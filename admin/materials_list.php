@@ -2,70 +2,82 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "admin";
   $nav = "materials";
 
-  require_once("../classes/Dm.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../functions/errorFuncs.php");
+  require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../shared/logincheck.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  require_once("../shared/header.php");
-
-
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dms = $dmQ->getWithStats("material_type_dm");
-  $dmQ->close();
-
+  if ($_GET["msg"]) {
+    echo '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
+  }
+  $mattypes = new MaterialTypes;
+  $types = $mattypes->getAllWithStats();
 ?>
-<a href="../admin/materials_new_form.php?reset=Y"><?php echo $loc->getText("admin_materials_listAddmaterialtypes"); ?></a><br>
-<h1> <?php echo $loc->getText("admin_materials_listMaterialtypes"); ?></h1>
+<h1><?php echo T("Material Types"); ?></h1>
+<a href="../admin/materials_new_form.php?reset=Y"><?php echo T("Add New Material Type"); ?></a><br />
 <table class="primary">
   <tr>
-    <th colspan="3" valign="top">
-      <font class="small">*</font><?php echo $loc->getText("admin_materials_listFunction"); ?>
+    <th colspan="3" rowspan="2" valign="top">
+      <sup>*</sup><?php echo T("Function"); ?>
     </th>
-    <th valign="top" nowrap="yes">
-      <?php echo $loc->getText("admin_materials_listDescription"); ?>
+    <th rowspan="2" valign="top" nowrap="yes">
+      <?php echo T("Description"); ?>
     </th>
+    <th colspan="2" valign="top">
+      <?php echo T("Checkout Limit"); ?>
+    </th>
+    <th rowspan="2" valign="top">
+      <?php echo T("Image File:"); ?>
+    </th>
+    <th rowspan="2" valign="top">
+      <?php echo T("Item Count"); ?>
+    </th>
+  </tr>
+  <tr>
     <th valign="top">
-      <?php echo $loc->getText("admin_materials_listImageFile"); ?>
+      <?php echo T("Adult"); ?>
     </th>
-    <th valign="top">
-      <?php echo $loc->getText("admin_materials_listBibcount"); ?>
+    <th>
+      <?php echo T("Juvenile"); ?>
     </th>
   </tr>
   <?php
     $row_class = "primary";
-    foreach ($dms as $dm) {
+    while ($type = $types->next()) {
   ?>
   <tr>
     <td valign="top" class="<?php echo H($row_class);?>">
-      <a href="../admin/materials_edit_form.php?code=<?php echo HURL($dm->getCode());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("admin_materials_listEdit"); ?></a>
+      <a href="../admin/materials_edit_form.php?code=<?php echo H($type['code']);?>" class="<?php echo H($row_class);?>"><?php echo T("edit"); ?></a>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($dm->getCount() == 0) { ?>
-        <a href="../admin/materials_del_confirm.php?code=<?php echo HURL($dm->getCode());?>&amp;desc=<?php echo HURL($dm->getDescription());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("admin_materials_listDel"); ?></a>
-      <?php } else { echo $loc->getText("admin_materials_listDel"); }?>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <?php if ($type['count'] == 0) { ?>
+        <a href="../admin/materials_del_confirm.php?code=<?php echo HURL($type['code']); ?>&desc=<?php echo HURL($type['description']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
+      <?php } else { echo T("del"); } ?>
     </td>
-    <td valign="top" nowrap="true" class="<?php echo H($row_class);?>">
-    <a href="../admin/custom_marc_view.php?materialCd=<?php echo HURL($dm->getCode());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("MARC Fields"); ?></a>
-   </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php echo H($dm->getDescription());?>
+	<td valign="top" nowrap="true" class="<?php echo H($row_class); ?>">
+    	<a href="../admin/material_fields_view.php?material_cd=<?php echo HURL($type['code']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("MARC Fields"); ?></a>
+   	</td>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <?php echo H($type['description']); ?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <img src="../images/<?php echo HURL($dm->getImageFile());?>" width="20" height="20" align="middle" alt="<?php echo H($dm->getDescription());?>">
-      <?php echo H($dm->getImageFile());?>
+    <td valign="top" align="center" class="<?php echo H($row_class); ?>">
+      <?php echo H($type['adult_checkout_limit']); ?>
     </td>
-    <td valign="top" align="center"  class="<?php echo H($row_class);?>">
-      <?php echo H($dm->getCount());?>
+    <td valign="top" align="center" class="<?php echo H($row_class); ?>">
+      <?php echo H($type['juvenile_checkout_limit']); ?>
+    </td>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <img src="../images/<?php echo H($type['image_file']); ?>" width="20" height="20" align="middle" alt="<?php echo H($type['description']); ?>">
+      <?php echo H($type['image_file']); ?>
+    </td>
+    <td valign="top" align="center"  class="<?php echo H($row_class); ?>">
+      <?php echo H($type['count']); ?>
     </td>
   </tr>
   <?php
@@ -78,8 +90,11 @@
     }
   ?>
 </table>
-<br>
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><?php echo $loc->getText("admin_materials_listNote"); ?></font></td>
-<td class="noborder"><font class="small"><?php echo $loc->getText("admin_materials_listNoteText"); ?><br></font>
-</td></tr></table>
-<?php include("../shared/footer.php"); ?>
+<br />
+<p class="note">
+<sup>*</sup><?php echo T("Note:"); ?><br />
+<?php echo T('materialsListNoteMsg'); ?></p>
+
+<?php
+
+  Page::footer();

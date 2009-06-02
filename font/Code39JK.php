@@ -23,4 +23,3 @@ $PDF_font['diff']='';
 $PDF_font['file']='Code39JK.z';
 $PDF_font['size1']=2251;
 $PDF_font['size2']=3137;
-?>

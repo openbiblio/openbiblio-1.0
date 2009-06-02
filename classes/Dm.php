@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 /******************************************************************************
  * Dm represents a domain table row.
  *
@@ -37,18 +37,18 @@ class Dm {
     $valid = true;
     if ($this->_description == "") {
       $valid = false;
-      $this->_descriptionError = "Description is required.";
+      $this->_descriptionError = T("Description is required.");
     }
     $this->_validateFieldNumericAndPositiveOrZero($valid,
                 $this->_daysDueBack,
                 $this->_daysDueBackError,
-                "Days due back must be numeric.",
-                "Days due back can not be less than zero.");
+                T("Days due back must be numeric."),
+                T("Days due back can not be less than zero."));
     $this->_validateFieldNumericAndPositiveOrZero($valid,
                 $this->_dailyLateFee,
                 $this->_dailyLateFeeError,
-                "Daily late fee must be numeric.",
-                "Daily late fee can not be less than zero.");
+                T("Daily late fee must be numeric."),
+                T("Daily late fee can not be less than zero."));
     return $valid;
   }
 
@@ -194,5 +194,3 @@ class Dm {
     $this->_setNumeric($value, $this->_count);
   }
 }
-
-?>

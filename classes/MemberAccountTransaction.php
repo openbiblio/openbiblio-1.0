@@ -2,8 +2,6 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-  require_once("../classes/Localize.php");
 
 /******************************************************************************
  * MemberAccountTransaction represents a member account transaction
@@ -24,10 +22,9 @@ class MemberAccountTransaction {
   var $_amountError = "";
   var $_description = "";
   var $_descriptionError = "";
-  var $_loc;
 
   function MemberAccountTransaction () {
-    $this->_loc = new Localize(OBIB_LOCALE,"classes");
+    
   }
 
   /****************************************************************************
@@ -39,17 +36,14 @@ class MemberAccountTransaction {
     $valid = true;
     if ($this->_amount == "") {
       $valid = FALSE;
-      $this->_amountError = $this->_loc->getText("memberAccountTransError1");
+      $this->_amountError = T("Amount is required.");
     } else if (!is_numeric($this->_amount)) {
       $valid = FALSE;
-      $this->_amountError = $this->_loc->getText("memberAccountTransError2");
-    } else if ($this->_amount <= 0) {
-      $valid = FALSE;
-      $this->_amountError = $this->_loc->getText("Amount must be greater than zero.");
+      $this->_amountError = T("Amount must be numeric.");
     }
     if ($this->_description == "") {
       $valid = false;
-      $this->_descriptionError = $this->_loc->getText("memberAccountTransError3");
+      $this->_descriptionError = T("Description is required.");
     }
     return $valid;
   }
@@ -124,5 +118,3 @@ class MemberAccountTransaction {
   }
 
 }
-
-?>

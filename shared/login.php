@@ -2,12 +2,13 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
-  require_once("../classes/Staff.php");
-  require_once("../classes/StaffQuery.php");
-  require_once("../classes/SessionQuery.php");
-  require_once("../functions/errorFuncs.php");
+
+  require_once(REL(__FILE__, "../classes/Staff.php"));
+  require_once(REL(__FILE__, "../classes/StaffQuery.php"));
+  require_once(REL(__FILE__, "../classes/SessionQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -24,7 +25,7 @@
   $username = $_POST["username"];
   if ($username == "") {
     $error_found = true;
-    $pageErrors["username"] = "Username is required.";
+    $pageErrors["username"] = T("Username is required.");
   }
 
   #****************************************************************************
@@ -34,7 +35,7 @@
   $pwd = $_POST["pwd"];
   if ($pwd == "") {
     $error_found = true;
-    $pageErrors["pwd"] = "Password is required.";
+    $pageErrors["pwd"] = T("Password is required.");
   } else {
 
 
@@ -51,7 +52,7 @@
     if ($staff == false) {
       # invalid password.  Add one to login attempts.
       $error_found = true;
-      $pageErrors["pwd"] = "Invalid signon.";
+      $pageErrors["pwd"] = T("Invalid signon.");
       if (!isset($_SESSION["loginAttempts"]) || ($_SESSION["loginAttempts"] == "")) {
         $sess_login_attempts = 1;
       } else {
@@ -124,5 +125,3 @@
   #**************************************************************************
   header("Location: ".$_SESSION["returnPage"]);
   exit();
-
-?>

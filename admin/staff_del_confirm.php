@@ -2,13 +2,12 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "admin";
   $nav = "staff";
-  require_once("../shared/logincheck.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
   #****************************************************************************
   #*  Checking for query string.  Go back to staff list if none found.
@@ -24,13 +23,16 @@
   #**************************************************************************
   #*  Show confirm page
   #**************************************************************************
-  require_once("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <center>
-<form name="delstaffform" method="POST" action="../admin/staff_del.php?UID=<?php echo HURL($uid);?>&amp;LAST=<?php echo HURL($last_name);?>&amp;FIRST=<?php echo HURL($first_name);?>">
-<?php echo $loc->getText("adminStaff_del_confirmConfirmText"); ?><?php echo H($first_name);?> <?php echo H($last_name);?>?<br><br>
-      <input type="submit" value="  <?php echo $loc->getText("Delete"); ?>  " class="button">
-      <input type="button" onClick="self.location='../admin/staff_list.php'" value="  <?php echo $loc->getText("Cancel"); ?>  " class="button">
+<form name="delstaffform" method="post" action="../admin/staff_del.php?UID=<?php echo $uid;?>&LAST=<?php echo $last_name;?>&FIRST=<?php echo $first_name;?>">
+<?php echo T('staffDelConfirmMsg', array('name'=>$first_name.' '.$last_name)); ?><br /><br />
+      <input type="submit" value="<?php echo T("Delete"); ?>" class="button">
+      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="<?php echo T("Cancel"); ?>" class="button">
 </form>
 </center>
-<?php include("../shared/footer.php"); ?>
+
+<?php
+
+  Page::footer();

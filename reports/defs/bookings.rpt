@@ -1,0 +1,107 @@
+.title "Booking Search"
+.category "Circulation"
+.layout packing_slip title="Packing Slips"
+.layout checkout_history title="Checkout History"
+.column bookingid hidden checkbox
+.column bibid hidden
+.column pieces hidden
+.column status func=booking_link title=Status
+.column item_num title="Item" sort=item_num
+.column title func=biblio_link title=Title sort=title
+.column outd title="Checkout" sort=outd
+.column retd title="Return" sort=retd
+.column members title="Members" func=member_list
+.parameters
+.	date out_since title="Earliest Checkout Date"
+.	date out_before title="Latest Checkout Date"
+.	date ret_since title="Earliest Return Date"
+.	date ret_before title="Latest Return Date"
+.	date created_since title="Created Since"
+.	select status title="Status" default=any
+.		item any title="Any"
+.		item booked title="Booked"
+.		item out title="Out"
+.		item returned title="Returned"
+.	end select
+.	string mbrid
+.	string bibid
+.	order_by
+.		item outd title="Checkout Date" expr='ifnull(to_days(out_dt), to_days(book_dt))'
+.		item retd title="Return Date" expr='ifnull(to_days(ret_dt), to_days(due_dt))'
+.		item item_num title="Item Number" expr='ifnull(c.barcode_nmbr, cs.subfield_data)'
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.	end order_by
+.end parameters
+
+.sql
+	select b.*,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		ifnull(date_format(out_dt, '%%Y-%%m-%%d'),
+			date_format(book_dt, '(%%Y-%%m-%%d)')) as outd,
+		ifnull(date_format(ret_dt, '%%Y-%%m-%%d'),
+			date_format(due_dt, '(%%Y-%%m-%%d)')) as retd,
+		ifnull(c.barcode_nmbr, cs.subfield_data) as item_num,
+		ifnull(ps.subfield_data, 1) as pieces,
+		if(b.out_histid IS NULL, 'Booked',
+			if(b.ret_histid IS NULL, 'Out', 'Returned')) as status
+	from booking b join biblio_field tf join biblio_subfield ts
+		join biblio_field cf join biblio_subfield cs
+.	if_set mbrid
+		join booking_member bkm
+.	end if_set
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+		left join biblio_status_hist bsh on bsh.histid=b.out_histid
+		left join biblio_copy c on c.bibid=bsh.bibid
+			and c.copyid=bsh.copyid
+		left join biblio_field pf on pf.bibid=b.bibid
+			and pf.tag='309' 
+		left join biblio_subfield ps on ps.fieldid=pf.fieldid 
+			and ps.subfield_cd='a' 
+	where tf.bibid=b.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and cf.bibid=b.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+.	if_equal status booked
+		and out_dt is null
+.	end if_equal
+.	if_equal status out
+		and out_dt is not null and ret_dt is null
+.	end if_equal
+.	if_equal status returned
+		and ret_dt is not null
+.	end if_equal
+.	if_set bibid
+		and b.bibid=%#bibid%
+.	end if_set
+.	if_set out_before
+		and ifnull(out_dt, book_dt) < %out_before% + interval 1 day
+.	end if_set
+.	if_set out_since
+		and ifnull(out_dt, book_dt) >= %out_since%
+.	end if_set
+.	if_set ret_before
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, greatest(due_dt, now())))
+			< %ret_before% + interval 1 day
+.	end if_set
+.	if_set ret_since
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, greatest(due_dt, now()))) >= %ret_since%
+.	end if_set
+.	if_set mbrid
+		and bkm.bookingid=b.bookingid
+		and bkm.mbrid = %#mbrid%
+.	end if_set
+.	if_set created_since
+		and b.create_dt >= %created_since%
+.	end if_set
+.	order_by_expr
+.	subselect members
+		select m.*, s.name as site_name, s.code as site_code
+		from member m, booking_member bkm, site s
+		where m.mbrid=bkm.mbrid
+			and bkm.bookingid=%#bookingid%
+			and m.siteid=s.siteid
+.	end subselect
+.end sql

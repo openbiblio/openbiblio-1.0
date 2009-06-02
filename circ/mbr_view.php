@@ -2,28 +2,28 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-  require_once("../shared/common.php");
-  $tab = "circulation";
-  $nav = "view";
-  $helpPage = "memberView";
-  $focus_form_name = "barcodesearch";
-  $focus_form_field = "barcodeNmbr";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../functions/formatFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../classes/Member.php");
-  require_once("../classes/MemberQuery.php");
-  require_once("../classes/BiblioSearch.php");
-  require_once("../classes/BiblioSearchQuery.php");
-  require_once("../classes/BiblioHold.php");
-  require_once("../classes/BiblioHoldQuery.php");
-  require_once("../classes/MemberAccountQuery.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../shared/get_form_vars.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once("../shared/common.php");
+
+  $tab = "circulation";
+  $nav = "mbr";
+  $focus_form_name = "bookingsearch";
+  $focus_form_field = "searchText";
+
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../functions/formatFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Members.php"));
+  require_once(REL(__FILE__, "../model/Sites.php"));
+  require_once(REL(__FILE__, "../model/Biblios.php"));
+  require_once(REL(__FILE__, "../model/Copies.php"));
+  require_once(REL(__FILE__, "../model/History.php"));
+  require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+  require_once(REL(__FILE__, "../model/Bookings.php"));
+  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../classes/Report.php"));
+  require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+
 
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
@@ -37,8 +37,8 @@
   #*  Retrieving get var
   #****************************************************************************
   $mbrid = $_GET["mbrid"];
-  if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
+  if ($_GET["msg"]) {
+    $msg = '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
   } else {
     $msg = "";
   }
@@ -46,23 +46,14 @@
   #****************************************************************************
   #*  Loading a few domain tables into associative arrays
   #****************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $mbrClassifyDm = $dmQ->getAssoc("mbr_classify_dm");
-  $mbrMaxFines = $dmQ->getAssoc("mbr_classify_dm", "max_fines");
-  $biblioStatusDm = $dmQ->getAssoc("biblio_status_dm");
-  $materialTypeDm = $dmQ->getAssoc("material_type_dm");
-  $materialImageFiles = $dmQ->getAssoc("material_type_dm", "image_file");
-  $memberFieldsDm = $dmQ->getAssoc("member_fields_dm");
-  $dmQ->close();
-
-  #****************************************************************************
-  #*  Search database for member
-  #****************************************************************************
-  $mbrQ = new MemberQuery();
-  $mbrQ->connect();
-  $mbr = $mbrQ->get($mbrid);
-  $mbrQ->close();
+  $mattypes = new MaterialTypes;
+  $types = $mattypes->getAll();
+  $materialTypeDm = array();
+  $materialImageFiles = array();
+  while ($type = $types->next()) {
+    $materialTypeDm[$type['code']] = $type['description'];
+    $materialImageFiles[$type['code']] = $type['image_file'];
+  }
 
   #****************************************************************************
   #*  Check for outstanding balance due
@@ -80,392 +71,337 @@
   }
   $acctQ->close();
   $balMsg = "";
-  if ($balance > 0 && $balance >= $mbrMaxFines[$mbr->getClassification()]) {
+  if ($balance != 0) {
     $balText = moneyFormat($balance,2);
-    $balMsg = "<font class=\"error\">".$loc->getText("mbrViewBalMsg",array("bal"=>$balText))."</font><br><br>";
+    $balMsg = '<p class="error">'.T("Note: Mbr outstanding balance %bal%", array("bal"=>$balText)).'</p><br /><br />';
+  }
+
+  #****************************************************************************
+  #*  Search database for member
+  #****************************************************************************
+  $members = new Members;
+  $mbr = $members->maybeGetOne($mbrid);
+
+  if ($mbr) {
+    $_SESSION['currentMbrid'] = $mbrid;
+  } else {
+    header('Location: ../circ/index.php');
+    exit();
+  }
+
+  $sites = new Sites;
+  $site = $sites->getOne($mbr['siteid']);
+  $biblios = new Biblios;
+  $bookings = new Bookings;
+
+  if (isset($_REQUEST['seq'])) {
+    $seq = Sequence::load($_REQUEST['seq']);
+  } else {
+    $seq = NULL;
   }
 
   #**************************************************************************
   #*  Show member information
   #**************************************************************************
-  require_once("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
+  if (isset($_REQUEST['rpt'])) {
+    $rpt = Report::load($_REQUEST['rpt']);
+  } else {
+    $rpt = NULL;
+  }
+  if ($rpt and isset($_REQUEST['seqno'])) {
+    $p = $rpt->row($_REQUEST['seqno']-1);
+    $n = $rpt->row($_REQUEST['seqno']+1);
+    echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
+    if ($p) {
+      echo '<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
+    }
+    echo '</td><td align="center">';
+    echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
+    echo '</td><td align="right">';
+    if ($n) {
+      echo '<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
+    }
+    echo '</td></tr></table>';
+  }
 ?>
 
 <?php echo $balMsg ?>
 <?php echo $msg ?>
 
-<table class="primary">
-  <tr><td class="noborder" valign="top">
-  <br>
-<table class="primary">
+<form name="selection" id="selection" class="not_block" action="../shared/dispatch.php" method="post">
+<input type="hidden" name="tab" value="<?php echo H($tab)?>" />
+<table class="resultshead">
   <tr>
-    <th align="left" colspan="2" nowrap="yes">
-      <?php echo $loc->getText("mbrViewHead1"); ?>
-    </th>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo $loc->getText("mbrViewName"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($mbr->getLastName());?>, <?php echo H($mbr->getFirstName());?>
-    </td>
-  </tr>
-  <tr>
-    <td class="primary" valign="top">
-      <?php echo $loc->getText("mbrViewAddr"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php
-        echo str_replace("\n", "<br />", H($mbr->getAddress()));
-      ?>
-    </td>
-  </tr>
-  <tr>
-    <td class="primary" valign="top">
-      <?php echo $loc->getText("mbrViewCardNmbr"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($mbr->getBarcodeNmbr());?>
-    </td>
-  </tr>
-  <tr>
-    <td class="primary" valign="top">
-      <?php echo $loc->getText("mbrViewClassify"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($mbrClassifyDm[$mbr->getClassification()]);?>
-    </td>
-  </tr>
-  <tr>
-    <td class="primary" valign="top">
-      <?php echo $loc->getText("mbrViewPhone"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php
-        if ($mbr->getHomePhone() != "") {
-          echo $loc->getText("mbrViewPhoneHome").$mbr->getHomePhone()." ";
-        }
-        if ($mbr->getWorkPhone() != "") {
-          echo $loc->getText("mbrViewPhoneWork").$mbr->getWorkPhone();
-        }
-      ?>
-    </td>
-  </tr>
-  <tr>
-    <td class="primary" valign="top">
-      <?php echo $loc->getText("mbrViewEmail"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($mbr->getEmail());?>
-    </td>
-  </tr>
+      <th><?php echo T("Member Information"); ?></th>
+    <td class="resultshead">
+<table class="buttons">
+<tr>
 <?php
-  foreach ($memberFieldsDm as $name => $title) {
-    if (($value = $mbr->getCustom($name))) {
+if ($_SESSION['currentBookingid']) {
+  echo '<td>';
+  echo '<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
+  echo '<input type="hidden" name="id[]" value="'.H($mbrid).'" />';
+  echo '<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
+  echo '</td>';
+}
 ?>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</form>
+<table class="biblio_view">
   <tr>
-    <td class="primary" valign="top">
-      <?php echo H($title); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($value);?>
+    <td class="name"><?php echo T("Name:"); ?></td>
+    <td class="value">
+      <?php echo H($mbr['last_name']);?>, <?php echo H($mbr['first_name']);?>
     </td>
   </tr>
-<?php
-    }
-  }
-?>
+  <tr>
+    <td class="name">
+      <?php echo T("Site:"); ?>
+    </td>
+    <td class="value">
+      <?php echo H($site['name']) ?>
+    </td>
+  </tr>
+  <tr>
+    <td class="name">
+      <?php echo T("Card Number:"); ?>
+    </td>
+    <td class="value">
+      <?php echo H($mbr['barcode_nmbr']);?>
+    </td>
+  </tr>
+  <tr>
+    <td class="name">
+      <?php echo T("School Grade:"); ?>
+    </td>
+    <td class="value">
+      <?php echo H($mbr['school_grade']);?>
+    </td>
+  </tr>
 </table>
 
-  </td>
-  <td class="noborder" valign="top">
+<br />
 
-<?php
-  #****************************************************************************
-  #*  Show checkout stats
-  #****************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dms = $dmQ->getCheckoutStats($mbr->getMbrid());
-  $dmQ->close();
-?>
-<?php echo $loc->getText("mbrViewHead2"); ?>
-<table class="primary">
-  <tr>
-    <th align="left" rowspan="2">
-      <?php echo $loc->getText("mbrViewStatColHdr1"); ?>
-    </th>
-    <th align="left" rowspan="2">
-      <?php echo $loc->getText("mbrViewStatColHdr2"); ?>
-    </th>
-    <th align="center" colspan="2" nowrap="yes">
-      <?php echo $loc->getText("mbrViewStatColHdr3"); ?>
-    </th>
-  </tr>
-  <tr>
-    <th align="left">
-      <?php echo $loc->getText("mbrViewStatColHdr4"); ?>
-    </th>
-    <th align="left">
-      <?php echo $loc->getText("mbrViewStatColHdr5"); ?>
-    </th>
-  </tr>
-<?php
-  foreach ($dms as $dm) {
-?>
-  <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo H($dm->getDescription()); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($dm->getCount()); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($dm->getCheckoutLimit()); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php echo H($dm->getRenewalLimit()); ?>
-    </td>
-  </tr>
-<?php
-  }
-?>
-  </table>
-</td></tr></table>
-
-<br>
 <!--****************************************************************************
     *  Checkout form
     **************************************************************************** -->
-<form name="barcodesearch" method="POST" action="../circ/checkout.php">
+<form name="bookingsearch" method="get" action="../shared/biblio_search.php">
 <table class="primary">
   <tr>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHead3"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Make Booking"); ?>
     </th>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
-      <?php echo $loc->getText("mbrViewBarcode"); ?>
-      <?php printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
-        <a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"><?php echo $loc->getText("indexSearch"); ?></a>
-      <input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>">
-      <input type="submit" value="<?php echo $loc->getText("mbrViewCheckOut"); ?>" class="button">
+    <td nowrap="nowrap" class="primary">
+      <select name="searchType">
+        <option value="keyword"><?php echo T("Keyword"); ?></option>
+        <option value="title"><?php echo T("Title"); ?></option>
+        <option value="subject"><?php echo T("Subject"); ?></option>
+        <option value="series"><?php echo T("Series"); ?></option>
+        <option value="publisher"><?php echo T("Publisher"); ?></option>
+        <option value="callno" selected><?php echo T("Item Number"); ?></option>
+      </select>
+      <input type="text" name="searchText" size="30" maxlength="256" />
+      <input type="hidden" name="sortBy" value="default" />
+      <input type="hidden" name="tab" value="<?php echo H($circ); ?>" />
+      <input type="hidden" name="lookup" value="<?php echo H($lookup); ?>" />
+      <input type="submit" value="<?php echo T("Search"); ?>" class="button" />
     </td>
   </tr>
 </table>
 </form>
 
-<h1><?php echo $loc->getText("mbrViewHead4"); ?>
-  <font class="primary"> <a href="javascript:popSecondary('../circ/mbr_print_checkouts.php?mbrid=<?php echo H(addslashes(U($mbrid)));?>')"><?php echo $loc->getText("mbrPrintCheckouts"); ?></a></font>
-</h1>
+<form name="barcodesearch" method="post" action="../circ/checkout.php">
 <table class="primary">
   <tr>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr1"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Quick Check Out"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr2"); ?>
+  </tr>
+  <tr>
+    <td nowrap="nowrap" class="primary">
+      <?php echo T("Barcode Number:"); ?>
+      <?php printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
+      <input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>" />
+      <input type="hidden" name="classification" value="<?php echo H($mbr['classification']);?>" />
+      <input type="submit" value="<?php echo T("Check Out"); ?>" class="button" />
+    </td>
+  </tr>
+</table>
+</form>
+
+<h1><?php echo T("Items Currently Checked Out"); ?></h1>
+<table class="primary">
+  <tr>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Checked Out"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr3"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Material"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr4"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Barcode"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr5"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Title"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr6"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Due Back"); ?>
     </th>
     <th valign="top" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr8"); ?>
-    </th>
-    <th valign="top" align="left">
-      <?php echo $loc->getText("mbrViewOutHdr7"); ?>
+      <?php echo T("Days Late"); ?>
     </th>
   </tr>
 
 <?php
   #****************************************************************************
-  #*  Search database for BiblioStatus data
+  #*  Get copies this member has out.
   #****************************************************************************
-  $biblioQ = new BiblioSearchQuery();
-  $biblioQ->connect();
-  if ($biblioQ->errorOccurred()) {
-    $biblioQ->close();
-    displayErrorPage($biblioQ);
-  }
-  if (!$biblioQ->doQuery(OBIB_STATUS_OUT,$mbrid)) {
-    $biblioQ->close();
-    displayErrorPage($biblioQ);
-  }
-  if ($biblioQ->getRowCount() == 0) {
+  $copies = new Copies;
+  $checkouts = $copies->getMemberCheckouts($mbrid);
+  if ($checkouts->count() == 0) {
 ?>
   <tr>
-    <td class="primary" align="center" colspan="8">
-      <?php echo $loc->getText("mbrViewNoCheckouts"); ?>
+    <td class="primary" align="center" colspan="6">
+      <?php echo T("No items are currently checked out."); ?>
     </td>
   </tr>
 <?php
   } else {
-    while ($biblio = $biblioQ->fetchRow()) {
+    while ($copy = $checkouts->next()) {
+      $history = new History;
+      $biblio = $biblios->getOne($copy['bibid']);
+      $status = $history->getOne($copy['histid']);
+      $booking = $bookings->getByHistid($copy['histid']);
+      if ($booking == NULL) {
+        Fatal::internalError(T("Broken histid/booking reference"));
+      }
 ?>
   <tr>
-    <td class="primary" valign="top" nowrap="yes">
-      <?php echo H($biblio->getStatusBeginDt());?>
+    <td class="primary" valign="top" nowrap="nowrap">
+      <?php echo H($status['status_begin_dt']);?>
     </td>
     <td class="primary" valign="top">
-      <img src="../images/<?php echo HURL($materialImageFiles[$biblio->getMaterialCd()]);?>" width="20" height="20" border="0" align="middle" alt="<?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>">
-      <?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>
+      <img src="../images/<?php echo H($materialImageFiles[$biblio['material_cd']]);?>" width="20" height="20" border="0" align="middle" alt="<?php echo H($materialTypeDm[$biblio['material_cd']]);?>">
+      <?php echo H($materialTypeDm[$biblio['material_cd']]);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($biblio->getBarcodeNmbr());?>
+      <?php echo H($copy['barcode_nmbr']);?>
     </td>
     <td class="primary" valign="top" >
-      <a href="../shared/biblio_view.php?bibid=<?php echo HURL($biblio->getBibid());?>"><?php echo H($biblio->getTitle());?></a>
+      <a href="../shared/biblio_view.php?bibid=<?php echo HURL($copy['bibid']);?>"><?php echo H($biblio['marc']->getValue('245$a'));?></a>
+    </td>
+    <td class="primary" valign="top" nowrap="nowrap">
+      <?php echo H($booking['due_dt']);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($biblio->getAuthor());?>
-    </td>
-    <td class="primary" valign="top" nowrap="yes">
-      <?php echo H($biblio->getDueBackDt());?>
-    </td>
-    <td class="primary" valign="top" >
-      <a href="../circ/checkout.php?barcodeNmbr=<?php echo HURL($biblio->getBarcodeNmbr());?>&amp;mbrid=<?php echo HURL($mbrid);?>&amp;renewal">Renew item</A>
-      <?php
-        if($biblio->getRenewalCount() > 0) { ?>
-          </br>
-          (<?php echo H($biblio->getRenewalCount());?> <?php echo $loc->getText("mbrViewOutHdr9"); ?>)
-      <?php
-        } ?>
-    </td>
-    <td class="primary" valign="top" >
-      <?php echo H($biblio->getDaysLate());?>
+      <?php echo H($bookings->getDaysLate($booking));?>
     </td>
   </tr>
 <?php
     }
   }
-  $biblioQ->close();
 ?>
 
 </table>
 
-<br>
+<br />
 <!--****************************************************************************
     *  Hold form
     **************************************************************************** -->
-<form name="holdForm" method="POST" action="../circ/place_hold.php">
+<form name="holdForm" method="post" action="../circ/place_hold.php">
 <table class="primary">
   <tr>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHead5"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Place Hold"); ?>
     </th>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
-      <?php echo $loc->getText("mbrViewBarcode"); ?>
+    <td nowrap="nowrap" class="primary">
+      <?php echo T("Barcode Number"); ?>
       <?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
-        <a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"><?php echo $loc->getText("indexSearch"); ?></a>
-      <input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>">
-      <input type="hidden" name="classification" value="<?php echo H($mbr->getClassification());?>">
-      <input type="submit" value="<?php echo $loc->getText("mbrViewPlaceHold"); ?>" class="button">
+      <a href="javascript:popSecondaryLarge(../opac/index.php?lookup=Y)">search</a>
+      <input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
+      <input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
+      <input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
     </td>
   </tr>
 </table>
 </form>
 
-<h1><?php echo $loc->getText("mbrViewHead6"); ?></h1>
+<h1><?php echo T("Copies Currently On Hold"); ?></h1>
 <table class="primary">
   <tr>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr1"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Function"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr2"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Placed On Hold"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr3"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Barcode"); ?>
     </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr4"); ?>
-    </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr5"); ?>
-    </th>
-    <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr6"); ?>
+    <th valign="top" nowrap="nowrap" align="left">
+      <?php echo T("Title"); ?>
     </th>
     <th valign="top" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr7"); ?>
+      <?php echo T("Status"); ?>
     </th>
     <th valign="top" align="left">
-      <?php echo $loc->getText("mbrViewHoldHdr8"); ?>
+      <?php echo T("Due Back"); ?>
     </th>
   </tr>
 <?php
   #****************************************************************************
   #*  Search database for BiblioHold data
   #****************************************************************************
-  $holdQ = new BiblioHoldQuery();
-  $holdQ->connect();
-  if ($holdQ->errorOccurred()) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  if (!$holdQ->queryByMbrid($mbrid)) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  if ($holdQ->getRowCount() == 0) {
+  $holds = Report::create('holds');
+  $holds->init(array('mbrid'=>$mbrid));
+  if ($holds->count() == 0) {
 ?>
   <tr>
-    <td class="primary" align="center" colspan="8">
-      <?php echo $loc->getText("mbrViewNoHolds"); ?>
+    <td class="primary" align="center" colspan="7">
+      <?php echo T("No copies on hold"); ?>
     </td>
   </tr>
 <?php
   } else {
-    while ($hold = $holdQ->fetchRow()) {
+    while ($hold = $holds->each()) {
 ?>
   <tr>
-    <td class="primary" valign="top" nowrap="yes">
-      <a href="../shared/hold_del_confirm.php?bibid=<?php echo HURL($hold->getBibid());?>&amp;copyid=<?php echo HURL($hold->getCopyid());?>&amp;holdid=<?php echo HURL($hold->getHoldid());?>&amp;mbrid=<?php echo HURL($mbrid);?>"><?php echo $loc->getText("mbrViewDel"); ?></a>
+    <td class="primary" valign="top" nowrap="nowrap">
+      <a href="../shared/hold_del_confirm.php?holdid=<?php echo HURL($hold['holdid']);?>&amp;bibid=<?php echo HURL($hold['bibid']); ?>&amp;mbrid=<?php echo HURL($mbrid);?>"><?php echo T("del"); ?></a>
     </td>
-    <td class="primary" valign="top" nowrap="yes">
-      <?php echo H($hold->getHoldBeginDt());?>
-    </td>
-    <td class="primary" valign="top">
-      <img src="../images/<?php echo HURL($materialImageFiles[$hold->getMaterialCd()]);?>" width="20" height="20" border="0" align="middle" alt="<?php echo H($materialTypeDm[$hold->getMaterialCd()]);?>">
-      <?php echo H($materialTypeDm[$hold->getMaterialCd()]);?>
+    <td class="primary" valign="top" nowrap="nowrap">
+      <?php echo H($hold['hold_begin']);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($hold->getBarcodeNmbr());?>
+      <?php echo H($hold['barcode_nmbr']);?>
     </td>
     <td class="primary" valign="top" >
-      <a href="../shared/biblio_view.php?bibid=<?php echo HURL($hold->getBibid());?>"><?php echo H($hold->getTitle());?></a>
+      <a href="../shared/biblio_view.php?bibid=<?php echo HURL($hold['bibid']);?>"><?php echo H($hold['title']);?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($hold->getAuthor());?>
+      <?php echo H($hold['status']);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($biblioStatusDm[$hold->getStatusCd()]);?>
-    </td>
-    <td class="primary" valign="top" >
-      <?php echo H($hold->getDueBackDt());?>
+      <?php echo H($hold['due']);?>
     </td>
   </tr>
 <?php
     }
   }
-  $holdQ->close();
 ?>
-
 
 </table>
 
+<?php
 
-<?php require_once("../shared/footer.php"); ?>
+  Page::footer();

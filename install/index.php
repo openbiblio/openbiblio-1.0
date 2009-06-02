@@ -2,13 +2,12 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   $doing_install = true;
   require_once("../shared/common.php");
-  
-  require_once("../classes/InstallQuery.php");
-  require_once("../classes/Settings.php");
-  
+
+  require_once(REL(__FILE__, "../install/InstallQuery.php"));
+
   $installQ = new InstallQuery();
   $version = NULL;
   $error = $installQ->connect_e();
@@ -16,8 +15,8 @@
     $version = $installQ->getCurrentDatabaseVersion();
     $installQ->close();
   }
-  
-  include("../install/header.php");
+
+  include(REL(__FILE__, "../install/header.php"));
 ?>
 <h1>OpenBiblio <?php echo H(OBIB_CODE_VERSION); ?> Installation</h1>
 <?php
@@ -50,7 +49,7 @@
       <blockquote>
         <h2>Your OpenBiblio Installation is up to date</h2>
         <font class="error">No action is required</font></br></br>
-        <a href="../home/index.php">start using OpenBiblio</a>
+        <a href="../circ/index.php">start using OpenBiblio</a>
       </blockquote>
 <?php
     } elseif ($version == NULL) {
@@ -63,8 +62,7 @@
               <td><font class="primary">Language:</font></td>
               <td><select name="locale">
                 <?php
-                  $stng = new Settings();
-                  $arr_lang = $stng->getLocales();
+                  $arr_lang = Localize::getLocales();
                   foreach ($arr_lang as $langCode => $langDesc) {
                     echo "<option value=\"".H($langCode)."\"";
                     echo ">".H($langDesc)."\n";
@@ -96,5 +94,4 @@
 <?php
     }
   }
-  include("../install/footer.php");
-?>
+  include(REL(__FILE__, "../install/footer.php"));

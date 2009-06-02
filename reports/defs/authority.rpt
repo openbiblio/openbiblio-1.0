@@ -1,0 +1,35 @@
+.title "Authority Search"
+.category "MARC Reports"
+.layout authority_list title="Authority List"
+.column subfield_data title="Value" sort=subfield_data
+.column items title="Items" sort=items
+.parameters
+.	string tag title="MARC Tag"
+.	string subfield title="MARC Subfield"
+.	string contains title="Subfield Contains"
+.	string startswith title="Subfield Starts With"
+.	order_by default=subfield_data
+.		item subfield_data title="Value"
+.		item items title="Items" type=numeric
+.	end order_by
+.end parameters
+
+.sql
+	select subfield_data, count(distinct f.bibid) as items
+	from biblio_field f, biblio_subfield s
+	where s.fieldid=f.fieldid
+.	if_set tag
+	and f.tag=%tag%
+.	end if_set
+.	if_set subfield
+	and s.subfield_cd=%subfield%
+.	end if_set
+.	if_set contains
+		and s.subfield_data like '%%%"contains%%%'
+.	end if_set
+.	if_set startswith
+		and s.subfield_data like '%"startswith%%%'
+.	end if_set
+	group by s.subfield_data
+.	order_by_expr
+.end sql

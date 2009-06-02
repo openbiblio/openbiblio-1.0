@@ -1,0 +1,26 @@
+.title "Subject Search"
+.category "MARC Reports"
+.column subject title="Subject" func=subject_link sort=subject width=5
+.column items title="Items" sort=items
+.parameters
+.	string contains title="Subject Contains"
+.	string startswith title="Subject Starts With"
+.	order_by default=subject
+.		item subject title="Subject" expr="s.subfield_data"
+.		item items title="Items" type=numeric
+.	end order_by
+.end parameters
+
+.sql
+	select s.subfield_data as subject, count(distinct f.bibid) as items
+	from biblio_field f, biblio_subfield s
+	where f.tag='650' and s.subfield_cd='a' and s.fieldid=f.fieldid
+.	if_set contains
+		and s.subfield_data like '%%%"contains%%%'
+.	end if_set
+.	if_set startswith
+		and s.subfield_data like '%"startswith%%%'
+.	end if_set
+	group by s.subfield_data
+.	order_by_expr
+.end sql

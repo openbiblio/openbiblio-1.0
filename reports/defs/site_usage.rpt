@@ -1,0 +1,29 @@
+.title "Site Usage"
+.category "Statistical Reports"
+.column siteid hidden
+.column site_name sort=site_member title=Site
+.column bookings sort=bookings title=Bookings
+.parameters
+.	date start title="Start Date"
+.	date end title="End Date" default="today"
+.	order_by
+.		item site_name title=Site expr="s.name"
+.		item bookings title="Booking Count" type="numeric"
+.	end order_by
+.end parameters
+
+.sql
+	select s.siteid, s.name as site_name, count(distinct b.bookingid) as bookings
+	from booking b join booking_member bkm join member m
+		right join site s on s.siteid=m.siteid
+	where bkm.bookingid=b.bookingid and m.mbrid=bkm.mbrid
+		and s.siteid=m.siteid
+.	if_set start
+		and ifnull(b.out_dt, b.book_dt) >= %start%
+.	end if_set
+.	if_set end
+		and ifnull(b.out_dt, b.book_dt) < %end% + interval 1 day
+.	end if_set
+	group by s.siteid, s.name
+.	order_by_expr
+.end sql

@@ -2,18 +2,17 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
   $tab = "admin";
   $nav = "member_fields";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../classes/Dm.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../classes/Dm.php"));
+  require_once(REL(__FILE__, "../classes/DmQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
@@ -28,10 +27,10 @@
   #****************************************************************************
   $pageErrors = array();
   if (!isset($_POST['code']) or !$_POST['code']) {
-    $pageErrors['code'] = 'This is a required field.';
+    $pageErrors['code'] = T("This is a required field.");
   }
   if (!isset($_POST['description']) or !$_POST['description']) {
-    $pageErrors['description'] = 'This is a required field.';
+    $pageErrors['description'] = T("This is a required field.");
   }
   if (!empty($pageErrors)) {
     $_SESSION["postVars"] = $_POST;
@@ -60,9 +59,9 @@
   #**************************************************************************
   #*  Show success page
   #**************************************************************************
-  require_once("../shared/header.php");
-?>
-<?php echo $loc->getText("Member field, %desc%, has been added.", array('desc'=>$dm->getDescription()));?><br><br>
-<a href="../admin/member_fields_list.php"><?php echo $loc->getText("return to member fields list"); ?></a>
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-<?php require_once("../shared/footer.php"); ?>
+  echo T("Member field, %desc%, has been added.", array('desc'=>$dm->getDescription())).'<br /><br />';
+  echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
+
+  Page::footer();

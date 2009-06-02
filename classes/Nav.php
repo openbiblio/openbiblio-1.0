@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 $_Nav_menu = array();
 $_Nav_unparented = array();
 class Nav {
@@ -20,6 +20,9 @@ class Nav {
     Nav::_display($activePath, $_Nav_menu);
   }
   function _display($activePath, $menu, $class='nav_main') {
+    if (empty($menu)) {
+      return;
+    }
     echo '<ul class="'.$class.'">';
     foreach ($menu as $m) {
       if ($m['path'] != $activePath) {
@@ -41,16 +44,20 @@ class Nav {
     return ($sub == $path) or ($path.'/' == substr($sub, 0, strlen($path)+1));
   }
   function &_getParent($path) {
-    global $_Nav_menu;
+    global $_Nav_menu, $_Nav_unparented;
     if (ereg('^(.*)/([^/]*)?$', $path, $m)) {
       $path = $m[1];
     } else {
       $path = "";
     }
-    return Nav::_getParent_real($path, $_Nav_menu);
+    $a =& Nav::_getParent_real($path, $_Nav_menu);
+    if ($a === false) {
+      return $_Nav_unparented;
+    } else {
+      return $a;
+    }
   }
   function &_getParent_real($path, &$menu, $curpath="") {
-    global $_Nav_unparented;
     if ($path == $curpath) {
       return $menu;
     }
@@ -60,7 +67,7 @@ class Nav {
         return Nav::_getParent_real($path, $menu[$i]['children'], $menu[$i]['path']);
       }
     }
-    return $_Nav_unparented;
+    return false;
   }
   function _reparent() {
     global $_Nav_unparented;
@@ -71,5 +78,3 @@ class Nav {
     }
   }
 }
-
-?>

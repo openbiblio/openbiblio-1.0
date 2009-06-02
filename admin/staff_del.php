@@ -2,16 +2,16 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "admin";
   $nav = "staff";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
-  require_once("../classes/StaffQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../classes/StaffQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+
   #****************************************************************************
   #*  Checking for query string.  Go back to staff list if none found.
   #****************************************************************************
@@ -41,9 +41,9 @@
   #**************************************************************************
   #*  Show success page
   #**************************************************************************
-  require_once("../shared/header.php");
-?>
-<?php echo $loc->getText("adminStaff_Staffmember"); ?> <?php echo H($first_name);?> <?php echo H($last_name);?><?php echo $loc->getText("adminStaff_delDeleted"); ?><br><br>
-<a href="../admin/staff_list.php"><?php echo $loc->getText("adminStaff_Return"); ?></a>
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-<?php require_once("../shared/footer.php"); ?>
+  echo T("Staff member, %name%, has been deleted.", array('name'=>$first_name.' '.$last_name)).'<br /><br />';
+  echo '<a href="../admin/staff_list.php">'.T("Return to staff list").'</a>';
+
+  Page::footer();

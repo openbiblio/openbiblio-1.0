@@ -1,0 +1,51 @@
+.title "Must Returns"
+.category "Circulation"
+.layout pickup_list title="Pickup List"
+.column bookingid hidden checkbox
+.column bibid hidden
+.column mbrid hidden
+.column siteid hidden
+.column first_name hidden
+.column last_name hidden
+.column mbr_name sort=member title=Member func=member_link
+.column site_name sort=site_member title=Site
+.column barcode_nmbr sort=barcode_nmbr title=Barcode
+.column title sort=title func=biblio_link title=Title
+.column due_dt sort=due_dt func=booking_link title="Date Due"
+.parameters
+.	date date title="Date" type="date" default="today"
+.	order_by
+.		item site_member type=multi expr="site_name, member" title="Site, Member" 
+.		item member title=Member expr="concat(m.last_name, m.first_name)"
+.		item site_name title=Site expr="s.name"
+.		item due_dt title="Date Due"
+.		item barcode_nmbr title="Item Barcode" expr="bc.barcode_nmbr"
+.		item title expr="titles.subfield_data" type=MARC skip_indicator="titlef.ind2_cd"
+.	end order_by
+.end parameters
+
+.sql
+	select distinct b.*, bc.barcode_nmbr,
+		m.mbrid, m.barcode_nmbr as mbr_bcode,
+		m.first_name, m.last_name, s.siteid,
+		concat(m.first_name, ' ', m.last_name, ' (',
+			m.barcode_nmbr, ')') as mbr_name,
+		s.name as site_name,
+		concat(titles.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title
+	from booking b join booking bp join booking_member bkm
+		join member m join site s join biblio_copy bc join biblio_field titlef
+		join biblio_subfield titles
+		left join biblio_subfield sub on sub.fieldid=titlef.fieldid
+			and sub.subfield_cd='b'
+	where b.bibid=bp.bibid
+		and bp.out_histid is NULL
+		and bp.book_dt <= %date% + interval 7 day
+		and bc.histid=b.out_histid
+		and titlef.bibid=b.bibid and titlef.tag='245'
+		and titles.fieldid=titlef.fieldid and titles.subfield_cd='a'
+		and b.out_histid is not NULL and b.ret_histid is NULL
+		and b.due_dt <= %date%
+		and bkm.bookingid=b.bookingid and m.mbrid=bkm.mbrid
+		and s.siteid=m.siteid
+.	order_by_expr
+.end sql

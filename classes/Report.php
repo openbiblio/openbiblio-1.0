@@ -3,21 +3,21 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once("../classes/Params.php");
+require_once(REL(__FILE__, "../classes/Params.php"));
 
-/* A report should always be created with Report::load() or
- * Report::create_e(), never with new Report().  Create() makes a new
+/* A report should always be created with Report::load(), Report::create(),
+ * or Report::create_e(), never with new Report().  Create_e() makes a new
  * report of the given type.  If the report is given a name, it will be
- * saved in the session in a way that does not depend on storing
- * objects in the session.  Load() loads a named report from data
- * stored in the session.
+ * saved in the session in a way that does not depend on storing objects
+ * in the session.  Load() loads a named report from data stored in the
+ * session.  Create() calls create_e(), but treats any error as fatal.
  *
- * Link() returns an URL for linking to the results of a named report.
- * An optional message may be supplied for display on the results
- * page.
- * 
+ * Link() returns an URL for linking to the results of a named report.  An
+ * optional message may be supplied for display on the results page.
+ *
  * Public instance methods:
- *   title(), layouts(), paramDefs(), init(), variant_el(), columns(), columnNames(),
+ *   title(), layouts(), paramDefs(), init(), init_el(), initCgi(),
+ *   initCgi_el(), variant() ,variant_el(), columns(), columnNames(),
  *   count(), curPage(), row(), each(), table(), and pageTable()
  */
 class Report {
@@ -31,6 +31,7 @@ class Report {
     $urls = array(
       'Report'=>'../reports/run_report.php?type=previous&msg=',
       'BiblioSearch'=>'../shared/biblio_search.php?searchType=previous&msg=',
+      'BiblioCart'=>'../shared/req_cart.php?msg=',
     );
     if (isset($urls[$name])) {
       $url = $urls[$name];
@@ -42,6 +43,13 @@ class Report {
       $url .= '&tab='.U($tab);
     }
     return $url;
+  }
+  function create($type, $name=NULL) {
+    list($rpt, $err) = Report::create_e($type, $name);
+    if($err) {
+      Fatal::internalError(T('ReportCreatingReport', array('error'=>$err->toStr())));
+    }
+    return $rpt;
   }
   function create_e($type, $name=NULL) {
     $cache = array('type'=>$type);
@@ -57,7 +65,7 @@ class Report {
     $err = $rpt->_load_e($name, $_SESSION['rpt_'.$name]);
     if ($err) {
       unset($_SESSION['rpt_'.$name]);
-      Fatal::internalError("Couldn't load cached report: $name");
+      Fatal::internalError(T('ReportNoLoadReport', array('name'=>$name)));
     }
     return $rpt;
   }
@@ -87,7 +95,7 @@ class Report {
     return NULL;		# Can't error non-fatally
   }
   function _load_rpt_e($type, $fname) {
-    require_once('../classes/Rpt.php');
+    require_once(REL(__FILE__, '../classes/Rpt.php'));
     $rpt = new Rpt;
     $err = $rpt->load_e($fname);
     if ($err) {
@@ -117,6 +125,12 @@ class Report {
   function columnNames() {
     return array_map(create_function('$x', 'return $x["name"];'), $this->columns());
   }
+  function init($params) {
+    $errs = $this->init_el($params);
+    if(!empty($errs)) {
+      Fatal::internalError(T('ReportInitReport', array('error'=>Error::listToStr($errs))));
+    }
+  }
   function init_el($params) {
     assert('is_array($params)');
     $p = new Params;
@@ -125,6 +139,12 @@ class Report {
       return $errs;
     }
     return $this->_init_el($p);
+  }
+  function initCgi($prefix='rpt_') {
+    $errs = $this->initCgi_el($prefix);
+    if(!empty($errs)) {
+      Fatal::internalError(T('ReportInitReport', array('error'=>Error::listToStr($errs))));
+    }
   }
   function initCgi_el($prefix='rpt_') {
     $p = new Params;
@@ -141,14 +161,23 @@ class Report {
     $this->_save();
     return array();
   }
+  function variant($newParams, $newName=NULL) {
+    list($rpt, $errs) = $this->variant_el($newParams, $newName);
+    if(!empty($errs)) {
+      Fatal::internalError(T('ReportMakingVariant', array('error'=>Error::listToStr($errs))));
+    }
+    return $rpt;
+  }
   function variant_el($newParams, $newName=NULL) {
-    assert('is_array($this->cache["params"])');
+    if(!is_array($this->cache["params"])) {
+      Fatal::internalError(T('ReportNoParams'));
+    }
     if ($newName === NULL) {
       $newName = $this->name;
     }
-    list($rpt, $err) = Report::create_e($this->cache['type'], $newName);
-    if ($err) {
-      Fatal::internalError("Unexpected report creation error: ".$err->toStr());
+    $rpt = Report::create($this->cache['type'], $newName);
+    if(!$rpt) {
+      Fatal::internalError(T('ReportCreationFailed'));
     }
     $params = new Params;
     $params->loadDict($this->cache['params']);
@@ -163,7 +192,7 @@ class Report {
     return array($rpt, array());
   }
   function curPage() {
-    if (isset($this->cache['page']) and $this->cache['page']) {
+    if ($this->cache['page']) {
       return $this->cache['page'];
     } else {
       return 1;
@@ -177,22 +206,25 @@ class Report {
     }
   }
   function count() {
-    if (!isset($this->cache['count']) || $this->cache['count'] === NULL) {
+    if ($this->cache['count'] === NULL) {
       $this->_getIter();
       $this->cache['count'] = $this->iter->count();
       $this->_save();
     }
     return $this->cache['count'];
   }
-  function each() {
+  function next() {
     $this->_getIter();
     return $this->iter->next();
+  }
+  function each() { # FIXME - get rid of this
+    return $this->next();
   }
   function row($num) {
     if (isset($this->cache['rows'][$num])) {
       return $this->cache['rows'][$num];
     }
-    $first = max(0, $num - floor(OBIB_ITEMS_PER_PAGE/2));
+    $first = max(0, $num - floor(Settings::get('items_per_page')/2));
     $this->_cacheSlice($first);
     if (isset($this->cache['rows'][$num])) {
       return $this->cache['rows'][$num];
@@ -200,7 +232,10 @@ class Report {
       return NULL;
     }
   }
-  function _cacheSlice($skip, $len=OBIB_ITEMS_PER_PAGE) {
+  function _cacheSlice($skip, $len=NULL) {
+    if ($len === NULL) {
+      $len = Settings::get('items_per_page');
+    }
     $first = min($skip, $this->count()-1);
     $last = min($skip+$len-1, $this->count()-1);
     if (isset($this->cache['rows'])
@@ -218,54 +253,16 @@ class Report {
     $this->_save();
   }
   function _cachePage($page) {
-    $this->_cacheSlice(($page-1)*OBIB_ITEMS_PER_PAGE);
+    $this->_cacheSlice(($page-1)*Settings::get('items_per_page'));
+  }
+  function pageIter($page) {
+    $this->_cachePage($page);
+    return new ArrayIter(array_values($this->cache['rows']));
   }
   function _save() {
     if ($this->name) {
       $_SESSION['rpt_'.$this->name] = $this->cache;
     }
   }
-  function table($table=NULL, $doCols=true) {
-    if (!$table) {
-      require_once('../classes/Table.php');
-      $table = new Table;
-    }
-    if ($doCols) {
-      $table->columns($this->columns());
-    }
-    if ($this->name) {
-      $table->parameters(array('rpt'=>$this->name,
-                               'rpt_colnames'=>$this->columnNames()));
-    }
-    $table->start();
-    while (($row = $this->each()) !== NULL) {
-      $table->row($row);
-    }
-    $table->end();
-  }
-  function pageTable($page, $table=NULL, $doCols=true) {
-    if (!isset($this->cache['page']) or $page != $this->cache['page']) {
-      $this->cache['page'] = $page;
-      $this->_save();
-    }
-    $this->_cachePage($page);
-    if (!$table) {
-      require_once('../classes/Table.php');
-      $table = new Table;
-    }
-    if ($doCols) {
-      $table->columns($this->columns());
-    }
-    if ($this->name) {
-      $table->parameters(array('rpt'=>$this->name,
-                               'rpt_colnames'=>$this->columnNames()));
-    }
-    $table->start();
-    foreach ($this->cache['rows'] as $row) {
-      $table->row($row);
-    }
-    $table->end();
-  }
 }
 
-?>

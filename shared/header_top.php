@@ -2,30 +2,22 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-  require_once("../classes/Localize.php");
-  $headerLoc = new Localize(OBIB_LOCALE,"shared");
 
-// code html tag with language attribute if specified.
-echo "<html";
-if (OBIB_HTML_LANG_ATTR != "") {
-  echo " lang=\"".H(OBIB_HTML_LANG_ATTR)."\"";
-}
-echo ">\n";
-
-// code character set if specified
-if (OBIB_CHARSET != "") { ?>
-<META http-equiv="content-type" content="text/html; charset=<?php echo H(OBIB_CHARSET); ?>">
-<?php } ?>
-
+?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo H(Settings::get('html_lang_attr')); ?>" lang="<?php echo H(Settings::get('html_lang_attr')); ?>">
 <head>
-<style type="text/css">
-  <?php include("../css/style.php");?>
-</style>
+<?php // code character set if specified
+if (Settings::get('charset') != "") { ?>
+<meta http-equiv="content-type" content="text/html; charset=<?php echo H(Settings::get('charset')); ?>" />
+<?php } ?>
+<link rel="stylesheet" type="text/css" href="../css/style.php?themeid=<?php echo HURL(Settings::get('themeid')); ?>" />
 <meta name="description" content="OpenBiblio Library Automation System">
-<title><?php echo H(OBIB_LIBRARY_NAME);?></title>
+<title><?php echo H(Settings::get('library_name'));?></title>
 
-<script language="JavaScript">
+<script type="text/javascript">
 <!--
 function popSecondary(url) {
     var SecondaryWin;
@@ -43,18 +35,44 @@ function backToMain(URL) {
     mainWin.focus();
     this.close();
 }
+var modified = false;
+function confirmLink(e) {
+    if (modified) {
+      return confirm("This will discard any changes you've made on this page.  Are you sure?");
+    } else {
+      return true;
+    }
+}
+function init() {
+<?php
+if (isset($focus_form_name) && ($focus_form_name != "")) {
+  echo 'self.focus();';
+  echo 'document.'.$focus_form_name.'.'.$focus_form_field.'.focus();';
+}
+if (isset($confirm_links) and $confirm_links) {
+?>
+  elems = document.getElementsByTagName('a');
+  for (i=0; i<elems.length; i++) {
+    if (!elems[i].onclick) {
+      elems[i].onclick = l=confirmLink;
+      if (elems[i].captureEvents) elems[i].captureEvents(Event.CLICK);
+    }
+  }
+<?php } ?>
+}
 -->
 </script>
 
 
 </head>
+
 <body bgcolor="<?php echo H(OBIB_PRIMARY_BG);?>" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" <?php
   if (isset($focus_form_name) && ($focus_form_name != "")) {
     if (ereg('^[a-zA-Z0-9_]+$', $focus_form_name)
         && ereg('^[a-zA-Z0-9_]+$', $focus_form_field)) {
-      echo 'onLoad="self.focus();document.'.$focus_form_name.".".$focus_form_field.'.focus()"';
+      echo 'onload="self.focus();document.'.$focus_form_name.".".$focus_form_field.'.focus()"';
     }
-  } ?> >
+  } ?> onload="init()">
 
 <!-- **************************************************************************************
      * Library Name and hours
@@ -74,166 +92,19 @@ function backToMain(URL) {
     <td valign="top">
       <table class="primary" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php echo $headerLoc->getText("headerTodaysDate"); ?></font></td>
-          <td class="title" nowrap="yes"><font class="small"><?php echo H(date($headerLoc->getText("headerDateFormat")));?></font></td>
+          <td class="title" nowrap="yes"><?php echo T("Today's Date"); ?></td>
+          <td class="title" nowrap="yes"><?php echo H(date(T("headerDateFormat")));?></td>
         </tr>
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") echo $headerLoc->getText("headerLibraryHours");?></font></td>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") echo H(OBIB_LIBRARY_HOURS);?></font></td>
+          <td class="title" nowrap="yes"><?php if (OBIB_LIBRARY_HOURS != "") echo T("Library Hours"); ?></td>
+          <td class="title" nowrap="yes"><?php if (OBIB_LIBRARY_HOURS != "") echo H(OBIB_LIBRARY_HOURS);?></td>
         </tr>
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") echo $headerLoc->getText("headerLibraryPhone");?></font></td>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") echo H(OBIB_LIBRARY_PHONE);?></font></td>
+          <td class="title" nowrap="yes"><?php if (OBIB_LIBRARY_PHONE != "") echo T("Library Phone"); ?></td>
+          <td class="title" nowrap="yes"><?php if (OBIB_LIBRARY_PHONE != "") echo H(OBIB_LIBRARY_PHONE); ?></td>
         </tr>
       </table>
     </td>
   </tr>
 </table>
-<!-- **************************************************************************************
-     * Tabs
-     **************************************************************************************-->
-<table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-  </tr>
-  <tr bgcolor="<?php echo H(OBIB_TITLE_BG);?>">
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
 
-    <?php if ($tab == "home") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "circulation") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "cataloging") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "admin") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "reports") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td width="2000" bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-  </tr>
-  <tr bgcolor="<?php echo H(OBIB_TITLE_BG);?>">
-    <?php if ($tab == "home") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> <?php echo $headerLoc->getText("headerHome"); ?></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../home/index.php" class="tab"><?php echo $headerLoc->getText("headerHome"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "circulation") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> <?php echo $headerLoc->getText("headerCirculation"); ?></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../circ/index.php" class="tab"><?php echo $headerLoc->getText("headerCirculation"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "cataloging") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> <?php echo $headerLoc->getText("headerCataloging"); ?></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../catalog/index.php" class="tab"><?php echo $headerLoc->getText("headerCataloging"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "admin") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> <?php echo $headerLoc->getText("headerAdmin"); ?></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../admin/index.php" class="tab"><?php echo $headerLoc->getText("headerAdmin"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-    <?php if ($tab == "reports") { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> <?php echo $headerLoc->getText("headerReports"); ?></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } else { ?>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../reports/index.php" class="tab"><?php echo $headerLoc->getText("headerReports"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <?php } ?>
-
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td width="2000" bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-
-  </tr>
-  <tr bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>">
-    <td colspan="3" <?php if ($tab == "home") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "circulation") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "cataloging") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "admin") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "reports") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-  </tr>
-</table>

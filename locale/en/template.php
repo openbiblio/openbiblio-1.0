@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 /**********************************************************************************
  *   Instructions for translators:
  *
@@ -14,7 +14,7 @@
  *   Formatting rules:
  *   - Resulting translation string must be stored in a variable called $text.
  *   - Input arguments must be surrounded by % characters (i.e. %pageCount%).
- *   - A backslash ('\') needs to be placed before any special php characters 
+ *   - A backslash ('\') needs to be placed before any special php characters
  *     (such as $, ", etc.) within the php translation code.
  *
  *   Simple Example:
@@ -24,7 +24,7 @@
  *     $trans["searchResult"]      = "\$text='page %page% of %pages%';";
  *
  *   Example Containing a PHP If Statment and Argument Substitution:
- *     $trans["searchResult"]      = 
+ *     $trans["searchResult"]      =
  *       "if (%items% == 1) {
  *         \$text = '%items% result';
  *       } else {
@@ -36,4 +36,3 @@
 
   $trans[""]            = "\$text = '';";
 
-?>

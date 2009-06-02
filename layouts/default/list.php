@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once('../classes/Lay.php');
+require_once(REL(__FILE__, '../../classes/Lay.php'));
 
 class Layout_list {
   function render($rpt) {
@@ -27,7 +27,7 @@ class Layout_list {
     }
     # We have 7.5in, distribute it weighted by width
     $unit = (7.5-$totalspacing)/$total;
-      
+
     $lay = new Lay;
       $lay->container('Columns', array(
         'margin-left'=>'0.5in', 'margin-right'=>'0.5in',
@@ -59,7 +59,11 @@ class Layout_list {
                 continue;
               }
               $lay->container('TextLine', array('width'=>($unit*$col['width']).'in'));
-                $lay->text($row[$col['name']]);
+                if (is_array($row[$col['name']])) {
+                  $lay->text('[Sub-select rows]');
+                } else {
+                  $lay->text($row[$col['name']]);
+                }
               $lay->close();
             }
           $lay->close();
@@ -68,5 +72,3 @@ class Layout_list {
     $lay->close();
   }
 }
-
-?>

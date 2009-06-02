@@ -1,0 +1,31 @@
+.title "Understocked Items"
+.category "Cataloging"
+.column bibid hidden
+.column title func=biblio_link title=Title sort=title
+.column count title="In Stock" sort=count
+.column restock_threshold title="Restock At" sort=restock_threshold
+.column collection title="Collection" sort=collection
+.parameters
+.	order_by default=count
+.		item title title="Title" expr='t.subfield_data' type=MARC skip_indicator="f.ind2_cd"
+.		item count title="In Stock" expr='IFNULL(s.count, 0)' type=numeric
+.		item restock_threshold title="Restock Threshold" expr='cd.restock_threshold'
+.		item collection title="Collection"
+.	end order_by
+.end parameters
+
+.sql
+	SELECT IFNULL(s.count, 0) count, b.*,
+		c.description collection, cd.restock_threshold,
+		CONCAT(t.subfield_data, ' ', IFNULL(sub.subfield_data, '')) as title
+	FROM collection_dist cd JOIN biblio b JOIN collection_dm c
+		LEFT JOIN biblio_stock s ON s.bibid=b.bibid
+		LEFT JOIN biblio_field f ON f.bibid=b.bibid
+		LEFT JOIN biblio_subfield t ON t.fieldid=f.fieldid
+		LEFT JOIN biblio_subfield sub ON sub.fieldid=f.fieldid
+			and sub.subfield_cd='b'
+	WHERE b.collection_cd=cd.code AND c.code=cd.code
+		AND f.tag='245' and t.subfield_cd='a'
+		AND IFNULL(s.count, 0) <= cd.restock_threshold
+.	order_by_expr
+.end sql

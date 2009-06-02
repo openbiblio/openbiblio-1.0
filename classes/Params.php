@@ -3,9 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once("../functions/inputFuncs.php");
-require_once("../classes/Date.php");
- 
+require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+require_once(REL(__FILE__, "../classes/Date.php"));
+
 class Params {
   var $dict = array();
   function load_el($paramdefs, $params) {
@@ -22,7 +22,10 @@ class Params {
     $el = $this->_load_el($this->dict, $paramdefs, $params);
     $errs = array();
     foreach ($el as $k => $e) {
-      $errs[$prefix.$k] = $e;
+      if (is_a($e, 'FieldError')) {
+        $e->field = $prefix.$e->field;
+      }
+      $errs[] = $e;
     }
     return $errs;
   }
@@ -108,7 +111,7 @@ class Params {
   /* PRIVATE */
   function _print($type, $namel, $options, $list, $prefix) {
     global $loc;
-    assert('$loc');
+    //assert('$loc');
     assert('!empty($namel)');
     if ($type == 'session_id') {
       return;
@@ -137,37 +140,37 @@ class Params {
     }
     echo '<tr class="'.$prefix.'param">';
     echo '<td><label for="'.H($name).'">';
-    echo $loc->getText($title);
+    echo T($title);
     echo '</label></td><td>';
     switch ($type) {
     case 'string':
     case 'date':
-      echo inputField('text', $name, $default);
+      echo inputfield('text', $name, $default);
       break;
     case 'select':
       $l = array();
       foreach ($list as $v) {
         list($n, $o) = $v;
         if (isset($o['title']) && $o['title']) {
-          $l[$n] = $loc->getText($o['title']);
+          $l[$n] = T($o['title']);
         } else {
           $l[$n] = $n;
         }
       }
-      echo inputField('select', $name, $default, NULL, $l);
+      echo inputfield('select', $name, $default, NULL, $l);
       break;
     case 'order_by':
       $l = array();
       foreach ($list as $v) {
         list($n, $o) = $v;
         if (isset($o['title']) and $o['title']) {
-          $l[$n] = $loc->getText($o['title']);
+          $l[$n] = T($o['title']);
         } else {
           $l[$n] = $n;
         }
         $l[$n.'!r'] = $l[$n].' (Reverse)';
       }
-      echo inputField('select', $name, $default, NULL, $l);
+      echo inputfield('select', $name, $default, NULL, $l);
       break;
     default:
       assert(NULL);
@@ -238,7 +241,7 @@ class Params {
         if (!empty($val)) {
           list($val, $error) = Date::read_e($val);
           if ($error) {
-            return array(NULL, array($errprefix=>$error));
+            return array(NULL, array(new FieldError($errprefix, $error->toStr())));
           }
           return array(array('string', $val), $noerrors);
         }
@@ -273,7 +276,7 @@ class Params {
         $expr = $this->getOrderExpr($val, $list, $desc);
         return array(array('order_by', $expr, $rawval), $noerrors);
       default:
-        assert('NULL');		# Can't happen
+        Fatal::internalError(T("Can't happen"));
     }
     return array(NULL, $noerrors);
   }
@@ -294,7 +297,7 @@ class Params {
       switch ($v[1]['type']) {
       case 'MARC':
         if (!isset($v[1]['skip_indicator'])) {
-          Fatal::internalError("MARC sort without skip indicator");
+          Fatal::internalError(T("MARC sort without skip indicator"));
         }
         $skip = $v[1]['skip_indicator'];
         $expr = "ifnull(substring($expr, $skip+1), $expr)";
@@ -327,5 +330,3 @@ class Params {
     }
   }
 }
-
-?>

@@ -2,9 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../shared/global_constants.php");
-require_once("../classes/Query.php");
+
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 /******************************************************************************
  * StaffQuery data access component for library staff members
@@ -28,7 +27,7 @@ class StaffQuery extends Query {
       $sql .= $this->mkSQL(" where userid=%N ", $userid);
     }
     $sql .= " order by last_name, first_name";
-    return $this->_query($sql, "Error accessing staff member information.");
+    return $this->_query($sql, T("Error accessing staff member information."));
   }
   /****************************************************************************
    * Executes a query to verify a signon username and password
@@ -43,7 +42,7 @@ class StaffQuery extends Query {
                         . "where username = lower(%Q) "
                         . " and pwd = md5(lower(%Q)) ",
                         $username, $pwd);
-    return $this->_query($sql, "Error verifying username and password.");
+    return $this->_query($sql, T("Error verifying username and password."));
   }
 
   /****************************************************************************
@@ -55,9 +54,12 @@ class StaffQuery extends Query {
    */
   function suspendStaff($username)
   {
+    $this->lock();
     $sql = $this->mkSQL("update staff set suspended_flg='Y' "
                         . "where username = lower(%Q)", $username);
-    return $this->_query($sql, "Error suspending staff member.");
+    $r = $this->_query($sql, T("Error suspending staff member."));
+    $this->unlock();
+    return $r;
   }
 
   /****************************************************************************
@@ -120,7 +122,7 @@ class StaffQuery extends Query {
   function _dupUserName($username, $userid=0) {
     $sql = $this->mkSQL("select count(*) from staff where username = %Q "
                         . " and userid <> %N", $username, $userid);
-    if (!$this->_query($sql, "Error checking for dup username.")) {
+    if (!$this->_query($sql, T("Error checking for dup username."))) {
       return false;
     }
     $array = $this->_conn->fetchRow(OBIB_NUM);
@@ -138,11 +140,16 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function insert($staff) {
+    $this->lock();
     $dupUsername = $this->_dupUserName($staff->getUsername());
-    if ($this->errorOccurred()) return false;
+    if ($this->errorOccurred()) {
+      $this->unlock();
+      return false;
+    }
     if ($dupUsername) {
+      $this->unlock();
       $this->_errorOccurred = true;
-      $this->_error = "Username is already in use.";
+      $this->_error = T("Username is already in use.");
       return false;
     }
     $sql = $this->mkSQL("insert into staff values (null, sysdate(), sysdate(), "
@@ -160,7 +167,9 @@ class StaffQuery extends Query {
                          $staff->hasCircMbrAuth() ? "Y" : "N",
                          $staff->hasCatalogAuth() ? "Y" : "N",
                          $staff->hasReportsAuth() ? "Y" : "N");
-    return $this->_query($sql, "Error inserting new staff member information.");
+    $r = $this->_query($sql, T("Error inserting new staff member information."));
+    $this->unlock();
+    return $r;
   }
 
   /****************************************************************************
@@ -171,14 +180,19 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function update($staff) {
+    $this->lock();
     /**************************************************************
-     * If changing username check to see if it already exists. 
+     * If changing username check to see if it already exists.
      **************************************************************/
     $dupUsername = $this->_dupUserName($staff->getUsername(), $staff->getUserid());
-    if ($this->errorOccurred()) return false;
+    if ($this->errorOccurred()) {
+      $this->unlock();
+      return false;
+    }
     if ($dupUsername) {
+      $this->unlock();
       $this->_errorOccurred = true;
-      $this->_error = "Username is already in use.";
+      $this->_error = T("Username is already in use.");
       return false;
     }
 
@@ -201,7 +215,9 @@ class StaffQuery extends Query {
                          $staff->hasCatalogAuth() ? "Y" : "N",
                          $staff->hasReportsAuth() ? "Y" : "N",
                          $staff->getUserid());
-    return $this->_query($sql, "Error updating staff member information.");
+    $r = $this->_query($sql, T("Error updating staff member information."));
+    $this->unlock();
+    return $r;
   }
 
   /****************************************************************************
@@ -215,7 +231,10 @@ class StaffQuery extends Query {
     $sql = $this->mkSQL("update staff set pwd=md5(lower(%Q)) "
                         . "where userid=%N ",
                         $staff->getPwd(), $staff->getUserid());
-    return $this->_query($sql, "Error resetting password.");
+    $this->lock();
+    $r = $this->_query($sql, T("Error resetting password."));
+    $this->unlock();
+    return $r;
   }
 
   /****************************************************************************
@@ -227,9 +246,10 @@ class StaffQuery extends Query {
    */
   function delete($userid) {
     $sql = $this->mkSQL("delete from staff where userid = %N ", $userid);
-    return $this->_query($sql, "Error deleting staff information.");
+    $this->lock();
+    $r = $this->_query($sql, T("Error deleting staff information."));
+    $this->unlock();
+    return $r;
   }
 
 }
-
-?>

@@ -2,19 +2,18 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "circulation";
   $restrictToMbrAuth = TRUE;
   $nav = "deletedone";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
-  require_once("../classes/MemberQuery.php");
-  require_once("../classes/BiblioStatusHistQuery.php");
-  require_once("../classes/MemberAccountQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Members.php"));
+  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+
 
   $mbrid = $_GET["mbrid"];
   $mbrName = $_GET["name"];
@@ -22,14 +21,13 @@
   #**************************************************************************
   #*  Delete library member
   #**************************************************************************
-  $mbrQ = new MemberQuery();
-  $mbrQ->connect();
-  $mbrQ->delete($mbrid);
-  $mbrQ->close();
+  $members = new Members;
+  $members->deleteOne($mbrid);
 
   #**************************************************************************
   #*  Delete Member History
   #**************************************************************************
+/**** FIXME !!!! ***
   $histQ = new BiblioStatusHistQuery();
   $histQ->connect();
   if ($histQ->errorOccurred()) {
@@ -41,6 +39,7 @@
     displayErrorPage($histQ);
   }
   $histQ->close();
+*****************/
 
   #**************************************************************************
   #*  Delete Member Account
@@ -61,10 +60,13 @@
   #**************************************************************************
   #*  Show success page
   #**************************************************************************
-  require_once("../shared/header.php");
-  echo $loc->getText("mbrDelSuccess",array("name"=>$mbrName));
-  
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+  echo T("Member, %name%, has been deleted.", array("name"=>$mbrName));
+
 ?>
-<br><br>
-<a href="../circ/index.php"><?php echo $loc->getText("mbrDelReturn");?></a>
-<?php require_once("../shared/footer.php"); ?>
+<br /><br />
+<a href="../circ/index.php"><?php echo T("Return to Member Search"); ?></a>
+
+<?php
+
+  Page::footer();

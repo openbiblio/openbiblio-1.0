@@ -2,21 +2,22 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "circulation";
-  $nav = "account";
+  $nav = "mbr/account";
   $focus_form_name = "accttransform";
   $focus_form_field = "transactionTypeCd";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../functions/formatFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../shared/get_form_vars.php");
-  require_once("../classes/MemberAccountTransaction.php");
-  require_once("../classes/MemberAccountQuery.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../functions/formatFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+  require_once(REL(__FILE__, "../model/TransactionTypes.php"));
+  require_once(REL(__FILE__, "../classes/MemberAccountTransaction.php"));
+  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+
 
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
@@ -31,45 +32,40 @@
   #****************************************************************************
   $mbrid = $_GET["mbrid"];
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
+    $msg = "<p class=\"error\">".stripslashes($_GET["msg"])."</p><br /><br />";
   } else {
     $msg = "";
   }
 
   #****************************************************************************
-  #*  Loading a few domain tables into associative arrays
-  #****************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $mbrClassifyDm = $dmQ->getAssoc("transaction_type_dm");
-  $dmQ->close();
-
-  #****************************************************************************
   #*  Show transaction input form
   #****************************************************************************
-  require_once("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
 <?php echo $msg ?>
 
-<form name="accttransform" method="POST" action="../circ/mbr_transaction.php">
+<form name="accttransform" method="post" action="../circ/mbr_transaction.php">
 <table class="primary">
   <tr>
     <th colspan="2" valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountLabel"); ?>
+      <?php echo T("Add a Transaction"); ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("mbrAccountTransTyp"); ?>
+      <?php echo T("Transaction Type:"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printSelect("transactionTypeCd","transaction_type_dm",$postVars); ?>
+      <?php
+        $transtypes = new TransactionTypes;
+        echo inputfield('select', 'transactionTypeCd','' , NULL, $transtypes->getSelect());
+      ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary" valign="top">
-      <?php echo $loc->getText("mbrAccountDesc"); ?>
+      <?php echo T("Description:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("description",40,128,$postVars,$pageErrors); ?>
@@ -77,7 +73,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary" valign="top">
-      <?php echo $loc->getText("mbrAccountAmount"); ?>
+      <?php echo T("Amount:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("amount",12,12,$postVars,$pageErrors); ?>
@@ -85,97 +81,90 @@
   </tr>
   <tr>
     <td colspan="2" class="primary" valign="top" align="center">
-      <input type="submit" value="  <?php echo $loc->getText("circAdd"); ?>  " class="button">
+      <input type="submit" value="<?php echo T("Add"); ?>" class="button" />
     </td>
   </tr>
 </table>
-<input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>">
+<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
 </form>
 
-<?php 
+<?php
   #****************************************************************************
   #*  Search database for member account info
   #****************************************************************************
   $transQ = new MemberAccountQuery();
-  $transQ->connect();
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  if (!$transQ->doQuery($mbrid)) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
+  $transactions = $transQ->getByMbrid($mbrid);
 
 ?>
 
-<h1><?php echo $loc->getText("mbrAccountHead1"); ?></h1>
+<h1><?php echo T("Member Account Transactions"); ?></h1>
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountHdr1"); ?>
+      <?php echo T("Function"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountHdr2"); ?>
+      <?php echo T("Date"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountHdr3"); ?>
+      <?php echo T("Trans Type"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountHdr4"); ?>
+      <?php echo T("Description"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountHdr5"); ?>
+      <?php echo T("Amount"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php echo $loc->getText("mbrAccountHdr6"); ?>
+      <?php echo T("Balance"); ?>
     </th>
   </tr>
 
 <?php
-  if ($transQ->getRowCount() == 0) {
+  if (empty($transactions)) {
 ?>
   <tr>
     <td class="primary" align="center" colspan="6">
-      <?php echo $loc->getText("mbrAccountNoTrans"); ?>
+      <?php echo T("No transactions found."); ?>
     </td>
   </tr>
 <?php
   } else {
     $bal = 0;
     ?>
-    <tr><td class="primary" colspan="5"><?php echo $loc->getText("mbrAccountOpenBal"); ?></td><td class="primary"><?php echo H(moneyFormat($bal,2));?></td></tr>
+    <tr><td class="primary" colspan="5"><?php echo T("Opening Balance"); ?></td><td class="primary"><?php echo moneyFormat($bal,2); ?></td></tr>
 
     <?php
-    while ($trans = $transQ->fetchRow()) {
+    foreach ($transactions as $trans) {
       $bal = $bal + $trans->getAmount();
 ?>
   <tr>
     <td class="primary" valign="top" >
-      <a href="../circ/mbr_transaction_del_confirm.php?mbrid=<?php echo HURL($mbrid);?>&amp;transid=<?php echo HURL($trans->getTransid());?>"><?php echo $loc->getText("mbrAccountDel");?></a>
+      <a href="../circ/mbr_transaction_del_confirm.php?mbrid=<?php echo $mbrid;?>&transid=<?php echo $trans->getTransid();?>"><?php echo T("del");?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($trans->getCreateDt());?>
+      <?php echo $trans->getCreateDt();?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($trans->getTransactionTypeDesc());?>
+      <?php echo $trans->getTransactionTypeDesc();?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H($trans->getDescription());?>
+      <?php echo $trans->getDescription();?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H(moneyFormat($trans->getAmount(),2));?>
+      <?php echo moneyFormat($trans->getAmount(),2);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo H(moneyFormat($bal,2));?>
+      <?php echo moneyFormat($bal,2);?>
     </td>
   </tr>
 <?php
     }
   }
-  $transQ->close();
 
 ?>
 </table>
 
-<?php require_once("../shared/footer.php"); ?>
+<?php
+
+  Page::footer();

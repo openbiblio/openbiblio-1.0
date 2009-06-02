@@ -1,40 +1,58 @@
-.title reportHolds
-.category Circulation
+.title "Hold Requests"
+.category "Circulation"
+.column holdid hidden checkbox
+.column copyid hidden
 .column bibid hidden
 .column mbrid hidden
-.column item_bcode sort=item_bcode
-.column title sort=title func=biblio_link
-.column author sort=author
-.column hold_begin_dt sort=hold_begin_dt
-.column mbr_bcode sort=mbr_bcode
-.column name sort=name func=member_link
+.column barcode_nmbr title="Barcode" sort=barcode_nmbr
+.column title func=biblio_link title=Title sort=title
+.column member func=member_link title=Member sort=member
+.column hold_begin_dt hidden
+.column hold_begin title="Start Date" sort=hold_begin_dt
+.column status_cd hidden
+.column status title="Copy Status" sort=status_cd
+.column due_dt hidden
+.column due title="Due Date" sort=due_dt
 .parameters
-.	date placed_before title="Placed before"
-.	date placed_since title="Placed since"
-.	order_by
-.		item item_bcode expr="c.barcode_nmbr"
-.		item title
-.		item author
-.		item hold_begin_dt
-.		item mbr_bcode expr="m.barcode_nmbr"
-.		item name expr="concat(m.last_name, ', ', m.first_name)"
+.	string bibid
+.	string mbrid
+.	order_by default=barcode_nmbr
+.		item barcode_nmbr title="Barcode" expr='bc.barcode_nmbr'
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.		item member title="Member" expr='concat(m.last_name, m.first_name)'
+.		item hold_begin_dt title="Start Date"
+.		item status_cd title="Copy Status"
+.		item due_dt  title="Due Date"
 .	end order_by
 .end parameters
+
 .sql
-	select b.bibid, c.barcode_nmbr item_bcode,
-		b.title, b.author, h.hold_begin_dt,
-		m.mbrid, m.barcode_nmbr mbr_bcode,
-		concat(m.last_name, ', ', m.first_name) name
-	from biblio b, biblio_copy c, biblio_hold h, member m
-	where b.bibid=c.bibid
-		and b.bibid=h.bibid
-		and c.copyid=h.copyid
-		and h.mbrid=m.mbrid
-.	if_set placed_before
-		and h.hold_begin_dt <= %placed_before%
+	select bh.*,
+		concat(m.last_name, ', ', m.first_name) as member,
+		bc.barcode_nmbr, bsh.status_cd, bk.due_dt,
+		stat.description as status,
+		date_format(bh.hold_begin_dt, '%%m/%%d/%%Y') as hold_begin,
+		ifnull(date_format(bk.due_dt, '%%m/%%d/%%Y'), 'N/A') as due,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title
+	from biblio_hold bh join member m
+		join biblio_copy bc join biblio_status_hist bsh
+		join biblio_status_dm as stat
+		join biblio_field tf join biblio_subfield ts
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+		left join booking bk
+			on bk.out_histid=bsh.histid
+	where m.mbrid=bh.mbrid
+		and bc.copyid=bh.copyid
+		and bsh.histid=bc.histid
+		and stat.code=bsh.status_cd
+		and tf.bibid=bh.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+.	if_set bibid
+		and bh.bibid=%#bibid%
 .	end if_set
-.	if_set placed_since
-		and h.hold_begin_dt >= %placed_since%
+.	if_set mbrid
+		and bh.mbrid=%#mbrid%
 .	end if_set
 .	order_by_expr
 .end sql

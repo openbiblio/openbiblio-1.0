@@ -2,10 +2,10 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../shared/global_constants.php");
-require_once("../classes/Dm.php");
-require_once("../classes/Query.php");
+
+require_once(REL(__FILE__, "../shared/global_constants.php"));
+require_once(REL(__FILE__, "../classes/Dm.php"));
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 class DmQuery extends Query {
   var $_tableNm = "";
@@ -32,7 +32,7 @@ class DmQuery extends Query {
   function get1($table, $code) {
     $rows = $this->_get($table, $code);
     if (count($rows) != 1) {
-     Fatal::internalError("Invalid domain table code");
+     Fatal::internalError(T("Invalid domain table code"));
     }
     return $this->_mkObj($rows[0]);
   }
@@ -52,7 +52,7 @@ class DmQuery extends Query {
       $sql .= "from mbr_classify_dm left join member on mbr_classify_dm.code = member.classification ";
       $sql .= "group by 1, 2, 3, 4 ";
     } else {
-      Fatal::internalError("Cannot retrieve stats for that dm table");
+      Fatal::internalError(T("Cannot retrieve stats for that dm table"));
     }
     $sql .= "order by description ";
     return array_map(array($this, '_mkObj'), $this->exec($sql));
@@ -88,7 +88,7 @@ class DmQuery extends Query {
       $dm->setDaysDueBack($array["days_due_back"]);
       $dm->setDailyLateFee($array["daily_late_fee"]);
     }
-    
+
     if (isset($array['checkout_limit'])) {
       $dm->setCheckoutLimit($array["checkout_limit"]);
     }
@@ -151,5 +151,3 @@ class DmQuery extends Query {
   }
 
 }
-
-?>

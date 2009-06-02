@@ -1,0 +1,50 @@
+.title "Confirmation Notices"
+.category "Circulation"
+.column bookingid hidden checkbox
+.column bibid hidden
+.column mbrid hidden
+.column siteid hidden
+.column first_name hidden
+.column last_name hidden
+.column mbr_name sort=member title=Member func=member_link
+.column site_name sort=site_member title=Site
+.column callnum sort=callnum title="Call No."
+.column title sort=title func=biblio_link title=Title
+.column create_dt sort=create_dt title="Date Booked"
+.column book_dt sort=book_dt func=booking_link title="Date Out"
+.parameters
+.	date booked_since title="Booked since" default="today"
+.	order_by
+.		item site_member type=multi expr="site_name, member" title="Site, Member" 
+.		item member title=Member expr="concat(m.last_name, m.first_name)"
+.		item site_name title=Site expr="s.name"
+.		item create_dt title="Date Booked"
+.		item book_dt title="Date Out"
+.		item callnum title="Call No." expr="cs.subfield_cd"
+.		item title expr="ts.subfield_data" title=Title type=MARC skip_indicator="tf.ind2_cd"
+.	end order_by
+.end parameters
+
+.sql
+	select b.*, m.mbrid, m.barcode_nmbr as mbr_bcode,
+		m.first_name, m.last_name,
+		concat(m.first_name, ' ', m.last_name, ' (',
+			m.barcode_nmbr, ')') as mbr_name,
+		s.siteid, s.name as site_name,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		cs.subfield_data as callnum
+	from booking b join booking_member bkm
+		join member m join site s
+		join biblio_field cf join biblio_subfield cs
+		join biblio_field tf join biblio_subfield ts
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+	where bkm.bookingid=b.bookingid and m.mbrid=bkm.mbrid
+		and s.siteid=m.siteid
+		and cf.bibid=b.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+		and tf.bibid=b.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and b.create_dt >= %booked_since%
+.	order_by_expr
+.end sql

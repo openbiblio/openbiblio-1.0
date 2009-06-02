@@ -2,103 +2,123 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
-  session_cache_limiter(null);
 
   $tab = "cataloging";
-  $nav = "editmarcfield";
+  $nav = "biblio/editmarc";
+  $helpPage = "biblioMarcEdit";
   $focus_form_name = "editmarcform";
-  $focus_form_field = "tag";
+  $focus_form_field = "materialCd";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../catalog/marcFuncs.php");
-  require_once("../classes/BiblioField.php");
-  require_once("../classes/BiblioFieldQuery.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Biblios.php"));
+  require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+  require_once(REL(__FILE__, "../model/Collections.php"));
+  require_once(REL(__FILE__, "../classes/Report.php"));
 
-  $postVars = array();
-  $pageErrors = array();
-  if (isset($_GET["bibid"])) {
-    $bibid = $_GET["bibid"];
-    if (!isset($_GET['fieldid'])) {
-      Fatal::internalError('no fieldid set');
-    }
-    $fieldid = $_GET["fieldid"];
-
-    #****************************************************************************
-    #*  Reading database for subfield values
-    #****************************************************************************
-    $fieldQ = new BiblioFieldQuery();
-    $fieldQ->connect();
-    if ($fieldQ->errorOccurred()) {
-      $fieldQ->close();
-      displayErrorPage($fieldQ);
-    }
-    $field = $fieldQ->doQuery($bibid,$fieldid);
-    if ($fieldQ->errorOccurred()) {
-      $fieldQ->close();
-      displayErrorPage($fieldQ);
-    }
-    $fieldQ->close();
-
-    $postVars["bibid"] = $bibid;
-    $postVars["fieldid"] = $bibid;
-    $postVars["tag"] = $field->getTag();
-    $postVars["ind1Cd"] = $field->getInd1Cd();
-    $postVars["ind2Cd"] = $field->getInd2Cd();
-    $postVars["subfieldCd"] = $field->getSubfieldCd();
-    $postVars["fieldData"] = $field->getFieldData();
-    $selectedTag = $field->getTag();
-    $selectedSubfld = $field->getSubfieldCd();
+  if (isset($_REQUEST["bibid"])){
+    $bibid = $_REQUEST["bibid"];
+    $postVars['bibid'] = $bibid;
+    $_SESSION["postVars"] = $postVars;
   } else {
-    $postVars = $_SESSION['postVars'];
-    if (isset($_SESSION['pageErrors'])) {
-      $pageErrors = $_SESSION['pageErrors'];
-    }
+    require(REL(__FILE__, "../shared/get_form_vars.php"));
     $bibid = $postVars["bibid"];
-    $fieldid = $postVars["fieldid"];
-    $selectedTag = $postVars["tag"];
-    $selectedSubfld = $postVars["subfieldCd"];
   }
-  if (!isset($bibid) || $bibid == "") {
-    Fatal::internalError('no bibid set');
-  }
-  if (!isset($fieldid) || $fieldid == "") {
-    Fatal::internalError('no fieldid set');
-  }
-  if (isset($_GET["tag"])) {
-    $selectedTag = $_GET["tag"];
-    $postVars["tag"] = $selectedTag;
-  }
-  if (isset($_GET["subfld"])) {
-    $selectedSubfld = $_GET["subfld"];
-    $postVars["subfieldCd"] = $selectedSubfld;
-  }
-
-  require_once("../shared/header.php");
-
   #****************************************************************************
-  #*  Read for field value descriptions
+  #*  Search database
   #****************************************************************************
-  getTagDesc($selectedTag,$selectedSubfld,$tagDesc,$subfldDesc,$ind1Desc,$ind2Desc);
+  $biblios = new Biblios();
+  $biblio = $biblios->getOne($bibid);
 
-  $formLabel = $loc->getText("biblioMarcEditFormHdr");
-  $returnPg = "../catalog/biblio_marc_edit_form.php?bibid=".U($bibid)."&fieldid=".U($fieldid);
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  #****************************************************************************
-  #*  Start of body
-  #****************************************************************************
-  ?>
-  
-<form name="editmarcform" method="POST" action="../catalog/biblio_marc_edit.php">
-<?php include("../catalog/biblio_marc_fields.php"); ?>
-<input type="hidden" name="bibid" value="<?php echo H($bibid);?>">
-<input type="hidden" name="fieldid" value="<?php echo H($fieldid);?>">
-</form>
-  
+  $cancelLocation = "../shared/biblio_view.php?bibid=".urlencode($bibid);
 
+  if (isset($_REQUEST["msg"])) {
+    echo '<p class="error">'.H($_REQUEST["msg"]).'</p>';
+  }
+  if (isset($_REQUEST['rpt'])) {
+    $rpt = Report::load($_REQUEST['rpt']);
+  } else {
+    $rpt = NULL;
+  }
+  if ($rpt and isset($_REQUEST['seqno'])) {
+    $p = $rpt->row($_REQUEST['seqno']-1);
+    $n = $rpt->row($_REQUEST['seqno']+1);
+    echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
+    if ($p) {
+      echo '<a href="../catalog/biblio_marc_edit_form.php?bibid='.HURL($p['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($p['.seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
+    }
+    echo '</td><td align="center">';
+    echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
+    echo '</td><td align="right">';
+    if ($n) {
+      echo '<a href="../catalog/biblio_marc_edit_form.php?bibid='.HURL($n['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($n['.seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
+    }
+    echo '</td></tr></table>';
+  }
+?>
 
-<?php include("../shared/footer.php"); ?>
+<form name="editmarcform" method="post" action="../catalog/biblio_marc_edit.php">
+<input type="hidden" name="bibid" value="<?php echo H($postVars["bibid"]);?>" />
+<table class="primary" width="100%">
+  <tr>
+    <th colspan="2" valign="top" nowrap="yes" align="left">
+      <?php echo T("Item"); ?>
+    </th>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      <sup>*</sup><?php echo T("Type of Material:"); ?>
+    </td>
+    <td valign="top" class="primary">
+      <?php
+        $mattypes = new MaterialTypes;
+        echo inputfield('select', "materialCd", $biblio['material_cd'], NULL, $mattypes->getSelect());
+      ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      <sup>*</sup><?php echo T("Collection:"); ?>
+    </td>
+    <td valign="top" class="primary">
+      <?php
+        $collections = new Collections;
+        echo inputfield('select', "collectionCd", $biblio['collection_cd'], NULL, $collections->getSelect());
+      ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary" valign="top">
+      <?php echo T("Show in OPAC:"); ?>
+    </td>
+    <td valign="top" class="primary">
+      <?php echo inputfield('checkbox', 'opacFlg', $biblio['opac_flg']=='Y' ? 'CHECKED' : '',
+          NULL, 'CHECKED'); ?>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" nowrap="true" class="primary">
+      <b><?php echo T("MARC Record:"); ?></b>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" nowrap="true" class="primary">
+      <?php echo inputfield('textarea', 'marc', $biblio['marc']->getMnem(), array('rows'=>15)); ?>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2" class="primary">
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onclick="parent.location='<?php echo H($cancelLocation);?>'" value="<?php echo T("Cancel"); ?>" class="button" />
+    </td>
+  </tr>
+</table>
+
+<?php
+
+  Page::footer();

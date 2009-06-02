@@ -2,10 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../shared/global_constants.php");
-require_once("../classes/Query.php");
-require_once("../classes/Localize.php");
+
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 /******************************************************************************
  * UsmarcBlockDmQuery data access component for usmarc_block_dm table
@@ -18,9 +16,8 @@ require_once("../classes/Localize.php");
 class UsmarcBlockDmQuery extends Query {
   var $_loc;
 
-  function UsmarcBlockDmQuery() {
+  function UsmarcBlockDmQuery () {
     $this->Query();
-    $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
   /****************************************************************************
@@ -33,7 +30,7 @@ class UsmarcBlockDmQuery extends Query {
    */
   function execSelect() {
     $sql = "select * from usmarc_block_dm order by block_nmbr ";
-    return $this->_query($sql, $this->_loc->getText("usmarcBlockDmQueryErr1"));
+    return $this->_query($sql, T("Error accessing the marc block data."));
   }
 
   /****************************************************************************
@@ -70,5 +67,3 @@ class UsmarcBlockDmQuery extends Query {
   }
 
 }
-
-?>

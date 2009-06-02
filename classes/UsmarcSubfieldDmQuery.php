@@ -2,10 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../shared/global_constants.php");
-require_once("../classes/Query.php");
-require_once("../classes/Localize.php");
+
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 /******************************************************************************
  * UsmarcSubfieldDmQuery data access component for usmarc_subfield_dm table
@@ -18,9 +16,8 @@ require_once("../classes/Localize.php");
 class UsmarcSubfieldDmQuery extends Query {
   var $_loc;
 
-  function UsmarcSubfieldDmQuery() {
+  function UsmarcSubfieldDmQuery () {
     $this->Query();
-    $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
   /****************************************************************************
@@ -36,7 +33,7 @@ class UsmarcSubfieldDmQuery extends Query {
       $sql .= $this->mkSQL("where tag = %N ", $tag);
     }
     $sql .= "order by tag, subfield_cd ";
-    return $this->_query($sql, $this->_loc->getText("usmarcSubfldDmQueryErr1"));
+    return $this->_query($sql, T("Error accessing the marc subfield data."));
   }
 
   /****************************************************************************
@@ -62,19 +59,16 @@ class UsmarcSubfieldDmQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function doQuery($tag, $subfld) {
+  function get($tag, $subfld) {
     $sql = $this->mkSQL("select * from usmarc_subfield_dm "
                         . "where tag=%N and subfield_cd=%Q ",
                         $tag, $subfld);
-    if (!$this->_query($sql, $this->_loc->getText("usmarcSubfldDmQueryErr1"))) {
-      return false;
+    $rows = $this->eexec($sql);
+    if (empty($rows)) {
+      return NULL;
     }
-    $result = $this->_conn->fetchRow();
-    if ($result == false) {
-      return false;
-    }
-    $dm = $this->_formatSubfield($result);
-    return $dm;
+    assert('count($rows) == 1');
+    return $this->_formatSubfield($rows[0]);
   }
 
   /****************************************************************************
@@ -112,5 +106,3 @@ class UsmarcSubfieldDmQuery extends Query {
   }
 
 }
-
-?>

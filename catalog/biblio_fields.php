@@ -3,14 +3,17 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../classes/DmQuery.php");
-  require_once("../classes/UsmarcTagDm.php");
-  require_once("../classes/UsmarcTagDmQuery.php");
-  require_once("../classes/UsmarcSubfieldDm.php");
-  require_once("../classes/UsmarcSubfieldDmQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../functions/inputFuncs.php");
-  require_once("../catalog/inputFuncs.php");
+  require_once("../shared/common.php");
+
+  require_once(REL(__FILE__, "../classes/UsmarcTagDm.php"));
+  require_once(REL(__FILE__, "../classes/UsmarcTagDmQuery.php"));
+  require_once(REL(__FILE__, "../classes/UsmarcSubfieldDm.php"));
+  require_once(REL(__FILE__, "../classes/UsmarcSubfieldDmQuery.php"));
+  require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+  require_once(REL(__FILE__, "../model/MaterialFields.php"));
+  require_once(REL(__FILE__, "../model/Collections.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+  require_once(REL(__FILE__, "../catalog/inputFuncs.php"));
 
   #****************************************************************************
   #*  Loading up an array ($marcArray) with the USMarc tag descriptions.
@@ -45,125 +48,177 @@
   $marcSubfldDmQ->close();
 
 ?>
+<p class="note">
+<?php echo T("Fields marked are required"); ?>
+</p>
 
-<input type="hidden" name="posted" value="1" />
-<font class="small">
-<?php echo $loc->getText("catalogFootnote",array("symbol"=>"*")); ?>
-</font>
-
-<table class="primary">
+<table class="primary" width="100%">
   <tr>
     <th colspan="2" valign="top" nowrap="yes" align="left">
-      <?php
-        echo H($headerWording)." ";
-        echo $loc->getText("biblioFieldsLabel");
-      ?>:
-    </td>
+      <?php echo T("Item"); ?>
+    </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <sup>*</sup> <?php echo $loc->getText("biblioFieldsMaterialTyp"); ?>:
+      <sup>*</sup><?php echo T("Type of Material:"); ?>
     </td>
     <td valign="top" class="primary">
 <?php
-  //    Played with printselect function
-  if (isset($postVars['materialCd'])) {
-    $materialCd = $postVars['materialCd'];
+  $mattypes = new MaterialTypes;
+
+  if (isset($biblio['material_cd'])) {
+    $material_cd_value = $biblio['material_cd'];
+  } elseif (isset($_GET['material_cd'])) {
+	  $material_cd_value = $_GET['material_cd'];
   } else {
-    $materialCd = '';
+    $material_cd_value = $mattypes->getDefault();
   }
-  $fieldname="materialCd";
-  $domainTable="material_type_dm";
-
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dms = $dmQ->get($domainTable);
-  $dmQ->close();
-  echo "<select id=\"materialCd\" name=\"materialCd\"";
-
-  //    Needed OnChange event here.
-  echo " onChange=\"matCdReload()\">\n";
-  foreach ($dms as $dm) {
-    echo "<option value=\"".H($dm->getCode())."\"";
-    if (($materialCd == "") && ($dm->getDefaultFlg() == 'Y')) {
-      $materialCd = $dm->getCode();
-      echo " selected";
-    } elseif ($materialCd == $dm->getCode()) {
-      echo " selected";
-    }
-    echo ">".H($dm->getDescription())."</option>\n";
-  }
-  echo "</select>\n";
-?>
-	  </td>
+  echo inputfield('select', "materialCd", $material_cd_value, array('onchange'=>"matCdReload()"), $mattypes->getSelect());
+      ?>
+    </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <sup>*</sup> <?php echo $loc->getText("biblioFieldsCollection"); ?>:
+      <sup>*</sup><?php echo T("Collection:"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printSelect("collectionCd","collection_dm",$postVars); ?>
+      <?php
+        $collections = new Collections;
+        if (isset($biblio['collection_cd'])) {
+          $value = $biblio['collection_cd'];
+        } else {
+          $value = $collections->getDefault();
+        }
+        echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
+      ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary" valign="top">
-      <sup>*</sup> <?php echo $loc->getText("biblioFieldsCallNmbr"); ?>:
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("callNmbr1",20,20,$postVars,$pageErrors); ?><br>
-      <?php printInputText("callNmbr2",20,20,$postVars,$pageErrors); ?><br>
-      <?php printInputText("callNmbr3",20,20,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo $loc->getText("biblioFieldsOpacFlg"); ?>:
+      <?php echo T("Show in OPAC:"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="opacFlg" value="CHECKED"
-        <?php if (isset($postVars["opacFlg"])) echo H($postVars["opacFlg"]); ?> >
+        <?php if (isset($biblio) and $biblio['opac_flg'] == 'Y') echo H('checked="checked"'); ?> />
     </td>
   </tr>
 
   <tr>
     <td colspan="2" nowrap="true" class="primary">
-      <b><?php echo $loc->getText("biblioFieldsUsmarcFields"); ?>:</b>
+      <b><?php echo T("USMarc Fields:"); ?></b>
     </td>
   </tr>
- <?php printUsmarcInputText(245,"a",TRUE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(245,"b",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(245,"c",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(100,"a",TRUE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(650,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(650,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL,"1");?>
-  <?php printUsmarcInputText(650,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL,"2");?>
-  <?php printUsmarcInputText(650,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL,"3");?>
-  <?php printUsmarcInputText(650,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL,"4");?>
-  <?php printUsmarcInputText(250,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
+<?php
+  function getlabel($f) {
+    global $marcSubflds, $marcTags;
+    $label = "";
+    if ($f['label'] != "") {
+      $label = $f['label'];
+    } elseif ($f['subfield'] != "") {
+      $idx = sprintf("%03d%s", $f['tag'], $f['subfield']);
+      $label = $marcSubflds[$idx]->getDescription();
+    } else {
+      $label = $marcTags[$f['tag']]->getDescription();
+    }
+    return $label;
+  }
+  function mkinput($fid, $sfid, $data, $f) {
+    return array('fieldid' => $fid,
+                 'subfieldid' => $sfid,
+                 'data' => $data,
+                 'tag' => $f['tag'],
+								 'subfield' => $f['subfield_cd'],
+                 'label' => getlabel($f),
+                 'required' => $f['required'],
+                 'form_type' => $f['form_type']);
+  }
 
-  <?php printUsmarcInputText(10,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(20,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(50,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(50,"b",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(82,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(82,"2",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(260,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(260,"b",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(260,"c",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(520,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXTAREA_CNTRL);?>
-  <?php printUsmarcInputText(300,"a",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(300,"b",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(300,"c",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(300,"e",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, TRUE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(20,"c",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
-  <?php printUsmarcInputText(541,"h",FALSE,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
+  $mf = new MaterialFields;
+  $fields = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
+  if ($fields->count() == 0) {
+?>
+  <tr>
+    <td colspan="2" class="primary"><?php echo T('No fields to fill in.'); ?></td>
+  </tr>
+<?php
+  }
+  $inputs = array();
+  while (($f=$fields->next()) !== NULL) {
+    $tags = array();
+    if (isset($biblio)) {
+      $tags = $biblio['marc']->getFields($f['tag']);
+      if ($f['auto_repeat'] != Tag && count($tags) > 0) {
+        $tags = array($tags[0]);
+      }
+    }
+    foreach ($tags as $t) {
+      $subfs = array();
+      if ($f['subfield_cd'] != "") {
+        $subfs = $t->getSubfields($f['subfield_cd']);
+        if ($f['auto_repeat'] != Subfield && count($subfs) > 0) {
+          $subfs = array($subfs[0]);
+        }
+      }
+      foreach ($subfs as $sf) {
+        array_push($inputs,
+                   mkinput($t->fieldid,
+                           $sf->subfieldid,
+                           $sf->data, $f));
+      }
+      if (count($subfs) == 0 || $f['auto_repeat'] == 'Subfield') {
+        array_push($inputs, mkinput($t->fieldid, NULL, NULL, $f));
+      }
+    }
+    if (count($tags) == 0 || $f['auto_repeat'] == 'Tag') {
+      array_push($inputs, mkinput(NULL, NULL, NULL, $f));
+    }
+  }
 
-<?php include("biblio_custom_fields.php");?>
-
+  foreach ($inputs as $n => $i) {
+?>
+  <tr>
+    <td class="primary" valign="top" style="width: 30%">
+<?php
+    if ($i['required'] == 'Y') {
+      echo '<sup>*</sup>';
+    }
+    echo H($i['label'].":");
+?>
+    </td>
+    <td valign="top" class="primary">
+      <input type="hidden" name="fields[<?php echo H($n); ?>][tag]"
+             value="<?php echo H($i['tag']); ?>" />
+      <input type="hidden" name="fields[<?php echo H($n); ?>][subfield_cd]"
+             value="<?php echo H($i['subfield']); ?>" />
+      <input type="hidden" name="fields[<?php echo H($n); ?>][fieldid]"
+             value="<?php echo H($i['fieldid']); ?>" />
+      <input type="hidden" name="fields[<?php echo H($n); ?>][subfieldid]"
+             value="<?php echo H($i['subfieldid']); ?>" />
+<?php
+    if ($i['form_type'] == 'text') {
+?>
+      <input style="width: 100%" type="text" name="fields[<?php echo H($n); ?>][data]"
+        value="<?php echo H($i['data']); ?>" />
+<?php
+    } else {
+      // IE seems to make the font-size of a textarea overly small under
+      // certain circumstances.  We force it to a sane value, even
+      // though I have some misgivings about it.  This will make
+      // the font smaller for some people.
+?>
+      <textarea style="width: 100%; font-size: 10pt; font-weight: normal" rows="7" name="fields[<?php echo H($n); ?>][data]"><?php echo H($i['data']); ?></textarea>
+<?php
+    }
+?>
+    </td>
+  </tr>
+<?php
+  }
+?>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="<?php echo $loc->getText("catalogSubmit"); ?>" class="button">
-      <input type="button" onClick="self.location='<?php echo H(addslashes($cancelLocation));?>'" value="<?php echo $loc->getText("catalogCancel"); ?>" class="button">
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onclick="parent.location='<?php echo H($cancelLocation);?>'" value="<?php echo T("Cancel"); ?>" class="button" />
     </td>
   </tr>
 

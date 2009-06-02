@@ -1,0 +1,26 @@
+.title "Series Search"
+.category "MARC Reports"
+.column series title="Series" func=series_link sort=series
+.column items title="Items" sort=items
+.parameters
+.	string contains title="Series Contains"
+.	string startswith title="Series Starts With"
+.	order_by default=series
+.		item series title="Series" expr="s.subfield_data"
+.		item items title="Items" type=numeric
+.	end order_by
+.end parameters
+
+.sql
+	select s.subfield_data as series, count(distinct f.bibid) as items
+	from biblio_field f, biblio_subfield s
+	where f.tag='440' and s.subfield_cd='a' and s.fieldid=f.fieldid
+.	if_set contains
+		and s.subfield_data like '%%%"contains%%%'
+.	end if_set
+.	if_set startswith
+		and s.subfield_data like '%"startswith%%%'
+.	end if_set
+	group by s.subfield_data
+.	order_by_expr
+.end sql

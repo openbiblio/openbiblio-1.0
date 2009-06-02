@@ -1,0 +1,27 @@
+.title "Images"
+.category "Cataloging"
+.column bibid hidden
+.column callnum title="Call No." sort=callnum
+.column title func=biblio_link title=Title sort=title
+.column imgurl title="Thumbnail URL"
+.column url title="Link URL"
+.parameters
+.	order_by default="callnum"
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.		item callnum title="Call No." expr="cs.subfield_data"
+.	end order_by
+.end parameters
+
+.sql
+	select i.*, cs.subfield_data as callnum,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title
+	from images i join biblio_field tf join biblio_subfield ts
+		join biblio_field cf join biblio_subfield cs
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+	where tf.bibid=i.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and cf.bibid=i.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+.	order_by_expr
+.end sql

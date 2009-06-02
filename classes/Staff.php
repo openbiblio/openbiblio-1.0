@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 /******************************************************************************
  * Staff represents a library staff member.  Contains business rules for
  * staff member data validation.
@@ -40,14 +40,14 @@ class Staff {
     $valid = true;
     if ($this->_lastName == "") {
       $valid = false;
-      $this->_lastNameError = "Last name is required.";
+      $this->_lastNameError = T("Last name is required.");
     }
     if (strlen($this->_username) < 4) {
       $valid = false;
-      $this->_usernameError = "Username must be at least 4 characters.";
+      $this->_usernameError = T("Username must be at least 4 characters.");
     } elseif (substr_count($this->_username, " ") > 0) {
       $valid = false;
-      $this->_usernameError = "Username must not contain any spaces.";
+      $this->_usernameError = T("Username must not contain any spaces.");
     }
     return $valid;
   }
@@ -61,13 +61,13 @@ class Staff {
     $valid = true;
     if (strlen($this->_pwd) < 4) {
       $valid = false;
-      $this->_pwdError = "Password must be at least 4 characters.";
+      $this->_pwdError = T("Password at least 4 chars");
     } elseif (substr_count($this->_pwd, " ") > 0) {
       $valid = false;
-      $this->_pwdError = "Password must not contain any spaces.";
+      $this->_pwdError = T("Password must not contain any spaces.");
     } elseif ($this->_pwd != $this->_pwd2) {
       $valid = false;
-      $this->_pwdError = "Passwords do not match.";
+      $this->_pwdError = T("Passwords do not match.");
     }
     return $valid;
   }
@@ -327,5 +327,3 @@ class Staff {
 
 
 }
-
-?>

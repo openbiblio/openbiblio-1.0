@@ -29,6 +29,25 @@ class Iter {
   }
 }
 
+class ArrayIter extends Iter {
+  function ArrayIter($arr) {
+    $this->arr = $arr;
+    $this->i = 0;
+  }
+  function count() {
+    return count($this->arr);
+  }
+  function next() {
+    if (!isset($this->arr[$this->i])) {
+      return NULL;
+    }
+    return $this->arr[$this->i++];
+  }
+  function skip() {
+    $this->i++;
+  }
+}
+
 class MapIter extends Iter {
   function MapIter($callback, $iter) {
     $this->callback = $callback;
@@ -94,5 +113,3 @@ class SliceIter extends Iter {
     $this->iter->skip();
   }
 }
-
-?>

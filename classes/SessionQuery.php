@@ -2,8 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../classes/Query.php");
+
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 /******************************************************************************
  * SessionQuery data access component for signon sessions
@@ -26,8 +26,8 @@ class SessionQuery extends Query {
     $sql = $this->mkSQL("select last_updated_dt, token from session "
                         . "where userid = %N and token = %N"
                         . " and last_updated_dt >= date_sub(sysdate(), interval %N minute)",
-                        $userid, $token, OBIB_SESSION_TIMEOUT);
-    if (!$this->_query($sql, "Error accessing session information.")) {
+                        $userid, $token, Settings::get('session_timeout'));
+    if (!$this->_query($sql, T("Error accessing session information."))) {
       return false;
     }
     $rowCount = $this->_conn->numRows();
@@ -52,8 +52,8 @@ class SessionQuery extends Query {
      **************************************************************************/
     $sql = $this->mkSQL("delete from session where userid = %N"
                         . " and last_updated_dt < date_sub(sysdate(), interval %N minute)",
-                        $userid, OBIB_SESSION_TIMEOUT);
-    if (!$this->_query($sql, "Error deleting session information.")) {
+                        $userid, Settings::get('session_timeout'));
+    if (!$this->_query($sql, T("Error deleting session information."))) {
       return false;
     }
     srand((double) microtime() * 1000000);
@@ -61,7 +61,7 @@ class SessionQuery extends Query {
     $sql = $this->mkSQL("insert into session "
                         . "values (%N, sysdate(), %N) ",
                         $userid, $token);
-    if (!$this->_query($sql, "Error creating a new session.")) {
+    if (!$this->_query($sql, T("Error creating a new session."))) {
       return false;
     }
     return $token;
@@ -77,8 +77,6 @@ class SessionQuery extends Query {
   function _updateToken($token) {
     $sql = $this->mkSQL("update session set last_updated_dt=sysdate() "
                         . "where token = %Q ", $token);
-    return $this->_query($sql, "Error updating session timeout.");
+    return $this->_query($sql, T("Error updating session timeout."));
   }
 }
-
-?>

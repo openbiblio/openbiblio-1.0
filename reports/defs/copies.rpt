@@ -1,32 +1,45 @@
 .title "Copy Search"
 .category "Cataloging"
-.layout labels title="Labels"
+.layout barcode_33up title="Barcodes (33up)"
+.layout barcode_98up title="Barcodes (98up)"
 .column copyid hidden
 .column bibid hidden
 .column barcode_nmbr title="Barcode" sort=barcode_nmbr
-.column callno title="Call Num."
-.column author title=Author
 .column title func=biblio_link title=Title sort=title
-.column collection
 .parameters
 .	string barcode title="Barcode Starts With"
 .	date newer title="Newer than"
+.	select cart title="Only In Item Cart" default=''
+.		item none title="No"
+.		item bibid title="Yes"
+.	end select
 .	order_by default=barcode_nmbr
 .		item barcode_nmbr title="Barcode"
-.		item title title="Title"
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
 .	end order_by
+.	session_id
 .end parameters
 
 .sql
-	select c.*, concat_ws(' ', b.call_nmbr1, b.call_nmbr2, b.call_nmbr3) callno,
-		b.title, b.author, coll.description collection
-	from biblio_copy c, biblio b, collection_dm coll
-	where b.bibid=c.bibid and coll.code=b.collection_cd
+	select c.*,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title
+	from biblio_copy c join biblio_field tf join biblio_subfield ts
+.	if_not_equal cart none
+		join cart
+.	end if_not_equal
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+	where tf.bibid=c.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
 .	if_set barcode
 		and c.barcode_nmbr like '%"barcode%%%'
 .	end if_set
 .	if_set newer
 		and c.create_dt >= %newer%
 .	end if_set
+.	if_not_equal cart none
+		and cart.name='bibid' and cart.sess_id=%session_id%
+		and c.bibid=cart.id
+.	end if_not_equal
 .	order_by_expr
 .end sql

@@ -2,25 +2,24 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "circulation";
   $nav = "checkin";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../classes/BiblioCopy.php");
-  require_once("../classes/BiblioCopyQuery.php");
-  require_once("../classes/BiblioHold.php");
-  require_once("../classes/BiblioHoldQuery.php");
-  require_once("../classes/BiblioStatusHist.php");
-  require_once("../classes/BiblioStatusHistQuery.php");
-  require_once("../classes/MemberAccountTransaction.php");
-  require_once("../classes/MemberAccountQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../functions/formatFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../model/Copies.php"));
+  require_once(REL(__FILE__, "../model/History.php"));
+  require_once(REL(__FILE__, "../model/Collections.php"));
+  require_once(REL(__FILE__, "../model/Holds.php"));
+  require_once(REL(__FILE__, "../model/Bookings.php"));
+  require_once(REL(__FILE__, "../classes/MemberAccountTransaction.php"));
+  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+  require_once(REL(__FILE__, "../functions/formatFuncs.php"));
+
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -30,136 +29,76 @@
     header("Location: ../circ/checkin_form.php?reset=Y");
     exit();
   }
-  $barcode = trim($_POST["barcodeNmbr"]);
 
-  #****************************************************************************
-  #*  Edit input
-  #****************************************************************************
-  if (!ctypeAlnum($barcode)) {
-    $pageErrors["barcodeNmbr"] = $loc->getText("shelvingCartErr1");
-    $postVars["barcodeNmbr"] = $barcode;
+  function userError($msg) {
+    global $loc;
+    $pageErrors = array();
+    $postVars = array();
+    $pageErrors["barcodeNmbr"] = T($msg);
+    $postVars["barcodeNmbr"] = $_POST["barcodeNmbr"];
     $_SESSION["postVars"] = $postVars;
     $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/checkin_form.php");
     exit();
   }
-  
+
+  $barcode = $_POST["barcodeNmbr"];
+
   #****************************************************************************
   #*  Ready copy record
   #****************************************************************************
-  $copyQ = new BiblioCopyQuery();
-  $copyQ->connect();
-  if ($copyQ->errorOccurred()) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  }
-  if (!$copy = $copyQ->queryByBarcode($barcode)) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
+  $copies = new Copies;
+  $copy = $copies->getByBarcode($barcode);
+
+  if (!$copy) {
+    userError(T("No copy with that barcode"));
   }
 
-  #****************************************************************************
-  #*  Edit results
-  #****************************************************************************
-  $foundError = FALSE;
-  if ($copyQ->getRowCount() == 0) {
-    $foundError = true;
-    $pageErrors["barcodeNmbr"] = $loc->getText("shelvingCartErr2");
-  }
-
-  if ($foundError == true) {
-    $postVars["barcodeNmbr"] = $barcode;
-    $_SESSION["postVars"] = $postVars;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/checkin_form.php");
-    exit();
-  }
-
-  #****************************************************************************
-  #*  Get daily late fee
-  #****************************************************************************
-  $dailyLateFee = $copyQ->getDailyLateFee($copy);
-  if ($copyQ->errorOccurred()) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  }
-
-  $copyQ->close();
-  $saveMbrid = $copy->getMbrid();
-  $saveDaysLate = $copy->getDaysLate();
+  $history = new History;
+  $status = $history->getOne($copy['histid']);
+  $bookings = new Bookings;
+  $booking = $bookings->getByHistid($copy['histid']);	# May be null
 
   #**************************************************************************
   #*  Check hold list to see if someone has the copy on hold
   #**************************************************************************
-  $holdQ = new BiblioHoldQuery();
-  $holdQ->connect();
-  if ($holdQ->errorOccurred()) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  $hold = $holdQ->getFirstHold($copy->getBibid(),$copy->getCopyid());
-  if ($holdQ->errorOccurred()) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  $holdQ->close();
+  $holds = new Holds;
+  $hold = $holds->getFirstHold($copy['copyid']);
 
   #**************************************************************************
   #*  Update copy status code
   #**************************************************************************
-  $copyQ->connect();
-  if ($copyQ->errorOccurred()) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  }
-  if ($holdQ->getRowCount() > 0) {
-    $copy->setStatusCd(OBIB_STATUS_ON_HOLD);
+  if ($hold) {
+    $newStatus = OBIB_STATUS_ON_HOLD;
   } else {
-    $copy->setStatusCd(OBIB_STATUS_SHELVING_CART);
+    $newStatus = OBIB_STATUS_SHELVING_CART;
   }
-  $copy->setMbrid("");
-  $copy->setDueBackDt("");
-  if (!$copyQ->update($copy,true)) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
+  $hist = array(
+    'bibid'=>$copy['bibid'],
+    'copyid'=>$copy['copyid'],
+    'status_cd'=>$newStatus,
+  );
+  if ($booking) {
+    $hist['bookingid'] = $booking['bookingid'];
   }
-  $copyQ->close();
+  $history->insert($hist);
 
   #**************************************************************************
-  #*  Insert into biblio status history
+  #*  Calc late fee if any
   #**************************************************************************
-  if ($saveMbrid != "") {
-    $hist = new BiblioStatusHist();
-    $hist->setBibid($copy->getBibid());
-    $hist->setCopyid($copy->getCopyid());
-    $hist->setStatusCd($copy->getStatusCd());
-    $hist->setDueBackDt($copy->getDueBackDt());
-    $hist->setMbrid($saveMbrid);
-
-    $histQ = new BiblioStatusHistQuery();
-    $histQ->connect();
-    if ($histQ->errorOccurred()) {
-      $histQ->close();
-      displayErrorPage($histQ);
-    }
-    $histQ->insert($hist);
-    if ($histQ->errorOccurred()) {
-      $histQ->close();
-      displayErrorPage($histQ);
-    }
-    $histQ->close();
-
-    #**************************************************************************
-    #*  Calc late fee if any
-    #**************************************************************************
-    if (($saveDaysLate > 0) and ($dailyLateFee > 0)) {
-      $fee = $dailyLateFee * $saveDaysLate;
+  if ($booking) {
+    $daysLate = $bookings->getDaysLate($booking);
+    $collections = new Collections;
+    $coll = $collections->getByBibid($booking['bibid']);
+    $dailyLateFee = $coll['daily_late_fee'];
+    if (($daysLate > 0) and ($dailyLateFee > 0)) {
+      $fee = $dailyLateFee * $daysLate;
       $trans = new MemberAccountTransaction();
       $trans->setMbrid($saveMbrid);
       $trans->setCreateUserid($_SESSION["userid"]);
       $trans->setTransactionTypeCd("+c");
       $trans->setAmount($fee);
-      $trans->setDescription($loc->getText("shelvingCartTrans",array("barcode" => $barcode)));
+      $trans->setDescription(T("Late fee (barcode=%barcode%)", array("barcode" => $barcode)));
 
       $transQ = new MemberAccountQuery();
       $transQ->connect();
@@ -176,19 +115,15 @@
     }
   }
 
-  #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
-
+  $msg = T("%barcode% added to shelving cart.", array('barcode'=>$barcode));
+  if (!$booking) {
+    $msg .= T(" THIS ITEM WAS NOT CHECKED OUT.");
+  }
   #**************************************************************************
   #*  Go back to member view
   #**************************************************************************
-  if ($holdQ->getRowCount() > 0) {
+  if ($hold) {
     header("Location: ../circ/hold_message.php?barcode=".U($barcode));
   } else {
-    header("Location: ../circ/checkin_form.php");
+    header("Location: ../circ/checkin_form.php?msg=".U($msg));
   }
-?>
-    

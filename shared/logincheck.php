@@ -2,25 +2,23 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 #*********************************************************************************
 #*  checklogin.php
 #*  Description: Used to verify signon token on every secured page.
 #*               Redirects to the login page if token not valid.
 #*********************************************************************************
 
-  require_once("../classes/SessionQuery.php");
-  require_once("../functions/errorFuncs.php");
+  require_once(REL(__FILE__, "../classes/SessionQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
   #****************************************************************************
   #*  Temporarily disabling security for demo since sourceforge.net
   #*  seems to be using mirrored servers that do not share session info.
   #****************************************************************************
   if (!OBIB_DEMO_FLG) {
-
     $pages = array(
       'opac'=>'../opac/index.php',
-      'home'=>'../home/index.php',
       'circulation'=>'../circ/index.php',
       'cataloging'=>'../catalog/index.php',
       'admin'=>'../admin/index.php',
@@ -54,7 +52,7 @@
       displayErrorPage($sessQ);
     }
     $sessQ->close();
-    header("Location: ../shared/loginform.php?RET=".U($returnPage));
+    header("Location: ../shared/loginform.php?RET=".$returnPage);
     exit();
   }
   $sessQ->close();
@@ -96,7 +94,5 @@
   #*  page.
   #****************************************************************************
   if (isset($restrictInDemo) && $restrictInDemo && OBIB_DEMO_FLG) {
-    include("../shared/demo_msg.php");
+    include(REL(__FILE__, "../shared/demo_msg.php"));
   }
-
-?>

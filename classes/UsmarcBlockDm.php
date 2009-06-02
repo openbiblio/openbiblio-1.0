@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 /******************************************************************************
  * UsmarcBlockDm represents a row in usmarc_block_dm.
  *
@@ -47,5 +47,3 @@ class UsmarcBlockDm {
   }
 
 }
-
-?>

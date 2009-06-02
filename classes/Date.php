@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 class Date {
   // Dates are represented internally as 'YYYY-mm-dd'
   function read_e($datestr, $ref=NULL) {
@@ -28,10 +28,10 @@ class Date {
     }
     if ($gotit) {
       if ($month < 1 or $month > 12) {
-        return array(NULL, new Error('Bad month number: '.$month));
+        return array(NULL, new Error(T("Bad month number: %month%", array('month'=>$month))));
       }
       if ($day < 1 or $day > 31) {
-        return array(NULL, new Error('Bad day number: '.$day));
+        return array(NULL, new Error(T("Bad day number: %day%", array('day'=>$day))));
       }
       if ($year < 60) {
         $year += 2000;
@@ -55,7 +55,7 @@ class Date {
     } elseif ($datestr == 'tomorrow') {
       return array(Date::addDays($ref, 1), NULL);
     } else {
-      return array(NULL, new Error('Invalid date format'));
+      return array(NULL, new Error(T("Invalid date format")));
     }
   }
   function addDays($date, $days) {
@@ -89,5 +89,3 @@ class Date {
     return $days;
   }
 }
-
-?>

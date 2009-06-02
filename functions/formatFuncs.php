@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 /*********************************************************************************
  * Same as ctype_alnum without requiring PHP 4.3 or 4.2 with ctype turned on
  * @param String $text text to check
@@ -33,9 +33,6 @@ function ctypeAlnum($text){
 function moneyFormat($amount,$decimals){
   // get local info
   $localeInfo = localeconv();
-  if (!$localeInfo["negative_sign"]) {
-    $localeInfo["negative_sign"] = '-';
-  }
   if ($amount < 0) {
     $prefix = "n";
     $sign = $localeInfo["negative_sign"];
@@ -44,17 +41,8 @@ function moneyFormat($amount,$decimals){
     $sign = $localeInfo["positive_sign"];
   }
   $currencySymbol = $localeInfo["currency_symbol"];
-  if (!$currencySymbol) {
-    $currencySymbol = '$';
-  }
   $dec_point = $localeInfo["mon_decimal_point"];
-  if (!$dec_point) {
-    $dec_point = '.';
-  }
   $thousand_sep = $localeInfo["mon_thousands_sep"];
-  if (!$thousand_sep) {
-    $thousand_sep = ',';
-  }
   if ($localeInfo[$prefix."_sep_by_space"]) {
     $sep = " ";
   } else {
@@ -66,11 +54,11 @@ function moneyFormat($amount,$decimals){
 
 /* add currency symbol and sign
    _sign_posn doc:
-   0 Parentheses surround the quantity and currency_symbol  
-   1 The sign string precedes the quantity and currency_symbol  
-   2 The sign string succeeds the quantity and currency_symbol  
-   3 The sign string immediately precedes the currency_symbol  
-   4 The sign string immediately succeeds the currency_symbol  
+   0 Parentheses surround the quantity and currency_symbol
+   1 The sign string precedes the quantity and currency_symbol
+   2 The sign string succeeds the quantity and currency_symbol
+   3 The sign string immediately precedes the currency_symbol
+   4 The sign string immediately succeeds the currency_symbol
 */
 
   if ($localeInfo[$prefix."_sign_posn"] == 0) {
@@ -103,11 +91,7 @@ function moneyFormat($amount,$decimals){
     } else {
       $result = $result.$sep.$currencySymbol.$sign;
     }
-  } else {
-    # American-style default
-    $result = $currencySymbol.$sep.$sign.$result;
   }
-  
+
   return $result;
 }
-?>

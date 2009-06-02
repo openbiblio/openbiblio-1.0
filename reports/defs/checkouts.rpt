@@ -1,42 +1,55 @@
-.title reportCheckouts
-.category Circulation
+.title "Checkouts"
+.category "Circulation"
+.layout pickup_list title="Pickup List"
+.column bookingid hidden checkbox
 .column bibid hidden
-.column copyid hidden
 .column mbrid hidden
-.column barcode_nmbr sort=barcode_nmbr
-.column title sort=title func=biblio_link
-.column author sort=author
-.column member_bcode sort=member_bcode
-.column name sort=name func=member_link
-.column status_begin_dt sort=status_begin_dt
-.column due_back_dt sort=due_back_dt
+.column siteid hidden
+.column first_name hidden
+.column last_name hidden
+.column mbr_name sort=member title=Member func=member_link
+.column site_name sort=site_member title=Site
+.column barcode_nmbr sort=barcode_nmbr title=Barcode
+.column price title=Price
+.column title sort=title func=biblio_link title=Title
+.column due_dt sort=due_dt func=booking_link title="Date Due"
+.column days_late sort="days_late" title="Days Late"
 .parameters
-.	date due_before title="Due before"
-.	date out_since title="Out since"
+.	string mbrid
+.	date as_of title="As Of" default="today"
 .	order_by
-.		item barcode_nmbr expr='c.barcode_nmbr'
-.		item title
-.		item author
-.		item member_bcode expr='m.barcode_nmbr'
-.		item name expr="concat(m.last_name, ', ', m.first_name)"
-.		item status_begin_dt
-.		item due_back_dt
+.		item site_member type=multi expr="site_name, member" title="Site, Member" 
+.		item member title=Member expr="concat(m.last_name, m.first_name)"
+.		item site_name title=Site expr="s.name"
+.		item due_dt title="Date Due"
+.		item days_late title="Days Late" expr="to_days(now())-to_days(b.due_dt)"
+.		item barcode_nmbr title="Item Barcode" expr="bc.barcode_nmbr"
+.		item title expr="titles.subfield_data" title=Title type=MARC skip_indicator="titlef.ind2_cd"
 .	end order_by
 .end parameters
+
 .sql
-	select c.bibid, c.copyid, m.mbrid, c.barcode_nmbr,
-		b.title, b.author, c.status_begin_dt,
-		c.due_back_dt, m.barcode_nmbr member_bcode,
-		concat(m.last_name, ', ', m.first_name) name
-	from biblio b, biblio_copy c, member m
-	where b.bibid = c.bibid
-		and c.mbrid = m.mbrid
-		and c.status_cd = 'out'
-.	if_set due_before
-		and c.due_back_dt <= %due_before%
-.	end if_set
-.	if_set out_since
-		and c.status_begin_dt >= %out_since%
+	select b.*, bc.barcode_nmbr, bc.price,
+		m.mbrid, m.barcode_nmbr as mbr_bcode,
+		m.first_name, m.last_name, s.siteid,
+		concat(m.first_name, ' ', m.last_name, ' (',
+			m.barcode_nmbr, ')') as mbr_name,
+		s.name as site_name,
+		concat(titles.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		greatest(0, to_days(%as_of%)-to_days(b.due_dt)) as days_late
+	from booking b join booking_member bkm
+		join member m join site s join biblio_copy bc join biblio_field titlef
+		join biblio_subfield titles
+		left join biblio_subfield sub on sub.fieldid=titlef.fieldid
+			and sub.subfield_cd='b'
+	where bc.histid=b.out_histid
+		and titlef.bibid=b.bibid and titlef.tag='245'
+		and titles.fieldid=titlef.fieldid and titles.subfield_cd='a'
+		and b.out_histid is not NULL and b.ret_histid is NULL
+		and bkm.bookingid=b.bookingid and m.mbrid=bkm.mbrid
+		and s.siteid=m.siteid
+.	if_set mbrid
+		and bkm.mbrid=%#mbrid%
 .	end if_set
 .	order_by_expr
 .end sql

@@ -2,102 +2,58 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-  require_once("../shared/common.php");
-  $tab = "circulation";
-  $restrictToMbrAuth = TRUE;
-  $nav = "edit";
-  $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
 
-  require_once("../classes/Member.php");
-  require_once("../classes/MemberQuery.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+	require_once("../shared/common.php");
 
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
+	$tab = "circulation";
+	$restrictToMbrAuth = TRUE;
+	$nav = "edit";
+	$restrictInDemo = true;
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  if (count($_POST) == 0) {
-    header("Location: ../circ/index.php");
-    exit();
-  }
+	require_once(REL(__FILE__, "../model/Members.php"));
+	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
-  $mbrid = $_POST["mbrid"];
 
-  $mbr = new Member();
-  $mbr->setMbrid($_POST["mbrid"]);
-  $mbr->setBarcodeNmbr($_POST["barcodeNmbr"]);
-  $_POST["barcodeNmbr"] = $mbr->getBarcodeNmbr();
-  $mbr->setLastChangeUserid($_SESSION["userid"]);
-  $mbr->setLastName($_POST["lastName"]);
-  $_POST["lastName"] = $mbr->getLastName();
-  $mbr->setFirstName($_POST["firstName"]);
-  $_POST["firstName"] = $mbr->getFirstName();
-  $mbr->setAddress($_POST["address"]);
-  $_POST["address"] = $mbr->getAddress();
-  $mbr->setHomePhone($_POST["homePhone"]);
-  $_POST["homePhone"] = $mbr->getHomePhone();
-  $mbr->setWorkPhone($_POST["workPhone"]);
-  $_POST["workPhone"] = $mbr->getWorkPhone();
-  $mbr->setEmail($_POST["email"]);
-  $_POST["email"] = $mbr->getEmail();
-  $mbr->setClassification($_POST["classification"]);
-  
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $customFields = $dmQ->getAssoc('member_fields_dm');
-  $dmQ->close();
-  foreach ($customFields as $name => $title) {
-    if (isset($_REQUEST['custom_'.$name])) {
-      $mbr->setCustom($name, $_REQUEST['custom_'.$name]);
-    }
-  }
-  
-  $validData = $mbr->validateData();
-  if (!$validData) {
-    $pageErrors["barcodeNmbr"] = $mbr->getBarcodeNmbrError();
-    $pageErrors["lastName"] = $mbr->getLastNameError();
-    $pageErrors["firstName"] = $mbr->getFirstNameError();
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_edit_form.php");
-    exit();
-  }
+  	if (count($_POST) == 0) {
+    	header("Location: ../circ/index.php");
+    	exit();
+  	}
 
-  #**************************************************************************
-  #*  Check for duplicate barcode number
-  #**************************************************************************
-  $mbrQ = new MemberQuery();
-  $mbrQ->connect();
-  $dupBarcode = $mbrQ->DupBarcode($mbr->getBarcodeNmbr(),$mbr->getMbrid());
-  if ($dupBarcode) {
-    $pageErrors["barcodeNmbr"] = $loc->getText("mbrDupBarcode",array("barcode"=>$mbr->getBarcodeNmbr()));
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_edit_form.php");
-    exit();
-  }
+  	$mbr = array(
+		'mbrid'=>$_POST["mbrid"],
+    	'siteid'=>$_POST["siteid"],
+    	'barcode_nmbr'=>$_POST["barcode_nmbr"],
+    	'last_name'=>$_POST["last_name"],
+    	'first_name'=>$_POST["first_name"],
+    	'address1'=>$_POST["address1"],
+    	'address2'=>$_POST["address2"],
+    	'city'=>$_POST["city"],
+    	'state'=>$_POST["state"],
+    	'zip'=>$_POST["zip"],
+    	'zip_ext'=>$_POST["zip_ext"],
+    	'home_phone'=>$_POST["home_phone"],
+    	'work_phone'=>$_POST["work_phone"],
+    	'email'=>$_POST["email"],
+    	'password'=>$_POST["password"],
+    	'confirm-pw'=>$_POST["confirm-pw"],
+    	'classification'=>$_POST["classification"],
+	  );
 
-  #**************************************************************************
-  #*  Update library member
-  #**************************************************************************
-  $mbrQ->update($mbr);
-  $mbrQ->close();
+ 	$members = new Members;
+	$errors = $members->update_el($mbr);
+  	if ($errors) {
+		FieldError::backToForm('../circ/mbr_edit_form.php', $errors);
+	}
 
-  #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
+  	$customFields = new MemberCustomFields;
+	$custom = array();
+	foreach ($customFields->getSelect() as $name => $title) {
+		if (isset($_REQUEST['custom_'.$name])) {
+			$custom[$name] = $_POST['custom_'.$name];
+		}
+  	}
+	$members->setCustomFields($mbr['mbrid'], $custom);
 
-  $msg = $loc->getText("mbrEditSuccess");
-  header("Location: ../circ/mbr_view.php?mbrid=".U($mbr->getMbrid())."&reset=Y&msg=".U($msg));
-  exit();
-?>
+  	$msg = T("Member has been successfully updated.");
+  	header("Location: ../circ/mbr_view.php?mbrid=".U($mbr['mbrid'])."&reset=Y&msg=".U($msg));

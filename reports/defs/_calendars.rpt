@@ -1,0 +1,19 @@
+.title "Calendars"
+.column calendar hidden checkbox
+.column name title=Name sort=name func=calendar_link
+.column sites title=Sites sort=sites
+.parameters
+.	order_by
+.		item name title=Name expr='c.description'
+.		item sites title=Sites expr='count(s.siteid)'
+.	end order_by
+.end parameters
+
+.sql
+	select c.code as calendar, c.description as name,
+		count(s.siteid) as sites
+	from calendar_dm c
+		left join site s on s.calendar=c.code
+	group by c.code, c.description
+.	order_by_expr
+.end sql

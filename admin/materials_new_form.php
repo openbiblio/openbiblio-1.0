@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   session_cache_limiter(null);
 
   $tab = "admin";
@@ -11,25 +12,23 @@
   $focus_form_name = "newmaterialform";
   $focus_form_field = "description";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../shared/get_form_vars.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-  require_once("../shared/header.php");
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
 
-<form name="newmaterialform" method="POST" action="../admin/materials_new.php">
+<form name="newmaterialform" method="post" action="../admin/materials_new.php">
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      <?php echo $loc->getText("admin_materials_listAddmaterialtypes"); ?>
+      <?php echo T("Add New Material Type");?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("admin_materials_listDescription"); ?>
+      <?php echo T("Description"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("description",40,40,$postVars,$pageErrors); ?>
@@ -37,24 +36,42 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <font class="small">*</font><?php echo $loc->getText("admin_materials_delImagefile"); ?>
+      <?php echo T("Adult Checkout Limit:");?><br /><span class="small"><?php echo T("(enter 0 for unlimited)"); ?></span>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("imageFile",40,128,$postVars,$pageErrors); ?>
+      <?php printInputText("adult_checkout_limit",2,2,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      <?php echo T("Juvenile Checkout Limit:"); ?><br /><span class="small"><?php echo T("(enter 0 for unlimited)"); ?></span>
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("juvenile_checkout_limit",2,2,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      <sup>*</sup><?php echo T("Image File:");?>
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("image_file",40,128,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  <?php echo $loc->getText("adminSubmit"); ?>  " class="button">
-      <input type="button" onClick="self.location='../admin/materials_list.php'" value="  <?php echo $loc->getText("adminCancel"); ?>  " class="button">
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onClick="parent.location='../admin/materials_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
     </td>
   </tr>
 
 </table>
-      </form>
+</form>
 
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><?php echo $loc->getText("admin_materials_listNote"); ?></font></td>
-<td class="noborder"><font class="small"><?php echo $loc->getText("admin_materials_new_formNoteText"); ?><br></font>
-</td></tr></table>
+<p class="note">
+<sup>*</sup><?php echo T("Note:");?><br />
+<?php echo T("Image file located in directory");?></p>
 
-<?php include("../shared/footer.php"); ?>
+<?php
+
+  Page::footer();

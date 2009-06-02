@@ -1,0 +1,196 @@
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+
+body {
+	background: #90b0b8;
+	padding: 10px;
+	margin: 0;
+	font: 16px serif;
+}
+h1.staff_head {
+	text-align: right;
+	font: bold 16px serif;
+	color: white;
+	margin: 0;
+}
+#logo {
+	width: 150px;
+	float: left;
+}
+#banner { text-align: center; margin-bottom: 16px; }
+#library_name {
+	margin-left: 160px;
+	font: 28px sans-serif;
+	color: white;
+}
+#library_hours {
+	margin-left: 160px;
+	font: 12px sans-serif;
+}
+#library_phone {
+	margin-left: 160px;
+	font: 12px sans-serif;
+}
+table.sigh { width: 100%; }
+table.sigh .spacer { width: 5px; }
+#sidebar {
+	vertical-align: top;
+	width: 126px;
+	border: solid black 2px;
+	padding: 10px;
+}
+
+/* Using list-style-image because IE has an odd circle list-style-type. */
+ul.nav_main { margin-top: 0; margin-left: 0; padding-left: 0; list-style-type: none; }
+ul.nav_main li { margin-bottom: 1.1em; white-space: nowrap; }
+ul.nav_main > li.nav_selected {
+	border: solid black 2px;
+	border-right: none;
+	margin-right: -28px;
+	margin-left: -4px;
+	background: white;
+	padding: 2px;
+	position: relative;
+}
+ul.nav_sub { margin-left: 0; padding-left: 2em; list-style-type: circle; list-style-image: url("../images/bulleto.png"); }
+ul.nav_sub ul.nav_sub { padding-left: 1em }
+ul.nav_sub li { margin-bottom: 0; font-weight: normal; }
+ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; list-style-image: url("../images/bulletc.png"); }
+
+#sidebar_login {
+	text-align: center;
+	font: 12px sans-serif;
+}
+#sidebar .login_id {
+	margin-bottom: 1em;
+}
+#sidebar .password {
+	margin-bottom: 1em;
+}
+#sidebar_login .login_id input {
+	width: 100px;
+	border: solid black 2px;
+	font: 12px serif;
+}
+#sidebar_login .password input {
+	width: 100px;
+	border: solid black 2px;
+	font: 12px serif;
+}
+#content {
+	vertical-align: top;
+	margin-left: 160px;
+	border: solid black 2px;
+	background: white;
+	padding: 7px;
+}
+
+#catalog_search h3 {
+	font: 20px sans-serif;
+	text-align: center;
+	color: white;
+	background: #ccb470;
+	border: solid black 2px;
+}
+.title {
+	font: 20px sans-serif;
+	text-align: center;
+	color: white;
+	background: #ccb470;
+	border: solid black 2px;
+}
+.results_found {
+	font: 12px serif;
+	text-align: right;
+	margin: 0.5em 0;
+}
+.results_pages {
+	font: 12px serif;
+	text-align: right;
+	float: right;
+}
+.search_terms {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 0.5em 0;
+}
+.results_list {
+	margin-top: 10px;
+	padding: 10px 5px;
+	border-top: solid #90b0b8 4px;
+}
+.search_result {
+	border: solid #90b0b8 4px;
+	padding: 3px;
+	margin: 5px;
+	width: 100%;
+}
+.search_result td { vertical-align: top }
+.cover_image { width: 75px }
+.cover_image img { border: solid black 2px; width: 75px; }
+.call_media {
+	font: 16px sans-serif;
+	width: 40px;
+	padding: 0 16px;
+}
+.compact_info_display table.header {
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+.compact_info_display th.title {
+	background: none;
+	border: none;
+	font: 16px serif regular;
+	text-align: left;
+}
+.compact_info_display ul {
+	margin: 0; padding: 0;
+	list-style-type: none;
+}
+.compact_info_display li {
+	font: 14px serif;
+	margin-left: 2em;
+	text-indent: -2em;
+}
+.compact_info_display .heading {
+	font-weight: bold;
+}
+.search_result .right_info { width: 125px; text-align: center; vertical-align: middle }
+.search_result .available {
+	margin-top: 12px;
+	font: 14px serif;
+}
+input.button {
+	background: #b2dae4;
+	border: solid black 2px;
+	padding: 2px;
+	width: auto;
+	text-decoration: none;
+	font: 12px serif;
+	color: black;
+}
+input.button:hover {
+	text-decoration: underline;
+}
+a { color: blue }
+a:visited { color: blue }
+a.button {
+	background: #b2dae4;
+	border: solid black 2px;
+	padding: 3px;
+	text-decoration: none;
+	font: 12px serif;
+	color: black;
+}
+a.button:visited { color: black }
+a.button:hover {
+	text-decoration: underline;
+}
+#footer {
+	margin-left: 160px;
+	margin-top: 10px;
+	text-align: center;
+	font: 12px serif;
+}

@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once('../classes/Lay.php');
+require_once(REL(__FILE__, '../../classes/Lay.php'));
 
 class Layout_barcode_33up {
   var $p;
@@ -56,5 +56,3 @@ class Layout_barcode_33up {
     $lay->close();
   }
 }
-
-?>

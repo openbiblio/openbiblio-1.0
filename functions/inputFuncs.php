@@ -2,13 +2,10 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../functions/errorFuncs.php");
-require_once("../classes/Dm.php");
-require_once("../classes/DmQuery.php");
 
-/* Returns HTML for a form input field with error handling. */
-function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
+require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+
+function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
   $s = "";
   if (isset($_SESSION['postVars'])) {
     $postVars = $_SESSION['postVars'];
@@ -24,7 +21,7 @@ function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
     $pageErrors = array();
   }
   if (isset($pageErrors[$name])) {
-    $s .= '<font class="error">'.H($pageErrors[$name]).'</font><br />';
+    $s .= '<span class="error">'.H($pageErrors[$name]).'</span><br />';
   }
   if (!$attrs) {
     $attrs = array();
@@ -43,7 +40,7 @@ function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
     foreach ($data as $val => $desc) {
       $s .= '<option value="'.H($val).'" ';
       if ($value == $val) {
-        $s .= " selected";
+        $s .= ' selected="selected"';
       }
       $s .= ">".H($desc)."</option>\n";
     }
@@ -51,6 +48,7 @@ function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
     break;
   case 'textarea':
     $s .= '<textarea name="'.H($name).'" ';
+    $s .= 'id="'.H($name).'" ';
     foreach ($attrs as $k => $v) {
       $s .= H($k).'="'.H($v).'" ';
     }
@@ -59,9 +57,9 @@ function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
   case 'checkbox':
     $s .= '<input type="checkbox" ';
     $s .= 'name="'.H($name).'" ';
-    $s .= 'value="'.H($data).'" ';
+    //$s .= 'value="'.H($data).'" ';
     if ($value == $data) {
-      $s .= "checked ";
+      $s .= 'checked="checked" ';
     }
     foreach ($attrs as $k => $v) {
       $s .= H($k).'="'.H($v).'" ';
@@ -83,32 +81,8 @@ function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
   return $s;
 }
 
-/* Returns HTML for a select box with the contents of $table as options. */
-function dmSelect($table, $name, $value="", $all=FALSE, $attrs=NULL) {
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  # Don't use getAssoc() so that we can set the default below
-  $dms = $dmQ->get($table);
-  $dmQ->close();
-  $default = "";
-  $options = array();
-  if ($all) {
-    $options['all'] = 'All';
-  }
-  foreach ($dms as $dm) {
-    $options[$dm->getCode()] = $dm->getDescription();
-    if ($dm->getDefaultFlg() == 'Y') {
-      $default = $dm->getCode();
-    }
-  }
-  if ($value == "") {
-    $value = $default;
-  }
-  return inputField('select', $name, $value, $attrs, $options);
-}
-
 /*********************************************************************************
- * DEPRECATED, use inputField.  Draws input html tag of type text.
+ * DEPRECATED, use inputfield.  Draws input html tag of type text.
  * @param string $fieldName name of input field
  * @param string $size size of text box
  * @param string $max max input length of text box
@@ -118,28 +92,11 @@ function dmSelect($table, $name, $value="", $all=FALSE, $attrs=NULL) {
  * @access public
  *********************************************************************************
  */
-function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible") {
+function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible"){
   $_SESSION['postVars'] = $postVars;
   $_SESSION['pageErrors'] = $pageErrors;
   $attrs = array('size'=>$size,
                  'maxlength'=>$max,
                  'style'=>"visibility: $visibility");
-  echo inputField('text', $fieldName, '', $attrs);
+  echo inputfield('text', $fieldName, '', $attrs);
 }
-
-/*********************************************************************************
- * DEPRECATED, use dmSelect.
- * @param string $fieldName name of input field
- * @param string $domainTable name of domain table to get values from
- * @param array_reference &$postVars reference to array containing all input values
- *********************************************************************************
- */
-function printSelect($fieldName,$domainTable,&$postVars,$disabled=FALSE){
-  $_SESSION['postVars'] = $postVars;
-  $attrs = array();
-  if ($disabled) {
-    $attrs['disabled'] = '1';
-  }
-  echo dmSelect($domainTable, $fieldName, "", FALSE, $attrs);
-}
-?>

@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   session_cache_limiter(null);
 
   $tab = "admin";
@@ -11,26 +12,23 @@
   $focus_form_name = "newstaffform";
   $focus_form_field = "last_name";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../shared/get_form_vars.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-  
-  require_once("../shared/header.php");
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
 
-<form name="newstaffform" method="POST" action="../admin/staff_new.php">
+<form name="newstaffform" method="post" action="../admin/staff_new.php">
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      <?php echo $loc->getText("adminStaff_new_form_Header"); ?>
+      <?php echo T("Add New Staff Member");?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formLastname"); ?>
+      <?php echo T("Last Name:");?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("last_name",30,30,$postVars,$pageErrors); ?>
@@ -38,7 +36,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formFirstname"); ?>
+      <?php echo T("First Name:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("first_name",30,30,$postVars,$pageErrors); ?>
@@ -46,7 +44,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formLogin"); ?>
+      <?php echo T("Login Username:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("username",20,20,$postVars,$pageErrors); ?>
@@ -54,57 +52,60 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_new_form_Password"); ?>
+      <?php echo T("Password:"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="password" name="pwd" size="20" maxlength="20"
-      value="<?php if (isset($postVars["pwd"])) echo H($postVars["pwd"]); ?>" ><br>
-      <font class="error">
-      <?php if (isset($pageErrors["pwd"])) echo H($pageErrors["pwd"]); ?></font>
+      value="<?php if (isset($postVars["pwd"])) echo $postVars["pwd"]; ?>" ><br />
+      <?php if (isset($pageErrors["pwd"])) {
+				echo '<span class="error">'.$pageErrors["pwd"].'</span>';
+				} ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_new_form_Reenterpassword"); ?>
+      <?php echo T("Re-enter Password:"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="password" name="pwd2" size="20" maxlength="20"
-      value="<?php if (isset($postVars["pwd2"])) echo H($postVars["pwd2"]); ?>" ><br>
-      <font class="error">
-      <?php if (isset($pageErrors["pwd2"])) echo H($pageErrors["pwd2"]); ?></font>
+      value="<?php if (isset($postVars["pwd2"])) echo $postVars["pwd2"]; ?>" ><br />
+      <?php if (isset($pageErrors["pwd2"])) {
+				echo '<span class="error">'.$pageErrors["pwd2"].'</span>';
+				} ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formAuth"); ?>
+      <?php echo T("Authorization:");?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="circ_flg" value="CHECKED"
-        <?php if (isset($postVars["circ_flg"])) echo H($postVars["circ_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formCirc"); ?>
+        <?php if (isset($postVars["circ_flg"])) echo $postVars["circ_flg"]; ?> />
+      <?php echo T("Circ");?>
       <input type="checkbox" name="circ_mbr_flg" value="CHECKED"
-        <?php if (isset($postVars["circ_mbr_flg"])) echo H($postVars["circ_mbr_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formUpdatemember"); ?>
+        <?php if (isset($postVars["circ_mbr_flg"])) echo $postVars["circ_mbr_flg"]; ?> />
+      <?php echo T("Update Member"); ?>
       <input type="checkbox" name="catalog_flg" value="CHECKED"
-        <?php if (isset($postVars["catalog_flg"])) echo H($postVars["catalog_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formCatalog"); ?>
+        <?php if (isset($postVars["catalog_flg"])) echo $postVars["catalog_flg"]; ?> />
+      <?php echo T("Catalog"); ?>
       <input type="checkbox" name="admin_flg" value="CHECKED"
-        <?php if (isset($postVars["admin_flg"])) echo H($postVars["admin_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formAdmin"); ?>
+        <?php if (isset($postVars["admin_flg"])) echo $postVars["admin_flg"]; ?> />
+      <?php echo T("Admin");?>
       <input type="checkbox" name="reports_flg" value="CHECKED"
-        <?php if (isset($postVars["reports_flg"])) echo H($postVars["reports_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formReports"); ?>
+        <?php if (isset($postVars["reports_flg"])) echo $postVars["reports_flg"]; ?> />
+     <?php echo T("Reports"); ?>
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  <?php echo $loc->getText("adminSubmit"); ?>  " class="button">
-      <input type="button" onClick="self.location='../admin/staff_list.php'" value="  <?php echo $loc->getText("adminCancel"); ?>  " class="button">
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
     </td>
   </tr>
 
 </table>
-      </form>
+</form>
 
+<?php
 
-<?php include("../shared/footer.php"); ?>
+  Page::footer();

@@ -2,16 +2,16 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-  include("../shared/help_header.php");
-  
+
+  require_once("../shared/common.php");
+
+  include(REL(__FILE__, "../shared/help_header.php"));
+
   if (isset($_GET["page"])) {
     $page = $_GET["page"];
   } else {
     $page = "contents";
   }
-  if (ereg('^[a-zA-Z0-9_]+$', $page)) {
-    include("../locale/".OBIB_LOCALE."/help/".$page.".php");
-  }
-  include("../shared/help_footer.php");
-?>
+  assert('ereg("^[A-Za-z0-9_]+\\$", $page)');
+  include("../locale/".Settings::get('locale')."/help/".$page.".php");
+  include(REL(__FILE__, "../shared/help_footer.php"));

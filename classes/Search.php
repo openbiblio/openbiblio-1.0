@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 class Search {
   function type($title, $within, $fields, $method='words', $operator='like', $where='anywhere') {
     return array('title'=>$title, 'within'=>$within, 'fields'=>$fields,
@@ -102,5 +102,3 @@ class Search {
     return $elements;
   }
 }
-
-?>

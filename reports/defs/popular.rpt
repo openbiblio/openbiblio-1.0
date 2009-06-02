@@ -1,0 +1,62 @@
+.title "Popular Titles"
+.category "Statistical Reports"
+.column bibid hidden checkbox
+.column item_num title="Item" sort=item_num 
+.column title func=biblio_link title=Title sort=title width=4
+.column bookings title="Bookings" sort=bookings
+.parameters
+.	string item_num title="Item Number Starts With"
+.	date out_since title="Earliest Checkout Date"
+.	date out_before title="Latest Checkout Date"
+.	date ret_since title="Earliest Return Date"
+.	date ret_before title="Latest Return Date"
+.	order_by default="bookings!r"
+.		item bookings title="Booking Count"
+.		item item_num title="Item Number"
+.		item title title="Title" type=MARC skip_indicator="skip"
+.	end order_by
+.end parameters
+
+.sql
+	create temporary table rpt_popular
+	select tf.bibid, tf.ind2_cd as skip,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		cs.subfield_data as item_num,
+		count(distinct bk.bookingid) as bookings
+	from biblio_field tf join biblio_subfield ts
+		join biblio_field cf join biblio_subfield cs
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+		left join booking bk
+			on bk.bibid=tf.bibid
+.	if_set out_before
+		and ifnull(out_dt, book_dt) < %out_before% + interval 1 day
+.	end if_set
+.	if_set out_since
+		and ifnull(out_dt, book_dt) >= %out_since%
+.	end if_set
+.	if_set ret_before
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, if(due_dt>now(), due_dt, now())))
+			< %ret_before% + interval 1 day
+.	end if_set
+.	if_set ret_since
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, if(due_dt>now(), due_dt, now()))) >= %ret_since%
+.	end if_set
+	where tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and cf.bibid=tf.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+.	if_set item_num
+		and cs.subfield_data like '%"item_num%%%'
+.	end if_set
+	group by tf.bibid, ts.subfield_data, cs.subfield_data
+.end sql
+.sql
+	select * from rpt_popular
+.	order_by_expr
+.end sql
+.sql
+	drop temporary table rpt_popular
+.end sql

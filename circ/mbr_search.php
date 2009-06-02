@@ -2,175 +2,137 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
-  session_cache_limiter(null);
 
   $tab = "circulation";
   $nav = "search";
-  require_once("../shared/logincheck.php");
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../classes/Member.php");
-  require_once("../classes/MemberQuery.php");
-  require_once("../functions/searchFuncs.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-
-  #****************************************************************************
-  #*  Function declaration only used on this page.
-  #****************************************************************************
-  function printResultPages($currPage, $pageCount) {
-    global $loc;
-    $maxPg = 21;
-    if ($currPage > 1) {
-      echo "<a href=\"javascript:changePage(".H(addslashes($currPage-1)).")\">&laquo;".$loc->getText("mbrsearchprev")."</a> ";
-    }
-    for ($i = 1; $i <= $pageCount; $i++) {
-      if ($i < $maxPg) {
-        if ($i == $currPage) {
-          echo "<b>".H($i)."</b> ";
-        } else {
-          echo "<a href=\"javascript:changePage(".H(addslashes($i)).")\">".H($i)."</a> ";
-        }
-      } elseif ($i == $maxPg) {
-        echo "... ";
-      }
-    }
-    if ($currPage < $pageCount) {
-      echo "<a href=\"javascript:changePage(".($currPage+1).")\">".$loc->getText("mbrsearchnext")."&raquo;</a> ";
-    }
-  }
+  require_once(REL(__FILE__, "../classes/Report.php"));
+  require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
+  require_once(REL(__FILE__, "../classes/TableDisplay.php"));
+  require_once(REL(__FILE__, "../classes/Links.php"));
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($_POST) == 0) {
+  if (empty($_REQUEST)) {
     header("Location: ../circ/index.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  Loading a few domain tables into associative arrays
-  #****************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $mbrClassifyDm = $dmQ->getAssoc("mbr_classify_dm");
-  $dmQ->close();
+  function getRpt() {
+    if ($_REQUEST['type'] == 'previous') {
+      $rpt = Report::load('MemberSearch');
 
-  #****************************************************************************
-  #*  Retrieving post vars and scrubbing the data
-  #****************************************************************************
-  if (isset($_POST["page"])) {
-    $currentPageNmbr = $_POST["page"];
-  } else {
-    $currentPageNmbr = 1;
-  }
-  $searchType = $_POST["searchType"];
-  $searchText = trim($_POST["searchText"]);
-  # remove redundant whitespace
-  $searchText = eregi_replace("[[:space:]]+", " ", $searchText);
+      if ($rpt && $_REQUEST['rpt_order_by']) {
+        $rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
+      }
+      return $rpt;
+    }
 
-  if ($searchType == "barcodeNmbr") {
-    $sType = OBIB_SEARCH_BARCODE;
-  } else {
-    $sType = OBIB_SEARCH_NAME;
+    $rpt = Report::create('member_search', 'MemberSearch');
+    if (!$rpt) {
+      return false;
+    }
+    $rpt->initCgi();
+    return $rpt;
   }
 
-  #****************************************************************************
-  #*  Search database
-  #****************************************************************************
-  $mbrQ = new MemberQuery();
-  $mbrQ->setItemsPerPage(OBIB_ITEMS_PER_PAGE);
-  $mbrQ->connect();
-  $mbrQ->execSearch($sType,$searchText,$currentPageNmbr);
+  $rpt = getRpt();
+  assert($rpt);
+
+  if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
+    $currentPageNmbr = $_REQUEST["page"];
+  } else {
+    $currentPageNmbr = $rpt->curPage();
+  }
 
   #**************************************************************************
-  #*  Show member view screen if only one result from barcode query
+  #*  Show member view screen if only one result from query
   #**************************************************************************
-  if (($sType == OBIB_SEARCH_BARCODE) && ($mbrQ->getRowCount() == 1)) {
-    $mbr = $mbrQ->fetchMember();
-    $mbrQ->close();
-    header("Location: ../circ/mbr_view.php?mbrid=".U($mbr->getMbrid())."&reset=Y");
+  if ($rpt->count() == 1) {
+    $mbr = $rpt->row(0);
+    header("Location: ../circ/mbr_view.php?mbrid=".$mbr['mbrid']."&reset=Y");
     exit();
   }
+
+  Nav::node('circulation/search/member_list', T("Print List"), '../shared/layout.php?name=member_list&rpt=MemberSearch');
 
   #**************************************************************************
   #*  Show search results
   #**************************************************************************
-  require_once("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   # Display no results message if no results returned from search.
-  if ($mbrQ->getRowCount() == 0) {
-    $mbrQ->close();
-    echo $loc->getText("mbrsearchNoResults");
-    require_once("../shared/footer.php");
+  if ($rpt->count() == 0) {
+    echo T("No results found.");
+    Page::footer();
     exit();
   }
+
+  $page_url = new LinkUrl("../circ/mbr_search.php", 'page', array('type'=>'previous'));
+  $disp = new ReportDisplay($rpt);
+  echo '<div class="results_count">';
+  echo T("%count% results found.", array('count'=>$rpt->count()));
+  echo '</div>';
+  echo $disp->pages($page_url, $currentPageNmbr);
+
 ?>
-
-<!--**************************************************************************
-    *  Javascript to post back to this page
-    ************************************************************************** -->
-<script language="JavaScript" type="text/javascript">
-<!--
-function changePage(page)
+<script type="text/javascript">
+// based on a function from PhpMyAdmin
+function setCheckboxes()
 {
-  document.changePageForm.page.value = page;
-  document.changePageForm.submit();
+	var checked = document.forms['selection'].elements['all'].checked;
+	var elts = document.forms['selection'].elements['id[]'];
+	if (typeof(elts.length) != 'undefined') {
+		for (var i = 0; i < elts.length; i++) {
+			elts[i].checked = checked;
+		}
+	} else {
+		elts.checked = checked;
+	}
+	return true;
 }
--->
 </script>
-
-
-<!--**************************************************************************
-    *  Form used by javascript to post back to this page
-    ************************************************************************** -->
-<form name="changePageForm" method="POST" action="../circ/mbr_search.php">
-  <input type="hidden" name="searchType" value="<?php echo H($_POST["searchType"]);?>">
-  <input type="hidden" name="searchText" value="<?php echo H($_POST["searchText"]);?>">
-  <input type="hidden" name="page" value="1">
-</form>
-
-<!--**************************************************************************
-    *  Printing result stats and page nav
-    ************************************************************************** -->
-<?php echo H($mbrQ->getRowCount()); echo $loc->getText("mbrsearchFoundResults");?><br>
-<?php printResultPages($currentPageNmbr, $mbrQ->getPageCount()); ?><br>
-<br>
-
-<!--**************************************************************************
-    *  Printing result table
-    ************************************************************************** -->
-<table class="primary">
+<form name="selection" id="selection" action="../shared/dispatch.php" method="post">
+<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
+<table class="resultshead">
   <tr>
-    <th valign="top" nowrap="yes" align="left" colspan="2">
-      <?php echo $loc->getText("mbrsearchSearchResults");?>
-    </th>
+    <th><?php echo T("Search Results"); ?></th>
+    <td class="resultshead">
+<table class="buttons">
+<tr>
+<?php
+if ($_SESSION['currentBookingid']) {
+  echo '<td>';
+  echo '<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
+  echo '<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
+  echo '</td>';
+}
+?>
+</tr>
+</table>
+</td>
   </tr>
-  <?php
-    while ($mbr = $mbrQ->fetchMember()) {
-  ?>
-  <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo H($mbrQ->getCurrentRowNmbr());?>.
-    </td>
-    <td nowrap="true" class="primary">
-      <a href="../circ/mbr_view.php?mbrid=<?php echo HURL($mbr->getMbrid());?>&amp;reset=Y"><?php echo H($mbr->getLastName());?>, <?php echo H($mbr->getFirstName());?></a><br>
-      <?php
-        if ($mbr->getAddress() != "")
-          echo str_replace("\n", "<br />", H($mbr->getAddress())).'<br />';
-      ?>
-      <b><?php echo $loc->getText("mbrsearchCardNumber");?></b> <?php echo H($mbr->getBarcodeNmbr());?>
-      <b><?php echo $loc->getText("mbrsearchClassification");?></b> <?php echo H($mbrClassifyDm[$mbr->getClassification()]);?>
-    </td>
-  </tr>
+</table>
+<?php
 
+$sort_url = new LinkUrl("../circ/mbr_search.php", 'rpt_order_by', array('type'=>'previous'));
+$t = new TableDisplay;
+$t->columns = $disp->columns($sort_url);
+array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" name="all" value="all" onclick="setCheckboxes()" />'));
+echo $t->begin();
+$page = $rpt->pageIter($currentPageNmbr);
+while ($r = $page->next()) {
+  $dr = $disp->row($r);
+  array_unshift($dr, '<input type="checkbox" name="id[]" value="'.H($r['mbrid']).'" />');
+  echo $t->rowArray($dr);
+}
+echo $t->end();
 
-  <?php
-    }
-    $mbrQ->close();
-  ?>
-  </table><br>
-<?php printResultPages($currentPageNmbr, $mbrQ->getPageCount()); ?><br>
-<?php require_once("../shared/footer.php"); ?>
+echo '</form>';
+
+echo $disp->pages($page_url, $currentPageNmbr);
+Page::footer();

@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   session_cache_limiter(null);
 
   $tab = "admin";
@@ -11,80 +12,107 @@
   $focus_form_name = "editcollectionform";
   $focus_form_field = "description";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-
-  require_once("../shared/header.php");
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #****************************************************************************
   if (isset($_GET["code"])){
-    unset($_SESSION["postVars"]);
-    unset($_SESSION["pageErrors"]);
-
     $code = $_GET["code"];
     $postVars["code"] = $code;
-    include_once("../classes/Dm.php");
-    include_once("../classes/DmQuery.php");
-    include_once("../functions/errorFuncs.php");
-    $dmQ = new DmQuery();
-    $dmQ->connect();
-    $dm = $dmQ->get1("collection_dm",$code);
-    $postVars["description"] = $dm->getDescription();
-    $postVars["daysDueBack"] = $dm->getDaysDueBack();
-    $postVars["dailyLateFee"] = $dm->getDailyLateFee();
-    $dmQ->close();
+    include_once(REL(__FILE__, "../model/Collections.php"));
+    $collections = new Collections;
+    $coll = $collections->getOne($code);
+    $postVars = $coll;
+    $t = $collections->getTypeData($coll);
+    $postVars = array_merge($postVars, $t);
+    $_SESSION['postVars'] = $postVars;
   } else {
-    require("../shared/get_form_vars.php");
+    require(REL(__FILE__, "../shared/get_form_vars.php"));
   }
 ?>
 
-<form name="editcollectionform" method="POST" action="../admin/collections_edit.php">
-<input type="hidden" name="code" value="<?php echo H($postVars["code"]);?>">
+<form name="editcollectionform" method="post" action="../admin/collections_edit.php">
+<input type="hidden" name="code" value="<?php echo $postVars["code"];?>">
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      <?php echo $loc->getText("adminCollections_edit_formEditcollection"); ?>
+      <?php echo T("Edit Collection:"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminCollections_edit_formDescription"); ?>
+      <sup>*</sup><?php echo T("Description:"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("description",40,40,$postVars,$pageErrors); ?>
+      <?php echo inputfield('text','description'); ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <font class="small">*</font><?php echo $loc->getText("adminCollections_edit_formDaysdueback"); ?>
+      Type:
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("daysDueBack",3,3,$postVars,$pageErrors); ?>
+      <?php echo inputfield('select', 'type','Circulated',
+        array('onChange'=>'modified=true;switchType()', 'id'=>'type'),
+        $collections->getTypeSelect()); ?>
     </td>
   </tr>
-  <tr>
-    <td nowrap="true" class="primary"><?php echo $loc->getText("adminCollections_edit_formDailyLateFee"); ?>
-      <font class="small">*</font>
+  <tr class="colltype_Circulated">
+    <td nowrap="true" class="primary">
+      <sup>*</sup><?php echo T("Days Due Back:");?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("dailyLateFee",7,7,$postVars,$pageErrors); ?>
+      <?php echo inputfield('text', 'days_due_back'); ?>
+    </td>
+  </tr>
+  <tr class="colltype_Circulated">
+    <td nowrap="true" class="primary">
+      <sup>*</sup><?php echo T("Daily Late Fee:"); ?>
+    </td>
+    <td valign="top" class="primary">
+      <?php echo inputfield('text', 'daily_late_fee'); ?>
+    </td>
+  </tr>
+  <tr class="colltype_Distributed">
+    <td nowrap="true" class="primary">
+      <sup>*</sup><?php echo T("Restock amount:"); ?>
+    </td>
+    <td valign="top" class="primary">
+      <?php echo inputfield('text', 'restock_threshold'); ?>
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  <?php echo $loc->getText("adminSubmit"); ?>  " class="button">
-      <input type="button" onClick="self.location='../admin/collections_list.php'" value="  <?php echo $loc->getText("adminCancel"); ?>  " class="button">
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onclick="parent.location='../admin/collections_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
     </td>
   </tr>
 
 </table>
-      </form>
-<table><tr><td valign="top"><font class="small"><?php echo $loc->getText("adminCollections_edit_formNote"); ?></font></td>
-<td><font class="small"><?php echo $loc->getText("adminCollections_edit_formNoteText"); ?><br></font>
-</td></tr></table>
+</form>
+<p class="note">
+<sup>*</sup><?php echo T("Note:"); ?><br />
+<?php echo T("Setting zero days no checkout"); ?></p>
 
-<?php include("../shared/footer.php"); ?>
+<script type="text/javascript"><!--
+function switchType() {
+  var rows = document.getElementsByTagName("tr");
+  var type = document.getElementById("type");
+  for(var i=0; i<rows.length; i++) {
+    if (rows[i].getAttribute("class") == null)
+      continue;
+    if (rows[i].getAttribute("class") == 'colltype_'+type.value)
+      rows[i].style.display="table-row";
+    else if (rows[i].getAttribute("class").indexOf("colltype_") == 0)
+      rows[i].style.display="none";
+  }
+}
+switchType();
+--></script>
+
+<?php
+
+  Page::footer();

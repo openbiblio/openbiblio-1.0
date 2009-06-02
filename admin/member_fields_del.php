@@ -2,16 +2,15 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
   $tab = "admin";
   $nav = "member_fields";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../classes/DmQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+
   #****************************************************************************
   #*  Checking for query string.  Go back to list if none found.
   #****************************************************************************
@@ -33,9 +32,9 @@
   #**************************************************************************
   #*  Show success page
   #**************************************************************************
-  require_once("../shared/header.php");
-?>
-<?php echo $loc->getText("Member field, %desc%, has been deleted.", array('desc'=>$description));?><br><br>
-<a href="../admin/member_fields_list.php"><?php echo $loc->getText("return to member field list"); ?></a>
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-<?php require_once("../shared/footer.php"); ?>
+  echo T('memberFieldsDelMsg', array('desc'=>$description)).'<br /><br />';
+  echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
+
+  Page::footer();

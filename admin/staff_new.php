@@ -2,18 +2,17 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "admin";
   $nav = "staff";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../classes/Staff.php");
-  require_once("../classes/StaffQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../classes/Staff.php"));
+  require_once(REL(__FILE__, "../classes/StaffQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -72,17 +71,11 @@
   $staffQ->close();
 
   #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
-
-  #**************************************************************************
   #*  Show success page
   #**************************************************************************
-  require_once("../shared/header.php");
-?>
-<?php echo $loc->getText("adminStaff_Staffmember"); ?> <?php echo H($staff->getFirstName());?> <?php echo H($staff->getLastName());?><?php echo $loc->getText("adminStaff_new_Added"); ?><br><br>
-<a href="../admin/staff_list.php"><?php echo $loc->getText("adminStaff_Return"); ?></a>
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-<?php require_once("../shared/footer.php"); ?>
+  echo T("Staff member, %name%, has been added.", array('name'=>$staff->getFirstName().' '.$staff->getLastName())).'<br /><br />';
+  echo '<a href="../admin/staff_list.php">'.T("Return to staff list").'</a>';
+
+  Page::footer();

@@ -1,0 +1,25 @@
+.title "Average Copyright Date"
+.category "Statistical Reports"
+.column material_cd hidden
+.column media_type title="Media Type" sort=media_type
+.column items title="Items Included" sort=items
+.column copyright title="Copyright" sort=copyright
+.parameters
+.	order_by default=subject
+.		item media_type title="Media Type" expr="m.description"
+.		item items title="Items" type=numeric expr=items
+.		item copyright title="Copyright" type=numeric expr=copyright
+.	end order_by
+.end parameters
+
+.sql
+	select b.material_cd, m.description as media_type,
+		count(b.bibid) as items,
+		avg(replace(s.subfield_data, 'c', '')) as copyright
+	from biblio b, material_type_dm m, biblio_field f, biblio_subfield s
+	where m.code=b.material_cd and f.bibid=b.bibid and f.tag='260'
+		and s.fieldid=f.fieldid and s.subfield_cd='c'
+		and replace(s.subfield_data, 'c', '') > 1800
+	group by b.material_cd, m.description
+.	order_by_expr
+.end sql

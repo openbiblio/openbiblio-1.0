@@ -1,0 +1,63 @@
+.title "Pending Bookings"
+.category "Circulation"
+.layout pull_list title="Pull List"
+.layout packing_slip title="Packing Slips"
+.column bookingid hidden checkbox checked
+.column bibid hidden
+.column item_num hidden
+.column copies func=select select_name=barcodes select_index=bookingid select_key=barcode_nmbr select_value=barcode_nmbr title=Copy
+.column title func=biblio_link title=Title sort=title
+.column book_dt title="Booking Date" func=booking_link sort=book_dt
+.column due_dt title="Due Date" sort=due_dt
+.column members title="Members" func=member_list
+.parameters
+.	date out_since title="Earliest Date Out"
+.	date out_before title="Latest Date Out" default="today"
+.	order_by
+.		item item_num title="Item Number" expr='nums.subfield_data'
+.		item book_dt title="Out Date"
+.		item due_dt title="Due Date"
+.		item title title="Title" expr='titles.subfield_data' type=MARC skip_indicator="titlef.ind2_cd"
+.	end order_by
+.end parameters
+
+.sql
+	select b.*, nums.subfield_data as item_num,
+		concat(titles.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title
+	from booking b join biblio_field numf join biblio_subfield nums
+		join biblio_field titlef join biblio_subfield titles
+		left join biblio_subfield sub on sub.fieldid=titlef.fieldid
+			and sub.subfield_cd='b'
+	where b.out_histid is NULL 
+		and titlef.bibid=b.bibid and titlef.tag='245'
+		and titles.fieldid=titlef.fieldid and titles.subfield_cd='a'
+		and numf.bibid=b.bibid and numf.tag='099'
+		and nums.fieldid=numf.fieldid and nums.subfield_cd='a'
+.	if_set out_since
+		and book_dt >= %out_since%
+.	end if_set
+.	if_set out_before
+		and book_dt <= %out_before%
+.	end if_set
+.	foreach_parameter due
+		and due_dt %!due.op% %due.date%
+.	end foreach_parameter
+.	order_by_expr
+.	subselect members
+		select m.*, s.name as site_name, s.code as site_code
+		from member m, booking_member bkm, site s
+		where m.mbrid=bkm.mbrid
+			and bkm.bookingid=%#bookingid%
+			and m.siteid=s.siteid
+.	end subselect
+.	subselect copies
+		select * from biblio_copy bc,
+			biblio_status_hist bsh
+		where bsh.histid=bc.histid
+			and (bsh.status_cd='in'
+				or bsh.status_cd='dis'
+				or bsh.status_cd='hld'
+				or bsh.status_cd='crt')
+			and bc.bibid = %#bibid%
+.	end subselect
+.end sql

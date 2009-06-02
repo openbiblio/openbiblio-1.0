@@ -2,20 +2,18 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
   $tab = "admin";
   $nav = "member_fields";
 
-  require_once("../classes/Dm.php");
-  require_once("../classes/DmQuery.php");
-  require_once("../functions/errorFuncs.php");
+  require_once(REL(__FILE__, "../classes/Dm.php"));
+  require_once(REL(__FILE__, "../classes/DmQuery.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
-  require_once("../shared/logincheck.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 
   $dmQ = new DmQuery();
@@ -24,18 +22,18 @@
   $dmQ->close();
 
 ?>
-<a href="../admin/member_fields_new_form.php?reset=Y"><?php echo $loc->getText("Add new custom field"); ?></a><br>
-<h1> <?php echo $loc->getText("Custom Member FIelds"); ?></h1>
+<h1><?php echo T("Custom Member Fields"); ?></h1>
+<a href="../admin/member_fields_new_form.php?reset=Y"><?php echo T("Add new custom field"); ?></a><br />
 <table class="primary">
   <tr>
     <th colspan="2" valign="top">
-      <font class="small">*</font><?php echo $loc->getText("function"); ?>
+      <sup>*</sup><?php echo T("Function"); ?>
     </th>
     <th valign="top" nowrap="yes">
-      <?php echo $loc->getText("Code"); ?>
+      <?php echo T("Code"); ?>
     </th>
     <th valign="top" nowrap="yes">
-      <?php echo $loc->getText("Description"); ?>
+      <?php echo T("Description"); ?>
     </th>
   </tr>
   <?php
@@ -43,17 +41,17 @@
     foreach ($dms as $dm) {
   ?>
   <tr>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($dm->getCode());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("edit"); ?></a>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($dm->getCode()); ?>" class="<?php echo H($row_class); ?>"><?php echo T("edit"); ?></a>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <a href="../admin/member_fields_del_confirm.php?code=<?php echo HURL($dm->getCode());?>&amp;desc=<?php echo HURL($dm->getDescription());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("del"); ?></a>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <a href="../admin/member_fields_del_confirm.php?code=<?php echo HURL($dm->getCode()); ?>&amp;desc=<?php echo HURL($dm->getDescription()); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php echo H($dm->getCode());?>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <?php echo H($dm->getCode()); ?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php echo H($dm->getDescription());?>
+    <td valign="top" class="<?php echo H($row_class); ?>">
+      <?php echo H($dm->getDescription()); ?>
     </td>
   </tr>
   <?php
@@ -66,4 +64,7 @@
     }
   ?>
 </table>
-<?php include("../shared/footer.php"); ?>
+
+<?php
+
+  Page::footer();

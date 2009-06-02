@@ -2,17 +2,15 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "admin";
   $nav = "themes";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
-  require_once("../classes/ThemeQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-  
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Themes.php"));
+
   #****************************************************************************
   #*  Checking for query string.  Go back to theme list if none found.
   #****************************************************************************
@@ -26,24 +24,15 @@
   #**************************************************************************
   #*  Delete row
   #**************************************************************************
-  $themeQ = new ThemeQuery();
-  $themeQ->connect();
-  if ($themeQ->errorOccurred()) {
-    $themeQ->close();
-    displayErrorPage($themeQ);
-  }
-  if (!$themeQ->delete($themeid)) {
-    $themeQ->close();
-    displayErrorPage($themeQ);
-  }
-  $themeQ->close();
+  $themes = new Themes;
+  $themes->deleteOne($themeid);
 
   #**************************************************************************
   #*  Show success page
   #**************************************************************************
-  require_once("../shared/header.php");
-?>
-<?php echo $loc->getText("adminTheme_Theme"); ?> <?php echo H($name);?><?php echo $loc->getText("adminTheme_Deleted"); ?><br><br>
-<a href="../admin/theme_list.php"><?php echo $loc->getText("adminTheme_Return"); ?></a>
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-<?php require_once("../shared/footer.php"); ?>
+  echo T("Theme, %name%, has been deleted.", array('name'=>H($name))).'<br /><br />';
+  echo '<a href="../admin/theme_list.php">'.T("Return to theme list").'</a>';
+
+  Page::footer();

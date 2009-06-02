@@ -2,10 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../shared/global_constants.php");
-require_once("../classes/Query.php");
-require_once("../classes/Localize.php");
+
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 /******************************************************************************
  * UsmarcTagDmQuery data access component for usmarc_tag_dm table
@@ -18,9 +16,8 @@ require_once("../classes/Localize.php");
 class UsmarcTagDmQuery extends Query {
   var $_loc;
 
-  function UsmarcTagDmQuery() {
+  function UsmarcTagDmQuery () {
     $this->Query();
-    $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
   /****************************************************************************
@@ -36,7 +33,7 @@ class UsmarcTagDmQuery extends Query {
       $sql .= $this->mkSQL("where block_nmbr = %N ", $blockNmbr);
     }
     $sql .= "order by tag ";
-    return $this->_query($sql, $this->_loc->getText("usmarcTagDmQueryErr1"));
+    return $this->_query($sql, T("Error accessing the marc tag data."));
   }
 
   /****************************************************************************
@@ -64,17 +61,14 @@ class UsmarcTagDmQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function doQuery($tag) {
+  function get($tag) {
     $sql = $this->mkSQL("select * from usmarc_tag_dm where tag=%N ", $tag);
-    if (!$this->_query($sql, $this->_loc->getText("usmarcTagDmQueryErr1"))) {
-      return false;
+    $rows = $this->eexec($sql);
+    if (empty($rows)) {
+      return NULL;
     }
-    $result = $this->_conn->fetchRow();
-    if ($result == false) {
-      return false;
-    }
-    $dm = $this->_formatTag($result);
-    return $dm;
+    assert('count($rows) == 1');
+    return $this->_formatTag($rows[0]);
   }
 
   /****************************************************************************
@@ -119,5 +113,3 @@ class UsmarcTagDmQuery extends Query {
   }
 
 }
-
-?>

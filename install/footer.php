@@ -7,15 +7,15 @@
 <!-- **************************************************************************************
      * Footer
      **************************************************************************************-->
-<br><br><br>
+<br /><br /><br />
 </font>
 <font face="Arial, Helvetica, sans-serif" size="1">
 <center>
-  Powered by OpenBiblio<br>
-  Copyright &copy; 2002-2005 Dave Stevens<br>
-  under the GNU General Public License
+  Powered by OpenBiblio<br />
+  OpenBiblio is free software, copyright by its authors.<br />
+  Get <a href="../COPYRIGHT.html">more information</a>.
 </center>
-<br>
+<br />
 </font>
     </td>
   </tr>

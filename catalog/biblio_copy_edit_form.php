@@ -2,60 +2,43 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   session_cache_limiter(null);
 
   $tab = "cataloging";
-  $nav = "editcopy";
-  $helpPage = "biblioCopyEdit";
+  $nav = "biblio/editcopy";
   $focus_form_name = "editCopyForm";
   $focus_form_field = "barcodeNmbr";
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../classes/BiblioCopy.php");
-  require_once("../classes/BiblioCopyQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Copies.php"));
+  require_once(REL(__FILE__, "../model/History.php"));
+  require_once(REL(__FILE__, "../model/CopyStates.php"));
+  require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
-  #****************************************************************************
-  #*  Retrieving get var
-  #****************************************************************************
-  if (isset($_GET["bibid"])){
-    unset($_SESSION["postVars"]);
-    unset($_SESSION["pageErrors"]);
-    #****************************************************************************
-    #*  Retrieving get var
-    #****************************************************************************
-    $bibid = $_GET["bibid"];
+
+  if (isset($_GET["copyid"])){
     $copyid = $_GET["copyid"];
 
-    #****************************************************************************
-    #*  Read copy information
-    #****************************************************************************
-    $copyQ = new BiblioCopyQuery();
-    $copyQ->connect();
-    if ($copyQ->errorOccurred()) {
-      $copyQ->close();
-      displayErrorPage($copyQ);
-    }
-    if (!$copy = $copyQ->doQuery($bibid,$copyid)) {
-      $copyQ->close();
-      displayErrorPage($copyQ);
-    }
-    $postVars["bibid"] = $bibid;
-    $postVars["copyid"] = $copyid;
-    $postVars["barcodeNmbr"] = $copy->getBarcodeNmbr();
-    $postVars["copyDesc"] = $copy->getCopyDesc();
-    $postVars["statusCd"] = $copy->getStatusCd();
+    $copies = new Copies;
+    $history = new History;
+    $copy = $copies->getOne($copyid);
 
+    foreach ($copy as $k=>$v) {
+      $_SESSION["postVars"][$k] = $v;
+    }
+
+    $custom = $copies->getCustomFields($copyid);
+    while ($row = $custom->next() ) {
+      $_SESSION["postVars"]['custom_'.$row["code"]] = $row["data"];
+    }
+
+    $status = $history->getOne($copy['histid']);
+    $postVars['status_cd'] = $status['status_cd'];
   } else {
-    #**************************************************************************
-    #*  load up post vars
-    #**************************************************************************
-    require("../shared/get_form_vars.php");
-    $bibid = $postVars["bibid"];
+    require(REL(__FILE__, "../shared/get_form_vars.php"));
     $copyid = $postVars["copyid"];
   }
 
@@ -63,76 +46,79 @@
   #*  disable status code drop down for shelving cart and out status codes
   #**************************************************************************
   $statusDisabled = FALSE;
-  if (($postVars["statusCd"] == OBIB_STATUS_SHELVING_CART) or ($postVars["statusCd"] == OBIB_STATUS_OUT)) {
+  if ($postVars[status_cd] == OBIB_STATUS_SHELVING_CART
+      or $postVars[status_cd] == OBIB_STATUS_OUT) {
     $statusDisabled = TRUE;
   }
 
-  require_once("../shared/header.php");
+  	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+  	$BCQ = new BiblioCopyFields;
+  	$fields = array(
+    	T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$postVars),
+		T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,$attr=array("size"=>1,"max"=>1),$postVars),
+		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40), $postVars),
+	);
+
+	$rows = $BCQ->getAll();
+
+	while ($row = $rows->next()) {
+		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["description"], NULL,NULL,$postVars);
+	}
+
+
 ?>
 
-<font class="small">
-<?php echo $loc->getText("catalogFootnote",array("symbol"=>"*")); ?>
-</font>
+<p class="note">
+<?php echo T("Fields marked are required"); ?>
+</p>
 
-<form name="editCopyForm" method="POST" action="../catalog/biblio_copy_edit.php">
+<form name="editCopyForm" method="post" action="../catalog/biblio_copy_edit.php">
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      <?php echo $loc->getText("biblioCopyEditFormLabel"); ?>:
+      <?php echo T("Edit Copy"); ?>
     </th>
   </tr>
+<?php
+  foreach ($fields as $title => $html) {
+?>
   <tr>
     <td nowrap="true" class="primary" valign="top">
-      <sup>*</sup> <?php echo $loc->getText("biblioCopyNewBarcode"); ?>:
+      <?php echo T($title); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("barcodeNmbr",20,20,$postVars,$pageErrors); ?>
+      <?php echo $html; ?>
     </td>
   </tr>
+<?php
+  }
+?>
+
+
+
   <tr>
     <td nowrap="true" class="primary" valign="top">
-      <?php echo $loc->getText("biblioCopyNewDesc"); ?>:
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("copyDesc",40,40,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo $loc->getText("biblioCopyEditFormStatus"); ?>:
+      <?php echo T("Status:"); ?>
     </td>
     <td valign="top" class="primary">
 
-<?php 
+<?php
   #**************************************************************************
   #*  only show status codes for valid transitions
   #**************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dms = $dmQ->get("biblio_status_dm");
-  $dmQ->close();
-  echo "<select name=\"statusCd\"";
-  if ($disabled) {
-    echo " disabled";
+  $states = new CopyStates;
+  $state_select = $states->getSelect();
+  $attrs = array();
+  if ($postVars['status_cd'] == OBIB_STATUS_OUT
+      or $postVars['status_cd'] == OBIB_STATUS_ON_HOLD
+      or $postVars['status_cd'] == OBIB_STATUS_SHELVING_CART) {
+    $attrs['disabled'] = 1;
+  } else {
+    unset($state_select[OBIB_STATUS_OUT]);
+    unset($state_select[OBIB_STATUS_ON_HOLD]);
+    unset($state_select[OBIB_STATUS_SHELVING_CART]);
   }
-  echo ">\n";
-  foreach ($dms as $dm) {
-    #**************************************************************************
-    #*  tranisitions to out, hold, and shelving cart are not allowed
-    #**************************************************************************
-    if (($dm->getCode() != OBIB_STATUS_OUT)
-      and ($dm->getCode() != OBIB_STATUS_ON_HOLD)
-      and ($dm->getCode() != OBIB_STATUS_SHELVING_CART)) {
-      echo "<option value=\"".H($dm->getCode())."\"";
-      if (($postVars["statusCd"] == "") && ($dm->getDefaultFlg() == 'Y')) {
-        echo " selected";
-      } elseif ($postVars["statusCd"] == $dm->getCode()) {
-        echo " selected";
-      }
-      echo ">".H($dm->getDescription())."</option>\n";
-    }
-  }
-  echo "</select>\n";
+  echo inputfield(select, status_cd, $postVars['status_cd'], $attrs, $state_select);
 ?>
 
 
@@ -140,15 +126,15 @@
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="<?php echo $loc->getText("catalogSubmit"); ?>" class="button">
-      <input type="button" onClick="self.location='../shared/biblio_view.php?bibid=<?php echo HURL($bibid); ?>'" value="<?php echo $loc->getText("catalogCancel"); ?>" class="button" >
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onclick="parent.location='../shared/biblio_view.php?bibid=<?php echo $postVars[bibid]; ?>'" value="<?php echo T("Cancel"); ?>" class="button" />
     </td>
   </tr>
 
 </table>
-<input type="hidden" name="bibid" value="<?php echo H($bibid);?>">
-<input type="hidden" name="copyid" value="<?php echo H($copyid);?>">
+<input type="hidden" name="copyid" value="<?php echo $copyid;?>" />
 </form>
 
+<?php
 
-<?php include("../shared/footer.php"); ?>
+  Page::footer();

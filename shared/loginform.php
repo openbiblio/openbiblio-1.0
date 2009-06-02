@@ -2,61 +2,63 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
 
   $temp_return_page = "";
   if (isset($_GET["RET"])){
     $_SESSION["returnPage"] = $_GET["RET"];
   }
 
-  $tab = "home";
+  $tab = "circ";
   $nav = "";
   $focus_form_name = "loginform";
   $focus_form_field = "username";
 
-  require_once("../shared/get_form_vars.php");
-  require_once("../shared/header.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,"shared");
+  require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
 
-<br>
+<br />
 <center>
-<form name="loginform" method="POST" action="../shared/login.php">
+<form name="loginform" method="post" action="../shared/login.php">
 <table class="primary">
   <tr>
-    <th><?php echo $loc->getText("loginFormTbleHdr"); ?>:</th>
+    <th><?php echo T("Staff Login"); ?></th>
   </tr>
   <tr>
     <td valign="top" class="primary" align="left">
 <table class="primary">
   <tr>
     <td valign="top" class="noborder">
-      <?php echo $loc->getText("loginFormUsername"); ?>:</font>
+      <?php echo T("Username:"); ?>
     </td>
     <td valign="top" class="noborder">
       <input type="text" name="username" size="20" maxlength="20"
-      value="<?php if (isset($postVars["username"])) echo H($postVars["username"]); ?>" >
-      <font class="error"><?php if (isset($pageErrors["username"])) echo H($pageErrors["username"]); ?></font>
+      value="<?php if (isset($postVars["username"])) echo $postVars["username"]; ?>" />
+      <?php if (isset($pageErrors["username"])) {
+				echo '<span class="error">'.$pageErrors["username"].'</span>';
+				} ?>
     </td>
   </tr>
   <tr>
     <td valign="top" class="noborder">
-      <?php echo $loc->getText("loginFormPassword"); ?>:</font>
+      <?php echo T("Password:"); ?>
     </td>
     <td valign="top" class="noborder">
       <input type="password" name="pwd" size="20" maxlength="20"
-      value="<?php if (isset($postVars["pwd"])) echo H($postVars["pwd"]); ?>" >
-      <font class="error">
-      <?php if (isset($pageErrors["pwd"])) echo H($pageErrors["pwd"]); ?></font>
+      value="<?php if (isset($postVars["pwd"])) echo $postVars["pwd"]; ?>" />
+      <?php if (isset($pageErrors["pwd"])) {
+				echo '<span class="error">'.$pageErrors["pwd"].'</span>';
+				} ?>
     </td>
   </tr>
 
   <tr>
     <td colspan="2" align="center" class="noborder">
-      <input type="submit" value="<?php echo $loc->getText("loginFormLogin"); ?>" class="button">
+      <input type="submit" value="<?php echo T("Login"); ?>" class="button" />
     </td>
   </tr>
 </table>
@@ -67,4 +69,6 @@
 </form>
 </center>
 
-<?php include("../shared/footer.php"); ?>
+<?php
+
+  Page::footer();

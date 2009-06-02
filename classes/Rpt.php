@@ -2,8 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../classes/Query.php");
+
+require_once(REL(__FILE__, "../classes/Query.php"));
 
 class Rpt {
   function load_e($filename) {
@@ -42,7 +42,7 @@ class Rpt {
           array_push($this->_code, $value);
           break;
         default:
-          Fatal::internalError("Can't happen");
+          Fatal::internalError(T("Can't happen"));
       }
     }
     return NULL;
@@ -92,11 +92,8 @@ class Rpt {
 #			;
 # items:	  /* empty */
 #		| items 'item' WORD params
-#		| items 'sql' SQLCODE item_sql end
+#		| items 'sql' SQLCODE end
 #		;
-# item_sql:	  /* empty */
-#			| SQLCODE item_sql
-#			;
 # sql_form:	  sql_exprs subselects end
 #			;
 # sql_exprs:	  /* empty */
@@ -126,7 +123,7 @@ class Rpt {
 #		| params WORD '=' WORD
 #		| params WORD
 #		;
-# 
+#
 class RptParser {
   function load_e($filename) {
     # returns true or an error object
@@ -134,7 +131,7 @@ class RptParser {
 
     $this->fd = fopen($this->filename, 'rb');
     if ($this->fd === FALSE) {
-      return array(NULL, new Error('Cannot open file: '.$this->filename));
+      return array(NULL, new Error(T("Cannot open file: %file%", array('file'=>$this->filename))));
     }
     $this->_tokens = array();
     $this->line = 0;
@@ -166,12 +163,12 @@ class RptParser {
   }
   function unexpectedToken($expected=NULL) {
     if ($this->lat[0] == 'EOF') {
-      $str = 'Unexpected end of file';
+      $str = T("Unexpected end of file");
     } else {
-      $str = 'Unexpected token "'.$this->lat[0].'"';
+      $str = T("Unexpected token \"%token%\"", array('token'=>$this->lat[0]));
     }
     if ($expected) {
-      $str .= ' expecting "'.$expected.'"';
+      $str .= ' '.T("expecting \"%exp%\"", array('exp'=>$expected));
     }
     return $this->error($str);
   }
@@ -240,7 +237,7 @@ class RptParser {
   }
   function getQuoted($str) {
     if (empty($str)) {
-      Fatal::internalError('getQuoted() called with empty $str');
+      Fatal::internalError(T("getQuoted() called with empty \$str"));
     }
     $q = $str{0};
     $w = '';
@@ -296,10 +293,8 @@ class RptParser {
       }
     }
     # hack to force proper whitespace
-    if (count($list) != 0 || strlen($sql) != 0) {
-      $sql .= ' ';
-      array_push($list, array('SQLCODE', $sql));
-    }
+    $sql .= ' ';
+    array_push($list, array('SQLCODE', $sql));
     return $list;
   }
 
@@ -427,7 +422,7 @@ class RptParser {
         }
         return array('select', $name, $params, $list);
       default:
-        Fatal::internalError("Can't happen");
+        Fatal::internalError(T("Can't happen"));
     }
   }
   function p_items() {
@@ -452,10 +447,6 @@ class RptParser {
         }
         $sql = $this->lat[1];
         $this->lex();
-        while ($this->lat[0] == 'SQLCODE') {
-          $sql .= ' '.$this->lat[1];
-          $this->lex();
-        }
         $result = $this->p_end();
         if (is_a($result, 'Error')) {
           return $result;
@@ -723,7 +714,7 @@ class RptIter extends Iter {
     }
     foreach ($this->subselects as $name => $sql) {
       if ($sql[0] != 'sql') {
-        Fatal::internalError('Broken RPT code structure');
+        Fatal::internalError(T("Broken RPT code structure"));
       }
       $iter = new RptIter(array($sql[1]), $scope);
       $row[$name] = $iter->toArray();
@@ -783,10 +774,10 @@ class RptIter extends Iter {
           if ($type == 'foreach_parameter') {
             $vlist = $scope->getList($name);
           } else {
-            include_once("../classes/Search.php");
+            include_once(REL(__FILE__, "../classes/Search.php"));
             list($t, $v) = $scope->getFirst($name);
             if ($t != "string") {
-              Fatal::internalError('$t != "string"');
+              Fatal::internalError(T("\$t != \"string\""));
             }
             $vlist = array();
             foreach (Search::explodeQuoted($v) as $w) {
@@ -804,18 +795,16 @@ class RptIter extends Iter {
           if ($v = $scope->getFirst('order_by')) {
             list($type, $value, $raw) = $v;
             if ($type != "order_by") {
-              Fatal::internalError('$type != "order_by"');
+              Fatal::internalError(T("\$type != \"order_by\""));
             }
             $query .= 'order by '.$value.' ';
           }
           break;
         default:
-          Fatal::internalError("Can't happen");
+          Fatal::internalError(T("Can't happen"));
           break;
       }
     }
     return $query;
   }
 }
-
-?>

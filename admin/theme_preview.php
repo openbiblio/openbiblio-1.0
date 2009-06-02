@@ -2,248 +2,117 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-  /****************************************************************************
-   * theme related constants.
-   ****************************************************************************
-   */
-  $tab = "home";
 
-  /****************************************************************************
-   * Reading general settings
-   ****************************************************************************
-   */
-  include_once("../classes/Settings.php");
-  include_once("../classes/SettingsQuery.php");
-  $setQ = new SettingsQuery();
-  $setQ->connect();
-  if ($setQ->errorOccurred()) {
-    $setQ->close();
-    displayErrorPage($setQ);
-  }
-  $setQ->execSelect();
-  if ($setQ->errorOccurred()) {
-    $setQ->close();
-    displayErrorPage($setQ);
-  }
-  $set = $setQ->fetchRow();
-  $setQ->close();
+  require_once("../shared/common.php");
 
-  /****************************************************************************
-   * general settings constants
-   ****************************************************************************
-   */
-  define("OBIB_LOCALE",$set->getLocale());
+  $theme = array(
+  "title_bg"=>$_POST["titleBg"],
+  "title_font_face"=>$_POST["titleFontFace"],
+  "title_font_size"=>$_POST["titleFontSize"],
+  "title_font_bold"=>isset($_POST["titleFontBold"]),
+  "title_align"=>$_POST["titleAlign"],
+  "title_font_color"=>$_POST["titleFontColor"],
 
+  "primary_bg"=>$_POST["primaryBg"],
+  "primary_font_face"=>$_POST["primaryFontFace"],
+  "primary_font_size"=>$_POST["primaryFontSize"],
+  "primary_font_color"=>$_POST["primaryFontColor"],
+  "primary_link_color"=>$_POST["primaryLinkColor"],
+  "primary_error_color"=>$_POST["primaryErrorColor"],
 
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,"admin");
+  "alt1_bg"=>$_POST["alt1Bg"],
+  "alt1_font_face"=>$_POST["alt1FontFace"],
+  "alt1_font_size"=>$_POST["alt1FontSize"],
+  "alt1_font_color"=>$_POST["alt1FontColor"],
+  "alt1_link_color"=>$_POST["alt1LinkColor"],
 
-  define("OBIB_TITLE_BG",$_POST["titleBg"]);
-  define("OBIB_TITLE_FONT_FACE",$_POST["titleFontFace"]);
-  define("OBIB_TITLE_FONT_SIZE",$_POST["titleFontSize"]);
-  define("OBIB_TITLE_FONT_BOLD",isset($_POST["titleFontBold"]));
-  define("OBIB_TITLE_ALIGN",$_POST["titleAlign"]);
-  define("OBIB_TITLE_FONT_COLOR",$_POST["titleFontColor"]);
+  "alt2_bg"=>$_POST["alt2Bg"],
+  "alt2_font_face"=>$_POST["alt2FontFace"],
+  "alt2_font_size"=>$_POST["alt2FontSize"],
+  "alt2_font_color"=>$_POST["alt2FontColor"],
+  "alt2_link_color"=>$_POST["alt2LinkColor"],
+  "alt2_font_bold"=>isset($_POST["alt2FontBold"]),
 
-  define("OBIB_PRIMARY_BG",$_POST["primaryBg"]);
-  define("OBIB_PRIMARY_FONT_FACE",$_POST["primaryFontFace"]);
-  define("OBIB_PRIMARY_FONT_SIZE",$_POST["primaryFontSize"]);
-  define("OBIB_PRIMARY_FONT_COLOR",$_POST["primaryFontColor"]);
-  define("OBIB_PRIMARY_LINK_COLOR",$_POST["primaryLinkColor"]);
-  define("OBIB_PRIMARY_ERROR_COLOR",$_POST["primaryErrorColor"]);
-
-  define("OBIB_ALT1_BG",$_POST["alt1Bg"]);
-  define("OBIB_ALT1_FONT_FACE",$_POST["alt1FontFace"]);
-  define("OBIB_ALT1_FONT_SIZE",$_POST["alt1FontSize"]);
-  define("OBIB_ALT1_FONT_COLOR",$_POST["alt1FontColor"]);
-  define("OBIB_ALT1_LINK_COLOR",$_POST["alt1LinkColor"]);
-
-  define("OBIB_ALT2_BG",$_POST["alt2Bg"]);
-  define("OBIB_ALT2_FONT_FACE",$_POST["alt2FontFace"]);
-  define("OBIB_ALT2_FONT_SIZE",$_POST["alt2FontSize"]);
-  define("OBIB_ALT2_FONT_COLOR",$_POST["alt2FontColor"]);
-  define("OBIB_ALT2_LINK_COLOR",$_POST["alt2LinkColor"]);
-  define("OBIB_ALT2_FONT_BOLD",isset($_POST["alt2FontBold"]));
-
-  define("OBIB_BORDER_COLOR",$_POST["borderColor"]);
-  define("OBIB_BORDER_WIDTH",$_POST["borderWidth"]);
-  define("OBIB_PADDING",$_POST["tablePadding"]);
+  "border_color"=>$_POST["borderColor"],
+  "border_width"=>$_POST["borderWidth"],
+  "padding"=>$_POST["tablePadding"],
+  );
 
 ?>
-
 <html>
 <head>
 <style type="text/css">
-  <?php include("../css/style.php");?>
+  <?php include(REL(__FILE__, "../css/style.php"));?>
 </style>
 <meta name="description" content="OpenBiblio Library Automation System">
-<title><?php echo H($_POST["themeName"]); ?> <?php echo $loc->getText("adminTheme_preview_Themepreview"); ?></title>
-
+<title><?php echo $_POST["themeName"].' '.T("Theme Preview"); ?></title>
 </head>
-<body bgcolor="<?php echo H(OBIB_PRIMARY_BG);?>" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" onLoad="self.focus()">
-
-
-<!-- **************************************************************************************
-     * Library Name and hours
-     **************************************************************************************-->
-<table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="<?php echo H(OBIB_TITLE_BG);?>">
-    <td width="100%" class="title" valign="top">
-      <?php echo $loc->getText("adminTheme_preview_Librarytitle"); ?>
-    </td>
-    <td class="title" valign="top" nowrap="yes"><font class="small"><a href="javascript:window.close()"><font color="<?php echo H(OBIB_TITLE_FONT_COLOR)?>"><?php echo $loc->getText("adminTheme_preview_CloseWindow"); ?></font></a>&nbsp;&nbsp;</font></td>
-  </tr>
-</table>
-<!-- **************************************************************************************
-     * Tabs
-     **************************************************************************************-->
-<table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>" colspan="3"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-  </tr>
-  <tr bgcolor="<?php echo H(OBIB_TITLE_BG);?>">
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td width="2000" bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-  </tr>
-  <tr bgcolor="<?php echo H(OBIB_TITLE_BG);?>">
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> <?php echo $loc->getText("adminTheme_preview_Home"); ?> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="#" class="tab"><?php echo $loc->getText("adminTheme_preview_Circulation"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="#" class="tab"><?php echo $loc->getText("adminTheme_preview_Cataloging"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="#" class="tab"><?php echo $loc->getText("adminTheme_preview_Admin"); ?></a> </td>
-      <td  bgcolor="<?php echo H(OBIB_ALT2_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td width="2000" bgcolor="<?php echo H(OBIB_TITLE_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-  </tr>
-  <tr bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>">
-    <td colspan="3" <?php if ($tab == "home") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "circulation") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "cataloging") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td colspan="3" <?php if ($tab == "admin") { echo " bgcolor='".H(OBIB_ALT1_BG)."'"; } ?>><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-  </tr>
-</table>
+<body onLoad="self.focus()">
+<div class="title">
+  <div style="float: left">
+    <a href="javascript:window.close()"><?php echo T("Close Window"); ?></a>
+  </div>
+  <h1><?php echo T("Library Title"); ?></h1>
+</div>
+<hr id="end_title" />
 <!-- **************************************************************************************
      * Left nav
      **************************************************************************************-->
-<table height="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="<?php echo H(OBIB_ALT1_BG);?>">
-    <td colspan="6"><img src="../images/shim.gif" width="1" height="15" border="0"></td>
-  </tr>
+<?php
+// cellspacing="0" cellpadding="0" works around IE's lack of
+// support for CSS2's border-spacing property.
+?>
+<table id="main" height="100%" cellspacing="0" cellpadding="0">
   <tr>
-    <td bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="10" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="140" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="10" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="10" height="1" border="0"></td>
-  </tr>
-  <tr>
-    <td bgcolor="<?php echo H(OBIB_ALT1_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td valign="top" bgcolor="<?php echo H(OBIB_ALT1_BG);?>">
-      <font  class="alt1">
-        &raquo; <?php echo $loc->getText("adminTheme_preview_Themepreview"); ?><br>
-        <a href="#" class="alt1"><?php echo $loc->getText("adminTheme_preview_Samplelink"); ?></a><br>
-      </font>
-      <br><br><br><br>
-      <a href="http://obiblio.sourceforge.net/"><img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0"></a>
+    <td id="sidebar">
+<?php
+Nav::node('preview', T("Theme Preview"));
+Nav::node('link', T("Sample link"), '#');
+Nav::display('preview');
+?>
+      <p><a href="http://obiblio.sourceforge.net/"><img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0"></a></p>
     </td>
-    <td bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td bgcolor="<?php echo H(OBIB_PRIMARY_BG);?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-    <td height="100%" width="100%" valign="top">
+    <td id="content">
       <font class="primary">
-      <br>
+      <br />
 <!-- **************************************************************************************
      * beginning of main body
      **************************************************************************************-->
 
-<?php echo $loc->getText("adminTheme_preview_Thisstart"); ?><?php echo H($_POST["themeName"]); ?> <?php echo $loc->getText("adminTheme_preview_Thisend"); ?>
+<?php echo T("This is a preview of the %name% theme.", array('name'=>$_POST["themeName"])); ?>
 
-<h1><?php echo $loc->getText("adminTheme_preview_Samplelist"); ?></h1>
+<h1><?php echo T("Sample List:"); ?></h1>
 <table class="primary">
   <tr>
     <th valign="top">
-      <?php echo $loc->getText("adminTheme_preview_Tableheading"); ?>
+      <?php echo T("Table Heading"); ?>
     </th>
   </tr>
   <tr>
     <td valign="top" class="primary">
-      <?php echo $loc->getText("adminTheme_preview_Sampledatarow1"); ?>
+      <?php echo T("Sample data row 1"); ?>
     </td>
   </tr>
   <tr>
     <td valign="top" class="alt1">
-      <?php echo $loc->getText("adminTheme_preview_Sampledatarow2"); ?>
+      <?php echo T("Sample data row 2"); ?>
     </td>
   </tr>
   <tr>
     <td valign="top" class="primary">
-      <?php echo $loc->getText("adminTheme_preview_Sampledatarow3"); ?>
+      <?php echo T("Sample data row 3"); ?>
     </td>
   </tr>
 </table>
-<br>
-<a href="#"><?php echo $loc->getText("adminTheme_preview_Samplelink"); ?></a><br>
-<font class="error"><?php echo $loc->getText("adminTheme_preview_Sampleerror"); ?></font><br />
+<br />
+<a href="#"><?php echo T("Sample link"); ?></a><br />
+<p class="error"><?php echo T("Sample error"); ?></p>
+<br />
 <form>
-<input type="text" name="sampleInput" size="40" maxlength="40" value="<?php echo $loc->getText("adminTheme_preview_Sampleinput"); ?>" ><br />
-<input type="button" value="<?php echo $loc->getText("adminTheme_preview_Samplebutton"); ?>" class="button">
+<input type="text" name="sampleInput" size="40" maxlength="40" value="<?php echo T("Sample Input"); ?>" /><br />
+<input type="button" value="<?php echo T("Sample Button"); ?>" class="button" />
 </form>
 
-<!-- **************************************************************************************
-     * Footer
-     **************************************************************************************-->
-<br><br><br>
-</font>
-<font face="Arial, Helvetica, sans-serif" size="1" color="<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>">
-<center>
-  <br><br>
-  <?php echo $loc->getText("adminTheme_preview_Poweredby"); ?><br>
-  <?php echo $loc->getText("adminTheme_preview_Copyright"); ?> <a href="http://dave.stevens.name">Dave Stevens</a><br>
-  <?php echo $loc->getText("adminTheme_preview_underthe"); ?>
-  <a href="../shared/copying.html"><?php echo $loc->getText("adminTheme_preview_GNU"); ?></a>
-</center>
-<br>
-</font>
-    </td>
-  </tr>
-</table>
-</body>
-</html>
+<?php
+
+  require_once(REL(__FILE__, '../shared/help_footer.php'));

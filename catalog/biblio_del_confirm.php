@@ -2,96 +2,61 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "cataloging";
-  $nav = "delete";
-  require_once("../shared/logincheck.php");
-  require_once("../classes/BiblioQuery.php");
-  require_once("../classes/BiblioCopyQuery.php");
-  require_once("../classes/BiblioHoldQuery.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  $nav = "biblio/delete";
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Biblios.php"));
+  require_once(REL(__FILE__, "../model/Copies.php"));
+  require_once(REL(__FILE__, "../model/Holds.php"));
 
   $bibid = $_GET["bibid"];
-  $biblioQ = new BiblioQuery();
-  $biblioQ->connect();
-  if ($biblioQ->errorOccurred()) {
-    $biblioQ->close();
-    displayErrorPage($biblioQ);
-  }
-  $biblio = $biblioQ->doQuery($bibid);
-  if ($biblioQ->errorOccurred()) {
-    $biblioQ->close();
-    displayErrorPage($biblioQ);
-  }
-  $biblioFlds = $biblio->getBiblioFields();
-  $title = '';
-  if (isset($biblioFlds["245a"])) {
-    $title .= $biblioFlds["245a"]->getFieldData();
-  }
-  if (isset($biblioFlds["245b"])) {
-    $title .= $biblioFlds["245b"]->getFieldData();
-  }
-  $biblioQ->close();
 
+  $biblios = new Biblios();
+  $biblio = $biblios->getOne($bibid);
+  $title = $biblio['marc']->getValue('245$a').' '.$biblio['marc']->getValue('245$b');
 
   #****************************************************************************
   #*  Check for copies and holds
   #****************************************************************************
-  $copyQ = new BiblioCopyQuery();
-  $copyQ->connect();
-  if ($copyQ->errorOccurred()) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  }
-  $copyQ->execSelect($bibid);
-  if ($copyQ->errorOccurred()) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  }
-  $copyCount = $copyQ->getRowCount();
-  $copyQ->close();
+  $copies = new Copies;
+  $all_copies = $copies->getMatches(array('bibid'=>$bibid));
+  $copyCount = $all_copies->count();
 
-  $holdQ = new BiblioHoldQuery();
-  $holdQ->connect();
-  if ($holdQ->errorOccurred()) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  $holdQ->queryByBibid($bibid);
-  if ($holdQ->errorOccurred()) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  $holdCount = $holdQ->getRowCount();
-  $holdQ->close();
+  $holds = new Holds();
+  $all_holds = $holds->getMatches(array('bibid'=>$bibid));
+  $holdCount = $all_holds->count();
 
   #**************************************************************************
   #*  Show confirm page
   #**************************************************************************
-  require_once("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   if (($copyCount > 0) or ($holdCount > 0)) {
 ?>
 <center>
-  <?php echo $loc->getText("biblioDelConfirmWarn",array("copyCount"=>$copyCount,"holdCount"=>$holdCount)); ?>
-  <br><br>
-  <a href="../shared/biblio_view.php?bibid=<?php echo HURL($bibid);?>"><?php echo $loc->getText("biblioDelConfirmReturn"); ?></a>
+  <?php echo T("biblioDelConfirmWarn",array("copyCount"=>$copyCount,"holdCount"=>$holdCount)); ?>
+  <br /><br />
+  <a href="../shared/biblio_view.php?bibid=<?php echo $bibid; ?>"><?php echo T("Return to item information"); ?></a>
 </center>
 
 <?php
   } else {
+    $delurl = '../catalog/biblio_del.php?bibid='.U($bibid).'&title='.U($title);
+    if (isset($_REQUEST[rpt])) {
+      $delurl .= '&rpt='.U($_REQUEST['rpt']);
+    }
 ?>
 <center>
-<form name="delbiblioform" method="POST" action="../shared/biblio_view.php?bibid=<?php echo HURL($bibid);?>">
-<?php echo $loc->getText("biblioDelConfirmMsg",array("title"=>$title)); ?>
-<br><br>
-      <input type="button" onClick="self.location='../catalog/biblio_del.php?bibid=<?php echo HURL($bibid);?>&amp;title=<?php echo HURL($title);?>'" value="<?php echo $loc->getText("catalogDelete"); ?>" class="button">
-      <input type="submit" value="<?php echo $loc->getText("catalogCancel"); ?>" class="button">
+<form name="delbiblioform" method="post" action="../shared/biblio_view.php?bibid=<?php echo $bibid;?>">
+<?php echo T("biblioDelConfirmMsg",array("title"=>$title)); ?>
+<br /><br />
+      <input type="button" onclick="parent.location='<?php echo H($delurl) ?>'" value="<?php echo T("Delete"); ?>" class="button" />
+      <input type="submit" value="<?php echo T("Cancel"); ?>" class="button" />
 </form>
 </center>
-<?php 
+<?php
   }
-  include("../shared/footer.php");
-?>
+  Page::footer();

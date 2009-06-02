@@ -2,8 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../classes/PDF.php");
+
+require_once(REL(__FILE__, "../classes/PDF.php"));
 
 /*** Elements ***/
 class Lay_Spacer {
@@ -112,19 +112,19 @@ class Lay_Transformed_Element {
     $ur = array('x'=>$elem->dimensions['x'], 'y'=>0.0);
     $ll = array('x'=>0.0, 'y'=>-1*$elem->dimensions['y']);
     $lr = array('x'=>$elem->dimensions['x'], 'y'=>-1*$elem->dimensions['y']);
-    
+
     $ult = $this->_transformPt($ul);
     $urt = $this->_transformPt($ur);
     $llt = $this->_transformPt($ll);
     $lrt = $this->_transformPt($lr);
-    
+
     $ulb = array(
       'x'=>min($ult['x'], $urt['x'], $llt['x'], $lrt['x']),
       'y'=>max($ult['y'], $urt['y'], $llt['y'], $lrt['y']));
     $lrb = array(
       'x'=>max($ult['x'], $urt['x'], $llt['x'], $lrt['x']),
       'y'=>min($ult['y'], $urt['y'], $llt['y'], $lrt['y']));
-    
+
     $this->dimensions = array(
       'x' => $lrb['x']-$ulb['x'],
       'y' => $ulb['y']-$lrb['y'],
@@ -136,7 +136,7 @@ class Lay_Transformed_Element {
       'y' => $ul['y'] - $ulb['y'],
     );
   }
-    
+
   function paint($point) {
     $this->display->startTransform($this->a, $this->b, $this->c, $this->d,
       $point['x']+$this->shift['x'], $point['y']+$this->shift['y']);
@@ -193,11 +193,11 @@ class Lay_Transformer extends Lay_Container {
   function init(&$parent, $params) {
     parent::init($parent, $params);
     if ($params['scaling'] != 1)
-      Fatal::internalError('Transformer: scaling not implemented');
+      Fatal::internalError(T("Transformer: scaling not implemented"));
     if ($params['x-skew'] != 0 or $params['y-skew'] != 0)
-      Fatal::internalError('Transformer: skew not implemented');
+      Fatal::internalError(T("Transformer: skew not implemented"));
     if (abs(fmod($params['rotation'] * 2 / M_PI, 1)) > 0.01)
-      Fatal::internalError('Transformer: rotation is only supported in pi/2 increments');
+      Fatal::internalError(T('LaySupportedRotation'));
     $this->setDims();
   }
   function setDims() {
@@ -528,7 +528,7 @@ class Lay_Column extends Lay_Line {
   var $dirs = array('y', 'x');
 }
 
-/* Adds widow/orphan protection. */ 
+/* Adds widow/orphan protection. */
 class Lay_Paragraph extends Lay_Columns {
   function close($final=true) {
     if ($final) {
@@ -763,7 +763,7 @@ class Lay {
     } elseif (is_string($len)) {
       if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)%$/', $len, $m)) {
         if (!$this->current) {
-          return array(0, 'percent lengths require a current container');
+          return array(0, T('LayPercentLengths'));
         }
         $dim = $this->current->max_dim;
         $length = ($m[1]/100) * $dim[$dir];
@@ -779,12 +779,8 @@ class Lay {
         $length = $m[1] * 72;	// 72 points/inch
       } else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)cm$/', $len, $m)) {
         $length = $m[1] * 28.35;	// 28.35 points/cm
-      } else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)mm$/', $len, $m)) {
-        $length = $m[1] * 2.835;	// 2.835 points/cm
       }
     }
     return array($length, false);
   }
 }
-
-?>

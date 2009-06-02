@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   # Forcibly disable register_globals
   if (ini_get('register_globals')) {
     foreach ($_REQUEST as $k=>$v) {
@@ -15,7 +15,7 @@
       unset(${$k});
     }
   }
-  
+
   /****************************************************************************
    * Cover up for the magic_quotes disaster.
    * Modified from ryan@wonko.com.
@@ -37,50 +37,79 @@
     $_COOKIE = array_map("magicSlashes", $_COOKIE);
     $_REQUEST = array_map("magicSlashes", $_REQUEST);
   }
-  
-  # FIXME - Until I get around to fixing all the notices...
+
+  #apd_set_pprof_trace();
   error_reporting(E_ALL ^ E_NOTICE);
-  
-  # Escaping shorthands
+  if (isset($cache)) {
+    session_cache_limiter($cache);
+  } else {
+    session_cache_limiter('nocache');
+  }
+
+  /* Convenience functions for everywhere */
+  /* Work around PHP's braindead include_path stuff. */
+  function REL($sf, $if) {
+    return dirname($sf)."/".$if;
+  }
+  /* Escaping */
   function H($s) {
     return htmlspecialchars($s, ENT_QUOTES);
-  }
-  function HURL($s) {
-    return H(urlencode($s));
   }
   function U($s) {
     return urlencode($s);
   }
-  
-  # Compatibility
-  $phpver = explode('.', PHP_VERSION);
-  if (!function_exists('mysql_real_escape_string')) {		# PHP < 4.3.0
-    function mysql_real_escape_string($s, $link) {
-      return mysql_escape_string($s);
-    }
+  function HURL($s) {
+    return H(U($s));
   }
-  if ($phpver[0]>=5 || ($phpver[0]==4 && $phpver[1]>=3)) {
-    function obib_setlocale() {
-      $a = func_get_args();
-      call_user_func_array('setlocale', $a);
-    }
-  } else {
-    function obib_setlocale() {
-      $a = func_get_args();
-      setlocale($a[0], $a[1]);
-    }
+  /* Translation */
+  function T($s, $v=NULL) {
+    global $LOC;
+    return $LOC->getText($s, $v);
   }
-  
-  require_once('../database_constants.php');
-  require_once('../shared/global_constants.php');
-  require_once('../classes/Error.php');
-  require_once('../classes/Iter.php');
-  require_once('../classes/Nav.php');
-  
-  if (!isset($doing_install) or !$doing_install) {
-    require_once("../shared/read_settings.php");
+  function nT($n, $s, $v=NULL) {
+    global $LOC;
+    return $LOC->nGetText($n, $s, $v);
+  }
 
-    /* Making session user info available on all pages. */
+  /* This one should be used by all the form handlers that return errors. */
+  function _mkPostVars($arr, $prefix) {
+    $pv = array();
+    foreach ($arr as $k => $v) {
+      if ($prefix !== NULL) {
+        $k = $prefix."[$k]";
+      }
+      if (is_array($v)) {
+        $pv = array_merge($pv, _mkPostVars($v, $k));
+      } else {
+        $pv[$k] = $v;
+      }
+    }
+    return $pv;
+  }
+  function mkPostVars() {
+    return _mkPostVars($_REQUEST, NULL);
+  }
+
+  require_once(REL(__FILE__, '../database_constants.php'));
+  require_once(REL(__FILE__, '../shared/global_constants.php'));
+  require_once(REL(__FILE__, '../classes/Error.php'));
+  require_once(REL(__FILE__, '../classes/Iter.php'));
+  require_once(REL(__FILE__, "../classes/Nav.php"));
+  require_once(REL(__FILE__, "../classes/Localize.php"));
+
+  if (!isset($doing_install) or !$doing_install) {
+    include_once(REL(__FILE__, "../model/Settings.php"));
+    Settings::load();
+
+    /* Global variables for use with themes */
+    global $ThemeDirUrl, $ThemeDir, $SharedDirUrl, $HTMLHead;
+    $ThemeDirUrl = "../themes/".Settings::get('theme_name');
+    $ThemeDir = REL(__FILE__, $ThemeDirUrl);
+    $SharedDirUrl = "../shared";
+    $HTMLHead = "";
+
+    /* Make session user info available on all pages. */
+    include_once(REL(__FILE__, "../classes/SessionHandler.php"));
     session_start();
     # Forcibly disable register_globals
     if (ini_get('register_globals')) {
@@ -88,6 +117,12 @@
         unset(${$k});
       }
     }
-  }
 
-?>
+    global $LOC;
+    $LOC = new Localize;
+    $LOC->init(Settings::get('locale'));
+    setlocale(LC_MONETARY,Settings::get('locale'));
+    setlocale(LC_NUMERIC,Settings::get('locale'));
+
+    include_once(REL(__FILE__, "../classes/Page.php"));
+  }

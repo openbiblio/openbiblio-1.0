@@ -2,11 +2,11 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   #****************************************************************************
   #*  Reset all form values
   #****************************************************************************
-  if (isset($_GET["reset"])){
+  if (isset($_REQUEST["reset"])){
     unset($_SESSION["postVars"]);
     unset($_SESSION["pageErrors"]);
   }
@@ -24,5 +24,3 @@
   } else {
     $pageErrors = NULL;
   }
-
-?>

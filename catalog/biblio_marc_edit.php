@@ -2,85 +2,60 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
-  $tab = "cataloging";
-  $nav = "view";
+
+  $tab = cataloging;
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
 
-  require_once("../classes/BiblioField.php");
-  require_once("../classes/BiblioFieldQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
+  require_once(REL(__FILE__, "../model/Biblios.php"));
+  require_once(REL(__FILE__, "../classes/Marc.php"));
+  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
-  if (count($_POST) == 0) {
+  if (count($_POST) == 0 or !isset($_POST['bibid'])) {
     header("Location: ../catalog/index.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
-  $bibid=$_POST["bibid"];
-  $fld = new BiblioField();
-  $fld->setBibid($bibid);
-  $fld->setFieldid($_POST["fieldid"]);
-  $fld->setTag($_POST["tag"]);
-  $_POST["tag"] = $fld->getTag();
-  $fld->setSubfieldCd($_POST["subfieldCd"]);
-  $_POST["subfieldCd"] = $fld->getSubfieldCd();
-  if (isset($_POST["ind1Cd"])) {
-    $fld->setInd1Cd("Y");
-  } else {
-    $fld->setInd1Cd("N");
-  }
-  if (isset($_POST["ind2Cd"])) {
-    $fld->setInd2Cd("Y");
-  } else {
-    $fld->setInd2Cd("N");
-  }
-  $fld->setFieldData($_POST["fieldData"]);
-  $fld->setIsRequired(true);
-  $_POST["fieldData"] = $fld->getFieldData();
-  $validData = $fld->validateData();
-  if (!$validData) {
-    $pageErrors["fieldData"] = $fld->getFieldDataError();
-    $pageErrors["tag"] = $fld->getTagError();
-    $pageErrors["subfieldCd"] = $fld->getSubfieldCdError();
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../catalog/biblio_marc_edit_form.php");
+  $biblio = array(
+    'bibid'=>$_POST["bibid"],
+    'material_cd'=>$_POST["materialCd"],
+    'collection_cd'=>$_POST["collectionCd"],
+    'last_change_userid'=>$_SESSION["userid"],
+    'opac_flg'=>isset($_POST["opacFlg"]) ? 'Y' : 'N'
+  );
+
+  function marcError($str) {
+    $_SESSION['pageErrors'] = array('marc'=>$str);
+    $_SESSION['postVars'] = $_POST;
+    $msg = T('biblioMarcEditError');
+    header("Location: ../catalog/biblio_marc_edit_form.php?msg=".U($msg));
     exit();
   }
 
-  #**************************************************************************
-  #*  Update bibliography field
-  #**************************************************************************
-  $fieldQ = new BiblioFieldQuery();
-  $fieldQ->connect();
-  if ($fieldQ->errorOccurred()) {
-    $fieldQ->close();
-    displayErrorPage($fieldQ);
+  $parser = new MarcMnemParser();
+  $err = $parser->parse($_POST["marc"]);
+  if (is_a($err, MarcParseError)) {
+    marcError($err->toStr());
   }
-  if (!$fieldQ->update($fld)) {
-    $fieldQ->close();
-    displayErrorPage($fieldQ);
+  $err = $parser->eof();
+  if (is_a($err, MarcParseError)) {
+    marcError($err->toStr());
   }
-  $fieldQ->close();
+  if (count($parser->records) != 1) {
+    marcError(T("You must enter exactly 1 record"));
+  }
+
+  $biblio['marc'] = $parser->records[0];
 
   #**************************************************************************
-  #*  Destroy form values and errors
+  #*  Insert/Update bibliography
   #**************************************************************************
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
+  $biblios = new Biblios();
+  $biblios->update($biblio);
 
-  $msg = $loc->getText("biblioMarcEditSuccess");
-  header("Location: ../catalog/biblio_marc_list.php?bibid=".U($bibid)."&msg=".U($msg));
+  $msg = T("Item successfully updated.");
+  header("Location: ../catalog/biblio_marc_edit_form.php?bibid=".$biblio['bibid']."&msg=".U($msg));
   exit();
-?>

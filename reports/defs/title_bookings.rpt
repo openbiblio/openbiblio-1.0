@@ -1,0 +1,77 @@
+.title "Bookings by Title"
+.category "Statistical Reports"
+.layout title_bookings title="Title Bookings"
+.column bibid hidden checkbox
+.column siteid hidden
+.column title func=biblio_link title=Title sort=title
+.column item_num title="Item" sort=item_num
+.column site_name title=Site sort=site_out_title func=site_link
+.column usage_count title="Usage"
+.parameters
+.	date out_since title="Earliest Checkout Date"
+.	date out_before title="Latest Checkout Date"
+.	date ret_since title="Earliest Return Date"
+.	date ret_before title="Latest Return Date"
+.	select status title="Status" default=any
+.		item any title="Any"
+.		item booked title="Booked"
+.		item out title="Out"
+.		item returned title="Returned"
+.	end select
+.	order_by
+.		item item_num title="Item Number" expr='cs.subfield_data'
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.		item site_name title="Site" expr='s.name'
+.	end order_by
+.end parameters
+
+.sql
+	select bk.bibid, s.siteid, s.name as site_name,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		cs.subfield_data as item_num,
+		count(distinct bk.bookingid) as usage_count
+	from biblio b
+		join biblio_field tf join biblio_subfield ts
+		join biblio_field cf join biblio_subfield cs
+		join booking bk
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+		left join booking_member bkm
+			on bkm.bookingid=bk.bookingid
+		left join member m
+			on m.mbrid=bkm.mbrid
+		left join site s
+			on s.siteid=m.siteid
+	where tf.bibid=b.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and cf.bibid=b.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+		and bk.bibid=b.bibid
+.	if_equal status booked
+		and out_dt is null
+.	end if_equal
+.	if_equal status out
+		and out_dt is not null and ret_dt is null
+.	end if_equal
+.	if_equal status returned
+		and ret_dt is not null
+.	end if_equal
+.	if_set out_before
+		and ifnull(out_dt, book_dt) < %out_before% + interval 1 day
+.	end if_set
+.	if_set out_since
+		and ifnull(out_dt, book_dt) >= %out_since%
+.	end if_set
+.	if_set ret_before
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, if(due_dt>now(), due_dt, now())))
+			< %ret_before% + interval 1 day
+.	end if_set
+.	if_set ret_since
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, if(due_dt>now(), due_dt, now()))) >= %ret_since%
+.	end if_set
+	group by bk.bibid, s.siteid, s.name,
+		ts.subfield_data, cs.subfield_data
+.	order_by_expr
+.end sql

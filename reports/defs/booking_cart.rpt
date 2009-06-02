@@ -1,0 +1,57 @@
+.title "Booking Cart"
+.category "Circulation"
+.column bookingid hidden checkbox
+.column bibid hidden
+.column pieces hidden
+.column status func=booking_link title=Status
+.column item_num title="Item" sort=item_num
+.column title func=biblio_link title=Title sort=title
+.column outd title="Checkout" sort=outd
+.column retd title="Return" sort=retd
+.column members title="Members" func=member_list
+.parameters
+.	session_id
+.	order_by default='item_num'
+.		item outd title="Checkout Date" expr='ifnull(out_dt, book_dt)'
+.		item retd title="Return Date" expr='ifnull(ret_dt, due_dt)'
+.		item item_num title="Item Number" expr='ifnull(c.barcode_nmbr, cs.subfield_data)'
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.	end order_by
+.end parameters
+
+.sql
+	select b.*,
+		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		ifnull(date_format(out_dt, '%%Y-%%m-%%d'),
+			date_format(book_dt, '(%%Y-%%m-%%d)')) as outd,
+		ifnull(date_format(ret_dt, '%%Y-%%m-%%d'),
+			date_format(due_dt, '(%%Y-%%m-%%d)')) as retd,
+		ifnull(c.barcode_nmbr, cs.subfield_data) as item_num,
+		ifnull(ps.subfield_data, 1) as pieces,
+		if(b.out_histid IS NULL, 'Booked',
+			if(b.ret_histid IS NULL, 'Out', 'Returned')) as status
+	from cart join booking b join biblio_field cf join biblio_subfield cs
+		join biblio_field tf join biblio_subfield ts
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+		left join biblio_status_hist bsh on bsh.histid=b.out_histid
+		left join biblio_copy c on c.copyid=bsh.copyid
+		left join biblio_field pf on pf.bibid=b.bibid
+			and pf.tag='309'
+		left join biblio_subfield ps on ps.fieldid=pf.fieldid
+			and ps.subfield_cd='a'
+	where cart.name='bookingid' and cart.id=b.bookingid
+		and tf.bibid=b.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and cf.bibid=b.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+		and cart.sess_id=%session_id%
+.	order_by_expr
+.	subselect members
+		select m.*, s.name as site_name, s.code as site_code
+		from member m, booking_member bkm, site s
+		where m.mbrid=bkm.mbrid
+			and bkm.bookingid=%#bookingid%
+			and m.siteid=s.siteid
+.	end subselect
+.end sql

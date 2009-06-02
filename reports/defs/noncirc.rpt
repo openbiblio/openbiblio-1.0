@@ -1,0 +1,68 @@
+.title "Non-circulating Titles"
+.category "Statistical Reports"
+.column bibid hidden checkbox
+.column item_num title="Item" sort=item_num 
+.column title func=biblio_link title=Title sort=title width=5
+.column copyright title=Copyright sort=copyright
+.column added title=Added sort=added
+.parameters
+.	string item_num title="Item Number Starts With"
+.	date added_before title="Added Before Date"
+.	date out_since title="Earliest Checkout Date"
+.	date out_before title="Latest Checkout Date"
+.	date ret_since title="Earliest Return Date"
+.	date ret_before title="Latest Return Date"
+.	order_by
+.		item item_num title="Item Number" expr='cs.subfield_data'
+.		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.		item copyright title="Copyright Date" expr='cos.subfield_data'
+.		item added title="Date Added" expr='b.create_dt'
+.	end order_by
+.end parameters
+
+.sql
+	select b.bibid, concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+		cs.subfield_data as item_num,
+		cos.subfield_data as copyright,
+		date_format(b.create_dt, '%%m/%%d/%%Y') as added
+	from biblio b
+		join biblio_field tf join biblio_subfield ts
+		join biblio_field cf join biblio_subfield cs
+		left join biblio_subfield sub on sub.fieldid=tf.fieldid
+			and sub.subfield_cd='b'
+		left join biblio_field cof
+			on cof.bibid=b.bibid
+			and cof.tag='260'
+		left join biblio_subfield cos
+			on cos.fieldid=cof.fieldid
+			and cos.subfield_cd='c'
+		left join booking bk
+			on bk.bibid=b.bibid
+.	if_set out_before
+		and ifnull(out_dt, book_dt) < %out_before% + interval 1 day
+.	end if_set
+.	if_set out_since
+		and ifnull(out_dt, book_dt) >= %out_since%
+.	end if_set
+.	if_set ret_before
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, if(due_dt>now(), due_dt, now())))
+			< %ret_before% + interval 1 day
+.	end if_set
+.	if_set ret_since
+		and if(out_dt is null, due_dt,
+			ifnull(ret_dt, if(due_dt>now(), due_dt, now()))) >= %ret_since%
+.	end if_set
+	where tf.bibid=b.bibid and tf.tag='245'
+		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
+		and cf.bibid=b.bibid and cf.tag='099'
+		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
+		and bk.bibid is null
+.	if_set added_before
+		and b.create_dt < %added_before%
+.	end if_set
+.	if_set item_num
+		and cs.subfield_data like '%"item_num%%%'
+.	end if_set
+.	order_by_expr
+.end sql

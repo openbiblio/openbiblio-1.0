@@ -2,8 +2,8 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
-require_once("../functions/inputFuncs.php");
+
+require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 class Table {
   var $_cols;
@@ -34,32 +34,32 @@ class Table {
       foreach ($this->_cols as $col) {
         if (!$this->_idcol and $col['checkbox']) {
           $this->_idcol = $col['name'];
-          if (isset($col['checked']) and $col['checked'] === true) {
+          if ($col['checked'] === true) {
             $this->_checked = true;
           }
         }
       }
       echo '<td valign="middle" align="center" class="primary">';
-      echo '<font class="small">';
+      echo '<span class="small">';
       echo '<b>All</b><br />';
       echo '<input type="checkbox" name="all" value="all" onclick="setCheckboxes()" ';
       if ($this->_checked) {
         echo 'checked="checked" ';
       }
       echo '/>';
-      echo '</font>';
+      echo '</span>';
     }
     foreach ($this->_cols as $col) {
-      if (isset($col['hidden']) and $col['hidden']) {
+      if ($col['hidden']) {
         continue;
       }
-      if (!isset($col['title']) or !$col['title']) {
+      if (!$col['title']) {
         $col['title'] = $col['name'];
       }
       echo '<td valign="middle" align="center" class="primary">';
-      echo '<font class="small"><b>'.$col['title'].'</b></font>';
-      if (isset($col['sort']) and $col['sort'] and $echolink) {
-        echo "<br><nobr>";
+      echo '<span class="small"><b>'.$col['title'].'</b></span>';
+      if ($col['sort'] and $echolink) {
+        echo "<br /><nobr>";
         $echolink(1, "<img border='0' src='../images/down.png' alt='&darr;'>",
                   $col['sort']);
         $echolink(1, "<img border='0' src='../images/up.png' alt='&uarr;'>",
@@ -86,15 +86,15 @@ class Table {
       echo "</td>\n";
     }
     foreach ($this->_cols as $col) {
-      if (isset($col['hidden']) and $col['hidden']) {
+      if ($col['hidden']) {
         continue;
       }
       echo '<td class="'.H($class[$this->_rown%2]).'"';
-      if (isset($col['align'])) {
+      if ($col['align']) {
         echo 'align="'.H($col['align']).'"';
       }
       echo '>';
-      if (isset($col['func']) and in_array($col['func'], get_class_methods('TableFuncs'))) {
+      if ($col['func'] and in_array($col['func'], get_class_methods('TableFuncs'))) {
         echo TableFuncs::$col['func']($col, $row, $this->_params);
       } else {
         echo H($row[$col['name']]);
@@ -114,14 +114,14 @@ class TableFuncs {
     return $row[$col['name']];
   }
   function _link_common($col, $row, $params, $url, $rpt_colname=NULL) {
-    if ($rpt_colname and isset($params['rpt']) and isset($params['rpt_colnames'])
+    if ($rpt_colname and $params['rpt']
         and in_array($rpt_colname, $params['rpt_colnames'])) {
       assert('$row[".seqno"] !== NULL');
       $url .= '&amp;rpt='.HURL($params['rpt'])
               . '&amp;seqno='.HURL($row['.seqno']);
     }
     $s = '<a ';
-    if (isset($col['link_class'])) {
+    if ($col['link_class']) {
       $s .= 'class="'.$col['link_class'].'" ';
     }
     $s .= 'href="'.$url.'">'.H($row[$col['name']]).'</a>';
@@ -189,7 +189,7 @@ class TableFuncs {
     $s = '<input type="checkbox" ';
     $s .= 'name="'.H($col['checkbox_name']).'" ';
     $s .= 'value="'.H($row[$col['checkbox_value']]).'" ';
-    if (isset($col['checkbox_checked']) and $col['checkbox_checked'] === true) {
+    if ($col['checkbox_checked'] === true) {
       $s .= 'checked="checked" ';
     } elseif (is_string($col['checkbox_checked'])) {
       if (strtolower($row[$col['checkbox_checked']]) == 'y') {
@@ -226,5 +226,3 @@ class TableFuncs {
     return substr($s, 0, -2);  # lose the final ', '
   }
 }
-
-?>

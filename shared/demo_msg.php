@@ -2,18 +2,14 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
-  $tab = "home";
+
+  $tab = "circ";
   $nav = "";
-  include("../shared/header.php");
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-?>
-This function is not available in the demo version of OpenBiblio
-in order to limit the demo database size and to keep the data
-presentable.
+  echo '<p>'.T('demoMsg').'</p>;
 
-<?php
-  include("../shared/footer.php");
+  Page::footer();
   exit();
-?>

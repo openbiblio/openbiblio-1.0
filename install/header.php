@@ -7,7 +7,7 @@
 <html>
 <head>
 <style type="text/css">
-  <?php include("../css/style.css"); ?>
+  <?php include(REL(__FILE__, "../css/style.css")); ?>
 </style>
 <meta name="description" content="OpenBiblio Library Automation System">
 <title>OpenBiblio Install</title>

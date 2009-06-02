@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   session_cache_limiter(null);
 
   $tab = "admin";
@@ -12,84 +13,64 @@
   $focus_form_name = "newthemeform";
   $focus_form_field = "themeName";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../shared/get_form_vars.php");
-  require_once("../shared/header.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-  
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #*  This is only used when copying an existing theme.
   #****************************************************************************
   if (isset($_GET["themeid"])){
-    unset($_SESSION["postVars"]);
-    unset($_SESSION["pageErrors"]);
+    include_once(REL(__FILE__, "../model/Themes.php"));
+    $themes = new Themes;
+    $theme = $themes->getOne($_GET["themeid"]);
 
-    $themeid = $_GET["themeid"];
-    include_once("../classes/Theme.php");
-    include_once("../classes/ThemeQuery.php");
-    include_once("../functions/errorFuncs.php");
-    $themeQ = new ThemeQuery();
-    $themeQ->connect();
-    if ($themeQ->errorOccurred()) {
-      $themeQ->close();
-      displayErrorPage($themeQ);
-    }
-    $themeQ->execSelect($themeid);
-    if ($themeQ->errorOccurred()) {
-      $themeQ->close();
-      displayErrorPage($themeQ);
-    }
-    $theme = $themeQ->fetchTheme();
-
-    $postVars["titleBg"] = $theme->getTitleBg();
-    $postVars["titleFontFace"] = $theme->getTitleFontFace();
-    $postVars["titleFontSize"] = $theme->getTitleFontSize();
-    if ($theme->getTitleFontBold()) {  
+    $postVars["titleBg"] = $theme['title_bg'];
+    $postVars["titleFontFace"] = $theme['title_font_face'];
+    $postVars["titleFontSize"] = $theme['title_font_size'];
+    if ($theme['title_font_bold'] == 'Y') {
       $postVars["titleFontBold"] = "CHECKED";
     } else {
       $postVars["titleFontBold"] = "";
     }
-    $postVars["titleFontColor"] = $theme->getTitleFontColor();
-    $postVars["titleAlign"] = $theme->getTitleAlign();
+    $postVars["titleFontColor"] = $theme['title_font_color'];
+    $postVars["titleAlign"] = $theme['title_align'];
 
-    $postVars["primaryBg"] = $theme->getPrimaryBg();
-    $postVars["primaryFontFace"] = $theme->getPrimaryFontFace();
-    $postVars["primaryFontSize"] = $theme->getPrimaryFontSize();
-    $postVars["primaryFontColor"] = $theme->getPrimaryFontColor();
-    $postVars["primaryLinkColor"] = $theme->getPrimaryLinkColor();
-    $postVars["primaryErrorColor"] = $theme->getPrimaryErrorColor();
+    $postVars["primaryBg"] = $theme['primary_bg'];
+    $postVars["primaryFontFace"] = $theme['primary_font_face'];
+    $postVars["primaryFontSize"] = $theme['primary_font_size'];
+    $postVars["primaryFontColor"] = $theme['primary_font_color'];
+    $postVars["primaryLinkColor"] = $theme['primary_link_color'];
+    $postVars["primaryErrorColor"] = $theme['primary_error_color'];
 
-    $postVars["alt1Bg"] = $theme->getAlt1Bg();
-    $postVars["alt1FontFace"] = $theme->getAlt1FontFace();
-    $postVars["alt1FontSize"] = $theme->getAlt1FontSize();
-    $postVars["alt1FontColor"] = $theme->getAlt1FontColor();
-    $postVars["alt1LinkColor"] = $theme->getAlt1LinkColor();
+    $postVars["alt1Bg"] = $theme['alt1_bg'];
+    $postVars["alt1FontFace"] = $theme['alt1_font_face'];
+    $postVars["alt1FontSize"] = $theme['alt1_font_size'];
+    $postVars["alt1FontColor"] = $theme['alt1_font_color'];
+    $postVars["alt1LinkColor"] = $theme['alt1_link_color'];
 
-    $postVars["alt2Bg"] = $theme->getAlt2Bg();
-    $postVars["alt2FontFace"] = $theme->getAlt2FontFace();
-    $postVars["alt2FontSize"] = $theme->getAlt2FontSize();
-    $postVars["alt2FontColor"] = $theme->getAlt2FontColor();
-    $postVars["alt2LinkColor"] = $theme->getAlt2LinkColor();
-    if ($theme->getAlt2FontBold()) {  
+    $postVars["alt2Bg"] = $theme['alt2_bg'];
+    $postVars["alt2FontFace"] = $theme['alt2_font_face'];
+    $postVars["alt2FontSize"] = $theme['alt2_font_size'];
+    $postVars["alt2FontColor"] = $theme['alt2_font_color'];
+    $postVars["alt2LinkColor"] = $theme['alt2_link_color'];
+    if ($theme['alt2_font_bold'] == 'Y') {
       $postVars["alt2FontBold"] = "CHECKED";
     } else {
       $postVars["alt2FontBold"] = "";
     }
 
-    $postVars["borderColor"] = $theme->getBorderColor();
-    $postVars["borderWidth"] = $theme->getBorderWidth();
-    $postVars["tablePadding"] = $theme->getTablePadding();
-
-    $themeQ->close();
+    $postVars["borderColor"] = $theme['border_color'];
+    $postVars["borderWidth"] = $theme['border_width'];
+    $postVars["tablePadding"] = $theme['table_padding'];
   }
 
 
 ?>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 <!--
 function previewTheme() {
   var SecondaryWin;
@@ -107,8 +88,10 @@ function editTheme() {
 </script>
 
 
-<a href="javascript:previewTheme()"><?php echo $loc->getText("adminTheme_Preview"); ?></a><br /><br />
+<a href="javascript:previewTheme()"><?php echo T("Preview Theme Changes"); ?></a><br /><br />
 
-<form name="newthemeform" method="POST" action="../admin/theme_new.php">
-<?php include("../admin/theme_fields.php"); ?>
-<?php include("../shared/footer.php"); ?>
+<form name="newthemeform" method="post" action="../admin/theme_new.php">
+<?php
+
+  include(REL(__FILE__, "../admin/theme_fields.php"));
+  Page::footer();

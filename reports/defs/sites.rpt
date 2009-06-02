@@ -1,0 +1,18 @@
+.title "Site List"
+.category "Member Reports"
+.column siteid hidden checkbox
+.column name title=Name sort=name func=site_link
+.column code title=Code sort=code
+.column city title=City sort=city
+.parameters
+.	order_by default=name
+.		item name title=Name
+.		item code title=Code
+.		item city title=City
+.	end order_by
+.end parameters
+
+.sql
+	select * from site
+.	order_by_expr
+.end sql

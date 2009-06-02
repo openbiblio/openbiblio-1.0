@@ -2,20 +2,17 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "circulation";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/logincheck.php");
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once("../classes/BiblioHold.php");
-  require_once("../classes/BiblioHoldQuery.php");
-  require_once("../classes/BiblioCopyQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../functions/formatFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
+  require_once(REL(__FILE__, "../model/Copies.php"));
+  require_once(REL(__FILE__, "../model/Holds.php"));
+
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -24,53 +21,13 @@
     header("Location: ../circ/index.php");
     exit();
   }
-  $barcode = trim($_POST["holdBarcodeNmbr"]);
-  $mbrid = trim($_POST["mbrid"]);
-
-  #****************************************************************************
-  #*  Edit input
-  #****************************************************************************
-  if (!ctypeAlnum($barcode)) {
-    $pageErrors["holdBarcodeNmbr"] = $loc->getText("placeHoldErr1");
-    $postVars["holdBarcodeNmbr"] = $barcode;
-    $_SESSION["postVars"] = $postVars;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
-    exit();
-  }
-
-  // Check to see if this member already has the item checked out.
-  $copyQ = new BiblioCopyQuery();
-  $copyQ->connect();
-  if ($copyQ->errorOccurred()) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  }
-  $copy = $copyQ->queryByBarcode($barcode);
+  $mbrid = $_POST["mbrid"];
+  $barcode = $_POST["holdBarcodeNmbr"];
+  $copies = new Copies;
+  $copy = $copies->getByBarcode($barcode);
   if (!$copy) {
-    $copyQ->close();
-    displayErrorPage($copyQ);
-  } else if (!is_a($copy, 'BiblioCopy')) {
-    $pageErrors["holdBarcodeNmbr"] = $loc->getText("placeHoldErr2");
-    $postVars["holdBarcodeNmbr"] = $barcode;
-    $_SESSION["postVars"] = $postVars;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
-    exit();
-  } else if ($copy->getStatusCd() == OBIB_STATUS_OUT
-             and $copy->getMbrid() == $mbrid) {
-    $pageErrors["holdBarcodeNmbr"] = $loc->getText("placeHoldErr3");
-    $postVars["holdBarcodeNmbr"] = $barcode;
-    $_SESSION["postVars"] = $postVars;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
-    exit();
-  } else if ($copy->getStatusCd() != OBIB_STATUS_OUT) {
-    $pageErrors["holdBarcodeNmbr"] = $loc->getText("This item is not checked out.");
-    $postVars["holdBarcodeNmbr"] = $barcode;
-    $_SESSION["postVars"] = $postVars;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
+	  $msg = T("Copy barcode %barcode% does not exist", array('barcode'=>$barcode));
+    header("Location: ../circ/mbr_view.php?mbrid=".U($_POST["mbrid"])."&msg=".U($msg));
     exit();
   }
 
@@ -78,27 +35,14 @@
   #*  Insert hold
   #**************************************************************************
   // we need to also insert into status history table
-  $holdQ = new BiblioHoldQuery();
-  $holdQ->connect();
-  if ($holdQ->errorOccurred()) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  $rc = $holdQ->insert($mbrid,$barcode);
-  if (!$rc) {
-    $holdQ->close();
-    displayErrorPage($holdQ);
-  }
-  $holdQ->close();
-
-  #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
+  $holds = new Holds;
+  $holds->insert(array(
+    'bibid'=>$copy['bibid'],
+    'copyid'=>$copy['copyid'],
+    'mbrid'=>$mbrid,
+  ));
 
   #**************************************************************************
   #*  Go back to member view
   #**************************************************************************
   header("Location: ../circ/mbr_view.php?mbrid=".U($_POST["mbrid"]));
-?>

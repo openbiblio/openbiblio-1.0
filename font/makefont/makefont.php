@@ -4,7 +4,6 @@
 * Version: 1.13                                                                *
 * Date:    2004-12-31                                                          *
 *******************************************************************************/
-
 function ReadMap($enc)
 {
 	//Read a map file
@@ -30,7 +29,6 @@ function ReadMap($enc)
 	}
 	return $cc2gn;
 }
-
 function ReadAFM($file,&$map)
 {
 	//Read a font metric file
@@ -131,7 +129,6 @@ function ReadAFM($file,&$map)
 	$fm['Widths']=$widths;
 	return $fm;
 }
-
 function MakeFontDescriptor($fm,$symbolic)
 {
 	//Ascent
@@ -182,7 +179,6 @@ function MakeFontDescriptor($fm,$symbolic)
 	$fd.=')';
 	return $fd;
 }
-
 function MakeWidthArray($fm)
 {
 	//Make character width array
@@ -207,7 +203,6 @@ function MakeWidthArray($fm)
 	$s.=')';
 	return $s;
 }
-
 function MakeFontEncoding($map)
 {
 	//Build differences from reference encoding
@@ -226,7 +221,6 @@ function MakeFontEncoding($map)
 	}
 	return rtrim($s);
 }
-
 function SaveToFile($file,$s,$mode='t')
 {
 	$f=fopen($file,'w'.$mode);
@@ -235,19 +229,16 @@ function SaveToFile($file,$s,$mode='t')
 	fwrite($f,$s,strlen($s));
 	fclose($f);
 }
-
 function ReadShort($f)
 {
 	$a=unpack('n1n',fread($f,2));
 	return $a['n'];
 }
-
 function ReadLong($f)
 {
 	$a=unpack('N1N',fread($f,4));
 	return $a['N'];
 }
-
 function CheckTTF($file)
 {
 	//Check if font license allows embedding
@@ -287,7 +278,6 @@ function CheckTTF($file)
 	if($rl and !$pp and !$e)
 		echo '<B>Warning:</B> font license does not allow embedding';
 }
-
 /*******************************************************************************
 * $fontfile : chemin du fichier TTF (ou chaîne vide si pas d'incorporation)    *
 * $afmfile :  chemin du fichier AFM                                            *
@@ -413,4 +403,3 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 	SaveToFile($basename.'.php',$s);
 	echo 'Font definition file generated ('.$basename.'.php'.')<BR>';
 }
-?>

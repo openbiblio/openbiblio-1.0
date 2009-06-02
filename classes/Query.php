@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 $_Query_lock_depth = 0;
 
 class Query {
@@ -29,44 +29,37 @@ class Query {
     static $link;
     if (!isset($link)) {
       if (!function_exists('mysql_connect')) {
-        return array(NULL, new DbError("Checking for MySQL Extension...",
-                           "Unable to connect to database.",
-                           "The MySQL extension is not available"));
+        return array(NULL, new DbError(T("Checking for MySQL Extension..."), T("Unable to connect to database."), T("The MySQL extension is not available")));
       }
       $link = mysql_connect(OBIB_HOST,OBIB_USERNAME,OBIB_PWD);
       if (!$link) {
-        return array(NULL, new DbError("Connecting to database server...",
-                                       "Cannot connect to database server.",
-                                       mysql_error()));
+        return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
       }
       $rc = mysql_select_db(OBIB_DATABASE, $link);
       if (!$rc) {
-        return array(NULL, new DbError("Selecting database...",
-                                       "Cannot select database.",
-                                       mysql_error($link)));
+        return array(NULL, new DbError(T("Selecting database..."), T("Cannot select database."), mysql_error($link)));
       }
     }
     return array($link, NULL);
   }
-  
+
   function act($sql) {
     $results = $this->_act($sql);
     if (!is_bool($results)) {
-      Fatal::dbError($sql, "Action query returned results.", 'No DBMS error.');
+      Fatal::dbError($sql, T("Action query returned results."), T("No DBMS error."));
     }
   }
   function select($sql) {
     $results = $this->_act($sql);
     if (is_bool($results)) {
-      Fatal::dbError($sql, "Select did not return results.", 'No DBMS error.');
+      Fatal::dbError($sql, T("Select did not return results."), T("No DBMS error."));
     }
     return new DbIter($results);
   }
   function select1($sql) {
     $r = $this->select($sql);
     if ($r->count() != 1) {
-      Fatal::dbError($sql, 'Wrong number of result rows: expected 1, got '.$r->count(),
-                     'No DBMS Error');
+      Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("No DBMS error."));
     } else {
       return $r->next();
     }
@@ -76,30 +69,29 @@ class Query {
     if ($r->count() == 0) {
       return NULL;
     } else if ($r->count() != 1) {
-      Fatal::dbError($sql, 'Wrong number of result rows: expected 0 or 1, got '.$r->count(),
-                     'No DBMS Error');
+      Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("No DBMS error."));
     } else {
       return $r->next();
     }
   }
   function _act($sql) {
     if (!$this->_link) {
-      Fatal::internalError('Tried to make database query before connection.');
+      Fatal::internalError(T('QueryBeforeConnect'));
     }
-    $r = mysql_query($sql, $this->_link);
+    $r =  mysql_query($sql, $this->_link);
     if ($r === false) {
-      Fatal::dbError($sql, 'Database query failed', mysql_error());
+      Fatal::dbError($sql, T("Database query failed"), mysql_error());
     }
     return $r;
   }
-  
+
   /* This is not easily portable to many SQL DBMSs.  A better scheme
    * might be something like PEAR::DB's sequences.
    */
   function getInsertID() {
     return mysql_insert_id($this->_link);
   }
-  
+
   /* Locking functions
    *
    * Besides switching to InnoDB for transactions, I haven't been able to
@@ -113,7 +105,7 @@ class Query {
   function lock() {
     global $_Query_lock_depth;
     if ($_Query_lock_depth < 0) {
-      Fatal::internalError('Negative lock depth');
+      Fatal::internalError(T("Negative lock depth"));
     }
     if ($_Query_lock_depth == 0) {
       $row = $this->select1($this->mkSQL('select get_lock(%Q, %N) as locked',
@@ -127,7 +119,7 @@ class Query {
   function unlock() {
     global $_Query_lock_depth;
     if ($_Query_lock_depth <= 0) {
-      Fatal::internalError('Tried to unlock an unlocked database.');
+      Fatal::internalError(T("Tried to unlock an unlocked database."));
     }
     $_Query_lock_depth--;
     if ($_Query_lock_depth == 0) {
@@ -169,7 +161,7 @@ class Query {
   function mkSQL() {
     $n = func_num_args();
     if ($n < 1) {
-      Fatal::internalError('Not enough arguments given to mkSQL().');
+      Fatal::internalError(T("Not enough arguments given to mkSQL()."));
     }
     $i = 1;
     $SQL = "";
@@ -182,13 +174,13 @@ class Query {
       }
       $SQL .= substr($fmt, 0, $p);
       if (strlen($fmt) < $p+2) {
-        Fatal::internalError('Bad mkSQL() format string.');
+        Fatal::internalError(T("Bad mkSQL() format string."));
       }
       if ($fmt{$p+1} == '%') {
         $SQL .= "%";
       } else {
         if ($i >= $n) {
-          Fatal::internalError('Not enough arguments given to mkSQL().');
+          Fatal::internalError(T("Not enough arguments given to mkSQL()."));
         }
         $arg = func_get_arg($i++);
         switch ($fmt{$p+1}) {
@@ -226,17 +218,17 @@ class Query {
           $SQL .= mysql_real_escape_string($arg, $this->_link);
           break;
         default:
-          Fatal::internalError('Bad mkSQL() format string.');
+          Fatal::internalError(T("Bad mkSQL() format string."));
         }
       }
       $fmt = substr($fmt, $p+2);
     }
     if ($i != $n) {
-      Fatal::internalError('Too many arguments to mkSQL().');
+      Fatal::internalError(T("Too many arguments to mkSQL()."));
     }
     return $SQL;
   }
-  
+
   function _ident($i) {
     # Because the MySQL manual is unclear on how to include a ` in a `-quoted
     # identifer, we just drop them.  The manual does not say whether backslash
@@ -250,7 +242,7 @@ class Query {
       return "0";
     }
   }
-  
+
   /* Everything below is just a compatibility interface
    * for the last few iterations of this design.  Don't use
    * it.  This will be removed as soon as I get time to
@@ -262,13 +254,9 @@ class Query {
   function close() {
     return true;
   }
-  function _exec($sql) {
+  function exec($sql) {
     $r = $this->_act($sql);
     $this->_conn = new DbOld($r, $this->getInsertId());
-    return $r;
-  }
-  function exec($sql) {
-    $r = $this->_exec($sql);
     if (is_bool($r)) {
       return $r;
     } else {
@@ -300,11 +288,7 @@ class Query {
     return false;
   }
   function getError() {
-    if (isset($this->_error)){
-      return $this->_error;
-    } else {
-      return "";
-    }
+    return "";
   }
   function getDbErrno() {
     return 0;
@@ -368,5 +352,3 @@ class DbOld {
     mysql_data_seek($this->results, 0);
   }
 }
-
-?>

@@ -2,139 +2,100 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   $tab = "admin";
   $nav = "staff";
 
-  require_once("../classes/Staff.php");
-  require_once("../classes/StaffQuery.php");
-  require_once("../functions/errorFuncs.php");
+  require_once(REL(__FILE__, "../model/Staff.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-
-  require_once("../shared/logincheck.php");
-
-  require_once("../shared/header.php");
-
-  $staffQ = new StaffQuery();
-  $staffQ->connect();
-  if ($staffQ->errorOccurred()) {
-    $staffQ->close();
-    displayErrorPage($staffQ);
-  }
-  $staffQ->execSelect();
-  if ($staffQ->errorOccurred()) {
-    $staffQ->close();
-    displayErrorPage($staffQ);
-  }
+  $staff = new Staff;
 
 ?>
-<a href="../admin/staff_new_form.php?reset=Y"><?php echo $loc->getText("adminStaff_list_formHeader"); ?></a><br><br>
-<h1><?php echo $loc->getText("adminStaff_list_Columnheader"); ?></h1>
+<h1><?php echo T("Staff Members"); ?></h1>
+<a href="../admin/staff_new_form.php?reset=Y"><?php echo T("Add New Staff Member"); ?></a><br /><br />
 <table class="primary">
   <tr>
     <th colspan="3" rowspan="2" valign="top">
-      <?php echo $loc->getText("adminStaff_list_Function"); ?>
+      <?php echo T("Function"); ?>
     </th>
     <th rowspan="2" valign="top" nowrap="yes">
-      <?php echo $loc->getText("adminStaff_edit_formLastname"); ?>
+      <?php echo T("Last Name"); ?>
     </th>
     <th rowspan="2" valign="top" nowrap="yes">
-      <?php echo $loc->getText("adminStaff_edit_formFirstname"); ?>
+      <?php echo T("First Name"); ?>
     </th>
     <th rowspan="2" valign="top">
-      <?php echo $loc->getText("adminStaff_edit_formLogin"); ?>
+      <?php echo T("Userid"); ?>
     </th>
     <th colspan="5">
-      <?php echo $loc->getText("adminStaff_edit_formAuth"); ?>
+      <?php echo T("Authorization"); ?>
     </th>
     <th rowspan="2" valign="top">
-      <?php echo $loc->getText("adminStaff_edit_formSuspended"); ?>
+      <?php echo T("Suspended"); ?>
     </th>
   </tr>
   <tr>
     <th>
-      <?php echo $loc->getText("adminStaff_edit_formCirc"); ?>
+      <?php echo T("Circ"); ?>
     </th>
     <th>
-      <?php echo $loc->getText("adminStaff_edit_formUpdatemember"); ?>
+      <?php echo T("Member"); ?>
     </th>
     <th>
-      <?php echo $loc->getText("adminStaff_edit_formCatalog"); ?>
+     <?php echo T("Catalog"); ?>
     </th>
     <th>
-      <?php echo $loc->getText("adminStaff_edit_formAdmin"); ?>
+      <?php echo T("Admin"); ?>
     </th>
     <th>
-      <?php echo $loc->getText("adminStaff_edit_formReports"); ?>
+     <?php echo T("Reports"); ?>
     </th>
   </tr>
   <?php
     $row_class = "primary";
-    while ($staff = $staffQ->fetchStaff()) {
+    $staff_list = $staff->getAll('last_name');
+    while ($s = $staff_list->next()) {
   ?>
   <tr>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <a href="../admin/staff_edit_form.php?UID=<?php echo HURL($staff->getUserid());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("adminStaff_list_Edit"); ?></a>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <a href="../admin/staff_edit_form.php?UID=<?php echo HURL($s['userid']); ?>" class="<?php echo $row_class;?>"><?php echo T("edit"); ?></a>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <a href="../admin/staff_pwd_reset_form.php?UID=<?php echo HURL($staff->getUserid());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("adminStaff_list_Pwd"); ?></a>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <a href="../admin/staff_pwd_reset_form.php?UID=<?php echo HURL($s['userid']); ?>" class="<?php echo $row_class; ?>"><?php echo T("pwd"); ?></a>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <a href="../admin/staff_del_confirm.php?UID=<?php echo HURL($staff->getUserid());?>&amp;LAST=<?php echo HURL($staff->getLastName());?>&amp;FIRST=<?php echo HURL($staff->getFirstName());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("adminStaff_list_Del"); ?></a>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <a href="../admin/staff_del_confirm.php?UID=<?php echo HURL($s['userid']); ?>&amp;LAST=<?php echo HURL($s['last_name']); ?>&amp;FIRST=<?php echo HURL($s['first_name']); ?>" class="<?php echo $row_class; ?>"><?php echo T("del"); ?></a>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php echo H($staff->getLastName());?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['last_name']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php echo H($staff->getFirstName());?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['first_name']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php echo H($staff->getUsername());?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['username']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($staff->hasCircAuth()) {
-        echo $loc->getText("adminStaff_Yes");
-      } else {
-        echo $loc->getText("adminStaff_No");
-      } ?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['circ_flg']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($staff->hasCircMbrAuth()) {
-        echo $loc->getText("adminStaff_Yes");
-      } else {
-        echo $loc->getText("adminStaff_No");
-      } ?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['circ_mbr_flg']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($staff->hasCatalogAuth()) {
-        echo $loc->getText("adminStaff_Yes");
-      } else {
-        echo $loc->getText("adminStaff_No");
-      } ?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['catalog_flg']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($staff->hasAdminAuth()) {
-        echo $loc->getText("adminStaff_Yes");
-      } else {
-        echo $loc->getText("adminStaff_No");
-      } ?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['admin_flg']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($staff->hasReportsAuth()) {
-        echo $loc->getText("adminStaff_Yes");
-      } else {
-        echo $loc->getText("adminStaff_No");
-      } ?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['reports_flg']);?>
     </td>
-    <td valign="top" class="<?php echo H($row_class);?>">
-      <?php if ($staff->isSuspended()) {
-        echo $loc->getText("adminStaff_Yes");
-      } else {
-        echo $loc->getText("adminStaff_No");
-      } ?>
+    <td valign="top" class="<?php echo $row_class; ?>">
+      <?php echo H($s['suspended_flg']); ?>
     </td>
   </tr>
   <?php
@@ -145,7 +106,9 @@
         $row_class = "primary";
       }
     }
-    $staffQ->close();
   ?>
 </table>
-<?php include("../shared/footer.php"); ?>
+
+<?php
+
+  Page::footer();

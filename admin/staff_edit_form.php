@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
   require_once("../shared/common.php");
+
   session_cache_limiter(null);
 
   $tab = "admin";
@@ -11,24 +12,18 @@
   $focus_form_name = "editstaffform";
   $focus_form_field = "last_name";
 
-  require_once("../functions/inputFuncs.php");
-  require_once("../shared/logincheck.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-
-  require_once("../shared/header.php");
+  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #****************************************************************************
   if (isset($_GET["UID"])){
-    unset($_SESSION["postVars"]);
-    unset($_SESSION["pageErrors"]);
-
     $postVars["userid"] = $_GET["UID"];
-    include_once("../classes/Staff.php");
-    include_once("../classes/StaffQuery.php");
-    include_once("../functions/errorFuncs.php");
+    include_once(REL(__FILE__, "../classes/Staff.php"));
+    include_once(REL(__FILE__, "../classes/StaffQuery.php"));
+    include_once(REL(__FILE__, "../functions/errorFuncs.php"));
     $staffQ = new StaffQuery();
     $staffQ->connect();
     if ($staffQ->errorOccurred()) {
@@ -76,22 +71,22 @@
     }
     $staffQ->close();
   } else {
-    require("../shared/get_form_vars.php");
+    require(REL(__FILE__, "../shared/get_form_vars.php"));
   }
 
 ?>
 
-<form name="editstaffform" method="POST" action="../admin/staff_edit.php">
-<input type="hidden" name="userid" value="<?php echo H($postVars["userid"]);?>">
+<form name="editstaffform" method="post" action="../admin/staff_edit.php">
+<input type="hidden" name="userid" value="<?php echo $postVars["userid"];?>">
 <table class="primary">
   <tr>
     <th align="left" colspan="2" nowrap="yes">
-      <?php echo $loc->getText("adminStaff_edit_formHeader"); ?>
+      <?php echo T("Edit Staff Member Information"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formLastname"); ?>
+      <?php echo T("Last Name:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("last_name",30,30,$postVars,$pageErrors); ?>
@@ -99,7 +94,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formFirstname"); ?>
+      <?php echo T("First Name:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("first_name",30,30,$postVars,$pageErrors); ?>
@@ -107,7 +102,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formLogin"); ?>
+      <?php echo T("Login Username:"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("username",20,20,$postVars,$pageErrors); ?>
@@ -115,42 +110,44 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formAuth"); ?>
+      <?php echo T("Authorization:");?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="circ_flg" value="CHECKED"
-        <?php if (isset($postVars["circ_flg"])) echo H($postVars["circ_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formCirc"); ?>
+        <?php if (isset($postVars["circ_flg"])) echo $postVars["circ_flg"]; ?> />
+      <?php echo T("Circ");?>
       <input type="checkbox" name="circ_mbr_flg" value="CHECKED"
-        <?php if (isset($postVars["circ_mbr_flg"])) echo H($postVars["circ_mbr_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formUpdatemember"); ?>
+        <?php if (isset($postVars["circ_mbr_flg"])) echo $postVars["circ_mbr_flg"]; ?> />
+      <?php echo T("Update Member"); ?>
       <input type="checkbox" name="catalog_flg" value="CHECKED"
-        <?php if (isset($postVars["catalog_flg"])) echo H($postVars["catalog_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formCatalog"); ?>
+        <?php if (isset($postVars["catalog_flg"])) echo $postVars["catalog_flg"]; ?> />
+      <?php echo T("Catalog");?>
       <input type="checkbox" name="admin_flg" value="CHECKED"
-        <?php if (isset($postVars["admin_flg"])) echo H($postVars["admin_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formAdmin"); ?>
+        <?php if (isset($postVars["admin_flg"])) echo $postVars["admin_flg"]; ?> />
+      <?php echo T("Admin");?>
       <input type="checkbox" name="reports_flg" value="CHECKED"
-        <?php if (isset($postVars["reports_flg"])) echo H($postVars["reports_flg"]); ?> >
-      <?php echo $loc->getText("adminStaff_edit_formReports"); ?>
+        <?php if (isset($postVars["reports_flg"])) echo $postVars["reports_flg"]; ?> />
+      <?php echo T("Reports"); ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <?php echo $loc->getText("adminStaff_edit_formSuspended"); ?>
+      <?php echo T("Suspended:"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="suspended_flg" value="CHECKED"
-        <?php if (isset($postVars["suspended_flg"])) echo H($postVars["suspended_flg"]); ?> >
+        <?php if (isset($postVars["suspended_flg"])) echo $postVars["suspended_flg"]; ?> />
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  <?php echo $loc->getText("adminSubmit"); ?>  " class="button">
-      <input type="button" onClick="self.location='../admin/staff_list.php'" value="  <?php echo $loc->getText("adminCancel"); ?>  " class="button">
+      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
     </td>
   </tr>
 </table>
 </form>
 
-<?php include("../shared/footer.php"); ?>
+<?php
+
+  Page::footer();
