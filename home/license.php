@@ -1,8 +1,8 @@
 <?php
+  require_once("../shared/common.php");
   $tab = "home";
   $nav = "license";
 
-  require_once("../shared/common.php");
   include("../shared/header.php");
 ?>
 

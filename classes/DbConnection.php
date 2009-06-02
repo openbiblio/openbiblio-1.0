@@ -1,152 +1,66 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
 require_once("../database_constants.php");
 
-/******************************************************************************
- * DbConnection encapsulates all database specific functions for OpenBiblio
- *
- * @author David Stevens <dave@stevens.name>;
- * @version 1.0
- * @access public
- * @package MyWebShop
- ******************************************************************************
- */
 class DbConnection {
   var $_link;
   var $_result;
-  var $_error;
-  var $_dbErrno;
-  var $_dbError;
 
-  /****************************************************************************
-   * Connects to the database
-   *
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function connect() {
+  function connect_e() {
+    if (!function_exists('mysql_connect')) {
+      return new DbError(NULL,
+                         "Unable to connect to database",
+                         "The MySQL extension is not available");
+    }
     $this->_link = mysql_connect(OBIB_HOST,OBIB_USERNAME,OBIB_PWD);
     if ($this->_link == false) {
-      $this->_error = "Unable to connect to database";
-      $this->_dbErrno = mysql_errno();
-      $this->_dbError = mysql_error();
-      return false;
+      return new DbError(NULL,
+                         "Unable to connect to database",
+                         mysql_error());
     }
     $rc = mysql_select_db(OBIB_DATABASE, $this->_link);
     if ($rc == false) {
-      $this->_error = "Unable to connect to database";
-      $this->_dbErrno = mysql_errno();
-      $this->_dbError = mysql_error();
-      return false;
+      return new DbError(NULL,
+                         "Unable to select database",
+                         mysql_error());
     }
-    return true;
+    return NULL;
   }
-  /****************************************************************************
-   * Closes database connection
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function close() {
-    $rc = mysql_close($this->_link);
-    if ($rc == false) {
-      $this->_error = "Unable to close database";
-      $this->_dbErrno = mysql_errno();
-      $this->_dbError = mysql_error();
-      return false;
+  function close_e() {
+    if (!mysql_close($this->_link)) {
+      return new DbError(NULL,
+                         "Unable to close database",
+                         mysql_error());
     }
-    return true;
+    return NULL;
   }
-  /****************************************************************************
-   * Quotes a string for use in a query
-   * @param string $s string to be quoted
-   * @return string quoted $s
-   * @access public
-   ****************************************************************************
-   */
-  function quote($s) {
-    return "'" . mysql_real_escape_string($s, $this->_link) . "'";
-  }
-  /****************************************************************************
-   * Quotes an identifier for use in a query
-   * @param string $i identifier to be validated
-   * @return string valid identifier
-   * @access public
-   ****************************************************************************
-   */
-  function ident($i) {
-    # Because the MySQL manual is unclear on how to include a ` in a `-quoted
-    # identifer, we just drop them.  It looks like phpMyAdmin does about the
-    # same thing, so we're in good company.  But clearer documentation would
-    # be nice.
-    return '`' . str_replace('`', '', $i) . '`';
-  }
-  /****************************************************************************
-   * Validates a numeric string for use in a query
-   * @param string $n numeric string to be validated
-   * @return string longest prefix of $n that can be treated as a number or "0"
-   * @access public
-   ****************************************************************************
-   */
-  function numstr($n) {
-    if (ereg("^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)", $n, $subs)) {
-      return $subs[1];
-    } else {
-      return "0";
-    }
-  }
-  /****************************************************************************
-   * Executes a query
-   * @param string $sql SQL of query to execute
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function exec($sql) {
+  function exec_e($sql) {
     $this->_result = mysql_query($sql, $this->_link);
-    if ($this->_result == false) {
-      $this->_error = "Unable to execute query";
-      $this->_dbErrno = mysql_errno();
-      $this->_dbError = mysql_error();
-      return false;
+    if (!$this->_result) {
+      return new DbError($sql,
+                         "SQL Query Failed",
+                         mysql_error());
     }
-    ;
-    return $this->_result;
+    return NULL;
   }
 
   /****************************************************************************
-   * Executes a query
+   * Gets a result row
    * @param boolean $arrayType (optional) array type to return
    * @return array resulting array.  Returns false, if no more rows to fetch.
    * @access public
    ****************************************************************************
    */
   function fetchRow($arrayType=OBIB_ASSOC) {
-    if ($this->_result == false) {
-      $this->_error = "Invalid result.  Must execute query first.";
-      return false;
+    if (!$this->_result) {
+      Fatal::internalError("Must execute query before fetching result row.");
+    }
+    if (is_bool($this->_result)) {
+      return NULL;
     }
     switch ($arrayType) {
       case OBIB_ASSOC:
@@ -163,7 +77,6 @@ class DbConnection {
     }
     return mysql_fetch_array($this->_result, $mysqlArrayType);
   }
-
 
   /****************************************************************************
    * Resets row point to the first row in the resultset
@@ -203,40 +116,45 @@ class DbConnection {
   function getInsertId() {
     return mysql_insert_id();
   }
-
+  
   /****************************************************************************
-   * @return link connection link
+   * Quotes a string for use in a query
+   * @param string $s string to be quoted
+   * @return string quoted $s
    * @access public
    ****************************************************************************
    */
-  function get_link() {
-    return $this->_link;
-  }
-
-  /****************************************************************************
-   * @return string error message
-   * @access public
-   ****************************************************************************
-   */
-  function getError() {
-    return $this->_error;
-  }
-
-  /****************************************************************************
-   * @return string error number returned from database
-   * @access public
-   ****************************************************************************
-   */
-  function getDbErrno() {
-    return $this->_dbErrno;
+  function quote($s) {
+    # would use mysql_real_escape_string(), but it requires PHP >= 4.3
+    return "'" . mysql_escape_string($s) . "'";
   }
   /****************************************************************************
-   * @return string error message returned from database
+   * Quotes an identifier for use in a query
+   * @param string $i identifier to be validated
+   * @return string valid identifier
    * @access public
    ****************************************************************************
    */
-  function getDbError() {
-    return $this->_dbError;
+  function ident($i) {
+    # Because the MySQL manual is unclear on how to include a ` in a `-quoted
+    # identifer, we just drop them.  It looks like phpMyAdmin does about the
+    # same thing, so we're in good company.  But clearer documentation would
+    # be nice.
+    return '`' . str_replace('`', '', $i) . '`';
+  }
+  /****************************************************************************
+   * Validates a numeric string for use in a query
+   * @param string $n numeric string to be validated
+   * @return string longest prefix of $n that can be treated as a number or "0"
+   * @access public
+   ****************************************************************************
+   */
+  function numstr($n) {
+    if (ereg("^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)", $n, $subs)) {
+      return $subs[1];
+    } else {
+      return "0";
+    }
   }
 }
 

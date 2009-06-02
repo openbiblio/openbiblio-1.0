@@ -1,27 +1,10 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
-
+ 
   require_once("../shared/common.php");
+
   $temp_return_page = "";
   if (isset($_GET["RET"])){
     $_SESSION["returnPage"] = $_GET["RET"];
@@ -55,8 +38,8 @@
     </td>
     <td valign="top" class="noborder">
       <input type="text" name="username" size="20" maxlength="20"
-      value="<?php if (isset($postVars["username"])) echo $postVars["username"]; ?>" >
-      <font class="error"><?php if (isset($pageErrors["username"])) echo $pageErrors["username"]; ?></font>
+      value="<?php if (isset($postVars["username"])) echo H($postVars["username"]); ?>" >
+      <font class="error"><?php if (isset($pageErrors["username"])) echo H($pageErrors["username"]); ?></font>
     </td>
   </tr>
   <tr>
@@ -65,9 +48,9 @@
     </td>
     <td valign="top" class="noborder">
       <input type="password" name="pwd" size="20" maxlength="20"
-      value="<?php if (isset($postVars["pwd"])) echo $postVars["pwd"]; ?>" >
+      value="<?php if (isset($postVars["pwd"])) echo H($postVars["pwd"]); ?>" >
       <font class="error">
-      <?php if (isset($pageErrors["pwd"])) echo $pageErrors["pwd"]; ?></font>
+      <?php if (isset($pageErrors["pwd"])) echo H($pageErrors["pwd"]); ?></font>
     </td>
   </tr>
 

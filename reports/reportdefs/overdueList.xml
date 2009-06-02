@@ -14,12 +14,10 @@
   <sql>
     select member.last_name
            ,member.first_name
-           ,member.address1
-           ,member.address2
+           ,member.address
            ,member.home_phone
            ,member.work_phone
            ,member.email
-           ,member.school_grade
            ,biblio_copy.barcode_nmbr
            ,biblio.title
            ,biblio.author

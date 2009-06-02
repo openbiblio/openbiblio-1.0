@@ -3,7 +3,7 @@
      **************************************************************************************-->
 <br><br><br>
 </font>
-<font face="Arial, Helvetica, sans-serif" size="1" color="<?php echo OBIB_PRIMARY_FONT_COLOR;?>">
+<font face="Arial, Helvetica, sans-serif" size="1" color="<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>">
 <center>
   <br><br>
   Powered by OpenBiblio<br>

@@ -63,8 +63,7 @@
     <line indent="3.25">hours: <column name="library_hours"/></line>
     <line/>
     <line><column name="first_name"/> <column name="last_name"/></line>
-    <line><column name="address1"/> <column name="address2"/></line>
-    <line><column name="city"/> <column name="state"/>, <column name="zip"/></line>
+    <line><column name="address"/></line>
     <line/>
     <line>Dear <column name="first_name"/> <column name="last_name"/></line>
     <line/>

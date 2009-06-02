@@ -1,31 +1,14 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "circulation";
   $nav = "view";
   $focus_form_name = "barcodesearch";
   $focus_form_field = "barcodeNmbr";
 
-  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Member.php");
@@ -42,7 +25,7 @@
   #****************************************************************************
   $mbrid = $_GET["mbrid"];
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -52,17 +35,9 @@
   #****************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelect("mbr_classify_dm");
-  $mbrClassifyDm = $dmQ->fetchRows();
-  $dmQ->execSelect("material_type_dm");
-  $materialTypeDm = $dmQ->fetchRows();
-  // reseting row to top of same result set to get image_file.  This avoids having to do another select.
-  $dmQ->resetResult();
-  $materialImageFiles = $dmQ->fetchRows("image_file");
+  $mbrClassifyDm = $dmQ->getAssoc("mbr_classify_dm");
+  $materialTypeDm = $dmQ->getAssoc("material_type_dm");
+  $materialImageFiles = $dmQ->getAssoc("material_type_dm", "image_file");
   $dmQ->close();
 
   #****************************************************************************
@@ -70,15 +45,7 @@
   #****************************************************************************
   $mbrQ = new MemberQuery();
   $mbrQ->connect();
-  if ($mbrQ->errorOccurred()) {
-    $mbrQ->close();
-    displayErrorPage($mbrQ);
-  }
-  if (!$mbrQ->execSelect($mbrid)) {
-    $mbrQ->close();
-    displayErrorPage($mbrQ);
-  }
-  $mbr = $mbrQ->fetchMember();
+  $mbr = $mbrQ->get($mbrid);
   $mbrQ->close();
 
   #**************************************************************************
@@ -91,10 +58,10 @@
   <?php include("../css/style.php");?>
 </style>
 <meta name="description" content="OpenBiblio Library Automation System">
-<title>Checkouts for <?php echo $mbr->getFirstLastName();?></title>
+<title>Checkouts for <?php echo H($mbr->getFirstLastName());?></title>
 
 </head>
-<body bgcolor="<?php echo OBIB_PRIMARY_BG;?>" topmargin="5" bottommargin="5" leftmargin="5" rightmargin="5" marginheight="5" marginwidth="5" onLoad="self.focus();self.print();">
+<body bgcolor="<?php echo H(OBIB_PRIMARY_BG);?>" topmargin="5" bottommargin="5" leftmargin="5" rightmargin="5" marginheight="5" marginwidth="5" onLoad="self.focus();self.print();">
 
 <font class="primary">
 <table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -109,41 +76,41 @@
 <table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
   <tr>
     <td class="noborder" valign="top"><?php echo $loc->getText("mbrPrintCheckoutsHdr1");?></td>
-    <td width="100%" class="noborder" valign="top"><?php echo $today = date("F j, Y, g:i a");?></td>
+    <td width="100%" class="noborder" valign="top"><?php echo H(date("F j, Y, g:i a"));?></td>
   </tr>
   <tr>
     <td class="noborder" valign="top" nowrap><?php echo $loc->getText("mbrPrintCheckoutsHdr2");?></td>
-    <td class="noborder" valign="top"><?php echo $mbr->getFirstLastName();?></td>
+    <td class="noborder" valign="top"><?php echo H($mbr->getFirstLastName());?></td>
   </tr>
   <tr>
     <td class="noborder" valign="top" nowrap><?php echo $loc->getText("mbrPrintCheckoutsHdr3");?></td>
-    <td class="noborder" valign="top"><?php echo $mbr->getBarcodeNmbr();?></td>
+    <td class="noborder" valign="top"><?php echo H($mbr->getBarcodeNmbr());?></td>
   </tr>
   <tr>
     <td class="noborder" valign="top" nowrap><?php echo $loc->getText("mbrPrintCheckoutsHdr4");?></td>
-    <td class="noborder" valign="top"><?php echo $mbrClassifyDm[$mbr->getClassification()];?></td>
+    <td class="noborder" valign="top"><?php echo H($mbrClassifyDm[$mbr->getClassification()]);?></td>
   </tr>
 </table>
 <br>
 <table class="primary">
   <tr>
     <td class="primary" valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrViewOutHdr1"); ?>
+      <?php echo $loc->getText("mbrViewOutHdr1"); ?>
     </th>
     <td class="primary" valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrViewOutHdr2"); ?>
+      <?php echo $loc->getText("mbrViewOutHdr2"); ?>
     </th>
     <td class="primary" valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrViewOutHdr4"); ?>
+      <?php echo $loc->getText("mbrViewOutHdr4"); ?>
     </th>
     <td class="primary" valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrViewOutHdr5"); ?>
+      <?php echo $loc->getText("mbrViewOutHdr5"); ?>
     </th>
     <td class="primary" valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrViewOutHdr6"); ?>
+      <?php echo $loc->getText("mbrViewOutHdr6"); ?>
     </th>
     <td class="primary" valign="top" align="left">
-      <?php print $loc->getText("mbrViewOutHdr7"); ?>
+      <?php echo $loc->getText("mbrViewOutHdr7"); ?>
     </th>
   </tr>
 
@@ -165,7 +132,7 @@
 ?>
   <tr>
     <td class="primary" align="center" colspan="6">
-      <?php print $loc->getText("mbrViewNoCheckouts"); ?>
+      <?php echo $loc->getText("mbrViewNoCheckouts"); ?>
     </td>
   </tr>
 <?php
@@ -174,23 +141,23 @@
 ?>
   <tr>
     <td class="primary" valign="top" nowrap>
-      <?php echo $biblio->getStatusBeginDt();?>
+      <?php echo H($biblio->getStatusBeginDt());?>
     </td>
     <td class="primary" valign="top" nowrap>
-      <img src="../images/<?php echo $materialImageFiles[$biblio->getMaterialCd()];?>" width="20" height="20" border="0" align="middle" alt="<?php echo $materialTypeDm[$biblio->getMaterialCd()];?>">
-      <?php echo $materialTypeDm[$biblio->getMaterialCd()];?>
+      <img src="../images/<?php echo HURL($materialImageFiles[$biblio->getMaterialCd()]);?>" width="20" height="20" border="0" align="middle" alt="<?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>">
+      <?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblio->getTitle();?>
+      <?php echo H($biblio->getTitle());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblio->getAuthor();?>
+      <?php echo H($biblio->getAuthor());?>
     </td>
     <td class="primary" valign="top" nowrap="yes">
-      <?php echo $biblio->getDueBackDt();?>
+      <?php echo H($biblio->getDueBackDt());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblio->getDaysLate();?>
+      <?php echo H($biblio->getDaysLate());?>
     </td>
   </tr>
 <?php

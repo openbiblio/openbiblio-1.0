@@ -14,22 +14,18 @@
   <sql>
     select member.last_name
            ,member.first_name
-           ,member.address1
-           ,member.address2
+           ,member.address
            ,member.home_phone
            ,member.work_phone
            ,member.email
-           ,member.school_grade
            ,sum(member_account.amount) balance
     from   member, member_account
     where  member.mbrid = member_account.mbrid
     group by  member.last_name
            ,member.first_name
-           ,member.address1
-           ,member.address2
+           ,member.address
            ,member.home_phone
            ,member.work_phone
            ,member.email
-           ,member.school_grade
   </sql>
 </report>

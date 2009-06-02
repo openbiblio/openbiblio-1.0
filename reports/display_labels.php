@@ -1,25 +1,9 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002, 2003, 2004 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
 
   $tab = "reports";
   $nav = "runreport";
@@ -27,7 +11,6 @@
   // IE gets messed up if you send a cache control in the header of a pdf.  Therefore, the following
   // command will send no cache control.
   session_cache_limiter('private_no_expire'); 
-  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../lib/pdf/class.pdf.php");
   require_once("../functions/fileIOFuncs.php");
@@ -46,12 +29,12 @@
   function fatalError($msg=NULL) {
     global $rptid, $title, $baseSql, $label;
     $s = "Location: ../reports/report_criteria.php"
-         . "?rptid=".urlencode($rptid)
-         . "&title=".urlencode($title)
-         . "&sql=".urlencode($baseSql)
-         . "&label=".urlencode($label);
+         . "?rptid=".U($rptid)
+         . "&title=".U($title)
+         . "&sql=".U($baseSql)
+         . "&label=".U($label);
     if ($msg) {
-      $s .= '&msg='.urlencode($msg);
+      $s .= '&msg='.U($msg);
     }
     header($s);
     exit();
@@ -92,16 +75,16 @@
 //  header("Content-type: application/pdf");
 //  header("Content-Disposition: inline; filename=display_labels.pdf");
 
-/*echo "getId()=".$labelDef->getId();
-echo "<br>getTitle()=".$labelDef->getTitle();
-echo "<br>getFontType()=".$labelDef->getFontType();
-echo "<br>getFontSize()=".$labelDef->getFontSize();
-echo "<br>getFontSize()=".$labelDef->getUnitOfMeasure();
-echo "<br>getLeftMargin()=".$labelDef->getLeftMargin();
-echo "<br>getTopMargin()=".$labelDef->getTopMargin();
-echo "<br>getColumns()=".$labelDef->getColumns();
-echo "<br>getWidth()=".$labelDef->getWidth();
-echo "<br>getSubLabelCount()=".$labelDef->getSubLabelCount();
+/*echo "getId()=".H($labelDef->getId());
+echo "<br>getTitle()=".H($labelDef->getTitle());
+echo "<br>getFontType()=".H($labelDef->getFontType());
+echo "<br>getFontSize()=".H($labelDef->getFontSize());
+echo "<br>getFontSize()=".H($labelDef->getUnitOfMeasure());
+echo "<br>getLeftMargin()=".H($labelDef->getLeftMargin());
+echo "<br>getTopMargin()=".H($labelDef->getTopMargin());
+echo "<br>getColumns()=".H($labelDef->getColumns());
+echo "<br>getWidth()=".H($labelDef->getWidth());
+echo "<br>getSubLabelCount()=".H($labelDef->getSubLabelCount());
 exit();
 */
 
@@ -152,7 +135,7 @@ exit();
       foreach($subLabel->getLines() as $line) {
         $resultLine = $line->getFormattedText($array);
 
-//echo "list=".$line->isList()." groupBy=".$line->getGroupBy()." text=".$resultLine."<br>";
+//echo "list=".H($line->isList())." groupBy=".H($line->getGroupBy())." text=".H($resultLine)."<br>";
         
         $pdf->addTextWrap($subx,$suby,$subw,$fontSize,$resultLine);
 //      $pdf->addText($subx,$suby,$fontSize,$array[$line]);

@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /*********************************************************************************
  * Same as ctype_alnum without requiring PHP 4.3 or 4.2 with ctype turned on
  * @param String $text text to check
@@ -50,6 +33,9 @@ function ctypeAlnum($text){
 function moneyFormat($amount,$decimals){
   // get local info
   $localeInfo = localeconv();
+  if (!$localeInfo["negative_sign"]) {
+    $localeInfo["negative_sign"] = '-';
+  }
   if ($amount < 0) {
     $prefix = "n";
     $sign = $localeInfo["negative_sign"];
@@ -58,8 +44,17 @@ function moneyFormat($amount,$decimals){
     $sign = $localeInfo["positive_sign"];
   }
   $currencySymbol = $localeInfo["currency_symbol"];
+  if (!$currencySymbol) {
+    $currencySymbol = '$';
+  }
   $dec_point = $localeInfo["mon_decimal_point"];
+  if (!$dec_point) {
+    $dec_point = '.';
+  }
   $thousand_sep = $localeInfo["mon_thousands_sep"];
+  if (!$thousand_sep) {
+    $thousand_sep = ',';
+  }
   if ($localeInfo[$prefix."_sep_by_space"]) {
     $sep = " ";
   } else {
@@ -108,6 +103,9 @@ function moneyFormat($amount,$decimals){
     } else {
       $result = $result.$sep.$currencySymbol.$sign;
     }
+  } else {
+    # American-style default
+    $result = $currencySymbol.$sep.$sign.$result;
   }
   
   return $result;

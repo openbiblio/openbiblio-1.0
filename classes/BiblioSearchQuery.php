@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
 require_once("../classes/BiblioField.php");
@@ -94,7 +77,10 @@ class BiblioSearchQuery extends Query {
       if ($type == OBIB_SEARCH_BARCODE) {
         $criteria = $this->_getCriteria(array("biblio_copy.barcode_nmbr"),$words);
       } elseif ($type == OBIB_SEARCH_AUTHOR) {
-        $criteria = $this->_getCriteria(array("biblio.author","biblio.responsibility_stmt"),$words);
+        $join .= "left join biblio_field on biblio_field.bibid=biblio.bibid "
+                 . "and biblio_field.tag='700' "
+                 . "and (biblio_field.subfield_cd='a' or biblio_field.subfield_cd='b') ";
+        $criteria = $this->_getCriteria(array("biblio.author","biblio.responsibility_stmt","biblio_field.field_data"),$words);
       } elseif ($type == OBIB_SEARCH_SUBJECT) {
         $criteria = $this->_getCriteria(array("biblio.topic1","biblio.topic2","biblio.topic3","biblio.topic4","biblio.topic5"),$words);
       } else {
@@ -195,6 +181,7 @@ class BiblioSearchQuery extends Query {
     $sql .= ",biblio_copy.status_begin_dt ";
     $sql .= ",biblio_copy.due_back_dt ";
     $sql .= ",biblio_copy.mbrid ";
+    $sql .= ",biblio_copy.renewal_count ";
     $sql .= ",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late ";
     $sql .= "from biblio, biblio_copy ";
     $sql .= "where biblio.bibid = biblio_copy.bibid ";
@@ -264,6 +251,9 @@ class BiblioSearchQuery extends Query {
     }
     if (isset($array["days_late"])) {
       $bib->setDaysLate($array["days_late"]);
+    }
+    if (isset($array["renewal_count"])) {
+      $bib->setRenewalCount($array["renewal_count"]);
     }
 
     return $bib;

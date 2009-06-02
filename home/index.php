@@ -1,88 +1,71 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "home";
   $nav = "home";
 
-  require_once("../shared/common.php");
   require_once("../shared/header.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 ?>
-<h1><?php print $loc->getText("indexHeading"); ?></h1>
+<h1><?php echo $loc->getText("indexHeading"); ?></h1>
 
 <?php
-# print $loc->getText("searchResults",array("items"=>0))."<br>";
+# echo $loc->getText("searchResults",array("items"=>0))."<br>";
 ?>
 
-<?php print $loc->getText("indexIntro"); ?>
+<?php echo $loc->getText("indexIntro"); ?>
 
 <br><br>
 <table class="primary">
   <tr>
-    <th><?php print $loc->getText("indexTab"); ?></th><th align="left"><?php print $loc->getText("indexDesc"); ?></th>
+    <th><?php echo $loc->getText("indexTab"); ?></th><th align="left"><?php echo $loc->getText("indexDesc"); ?></th>
   </tr>
   <tr>
-    <td align="center" valign="top" class="primary"><?php print $loc->getText("indexCirc"); ?><br><br>
+    <td align="center" valign="top" class="primary"><?php echo $loc->getText("indexCirc"); ?><br><br>
       <img src="../images/circ.png" border="0" width="30" height="30"></td>
-    <td class="primary"><?php print $loc->getText("indexCircDesc1"); ?>
+    <td class="primary"><?php echo $loc->getText("indexCircDesc1"); ?>
       <ul>
-        <li><?php print $loc->getText("indexCircDesc2"); ?></li>
-        <li><?php print $loc->getText("indexCircDesc3"); ?></li>
-        <li><?php print $loc->getText("indexCircDesc4"); ?></li>
+        <li><?php echo $loc->getText("indexCircDesc2"); ?></li>
+        <li><?php echo $loc->getText("indexCircDesc3"); ?></li>
+        <li><?php echo $loc->getText("indexCircDesc4"); ?></li>
       </ul>
     </td>
   </tr>
   <tr>
-    <td align="center"  valign="top" class="primary"><?php print $loc->getText("indexCat"); ?><br><br>
+    <td align="center"  valign="top" class="primary"><?php echo $loc->getText("indexCat"); ?><br><br>
       <img src="../images/catalog.png" border="0" width="30" height="30"><br><br></td>
-    <td valign="top" class="primary"><?php print $loc->getText("indexCatDesc1"); ?>
+    <td valign="top" class="primary"><?php echo $loc->getText("indexCatDesc1"); ?>
       <ul>
-        <li><?php print $loc->getText("indexCatDesc2"); ?></li>
+        <li><?php echo $loc->getText("indexCatDesc2"); ?></li>
       </ul>
     </td>
   </tr>
   <tr>
-    <td align="center"  valign="top" class="primary"><?php print $loc->getText("indexAdmin"); ?><br><br>
+    <td align="center"  valign="top" class="primary"><?php echo $loc->getText("indexAdmin"); ?><br><br>
       <img src="../images/admin.png" border="0" width="30" height="30"></td>
-    <td class="primary"><?php print $loc->getText("indexAdminDesc1"); ?>
+    <td class="primary"><?php echo $loc->getText("indexAdminDesc1"); ?>
 
       <ul>
-        <li><?php print $loc->getText("indexAdminDesc2"); ?></li>
-        <li><?php print $loc->getText("indexAdminDesc3"); ?></li>
-        <li><?php print $loc->getText("indexAdminDesc4"); ?></li>
-        <li><?php print $loc->getText("indexAdminDesc5"); ?></li>
-        <li><?php print $loc->getText("indexAdminDesc6"); ?></li>
+        <li><?php echo $loc->getText("indexAdminDesc2"); ?></li>
+        <li><?php echo $loc->getText("indexAdminDesc3"); ?></li>
+        <li><?php echo $loc->getText("indexAdminDesc4"); ?></li>
+        <li><?php echo $loc->getText("indexAdminDesc5"); ?></li>
+        <li><?php echo $loc->getText("indexAdminDesc6"); ?></li>
       </ul>
     </td>
   </tr>
   <tr>
-    <td align="center"  valign="top" class="primary"><?php print $loc->getText("indexReports"); ?><br><br>
+    <td align="center"  valign="top" class="primary"><?php echo $loc->getText("indexReports"); ?><br><br>
       <img src="../images/reports.png" border="0" width="30" height="30"><br><br></td>
-    <td class="primary" valign="top"><?php print $loc->getText("indexReportsDesc1"); ?>
+    <td class="primary" valign="top"><?php echo $loc->getText("indexReportsDesc1"); ?>
 
       <ul>
-        <li><?php print $loc->getText("indexReportsDesc2"); ?></li>
-        <li><?php print $loc->getText("indexReportsDesc3"); ?></li>
+        <li><?php echo $loc->getText("indexReportsDesc2"); ?></li>
+        <li><?php echo $loc->getText("indexReportsDesc3"); ?></li>
       </ul>
     </td>
   </tr>

@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
 require_once("../classes/BiblioStatusHist.php");
@@ -133,6 +116,7 @@ class BiblioStatusHistQuery extends Query {
     $hist->setFirstName($array["first_name"]);
     $hist->setMbrBarcodeNmbr($array["mbr_barcode_nmbr"]);
     $hist->setDueBackDt($array["due_back_dt"]);
+    $hist->setRenewalCount($array["renewal_count"]);
     return $hist;
   }
 
@@ -153,7 +137,7 @@ class BiblioStatusHistQuery extends Query {
     } else {
       $sql .= "null, ";
     }
-    $sql .= $this->mkSQL("%N)", $hist->getMbrid());
+    $sql .= $this->mkSQL("%N, %N)", $hist->getMbrid(), $hist->getRenewalCount());
     if (!$this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr3"))) {
       return false;
     }
@@ -197,13 +181,7 @@ class BiblioStatusHistQuery extends Query {
    */
   function _purgeHistory($mbrid) {
     $setQ = new SettingsQuery();
-    $purgeMo = $setQ->getPurgeHistoryAfterMonths($this->_conn);
-    if ($setQ->errorOccurred()) {
-      $this->_error = $setQ->getError();
-      $this->_dbErrno = $setQ->getDbErrno();
-      $this->_dbError = $setQ->getDbError();
-      return false;
-    }
+    $purgeMo = $setQ->getPurgeHistoryAfterMonths($this);
     if ($purgeMo == 0) {
       return TRUE;
     }

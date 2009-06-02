@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
   require_once("../functions/formatFuncs.php");
 
 /******************************************************************************
@@ -39,25 +22,17 @@ class Member {
   var $_lastChangeDt = "";
   var $_lastChangeUserid = "";
   var $_lastChangeUsername = "";
+  var $_classification = "";
   var $_lastName = "";
   var $_lastNameError = "";
   var $_firstName = "";
   var $_firstNameError = "";
-  var $_address1 = "";
-  var $_address2 = "";
-  var $_city = "";
-  var $_state = "";
-  var $_zip = "";
-  var $_zipError = "";
-  var $_zipExt = "";
-  var $_zipExtError = "";
+  var $_email = "";
+  var $_address = "";
   var $_homePhone = "";
   var $_workPhone = "";
-  var $_email = "";
-  var $_classification = "";
-  var $_schoolGrade = "";
-  var $_schoolGradeError = "";
-  var $_schoolTeacher = "";
+  var $_custom = array();
+  
 
   /****************************************************************************
    * @return boolean true if data is valid, otherwise false.
@@ -81,32 +56,18 @@ class Member {
       $valid = false;
       $this->_firstNameError = "First name is required.";
     }
-    if (!is_numeric($this->_zip)) {
-      $valid = false;
-      $this->_zipError = "Zip code number must be numeric.";
-    }
-    if (strrpos($this->_zip,".")) {
-      $valid = false;
-      $this->_zipError = "Zip code number must not contain a decimal point.";
-    }
-    if (!is_numeric($this->_zipExt)) {
-      $valid = false;
-      $this->_zipExtError = "Zip code extension must be numeric.";
-    }
-    if (strrpos($this->_zipExt,".")) {
-      $valid = false;
-      $this->_zipExtError = "Zip code extension must not contain a decimal point.";
-    }
-    if (!is_numeric($this->_schoolGrade)) {
-      $valid = false;
-      $this->_schoolGradeError = "School grade must be numeric.";
-    }
-    if (strrpos($this->_schoolGrade,".")) {
-      $valid = false;
-      $this->_schoolGradeError = "School grade must not contain a decimal point.";
-    }
 
     return $valid;
+  }
+  
+  function getCustom($field) {
+    if (isset($this->_custom[$field])) {
+      return $this->_custom[$field];
+    }
+    return "";
+  }
+  function setCustom($field, $value) {
+    $this->_custom[$field] = $value;
   }
 
   /****************************************************************************
@@ -154,29 +115,8 @@ class Member {
   function getLastFirstName() {
     return $this->_lastName.",".$this->_firstName;
   }
-  function getAddress1() {
-    return $this->_address1;
-  }
-  function getAddress2() {
-    return $this->_address2;
-  }
-  function getCity() {
-    return $this->_city;
-  }
-  function getState() {
-    return $this->_state;
-  }
-  function getZip() {
-    return $this->_zip;
-  }
-  function getZipError() {
-    return $this->_zipError;
-  }
-  function getZipExt() {
-    return $this->_zipExt;
-  }
-  function getZipExtError() {
-    return $this->_zipExtError;
+  function getAddress() {
+    return $this->_address;
   }
   function getHomePhone() {
     return $this->_homePhone;
@@ -189,15 +129,6 @@ class Member {
   }
   function getClassification() {
     return $this->_classification;
-  }
-  function getSchoolGrade() {
-    return $this->_schoolGrade;
-  }
-  function getSchoolGradeError() {
-    return $this->_schoolGradeError;
-  }
-  function getSchoolTeacher() {
-    return $this->_schoolTeacher;
   }
 
   /****************************************************************************
@@ -237,39 +168,8 @@ class Member {
   function setFirstNameError($value) {
     $this->_firstNameError = trim($value);
   }
-  function setAddress1($value) {
-    $this->_address1 = trim($value);
-  }
-  function setAddress2($value) {
-    $this->_address2 = trim($value);
-  }
-  function setCity($value) {
-    $this->_city = trim($value);
-  }
-  function setState($value) {
-    $this->_state = trim($value);
-  }
-  function setZip($value) {
-    $temp = trim($value);
-    if ($temp == "") {
-      $this->_zip = 0;
-    } else {
-      $this->_zip = $temp;
-    }
-  }
-  function setZipError($value) {
-    $this->_zipError = trim($value);
-  }
-  function setZipExt($value) {
-    $temp = trim($value);
-    if ($temp == "") {
-      $this->_zipExt = 0;
-    } else {
-      $this->_zipExt = $temp;
-    }
-  }
-  function setZipExtError($value) {
-    $this->_zipExtError = trim($value);
+  function setAddress($value) {
+    $this->_address = trim($value);
   }
   function setHomePhone($value) {
     $this->_homePhone = trim($value);
@@ -283,21 +183,6 @@ class Member {
   function setClassification($value) {
     $this->_classification = trim($value);
   }
-  function setSchoolGrade($value) {
-    $temp = trim($value);
-    if ($temp == "") {
-      $this->_schoolGrade = 0;
-    } else {
-      $this->_schoolGrade = $temp;
-    }
-  }
-  function setSchoolGradeError($value) {
-    $this->_schoolGradeError = trim($value);
-  }
-  function setSchoolTeacher($value) {
-    $this->_schoolTeacher = trim($value);
-  }
-
 }
 
 ?>

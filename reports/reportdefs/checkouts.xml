@@ -20,7 +20,6 @@
            ,member.barcode_nmbr
            ,member.last_name
            ,member.first_name
-           ,member.school_grade
     from   biblio, biblio_copy, member
     where  biblio.bibid = biblio_copy.bibid
            and biblio_copy.mbrid = member.mbrid

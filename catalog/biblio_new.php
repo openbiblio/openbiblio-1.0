@@ -1,114 +1,140 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
 
-  $tab = "cataloging";
-  $nav = "newconfirm";
-  $restrictInDemo = true;
-  require_once("../shared/common.php");
-  require_once("../shared/logincheck.php");
+require_once("../shared/common.php");
 
+$tab = "cataloging";
+$nav = "new";
+
+require_once("../classes/Localize.php");
+$loc = new Localize(OBIB_LOCALE,$tab);
+
+if (!isset($_REQUEST['posted'])) {
+  require_once("../shared/logincheck.php");
+  showForm(array('opacFlg'=>'CHECKED'));
+} else {
+  $postVars = $_POST;
+  if ($_REQUEST['posted'] == 'media_change') {
+    require_once("../shared/logincheck.php");
+    showForm($postVars);
+  } else {
+    $restrictInDemo = true;
+    require_once("../shared/logincheck.php");
+    $biblio = postVarsToBiblio($postVars);
+    $pageErrors = array();
+    if (!$biblio->validateData()) {
+      $pageErrors = array_merge($pageErrors, biblioToPageErrors($biblio));
+    }
+    $pageErrors = array_merge($pageErrors, customFieldErrors($biblio));
+    if (!empty($pageErrors)) {
+     showForm($postVars, $pageErrors);
+    } else {
+      $bibid = insertBiblio($biblio);
+      $msg = $loc->getText("biblioNewSuccess");
+      header("Location: ../shared/biblio_view.php?bibid=".U($bibid)."&msg=".U($msg));
+    }
+  }
+}
+
+function postVarsToBiblio($post) {
   require_once("../classes/Biblio.php");
   require_once("../classes/BiblioField.php");
-  require_once("../classes/BiblioQuery.php");
-  require_once("../functions/errorFuncs.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
-
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
-
-  if (count($_POST) == 0) {
-    header("Location: ../catalog/biblio_new_form.php");
-    exit();
-  }
-
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
+  
   $biblio = new Biblio();
-  $biblio->setMaterialCd($_POST["materialCd"]);
-  $biblio->setCollectionCd($_POST["collectionCd"]);
-  $biblio->setCallNmbr1($_POST["callNmbr1"]);
-  $biblio->setCallNmbr2($_POST["callNmbr2"]);
-  $biblio->setCallNmbr3($_POST["callNmbr3"]);
+  $biblio->setMaterialCd($post["materialCd"]);
+  $biblio->setCollectionCd($post["collectionCd"]);
+  $biblio->setCallNmbr1($post["callNmbr1"]);
+  $biblio->setCallNmbr2($post["callNmbr2"]);
+  $biblio->setCallNmbr3($post["callNmbr3"]);
   $biblio->setLastChangeUserid($_SESSION["userid"]);
-  $biblio->setOpacFlg(isset($_POST["opacFlg"]));
-  $_POST["callNmbr1"] = $biblio->getCallNmbr1();
-  $_POST["callNmbr2"] = $biblio->getCallNmbr2();
-  $_POST["callNmbr3"] = $biblio->getCallNmbr3();
-  $indexes = $_POST["indexes"];
+  $biblio->setOpacFlg(isset($post["opacFlg"]));
+  $indexes = $post["indexes"];
   foreach($indexes as $index) {
-    $tag = $_POST["tags"][$index];
-    $subfieldCd = $_POST["subfieldCds"][$index];
-    $requiredFlg = $_POST["requiredFlgs"][$index];
-    $value = $_POST["values"][$index];
-    # echo "<br>index=".$index." tag=".$tag." subfieldCd=".$subfieldCd." value=".$value;
+    $value = $post["values"][$index];
+    $fieldid = $post["fieldIds"][$index];
+    $tag = $post["tags"][$index];
+    $subfieldCd = $post["subfieldCds"][$index];
+    $requiredFlg = $post["requiredFlgs"][$index];
     $biblioFld = new BiblioField();
+    $biblioFld->setFieldid($fieldid);
     $biblioFld->setTag($tag);
     $biblioFld->setSubfieldCd($subfieldCd);
     $biblioFld->setIsRequired($requiredFlg);
     $biblioFld->setFieldData($value);
-    $_POST[$index] = $biblioFld->getFieldData();
     $biblio->addBiblioField($index,$biblioFld);
   }
-  $validData = $biblio->validateData();
-  if (!$validData) {
-    $pageErrors["callNmbr1"] = $biblio->getCallNmbrError();
-    $biblioFlds = $biblio->getBiblioFields();
-    foreach($indexes as $index) {
-      if ($biblioFlds[$index]->getFieldDataError() != "") {
-        $pageErrors[$index] = $biblioFlds[$index]->getFieldDataError();
+  return $biblio;
+}
+function biblioToPageErrors($biblio) {
+  $pageErrors = array();
+  $pageErrors["callNmbr1"] = $biblio->getCallNmbrError();
+  $biblioFlds = $biblio->getBiblioFields();
+  foreach($biblio->getBiblioFields() as $index => $field) {
+    if ($field->getFieldDataError() != "") {
+      $pageErrors[$index] = $field->getFieldDataError();
+    }
+  }
+  return $pageErrors;
+}
+function customFieldErrors($biblio) {
+  require_once("../classes/MaterialFieldQuery.php");
+  $matQ = new MaterialFieldQuery();
+  $matQ->connect();
+  $rows = $matQ->get($biblio->getMaterialCd());
+  $matQ->close();
+  $errors = array();
+  $fields = $biblio->getBiblioFields();
+  foreach ($rows as $row) {
+    $idx = sprintf('%03d%s', $row['tag'], $row['subfieldCd']);
+    if ($row['required'] == 'Y') {
+      if (!isset($fields[$idx]) or $fields[$idx]->getFieldData() == '') {
+        $errors[$idx] = 'Field is required.';
       }
     }
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../catalog/biblio_new_form.php");
-    exit();
   }
-
-  #**************************************************************************
-  #*  Insert new bibliography
-  #**************************************************************************
+  return $errors;
+}
+function insertBiblio($biblio) {
+  require_once("../classes/BiblioQuery.php");
+  
   $biblioQ = new BiblioQuery();
   $biblioQ->connect();
   if ($biblioQ->errorOccurred()) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
-  if (!$bibid = $biblioQ->insert($biblio)) {
+  $bibid = $biblioQ->insert($biblio);
+  if (!$bibid) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
   $biblioQ->close();
+  return $bibid;
+}
+function showForm($postVars, $pageErrors=array()) {
+  global $tab, $nav, $loc;
+  $helpPage = "biblioEdit";
+  $focus_form_name = "newbiblioform";
+  $focus_form_field = "materialCd";
+  require_once("../shared/header.php");
 
-  #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
+  $cancelLocation = "../catalog/index.php";
+  $headerWording=$loc->getText("biblioNewFormLabel");
+?>
+  <script language="JavaScript">
+    <!--
+      function matCdReload(){
+        document.newbiblioform.posted.value='media_change';
+        document.newbiblioform.submit();
+      }
+    //-->
+  </script>
+  <form name="newbiblioform" method="POST" action="../catalog/biblio_new.php">
+<?php
+  include("../catalog/biblio_fields.php");
+  include("../shared/footer.php");
+}
 
-  $msg = $loc->getText("biblioNewSuccess");
-  $msg = urlencode($msg);
-  header("Location: ../shared/biblio_view.php?bibid=".$bibid."&msg=".$msg);
-  exit();
 ?>

@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /******************************************************************************
  * BiblioSearch represents a library bibliography search result.
  *
@@ -55,6 +38,7 @@ class BiblioSearch {
   var $_statusBeginDt = "";
   var $_dueBackDt = "";
   var $_daysLate = "";
+  var $_renewalCount = "";
 
   /****************************************************************************
    * Getter methods for all fields
@@ -139,6 +123,9 @@ class BiblioSearch {
   }
   function getDaysLate() {
     return $this->_daysLate;
+  }
+  function getRenewalCount() {
+    return $this->_renewalCount;
   }
 
   /****************************************************************************
@@ -225,6 +212,9 @@ class BiblioSearch {
   }
   function setDaysLate($value) {
     $this->_daysLate = trim($value);
+  }
+  function setRenewalCount($value) {
+    $this->_renewalCount = trim($value);
   }
 }
 

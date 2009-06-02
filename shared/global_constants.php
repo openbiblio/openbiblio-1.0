@@ -32,6 +32,7 @@ define("OBIB_SEARCH_NAME","5");
  ****************************************************************************
  */
 define("OBIB_CODE_VERSION","CVS");
+define("OBIB_LATEST_DB_VERSION","0.5.2");
 define("OBIB_DEFAULT_STATUS","in");
 define("OBIB_STATUS_IN","in");
 define("OBIB_STATUS_OUT","out");
@@ -49,5 +50,8 @@ define("OBIB_MYSQL_DATETIME_FORMAT","Y-m-d H:i:s");
 define("OBIB_MYSQL_DATE_TYPE","date");
 define("OBIB_MYSQL_DATE_FORMAT","Y-m-d");
 
-define("OBIB_LOCALE_ROOT","../locale")
+define("OBIB_LOCALE_ROOT","../locale");
+
+# Not fully implemented yet.
+define("DB_TABLENAME_PREFIX", "");
 ?>

@@ -1,29 +1,12 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "admin";
   $nav = "collections";
   $restrictInDemo = true;
-  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Dm.php");
@@ -68,14 +51,7 @@
   #**************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  if (!$dmQ->update("collection_dm",$dm)) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
+  $dmQ->update("collection_dm",$dm);
   $dmQ->close();
 
   #**************************************************************************
@@ -89,7 +65,7 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-<? echo $loc->getText("adminCollections_delStart"); ?><?php echo $dm->getDescription();?><? echo $loc->getText("adminCollections_editEnd"); ?><br><br>
-<a href="../admin/collections_list.php"><? echo $loc->getText("adminCollections_delReturn"); ?></a>
+<?php echo $loc->getText("adminCollections_delStart"); ?><?php echo H($dm->getDescription());?><?php echo $loc->getText("adminCollections_editEnd"); ?><br><br>
+<a href="../admin/collections_list.php"><?php echo $loc->getText("adminCollections_delReturn"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

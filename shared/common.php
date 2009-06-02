@@ -1,30 +1,21 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2005 Micah Stetson
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
-  require_once("../shared/global_constants.php");
-  require_once("../shared/read_settings.php");
-
-  session_start();
-
+ 
+  # Forcibly disable register_globals
+  if (ini_get('register_globals')) {
+    foreach ($_REQUEST as $k=>$v) {
+      unset(${$k});
+    }
+    foreach ($_ENV as $k=>$v) {
+      unset(${$k});
+    }
+    foreach ($_SERVER as $k=>$v) {
+      unset(${$k});
+    }
+  }
+  
   /****************************************************************************
    * Cover up for the magic_quotes disaster.
    * Modified from ryan@wonko.com.
@@ -46,4 +37,34 @@
     $_COOKIE = array_map("magicSlashes", $_COOKIE);
     $_REQUEST = array_map("magicSlashes", $_REQUEST);
   }
+  
+  # Escaping shorthands
+  function H($s) {
+    return htmlspecialchars($s, ENT_QUOTES);
+  }
+  function HURL($s) {
+    return H(urlencode($s));
+  }
+  function U($s) {
+    return urlencode($s);
+  }
+  
+  # Error handling
+  require_once("../classes/Error.php");
+  
+  # Load settings
+  require_once("../shared/global_constants.php");
+  
+  if (!isset($doing_install) or !$doing_install) {
+    require_once("../shared/read_settings.php");
+
+    session_start();
+    # Forcibly disable register_globals
+    if (ini_get('register_globals')) {
+      foreach ($_SESSION as $k=>$v) {
+        unset(${$k});
+      }
+    }
+  }
+
 ?>

@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /******************************************************************************
  * Dm represents a domain table row.
  *
@@ -37,16 +20,17 @@ class Dm {
   var $_daysDueBackError = "";
   var $_dailyLateFee = "0";
   var $_dailyLateFeeError = "";
-  var $_adultCheckoutLimit = "0";
-  var $_adultCheckoutLimitError = "";
-  var $_juvenileCheckoutLimit = "0";
-  var $_juvenileCheckoutLimitError = "";
   var $_imageFile = "";
+  var $_checkoutLimit = 0;
+  var $_renewalLimit = 0;
+  var $_maxFines = 0;
   var $_count = "0";
 
   /****************************************************************************
    * @return boolean true if data is valid, otherwise false.
    * @access public
+   *
+   * TODO: Error responses need to be internationalised
    ****************************************************************************
    */
   function validateData() {
@@ -55,35 +39,41 @@ class Dm {
       $valid = false;
       $this->_descriptionError = "Description is required.";
     }
-    if (!is_numeric($this->_daysDueBack)) {
-      $valid = false;
-      $this->_daysDueBackError = "Days due back must be numeric.";
-    } elseif ($this->_daysDueBack < 0) {
-      $valid = false;
-      $this->_daysDueBackError = "Days due back can not be less than zero.";
-    }
-    if (!is_numeric($this->_dailyLateFee)) {
-      $valid = false;
-      $this->_dailyLateFeeError = "Daily late fee must be numeric.";
-    } elseif ($this->_dailyLateFee < 0) {
-      $valid = false;
-      $this->_dailyLateFeeError = "Daily late fee can not be less than zero.";
-    }
-    if (!is_numeric($this->_adultCheckoutLimit)) {
-      $valid = false;
-      $this->_adultCheckoutLimitError = "Adult checkout limit must be numeric.";
-    } elseif ($this->_adultCheckoutLimit < 0) {
-      $valid = false;
-      $this->_adultCheckoutLimitError = "Adult checkout limit can not be less than zero.";
-    }
-    if (!is_numeric($this->_juvenileCheckoutLimit)) {
-      $valid = false;
-      $this->_juvenileCheckoutLimitError = "Juvenile checkout limit must be numeric.";
-    } elseif ($this->_juvenileCheckoutLimit < 0) {
-      $valid = false;
-      $this->_juvenileCheckoutLimitError = "Juvenile checkout limit can not be less than zero.";
-    }
+    $this->_validateFieldNumericAndPositiveOrZero($valid,
+                $this->_daysDueBack,
+                $this->_daysDueBackError,
+                "Days due back must be numeric.",
+                "Days due back can not be less than zero.");
+    $this->_validateFieldNumericAndPositiveOrZero($valid,
+                $this->_dailyLateFee,
+                $this->_dailyLateFeeError,
+                "Daily late fee must be numeric.",
+                "Daily late fee can not be less than zero.");
     return $valid;
+  }
+
+  /****************************************************************************
+   * Validation Function. Ensures the specified field is numeric and a positive
+   * number (zero is ok).
+   *
+   * @param boolean $valid                 Set to false if the specified field is not validate
+   * @param string  $fieldToValidate       Specified field to validate
+   * @param string  $errorResponse         Populated with the appropriate error message if validation fails
+   * @param string  $mustBeNumericErrorMsg Error Message to use on a numeric validation failure
+   * @param string  $mustBePositiveOrZeroErrorMsg Error Message to use on a positive or zero validation failure
+   *
+   * @return void
+   * @access private
+   ****************************************************************************
+   */
+  function _validateFieldNumericAndPositiveOrZero(&$valid, &$fieldToValidate, &$errorResponse, $mustBeNumericErrorMsg, $mustBePositiveOrZeroErrorMsg) {
+    if (!is_numeric($fieldToValidate)) {
+      $valid = false;
+      $errorResponse = $mustBeNumericErrorMsg;
+    } elseif ($fieldToValidate < 0) {
+      $valid = false;
+      $errorResponse = $mustBeGtErrorMsg;
+    }
   }
 
   /****************************************************************************
@@ -116,23 +106,39 @@ class Dm {
   function getDailyLateFeeError() {
     return $this->_dailyLateFeeError;
   }
-  function getAdultCheckoutLimit() {
-    return $this->_adultCheckoutLimit;
-  }
-  function getAdultCheckoutLimitError() {
-    return $this->_adultCheckoutLimitError;
-  }
-  function getJuvenileCheckoutLimit() {
-    return $this->_juvenileCheckoutLimit;
-  }
-  function getJuvenileCheckoutLimitError() {
-    return $this->_juvenileCheckoutLimitError;
-  }
   function getImageFile() {
     return $this->_imageFile;
   }
+  function getCheckoutLimit() {
+    return $this->_checkoutLimit;
+  }
+  function getRenewalLimit() {
+    return $this->_renewalLimit;
+  }
+  function getMaxFines() {
+    return $this->_maxFines;
+  }
   function getCount() {
     return $this->_count;
+  }
+
+  /****************************************************************************
+   * Generic setter method for numeric fields. Ensures the value set is trimmed,
+   * and defaulting to 0 if an empty field is passed.
+   *
+   * @param string $valueToSet New value to set
+   * @param string $destinationField The destination field
+   *
+   * @return void
+   * @access private
+   ****************************************************************************
+   */
+  function _setNumeric(&$valueToSet, &$destinationField) {
+    if (trim($valueToSet) == "") {
+      $destinationField = "0";
+    } else {
+      $destinationField = trim($valueToSet);
+    }
   }
 
   /****************************************************************************
@@ -155,57 +161,38 @@ class Dm {
     $this->_defaultFlg = trim($value);
   }
   function setDaysDueBack($value) {
-    if (trim($value) == "") {
-      $this->_daysDueBack = "0";
-    } else {
-      $this->_daysDueBack = trim($value);
-    }
+    $this->_setNumeric($value, $this->_daysDueBack);
   }
   function setDaysDueBackError($value) {
     $this->_daysDueBackError = trim($value);
   }
   function setDailyLateFee($value) {
-    if (trim($value) == "") {
-      $this->_dailyLateFee = "0";
-    } else {
-      $this->_dailyLateFee = trim($value);
-    }
+    $this->_setNumeric($value, $this->_dailyLateFee);
   }
   function setDailyLateFeeError($value) {
     $this->_dailyLateFeeError = trim($value);
   }
-  function setAdultCheckoutLimit($value) {
-    if (trim($value) == "") {
-      $this->_adultCheckoutLimit = "0";
-    } else {
-      $this->_adultCheckoutLimit = trim($value);
-    }
-  }
-  function setAdultCheckoutLimitError($value) {
-    $this->_adultCheckoutLimitError = trim($value);
-  }
-  function setJuvenileCheckoutLimit($value) {
-    if (trim($value) == "") {
-      $this->_juvenileCheckoutLimit = "0";
-    } else {
-      $this->_juvenileCheckoutLimit = trim($value);
-    }
-  }
-  function setJuvenileCheckoutLimitError($value) {
-    $this->_juvenileCheckoutLimitError = trim($value);
-  }
   function setImageFile($value) {
-    $this->_imageFile = trim($value);
+    $temp = trim($value);
+    $fileloc = "../images/$temp";
+    if (($temp == "") or (!file_exists($fileloc))) {
+      $this->_imageFile = "shim.gif";
+    } else {
+      $this->_imageFile = $temp;
+    }
+  }
+  function setCheckoutLimit($value) {
+    $this->_checkoutLimit = trim($value);
+  }
+  function setRenewalLimit($value) {
+    $this->_renewalLimit = trim($value);
+  }
+  function setMaxFines($value) {
+    $this->_maxFines = trim($value);
   }
   function setCount($value) {
-    if (trim($value) == "") {
-      $this->_count = "0";
-    } else {
-      $this->_count = trim($value);
-    }
+    $this->_setNumeric($value, $this->_count);
   }
-
-
 }
 
 ?>

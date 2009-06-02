@@ -1,29 +1,12 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "admin";
   $nav = "materials";
   $restrictInDemo = true;
-  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Dm.php");
@@ -48,17 +31,11 @@
   $_POST["code"] = $dm->getCode();
   $dm->setDescription($_POST["description"]);
   $_POST["description"] = $dm->getDescription();
-  $dm->setAdultCheckoutLimit($_POST["adultCheckoutLimit"]);
-  $_POST["adultCheckoutLimit"] = $dm->getAdultCheckoutLimit();
-  $dm->setJuvenileCheckoutLimit($_POST["juvenileCheckoutLimit"]);
-  $_POST["juvenileCheckoutLimit"] = $dm->getJuvenileCheckoutLimit();
   $dm->setImageFile($_POST["imageFile"]);
   $_POST["imageFile"] = $dm->getImageFile();
 
   if (!$dm->validateData()) {
     $pageErrors["description"] = $dm->getDescriptionError();
-    $pageErrors["adultCheckoutLimit"] = $dm->getAdultCheckoutLimitError();
-    $pageErrors["juvenileCheckoutLimit"] = $dm->getJuvenileCheckoutLimitError();
     $_SESSION["postVars"] = $_POST;
     $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../admin/materials_edit_form.php");
@@ -70,14 +47,7 @@
   #**************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  if (!$dmQ->update("material_type_dm",$dm)) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
+  $dmQ->update("material_type_dm",$dm);
   $dmQ->close();
 
   #**************************************************************************
@@ -91,7 +61,7 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-<? echo $loc->getText("admin_materials_delMaterialType"); ?><?php echo $dm->getDescription();?><? echo $loc->getText("admin_materials_editEnd"); ?><br><br>
-<a href="../admin/materials_list.php"><? echo $loc->getText("admin_materials_Return"); ?></a>
+<?php echo $loc->getText("admin_materials_delMaterialType"); ?><?php echo H($dm->getDescription());?><?php echo $loc->getText("admin_materials_editEnd"); ?><br><br>
+<a href="../admin/materials_list.php"><?php echo $loc->getText("admin_materials_Return"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

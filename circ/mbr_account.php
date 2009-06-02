@@ -1,31 +1,14 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "circulation";
   $nav = "account";
   $focus_form_name = "accttransform";
   $focus_form_field = "transactionTypeCd";
 
-  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../functions/formatFuncs.php");
   require_once("../shared/logincheck.php");
@@ -48,7 +31,7 @@
   #****************************************************************************
   $mbrid = $_GET["mbrid"];
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -58,12 +41,7 @@
   #****************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelect("transaction_type_dm");
-  $mbrClassifyDm = $dmQ->fetchRows();
+  $mbrClassifyDm = $dmQ->getAssoc("transaction_type_dm");
   $dmQ->close();
 
   #****************************************************************************
@@ -111,7 +89,7 @@
     </td>
   </tr>
 </table>
-<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>">
+<input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>">
 </form>
 
 <?php 
@@ -131,26 +109,26 @@
 
 ?>
 
-<h1><?php print $loc->getText("mbrAccountHead1"); ?></h1>
+<h1><?php echo $loc->getText("mbrAccountHead1"); ?></h1>
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrAccountHdr1"); ?>
+      <?php echo $loc->getText("mbrAccountHdr1"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrAccountHdr2"); ?>
+      <?php echo $loc->getText("mbrAccountHdr2"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrAccountHdr3"); ?>
+      <?php echo $loc->getText("mbrAccountHdr3"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrAccountHdr4"); ?>
+      <?php echo $loc->getText("mbrAccountHdr4"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrAccountHdr5"); ?>
+      <?php echo $loc->getText("mbrAccountHdr5"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrAccountHdr6"); ?>
+      <?php echo $loc->getText("mbrAccountHdr6"); ?>
     </th>
   </tr>
 
@@ -159,14 +137,14 @@
 ?>
   <tr>
     <td class="primary" align="center" colspan="6">
-      <?php print $loc->getText("mbrAccountNoTrans"); ?>
+      <?php echo $loc->getText("mbrAccountNoTrans"); ?>
     </td>
   </tr>
 <?php
   } else {
     $bal = 0;
     ?>
-    <tr><td class="primary" colspan="5"><?php print $loc->getText("mbrAccountOpenBal"); ?></td><td class="primary"><?php echo moneyFormat($bal,2);?></td></tr>
+    <tr><td class="primary" colspan="5"><?php echo $loc->getText("mbrAccountOpenBal"); ?></td><td class="primary"><?php echo H(moneyFormat($bal,2));?></td></tr>
 
     <?php
     while ($trans = $transQ->fetchRow()) {
@@ -174,22 +152,22 @@
 ?>
   <tr>
     <td class="primary" valign="top" >
-      <a href="../circ/mbr_transaction_del_confirm.php?mbrid=<?php echo $mbrid;?>&transid=<?php echo $trans->getTransid();?>"><?php echo $loc->getText("mbrAccountDel");?></a>
+      <a href="../circ/mbr_transaction_del_confirm.php?mbrid=<?php echo HURL($mbrid);?>&amp;transid=<?php echo HURL($trans->getTransid());?>"><?php echo $loc->getText("mbrAccountDel");?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $trans->getCreateDt();?>
+      <?php echo H($trans->getCreateDt());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $trans->getTransactionTypeDesc();?>
+      <?php echo H($trans->getTransactionTypeDesc());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $trans->getDescription();?>
+      <?php echo H($trans->getDescription());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo moneyFormat($trans->getAmount(),2);?>
+      <?php echo H(moneyFormat($trans->getAmount(),2));?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo moneyFormat($bal,2);?>
+      <?php echo H(moneyFormat($bal,2));?>
     </td>
   </tr>
 <?php

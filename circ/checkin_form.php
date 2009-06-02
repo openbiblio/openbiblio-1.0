@@ -1,27 +1,12 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "circulation";
   $nav = "checkin";
+  $helpPage = "checkin";
   $focus_form_name = "barcodesearch";
   $focus_form_field = "barcodeNmbr";
 
@@ -31,7 +16,6 @@
   } 
   $startTm = getmicrotime();
 */
-  require_once("../shared/common.php");
 
 /*
   $endTm = getmicrotime();
@@ -81,7 +65,8 @@ function checkin(massCheckinFlg)
     <td nowrap="true" class="primary">
       <?php echo $loc->getText("checkinFormBarcode"); ?>
       <?php printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
-      <input type="hidden" name="mbrid" value="<?php echo $mbrid;?>">
+        <a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"><?php echo $loc->getText("indexSearch"); ?></a>
+      <input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>">
       <input type="submit" value="<?php echo $loc->getText("checkinFormShelveButton"); ?>" class="button">
     </td>
   </tr>
@@ -91,7 +76,7 @@ function checkin(massCheckinFlg)
 <?php
   if (isset($_GET["msg"])){
     echo "<font class=\"error\">";
-    echo $_GET["msg"]."</font>";
+    echo H($_GET["msg"])."</font>";
   }
 ?>
 
@@ -148,19 +133,19 @@ function checkin(massCheckinFlg)
 ?>
   <tr>
     <td class="primary" valign="top" align="center">
-      <input type="checkbox" name="bibid=<?php echo $biblio->getBibid();?>&copyid=<?php echo $biblio->getCopyid();?>" value="copyid">
+      <input type="checkbox" name="bibid=<?php echo HURL($biblio->getBibid());?>&amp;copyid=<?php echo HURL($biblio->getCopyid());?>" value="copyid">
     </td>
     <td class="primary" valign="top" nowrap="yes">
-      <?php echo $biblio->getStatusBeginDt();?>
+      <?php echo H($biblio->getStatusBeginDt());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblio->getBarcodeNmbr();?>
+      <?php echo H($biblio->getBarcodeNmbr());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblio->getTitle();?>
+      <?php echo H($biblio->getTitle());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblio->getAuthor();?>
+      <?php echo H($biblio->getAuthor());?>
     </td>
   </tr>
 <?php

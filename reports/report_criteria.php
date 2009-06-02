@@ -1,30 +1,13 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "reports";
   $focus_form_name = "reportcriteriaform";
   $focus_form_field = "fieldId1";
 
-  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   require_once("../functions/inputFuncs.php");
   require_once("../classes/ReportQuery.php");
@@ -45,18 +28,18 @@
 
   function printCriteriaFields($index,&$fieldIds,&$fieldNames,&$fieldTypes,&$fieldNumericFlgs,&$postVars,&$pageErrors,&$loc,&$fieldValuebVisibility){
     $fldIndex = "fieldId".$index;
-    echo "<select name=\"".$fldIndex."\">";
+    echo "<select name=\"".H($fldIndex)."\">";
     echo "<option value=\"\"";
     if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == "")) echo " selected";
     echo " ></option>";
     foreach($fieldIds as $fldid) {
       $fld = $fldid." ".$fieldTypes[$fldid]." ".$fieldNumericFlgs[$fldid];
-      echo "<option value=\"".$fld."\"";
+      echo "<option value=\"".H($fld)."\"";
       if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == $fld)) echo " selected";
       echo " >".$loc->getText($fldid)."</option>";
     }
     echo "</select>";
-    echo " <select name=\"comparitor".$index."\" onchange=\"comparitorOnChange(this,".$index.")\";>";
+    echo " <select name=\"comparitor".H($index)."\" onchange=\"comparitorOnChange(this,".H(addslashes($index)).")\";>";
     echo "<option value=\"eq\" ";
     if ($postVars["comparitor".$index] == "eq") echo "selected";
     echo ">".$loc->getText("reportCriteriaEQ")."</option>";
@@ -80,31 +63,31 @@
     echo ">".$loc->getText("reportCriteriaBT")."</option>";
     echo "</select> ";
     printInputText("fieldValue".$index."a",15,80,$postVars,$pageErrors);
-    echo"<span id=\"and".$index."\" style=\"visibility:".$fieldValuebVisibility[$index].";\"> ".$loc->getText("reportCriteriaAnd")." </span>";
+    echo"<span id=\"and".H($index)."\" style=\"visibility:".H($fieldValuebVisibility[$index]).";\"> ".$loc->getText("reportCriteriaAnd")." </span>";
     printInputText("fieldValue".$index."b",15,80,$postVars,$pageErrors,$fieldValuebVisibility[$index]);
   }
 
   function printSortFields($index,&$fieldIds,&$postVars,&$pageErrors,&$loc){
     $fldIndex = "sortOrder".$index;
-    echo "<select name=\"".$fldIndex."\">";
+    echo "<select name=\"".H($fldIndex)."\">";
     echo "<option value=\"\"";
     if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == "")) echo " selected";
     echo " ></option>";
     foreach($fieldIds as $fldid) {
-      echo "<option value=\"".$fldid."\"";
+      echo "<option value=\"".H($fldid)."\"";
       if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == $fldid)) echo " selected";
       echo " >".$loc->getText($fldid)."</option>";
     }
     echo "</select>";
     
     $fldIndex = "sortDir".$index;
-    echo "<input type=\"radio\" name=\"".$fldIndex."\" value=\"asc\"";
+    echo "<input type=\"radio\" name=\"".H($fldIndex)."\" value=\"asc\"";
     if ((!isset($postVars[$fldIndex]) or
       (isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == "asc"))) {
       echo " checked";
     }
     echo ">".$loc->getText("reportCriteriaAscending")."</input>";
-    echo "<input type=\"radio\" name=\"".$fldIndex."\" value=\"desc\"";
+    echo "<input type=\"radio\" name=\"".H($fldIndex)."\" value=\"desc\"";
     if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == "desc")) {
       echo " checked";
     }
@@ -113,9 +96,9 @@
 
   function printOutputFields(&$fieldIds,&$postVars,&$pageErrors,&$loc){
     $fldIndex = "outputType";
-    echo "<select name=\"".$fldIndex."\">";
+    echo "<select name=\"".H($fldIndex)."\">";
     foreach($fieldIds as $fldid) {
-      echo "<option value=\"".$fldid."\"";
+      echo "<option value=\"".H($fldid)."\"";
       if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == $fldid)) echo " selected";
       echo " >".$loc->getText($fldid)."</option>";
     }
@@ -143,7 +126,7 @@
   #****************************************************************************
   $rptid = $_GET["rptid"];
   $title = $_GET["title"];
-  $sql = stripslashes($_GET["sql"]);
+  $sql = $_GET["sql"];
   if (isset($_GET["label"]) and $_GET["label"]!="") {
     $nav = "labellist";
     $label = $_GET["label"];
@@ -170,7 +153,7 @@
     $showStartLabelFld = FALSE;
   }
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -239,15 +222,15 @@
   include("../shared/header.php");
 ?>
 
-<h1><?php echo $title.":";?></h1>
+<h1><?php echo H($title).":";?></h1>
 
 <?php echo $msg ?>
 
-<form name="reportcriteriaform" method="POST" action="<?php echo $okAction; ?>">
+<form name="reportcriteriaform" method="POST" action="<?php echo H($okAction); ?>">
 <table class="primary">
   <tr>
     <th align="left" colspan="2" nowrap="yes">
-      <?php print $loc->getText("reportCriteriaHead1"); ?>
+      <?php echo $loc->getText("reportCriteriaHead1"); ?>
     </th>
   </tr>
   <tr>
@@ -289,7 +272,7 @@
 <table class="primary">
   <tr>
     <th align="left" colspan="2" nowrap="yes">
-      <?php print $loc->getText("reportCriteriaHead2"); ?>
+      <?php echo $loc->getText("reportCriteriaHead2"); ?>
     </th>
   </tr>
   <tr>
@@ -321,7 +304,7 @@
 <table class="primary">
   <tr>
     <th align="left" colspan="2" nowrap="yes">
-      <?php print $loc->getText("reportCriteriaHead3"); ?>
+      <?php echo $loc->getText("reportCriteriaHead3"); ?>
     </th>
   </tr>
   <tr>
@@ -346,16 +329,16 @@
   }
 ?>
   
-  <input type="hidden" name="rptid" value="<?php echo $rptid;?>">
-  <input type="hidden" name="title" value="<?php echo $title;?>">
-  <input type="hidden" name="sql" value="<?php echo $sql;?>">
-  <input type="hidden" name="label" value="<?php echo $label;?>">
-  <input type="hidden" name="letter" value="<?php echo $letter;?>">
-  <input type="hidden" name="initialSort" value="<?php echo $initialSort;?>">
+  <input type="hidden" name="rptid" value="<?php echo H($rptid);?>">
+  <input type="hidden" name="title" value="<?php echo H($title);?>">
+  <input type="hidden" name="sql" value="<?php echo H($sql);?>">
+  <input type="hidden" name="label" value="<?php echo H($label);?>">
+  <input type="hidden" name="letter" value="<?php echo H($letter);?>">
+  <input type="hidden" name="initialSort" value="<?php echo H($initialSort);?>">
 <br>
   <center>
     <input type="submit" value="<?php echo $loc->getText("reportCriteriaRunReport"); ?>" class="button">
-    <input type="button" onClick="parent.location='<?php echo $cancelAction; ?>'" value="<?php echo $loc->getText("reportsCancel"); ?>" class="button">
+    <input type="button" onClick="self.location='<?php echo H(addslashes($cancelAction)); ?>'" value="<?php echo $loc->getText("reportsCancel"); ?>" class="button">
   </center>
 </form>
 

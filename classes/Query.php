@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
 require_once("../classes/DbConnection.php");
 
@@ -48,37 +31,44 @@ class Query {
    */
   function connect() {
     $this->_conn = new DbConnection();
-    $rc = $this->_conn->connect();
-    if ($rc == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_conn->getError();
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      return false;
+    $error = $this->_conn->connect_e();
+    if ($error) {
+      Fatal::dbError($error->sql, $error->msg, $error->dberror);
     }
-    return true;
   }
   /****************************************************************************
    * Closes database and destroys connection
    *
-   * @return boolean returns false, if error occurs
+   * @return void
    * @access public
    ****************************************************************************
    */
   function close() {
-    $rc = $this->_conn->close();
-    if ($rc == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_conn->getError();
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      unset($this->_conn);
-      return false;
+    $error = $this->_conn->close_e();
+    if ($error) {
+      Fatal::dbError($error->sql, $error->msg, $error->dberror);
     }
     unset($this->_conn);
-    return true;
   }
 
+  function _exec($sql) {
+    $error = $this->_conn->exec_e($sql);
+    if ($error) {
+      Fatal::dbError($error->sql, $error->msg, $error->dberror);
+    }
+  }
+  function fetchRows($arrayType=OBIB_ASSOC) {
+    $results = array();
+    while ($r = $this->_conn->fetchRow($arrayType)) {
+      array_push($results, $r);
+    }
+    return $results;
+  }
+  function exec($sql, $arrayType=OBIB_ASSOC) {
+    $this->_exec($sql);
+    return $this->fetchRows($arrayType);
+  }
+  
   /****************************************************************************
    * Makes SQL by interpolating values into a format string.
    * This function works something like printf() for SQL queries.  Format
@@ -159,16 +149,16 @@ class Query {
    ****************************************************************************
    */
   function _query($sql, $msg) {
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
+    $error = $this->_conn->exec_e($sql);
+    if ($error) {
       $this->_errorOccurred = true;
-      $this->_error = $msg;
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+      $this->_error = $error->msg;
+      $this->_dbErrno = NULL;
+      $this->_dbError = $error->dberror;
+      $this->_SQL = $error->sql;
       return false;
     }
-    return $result;
+    return true;
   }
 
   /****************************************************************************

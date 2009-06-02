@@ -1,141 +1,55 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
+
+  require_once("../functions/inputFuncs.php");
+  require_once('../classes/DmQuery.php');
+  $dmQ = new DmQuery();
+  $dmQ->connect();
+  $mbrClassifyDm = $dmQ->getAssoc('mbr_classify_dm');
+  $customFields = $dmQ->getAssoc('member_fields_dm');
+  $dmQ->close();
+  $fields = array(
+    "mbrFldsClassify" => inputField('select', 'classification', $mbr->getClassification(), NULL, $mbrClassifyDm),
+    "mbrFldsCardNmbr" => inputField('text', "barcodeNmbr", $mbr->getBarcodeNmbr()),
+    "mbrFldsLastName" => inputField('text', "lastName", $mbr->getLastName()),
+    "mbrFldsFirstName" => inputField('text', "firstName", $mbr->getFirstName()),
+    "mbrFldsEmail" => inputField('text', "email", $mbr->getEmail()),
+    "Mailing Address:" => inputField('textarea', "address", $mbr->getAddress()),
+    "mbrFldsHomePhone" => inputField('text', "homePhone", $mbr->getHomePhone()),
+    "mbrFldsWorkPhone" => inputField('text', "workPhone", $mbr->getWorkPhone()),
+  );
+  
+  foreach ($customFields as $name => $title) {
+    $fields[$title.':'] = inputField('text', 'custom_'.$name, $mbr->getCustom($name));
+  }
 ?>
 
 <table class="primary">
   <tr>
     <th colspan="2" valign="top" nowrap="yes" align="left">
-      <?php echo $headerWording;?> <?php print $loc->getText("mbrFldsHeader"); ?>
+      <?php echo H($headerWording);?> <?php echo $loc->getText("mbrFldsHeader"); ?>
     </td>
   </tr>
+<?php
+  foreach ($fields as $title => $html) {
+?>
   <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsCardNmbr"); ?>
+    <td nowrap="true" class="primary" valign="top">
+      <?php echo $loc->getText($title); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("barcodeNmbr",20,20,$postVars,$pageErrors); ?>
+      <?php echo $html; ?>
     </td>
   </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsLastName"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("lastName",30,50,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsFirstName"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("firstName",30,50,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsAddr1"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("address1",40,128,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsAddr2"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("address2",40,128,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsCity"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("city",30,50,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsStateZip"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printSelect("state","state_dm",$postVars); ?>
-      <?php printInputText("zip",5,5,$postVars,$pageErrors); ?>-<?php printInputText("zipExt",4,4,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsHomePhone"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("homePhone",15,15,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsWorkPhone"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("workPhone",15,15,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsEmail"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("email",40,128,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsClassify"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printSelect("classification","mbr_classify_dm",$postVars); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsGrade"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("schoolGrade",2,2,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php print $loc->getText("mbrFldsTeacher"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php printInputText("schoolTeacher",30,50,$postVars,$pageErrors); ?>
-    </td>
-  </tr>
+<?php
+  }
+?>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="<?php print $loc->getText("mbrFldsSubmit"); ?>" class="button">
-      <input type="button" onClick="parent.location='<?php echo $cancelLocation;?>'" value="<?php print $loc->getText("mbrFldsCancel"); ?>" class="button">
+      <input type="submit" value="<?php echo $loc->getText("mbrFldsSubmit"); ?>" class="button">
+      <input type="button" onClick="self.location='<?php echo H(addslashes($cancelLocation));?>'" value="<?php echo $loc->getText("mbrFldsCancel"); ?>" class="button">
     </td>
   </tr>
 

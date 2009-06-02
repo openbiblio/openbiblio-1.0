@@ -1,31 +1,114 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../functions/errorFuncs.php");
 require_once("../classes/Dm.php");
 require_once("../classes/DmQuery.php");
 
+/* Returns HTML for a form input field with error handling. */
+function inputField($type, $name, $value="", $attrs=NULL, $data=NULL) {
+  $s = "";
+  if (isset($_SESSION['postVars'])) {
+    $postVars = $_SESSION['postVars'];
+  } else {
+    $postVars = array();
+  }
+  if (isset($postVars[$name])) {
+    $value = $postVars[$name];
+  }
+  if (isset($_SESSION['pageErrors'])) {
+    $pageErrors = $_SESSION['pageErrors'];
+  } else {
+    $pageErrors = array();
+  }
+  if (isset($pageErrors[$name])) {
+    $s .= '<font class="error">'.H($pageErrors[$name]).'</font><br />';
+  }
+  if (!$attrs) {
+    $attrs = array();
+  }
+  if (!isset($attrs['onChange'])) {
+    $attrs['onChange'] = 'modified=true';
+  }
+  switch ($type) {
+  // FIXME radio
+  case 'select':
+    $s .= '<select id="'.H($name).'" name="'.H($name).'" ';
+    foreach ($attrs as $k => $v) {
+      $s .= H($k).'="'.H($v).'" ';
+    }
+    $s .= ">\n";
+    foreach ($data as $val => $desc) {
+      $s .= '<option value="'.H($val).'" ';
+      if ($value == $val) {
+        $s .= " selected";
+      }
+      $s .= ">".H($desc)."</option>\n";
+    }
+    $s .= "</select>\n";
+    break;
+  case 'textarea':
+    $s .= '<textarea name="'.H($name).'" ';
+    foreach ($attrs as $k => $v) {
+      $s .= H($k).'="'.H($v).'" ';
+    }
+    $s .= ">".H($value)."</textarea>";
+    break;
+  case 'checkbox':
+    $s .= '<input type="checkbox" ';
+    $s .= 'name="'.H($name).'" ';
+    $s .= 'value="'.H($data).'" ';
+    if ($value == $data) {
+      $s .= "checked ";
+    }
+    foreach ($attrs as $k => $v) {
+      $s .= H($k).'="'.H($v).'" ';
+    }
+    $s .= "/>";
+    break;
+  default:
+    $s .= '<input type="'.H($type).'" ';
+    $s .= 'name="'.H($name).'" ';
+    if ($value != "") {
+      $s .= 'value="'.H($value).'" ';
+    }
+    foreach ($attrs as $k => $v) {
+      $s .= H($k).'="'.H($v).'" ';
+    }
+    $s .= "/>";
+    break;
+  }
+  return $s;
+}
+
+/* Returns HTML for a select box with the contents of $table as options. */
+function dmSelect($table, $name, $value="", $all=FALSE, $attrs=NULL) {
+  $dmQ = new DmQuery();
+  $dmQ->connect();
+  # Don't use getAssoc() so that we can set the default below
+  $dms = $dmQ->get($table);
+  $dmQ->close();
+  $default = "";
+  $options = array();
+  if ($all) {
+    $options['all'] = 'All';
+  }
+  foreach ($dms as $dm) {
+    $options[$dm->getCode()] = $dm->getDescription();
+    if ($dm->getDefaultFlg() == 'Y') {
+      $default = $dm->getCode();
+    }
+  }
+  if ($value == "") {
+    $value = $default;
+  }
+  return inputField('select', $name, $value, $attrs, $options);
+}
+
 /*********************************************************************************
- * Draws input html tag of type text.
+ * DEPRECATED, use inputField.  Draws input html tag of type text.
  * @param string $fieldName name of input field
  * @param string $size size of text box
  * @param string $max max input length of text box
@@ -35,72 +118,28 @@ require_once("../classes/DmQuery.php");
  * @access public
  *********************************************************************************
  */
-function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible"){
-  if (!isset($postVars)) {
-    $value = "";
-  } elseif (!isset($postVars[$fieldName])) {
-      $value = "";
-  } else {
-      $value = $postVars[$fieldName];
-  }
-  if (!isset($pageErrors)) {
-    $error = "";
-  } elseif (!isset($pageErrors[$fieldName])) {
-      $error = "";
-  } else {
-      $error = $pageErrors[$fieldName];
-  }
-
-  echo "<input type=\"text\" id=\"".$fieldName."\" name=\"".$fieldName."\" size=\"".$size."\" maxlength=\"".$max."\"";
-  if ($visibility != "visible") {
-    echo " style=\"visibility:".$visibility."\"";
-  }
-  echo " value=\"".$value."\" >";
-  if ($error != "") {
-    echo "<br><font class=\"error\">";
-    echo $error."</font>";
-  }
+function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible") {
+  $_SESSION['postVars'] = $postVars;
+  $_SESSION['pageErrors'] = $pageErrors;
+  $attrs = array('size'=>$size,
+                 'maxlength'=>$max,
+                 'style'=>"visibility: $visibility");
+  echo inputField('text', $fieldName, '', $attrs);
 }
 
 /*********************************************************************************
- * Draws input html tag of type text.
+ * DEPRECATED, use dmSelect.
  * @param string $fieldName name of input field
  * @param string $domainTable name of domain table to get values from
  * @param array_reference &$postVars reference to array containing all input values
  *********************************************************************************
  */
 function printSelect($fieldName,$domainTable,&$postVars,$disabled=FALSE){
-  $value = "";
-  if (isset($postVars[$fieldName])) {
-      $value = $postVars[$fieldName];
-  }
-
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelect($domainTable);
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  echo "<select id=\"".$fieldName."\" name=\"".$fieldName."\"";
+  $_SESSION['postVars'] = $postVars;
+  $attrs = array();
   if ($disabled) {
-    echo " disabled";
+    $attrs['disabled'] = '1';
   }
-  echo ">\n";
-  while ($dm = $dmQ->fetchRow()) {
-    echo "<option value=\"".$dm->getCode()."\"";
-    if (($value == "") && ($dm->getDefaultFlg() == 'Y')) {
-      echo " selected";
-    } elseif ($value == $dm->getCode()) {
-      echo " selected";
-    }
-    echo ">".$dm->getDescription()."\n";
-  }
-  echo "</select>\n";
-  $dmQ->close();
+  echo dmSelect($domainTable, $fieldName, "", FALSE, $attrs);
 }
 ?>

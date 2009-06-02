@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
   $tab = "reports";
   $nav = "runreport";
 
@@ -32,9 +15,9 @@
 ?>
 
 <font class="small">
-<a href="../reports/report_criteria.php?rptid=<?php echo $rptid;?>&title=<?php echo $qStrTitle;?>&sql=<?php echo $qStrSql;?>"><?php print $loc->getText("runReportReturnLink1"); ?></a>
-| <a href="../reports/report_list.php"><?php print $loc->getText("runReportReturnLink2"); ?></a></font>
-<h1><?php echo $title;?>:</h1>
+<a href="../reports/report_criteria.php?rptid=<?php echo HURL($rptid);?>&amp;title=<?php echo HURL($title);?>&amp;sql=<?php echo HURL($baseSql);?>"><?php echo $loc->getText("runReportReturnLink1"); ?></a>
+| <a href="../reports/report_list.php"><?php echo $loc->getText("runReportReturnLink2"); ?></a></font>
+<h1><?php echo H($title);?>:</h1>
 
 <table class="primary">
   <tr>
@@ -49,10 +32,10 @@
     $mbridIndex = -1;
 
     foreach($fieldIds as $key => $value) {
-      if($value == "biblio.bibid") {
+      if(stristr($value, ".bibid") != false) {
         $bibidIndex = $key;
       }
-      else if($value == "member.mbrid") {
+      else if(stristr($value, ".mbrid") != false) {
         $mbridIndex = $key;
       }
     }
@@ -63,13 +46,13 @@
         echo "<td class=\"rpt\">";
 
 	if($key == $bibidIndex) {
-          echo "<a href=\"../shared/biblio_view.php?bibid=".$value."&tab=cataloging\">".$value."</a>";
+          echo "<a href=\"../shared/biblio_view.php?bibid=".HURL($value)."&amp;tab=cataloging\">".H($value)."</a>";
         }
         else if($key == $mbridIndex) {
-          echo "<a href=\"../circ/mbr_view.php?mbrid=".$value."\">".$value."</a>";
+          echo "<a href=\"../circ/mbr_view.php?mbrid=".HURL($value)."\">".H($value)."</a>";
         }
         else {
-          echo $value;
+          echo H($value);
         }
 
         echo "</td>";
@@ -78,11 +61,11 @@
     }
     $reportQ->close();
   ?>
-  <tr><th class="rpt" colspan="<?php echo $colCount;?>"><?php echo $loc->getText("runReportTotal");?> <?php echo $rowCount;?></th></tr>
+  <tr><th class="rpt" colspan="<?php echo H($colCount);?>"><?php echo $loc->getText("runReportTotal");?> <?php echo H($rowCount);?></th></tr>
 </table>
 <br>
 <font class="small">
-<a href="../reports/report_criteria.php?rptid=<?php echo $rptid;?>&title=<?php echo $qStrTitle;?>&sql=<?php echo $qStrSql;?>"><?php print $loc->getText("runReportReturnLink1"); ?></a>
-| <a href="../reports/report_list.php"><?php print $loc->getText("runReportReturnLink2"); ?></a></font>
+<a href="../reports/report_criteria.php?rptid=<?php echo HURL($rptid);?>&amp;title=<?php echo HURL($title);?>&amp;sql=<?php echo HURL($baseSql);?>"><?php echo $loc->getText("runReportReturnLink1"); ?></a>
+| <a href="../reports/report_list.php"><?php echo $loc->getText("runReportReturnLink2"); ?></a></font>
 
 <?php include("../shared/footer.php"); ?>

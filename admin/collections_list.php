@@ -1,25 +1,9 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "admin";
   $nav = "collections";
 
@@ -27,7 +11,6 @@
   require_once("../classes/DmQuery.php");
   require_once("../functions/errorFuncs.php");
   require_once("../functions/formatFuncs.php");
-  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
@@ -36,61 +19,54 @@
 
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelectWithStats("collection_dm");
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
+  $dms = $dmQ->getWithStats("collection_dm");
+  $dmQ->close();
 
 ?>
-<a href="../admin/collections_new_form.php?reset=Y"><? echo $loc->getText("adminCollections_listAddNewCollection"); ?></a><br>
-<h1><? echo $loc->getText("adminCollections_listCollections"); ?></h1>
+<a href="../admin/collections_new_form.php?reset=Y"><?php echo $loc->getText("adminCollections_listAddNewCollection"); ?></a><br>
+<h1><?php echo $loc->getText("adminCollections_listCollections"); ?></h1>
 <table class="primary">
   <tr>
-    <th colspan="2" valign="top"><? echo $loc->getText("adminCollections_listFunction"); ?>
+    <th colspan="2" valign="top"><?php echo $loc->getText("adminCollections_listFunction"); ?>
       <font class="small">*</font>
     </th>
     <th valign="top">
-      <? echo $loc->getText("adminCollections_listDescription"); ?>
+      <?php echo $loc->getText("adminCollections_listDescription"); ?>
     </th>
     <th valign="top">
-      <? echo $loc->getText("adminCollections_listDaysdueback"); ?>
+      <?php echo $loc->getText("adminCollections_listDaysdueback"); ?>
     </th>
     <th valign="top">
-      <? echo $loc->getText("adminCollections_listDailylatefee"); ?>
+      <?php echo $loc->getText("adminCollections_listDailylatefee"); ?>
     </th>
     <th valign="top">
-      <? echo $loc->getText("adminCollections_listBibliographycount"); ?>
+      <?php echo $loc->getText("adminCollections_listBibliographycount"); ?>
     </th>
   </tr>
   <?php
     $row_class = "primary";
-    while ($dm = $dmQ->fetchRow()) {
+    foreach ($dms as $dm) {
   ?>
   <tr>
-    <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/collections_edit_form.php?code=<?php echo $dm->getCode();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminCollections_listEdit"); ?></a>
+    <td valign="top" class="<?php echo H($row_class);?>">
+      <a href="../admin/collections_edit_form.php?code=<?php echo HURL($dm->getCode());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("adminCollections_listEdit"); ?></a>
     </td>
-    <td valign="top" class="<?php echo $row_class;?>">
+    <td valign="top" class="<?php echo H($row_class);?>">
       <?php if ($dm->getCount() == 0) { ?>
-        <a href="../admin/collections_del_confirm.php?code=<?php echo $dm->getCode();?>&desc=<?php echo urlencode($dm->getDescription());?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminCollections_listDel"); ?></a>
-      <?php } else { echo "del"; }?>
+        <a href="../admin/collections_del_confirm.php?code=<?php echo HURL($dm->getCode());?>&amp;desc=<?php echo HURL($dm->getDescription());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("adminCollections_listDel"); ?></a>
+      <?php } else { echo $loc->getText("del"); }?>
     </td>
-    <td valign="top" class="<?php echo $row_class;?>">
-      <?php echo $dm->getDescription();?>
+    <td valign="top" class="<?php echo H($row_class);?>">
+      <?php echo H($dm->getDescription());?>
     </td>
-    <td valign="top" align="center" class="<?php echo $row_class;?>">
-      <?php echo $dm->getDaysDueBack();?>
+    <td valign="top" align="center" class="<?php echo H($row_class);?>">
+      <?php echo H($dm->getDaysDueBack());?>
     </td>
-    <td valign="top" align="center" class="<?php echo $row_class;?>">
-      <?php echo moneyFormat($dm->getDailyLateFee(),2); ?>
+    <td valign="top" align="center" class="<?php echo H($row_class);?>">
+      <?php echo H(moneyFormat($dm->getDailyLateFee(),2)); ?>
     </td>
-    <td valign="top" align="center"  class="<?php echo $row_class;?>">
-      <?php echo $dm->getCount();?>
+    <td valign="top" align="center"  class="<?php echo H($row_class);?>">
+      <?php echo H($dm->getCount());?>
     </td>
   </tr>
   <?php
@@ -101,11 +77,10 @@
         $row_class = "primary";
       }
     }
-    $dmQ->close();
   ?>
 </table>
 <br>
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><? echo $loc->getText("adminCollections_ListNote"); ?></font></td>
-<td class="noborder"><font class="small"><? echo $loc->getText("adminCollections_ListNoteText"); ?><br></font>
+<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><?php echo $loc->getText("adminCollections_ListNote"); ?></font></td>
+<td class="noborder"><font class="small"><?php echo $loc->getText("adminCollections_ListNoteText"); ?><br></font>
 </td></tr></table>
 <?php include("../shared/footer.php"); ?>

@@ -1,65 +1,43 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
+require_once("../classes/Dm.php");
 require_once("../classes/Query.php");
 
-/******************************************************************************
- * DmQuery data access component for domain tables
- *
- * @author David Stevens <dave@stevens.name>;
- * @version 1.0
- * @access public
- ******************************************************************************
- */
 class DmQuery extends Query {
   var $_tableNm = "";
 
-  /****************************************************************************
-   * Executes a query
-   * @param string $table table name of domain table to query
-   * @param int $code (optional) code of row to fetch
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function execSelect($table, $code = "") {
+  function _get($table, $code = "") {
     $this->_tableNm = $table;
     $sql = $this->mkSQL("select * from %I ", $table);
     if ($code != "") {
-      $sql .= $this->mkSQL("where code = %N ", $code);
+      $sql .= $this->mkSQL("where code = %Q ", $code);
     }
     $sql .= "order by description ";
-    return $this->_query($sql, "Error accessing the ".$table." domain table.");
+    return $this->exec($sql);
+  }
+  function get($table) {
+    return array_map(array($this, '_mkObj'), $this->_get($table));
+  }
+  function getAssoc($table, $column="description") {
+    $assoc = array();
+    foreach ($this->_get($table) as $row) {
+      $assoc[$row['code']] = $row[$column];
+    }
+    return $assoc;
+  }
+  function get1($table, $code) {
+    $rows = $this->_get($table, $code);
+    if (count($rows) != 1) {
+     Fatal::internalError("Invalid domain table code");
+    }
+    return $this->_mkObj($rows[0]);
   }
 
-  /****************************************************************************
-   * Executes a query
-   * @param string $table table name of domain table to query
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function execSelectWithStats($table) {
+  function getWithStats($table) {
     $this->_tableNm = $table;
     if ($table == "collection_dm") {
       $sql = "select collection_dm.*, count(biblio.bibid) row_count ";
@@ -68,50 +46,40 @@ class DmQuery extends Query {
     } elseif ($table == "material_type_dm") {
       $sql = "select material_type_dm.*, count(biblio.bibid) row_count ";
       $sql .= "from material_type_dm left join biblio on material_type_dm.code = biblio.material_cd ";
-      $sql .= "group by 1, 2, 3, 4, 5, 6 ";
+      $sql .= "group by 1, 2, 3, 4 ";
+    } elseif ($table == "mbr_classify_dm") {
+      $sql = "select mbr_classify_dm.*, count(member.mbrid) row_count ";
+      $sql .= "from mbr_classify_dm left join member on mbr_classify_dm.code = member.classification ";
+      $sql .= "group by 1, 2, 3, 4 ";
     } else {
-      $this->_errorOccurred = true;
-      $this->_error = "Can only retrieve stats on collections and material types.";
-      return false;
+      Fatal::internalError("Cannot retrieve stats for that dm table");
     }
     $sql .= "order by description ";
-    return $this->_query($sql, "Error accessing the ".$table." domain table.");
+    return array_map(array($this, '_mkObj'), $this->exec($sql));
   }
 
-  /****************************************************************************
-   * Retrieves checkout stats for a particular member.
-   * @param string $mbrid Member id of library member to select
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function execCheckoutStats($mbrid) {
-    $sql = $this->mkSQL("select mat.*, count(copy.mbrid) row_count "
-                        . "from material_type_dm mat "
-                        . " left outer join biblio bib on mat.code = bib.material_cd "
-                        . " left outer join biblio_copy copy on bib.bibid = copy.bibid "
-                        . "where copy.mbrid = %N or copy.mbrid is null "
+  function getCheckoutStats($mbrid) {
+    $sql = $this->mkSQL("create temporary table mbrout type=heap "
+                        . "select b.material_cd, c.bibid, c.copyid "
+                        . "from biblio_copy c, biblio b "
+                        . "where c.mbrid=%N and b.bibid=c.bibid ", $mbrid);
+    $this->exec($sql);
+    $sql = $this->mkSQL("select mat.*, "
+                        . "ifnull(privs.checkout_limit, 0) checkout_limit, "
+                        . "ifnull(privs.renewal_limit, 0) renewal_limit, "
+                        . "count(mbrout.copyid) row_count "
+                        . "from material_type_dm mat join member "
+                        . "left join checkout_privs privs "
+                        . "on privs.material_cd=mat.code "
+                        . "and privs.classification=member.classification "
+                        . "left join mbrout on mbrout.material_cd=mat.code "
+                        . "where member.mbrid=%N "
                         . "group by mat.code, mat.description, mat.default_flg, "
-                        . " mat.adult_checkout_limit, mat.juvenile_checkout_limit "
-                        . "order by mat.description ", $mbrid);
-    if (!$this->_query($sql, "Error accessing library member information.")) {
-      return false;
-    }
-    $this->_tableNm = "material_type_dm";
-    return true;
+                        . "privs.checkout_limit, privs.renewal_limit ", $mbrid);
+    return array_map(array($this, '_mkObj'), $this->exec($sql));
   }
 
-  /****************************************************************************
-   * Fetches a row from the query result and populates the Dm object.
-   * @return Dm returns domain object or false if no more domain rows to fetch
-   * @access public
-   ****************************************************************************
-   */
-  function fetchRow() {
-    $array = $this->_conn->fetchRow();
-    if ($array == false) {
-      return false;
-    }
+  function _mkObj($array) {
     $dm = new Dm();
     $dm->setCode($array["code"]);
     $dm->setDescription($array["description"]);
@@ -119,10 +87,19 @@ class DmQuery extends Query {
     if ($this->_tableNm == "collection_dm") {
       $dm->setDaysDueBack($array["days_due_back"]);
       $dm->setDailyLateFee($array["daily_late_fee"]);
-    } elseif ($this->_tableNm == "material_type_dm") {
-      $dm->setAdultCheckoutLimit($array["adult_checkout_limit"]);
-      $dm->setJuvenileCheckoutLimit($array["juvenile_checkout_limit"]);
+    }
+    
+    if (isset($array['checkout_limit'])) {
+      $dm->setCheckoutLimit($array["checkout_limit"]);
+    }
+    if (isset($array['renewal_limit'])) {
+      $dm->setRenewalLimit($array["renewal_limit"]);
+    }
+    if (isset($array["image_file"])) {
       $dm->setImageFile($array["image_file"]);
+    }
+    if (isset($array["max_fines"])) {
+      $dm->setMaxFines($array["max_fines"]);
     }
     if (isset($array["row_count"])) {
       $dm->setCount($array["row_count"]);
@@ -130,87 +107,47 @@ class DmQuery extends Query {
     return $dm;
   }
 
-  /****************************************************************************
-   * Fetches all rows from the query result.
-   * @return assocArray returns associative array containing domain codes and values.
-   * @access public
-   ****************************************************************************
-   */
-  function fetchRows($col="") {
-    if ($col == "") $col = "description";
-    while ($result = $this->_conn->fetchRow()) {
-      $assoc[$result["code"]] = $result[$col];
-    }
-    return $assoc;
-  }
-
-  /****************************************************************************
-   * Inserts a new domain table row.
-   * @param string $table table name of domain table to query
-   * @param Dm $dm domain object
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
   function insert($table, $dm) {
-    # constructing sql
-    $sql .= $this->mkSQL("insert into %I values (null, %Q, 'N', ",
-                         $table, $dm->getDescription());
-    if ($table == "collection_dm") {
-      $sql .= $this->mkSQL("%N, %N)", $dm->getDaysDueBack(), $dm->getDailyLateFee());
-    } elseif ($table == "material_type_dm") {
-      $sql .= $this->mkSQL("%N, %N, %Q)", $dm->getAdultCheckoutLimit(),
-                           $dm->getJuvenileCheckoutLimit(), $dm->getImageFile());
+    $sql = $this->mkSQL("insert into %I values ", $table);
+    if ($table == "collection_dm"
+        or $table == "material_type_dm"
+        or $table == "mbr_classify_dm") {
+      $sql .= '(null, ';
     } else {
-      $this->_errorOccurred = true;
-      $this->_error = "Can only insert rows on collections and material types.";
-      return false;
+      $sql .= $this->mkSQL('(%Q, ', $dm->getCode());
+    }
+    $sql .= $this->mkSQL("%Q, 'N' ", $dm->getDescription());
+    if ($table == "collection_dm") {
+      $sql .= $this->mkSQL(", %N, %N)", $dm->getDaysDueBack(), $dm->getDailyLateFee());
+    } elseif ($table == "material_type_dm") {
+      $sql .= $this->mkSQL(", %Q)", $dm->getImageFile());
+    } elseif ($table == "mbr_classify_dm") {
+      $sql .= $this->mkSQL(", %N)", $dm->getMaxFines());
+    } else {
+      $sql .= ")";
     }
 
-    # running sql
-    return $this->_query($sql, "Error inserting into ".$table);
+    $this->exec($sql);
   }
 
-  /****************************************************************************
-   * Update a row in a domain table.
-   * @param string $table table name of domain table to query
-   * @param Staff $staff staff member to update
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
   function update($table, $dm) {
-    $sql = $this->mkSQL("update %I set description=%Q, default_flg='N', ",
+    $sql = $this->mkSQL("update %I set description=%Q, default_flg='N' ",
                          $table, $dm->getDescription());
     if ($table == "collection_dm") {
-      $sql .= $this->mkSQL("days_due_back=%N, daily_late_fee=%N ",
+      $sql .= $this->mkSQL(", days_due_back=%N, daily_late_fee=%N ",
                            $dm->getDaysDueBack(), $dm->getDailyLateFee());
     } elseif ($table == "material_type_dm") {
-      $sql .= $this->mkSQL("adult_checkout_limit=%N, "
-                          . "juvenile_checkout_limit=%N, "
-                          . "image_file=%Q ",
-                          $dm->getAdultCheckoutLimit(),
-                          $dm->getJuvenileCheckoutLimit(),
-                          $dm->getImageFile());
-    } else {
-      $this->_errorOccurred = true;
-      $this->_error = "Can only update rows on collections and material types.";
-      return false;
+      $sql .= $this->mkSQL(", image_file=%Q ", $dm->getImageFile());
+    } elseif ($table == "mbr_classify_dm") {
+      $sql .= $this->mkSQL(", max_fines=%N ", $dm->getMaxFines());
     }
-    $sql .= $this->mkSQL("where code=%N ", $dm->getCode());
-    return $this->_query($sql, "Error updating ".$table);
+    $sql .= $this->mkSQL("where code=%Q ", $dm->getCode());
+    $this->exec($sql);
   }
 
-  /****************************************************************************
-   * Deletes a row from a domain table.
-   * @param string $mbrid Member id of library member to delete
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
   function delete($table, $code) {
-    $sql = $this->mkSQL("delete from %I where code = %N", $table, $code);
-    return $this->_query($sql, "Error deleting from ".$table);
+    $sql = $this->mkSQL("delete from %I where code = %Q", $table, $code);
+    $this->exec($sql);
   }
 
 }

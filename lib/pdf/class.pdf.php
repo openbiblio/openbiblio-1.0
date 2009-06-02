@@ -1231,7 +1231,7 @@ function output($debug=0){
   $this->checkAllHere();
 
   $xref=array();
-  $content="%PDF-1.3\n%âãÏÓ\n";
+  $content="%PDF-1.3\n%Â€Â€Â€Â€\n";
 //  $content="%PDF-1.3\n";
   $pos=strlen($content);
   foreach($this->objects as $k=>$v){
@@ -2703,7 +2703,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
           break;
         case 'tRNS': 
           //this chunk can only occur once and it must occur after the PLTE chunk and before IDAT chunk 
-          //print "tRNS found, color type = ".$info['colorType']."<BR>"; 
+          //echo "tRNS found, color type = ".$info['colorType']."<BR>"; 
           $transparency = array();
           if ($info['colorType'] == 3) { // indexed color, rbg 
           /* corresponding to entries in the plte chunk 

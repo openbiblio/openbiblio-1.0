@@ -1,29 +1,14 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   session_cache_limiter(null);
 
   $tab = "cataloging";
   $nav = "newcopy";
+  $helpPage = "biblioCopyEdit";
   $focus_form_name = "newCopyForm";
   $focus_form_field = "barcodeNmbr";
 
@@ -35,7 +20,6 @@
     exit();
   }
 
-  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
@@ -52,7 +36,7 @@
 ?>
 
 <font class="small">
-<?php echo $loc->getText("catalogFootnote",array("symbol"=>"</font>*<font class=\"small\">")); ?>
+<?php echo $loc->getText("catalogFootnote",array("symbol"=>"*")); ?>
 </font>
 
 <form name="newCopyForm" method="POST" action="../catalog/biblio_copy_new.php">
@@ -68,6 +52,8 @@
     </td>
     <td valign="top" class="primary">
       <?php printInputText("barcodeNmbr",20,20,$postVars,$pageErrors); ?>
+      <input type="checkbox" name="autobarco" />
+      <?php echo $loc->getText("biblioCopyNewAuto"); ?>
     </td>
   </tr>
   <tr>
@@ -81,12 +67,12 @@
   <tr>
     <td align="center" colspan="2" class="primary">
       <input type="submit" value="<?php echo $loc->getText("catalogSubmit"); ?>" class="button">
-      <input type="button" onClick="parent.location='../shared/biblio_view.php?bibid=<?php echo $bibid; ?>'" value="<?php echo $loc->getText("catalogCancel"); ?>" class="button">
+      <input type="button" onClick="self.location='../shared/biblio_view.php?bibid=<?php echo HURL($bibid); ?>'" value="<?php echo $loc->getText("catalogCancel"); ?>" class="button">
     </td>
   </tr>
 
 </table>
-<input type="hidden" name="bibid" value="<?php echo $bibid;?>">
+<input type="hidden" name="bibid" value="<?php echo H($bibid);?>">
 </form>
 
 

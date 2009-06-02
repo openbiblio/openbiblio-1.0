@@ -1,25 +1,10 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
+  
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
   #****************************************************************************
@@ -38,7 +23,6 @@
   }
 
   $nav = "view";
-  require_once("../shared/common.php");
   if ($tab != "opac") {
     require_once("../shared/logincheck.php");
   }
@@ -61,7 +45,7 @@
   #****************************************************************************
   $bibid = $_GET["bibid"];
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -71,16 +55,9 @@
   #****************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelect("collection_dm");
-  $collectionDm = $dmQ->fetchRows();
-  $dmQ->execSelect("material_type_dm");
-  $materialTypeDm = $dmQ->fetchRows();
-  $dmQ->execSelect("biblio_status_dm");
-  $biblioStatusDm = $dmQ->fetchRows();
+  $collectionDm = $dmQ->getAssoc("collection_dm");
+  $materialTypeDm = $dmQ->getAssoc("material_type_dm");
+  $biblioStatusDm = $dmQ->getAssoc("biblio_status_dm");
   $dmQ->close();
 
   $marcTagDmQ = new UsmarcTagDmQuery();
@@ -150,7 +127,7 @@
       <?php echo $loc->getText("biblioViewMaterialType"); ?>:
     </td>
     <td valign="top" class="primary">
-      <?php echo $materialTypeDm[$biblio->getMaterialCd()];?>
+      <?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>
     </td>
   </tr>
   <tr>
@@ -158,7 +135,7 @@
       <?php echo $loc->getText("biblioViewCollection"); ?>:
     </td>
     <td valign="top" class="primary">
-      <?php echo $collectionDm[$biblio->getCollectionCd()];?>
+      <?php echo H($collectionDm[$biblio->getCollectionCd()]);?>
     </td>
   </tr>
   <tr>
@@ -166,9 +143,9 @@
       <?php echo $loc->getText("biblioViewCallNmbr"); ?>:
     </td>
     <td valign="top" class="primary">
-      <?php echo $biblio->getCallNmbr1(); ?>
-      <?php echo $biblio->getCallNmbr2(); ?>
-      <?php echo $biblio->getCallNmbr3(); ?>
+      <?php echo H($biblio->getCallNmbr1()); ?>
+      <?php echo H($biblio->getCallNmbr2()); ?>
+      <?php echo H($biblio->getCallNmbr3()); ?>
     </td>
   </tr>
   <tr>
@@ -176,7 +153,7 @@
       <?php printUsmarcText(245,"a",$marcTags, $marcSubflds, FALSE);?>:
     </td>
     <td valign="top" class="primary">
-      <?php if (isset($biblioFlds["245a"])) echo $biblioFlds["245a"]->getFieldData();?>
+      <?php if (isset($biblioFlds["245a"])) echo H($biblioFlds["245a"]->getFieldData());?>
     </td>
   </tr>
   <tr>
@@ -184,7 +161,7 @@
       <?php printUsmarcText(245,"b",$marcTags, $marcSubflds, FALSE);?>:
     </td>
     <td valign="top" class="primary">
-      <?php if (isset($biblioFlds["245b"])) echo $biblioFlds["245b"]->getFieldData();?>
+      <?php if (isset($biblioFlds["245b"])) echo H($biblioFlds["245b"]->getFieldData());?>
     </td>
   </tr>
   <tr>
@@ -192,7 +169,7 @@
       <?php printUsmarcText(100,"a",$marcTags, $marcSubflds, FALSE);?>:
     </td>
     <td valign="top" class="primary">
-      <?php if (isset($biblioFlds["100a"])) echo $biblioFlds["100a"]->getFieldData();?>
+      <?php if (isset($biblioFlds["100a"])) echo H($biblioFlds["100a"]->getFieldData());?>
     </td>
   </tr>
   <tr>
@@ -200,7 +177,7 @@
       <?php printUsmarcText(245,"c",$marcTags, $marcSubflds, FALSE);?>:
     </td>
     <td valign="top" class="primary">
-      <?php if (isset($biblioFlds["245c"])) echo $biblioFlds["245c"]->getFieldData();?>
+      <?php if (isset($biblioFlds["245c"])) echo H($biblioFlds["245c"]->getFieldData());?>
     </td>
   </tr>
   <tr>
@@ -227,7 +204,7 @@
   #*  Show copy information
   #****************************************************************************
   if ($tab == "cataloging") { ?>
-    <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y">
+    <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo HURL($bibid);?>&reset=Y">
       <?php echo $loc->getText("biblioViewNewCopy"); ?></a><br/>
     <?php
     $copyCols=7;
@@ -274,7 +251,7 @@
   <?php
     if ($copyQ->getRowCount() == 0) { ?>
       <tr>
-        <td valign="top" colspan="<?php echo $copyCols; ?>" class="primary" colspan="2">
+        <td valign="top" colspan="<?php echo H($copyCols); ?>" class="primary" colspan="2">
           <?php echo $loc->getText("biblioViewNoCopies"); ?>
         </td>
       </tr>      
@@ -284,27 +261,27 @@
   ?>
     <tr>
       <?php if ($tab == "cataloging") { ?>
-        <td valign="top" class="<?php echo $row_class;?>">
-          <a href="../catalog/biblio_copy_edit_form.php?bibid=<?php echo $copy->getBibid();?>&copyid=<?php echo $copy->getCopyid();?>" class="<?php echo $row_class;?>"><?php echo $loc->getText("biblioViewTble2Coledit"); ?></a>
+        <td valign="top" class="<?php echo H($row_class);?>">
+          <a href="../catalog/biblio_copy_edit_form.php?bibid=<?php echo HURL($copy->getBibid());?>&amp;copyid=<?php echo H($copy->getCopyid());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("biblioViewTble2Coledit"); ?></a>
         </td>
-        <td valign="top" class="<?php echo $row_class;?>">
-          <a href="../catalog/biblio_copy_del_confirm.php?bibid=<?php echo $copy->getBibid();?>&copyid=<?php echo $copy->getCopyid();?>" class="<?php echo $row_class;?>"><?php echo $loc->getText("biblioViewTble2Coldel"); ?></a>
+        <td valign="top" class="<?php echo H($row_class);?>">
+          <a href="../catalog/biblio_copy_del_confirm.php?bibid=<?php echo HURL($copy->getBibid());?>&amp;copyid=<?php echo HURL($copy->getCopyid());?>" class="<?php echo H($row_class);?>"><?php echo $loc->getText("biblioViewTble2Coldel"); ?></a>
         </td>
       <?php } ?>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $copy->getBarcodeNmbr(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getBarcodeNmbr()); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $copy->getCopyDesc(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getCopyDesc()); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $biblioStatusDm[$copy->getStatusCd()]; ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($biblioStatusDm[$copy->getStatusCd()]); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $copy->getStatusBeginDt(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getStatusBeginDt()); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $copy->getDueBackDt(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($copy->getDueBackDt()); ?>
       </td>
     </tr>      
   <?php
@@ -344,7 +321,7 @@
           <td valign="top" class="primary">
             <?php printUsmarcText($field->getTag(),$field->getSubfieldCd(),$marcTags, $marcSubflds, FALSE);?>:
           </td>
-          <td valign="top" class="primary"><?php echo $field->getFieldData(); ?></td>
+          <td valign="top" class="primary"><?php echo H($field->getFieldData()); ?></td>
         </tr>      
   <?php
       }

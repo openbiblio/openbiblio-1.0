@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
   /****************************************************************************
    * Reading settings from database
    ****************************************************************************
@@ -82,9 +65,18 @@
   define("OBIB_DB_VERSION",$set->getVersion());
   define("OBIB_THEMEID",$set->getThemeid());
   define("OBIB_BLOCK_CHECKOUTS_WHEN_FINES_DUE",$set->isBlockCheckoutsWhenFinesDue());
+  define("OBIB_HOLD_MAX_DAYS",$set->getHoldMaxDays());
   define("OBIB_LOCALE",$set->getLocale());
-  setlocale(LC_MONETARY,$set->getLocale());
-  setlocale(LC_NUMERIC,$set->getLocale());
+  if ($set->getLocale()=="de") {
+    setlocale(LC_MONETARY, 'de_DE', 'de_DE@euro', 'de', 'ge', 'deu_deu', 'deu', 'Germany', 'de_DE.ISO8859-1');
+    setlocale(LC_NUMERIC, 'de_DE', 'de_DE@euro', 'de', 'ge', 'deu_deu', 'deu', 'Germany', 'de_DE.ISO8859-1');
+  } elseif ($set->getLocale()=="en") {
+    setlocale(LC_MONETARY,'en_US.iso885915', 'en', 'en_US', 'eng');
+    setlocale(LC_NUMERIC,'en_US.iso885915', 'en', 'en_US', 'eng');
+  } else {
+    setlocale(LC_MONETARY,$set->getLocale());
+    setlocale(LC_NUMERIC,$set->getLocale());
+  }
   define("OBIB_CHARSET",$set->getCharset());
   define("OBIB_HTML_LANG_ATTR",$set->getHtmlLangAttr());
   define("OBIB_LIBRARY_USE_IMAGE_ONLY",$set->isUseImageSet());

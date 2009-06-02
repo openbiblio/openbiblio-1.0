@@ -1,29 +1,12 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "circulation";
   $nav = "hist";
 
-  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioStatusHist.php");
@@ -43,11 +26,17 @@
   #*  Retrieving get var
   #****************************************************************************
   $mbrid = $_GET["mbrid"];
-  if (isset($_GET["name"])) {
-      $mbrName = urlencode($_GET["name"]);
-  } else {
-      $mbrName = "";
-  }
+
+  #****************************************************************************
+  #*  Loading a few domain tables into associative arrays
+  #****************************************************************************
+  $dmQ = new DmQuery();
+  $dmQ->connect();
+  $mbrClassifyDm = $dmQ->getAssoc("mbr_classify_dm");
+  $biblioStatusDm = $dmQ->getAssoc("biblio_status_dm");
+  $materialTypeDm = $dmQ->getAssoc("material_type_dm");
+  $materialImageFiles = $dmQ->getAssoc("material_type_dm", "image_file");
+  $dmQ->close();
 
   #****************************************************************************
   #*  Search database for member history
@@ -69,26 +58,26 @@
   require_once("../shared/header.php");
 ?>
 
-<h1><?php print $loc->getText("mbrHistoryHead1"); ?></h1>
+<h1><?php echo $loc->getText("mbrHistoryHead1"); ?></h1>
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrHistoryHdr1"); ?>
+      <?php echo $loc->getText("mbrHistoryHdr1"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrHistoryHdr2"); ?>
+      <?php echo $loc->getText("mbrHistoryHdr2"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrHistoryHdr3"); ?>
+      <?php echo $loc->getText("mbrHistoryHdr3"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrHistoryHdr4"); ?>
+      <?php echo $loc->getText("mbrHistoryHdr4"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrHistoryHdr5"); ?>
+      <?php echo $loc->getText("mbrHistoryHdr5"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("mbrHistoryHdr6"); ?>
+      <?php echo $loc->getText("mbrHistoryHdr6"); ?>
     </th>
   </tr>
 
@@ -97,7 +86,7 @@
 ?>
   <tr>
     <td class="primary" align="center" colspan="6">
-      <?php print $loc->getText("mbrHistoryNoHist"); ?>
+      <?php echo $loc->getText("mbrHistoryNoHist"); ?>
     </td>
   </tr>
 <?php
@@ -106,22 +95,22 @@
 ?>
   <tr>
     <td class="primary" valign="top" >
-      <?php echo $hist->getBiblioBarcodeNmbr();?>
+      <?php echo H($hist->getBiblioBarcodeNmbr());?>
     </td>
     <td class="primary" valign="top" >
-      <a href="../shared/biblio_view.php?bibid=<?php echo $hist->getBibid();?>&tab=cataloging"><?php echo $hist->getTitle();?></a>
+      <a href="../shared/biblio_view.php?bibid=<?php echo HURL($hist->getBibid());?>&amp;tab=cataloging"><?php echo H($hist->getTitle());?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $hist->getAuthor();?>
+      <?php echo H($hist->getAuthor());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $hist->getStatusCd();?>
+      <?php echo H($biblioStatusDm[$hist->getStatusCd()]);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $hist->getStatusBeginDt();?>
+      <?php echo H($hist->getStatusBeginDt());?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $hist->getDueBackDt();?>
+      <?php echo H($hist->getDueBackDt());?>
     </td>
   </tr>
 <?php

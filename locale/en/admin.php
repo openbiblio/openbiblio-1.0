@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /**********************************************************************************
  *   Instructions for translators:
  *
@@ -64,7 +47,7 @@ $trans["adminFootnote"]            = "\$text = 'Fields marked with %symbol% are 
 #*  Translation text for page index.php
 #****************************************************************************
 $trans["indexHdr"]                 = "\$text = 'Admin';";
-$trans["indexDesc"]                = "\$text = 'Use the functions located in the left hand navagation area to manage your library\'s staff and administrative records.';";
+$trans["indexDesc"]                = "\$text = 'Use the functions located in the left hand navigation area to manage your library\'s staff and administrative records.';";
 
 #****************************************************************************
 #*  Translation text for page collections*.php
@@ -144,9 +127,7 @@ $trans["admin_materials_delAreyousure"]                 = "\$text = 'Are you sur
 #****************************************************************************
 $trans["admin_materials_delEditmaterialtype"]                 = "\$text = 'Edit Material Type:';";
 $trans["admin_materials_delDescription"]                 = "\$text = 'Description:';";
-$trans["admin_materials_delAdultLimit"]                 = "\$text = 'Adult Checkout Limit:';";
 $trans["admin_materials_delunlimited"]                 = "\$text = '(enter 0 for unlimited)';";
-$trans["admin_materials_delJuvenileLimit"]                 = "\$text = 'Juvenile Checkout Limit:';";
 $trans["admin_materials_delImagefile"]                 = "\$text = 'Image File:';";
 $trans["admin_materials_delNote"]                 = "\$text = '*Note:';";
 $trans["admin_materials_delNoteText"]                 = "\$text = 'Image files must be located in the openbiblio/images directory.';";
@@ -163,11 +144,11 @@ $trans["admin_materials_listAddmaterialtypes"]                 = "\$text = 'Add 
 $trans["admin_materials_listMaterialtypes"]                 = "\$text = 'Material Types:';";
 $trans["admin_materials_listFunction"]                 = "\$text = 'Function';";
 $trans["admin_materials_listDescription"]                 = "\$text = 'Description';";
-$trans["admin_materials_listCheckoutlimit"]                 = "\$text = 'Checkout Limit';";
+$trans["admin_materials_listLimits"]                 = "\$text = 'Limits';";
+$trans["admin_materials_listCheckoutlimit"]                 = "\$text = 'Checkout';";
+$trans["admin_materials_listRenewallimit"]                 = "\$text = 'Renewal';";
 $trans["admin_materials_listImageFile"]                 = "\$text = 'Image<br>File';";
 $trans["admin_materials_listBibcount"]                 = "\$text = 'Bibliography<br>Count';";
-$trans["admin_materials_listAdult"]                 = "\$text = 'Adult';";
-$trans["admin_materials_listJuvenile"]                 = "\$text = 'Juvenile';";
 $trans["admin_materials_listEdit"]                 = "\$text = 'edit';";
 $trans["admin_materials_listDel"]                 = "\$text = 'del';";
 $trans["admin_materials_listNote"]                 = "\$text = '*Note:';";

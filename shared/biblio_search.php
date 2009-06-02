@@ -1,25 +1,9 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   session_cache_limiter(null);
 
   #****************************************************************************
@@ -34,16 +18,19 @@
   #*  Checking for tab name to show OPAC look and feel if searching from OPAC
   #****************************************************************************
   $tab = "cataloging";
+  $helpPage = "biblioSearch";
   $lookup = "N";
   if (isset($_POST["tab"])) {
     $tab = $_POST["tab"];
   }
   if (isset($_POST["lookup"])) {
     $lookup = $_POST["lookup"];
+    if ($lookup == 'Y') {
+      $helpPage = "opacLookup";
+    }
   }
 
   $nav = "search";
-  require_once("../shared/common.php");
   if ($tab != "opac") {
     require_once("../shared/logincheck.php");
   }
@@ -62,14 +49,14 @@
     echo $loc->getText("biblioSearchResultPages").": ";
     $maxPg = OBIB_SEARCH_MAXPAGES + 1;
     if ($currPage > 1) {
-      echo "<a href=\"javascript:changePage(".($currPage-1).",'".$sort."')\">&laquo;".$loc->getText("biblioSearchPrev")."</a> ";
+      echo "<a href=\"javascript:changePage(".H(addslashes($currPage-1)).",'".H(addslashes($sort))."')\">&laquo;".$loc->getText("biblioSearchPrev")."</a> ";
     }
     for ($i = 1; $i <= $pageCount; $i++) {
       if ($i < $maxPg) {
         if ($i == $currPage) {
-          echo "<b>".$i."</b> ";
+          echo "<b>".H($i)."</b> ";
         } else {
-          echo "<a href=\"javascript:changePage(".$i.",'".$sort."')\">".$i."</a> ";
+          echo "<a href=\"javascript:changePage(".H(addslashes($i)).",'".H(addslashes($sort))."')\">".H($i)."</a> ";
         }
       } elseif ($i == $maxPg) {
         echo "... ";
@@ -80,37 +67,15 @@
     }
   }
 
-  function printCopySection($copyBarcodes,$copyStatus) {
-    echo "<tr><td class=\"primary\" valign=\"top\"><font class=\"small\">";
-    echo "<b>Barcode</b></font></td>";
-    echo "<td class=\"primary\" nowrap=\"true\" valign=\"top\"><font class=\"small\">";
-    echo "<b>Status</b></font></td></tr>";
-    echo "<tr><td class=\"primary\" valign=\"top\" height=\"50\"><font class=\"small\">";
-    echo $copyBarcodes;
-    echo "</font></td>";
-    echo "<td class=\"primary\" nowrap=\"true\" valign=\"top\"><font class=\"small\">";
-    echo $copyStatus;
-    echo "</font></td></tr>";
-  }
-
-
   #****************************************************************************
   #*  Loading a few domain tables into associative arrays
   #****************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelect("collection_dm");
-  $collectionDm = $dmQ->fetchRows();
-  $dmQ->execSelect("material_type_dm");
-  $materialTypeDm = $dmQ->fetchRows();
-  $dmQ->resetResult();
-  $materialImageFiles = $dmQ->fetchRows("image_file");
-  $dmQ->execSelect("biblio_status_dm");
-  $biblioStatusDm = $dmQ->fetchRows();
+  $collectionDm = $dmQ->getAssoc("collection_dm");
+  $materialTypeDm = $dmQ->getAssoc("material_type_dm");
+  $materialImageFiles = $dmQ->getAssoc("material_type_dm", "image_file");
+  $biblioStatusDm = $dmQ->getAssoc("biblio_status_dm");
   $dmQ->close();
 
   #****************************************************************************
@@ -130,8 +95,7 @@
       $sortBy = "title";
     }
   }
-  # remove slashes added by form post
-  $searchText = stripslashes(trim($_POST["searchText"]));
+  $searchText = trim($_POST["searchText"]);
   # remove redundant whitespace
   $searchText = eregi_replace("[[:space:]]+", " ", $searchText);
   if ($searchType == "barcodeNmbr") {
@@ -208,12 +172,12 @@ function changePage(page,sort)
     *  Form used by javascript to post back to this page
     ************************************************************************** -->
 <form name="changePageForm" method="POST" action="../shared/biblio_search.php">
-  <input type="hidden" name="searchType" value="<?php echo $_POST["searchType"];?>">
-  <input type="hidden" name="searchText" value="<?php echo $_POST["searchText"];?>">
-  <input type="hidden" name="sortBy" value="<?php echo $_POST["sortBy"];?>">
-  <input type="hidden" name="lookup" value="<?php echo $_POST["lookup"];?>">
+  <input type="hidden" name="searchType" value="<?php echo H($_POST["searchType"]);?>">
+  <input type="hidden" name="searchText" value="<?php echo H($_POST["searchText"]);?>">
+  <input type="hidden" name="sortBy" value="<?php echo H($_POST["sortBy"]);?>">
+  <input type="hidden" name="lookup" value="<?php echo H($lookup);?>">
   <input type="hidden" name="page" value="1">
-  <input type="hidden" name="tab" value="<?php echo $tab;?>">
+  <input type="hidden" name="tab" value="<?php echo H($tab);?>">
 </form>
 
 <!--**************************************************************************
@@ -254,14 +218,14 @@ function changePage(page,sort)
           ?>
           <tr>
             <td nowrap="true" class="primary" valign="top" align="center"><font class="small">
-              <?php echo $biblioQ->getCurrentRowNmbr();?>.
+              <?php echo H($biblioQ->getCurrentRowNmbr());?>.
             </font></td>
-            <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
+            <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo H($biblio->getBarcodeNmbr());?>
               <?php if ($lookup == 'Y') { ?>
-                <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo $biblio->getBarcodeNmbr();?>')"><?php echo $loc->getText("biblioSearchSelect"); ?></a>
+                <a href="javascript:returnLookup('barcodesearch','barcodeNmbr','<?php echo H(addslashes($biblio->getBarcodeNmbr()));?>')"><?php echo $loc->getText("biblioSearchOutIn"); ?></a> | <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo H(addslashes($biblio->getBarcodeNmbr()));?>')"><?php echo $loc->getText("biblioSearchHold"); ?></a>
               <?php } ?>
             </font></td>
-            <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>
+            <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo H($biblioStatusDm[$biblio->getStatusCd()]);?></font></td>
           </tr>
           <?php 
         }
@@ -272,31 +236,31 @@ function changePage(page,sort)
 
   <tr>
     <td nowrap="true" class="primary" valign="top" align="center" rowspan="2">
-      <?php echo $biblioQ->getCurrentRowNmbr();?>.<br />
-      <a href="../shared/biblio_view.php?bibid=<?php echo $biblio->getBibid();?>&tab=<?php echo $tab;?>">
-      <img src="../images/<?php echo $materialImageFiles[$biblio->getMaterialCd()];?>" width="20" height="20" border="0" align="bottom" alt="<?php echo $materialTypeDm[$biblio->getMaterialCd()];?>"></a>
+      <?php echo H($biblioQ->getCurrentRowNmbr());?>.<br />
+      <a href="../shared/biblio_view.php?bibid=<?php echo HURL($biblio->getBibid());?>&amp;tab=<?php echo HURL($tab);?>">
+      <img src="../images/<?php echo HURL($materialImageFiles[$biblio->getMaterialCd()]);?>" width="20" height="20" border="0" align="bottom" alt="<?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?>"></a>
     </td>
     <td class="primary" valign="top" colspan="2">
       <table class="primary" width="100%">
         <tr>
           <td class="noborder" width="1%" valign="top"><b><?php echo $loc->getText("biblioSearchTitle"); ?>:</b></td>
-          <td class="noborder" colspan="3"><a href="../shared/biblio_view.php?bibid=<?php echo $biblio->getBibid();?>&tab=<?php echo $tab;?>"><?php echo $biblio->getTitle();?></a></td>
+          <td class="noborder" colspan="3"><a href="../shared/biblio_view.php?bibid=<?php echo HURL($biblio->getBibid());?>&amp;tab=<?php echo HURL($tab);?>"><?php echo H($biblio->getTitle());?></a></td>
         </tr>
         <tr>
           <td class="noborder" valign="top"><b><?php echo $loc->getText("biblioSearchAuthor"); ?>:</b></td>
-          <td class="noborder" colspan="3"><?php if ($biblio->getAuthor() != "") echo $biblio->getAuthor();?></td>
+          <td class="noborder" colspan="3"><?php if ($biblio->getAuthor() != "") echo H($biblio->getAuthor());?></td>
         </tr>
         <tr>
           <td class="noborder" valign="top"><font class="small"><b><?php echo $loc->getText("biblioSearchMaterial"); ?>:</b></font></td>
-          <td class="noborder" colspan="3"><font class="small"><?php echo $materialTypeDm[$biblio->getMaterialCd()];?></font></td>
+          <td class="noborder" colspan="3"><font class="small"><?php echo H($materialTypeDm[$biblio->getMaterialCd()]);?></font></td>
         </tr>
         <tr>
           <td class="noborder" valign="top"><font class="small"><b><?php echo $loc->getText("biblioSearchCollection"); ?>:</b></font></td>
-          <td class="noborder" colspan="3"><font class="small"><?php echo $collectionDm[$biblio->getCollectionCd()];?></font></td>
+          <td class="noborder" colspan="3"><font class="small"><?php echo H($collectionDm[$biblio->getCollectionCd()]);?></font></td>
         </tr>
         <tr>
           <td class="noborder" valign="top" nowrap="yes"><font class="small"><b><?php echo $loc->getText("biblioSearchCall"); ?>:</b></font></td>
-          <td class="noborder" colspan="3"><font class="small"><?php echo $biblio->getCallNmbr1()." ".$biblio->getCallNmbr2()." ".$biblio->getCallNmbr3();?></font></td>
+          <td class="noborder" colspan="3"><font class="small"><?php echo H($biblio->getCallNmbr1()." ".$biblio->getCallNmbr2()." ".$biblio->getCallNmbr3());?></font></td>
         </tr>
       </table>
     </td>
@@ -305,12 +269,12 @@ function changePage(page,sort)
     if ($biblio->getBarcodeNmbr() != "") {
       ?>
       <tr>
-        <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
+        <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo H($biblio->getBarcodeNmbr());?>
           <?php if ($lookup == 'Y') { ?>
-            <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo $biblio->getBarcodeNmbr();?>')">select</a>
+            <a href="javascript:returnLookup('barcodesearch','barcodeNmbr','<?php echo H(addslashes($biblio->getBarcodeNmbr()));?>')"><?php echo $loc->getText("biblioSearchOutIn"); ?></a> | <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo H(addslashes($biblio->getBarcodeNmbr()));?>')"><?php echo $loc->getText("biblioSearchHold"); ?></a>
           <?php } ?>
         </font></td>
-        <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>
+        <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo H($biblioStatusDm[$biblio->getStatusCd()]);?></font></td>
       </tr>
     <?php } else { ?>
       <tr>

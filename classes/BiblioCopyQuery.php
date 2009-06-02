@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
 require_once("../classes/BiblioCopy.php");
@@ -139,6 +122,7 @@ class BiblioCopyQuery extends Query {
     $copy->setDueBackDt($array["due_back_dt"]);
     $copy->setDaysLate($array["days_late"]);
     $copy->setMbrid($array["mbrid"]);
+    $copy->setRenewalCount($array["renewal_count"]);
     return $copy;
   }
 
@@ -163,6 +147,26 @@ class BiblioCopyQuery extends Query {
       return true;
     }
     return false;
+  }
+
+  /****************************************************************************
+   * Returns the next copyid number available in the biblio_copy copyid field for a given biblio
+   * @return boolean returns false, if error occurs
+   * @access private
+   ****************************************************************************
+   */
+  function nextCopyid($bibid) {
+    $sql = $this->mkSQL("select max(copyid) as lastNmbr from biblio_copy "
+                        . "where biblio_copy.bibid = %Q",
+                        $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr11"))) {
+		//echo 'copyid fetch failed.';
+      return false;
+    }
+		//echo 'got something!';
+    $array = $this->_conn->fetchRow();
+		$nmbr = $array["lastNmbr"];
+    return $nmbr+1;
   }
 
   /****************************************************************************
@@ -191,10 +195,11 @@ class BiblioCopyQuery extends Query {
       $sql .= $this->mkSQL("%Q, ", $copy->getDueBackDt());
     }
     if ($copy->getMbrid() == "") {
-      $sql .= "null)";
+      $sql .= "null,";
     } else {
-      $sql .= $this->mkSQL("%Q)", $copy->getMbrid());
+      $sql .= $this->mkSQL("%Q,", $copy->getMbrid());
     }
+    $sql .= " 0)"; //Default renewal count to zero
     return $this->_query($sql, $this->_loc->getText("biblioCopyQueryErr3"));
   }
 
@@ -219,10 +224,12 @@ class BiblioCopyQuery extends Query {
     }
     $sql = $this->mkSQL("update biblio_copy set "
                         . "status_cd=%Q, "
-                        . "status_begin_dt=sysdate(), ",
-                        $copy->getStatusCd());
+                        . "status_begin_dt=sysdate(), "
+                        . "renewal_count=%N, ",
+                        $copy->getStatusCd(),
+                        $copy->getRenewalCount());
 
-    if ($copy->getStatusCd() == OBIB_STATUS_OUT){
+    if ($checkout){
       if ($copy->getDueBackDt() != "") {
         $sql .= $this->mkSQL("due_back_dt=date_add(sysdate(),interval %N day), ",
                              $copy->getDueBackDt());
@@ -336,36 +343,47 @@ class BiblioCopyQuery extends Query {
     return $this->_query($sql, $this->_loc->getText("biblioCopyQueryErr9"));
   }
 
+  function _getCheckoutPrivs($bibid, $classification) {
+    $sql = $this->mkSQL("select checkout_privs.* "
+                        . "from biblio, checkout_privs "
+                        . "where bibid=%N and classification=%N "
+                        . "and biblio.material_cd=checkout_privs.material_cd ",
+                        $bibid, $classification);
+    $rows = $this->exec($sql);
+    if (count($rows) != 1) {
+      return array('checkout_limit'=>0, 'renewal_limit'=>0);
+    }
+    return $rows[0];
+  }
+
+  function hasReachedRenewalLimit($mbrid,$classification,$copy) {
+    $array = $this->_getCheckoutPrivs($copy->getBibid(), $classification);
+    if($array['renewal_limit'] == 0) {
+        //0 = unlimited
+        return FALSE;
+    }
+    if($copy->getRenewalCount() < $array['renewal_limit']) {
+        return FALSE;
+    }
+    else {
+        return TRUE;
+    }
+  }
+
   /****************************************************************************
    * determines if checkout limit for given member and material type has been reached
    * @param int $mbrid member id
-   * @param String $classification member classification code
+   * @param int $classification member classification code
    * @param int $bibid bibliography id of bibliography material type to check for
    * @return boolean true if member has reached limit, otherwise false
    * @access public
    ****************************************************************************
    */
   function hasReachedCheckoutLimit($mbrid,$classification,$bibid) {
-    // get material code for given bibid
-    $sql = $this->mkSQL("select material_cd from biblio where bibid = %N",
-                        $bibid);
-    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr10"))) {
-      return false;
-    }
-    $array = $this->_conn->fetchRow();
-    $materialCd = $array["material_cd"];
-
-    // get checkout limits from material_type_dm
-    $sql = $this->mkSQL("select * from material_type_dm where code = %N",
-                        $materialCd);
-    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr10"))) {
-      return false;
-    }
-    $array = $this->_conn->fetchRow();
-    if ($classification == OBIB_MBR_CLASSIFICATION_JUVENILE) {
-      $checkoutLimit = $array["juvenile_checkout_limit"];
-    } else {
-      $checkoutLimit = $array["adult_checkout_limit"];
+    $privs = $this->_getCheckoutPrivs($bibid, $classification);
+    if($privs['checkout_limit'] == 0) {
+        //0 = unlimited
+        return FALSE;
     }
 
     // get member's current checkout count for given material type
@@ -373,18 +391,15 @@ class BiblioCopyQuery extends Query {
                         . " where biblio_copy.bibid = biblio.bibid"
                         . " and biblio_copy.mbrid = %N"
                         . " and biblio.material_cd = %N",
-                        $mbrid, $materialCd);
+                        $mbrid, $privs["material_cd"]);
     if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr10"))) {
       return false;
     }
     $array = $this->_conn->fetchRow();
-    $rowCount = $array["row_count"];
-    if ($rowCount >= $checkoutLimit) {
+    if ($array["row_count"] >= $privs['checkout_limit']) {
       return TRUE;
     }
     return FALSE;
   }
-
 }
-
 ?>

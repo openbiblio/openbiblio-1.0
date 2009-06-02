@@ -1,25 +1,9 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2004 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
 
   $tab = "reports";
   $nav = "runreport";
@@ -27,7 +11,6 @@
   // IE gets messed up if you send a cache control in the header of a pdf.  Therefore, the following
   // command will send no cache control.
   session_cache_limiter('private_no_expire'); 
-  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../lib/pdf/class.pdf.php");
   require_once("../functions/fileIOFuncs.php");
@@ -46,13 +29,13 @@
   function fatalError($msg=NULL) {
     global $rptid, $title, $baseSql, $letter, $initialSort;
     $s = "Location: ../reports/report_criteria.php"
-         . "?rptid=".urlencode($rptid)
-         . "&title=".urlencode($title)
-         . "&sql=".urlencode($baseSql)
-         . "&letter=".urlencode($letter)
-         . "&initialSort=".urlencode($initialSort);
+         . "?rptid=".U($rptid)
+         . "&title=".U($title)
+         . "&sql=".U($baseSql)
+         . "&letter=".U($letter)
+         . "&initialSort=".U($initialSort);
     if ($msg) {
-      $s .= '&msg='.urlencode($msg);
+      $s .= '&msg='.U($msg);
     }
     header($s);
     exit();
@@ -82,28 +65,28 @@
 //  header("Content-type: application/pdf");
 //  header("Content-Disposition: inline; filename=display_labels.pdf");
 
-/*echo "getId()=".$letterDef->getId();
-echo "<br>getGroupBy()=".$letterDef->getGroupBy();
-echo "<br>getTitle()=".$letterDef->getTitle();
-echo "<br>getFontType()=".$letterDef->getFontType();
-echo "<br>getFontSize()=".$letterDef->getFontSize();
-echo "<br>getUnitOfMeasure()=".$letterDef->getUnitOfMeasure();
-echo "<br>getLeftMargin()=".$letterDef->getLeftMargin();
-echo "<br>getRightMargin()=".$letterDef->getRightMargin();
-echo "<br>getTopMargin()=".$letterDef->getTopMargin();
-echo "<br>getBottomMargin()=".$letterDef->getBottomMargin();
+/*echo "getId()=".H($letterDef->getId());
+echo "<br>getGroupBy()=".H($letterDef->getGroupBy());
+echo "<br>getTitle()=".H($letterDef->getTitle());
+echo "<br>getFontType()=".H($letterDef->getFontType());
+echo "<br>getFontSize()=".H($letterDef->getFontSize());
+echo "<br>getUnitOfMeasure()=".H($letterDef->getUnitOfMeasure());
+echo "<br>getLeftMargin()=".H($letterDef->getLeftMargin());
+echo "<br>getRightMargin()=".H($letterDef->getRightMargin());
+echo "<br>getTopMargin()=".H($letterDef->getTopMargin());
+echo "<br>getBottomMargin()=".H($letterDef->getBottomMargin());
 echo "<br>Lines:";
 foreach($letterDef->getLines() as $line) {
-  echo "<br>&nbsp;&nbsp;text=".$line->getText();
-  echo "<br>&nbsp;&nbsp;column count=".sizeof($line->getColumnNames());
+  echo "<br>&nbsp;&nbsp;text=".H($line->getText());
+  echo "<br>&nbsp;&nbsp;column count=".H(sizeof($line->getColumnNames()));
 }
 echo "<br>Report Column Names:";
 foreach($letterDef->getReportColumnNames() as $name) {
-  echo "<br>&nbsp;&nbsp;name=".$name;
+  echo "<br>&nbsp;&nbsp;name=".H($name);
 }
 echo "<br>Report Column Widths:";
 foreach($letterDef->getReportColumnWidths() as $width) {
-  echo "<br>&nbsp;&nbsp;width=".$width;
+  echo "<br>&nbsp;&nbsp;width=".H($width);
 }
 exit();
 */
@@ -155,21 +138,24 @@ exit();
         $pdf->newPage();
       }
       foreach($letterDef->getLines() as $line) {
-        $y = $y - $fontHeight;
         $x = $letterDef->getLeftMarginInPdfUnits() + $line->getIndent();
         $w = PAGE_WIDTH - $x - $letterDef->getRightMarginInPdfUnits();
         $resultLine = $line->getFormattedText($array);
-        //*************************************************************
-        //*  addTextWrap - addes a line to the pdf
-        //*  arguments:
-        //*    x - location from left of page in pdf units.
-        //*    y - location from bottom of page in pdf units.
-        //*    w - width in pdf units of text area.  Text exceeding
-        //*        this width will be truncated.
-        //*  addText - same as addTextWrap but allows text to go on
-        //*    without being indented.  Format is addText(x,y,fontSize,text)
-        //*************************************************************
-        $pdf->addTextWrap($x,$y,$w,$fontSize,$resultLine);
+        # Ugly on top of ugly
+        foreach (explode("\n", $resultLine) as $l) {
+          $y = $y - $fontHeight;
+          //*************************************************************
+          //*  addTextWrap - addes a line to the pdf
+          //*  arguments:
+          //*    x - location from left of page in pdf units.
+          //*    y - location from bottom of page in pdf units.
+          //*    w - width in pdf units of text area.  Text exceeding
+          //*        this width will be truncated.
+          //*  addText - same as addTextWrap but allows text to go on
+          //*    without being indented.  Format is addText(x,y,fontSize,text)
+          //*************************************************************
+          $pdf->addTextWrap($x,$y,$w,$fontSize,$l);
+        }
       }
       
       // add a blank line
@@ -199,7 +185,6 @@ exit();
       $colWidth = $colWidths[$i];
       $colValue = $array[$colName];
       $pdf->addTextWrap($x,$y,$colWidth,$fontSize,$colValue);
-//      echo "<br>x=".$x." y=".$y." w=".$colWidth." font=".$fontSize." val=".$colValue;
       $x = $x + $colWidth;
     }
 

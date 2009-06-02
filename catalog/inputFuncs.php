@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 define("OBIB_TEXT_CNTRL", "0");
 define("OBIB_TEXTAREA_CNTRL", "1");
 
@@ -40,7 +23,7 @@ define("OBIB_TEXTAREA_CNTRL", "1");
  * @access public
  *********************************************************************************
  */
-function printUsmarcInputText($tag,$subfieldCd,$required,&$fieldIds,&$postVars,&$pageErrors,&$marcTags,&$marcSubflds,$showTagDesc,$cntrlType,$occur=""){
+function printUsmarcInputText($tag,$subfieldCd,$required,&$postVars,&$pageErrors,&$marcTags,&$marcSubflds,$showTagDesc,$cntrlType,$occur=""){
   $arrayIndex = sprintf("%03d",$tag).$subfieldCd;
   $formIndex = $arrayIndex.$occur;
   $size = 40;
@@ -48,19 +31,19 @@ function printUsmarcInputText($tag,$subfieldCd,$required,&$fieldIds,&$postVars,&
   $cols = 35;
   $rows = 4;
 
-  if (!isset($fieldIds)) {
-    $fieldId = "";
-  } elseif (!isset($fieldIds[$arrayIndex])) {
-      $fieldId = "";
-  } else {
-      $fieldId = $fieldIds[$arrayIndex];
-  }
   if (!isset($postVars)) {
     $value = "";
-  } elseif (!isset($postVars[$formIndex])) {
+  } elseif (!isset($postVars['values'][$formIndex])) {
       $value = "";
   } else {
-      $value = $postVars[$formIndex];
+      $value = $postVars['values'][$formIndex];
+  }
+  if (!isset($postVars['fieldIds'])) {
+    $fieldId = "";
+  } elseif (!isset($postVars['fieldIds'][$formIndex])) {
+      $fieldId = "";
+  } else {
+      $fieldId = $postVars['fieldIds'][$formIndex];
   }
   if (!isset($pageErrors)) {
     $error = "";
@@ -78,33 +61,33 @@ function printUsmarcInputText($tag,$subfieldCd,$required,&$fieldIds,&$postVars,&
   if (($showTagDesc) 
     && (isset($marcTags[$tag]))
     && (isset($marcSubflds[$arrayIndex]))){
-    echo $marcTags[$tag]->getDescription();
-    echo " (".$marcSubflds[$arrayIndex]->getDescription().")";
+    echo H($marcTags[$tag]->getDescription());
+    echo " (".H($marcSubflds[$arrayIndex]->getDescription()).")";
   } elseif (isset($marcSubflds[$arrayIndex])){
-    echo $marcSubflds[$arrayIndex]->getDescription();
+    echo H($marcSubflds[$arrayIndex]->getDescription());
   }
   if ($occur != "") {
-    echo " ".($occur+1);
+    echo " ".H($occur+1);
   }
   echo ":\n</td>\n";
   echo "<td valign=\"top\" class=\"primary\">\n";
   if ($cntrlType == OBIB_TEXTAREA_CNTRL) {
-    echo "<textarea name=\"values[".$formIndex."]\" cols=\"".$cols."\" rows=\"".$rows."\">";
-    echo $value."</textarea>";
+    echo "<textarea name=\"values[".H($formIndex)."]\" cols=\"".H($cols)."\" rows=\"".H($rows)."\">";
+    echo H($value)."</textarea>";
   } else {
     echo "<input type=\"text\"";
-    echo "\" name=\"values[".$formIndex."]\" size=\"".$size."\" maxlength=\"".$maxLen."\" ";
-    echo "value=\"".$value."\" >";
+    echo " name=\"values[".H($formIndex)."]\" size=\"".H($size)."\" maxlength=\"".H($maxLen)."\" ";
+    echo "value=\"".H($value)."\" >";
   }
   if ($error != "") {
     echo "<br><font class=\"error\">";
-    echo $error."</font>";
+    echo H($error)."</font>";
   }
-  echo "<input type=\"hidden\" name=\"indexes[]\" value=\"".$formIndex."\" >\n";
-  echo "<input type=\"hidden\" name=\"tags[".$formIndex."]\" value=\"".$tag."\" >\n";
-  echo "<input type=\"hidden\" name=\"subfieldCds[".$formIndex."]\" value=\"".$subfieldCd."\" >\n";
-  echo "<input type=\"hidden\" name=\"fieldIds[".$formIndex."]\" value=\"".$fieldId."\" >\n";
-  echo "<input type=\"hidden\" name=\"requiredFlgs[".$formIndex."]\" value=\"".$required."\" >\n";
+  echo "<input type=\"hidden\" name=\"indexes[]\" value=\"".H($formIndex)."\" >\n";
+  echo "<input type=\"hidden\" name=\"tags[".H($formIndex)."]\" value=\"".H($tag)."\" >\n";
+  echo "<input type=\"hidden\" name=\"subfieldCds[".H($formIndex)."]\" value=\"".H($subfieldCd)."\" >\n";
+  echo "<input type=\"hidden\" name=\"fieldIds[".H($formIndex)."]\" value=\"".H($fieldId)."\" >\n";
+  echo "<input type=\"hidden\" name=\"requiredFlgs[".H($formIndex)."]\" value=\"".H($required)."\" >\n";
   echo "</td></tr>\n";
 }
 

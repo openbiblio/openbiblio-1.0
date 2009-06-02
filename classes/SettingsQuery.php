@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
 
@@ -77,6 +60,7 @@ class SettingsQuery extends Query {
     } else {
       $set->setBlockCheckoutsWhenFinesDue(false);
     }
+    $set->setHoldMaxDays($array["hold_max_days"]);
     $set->setLocale($array["locale"]);
     $set->setCharset($array["charset"]);
     $set->setHtmlLangAttr($array["html_lang_attr"]);
@@ -99,6 +83,7 @@ class SettingsQuery extends Query {
                         . "opac_url=%Q, session_timeout=%N, "
                         . "items_per_page=%N, purge_history_after_months=%N, "
                         . "block_checkouts_when_fines_due=%Q, "
+                        . "hold_max_days=%N, "
                         . "locale=%Q, charset=%Q, html_lang_attr=%Q ",
                         $set->getLibraryName(), $set->getLibraryImageUrl(),
                         $set->isUseImageSet() ? "Y" : "N",
@@ -107,6 +92,7 @@ class SettingsQuery extends Query {
                         $set->getSessionTimeout(), $set->getItemsPerPage(),
                         $set->getPurgeHistoryAfterMonths(),
                         $set->isBlockCheckoutsWhenFinesDue() ? "Y" : "N",
+                        $set->getHoldMaxDays(),
                         $set->getLocale(), $set->getCharset(),
                         $set->getHtmlLangAttr());
 
@@ -125,22 +111,13 @@ class SettingsQuery extends Query {
     return $this->_query($sql, "Error updating library theme in use");
   }
 
-  function getPurgeHistoryAfterMonths($connection) {
+  function getPurgeHistoryAfterMonths($query) {
     $sql = "select purge_history_after_months from settings";
-    $result = $connection->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating library theme in use";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
+    $rows = $query->exec($sql);
+    if (count($rows) != 1) {
+      Fatal::internalError("Wrong number of settings rows");
     }
-    $array = $connection->fetchRow();
-    if ($array == false) {
-      return false;
-    }
-    return $array["purge_history_after_months"];
+    return $rows[0]["purge_history_after_months"];
   }
 }
 

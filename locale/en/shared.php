@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002-2004 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /**********************************************************************************
  *   Instructions for translators:
  *
@@ -107,7 +90,11 @@ $trans["biblioSearchCall"]         = "\$text = 'Call Number';";
 $trans["biblioSearchCopyBCode"]    = "\$text = 'Copy Barcode';";
 $trans["biblioSearchCopyStatus"]   = "\$text = 'Status';";
 $trans["biblioSearchNoCopies"]     = "\$text = 'No copies are available.';";
-$trans["biblioSearchSelect"]       = "\$text = 'select';";
+$trans["biblioSearchHold"]         = "\$text = 'hold';";
+$trans["biblioSearchOutIn"]        = "\$text = 'check out/in';";
+$trans["biblioSearchDetail"]       = "\$text = 'Show detailed Bibliography information';";
+$trans["biblioSearchBCode2Chk"]    = "\$text = 'Barcode to Check Out or Check In Form';";
+$trans["biblioSearchBCode2Hold"]   = "\$text = 'Barcode to Hold Form';";
 
 #****************************************************************************
 #*  Translation text for page loginform.php

@@ -1,27 +1,10 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
-  $tab = "cataloging";
+ 
   require_once("../shared/common.php");
+  $tab = "cataloging";
   require_once("../shared/logincheck.php");
   require_once("../classes/UsmarcBlockDm.php");
   require_once("../classes/UsmarcBlockDmQuery.php");
@@ -52,8 +35,17 @@
   }
   if (isset($_GET["retpage"])) {
     $retPage = $_GET["retpage"];
+    # Sanity check
+    if (substr($retPage, 0, 3) != '../') {
+      Fatal::internalError('unexpected retPage value');
+    }
   } else {
     $retPage = "";
+  }
+  if (strpos($retPage, '?') === false) {
+    $sepchar = '?';
+  } else {
+    $sepchar = '&';
   }
 
   #****************************************************************************
@@ -98,24 +90,24 @@ function backToMain(URL) {
 
 
 </head>
-<body bgcolor="<?php echo OBIB_PRIMARY_BG;?>" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" onLoad="self.focus()">
+<body bgcolor="<?php echo H(OBIB_PRIMARY_BG);?>" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" onLoad="self.focus()">
 
 <!-- **************************************************************************************
      * Header
      **************************************************************************************-->
 <table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="<?php echo OBIB_TITLE_BG;?>">
+  <tr bgcolor="<?php echo H(OBIB_TITLE_BG);?>">
     <td width="100%" class="title" valign="top">
       <?php echo $loc->getText("usmarcSelectHdr"); ?>
     </td>
-    <td class="title" valign="top" nowrap="yes"><font class="small"><a href="javascript:window.close()"><font color="<?php echo OBIB_TITLE_FONT_COLOR?>"><?php echo $loc->getText("usmarcCloseWindow"); ?></font></a>&nbsp;&nbsp;</font></td>
+    <td class="title" valign="top" nowrap="yes"><font class="small"><a href="javascript:window.close()"><font color="<?php echo H(OBIB_TITLE_FONT_COLOR)?>"><?php echo $loc->getText("usmarcCloseWindow"); ?></font></a>&nbsp;&nbsp;</font></td>
   </tr>
 </table>
 <!-- **************************************************************************************
      * Line
      **************************************************************************************-->
 <table class="primary" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="<?php echo OBIB_BORDER_COLOR;?>">
+  <tr bgcolor="<?php echo H(OBIB_BORDER_COLOR);?>">
     <td><img src="../images/shim.gif" width="1" height="1" border="0"></td>
   </tr>
 </table>
@@ -134,10 +126,10 @@ function backToMain(URL) {
       if (strcmp($selectedBlock,$blockKey) == 0) {
         ?>
         <tr><td class="noborder" nowrap>
-        <a href="../catalog/usmarc_select.php?retpage=<?php echo $retPage; ?>" class="nav">
+        <a href="../catalog/usmarc_select.php?retpage=<?php echo HURL($retPage); ?>" class="nav">
           -&nbsp;</a>
         </td><td class="noborder" colspan="3">
-          <?php echo $blockKey." - ".$block->getDescription(); ?>
+          <?php echo H($blockKey." - ".$block->getDescription()); ?>
         </td></tr>
         <?php
         #***************************************
@@ -165,10 +157,10 @@ function backToMain(URL) {
               ?>
               <tr><td class="noborder"></td>
               <td class="noborder" nowrap>
-              <a href="../catalog/usmarc_select.php?retpage=<?php echo $retPage; ?>&block=<?php echo $blockKey; ?>" class="nav">
+              <a href="../catalog/usmarc_select.php?retpage=<?php echo HURL($retPage); ?>&amp;block=<?php echo HURL($blockKey); ?>" class="nav">
               -&nbsp;</a>
               </td><td class="noborder" colspan="2">
-                <?php echo $tagKey." - ".$tag->getDescription(); ?></a>
+                <?php echo H($tagKey." - ".$tag->getDescription()); ?></a>
               </td></tr>
               <?php
               #***************************************
@@ -193,10 +185,10 @@ function backToMain(URL) {
                   ?>
                   <tr><td class="noborder" colspan="2"></td>
                   <td class="noborder">
-                  <a href="javascript:backToMain('../catalog/<?php echo $retPage; ?>?tag=<?php echo $selectedTag; ?>&subfld=<?php echo $subfld->getSubfieldCd(); ?>')" class="nav">
+                  <a href="javascript:backToMain('<?php echo H(addslashes($retPage.$sepchar."tag=".U($selectedTag)."&subfld=".U($subfld->getSubfieldCd())."&descr=".U($subfld->getDescription()))) ?>')" class="nav">
                     <?php echo $loc->getText("usmarcSelectUse");?></a>
                   </td><td class="noborder" width="100%">
-                  <?php echo $subfld->getSubfieldCd()." - ".$subfld->getDescription(); ?></a><br>
+                  <?php echo H($subfld->getSubfieldCd()." - ".$subfld->getDescription()); ?></a><br>
                   </td></tr>
                   <?php
                 }
@@ -219,10 +211,10 @@ function backToMain(URL) {
               ?>
               <tr><td class="noborder"></td>
               <td class="noborder">
-              <a href="../catalog/usmarc_select.php?retpage=<?php echo $retPage; ?>&block=<?php echo $blockKey; ?>&tag=<?php echo $tagKey; ?>" class="nav">
+              <a href="../catalog/usmarc_select.php?retpage=<?php echo HURL($retPage); ?>&amp;block=<?php echo HURL($blockKey); ?>&amp;tag=<?php echo HURL($tagKey); ?>" class="nav">
               +</a>
               </td><td class="noborder" colspan="2" width="100%">
-                <?php echo $tagKey." - ".$tag->getDescription(); ?></a>
+                <?php echo H($tagKey." - ".$tag->getDescription()); ?></a>
               </td></tr>
               <?php
             }
@@ -242,10 +234,10 @@ function backToMain(URL) {
         #***************************************
         ?>
         <tr><td class="noborder">
-        <a href="../catalog/usmarc_select.php?retpage=<?php echo $retPage; ?>&block=<?php echo $blockKey; ?>" class="nav">
+        <a href="../catalog/usmarc_select.php?retpage=<?php echo HURL($retPage); ?>&amp;block=<?php echo HURL($blockKey); ?>" class="nav">
           +</a>
         </td><td class="noborder" colspan="3" width="100%">
-          <?php echo $blockKey." - ".$block->getDescription(); ?>
+          <?php echo H($blockKey." - ".$block->getDescription()); ?>
         </td></tr>
 
         <?php
@@ -259,7 +251,7 @@ function backToMain(URL) {
      **************************************************************************************-->
 <br><br><br>
 </font>
-<font face="Arial, Helvetica, sans-serif" size="1" color="<?php echo OBIB_PRIMARY_FONT_COLOR;?>">
+<font face="Arial, Helvetica, sans-serif" size="1" color="<?php echo H(OBIB_PRIMARY_FONT_COLOR);?>">
 <center>
   <br><br>
   Powered by OpenBiblio<br>

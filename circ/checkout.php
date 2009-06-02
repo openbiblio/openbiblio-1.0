@@ -1,29 +1,12 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "circulation";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioCopy.php");
@@ -31,6 +14,7 @@
   require_once("../classes/BiblioHoldQuery.php");
   require_once("../classes/BiblioStatusHist.php");
   require_once("../classes/BiblioStatusHistQuery.php");
+  require_once("../classes/MemberQuery.php");
   require_once("../classes/MemberAccountQuery.php");
   require_once("../functions/errorFuncs.php");
   require_once("../functions/formatFuncs.php");
@@ -38,15 +22,29 @@
   $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
+  #*  Checking for post or get vars.  Go back to form if none found.
   #****************************************************************************
+  if (count($_GET) != 0) {
+      $_POST = $_GET;
+  }
   if (count($_POST) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
   $barcode = trim($_POST["barcodeNmbr"]);
   $mbrid = trim($_POST["mbrid"]);
-  $mbrClassification = trim($_POST["classification"]);
+  $mbrQ = new MemberQuery;
+  $mbrQ->connect();
+  $mbr = $mbrQ->get($mbrid);
+  $mbrClassification = $mbr->getClassification();
+  $mbrQ->close();
+
+  if(isset($_POST["renewal"])) {
+      $renewal = true;
+  }
+  else {
+      $renewal = false;
+  }
 
   #****************************************************************************
   #*  Make sure member does not have outstanding balance due
@@ -69,7 +67,7 @@
       $postVars["barcodeNmbr"] = $barcode;
       $_SESSION["postVars"] = $postVars;
       $_SESSION["pageErrors"] = $pageErrors;
-      header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+      header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
       exit();
     }
   }
@@ -82,7 +80,7 @@
     $postVars["barcodeNmbr"] = $barcode;
     $_SESSION["postVars"] = $postVars;
     $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+    header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
     exit();
   }
 
@@ -107,31 +105,64 @@
   if ($copyQ->getRowCount() == 0) {
     $foundError = true;
     $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr2");
-  } else if ($copy->getStatusCd() == OBIB_STATUS_OUT) {
-    // copy is already checked out
-    $foundError = TRUE;
-    $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr3",array("barcode"=>$barcode));
   } else {
-    // check days due back
-    // some collections will have days due back set to 0 so that those items can not be checked out.
+
     $daysDueBack = $copyQ->getDaysDueBack($copy);
     if ($copyQ->errorOccurred()) {
       $copyQ->close();
       displayErrorPage($copyQ);
     }
-    if ($daysDueBack <= 0) {
-      $foundError = true;
-      $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr4",array("barcode"=>$barcode));
-    } else {
-      // check to see if collection max has been reached
-      $reachedLimit = $copyQ->hasReachedCheckoutLimit($mbrid,$mbrClassification,$copy->getBibid());
-      if ($copyQ->errorOccurred()) {
-        $copyQ->close();
-        displayErrorPage($copyQ);
+
+    if ($copy->getStatusCd() == OBIB_STATUS_OUT) {
+      //Item already checked out, let's see if it's a renewal
+      if($renewal) {
+        //Check to see if the renewal limit has been reached
+        $reachedLimit = $copyQ->hasReachedRenewalLimit($mbrid,$mbrClassification,$copy);
+        if ($copyQ->errorOccurred()) {
+          $copyQ->close();
+          displayErrorPage($copyQ);
+        }
+        if ($reachedLimit) {
+          $foundError = TRUE;
+          $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr7",array("barcode"=>$barcode));
+        }
+        else {
+          if($copy->getDaysLate() > 0) {
+            $foundError = TRUE;
+            $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr8",array("barcode"=>$barcode));
+          }
+          else {
+            //We can renew this item!
+            $copy->setRenewalCount($copy->getRenewalCount() + 1);
+          }
+        }
       }
-      if ($reachedLimit) {
+      else {
+        //copy is already checked out by someone else
         $foundError = TRUE;
-        $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr6");
+        $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr3",array("barcode"=>$barcode));
+      }
+    } else {
+
+      //Not a renewal, clearing renewal count
+      $copy->setRenewalCount(0);
+
+      // check days due back
+      // some collections will have days due back set to 0 so that those items can not be checked out.
+      if ($daysDueBack <= 0) {
+        $foundError = true;
+        $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr4",array("barcode"=>$barcode));
+      } else {
+        // check to see if collection max has been reached
+        $reachedLimit = $copyQ->hasReachedCheckoutLimit($mbrid,$mbrClassification,$copy->getBibid());
+        if ($copyQ->errorOccurred()) {
+          $copyQ->close();
+          displayErrorPage($copyQ);
+        }
+        if ($reachedLimit) {
+          $foundError = TRUE;
+          $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr6");
+        }
       }
     }
   }
@@ -144,12 +175,12 @@
     $postVars["barcodeNmbr"] = $barcode;
     $_SESSION["postVars"] = $postVars;
     $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+    header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
     exit();
   }
 
   #**************************************************************************
-  #*  Show hold edit if bibliography is currently on hold and 
+  #*  Show hold edit if bibliography is currently on hold and
   #*  current member != first member in hold queue
   #**************************************************************************
   if ($copy->getStatusCd() == OBIB_STATUS_ON_HOLD) {
@@ -169,14 +200,20 @@
     }
     // make sure hold still exists.  if not continue on with checkout
     if ($holdQ->getRowCount() > 0) {
-      if ($mbrid != $hold->getMbrid()) {
+      $holdAge = time() - strtotime($hold->getHoldBeginDt());
+      $tooOld = false;
+      $secondsPerDay = 86400;
+      if (OBIB_HOLD_MAX_DAYS > 0 and $holdAge > OBIB_HOLD_MAX_DAYS*$secondsPerDay) {
+        $tooOld = true;
+      }
+      if (!$tooOld and $mbrid != $hold->getMbrid()) {
         // show error if member who placed hold is not current member
         $holdQ->close();
         $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr5",array("barcode"=>$barcode));
         $postVars["barcodeNmbr"] = $barcode;
         $_SESSION["postVars"] = $postVars;
         $_SESSION["pageErrors"] = $pageErrors;
-        header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+        header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
         exit();
       } else {
         // need to remove hold and continue on to checkout
@@ -216,8 +253,10 @@
   $hist->setBibid($copy->getBibid());
   $hist->setCopyid($copy->getCopyid());
   $hist->setStatusCd($copy->getStatusCd());
+  $hist->setStatusBeginDt($copy->getStatusBeginDt());
   $hist->setDueBackDt($copy->getDueBackDt());
   $hist->setMbrid($copy->getMbrid());
+  $hist->setRenewalCount($copy->getRenewalCount());
 
   $histQ = new BiblioStatusHistQuery();
   $histQ->connect();
@@ -241,5 +280,5 @@
   #**************************************************************************
   #*  Go back to member view
   #**************************************************************************
-  header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+  header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid));
 ?>

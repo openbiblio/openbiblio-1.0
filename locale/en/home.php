@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /**********************************************************************************
  *   Instructions for translators:
  *
@@ -69,11 +52,11 @@ $trans["indexCircDesc4"]     = "\$text='Bibliography checkin and shelving cart l
 //$trans["indexCircDesc5"]     = "\$text='Member late fee payment';";
 $trans["indexCat"]           = "\$text='Cataloging';";
 $trans["indexCatDesc1"]      = "\$text='Use this tab to manage your bibliography records.';";
-$trans["indexCatDesc2"]      = "\$text='Bibliography administartion (new, search, edit, delete)';";
+$trans["indexCatDesc2"]      = "\$text='Bibliography administration (new, search, edit, delete)';";
 //$trans["indexCatDesc3"]      = "\$text='Import bibliography from USMarc record';";
 $trans["indexAdmin"]         = "\$text='Admin';";
 $trans["indexAdminDesc1"]    = "\$text='Use this tab to manage staff and administrative records.';";
-$trans["indexAdminDesc2"]    = "\$text='Staff administartion (new, edit, password, delete)';";
+$trans["indexAdminDesc2"]    = "\$text='Staff administration (new, edit, password, delete)';";
 $trans["indexAdminDesc3"]    = "\$text='General library settings';";
 $trans["indexAdminDesc5"]    = "\$text='Library material type list';";
 $trans["indexAdminDesc4"]    = "\$text='Library collection list';";

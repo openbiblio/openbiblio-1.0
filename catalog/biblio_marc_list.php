@@ -1,30 +1,13 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   session_cache_limiter(null);
 
   $tab = "cataloging";
   $nav = "editmarc";
-  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioField.php");
   require_once("../classes/BiblioFieldQuery.php");
@@ -40,7 +23,7 @@
   #****************************************************************************
   $bibid = $_GET["bibid"];
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -104,7 +87,7 @@
   #****************************************************************************
   ?>
   
-  <a href="../catalog/biblio_marc_new_form.php?bibid=<?php echo $bibid;?>&reset=Y">
+  <a href="../catalog/biblio_marc_new_form.php?bibid=<?php echo HURL($bibid);?>&reset=Y">
     <?php echo $loc->getText("biblioMarcListMarcSelect"); ?></a><br/>
 
   <!--
@@ -163,32 +146,32 @@
       $subfldIndex = $tag.$fld->getSubfieldCd();
       ?>
     <tr>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <a href="../catalog/biblio_marc_edit_form.php?bibid=<?php echo $bibid;?>&fieldid=<?php echo $fld->getFieldid();?>&reset=Y"><?php echo $loc->getText("biblioMarcListEdit"); ?></a>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <a href="../catalog/biblio_marc_edit_form.php?bibid=<?php echo HURL($bibid);?>&amp;fieldid=<?php echo HURL($fld->getFieldid());?>&amp;reset=Y"><?php echo $loc->getText("biblioMarcListEdit"); ?></a>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <a href="../catalog/biblio_marc_del_confirm.php?bibid=<?php echo $bibid;?>&fieldid=<?php echo $fld->getFieldid();?>&tag=<?php echo $tag;?>&subfieldCd=<?php echo $fld->getSubfieldCd();?>"><?php echo $loc->getText("biblioMarcListDel"); ?></a>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <a href="../catalog/biblio_marc_del_confirm.php?bibid=<?php echo HURL($bibid);?>&amp;fieldid=<?php echo H($fld->getFieldid());?>&amp;tag=<?php echo HURL($tag);?>&amp;subfieldCd=<?php echo HURL($fld->getSubfieldCd());?>"><?php echo $loc->getText("biblioMarcListDel"); ?></a>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $tag; ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($tag); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo getDescription($marcTags, $fld->getTag()); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H(getDescription($marcTags, $fld->getTag())); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $fld->getInd1Cd(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($fld->getInd1Cd()); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $fld->getInd2Cd(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($fld->getInd2Cd()); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $fld->getSubfieldCd(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($fld->getSubfieldCd()); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo getDescription($marcSubflds, $subfldIndex); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H(getDescription($marcSubflds, $subfldIndex)); ?>
       </td>
-      <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $fld->getFieldData(); ?>
+      <td valign="top" class="<?php echo H($row_class);?>">
+        <?php echo H($fld->getFieldData()); ?>
       </td>
     </tr>
       <?php

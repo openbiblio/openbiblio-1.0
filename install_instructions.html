@@ -2,145 +2,86 @@
 
 <head>
 
-<link rel="stylesheet" type="text/css" href="css/style.css" title="obibstyle">
 <meta name="description" content="OpenBiblio Library Automation System">
 <title>OpenBiblio Install Instructions</title>
+<style type="text/css">
+.notice {
+  margin-left: 50px;
+  margin-right: 50px;
+  border: solid black 1px;
+  background: #ffaaaa;
+  padding: 4px;
+}
+h1 { border-bottom: solid black 1px }
+th { text-align: right }
+</style>
 </head>
 <body bgcolor="#ffffff" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
-<!-- **************************************************************************************
-     * OpenBiblio logo and black background with links and date
-     **************************************************************************************-->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="#bebdbe">
-    <td align="left"><img src="images/obiblio_logo.gif" width="170" height="35" border="0"></td>
-    <td align="right" valign="top" width="100%"><font color="#ffffff">
-    </td>
-  </tr>
-</table>
-<font class="primary">
-
-<h1>Index:</h1>
+<div style="background: #bebdbe"><img src="images/obiblio_logo.gif" width="170" height="35" border="0"></div>
+<div style="padding: 8px">
+<h1>Contents:</h1>
 <ul>
     <li><a href="#releaseNotes">Release Notes</a></li>
-    <li><a href="#install">OpenBiblio 0.5.x Install Instructions (New Systems)</a></li>
-    <li><a href="#update030">Updating Your System From OpenBiblio 0.3.x to 0.5.1 Instructions</a></li>
-    <li><a href="#update040">Updating Your System From OpenBiblio 0.4.x/0.5.0 to 0.5.1 Instructions</a></li>
+    <li><a href="#install">Install Instructions (New Systems)</a></li>
+    <li><a href="#update">Updating from a previous version of OpenBiblio</a></li>
 </ul>
 
-<br>
 <a name="releaseNotes">
 <h1>Release Notes:</h1>
 </a>
+<p>OpenBiblio 0.5.2 fixes a number of longstanding bugs and introduces several new features.</p>
+<div class="notice"><strong>IMPORTANT:</strong> There is an outstanding security issue in the reports system that
+allows a staff member with report privileges to execute arbitrary SQL commands on the database
+server.  This means that any staff member with report privileges is equivalent to a staff member with
+all privileges.  This issue will be fixed in the next release (hopefully within a few weeks), but until then,
+only grant reports privileges to highly trusted staff.</div>
+<h3>Notable bug fixes</h3>
 <ul>
-<li><font color="red"><b>CAUTION!</b> - version 0.5.x is still considered <b>beta</b> software since some features
-have still not been implemented.  Use at your own risk.</font>
-</li>
-<li>Version 0.5.1 has the exact same database structure as version 0.4.0.  So, if you are
-using verion 0.4.0 you will <b>not</b> need to update your database to version 0.5.1.
-</li>
-<li>Starting with 0.5.0, all versions will include conversion software so that you can convert your database to the latest version.  A conversion 
-utility for converting version 0.3.0 data to the version 0.4.0 database format (works with 0.5.1 code base) has been included with this version.
-</li>
-<li>OpenBiblio version 0.5.x requires PHP version 4.2.0 or higher.
-</li>
-<li>The label printing feature of OpenBiblio dynamically produces a PDF file that causes
-problems with Internet Explorer 5.5 and lower.  IE 6.0 and Mozilla 1.x handles the dynamically
-produced PDF files fine.
-<li>OpenBiblio version 0.5.1 test scenarios ran succussfully on the following configurations:
+<li>Several security issues, some severe, have been fixed.  <strong>All users are advised to upgrade.</strong></li>
+<li>All known incompatibilities with newer MySQL versions have been fixed.</li>
+</ul>
+<h3>Notable new functionality</h3>
+<ul>
+<li>More flexible checkout privilege system</li>
+<li>User-definable custom fields for members and items (per material type)</li>
+<li>Hold expiration</li>
+<li>Renewal functionality</li>
+</ul>
+<p>See the newly introduced <a href="ChangeLog">ChangeLog</a> for more details.</p>
+<p>OpenBiblio version 0.5.1 test scenarios ran successfully on the following configurations:</p>
 <blockquote>
 <table>
   <tr>
-    <td><font class="primary">Operating System:</font></td>
-    <td><font class="primary">Windows 2000</font></td>
-    <td><font class="primary">Windows XP</font></td>
-    <td><font class="primary">Debian GNU/Linux (sarge)</font></td>
+    <th>Operating System:</th>
   </tr>
   <tr>
-    <td><font class="primary">PHP Version</font></td>
-    <td><font class="primary">5.0.3</font></td>
-    <td><font class="primary">4.3.3</font></td>
-    <td><font class="primary">4.3.4</font></td>
+    <th>PHP Version:</th>
   </tr>
   <tr>
-    <td><font class="primary">Web Server</font></td>
-    <td><font class="primary">Apache 2.0.52</font></td>
-    <td><font class="primary">Apache 1.3.27</font></td>
-    <td><font class="primary">Apache 2.0.52</font></td>
+    <th>Web Server:</th>
   </tr>
   <tr>
-    <td><font class="primary">MySql Version</font></td>
-    <td><font class="primary">4.0.10-gamma-max-nt</font></td>
-    <td><font class="primary">4.0.15</font></td>
-    <td><font class="primary">Unknown</font></td>
+    <th>MySql Version:</th>
   </tr>
   <tr>
-    <td><font class="primary">Browser</font></td>
-    <td><font class="primary">Mozilla 1.3a and IE 6.0.2600</font></td>
-    <td><font class="primary">IE 6.0.2900</font></td>
-    <td><font class="primary">Mozilla Firefox 1.0</font></td>
+    <th>Browser:</th>
   </tr>
 </table>
 </blockquote>
-<li>New functionality:<br>
-<pre>
-Patch 758400: Links for biblios & members in report results
-Patch 758409: Multiple output types for reports (HTML & CSV)
-Patch 766275: 'New Like' functionality
-</pre>
 </li>
-<li>Bug Fixes:<br>
-<pre>
-Made OpenBiblio independent of the setting of magic_quotes_gpc
-Replaced HTTP_*_VARS with superglobals
-
-        Fixed 758396: Can place book on hold that a member already has checked out 
-        Patch 767734: Sort order of checked out & on Hold bibliographies
-Partly Fixed 1006634: Localization: Hardcoded frontend words.
-       Fixed 1010625: Title doesn't show on delete confirm or after delete 
-       Fixed 1075370: German Install 0.5 is erreanous
-       Fixed 1152881: Undefined variable on catalog/biblio_marc_list.php
-       Fixed 1152756: Report List shows PHP warning
-
-Fixed bug that forced call numbers to be actual numbers
-Converted all queries to use new mkSQL function
-Fixed couple compatibility bugs with PHP 4.2.0 and 5.0.0
-Fixed small copy-and-paste error in BiblioSearchQuery.php
-Fixed escaping bug
-Copyright message updated to 2005
-</pre>
-</li>
-<li>Known Bugs:
-<pre>
-1162262 Image files for new material types 
-1162255 Inconsistent account balances 
-1162251 Editing checked-out copies broken 
-1162155 Stray '1' in single-page search results 
-1157668 German Locales and AmountFunctions 
-1118538 Install - Problems with MySQL 4.1.x 
-1114244 Holds and mbr_checkout stats 
-1114189 Hardcoded abbreviations for status 
-1082973 SQL inserts need column names 
-1082970 Security: check_out.php uses classification from url 
-1013037 BiblioQuery improper error handling 
-1010620 Repeated Escaping of characters in title 
-1006634 Localization: Hardcoded frontend words 
-974720 Reports: Date '=' comparisions require exact time 
-890988 Edit-Basic: contamination of empty fields 
-844825 Broken Database Format 
-777883 Double quotes not shown on Biblio - Edit-BASIC 
-774560 staff.pwd field not big enough for MySQL 4.1.0 
-763855 Report search &amp; sort criteria don't work with count() 
-761213 Checked in books are holdable 
-758405 &quot;Error running report.&quot; after timed out session. 
-</pre>
-</li>
-
 </ul>
-<br>
-
 <a name="install">
-<h1>OpenBiblio 0.5.x Install Instructions (New Systems):</h1>
+<h1>Install Instructions (New Systems):</h1>
 </a>
+<h3>Requirements</h3>
+<ul>
+<li>PHP version 4.2.0 or higher and a web server which supports it</li>
+<li>MySQL version 3.23 or higher</li>
+<li>A relatively modern web browser.  Versions of Internet Explorer before 6.0 may
+  have problems with PDF files generated by OpenBiblio.  Users of Netscape 4.x and earlier
+  may suffer from appearance problems.</li>
+</ul>
+<h3>Procedure</h3>
 <ol>
   <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that is
      compatible with PHP.  If you install Apache, get familiar with starting 
@@ -255,20 +196,25 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
    located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
    assuming you placed the openbiblio directory in the root htdocs directory.
   </li>
-  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.html">http://localhost/openbiblio/index.html</a>,
+  <li><strong>For security:</strong> Remove the openbiblio/install directory completely
+    to prevent unauthorized use of install or upgrade tools.</li>
+  <li><strong>For security:</strong> Verify that the <tt>display_errors</tt> setting in php.ini is 'Off'
+    to prevent unintended information disclosure.</li>
+  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.php">http://localhost/openbiblio/index.php</a>,
    assuming you placed the openbiblio directory in the root htdocs directory.  Enter
    "admin" for both the userid and password whenever you are prompted to signon.  You can
    change the admin password from the "Admin" tab -> staff list, where you can also add
    more library staff members.
   </li>
-    
-
 </ol>
 
 
 <br>
-<a name="update030">
-<h1>Updating Your System From OpenBiblio 0.3.x to 0.5.1 Instructions:</h1>
+<a name="update">
+<h1>Updating from a previous version of OpenBiblio:</h1>
+<div class="notice"><strong>IMPORTANT:</strong> Updates from OpenBiblio.de versions
+(e.g. 0.5.1.7) must be performed manually at the moment.  The automatic upgrade
+script does not know how to handle the database format differences.</div>
 <ol>
   <li>Rename your old openbiblio installation directory
     so that you don't lose its contents.  We'll call the old directory openbiblio-old.
@@ -284,30 +230,12 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
    <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
    assuming you placed the openbiblio directory in the root htdocs directory.
   </li>
+  <li><strong>For security:</strong> Remove the openbiblio/install directory completely
+    to prevent unauthorized use of install or upgrade tools.</li>
+  <li><strong>For security:</strong> Verify that the <tt>display_errors</tt> setting in php.ini is 'Off'
+    to prevent unintended information disclosure.</li>
 </ol>
 </a>
-<br>
-<a name="update040">
-<h1>Updating Your System From OpenBiblio 0.4.x/0.5.0 to 0.5.1 Instructions:</h1>
-</a>
-<ol>
-  <li>Rename your old openbiblio installation directory
-    so that you don't lose its contents.  We'll call the old directory openbiblio-old.
-  </li>
-  <li>Copy the new openbiblio directory and all of its contents into the directory where the old openbiblio installation was.
-  </li>
-  <li>Copy the database_constants.php file from the openbiblio-old directory into the new
-    openbiblio directory, replacing the database_constants.php file there.
-  </li>
-  <li>No update of the database is necessary.
-  </li>
-</ol>
-</a>
-
-<br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br>
-
-</font>
+</div>
 </body>
 </html>

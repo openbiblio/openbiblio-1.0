@@ -16,16 +16,10 @@
 	   ,member.mbrid
            ,member.last_name
            ,member.first_name
-           ,member.address1
-           ,member.address2
-           ,member.city
-           ,member.state
-           ,member.zip
-           ,member.zip_ext
+           ,member.address
            ,member.home_phone
            ,member.work_phone
            ,member.email
-           ,member.school_grade
            ,biblio_copy.barcode_nmbr
            ,biblio.title
            ,biblio.author

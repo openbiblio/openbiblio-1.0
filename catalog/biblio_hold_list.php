@@ -1,28 +1,11 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   $tab = "cataloging";
   $nav = "holds";
-  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioHold.php");
@@ -36,7 +19,7 @@
   #*  Get Status Message
   #****************************************************************************
   if (isset($_GET["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
+    $msg = "<font class=\"error\">".H($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -46,12 +29,7 @@
   #****************************************************************************
   $dmQ = new DmQuery();
   $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
-  }
-  $dmQ->execSelect("biblio_status_dm");
-  $biblioStatusDm = $dmQ->fetchRows();
+  $biblioStatusDm = $dmQ->getAssoc("biblio_status_dm");
   $dmQ->close();
 
   #****************************************************************************
@@ -64,27 +42,27 @@
   #****************************************************************************
   require_once("../shared/header.php");
 ?>
-<h1><?php print $loc->getText("biblioHoldListHead"); ?></h1>
+<h1><?php echo $loc->getText("biblioHoldListHead"); ?></h1>
 <?php echo $msg ?>
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("biblioHoldListHdr1"); ?>
+      <?php echo $loc->getText("biblioHoldListHdr1"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("biblioHoldListHdr2"); ?>
+      <?php echo $loc->getText("biblioHoldListHdr2"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("biblioHoldListHdr3"); ?>
+      <?php echo $loc->getText("biblioHoldListHdr3"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("biblioHoldListHdr4"); ?>
+      <?php echo $loc->getText("biblioHoldListHdr4"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("biblioHoldListHdr5"); ?>
+      <?php echo $loc->getText("biblioHoldListHdr5"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      <?php print $loc->getText("biblioHoldListHdr6"); ?>
+      <?php echo $loc->getText("biblioHoldListHdr6"); ?>
     </th>
   </tr>
 <?php
@@ -107,7 +85,7 @@
 
 ?>
     <td class="primary" align="center" colspan="6">
-      <?php print $loc->getText("biblioHoldListNoHolds"); ?>
+      <?php echo $loc->getText("biblioHoldListNoHolds"); ?>
     </td>
 <?php
   } else {
@@ -115,23 +93,23 @@
 ?>
   <tr>
     <td class="primary" valign="top" nowrap="yes">
-       <a href="../shared/hold_del_confirm.php?bibid=<?php echo $hold->getBibid();?>&copyid=<?php echo $hold->getCopyid();?>&holdid=<?php echo $hold->getHoldid();?>"><?php print $loc->getText("biblioHoldListdel"); ?></a>
+       <a href="../shared/hold_del_confirm.php?bibid=<?php echo HURL($hold->getBibid());?>&amp;copyid=<?php echo HURL($hold->getCopyid());?>&amp;holdid=<?php echo HURL($hold->getHoldid());?>"><?php echo $loc->getText("biblioHoldListdel"); ?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $hold->getBarcodeNmbr();?>
+      <?php echo H($hold->getBarcodeNmbr());?>
     </td>
     <td class="primary" valign="top" nowrap="yes">
-      <?php echo $hold->getHoldBeginDt();?>
+      <?php echo H($hold->getHoldBeginDt());?>
     </td>
     <td class="primary" valign="top" >
-      <a href="../circ/mbr_view.php?mbrid=<?php echo $hold->getMbrid();?>&reset=Y"><?php echo $hold->getFirstName();?>
-      <?php echo $hold->getLastName();?></a>
+      <a href="../circ/mbr_view.php?mbrid=<?php echo HURL($hold->getMbrid());?>&amp;reset=Y"><?php echo H($hold->getFirstName());?>
+      <?php echo H($hold->getLastName());?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $biblioStatusDm[$hold->getStatusCd()];?>
+      <?php echo H($biblioStatusDm[$hold->getStatusCd()]);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $hold->getDueBackDt();?>
+      <?php echo H($hold->getDueBackDt());?>
     </td>
   </tr>
 <?php

@@ -1,25 +1,8 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
 /**********************************************************************************
  *   Instructions for translators:
  *
@@ -73,6 +56,7 @@ $trans["indexName"]               = "\$text='Last name start with:';";
 #****************************************************************************
 #*  Translation text for page mbr_new_form.php, mbr_edit_form.php and mbr_fields.php
 #****************************************************************************
+$trans["Mailing Address:"] = "\$text='Mailing Address:';";
 $trans["mbrNewForm"]              = "\$text='Add New';";
 $trans["mbrEditForm"]             = "\$text='Edit';";
 $trans["mbrFldsHeader"]           = "\$text='Member:';";
@@ -127,7 +111,9 @@ $trans["mbrViewTeacher"]          = "\$text='School Teacher:';";
 $trans["mbrViewHead2"]            = "\$text='Checkout Stats:';";
 $trans["mbrViewStatColHdr1"]      = "\$text='Material';";
 $trans["mbrViewStatColHdr2"]      = "\$text='Count';";
-$trans["mbrViewStatColHdr3"]      = "\$text='Limit';";
+$trans["mbrViewStatColHdr3"]      = "\$text='Limits';";
+$trans["mbrViewStatColHdr4"]      = "\$text='Checkout';";
+$trans["mbrViewStatColHdr5"]      = "\$text='Renewal';";
 $trans["mbrViewHead3"]            = "\$text='Bibliography Check Out:';";
 $trans["mbrViewBarcode"]          = "\$text='Barcode Number:';";
 $trans["mbrViewCheckOut"]         = "\$text='Check Out';";
@@ -139,6 +125,8 @@ $trans["mbrViewOutHdr4"]          = "\$text='Title';";
 $trans["mbrViewOutHdr5"]          = "\$text='Author';";
 $trans["mbrViewOutHdr6"]          = "\$text='Due Back';";
 $trans["mbrViewOutHdr7"]          = "\$text='Days Late';";
+$trans["mbrViewOutHdr8"]          = "\$text='Renewal';";
+$trans["mbrViewOutHdr9"]          = "\$text='time/s';";
 $trans["mbrViewNoCheckouts"]      = "\$text='No bibliographies are currently checked out.';";
 $trans["mbrViewHead5"]            = "\$text='Place Hold:';";
 $trans["mbrViewHead6"]            = "\$text='Bibliographies Currently On Hold:';";
@@ -166,6 +154,8 @@ $trans["checkoutErr3"]            = "\$text='Bibliography with barcode number %b
 $trans["checkoutErr4"]            = "\$text='Bibliography with barcode number %barcode% is not available for checkout.';";
 $trans["checkoutErr5"]            = "\$text='Bibliography with barcode number %barcode% is currently on hold for another member.';";
 $trans["checkoutErr6"]            = "\$text='Member has reached the checkout limit for the specified bibliography\'s material type.';";
+$trans["checkoutErr7"]            = "\$text='Bibliography with barcode number %barcode% has reached the member\'s renewal limit.';";
+$trans["checkoutErr8"]            = "\$text='Bibliography with barcode number %barcode% can not be renew as it is already late.';";
 
 #****************************************************************************
 #*  Translation text for page shelving_cart.php

@@ -1,25 +1,9 @@
 <?php
-/**********************************************************************************
- *   Copyright(C) 2002 David Stevens
- *
- *   This file is part of OpenBiblio.
- *
- *   OpenBiblio is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   OpenBiblio is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with OpenBiblio; if not, write to the Free Software
- *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- **********************************************************************************
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
-
+ 
+  require_once("../shared/common.php");
   session_cache_limiter(null);
 
   $tab = "cataloging";
@@ -27,19 +11,15 @@
   $focus_form_name = "newmarcform";
   $focus_form_field = "tag";
 
-  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../catalog/marcFuncs.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  #****************************************************************************
-  #*  Retrieving get var
-  #****************************************************************************
-  if (isset($_GET["reset"])) {
-    unset($_SESSION["postVars"]);
-    unset($_SESSION["pageErrors"]);
+  $postVars = array();
+  $pageErrors = array();
+  if (isset($_GET["bibid"])) {
     $bibid = $_GET["bibid"];
     $postVars["bibid"] = $bibid;
     $postVars["tag"] = "";
@@ -49,26 +29,25 @@
     $postVars["fieldData"] = "";
     $selectedTag = "";
     $selectedSubfld = "";
-    $_SESSION["postVars"] = $postVars;
-  } else {
-    require_once("../shared/get_form_vars.php");
+  } else if (isset($_SESSION['postVars'])) {
+    $postVars = $_SESSION['postVars'];
+    if (isset($_SESSION['pageErrors'])) {
+      $pageErrors = $_SESSION['pageErrors'];
+    }
     $bibid = $postVars["bibid"];
     $selectedTag = $postVars["tag"];
     $selectedSubfld = $postVars["subfieldCd"];
-    if (isset($_GET["tag"])) {
-      #****************************************************************************
-      #*  Retrieving get var from field select page
-      #****************************************************************************
-      $selectedTag = $_GET["tag"];
-      $postVars["tag"] = $selectedTag;
-      if (isset($_GET["subfld"])) {
-        $selectedSubfld = $_GET["subfld"];
-        $postVars["subfieldCd"] = $selectedSubfld;
-      } else {
-        $selectedSubfld = $postVars["subfieldCd"];
-      }
-      $_SESSION["postVars"] = $postVars;
-    }
+  }
+  if (!isset($bibid) || $bibid == "") {
+    Fatal::internalError('no bibid set');
+  }
+  if (isset($_GET["tag"])) {
+    $selectedTag = $_GET["tag"];
+    $postVars["tag"] = $selectedTag;
+  }
+  if (isset($_GET["subfld"])) {
+    $selectedSubfld = $_GET["subfld"];
+    $postVars["subfieldCd"] = $selectedSubfld;
   }
     
   require_once("../shared/header.php");
@@ -86,7 +65,7 @@
   }
 
   $formLabel = $loc->getText("biblioMarcNewFormHdr");
-  $returnPg = "biblio_marc_new_form.php";
+  $returnPg = "../catalog/biblio_marc_new_form.php?bibid=".U($bibid);
   $fieldid = "";
 
   #****************************************************************************
@@ -96,7 +75,7 @@
   
 <form name="newmarcform" method="POST" action="../catalog/biblio_marc_new.php">
 <?php include("../catalog/biblio_marc_fields.php"); ?>
-<input type="hidden" name="bibid" value="<?php echo $bibid;?>">
+<input type="hidden" name="bibid" value="<?php echo H($bibid);?>">
 </form>
   
 
