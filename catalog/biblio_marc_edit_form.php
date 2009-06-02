@@ -37,7 +37,7 @@
       $fieldQ->close();
       displayErrorPage($fieldQ);
     }
-    $field = $fieldQ->query($bibid,$fieldid);
+    $field = $fieldQ->doQuery($bibid,$fieldid);
     if ($fieldQ->errorOccurred()) {
       $fieldQ->close();
       displayErrorPage($fieldQ);

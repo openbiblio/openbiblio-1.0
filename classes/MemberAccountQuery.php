@@ -19,7 +19,8 @@ class MemberAccountQuery extends Query {
   var $_rowCount = 0;
   var $_loc;
 
-  function MemberAccountQuery () {
+  function MemberAccountQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
@@ -34,7 +35,7 @@ class MemberAccountQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function query($mbrid) {
+  function doQuery($mbrid) {
     # setting query that will return all the data
     $sql = $this->mkSQL("select member_account.*, "
                         . " transaction_type_dm.description transaction_type_desc "

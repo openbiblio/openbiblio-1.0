@@ -18,29 +18,19 @@
   <input type="button" onClick="self.location='../shared/logout.php'" value="<?php echo $navLoc->getText("logout");?>" class="navbutton">
 <?php } ?>
 <br /><br />
+<?php
+Nav::node('reportlist', 'Report List', '../reports/index.php');
+if (isset($_SESSION['rpt_Report'])) {
+  Nav::node('results', "Report Results",
+           '../reports/run_report.php?type=previous');
+}
 
-<?php if ($nav == "summary") { ?>
- &raquo; <?php echo $navLoc->getText("reportsSummary");?><br>
-<?php } else { ?>
- <a href="../reports/index.php" class="alt1"><?php echo $navLoc->getText("reportsSummary");?></a><br>
-<?php } ?>
+$helpurl = "javascript:popSecondary('../shared/help.php";
+if (isset($helpPage)) {
+  $helpurl .= "?page=".$helpPage;
+}
+$helpurl .= "')";
+Nav::node('help', 'Help', $helpurl);
 
-<?php if ($nav == "reportlist") { ?>
- &raquo; <?php echo $navLoc->getText("reportsReportListLink");?><br>
-<?php } else { ?>
- <a href="../reports/report_list.php" class="alt1"><?php echo $navLoc->getText("reportsReportListLink");?></a><br>
-<?php } ?>
-
-<?php if ($nav == "labellist") { ?>
- &raquo; <?php echo $navLoc->getText("reportsLabelsLink");?><br>
-<?php } else { ?>
- <a href="../reports/label_list.php" class="alt1"><?php echo $navLoc->getText("reportsLabelsLink");?></a><br>
-<?php } ?>
-
-<?php if ($nav == "letterlist") { ?>
- &raquo; <?php echo $navLoc->getText("reportsLettersLink");?><br>
-<?php } else { ?>
- <a href="../reports/letter_list.php" class="alt1"><?php echo $navLoc->getText("reportsLettersLink");?></a><br>
-<?php } ?>
-
-<a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".H(addslashes(U($helpPage))); ?>')"><?php echo $navLoc->getText("help");?></a>
+Nav::display("$nav");
+?>

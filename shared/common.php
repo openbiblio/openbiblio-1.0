@@ -38,6 +38,9 @@
     $_REQUEST = array_map("magicSlashes", $_REQUEST);
   }
   
+  # FIXME - Until I get around to fixing all the notices...
+  error_reporting(E_ALL ^ E_NOTICE);
+  
   # Escaping shorthands
   function H($s) {
     return htmlspecialchars($s, ENT_QUOTES);
@@ -49,15 +52,16 @@
     return urlencode($s);
   }
   
-  # Error handling
-  require_once("../classes/Error.php");
-  
-  # Load settings
-  require_once("../shared/global_constants.php");
+  require_once('../database_constants.php');
+  require_once('../shared/global_constants.php');
+  require_once('../classes/Error.php');
+  require_once('../classes/Iter.php');
+  require_once('../classes/Nav.php');
   
   if (!isset($doing_install) or !$doing_install) {
     require_once("../shared/read_settings.php");
 
+    /* Making session user info available on all pages. */
     session_start();
     # Forcibly disable register_globals
     if (ini_get('register_globals')) {

@@ -312,3 +312,39 @@ select {
   font-family: <?php echo H(OBIB_PRIMARY_FONT_FACE);?>;
   color: <?php echo H(OBIB_PRIMARY_FONT_COLOR);?>;
 }
+
+ul.nav_main { list-style-type: none; padding-left: 0; margin-left: 0; }
+li.nav_selected:before { white-space: pre-wrap; content: "\bb  " }
+ul.nav_main li.nav_selected { font-weight: bold }
+ul.nav_sub li.nav_selected { font-weight: bold }
+ul.nav_main li { font-weight: normal }
+ul.nav_sub li { font-weight: normal }
+
+li.report_category { margin-bottom: 1em }
+
+table.results {
+  width: 100%;
+  border-collapse: collapse;
+}
+table.resultshead {
+  width: 100%;
+  border-collapse: separate;
+  border-top: solid <?php echo OBIB_ALT2_BG;?> 3px;
+  border-bottom: solid <?php echo OBIB_ALT2_BG;?> 3px;
+  clear: both;
+}
+table.resultshead th {
+  text-align: left;
+  color: <?php echo OBIB_PRIMARY_FONT_COLOR;?>;
+  border: none;
+  background: <?php echo OBIB_PRIMARY_BG;?>;
+  font-size: 16px;
+  font-weight: bold;
+  vertical-align: middle;
+  padding: 2px;
+}
+table.resultshead td {
+  text-align: right;
+}
+table.results td.primary { border-top: none; }
+

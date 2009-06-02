@@ -7,10 +7,9 @@ require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
 
 class InstallQuery extends Query {
-  /* So the installer can test the database connection */
-  function connect_e() {
-    $this->_conn = new DbConnection();
-    return $this->_conn->connect_e();
+  /* Override constructor so the installer can test the database connection */
+  function InstallQuery() {
+    ;
   }
   function dropTable($tableName) {
     $sql = $this->mkSQL("drop table if exists %I ", $tableName);
@@ -46,12 +45,13 @@ class InstallQuery extends Query {
   }
   
   function _getSettings($tablePrfx) {
-    $sql = "select * from ".$tablePrfx."settings";
-    $error = $this->_conn->exec_e($sql);
-    if ($error) {
+    $sql = $this->mkSQL('SHOW TABLES LIKE %Q ', $tablePrfx.'settings');
+    $row = $this->select01($sql);
+    if (!$row) {
       return false;
     }
-    return $this->_conn->fetchRow();
+    $sql = $this->mkSQL('SELECT * FROM %I ', $tablePrfx.'settings');
+    return $this->select1($sql);
   }
   
   function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {

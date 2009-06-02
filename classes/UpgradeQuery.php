@@ -6,6 +6,10 @@
 require_once("../classes/InstallQuery.php");
 
 class UpgradeQuery extends InstallQuery {
+  function UpgradeQuery() {
+    # Call query constructor so database connection gets made
+    $this->Query();
+  }
   function insertBiblioFields($tag, $subFieldCd, 
                               $fromTablePrfx, $toTablePrfx,  $colName){
     $sql = "insert into ".$toTablePrfx."biblio_field"
@@ -40,6 +44,7 @@ class UpgradeQuery extends InstallQuery {
     $upgrades = array(
       '0.3.0' => '_upgrade030_e',
       '0.4.0' => '_upgrade040_e',
+      '0.5.2' => '_upgrade052_e',
     );
     $tmpPrfx = "obiblio_upgrade_";
     # FIXME - translate upgrade messages
@@ -76,6 +81,8 @@ class UpgradeQuery extends InstallQuery {
   # $prfx is the table prefix to be used by both the original and upgraded databases.
   # $tmpPrfx is a prefix which may be used for temporary tables.
   # Return value is the same as performUpgrade_e()
+  
+  /* Upgrade 0.3.0 to 0.4.0 */
   function _upgrade030_e($prfx, $tmpPrfx) {
     # 0.3.0 was English only
     $this->freshInstall('en', false, '0.4.0', $tmpPrfx);
@@ -226,13 +233,15 @@ class UpgradeQuery extends InstallQuery {
 
     $this->dropTable($prfx.'settings');
     
-    #moving tables that haven't changed in structure, yet may have be modified by the user
+    # moving tables that haven't changed in structure,
+    # yet may have been modified by the user
     $this->renamePrfxedTable("material_type_dm", $prfx, $tmpPrfx);
     $this->renamePrfxedTable("theme", $prfx, $tmpPrfx);
     $this->renameTables($tmpPrfx, $prfx);
     $notices = array('Any existing hold requests have been forgotten.');
     return array($notices, NULL); # no error
   }
+  /* Upgrade 0.4.0 to 0.5.2 */
   function _upgrade040_e($prfx, $tmpPrfx) {
     $settings = $this->exec('select * from '.$prfx.'settings ');
     if (is_dir('../locale/'.$settings[0]['locale'].'/sql/0.5.2/domain')) {
@@ -303,6 +312,18 @@ class UpgradeQuery extends InstallQuery {
     $this->exec('update '.$prfx.'settings set version=\'0.5.2\'');
     $notices = array('All staff passwords have been reset to be equal to the corresponding usernames.');
     return array($notices, NULL); # no error
+  }
+  /* Upgrade 0.5.2 to 0.6.0 */
+  function _upgrade052_e($prfx, $tmpPrfx) {
+    $this->exec('alter table '.$prfx.'biblio_copy '
+                . 'add create_dt datetime not null '
+                . 'after copyid ');
+    $this->exec('update biblio_copy bc, biblio b '
+                . 'set bc.create_dt=b.create_dt '
+                . 'where b.bibid=bc.bibid ');
+    $this->exec("update settings set version='0.6.0'");
+    $notices = array();
+    return array($notices, NULL);
   }
 }
 

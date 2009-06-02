@@ -32,7 +32,7 @@ define("OBIB_SEARCH_NAME","5");
  ****************************************************************************
  */
 define("OBIB_CODE_VERSION","CVS");
-define("OBIB_LATEST_DB_VERSION","0.5.2");
+define("OBIB_LATEST_DB_VERSION","0.6.0");
 define("OBIB_DEFAULT_STATUS","in");
 define("OBIB_STATUS_IN","in");
 define("OBIB_STATUS_OUT","out");

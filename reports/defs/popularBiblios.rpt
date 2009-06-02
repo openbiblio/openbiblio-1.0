@@ -1,0 +1,26 @@
+.title popularBiblios
+.category Circulation
+.column bibid hidden
+.column barcode_nmbr sort=barcode_nmbr
+.column title sort=title func=biblio_link
+.column author sort=author
+.column checkoutCount sort=checkoutCount
+.parameters
+.	order_by
+.		item barcode_nmbr
+.		item title
+.		item author
+.		item checkoutCount type=numeric
+.	end order_by
+.end parameters
+.sql
+	select b.bibid, c.barcode_nmbr, b.title, b.author,
+		count(h.status_begin_dt) checkoutCount
+	from biblio_status_hist h, biblio_copy c, biblio b
+	where  h.bibid = c.bibid
+		and h.copyid = c.copyid
+		and h.bibid = b.bibid
+		and h.status_cd = 'out'
+	group by c.barcode_nmbr, b.title, b.author
+.	order_by_expr
+.end sql

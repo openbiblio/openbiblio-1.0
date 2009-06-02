@@ -20,7 +20,8 @@ class BiblioFieldQuery extends Query {
   var $_rowCount = 0;
   var $_loc;
 
-  function BiblioFieldQuery () {
+  function BiblioFieldQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
@@ -36,7 +37,7 @@ class BiblioFieldQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function query($bibid,$fieldid) {
+  function doQuery($bibid,$fieldid) {
     # setting query that will return all the data in biblio
     $sql = $this->mkSQL("select biblio_field.* from biblio_field "
                         . "where biblio_field.bibid = %N "

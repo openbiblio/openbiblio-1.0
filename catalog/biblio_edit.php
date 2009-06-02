@@ -59,7 +59,7 @@ function bibidToPostVars($bibid) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
-  if (!$biblio = $biblioQ->query($bibid)) {
+  if (!$biblio = $biblioQ->doQuery($bibid)) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }

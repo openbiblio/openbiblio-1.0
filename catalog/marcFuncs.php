@@ -35,7 +35,7 @@ function getTagDesc($tag,$subfldCd,&$tagDesc,&$subfldDesc,&$ind1Desc,&$ind2Desc)
       $marcTagDmQ->close();
       displayErrorPage($marcTagDmQ);
     }
-    $marcTag = $marcTagDmQ->query($tag);
+    $marcTag = $marcTagDmQ->doQuery($tag);
     if ($marcTagDmQ->errorOccurred()) {
       $marcTagDmQ->close();
       displayErrorPage($marcTagDmQ);
@@ -53,7 +53,7 @@ function getTagDesc($tag,$subfldCd,&$tagDesc,&$subfldDesc,&$ind1Desc,&$ind2Desc)
         $marcSubfldDmQ->close();
         displayErrorPage($marcSubfldDmQ);
       }
-      $marcSubfld = $marcSubfldDmQ->query($tag, $subfldCd);
+      $marcSubfld = $marcSubfldDmQ->doQuery($tag, $subfldCd);
       if ($marcSubfldDmQ->errorOccurred()) {
         $marcSubfldDmQ->close();
         displayErrorPage($marcSubfldDmQ);

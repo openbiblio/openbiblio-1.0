@@ -296,21 +296,6 @@
 <tr>
 	<td>type</td>
 	<td>barcodeNmbr</td>
-	<td>101</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Check Out']</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>UNIX in a Nutshell</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>barcodeNmbr</td>
 	<td>102</td>
 </tr>
 <tr>
@@ -321,6 +306,46 @@
 <tr>
 	<td>verifyTextPresent</td>
 	<td>Java in a Nutshell</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>storeLocation</td>
+	<td>mbrpage</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/tests/selenium/helpers/makeOverdue.php</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Changed Due Date</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>${mbrpage}</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//tr[td[3]=102]/td[8]</td>
+	<td>30</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>barcodeNmbr</td>
+	<td>101</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Check Out']</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>UNIX in a Nutshell</td>
 	<td>&nbsp;</td>
 </tr>
 <tr>
@@ -402,31 +427,6 @@
 	<td>clickAndWait</td>
 	<td>link=return to member information</td>
 	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>storeLocation</td>
-	<td>mbrpage</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/openbiblio/tests/selenium/helpers/makeOverdue.php</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Changed Due Date</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>${mbrpage}</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td>verifyText</td>
-	<td>//tr[td[3]=102]/td[8]</td>
-	<td>30</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

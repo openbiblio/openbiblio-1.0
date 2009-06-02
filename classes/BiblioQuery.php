@@ -27,7 +27,8 @@ class BiblioQuery extends Query {
   var $_loc;
   var $_fieldsInBiblio;
 
-  function BiblioQuery () {
+  function BiblioQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
     $this->_fieldsInBiblio = array(
       '100a' => 'author',
@@ -65,7 +66,7 @@ class BiblioQuery extends Query {
   /*###########################
     # WORKS WITH NEW FORMAT   #
     ###########################*/
-  function query($bibid) {
+  function doQuery($bibid) {
     # reset rowNmbr
     $this->_rowNmbr = 0;
     $this->_currentRowNmbr = 1;

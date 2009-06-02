@@ -28,4 +28,4 @@ dir=rb$1
 $testrun && echo TEST RUN: not tagging
 $testrun || cvs rtag -b $branch "$module"
 cd ..
-cvs co -r $branch -d $dir "$module"
+cvs co -r $branch -d $dir -P "$module"

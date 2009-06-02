@@ -528,6 +528,19 @@
 	<td>null</td>
 	<td></td>
 </tr>
+<!--There's a race between the OpenBiblio JavaScript setting the proper page in the
+  main window and the test JavaScript selecting that window.  The waitFors below
+  make sure things are filled in correctly before we go on. -->
+<tr>
+	<td>waitForValue</td>
+	<td>//input[@name='tag']</td>
+	<td>650</td>
+</tr>
+<tr>
+	<td>waitForValue</td>
+	<td>//input[@name='subfieldCd']</td>
+	<td>a</td>
+</tr>
 <tr>
 	<td>type</td>
 	<td>fieldData</td>

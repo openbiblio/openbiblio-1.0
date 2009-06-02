@@ -25,7 +25,8 @@ class BiblioSearchQuery extends Query {
   var $_pageCount = 0;
   var $_loc;
 
-  function BiblioSearchQuery () {
+  function BiblioSearchQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
   function setItemsPerPage($value) {
@@ -172,7 +173,7 @@ class BiblioSearchQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function query($statusCd,$mbrid="") {
+  function doQuery($statusCd,$mbrid="") {
 
     $sql = "select biblio.* ";
     $sql .= ",biblio_copy.copyid ";

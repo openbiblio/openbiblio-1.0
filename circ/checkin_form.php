@@ -118,7 +118,7 @@ function checkin(massCheckinFlg)
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
-  if (!$biblioQ->query(OBIB_STATUS_SHELVING_CART)) {
+  if (!$biblioQ->doQuery(OBIB_STATUS_SHELVING_CART)) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }

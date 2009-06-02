@@ -15,69 +15,72 @@ The format of a locator is:</p>
 <p>
 We support the following strategies for locating elements:
 </p>
-<blockquote>
-<dl>
-<dt><strong>identifier</strong>=<em>id</em></dt>
-<dd>Select the element with the specified &#64;id attribute. If no match is
-found, select the first element whose &#64;name attribute is <em>id</em>.
-(This is normally the default; see below.)</dd>
-<dt><strong>id</strong>=<em>id</em></dt>
-<dd>Select the element with the specified &#64;id attribute.</dd>
 
-<dt><strong>name</strong>=<em>name</em></dt>
-<dd>Select the first element with the specified &#64;name attribute.</dd>
-<dd><ul class="first last simple">
+<ul>
+<li><strong>identifier</strong>=<em>id</em>: 
+Select the element with the specified &#64;id attribute. If no match is
+found, select the first element whose &#64;name attribute is <em>id</em>.
+(This is normally the default; see below.)</li>
+<li><strong>id</strong>=<em>id</em>:
+Select the element with the specified &#64;id attribute.</li>
+
+<li><strong>name</strong>=<em>name</em>:
+Select the first element with the specified &#64;name attribute.
+<ul class="first last simple">
 <li>username</li>
 <li>name=username</li>
 </ul>
-</dd>
-<dd>The name may optionally be followed by one or more <em>element-filters</em>, separated from the name by whitespace.  If the <em>filterType</em> is not specified, <strong>value</strong> is assumed.</dd>
 
-<dd><ul class="first last simple">
+<p>The name may optionally be followed by one or more <em>element-filters</em>, separated from the name by whitespace.  If the <em>filterType</em> is not specified, <strong>value</strong> is assumed.</p>
+
+<ul class="first last simple">
 <li>name=flavour value=chocolate</li>
 </ul>
-</dd>
-<dt><strong>dom</strong>=<em>javascriptExpression</em></dt>
+</li>
+<li><strong>dom</strong>=<em>javascriptExpression</em>: 
 
-<dd>
-
-<dd>Find an element using JavaScript traversal of the HTML Document Object
-Model. DOM locators <em>must</em> begin with &quot;document.&quot;.
+Find an element by evaluating the specified string.  This allows you to traverse the HTML Document Object
+Model using JavaScript.  Note that you must not return a value in this string; simply make it the last expression in the block.
 <ul class="first last simple">
 <li>dom=document.forms['myForm'].myDropdown</li>
 <li>dom=document.images[56]</li>
+<li>dom=function foo() { return document.links[1]; }; foo();</li>
 </ul>
-</dd>
 
-</dd>
+</li>
 
-<dt><strong>xpath</strong>=<em>xpathExpression</em></dt>
-<dd>Locate an element using an XPath expression.
+<li><strong>xpath</strong>=<em>xpathExpression</em>: 
+Locate an element using an XPath expression.
 <ul class="first last simple">
 <li>xpath=//img[&#64;alt='The image alt text']</li>
 <li>xpath=//table[&#64;id='table1']//tr[4]/td[2]</li>
+<li>xpath=//a[contains(&#64;href,'#id1')]</li>
+<li>xpath=//a[contains(&#64;href,'#id1')]/&#64;class</li>
+<li>xpath=(//table[&#64;class='stylee'])//th[text()='theHeaderText']/../td</li>
+<li>xpath=//input[&#64;name='name2' and &#64;value='yes']</li>
+<li>xpath=//*[text()="right"]</li>
 
 </ul>
-</dd>
-<dt><strong>link</strong>=<em>textPattern</em></dt>
-<dd>Select the link (anchor) element which contains text matching the
+</li>
+<li><strong>link</strong>=<em>textPattern</em>:
+Select the link (anchor) element which contains text matching the
 specified <em>pattern</em>.
 <ul class="first last simple">
 <li>link=The link text</li>
 </ul>
 
-</dd>
+</li>
 
-<dt><strong>css</strong>=<em>cssSelectorSyntax</em></dt>
-<dd>Select the element using css selectors. Please refer to <a href="http://www.w3.org/TR/REC-CSS2/selector.html">CSS2 selectors</a>, <a href="http://www.w3.org/TR/2001/CR-css3-selectors-20011113/">CSS3 selectors</a> for more information. You can also check the TestCssLocators test in the selenium test suite for an example of usage, which is included in the downloaded selenium core package.
+<li><strong>css</strong>=<em>cssSelectorSyntax</em>:
+Select the element using css selectors. Please refer to <a href="http://www.w3.org/TR/REC-CSS2/selector.html">CSS2 selectors</a>, <a href="http://www.w3.org/TR/2001/CR-css3-selectors-20011113/">CSS3 selectors</a> for more information. You can also check the TestCssLocators test in the selenium test suite for an example of usage, which is included in the downloaded selenium core package.
 <ul class="first last simple">
 <li>css=a[href="#id3"]</li>
 <li>css=span#firstChild + span</li>
 </ul>
-</dd>
-<dd>Currently the css selector locator supports all css1, css2 and css3 selectors except namespace in css3, some pseudo classes(:nth-of-type, :nth-last-of-type, :first-of-type, :last-of-type, :only-of-type, :visited, :hover, :active, :focus, :indeterminate) and pseudo elements(::first-line, ::first-letter, ::selection, ::before, ::after). </dd>
-</dl>
-</blockquote>
+<p>Currently the css selector locator supports all css1, css2 and css3 selectors except namespace in css3, some pseudo classes(:nth-of-type, :nth-last-of-type, :first-of-type, :last-of-type, :only-of-type, :visited, :hover, :active, :focus, :indeterminate) and pseudo elements(::first-line, ::first-letter, ::selection, ::before, ::after). </p>
+</li>
+</ul>
+
 <p>
 Without an explicit locator prefix, Selenium uses the following default
 strategies:
@@ -110,23 +113,21 @@ Selects a single element based on its position in the list (offset from zero).</
 <p>
 Various Pattern syntaxes are available for matching string values:
 </p>
-<blockquote>
-<dl>
-<dt><strong>glob:</strong><em>pattern</em></dt>
-<dd>Match a string against a "glob" (aka "wildmat") pattern. "Glob" is a
+<ul>
+<li><strong>glob:</strong><em>pattern</em>:
+Match a string against a "glob" (aka "wildmat") pattern. "Glob" is a
 kind of limited regular-expression syntax typically used in command-line
 shells. In a glob pattern, "*" represents any sequence of characters, and "?"
 represents any single character. Glob patterns match against the entire
-string.</dd>
-<dt><strong>regexp:</strong><em>regexp</em></dt>
-<dd>Match a string using a regular-expression. The full power of JavaScript
-regular-expressions is available.</dd>
-<dt><strong>exact:</strong><em>string</em></dt>
+string.</li>
+<li><strong>regexp:</strong><em>regexp</em>:
+Match a string using a regular-expression. The full power of JavaScript
+regular-expressions is available.</li>
+<li><strong>exact:</strong><em>string</em>:
 
-<dd>Match a string exactly, verbatim, without any of that fancy wildcard
-stuff.</dd>
-</dl>
-</blockquote>
+Match a string exactly, verbatim, without any of that fancy wildcard
+stuff.</li>
+</ul>
 <p>
 If no pattern prefix is specified, Selenium assumes that it's a "glob"
 pattern.
@@ -142,6 +143,16 @@ waitForPageToLoad.</comment>
 
 </function>
 
+<function name="doubleClick">
+
+<param name="locator">an element locator</param>
+
+<comment>Double clicks on a link, button, checkbox or radio button. If the double click action
+causes a new page to load (like a link usually does), call
+waitForPageToLoad.</comment>
+
+</function>
+
 <function name="clickAt">
 
 <param name="locator">an element locator</param>
@@ -150,10 +161,19 @@ waitForPageToLoad.</comment>
 
 <comment>Clicks on a link, button, checkbox or radio button. If the click action
 causes a new page to load (like a link usually does), call
-waitForPageToLoad.
+waitForPageToLoad.</comment>
 
-Beware of http://jira.openqa.org/browse/SEL-280, which will lead some event handlers to
-get null event arguments.  Read the bug for more details, including a workaround.</comment>
+</function>
+
+<function name="doubleClickAt">
+
+<param name="locator">an element locator</param>
+
+<param name="coordString">specifies the x,y position (i.e. - 10,20) of the mouse      event relative to the element returned by the locator.</param>
+
+<comment>Doubleclicks on a link, button, checkbox or radio button. If the action
+causes a new page to load (like a link usually does), call
+waitForPageToLoad.</comment>
 
 </function>
 
@@ -175,6 +195,54 @@ handler.</comment>
 <param name="keySequence">Either be a string("\" followed by the numeric keycode  of the key to be pressed, normally the ASCII value of that key), or a single  character. For example: "w", "\119".</param>
 
 <comment>Simulates a user pressing and releasing a key.</comment>
+
+</function>
+
+<function name="shiftKeyDown">
+
+<comment>Press the shift key and hold it down until doShiftUp() is called or a new page is loaded.</comment>
+
+</function>
+
+<function name="shiftKeyUp">
+
+<comment>Release the shift key.</comment>
+
+</function>
+
+<function name="metaKeyDown">
+
+<comment>Press the meta key and hold it down until doMetaUp() is called or a new page is loaded.</comment>
+
+</function>
+
+<function name="metaKeyUp">
+
+<comment>Release the meta key.</comment>
+
+</function>
+
+<function name="altKeyDown">
+
+<comment>Press the alt key and hold it down until doAltUp() is called or a new page is loaded.</comment>
+
+</function>
+
+<function name="altKeyUp">
+
+<comment>Release the alt key.</comment>
+
+</function>
+
+<function name="controlKeyDown">
+
+<comment>Press the control key and hold it down until doControlUp() is called or a new page is loaded.</comment>
+
+</function>
+
+<function name="controlKeyUp">
+
+<comment>Release the control key.</comment>
 
 </function>
 
@@ -230,10 +298,7 @@ the specified element.</comment>
 <param name="coordString">specifies the x,y position (i.e. - 10,20) of the mouse      event relative to the element returned by the locator.</param>
 
 <comment>Simulates a user pressing the mouse button (without releasing it yet) on
-the specified element.
-
-Beware of http://jira.openqa.org/browse/SEL-280, which will lead some event handlers to
-get null event arguments.  Read the bug for more details, including a workaround.</comment>
+the specified element.</comment>
 
 </function>
 
@@ -253,10 +318,7 @@ the specified element.</comment>
 <param name="coordString">specifies the x,y position (i.e. - 10,20) of the mouse      event relative to the element returned by the locator.</param>
 
 <comment>Simulates a user pressing the mouse button (without releasing it yet) on
-the specified element.
-
-Beware of http://jira.openqa.org/browse/SEL-280, which will lead some event handlers to
-get null event arguments.  Read the bug for more details, including a workaround.</comment>
+the specified element.</comment>
 
 </function>
 
@@ -276,10 +338,7 @@ the specified element.</comment>
 <param name="coordString">specifies the x,y position (i.e. - 10,20) of the mouse      event relative to the element returned by the locator.</param>
 
 <comment>Simulates a user pressing the mouse button (without releasing it yet) on
-the specified element.
-
-Beware of http://jira.openqa.org/browse/SEL-280, which will lead some event handlers to
-get null event arguments.  Read the bug for more details, including a workaround.</comment>
+the specified element.</comment>
 
 </function>
 
@@ -293,6 +352,44 @@ get null event arguments.  Read the bug for more details, including a workaround
 
 <p>Can also be used to set the value of combo boxes, check boxes, etc. In these cases,
 value should be the value of the option selected, not the visible text.</p></comment>
+
+</function>
+
+<function name="typeKeys">
+
+<param name="locator">an <a href="#locators">element locator</a></param>
+
+<param name="value">the value to type</param>
+
+<comment>Simulates keystroke events on the specified element, as though you typed the value key-by-key.
+
+<p>This is a convenience method for calling keyDown, keyUp, keyPress for every character in the specified string;
+this is useful for dynamic UI widgets (like auto-completing combo boxes) that require explicit key events.</p>
+
+<p>Unlike the simple "type" command, which forces the specified value into the page directly, this command
+may or may not have any visible effect, even in cases where typing keys would normally have a visible effect.
+For example, if you use "typeKeys" on a form element, you may or may not see the results of what you typed in
+the field.</p>
+<p>In some cases, you may need to use the simple "type" command to set the value of the field and then the "typeKeys" command to
+send the keystroke events corresponding to what you just typed.</p></comment>
+
+</function>
+
+<function name="setSpeed">
+
+<param name="value">the number of milliseconds to pause after operation</param>
+
+<comment>Set execution speed (i.e., set the millisecond length of a delay which will follow each selenium operation).  By default, there is no such delay, i.e.,
+the delay is 0 milliseconds.</comment>
+
+</function>
+
+<function name="getSpeed">
+
+<comment>Get execution speed (i.e., get the millisecond length of the delay following each selenium operation).  By default, there is no such delay, i.e.,
+the delay is 0 milliseconds.
+
+See also setSpeed.</comment>
 
 </function>
 
@@ -326,37 +423,37 @@ Select element (e.g. for selecting a specific option, or for asserting
 that the selected option satisfies a specification). There are several
 forms of Select Option Locator.
 </p>
-<dl>
-<dt><strong>label</strong>=<em>labelPattern</em></dt>
-<dd>matches options based on their labels, i.e. the visible text. (This
+<ul>
+<li><strong>label</strong>=<em>labelPattern</em>:
+matches options based on their labels, i.e. the visible text. (This
 is the default.)
 <ul class="first last simple">
 <li>label=regexp:^[Oo]ther</li>
 </ul>
-</dd>
-<dt><strong>value</strong>=<em>valuePattern</em></dt>
-<dd>matches options based on their values.
+</li>
+<li><strong>value</strong>=<em>valuePattern</em>:
+matches options based on their values.
 <ul class="first last simple">
 <li>value=other</li>
 </ul>
 
 
-</dd>
-<dt><strong>id</strong>=<em>id</em></dt>
+</li>
+<li><strong>id</strong>=<em>id</em>:
 
-<dd>matches options based on their ids.
+matches options based on their ids.
 <ul class="first last simple">
 <li>id=option1</li>
 </ul>
-</dd>
-<dt><strong>index</strong>=<em>index</em></dt>
-<dd>matches an option based on its index (offset from zero).
+</li>
+<li><strong>index</strong>=<em>index</em>:
+matches an option based on its index (offset from zero).
 <ul class="first last simple">
 
 <li>index=2</li>
 </ul>
-</dd>
-</dl>
+</li>
+</ul>
 <p>
 If no option locator prefix is provided, the default behaviour is to match on <strong>label</strong>.
 </p></comment>
@@ -387,6 +484,14 @@ If no option locator prefix is provided, the default behaviour is to match on <s
 
 </function>
 
+<function name="removeAllSelections">
+
+<param name="locator">an <a href="#locators">element locator</a> identifying a multi-select box</param>
+
+<comment>Unselects all of the selected options in a multi-select element.</comment>
+
+</function>
+
 <function name="submit">
 
 <param name="formLocator">an <a href="#locators">element locator</a> for the form you want to submit</param>
@@ -413,13 +518,48 @@ new browser session on that domain.</comment>
 
 </function>
 
+<function name="openWindow">
+
+<param name="url">the URL to open, which can be blank</param>
+
+<param name="windowID">the JavaScript window ID of the window to select</param>
+
+<comment>Opens a popup window (if a window with that ID isn't already open).
+After opening the window, you'll need to select it using the selectWindow
+command.
+
+<p>This command can also be a useful workaround for bug SEL-339.  In some cases, Selenium will be unable to intercept a call to window.open (if the call occurs during or before the "onLoad" event, for example).
+In those cases, you can force Selenium to notice the open window's name by using the Selenium openWindow command, using
+an empty (blank) url, like this: openWindow("", "myFunnyWindow").</p></comment>
+
+</function>
+
 <function name="selectWindow">
 
 <param name="windowID">the JavaScript window ID of the window to select</param>
 
 <comment>Selects a popup window; once a popup window has been selected, all
-commands go to that window. To select the main window again, use "null"
-as the target.</comment>
+commands go to that window. To select the main window again, use null
+as the target.
+
+<p>Selenium has several strategies for finding the window object referred to by the "windowID" parameter.</p>
+
+<p>1.) if windowID is null, then it is assumed the user is referring to the original window instantiated by the browser).</p>
+<p>2.) if the value of the "windowID" parameter is a JavaScript variable name in the current application window, then it is assumed
+that this variable contains the return value from a call to the JavaScript window.open() method.</p>
+<p>3.) Otherwise, selenium looks in a hash it maintains that maps string names to window objects.  Each of these string 
+names matches the second parameter "windowName" past to the JavaScript method  window.open(url, windowName, windowFeatures, replaceFlag)
+(which selenium intercepts).</p>
+
+<p>If you're having trouble figuring out what is the name of a window that you want to manipulate, look at the selenium log messages
+which identify the names of windows created via window.open (and therefore intercepted by selenium).  You will see messages
+like the following for each window as it is opened:</p>
+
+<p><code>debug: window.open call intercepted; window ID (which you can use with selectWindow()) is "myNewWindow"</code></p>
+
+<p>In some cases, Selenium will be unable to intercept a call to window.open (if the call occurs during or before the "onLoad" event, for example).
+(This is bug SEL-339.)  In those cases, you can force Selenium to notice the open window's name by using the Selenium openWindow command, using
+an empty (blank) url, like this: openWindow("", "myFunnyWindow").</p></comment>
 
 </function>
 
@@ -468,6 +608,24 @@ browser frame and window, and sometimes the selenium server needs to identify
 the "current" frame.  In this case, when the test calls selectFrame, this
 routine is called for each frame to figure out which one has been selected.
 The selected frame will return true, while all others will return false.</p></comment>
+
+</function>
+
+<function name="getWhetherThisWindowMatchWindowExpression">
+
+<return type="boolean">true if the new window is this code's window</return>
+
+<param name="currentWindowString">starting window</param>
+
+<param name="target">new window (which might be relative to the current one, e.g., "_parent")</param>
+
+<comment>Determine whether currentWindowString plus target identify the window containing this running code.
+
+<p>This is useful in proxy injection mode, where this code runs in every
+browser frame and window, and sometimes the selenium server needs to identify
+the "current" window.  In this case, when the test calls selectWindow, this
+routine is called for each window to figure out which one has been selected.
+The selected window will return true, while all others will return false.</p></comment>
 
 </function>
 
@@ -670,6 +828,14 @@ text shown to the user.</comment>
 
 </function>
 
+<function name="highlight">
+
+<param name="locator">an <a href="#locators">element locator</a></param>
+
+<comment>Briefly changes the backgroundColor of the specified element yellow.  Useful for debugging.</comment>
+
+</function>
+
 <function name="getEval">
 
 <return type="string">the results of evaluating the snippet</return>
@@ -686,7 +852,7 @@ refer to the top-level runner test window, not the window of your application.</
 <p>If you need a reference to the window of your application, you can refer
 to <code>this.browserbot.getCurrentWindow()</code> and if you need to use
 a locator to refer to a single element in your application page, you can
-use <code>this.page().findElement("foo")</code> where "foo" is your locator.</p></comment>
+use <code>this.browserbot.findElement("foo")</code> where "foo" is your locator.</p></comment>
 
 </function>
 
@@ -817,10 +983,7 @@ tableLocator.row.column, where row and column start at 0.</comment>
 
 <param name="attributeLocator">an element locator followed by an</param>
 
-<comment>Gets the value of an element attribute.
-
-Beware of http://jira.openqa.org/browse/SEL-280, which will lead some event handlers to
-get null event arguments.  Read the bug for more details, including a workaround.</comment>
+<comment>Gets the value of an element attribute.</comment>
 
 </function>
 
@@ -915,9 +1078,49 @@ This method will fail if the specified element isn't an input element.</comment>
 
 <param name="movementsString">offset in pixels from the current location to which the element should be moved, e.g., "+70,-300"</param>
 
-<comment>Drags an element a certain distance and then drops it
-Beware of http://jira.openqa.org/browse/SEL-280, which will lead some event handlers to
-get null event arguments.  Read the bug for more details, including a workaround.</comment>
+<comment>deprecated - use dragAndDrop instead</comment>
+
+</function>
+
+<function name="setMouseSpeed">
+
+<param name="pixels">the number of pixels between "mousemove" events</param>
+
+<comment>Configure the number of pixels between "mousemove" events during dragAndDrop commands (default=10).
+<p>Setting this value to 0 means that we'll send a "mousemove" event to every single pixel
+in between the start location and the end location; that can be very slow, and may
+cause some browsers to force the JavaScript to timeout.</p>
+
+<p>If the mouse speed is greater than the distance between the two dragged objects, we'll
+just send one "mousemove" at the start location and then one final one at the end location.</p></comment>
+
+</function>
+
+<function name="getMouseSpeed">
+
+<return type="number">the number of pixels between "mousemove" events during dragAndDrop commands (default=10)</return>
+
+<comment>Returns the number of pixels between "mousemove" events during dragAndDrop commands (default=10).</comment>
+
+</function>
+
+<function name="dragAndDrop">
+
+<param name="locator">an element locator</param>
+
+<param name="movementsString">offset in pixels from the current location to which the element should be moved, e.g., "+70,-300"</param>
+
+<comment>Drags an element a certain distance and then drops it</comment>
+
+</function>
+
+<function name="dragAndDropToObject">
+
+<param name="locatorOfObjectToBeDragged">an element to be dragged</param>
+
+<param name="locatorOfDragDestinationObject">an element whose location (i.e., whose center-most pixel) will be the point where locatorOfObjectToBeDragged  is dropped</param>
+
+<comment>Drags an element and drops it on another element</comment>
 
 </function>
 

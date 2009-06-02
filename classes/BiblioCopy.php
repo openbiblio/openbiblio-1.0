@@ -18,6 +18,7 @@
 class BiblioCopy {
   var $_bibid = "";
   var $_copyid = "";
+  var $_createDt = "";
   var $_copyDesc = "";
   var $_barcodeNmbr = "";
   var $_barcodeNmbrError = "";
@@ -64,6 +65,9 @@ class BiblioCopy {
   function getCopyid() {
     return $this->_copyid;
   }
+  function getCreateDt() {
+    return $this->_createDt;
+  }
   function getCopyDesc() {
     return $this->_copyDesc;
   }
@@ -104,6 +108,9 @@ class BiblioCopy {
   }
   function setCopyid($value) {
     $this->_copyid = trim($value);
+  }
+  function setCreateDt($value) {
+    $this->_createDt = trim($value);
   }
   function setCopyDesc($value) {
     $this->_copyDesc = trim($value);

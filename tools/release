@@ -34,7 +34,7 @@ module='OpenBiblio Source'
 branch=RB_`echo $1 | sed 's/\./_/g'`
 tag=REL_`echo $2 | sed 's/\./_/g'`
 basefile=openbiblio-$2
-cvs -z3 co -r $branch -d openbiblio "$module" || exit 1
+cvs -z3 co -r $branch -d openbiblio -P "$module" || exit 1
 cd openbiblio || exit 1
 $testrun && echo TEST RUN: not tagging
 $testrun || cvs tag $tag || exit 1

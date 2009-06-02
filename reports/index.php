@@ -4,18 +4,66 @@
  */
  
   require_once("../shared/common.php");
+
   $tab = "reports";
-  $nav = "summary";
+  $nav = "reportlist";
 
   include("../shared/logincheck.php");
-  include("../shared/header.php");
+  require_once("../classes/Report.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
+  define("REPORT_DEFS_DIR","../reports/defs");
 
+  #****************************************************************************
+  #*  Read report definitions
+  #****************************************************************************
+  $reports = array();
+  $errors = array();
+  
+  if ($handle = opendir(REPORT_DEFS_DIR)) {
+    while (($file = readdir($handle)) !== false) { 
+      if (preg_match('/^([^._][^.]*)\\.(rpt|php)$/', $file, $m)) {
+        list($rpt, $err) = Report::create_e($m[1]);
+        if (!$err) {
+          if (!isset($reports[$rpt->category()])) {
+            $reports[$rpt->category()] = array();
+          }
+          $reports[$rpt->category()][$rpt->type()] = $loc->getText($rpt->title());
+        } else {
+          $errors[] = $err;
+        }
+      } 
+    }
+    closedir($handle); 
+  }
+
+  ksort($reports);
+  foreach (array_keys($reports) as $k) {
+    asort($reports[$k]);
+  }
+  
+  include("../shared/header.php");
 ?>
 
-<h1><img src="../images/reports.png" border="0" width="30" height="30" align="top"> <?php echo $loc->getText("indexHdr");?></h1>
-<?php echo $loc->getText("indexDesc");?>
-<br><br><br><br><br>
+<h1><?php echo $loc->getText("reportListHdr");?></h1>
 
+<?php echo $loc->getText("reportListDesc");?>
+<ul>
+<?php
+  foreach (array_keys($reports) as $category) {
+    echo '<li class="report_category"><strong>'.$loc->getText($category).'</strong><ul>';
+    foreach ($reports[$category] as $type => $title) {
+      echo '<li><a href="../reports/report_criteria.php?type='.HURL($type).'">'.H($title).'</a></li>';
+    }
+    echo '</ul></li>';
+  }
+  if ($errors) {
+    echo '<li class="report_category"><strong>'.$loc->getText("Report Errors").'</strong><ul>';
+    foreach ($errors as $e) {
+      echo '<li>'.H($e->toStr()).'</li>';
+    }
+    echo '</ul></li>';
+  }
+?>
+</ul>
 <?php include("../shared/footer.php"); ?>

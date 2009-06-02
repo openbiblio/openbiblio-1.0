@@ -35,7 +35,7 @@
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
-  if (!$biblioQ->query(OBIB_STATUS_OUT,$mbrid)) {
+  if (!$biblioQ->doQuery(OBIB_STATUS_OUT,$mbrid)) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }

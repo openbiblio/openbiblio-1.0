@@ -20,7 +20,7 @@
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
-  $biblio = $biblioQ->query($bibid);
+  $biblio = $biblioQ->doQuery($bibid);
   if ($biblioQ->errorOccurred()) {
     $biblioQ->close();
     displayErrorPage($biblioQ);

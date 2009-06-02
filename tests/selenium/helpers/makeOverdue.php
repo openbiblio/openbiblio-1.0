@@ -7,7 +7,7 @@ if (!mysql_select_db(OBIB_DATABASE)) {
   die("Can't select DB");
 }
 $res = mysql_query("UPDATE biblio_copy set due_back_dt=now() - interval 30 day "
-  . "WHERE barcode_nmbr='102'");
+  . "WHERE status_cd='out'");
 if (!$res) {
   die("Can't change due date:".mysql_error());
 }

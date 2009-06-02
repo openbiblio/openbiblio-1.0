@@ -30,12 +30,12 @@ to work-around a bug in IE on Win2K whereby the HTA application doesn't function
         <script type="text/javascript" src="scripts/narcissus-parse.js"></script>
         <script type="text/javascript" src="scripts/narcissus-exec.js"></script>
         <script language="JavaScript" type="text/javascript" src="lib/prototype.js"></script>
+        <script language="JavaScript" type="text/javascript" src="scripts/htmlutils.js"></script>
         <script language="JavaScript" type="text/javascript" src="lib/scriptaculous/scriptaculous.js"></script>
         <script language="JavaScript" type="text/javascript" src="lib/cssQuery/cssQuery-p.js"></script>
         <script language="JavaScript" type="text/javascript" src="scripts/selenium-browserdetect.js"></script>
         <script language="JavaScript" type="text/javascript" src="scripts/selenium-browserbot.js"></script>
         <script language="JavaScript" type="text/javascript" src="scripts/find_matching_child.js"></script>
-        <script language="JavaScript" type="text/javascript" src="scripts/htmlutils.js"></script>
         <script language="JavaScript" type="text/javascript" src="scripts/selenium-api.js"></script>
         <script language="JavaScript" type="text/javascript" src="scripts/selenium-commandhandlers.js"></script>
         <script language="JavaScript" type="text/javascript" src="scripts/selenium-executionloop.js"></script>
@@ -84,31 +84,27 @@ to work-around a bug in IE on Win2K whereby the HTA application doesn't function
                 <fieldset>
                     <legend>Execute Tests</legend>
 
-                    <div style="float:left">Fast</div>
-                    <div style="float:right">Slow</div>
-	      <br>
-	      <div id="speedSlider">
-	      <div id="speedTrack">&nbsp;</div>
-	      <div id="speedHandle">&nbsp;</div>
-	      </div>
-
-                    <div>
+                    <div id="imageButtonPanel">
                         <button type="button" id="runSuite" onClick="htmlTestRunner.startTestSuite();"
-                                title="Run the entire Test-Suite">
-                            <strong>All</strong>
+                                title="Run All tests">
                         </button>
                         <button type="button" id="runSeleniumTest" onClick="htmlTestRunner.runSingleTest();"
-                                title="Run the current Test">
-                            <em>Selected</em>
+                                title="Run the Selected test">
                         </button>
                         <button type="button" id="pauseTest" disabled="disabled"
-                                title="Pause the current Test">
-                            Pause
+                                title="Pause/Continue" class="cssPauseTest">
                         </button>
                         <button type="button" id="stepTest" disabled="disabled"
-                                title="Step the Test">
-                            Step
+                                title="Step">
                         </button>
+                    </div>
+
+                    <div style="float:left">Fast</div>
+                    <div style="float:right">Slow</div>
+                    <br/>
+                    <div id="speedSlider">
+                        <div id="speedTrack">&nbsp;</div>
+                        <div id="speedHandle">&nbsp;</div>
                     </div>
 
                     <div class="executionOptions">

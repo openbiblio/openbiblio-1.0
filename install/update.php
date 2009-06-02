@@ -17,7 +17,6 @@
 
   # testing connection and current version
   $upgradeQ = new UpgradeQuery();
-  $upgradeQ->connect();
 
   echo "Updating OpenBiblio tables, please wait...<br>\n";
   

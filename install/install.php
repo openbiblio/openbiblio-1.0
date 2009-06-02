@@ -35,7 +35,10 @@
 
   # testing connection and current version
   $installQ = new InstallQuery();
-  $installQ->connect();
+  $err = $installQ->connect_e();
+  if ($err) {
+    Fatal::dbError($e->sql, $e->msg, $e->dberror);
+  }
   $version = $installQ->getCurrentDatabaseVersion();
   echo "Database connection is good.<br>\n";
 

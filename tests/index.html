@@ -1,0 +1,22 @@
+<html>
+<head><title>OpenBiblio Test Suite</title></head>
+<body>
+<h1>OpenBiblio Test Suite</h1>
+<p><strong style="color: red">WARNING:</strong>
+These tests modify the database.  <strong>DO NOT</strong> run the
+test suite unless you are willing to lose all your data.</p>
+<ul>
+<li>Unit tests (not in place yet)</li>
+<li><a href="selenium/core/TestRunner.html">Functional tests</a>
+<p>As useful as these functional tests are, they aren't as robust as they should be.
+It's just as likely that failures may indicate errors in the suite as errors in the system.
+Also, running the tests many times in succession seems to tickle bugs in both IE and
+Firefox, so a browser restart may be necessary.  Look sharp.</p>
+<p><strong>IE Note:</strong> The Cataloging test seems to trigger some bad interaction
+between IE and Selenium.  I haven't fully investigated yet, but running the test normally
+almost always results in some sort of 'permission denied' error from IE.  However, running
+the test in single-step mode succeeds.</p>
+</li>
+</ul>
+</body>
+</html>

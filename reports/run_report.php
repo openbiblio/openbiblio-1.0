@@ -3,159 +3,176 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-  require_once("../classes/ReportCriteria.php");
-  require_once("../classes/ReportQuery.php");
+  require_once("../shared/common.php");
 
-  #****************************************************************************
-  #*  Page functions
-  #****************************************************************************
-  function getCriteria(&$vars,$index) {
-    $crit = new ReportCriteria();
-    $colData = explode(" ", $vars["fieldId".$index]);
-    $fieldId = $colData[0];
-    $fieldType = $colData[1];
-    $fieldIsNumeric = $colData[2];
-    $crit->setFieldid($fieldId);
-    $crit->setType($fieldType);
-    $crit->setNumeric($fieldIsNumeric);
-    $crit->setComparitor($vars["comparitor".$index]);
-    $vars["comparitor".$index] = $crit->getComparitor();
-    $crit->setValue1($vars["fieldValue".$index."a"]);
-    $vars["fieldValue".$index."a"] = $crit->getValue1();
-    $crit->setValue2($vars["fieldValue".$index."b"]);
-    $vars["fieldValue".$index."b"] = $crit->getValue2();
-    return $crit;
+  require_once("../classes/Report.php");
+  require_once("../classes/Table.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE, "reports");
+
+  $tab="reports";
+  $nav="results";
+  if (isset($_REQUEST['tab'])) {
+    $tab = $_REQUEST['tab'];
   }
+  if (isset($_REQUEST['nav'])) {
+    $nav = $_REQUEST['nav'];
+  }
+  require_once("../shared/logincheck.php");
 
-  #****************************************************************************
-  #*  Read form variables
-  #****************************************************************************
-  $rptid = $_POST["rptid"];
-  $title = $_POST["title"];
-  $label = $_POST["label"];
-  $letter = $_POST["letter"];
-  $initialSort = $_POST["initialSort"];
-  $baseSql = $_POST["sql"];
-
-  #****************************************************************************
-  #*  Validate selection criteria
-  #****************************************************************************
-  $crit = Array();
-  $allCriteriaValid = TRUE;
-
-  for ($i = 1; $i <= 4; $i++) {
-    if ($_POST["fieldId".$i] != "") {
-      $crit[$i] = getCriteria($_POST,$i);
-      $critValid = $crit[$i]->validateData();
-      $_POST["fieldValue".$i."a"] = $crit[$i]->getValue1();
-      $_POST["fieldValue".$i."b"] = $crit[$i]->getValue2();
-      if (!$critValid) {
-        $allCriteriaValid = FALSE;
-        $pageErrors["fieldValue".$i."a"] = $crit[$i]->getValue1Error();
-        $pageErrors["fieldValue".$i."b"] = $crit[$i]->getValue2Error();
+  if (isset($_REQUEST['rpt___format'])) {
+    $format = $_REQUEST['rpt___format'];
+  } else {
+    $format = 'paged';
+  }
+  
+  function echolink($page, $text, $newSort=NULL) {
+    global $tab, $nav, $format;
+    echo '<a href="../reports/run_report.php?type=previous';
+    echo '&amp;rpt___format='.HURL($format);
+    echo '&amp;tab='.HURL($tab).'&amp;nav='.HURL($nav);
+    echo '&amp;page='.HURL($page);
+    if ($newSort) {
+      echo '&amp;rpt_order_by='.HURL($newSort);
+    }
+    echo '">'
+         . $text
+         . '</a>';
+  }
+  function printResultPages(&$loc, $currPage, $pageCount) {
+    if ($pageCount <= 1) {
+      return false;
+    }
+    echo $loc->getText("Result Pages: ");
+    if ($currPage > 1) {
+      echolink($currPage-1, $loc->getText("&laquo;Prev"));
+      echo ' ';
+    }
+    $i = max(1, $currPage-OBIB_SEARCH_MAXPAGES/2);
+    $maxPg = OBIB_SEARCH_MAXPAGES + $i;
+    if ($i > 1) {
+      echo "... ";
+    }
+    for (;$i <= $pageCount; $i++) {
+      if ($i == $maxPg) {
+        echo "... ";
+        break;
       }
+      if ($i == $currPage) {
+        echo "<b>".$i."</b> ";
+      } else {
+        echolink($i, $i);
+        echo ' ';
+      }
+    }
+    if ($currPage < $pageCount) {
+      echolink($currPage+1, $loc->getText("Next&raquo;"));
+      echo ' ';
     }
   }
 
-  #****************************************************************************
-  #*  Go back to criteria screen if any errors occurred
-  #****************************************************************************
-  $_SESSION["postVars"] = $_POST;
-  if (!$allCriteriaValid) {
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../reports/report_criteria.php?rptid=".U($rptid)."&title=".U($title)."&sql=".U($baseSql)."&label=".U($label)."&letter=".U($letter)."&initialSort=".U($initialSort));
+  if (!$_REQUEST['type']) {
+    header('Location: ../reports/index.php');
+    exit(0);
+  }
+  if ($_REQUEST['type'] == 'previous') {
+    $rpt = Report::load('Report');
+  } else {
+    list($rpt, $err) = Report::create_e($_REQUEST['type'], 'Report');
+    if ($err) {
+      $rpt = NULL;
+    }
+  }
+  if (!$rpt) {
+    header('Location: ../reports/index.php');
+    exit(0);
+  }
+
+  if ($_REQUEST['type'] == 'previous') {
+    if (isset($_REQUEST['rpt_order_by'])) {
+      list($rpt, $errs) = $rpt->variant_el(array('order_by'=>$_REQUEST['rpt_order_by']));
+      assert('empty($errs)');
+    }
+  } else {
+    $errs = $rpt->initCgi_el();
+    if (!empty($errs)) {
+      $_SESSION['postVars'] = mkPostVars();
+      $_SESSION['pageErrors'] = array();
+      foreach ($errs as $k=>$e) {
+        $_SESSION['pageErrors'][$k] = $e->toStr();
+      }
+      header('Location: ../reports/report_criteria.php?msg='.U('Incorrect parameters, see below:'));
+      exit();
+    }
+  }
+  if (isset($_REQUEST['page'])) {
+    $page = $_REQUEST['page'];
+  } else {
+    $page = $rpt->curPage();
+  }
+
+  foreach ($rpt->layouts() as $l) {
+    if ($l['title']) {
+      $title = $l['title'];
+    } else {
+      $title = $l['name'];
+    }
+    Nav::node('results/'.$l['name'], $title,
+      '../shared/layout.php?rpt=Report&name='.U($l['name']));
+  }
+  Nav::node('results/list', 'Print list',
+    '../shared/layout.php?rpt=Report&name=list');
+  Nav::node('reportcriteria', 'Report Criteria',
+    '../reports/report_criteria.php?type='.U($rpt->type()));
+  
+  if ($format == 'csv') {
+    include_once('../classes/CsvTable.php');
+    $table = new CsvTable;
+    header('Content-type: text/csv;header=yes');
+    header('Content-disposition: inline; filename="'.$rpt->type().'.csv"');
+    $rpt->table($table);
+    exit;
+  }
+  
+  include('../shared/header.php');
+
+  if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
+    echo "<font class=\"error\">".H($_REQUEST["msg"])."</font><br><br>";
+  }
+
+  if ($rpt->count() == 0) {
+    echo $loc->getText("No results found.");
+    require_once("../shared/footer.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  add selection criteria to sql
-  #****************************************************************************
-  // checking for existing where clause.
-  $hasWhereClause = stristr($baseSql,"where");
-  if ($hasWhereClause == FALSE) {
-    $clausePrefix = " where ";
+  echo '<p>'.$rpt->count().' results found.</p>';
+  if ($format == 'paged') {
+    printResultPages($loc, $page, ceil($rpt->count()/OBIB_ITEMS_PER_PAGE));
+  }
+?>
+
+<table class="resultshead">
+  <tr>
+      <th><?php echo $loc->getText("Report Results:"); ?></th>
+    <td class="resultshead">
+<table class="buttons">
+<tr>
+<?php
+# Fill in report actions here
+?>
+</tr>
+</table>
+</td>
+  </tr>
+</table>
+<?php
+  if ($format == 'paged') {
+    $rpt->pageTable($page, new Table('echolink'));
+    printResultPages($loc, $page, ceil($rpt->count()/OBIB_ITEMS_PER_PAGE));
   } else {
-    $clausePrefix = " and ";
+    $rpt->table(new Table('echolink'));
   }
 
-  // add each selection criteria to the sql
-  $splitResult = spliti("group by",$baseSql,2);
-  if (count($splitResult) > 1) {
-    $sql = $splitResult[0];
-    $groupBy = $splitResult[1];
-  } else {
-    $sql = $baseSql;
-    $groupBy = "";
-  }
-
-  foreach($crit as $c) {
-    $sql = $sql.$clausePrefix.$c->getFieldid()." ".$c->getSqlComparitor();
-    if ($c->isNumeric()) {
-      $quote = "";
-    } else {
-      $quote = "'";
-    }
-    $sql = $sql." ".$quote.$c->getValue1().$quote;
-    if ($c->getComparitor() == "bt") {
-      $sql = $sql." and ".$quote.$c->getValue2().$quote;
-    }
-    $clausePrefix = " and ";
-  }
-
-  #****************************************************************************
-  #*  add group by back in if it exists
-  #****************************************************************************
-  if ($groupBy != "") {
-    $sql = $sql." group by ".$groupBy;
-  }
-
-  #****************************************************************************
-  #*  add sort clause to sql
-  #****************************************************************************
-  $clausePrefix = " order by ";
-  for ($i = 1; $i <= 3; $i++) {
-    $sortOrderFldNm = "sortOrder".$i;
-    $sortDirFldNm = "sortDir".$i;
-    $sortCol = $_POST[$sortOrderFldNm];
-    $sortDir = $_POST[$sortDirFldNm];
-    if ($sortCol != ""){
-      $sql = $sql.$clausePrefix.$sortCol;
-      if ($sortDir == "desc") {
-        $sql = $sql." DESC";
-      }
-      $clausePrefix = ", ";
-    }
-  }
-  
-  #****************************************************************************
-  #*  run report
-  #****************************************************************************
-  $reportQ = new ReportQuery();
-  $reportQ->connect();
-  if ($reportQ->errorOccurred()) {
-    $reportQ->close();
-    displayErrorPage($reportQ);
-  }
-  $result = $reportQ->query($sql);
-  if ($reportQ->errorOccurred()) {
-    $reportQ->close();
-    displayErrorPage($reportQ);
-  }
-  $fieldIds = array();
-  $fieldNames = array();
-  $fieldTypes = array();
-  $fieldNumericFlgs = array();
-  while ($fld = $reportQ->fetchField()) {
-    $fldid = $fld->name;
-    if ($fld->table != "") {
-      $fldid = $fld->table.".".$fldid;
-    }
-    $fieldIds[] = $fldid;
-    $fieldTypes[$fldid] = $fld->type;
-    $fieldNumericFlgs[$fldid] = $fld->numeric;
-  }
-
-  $colCount = count($fieldIds);
-  $rowCount = $reportQ->getRowCount();
-
+  include('../shared/footer.php');
 ?>

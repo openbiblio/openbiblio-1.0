@@ -102,7 +102,7 @@
     $transQ->close();
     displayErrorPage($transQ);
   }
-  if (!$transQ->query($mbrid)) {
+  if (!$transQ->doQuery($mbrid)) {
     $transQ->close();
     displayErrorPage($transQ);
   }

@@ -18,7 +18,8 @@ require_once("../classes/Localize.php");
 class UsmarcSubfieldDmQuery extends Query {
   var $_loc;
 
-  function UsmarcSubfieldDmQuery () {
+  function UsmarcSubfieldDmQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
@@ -61,7 +62,7 @@ class UsmarcSubfieldDmQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function query($tag, $subfld) {
+  function doQuery($tag, $subfld) {
     $sql = $this->mkSQL("select * from usmarc_subfield_dm "
                         . "where tag=%N and subfield_cd=%Q ",
                         $tag, $subfld);

@@ -1,0 +1,74 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>upgrade</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">upgrade</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/tests/selenium/helpers/clearDB.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Tables dropped</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/tests/selenium/helpers/install040.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Installed 0.4.0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/install/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Database connection is good.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>update database version 0.4.0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>back up your database</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Update']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>updated successfully!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/install/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No action is required</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

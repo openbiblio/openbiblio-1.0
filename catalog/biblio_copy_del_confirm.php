@@ -30,7 +30,7 @@
     $copyQ->close();
     displayErrorPage($copyQ);
   }
-  if (!$copy = $copyQ->query($bibid,$copyid)) {
+  if (!$copy = $copyQ->doQuery($bibid,$copyid)) {
     $copyQ->close();
     displayErrorPage($copyQ);
   }

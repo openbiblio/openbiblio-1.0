@@ -1,3 +1,12 @@
+---- 0.6.0 ----
+* Track create_dt for copies
+* Add iterators and the Iter class
+* New Query class using Iters
+* New sidebar navigation code
+* New reports system
+* Improve selenium tests
+* Make release scripts prune empty directories
+
 ---- 0.5.2 ----
 * Allow user-specified member classes with individual checkout privileges
 * Show per-material type custom MARC fields on view/edit pages

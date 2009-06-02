@@ -18,7 +18,8 @@ require_once("../classes/Localize.php");
 class UsmarcTagDmQuery extends Query {
   var $_loc;
 
-  function UsmarcTagDmQuery () {
+  function UsmarcTagDmQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
@@ -63,7 +64,7 @@ class UsmarcTagDmQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function query($tag) {
+  function doQuery($tag) {
     $sql = $this->mkSQL("select * from usmarc_tag_dm where tag=%N ", $tag);
     if (!$this->_query($sql, $this->_loc->getText("usmarcTagDmQueryErr1"))) {
       return false;

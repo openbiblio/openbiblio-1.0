@@ -19,7 +19,8 @@ class BiblioCopyQuery extends Query {
   var $_rowCount = 0;
   var $_loc;
 
-  function BiblioCopyQuery () {
+  function BiblioCopyQuery() {
+    $this->Query();
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
   }
 
@@ -36,7 +37,7 @@ class BiblioCopyQuery extends Query {
    * @access public
    ****************************************************************************
    */
-  function query($bibid,$copyid) {
+  function doQuery($bibid,$copyid) {
     # setting query that will return all the data
     $sql = $this->mkSQL("select biblio_copy.*, "
                         . " greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late "
@@ -115,6 +116,7 @@ class BiblioCopyQuery extends Query {
     $copy = new BiblioCopy();
     $copy->setBibid($array["bibid"]);
     $copy->setCopyid($array["copyid"]);
+    $copy->setCreateDt($array["create_dt"]);
     $copy->setCopyDesc($array["copy_desc"]);
     $copy->setBarcodeNmbr($array["barcode_nmbr"]);
     $copy->setStatusCd($array["status_cd"]);
@@ -186,7 +188,7 @@ class BiblioCopyQuery extends Query {
       return false;
     }
     $sql = $this->mkSQL("insert into biblio_copy values (%N"
-                        . ",null, %Q, %Q, %Q, sysdate(), ",
+                        . ",null, now(), %Q, %Q, %Q, sysdate(), ",
                         $copy->getBibid(), $copy->getCopyDesc(),
                         $copy->getBarcodeNmbr(), $copy->getStatusCd());
     if ($copy->getDueBackDt() == "") {
