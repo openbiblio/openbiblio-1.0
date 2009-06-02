@@ -1,0 +1,147 @@
+<html>
+
+<head>
+
+<link rel="stylesheet" type="text/css" href="css/style.css" title="obibstyle">
+<meta name="description" content="OpenBiblio Library Automation System">
+<title>OpenBiblio Install Instructions</title>
+</head>
+<body bgcolor="#ffffff" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<!-- **************************************************************************************
+     * OpenBiblio logo and black background with links and date
+     **************************************************************************************-->
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr bgcolor="#000000">
+    <td align="left"><a href="http://obiblio.sourceforge.net/"><img src="images/logo-small.gif" width="220" height="50" border="0"></a></td>
+    <td align="right" valign="top" width="100%"><font color="#ffffff">
+    </td>
+  </tr>
+</table>
+<br>
+<font class="primary">
+
+
+<h1>Updating an Older Version of OpenBiblio:</h1>
+
+If you have already created the OpenBiblio database when installing a prior beta version (vs 0.x.x) you can
+<a href="#step7">skip to step 7</a>.
+
+<h1>Installing OpenBiblio for the First Time:</h1>
+<ol>
+  <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that can
+     execute cgi applications.  If you install Apache, get familiar with starting 
+     and stopping your Apache Web Server. If you are running Windows 95 or Windows 98 
+     there will be "Start Apache" and "Stop Apache" icons that will help you start 
+     and stop your web server. You may want to consider adding the "Start Apache" 
+     icon to your startup folder. If you are running NT you can add Apache as a 
+     service which will be running, even if you are logged off.  If you are running Linux
+     your Apache server should be packaged with your Linux installation and will start when
+     you start Linux.
+  </li>
+
+  <li>Install the MySQL database from <a href="http://www.mysql.com/">http://www.mysql.com/</a>.
+     Get familiar with starting and stopping your MySQL Server.  See
+     <a href="http://www.mysql.com/doc/W/i/Win95_start.html">Starting MySQL on Windows 95 or
+     Windows 98</a> for more information.<br><br>
+     If you are running NT, setup MySQL as a service so it starts whenever the machine
+     powers up.  See <a href="http://www.mysql.com/doc/N/T/NT_start.html">Starting MySQL on Windows NT or Windows 2000</a>
+     for more information on starting MySQL as a service.<br><br>
+     If you are running Linux, MySQL should be packaged with your Linux installation and will start when
+     you start Linux.
+  </li>
+
+  <li>Get familiar with logging into MySQL with your admin account within a DOS prompt window.  You can use the following command sequence as a test.
+<blockquote><pre>
+C:\><b>c:\mysql\bin\mysql -uadmin -p mysql</b>
+Enter password: <b>*********</b>
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8 to server version: 3.23.26-beta
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer
+
+mysql> <b>show databases;</b>
++--------------+
+| Database     |
++--------------+
+| mysql        |
++--------------+
+6 rows in set (0.00 sec)
+
+mysql> <b>exit</b>
+Bye
+
+C:\>
+</pre></blockquote>
+  </li>     
+
+
+  <a name="step4">
+  <li>Create an OpenBiblio database.  To do this, log into MySQL with your admin account 
+     and run the following SQL command.
+     <blockquote><pre>
+mysql> <b>create database OpenBiblio;</b>
+</pre>
+     To check to make sure the OpenBiblio database was created properly run the following command.
+<pre>
+mysql> <b>show databases;</b>
++--------------+
+| Database     |
++--------------+
+| mysql        |
+| OpenBiblio   |
++--------------+
+</pre></blockquote>
+
+  </li>
+  </a>
+
+  <a name="step5">
+  <li>Create an OpenBiblio database user.  To do this login to MySQL under the admin userid
+    and run the following SQL command, substituting <i>obiblio_user</i> and <i>obiblio_password</i> with the userid and password of your choice.
+<blockquote><pre>
+mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
+    -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>
+</pre></blockquote>
+  </li>
+  </a>
+
+  <li>Verify your OpenBiblio database and user by logging into the new MySQL database under the new user.
+<blockquote><pre>
+<b>C:\mysql\bin\mysql -u<i>obiblio_user</i> -p<i>obiblio_password</i> OpenBiblio</b>
+</pre></blockquote>
+  </li>
+
+  <a name="step7">
+  <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
+    root or any subdirectory within the htdocs root.
+  </li></a>
+  <a name="step8">
+  <li>Edit the database_constants.php file (located in the main openbiblio directory)
+    with the text editor of your choice.
+    Change the username and password to match the new MySQL user and password that you 
+    created in the previous steps.
+  </li></a>
+  <li>Create the OpenBiblio database tables.  To do this run the install php script
+   located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
+   assuming you placed the openbiblio directory in the root htdocs directory.
+  </li>
+  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.php">http://localhost/openbiblio/index.php</a>
+   assuming you placed the openbiblio directory in the root htdocs directory.  Enter
+   "admin" for both the userid and password whenever you are prompted to signon.  You can
+   change the admin password from the "Admin" tab -> staff list, where you can also add
+   more library staff members.
+  </li>
+    
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+</ol>
+
+
+
+</font>
+</body>
+</html>
