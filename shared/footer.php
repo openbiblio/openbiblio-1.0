@@ -39,7 +39,7 @@
   <br><br>
   <?php print $headerLoc->getText("footerPoweredBy"); ?> <?php echo OBIB_CODE_VERSION;?>
   <?php print $headerLoc->getText("footerDatabaseVersion"); ?> <?php echo OBIB_DB_VERSION;?><br>
-  <?php print $headerLoc->getText("footerCopyright"); ?> &copy; 2002-2004 Dave Stevens<br>
+  <?php print $headerLoc->getText("footerCopyright"); ?> &copy; 2002-2005 Dave Stevens<br>
   <?php print $headerLoc->getText("footerUnderThe"); ?>
   <a href="../shared/copying.html"><?php print $headerLoc->getText("footerGPL"); ?></a>
 </center>

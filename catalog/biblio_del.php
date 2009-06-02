@@ -23,15 +23,15 @@
   $tab = "cataloging";
   $nav = "deletedone";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioQuery.php");
   require_once("../functions/errorFuncs.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $title = $HTTP_GET_VARS["title"];
+  $bibid = $_GET["bibid"];
+  $title = $_GET["title"];
 
   #**************************************************************************
   #*  Delete Bibliography

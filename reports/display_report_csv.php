@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2005 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -19,22 +19,30 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
+
+  $tab = "reports";
+  $nav = "runreport";
+
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  Header("Content-type: application/vnd.ms-excel; charset=".OBIB_CHARSET.";");
+  Header("Content-disposition: attachment; filename=report_result.csv");
+  include("../reports/run_report.php");
 ?>
-<!-- **************************************************************************************
-     * Footer
-     **************************************************************************************-->
-<br><br><br>
-</font>
-<font face="Arial, Helvetica, sans-serif" size="1">
-<center>
-  Powered by OpenBiblio<br>
-  Copyright &copy; 2002-2005 Dave Stevens<br>
-  under the GNU General Public License
-</center>
-<br>
-</font>
-    </td>
-  </tr>
-</table>
-</body>
-</html>
+<?php
+    foreach($fieldIds as $fldid) {
+       echo "\"".$loc->getText($fldid)."\",";
+    }
+    echo "
+";
+?>
+<?php
+    while ($array = $reportQ->fetchRow()) {
+        foreach($array as $cell) {
+            echo "\"".$cell."\",";
+        }
+        echo "
+";
+    }
+    $reportQ->close();
+?>

@@ -27,7 +27,7 @@
   // IE gets messed up if you send a cache control in the header of a pdf.  Therefore, the following
   // command will send no cache control.
   session_cache_limiter('private_no_expire'); 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../lib/pdf/class.pdf.php");
   require_once("../functions/fileIOFuncs.php");
@@ -60,11 +60,11 @@
   #****************************************************************************
   #*  Validate start on label # field
   #****************************************************************************
-  $startOnLabel = trim($HTTP_POST_VARS["startOnLabel"]);
-  $HTTP_POST_VARS["startOnLabel"] = $startOnLabel;
+  $startOnLabel = trim($_POST["startOnLabel"]);
+  $_POST["startOnLabel"] = $startOnLabel;
   if (!is_numeric($startOnLabel)) {
     $pageErrors["startOnLabel"] = $loc->getText("displayLabelsStartOnLblErr");
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["pageErrors"] = $pageErrors;
     fatalError();
   }
 
@@ -75,7 +75,7 @@
 //  $xml = file_get_contents($fileName);
   $xml = fileGetContents($fileName);
   if ($xml === FALSE) {
-    fatalError($loc->getText('Cannot read label file: %fileName%',
+    fatalError($loc->getText('displayLabelsCannotRead',
                array('fileName' => basename($fileName))));
   }
   $labelDef = new LabelFormat();

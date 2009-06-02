@@ -12,10 +12,12 @@
   <id>holds</id>
   <title>reportHolds</title>
   <sql>
-    select biblio_copy.barcode_nmbr
+    select  biblio.bibid
+           ,biblio_copy.barcode_nmbr
            ,biblio.title
            ,biblio.author
            ,biblio_hold.hold_begin_dt
+	   ,member.mbrid
            ,member.barcode_nmbr
            ,member.last_name
            ,member.first_name

@@ -21,11 +21,10 @@
  */
 
 
-  session_start();
-
+  require_once("../shared/common.php");
   $temp_return_page = "";
-  if (isset($HTTP_GET_VARS["RET"])){
-    $HTTP_SESSION_VARS["returnPage"] = $HTTP_GET_VARS["RET"];
+  if (isset($_GET["RET"])){
+    $_SESSION["returnPage"] = $_GET["RET"];
   }
 
   $tab = "home";
@@ -33,7 +32,6 @@
   $focus_form_name = "loginform";
   $focus_form_field = "username";
 
-  require_once("../shared/read_settings.php");
   require_once("../shared/get_form_vars.php");
   require_once("../shared/header.php");
   require_once("../classes/Localize.php");

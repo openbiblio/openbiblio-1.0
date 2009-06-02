@@ -20,26 +20,24 @@
  **********************************************************************************
  */
 
-  session_start();
-
   #****************************************************************************
   #*  Reset all form values
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["reset"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["reset"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
   }
 
   #****************************************************************************
   #*  Getting page errors and previous post variables from session.
   #****************************************************************************
-  if (isset($HTTP_SESSION_VARS["postVars"])){
-    $postVars = $HTTP_SESSION_VARS["postVars"];
+  if (isset($_SESSION["postVars"])){
+    $postVars = $_SESSION["postVars"];
   } else {
     $postVars = NULL;
   }
-  if (isset($HTTP_SESSION_VARS["pageErrors"])){
-    $pageErrors = $HTTP_SESSION_VARS["pageErrors"];
+  if (isset($_SESSION["pageErrors"])){
+    $pageErrors = $_SESSION["pageErrors"];
   } else {
     $pageErrors = NULL;
   }

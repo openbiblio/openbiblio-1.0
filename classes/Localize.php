@@ -59,7 +59,7 @@ class Localize {
       foreach($vars as $varKey => $value) {
         $search = "%".$varKey."%";
         if ($transFunc) {
-          $transFunc = str_replace($search,$value,$transFunc);
+          $transFunc = str_replace($search,addslashes($value),$transFunc);
         } else {
           $text = str_replace($search,$value,$text);
         }

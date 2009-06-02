@@ -27,7 +27,7 @@
   $focus_form_name = "newstaffform";
   $focus_form_field = "last_name";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");

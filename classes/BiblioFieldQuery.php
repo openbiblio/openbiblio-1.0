@@ -55,18 +55,11 @@ class BiblioFieldQuery extends Query {
    */
   function query($bibid,$fieldid) {
     # setting query that will return all the data in biblio
-    $sql = "select biblio_field.* ";
-    $sql = $sql."from biblio_field ";
-    $sql = $sql."where biblio_field.bibid = ".$bibid;
-    $sql = $sql." and biblio_field.fieldid = ".$fieldid;
+    $sql = $this->mkSQL("select biblio_field.* from biblio_field "
+                        . "where biblio_field.bibid = %N "
+                        . "and biblio_field.fieldid = %N ", $bibid, $fieldid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioFieldQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioFieldQueryErr1"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
@@ -82,22 +75,16 @@ class BiblioFieldQuery extends Query {
    */
   function execSelect($bibid) {
     # setting query that will return all the data in biblio
-    $sql = "select biblio_field.* ";
-    $sql = $sql."from biblio_field ";
-    $sql = $sql."where biblio_field.bibid = ".$bibid;
-    $sql = $sql." order by tag, subfield_cd";
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioFieldQueryErr2");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select biblio_field.* "
+                        . "from biblio_field "
+                        . "where biblio_field.bibid = %N "
+                        . "order by tag, subfield_cd ",
+                        $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioFieldQueryErr2"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    return $result;
+    return;
   }
 
   /****************************************************************************
@@ -132,21 +119,13 @@ class BiblioFieldQuery extends Query {
    */
   function insert($field) {
     # inserting biblio field row
-    $sql = "insert into biblio_field values (";
-    $sql = $sql.$field->getBibid().",null,";
-    $sql = $sql.$field->getTag().",";
-    $sql = $sql."'".$field->getInd1Cd()."',";
-    $sql = $sql."'".$field->getInd2Cd()."',";
-    $sql = $sql."'".$field->getSubfieldCd()."',";
-    $sql = $sql."'".$field->getFieldData()."')";
+    $sql = $this->mkSQL("insert into biblio_field values "
+                        . "(%N, null, %N, %Q, %Q, %Q, %Q) ",
+                        $field->getBibid(), $field->getTag(),
+                        $field->getInd1Cd(), $field->getInd2Cd(),
+                        $field->getSubfieldCd(), $field->getFieldData());
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioFieldQueryInsertErr");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioFieldQueryInsertErr"))) {
       return false;
     }
     return true;
@@ -162,25 +141,14 @@ class BiblioFieldQuery extends Query {
    */
   function update($field) {
     # updating biblio table
-    $sql = "update biblio_field set tag=".$field->getTag();
-    $sql = $sql.",ind1_cd='".$field->getInd1Cd()."'";
-    $sql = $sql.",ind2_cd='".$field->getInd2Cd()."'";
-    $sql = $sql.",subfield_cd='".$field->getSubfieldCd()."'";
-    $sql = $sql.",field_data='".$field->getFieldData()."'";
-    $sql = $sql." where bibid=".$field->getBibid();
-    $sql = $sql." and fieldid=".$field->getFieldid();
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioFieldQueryUpdateErr");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-
-    return true;
+    $sql = $this->mkSQL("update biblio_field set tag=%N, "
+                        . "ind1_cd=%Q, ind2_cd=%Q, subfield_cd=%Q, field_data=%Q "
+                        . "where bibid=%N and fieldid=%N",
+                        $field->getTag(), $field->getInd1Cd(),
+                        $field->getInd2Cd(), $field->getSubfieldCd(),
+                        $field->getFieldData(), $field->getBibid(),
+                        $field->getFieldid());
+    return $this->_query($sql, $this->_loc->getText("biblioFieldQueryUdateErr"));
   }
 
   /****************************************************************************
@@ -192,18 +160,11 @@ class BiblioFieldQuery extends Query {
    ****************************************************************************
    */
   function delete($bibid, $fieldid) {
-    $sql = "delete from biblio_field where bibid = ".$bibid;
-    $sql = $sql." and fieldid = ".$fieldid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioFieldQueryDeleteErr");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from biblio_field "
+                        . "where bibid=%N and fieldid=%N ",
+                        $bibid, $fieldid);
+
+    return $this->_query($sql, $this->_loc->getText("biblioFieldQueryDeleteErr"));
   }
 
 }

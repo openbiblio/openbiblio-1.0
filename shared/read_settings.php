@@ -125,8 +125,4 @@
   define("OBIB_BORDER_WIDTH",$theme->getBorderWidth());
   define("OBIB_PADDING",$theme->getTablePadding());
 
-  #****************************************************************************
-  #*  Making session user info available on all pages.
-  #****************************************************************************
-  session_start();
 ?>

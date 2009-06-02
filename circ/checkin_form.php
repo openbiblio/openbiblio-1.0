@@ -31,7 +31,7 @@
   } 
   $startTm = getmicrotime();
 */
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
 
 /*
   $endTm = getmicrotime();
@@ -89,9 +89,9 @@ function checkin(massCheckinFlg)
 </form>
 
 <?php
-  if (isset($HTTP_GET_VARS["msg"])){
+  if (isset($_GET["msg"])){
     echo "<font class=\"error\">";
-    echo $HTTP_GET_VARS["msg"]."</font>";
+    echo $_GET["msg"]."</font>";
   }
 ?>
 

@@ -29,7 +29,7 @@
   $focus_form_name = "newbiblioform";
   $focus_form_field = "materialCd";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
@@ -42,7 +42,7 @@
   /*****************************************************
    *  Set form defaults
    *****************************************************/
-  if (isset($HTTP_GET_VARS["reset"])){
+  if (isset($_GET["reset"])){
     $postVars["opacFlg"] = "CHECKED";
   }
 

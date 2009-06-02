@@ -49,19 +49,10 @@ class UsmarcSubfieldDmQuery extends Query {
   function execSelect($tag = "") {
     $sql = "select * from usmarc_subfield_dm ";
     if ($tag != "") {
-      $sql = $sql."where tag = ".$tag." ";
+      $sql .= $this->mkSQL("where tag = %N ", $tag);
     }
-    $sql = $sql."order by tag, subfield_cd ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("usmarcSubfldDmQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= "order by tag, subfield_cd ";
+    return $this->_query($sql, $this->_loc->getText("usmarcSubfldDmQueryErr1"));
   }
 
   /****************************************************************************
@@ -88,16 +79,10 @@ class UsmarcSubfieldDmQuery extends Query {
    ****************************************************************************
    */
   function query($tag, $subfld) {
-    $sql = "select * from usmarc_subfield_dm ";
-    $sql = $sql."where tag = ".$tag;
-    $sql = $sql." and subfield_cd = '".$subfld."'";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("usmarcSubfldDmQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select * from usmarc_subfield_dm "
+                        . "where tag=%N and subfield_cd=%Q ",
+                        $tag, $subfld);
+    if (!$this->_query($sql, $this->_loc->getText("usmarcSubfldDmQueryErr1"))) {
       return false;
     }
     $result = $this->_conn->fetchRow();

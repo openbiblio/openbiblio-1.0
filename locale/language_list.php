@@ -29,7 +29,6 @@
 
   $locales = array(
     "en"=>"English"
-    ,"de"=>"German"
   );
 
 ?>

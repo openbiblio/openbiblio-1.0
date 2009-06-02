@@ -25,14 +25,14 @@
   $focus_form_name = "barcodesearch";
   $focus_form_field = "barcodeNmbr";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/header.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
   
-  $barcode = $HTTP_GET_VARS["barcode"];
+  $barcode = $_GET["barcode"];
   
 ?>
 <h1><?php echo $loc->getText("holdMessageHdr"); ?></h1>

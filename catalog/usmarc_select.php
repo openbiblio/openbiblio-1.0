@@ -21,7 +21,7 @@
  */
 
   $tab = "cataloging";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/UsmarcBlockDm.php");
   require_once("../classes/UsmarcBlockDmQuery.php");
@@ -35,23 +35,23 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["block"])) {
-    $selectedBlock = $HTTP_GET_VARS["block"];
+  if (isset($_GET["block"])) {
+    $selectedBlock = $_GET["block"];
   } else {
     $selectedBlock = "";
   }
-  if (isset($HTTP_GET_VARS["tag"])) {
-    $selectedTag = $HTTP_GET_VARS["tag"];
+  if (isset($_GET["tag"])) {
+    $selectedTag = $_GET["tag"];
   } else {
     $selectedTag = "";
   }
-  if (isset($HTTP_GET_VARS["subfld"])) {
-    $selectedSubfld = $HTTP_GET_VARS["subfld"];
+  if (isset($_GET["subfld"])) {
+    $selectedSubfld = $_GET["subfld"];
   } else {
     $selectedSubfld = "";
   }
-  if (isset($HTTP_GET_VARS["retpage"])) {
-    $retPage = $HTTP_GET_VARS["retpage"];
+  if (isset($_GET["retpage"])) {
+    $retPage = $_GET["retpage"];
   } else {
     $retPage = "";
   }
@@ -108,7 +108,7 @@ function backToMain(URL) {
     <td width="100%" class="title" valign="top">
       <?php echo $loc->getText("usmarcSelectHdr"); ?>
     </td>
-    <td class="title" valign="top" nowrap="yes"><font class="small"><a href="javascript:window.close()"><font color="<?php echo OBIB_TITLE_FONT_COLOR?>">Close Window</font></a>&nbsp;&nbsp;</font></td>
+    <td class="title" valign="top" nowrap="yes"><font class="small"><a href="javascript:window.close()"><font color="<?php echo OBIB_TITLE_FONT_COLOR?>"><?php echo $loc->getText("usmarcCloseWindow"); ?></font></a>&nbsp;&nbsp;</font></td>
   </tr>
 </table>
 <!-- **************************************************************************************
@@ -254,7 +254,6 @@ function backToMain(URL) {
   ?>
 </table>
 
-
 <!-- **************************************************************************************
      * Footer
      **************************************************************************************-->
@@ -264,7 +263,7 @@ function backToMain(URL) {
 <center>
   <br><br>
   Powered by OpenBiblio<br>
-  Copyright &copy; 2002 <a href="http://dave.stevens.name">Dave Stevens</a><br>
+  Copyright &copy; 2002-2005 Dave Stevens<br>
   under the
   <a href="../shared/copying.html">GNU General Public License</a>
 </center>

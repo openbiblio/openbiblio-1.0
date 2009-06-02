@@ -25,7 +25,7 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../catalog/index.php");
     exit();
   }
@@ -35,15 +35,15 @@
   #****************************************************************************
   $tab = "cataloging";
   $lookup = "N";
-  if (isset($HTTP_POST_VARS["tab"])) {
-    $tab = $HTTP_POST_VARS["tab"];
+  if (isset($_POST["tab"])) {
+    $tab = $_POST["tab"];
   }
-  if (isset($HTTP_POST_VARS["lookup"])) {
-    $lookup = $HTTP_POST_VARS["lookup"];
+  if (isset($_POST["lookup"])) {
+    $lookup = $_POST["lookup"];
   }
 
   $nav = "search";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   if ($tab != "opac") {
     require_once("../shared/logincheck.php");
   }
@@ -116,13 +116,13 @@
   #****************************************************************************
   #*  Retrieving post vars and scrubbing the data
   #****************************************************************************
-  if (isset($HTTP_POST_VARS["page"])) {
-    $currentPageNmbr = $HTTP_POST_VARS["page"];
+  if (isset($_POST["page"])) {
+    $currentPageNmbr = $_POST["page"];
   } else {
     $currentPageNmbr = 1;
   }
-  $searchType = $HTTP_POST_VARS["searchType"];
-  $sortBy = $HTTP_POST_VARS["sortBy"];
+  $searchType = $_POST["searchType"];
+  $sortBy = $_POST["sortBy"];
   if ($sortBy == "default") {
     if ($searchType == "author") {
       $sortBy = "author";
@@ -131,7 +131,7 @@
     }
   }
   # remove slashes added by form post
-  $searchText = stripslashes(trim($HTTP_POST_VARS["searchText"]));
+  $searchText = stripslashes(trim($_POST["searchText"]));
   # remove redundant whitespace
   $searchText = eregi_replace("[[:space:]]+", " ", $searchText);
   if ($searchType == "barcodeNmbr") {
@@ -208,10 +208,10 @@ function changePage(page,sort)
     *  Form used by javascript to post back to this page
     ************************************************************************** -->
 <form name="changePageForm" method="POST" action="../shared/biblio_search.php">
-  <input type="hidden" name="searchType" value="<?php echo $HTTP_POST_VARS["searchType"];?>">
-  <input type="hidden" name="searchText" value="<?php echo $HTTP_POST_VARS["searchText"];?>">
-  <input type="hidden" name="sortBy" value="<?php echo $HTTP_POST_VARS["sortBy"];?>">
-  <input type="hidden" name="lookup" value="<?php echo $HTTP_POST_VARS["lookup"];?>">
+  <input type="hidden" name="searchType" value="<?php echo $_POST["searchType"];?>">
+  <input type="hidden" name="searchText" value="<?php echo $_POST["searchText"];?>">
+  <input type="hidden" name="sortBy" value="<?php echo $_POST["sortBy"];?>">
+  <input type="hidden" name="lookup" value="<?php echo $_POST["lookup"];?>">
   <input type="hidden" name="page" value="1">
   <input type="hidden" name="tab" value="<?php echo $tab;?>">
 </form>
@@ -258,7 +258,7 @@ function changePage(page,sort)
             </font></td>
             <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
               <?php if ($lookup == 'Y') { ?>
-                <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo $biblio->getBarcodeNmbr();?>')">select</a>
+                <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo $biblio->getBarcodeNmbr();?>')"><?php echo $loc->getText("biblioSearchSelect"); ?></a>
               <?php } ?>
             </font></td>
             <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>

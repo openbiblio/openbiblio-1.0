@@ -22,6 +22,7 @@
 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
+require_once("../classes/Biblio.php");
 require_once("../classes/BiblioField.php");
 require_once("../classes/Localize.php");
 
@@ -92,19 +93,11 @@ class BiblioQuery extends Query {
      *  Reading biblio data
      ***********************************************************/
     # setting query that will return all the data in biblio
-    $sql = "select biblio.*, ";
-    $sql = $sql."staff.username ";
-    $sql = $sql."from biblio ";
-    $sql = $sql." left join staff on biblio.last_change_userid = staff.userid ";
-    $sql = $sql."where biblio.bibid = ".$bibid;
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioQueryQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select biblio.*, staff.username "
+                        . "from biblio left join staff "
+                        . "on biblio.last_change_userid = staff.userid "
+                        . "where biblio.bibid = %N ", $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioQueryQueryErr1"))) {
       return false;
     }
 
@@ -132,17 +125,11 @@ class BiblioQuery extends Query {
      *  Reading biblio_field data
      ***********************************************************/
     # setting query that will return all the data in biblio
-    $sql = "select biblio_field.* ";
-    $sql = $sql."from biblio_field ";
-    $sql = $sql."where biblio_field.bibid = ".$bibid;
-    $sql = $sql." order by tag, subfield_cd";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioQueryQueryErr2");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select biblio_field.* "
+                        . "from biblio_field "
+                        . "where biblio_field.bibid = %N "
+                        . "order by tag, subfield_cd ", $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioQueryQueryErr2"))) {
       return false;
     }
 
@@ -238,15 +225,10 @@ class BiblioQuery extends Query {
    ****************************************************************************
    */
   function _dupBarcode($barcode, $bibid=0) {
-    $sql = "select count(*) from biblio where barcode_nmbr = '".$barcode."'";
-    $sql = $sql." and bibid <> ".$bibid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error checking for dup barcode.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select count(*) from biblio "
+                        . "where barcode_nmbr = %Q and bibid <> %N ",
+                        $barcode, $bibid);
+    if (!$this->_query($sql, "Error checking for dup barcode.")) {
       return 0;
     }
     $array = $this->_conn->fetchRow(OBIB_NUM);
@@ -255,7 +237,6 @@ class BiblioQuery extends Query {
     }
     return false;
   }
-
 
   /****************************************************************************
    * Inserts new bibliography info into the biblio and biblio_field tables.
@@ -281,35 +262,21 @@ class BiblioQuery extends Query {
       }
     }
 
-    $sql = "insert into biblio values (null, ";
-    $sql = $sql."sysdate(), sysdate(), ";
-    $sql = $sql.addslashes($biblio->getLastChangeUserid()).", ";
-    $sql = $sql.addslashes($biblio->getMaterialCd()).", ";
-    $sql = $sql.addslashes($biblio->getCollectionCd()).", ";
-    $sql = $sql."'".addslashes($biblio->getCallNmbr1())."', ";
-    $sql = $sql."'".addslashes($biblio->getCallNmbr2())."', ";
-    $sql = $sql."'".addslashes($biblio->getCallNmbr3())."', ";
-    $sql = $sql."'".addslashes($bibfields['title'])."', ";
-    $sql = $sql."'".addslashes($bibfields['title_remainder'])."', ";
-    $sql = $sql."'".addslashes($bibfields['responsibility_stmt'])."', ";
-    $sql = $sql."'".addslashes($bibfields['author'])."', ";
-    $sql = $sql."'".addslashes($bibfields['topic1'])."', ";
-    $sql = $sql."'".addslashes($bibfields['topic2'])."', ";
-    $sql = $sql."'".addslashes($bibfields['topic3'])."', ";
-    $sql = $sql."'".addslashes($bibfields['topic4'])."', ";
-    $sql = $sql."'".addslashes($bibfields['topic5'])."', ";
-    if ($biblio->showInOpac()) {
-      $sql = $sql."'Y')";
-    } else {
-      $sql = $sql."'N')";
-    }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioQueryInsertErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("insert into biblio values(null, sysdate(), sysdate(), "
+                        . "%N, %N, %N, %Q, %Q, %Q, %Q, %Q, %Q, %Q, %Q, "
+                        . "%Q, %Q, %Q, %Q, %Q) ",
+                        $biblio->getLastChangeUserid(),
+                        $biblio->getMaterialCd(), $biblio->getCollectionCd(),
+                        $biblio->getCallNmbr1(),
+                        $biblio->getCallNmbr2(),
+                        $biblio->getCallNmbr3(),
+                        $bibfields['title'], $bibfields['title_remainder'],
+                        $bibfields['responsibility_stmt'], $bibfields['author'],
+                        $bibfields['topic1'], $bibfields['topic2'],
+                        $bibfields['topic3'], $bibfields['topic4'],
+                        $bibfields['topic5'],
+                        $biblio->showInOpac() ? "Y" : "N");
+    if (!$this->_query($sql, $this->_loc->getText("biblioQueryInsertErr1"))) {
       return false;
     }
     $bibid = $this->_conn->getInsertId();
@@ -336,44 +303,35 @@ class BiblioQuery extends Query {
     $biblioFlds = $biblio->getBiblioFields();
 
     // updating biblio table
-    $sql = "update biblio set last_change_dt = sysdate(), ";
-    $sql = $sql."last_change_userid=".addslashes($biblio->getLastChangeUserid()).", ";
-    $sql = $sql."material_cd=".addslashes($biblio->getMaterialCd()).", ";
-    $sql = $sql."collection_cd=".addslashes($biblio->getCollectionCd()).", ";
-    $sql = $sql."call_nmbr1='".addslashes($biblio->getCallNmbr1())."', ";
-    $sql = $sql."call_nmbr2='".addslashes($biblio->getCallNmbr2())."', ";
-    $sql = $sql."call_nmbr3='".addslashes($biblio->getCallNmbr3())."', ";
+    $sql = $this->mkSQL("update biblio set last_change_dt = sysdate(), "
+                        . " last_change_userid=%N, material_cd=%N, "
+                        . " collection_cd=%N, "
+                        . " call_nmbr1=%Q, call_nmbr2=%Q, call_nmbr3=%Q, ",
+                        $biblio->getLastChangeUserid(),
+                        $biblio->getMaterialCd(), $biblio->getCollectionCd(),
+                        $biblio->getCallNmbr1(), $biblio->getCallNmbr2(),
+                        $biblio->getCallNmbr3());
     foreach ($this->_fieldsInBiblio as $key => $name) {
       if (array_key_exists($key, $biblioFlds) and $biblioFlds[$key]->getFieldid() == '') {
-        $sql .= $name."='".addslashes($biblioFlds[$key]->getFieldData())."', ";
+        $sql .= $this->mkSQL("%I=%Q, ", $name, $biblioFlds[$key]->getFieldData());
         unset($biblioFlds[$key]);
       } else {
-        $sql .= $name."='', ";
+        $sql .= $this->mkSQL("%I='', ", $name);
       }
     }
-    if ($biblio->showInOpac()) {
-      $sql = $sql."opac_flg='Y'";
-    } else {
-      $sql = $sql."opac_flg='N'";
-    }
-    $sql = $sql." where bibid=".$biblio->getBibid();
+    $sql .= $this->mkSQL("opac_flg=%Q where bibid=%N ",
+                        $biblio->showInOpac() ? "Y" : "N", $biblio->getBibid());
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioQueryUpdateErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioQueryUpdateErr1"))) {
       return false;
     }
 
-    // inserting (or upating) biblio_field rows from update Biblio object.
+    // inserting (or updating) biblio_field rows from update Biblio object.
     if (!($this->_insertFields($biblioFlds, $biblio->getBibid()))) {
       return false;
     }
 
-    return $result;
+    return true;
   }
 
 
@@ -392,32 +350,27 @@ class BiblioQuery extends Query {
         if ($value->getFieldid() == "") {
           $sql = NULL;
         } else {
-          $sql = "delete from biblio_field ";
-          $sql = $sql."where bibid=".$value->getBibid();
-          $sql = $sql." and fieldid=".$value->getFieldid();
+          $sql = $this->mkSQL("delete from biblio_field "
+                                . "where bibid=%N and fieldid=%N ",
+                                $value->getBibid(), $value->getFieldid());
         }          
       } elseif ($value->getFieldid() == "") {
         // new value
-        $sql = "insert into biblio_field values (".$bibid.",null,";
-        $sql = $sql."'".addslashes($value->getTag())."', ";
-        $sql = $sql."'N','N',";
-        $sql = $sql."'".addslashes($value->getSubfieldCd())."',";
-        $sql = $sql."'".addslashes($value->getFieldData())."')";
+        $sql = $this->mkSQL("insert into biblio_field "
+                            . "values (%N, null, %Q, 'N','N', %Q, %Q) ",
+                            $bibid, $value->getTag(),
+                            $value->getSubfieldCd(),
+                            $value->getFieldData());
       } else {
         // existing value
-        $sql = "update biblio_field set field_data = '".addslashes($value->getFieldData())."' ";
-        $sql = $sql."where bibid=".$value->getBibid();
-        $sql = $sql." and fieldid=".$value->getFieldid();
+        $sql = $this->mkSQL("update biblio_field set field_data = %Q "
+                            . "where bibid=%N and fieldid=%N ",
+                            $value->getFieldData(), $value->getBibid(),
+                            $value->getFieldid());
       }
     
       if ($sql != NULL) {
-        $result = $this->_conn->exec($sql);
-        if ($result == FALSE) {
-          $this->_errorOccurred = TRUE;
-          $this->_error = $this->_loc->getText("biblioQueryInsertErr2");
-          $this->_dbErrno = $this->_conn->getDbErrno();
-          $this->_dbError = $this->_conn->getDbError();
-          $this->_SQL = $sql;
+        if (!$this->_query($sql, $this->_loc->getText("biblioQueryInsertErr2"))) {
           return FALSE;
         }
       }
@@ -433,27 +386,12 @@ class BiblioQuery extends Query {
    ****************************************************************************
    */
   function delete($bibid) {
-    $sql = "delete from biblio_field where bibid = ".$bibid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioQueryDeleteErr");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("delete from biblio_field where bibid = %N ", $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioQueryDeleteErr"))) {
       return false;
     }
-    $sql = "delete from biblio where bibid = ".$bibid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioQueryDeleteErr");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from biblio where bibid = %N ", $bibid);
+    return $this->_query($sql, $this->_loc->getText("biblioQueryDeleteErr"));
   }
 
 }

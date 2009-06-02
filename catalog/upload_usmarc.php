@@ -27,12 +27,13 @@ require_once("../classes/Biblio.php");
 require_once("../classes/BiblioField.php");
 require_once("../classes/BiblioQuery.php");
 
-require_once("../shared/read_settings.php");
+require_once("../shared/common.php");
+require_once("../functions/fileIOFuncs.php");
 require_once("../shared/logincheck.php");
 require_once("../classes/Localize.php");
 $loc = new Localize(OBIB_LOCALE,$tab);
 
-if (count($HTTP_POST_FILES) == 0) {
+if (count($_FILES) == 0) {
   header("Location: upload_usmarc_form.php");
   exit();
 }
@@ -45,7 +46,7 @@ $recordterminator="\35";
 $fieldterminator="\36";
 $delimiter="\37";
 
-$usmarc_str = file_get_contents($HTTP_POST_FILES["usmarc_data"]["tmp_name"]);
+$usmarc_str = fileGetContents($_FILES["usmarc_data"]["tmp_name"]);
 $records = explode($recordterminator,$usmarc_str);
 // We separated with a terminator, so the last element will always be empty.
 array_pop($records);
@@ -113,7 +114,7 @@ if ($_POST["test"]=="true") {
   }
   echo '<hr /><h3>'.$loc->getText("MarcUploadRawData").'</h3>';
   echo '<pre>';
-  readfile($HTTP_POST_FILES["usmarc_data"]["tmp_name"]);
+  readfile($_FILES["usmarc_data"]["tmp_name"]);
   echo '</pre>';
 } else {
   $bq = new BiblioQuery();

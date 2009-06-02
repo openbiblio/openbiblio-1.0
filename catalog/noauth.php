@@ -23,7 +23,7 @@
   $tab = "cataloging";
   $nav = "";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/header.php");
 
 ?>

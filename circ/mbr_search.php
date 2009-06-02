@@ -24,22 +24,24 @@
 
   $tab = "circulation";
   $nav = "search";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Member.php");
   require_once("../classes/MemberQuery.php");
   require_once("../functions/searchFuncs.php");
   require_once("../classes/DmQuery.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Function declaration only used on this page.
   #****************************************************************************
   function printResultPages($currPage, $pageCount) {
-    echo "Result Pages: ";
+    global $loc;
     $maxPg = 21;
     if ($currPage > 1) {
-      echo "<a href=\"javascript:changePage(".($currPage-1).")\">&laquo;prev</a> ";
+      echo "<a href=\"javascript:changePage(".($currPage-1).")\">&laquo;".$loc->getText("mbrsearchprev")."</a> ";
     }
     for ($i = 1; $i <= $pageCount; $i++) {
       if ($i < $maxPg) {
@@ -53,14 +55,14 @@
       }
     }
     if ($currPage < $pageCount) {
-      echo "<a href=\"javascript:changePage(".($currPage+1).")\">next&raquo;</a> ";
+      echo "<a href=\"javascript:changePage(".($currPage+1).")\">".$loc->getText("mbrsearchnext")."&raquo;</a> ";
     }
   }
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
@@ -81,14 +83,14 @@
   #****************************************************************************
   #*  Retrieving post vars and scrubbing the data
   #****************************************************************************
-  if (isset($HTTP_POST_VARS["page"])) {
-    $currentPageNmbr = $HTTP_POST_VARS["page"];
+  if (isset($_POST["page"])) {
+    $currentPageNmbr = $_POST["page"];
   } else {
     $currentPageNmbr = 1;
   }
-  $searchType = $HTTP_POST_VARS["searchType"];
+  $searchType = $_POST["searchType"];
   # remove slashes added by form post
-  $searchText = stripslashes(trim($HTTP_POST_VARS["searchText"]));
+  $searchText = stripslashes(trim($_POST["searchText"]));
   # remove redundant whitespace
   $searchText = eregi_replace("[[:space:]]+", " ", $searchText);
 
@@ -131,7 +133,7 @@
   # Display no results message if no results returned from search.
   if ($mbrQ->getRowCount() == 0) {
     $mbrQ->close();
-    echo "No results found.";
+    echo $loc->getText("mbrsearchNoResults");
     require_once("../shared/footer.php");
     exit();
   }
@@ -155,15 +157,15 @@ function changePage(page)
     *  Form used by javascript to post back to this page
     ************************************************************************** -->
 <form name="changePageForm" method="POST" action="../circ/mbr_search.php">
-  <input type="hidden" name="searchType" value="<?php echo $HTTP_POST_VARS["searchType"];?>">
-  <input type="hidden" name="searchText" value="<?php echo $HTTP_POST_VARS["searchText"];?>">
+  <input type="hidden" name="searchType" value="<?php echo $_POST["searchType"];?>">
+  <input type="hidden" name="searchText" value="<?php echo $_POST["searchText"];?>">
   <input type="hidden" name="page" value="1">
 </form>
 
 <!--**************************************************************************
     *  Printing result stats and page nav
     ************************************************************************** -->
-<?php echo $mbrQ->getRowCount();?> results found.<br>
+<?php echo $mbrQ->getRowCount(); echo $loc->getText("mbrsearchFoundResults");?><br>
 <?php printResultPages($currentPageNmbr, $mbrQ->getPageCount()); ?><br>
 <br>
 
@@ -173,7 +175,7 @@ function changePage(page)
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left" colspan="2">
-      Search Results:
+      <?php echo $loc->getText("mbrsearchSearchResults");?>
     </th>
   </tr>
   <?php
@@ -197,8 +199,8 @@ function changePage(page)
           }
         }
       ?>
-      <b>Card Number:</b> <?php echo $mbr->getBarcodeNmbr();?>
-      <b>Classification:</b> <?php echo $mbrClassifyDm[$mbr->getClassification()];?>
+      <b><?php echo $loc->getText("mbrsearchCardNumber");?></b> <?php echo $mbr->getBarcodeNmbr();?>
+      <b><?php echo $loc->getText("mbrsearchClassification");?></b> <?php echo $mbrClassifyDm[$mbr->getClassification()];?>
     </td>
   </tr>
 

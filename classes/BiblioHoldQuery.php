@@ -48,78 +48,57 @@ class BiblioHoldQuery extends Query {
   /****************************************************************************
    * Executes a query to select holds
    * @param string $bibid bibid of bibliography copy to select
-   * @return BiblioHold returns hold record or false, if error occurs
+   * @return boolean returns false if error occurs
    * @access public
    ****************************************************************************
    */
   function queryByBibid($bibid) {
     # setting query that will return all the data
-    $sql = "select biblio_hold.* ";
-    $sql = $sql.",member.last_name ";
-    $sql = $sql.",member.first_name ";
-    $sql = $sql.",biblio_copy.barcode_nmbr ";
-    $sql = $sql.",biblio_copy.status_cd ";
-    $sql = $sql.",biblio_copy.due_back_dt ";
-    $sql = $sql."from biblio_hold ";
-    $sql = $sql.",biblio_copy ";
-    $sql = $sql.",member ";
-    $sql = $sql."where biblio_hold.bibid = biblio_copy.bibid";
-    $sql = $sql." and biblio_hold.copyid = biblio_copy.copyid";
-    $sql = $sql." and biblio_hold.mbrid = member.mbrid";
-    $sql = $sql." and biblio_hold.bibid = ".$bibid;
-    $sql = $sql." order by barcode_nmbr, hold_begin_dt ";
+    $sql = $this->mkSQL("select biblio_hold.*, "
+                        . " member.last_name, member.first_name, "
+                        . " biblio_copy.barcode_nmbr, biblio_copy.status_cd, "
+                        . " biblio_copy.due_back_dt "
+                        . "from biblio_hold, biblio_copy, member "
+                        . "where biblio_hold.bibid = biblio_copy.bibid "
+                        . " and biblio_hold.copyid = biblio_copy.copyid "
+                        . " and biblio_hold.mbrid = member.mbrid "
+                        . " and biblio_hold.bibid = %N "
+                        . "order by barcode_nmbr, hold_begin_dt ",
+                        $bibid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioHoldQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioHoldQueryErr1"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    return $result;
+    return true;
   }
 
   /****************************************************************************
    * Executes a query to select holds
    * @param string $mbrid mbrid of member placing holds
-   * @return BiblioHold returns hold record or false, if error occurs
+   * @return boolean returns false if error occurs
    * @access public
    ****************************************************************************
    */
   function queryByMbrid($mbrid) {
     # setting query that will return all the data
-    $sql = "select biblio_hold.* ";
-    $sql = $sql.",biblio.title ";
-    $sql = $sql.",biblio.author ";
-    $sql = $sql.",biblio.material_cd ";
-    $sql = $sql.",biblio_copy.barcode_nmbr ";
-    $sql = $sql.",biblio_copy.status_cd ";
-    $sql = $sql.",biblio_copy.due_back_dt ";
-    $sql = $sql."from biblio_hold ";
-    $sql = $sql.",biblio_copy ";
-    $sql = $sql.",biblio ";
-    $sql = $sql."where biblio_hold.bibid = biblio_copy.bibid";
-    $sql = $sql." and biblio_hold.copyid = biblio_copy.copyid";
-    $sql = $sql." and biblio_hold.bibid = biblio.bibid";
-    $sql = $sql." and biblio_hold.mbrid = ".$mbrid;
+    $sql = $this->mkSQL("select biblio_hold.*, "
+                        . "biblio.title, biblio.author, "
+                        . "biblio.material_cd, biblio_copy.barcode_nmbr, "
+                        . "biblio_copy.status_cd, biblio_copy.due_back_dt "
+                        . "from biblio_hold, biblio_copy, biblio "
+                        . "where biblio_hold.bibid = biblio_copy.bibid "
+                        . "and biblio_hold.copyid = biblio_copy.copyid "
+                        . "and biblio_hold.bibid = biblio.bibid "
+                        . "and biblio_hold.mbrid = %N "
+			. "order by biblio_hold.hold_begin_dt desc",
+                        $mbrid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioHoldQueryErr2");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioHoldQueryErr2"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    if ($this->_rowCount == 0) {
-      return true;
-    }
-    return $result;
+    return true;
   }
 
   /****************************************************************************
@@ -172,15 +151,10 @@ class BiblioHoldQuery extends Query {
    */
   function insert($mbrid,$barcode) {
     // getting bibid and copyid for a given barcode
-    $sql = "select bibid, copyid from biblio_copy where barcode_nmbr = '".$barcode."'";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioHoldQueryErr3");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
+    $sql = $this->mkSQL("select bibid, copyid from biblio_copy "
+                        . "where barcode_nmbr = %Q", $barcode);
+    if (!$this->_query($sql, $this->_loc->getText("biblioHoldQueryErr3"))) {
+      return 0;
     }
     if ($this->_conn->numRows() == 0) {
       return 2;
@@ -189,20 +163,11 @@ class BiblioHoldQuery extends Query {
     $bibid = $array["bibid"];
     $copyid = $array["copyid"];
 
-
-    $sql = "insert into biblio_hold values (";
-    $sql = $sql.$bibid.", ";
-    $sql = $sql.$copyid.",null, ";
-    $sql = $sql."sysdate(), ";
-    $sql = $sql.$mbrid.")";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioHoldQueryErr4");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
+    $sql = $this->mkSQL("insert into biblio_hold values "
+                        . "(%N, %N, null, sysdate(), %N)",
+                        $bibid, $copyid, $mbrid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioHoldQueryErr4"))) {
+      return 0;
     }
     return 1;
   }
@@ -217,41 +182,26 @@ class BiblioHoldQuery extends Query {
    ****************************************************************************
    */
   function delete($bibid,$copyid,$holdid) {
-    $sql = "delete from biblio_hold where bibid = ".$bibid;
-    $sql = $sql." and copyid = ".$copyid;
-    $sql = $sql." and holdid = ".$holdid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioHoldQueryErr5");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from biblio_hold where bibid = %N "
+                        . "and copyid = %N and holdid = %N",
+                        $bibid, $copyid, $holdid);
+    return $this->_query($sql, $this->_loc->getText("biblioHoldQueryErr5"));
   }
 
   /****************************************************************************
-   * Retrieves mbrid of first member in hold queue
+   * Retrieves first entry in hold queue
    * @param long $bibid bibid of bibliography on hold
    * @param long $copyid copyid of bibliography on hold
-   * @return long mbrid of first member in queue, -1 if not on hold, or false, if error occurs
+   * @return BiblioHold first hold in queue or false if error occurs
    * @access public
    ****************************************************************************
    */
   function getFirstHold($bibid,$copyid) {
-    $sql = "select * from biblio_hold ";
-    $sql = $sql."where bibid = ".$bibid;
-    $sql = $sql." and copyid = ".$copyid;
-    $sql = $sql." order by hold_begin_dt";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioHoldQueryErr6");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select * from biblio_hold "
+                        . "where bibid = %N and copyid = %N "
+                        . "order by hold_begin_dt",
+                        $bibid, $copyid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioHoldQueryErr6"))) {
       return FALSE;
     }
     $this->_rowCount = $this->_conn->numRows();

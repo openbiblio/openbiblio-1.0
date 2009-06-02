@@ -27,7 +27,7 @@
   $focus_form_name = "editsettingsform";
   $focus_form_field = "libraryName";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/header.php");
@@ -37,9 +37,9 @@
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["reset"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["reset"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
 
     include_once("../classes/Settings.php");
     include_once("../classes/SettingsQuery.php");
@@ -86,7 +86,7 @@
   #****************************************************************************
   #*  Display update message if coming from settings_edit with a successful update.
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["updated"])){
+  if (isset($_GET["updated"])){
 ?>
   <font class="error"><? echo $loc->getText("admin_settingsUpdated"); ?></font>
 <?php

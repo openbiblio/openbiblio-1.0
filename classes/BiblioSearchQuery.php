@@ -110,31 +110,25 @@ class BiblioSearchQuery extends Query {
 
     # setting query that will return all the data
     $sql = "select biblio.* ";
-    $sql = $sql.",biblio_copy.copyid ";
-    $sql = $sql.",biblio_copy.barcode_nmbr ";
-    $sql = $sql.",biblio_copy.status_cd ";
-    $sql = $sql.",biblio_copy.due_back_dt ";
-    $sql = $sql.",biblio_copy.mbrid ";
-    $sql = $sql.$join;
-    $sql = $sql.$criteria;
-    $sql = $sql." order by ".$sortBy;
+    $sql .= ",biblio_copy.copyid ";
+    $sql .= ",biblio_copy.barcode_nmbr ";
+    $sql .= ",biblio_copy.status_cd ";
+    $sql .= ",biblio_copy.due_back_dt ";
+    $sql .= ",biblio_copy.mbrid ";
+    $sql .= $join;
+    $sql .= $criteria;
+    $sql .= $this->mkSQL(" order by %C ", $sortBy);
 
     # setting limit so we can page through the results
     $offset = ($page - 1) * $this->_itemsPerPage;
     $limit = $this->_itemsPerPage;
-    $sql = $sql." limit ".$offset.",".$limit;
+    $sql .= $this->mkSQL(" limit %N, %N", $offset, $limit);
 
     //echo "sqlcount=[".$sqlcount."]<br>\n";
     //exit("sql=[".$sql."]<br>\n");
 
     # Running row count sql statement
-    $countResult = $this->_conn->exec($sqlcount);
-    if ($countResult == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioSearchQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sqlcount, $this->_loc->getText("biblioSearchQueryErr1"))) {
       return false;
     }
 
@@ -144,17 +138,7 @@ class BiblioSearchQuery extends Query {
     $this->_pageCount = ceil($this->_rowCount / $this->_itemsPerPage);
 
     # Running search sql statement
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioSearchQueryErr2");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-
-    return $result;
+    return $this->_query($sql, $this->_loc->getText("biblioSearchQueryErr2"));
   }
 
 
@@ -171,7 +155,7 @@ class BiblioSearchQuery extends Query {
     $prefix = "where ";
     $criteria = "";
     for ($i = 0; $i < count($words); $i++) {
-      $criteria = $criteria.$prefix.$this->_getLike($cols,$words[$i]);
+      $criteria .= $prefix.$this->_getLike($cols,$words[$i]);
       $prefix = " and ";
     }
     return $criteria;
@@ -186,10 +170,11 @@ class BiblioSearchQuery extends Query {
     }
     $like = "";
     for ($i = 0; $i < count($cols); $i++) {
-      $like = $like.$prefix.$cols[$i]." like '%".$word."%'";
+      $like .= $prefix;
+      $like .= $this->mkSQL("%C like %Q ", $cols[$i], "%".$word."%");
       $prefix = " or ";
     }
-    $like = $like.$suffix;
+    $like .= $suffix;
     return $like;
   }
 
@@ -202,33 +187,28 @@ class BiblioSearchQuery extends Query {
    ****************************************************************************
    */
   function query($statusCd,$mbrid="") {
-    
-    $sql = "select biblio.* ";
-    $sql = $sql.",biblio_copy.copyid ";
-    $sql = $sql.",biblio_copy.barcode_nmbr ";
-    $sql = $sql.",biblio_copy.status_cd ";
-    $sql = $sql.",biblio_copy.status_begin_dt ";
-    $sql = $sql.",biblio_copy.due_back_dt ";
-    $sql = $sql.",biblio_copy.mbrid ";
-    $sql = $sql.",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late ";
-    $sql = $sql."from biblio, biblio_copy ";
-    $sql = $sql."where biblio.bibid = biblio_copy.bibid ";
-    if ($mbrid != "") {
-        $sql = $sql."and biblio_copy.mbrid = ".$mbrid;
-    }
-    $sql = $sql." and biblio_copy.status_cd = '".$statusCd."'";
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioSearchQueryErr3");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = "select biblio.* ";
+    $sql .= ",biblio_copy.copyid ";
+    $sql .= ",biblio_copy.barcode_nmbr ";
+    $sql .= ",biblio_copy.status_cd ";
+    $sql .= ",biblio_copy.status_begin_dt ";
+    $sql .= ",biblio_copy.due_back_dt ";
+    $sql .= ",biblio_copy.mbrid ";
+    $sql .= ",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late ";
+    $sql .= "from biblio, biblio_copy ";
+    $sql .= "where biblio.bibid = biblio_copy.bibid ";
+    if ($mbrid != "") {
+        $sql .= $this->mkSQL("and biblio_copy.mbrid = %N ", $mbrid);
+    }
+    $sql .= $this->mkSQL(" and biblio_copy.status_cd=%Q ", $statusCd);
+    $sql .= " order by biblio_copy.status_begin_dt desc";
+
+    if (!$this->_query($sql, $this->_loc->getText("biblioSearchQueryErr3"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    return $result;
+    return true;
   }
 
   /****************************************************************************
@@ -265,8 +245,8 @@ class BiblioSearchQuery extends Query {
     $bib->setTopic1($array["topic1"]);
     $bib->setTopic2($array["topic2"]);
     $bib->setTopic3($array["topic3"]);
-    $bib->setTopic3($array["topic4"]);
-    $bib->setTopic3($array["topic5"]);
+    $bib->setTopic4($array["topic4"]);
+    $bib->setTopic5($array["topic5"]);
     if (isset($array["barcode_nmbr"])) {
       $bib->setBarcodeNmbr($array["barcode_nmbr"]);
     }

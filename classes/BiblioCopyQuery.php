@@ -22,6 +22,7 @@
 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
+require_once("../classes/BiblioCopy.php");
 
 /******************************************************************************
  * BiblioCopyQuery data access component for library bibliography copies
@@ -54,19 +55,14 @@ class BiblioCopyQuery extends Query {
    */
   function query($bibid,$copyid) {
     # setting query that will return all the data
-    $sql = "select biblio_copy.* ";
-    $sql = $sql.",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late ";
-    $sql = $sql."from biblio_copy ";
-    $sql = $sql."where biblio_copy.bibid = ".$bibid;
-    $sql = $sql." and biblio_copy.copyid = ".$copyid;
+    $sql = $this->mkSQL("select biblio_copy.*, "
+                        . " greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late "
+                        . "from biblio_copy "
+                        . "where biblio_copy.bibid = %N"
+                        . " and biblio_copy.copyid = %N",
+                        $bibid, $copyid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr4");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr4"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
@@ -74,27 +70,21 @@ class BiblioCopyQuery extends Query {
   }
 
   /****************************************************************************
-   * Executes a query to select ONLY ONE COPY
-   * @param string $bibid bibid of bibliography copy to select
-   * @param string $copyid copyid of bibliography copy to select
-   * @return Copy returns copy or false, if error occurs
+   * Executes a query to select ONLY ONE COPY by barcode
+   * @param string $barcode barcode of bibliography copy to select
+   * @return Copy returns copy or true if barcode doesn't exist,
+   *              false on error
    * @access public
    ****************************************************************************
    */
   function queryByBarcode($barcode) {
     # setting query that will return all the data
-    $sql = "select biblio_copy.* ";
-    $sql = $sql.",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late ";
-    $sql = $sql."from biblio_copy ";
-    $sql = $sql."where biblio_copy.barcode_nmbr = '".$barcode."'";
+    $sql = $this->mkSQL("select biblio_copy.*, "
+                        . "greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late "
+                        . "from biblio_copy where biblio_copy.barcode_nmbr = %Q",
+                        $barcode);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr4");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr4"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
@@ -106,7 +96,7 @@ class BiblioCopyQuery extends Query {
 
 
   /****************************************************************************
-   * Executes a query to select ALL COPIES
+   * Executes a query to select ALL COPIES belonging to a particular bibid
    * @param string $bibid bibid of bibliography copies to select
    * @return boolean returns false, if error occurs
    * @access public
@@ -114,27 +104,22 @@ class BiblioCopyQuery extends Query {
    */
   function execSelect($bibid) {
     # setting query that will return all the data
-    $sql = "select biblio_copy.* ";
-    $sql = $sql.",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late ";
-    $sql = $sql."from biblio_copy ";
-    $sql = $sql."where biblio_copy.bibid = ".$bibid;
+    $sql = $this->mkSQL("select biblio_copy.* "
+                        . ",greatest(0,to_days(sysdate()) - to_days(biblio_copy.due_back_dt)) days_late "
+                        . "from biblio_copy where biblio_copy.bibid = %N",
+                        $bibid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr4");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr4"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    return $result;
+    return true;
   }
 
   /****************************************************************************
    * Fetches a row from the query result and populates the BiblioCopy object.
-   * @return BiblioCopy returns bibliography copy or false if no more bibliography copies to fetch
+   * @return BiblioCopy returns bibliography copy or false if no more
+   *                    bibliography copies to fetch
    * @access public
    ****************************************************************************
    */
@@ -166,17 +151,12 @@ class BiblioCopyQuery extends Query {
    ****************************************************************************
    */
   function _dupBarcode($barcode, $bibid=0, $copyid=0) {
-    $sql = "select count(*) from biblio_copy where barcode_nmbr = '".$barcode."'";
-    $sql = $sql." and not (bibid = ".$bibid;
-    $sql = $sql." and copyid = ".$copyid.")";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return 0;
+    $sql = $this->mkSQL("select count(*) from biblio_copy "
+                        . "where barcode_nmbr = %Q "
+                        . " and not (bibid = %N and copyid = %N) ",
+                        $barcode, $bibid, $copyid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr1"))) {
+      return false;
     }
     $array = $this->_conn->fetchRow(OBIB_NUM);
     if ($array[0] > 0) {
@@ -201,37 +181,27 @@ class BiblioCopyQuery extends Query {
       $this->_error = $this->_loc->getText("biblioCopyQueryErr2",array("barcodeNmbr"=>$copy->getBarcodeNmbr()));
       return false;
     }
-    $sql = "insert into biblio_copy values (";
-    $sql = $sql.$copy->getBibid().",null, ";
-    $sql = $sql."'".$copy->getCopyDesc()."', ";
-    $sql = $sql."'".$copy->getBarcodeNmbr()."', ";
-    $sql = $sql."'".$copy->getStatusCd()."', ";
-    $sql = $sql."sysdate(), ";
+    $sql = $this->mkSQL("insert into biblio_copy values (%N"
+                        . ",null, %Q, %Q, %Q, sysdate(), ",
+                        $copy->getBibid(), $copy->getCopyDesc(),
+                        $copy->getBarcodeNmbr(), $copy->getStatusCd());
     if ($copy->getDueBackDt() == "") {
-      $sql = $sql."null, ";
+      $sql .= "null, ";
     } else {
-      $sql = $sql."'".$copy->getDueBackDt()."', ";
+      $sql .= $this->mkSQL("%Q, ", $copy->getDueBackDt());
     }
     if ($copy->getMbrid() == "") {
-      $sql = $sql."null)";
+      $sql .= "null)";
     } else {
-      $sql = $sql."'".$copy->getMbrid()."')";
+      $sql .= $this->mkSQL("%Q)", $copy->getMbrid());
     }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr3");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, $this->_loc->getText("biblioCopyQueryErr3"));
   }
 
   /****************************************************************************
    * Updates a bibliography in the biblio table.
    * @param Biblio $biblio bibliography to update
+   * @param boolean $checkout is this a checkout operation? default FALSE
    * @return boolean returns false, if error occurs
    * @access public
    ****************************************************************************
@@ -247,37 +217,29 @@ class BiblioCopyQuery extends Query {
         return false;
       }
     }
-    $sql = "update biblio_copy set ";
-    $sql = $sql."status_cd='".$copy->getStatusCd()."', ";
-    $sql = $sql."status_begin_dt=sysdate(), ";
+    $sql = $this->mkSQL("update biblio_copy set "
+                        . "status_cd=%Q, "
+                        . "status_begin_dt=sysdate(), ",
+                        $copy->getStatusCd());
 
     if ($copy->getStatusCd() == OBIB_STATUS_OUT){
       if ($copy->getDueBackDt() != "") {
-        $sql = $sql."due_back_dt=date_add(sysdate(),interval ".$copy->getDueBackDt()." day), ";
+        $sql .= $this->mkSQL("due_back_dt=date_add(sysdate(),interval %N day), ",
+                             $copy->getDueBackDt());
       } else {
-        $sql = $sql."due_back_dt=null, ";
+        $sql .= "due_back_dt=null, ";
       }
       if ($copy->getMbrid() != "") {
-        $sql = $sql."mbrid=".$copy->getMbrid().", ";
+        $sql .= $this->mkSQL("mbrid=%N, ", $copy->getMbrid());
       } else {
-        $sql = $sql."mbrid=null, ";
+        $sql .= "mbrid=null, ";
       }
     }
-    $sql = $sql."copy_desc='".$copy->getCopyDesc()."', ";
-    $sql = $sql."barcode_nmbr='".$copy->getBarcodeNmbr()."'";
-    $sql = $sql." where bibid=".$copy->getBibid();
-    $sql = $sql." and copyid=".$copy->getCopyid();
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr5");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= $this->mkSQL("copy_desc=%Q, barcode_nmbr=%Q "
+                         . "where bibid=%N and copyid=%N",
+                         $copy->getCopyDesc(), $copy->getBarcodeNmbr(),
+                         $copy->getBibid(), $copy->getCopyid());
+    return $this->_query($sql, $this->_loc->getText("biblioCopyQueryErr5"));
   }
 
   /****************************************************************************
@@ -290,20 +252,11 @@ class BiblioCopyQuery extends Query {
    ****************************************************************************
    */
   function delete($bibid,$copyid=0) {
-    $sql = "delete from biblio_copy where bibid = ".$bibid;
+    $sql = $this->mkSQL("delete from biblio_copy where bibid = %N", $bibid);
     if ($copyid > 0) {
-      $sql = $sql." and copyid = ".$copyid;
+      $sql .= $this->mkSQL(" and copyid = %N", $copyid);
     }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr6");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, $this->_loc->getText("biblioCopyQueryErr6"));
   }
 
   /****************************************************************************
@@ -314,35 +267,25 @@ class BiblioCopyQuery extends Query {
    */
   function _getCollectionInfo($bibid) {
     // first get collection code
-    $sql = "select collection_cd from biblio where bibid = ".$bibid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr7");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select collection_cd from biblio where bibid = %N",
+                        $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr7"))) {
       return false;
     }
     $array = $this->_conn->fetchRow();
     $collectionCd = $array["collection_cd"];
 
     // now read collection domain for days due back
-    $sql = "select * from collection_dm where code = ".$collectionCd;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr8");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select * from collection_dm where code = %N",
+                        $collectionCd);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr8"))) {
       return false;
     }
     return $this->_conn->fetchRow();
   }
 
   /****************************************************************************
-   * Retrieves days due back for a given copies collection code
+   * Retrieves days due back for a given copy's collection code
    * @param BilioCopy $copy bibliography copy object to get days due back
    * @return integer days due back or false, if error occurs
    * @access public
@@ -354,8 +297,8 @@ class BiblioCopyQuery extends Query {
   }
 
   /****************************************************************************
-   * Retrieves daily late fee for a given copies collection code
-   * @param BilioCopy $copy bibliography copy object to get days due back
+   * Retrieves daily late fee for a given copy's collection code
+   * @param BiblioCopy $copy bibliography copy object to get days due back
    * @return decimal daily late fee or false, if error occurs
    * @access public
    ****************************************************************************
@@ -375,30 +318,22 @@ class BiblioCopyQuery extends Query {
    ****************************************************************************
    */
   function checkin($massCheckin,$bibids,$copyids) {
-    $sql = "update biblio_copy set ";
-    $sql = $sql."status_cd='".OBIB_STATUS_IN."', ";
-    $sql = $sql."status_begin_dt=sysdate(), ";
-    $sql = $sql."due_back_dt=null, ";
-    $sql = $sql."mbrid=null ";
-    $sql = $sql."where status_cd='".OBIB_STATUS_SHELVING_CART."' ";
+    $sql = $this->mkSQL("update biblio_copy set "
+                        . " status_cd=%Q, status_begin_dt=sysdate(), "
+                        . " due_back_dt=null, mbrid=null "
+                        . "where status_cd=%Q ",
+                        OBIB_STATUS_IN, OBIB_STATUS_SHELVING_CART);
     if (!$massCheckin) {
       $prefix = "and (";
       for ($i = 0; $i < count($bibids); $i++) {
-        $sql = $sql.$prefix."(bibid=".$bibids[$i]." and copyid=".$copyids[$i].")";
+        $sql .= $prefix;
+	$sql .= $this->mkSQL("(bibid=%N and copyid=%N)",
+                             $bibids[$i], $copyids[$i]);
         $prefix = " or ";
       }
-      $sql = $sql.")";
+      $sql .= ")";
     }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr9");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, $this->_loc->getText("biblioCopyQueryErr9"));
   }
 
   /****************************************************************************
@@ -412,28 +347,18 @@ class BiblioCopyQuery extends Query {
    */
   function hasReachedCheckoutLimit($mbrid,$classification,$bibid) {
     // get material code for given bibid
-    $sql = "select material_cd from biblio where bibid = ".$bibid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr10");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select material_cd from biblio where bibid = %N",
+                        $bibid);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr10"))) {
       return false;
     }
     $array = $this->_conn->fetchRow();
     $materialCd = $array["material_cd"];
 
     // get checkout limits from material_type_dm
-    $sql = "select * from material_type_dm where code = ".$materialCd;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr10");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select * from material_type_dm where code = %N",
+                        $materialCd);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr10"))) {
       return false;
     }
     $array = $this->_conn->fetchRow();
@@ -444,17 +369,12 @@ class BiblioCopyQuery extends Query {
     }
 
     // get member's current checkout count for given material type
-    $sql = "select count(*) row_count from biblio_copy, biblio";
-    $sql = $sql." where biblio_copy.bibid = biblio.bibid";
-    $sql = $sql." and biblio_copy.mbrid = ".$mbrid;
-    $sql = $sql." and biblio.material_cd = ".$materialCd;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioCopyQueryErr10");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select count(*) row_count from biblio_copy, biblio"
+                        . " where biblio_copy.bibid = biblio.bibid"
+                        . " and biblio_copy.mbrid = %N"
+                        . " and biblio.material_cd = %N",
+                        $mbrid, $materialCd);
+    if (!$this->_query($sql, $this->_loc->getText("biblioCopyQueryErr10"))) {
       return false;
     }
     $array = $this->_conn->fetchRow();

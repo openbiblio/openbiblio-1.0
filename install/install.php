@@ -20,7 +20,7 @@
  **********************************************************************************
  */
 
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../install/index.php");
     exit();
   }
@@ -34,14 +34,14 @@
   require_once("../install/installFuncs.php");
   require_once("../install/tableList.php");
 
-  $locale = $HTTP_POST_VARS["locale"];
+  $locale = $_POST["locale"];
 
   # table array
   $sqlDir="sql/";
   $domainDataDir="../locale/".$locale."/sql/";
 
-  if (isset($HTTP_POST_VARS["installTestData"])) {
-    if ($HTTP_POST_VARS["installTestData"] == "yes") {
+  if (isset($_POST["installTestData"])) {
+    if ($_POST["installTestData"] == "yes") {
       $domainTables[] = "biblio";
       $domainTables[] = "biblio_copy";
       $domainTables[] = "member";
@@ -80,14 +80,14 @@ instead of this module.<br><br-->
     } else {
       $version=$set->getVersion();
     }
-    if (!isset($HTTP_POST_VARS["confirm"]) or ($HTTP_POST_VARS["confirm"] != "yes")){
+    if (!isset($_POST["confirm"]) or ($_POST["confirm"] != "yes")){
       ?>
         <form method="POST" action="../install/install.php">
         OpenBiblio (version <?php echo $version;?>) is already installed.
         Are you sure you want to delete all library data and create new OpenBiblio         tables?<br>
         <input type="hidden" name="confirm" value="yes">
         <input type="hidden" name="locale" value="<?php echo $locale; ?>">
-        <input type="hidden" name="installTestData" value="<?php if (isset($HTTP_POST_VARS["installTestData"])) echo "yes"; ?>">
+        <input type="hidden" name="installTestData" value="<?php if (isset($_POST["installTestData"])) echo "yes"; ?>">
         <input type="submit" value="Continue">
         <input type="button" onClick="parent.location='../install/cancel_msg.php'" value="Cancel">
         </form>

@@ -27,7 +27,7 @@
   $focus_form_name = "newmarcform";
   $focus_form_field = "tag";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../catalog/marcFuncs.php");
@@ -37,10 +37,10 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["reset"])) {
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
-    $bibid = $HTTP_GET_VARS["bibid"];
+  if (isset($_GET["reset"])) {
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
+    $bibid = $_GET["bibid"];
     $postVars["bibid"] = $bibid;
     $postVars["tag"] = "";
     $postVars["ind1Cd"] = "";
@@ -49,25 +49,25 @@
     $postVars["fieldData"] = "";
     $selectedTag = "";
     $selectedSubfld = "";
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
+    $_SESSION["postVars"] = $postVars;
   } else {
     require_once("../shared/get_form_vars.php");
     $bibid = $postVars["bibid"];
     $selectedTag = $postVars["tag"];
     $selectedSubfld = $postVars["subfieldCd"];
-    if (isset($HTTP_GET_VARS["tag"])) {
+    if (isset($_GET["tag"])) {
       #****************************************************************************
       #*  Retrieving get var from field select page
       #****************************************************************************
-      $selectedTag = $HTTP_GET_VARS["tag"];
+      $selectedTag = $_GET["tag"];
       $postVars["tag"] = $selectedTag;
-      if (isset($HTTP_GET_VARS["subfld"])) {
-        $selectedSubfld = $HTTP_GET_VARS["subfld"];
+      if (isset($_GET["subfld"])) {
+        $selectedSubfld = $_GET["subfld"];
         $postVars["subfieldCd"] = $selectedSubfld;
       } else {
         $selectedSubfld = $postVars["subfieldCd"];
       }
-      $HTTP_SESSION_VARS["postVars"] = $postVars;
+      $_SESSION["postVars"] = $postVars;
     }
   }
     

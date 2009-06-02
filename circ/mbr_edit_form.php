@@ -27,20 +27,20 @@
   $nav = "edit";
   $focus_form_name = "editMbrform";
   $focus_form_field = "barcodeNmbr";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Member.php");
   require_once("../classes/MemberQuery.php");
 
-  if (isset($HTTP_GET_VARS["mbrid"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["mbrid"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
     #****************************************************************************
     #*  Retrieving get var
     #****************************************************************************
-    $mbrid = $HTTP_GET_VARS["mbrid"];
+    $mbrid = $_GET["mbrid"];
 
     #****************************************************************************
     #*  Search database
@@ -77,7 +77,7 @@
     $postVars["schoolGrade"] = $mbr->getSchoolGrade();
     $postVars["schoolTeacher"] = $mbr->getSchoolTeacher();
 
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
+    $_SESSION["postVars"] = $postVars;
     $mbrName = urlencode($mbr->getFirstName()." ".$mbr->getLastName());
   } else {
     require("../shared/get_form_vars.php");

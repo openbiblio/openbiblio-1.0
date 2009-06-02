@@ -23,7 +23,7 @@
   $tab = "admin";
   $nav = "staff";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/StaffQuery.php");
   require_once("../functions/errorFuncs.php");
@@ -32,13 +32,13 @@
   #****************************************************************************
   #*  Checking for query string.  Go back to staff list if none found.
   #****************************************************************************
-  if (!isset($HTTP_GET_VARS["UID"])){
+  if (!isset($_GET["UID"])){
     header("Location: ../admin/staff_list.php");
     exit();
   }
-  $userid = $HTTP_GET_VARS["UID"];
-  $last_name = $HTTP_GET_VARS["LAST"];
-  $first_name = $HTTP_GET_VARS["FIRST"];
+  $uid = $_GET["UID"];
+  $last_name = $_GET["LAST"];
+  $first_name = $_GET["FIRST"];
 
   #**************************************************************************
   #*  Delete staff member
@@ -49,7 +49,7 @@
     $staffQ->close();
     displayErrorPage($staffQ);
   }
-  if (!$staffQ->delete($userid)) {
+  if (!$staffQ->delete($uid)) {
     $staffQ->close();
     displayErrorPage($staffQ);
   }

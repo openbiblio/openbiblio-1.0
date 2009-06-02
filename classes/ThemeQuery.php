@@ -43,18 +43,10 @@ class ThemeQuery extends Query {
     if ($themeid == "") {
       $sql = "select * from theme order by theme_name";
     } else {
-      $sql = "select * from theme where themeid=".$themeid." order by theme_name";
+      $sql = $this->mkSQL("select * from theme where themeid=%N "
+                          . "order by theme_name ", $themeid);
     }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing theme information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error accessing theme information.");
   }
 
   /****************************************************************************
@@ -117,53 +109,28 @@ class ThemeQuery extends Query {
    ****************************************************************************
    */
   function insert($theme) {
-    $sql = "insert into theme values (null, ";
-    $sql = $sql."'".$theme->getThemeName()."', ";
-    $sql = $sql."'".$theme->getTitleBg()."', ";
-    $sql = $sql."'".$theme->getTitleFontFace()."', ";
-    $sql = $sql.$theme->getTitleFontSize().", ";
-    if ($theme->getTitleFontBold()) {
-      $sql = $sql."'Y', ";
-    } else {
-      $sql = $sql."'N', ";
-    }
-    $sql = $sql."'".$theme->getTitleFontColor()."', ";
-    $sql = $sql."'".$theme->getTitleAlign()."', ";
-    $sql = $sql."'".$theme->getPrimaryBg()."', ";
-    $sql = $sql."'".$theme->getPrimaryFontFace()."', ";
-    $sql = $sql.$theme->getPrimaryFontSize().", ";
-    $sql = $sql."'".$theme->getPrimaryFontColor()."', ";
-    $sql = $sql."'".$theme->getPrimaryLinkColor()."', ";
-    $sql = $sql."'".$theme->getPrimaryErrorColor()."', ";
-    $sql = $sql."'".$theme->getAlt1Bg()."', ";
-    $sql = $sql."'".$theme->getAlt1FontFace()."', ";
-    $sql = $sql.$theme->getAlt1FontSize().", ";
-    $sql = $sql."'".$theme->getAlt1FontColor()."', ";
-    $sql = $sql."'".$theme->getAlt1LinkColor()."', ";
-    $sql = $sql."'".$theme->getAlt2Bg()."', ";
-    $sql = $sql."'".$theme->getAlt2FontFace()."', ";
-    $sql = $sql.$theme->getAlt2FontSize().", ";
-    $sql = $sql."'".$theme->getAlt2FontColor()."', ";
-    $sql = $sql."'".$theme->getAlt2LinkColor()."', ";
-    if ($theme->getAlt2FontBold()) {
-      $sql = $sql."'Y', ";
-    } else {
-      $sql = $sql."'N', ";
-    }
-    $sql = $sql."'".$theme->getBorderColor()."', ";
-    $sql = $sql.$theme->getBorderWidth().", ";
-    $sql = $sql.$theme->getTablePadding().")";
+    $sql = $this->mkSQL("insert into theme "
+                        . "values (null, %Q, %Q, %Q, %N, %Q, %Q, %Q, %Q, %Q, "
+                        . " %N, %Q, %Q, %Q, %Q, %Q, %N, %Q, %Q, %Q, %Q, %N, "
+                        . " %Q, %Q, %Q, %Q, %N, %N) ",
+                        $theme->getThemeName(), $theme->getTitleBg(),
+                        $theme->getTitleFontFace(), $theme->getTitleFontSize(),
+                        $theme->getTitleFontBold() ? "Y" : "N",
+                        $theme->getTitleFontColor(), $theme->getTitleAlign(),
+                        $theme->getPrimaryBg(), $theme->getPrimaryFontFace(),
+                        $theme->getPrimaryFontSize(), $theme->getPrimaryFontColor(),
+                        $theme->getPrimaryLinkColor(),
+                        $theme->getPrimaryErrorColor(), $theme->getAlt1Bg(),
+                        $theme->getAlt1FontFace(), $theme->getAlt1FontSize(),
+                        $theme->getAlt1FontColor(), $theme->getAlt1LinkColor(),
+                        $theme->getAlt2Bg(), $theme->getAlt2FontFace(),
+                        $theme->getAlt2FontSize(), $theme->getAlt2FontColor(),
+                        $theme->getAlt2LinkColor(),
+                        $theme->getAlt2FontBold() ? "Y" : "N",
+                        $theme->getBorderColor(), $theme->getBorderWidth(),
+                        $theme->getTablePadding());
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error inserting new library look and feel theme.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error inserting new library look and feel theme.");
   }
 
   /****************************************************************************
@@ -174,58 +141,39 @@ class ThemeQuery extends Query {
    ****************************************************************************
    */
   function update($theme) {
-    $sql = "update theme set ";
-    $sql = $sql."theme_name='".$theme->getThemeName()."', ";
-
-    $sql = $sql."title_bg='".$theme->getTitleBg()."', ";
-    $sql = $sql."title_font_face='".$theme->getTitleFontFace()."', ";
-    $sql = $sql."title_font_size=".$theme->getTitleFontSize().", ";
-    if ($theme->getTitleFontBold()) {
-      $sql = $sql."title_font_bold='Y', ";
-    } else {
-      $sql = $sql."title_font_bold='N', ";
-    }
-    $sql = $sql."title_font_color='".$theme->getTitleFontColor()."', ";
-    $sql = $sql."title_align='".$theme->getTitleAlign()."', ";
-
-    $sql = $sql."primary_bg='".$theme->getPrimaryBg()."', ";
-    $sql = $sql."primary_font_face='".$theme->getPrimaryFontFace()."', ";
-    $sql = $sql."primary_font_size=".$theme->getPrimaryFontSize().", ";
-    $sql = $sql."primary_font_color='".$theme->getPrimaryFontColor()."', ";
-    $sql = $sql."primary_link_color='".$theme->getPrimaryLinkColor()."', ";
-    $sql = $sql."primary_error_color='".$theme->getPrimaryErrorColor()."', ";
-
-    $sql = $sql."alt1_bg='".$theme->getAlt1Bg()."', ";
-    $sql = $sql."alt1_font_face='".$theme->getAlt1FontFace()."', ";
-    $sql = $sql."alt1_font_size=".$theme->getAlt1FontSize().", ";
-    $sql = $sql."alt1_font_color='".$theme->getAlt1FontColor()."', ";
-    $sql = $sql."alt1_link_color='".$theme->getAlt1LinkColor()."', ";
-
-    $sql = $sql."alt2_bg='".$theme->getAlt2Bg()."', ";
-    $sql = $sql."alt2_font_face='".$theme->getAlt2FontFace()."', ";
-    $sql = $sql."alt2_font_size=".$theme->getAlt2FontSize().", ";
-    $sql = $sql."alt2_font_color='".$theme->getAlt2FontColor()."', ";
-    $sql = $sql."alt2_link_color='".$theme->getAlt2LinkColor()."', ";
-    if ($theme->getAlt2FontBold()) {
-      $sql = $sql."alt2_font_bold='Y', ";
-    } else {
-      $sql = $sql."alt2_font_bold='N', ";
-    }
-
-    $sql = $sql."border_color='".$theme->getBorderColor()."', ";
-    $sql = $sql."border_width='".$theme->getBorderWidth()."', ";
-    $sql = $sql."table_padding='".$theme->getTablePadding()."' ";
-    $sql = $sql." where themeid = ".$theme->getThemeid();
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating library look and feel theme.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("update theme set theme_name=%Q, "
+                        . " title_bg=%Q, title_font_face=%Q, "
+                        . " title_font_size=%N, title_font_bold=%Q, "
+                        . " title_font_color=%Q, title_align=%Q, "
+                        . " primary_bg=%Q, primary_font_face=%Q, "
+                        . " primary_font_size=%N, primary_font_color=%Q, "
+                        . " primary_link_color=%Q, primary_error_color=%Q, "
+                        . " alt1_bg=%Q, alt1_font_face=%Q, "
+                        . " alt1_font_size=%N, alt1_font_color=%Q, "
+                        . " alt1_link_color=%Q, alt2_bg=%Q, "
+                        . " alt2_font_face=%Q, alt2_font_size=%N, "
+                        . " alt2_font_color=%Q, alt2_link_color=%Q, "
+                        . " alt2_font_bold=%Q, border_color=%Q, "
+                        . " border_width=%Q, table_padding=%Q "
+                        . "where themeid = %N",
+                        $theme->getThemeName(), $theme->getTitleBg(),
+                        $theme->getTitleFontFace(), $theme->getTitleFontSize(),
+                        $theme->getTitleFontBold() ? "Y" : "N",
+                        $theme->getTitleFontColor(), $theme->getTitleAlign(),
+                        $theme->getPrimaryBg(), $theme->getPrimaryFontFace(),
+                        $theme->getPrimaryFontSize(),
+                        $theme->getPrimaryFontColor(),
+                        $theme->getPrimaryLinkColor(),
+                        $theme->getPrimaryErrorColor(), $theme->getAlt1Bg(),
+                        $theme->getAlt1FontFace(), $theme->getAlt1FontSize(),
+                        $theme->getAlt1FontColor(), $theme->getAlt1LinkColor(),
+                        $theme->getAlt2Bg(), $theme->getAlt2FontFace(),
+                        $theme->getAlt2FontSize(), $theme->getAlt2FontColor(),
+                        $theme->getAlt2LinkColor(),
+                        $theme->getAlt2FontBold() ? "Y" : "N",
+                        $theme->getBorderColor(), $theme->getBorderWidth(),
+                        $theme->getTablePadding(), $theme->getThemeid());
+    return $this->_query($sql, "Error updating library look and feel theme.");
   }
 
   /****************************************************************************
@@ -236,17 +184,8 @@ class ThemeQuery extends Query {
    ****************************************************************************
    */
   function delete($themeid) {
-    $sql = "delete from theme where themeid = ".$themeid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error deleting library look and feel theme.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from theme where themeid=%N ", $themeid);
+    return $this->_query($sql, "Error deleting library look and feel theme.");
   }
 
 }

@@ -24,7 +24,7 @@
   $restrictToMbrAuth = TRUE;
   $nav = "newconfirm";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Member.php");
@@ -36,7 +36,7 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../circ/mbr_new_form.php");
     exit();
   }
@@ -45,35 +45,35 @@
   #*  Validate data
   #****************************************************************************
   $mbr = new Member();
-  $mbr->setBarcodeNmbr($HTTP_POST_VARS["barcodeNmbr"]);
-  $HTTP_POST_VARS["barcodeNmbr"] = $mbr->getBarcodeNmbr();
-  $mbr->setLastChangeUserid($HTTP_SESSION_VARS["userid"]);
-  $mbr->setLastName($HTTP_POST_VARS["lastName"]);
-  $HTTP_POST_VARS["lastName"] = $mbr->getLastName();
-  $mbr->setFirstName($HTTP_POST_VARS["firstName"]);
-  $HTTP_POST_VARS["firstName"] = $mbr->getFirstName();
-  $mbr->setAddress1($HTTP_POST_VARS["address1"]);
-  $HTTP_POST_VARS["address1"] = $mbr->getAddress1();
-  $mbr->setAddress2($HTTP_POST_VARS["address2"]);
-  $HTTP_POST_VARS["address2"] = $mbr->getAddress2();
-  $mbr->setCity($HTTP_POST_VARS["city"]);
-  $HTTP_POST_VARS["city"] = $mbr->getCity();
-  $mbr->setState($HTTP_POST_VARS["state"]);
-  $mbr->setZip($HTTP_POST_VARS["zip"]);
-  $HTTP_POST_VARS["zip"] = $mbr->getZip();
-  $mbr->setZipExt($HTTP_POST_VARS["zipExt"]);
-  $HTTP_POST_VARS["zipExt"] = $mbr->getZipExt();
-  $mbr->setHomePhone($HTTP_POST_VARS["homePhone"]);
-  $HTTP_POST_VARS["homePhone"] = $mbr->getHomePhone();
-  $mbr->setWorkPhone($HTTP_POST_VARS["workPhone"]);
-  $HTTP_POST_VARS["workPhone"] = $mbr->getWorkPhone();
-  $mbr->setEmail($HTTP_POST_VARS["email"]);
-  $HTTP_POST_VARS["email"] = $mbr->getEmail();
-  $mbr->setClassification($HTTP_POST_VARS["classification"]);
-  $mbr->setSchoolGrade($HTTP_POST_VARS["schoolGrade"]);
-  $HTTP_POST_VARS["schoolGrade"] = $mbr->getSchoolGrade();
-  $mbr->setSchoolTeacher($HTTP_POST_VARS["schoolTeacher"]);
-  $HTTP_POST_VARS["schoolTeacher"] = $mbr->getSchoolTeacher();
+  $mbr->setBarcodeNmbr($_POST["barcodeNmbr"]);
+  $_POST["barcodeNmbr"] = $mbr->getBarcodeNmbr();
+  $mbr->setLastChangeUserid($_SESSION["userid"]);
+  $mbr->setLastName($_POST["lastName"]);
+  $_POST["lastName"] = $mbr->getLastName();
+  $mbr->setFirstName($_POST["firstName"]);
+  $_POST["firstName"] = $mbr->getFirstName();
+  $mbr->setAddress1($_POST["address1"]);
+  $_POST["address1"] = $mbr->getAddress1();
+  $mbr->setAddress2($_POST["address2"]);
+  $_POST["address2"] = $mbr->getAddress2();
+  $mbr->setCity($_POST["city"]);
+  $_POST["city"] = $mbr->getCity();
+  $mbr->setState($_POST["state"]);
+  $mbr->setZip($_POST["zip"]);
+  $_POST["zip"] = $mbr->getZip();
+  $mbr->setZipExt($_POST["zipExt"]);
+  $_POST["zipExt"] = $mbr->getZipExt();
+  $mbr->setHomePhone($_POST["homePhone"]);
+  $_POST["homePhone"] = $mbr->getHomePhone();
+  $mbr->setWorkPhone($_POST["workPhone"]);
+  $_POST["workPhone"] = $mbr->getWorkPhone();
+  $mbr->setEmail($_POST["email"]);
+  $_POST["email"] = $mbr->getEmail();
+  $mbr->setClassification($_POST["classification"]);
+  $mbr->setSchoolGrade($_POST["schoolGrade"]);
+  $_POST["schoolGrade"] = $mbr->getSchoolGrade();
+  $mbr->setSchoolTeacher($_POST["schoolTeacher"]);
+  $_POST["schoolTeacher"] = $mbr->getSchoolTeacher();
   $validData = $mbr->validateData();
   if (!$validData) {
     $pageErrors["barcodeNmbr"] = $mbr->getBarcodeNmbrError();
@@ -82,8 +82,8 @@
     $pageErrors["zip"] = $mbr->getZipError();
     $pageErrors["zipExt"] = $mbr->getZipExtError();
     $pageErrors["schoolGrade"] = $mbr->getSchoolGradeError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/mbr_new_form.php");
     exit();
   }
@@ -104,8 +104,8 @@
   }
   if ($dupBarcode) {
     $pageErrors["barcodeNmbr"] = $loc->getText("mbrDupBarcode",array("barcode"=>$mbr->getBarcodeNmbr()));
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/mbr_new_form.php");
     exit();
   }
@@ -122,8 +122,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   $msg = $loc->getText("mbrNewSuccess");
   $msg = urlencode($msg);

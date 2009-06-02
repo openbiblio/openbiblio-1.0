@@ -49,19 +49,10 @@ class UsmarcTagDmQuery extends Query {
   function execSelect($blockNmbr = "") {
     $sql = "select * from usmarc_tag_dm ";
     if ($blockNmbr != "") {
-      $sql = $sql."where block_nmbr = ".$blockNmbr." ";
+      $sql .= $this->mkSQL("where block_nmbr = %N ", $blockNmbr);
     }
-    $sql = $sql."order by tag ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("usmarcTagDmQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= "order by tag ";
+    return $this->_query($sql, $this->_loc->getText("usmarcTagDmQueryErr1"));
   }
 
   /****************************************************************************
@@ -90,15 +81,8 @@ class UsmarcTagDmQuery extends Query {
    ****************************************************************************
    */
   function query($tag) {
-    $sql = "select * from usmarc_tag_dm ";
-    $sql = $sql."where tag = ".$tag." ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("usmarcTagDmQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select * from usmarc_tag_dm where tag=%N ", $tag);
+    if (!$this->_query($sql, $this->_loc->getText("usmarcTagDmQueryErr1"))) {
       return false;
     }
     $result = $this->_conn->fetchRow();

@@ -24,13 +24,13 @@
   $navLoc = new Localize(OBIB_LOCALE,"navbars");
 
 
- if (isset($HTTP_SESSION_VARS["userid"])) {
-   $sess_userid = $HTTP_SESSION_VARS["userid"];
+ if (isset($_SESSION["userid"])) {
+   $sess_userid = $_SESSION["userid"];
  } else {
    $sess_userid = "";
  }
  if ($sess_userid == "") { ?>
-  <input type="button" onClick="parent.location='../shared/loginform.php?RET=<?php echo $HTTP_SERVER_VARS["PHP_SELF"];?>'" value="<?php echo $navLoc->getText("login");?>" class="navbutton">
+  <input type="button" onClick="parent.location='../shared/loginform.php?RET=<?php echo $_SERVER["PHP_SELF"];?>'" value="<?php echo $navLoc->getText("login");?>" class="navbutton">
 <?php } else { ?>
   <input type="button" onClick="parent.location='../shared/logout.php'" value="<?php echo $navLoc->getText("logout");?>" class="navbutton">
 <?php } ?>

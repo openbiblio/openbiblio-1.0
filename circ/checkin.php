@@ -23,7 +23,7 @@
   $tab = "circulation";
   $nav = "checkin";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioCopy.php");
@@ -35,11 +35,11 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../circ/checkin_form.php?reset=Y");
     exit();
   }
-  $massCheckinFlg = $HTTP_POST_VARS["massCheckin"];
+  $massCheckinFlg = $_POST["massCheckin"];
   if ($massCheckinFlg == "Y") {
     $massCheckin = TRUE;
   } else {
@@ -48,7 +48,7 @@
   $bibids = "";
   $copyids = "";
   if (!$massCheckin) {
-    foreach($HTTP_POST_VARS as $key => $value) {
+    foreach($_POST as $key => $value) {
       if ($value == "copyid") {
         parse_str($key,$output);
         $bibids[] = $output["bibid"];
@@ -81,8 +81,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   #**************************************************************************
   #*  Go back to member view

@@ -23,15 +23,15 @@
   $tab = "cataloging";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioFieldQuery.php");
   require_once("../functions/errorFuncs.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $fieldid = $HTTP_GET_VARS["fieldid"];
+  $bibid = $_GET["bibid"];
+  $fieldid = $_GET["fieldid"];
 
   #**************************************************************************
   #*  Delete bibliography field

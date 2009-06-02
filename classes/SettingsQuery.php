@@ -41,16 +41,7 @@ class SettingsQuery extends Query {
    */
   function execSelect() {
     $sql = "select * from settings";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing library settings information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error accessing library settings information.");
   }
 
   /****************************************************************************
@@ -101,40 +92,25 @@ class SettingsQuery extends Query {
    ****************************************************************************
    */
   function update($set) {
-    $sql = "update settings set ";
-    $sql = $sql."library_name='".$set->getLibraryName()."', ";
-    $sql = $sql."library_image_url='".$set->getLibraryImageUrl()."', ";
-    if ($set->isUseImageSet()) {
-      $sql = $sql."use_image_flg='Y', ";
-    } else {
-      $sql = $sql."use_image_flg='N', ";
-    }
-    $sql = $sql."library_hours='".$set->getLibraryHours()."', ";
-    $sql = $sql."library_phone='".$set->getLibraryPhone()."', ";
-    $sql = $sql."library_url='".$set->getLibraryUrl()."', ";
-    $sql = $sql."opac_url='".$set->getOpacUrl()."', ";
-    $sql = $sql."session_timeout=".$set->getSessionTimeout().", ";
-    $sql = $sql."items_per_page=".$set->getItemsPerPage().", ";
-    $sql = $sql."purge_history_after_months=".$set->getPurgeHistoryAfterMonths().", ";
-    if ($set->isBlockCheckoutsWhenFinesDue()) {
-      $sql = $sql."block_checkouts_when_fines_due='Y', ";
-    } else {
-      $sql = $sql."block_checkouts_when_fines_due='N', ";
-    }
-    $sql = $sql."locale='".$set->getLocale()."', ";
-    $sql = $sql."charset='".$set->getCharset()."', ";
-    $sql = $sql."html_lang_attr='".$set->getHtmlLangAttr()."'";
+    $sql = $this->mkSQL("update settings set "
+                        . "library_name=%Q, library_image_url=%Q, "
+                        . "use_image_flg=%Q, library_hours=%Q, "
+                        . "library_phone=%Q, library_url=%Q, "
+                        . "opac_url=%Q, session_timeout=%N, "
+                        . "items_per_page=%N, purge_history_after_months=%N, "
+                        . "block_checkouts_when_fines_due=%Q, "
+                        . "locale=%Q, charset=%Q, html_lang_attr=%Q ",
+                        $set->getLibraryName(), $set->getLibraryImageUrl(),
+                        $set->isUseImageSet() ? "Y" : "N",
+                        $set->getLibraryHours(), $set->getLibraryPhone(),
+                        $set->getLibraryUrl(), $set->getOpacUrl(),
+                        $set->getSessionTimeout(), $set->getItemsPerPage(),
+                        $set->getPurgeHistoryAfterMonths(),
+                        $set->isBlockCheckoutsWhenFinesDue() ? "Y" : "N",
+                        $set->getLocale(), $set->getCharset(),
+                        $set->getHtmlLangAttr());
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating library settings information";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error updating library settings information");
   }
 
   /****************************************************************************
@@ -145,18 +121,8 @@ class SettingsQuery extends Query {
    ****************************************************************************
    */
   function updateTheme($themeId) {
-    $sql = "update settings set ";
-    $sql = $sql."themeid=".$themeId;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating library theme in use";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("update settings set themeid=%N", $themeId);
+    return $this->_query($sql, "Error updating library theme in use");
   }
 
   function getPurgeHistoryAfterMonths($connection) {

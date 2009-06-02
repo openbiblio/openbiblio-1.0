@@ -43,17 +43,7 @@ class VersionQuery extends Query {
   function execSelect() {
     # setting query that will return all the data
     $sql = "select * from version";
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing version information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error accessing version information.");
   }
 
   /****************************************************************************

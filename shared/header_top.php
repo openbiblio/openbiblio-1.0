@@ -88,7 +88,7 @@ function backToMain(URL) {
       <table class="primary" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td class="title" nowrap="yes"><font class="small"><?php print $headerLoc->getText("headerTodaysDate"); ?></font></td>
-          <td class="title" nowrap="yes"><font class="small"><?php print date("m.d.Y");?></font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php print date($headerLoc->getText("headerDateFormat"));?></font></td>
         </tr>
         <tr>
           <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") print $headerLoc->getText("headerLibraryHours");?></font></td>

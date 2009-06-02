@@ -21,7 +21,7 @@
  */
   $tab = "home";
   $nav = "";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/header.php");
 
 ?>

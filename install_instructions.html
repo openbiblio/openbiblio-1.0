@@ -23,79 +23,115 @@
 <ul>
     <li><a href="#releaseNotes">Release Notes</a></li>
     <li><a href="#install">OpenBiblio 0.5.x Install Instructions (New Systems)</a></li>
-    <li><a href="#update030">Updating Your System From OpenBiblio 0.3.x to 0.5.x Instructions</a></li>
-    <li><a href="#update040">Updating Your System From OpenBiblio 0.4.x to 0.5.x Instructions</a></li>
+    <li><a href="#update030">Updating Your System From OpenBiblio 0.3.x to 0.5.1 Instructions</a></li>
+    <li><a href="#update040">Updating Your System From OpenBiblio 0.4.x/0.5.0 to 0.5.1 Instructions</a></li>
 </ul>
+
 <br>
 <a name="releaseNotes">
 <h1>Release Notes:</h1>
 </a>
 <ul>
-<li><font color="red"><b>CAUTION!</b> - version 0.5.0 is still considered <b>beta</b> software since some features
+<li><font color="red"><b>CAUTION!</b> - version 0.5.x is still considered <b>beta</b> software since some features
 have still not been implemented.  Use at your own risk.</font>
 </li>
-<li>Version 0.5.0 has the exact same database structure as version 0.4.0.  So, if you are
-using verion 0.4.0 you will <b>not</b> need to update your database to version 0.5.0.
+<li>Version 0.5.1 has the exact same database structure as version 0.4.0.  So, if you are
+using verion 0.4.0 you will <b>not</b> need to update your database to version 0.5.1.
 </li>
-<li>Starting with 0.5.0, all future versions will include conversion software so that you can convert your database to the latest version.  A conversion 
-utility for converting version 0.3.0 data to the version 0.4.0 database format (works with 0.5.0 code base) has been included with this version.
+<li>Starting with 0.5.0, all versions will include conversion software so that you can convert your database to the latest version.  A conversion 
+utility for converting version 0.3.0 data to the version 0.4.0 database format (works with 0.5.1 code base) has been included with this version.
 </li>
 <li>OpenBiblio version 0.5.x requires PHP version 4.2.0 or higher.
 </li>
 <li>The label printing feature of OpenBiblio dynamically produces a PDF file that causes
 problems with Internet Explorer 5.5 and lower.  IE 6.0 and Mozilla 1.x handles the dynamically
 produced PDF files fine.
-<li>OpenBiblio version 0.4.0 test scenarios ran succussfully on the following configurations:
+<li>OpenBiblio version 0.5.1 test scenarios ran succussfully on the following configurations:
 <blockquote>
 <table>
   <tr>
     <td><font class="primary">Operating System:</font></td>
     <td><font class="primary">Windows 2000</font></td>
-    <td><font class="primary">Windows 98</font></td>
+    <td><font class="primary">Windows XP</font></td>
+    <td><font class="primary">Debian GNU/Linux (sarge)</font></td>
   </tr>
   <tr>
     <td><font class="primary">PHP Version</font></td>
-    <td><font class="primary">4.3.1 (module)</font></td>
-    <td><font class="primary">4.2.3 (cgi)</font></td>
+    <td><font class="primary">5.0.3</font></td>
+    <td><font class="primary">4.3.3</font></td>
+    <td><font class="primary">4.3.4</font></td>
   </tr>
   <tr>
     <td><font class="primary">Web Server</font></td>
-    <td><font class="primary">Apache 2.0.44</font></td>
-    <td><font class="primary">Apache 2.0.43</font></td>
+    <td><font class="primary">Apache 2.0.52</font></td>
+    <td><font class="primary">Apache 1.3.27</font></td>
+    <td><font class="primary">Apache 2.0.52</font></td>
   </tr>
   <tr>
     <td><font class="primary">MySql Version</font></td>
     <td><font class="primary">4.0.10-gamma-max-nt</font></td>
-    <td><font class="primary">4.0.4-beta-max-debug</font></td>
+    <td><font class="primary">4.0.15</font></td>
+    <td><font class="primary">Unknown</font></td>
   </tr>
   <tr>
     <td><font class="primary">Browser</font></td>
     <td><font class="primary">Mozilla 1.3a and IE 6.0.2600</font></td>
-    <td><font class="primary">Mozilla 1.1</font></td>
+    <td><font class="primary">IE 6.0.2900</font></td>
+    <td><font class="primary">Mozilla Firefox 1.0</font></td>
   </tr>
 </table>
 </blockquote>
+<li>New functionality:<br>
+<pre>
+Patch 758400: Links for biblios & members in report results
+Patch 758409: Multiple output types for reports (HTML & CSV)
+Patch 766275: 'New Like' functionality
+</pre>
+</li>
 <li>Bug Fixes:<br>
 <pre>
-763846	Focus fails on some pages
-761369	Shelved books can be checked in
-761290	Zero and Negative transactions allowed
-758393	report_list.php broken if reportdefs contains directory
-555049	Unable to add new member
+Made OpenBiblio independent of the setting of magic_quotes_gpc
+Replaced HTTP_*_VARS with superglobals
+
+        Fixed 758396: Can place book on hold that a member already has checked out 
+        Patch 767734: Sort order of checked out & on Hold bibliographies
+Partly Fixed 1006634: Localization: Hardcoded frontend words.
+       Fixed 1010625: Title doesn't show on delete confirm or after delete 
+       Fixed 1075370: German Install 0.5 is erreanous
+       Fixed 1152881: Undefined variable on catalog/biblio_marc_list.php
+       Fixed 1152756: Report List shows PHP warning
+
+Fixed bug that forced call numbers to be actual numbers
+Converted all queries to use new mkSQL function
+Fixed couple compatibility bugs with PHP 4.2.0 and 5.0.0
+Fixed small copy-and-paste error in BiblioSearchQuery.php
+Fixed escaping bug
+Copyright message updated to 2005
 </pre>
 </li>
 <li>Known Bugs:
 <pre>
-890988	Edit-Basic: contamination of empty fields
-859290	biblio_search.php and apostrophes
-844825	Broken Database Format
-777883	Double quotes not shown on Biblio - Edit-BASIC
-774560	staff.pwd field not big enough for MySQL 4.1.0
-768408	Edit-Basic duplicates MARC fields
-763855	Report search &amp; sort criteria don't work with count()
-761213	Checked in books are holdable
-758405	&quot;Error running report.&quot; after timed out session.
-758396	Can place book on hold that a member already has checked out
+1162262 Image files for new material types 
+1162255 Inconsistent account balances 
+1162251 Editing checked-out copies broken 
+1162155 Stray '1' in single-page search results 
+1157668 German Locales and AmountFunctions 
+1118538 Install - Problems with MySQL 4.1.x 
+1114244 Holds and mbr_checkout stats 
+1114189 Hardcoded abbreviations for status 
+1082973 SQL inserts need column names 
+1082970 Security: check_out.php uses classification from url 
+1013037 BiblioQuery improper error handling 
+1010620 Repeated Escaping of characters in title 
+1006634 Localization: Hardcoded frontend words 
+974720 Reports: Date '=' comparisions require exact time 
+890988 Edit-Basic: contamination of empty fields 
+844825 Broken Database Format 
+777883 Double quotes not shown on Biblio - Edit-BASIC 
+774560 staff.pwd field not big enough for MySQL 4.1.0 
+763855 Report search &amp; sort criteria don't work with count() 
+761213 Checked in books are holdable 
+758405 &quot;Error running report.&quot; after timed out session. 
 </pre>
 </li>
 
@@ -122,7 +158,7 @@ produced PDF files fine.
      <a href="http://www.php.net/manual/en/install.apache2.php">Example 3-9. PHP and Apache 2.0 as Module</a>
      in the <a href="http://www.php.net/manual/en/">PHP Manual</a> for more info on how to install PHP
      as a module.
-     <p>OpenBiblio uses session data.  Therefore, you will need to make sure PHP sessions is turned on.
+     <p>OpenBiblio uses session data.  Therefore, you will need to make sure PHP sessions are turned on.
      Be sure to create a directory for your session data on your server and specify the session.save_path
      in your php.ini file.  The default php.ini sets session.save_path to "/tmp".  Therefore, you have
      to create a directory called c:/tmp (for Windows) users.  However, I usually create a more descriptive name
@@ -175,7 +211,7 @@ C:\>
      <blockquote><pre>
 mysql> <b>create database OpenBiblio;</b>
 </pre>
-     To check to make sure the OpenBiblio database was created properly run the following command.
+     To check to make sure the OpenBiblio database was created properly, run the following command.
 <pre>
 mysql> <b>show databases;</b>
 +--------------+
@@ -190,7 +226,7 @@ mysql> <b>show databases;</b>
   </a>
 
   <a name="step5">
-  <li>Create an OpenBiblio database user.  To do this login to MySQL under the admin userid
+  <li>Create an OpenBiblio database user.  To do this, login to MySQL under the admin userid
     and run the following SQL command, substituting <i>obiblio_user</i> and <i>obiblio_password</i> with the userid and password of your choice.
 <blockquote><pre>
 mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
@@ -219,7 +255,7 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
    located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
    assuming you placed the openbiblio directory in the root htdocs directory.
   </li>
-  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.html">http://localhost/openbiblio/index.html</a>
+  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.html">http://localhost/openbiblio/index.html</a>,
    assuming you placed the openbiblio directory in the root htdocs directory.  Enter
    "admin" for both the userid and password whenever you are prompted to signon.  You can
    change the admin password from the "Admin" tab -> staff list, where you can also add
@@ -232,18 +268,16 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
 
 <br>
 <a name="update030">
-<h1>Updating Your System From OpenBiblio 0.3.x to 0.5.x Instructions:</h1>
+<h1>Updating Your System From OpenBiblio 0.3.x to 0.5.1 Instructions:</h1>
 <ol>
-  <a name="step7">
-  <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
-    root or any subdirectory within the htdocs root.
-  </li></a>
-  <a name="step8">
-  <li>Edit the database_constants.php file (located in the main openbiblio directory)
-    with the text editor of your choice.
-    Change the username and password to match the new MySQL user and password that you 
-    created in the previous steps.
-  </li></a>
+  <li>Rename your old openbiblio installation directory
+    so that you don't lose its contents.  We'll call the old directory openbiblio-old.
+  </li>
+  <li>Copy the new openbiblio directory and all of its contents into the directory where the old openbiblio installation was.
+  </li>
+  <li>Copy the database_constants.php file from the openbiblio-old directory into the new
+    openbiblio directory, replacing the database_constants.php file there.
+  </li>
   <li>Backup your database.  See your MySQL documentation for instructions.
   </li>
   <li>Update your OpenBiblio database tables by using the conversion tool located at
@@ -254,27 +288,25 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
 </a>
 <br>
 <a name="update040">
-<h1>Updating Your System From OpenBiblio 0.4.x to 0.5.x Instructions:</h1>
+<h1>Updating Your System From OpenBiblio 0.4.x/0.5.0 to 0.5.1 Instructions:</h1>
 </a>
 <ol>
-  <a name="step7">
-  <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
-    root or any subdirectory within the htdocs root.
-  </li></a>
-  <a name="step8">
-  <li>Edit the database_constants.php file (located in the main openbiblio directory)
-    with the text editor of your choice.
-    Change the username and password to match the new MySQL user and password that you 
-    created in the previous steps.
-  </li></a>
+  <li>Rename your old openbiblio installation directory
+    so that you don't lose its contents.  We'll call the old directory openbiblio-old.
+  </li>
+  <li>Copy the new openbiblio directory and all of its contents into the directory where the old openbiblio installation was.
+  </li>
+  <li>Copy the database_constants.php file from the openbiblio-old directory into the new
+    openbiblio directory, replacing the database_constants.php file there.
+  </li>
   <li>No update of the database is necessary.
   </li>
 </ol>
+</a>
 
 <br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br>
 <br><br><br><br><br><br><br>
-
 
 </font>
 </body>

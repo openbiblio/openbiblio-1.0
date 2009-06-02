@@ -23,7 +23,7 @@
   $tab = "admin";
   $nav = "materials";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Dm.php");
@@ -35,7 +35,7 @@
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
 
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../admin/materials_new_form.php");
     exit();
   }
@@ -44,21 +44,21 @@
   #*  Validate data
   #****************************************************************************
   $dm = new Dm();
-  $dm->setDescription($HTTP_POST_VARS["description"]);
-  $HTTP_POST_VARS["description"] = $dm->getDescription();
-  $dm->setAdultCheckoutLimit($HTTP_POST_VARS["adultCheckoutLimit"]);
-  $HTTP_POST_VARS["adultCheckoutLimit"] = $dm->getAdultCheckoutLimit();
-  $dm->setJuvenileCheckoutLimit($HTTP_POST_VARS["juvenileCheckoutLimit"]);
-  $HTTP_POST_VARS["juvenileCheckoutLimit"] = $dm->getJuvenileCheckoutLimit();
-  $dm->setImageFile($HTTP_POST_VARS["imageFile"]);
-  $HTTP_POST_VARS["imageFile"] = $dm->getImageFile();
+  $dm->setDescription($_POST["description"]);
+  $_POST["description"] = $dm->getDescription();
+  $dm->setAdultCheckoutLimit($_POST["adultCheckoutLimit"]);
+  $_POST["adultCheckoutLimit"] = $dm->getAdultCheckoutLimit();
+  $dm->setJuvenileCheckoutLimit($_POST["juvenileCheckoutLimit"]);
+  $_POST["juvenileCheckoutLimit"] = $dm->getJuvenileCheckoutLimit();
+  $dm->setImageFile($_POST["imageFile"]);
+  $_POST["imageFile"] = $dm->getImageFile();
 
   if (!$dm->validateData()) {
     $pageErrors["description"] = $dm->getDescriptionError();
     $pageErrors["adultCheckoutLimit"] = $dm->getAdultCheckoutLimitError();
     $pageErrors["juvenileCheckoutLimit"] = $dm->getJuvenileCheckoutLimitError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../admin/materials_new_form.php");
     exit();
   }
@@ -81,8 +81,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   #**************************************************************************
   #*  Show success page

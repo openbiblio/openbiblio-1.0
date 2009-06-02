@@ -23,7 +23,7 @@
   $tab = "circulation";
   $nav = "account";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
@@ -31,14 +31,14 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $mbrid = $HTTP_GET_VARS["mbrid"];
-  $transid = $HTTP_GET_VARS["transid"];
+  $mbrid = $_GET["mbrid"];
+  $transid = $_GET["transid"];
 
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   #**************************************************************************
   #*  Show confirm page

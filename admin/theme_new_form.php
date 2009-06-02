@@ -28,7 +28,7 @@
   $focus_form_name = "newthemeform";
   $focus_form_field = "themeName";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
@@ -40,11 +40,11 @@
   #*  Checking for query string flag to read data from database.
   #*  This is only used when copying an existing theme.
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["themeid"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["themeid"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
 
-    $themeid = $HTTP_GET_VARS["themeid"];
+    $themeid = $_GET["themeid"];
     include_once("../classes/Theme.php");
     include_once("../classes/ThemeQuery.php");
     include_once("../functions/errorFuncs.php");

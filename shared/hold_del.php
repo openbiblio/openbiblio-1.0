@@ -23,10 +23,10 @@
   #****************************************************************************
   #*  Checking for get vars.
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $copyid = $HTTP_GET_VARS["copyid"];
-  $holdid = $HTTP_GET_VARS["holdid"];
-  $mbrid = $HTTP_GET_VARS["mbrid"];
+  $bibid = $_GET["bibid"];
+  $copyid = $_GET["copyid"];
+  $holdid = $_GET["holdid"];
+  $mbrid = $_GET["mbrid"];
   if ($mbrid == "") {
     $tab = "cataloging";
     $nav = "holds";
@@ -37,7 +37,7 @@
     $returnNav = "../circ/mbr_view.php?mbrid=".$mbrid;
   }
   $restrictInDemo = TRUE;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioHoldQuery.php");
   require_once("../functions/errorFuncs.php");

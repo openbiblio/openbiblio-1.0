@@ -22,7 +22,7 @@
 
   $tab = "admin";
   $nav = "materials";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
@@ -30,12 +30,12 @@
   #****************************************************************************
   #*  Checking for query string.  Go back to material type list if none found.
   #****************************************************************************
-  if (!isset($HTTP_GET_VARS["code"])){
+  if (!isset($_GET["code"])){
     header("Location: ../admin/materials_list.php");
     exit();
   }
-  $code = $HTTP_GET_VARS["code"];
-  $description = $HTTP_GET_VARS["desc"];
+  $code = $_GET["code"];
+  $description = $_GET["desc"];
 
   #**************************************************************************
   #*  Show confirm page

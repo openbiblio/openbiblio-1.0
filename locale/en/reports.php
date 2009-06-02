@@ -68,6 +68,7 @@ $trans["indexDesc"]                = "\$text = 'Use the report or label list loc
 $trans["reportListHdr"]            = "\$text = 'Report List';";
 $trans["reportListDesc"]           = "\$text = 'Choose from one of the following links to run a report.';";
 $trans["reportListXmlErr"]         = "\$text = 'Error occurred parsing report definition xml.';";
+$trans["reportListCannotRead"]     = "\$text = 'Cannot read label file: %fileName%';";
 
 #****************************************************************************
 #*  Translation text for page label_list.php
@@ -88,6 +89,7 @@ $trans["displayLettersXmlErr"]      = "\$text = 'Error occurred parsing report d
 #****************************************************************************
 $trans["reportCriteriaHead1"]      = "\$text = 'Report Search Criteria (optional)';";
 $trans["reportCriteriaHead2"]      = "\$text = 'Report Sort Order (optional)';";
+$trans["reportCriteriaHead3"]      = "\$text = 'Report Output Type';";
 $trans["reportCriteriaCrit1"]      = "\$text = 'Criteria 1:';";
 $trans["reportCriteriaCrit2"]      = "\$text = 'Criteria 2:';";
 $trans["reportCriteriaCrit3"]      = "\$text = 'Criteria 3:';";
@@ -107,6 +109,9 @@ $trans["reportCriteriaSortCrit3"]  = "\$text = 'Sort 3:';";
 $trans["reportCriteriaAscending"]  = "\$text = 'ascending';";
 $trans["reportCriteriaDescending"] = "\$text = 'descending';";
 $trans["reportCriteriaStartOnLabel"] = "\$text = 'Start printing on label:';";
+$trans["reportCriteriaOutput"]     = "\$text = 'Output Type:';";
+$trans["reportCriteriaOutputHTML"] = "\$text = 'HTML';";
+$trans["reportCriteriaOutputCSV"]  = "\$text = 'CSV';";
 
 #****************************************************************************
 #*  Translation text for page run_report.php
@@ -120,6 +125,7 @@ $trans["runReportTotal"]           = "\$text = 'Total Rows:';";
 #****************************************************************************
 $trans["displayLabelsStartOnLblErr"] = "\$text = 'Field must be numeric.';";
 $trans["displayLabelsXmlErr"]      = "\$text = 'Error occurred parsing report definition xml.  Error = ';";
+$trans["displayLabelsCannotRead"]  = "\$text = 'Cannot read label file: %fileName%';";
 
 #****************************************************************************
 #*  Translation text for page noauth.php
@@ -131,6 +137,7 @@ $trans["noauthMsg"]                = "\$text = 'You are not authorized to use th
 #****************************************************************************
 $trans["reportHolds"]              = "\$text = 'Hold Requests Containing Member Contact Info';";
 $trans["reportCheckouts"]          = "\$text = 'Bibliography Checkout Listing';";
+$trans["overdueLetters"]           = "\$text = 'Over Due Letters';";
 $trans["reportLabels"]             = "\$text = 'Label Printing Query (used by labels)';";
 $trans["popularBiblios"]           = "\$text = 'Most Popular Bibliographies';";
 $trans["overdueList"]              = "\$text = 'Over Due Member List';";
@@ -145,6 +152,7 @@ $trans["labelsSimple"]             = "\$text = 'Simple Label Example';";
 #****************************************************************************
 #*  Column Text
 #****************************************************************************
+$trans["biblio.bibid"]             = "\$text = 'Biblio ID';";
 $trans["biblio.create_dt"]         = "\$text = 'Date Added';";
 $trans["biblio.last_change_dt"]    = "\$text = 'Last Changed';";
 $trans["biblio.material_cd"]       = "\$text = 'Material Cd';";

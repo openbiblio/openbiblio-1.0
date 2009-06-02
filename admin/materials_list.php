@@ -26,7 +26,7 @@
   require_once("../classes/Dm.php");
   require_once("../classes/DmQuery.php");
   require_once("../functions/errorFuncs.php");
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
 
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");

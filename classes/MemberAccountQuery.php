@@ -53,28 +53,18 @@ class MemberAccountQuery extends Query {
    */
   function query($mbrid) {
     # setting query that will return all the data
-    $sql = "select member_account.* ";
-    $sql = $sql.",transaction_type_dm.description transaction_type_desc ";
-    $sql = $sql."from member_account ";
-    $sql = $sql.",transaction_type_dm ";
-    $sql = $sql."where member_account.transaction_type_cd = transaction_type_dm.code";
-    $sql = $sql." and member_account.mbrid = ".$mbrid;
-    $sql = $sql." order by create_dt";
+    $sql = $this->mkSQL("select member_account.*, "
+                        . " transaction_type_dm.description transaction_type_desc "
+                        . "from member_account, transaction_type_dm "
+                        . "where member_account.transaction_type_cd = transaction_type_dm.code "
+                        . " and member_account.mbrid = %N "
+                        . "order by create_dt ", $mbrid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("memberAccountQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("memberAccountQueryErr1"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    if ($this->_rowCount == 0) {
-      return true;
-    }
-    return $result;
+    return true;
   }
 
   /****************************************************************************
@@ -86,17 +76,11 @@ class MemberAccountQuery extends Query {
    */
   function getBalance($mbrid) {
     # setting query that will return all the data
-    $sql = "select sum(member_account.amount) balance ";
-    $sql = $sql."from member_account ";
-    $sql = $sql."where member_account.mbrid = ".$mbrid;
+    $sql = $this->mkSQL("select sum(member_account.amount) balance "
+                        . "from member_account "
+                        . "where member_account.mbrid = %N ", $mbrid);
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("memberAccountQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("memberAccountQueryErr1"))) {
       return 0;
     }
     $array = $this->_conn->fetchRow();
@@ -146,24 +130,12 @@ class MemberAccountQuery extends Query {
     } else {
       $amt = $trans->getAmount();
     }
-    $sql = "insert into member_account values (";
-    $sql = $sql.$trans->getMbrid().", ";
-    $sql = $sql."null, ";
-    $sql = $sql."sysdate(), ";
-    $sql = $sql.$trans->getCreateUserid().", ";
-    $sql = $sql."'".$trans->getTransactionTypeCd()."', ";
-    $sql = $sql.$amt.", ";
-    $sql = $sql."'".$trans->getDescription()."')";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("memberAccountQueryErr2");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("insert into member_account "
+                        . "values (%N, null, sysdate(), %N, %Q, %N, %Q) ",
+                        $trans->getMbrid(), $trans->getCreateUserid(),
+                        $trans->getTransactionTypeCd(), $amt,
+                        $trans->getDescription());
+    return $this->_query($sql, $this->_loc->getText("memberAccountQueryErr2"));
   }
 
   /****************************************************************************
@@ -174,20 +146,11 @@ class MemberAccountQuery extends Query {
    ****************************************************************************
    */
   function delete($mbrid,$tranid="") {
-    $sql = "delete from member_account where mbrid = ".$mbrid;
+    $sql = $this->mkSQL("delete from member_account where mbrid = %N ", $mbrid);
     if ($tranid != "") {
-      $sql = $sql." and transid = ".$tranid;
+      $sql .= $this->mkSQL(" and transid = %N ", $tranid);
     }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("memberAccountQueryErr3");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, $this->_loc->getText("memberAccountQueryErr3"));
   }
 
 

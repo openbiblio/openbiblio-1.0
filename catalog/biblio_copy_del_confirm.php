@@ -22,7 +22,7 @@
 
   $tab = "cataloging";
   $nav = "view";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioCopy.php");
@@ -49,8 +49,8 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $copyid = $HTTP_GET_VARS["copyid"];
+  $bibid = $_GET["bibid"];
+  $copyid = $_GET["copyid"];
 
   #****************************************************************************
   #*  Ready copy information

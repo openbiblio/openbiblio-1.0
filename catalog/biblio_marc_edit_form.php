@@ -27,7 +27,7 @@
   $focus_form_name = "editmarcform";
   $focus_form_field = "tag";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../catalog/marcFuncs.php");
@@ -36,14 +36,14 @@
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  if (isset($HTTP_GET_VARS["reset"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["reset"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
     #****************************************************************************
     #*  Retrieving get var from edit link
     #****************************************************************************
-    $bibid = $HTTP_GET_VARS["bibid"];
-    $fieldid = $HTTP_GET_VARS["fieldid"];
+    $bibid = $_GET["bibid"];
+    $fieldid = $_GET["fieldid"];
 
     #****************************************************************************
     #*  Reading database for subfield values
@@ -70,7 +70,7 @@
     $postVars["fieldData"] = $field->getFieldData();
     $selectedTag = $field->getTag();
     $selectedSubfld = $field->getSubfieldCd();
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
+    $_SESSION["postVars"] = $postVars;
 
   } else {
     require_once("../shared/get_form_vars.php");
@@ -78,19 +78,19 @@
     $fieldid = $postVars["fieldid"];
     $selectedTag = $postVars["tag"];
     $selectedSubfld = $postVars["subfieldCd"];
-    if (isset($HTTP_GET_VARS["tag"])) {
+    if (isset($_GET["tag"])) {
       #****************************************************************************
       #*  Retrieving get var from field select page
       #****************************************************************************
-      $selectedTag = $HTTP_GET_VARS["tag"];
+      $selectedTag = $_GET["tag"];
       $postVars["tag"] = $selectedTag;
-      if (isset($HTTP_GET_VARS["subfld"])) {
-        $selectedSubfld = $HTTP_GET_VARS["subfld"];
+      if (isset($_GET["subfld"])) {
+        $selectedSubfld = $_GET["subfld"];
         $postVars["subfieldCd"] = $selectedSubfld;
       } else {
         $selectedSubfld = $postVars["subfieldCd"];
       }
-      $HTTP_SESSION_VARS["postVars"] = $postVars;
+      $_SESSION["postVars"] = $postVars;
     }
   }
 

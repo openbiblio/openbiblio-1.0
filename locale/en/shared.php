@@ -71,12 +71,16 @@ $trans["biblioViewTble2Col3"]      = "\$text = 'Status';";
 $trans["biblioViewTble2Col4"]      = "\$text = 'Status Dt';";
 $trans["biblioViewTble2Col5"]      = "\$text = 'Due Back';";
 $trans["biblioViewTble2ColFunc"]   = "\$text = 'Function';";
+$trans["biblioViewTble2Coldel"]    = "\$text = 'del';";
+$trans["biblioViewTble2Coledit"]   = "\$text = 'edit';";
 $trans["biblioViewTble3Hdr"]       = "\$text = 'Additional Bibliographic Information';";
 $trans["biblioViewNoAddInfo"]      = "\$text = 'No additional bibliographic information available.';";
 $trans["biblioViewNoCopies"]       = "\$text = 'No copies have been created.';";
 $trans["biblioViewOpacFlg"]        = "\$text = 'Show in OPAC';";
 $trans["biblioViewNewCopy"]        = "\$text = 'Add New Copy';";
-$trans["biblioViewNeweCopy"]        = "\$text = 'Add New Electronic Copy';";
+$trans["biblioViewNeweCopy"]       = "\$text = 'Add New Electronic Copy';";
+$trans["biblioViewYes"]            = "\$text = 'yes';";
+$trans["biblioViewNo"]             = "\$text = 'no';";
 
 #****************************************************************************
 #*  Translation text for page biblio_search.php
@@ -103,6 +107,7 @@ $trans["biblioSearchCall"]         = "\$text = 'Call Number';";
 $trans["biblioSearchCopyBCode"]    = "\$text = 'Copy Barcode';";
 $trans["biblioSearchCopyStatus"]   = "\$text = 'Status';";
 $trans["biblioSearchNoCopies"]     = "\$text = 'No copies are available.';";
+$trans["biblioSearchSelect"]       = "\$text = 'select';";
 
 #****************************************************************************
 #*  Translation text for page loginform.php
@@ -136,6 +141,7 @@ $trans["catalogResults"]           = "\$text='Search Results';";
 #*  Translation text for page header.php and header_opac.php
 #****************************************************************************
 $trans["headerTodaysDate"]         = "\$text='today\'s date:';";
+$trans["headerDateFormat"]         = "\$text='m.d.Y';";
 $trans["headerLibraryHours"]       = "\$text='library hours:';";
 $trans["headerLibraryPhone"]       = "\$text='library phone:';";
 $trans["headerHome"]               = "\$text='Home';";

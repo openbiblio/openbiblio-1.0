@@ -23,7 +23,7 @@
   $tab = "circulation";
   $nav = "account";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/MemberAccountTransaction.php");
@@ -35,7 +35,7 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
@@ -43,9 +43,9 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $mbrid = $HTTP_POST_VARS["mbrid"];
-  if (isset($HTTP_POST_VARS["name"])) {
-      $mbrName = urlencode($HTTP_GET_VARS["name"]);
+  $mbrid = $_POST["mbrid"];
+  if (isset($_POST["name"])) {
+      $mbrName = urlencode($_GET["name"]);
   } else {
       $mbrName = "";
   }
@@ -55,19 +55,19 @@
   #****************************************************************************
   $trans = new MemberAccountTransaction();
   $trans->setMbrid($mbrid);
-  $trans->setCreateUserid($HTTP_SESSION_VARS["userid"]);
-  $trans->setTransactionTypeCd($HTTP_POST_VARS["transactionTypeCd"]);
-  $HTTP_POST_VARS["transactionTypeCd"] = $trans->getTransactionTypeCd();
-  $trans->setAmount($HTTP_POST_VARS["amount"]);
-  $HTTP_POST_VARS["amount"] = $trans->getAmount();
-  $trans->setDescription($HTTP_POST_VARS["description"]);
-  $HTTP_POST_VARS["description"] = $trans->getDescription();
+  $trans->setCreateUserid($_SESSION["userid"]);
+  $trans->setTransactionTypeCd($_POST["transactionTypeCd"]);
+  $_POST["transactionTypeCd"] = $trans->getTransactionTypeCd();
+  $trans->setAmount($_POST["amount"]);
+  $_POST["amount"] = $trans->getAmount();
+  $trans->setDescription($_POST["description"]);
+  $_POST["description"] = $trans->getDescription();
   $validData = $trans->validateData();
   if (!$validData) {
     $pageErrors["amount"] = $trans->getAmountError();
     $pageErrors["description"] = $trans->getDescriptionError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/mbr_account.php?mbrid=".$mbrid."&name=".$mbrName);
     exit();
   }
@@ -91,8 +91,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   $msg = $loc->getText("mbrTransactionSuccess");
   $msg = urlencode($msg);

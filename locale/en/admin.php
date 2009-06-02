@@ -385,7 +385,7 @@ $trans["adminTheme_preview_Sampleerror"]   = "\$text = 'sample error';";
 $trans["adminTheme_preview_Sampleinput"]   = "\$text = 'Sample Input';";
 $trans["adminTheme_preview_Samplebutton"]  = "\$text = 'Sample Button';";
 $trans["adminTheme_preview_Poweredby"]     = "\$text = 'Powered by OpenBiblio';";
-$trans["adminTheme_preview_Copyright"]     = "\$text = 'Copyright &copy; 2002 Dave Stevens';";
+$trans["adminTheme_preview_Copyright"]     = "\$text = 'Copyright &copy; 2002-2005 Dave Stevens';";
 $trans["adminTheme_preview_underthe"]      = "\$text = 'under the';";
 $trans["adminTheme_preview_GNU"]           = "\$text = 'GNU General Public License';";
 

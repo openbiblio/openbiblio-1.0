@@ -23,7 +23,7 @@
   $tab = "cataloging";
   $nav = "newconfirm";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Biblio.php");
@@ -37,7 +37,7 @@
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
 
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../catalog/biblio_new_form.php");
     exit();
   }
@@ -46,29 +46,29 @@
   #*  Validate data
   #****************************************************************************
   $biblio = new Biblio();
-  $biblio->setMaterialCd($HTTP_POST_VARS["materialCd"]);
-  $biblio->setCollectionCd($HTTP_POST_VARS["collectionCd"]);
-  $biblio->setCallNmbr1($HTTP_POST_VARS["callNmbr1"]);
-  $biblio->setCallNmbr2($HTTP_POST_VARS["callNmbr2"]);
-  $biblio->setCallNmbr3($HTTP_POST_VARS["callNmbr3"]);
-  $biblio->setLastChangeUserid($HTTP_SESSION_VARS["userid"]);
-  $biblio->setOpacFlg(isset($HTTP_POST_VARS["opacFlg"]));
-  $HTTP_POST_VARS["callNmbr1"] = $biblio->getCallNmbr1();
-  $HTTP_POST_VARS["callNmbr2"] = $biblio->getCallNmbr2();
-  $HTTP_POST_VARS["callNmbr3"] = $biblio->getCallNmbr3();
-  $indexes = $HTTP_POST_VARS["indexes"];
+  $biblio->setMaterialCd($_POST["materialCd"]);
+  $biblio->setCollectionCd($_POST["collectionCd"]);
+  $biblio->setCallNmbr1($_POST["callNmbr1"]);
+  $biblio->setCallNmbr2($_POST["callNmbr2"]);
+  $biblio->setCallNmbr3($_POST["callNmbr3"]);
+  $biblio->setLastChangeUserid($_SESSION["userid"]);
+  $biblio->setOpacFlg(isset($_POST["opacFlg"]));
+  $_POST["callNmbr1"] = $biblio->getCallNmbr1();
+  $_POST["callNmbr2"] = $biblio->getCallNmbr2();
+  $_POST["callNmbr3"] = $biblio->getCallNmbr3();
+  $indexes = $_POST["indexes"];
   foreach($indexes as $index) {
-    $tag = $HTTP_POST_VARS["tags"][$index];
-    $subfieldCd = $HTTP_POST_VARS["subfieldCds"][$index];
-    $requiredFlg = $HTTP_POST_VARS["requiredFlgs"][$index];
-    $value = $HTTP_POST_VARS["values"][$index];
+    $tag = $_POST["tags"][$index];
+    $subfieldCd = $_POST["subfieldCds"][$index];
+    $requiredFlg = $_POST["requiredFlgs"][$index];
+    $value = $_POST["values"][$index];
     # echo "<br>index=".$index." tag=".$tag." subfieldCd=".$subfieldCd." value=".$value;
     $biblioFld = new BiblioField();
     $biblioFld->setTag($tag);
     $biblioFld->setSubfieldCd($subfieldCd);
     $biblioFld->setIsRequired($requiredFlg);
     $biblioFld->setFieldData($value);
-    $HTTP_POST_VARS[$index] = $biblioFld->getFieldData();
+    $_POST[$index] = $biblioFld->getFieldData();
     $biblio->addBiblioField($index,$biblioFld);
   }
   $validData = $biblio->validateData();
@@ -80,8 +80,8 @@
         $pageErrors[$index] = $biblioFlds[$index]->getFieldDataError();
       }
     }
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../catalog/biblio_new_form.php");
     exit();
   }
@@ -104,8 +104,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   $msg = $loc->getText("biblioNewSuccess");
   $msg = urlencode($msg);

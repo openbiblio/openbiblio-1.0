@@ -23,7 +23,7 @@
   $tab = "admin";
   $nav = "themes";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/SettingsQuery.php");
@@ -32,7 +32,7 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../admin/theme_list.php");
     exit();
   }
@@ -40,7 +40,7 @@
   #**************************************************************************
   #*  Update theme in use
   #**************************************************************************
-  $newThemeId = $HTTP_POST_VARS["themeid"];
+  $newThemeId = $_POST["themeid"];
   $setQ = new SettingsQuery();
   $setQ->connect();
   if ($setQ->errorOccurred()) {
@@ -56,8 +56,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   header("Location: ../admin/theme_list.php");
 ?>

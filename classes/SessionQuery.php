@@ -40,16 +40,11 @@ class SessionQuery extends Query {
    ****************************************************************************
    */
   function validToken($userid, $token) {
-    $sql = "select last_updated_dt, token from session where userid = '".$userid;
-    $sql = $sql."' and token = ".$token;
-    $sql = $sql." and last_updated_dt >= date_sub(sysdate(), interval ".OBIB_SESSION_TIMEOUT." minute)";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing session information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select last_updated_dt, token from session "
+                        . "where userid = %N and token = %N"
+                        . " and last_updated_dt >= date_sub(sysdate(), interval %N minute)",
+                        $userid, $token, OBIB_SESSION_TIMEOUT);
+    if (!$this->_query($sql, "Error accessing session information.")) {
       return false;
     }
     $rowCount = $this->_conn->numRows();
@@ -72,29 +67,18 @@ class SessionQuery extends Query {
      * Only purpose of the delete is to clean up old session rows so that the
      * session table doesn't get too full.
      **************************************************************************/
-    $sql = "delete from session where userid = ".$userid;
-    $sql = $sql." and last_updated_dt < date_sub(sysdate(), interval ".OBIB_SESSION_TIMEOUT." minute)";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error deleting session information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("delete from session where userid = %N"
+                        . " and last_updated_dt < date_sub(sysdate(), interval %N minute)",
+                        $userid, OBIB_SESSION_TIMEOUT);
+    if (!$this->_query($sql, "Error deleting session information.")) {
       return false;
     }
     srand((double) microtime() * 1000000);
     $token = rand(-10000,10000);
-    $sql = "insert into session values (";
-    $sql = $sql.$userid.", sysdate(), ";
-    $sql = $sql.$token.")";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error creating a new session.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("insert into session "
+                        . "values (%N, sysdate(), %N) ",
+                        $userid, $token);
+    if (!$this->_query($sql, "Error creating a new session.")) {
       return false;
     }
     return $token;
@@ -108,17 +92,9 @@ class SessionQuery extends Query {
    ****************************************************************************
    */
   function _updateToken($token) {
-    $sql = "update session set last_updated_dt=sysdate() where token = '".$token."'";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating session timeout.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("update session set last_updated_dt=sysdate() "
+                        . "where token = %Q ", $token);
+    return $this->_query($sql, "Error updating session timeout.");
   }
 }
 

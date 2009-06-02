@@ -23,7 +23,7 @@
   $tab = "circulation";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioCopy.php");
@@ -40,13 +40,13 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
-  $barcode = trim($HTTP_POST_VARS["barcodeNmbr"]);
-  $mbrid = trim($HTTP_POST_VARS["mbrid"]);
-  $mbrClassification = trim($HTTP_POST_VARS["classification"]);
+  $barcode = trim($_POST["barcodeNmbr"]);
+  $mbrid = trim($_POST["mbrid"]);
+  $mbrClassification = trim($_POST["classification"]);
 
   #****************************************************************************
   #*  Make sure member does not have outstanding balance due
@@ -67,8 +67,8 @@
     if ($balance > 0) {
       $pageErrors["barcodeNmbr"] = $loc->getText("checkoutBalErr");
       $postVars["barcodeNmbr"] = $barcode;
-      $HTTP_SESSION_VARS["postVars"] = $postVars;
-      $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+      $_SESSION["postVars"] = $postVars;
+      $_SESSION["pageErrors"] = $pageErrors;
       header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
       exit();
     }
@@ -80,8 +80,8 @@
   if (!ctypeAlnum(trim($barcode))) {
     $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr1");
     $postVars["barcodeNmbr"] = $barcode;
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $postVars;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
     exit();
   }
@@ -142,8 +142,8 @@
   if ($foundError == TRUE) {
     $copyQ->close();
     $postVars["barcodeNmbr"] = $barcode;
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $postVars;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
     exit();
   }
@@ -174,8 +174,8 @@
         $holdQ->close();
         $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr5",array("barcode"=>$barcode));
         $postVars["barcodeNmbr"] = $barcode;
-        $HTTP_SESSION_VARS["postVars"] = $postVars;
-        $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+        $_SESSION["postVars"] = $postVars;
+        $_SESSION["pageErrors"] = $pageErrors;
         header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
         exit();
       } else {
@@ -201,7 +201,7 @@
   #**************************************************************************
   // we need to also insert into status history table
   $copy->setStatusCd(OBIB_STATUS_OUT);
-  $copy->setMbrid($HTTP_POST_VARS["mbrid"]);
+  $copy->setMbrid($_POST["mbrid"]);
   $copy->setDueBackDt($daysDueBack);
   if (!$copyQ->update($copy,true)) {
     $copyQ->close();
@@ -235,8 +235,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   #**************************************************************************
   #*  Go back to member view

@@ -29,7 +29,7 @@
   $focus_form_name = "newmbrform";
   $focus_form_field = "barcodeNmbr";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");

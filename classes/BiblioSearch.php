@@ -50,7 +50,6 @@ class BiblioSearch {
   var $_topic3 = "";
   var $_topic4 = "";
   var $_topic5 = "";
-  var $_copyid = "";
   var $_barcodeNmbr = "";
   var $_statusCd = "";
   var $_statusBeginDt = "";

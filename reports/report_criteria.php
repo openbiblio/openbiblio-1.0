@@ -24,7 +24,7 @@
   $focus_form_name = "reportcriteriaform";
   $focus_form_field = "fieldId1";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   require_once("../functions/inputFuncs.php");
   require_once("../classes/ReportQuery.php");
@@ -111,6 +111,17 @@
     echo ">".$loc->getText("reportCriteriaDescending")."</input>";
   }
 
+  function printOutputFields(&$fieldIds,&$postVars,&$pageErrors,&$loc){
+    $fldIndex = "outputType";
+    echo "<select name=\"".$fldIndex."\">";
+    foreach($fieldIds as $fldid) {
+      echo "<option value=\"".$fldid."\"";
+      if ((isset($postVars[$fldIndex])) and ($postVars[$fldIndex] == $fldid)) echo " selected";
+      echo " >".$loc->getText($fldid)."</option>";
+    }
+    echo "</select>";
+  }
+
   #****************************************************************************
   #*  getting form vars
   #****************************************************************************
@@ -130,22 +141,22 @@
   #****************************************************************************
   #*  Read query string args
   #****************************************************************************
-  $rptid = $HTTP_GET_VARS["rptid"];
-  $title = $HTTP_GET_VARS["title"];
-  $sql = stripslashes($HTTP_GET_VARS["sql"]);
-  if (isset($HTTP_GET_VARS["label"]) and $HTTP_GET_VARS["label"]!="") {
+  $rptid = $_GET["rptid"];
+  $title = $_GET["title"];
+  $sql = stripslashes($_GET["sql"]);
+  if (isset($_GET["label"]) and $_GET["label"]!="") {
     $nav = "labellist";
-    $label = $HTTP_GET_VARS["label"];
+    $label = $_GET["label"];
     $letter = "";
     $initialSort = "";
     $okAction = "../reports/display_labels.php";
     $cancelAction = "../reports/label_list.php";
     $showStartLabelFld = TRUE;
-  } elseif (isset($HTTP_GET_VARS["letter"]) and $HTTP_GET_VARS["letter"]!="") {
+  } elseif (isset($_GET["letter"]) and $_GET["letter"]!="") {
     $nav = "letterlist";
     $label = "";
-    $letter = $HTTP_GET_VARS["letter"];
-    $initialSort = $HTTP_GET_VARS["initialSort"];
+    $letter = $_GET["letter"];
+    $initialSort = $_GET["initialSort"];
     $okAction = "../reports/display_letters.php";
     $cancelAction = "../reports/letter_list.php";
     $showStartLabelFld = FALSE;
@@ -158,8 +169,8 @@
     $cancelAction = "../reports/report_list.php";
     $showStartLabelFld = FALSE;
   }
-  if (isset($HTTP_GET_VARS["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($HTTP_GET_VARS["msg"])."</font><br><br>";
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -303,6 +314,25 @@
     </td>
     <td class="primary" align="left" valign="top" nowrap="yes">
       <?php printSortFields(3,$fieldIds,$postVars,$pageErrors,$loc,$fieldValuebVisibility); ?>
+    </td>
+  </tr>
+</table>
+<br>
+<table class="primary">
+  <tr>
+    <th align="left" colspan="2" nowrap="yes">
+      <?php print $loc->getText("reportCriteriaHead3"); ?>
+    </th>
+  </tr>
+  <tr>
+    <td class="primary" align="left" valign="top" nowrap="yes">
+      <?php echo $loc->getText("reportCriteriaOutput"); ?>
+    </td>
+    <td class="primary" align="left" valign="top" nowrap="yes">
+      <?php
+        $outputFields = array('reportCriteriaOutputHTML', 'reportCriteriaOutputCSV');
+        printOutputFields($outputFields, $postVars,$pageErrors,$loc,$fieldValuebVisibility);
+      ?>
     </td>
   </tr>
 </table>

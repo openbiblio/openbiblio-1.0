@@ -48,18 +48,8 @@ class UsmarcBlockDmQuery extends Query {
    ****************************************************************************
    */
   function execSelect() {
-    $sql = "select * from usmarc_block_dm ";
-    $sql = $sql."order by block_nmbr ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("usmarcBlockDmQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = "select * from usmarc_block_dm order by block_nmbr ";
+    return $this->_query($sql, $this->_loc->getText("usmarcBlockDmQueryErr1"));
   }
 
   /****************************************************************************

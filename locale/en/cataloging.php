@@ -59,6 +59,8 @@ $trans["catalogCancel"]            = "\$text = 'Cancel';";
 $trans["catalogRefresh"]           = "\$text = 'Refresh';";
 $trans["catalogDelete"]            = "\$text = 'Delete';";
 $trans["catalogFootnote"]          = "\$text = 'Fields marked with %symbol% are required.';";
+$trans["AnswerYes"]                = "\$text = 'Yes';";
+$trans["AnswerNo"]                 = "\$text = 'No';";
 
 #****************************************************************************
 #*  Translation text for page index.php
@@ -141,6 +143,8 @@ $trans["biblioMarcListTbleCol6"]   = "\$text = 'Subfld';";
 $trans["biblioMarcListTbleCol7"]   = "\$text = 'Subfield Description';";
 $trans["biblioMarcListTbleCol8"]   = "\$text = 'Field Data';";
 $trans["biblioMarcListNoRows"]     = "\$text = 'No MARC fields found.';";
+$trans["biblioMarcListEdit"]       = "\$text = 'edit';";
+$trans["biblioMarcListDel"]        = "\$text = 'del';";
 
 #****************************************************************************
 #*  Translation text for page usmarc_select.php
@@ -149,6 +153,7 @@ $trans["usmarcSelectHdr"]          = "\$text = 'MARC Field Selector';";
 $trans["usmarcSelectInst"]         = "\$text = 'Select a field type';";
 $trans["usmarcSelectNoTags"]       = "\$text = 'No tags found.';";
 $trans["usmarcSelectUse"]          = "\$text = 'use';";
+$trans["usmarcCloseWindow"]        = "\$text = 'Close Window';";
 
 #****************************************************************************
 #*  Translation text for page biblio_marc_new_form.php
@@ -210,6 +215,7 @@ $trans["biblioHoldListHdr3"]       = "\$text = 'Placed On Hold';";
 $trans["biblioHoldListHdr4"]       = "\$text = 'Member';";
 $trans["biblioHoldListHdr5"]       = "\$text = 'Status';";
 $trans["biblioHoldListHdr6"]       = "\$text = 'Due Back';";
+$trans["biblioHoldListdel"]        = "\$text = 'Del';";
 
 #****************************************************************************
 #*  Translation text for page noauth.php
@@ -229,12 +235,13 @@ $trans["MarcUploadTag"]             = "\$text = 'Tag';";
 $trans["MarcUploadSubfield"]        = "\$text = 'Sub';";
 $trans["MarcUploadData"]            = "\$text = 'Data';";
 $trans["MarcUploadRawData"]         = "\$text = 'Raw Data:';";
+$trans["UploadFile"]                = "\$text = 'Upload File';";
 
 #****************************************************************************
 #*  Translation text for page usmarc_select.php
 #****************************************************************************
 $trans["PoweredByOB"]                 = "\$text = 'Powered by OpenBiblio';";
-$trans["Copyright"]                   = "\$text = 'Copyright &copy; 2002';";
+$trans["Copyright"]                   = "\$text = 'Copyright &copy; 2002-2005';";
 $trans["underthe"]                    = "\$text = 'under the';";
 $trans["GNU"]                 = "\$text = 'GNU General Public License';";
 

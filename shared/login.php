@@ -20,7 +20,7 @@
  **********************************************************************************
  */
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../classes/Staff.php");
   require_once("../classes/StaffQuery.php");
   require_once("../classes/SessionQuery.php");
@@ -30,7 +30,7 @@
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
   $pageErrors = "";
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../shared/loginform.php");
     exit();
   }
@@ -38,7 +38,7 @@
   #****************************************************************************
   #*  Username edits
   #****************************************************************************
-  $username = $HTTP_POST_VARS["username"];
+  $username = $_POST["username"];
   if ($username == "") {
     $error_found = true;
     $pageErrors["username"] = "Username is required.";
@@ -48,7 +48,7 @@
   #*  Password edits
   #****************************************************************************
   $error_found = false;
-  $pwd = $HTTP_POST_VARS["pwd"];
+  $pwd = $_POST["pwd"];
   if ($pwd == "") {
     $error_found = true;
     $pageErrors["pwd"] = "Password is required.";
@@ -69,10 +69,10 @@
       # invalid password.  Add one to login attempts.
       $error_found = true;
       $pageErrors["pwd"] = "Invalid signon.";
-      if (!isset($HTTP_SESSION_VARS["loginAttempts"]) || ($HTTP_SESSION_VARS["loginAttempts"] == "")) {
+      if (!isset($_SESSION["loginAttempts"]) || ($_SESSION["loginAttempts"] == "")) {
         $sess_login_attempts = 1;
       } else {
-        $sess_login_attempts = $HTTP_SESSION_VARS["loginAttempts"] + 1;
+        $sess_login_attempts = $_SESSION["loginAttempts"] + 1;
       }
       # Suspend userid if login attempts >= 3
       if ($sess_login_attempts >= 3) {
@@ -89,8 +89,8 @@
   #*  Redirect back to form if error occured
   #****************************************************************************
   if ($error_found == true) {
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../shared/loginform.php");
     exit();
   }
@@ -123,23 +123,23 @@
   #**************************************************************************
   #*  Destroy form values and errors and reset signon variables
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
-  $HTTP_SESSION_VARS["username"] = $staff->getUsername();
-  $HTTP_SESSION_VARS["userid"] = $staff->getUserid();
-  $HTTP_SESSION_VARS["token"] = $token;
-  $HTTP_SESSION_VARS["loginAttempts"] = 0;
-  $HTTP_SESSION_VARS["hasAdminAuth"] = $staff->hasAdminAuth();
-  $HTTP_SESSION_VARS["hasCircAuth"] = $staff->hasCircAuth();
-  $HTTP_SESSION_VARS["hasCircMbrAuth"] = $staff->hasCircMbrAuth();
-  $HTTP_SESSION_VARS["hasCatalogAuth"] = $staff->hasCatalogAuth();
-  $HTTP_SESSION_VARS["hasReportsAuth"] = $staff->hasReportsAuth();
+  $_SESSION["username"] = $staff->getUsername();
+  $_SESSION["userid"] = $staff->getUserid();
+  $_SESSION["token"] = $token;
+  $_SESSION["loginAttempts"] = 0;
+  $_SESSION["hasAdminAuth"] = $staff->hasAdminAuth();
+  $_SESSION["hasCircAuth"] = $staff->hasCircAuth();
+  $_SESSION["hasCircMbrAuth"] = $staff->hasCircMbrAuth();
+  $_SESSION["hasCatalogAuth"] = $staff->hasCatalogAuth();
+  $_SESSION["hasReportsAuth"] = $staff->hasReportsAuth();
 
   #**************************************************************************
   #*  Redirect to return page
   #**************************************************************************
-  header("Location: ".$HTTP_SESSION_VARS["returnPage"]);
+  header("Location: ".$_SESSION["returnPage"]);
   exit();
 
 ?>

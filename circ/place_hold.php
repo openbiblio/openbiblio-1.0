@@ -23,11 +23,12 @@
   $tab = "circulation";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioHold.php");
   require_once("../classes/BiblioHoldQuery.php");
+  require_once("../classes/BiblioCopyQuery.php");
   require_once("../functions/errorFuncs.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
@@ -35,12 +36,12 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
-  $barcode = trim($HTTP_POST_VARS["holdBarcodeNmbr"]);
-  $mbrid = trim($HTTP_POST_VARS["mbrid"]);
+  $barcode = trim($_POST["holdBarcodeNmbr"]);
+  $mbrid = trim($_POST["mbrid"]);
 
   #****************************************************************************
   #*  Edit input
@@ -48,8 +49,36 @@
   if (!is_numeric($barcode)) {
     $pageErrors["holdBarcodeNmbr"] = $loc->getText("placeHoldErr1");
     $postVars["holdBarcodeNmbr"] = $barcode;
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $postVars;
+    $_SESSION["pageErrors"] = $pageErrors;
+    header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+    exit();
+  }
+
+  // Check to see if this member already has the item checked out.
+  $copyQ = new BiblioCopyQuery();
+  $copyQ->connect();
+  if ($copyQ->errorOccurred()) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  }
+  $copy = $copyQ->queryByBarcode($barcode);
+  if (!$copy) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  } else if (!is_a($copy, 'BiblioCopy')) {
+    $pageErrors["holdBarcodeNmbr"] = $loc->getText("placeHoldErr2");
+    $postVars["holdBarcodeNmbr"] = $barcode;
+    $_SESSION["postVars"] = $postVars;
+    $_SESSION["pageErrors"] = $pageErrors;
+    header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+    exit();
+  } else if ($copy->getStatusCd() == OBIB_STATUS_OUT
+             and $copy->getMbrid() == $mbrid) {
+    $pageErrors["holdBarcodeNmbr"] = $loc->getText("placeHoldErr3");
+    $postVars["holdBarcodeNmbr"] = $barcode;
+    $_SESSION["postVars"] = $postVars;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
     exit();
   }
@@ -67,18 +96,18 @@
   $rc = $holdQ->insert($mbrid,$barcode);
   if (!$rc) {
     $holdQ->close();
-    displayErrorPage($copyQ);
+    displayErrorPage($holdQ);
   }
   $holdQ->close();
 
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   #**************************************************************************
   #*  Go back to member view
   #**************************************************************************
-  header("Location: ../circ/mbr_view.php?mbrid=".$HTTP_POST_VARS["mbrid"]);
+  header("Location: ../circ/mbr_view.php?mbrid=".$_POST["mbrid"]);
 ?>

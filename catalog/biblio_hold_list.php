@@ -22,7 +22,7 @@
 
   $tab = "cataloging";
   $nav = "holds";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioHold.php");
@@ -35,8 +35,8 @@
   #****************************************************************************
   #*  Get Status Message
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($HTTP_GET_VARS["msg"])."</font><br><br>";
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -57,7 +57,7 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
+  $bibid = $_GET["bibid"];
 
   #****************************************************************************
   #*  Show page
@@ -115,7 +115,7 @@
 ?>
   <tr>
     <td class="primary" valign="top" nowrap="yes">
-      <a href="../shared/hold_del_confirm.php?bibid=<?php echo $hold->getBibid();?>&copyid=<?php echo $hold->getCopyid();?>&holdid=<?php echo $hold->getHoldid();?>">del</a>
+       <a href="../shared/hold_del_confirm.php?bibid=<?php echo $hold->getBibid();?>&copyid=<?php echo $hold->getCopyid();?>&holdid=<?php echo $hold->getHoldid();?>"><?php print $loc->getText("biblioHoldListdel"); ?></a>
     </td>
     <td class="primary" valign="top" >
       <?php echo $hold->getBarcodeNmbr();?>

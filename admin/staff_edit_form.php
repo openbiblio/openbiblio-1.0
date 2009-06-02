@@ -27,7 +27,7 @@
   $focus_form_name = "editstaffform";
   $focus_form_field = "last_name";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
@@ -38,12 +38,11 @@
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["UID"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["UID"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
 
-    $userid = $HTTP_GET_VARS["UID"];
-    $postVars["userid"] = $userid;
+    $postVars["userid"] = $_GET["UID"];
     include_once("../classes/Staff.php");
     include_once("../classes/StaffQuery.php");
     include_once("../functions/errorFuncs.php");
@@ -53,7 +52,7 @@
       $staffQ->close();
       displayErrorPage($staffQ);
     }
-    $staffQ->execSelect($userid);
+    $staffQ->execSelect($postVars["userid"]);
     if ($staffQ->errorOccurred()) {
       $staffQ->close();
       displayErrorPage($staffQ);

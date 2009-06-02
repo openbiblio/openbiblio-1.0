@@ -23,7 +23,7 @@
   $tab = "admin";
   $nav = "settings";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Settings.php");
@@ -33,7 +33,7 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../admin/settings_edit_form.php?reset=Y");
     exit();
   }
@@ -42,39 +42,39 @@
   #*  Validate data
   #****************************************************************************
   $set = new Settings();
-  $set->setLibraryName($HTTP_POST_VARS["libraryName"]);
-  $HTTP_POST_VARS["libraryName"] = $set->getLibraryName();
-  $set->setLibraryImageUrl($HTTP_POST_VARS["libraryImageUrl"]);
-  $HTTP_POST_VARS["libraryImageUrl"] = $set->getLibraryImageUrl();
-  $set->setUseImageFlg(isset($HTTP_POST_VARS["isUseImageSet"]));
-  $set->setLibraryHours($HTTP_POST_VARS["libraryHours"]);
-  $HTTP_POST_VARS["libraryHours"] = $set->getLibraryHours();
-  $set->setLibraryPhone($HTTP_POST_VARS["libraryPhone"]);
-  $HTTP_POST_VARS["libraryPhone"] = $set->getLibraryPhone();
-  $set->setLibraryUrl($HTTP_POST_VARS["libraryUrl"]);
-  $HTTP_POST_VARS["libraryUrl"] = $set->getLibraryUrl();
-  $set->setOpacUrl($HTTP_POST_VARS["opacUrl"]);
-  $HTTP_POST_VARS["opacUrl"] = $set->getOpacUrl();
-  $set->setSessionTimeout($HTTP_POST_VARS["sessionTimeout"]);
-  $HTTP_POST_VARS["sessionTimeout"] = $set->getSessionTimeout();
-  $set->setItemsPerPage($HTTP_POST_VARS["itemsPerPage"]);
-  $HTTP_POST_VARS["itemsPerPage"] = $set->getItemsPerPage();
-  $set->setPurgeHistoryAfterMonths($HTTP_POST_VARS["purgeHistoryAfterMonths"]);
-  $HTTP_POST_VARS["purgeHistoryAfterMonths"] = $set->getPurgeHistoryAfterMonths();
-  $set->setBlockCheckoutsWhenFinesDue(isset($HTTP_POST_VARS["isBlockCheckoutsWhenFinesDue"]));
-  $set->setLocale($HTTP_POST_VARS["locale"]);
-  $HTTP_POST_VARS["locale"] = $set->getLocale();
-  $set->setCharset($HTTP_POST_VARS["charset"]);
-  $HTTP_POST_VARS["charset"] = $set->getCharset();
-  $set->setHtmlLangAttr($HTTP_POST_VARS["htmlLangAttr"]);
-  $HTTP_POST_VARS["htmlLangAttr"] = $set->getHtmlLangAttr();
+  $set->setLibraryName($_POST["libraryName"]);
+  $_POST["libraryName"] = $set->getLibraryName();
+  $set->setLibraryImageUrl($_POST["libraryImageUrl"]);
+  $_POST["libraryImageUrl"] = $set->getLibraryImageUrl();
+  $set->setUseImageFlg(isset($_POST["isUseImageSet"]));
+  $set->setLibraryHours($_POST["libraryHours"]);
+  $_POST["libraryHours"] = $set->getLibraryHours();
+  $set->setLibraryPhone($_POST["libraryPhone"]);
+  $_POST["libraryPhone"] = $set->getLibraryPhone();
+  $set->setLibraryUrl($_POST["libraryUrl"]);
+  $_POST["libraryUrl"] = $set->getLibraryUrl();
+  $set->setOpacUrl($_POST["opacUrl"]);
+  $_POST["opacUrl"] = $set->getOpacUrl();
+  $set->setSessionTimeout($_POST["sessionTimeout"]);
+  $_POST["sessionTimeout"] = $set->getSessionTimeout();
+  $set->setItemsPerPage($_POST["itemsPerPage"]);
+  $_POST["itemsPerPage"] = $set->getItemsPerPage();
+  $set->setPurgeHistoryAfterMonths($_POST["purgeHistoryAfterMonths"]);
+  $_POST["purgeHistoryAfterMonths"] = $set->getPurgeHistoryAfterMonths();
+  $set->setBlockCheckoutsWhenFinesDue(isset($_POST["isBlockCheckoutsWhenFinesDue"]));
+  $set->setLocale($_POST["locale"]);
+  $_POST["locale"] = $set->getLocale();
+  $set->setCharset($_POST["charset"]);
+  $_POST["charset"] = $set->getCharset();
+  $set->setHtmlLangAttr($_POST["htmlLangAttr"]);
+  $_POST["htmlLangAttr"] = $set->getHtmlLangAttr();
 
   if (!$set->validateData()) {
     $pageErrors["sessionTimeout"] = $set->getSessionTimeoutError();
     $pageErrors["itemsPerPage"] = $set->getItemsPerPageError();
     $pageErrors["purgeHistoryAfterMonths"] = $set->getPurgeHistoryAfterMonthsError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../admin/settings_edit_form.php");
     exit();
   }
@@ -98,8 +98,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   header("Location: ../admin/settings_edit_form.php?reset=Y&updated=Y");
   exit();

@@ -44,25 +44,12 @@ class ReportQuery extends Query {
     return $this->_rowCount;
   }
 
-  /****************************************************************************
-   * Executes a query to select holds
-   * @param string $bibid bibid of bibliography copy to select
-   * @return BiblioHold returns hold record or false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
   function query($sql) {
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("reportQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("reportQueryErr1"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    return $result;
+    return true;
   }
 
   /****************************************************************************

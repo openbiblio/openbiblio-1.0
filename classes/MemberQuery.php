@@ -78,24 +78,18 @@ class MemberQuery extends Query {
     }
 
     # Building sql statements
-    $sql = "from member where ".$col." like '".$word."%'";
+    $sql = $this->mkSQL("from member where %C like %Q ", $col, $word."%");
     $sqlcount = "select count(*) as rowcount ".$sql;
     $sql = "select * ".$sql;
-    $sql = $sql." order by last_name, first_name";
+    $sql .= " order by last_name, first_name";
     # setting limit so we can page through the results
     $offset = ($page - 1) * $this->_itemsPerPage;
     $limit = $this->_itemsPerPage;
-    $sql = $sql." limit ".$offset.",".$limit;
+    $sql .= $this->mkSQL(" limit %N, %N ", $offset, $limit);
     #echo "sql=[".$sql."]<br>\n";
 
     # Running row count sql statement
-    $countResult = $this->_conn->exec($sqlcount);
-    if ($countResult == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error counting library member search results.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sqlcount, "Error counting library member search results.")) {
       return false;
     }
 
@@ -105,17 +99,7 @@ class MemberQuery extends Query {
     $this->_pageCount = ceil($this->_rowCount / $this->_itemsPerPage);
 
     # Running search sql statement
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error searching library member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-
-    return $result;
+    return $this->_query($sql, "Error searching library member information.");
   }
 
   /****************************************************************************
@@ -126,21 +110,10 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function execSelect($mbrid) {
-    $sql = "select member.*, ";
-    $sql = $sql."staff.username ";
-    $sql = $sql."from member ";
-    $sql = $sql." left join staff on member.last_change_userid = staff.userid ";
-    $sql = $sql."where mbrid=".$mbrid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing library member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("select member.*, staff.username from member "
+                        . "left join staff on member.last_change_userid = staff.userid "
+                        . "where mbrid=%N ", $mbrid);
+    return $this->_query($sql, "Error accessing library member information.");
   }
 
   /****************************************************************************
@@ -194,16 +167,11 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function DupBarcode($barcode, $mbrid=0) {
-    $sql = "select count(*) from member where barcode_nmbr = '".$barcode."'";
-    $sql = $sql." and mbrid <> ".$mbrid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error checking for dup barcode.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return 0;
+    $sql = $this->mkSQL("select count(*) from member "
+                        . "where barcode_nmbr = %Q and mbrid <> %N",
+                        $barcode, $mbrid);
+    if (!$this->_query($sql, "Error checking for dup barcode.")) {
+      return false;
     }
     $array = $this->_conn->fetchRow(OBIB_NUM);
     if ($array[0] > 0) {
@@ -220,32 +188,19 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function insert($mbr) {
-    $sql = "insert into member values (null, ";
-    $sql = $sql."'".$mbr->getBarcodeNmbr()."', ";
-    $sql = $sql."sysdate(), sysdate(), ";
-    $sql = $sql.$mbr->getLastChangeUserid().", ";
-    $sql = $sql."'".$mbr->getLastName()."', ";
-    $sql = $sql."'".$mbr->getFirstName()."', ";
-    $sql = $sql."'".$mbr->getAddress1()."', ";
-    $sql = $sql."'".$mbr->getAddress2()."', ";
-    $sql = $sql."'".$mbr->getCity()."', ";
-    $sql = $sql."'".$mbr->getState()."', ";
-    $sql = $sql.$mbr->getZip().", ";
-    $sql = $sql.$mbr->getZipExt().", ";
-    $sql = $sql."'".$mbr->getHomePhone()."', ";
-    $sql = $sql."'".$mbr->getWorkPhone()."', ";
-    $sql = $sql."'".$mbr->getEmail()."', ";
-    $sql = $sql."'".$mbr->getClassification()."', ";
-    $sql = $sql."'".$mbr->getSchoolGrade()."', ";
-    $sql = $sql."'".$mbr->getSchoolTeacher()."')";
+    $sql = $this->mkSQL("insert into member "
+                        . "values (null, %Q, sysdate(), sysdate(), %N, %Q, %Q, "
+                        . " %Q, %Q, %Q, %Q, %N, %N, %Q, %Q, %Q, %Q, %Q, %Q) ",
+                        $mbr->getBarcodeNmbr(), $mbr->getLastChangeUserid(),
+                        $mbr->getLastName(), $mbr->getFirstName(),
+                        $mbr->getAddress1(), $mbr->getAddress2(),
+                        $mbr->getCity(), $mbr->getState(),
+                        $mbr->getZip(), $mbr->getZipExt(),
+                        $mbr->getHomePhone(), $mbr->getWorkPhone(),
+                        $mbr->getEmail(), $mbr->getClassification(),
+                        $mbr->getSchoolGrade(), $mbr->getSchoolTeacher());
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error inserting new library member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, "Error inserting new library member information.")) {
       return false;
     }
     $mbrid = $this->_conn->getInsertId();
@@ -260,36 +215,25 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function update($mbr) {
-    $sql = "update member set ";
-    $sql = $sql."last_change_dt = sysdate(),";
-    $sql = $sql."last_change_userid=".$mbr->getLastChangeUserid().", ";
-    $sql = $sql."barcode_nmbr='".$mbr->getBarcodeNmbr()."', ";
-    $sql = $sql."last_name='".$mbr->getLastName()."', ";
-    $sql = $sql."first_name='".$mbr->getFirstName()."', ";
-    $sql = $sql."address1='".$mbr->getAddress1()."', ";
-    $sql = $sql."address2='".$mbr->getAddress2()."', ";
-    $sql = $sql."city='".$mbr->getCity()."', ";
-    $sql = $sql."state='".$mbr->getState()."', ";
-    $sql = $sql."zip=".$mbr->getZip().", ";
-    $sql = $sql."zip_ext=".$mbr->getZipExt().", ";
-    $sql = $sql."home_phone='".$mbr->getHomePhone()."', ";
-    $sql = $sql."work_phone='".$mbr->getWorkPhone()."', ";
-    $sql = $sql."email='".$mbr->getEmail()."', ";
-    $sql = $sql."classification='".$mbr->getClassification()."', ";
-    $sql = $sql."school_grade='".$mbr->getSchoolGrade()."', ";
-    $sql = $sql."school_teacher='".$mbr->getSchoolTeacher()."' ";
-    $sql = $sql."where mbrid=".$mbr->getMbrid();
+    $sql = $this->mkSQL("update member set "
+                        . " last_change_dt = sysdate(), last_change_userid=%N, "
+                        . " barcode_nmbr=%Q,  last_name=%Q,  first_name=%Q, "
+                        . " address1=%Q, address2=%Q, city=%Q, state=%Q, "
+                        . " zip=%N, zip_ext=%N, home_phone=%Q, work_phone=%Q, "
+                        . " email=%Q, classification=%Q, school_grade=%Q, "
+                        . " school_teacher=%Q "
+                        . "where mbrid=%N",
+                        $mbr->getLastChangeUserid(), $mbr->getBarcodeNmbr(),
+                        $mbr->getLastName(), $mbr->getFirstName(),
+                        $mbr->getAddress1(), $mbr->getAddress2(),
+                        $mbr->getCity(), $mbr->getState(),
+                        $mbr->getZip(), $mbr->getZipExt(),
+                        $mbr->getHomePhone(), $mbr->getWorkPhone(),
+                        $mbr->getEmail(), $mbr->getClassification(),
+                        $mbr->getSchoolGrade(), $mbr->getSchoolTeacher(),
+                        $mbr->getMbrid());
 
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating library member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error updating library member information.");
   }
 
   /****************************************************************************
@@ -300,17 +244,8 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function delete($mbrid) {
-    $sql = "delete from member where mbrid = ".$mbrid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error deleting library member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from member where mbrid = %N ", $mbrid);
+    return $this->_query($sql, "Error deleting library member information.");
   }
 
 }

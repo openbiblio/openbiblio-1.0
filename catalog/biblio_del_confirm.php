@@ -22,15 +22,36 @@
 
   $tab = "cataloging";
   $nav = "delete";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
+  require_once("../classes/BiblioQuery.php");
   require_once("../classes/BiblioCopyQuery.php");
   require_once("../classes/BiblioHoldQuery.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $title = $HTTP_GET_VARS["title"];
+  $bibid = $_GET["bibid"];
+  $biblioQ = new BiblioQuery();
+  $biblioQ->connect();
+  if ($biblioQ->errorOccurred()) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
+  }
+  $biblio = $biblioQ->query($bibid);
+  if ($biblioQ->errorOccurred()) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
+  }
+  $biblioFlds = $biblio->getBiblioFields();
+  $title = '';
+  if (isset($biblioFlds["245a"])) {
+    $title .= $biblioFlds["245a"]->getFieldData();
+  }
+  if (isset($biblioFlds["245b"])) {
+    $title .= $biblioFlds["245b"]->getFieldData();
+  }
+  $biblioQ->close();
+
 
   #****************************************************************************
   #*  Check for copies and holds

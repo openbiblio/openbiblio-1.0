@@ -47,12 +47,12 @@
   #****************************************************************************
   #*  Read form variables
   #****************************************************************************
-  $rptid = $HTTP_POST_VARS["rptid"];
-  $title = $HTTP_POST_VARS["title"];
-  $label = $HTTP_POST_VARS["label"];
-  $letter = $HTTP_POST_VARS["letter"];
-  $initialSort = $HTTP_POST_VARS["initialSort"];
-  $baseSql = stripslashes($HTTP_POST_VARS["sql"]);
+  $rptid = $_POST["rptid"];
+  $title = $_POST["title"];
+  $label = $_POST["label"];
+  $letter = $_POST["letter"];
+  $initialSort = $_POST["initialSort"];
+  $baseSql = stripslashes($_POST["sql"]);
 
   #****************************************************************************
   #*  Validate selection criteria
@@ -61,11 +61,11 @@
   $allCriteriaValid = TRUE;
 
   for ($i = 1; $i <= 4; $i++) {
-    if ($HTTP_POST_VARS["fieldId".$i] != "") {
-      $crit[$i] = getCriteria($HTTP_POST_VARS,$i);
+    if ($_POST["fieldId".$i] != "") {
+      $crit[$i] = getCriteria($_POST,$i);
       $critValid = $crit[$i]->validateData();
-      $HTTP_POST_VARS["fieldValue".$i."a"] = $crit[$i]->getValue1();
-      $HTTP_POST_VARS["fieldValue".$i."b"] = $crit[$i]->getValue2();
+      $_POST["fieldValue".$i."a"] = $crit[$i]->getValue1();
+      $_POST["fieldValue".$i."b"] = $crit[$i]->getValue2();
       if (!$critValid) {
         $allCriteriaValid = FALSE;
         $pageErrors["fieldValue".$i."a"] = $crit[$i]->getValue1Error();
@@ -77,9 +77,9 @@
   #****************************************************************************
   #*  Go back to criteria screen if any errors occurred
   #****************************************************************************
-  $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
+  $_SESSION["postVars"] = $_POST;
   if (!$allCriteriaValid) {
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["pageErrors"] = $pageErrors;
     $urlTitle = urlencode($title);
     $urlSql = urlencode($baseSql);
     header("Location: ../reports/report_criteria.php?rptid=".$rptid."&title=".$urlTitle."&sql=".$urlSql."&label=".$label."&letter=".$letter."&initialSort=".$initialSort);
@@ -135,8 +135,8 @@
   for ($i = 1; $i <= 3; $i++) {
     $sortOrderFldNm = "sortOrder".$i;
     $sortDirFldNm = "sortDir".$i;
-    $sortCol = $HTTP_POST_VARS[$sortOrderFldNm];
-    $sortDir = $HTTP_POST_VARS[$sortDirFldNm];
+    $sortCol = $_POST[$sortOrderFldNm];
+    $sortDir = $_POST[$sortDirFldNm];
     if ($sortCol != ""){
       $sql = $sql.$clausePrefix.$sortCol;
       if ($sortDir == "desc") {

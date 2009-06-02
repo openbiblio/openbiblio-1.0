@@ -26,7 +26,7 @@
   require_once("../classes/Staff.php");
   require_once("../classes/StaffQuery.php");
   require_once("../functions/errorFuncs.php");
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
 
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);

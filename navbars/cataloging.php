@@ -43,7 +43,8 @@
  &nbsp; &nbsp; <a href="../catalog/biblio_marc_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibEditMarc");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "newcopy") { ?>
@@ -52,7 +53,8 @@
  &nbsp; &nbsp; <a href="../catalog/biblio_marc_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibEditMarc");?></a><br>
  &nbsp; &nbsp; &raquo; <?php echo $navLoc->getText("catalogCopyNew");?><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "editcopy") { ?>
@@ -62,7 +64,8 @@
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; &raquo; <?php echo $navLoc->getText("catalogCopyEdit");?><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "edit") { ?>
@@ -71,7 +74,8 @@
  &nbsp; &nbsp; <a href="../catalog/biblio_marc_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibEditMarc");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "editmarc") { ?>
@@ -81,7 +85,8 @@
  &nbsp; &nbsp; &nbsp; <a href="../catalog/biblio_marc_new_form.php?bibid=<?php echo $bibid;?>&reset=Y')"><?php echo $navLoc->getText("catalogBibMarcNewFld");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "newmarc") { ?>
@@ -91,7 +96,8 @@
  &nbsp; &nbsp; &nbsp; &raquo; <?php echo $navLoc->getText("catalogBibMarcNewFldShrt");?><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "editmarcfield") { ?>
@@ -101,7 +107,8 @@
  &nbsp; &nbsp; &nbsp; &raquo; <?php echo $navLoc->getText("catalogBibMarcEditFld");?><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "holds") { ?>
@@ -110,7 +117,8 @@
  &nbsp; &nbsp; <a href="../catalog/biblio_marc_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibEditMarc");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; &raquo; <?php echo $navLoc->getText("catalogHolds");?><br>
- &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>&title=<?php echo $title;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_del_confirm.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogDelete");?></a><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "delete") { ?>
@@ -120,6 +128,7 @@
  &nbsp; &nbsp; <a href="../catalog/biblio_copy_new_form.php?bibid=<?php echo $bibid;?>&reset=Y" class="alt1"><?php echo $navLoc->getText("catalogCopyNew");?></a><br>
  &nbsp; &nbsp; <a href="../catalog/biblio_hold_list.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogHolds");?></a><br>
  &nbsp; &nbsp; &raquo; <?php echo $navLoc->getText("catalogDelete");?><br>
+ &nbsp; &nbsp; <a href="../catalog/biblio_new_like.php?bibid=<?php echo $bibid;?>" class="alt1"><?php echo $navLoc->getText("catalogBibNewLike");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "new") { ?>

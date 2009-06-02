@@ -23,7 +23,7 @@
   $tab = "home";
   $nav = "";
 
-  include("read_settings.php");
+  require_once("../shared/common.php");
   include("header.php");
 
 ?>

@@ -23,7 +23,7 @@
   $tab = "circulation";
   $nav = "account";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/MemberAccountTransaction.php");
@@ -35,8 +35,8 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $mbrid = $HTTP_GET_VARS["mbrid"];
-  $transid = $HTTP_GET_VARS["transid"];
+  $mbrid = $_GET["mbrid"];
+  $transid = $_GET["transid"];
 
   #**************************************************************************
   #*  Delete member transaction

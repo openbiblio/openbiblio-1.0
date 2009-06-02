@@ -44,21 +44,12 @@ class DmQuery extends Query {
    */
   function execSelect($table, $code = "") {
     $this->_tableNm = $table;
-    $sql = "select * from ".$table." ";
+    $sql = $this->mkSQL("select * from %I ", $table);
     if ($code != "") {
-      $sql = $sql."where code = ".$code." ";
+      $sql .= $this->mkSQL("where code = %N ", $code);
     }
-    $sql = $sql."order by description ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing the ".$table." domain table.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= "order by description ";
+    return $this->_query($sql, "Error accessing the ".$table." domain table.");
   }
 
   /****************************************************************************
@@ -72,28 +63,19 @@ class DmQuery extends Query {
     $this->_tableNm = $table;
     if ($table == "collection_dm") {
       $sql = "select collection_dm.*, count(biblio.bibid) row_count ";
-      $sql = $sql."from collection_dm left join biblio on collection_dm.code = biblio.collection_cd ";
-      $sql = $sql."group by 1, 2, 3, 4, 5 ";
+      $sql .= "from collection_dm left join biblio on collection_dm.code = biblio.collection_cd ";
+      $sql .= "group by 1, 2, 3, 4, 5 ";
     } elseif ($table == "material_type_dm") {
       $sql = "select material_type_dm.*, count(biblio.bibid) row_count ";
-      $sql = $sql."from material_type_dm left join biblio on material_type_dm.code = biblio.material_cd ";
-      $sql = $sql."group by 1, 2, 3, 4, 5, 6 ";
+      $sql .= "from material_type_dm left join biblio on material_type_dm.code = biblio.material_cd ";
+      $sql .= "group by 1, 2, 3, 4, 5, 6 ";
     } else {
       $this->_errorOccurred = true;
       $this->_error = "Can only retrieve stats on collections and material types.";
       return false;
     }
-    $sql = $sql."order by description ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing the ".$table." domain table.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= "order by description ";
+    return $this->_query($sql, "Error accessing the ".$table." domain table.");
   }
 
   /****************************************************************************
@@ -104,24 +86,19 @@ class DmQuery extends Query {
    ****************************************************************************
    */
   function execCheckoutStats($mbrid) {
-    $sql = "select mat.* ";
-    $sql = $sql.",count(copy.mbrid) row_count ";
-    $sql = $sql."from material_type_dm mat left outer join biblio bib on mat.code = bib.material_cd ";
-    $sql = $sql."left outer join biblio_copy copy on bib.bibid = copy.bibid ";
-    $sql = $sql."where copy.mbrid = ".$mbrid." or copy.mbrid is null ";
-    $sql = $sql."group by mat.code, mat.description, mat.default_flg, mat.adult_checkout_limit, mat.juvenile_checkout_limit ";
-    $sql = $sql."order by mat.description ";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing library member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql = $this->mkSQL("select mat.*, count(copy.mbrid) row_count "
+                        . "from material_type_dm mat "
+                        . " left outer join biblio bib on mat.code = bib.material_cd "
+                        . " left outer join biblio_copy copy on bib.bibid = copy.bibid "
+                        . "where copy.mbrid = %N or copy.mbrid is null "
+                        . "group by mat.code, mat.description, mat.default_flg, "
+                        . " mat.adult_checkout_limit, mat.juvenile_checkout_limit "
+                        . "order by mat.description ", $mbrid);
+    if (!$this->_query($sql, "Error accessing library member information.")) {
       return false;
     }
     $this->_tableNm = "material_type_dm";
-    return $result;
+    return true;
   }
 
   /****************************************************************************
@@ -177,15 +154,13 @@ class DmQuery extends Query {
    */
   function insert($table, $dm) {
     # constructing sql
-    $sql = "insert into ".$table." values (null, ";
-    $sql = $sql."'".$dm->getDescription()."','N', ";
+    $sql .= $this->mkSQL("insert into %I values (null, %Q, 'N', ",
+                         $table, $dm->getDescription());
     if ($table == "collection_dm") {
-      $sql = $sql.$dm->getDaysDueBack().", ";
-      $sql = $sql.$dm->getDailyLateFee().")";
+      $sql .= $this->mkSQL("%N, %N)", $dm->getDaysDueBack(), $dm->getDailyLateFee());
     } elseif ($table == "material_type_dm") {
-      $sql = $sql.$dm->getAdultCheckoutLimit().", ";
-      $sql = $sql.$dm->getJuvenileCheckoutLimit().", ";
-      $sql = $sql."'".$dm->getImageFile()."')";
+      $sql .= $this->mkSQL("%N, %N, %Q)", $dm->getAdultCheckoutLimit(),
+                           $dm->getJuvenileCheckoutLimit(), $dm->getImageFile());
     } else {
       $this->_errorOccurred = true;
       $this->_error = "Can only insert rows on collections and material types.";
@@ -193,16 +168,7 @@ class DmQuery extends Query {
     }
 
     # running sql
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error inserting into ".$table;
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error inserting into ".$table);
   }
 
   /****************************************************************************
@@ -214,32 +180,25 @@ class DmQuery extends Query {
    ****************************************************************************
    */
   function update($table, $dm) {
-    $sql = "update ".$table." set ";
-    $sql = $sql."description='".$dm->getDescription()."', ";
-    $sql = $sql." default_flg = 'N', ";
+    $sql = $this->mkSQL("update %I set description=%Q, default_flg='N', ",
+                         $table, $dm->getDescription());
     if ($table == "collection_dm") {
-      $sql = $sql." days_due_back = ".$dm->getDaysDueBack().", ";
-      $sql = $sql." daily_late_fee = ".$dm->getDailyLateFee()." ";
+      $sql .= $this->mkSQL("days_due_back=%N, daily_late_fee=%N ",
+                           $dm->getDaysDueBack(), $dm->getDailyLateFee());
     } elseif ($table == "material_type_dm") {
-      $sql = $sql." adult_checkout_limit = ".$dm->getAdultCheckoutLimit().", ";
-      $sql = $sql." juvenile_checkout_limit = ".$dm->getJuvenileCheckoutLimit().", ";
-      $sql = $sql." image_file = '".$dm->getImageFile()."' ";
+      $sql .= $this->mkSQL("adult_checkout_limit=%N, "
+                          . "juvenile_checkout_limit=%N, "
+                          . "image_file=%Q ",
+                          $dm->getAdultCheckoutLimit(),
+                          $dm->getJuvenileCheckoutLimit(),
+                          $dm->getImageFile());
     } else {
       $this->_errorOccurred = true;
       $this->_error = "Can only update rows on collections and material types.";
       return false;
     }
-    $sql = $sql."where code = ".$dm->getCode();
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating ".$table;
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= $this->mkSQL("where code=%N ", $dm->getCode());
+    return $this->_query($sql, "Error updating ".$table);
   }
 
   /****************************************************************************
@@ -250,17 +209,8 @@ class DmQuery extends Query {
    ****************************************************************************
    */
   function delete($table, $code) {
-    $sql = "delete from ".$table." where code = ".$code;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error deleting from ".$table;
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from %I where code = %N", $table, $code);
+    return $this->_query($sql, "Error deleting from ".$table);
   }
 
 }

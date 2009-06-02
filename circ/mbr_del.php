@@ -24,7 +24,7 @@
   $restrictToMbrAuth = TRUE;
   $nav = "deletedone";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/MemberQuery.php");
   require_once("../classes/BiblioStatusHistQuery.php");
@@ -33,8 +33,8 @@
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  $mbrid = $HTTP_GET_VARS["mbrid"];
-  $mbrName = $HTTP_GET_VARS["name"];
+  $mbrid = $_GET["mbrid"];
+  $mbrName = $_GET["name"];
 
   #**************************************************************************
   #*  Delete library member

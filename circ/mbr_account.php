@@ -25,7 +25,7 @@
   $focus_form_name = "accttransform";
   $focus_form_field = "transactionTypeCd";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../functions/formatFuncs.php");
   require_once("../shared/logincheck.php");
@@ -38,7 +38,7 @@
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_GET_VARS) == 0) {
+  if (count($_GET) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
@@ -46,9 +46,9 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $mbrid = $HTTP_GET_VARS["mbrid"];
-  if (isset($HTTP_GET_VARS["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($HTTP_GET_VARS["msg"])."</font><br><br>";
+  $mbrid = $_GET["mbrid"];
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }

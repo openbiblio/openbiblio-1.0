@@ -40,16 +40,7 @@ class InstallQuery extends Query {
    ****************************************************************************
    */
   function exec($sql) {
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error processing install sql.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    return $this->_query($sql, "Error processing install sql.");
   }
 
 
@@ -61,17 +52,8 @@ class InstallQuery extends Query {
    ****************************************************************************
    */
   function dropTable($tableName) {
-    $sql = "drop table ".$tableName;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error dropping table ".$tableName;
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("drop table %I ", $tableName);
+    return $this->_query($sql, "Error dropping table $tableName");
   }
 
 }

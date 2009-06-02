@@ -26,7 +26,7 @@
   $nav = "editcopy";
   $focus_form_name = "editCopyForm";
   $focus_form_field = "barcodeNmbr";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioCopy.php");
@@ -38,14 +38,14 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["bibid"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["bibid"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
     #****************************************************************************
     #*  Retrieving get var
     #****************************************************************************
-    $bibid = $HTTP_GET_VARS["bibid"];
-    $copyid = $HTTP_GET_VARS["copyid"];
+    $bibid = $_GET["bibid"];
+    $copyid = $_GET["copyid"];
 
     #****************************************************************************
     #*  Read copy information

@@ -23,7 +23,7 @@
   $tab = "cataloging";
   $nav = "upload_usmarc";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../shared/header.php");
   
@@ -48,10 +48,10 @@
 <table border=0>
 <tr><td><?php echo $loc->getText("biblioFieldsCollection"); ?>:</td><td><?php printSelect("collectionCd","collection_dm",$postVars); ?></td></tr>
 <tr><td><?php echo $loc->getText("biblioFieldsMaterialTyp"); ?>:</td><td><?php printSelect("materialCd","material_type_dm",$postVars); ?></td></tr>
-<tr><td><?php echo $loc->getText("biblioFieldsOpacFlg"); ?>:</td><td><SELECT name=opac id=opac><option value=Y>Yes</option><option value=N SELECTED>No</option></select></td></tr>
-<tr><td colspan=2><input type=hidden name=userid id=userid value="<? echo $HTTP_SESSION_VARS["userid"]?>"></td></tr>
+  <tr><td><?php echo $loc->getText("biblioFieldsOpacFlg"); ?>:</td><td><SELECT name=opac id=opac><option value=Y><?php echo $loc->getText("AnswerYes"); ?></option><option value=N SELECTED><?php echo $loc->getText("AnswerNo"); ?></option></select></td></tr>
+<tr><td colspan=2><input type=hidden name=userid id=userid value="<? echo $_SESSION["userid"]?>"></td></tr>
 </table>
-<input type="submit" value="Upload File" class="button">
+  <input type="submit" value="<?php echo $loc->getText("UploadFile"); ?>" class="button">
 </form>
 
 <?php include("../shared/footer.php"); ?>

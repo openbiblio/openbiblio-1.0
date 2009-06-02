@@ -22,7 +22,7 @@
 
   $tab = "admin";
   $nav = "themes";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
@@ -30,12 +30,12 @@
   #****************************************************************************
   #*  Checking for query string.  Go back to theme list if none found.
   #****************************************************************************
-  if (!isset($HTTP_GET_VARS["themeid"])){
+  if (!isset($_GET["themeid"])){
     header("Location: ../admin/theme_list.php");
     exit();
   }
-  $themeid = $HTTP_GET_VARS["themeid"];
-  $name = $HTTP_GET_VARS["name"];
+  $themeid = $_GET["themeid"];
+  $name = $_GET["name"];
 
   #**************************************************************************
   #*  Show confirm page

@@ -26,13 +26,13 @@
   $nav = "home";
   $focus_form_name = "phrasesearch";
   $focus_form_field = "searchText";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
   require_once("../shared/header_opac.php");
 
   $lookup = "N";
-  if (isset($HTTP_GET_VARS["lookup"])) {
+  if (isset($_GET["lookup"])) {
     $lookup = "Y";
   }
 ?>

@@ -22,7 +22,7 @@
 
   $tab = "cataloging";
   $nav = "editmarc";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
@@ -31,10 +31,10 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $fieldid = $HTTP_GET_VARS["fieldid"];
-  $tag = $HTTP_GET_VARS["tag"];
-  $subfieldCd = $HTTP_GET_VARS["subfieldCd"];
+  $bibid = $_GET["bibid"];
+  $fieldid = $_GET["fieldid"];
+  $tag = $_GET["tag"];
+  $subfieldCd = $_GET["subfieldCd"];
 
   #**************************************************************************
   #*  Show confirm page

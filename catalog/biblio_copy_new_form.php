@@ -30,12 +30,12 @@
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_GET_VARS) == 0) {
+  if (count($_GET) == 0) {
     header("Location: ../catalog/index.php");
     exit();
   }
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
@@ -45,7 +45,7 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
+  $bibid = $_GET["bibid"];
   require_once("../shared/header.php");
 
 

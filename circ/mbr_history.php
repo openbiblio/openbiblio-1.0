@@ -23,7 +23,7 @@
   $tab = "circulation";
   $nav = "hist";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioStatusHist.php");
@@ -34,7 +34,7 @@
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_GET_VARS) == 0) {
+  if (count($_GET) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
@@ -42,9 +42,9 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $mbrid = $HTTP_GET_VARS["mbrid"];
-  if (isset($HTTP_GET_VARS["name"])) {
-      $mbrName = urlencode($HTTP_GET_VARS["name"]);
+  $mbrid = $_GET["mbrid"];
+  if (isset($_GET["name"])) {
+      $mbrName = urlencode($_GET["name"]);
   } else {
       $mbrName = "";
   }

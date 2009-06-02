@@ -23,7 +23,7 @@
   $tab = "cataloging";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioCopyQuery.php");
   require_once("../classes/BiblioStatusHistQuery.php");
@@ -31,9 +31,9 @@
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $copyid = $HTTP_GET_VARS["copyid"];
-  $barcode = $HTTP_GET_VARS["barcode"];
+  $bibid = $_GET["bibid"];
+  $copyid = $_GET["copyid"];
+  $barcode = $_GET["barcode"];
 
   #**************************************************************************
   #*  Delete Bibliography Copy

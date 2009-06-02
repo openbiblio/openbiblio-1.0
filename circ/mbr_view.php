@@ -25,7 +25,7 @@
   $focus_form_name = "barcodesearch";
   $focus_form_field = "barcodeNmbr";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../functions/formatFuncs.php");
   require_once("../shared/logincheck.php");
@@ -44,7 +44,7 @@
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_GET_VARS) == 0) {
+  if (count($_GET) == 0) {
     header("Location: ../circ/index.php");
     exit();
   }
@@ -52,9 +52,9 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $mbrid = $HTTP_GET_VARS["mbrid"];
-  if (isset($HTTP_GET_VARS["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($HTTP_GET_VARS["msg"])."</font><br><br>";
+  $mbrid = $_GET["mbrid"];
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -299,7 +299,7 @@
 </form>
 
 <h1><?php print $loc->getText("mbrViewHead4"); ?>
-<font class="primary"> <a href="javascript:popSecondary('../circ/mbr_print_checkouts.php?mbrid=<?php echo $mbrid;?>')">print checkouts</a></font>
+  <font class="primary"> <a href="javascript:popSecondary('../circ/mbr_print_checkouts.php?mbrid=<?php echo $mbrid;?>')"><?php print $loc->getText("mbrPrintCheckouts"); ?></a></font>
 </h1>
 <table class="primary">
   <tr>
@@ -398,7 +398,7 @@
     <td nowrap="true" class="primary">
       <?php print $loc->getText("mbrViewBarcode"); ?>
       <?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
-      <a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')">search</a>
+        <a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"><?php print $loc->getText("indexSearch"); ?></a>
       <input type="hidden" name="mbrid" value="<?php echo $mbrid;?>">
       <input type="hidden" name="classification" value="<?php echo $mbr->getClassification();?>">
       <input type="submit" value="<?php print $loc->getText("mbrViewPlaceHold"); ?>" class="button">
@@ -462,7 +462,7 @@
 ?>
   <tr>
     <td class="primary" valign="top" nowrap="yes">
-      <a href="../shared/hold_del_confirm.php?bibid=<?php echo $hold->getBibid();?>&copyid=<?php echo $hold->getCopyid();?>&holdid=<?php echo $hold->getHoldid();?>&mbrid=<?php echo $mbrid;?>">del</a>
+      <a href="../shared/hold_del_confirm.php?bibid=<?php echo $hold->getBibid();?>&copyid=<?php echo $hold->getCopyid();?>&holdid=<?php echo $hold->getHoldid();?>&mbrid=<?php echo $mbrid;?>"><?php print $loc->getText("mbrViewDel"); ?></a>
     </td>
     <td class="primary" valign="top" nowrap="yes">
       <?php echo $hold->getHoldBeginDt();?>

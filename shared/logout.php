@@ -20,8 +20,9 @@
  **********************************************************************************
  */
 
-  session_start();
-  $HTTP_SESSION_VARS = array();
+  require_once("../shared/common.php");
+
+  $_SESSION = array();
   session_destroy();
 
   header("Location: ../home/index.php");

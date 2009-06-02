@@ -23,7 +23,7 @@
   $tab = "admin";
   $nav = "staff";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Staff.php");
@@ -35,7 +35,7 @@
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../admin/staff_list.php");
     exit();
   }
@@ -44,15 +44,15 @@
   #*  Validate data
   #****************************************************************************
   $staff = new Staff();
-  $staff->setUserid($HTTP_POST_VARS["userid"]);
-  $staff->setPwd($HTTP_POST_VARS["pwd"]);
-  $HTTP_POST_VARS["pwd"] = $staff->getPwd();
-  $staff->setPwd2($HTTP_POST_VARS["pwd2"]);
-  $HTTP_POST_VARS["pwd2"] = $staff->getPwd2();
+  $staff->setUserid($_POST["userid"]);
+  $staff->setPwd($_POST["pwd"]);
+  $_POST["pwd"] = $staff->getPwd();
+  $staff->setPwd2($_POST["pwd2"]);
+  $_POST["pwd2"] = $staff->getPwd2();
   if (!$staff->validatePwd()) {
     $pageErrors["pwd"] = $staff->getPwdError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../admin/staff_pwd_reset_form.php");
     exit();
   }
@@ -75,8 +75,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   #**************************************************************************
   #*  Show success page

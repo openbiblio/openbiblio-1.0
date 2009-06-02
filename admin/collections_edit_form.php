@@ -27,7 +27,7 @@
   $focus_form_name = "editcollectionform";
   $focus_form_field = "description";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
@@ -38,11 +38,11 @@
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["code"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["code"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
 
-    $code = $HTTP_GET_VARS["code"];
+    $code = $_GET["code"];
     $postVars["code"] = $code;
     include_once("../classes/Dm.php");
     include_once("../classes/DmQuery.php");

@@ -56,36 +56,36 @@
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,"admin");
 
-  define("OBIB_TITLE_BG",$HTTP_POST_VARS["titleBg"]);
-  define("OBIB_TITLE_FONT_FACE",$HTTP_POST_VARS["titleFontFace"]);
-  define("OBIB_TITLE_FONT_SIZE",$HTTP_POST_VARS["titleFontSize"]);
-  define("OBIB_TITLE_FONT_BOLD",isset($HTTP_POST_VARS["titleFontBold"]));
-  define("OBIB_TITLE_ALIGN",$HTTP_POST_VARS["titleAlign"]);
-  define("OBIB_TITLE_FONT_COLOR",$HTTP_POST_VARS["titleFontColor"]);
+  define("OBIB_TITLE_BG",$_POST["titleBg"]);
+  define("OBIB_TITLE_FONT_FACE",$_POST["titleFontFace"]);
+  define("OBIB_TITLE_FONT_SIZE",$_POST["titleFontSize"]);
+  define("OBIB_TITLE_FONT_BOLD",isset($_POST["titleFontBold"]));
+  define("OBIB_TITLE_ALIGN",$_POST["titleAlign"]);
+  define("OBIB_TITLE_FONT_COLOR",$_POST["titleFontColor"]);
 
-  define("OBIB_PRIMARY_BG",$HTTP_POST_VARS["primaryBg"]);
-  define("OBIB_PRIMARY_FONT_FACE",$HTTP_POST_VARS["primaryFontFace"]);
-  define("OBIB_PRIMARY_FONT_SIZE",$HTTP_POST_VARS["primaryFontSize"]);
-  define("OBIB_PRIMARY_FONT_COLOR",$HTTP_POST_VARS["primaryFontColor"]);
-  define("OBIB_PRIMARY_LINK_COLOR",$HTTP_POST_VARS["primaryLinkColor"]);
-  define("OBIB_PRIMARY_ERROR_COLOR",$HTTP_POST_VARS["primaryErrorColor"]);
+  define("OBIB_PRIMARY_BG",$_POST["primaryBg"]);
+  define("OBIB_PRIMARY_FONT_FACE",$_POST["primaryFontFace"]);
+  define("OBIB_PRIMARY_FONT_SIZE",$_POST["primaryFontSize"]);
+  define("OBIB_PRIMARY_FONT_COLOR",$_POST["primaryFontColor"]);
+  define("OBIB_PRIMARY_LINK_COLOR",$_POST["primaryLinkColor"]);
+  define("OBIB_PRIMARY_ERROR_COLOR",$_POST["primaryErrorColor"]);
 
-  define("OBIB_ALT1_BG",$HTTP_POST_VARS["alt1Bg"]);
-  define("OBIB_ALT1_FONT_FACE",$HTTP_POST_VARS["alt1FontFace"]);
-  define("OBIB_ALT1_FONT_SIZE",$HTTP_POST_VARS["alt1FontSize"]);
-  define("OBIB_ALT1_FONT_COLOR",$HTTP_POST_VARS["alt1FontColor"]);
-  define("OBIB_ALT1_LINK_COLOR",$HTTP_POST_VARS["alt1LinkColor"]);
+  define("OBIB_ALT1_BG",$_POST["alt1Bg"]);
+  define("OBIB_ALT1_FONT_FACE",$_POST["alt1FontFace"]);
+  define("OBIB_ALT1_FONT_SIZE",$_POST["alt1FontSize"]);
+  define("OBIB_ALT1_FONT_COLOR",$_POST["alt1FontColor"]);
+  define("OBIB_ALT1_LINK_COLOR",$_POST["alt1LinkColor"]);
 
-  define("OBIB_ALT2_BG",$HTTP_POST_VARS["alt2Bg"]);
-  define("OBIB_ALT2_FONT_FACE",$HTTP_POST_VARS["alt2FontFace"]);
-  define("OBIB_ALT2_FONT_SIZE",$HTTP_POST_VARS["alt2FontSize"]);
-  define("OBIB_ALT2_FONT_COLOR",$HTTP_POST_VARS["alt2FontColor"]);
-  define("OBIB_ALT2_LINK_COLOR",$HTTP_POST_VARS["alt2LinkColor"]);
-  define("OBIB_ALT2_FONT_BOLD",isset($HTTP_POST_VARS["alt2FontBold"]));
+  define("OBIB_ALT2_BG",$_POST["alt2Bg"]);
+  define("OBIB_ALT2_FONT_FACE",$_POST["alt2FontFace"]);
+  define("OBIB_ALT2_FONT_SIZE",$_POST["alt2FontSize"]);
+  define("OBIB_ALT2_FONT_COLOR",$_POST["alt2FontColor"]);
+  define("OBIB_ALT2_LINK_COLOR",$_POST["alt2LinkColor"]);
+  define("OBIB_ALT2_FONT_BOLD",isset($_POST["alt2FontBold"]));
 
-  define("OBIB_BORDER_COLOR",$HTTP_POST_VARS["borderColor"]);
-  define("OBIB_BORDER_WIDTH",$HTTP_POST_VARS["borderWidth"]);
-  define("OBIB_PADDING",$HTTP_POST_VARS["tablePadding"]);
+  define("OBIB_BORDER_COLOR",$_POST["borderColor"]);
+  define("OBIB_BORDER_WIDTH",$_POST["borderWidth"]);
+  define("OBIB_PADDING",$_POST["tablePadding"]);
 
 ?>
 
@@ -95,7 +95,7 @@
   <?php include("../css/style.php");?>
 </style>
 <meta name="description" content="OpenBiblio Library Automation System">
-<title><?php echo $HTTP_POST_VARS["themeName"]; ?> <? echo $loc->getText("adminTheme_preview_Themepreview"); ?></title>
+<title><?php echo $_POST["themeName"]; ?> <? echo $loc->getText("adminTheme_preview_Themepreview"); ?></title>
 
 </head>
 <body bgcolor="<?php echo OBIB_PRIMARY_BG;?>" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" onLoad="self.focus()">
@@ -211,7 +211,7 @@
      * beginning of main body
      **************************************************************************************-->
 
-<? echo $loc->getText("adminTheme_preview_Thisstart"); ?><?php echo $HTTP_POST_VARS["themeName"]; ?> <? echo $loc->getText("adminTheme_preview_Thisend"); ?>
+<? echo $loc->getText("adminTheme_preview_Thisstart"); ?><?php echo $_POST["themeName"]; ?> <? echo $loc->getText("adminTheme_preview_Thisend"); ?>
 
 <h1><? echo $loc->getText("adminTheme_preview_Samplelist"); ?></h1>
 <table class="primary">

@@ -42,19 +42,10 @@ class StaffQuery extends Query {
   function execSelect($userid="") {
     $sql = "select * from staff";
     if ($userid != "") {
-      $sql = $sql." where userid=".$userid;
+      $sql .= $this->mkSQL(" where userid=%N ", $userid);
     }
-    $sql = $sql." order by last_name, first_name";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error accessing staff member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= " order by last_name, first_name";
+    return $this->_query($sql, "Error accessing staff member information.");
   }
   /****************************************************************************
    * Executes a query to verify a signon username and password
@@ -65,18 +56,11 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function verifySignon($username, $pwd) {
-    $sql = "select * from staff";
-    $sql = $sql." where username = lower('".$username."') and pwd = password(lower('".$pwd."'))";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error verifying username and password.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("select * from staff "
+                        . "where username = lower(%Q) "
+                        . " and pwd = password(lower(%Q)) ",
+                        $username, $pwd);
+    return $this->_query($sql, "Error verifying username and password.");
   }
 
   /****************************************************************************
@@ -88,17 +72,9 @@ class StaffQuery extends Query {
    */
   function suspendStaff($username)
   {
-    $sql = "update staff set suspended_flg='Y' where username = lower('".$username."')";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error suspending staff member.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("update staff set suspended_flg='Y' "
+                        . "where username = lower(%Q)", $username);
+    return $this->_query($sql, "Error suspending staff member.");
   }
 
   /****************************************************************************
@@ -159,16 +135,10 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function _dupUserName($username, $userid=0) {
-    $sql = "select count(*) from staff where username = '".$username."'";
-    $sql = $sql." and userid <> ".$userid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error checking for dup username.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return 0;
+    $sql = $this->mkSQL("select count(*) from staff where username = %Q "
+                        . " and userid <> %N", $username, $userid);
+    if (!$this->_query($sql, "Error checking for dup username.")) {
+      return false;
     }
     $array = $this->_conn->fetchRow(OBIB_NUM);
     if ($array[0] > 0) {
@@ -192,52 +162,22 @@ class StaffQuery extends Query {
       $this->_error = "Username is already in use.";
       return false;
     }
-    $sql = "insert into staff values (null, sysdate(), sysdate(), ";
-    $sql = $sql.$staff->getLastChangeUserid().", ";
-    $sql = $sql."'".$staff->getUsername()."', ";
-    $sql = $sql."password('".$staff->getPwd()."'), ";
-    $sql = $sql."'".$staff->getLastName()."', ";
+    $sql = $this->mkSQL("insert into staff values (null, sysdate(), sysdate(), "
+                        . "%N, %Q, password(%Q), %Q, ",
+                        $staff->getLastChangeUserid(), $staff->getUsername(),
+                        $staff->getPwd(), $staff->getLastName());
     if ($staff->getFirstName() == "") {
-      $sql = $sql."null, ";
+      $sql .= "null, ";
     } else {
-      $sql = $sql."'".$staff->getFirstName()."', ";
+      $sql .= $this->mkSQL("%Q, ", $staff->getFirstName());
     }
-    $sql = $sql."'N', ";
-    if ($staff->hasAdminAuth()) {
-      $sql = $sql."'Y', ";
-    } else {
-      $sql = $sql."'N', ";
-    }
-    if ($staff->hasCircAuth()) {
-      $sql = $sql."'Y', ";
-    } else {
-      $sql = $sql."'N', ";
-    }
-    if ($staff->hasCircMbrAuth()) {
-      $sql = $sql."'Y', ";
-    } else {
-      $sql = $sql."'N', ";
-    }
-    if ($staff->hasCatalogAuth()) {
-      $sql = $sql."'Y', ";
-    } else {
-      $sql = $sql."'N', ";
-    }
-    if ($staff->hasReportsAuth()) {
-      $sql = $sql."'Y')";
-    } else {
-      $sql = $sql."'N')";
-    }
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error inserting new staff member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= $this->mkSQL("'N', %Q, %Q, %Q, %Q, %Q) ",
+                         $staff->hasAdminAuth() ? "Y" : "N",
+                         $staff->hasCircAuth() ? "Y" : "N",
+                         $staff->hasCircMbrAuth() ? "Y" : "N",
+                         $staff->hasCatalogAuth() ? "Y" : "N",
+                         $staff->hasReportsAuth() ? "Y" : "N");
+    return $this->_query($sql, "Error inserting new staff member information.");
   }
 
   /****************************************************************************
@@ -259,56 +199,26 @@ class StaffQuery extends Query {
       return false;
     }
 
-    $sql = "update staff set last_change_dt = sysdate(),";
-    $sql = $sql." last_change_userid=".$staff->getLastChangeUserid().", ";
-    $sql = $sql." username='".$staff->getUsername()."',";
-    $sql = $sql." last_name='".$staff->getLastName()."',";
+    $sql = $this->mkSQL("update staff set last_change_dt = sysdate(), "
+                        . "last_change_userid=%N, username=%Q, last_name=%Q, ",
+                        $staff->getLastChangeUserid(), $staff->getUsername(),
+                        $staff->getLastName());
     if ($staff->getFirstName() == "") {
-      $sql = $sql." first_name=null,";
+      $sql .= "first_name=null, ";
     } else {
-      $sql = $sql." first_name='".$staff->getFirstName()."',";
+      $sql .= $this->mkSQL("first_name=%Q, ", $staff->getFirstName());
     }
-    if ($staff->isSuspended()) {
-      $sql = $sql." suspended_flg='Y',";
-    } else {
-      $sql = $sql." suspended_flg='N',";
-    }
-    if ($staff->hasAdminAuth()) {
-      $sql = $sql." admin_flg='Y',";
-    } else {
-      $sql = $sql." admin_flg='N',";
-    }
-    if ($staff->hasCircAuth()) {
-      $sql = $sql." circ_flg='Y',";
-    } else {
-      $sql = $sql." circ_flg='N',";
-    }
-    if ($staff->hasCircMbrAuth()) {
-      $sql = $sql." circ_mbr_flg='Y',";
-    } else {
-      $sql = $sql." circ_mbr_flg='N',";
-    }
-    if ($staff->hasCatalogAuth()) {
-      $sql = $sql." catalog_flg='Y',";
-    } else {
-      $sql = $sql." catalog_flg='N',";
-    }
-    if ($staff->hasReportsAuth()) {
-      $sql = $sql." reports_flg='Y'";
-    } else {
-      $sql = $sql." reports_flg='N'";
-    }
-    $sql = $sql." where userid = ".$staff->getUserid();
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error updating staff member information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql .= $this->mkSQL("suspended_flg=%Q, admin_flg=%Q, circ_flg=%Q, "
+                         . "circ_mbr_flg=%Q, catalog_flg=%Q, reports_flg=%Q "
+                         . "where userid=%N ",
+                         $staff->isSuspended() ? "Y" : "N",
+                         $staff->hasAdminAuth() ? "Y" : "N",
+                         $staff->hasCircAuth() ? "Y" : "N",
+                         $staff->hasCircMbrAuth() ? "Y" : "N",
+                         $staff->hasCatalogAuth() ? "Y" : "N",
+                         $staff->hasReportsAuth() ? "Y" : "N",
+                         $staff->getUserid());
+    return $this->_query($sql, "Error updating staff member information.");
   }
 
   /****************************************************************************
@@ -319,18 +229,10 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function resetPwd($staff) {
-    $sql = "update staff set pwd = password('".$staff->getPwd()."')";
-    $sql = $sql." where userid = ".$staff->getUserid();
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error reseting password.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("update staff set pwd=password(%Q) "
+                        . "where userid=%N ",
+                        $staff->getPwd(), $staff->getUserid());
+    return $this->_query($sql, "Error resetting password.");
   }
 
   /****************************************************************************
@@ -341,17 +243,8 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function delete($userid) {
-    $sql = "delete from staff where userid = ".$userid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error deleting staff information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from staff where userid = %N ", $userid);
+    return $this->_query($sql, "Error deleting staff information.");
   }
 
 }

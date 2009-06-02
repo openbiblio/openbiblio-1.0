@@ -23,7 +23,7 @@
   $tab = "admin";
   $nav = "summary";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../shared/header.php");
   require_once("../classes/Localize.php");

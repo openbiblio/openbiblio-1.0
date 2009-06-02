@@ -91,6 +91,14 @@ $trans["mbrFldsGrade"]            = "\$text='School Grade:';";
 $trans["mbrFldsTeacher"]          = "\$text='School Teacher:';";
 $trans["mbrFldsSubmit"]           = "\$text='Submit';";
 $trans["mbrFldsCancel"]           = "\$text='Cancel';";
+$trans["mbrsearchResult"]         = "\$text='Result Pages: ';";
+$trans["mbrsearchprev"]           = "\$text='prev';";
+$trans["mbrsearchnext"]           = "\$text='next';";
+$trans["mbrsearchNoResults"]      = "\$text='No results found.';";
+$trans["mbrsearchFoundResults"]   = "\$text=' results found.';";
+$trans["mbrsearchSearchResults"]  = "\$text='Search Results:';";
+$trans["mbrsearchCardNumber"]     = "\$text='Card Number:';";
+$trans["mbrsearchClassification"] = "\$text='Classification:';";
 
 #****************************************************************************
 #*  Translation text for page mbr_new.php
@@ -145,6 +153,8 @@ $trans["mbrViewHoldHdr7"]         = "\$text='Status';";
 $trans["mbrViewHoldHdr8"]         = "\$text='Due Back';";
 $trans["mbrViewNoHolds"]          = "\$text='No bibliographies are currently on hold.';";
 $trans["mbrViewBalMsg"]           = "\$text='Note: Member has an outstanding account balance of %bal%.';";
+$trans["mbrPrintCheckouts"]	  = "\$text='print checkouts';";
+$trans["mbrViewDel"]              = "\$text='del';";
 
 #****************************************************************************
 #*  Translation text for page checkout.php
@@ -195,6 +205,8 @@ $trans["holdMessageMsg2"]         = "\$text='Return to bibliography check in.';"
 #*  Translation text for page place_hold.php
 #****************************************************************************
 $trans["placeHoldErr1"]           = "\$text='Barcode number must be numeric.';";
+$trans["placeHoldErr2"]           = "\$text='Barcode does not exist.';";
+$trans["placeHoldErr3"]           = "\$text='This member already has that item checked out -- not placing hold.';";
 
 #****************************************************************************
 #*  Translation text for page mbr_del_confirm.php
@@ -262,5 +274,6 @@ $trans["mbrPrintCheckoutsHdr1"]   = "\$text='Current Date:';";
 $trans["mbrPrintCheckoutsHdr2"]   = "\$text='Member:';";
 $trans["mbrPrintCheckoutsHdr3"]   = "\$text='Card Number:';";
 $trans["mbrPrintCheckoutsHdr4"]   = "\$text='Classification:';";
+$trans["mbrPrintCloseWindow"]     = "\$text='Close Window';";
 
 ?>

@@ -23,11 +23,11 @@
   #****************************************************************************
   #*  Checking for get vars.
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
-  $copyid = $HTTP_GET_VARS["copyid"];
-  $holdid = $HTTP_GET_VARS["holdid"];
-  if (isset($HTTP_GET_VARS["mbrid"])) {
-    $mbrid = $HTTP_GET_VARS["mbrid"];
+  $bibid = $_GET["bibid"];
+  $copyid = $_GET["copyid"];
+  $holdid = $_GET["holdid"];
+  if (isset($_GET["mbrid"])) {
+    $mbrid = $_GET["mbrid"];
     $tab = "circulation";
     $nav = "view";
     $returnUrl = "../circ/mbr_view.php?mbrid=".$mbrid;
@@ -39,7 +39,7 @@
   }
   
   $restrictInDemo = TRUE;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,"shared");

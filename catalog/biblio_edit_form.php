@@ -27,7 +27,7 @@
   $helpPage = "biblioEdit";
   $focus_form_name = "editbiblioform";
   $focus_form_field = "materialCd";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/Biblio.php");
@@ -35,13 +35,13 @@
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
-  if (isset($HTTP_GET_VARS["bibid"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["bibid"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
     #****************************************************************************
     #*  Retrieving get var
     #****************************************************************************
-    $bibid = $HTTP_GET_VARS["bibid"];
+    $bibid = $_GET["bibid"];
 
     #****************************************************************************
     #*  Search database
@@ -56,40 +56,15 @@
       $biblioQ->close();
       displayErrorPage($biblioQ);
     }
-    $biblioFlds = $biblio->getBiblioFields();
 
     #**************************************************************************
     #*  load up post vars
     #**************************************************************************
-    $postVars["bibid"] = $bibid;
-    $postVars["collectionCd"] = $biblio->getCollectionCd();
-    $postVars["materialCd"] = $biblio->getMaterialCd();
-    $postVars["callNmbr1"] = $biblio->getCallNmbr1();
-    $postVars["callNmbr2"] = $biblio->getCallNmbr2();
-    $postVars["callNmbr3"] = $biblio->getCallNmbr3();
-    if ($biblio->showInOpac()) {
-      $postVars["opacFlg"] = "CHECKED";
-    } else {
-      $postVars["opacFlg"] = "";
-    }
-    $biblioFlds = $biblio->getBiblioFields();
-    foreach ($biblioFlds as $key => $biblioFld) {
-      // if we allow these tags with a fldid(added from marc screens), we'll get dup data.
-      if ( !(($biblioFld->getTag() == 245) && ($biblioFld->getSubfieldCd() == "a") && ($biblioFld->getFieldid() != ""))
-        && !(($biblioFld->getTag() == 245) && ($biblioFld->getSubfieldCd() == "b") && ($biblioFld->getFieldid() != ""))
-        && !(($biblioFld->getTag() == 245) && ($biblioFld->getSubfieldCd() == "c") && ($biblioFld->getFieldid() != ""))
-        && !(($biblioFld->getTag() == 100) && ($biblioFld->getSubfieldCd() == "a") && ($biblioFld->getFieldid() != ""))
-        && !(($biblioFld->getTag() == 650) && ($biblioFld->getSubfieldCd() == "a") && ($biblioFld->getFieldid() != "")) ) {
-        $postVars[$key] = $biblioFld->getFieldData();
-        $fieldIds[$key] = $biblioFld->getFieldid();
-      }
-    }
-    $HTTP_SESSION_VARS["postVars"] = $postVars;
-//    $title = urlencode($postVars["callNmbr"]);
+    include("biblio_post_conversion.php");
+    $_SESSION["postVars"] = $postVars;
   } else {
     require("../shared/get_form_vars.php");
-    $bibid = $postVars["bibid"];
-//    $title = urlencode($postVars["callNmbr"]);
+    $bibid = $postVars["bibid"];    
   }
   require_once("../shared/header.php");
 

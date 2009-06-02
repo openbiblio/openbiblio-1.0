@@ -23,7 +23,7 @@
   $tab = "reports";
   $nav = "runreport";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
 //  include("../shared/logincheck.php");
   include("../lib/pdf/class.pdf.php");
   require_once("../classes/LabelFormat.php");
@@ -39,7 +39,7 @@
   #****************************************************************************
   #*  Validate criteria and run report
   #****************************************************************************
-//$myvar = $HTTP_POST_VARS["label"];
+//$myvar = $_POST["label"];
 
 
 

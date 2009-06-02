@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2005 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -23,44 +23,18 @@
   $tab = "reports";
   $nav = "runreport";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
-  require_once("../classes/Localize.php");
-  $loc = new Localize(OBIB_LOCALE,$tab);
 
-  include("../reports/run_report.php");
-  include("../shared/header_no_nav.php");
-
+  $index = "outputType";
+  if ($_POST[$index] == "reportCriteriaOutputHTML"){
+    include("display_report_html.php");
+  }
+  else if($_POST[$index] == "reportCriteriaOutputCSV"){
+    include("display_report_csv.php");
+  }
+  else {
+    include("report_criteria.php");
+  }
 ?>
 
-<font class="small">
-<a href="../reports/report_criteria.php?rptid=<?php echo $rptid;?>&title=<?php echo $qStrTitle;?>&sql=<?php echo $qStrSql;?>"><?php print $loc->getText("runReportReturnLink1"); ?></a>
-| <a href="../reports/report_list.php"><?php print $loc->getText("runReportReturnLink2"); ?></a></font>
-<h1><?php echo $title;?>:</h1>
-
-<table class="primary">
-  <tr>
-    <?php
-      foreach($fieldIds as $fldid) {
-        echo "<th class=\"rpt\">".$loc->getText($fldid)."</th>";
-      }
-    ?>
-  </tr>
-  <?php
-    while ($array = $reportQ->fetchRow()) {
-      echo "<tr>";
-        foreach($array as $cell) {
-          echo "<td class=\"rpt\">".$cell."</td>";
-        }
-      echo "</tr>";
-    }
-    $reportQ->close();
-  ?>
-  <tr><th class="rpt" colspan="<?php echo $colCount;?>"><?php echo $loc->getText("runReportTotal");?> <?php echo $rowCount;?></th></tr>
-</table>
-<br>
-<font class="small">
-<a href="../reports/report_criteria.php?rptid=<?php echo $rptid;?>&title=<?php echo $qStrTitle;?>&sql=<?php echo $qStrSql;?>"><?php print $loc->getText("runReportReturnLink1"); ?></a>
-| <a href="../reports/report_list.php"><?php print $loc->getText("runReportReturnLink2"); ?></a></font>
-
-<?php include("../shared/footer.php"); ?>

@@ -27,7 +27,7 @@
   // IE gets messed up if you send a cache control in the header of a pdf.  Therefore, the following
   // command will send no cache control.
   session_cache_limiter('private_no_expire'); 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../lib/pdf/class.pdf.php");
   require_once("../functions/fileIOFuncs.php");

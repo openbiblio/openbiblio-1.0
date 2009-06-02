@@ -20,7 +20,7 @@
  **********************************************************************************
  */
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,"shared");
 
@@ -97,8 +97,8 @@ function popSecondaryLarge(url) {
     <td bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <td valign="top" bgcolor="<?php echo OBIB_ALT1_BG;?>">
       <font  class="alt1">
-        <?php if (!isset($HTTP_GET_VARS["page"])) { ?>
-          &raquo; Contents
+        <?php if (!isset($_GET["page"])) { ?>
+          &raquo; <?php echo $loc->getText("helpHeaderContents"); ?>
         <?php } else { ?>
           <a href="../shared/help.php" class="alt1"><?php echo $loc->getText("helpHeaderContents"); ?></a>
         <?php } ?>

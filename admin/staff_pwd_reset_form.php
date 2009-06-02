@@ -25,7 +25,7 @@
   $focus_form_name = "pwdresetform";
   $focus_form_field = "pwd";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../shared/header.php");
   require_once("../classes/Localize.php");
@@ -34,12 +34,11 @@
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["UID"])){
-    unset($HTTP_SESSION_VARS["postVars"]);
-    unset($HTTP_SESSION_VARS["pageErrors"]);
+  if (isset($_GET["UID"])){
+    unset($_SESSION["postVars"]);
+    unset($_SESSION["pageErrors"]);
 
-    $userid = $HTTP_GET_VARS["UID"];
-    $postVars["userid"] = $userid;
+    $postVars["userid"] = $_GET["UID"];
   } else {
     require("../shared/get_form_vars.php");
   }

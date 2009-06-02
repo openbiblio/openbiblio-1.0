@@ -24,7 +24,7 @@
 
   $tab = "cataloging";
   $nav = "editmarc";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioField.php");
   require_once("../classes/BiblioFieldQuery.php");
@@ -38,9 +38,9 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
-  if (isset($HTTP_GET_VARS["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($HTTP_GET_VARS["msg"])."</font><br><br>";
+  $bibid = $_GET["bibid"];
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -164,10 +164,10 @@
       ?>
     <tr>
       <td valign="top" class="<?php echo $row_class;?>">
-        <a href="../catalog/biblio_marc_edit_form.php?bibid=<?php echo $bibid;?>&fieldid=<?php echo $fld->getFieldid();?>&reset=Y">edit</a>
+        <a href="../catalog/biblio_marc_edit_form.php?bibid=<?php echo $bibid;?>&fieldid=<?php echo $fld->getFieldid();?>&reset=Y"><?php echo $loc->getText("biblioMarcListEdit"); ?></a>
       </td>
       <td valign="top" class="<?php echo $row_class;?>">
-        <a href="../catalog/biblio_marc_del_confirm.php?bibid=<?php echo $bibid;?>&fieldid=<?php echo $fld->getFieldid();?>&tag=<?php echo $tag;?>&subfieldCd=<?php echo $fld->getSubfieldCd();?>">del</a>
+        <a href="../catalog/biblio_marc_del_confirm.php?bibid=<?php echo $bibid;?>&fieldid=<?php echo $fld->getFieldid();?>&tag=<?php echo $tag;?>&subfieldCd=<?php echo $fld->getSubfieldCd();?>"><?php echo $loc->getText("biblioMarcListDel"); ?></a>
       </td>
       <td valign="top" class="<?php echo $row_class;?>">
         <?php echo $tag; ?>

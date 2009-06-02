@@ -80,6 +80,44 @@ class DbConnection {
     return true;
   }
   /****************************************************************************
+   * Quotes a string for use in a query
+   * @param string $s string to be quoted
+   * @return string quoted $s
+   * @access public
+   ****************************************************************************
+   */
+  function quote($s) {
+    return "'" . mysql_real_escape_string($s, $this->_link) . "'";
+  }
+  /****************************************************************************
+   * Quotes an identifier for use in a query
+   * @param string $i identifier to be validated
+   * @return string valid identifier
+   * @access public
+   ****************************************************************************
+   */
+  function ident($i) {
+    # Because the MySQL manual is unclear on how to include a ` in a `-quoted
+    # identifer, we just drop them.  It looks like phpMyAdmin does about the
+    # same thing, so we're in good company.  But clearer documentation would
+    # be nice.
+    return '`' . str_replace('`', '', $i) . '`';
+  }
+  /****************************************************************************
+   * Validates a numeric string for use in a query
+   * @param string $n numeric string to be validated
+   * @return string longest prefix of $n that can be treated as a number or "0"
+   * @access public
+   ****************************************************************************
+   */
+  function numstr($n) {
+    if (ereg("^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)", $n, $subs)) {
+      return $subs[1];
+    } else {
+      return "0";
+    }
+  }
+  /****************************************************************************
    * Executes a query
    * @param string $sql SQL of query to execute
    * @return boolean returns false, if error occurs

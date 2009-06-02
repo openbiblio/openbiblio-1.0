@@ -23,7 +23,7 @@
   #****************************************************************************
   #*  Checking for get vars.  Go back to form if none found.
   #****************************************************************************
-  if (count($HTTP_GET_VARS) == 0) {
+  if (count($_GET) == 0) {
     header("Location: ../catalog/index.php");
     exit();
   }
@@ -31,14 +31,14 @@
   #****************************************************************************
   #*  Checking for tab name to show OPAC look and feel if searching from OPAC
   #****************************************************************************
-  if (isset($HTTP_GET_VARS["tab"])) {
-    $tab = $HTTP_GET_VARS["tab"];
+  if (isset($_GET["tab"])) {
+    $tab = $_GET["tab"];
   } else {
     $tab = "cataloging";
   }
 
   $nav = "view";
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   if ($tab != "opac") {
     require_once("../shared/logincheck.php");
   }
@@ -59,9 +59,9 @@
   #****************************************************************************
   #*  Retrieving get var
   #****************************************************************************
-  $bibid = $HTTP_GET_VARS["bibid"];
-  if (isset($HTTP_GET_VARS["msg"])) {
-    $msg = "<font class=\"error\">".stripslashes($HTTP_GET_VARS["msg"])."</font><br><br>";
+  $bibid = $_GET["bibid"];
+  if (isset($_GET["msg"])) {
+    $msg = "<font class=\"error\">".stripslashes($_GET["msg"])."</font><br><br>";
   } else {
     $msg = "";
   }
@@ -209,9 +209,9 @@
     </td>
     <td valign="top" class="primary">
       <?php if ($biblio->showInOpac()) {
-        echo "yes";
+        echo $loc->getText("biblioViewYes");
       } else {
-        echo "no";
+        echo $loc->getText("biblioViewNo");
       }?>
     </td>
   </tr>
@@ -285,10 +285,10 @@
     <tr>
       <?php if ($tab == "cataloging") { ?>
         <td valign="top" class="<?php echo $row_class;?>">
-          <a href="../catalog/biblio_copy_edit_form.php?bibid=<?php echo $copy->getBibid();?>&copyid=<?php echo $copy->getCopyid();?>" class="<?php echo $row_class;?>">edit</a>
+          <a href="../catalog/biblio_copy_edit_form.php?bibid=<?php echo $copy->getBibid();?>&copyid=<?php echo $copy->getCopyid();?>" class="<?php echo $row_class;?>"><?php echo $loc->getText("biblioViewTble2Coledit"); ?></a>
         </td>
         <td valign="top" class="<?php echo $row_class;?>">
-          <a href="../catalog/biblio_copy_del_confirm.php?bibid=<?php echo $copy->getBibid();?>&copyid=<?php echo $copy->getCopyid();?>" class="<?php echo $row_class;?>">del</a>
+          <a href="../catalog/biblio_copy_del_confirm.php?bibid=<?php echo $copy->getBibid();?>&copyid=<?php echo $copy->getCopyid();?>" class="<?php echo $row_class;?>"><?php echo $loc->getText("biblioViewTble2Coldel"); ?></a>
         </td>
       <?php } ?>
       <td valign="top" class="<?php echo $row_class;?>">

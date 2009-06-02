@@ -49,88 +49,63 @@ class BiblioStatusHistQuery extends Query {
   /****************************************************************************
    * Executes a query to select status history
    * @param string $bibid bibid of bibliography status history to select
-   * @return BiblioHold returns hold record or false, if error occurs
+   * @return boolean returns false if error occurs
    * @access public
    ****************************************************************************
    */
   function queryByBibid($bibid) {
     # setting query that will return all the data
-    $sql = "select biblio_status_hist.* ";
-    $sql = $sql.",biblio.title ";
-    $sql = $sql.",biblio.author ";
-    $sql = $sql.",biblio_copy.barcode_nmbr biblio_barcode_nmbr";
-    $sql = $sql.",member.last_name ";
-    $sql = $sql.",member.first_name ";
-    $sql = $sql.",member.barcode_nmbr mbr_barcode_nmbr ";
+    $sql = $this->mkSQL("select biblio_status_hist.*, "
+                        . " biblio.title, biblio.author, "
+                        . " biblio_copy.barcode_nmbr biblio_barcode_nmbr, "
+                        . " member.last_name, member.first_name, "
+                        . " member.barcode_nmbr mbr_barcode_nmbr "
+                        . "from biblio_status_hist, biblio, "
+                        . " biblio_copy, member "
+                        . "where biblio_status_hist.bibid = biblio.bibid "
+                        . " and biblio_status_hist.bibid = biblio_copy.bibid "
+                        . " and biblio_status_hist.copyid = biblio_copy.copyid "
+                        . " and biblio_status_hist.mbrid = member.mbrid "
+                        . " and biblio_status_hist.bibid = %N "
+                        . "order by barcode_nmbr, status_begin_dt ",
+                        $bibid);
 
-    $sql = $sql."from biblio_status_hist ";
-    $sql = $sql.",biblio ";
-    $sql = $sql.",biblio_copy ";
-    $sql = $sql.",member ";
-
-    $sql = $sql."where biblio_status_hist.bibid = biblio.bibid";
-    $sql = $sql." and biblio_status_hist.bibid = biblio_copy.bibid";
-    $sql = $sql." and biblio_status_hist.copyid = biblio_copy.copyid";
-    $sql = $sql." and biblio_status_hist.mbrid = member.mbrid";
-    $sql = $sql." and biblio_status_hist.bibid = ".$bibid;
-    $sql = $sql." order by barcode_nmbr, status_begin_dt ";
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioStatusHistQueryErr1");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr1"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    return $result;
+    return true;
   }
 
   /****************************************************************************
    * Executes a query to select status history
    * @param string $mbrid mbrid of member
-   * @return BiblioHold returns hold record or false, if error occurs
+   * @return boolean returns false if error occurs
    * @access public
    ****************************************************************************
    */
   function queryByMbrid($mbrid) {
     # setting query that will return all the data
-    $sql = "select biblio_status_hist.* ";
-    $sql = $sql.",biblio.title ";
-    $sql = $sql.",biblio.author ";
-    $sql = $sql.",biblio_copy.barcode_nmbr biblio_barcode_nmbr";
-    $sql = $sql.",member.last_name ";
-    $sql = $sql.",member.first_name ";
-    $sql = $sql.",member.barcode_nmbr mbr_barcode_nmbr ";
+    $sql = $this->mkSQL("select biblio_status_hist.*, "
+                        . " biblio.title, biblio.author, "
+                        . " biblio_copy.barcode_nmbr biblio_barcode_nmbr, "
+                        . " member.last_name, member.first_name, "
+                        . " member.barcode_nmbr mbr_barcode_nmbr "
+                        . "from biblio_status_hist, biblio, "
+                        . " biblio_copy, member "
+                        . "where biblio_status_hist.bibid = biblio.bibid "
+                        . " and biblio_status_hist.bibid = biblio_copy.bibid "
+                        . " and biblio_status_hist.copyid = biblio_copy.copyid "
+                        . " and biblio_status_hist.mbrid = member.mbrid "
+                        . " and biblio_status_hist.mbrid = %N "
+                        . "order by status_begin_dt desc ",
+                        $mbrid);
 
-    $sql = $sql."from biblio_status_hist ";
-    $sql = $sql.",biblio ";
-    $sql = $sql.",biblio_copy ";
-    $sql = $sql.",member ";
-
-    $sql = $sql."where biblio_status_hist.bibid = biblio.bibid";
-    $sql = $sql." and biblio_status_hist.bibid = biblio_copy.bibid";
-    $sql = $sql." and biblio_status_hist.copyid = biblio_copy.copyid";
-    $sql = $sql." and biblio_status_hist.mbrid = member.mbrid";
-    $sql = $sql." and biblio_status_hist.mbrid = ".$mbrid;
-    $sql = $sql." order by status_begin_dt desc ";
-
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioStatusHistQueryErr2");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    if (!$this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr2"))) {
       return false;
     }
     $this->_rowCount = $this->_conn->numRows();
-    if ($this->_rowCount == 0) {
-      return true;
-    }
-    return $result;
+    return true;
   }
 
   /****************************************************************************
@@ -168,28 +143,22 @@ class BiblioStatusHistQuery extends Query {
    ****************************************************************************
    */
   function insert($hist) {
-    $sql = "insert into biblio_status_hist values (";
-    $sql = $sql.$hist->getBibid().", ";
-    $sql = $sql.$hist->getCopyid().", ";
-    $sql = $sql."'".$hist->getStatusCd()."', ";
-    $sql = $sql."sysdate(), ";
+    $sql = $this->mkSQL("insert into biblio_status_hist values "
+                        . "(%N, %N, %Q, sysdate(), ",
+                        $hist->getBibid(), $hist->getCopyid(),
+                        $hist->getStatusCd());
     if ($hist->getDueBackDt() != "") {
-      $sql = $sql."date_add(sysdate(),interval ".$hist->getDueBackDt()." day), ";
+      $sql .= $this->mkSQL("date_add(sysdate(),interval %N day), ",
+                           $hist->getDueBackDt());
     } else {
-      $sql = $sql."null, ";
+      $sql .= "null, ";
     }
-    $sql = $sql.$hist->getMbrid().")";
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioStatusHistQueryErr3");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
+    $sql .= $this->mkSQL("%N)", $hist->getMbrid());
+    if (!$this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr3"))) {
       return false;
     }
     $this->_purgeHistory($hist->getMbrid());
-    return $result;
+    return true;
   }
 
   /****************************************************************************
@@ -201,18 +170,10 @@ class BiblioStatusHistQuery extends Query {
    ****************************************************************************
    */
   function deleteByBibid($bibid,$copyid) {
-    $sql = "delete from biblio_status_hist where bibid = ".$bibid;
-    $sql = $sql." and copyid = ".$copyid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioStatusHistQueryErr4");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from biblio_status_hist "
+                        . "where bibid = %N and copyid = %N",
+                        $bibid, $copyid);
+    return $this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr4"));
   }
 
   /****************************************************************************
@@ -223,17 +184,8 @@ class BiblioStatusHistQuery extends Query {
    ****************************************************************************
    */
   function deleteByMbrid($mbrid) {
-    $sql = "delete from biblio_status_hist where mbrid = ".$mbrid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = $this->_loc->getText("biblioStatusHistQueryErr5");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-    return $result;
+    $sql = $this->mkSQL("delete from biblio_status_hist where mbrid = %N", $mbrid);
+    return $this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr5"));
   }
 
   /****************************************************************************
@@ -255,19 +207,11 @@ class BiblioStatusHistQuery extends Query {
     if ($purgeMo == 0) {
       return TRUE;
     }
-    $sql = "delete from biblio_status_hist where mbrid = ".$mbrid;
-    $sql = $sql." and status_begin_dt <= date_add(sysdate(),interval - ".$purgeMo." month)";
+    $sql = $this->mkSQL("delete from biblio_status_hist where mbrid = %N"
+                        . " and status_begin_dt <= date_add(sysdate(),interval - %N month)",
+                        $mbrid, $purgeMo);
     // need to add where clause for purge rule
-    $result = $this->_conn->exec($sql);
-    if ($result == FALSE) {
-      $this->_errorOccurred = TRUE;
-      $this->_error = $this->_loc->getText("biblioStatusHistQueryErr5");
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return FALSE;
-    }
-    return $result;
+    return $this->_query($sql, $this->_loc->getText("biblioStatusHistQueryErr5"));
   }
 
 }

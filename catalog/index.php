@@ -27,7 +27,7 @@
   $focus_form_name = "barcodesearch";
   $focus_form_field = "searchText";
 
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/header.php");
   require_once("../classes/Localize.php");

@@ -23,7 +23,7 @@
   $tab = "cataloging";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioCopy.php");
@@ -36,12 +36,12 @@
   #*  Checking for post vars.  Go back to search if none found.
   #****************************************************************************
 
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../catalog/index.php");
     exit();
   }
-  $bibid = $HTTP_POST_VARS["bibid"];
-  $copyid = $HTTP_POST_VARS["copyid"];
+  $bibid = $_POST["bibid"];
+  $copyid = $_POST["copyid"];
 
   #****************************************************************************
   #*  Ready copy record
@@ -60,18 +60,18 @@
   #****************************************************************************
   #*  Validate data
   #****************************************************************************
-  $copy->setCopyDesc($HTTP_POST_VARS["copyDesc"]);
-  $HTTP_POST_VARS["copyDesc"] = $copy->getCopyDesc();
-  $copy->setBarcodeNmbr($HTTP_POST_VARS["barcodeNmbr"]);
-  $HTTP_POST_VARS["barcodeNmbr"] = $copy->getBarcodeNmbr();
-  $copy->setStatusCd($HTTP_POST_VARS["statusCd"]);
-  $HTTP_POST_VARS["statusCd"] = $copy->getStatusCd();
+  $copy->setCopyDesc($_POST["copyDesc"]);
+  $_POST["copyDesc"] = $copy->getCopyDesc();
+  $copy->setBarcodeNmbr($_POST["barcodeNmbr"]);
+  $_POST["barcodeNmbr"] = $copy->getBarcodeNmbr();
+  $copy->setStatusCd($_POST["statusCd"]);
+  $_POST["statusCd"] = $copy->getStatusCd();
   $validData = $copy->validateData();
   if (!$validData) {
     $copyQ->close();
     $pageErrors["barcodeNmbr"] = $copy->getBarcodeNmbrError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../catalog/biblio_copy_edit_form.php");
     exit();
   }
@@ -83,8 +83,8 @@
     $copyQ->close();
     if ($copyQ->getDbErrno() == "") {
       $pageErrors["barcodeNmbr"] = $copyQ->getError();
-      $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-      $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+      $_SESSION["postVars"] = $_POST;
+      $_SESSION["pageErrors"] = $pageErrors;
       header("Location: ../catalog/biblio_copy_edit_form.php");
       exit();
     } else {
@@ -96,8 +96,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   $msg = $loc->getText("biblioCopyEditSuccess");
   $msg = urlencode($msg);

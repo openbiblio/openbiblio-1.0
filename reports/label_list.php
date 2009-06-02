@@ -23,7 +23,7 @@
   $tab = "reports";
   $nav = "labellist";
 
-  include("../shared/read_settings.php");
+  require_once("../shared/common.php");
   include("../shared/logincheck.php");
   include("../shared/header.php");
   require_once("../functions/fileIOFuncs.php");
@@ -50,7 +50,7 @@
         $xml = fileGetContents($fileName);
         if ($xml === FALSE) {
           echo '<p><font class="error">';
-          echo $loc->getText('Cannot read label file: %fileName%',
+          echo $loc->getText('reportListCannotRead',
             array('fileName' => basename($fileName)));
           echo '</font></p>';
           continue;

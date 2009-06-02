@@ -75,14 +75,14 @@
   }
 
   // confirm update
-  if (!isset($HTTP_POST_VARS["confirm"]) or ($HTTP_POST_VARS["confirm"] != "yes")){
+  if (!isset($_POST["confirm"]) or ($_POST["confirm"] != "yes")){
     ?>
       <form method="POST" action="../install/update030.php">
       OpenBiblio (version <?php echo $version;?>) is currently installed.
       Are you sure you want to convert all library data to version 0.4.0?<br>
       <input type="hidden" name="confirm" value="yes">
       <input type="hidden" name="locale" value="<?php echo $locale; ?>">
-      <input type="hidden" name="installTestData" value="<?php if (isset($HTTP_POST_VARS["installTestData"])) echo "yes"; ?>">
+      <input type="hidden" name="installTestData" value="<?php if (isset($_POST["installTestData"])) echo "yes"; ?>">
       <input type="submit" value="Continue">
       <input type="button" onClick="parent.location='../install/cancel_msg.php'" value="Cancel">
       </form>

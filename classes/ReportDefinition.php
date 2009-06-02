@@ -42,7 +42,7 @@ class ReportDefinition {
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
 
     $this->_parser = xml_parser_create();
-    xml_set_object($this->_parser, &$this);
+    xml_set_object($this->_parser, $this);
     xml_set_element_handler($this->_parser, "tag_open", "tag_close");
     xml_set_character_data_handler($this->_parser, "cdata");
   }

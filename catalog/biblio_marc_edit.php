@@ -23,7 +23,7 @@
   $tab = "cataloging";
   $nav = "view";
   $restrictInDemo = true;
-  require_once("../shared/read_settings.php");
+  require_once("../shared/common.php");
   require_once("../shared/logincheck.php");
 
   require_once("../classes/BiblioField.php");
@@ -36,7 +36,7 @@
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
 
-  if (count($HTTP_POST_VARS) == 0) {
+  if (count($_POST) == 0) {
     header("Location: ../catalog/index.php");
     exit();
   }
@@ -44,34 +44,34 @@
   #****************************************************************************
   #*  Validate data
   #****************************************************************************
-  $bibid=$HTTP_POST_VARS["bibid"];
+  $bibid=$_POST["bibid"];
   $fld = new BiblioField();
   $fld->setBibid($bibid);
-  $fld->setFieldid($HTTP_POST_VARS["fieldid"]);
-  $fld->setTag($HTTP_POST_VARS["tag"]);
-  $HTTP_POST_VARS["tag"] = $fld->getTag();
-  $fld->setSubfieldCd($HTTP_POST_VARS["subfieldCd"]);
-  $HTTP_POST_VARS["subfieldCd"] = $fld->getSubfieldCd();
-  if (isset($HTTP_POST_VARS["ind1Cd"])) {
+  $fld->setFieldid($_POST["fieldid"]);
+  $fld->setTag($_POST["tag"]);
+  $_POST["tag"] = $fld->getTag();
+  $fld->setSubfieldCd($_POST["subfieldCd"]);
+  $_POST["subfieldCd"] = $fld->getSubfieldCd();
+  if (isset($_POST["ind1Cd"])) {
     $fld->setInd1Cd("Y");
   } else {
     $fld->setInd1Cd("N");
   }
-  if (isset($HTTP_POST_VARS["ind2Cd"])) {
+  if (isset($_POST["ind2Cd"])) {
     $fld->setInd2Cd("Y");
   } else {
     $fld->setInd2Cd("N");
   }
-  $fld->setFieldData($HTTP_POST_VARS["fieldData"]);
+  $fld->setFieldData($_POST["fieldData"]);
   $fld->setIsRequired(true);
-  $HTTP_POST_VARS["fieldData"] = $fld->getFieldData();
+  $_POST["fieldData"] = $fld->getFieldData();
   $validData = $fld->validateData();
   if (!$validData) {
     $pageErrors["fieldData"] = $fld->getFieldDataError();
     $pageErrors["tag"] = $fld->getTagError();
     $pageErrors["subfieldCd"] = $fld->getSubfieldCdError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
-    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    $_SESSION["postVars"] = $_POST;
+    $_SESSION["pageErrors"] = $pageErrors;
     header("Location: ../catalog/biblio_marc_edit_form.php?bibid=".$bibid);
     exit();
   }
@@ -94,8 +94,8 @@
   #**************************************************************************
   #*  Destroy form values and errors
   #**************************************************************************
-  unset($HTTP_SESSION_VARS["postVars"]);
-  unset($HTTP_SESSION_VARS["pageErrors"]);
+  unset($_SESSION["postVars"]);
+  unset($_SESSION["pageErrors"]);
 
   $msg = $loc->getText("biblioMarcEditSuccess");
   $msg = urlencode($msg);

@@ -21,8 +21,8 @@
  */
   include("../shared/help_header.php");
   
-  if (isset($HTTP_GET_VARS["page"])) {
-    $page = $HTTP_GET_VARS["page"];
+  if (isset($_GET["page"])) {
+    $page = $_GET["page"];
   } else {
     $page = "contents";
   }
