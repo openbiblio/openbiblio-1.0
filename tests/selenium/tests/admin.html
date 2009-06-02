@@ -1,0 +1,804 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>admin</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">admin</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/home/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login' and @type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Staff Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add New Staff Member</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Last name is required</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Username must be at least 4 characters</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Password must be at least 4 characters.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>last_name</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd2</td>
+	<td>nottest</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Passwords do not match</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>pwd</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>username</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>last_name</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd2</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to staff list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Logout']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login' and @type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//input[@value='Logout']</td>
+	<td>Logout</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Circulation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>not authorized</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Cataloging</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>not authorized</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>not authorized</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Reports</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>not authorized</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Logout']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login' and @type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Staff Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[6],"test")]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>suspended_flg</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Logout']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login' and @type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>suspended</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>pwd</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Login' and @type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Staff Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[6],"test")]/td[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Delete&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Library Settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>libraryName</td>
+	<td>Your Test Library Name</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>libraryPhone</td>
+	<td>333-222-1111</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Update&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Circulation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Your Test Library Name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>333-222-1111</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Library Settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>libraryName</td>
+	<td>Your Library Name</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>libraryPhone</td>
+	<td>111-222-3333</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Update&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin Summary</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Your Library Name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>111-222-3333</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Material Types</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add New Material Type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>document.newmaterialform.description</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>imageFile</td>
+	<td>shim.gif</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to material type list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[4],"test")]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>imageFile</td>
+	<td>cd.gif</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to material type list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>//tr[contains(td[4],"test")]/td[5]/img/@src</td>
+	<td>regexp:images/cd.gif$</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[4],"test")]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Delete&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Material type, test, has been deleted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to material type list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Collections</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add New Collection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Description is required</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>document.newcollectionform.description</td>
+	<td>test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to collection list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[3],"test")]/td[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>daysDueBack</td>
+	<td>21</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dailyLateFee</td>
+	<td>5.00</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to collection list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//tr[contains(td[3],"test")]/td[4]</td>
+	<td>21</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[3],"test")]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Delete&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>has been deleted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to collection list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Themes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>themeid</td>
+	<td>label=Metalic Grey</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Update']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//tr[contains(td[4],"Metalic Grey")]/td[5]</td>
+	<td>in use</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>themeid</td>
+	<td>label=Mossy Blue</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Update']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//tr[contains(td[4],"Mossy Blue")]/td[5]</td>
+	<td>in use</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add New Theme</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>themeName</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>borderColor</td>
+	<td>#000000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>primaryErrorColor</td>
+	<td>#ff0000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>borderWidth</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>tablePadding</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>titleBg</td>
+	<td>#ffffff</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>primaryBg</td>
+	<td>#dddddd</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt1Bg</td>
+	<td>#333333</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt2Bg</td>
+	<td>#333333</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>titleFontFace</td>
+	<td>serif</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>primaryFontFace</td>
+	<td>serif</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt1FontFace</td>
+	<td>serif</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt2FontFace</td>
+	<td>serif</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>titleFontSize</td>
+	<td>30</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>titleFontBold</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>primaryFontSize</td>
+	<td>12</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt1FontSize</td>
+	<td>12</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt2FontSize</td>
+	<td>14</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>alt2FontBold</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>titleFontColor</td>
+	<td>#000000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>primaryFontColor</td>
+	<td>#000000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt1FontColor</td>
+	<td>#ffffff</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt2FontColor</td>
+	<td>#ffffff</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>primaryLinkColor</td>
+	<td>#00ff00</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt1LinkColor</td>
+	<td>#ffffff</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alt2LinkColor</td>
+	<td>#ffffff</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Submit&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>has been added</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to theme list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Test</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>themeid</td>
+	<td>label=Test</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Update']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//tr[contains(td[4],"Test")]/td[5]</td>
+	<td>in use</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>themeid</td>
+	<td>label=Mossy Blue</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Update']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//tr[contains(td[4],"Test")]/td[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='&nbsp;&nbsp;Delete&nbsp;&nbsp;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>has been deleted</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=return to theme list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Logout']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

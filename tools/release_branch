@@ -1,0 +1,31 @@
+#!/bin/sh
+# Run as ./tools/release_branch from the mainline directory.
+# Creates a release branch in the repository for the version number specified
+# and checks out that branch into a new directory at the same level as the one
+# it's run from.
+#
+# Make sure $CVSROOT is set properly.
+
+if [ "$1" = "-t" ]; then
+	testrun=true
+	shift
+else
+	testrun=false
+fi
+
+if [ -z "$1" ]; then
+	echo Usage: tools/release_branch '<version>' >&2
+	exit 1
+fi
+if ! (echo "$1" | egrep -q '^[0-9]+\.[0-9]+(\.[0-9]+)?$'); then
+	echo Bad version number: $1 >&2
+	exit 1
+fi
+
+module='OpenBiblio Source'
+branch=RB_`echo $1 | sed 's/\./_/g'`
+dir=rb$1
+$testrun && echo TEST RUN: not tagging
+$testrun || cvs rtag -b $branch "$module"
+cd ..
+cvs co -r $branch -d $dir "$module"

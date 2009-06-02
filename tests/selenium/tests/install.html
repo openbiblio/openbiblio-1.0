@@ -1,0 +1,59 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>install</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">install</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/tests/selenium/helpers/clearDB.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Tables dropped</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/install/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Database connection is good.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>installTestData</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Install']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>OpenBiblio tables have been created successfully!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/install/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No action is required</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

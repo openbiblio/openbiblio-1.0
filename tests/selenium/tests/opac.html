@@ -1,0 +1,49 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>opac</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">opac</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/openbiblio/opac/index.php</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>searchType</td>
+	<td>label=Author</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>searchText</td>
+	<td>vlissides</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Search']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1 result found</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Design Patterns</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Edit</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
