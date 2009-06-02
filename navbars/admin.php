@@ -19,45 +19,49 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
+
+  require_once("../classes/Localize.php");
+  $navLoc = new Localize(OBIB_LOCALE,"navbars");
+
 ?>
-<a href="../shared/logout.php"><img src="../images/logout.gif" width="64" height="20" border="0"></a>
-<br><br>
+<input type="button" onClick="parent.location='../shared/logout.php'" value="<?php echo $navLoc->getText("logout");?>" class="navbutton"><br />
+<br />
 
 <?php if ($nav == "summary") { ?>
- &raquo; Admin Summary<br>
+ &raquo; <?php echo $navLoc->getText("adminSummary");?><br>
 <?php } else { ?>
- <a href="../admin/index.php" class="alt1">Admin Summary</a><br>
+ <a href="../admin/index.php" class="alt1"><?php echo $navLoc->getText("adminSummary");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "staff") { ?>
- &raquo; Staff Admin<br>
+ &raquo; <?php echo $navLoc->getText("adminStaff");?><br>
 <?php } else { ?>
- <a href="../admin/staff_list.php" class="alt1">Staff Admin</a><br>
+ <a href="../admin/staff_list.php" class="alt1"><?php echo $navLoc->getText("adminStaff");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "settings") { ?>
- &raquo; Library Settings<br>
+ &raquo; <?php echo $navLoc->getText("adminSettings");?><br>
 <?php } else { ?>
- <a href="../admin/settings_edit_form.php?reset=Y" class="alt1">Library Settings</a><br>
+ <a href="../admin/settings_edit_form.php?reset=Y" class="alt1"><?php echo $navLoc->getText("adminSettings");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "materials") { ?>
- &raquo; Material Types<br>
+ &raquo; <?php echo $navLoc->getText("adminMaterialTypes");?><br>
 <?php } else { ?>
- <a href="../admin/materials_list.php" class="alt1">Material Types</a><br>
+ <a href="../admin/materials_list.php" class="alt1"><?php echo $navLoc->getText("adminMaterialTypes");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "collections") { ?>
- &raquo; Collections<br>
+ &raquo; <?php echo $navLoc->getText("adminCollections");?><br>
 <?php } else { ?>
- <a href="../admin/collections_list.php" class="alt1">Collections</a><br>
+ <a href="../admin/collections_list.php" class="alt1"><?php echo $navLoc->getText("adminCollections");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "themes") { ?>
- &raquo; Themes<br>
+ &raquo; <?php echo $navLoc->getText("adminThemes");?><br>
 <?php } else { ?>
- <a href="../admin/theme_list.php" class="alt1">Themes</a><br>
+ <a href="../admin/theme_list.php" class="alt1"><?php echo $navLoc->getText("adminThemes");?></a><br>
 <?php } ?>
 
-<a href="javascript:popSecondary('../doc/index.php?tab=<?php echo $tab;?>@nav=<?php echo $nav;?>')">Help</a>
+<a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')"><?php echo $navLoc->getText("help");?></a>
 

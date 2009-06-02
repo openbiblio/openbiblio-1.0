@@ -1,0 +1,29 @@
+<!--
+  *********************************************************************************
+  *  sql syntax rules:
+  *  1.  Do not code column aliases.  This will mess up the selection criteria page.
+  *  2.  Do not specify the sort clause in your sql.  The sort order will be specified
+  *      by the user.
+  *  3.  You may, but are not required to specify the where clause
+  *********************************************************************************
+-->
+
+<report>
+  <id>checkouts</id>
+  <title>reportCheckouts</title>
+  <sql>
+    select biblio_copy.barcode_nmbr
+           ,biblio.title
+           ,biblio.author
+           ,biblio_copy.status_begin_dt
+           ,biblio_copy.due_back_dt
+           ,member.barcode_nmbr
+           ,member.last_name
+           ,member.first_name
+           ,member.school_grade
+    from   biblio, biblio_copy, member
+    where  biblio.bibid = biblio_copy.bibid
+           and biblio_copy.mbrid = member.mbrid
+           and biblio_copy.status_cd = 'out'
+  </sql>
+</report>

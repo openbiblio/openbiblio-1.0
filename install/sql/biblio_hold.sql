@@ -1,7 +1,10 @@
 create table biblio_hold (
   bibid integer not null
-  ,hold_begin_dt date not null
-  ,mbrid integer null
-  ,key mbr_index (mbrid)
+  ,copyid integer not null
+  ,holdid integer auto_increment not null
+  ,hold_begin_dt datetime not null
+  ,mbrid integer not null
+  ,index mbr_index (mbrid)
+  ,primary key(bibid,copyid,holdid)
   )
 ;

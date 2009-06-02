@@ -21,8 +21,7 @@
  */
 
 /******************************************************************************
- * Staff represents a library staff member.  Contains business rules for
- * staff member data validation.
+ * Dm represents a domain table row.
  *
  * @author David Stevens <dave@stevens.name>;
  * @version 1.0
@@ -36,6 +35,8 @@ class Dm {
   var $_defaultFlg = "";
   var $_daysDueBack = "0";
   var $_daysDueBackError = "";
+  var $_dailyLateFee = "0";
+  var $_dailyLateFeeError = "";
   var $_adultCheckoutLimit = "0";
   var $_adultCheckoutLimitError = "";
   var $_juvenileCheckoutLimit = "0";
@@ -60,6 +61,13 @@ class Dm {
     } elseif ($this->_daysDueBack < 0) {
       $valid = false;
       $this->_daysDueBackError = "Days due back can not be less than zero.";
+    }
+    if (!is_numeric($this->_dailyLateFee)) {
+      $valid = false;
+      $this->_dailyLateFeeError = "Daily late fee must be numeric.";
+    } elseif ($this->_dailyLateFee < 0) {
+      $valid = false;
+      $this->_dailyLateFeeError = "Daily late fee can not be less than zero.";
     }
     if (!is_numeric($this->_adultCheckoutLimit)) {
       $valid = false;
@@ -101,6 +109,12 @@ class Dm {
   }
   function getDaysDueBackError() {
     return $this->_daysDueBackError;
+  }
+  function getDailyLateFee() {
+    return $this->_dailyLateFee;
+  }
+  function getDailyLateFeeError() {
+    return $this->_dailyLateFeeError;
   }
   function getAdultCheckoutLimit() {
     return $this->_adultCheckoutLimit;
@@ -149,6 +163,16 @@ class Dm {
   }
   function setDaysDueBackError($value) {
     $this->_daysDueBackError = trim($value);
+  }
+  function setDailyLateFee($value) {
+    if (trim($value) == "") {
+      $this->_dailyLateFee = "0";
+    } else {
+      $this->_dailyLateFee = trim($value);
+    }
+  }
+  function setDailyLateFeeError($value) {
+    $this->_dailyLateFeeError = trim($value);
   }
   function setAdultCheckoutLimit($value) {
     if (trim($value) == "") {

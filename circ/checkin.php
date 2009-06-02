@@ -26,9 +26,11 @@
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
 
-  require_once("../classes/BiblioStatus.php");
-  require_once("../classes/BiblioStatusQuery.php");
+  require_once("../classes/BiblioCopy.php");
+  require_once("../classes/BiblioCopyQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -37,34 +39,44 @@
     header("Location: ../circ/checkin_form.php?reset=Y");
     exit();
   }
-  $massCheckin = $HTTP_POST_VARS["massCheckin"];
-  $bibidList = "";
-  if ($massCheckin == "N") {
+  $massCheckinFlg = $HTTP_POST_VARS["massCheckin"];
+  if ($massCheckinFlg == "Y") {
+    $massCheckin = TRUE;
+  } else {
+    $massCheckin = FALSE;
+  }
+  $bibids = "";
+  $copyids = "";
+  if (!$massCheckin) {
     foreach($HTTP_POST_VARS as $key => $value) {
-      if (is_numeric($key)) {
-        $bibidList[] = $key;
+      if ($value == "copyid") {
+        parse_str($key,$output);
+        $bibids[] = $output["bibid"];
+        $copyids[] = $output["copyid"];
       }
     }
   }
-  if (($massCheckin == "N") and (!is_array($bibidList))) {
-    header("Location: ../circ/checkin_form.php?reset=Y&msg=No+items+have+been+selected.");
+  if ((!$massCheckin) and (!is_array($bibids))) {
+    $msg = $loc->getText("checkinErr1");
+    $msg = urlencode($msg);
+    header("Location: ../circ/checkin_form.php?reset=Y&msg=".$msg);
     exit();
   }
 
   #**************************************************************************
   #*  Checkin bibliographies in bibidList
   #**************************************************************************
-  $statQ = new BiblioStatusQuery();
-  $statQ->connect();
-  if ($statQ->errorOccurred()) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  $copyQ = new BiblioCopyQuery();
+  $copyQ->connect();
+  if ($copyQ->errorOccurred()) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
   }
-  if (!$statQ->delete("crt",$bibidList)) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  if (!$copyQ->checkin($massCheckin,$bibids,$copyids)) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
   }
-  $statQ->close();
+  $copyQ->close();
 
   #**************************************************************************
   #*  Destroy form values and errors

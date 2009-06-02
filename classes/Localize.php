@@ -62,6 +62,9 @@ class Localize {
       }
     }
     @eval ($transFunc);
+    if (OBIB_HIGHLIGHT_I18N_FLG) {
+      $text = "<i>".$text."</i>";
+    }
     return $text;
   }
 

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002, 2003 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -33,10 +33,12 @@
   if (OBIB_OPAC_URL != "") { ?>
     <a href="<?php echo OBIB_OPAC_URL;?>">OPAC</a> |
   <?php } ?>
-  <a href="javascript:popSecondary('../doc/index.php?tab=<?php echo $tab;?>@nav=<?php echo $nav;?>')">Help</a>
+  <a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')">Help</a>
+  <br><br>
+    <a href="http://obiblio.sourceforge.net/"><img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0"></a>
   <br><br>
   Powered by OpenBiblio version <?php echo OBIB_VERSION;?><br>
-  Copyright &copy; 2002 <a href="http://dave.stevens.name">Dave Stevens</a><br>
+  Copyright &copy; 2002, 2003 Dave Stevens<br>
   under the
   <a href="../shared/copying.html">GNU General Public License</a>
 </center>

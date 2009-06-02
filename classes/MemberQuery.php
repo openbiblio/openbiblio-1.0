@@ -126,8 +126,11 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function execSelect($mbrid) {
-    $sql = "select * from member";
-    $sql = $sql." where mbrid=".$mbrid;
+    $sql = "select member.*, ";
+    $sql = $sql."staff.username ";
+    $sql = $sql."from member,staff ";
+    $sql = $sql."where mbrid=".$mbrid;
+    $sql = $sql." and member.last_change_userid = staff.userid";
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
@@ -159,6 +162,11 @@ class MemberQuery extends Query {
     $mbr = new Member();
     $mbr->setMbrid($array["mbrid"]);
     $mbr->setBarcodeNmbr($array["barcode_nmbr"]);
+    $mbr->setLastChangeDt($array["last_change_dt"]);
+    $mbr->setLastChangeUserid($array["last_change_userid"]);
+    if (isset($array["username"])) {
+      $mbr->setLastChangeUsername($array["username"]);
+    }
     $mbr->setLastName($array["last_name"]);
     $mbr->setFirstName($array["first_name"]);
     $mbr->setAddress1($array["address1"]);
@@ -169,6 +177,7 @@ class MemberQuery extends Query {
     $mbr->setZipExt($array["zip_ext"]);
     $mbr->setHomePhone($array["home_phone"]);
     $mbr->setWorkPhone($array["work_phone"]);
+    $mbr->setEmail($array["email"]);
     $mbr->setClassification($array["classification"]);
     $mbr->setSchoolGrade($array["school_grade"]);
     $mbr->setSchoolTeacher($array["school_teacher"]);
@@ -184,7 +193,7 @@ class MemberQuery extends Query {
    * @access private
    ****************************************************************************
    */
-  function _dupBarcode($barcode, $mbrid=0) {
+  function DupBarcode($barcode, $mbrid=0) {
     $sql = "select count(*) from member where barcode_nmbr = '".$barcode."'";
     $sql = $sql." and mbrid <> ".$mbrid;
     $result = $this->_conn->exec($sql);
@@ -211,17 +220,10 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function insert($mbr) {
-    $dupBarcode = $this->_dupBarcode($mbr->getBarcodeNmbr());
-    if ($this->errorOccurred()) return false;
-    if ($dupBarcode) {
-      $this->_errorOccurred = true;
-      $this->_error = "Barcode number ".$mbr->getBarcodeNmbr()." is already in use.";
-      return false;
-    }
-
     $sql = "insert into member values (null, ";
-    $sql = $sql.$mbr->getBarcodeNmbr().", ";
-    $sql = $sql."curdate(), curdate(), ";
+    $sql = $sql."'".$mbr->getBarcodeNmbr()."', ";
+    $sql = $sql."sysdate(), sysdate(), ";
+    $sql = $sql.$mbr->getLastChangeUserid().", ";
     $sql = $sql."'".$mbr->getLastName()."', ";
     $sql = $sql."'".$mbr->getFirstName()."', ";
     $sql = $sql."'".$mbr->getAddress1()."', ";
@@ -232,6 +234,7 @@ class MemberQuery extends Query {
     $sql = $sql.$mbr->getZipExt().", ";
     $sql = $sql."'".$mbr->getHomePhone()."', ";
     $sql = $sql."'".$mbr->getWorkPhone()."', ";
+    $sql = $sql."'".$mbr->getEmail()."', ";
     $sql = $sql."'".$mbr->getClassification()."', ";
     $sql = $sql."'".$mbr->getSchoolGrade()."', ";
     $sql = $sql."'".$mbr->getSchoolTeacher()."')";
@@ -245,7 +248,8 @@ class MemberQuery extends Query {
       $this->_SQL = $sql;
       return false;
     }
-    return $result;
+    $mbrid = $this->_conn->getInsertId();
+    return $mbrid;
   }
 
   /****************************************************************************
@@ -256,17 +260,10 @@ class MemberQuery extends Query {
    ****************************************************************************
    */
   function update($mbr) {
-    $dupBarcode = $this->_dupBarcode($mbr->getBarcodeNmbr(),$mbr->getMbrid());
-    if ($this->errorOccurred()) return false;
-    if ($dupBarcode) {
-      $this->_errorOccurred = true;
-      $this->_error = "Barcode number ".$mbr->getBarcodeNmbr()." is already in use.";
-      return false;
-    }
-
-    $sql = "update member set barcode_nmbr=".$mbr->getBarcodeNmbr().", ";
-    $sql = $sql."last_updated_dt = curdate(),";
-    $sql = $sql."barcode_nmbr=".$mbr->getBarcodeNmbr().", ";
+    $sql = "update member set ";
+    $sql = $sql."last_change_dt = sysdate(),";
+    $sql = $sql."last_change_userid=".$mbr->getLastChangeUserid().", ";
+    $sql = $sql."barcode_nmbr='".$mbr->getBarcodeNmbr()."', ";
     $sql = $sql."last_name='".$mbr->getLastName()."', ";
     $sql = $sql."first_name='".$mbr->getFirstName()."', ";
     $sql = $sql."address1='".$mbr->getAddress1()."', ";
@@ -277,6 +274,7 @@ class MemberQuery extends Query {
     $sql = $sql."zip_ext=".$mbr->getZipExt().", ";
     $sql = $sql."home_phone='".$mbr->getHomePhone()."', ";
     $sql = $sql."work_phone='".$mbr->getWorkPhone()."', ";
+    $sql = $sql."email='".$mbr->getEmail()."', ";
     $sql = $sql."classification='".$mbr->getClassification()."', ";
     $sql = $sql."school_grade='".$mbr->getSchoolGrade()."', ";
     $sql = $sql."school_teacher='".$mbr->getSchoolTeacher()."' ";

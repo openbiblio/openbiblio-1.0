@@ -19,9 +19,19 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
-;?>
-<html>
-<head>
+
+// code html tag with language attribute if specified.
+echo "<html";
+if (OBIB_HTML_LANG_ATTR != "") {
+  echo " lang=\"".OBIB_HTML_LANG_ATTR."\"";
+}
+echo ">\n";
+
+// code character set if specified
+if (OBIB_CHARSET != "") { ?>
+<META http-equiv="content-type" content="text/html; charset=<?php echo OBIB_CHARSET; ?>">
+<?php } ?>
+
 <style type="text/css">
   <?php include("../css/style.php");?>
 </style>
@@ -33,6 +43,11 @@
 function popSecondary(url) {
     var SecondaryWin;
     SecondaryWin = window.open(url,"secondary","resizable=yes,scrollbars=yes,width=535,height=400");
+}
+function returnLookup(formName,fieldName,val) {
+    window.opener.document.forms[formName].elements[fieldName].value=val;
+    window.opener.focus();
+    this.close();
 }
 -->
 </script>
@@ -52,14 +67,15 @@ function popSecondary(url) {
   <tr bgcolor="<?php echo OBIB_TITLE_BG;?>">
     <td width="100%" class="title" valign="top">
        <?php
-         if (OBIB_LIBRARY_USE_IMAGE) {
-           echo "<img src=\"".OBIB_LIBRARY_IMAGE_URL."\" border=\"0\">";
-         } else {
-           echo OBIB_LIBRARY_NAME;
+         if (OBIB_LIBRARY_IMAGE_URL != "") {
+           echo "<img align=\"middle\" src=\"".OBIB_LIBRARY_IMAGE_URL."\" border=\"0\">";
+         }
+         if (!OBIB_LIBRARY_USE_IMAGE_ONLY) {
+           echo " ".OBIB_LIBRARY_NAME;
          }
        ?>
     </td>
-    <td>
+    <td valign="top">
       <table class="primary" cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td class="title" nowrap="yes"><font class="small">today's date:</font></td>
@@ -107,7 +123,6 @@ function popSecondary(url) {
       <?php include("../navbars/opac.php"); ?>
       </font>
     <br><br><br><br>
-    <a href="http://obiblio.sourceforge.net/"><img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0"></a>
     </td>
     <td bgcolor="<?php echo OBIB_BORDER_COLOR;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <td bgcolor="<?php echo OBIB_PRIMARY_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>

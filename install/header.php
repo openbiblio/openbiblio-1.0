@@ -36,8 +36,8 @@
      * OpenBiblio logo and black background with links and date
      **************************************************************************************-->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="#000000">
-    <td align="left"><img src="../images/logo-small.gif" width="220" height="50" border="0"></td>
+  <tr bgcolor="#bebdbe">
+    <td align="left"><img src="../images/obiblio_logo.gif" width="170" height="35" border="0"></td>
     <td align="right" valign="top" width="100%"><font color="#ffffff">
     </td>
   </tr>

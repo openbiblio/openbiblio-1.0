@@ -1,0 +1,39 @@
+<!--
+  *********************************************************************************
+  *  element descriptions:
+  *  left_margin = left page margin in units (72 = 1 inch, 28.35 = 1 cm)
+  *********************************************************************************
+-->
+
+<label>
+  <id>multiLabel</id>
+  <title>labelsMulti</title>
+  <font_type>Helvetica</font_type>
+  <font_size>10</font_size>
+  <left_margin>15</left_margin>
+  <top_margin>15</top_margin>
+  <columns>2</columns>
+  <width>200</width>
+  <height>100</height>
+  <sub_label left="0" top="0">
+    <layout>
+      <line>call_nmbr1</line>
+      <line>call_nmbr2</line>
+      <line>call_nmbr3</line>
+    </layout>
+  </sub_label>
+  <sub_label left="100" top="0">
+    <layout>
+      <line>author</line>
+      <line>title</line>
+      <line>barcode_nmbr</line>
+    </layout>
+  </sub_label>
+  <sub_label left="10" top="35">
+    <layout>
+      <line>call_nmbr1</line>
+      <line>call_nmbr2</line>
+      <line>call_nmbr3</line>
+    </layout>
+  </sub_label>
+</label>

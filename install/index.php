@@ -53,13 +53,33 @@ instead of this module.<br><br-->
     include("../install/footer.php");
     exit();
   }
-  echo "Database connection is good.<br>\n";
-
   $installQ->close();
+  echo "Database connection is good.  Please choose a language and press the install button.<br>\n";
 
 ?>
+  <br>
+  <form name="installForm" method="POST" action="../install/install.php">
+    <table cellpadding=0 cellspacing=0 border=0>
+      <tr>
+        <td><font class="primary">Language:</font></td>
+        <td><select name="locale">
+<?php
+  require_once("../locale/language_list.php");
+  foreach($locales as $langCode => $langDesc) {
+    echo "<option value=\"".$langCode."\">".$langDesc."\n";
+  }
+?>
+        </select></td>
+      </tr>
+      <tr>
+        <td rowspan="2" valign="top"><font class="primary">Install Test Data:</font></td>
+        <td><input type="checkbox" name="installTestData" value="yes"></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Install"></td>
+      </tr>
+    </table>
+  </form>
 
-<br>
-<a href="install.php">create OpenBiblio tables</a>
 
 <?php include("../install/footer.php"); ?>

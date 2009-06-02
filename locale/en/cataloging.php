@@ -1,0 +1,214 @@
+<?php
+/**********************************************************************************
+ *   Copyright(C) 2002 David Stevens
+ *
+ *   This file is part of OpenBiblio.
+ *
+ *   OpenBiblio is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 2 of the License, or
+ *   (at your option) any later version.
+ *
+ *   OpenBiblio is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with OpenBiblio; if not, write to the Free Software
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ **********************************************************************************
+ */
+
+/**********************************************************************************
+ *   Instructions for translators:
+ *
+ *   All gettext key/value pairs are specified as follows:
+ *     $trans["key"] = "<php translation code to set the $text variable>";
+ *   Allowing translators the ability to execute php code withint the transFunc string
+ *   provides the maximum amount of flexibility to format the languange syntax.
+ *
+ *   Formatting rules:
+ *   - Resulting translation string must be stored in a variable called $text.
+ *   - Input arguments must be surrounded by % characters (i.e. %pageCount%).
+ *   - A backslash ('\') needs to be placed before any special php characters 
+ *     (such as $, ", etc.) within the php translation code.
+ *
+ *   Simple Example:
+ *     $trans["homeWelcome"]       = "\$text='Welcome to OpenBiblio';";
+ *
+ *   Example Containing Argument Substitution:
+ *     $trans["searchResult"]      = "\$text='page %page% of %pages%';";
+ *
+ *   Example Containing a PHP If Statment and Argument Substitution:
+ *     $trans["searchResult"]      = 
+ *       "if (%items% == 1) {
+ *         \$text = '%items% result';
+ *       } else {
+ *         \$text = '%items% results';
+ *       }";
+ *
+ **********************************************************************************
+ */
+
+#****************************************************************************
+#*  Common translation text shared among multiple pages
+#****************************************************************************
+$trans["catalogSubmit"]            = "\$text = 'Submit';";
+$trans["catalogCancel"]            = "\$text = 'Cancel';";
+$trans["catalogRefresh"]           = "\$text = 'Refresh';";
+$trans["catalogDelete"]            = "\$text = 'Delete';";
+$trans["catalogFootnote"]          = "\$text = 'Fields marked with %symbol% are required.';";
+
+#****************************************************************************
+#*  Translation text for page index.php
+#****************************************************************************
+$trans["indexHdr"]                 = "\$text = 'Cataloging';";
+$trans["indexBarcodeHdr"]          = "\$text = 'Search Bibliography by Barcode Number';";
+$trans["indexBarcodeField"]        = "\$text = 'Barcode Number';";
+$trans["indexSearchHdr"]           = "\$text = 'Search Bibliography by Search Phrase';";
+$trans["indexTitle"]               = "\$text = 'Title';";
+$trans["indexAuthor"]              = "\$text = 'Author';";
+$trans["indexSubject"]             = "\$text = 'Subject';";
+$trans["indexButton"]              = "\$text = 'Search';";
+
+#****************************************************************************
+#*  Translation text for page biblio_new_form.php
+#****************************************************************************
+$trans["biblioNewFormLabel"]       = "\$text = 'Add New';";
+
+#****************************************************************************
+#*  Translation text for page biblio_fields.php
+#****************************************************************************
+$trans["biblioFieldsLabel"]        = "\$text = 'Bibliography';";
+$trans["biblioFieldsMaterialTyp"]  = "\$text = 'Type of Material';";
+$trans["biblioFieldsCollection"]   = "\$text = 'Collection';";
+$trans["biblioFieldsCallNmbr"]     = "\$text = 'Call Number';";
+$trans["biblioFieldsUsmarcFields"] = "\$text = 'USMarc Fields';";
+$trans["biblioFieldsOpacFlg"]      = "\$text = 'Show in OPAC';";
+
+#****************************************************************************
+#*  Translation text for page biblio_new.php
+#****************************************************************************
+$trans["biblioNewSuccess"]         = "\$text = 'The following new bibliography has been created.  To add a copy, select \"New Copy\" from the left hand navigation or \"Add New Copy\" from the copy information below.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_edit.php
+#****************************************************************************
+$trans["biblioEditSuccess"]        = "\$text = 'Bibliography successfully updated.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_copy_new_form.php and biblio_copy_edit_form.php
+#****************************************************************************
+$trans["biblioCopyNewFormLabel"]   = "\$text = 'Add New Copy';";
+$trans["biblioCopyNewBarcode"]     = "\$text = 'Barcode Number';";
+$trans["biblioCopyNewDesc"]        = "\$text = 'Description';";
+$trans["biblioCopyEditFormLabel"]  = "\$text = 'Edit Copy';";
+$trans["biblioCopyEditFormStatus"] = "\$text = 'Status';";
+
+#****************************************************************************
+#*  Translation text for page biblio_copy_new.php
+#****************************************************************************
+$trans["biblioCopyNewSuccess"]     = "\$text = 'Copy successfully created.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_copy_edit.php
+#****************************************************************************
+$trans["biblioCopyEditSuccess"]    = "\$text = 'Copy successfully updated.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_copy_del_confirm.php
+#****************************************************************************
+$trans["biblioCopyDelConfirmErr1"] = "\$text = 'Could not delete copy.  A copy must be checked in before it can be deleted.';";
+$trans["biblioCopyDelConfirmMsg"]  = "\$text = 'Are you sure you want to delete the copy with barcode %barcodeNmbr%?  This will also delete all status change history for this copy.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_copy_del.php
+#****************************************************************************
+$trans["biblioCopyDelSuccess"]     = "\$text = 'Copy with barcode %barcode% was successfully deleted.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_list.php
+#****************************************************************************
+$trans["biblioMarcListMarcSelect"] = "\$text = 'Add New MARC Field';";
+$trans["biblioMarcListHdr"]        = "\$text = 'MARC Field Information';";
+$trans["biblioMarcListTbleCol1"]   = "\$text = 'Function';";
+$trans["biblioMarcListTbleCol2"]   = "\$text = 'Tag';";
+$trans["biblioMarcListTbleCol3"]   = "\$text = 'Tag Description';";
+$trans["biblioMarcListTbleCol4"]   = "\$text = 'Ind 1';";
+$trans["biblioMarcListTbleCol5"]   = "\$text = 'Ind 2';";
+$trans["biblioMarcListTbleCol6"]   = "\$text = 'Subfld';";
+$trans["biblioMarcListTbleCol7"]   = "\$text = 'Subfield Description';";
+$trans["biblioMarcListTbleCol8"]   = "\$text = 'Field Data';";
+$trans["biblioMarcListNoRows"]     = "\$text = 'No MARC fields found.';";
+
+#****************************************************************************
+#*  Translation text for page usmarc_select.php
+#****************************************************************************
+$trans["usmarcSelectHdr"]          = "\$text = 'MARC Field Selector';";
+$trans["usmarcSelectInst"]         = "\$text = 'Select a field type';";
+$trans["usmarcSelectNoTags"]       = "\$text = 'No tags found.';";
+$trans["usmarcSelectUse"]          = "\$text = 'use';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_new_form.php
+#****************************************************************************
+$trans["biblioMarcNewFormHdr"]     = "\$text = 'Add New Marc Field';";
+$trans["biblioMarcNewFormTag"]     = "\$text = 'Tag';";
+$trans["biblioMarcNewFormSubfld"]  = "\$text = 'Subfield';";
+$trans["biblioMarcNewFormData"]    = "\$text = 'Field Data';";
+$trans["biblioMarcNewFormInd1"]    = "\$text = 'Indicator 1';";
+$trans["biblioMarcNewFormInd2"]    = "\$text = 'Indicator 2';";
+$trans["biblioMarcNewFormSelect"]  = "\$text = 'Select';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_new.php
+#****************************************************************************
+$trans["biblioMarcNewSuccess"]     = "\$text = 'Marc field successfully added.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_edit_form.php
+#****************************************************************************
+$trans["biblioMarcEditFormHdr"]    = "\$text = 'Edit Marc Field';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_edit.php
+#****************************************************************************
+$trans["biblioMarcEditSuccess"]    = "\$text = 'Marc field successfully updated.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_del_confirm.php
+#****************************************************************************
+$trans["biblioMarcDelConfirmMsg"]  = "\$text = 'Are you sure you want to delete the field with tag %tag% and subfield %subfieldCd%?';";
+
+#****************************************************************************
+#*  Translation text for page biblio_marc_del.php
+#****************************************************************************
+$trans["biblioMarcDelSuccess"]     = "\$text = 'Marc field successfully deleted.';";
+
+#****************************************************************************
+#*  Translation text for page biblio_del_confirm.php
+#****************************************************************************
+$trans["biblioDelConfirmWarn"]     = "\$text = 'This bibliography has %copyCount% copy(ies) and %holdCount% hold request(s).  Please delete these copies and/or hold requests before deleting this bibliography.';";
+$trans["biblioDelConfirmReturn"]   = "\$text = 'return to bibliography information';";
+$trans["biblioDelConfirmMsg"]      = "\$text = 'Are you sure you want to delete the bibliography with title %title%?';";
+
+#****************************************************************************
+#*  Translation text for page biblio_del_confirm.php
+#****************************************************************************
+$trans["biblioDelMsg"]             = "\$text = 'Bibliography, %title%, has been deleted.';";
+$trans["biblioDelReturn"]          = "\$text = 'return to bibliography search';";
+
+#****************************************************************************
+#*  Translation text for page biblio_hold_list.php
+#****************************************************************************
+$trans["biblioHoldListHead"]       = "\$text = 'Bibliography Hold Requests:';";
+$trans["biblioHoldListNoHolds"]    = "\$text = 'No bibliography copies are currently on hold.';";
+$trans["biblioHoldListHdr1"]       = "\$text = 'Function';";
+$trans["biblioHoldListHdr2"]       = "\$text = 'Copy';";
+$trans["biblioHoldListHdr3"]       = "\$text = 'Placed On Hold';";
+$trans["biblioHoldListHdr4"]       = "\$text = 'Member';";
+$trans["biblioHoldListHdr5"]       = "\$text = 'Status';";
+$trans["biblioHoldListHdr6"]       = "\$text = 'Due Back';";
+
+?>

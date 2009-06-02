@@ -43,31 +43,27 @@
   </tr>
   <tr>
     <td align="center" valign="top" class="primary"><?php print $loc->getText("indexCirc"); ?><br><br>
-      <img src="../images/circ.gif" border="0" width="50" height="50"></td>
+      <img src="../images/circ.png" border="0" width="30" height="30"></td>
     <td class="primary"><?php print $loc->getText("indexCircDesc1"); ?>
       <ul>
         <li><?php print $loc->getText("indexCircDesc2"); ?></li>
         <li><?php print $loc->getText("indexCircDesc3"); ?></li>
         <li><?php print $loc->getText("indexCircDesc4"); ?></li>
-        <li><?php print $loc->getText("indexCircDesc5"); ?></li>
-        <li><?php print $loc->getText("indexCircDesc6"); ?></li>
       </ul>
     </td>
   </tr>
   <tr>
     <td align="center"  valign="top" class="primary"><?php print $loc->getText("indexCat"); ?><br><br>
-      <img src="../images/catalog.gif" border="0" width="50" height="50"><br><br></td>
+      <img src="../images/catalog.png" border="0" width="30" height="30"><br><br></td>
     <td valign="top" class="primary"><?php print $loc->getText("indexCatDesc1"); ?>
       <ul>
         <li><?php print $loc->getText("indexCatDesc2"); ?></li>
-        <li><?php print $loc->getText("indexCatDesc3"); ?></li>
-        <li><?php print $loc->getText("indexCatDesc4"); ?></li>
       </ul>
     </td>
   </tr>
   <tr>
     <td align="center"  valign="top" class="primary"><?php print $loc->getText("indexAdmin"); ?><br><br>
-      <img src="../images/admin.gif" border="0" width="50" height="50"></td>
+      <img src="../images/admin.png" border="0" width="30" height="30"></td>
     <td class="primary"><?php print $loc->getText("indexAdminDesc1"); ?>
 
       <ul>
@@ -76,6 +72,17 @@
         <li><?php print $loc->getText("indexAdminDesc4"); ?></li>
         <li><?php print $loc->getText("indexAdminDesc5"); ?></li>
         <li><?php print $loc->getText("indexAdminDesc6"); ?></li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"  valign="top" class="primary"><?php print $loc->getText("indexReports"); ?><br><br>
+      <img src="../images/reports.png" border="0" width="30" height="30"><br><br></td>
+    <td class="primary" valign="top"><?php print $loc->getText("indexReportsDesc1"); ?>
+
+      <ul>
+        <li><?php print $loc->getText("indexReportsDesc2"); ?></li>
+        <li><?php print $loc->getText("indexReportsDesc3"); ?></li>
       </ul>
     </td>
   </tr>

@@ -138,13 +138,32 @@ class DbConnection {
   }
 
   /****************************************************************************
-   * Returns then number of rows in the result
+   * Returns the number of rows in the result
    * @return int, number of rows in result
    * @access public
    ****************************************************************************
    */
   function numRows() {
     return mysql_num_rows($this->_result);
+  }
+
+  /****************************************************************************
+   * Returns the field meta data for the result
+   * @return object, Returns an object containing field information. 
+   * @access public
+   ****************************************************************************
+   */
+  function fetchField() {
+    return mysql_fetch_field($this->_result);
+  }
+
+  /****************************************************************************
+   * Returns the ID generated from the previous INSERT operation 
+   * @return string, ID from previous INSERT
+   ****************************************************************************
+   */
+  function getInsertId() {
+    return mysql_insert_id();
   }
 
   /****************************************************************************

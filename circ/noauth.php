@@ -28,6 +28,6 @@
 
 ?>
 
-You are not authorized to use the Circulation tab.
+You are not authorized to use this function under the Circulation tab.
 
 <?php include("../shared/footer.php"); ?>

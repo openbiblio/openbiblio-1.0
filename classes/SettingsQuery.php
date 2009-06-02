@@ -80,6 +80,15 @@ class SettingsQuery extends Query {
     $set->setItemsPerPage($array["items_per_page"]);
     $set->setVersion($array["version"]);
     $set->setThemeid($array["themeid"]);
+    $set->setPurgeHistoryAfterMonths($array["purge_history_after_months"]);
+    if ($array["block_checkouts_when_fines_due"] == 'Y') {
+      $set->setBlockCheckoutsWhenFinesDue(true);
+    } else {
+      $set->setBlockCheckoutsWhenFinesDue(false);
+    }
+    $set->setLocale($array["locale"]);
+    $set->setCharset($array["charset"]);
+    $set->setHtmlLangAttr($array["html_lang_attr"]);
 
     return $set;
   }
@@ -105,7 +114,17 @@ class SettingsQuery extends Query {
     $sql = $sql."library_url='".$set->getLibraryUrl()."', ";
     $sql = $sql."opac_url='".$set->getOpacUrl()."', ";
     $sql = $sql."session_timeout=".$set->getSessionTimeout().", ";
-    $sql = $sql."items_per_page=".$set->getItemsPerPage();
+    $sql = $sql."items_per_page=".$set->getItemsPerPage().", ";
+    $sql = $sql."purge_history_after_months=".$set->getPurgeHistoryAfterMonths().", ";
+    if ($set->isBlockCheckoutsWhenFinesDue()) {
+      $sql = $sql."block_checkouts_when_fines_due='Y', ";
+    } else {
+      $sql = $sql."block_checkouts_when_fines_due='N', ";
+    }
+    $sql = $sql."locale='".$set->getLocale()."', ";
+    $sql = $sql."charset='".$set->getCharset()."', ";
+    $sql = $sql."html_lang_attr='".$set->getHtmlLangAttr()."'";
+
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
@@ -140,6 +159,23 @@ class SettingsQuery extends Query {
     return $result;
   }
 
+  function getPurgeHistoryAfterMonths($connection) {
+    $sql = "select purge_history_after_months from settings";
+    $result = $connection->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = "Error updating library theme in use";
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
+      return false;
+    }
+    $array = $connection->fetchRow();
+    if ($array == false) {
+      return false;
+    }
+    return $array["purge_history_after_months"];
+  }
 }
 
 ?>

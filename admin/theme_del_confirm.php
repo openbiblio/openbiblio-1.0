@@ -43,8 +43,8 @@
 <center>
 <form name="delstaffform" method="POST" action="../admin/theme_del.php?themeid=<?php echo $themeid;?>&name=<?php echo urlencode($name);?>">
 Are you sure you want to delete theme, <?php echo $name;?>?<br><br>
-      <input type="submit" value="  Delete  ">
-      <input type="button" onClick="parent.location='../admin/theme_list.php'" value="  Cancel  ">
+      <input type="submit" value="  Delete  " class="button">
+      <input type="button" onClick="parent.location='../admin/theme_list.php'" value="  Cancel  " class="button">
 </form>
 </center>
 <?php include("../shared/footer.php"); ?>

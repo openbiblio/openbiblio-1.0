@@ -20,51 +20,57 @@
  **********************************************************************************
  */
 
-  $tab = "circulation";
-  $nav = "summary";
+  session_cache_limiter(null);
 
-  include("../shared/read_settings.php");
-  include("../shared/logincheck.php");
-  include("../shared/header.php");
+  $tab = "circulation";
+  $nav = "searchform";
+  $focus_form_name = "barcodesearch";
+  $focus_form_field = "searchText";
+
+  require_once("../shared/read_settings.php");
+  require_once("../shared/logincheck.php");
+  require_once("../shared/header.php");
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
 
 ?>
 
-<h1><img src="../images/circ.gif" border="0" width="50" height="50" align="top"> <?php print $loc->getText("indexHeading"); ?></h1>
-<?php print $loc->getText("indexIntro"); ?>
-
-<br><br>
+<h1><img src="../images/circ.png" border="0" width="30" height="30" align="top"> <?php print $loc->getText("indexHeading"); ?></h1>
+<form name="barcodesearch" method="POST" action="../circ/mbr_search.php">
 <table class="primary">
   <tr>
-    <th nowrap="true"><?php print $loc->getText("indexFunc"); ?></th><th align="left"><?php print $loc->getText("indexDesc"); ?></th>
+    <th valign="top" nowrap="yes" align="left">
+      <?php print $loc->getText("indexCardHdr"); ?>
+    </th>
   </tr>
   <tr>
-    <td nowrap="true" align="center" valign="top" class="primary"><?php print $loc->getText("indexMbrSrch"); ?></td>
-    <td class="primary"><?php print $loc->getText("indexMbrSrchDesc1"); ?>
-      <ul>
-        <li><?php print $loc->getText("indexMbrSrchDesc2"); ?></li>
-        <li><?php print $loc->getText("indexMbrSrchDesc3"); ?></li>
-        <li><?php print $loc->getText("indexMbrSrchDesc4"); ?></li>
-        <li><?php print $loc->getText("indexMbrSrchDesc5"); ?></li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary"><?php print $loc->getText("indexNewMbr"); ?></td>
-    <td class="primary"><?php print $loc->getText("indexNewMbrDesc"); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary"><?php print $loc->getText("indexCheckIn"); ?></td>
-    <td class="primary"><?php print $loc->getText("indexCheckInDesc"); ?>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary"><?php print $loc->getText("indexReports"); ?></td>
-    <td class="primary"><?php print $loc->getText("indexReportsDesc"); ?>
+    <td nowrap="true" class="primary">
+      <?php print $loc->getText("indexCard"); ?>
+      <input type="text" name="searchText" size="20" maxlength="20">
+      <input type="hidden" name="searchType" value="barcodeNmbr">
+      <input type="submit" value="<?php print $loc->getText("indexSearch"); ?>" class="button">
     </td>
   </tr>
 </table>
+</form>
+
+
+<form name="phrasesearch" method="POST" action="../circ/mbr_search.php">
+<table class="primary">
+  <tr>
+    <th valign="top" nowrap="yes" align="left">
+      <?php print $loc->getText("indexNameHdr"); ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      <?php print $loc->getText("indexName"); ?>
+      <input type="text" name="searchText" size="30" maxlength="80">
+      <input type="hidden" name="searchType" value="lastName">
+      <input type="submit" value="<?php print $loc->getText("indexSearch"); ?>" class="button">
+    </td>
+  </tr>
+</table>
+</form>
 
 <?php include("../shared/footer.php"); ?>

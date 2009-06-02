@@ -31,7 +31,7 @@
 
 <form enctype="multipart/form-data" action="../catalog/upload_usmarc.php" method="post">
  USMarc Input File: <input type="file" name="usmarc_data"><br><br>
- <input type="submit" value="Upload File">
+ <input type="submit" value="Upload File" class="button">
 </form>
 
 <?php include("../shared/footer.php"); ?>

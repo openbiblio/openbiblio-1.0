@@ -23,6 +23,7 @@
   session_cache_limiter(null);
 
   $tab = "circulation";
+  $restrictToMbrAuth = TRUE;
   $nav = "new";
   $cancelLocation = "../circ/index.php";
   $focus_form_name = "newmbrform";

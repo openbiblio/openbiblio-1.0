@@ -21,6 +21,8 @@
  */
 
 
+  session_start();
+
   $temp_return_page = "";
   if (isset($HTTP_GET_VARS["RET"])){
     $HTTP_SESSION_VARS["returnPage"] = $HTTP_GET_VARS["RET"];
@@ -34,19 +36,24 @@
   require_once("../shared/read_settings.php");
   require_once("../shared/get_form_vars.php");
   require_once("../shared/header.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,"shared");
 
 ?>
 
 <br>
 <center>
 <form name="loginform" method="POST" action="../shared/login.php">
-<table class="border">
+<table class="primary">
   <tr>
-    <th colspan="2">Staff Login:</td>
+    <th><?php echo $loc->getText("loginFormTbleHdr"); ?>:</th>
   </tr>
   <tr>
+    <td valign="top" class="primary" align="left">
+<table class="primary">
+  <tr>
     <td valign="top" class="noborder">
-      Username:</font>
+      <?php echo $loc->getText("loginFormUsername"); ?>:</font>
     </td>
     <td valign="top" class="noborder">
       <input type="text" name="username" size="20" maxlength="20"
@@ -56,7 +63,7 @@
   </tr>
   <tr>
     <td valign="top" class="noborder">
-      Password:</font>
+      <?php echo $loc->getText("loginFormPassword"); ?>:</font>
     </td>
     <td valign="top" class="noborder">
       <input type="password" name="pwd" size="20" maxlength="20"
@@ -68,10 +75,14 @@
 
   <tr>
     <td colspan="2" align="center" class="noborder">
-      <input type="submit" value="  Login  ">
+      <input type="submit" value="<?php echo $loc->getText("loginFormLogin"); ?>" class="button">
     </td>
   </tr>
 </table>
+    </td>
+  </tr>
+</table>
+
 </form>
 </center>
 

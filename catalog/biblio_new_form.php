@@ -24,16 +24,27 @@
 
   $tab = "cataloging";
   $nav = "new";
+  $helpPage = "biblioEdit";
   $cancelLocation = "../catalog/index.php";
-  $headerWording="Add New";
   $focus_form_name = "newbiblioform";
-  $focus_form_field = "barcodeNmbr";
+  $focus_form_field = "materialCd";
 
   require_once("../shared/read_settings.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
   require_once("../shared/header.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+
+  $headerWording=$loc->getText("biblioNewFormLabel");
+
+  /*****************************************************
+   *  Set form defaults
+   *****************************************************/
+  if (isset($HTTP_GET_VARS["reset"])){
+    $postVars["opacFlg"] = "CHECKED";
+  }
 
 ?>
 

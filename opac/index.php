@@ -30,12 +30,17 @@
   require_once("../shared/read_settings.php");
   require_once("../shared/header_opac.php");
 
+  $lookup = "N";
+  if (isset($HTTP_GET_VARS["lookup"])) {
+    $lookup = "Y";
+  }
 ?>
 
 <h1>Online Public Access Catalog (OPAC)</h1>
 Welcome to our library's oline public access catalog.  Search our catalog
 to view bibliography information on holdings we have in our library.
 <form name="phrasesearch" method="POST" action="../shared/biblio_search.php">
+<br />
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
@@ -52,7 +57,8 @@ to view bibliography information on holdings we have in our library.
       <input type="text" name="searchText" size="30" maxlength="256">
       <input type="hidden" name="sortBy" value="default">
       <input type="hidden" name="tab" value="<?php echo $tab; ?>">
-      <input type="submit" value="Search">
+      <input type="hidden" name="lookup" value="<?php echo $lookup; ?>">
+      <input type="submit" value="Search" class="button">
     </td>
   </tr>
 </table>

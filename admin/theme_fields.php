@@ -203,8 +203,8 @@
 
   <tr>
     <td align="center" colspan="5" class="primary">
-      <input type="button" onClick="javascript:editTheme()" value="  Submit  ">
-      <input type="button" onClick="parent.location='../admin/theme_list.php'" value="  Cancel  ">
+      <input type="button" onClick="javascript:editTheme()" value="  Submit  " class="button">
+      <input type="button" onClick="parent.location='../admin/theme_list.php'" value="  Cancel  " class="button">
     </td>
   </tr>
 

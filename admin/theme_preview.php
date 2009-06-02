@@ -204,7 +204,7 @@ This is a preview of the <?php echo $HTTP_POST_VARS["themeName"]; ?> theme.
 <table class="primary">
   <tr>
     <th valign="top">
-      Table Heading</font>
+      Table Heading
     </th>
   </tr>
   <tr>
@@ -225,8 +225,11 @@ This is a preview of the <?php echo $HTTP_POST_VARS["themeName"]; ?> theme.
 </table>
 <br>
 <a href="#">sample link</a><br>
-<font class="error">sample error</font>
-
+<font class="error">sample error</font><br />
+<form>
+<input type="text" name="sampleInput" size="40" maxlength="40" value="Sample Input" ><br />
+<input type="button" value="Sample Button" class="button">
+</form>
 
 <!-- **************************************************************************************
      * Footer

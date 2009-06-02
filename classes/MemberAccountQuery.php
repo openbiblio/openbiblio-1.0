@@ -1,0 +1,195 @@
+<?php
+/**********************************************************************************
+ *   Copyright(C) 2002 David Stevens
+ *
+ *   This file is part of OpenBiblio.
+ *
+ *   OpenBiblio is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 2 of the License, or
+ *   (at your option) any later version.
+ *
+ *   OpenBiblio is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with OpenBiblio; if not, write to the Free Software
+ *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ **********************************************************************************
+ */
+
+require_once("../shared/global_constants.php");
+require_once("../classes/Query.php");
+require_once("../classes/MemberAccountTransaction.php");
+
+/******************************************************************************
+ * MemberAccountQuery data access component for member account transactions
+ *
+ * @author David Stevens <dave@stevens.name>;
+ * @version 1.0
+ * @access public
+ ******************************************************************************
+ */
+class MemberAccountQuery extends Query {
+  var $_rowCount = 0;
+  var $_loc;
+
+  function MemberAccountQuery () {
+    $this->_loc = new Localize(OBIB_LOCALE,"classes");
+  }
+
+  function getRowCount() {
+    return $this->_rowCount;
+  }
+
+  /****************************************************************************
+   * Executes a query to select account information
+   * @param string $mbrid mbrid of member
+   * @return BiblioHold returns hold record or false, if error occurs
+   * @access public
+   ****************************************************************************
+   */
+  function query($mbrid) {
+    # setting query that will return all the data
+    $sql = "select member_account.* ";
+    $sql = $sql.",transaction_type_dm.description transaction_type_desc ";
+    $sql = $sql."from member_account ";
+    $sql = $sql.",transaction_type_dm ";
+    $sql = $sql."where member_account.transaction_type_cd = transaction_type_dm.code";
+    $sql = $sql." and member_account.mbrid = ".$mbrid;
+    $sql = $sql." order by create_dt";
+
+    $result = $this->_conn->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("memberAccountQueryErr1");
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
+      return false;
+    }
+    $this->_rowCount = $this->_conn->numRows();
+    if ($this->_rowCount == 0) {
+      return true;
+    }
+    return $result;
+  }
+
+  /****************************************************************************
+   * Executes a query to select account information
+   * @param string $mbrid mbrid of member
+   * @return decimal returns balance due
+   * @access public
+   ****************************************************************************
+   */
+  function getBalance($mbrid) {
+    # setting query that will return all the data
+    $sql = "select sum(member_account.amount) balance ";
+    $sql = $sql."from member_account ";
+    $sql = $sql."where member_account.mbrid = ".$mbrid;
+
+    $result = $this->_conn->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("memberAccountQueryErr1");
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
+      return 0;
+    }
+    $array = $this->_conn->fetchRow();
+    if ($array == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("memberAccountQueryErr1");
+      return 0;
+    }
+    return $array["balance"];
+  }
+
+  /****************************************************************************
+   * Fetches a row from the query result and populates the BiblioStatusHist object.
+   * @return BiblioStatusHist returns bibliography status history object or false if no more holds to fetch
+   * @access public
+   ****************************************************************************
+   */
+  function fetchRow() {
+    $array = $this->_conn->fetchRow();
+    if ($array == false) {
+      return false;
+    }
+
+    $trans = new MemberAccountTransaction();
+    $trans->setMbrid($array["mbrid"]);
+    $trans->setTransid($array["transid"]);
+    $trans->setCreateDt($array["create_dt"]);
+    $trans->setCreateUserid($array["create_userid"]);
+    $trans->setTransactionTypeCd($array["transaction_type_cd"]);
+    $trans->setTransactionTypeDesc($array["transaction_type_desc"]);
+    $trans->setAmount($array["amount"]);
+    $trans->setDescription($array["description"]);
+    return $trans;
+  }
+
+  /****************************************************************************
+   * Inserts a new account transaction into the member_account table.
+   * @param MemberAccountTransaction $trans account transaction to insert
+   * @access public
+   ****************************************************************************
+   */
+  function insert($trans) {
+    // change trans type payment and credit amount to negative
+    $transTypeSign = substr($trans->getTransactionTypeCd(),0,1);
+    if ($transTypeSign == "-") {
+      $amt = $trans->getAmount() * -1;
+    } else {
+      $amt = $trans->getAmount();
+    }
+    $sql = "insert into member_account values (";
+    $sql = $sql.$trans->getMbrid().", ";
+    $sql = $sql."null, ";
+    $sql = $sql."sysdate(), ";
+    $sql = $sql.$trans->getCreateUserid().", ";
+    $sql = $sql."'".$trans->getTransactionTypeCd()."', ";
+    $sql = $sql.$amt.", ";
+    $sql = $sql."'".$trans->getDescription()."')";
+    $result = $this->_conn->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("memberAccountQueryErr2");
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
+      return false;
+    }
+    return $result;
+  }
+
+  /****************************************************************************
+   * Deletes history from the biblio_status_hist table.
+   * @param string $mbrid member id of history to delete
+   * @return boolean returns false, if error occurs
+   * @access public
+   ****************************************************************************
+   */
+  function delete($mbrid,$tranid="") {
+    $sql = "delete from member_account where mbrid = ".$mbrid;
+    if ($tranid != "") {
+      $sql = $sql." and transid = ".$tranid;
+    }
+    $result = $this->_conn->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("memberAccountQueryErr3");
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
+      return false;
+    }
+    return $result;
+  }
+
+
+}
+?>

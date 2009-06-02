@@ -35,7 +35,7 @@ require_once("../classes/DmQuery.php");
  * @access public
  *********************************************************************************
  */
-function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors){
+function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible"){
   if (!isset($postVars)) {
     $value = "";
   } elseif (!isset($postVars[$fieldName])) {
@@ -51,8 +51,11 @@ function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors){
       $error = $pageErrors[$fieldName];
   }
 
-  echo "<input type=\"text\" name=\"".$fieldName."\" size=\"".$size."\" maxlength=\"".$max."\"";
-  echo "value=\"".$value."\" >";
+  echo "<input type=\"text\" id=\"".$fieldName."\" name=\"".$fieldName."\" size=\"".$size."\" maxlength=\"".$max."\"";
+  if ($visibility != "visible") {
+    echo " style=\"visibility:".$visibility."\"";
+  }
+  echo " value=\"".$value."\" >";
   if ($error != "") {
     echo "<br><font class=\"error\">";
     echo $error."</font>";
@@ -66,7 +69,7 @@ function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors){
  * @param array_reference &$postVars reference to array containing all input values
  *********************************************************************************
  */
-function printSelect($fieldName,$domainTable,&$postVars){
+function printSelect($fieldName,$domainTable,&$postVars,$disabled=FALSE){
   $value = "";
   if (isset($postVars[$fieldName])) {
       $value = $postVars[$fieldName];
@@ -83,7 +86,11 @@ function printSelect($fieldName,$domainTable,&$postVars){
     $dmQ->close();
     displayErrorPage($dmQ);
   }
-  echo "<select name=\"".$fieldName."\">\n";
+  echo "<select id=\"".$fieldName."\" name=\"".$fieldName."\"";
+  if ($disabled) {
+    echo " disabled";
+  }
+  echo ">\n";
   while ($dm = $dmQ->fetchRow()) {
     echo "<option value=\"".$dm->getCode()."\"";
     if (($value == "") && ($dm->getDefaultFlg() == 'Y')) {

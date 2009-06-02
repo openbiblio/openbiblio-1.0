@@ -67,6 +67,15 @@
     $postVars["opacUrl"] = $set->getOpacUrl();
     $postVars["sessionTimeout"] = $set->getSessionTimeout();
     $postVars["itemsPerPage"] = $set->getItemsPerPage();
+    $postVars["purgeHistoryAfterMonths"] = $set->getPurgeHistoryAfterMonths();
+    if ($set->isBlockCheckoutsWhenFinesDue()) {
+      $postVars["isBlockCheckoutsWhenFinesDue"] = "CHECKED";
+    } else {
+      $postVars["isBlockCheckoutsWhenFinesDue"] = "";
+    }
+    $postVars["locale"] = $set->getLocale();
+    $postVars["charset"] = $set->getCharset();
+    $postVars["htmlLangAttr"] = $set->getHtmlLangAttr();
     $setQ->close();
   } else {
     require("../shared/get_form_vars.php");
@@ -108,7 +117,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Use Image in Place<br>of Name:
+      Only Show Image in Header:
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="isUseImageSet" value="CHECKED"
@@ -152,7 +161,7 @@
       Session Timeout:
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("sessionTimeout",3,3,$postVars,$pageErrors); ?>minutes
+      <?php printInputText("sessionTimeout",3,3,$postVars,$pageErrors); ?> minutes
     </td>
   </tr>
   <tr>
@@ -160,12 +169,64 @@
       Search Results:
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("itemsPerPage",2,2,$postVars,$pageErrors); ?>items per page
+      <?php printInputText("itemsPerPage",2,2,$postVars,$pageErrors); ?> items per page
+    </td>
+  </tr>
+  <tr>
+    <td class="primary" valign="top">
+      Purge Bibliography History After:
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("purgeHistoryAfterMonths",2,2,$postVars,$pageErrors); ?> months
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      Block Checkouts When Fines Due:
+    </td>
+    <td valign="top" class="primary">
+      <input type="checkbox" name="isBlockCheckoutsWhenFinesDue" value="CHECKED"
+        <?php if (isset($postVars["isBlockCheckoutsWhenFinesDue"])) echo $postVars["isBlockCheckoutsWhenFinesDue"]; ?> >
+    </td>
+  </tr>
+  <tr>
+    <td class="primary" valign="top">
+      Locale:
+    </td>
+    <td valign="top" class="primary">
+      <select name="locale">
+        <?php
+          require_once("../locale/language_list.php");
+          foreach($locales as $langCode => $langDesc) {
+            echo "<option value=\"".$langCode."\"";
+            if ($langCode == $postVars["locale"]) {
+              echo " selected";
+            }
+            echo ">".$langDesc."\n";
+          }
+        ?>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      HTML Charset:
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("charset",20,20,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
+      HTML Tag Lang Attribute:
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("htmlLangAttr",8,8,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Update  ">
+      <input type="submit" value="  Update  " class="button">
     </td>
   </tr>
 

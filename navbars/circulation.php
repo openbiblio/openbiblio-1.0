@@ -20,19 +20,13 @@
  **********************************************************************************
  */
 ?>
-<a href="../shared/logout.php"><img src="../images/logout.gif" width="64" height="20" border="0"></a>
-<br><br>
-
-<?php if ($nav == "summary") { ?>
- &raquo; Circ Summary<br>
-<?php } else { ?>
- <a href="../circ/index.php" class="alt1">Circulation Summary</a><br>
-<?php } ?>
+<input type="button" onClick="parent.location='../shared/logout.php'" value="Logout" class="navbutton"><br />
+<br />
 
 <?php if ($nav == "searchform") { ?>
  &raquo; Member Search<br>
 <?php } else { ?>
- <a href="../circ/mbr_search_form.php" class="alt1">Member Search</a><br>
+ <a href="../circ/index.php" class="alt1">Member Search</a><br>
 <?php } ?>
 
 <?php if ($nav == "search") { ?>
@@ -42,22 +36,41 @@
 <?php if ($nav == "view") { ?>
  &nbsp; &raquo; Member Info<br>
  &nbsp; &nbsp; <a href="../circ/mbr_edit_form.php?mbrid=<?php echo $mbrid;?>" class="alt1">Edit Info</a><br>
- &nbsp; &nbsp; <a href="../circ/mbr_del_confirm.php?mbrid=<?php echo $mbrid;?>&name=<?php echo $mbrName;?>" class="alt1">Delete</a><br>
- &nbsp; &nbsp; Pay Late Fee<br>
+ &nbsp; &nbsp; <a href="../circ/mbr_del_confirm.php?mbrid=<?php echo $mbrid;?>" class="alt1">Delete</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_account.php?mbrid=<?php echo $mbrid;?>&reset=Y" class="alt1">Account</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_history.php?mbrid=<?php echo $mbrid;?>" class="alt1">Checkout History</a><br>
 <?php } ?>
 
 <?php if ($nav == "edit") { ?>
  &nbsp; <a href="../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>" class="alt1">Member Info</a><br>
  &nbsp; &nbsp; &raquo; Edit Info<br>
- &nbsp; &nbsp; <a href="../circ/mbr_del_confirm.php?mbrid=<?php echo $mbrid;?>&name=<?php echo $mbrName;?>" class="alt1">Delete</a><br>
- &nbsp; &nbsp; Pay Late Fee<br>
+ &nbsp; &nbsp; <a href="../circ/mbr_del_confirm.php?mbrid=<?php echo $mbrid;?>" class="alt1">Delete</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_account.php?mbrid=<?php echo $mbrid;?>&reset=Y" class="alt1">Account</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_history.php?mbrid=<?php echo $mbrid;?>" class="alt1">Checkout History</a><br>
 <?php } ?>
 
 <?php if ($nav == "delete") { ?>
  &nbsp; <a href="../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>" class="alt1">Member Info</a><br>
  &nbsp; &nbsp; <a href="../circ/mbr_edit_form.php?mbrid=<?php echo $mbrid;?>" class="alt1">Edit Info</a><br>
  &nbsp; &nbsp; &raquo; Delete<br>
- &nbsp; &nbsp; Pay Late Fee<br>
+ &nbsp; &nbsp; <a href="../circ/mbr_account.php?mbrid=<?php echo $mbrid;?>&reset=Y" class="alt1">Account</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_history.php?mbrid=<?php echo $mbrid;?>" class="alt1">Checkout History</a><br>
+<?php } ?>
+
+<?php if ($nav == "hist") { ?>
+ &nbsp; <a href="../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>" class="alt1">Member Info</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_edit_form.php?mbrid=<?php echo $mbrid;?>" class="alt1">Edit Info</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_del_confirm.php?mbrid=<?php echo $mbrid;?>" class="alt1">Delete</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_account.php?mbrid=<?php echo $mbrid;?>&reset=Y" class="alt1">Account</a><br>
+ &nbsp; &nbsp; &raquo; Checkout Hist<br>
+<?php } ?>
+
+<?php if ($nav == "account") { ?>
+ &nbsp; <a href="../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>" class="alt1">Member Info</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_edit_form.php?mbrid=<?php echo $mbrid;?>" class="alt1">Edit Info</a><br>
+ &nbsp; &nbsp; <a href="../circ/mbr_del_confirm.php?mbrid=<?php echo $mbrid;?>" class="alt1">Delete</a><br>
+ &nbsp; &nbsp; &raquo; Account<br>
+ &nbsp; &nbsp; <a href="../circ/mbr_history.php?mbrid=<?php echo $mbrid;?>" class="alt1">Checkout History</a><br>
 <?php } ?>
 
 <?php if ($nav == "new") { ?>
@@ -72,5 +85,4 @@
  <a href="../circ/checkin_form.php?reset=Y" class="alt1">Check In</a><br>
 <?php } ?>
 
-Reports<br>
-<a href="javascript:popSecondary('../doc/index.php?tab=<?php echo $tab;?>@nav=<?php echo $nav;?>')">Help</a>
+<a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')">Help</a>

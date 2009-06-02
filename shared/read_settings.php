@@ -81,8 +81,13 @@
   define("OBIB_ITEMS_PER_PAGE",$set->getItemsPerPage());
   define("OBIB_VERSION",$set->getVersion());
   define("OBIB_THEMEID",$set->getThemeid());
-  define("OBIB_LOCALE","en");
-  define("OBIB_LIBRARY_USE_IMAGE",$set->isUseImageSet());
+  define("OBIB_BLOCK_CHECKOUTS_WHEN_FINES_DUE",$set->isBlockCheckoutsWhenFinesDue());
+  define("OBIB_LOCALE",$set->getLocale());
+  setlocale(LC_MONETARY,$set->getLocale());
+  setlocale(LC_NUMERIC,$set->getLocale());
+  define("OBIB_CHARSET",$set->getCharset());
+  define("OBIB_HTML_LANG_ATTR",$set->getHtmlLangAttr());
+  define("OBIB_LIBRARY_USE_IMAGE_ONLY",$set->isUseImageSet());
   define("OBIB_LIBRARY_IMAGE_URL",$set->getLibraryImageUrl());
 
   /****************************************************************************
@@ -119,12 +124,6 @@
   define("OBIB_BORDER_COLOR",$theme->getBorderColor());
   define("OBIB_BORDER_WIDTH",$theme->getBorderWidth());
   define("OBIB_PADDING",$theme->getTablePadding());
-
-  /****************************************************************************
-   *  System constants
-   ****************************************************************************
-   */
-  define("OBIB_DEMO_FLG",false);
 
   #****************************************************************************
   #*  Making session user info available on all pages.

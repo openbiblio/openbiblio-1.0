@@ -27,79 +27,64 @@
   require_once("../shared/logincheck.php");
 
   require_once("../classes/Biblio.php");
+  require_once("../classes/BiblioField.php");
   require_once("../classes/BiblioQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
+  #*  Checking for post vars.  Go back to search if none found.
   #****************************************************************************
 
   if (count($HTTP_POST_VARS) == 0) {
-    header("Location: ../catalog/biblio_search_form.php");
+    header("Location: ../catalog/index.php");
     exit();
   }
+  $bibid = $HTTP_POST_VARS["bibid"];
 
   #****************************************************************************
   #*  Validate data
   #****************************************************************************
-  $bibid = $HTTP_POST_VARS["bibid"];
-  $title = urlencode($HTTP_POST_VARS["title"]);
-
   $biblio = new Biblio();
-  $biblio->setBibid($HTTP_POST_VARS["bibid"]);
-  $biblio->setBarcodeNmbr($HTTP_POST_VARS["barcodeNmbr"]);
-  $HTTP_POST_VARS["barcodeNmbr"] = $biblio->getBarcodeNmbr();
-  $biblio->setTitle($HTTP_POST_VARS["title"]);
-  $HTTP_POST_VARS["title"] = $biblio->getTitle();
-  $biblio->setCollectionCd($HTTP_POST_VARS["collectionCd"]);
+  $biblio->setBibid($bibid);
   $biblio->setMaterialCd($HTTP_POST_VARS["materialCd"]);
-  $biblio->setSubtitle($HTTP_POST_VARS["subtitle"]);
-  $HTTP_POST_VARS["subtitle"] = $biblio->getSubtitle();
-  $biblio->setAuthor($HTTP_POST_VARS["author"]);
-  $HTTP_POST_VARS["author"] = $biblio->getAuthor();
-  $biblio->setAddAuthor($HTTP_POST_VARS["addAuthor"]);
-  $HTTP_POST_VARS["addAuthor"] = $biblio->getAddAuthor();
-  $biblio->setEdition($HTTP_POST_VARS["edition"]);
-  $HTTP_POST_VARS["edition"] = $biblio->getEdition();
-  $biblio->setCallNmbr($HTTP_POST_VARS["callNmbr"]);
-  $HTTP_POST_VARS["callNmbr"] = $biblio->getCallNmbr();
-  $biblio->setLccnNmbr($HTTP_POST_VARS["lccnNmbr"]);
-  $HTTP_POST_VARS["lccnNmbr"] = $biblio->getLccnNmbr();
-  $biblio->setIsbnNmbr($HTTP_POST_VARS["isbnNmbr"]);
-  $HTTP_POST_VARS["isbnNmbr"] = $biblio->getIsbnNmbr();
-  $biblio->setLcCallNmbr($HTTP_POST_VARS["lcCallNmbr"]);
-  $HTTP_POST_VARS["lcCallNmbr"] = $biblio->getLcCallNmbr();
-  $biblio->setLcItemNmbr($HTTP_POST_VARS["lcItemNmbr"]);
-  $HTTP_POST_VARS["lcItemNmbr"] = $biblio->getLcItemNmbr();
-  $biblio->setUdcNmbr($HTTP_POST_VARS["udcNmbr"]);
-  $HTTP_POST_VARS["udcNmbr"] = $biblio->getUdcNmbr();
-  $biblio->setUdcEdNmbr($HTTP_POST_VARS["udcEdNmbr"]);
-  $HTTP_POST_VARS["udcEdNmbr"] = $biblio->getUdcEdNmbr();
-  $biblio->setPublisher($HTTP_POST_VARS["publisher"]);
-  $HTTP_POST_VARS["publisher"] = $biblio->getPublisher();
-  $biblio->setPublicationDt($HTTP_POST_VARS["publicationDt"]);
-  $HTTP_POST_VARS["publicationDt"] = $biblio->getPublicationDt();
-  $biblio->setPublicationLoc($HTTP_POST_VARS["publicationLoc"]);
-  $HTTP_POST_VARS["publicationLoc"] = $biblio->getPublicationLoc();
-  $biblio->setSummary($HTTP_POST_VARS["summary"]);
-  $HTTP_POST_VARS["summary"] = $biblio->getSummary();
-  $biblio->setPages($HTTP_POST_VARS["pages"]);
-  $HTTP_POST_VARS["pages"] = $biblio->getPages();
-  $biblio->setPhysicalDetails($HTTP_POST_VARS["physicalDetails"]);
-  $HTTP_POST_VARS["physicalDetails"] = $biblio->getPhysicalDetails();
-  $biblio->setDimensions($HTTP_POST_VARS["dimensions"]);
-  $HTTP_POST_VARS["dimensions"] = $biblio->getDimensions();
-  $biblio->setAccompanying($HTTP_POST_VARS["accompanying"]);
-  $HTTP_POST_VARS["accompanying"] = $biblio->getAccompanying();
-  $biblio->setPrice($HTTP_POST_VARS["price"]);
-  $HTTP_POST_VARS["price"] = $biblio->getPrice();
-
+  $biblio->setCollectionCd($HTTP_POST_VARS["collectionCd"]);
+  $biblio->setCallNmbr1($HTTP_POST_VARS["callNmbr1"]);
+  $biblio->setCallNmbr2($HTTP_POST_VARS["callNmbr2"]);
+  $biblio->setCallNmbr3($HTTP_POST_VARS["callNmbr3"]);
+  $biblio->setLastChangeUserid($HTTP_SESSION_VARS["userid"]);
+  $biblio->setOpacFlg(isset($HTTP_POST_VARS["opacFlg"]));
+  $HTTP_POST_VARS["callNmbr1"] = $biblio->getCallNmbr1();
+  $HTTP_POST_VARS["callNmbr2"] = $biblio->getCallNmbr2();
+  $HTTP_POST_VARS["callNmbr3"] = $biblio->getCallNmbr3();
+  $indexes = $HTTP_POST_VARS["indexes"];
+  foreach($indexes as $index) {
+    $value = $HTTP_POST_VARS["values"][$index];
+    $fieldid = $HTTP_POST_VARS["fieldIds"][$index];
+    $tag = $HTTP_POST_VARS["tags"][$index];
+    $subfieldCd = $HTTP_POST_VARS["subfieldCds"][$index];
+    $requiredFlg = $HTTP_POST_VARS["requiredFlgs"][$index];
+    //echo "<br>index=".$index." tag=".$tag." subfieldCd=".$subfieldCd." value=".$value;
+    $biblioFld = new BiblioField();
+    $biblioFld->setBibid($bibid);
+    $biblioFld->setFieldid($fieldid);
+    $biblioFld->setTag($tag);
+    $biblioFld->setSubfieldCd($subfieldCd);
+    $biblioFld->setIsRequired($requiredFlg);
+    $biblioFld->setFieldData($value);
+    $HTTP_POST_VARS[$index] = $biblioFld->getFieldData();
+    $biblio->addBiblioField($index,$biblioFld);
+  }
   $validData = $biblio->validateData();
   if (!$validData) {
-    $pageErrors["barcodeNmbr"] = $biblio->getBarcodeNmbrError();
-    $pageErrors["title"] = $biblio->getTitleError();
-    $pageErrors["callNmbr"] = $biblio->getCallNmbrError();
-    $pageErrors["price"] = $biblio->getPriceError();
+    $pageErrors["callNmbr1"] = $biblio->getCallNmbrError();
+    $biblioFlds = $biblio->getBiblioFields();
+    foreach($indexes as $index) {
+      if ($biblioFlds[$index]->getFieldDataError() != "") {
+        $pageErrors[$index] = $biblioFlds[$index]->getFieldDataError();
+      }
+    }
     $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
     $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
     header("Location: ../catalog/biblio_edit_form.php");
@@ -128,12 +113,8 @@
   unset($HTTP_SESSION_VARS["postVars"]);
   unset($HTTP_SESSION_VARS["pageErrors"]);
 
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
-  require_once("../shared/header.php");
+  $msg = $loc->getText("biblioEditSuccess");
+  $msg = urlencode($msg);
+  header("Location: ../shared/biblio_view.php?bibid=".$bibid."&msg=".$msg);
+  exit();
 ?>
-Bibliography, <?php echo $biblio->getTitle();?>, has been updated.<br><br>
-<a href="../shared/biblio_view.php?bibid=<?php echo $biblio->getBibid();?>">return to Biblio Info</a>
-
-<?php require_once("../shared/footer.php"); ?>

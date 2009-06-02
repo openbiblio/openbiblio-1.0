@@ -25,14 +25,34 @@
   $focus_form_name = "barcodesearch";
   $focus_form_field = "barcodeNmbr";
 
+/*  function getmicrotime(){ 
+    list($usec, $sec) = explode(" ",microtime()); 
+    return ((float)$usec + (float)$sec); 
+  } 
+  $startTm = getmicrotime();
+*/
   require_once("../shared/read_settings.php");
+
+/*
+  $endTm = getmicrotime();
+  trigger_error ("read_settings: start=".$startTm." end=".$endTm." diff=".($endTm - $startTm),E_USER_NOTICE);
+  $startTm = getmicrotime();
+*/
+
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
-  require_once("../classes/BiblioStatus.php");
-  require_once("../classes/BiblioStatusQuery.php");
+  require_once("../classes/BiblioSearch.php");
+  require_once("../classes/BiblioSearchQuery.php");
   require_once("../shared/get_form_vars.php");
   require_once("../shared/header.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
+/*
+  $endTm = getmicrotime();
+  trigger_error ("Header: start=".$startTm." end=".$endTm." diff=".($endTm - $startTm),E_USER_NOTICE);
+  $startTm = getmicrotime();
+*/
 ?>
 
 
@@ -54,15 +74,15 @@ function checkin(massCheckinFlg)
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
-      Bibliography Check In:
+      <?php echo $loc->getText("checkinFormHdr1"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Barcode Number:
+      <?php echo $loc->getText("checkinFormBarcode"); ?>
       <?php printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
       <input type="hidden" name="mbrid" value="<?php echo $mbrid;?>">
-      <input type="submit" value="Add to Shelving Cart">
+      <input type="submit" value="<?php echo $loc->getText("checkinFormShelveButton"); ?>" class="button">
     </td>
   </tr>
 </table>
@@ -77,12 +97,12 @@ function checkin(massCheckinFlg)
 
 <form name="checkinForm" method="POST" action="../circ/checkin.php">
 <input type="hidden" name="massCheckin" value="N">
-<a href="javascript:checkin('N')">Check in selected items</a> | 
-<a href="javascript:checkin('Y')">Check in all items</a>
+<a href="javascript:checkin('N')"><?php echo $loc->getText("checkinFormCheckinLink1"); ?></a> | 
+<a href="javascript:checkin('Y')"><?php echo $loc->getText("checkinFormCheckinLink2"); ?></a><br><br>
 <table class="primary">
   <tr>
     <th valign="top" colspan="5" nowrap="yes" align="left">
-      Current Shelving Cart List:
+      <?php echo $loc->getText("checkinFormHdr2"); ?>
     </th>
   </tr>
   <tr>
@@ -90,68 +110,75 @@ function checkin(massCheckinFlg)
       &nbsp;
     </th>
     <th valign="top" nowrap="yes" align="left">
-      Date Scanned
+      <?php echo $loc->getText("checkinFormColHdr1"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      Barcode
+      <?php echo $loc->getText("checkinFormColHdr2"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      Title
+      <?php echo $loc->getText("checkinFormColHdr3"); ?>
     </th>
     <th valign="top" nowrap="yes" align="left">
-      Author
+      <?php echo $loc->getText("checkinFormColHdr4"); ?>
     </th>
   </tr>
 
 <?php
   #****************************************************************************
-  #*  Search database for BiblioStatus data
+  #*  Search database for biblio copy data
   #****************************************************************************
-  $statQ = new BiblioStatusQuery();
-  $statQ->connect();
-  if ($statQ->errorOccurred()) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  $biblioQ = new BiblioSearchQuery();
+  $biblioQ->connect();
+  if ($biblioQ->errorOccurred()) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
   }
-  if (!$statQ->execSelect("crt")) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  if (!$biblioQ->query(OBIB_STATUS_SHELVING_CART)) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
   }
-  if ($statQ->getRowCount() == 0) {
+  if ($biblioQ->getRowCount() == 0) {
 ?>
     <td class="primary" align="center" colspan="5">
-      No bibliographies are currently in shelving cart status.
+      <?php echo $loc->getText("checkinFormEmptyCart"); ?>
     </td>
 <?php
   } else {
-    while ($stat = $statQ->fetchBiblioStatus()) {
+    while ($biblio = $biblioQ->fetchRow()) {
 ?>
   <tr>
     <td class="primary" valign="top" align="center">
-      <input type="checkbox" name="<?php echo $stat->getBibid();?>">
+      <input type="checkbox" name="bibid=<?php echo $biblio->getBibid();?>&copyid=<?php echo $biblio->getCopyid();?>" value="copyid">
     </td>
     <td class="primary" valign="top" nowrap="yes">
-      <?php echo $stat->getStatusBeginDt();?>
+      <?php echo $biblio->getStatusBeginDt();?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $stat->getBarcodeNmbr();?>
+      <?php echo $biblio->getBarcodeNmbr();?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $stat->getTitle();?>
+      <?php echo $biblio->getTitle();?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $stat->getAuthor();?>
+      <?php echo $biblio->getAuthor();?>
     </td>
   </tr>
 <?php
     }
   }
-  $statQ->close();
+  $biblioQ->close();
 ?>
 </table>
-<a href="javascript:checkin('N')">Check in selected items</a> | 
-<a href="javascript:checkin('Y')">Check in all items</a>
+<br>
+<a href="javascript:checkin('N')"><?php echo $loc->getText("checkinFormCheckinLink1"); ?></a> | 
+<a href="javascript:checkin('Y')"><?php echo $loc->getText("checkinFormCheckinLink2"); ?></a>
 </form>
 
 
-<?php require_once("../shared/footer.php"); ?>
+<?php require_once("../shared/footer.php");
+
+/*
+  $endTm = getmicrotime();
+  trigger_error ("Footer: start=".$startTm." end=".$endTm." diff=".($endTm - $startTm),E_USER_NOTICE);
+*/
+ ?>

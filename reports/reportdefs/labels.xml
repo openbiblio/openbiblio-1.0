@@ -1,0 +1,30 @@
+<!--
+  *********************************************************************************
+  *  sql syntax rules:
+  *  1.  Do not code column aliases.  This will mess up the selection criteria page.
+  *  2.  Do not specify the sort clause in your sql.  The sort order will be specified
+  *      by the user.
+  *  3.  You may, but are not required to specify the where clause
+  *********************************************************************************
+-->
+
+<report>
+  <id>labels</id>
+  <title>reportLabels</title>
+  <sql>
+    select biblio.create_dt
+           ,biblio.last_change_dt
+           ,biblio.material_cd
+           ,biblio.collection_cd
+           ,biblio.call_nmbr1
+           ,biblio.call_nmbr2
+           ,biblio.call_nmbr3
+           ,biblio.title
+           ,biblio.title_remainder
+           ,biblio.responsibility_stmt
+           ,biblio.author
+           ,biblio.opac_flg
+           ,biblio_copy.barcode_nmbr
+    from   biblio left join biblio_copy on biblio.bibid=biblio_copy.bibid
+  </sql>
+</report>

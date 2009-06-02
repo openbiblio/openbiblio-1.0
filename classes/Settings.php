@@ -42,6 +42,12 @@ class Settings {
   var $_itemsPerPageError = "";
   var $_version = "";
   var $_themeid = 0;
+  var $_purgeHistoryAfterMonths = 0;
+  var $_purgeHistoryAfterMonthsError = "";
+  var $_isBlockCheckoutsWhenFinesDue = TRUE;
+  var $_locale = "";
+  var $_charset = "";
+  var $_htmlLangAttr = "";
 
   /****************************************************************************
    * @return boolean true if data is valid, otherwise false.
@@ -53,25 +59,21 @@ class Settings {
     if (!is_numeric($this->_sessionTimeout)) {
       $valid = false;
       $this->_sessionTimeoutError = "Session timeout must be numeric.";
-    } elseif (strrpos($this->_sessionTimeout,".")) {
-      $valid = false;
-      $this->_sessionTimeoutError = "Session timeout must not contain a decimal point.";
     } elseif ($this->_sessionTimeout <= 0) {
       $valid = false;
-      $this->_sessionTimeoutError = "Session timeout must be greater than zero.";
+      $this->_sessionTimeoutError = "Session timeout must be greater than 0.";
     }
-
     if (!is_numeric($this->_itemsPerPage)) {
       $valid = false;
       $this->_itemsPerPageError = "Items per page must be numeric.";
-    } elseif (strrpos($this->_itemsPerPage,".")) {
-      $valid = false;
-      $this->_itemsPerPageError = "Items per page must not contain a decimal point.";
     } elseif ($this->_itemsPerPage <= 0) {
       $valid = false;
-      $this->_itemsPerPageError = "Items per page must be greater than zero.";
+      $this->_itemsPerPageError = "Items per page must be greater than 0.";
     }
-
+    if (!is_numeric($this->_purgeHistoryAfterMonths)) {
+      $valid = FALSE;
+      $this->_purgeHistoryAfterMonthsError = "Months must be numeric.";
+    }
     return $valid;
   }
 
@@ -119,6 +121,24 @@ class Settings {
   }
   function getThemeid() {
     return $this->_themeid;
+  }
+  function getPurgeHistoryAfterMonths() {
+    return $this->_purgeHistoryAfterMonths;
+  }
+  function getPurgeHistoryAfterMonthsError() {
+    return $this->_purgeHistoryAfterMonthsError;
+  }
+  function isBlockCheckoutsWhenFinesDue() {
+    return $this->_isBlockCheckoutsWhenFinesDue;
+  }
+  function getLocale() {
+    return $this->_locale;
+  }
+  function getCharset() {
+    return $this->_charset;
+  }
+  function getHtmlLangAttr() {
+    return $this->_htmlLangAttr;
   }
 
   /****************************************************************************
@@ -185,6 +205,25 @@ class Settings {
     } else {
       $this->_themeid = $temp;
     }
+  }
+  function setPurgeHistoryAfterMonths($value) {
+    $this->_purgeHistoryAfterMonths = trim($value);
+  }
+  function setBlockCheckoutsWhenFinesDue($value) {
+    if ($value) {
+      $this->_isBlockCheckoutsWhenFinesDue = TRUE;
+    } else {
+      $this->_isBlockCheckoutsWhenFinesDue = FALSE;
+    }
+  }
+  function setLocale($value) {
+    $this->_locale = trim($value);
+  }
+  function setCharset($value) {
+    $this->_charset = trim($value);
+  }
+  function setHtmlLangAttr($value) {
+    $this->_htmlLangAttr = trim($value);
   }
 
 }

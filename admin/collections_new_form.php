@@ -59,9 +59,17 @@
     </td>
   </tr>
   <tr>
+    <td nowrap="true" class="primary">
+      <font class="small">*</font>Daily Late Fee:
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("dailyLateFee",7,7,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Submit  ">
-      <input type="button" onClick="parent.location='../admin/collections_list.php'" value="  Cancel  ">
+      <input type="submit" value="  Submit  " class="button">
+      <input type="button" onClick="parent.location='../admin/collections_list.php'" value="  Cancel  " class="button">
     </td>
   </tr>
 

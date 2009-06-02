@@ -42,6 +42,7 @@
   #*  Validate data
   #****************************************************************************
   $staff = new Staff();
+  $staff->setLastChangeUserid($HTTP_SESSION_VARS["userid"]);
   $staff->setUserid($HTTP_POST_VARS["userid"]);
   $staff->setLastName($HTTP_POST_VARS["last_name"]);
   $HTTP_POST_VARS["last_name"] = $staff->getLastName();
@@ -50,8 +51,10 @@
   $staff->setUsername($HTTP_POST_VARS["username"]);
   $HTTP_POST_VARS["username"] = $staff->getUsername();
   $staff->setCircAuth(isset($HTTP_POST_VARS["circ_flg"]));
+  $staff->setCircMbrAuth(isset($HTTP_POST_VARS["circ_mbr_flg"]));
   $staff->setCatalogAuth(isset($HTTP_POST_VARS["catalog_flg"]));
   $staff->setAdminAuth(isset($HTTP_POST_VARS["admin_flg"]));
+  $staff->setReportsAuth(isset($HTTP_POST_VARS["reports_flg"]));
   $staff->setSuspended(isset($HTTP_POST_VARS["suspended_flg"]));
   if (!$staff->validateData()) {
     $pageErrors["last_name"] = $staff->getLastNameError();

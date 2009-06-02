@@ -31,6 +31,9 @@
  */
 class Staff {
   var $_userid = "";
+  var $_lastChangeDt = "";
+  var $_lastChangeUserid = "";
+  var $_lastChangeUsername = "";
   var $_pwd = "";
   var $_pwdError = "";
   var $_pwd2 = "";
@@ -40,8 +43,10 @@ class Staff {
   var $_username = "";
   var $_usernameError = "";
   var $_circAuth = false;
+  var $_circMbrAuth = FALSE;
   var $_catalogAuth = false;
   var $_adminAuth = false;
+  var $_reportsAuth = FALSE;
   var $_suspended = false;
   /****************************************************************************
    * @return boolean true if data is valid, otherwise false.
@@ -213,6 +218,27 @@ class Staff {
     }
   }
   /****************************************************************************
+   * @return boolean true if staff member has circulation member update authorization
+   * @access public
+   ****************************************************************************
+   */
+  function hasCircMbrAuth() {
+    return $this->_circMbrAuth;
+  }
+  /****************************************************************************
+   * @param boolean $circAuth true if staff member has circulation member update authorization
+   * @return void
+   * @access public
+   ****************************************************************************
+   */
+  function setCircMbrAuth($circMbrAuth) {
+    if ($circMbrAuth == TRUE) {
+      $this->_circMbrAuth = TRUE;
+    } else {
+      $this->_circMbrAuth = FALSE;
+    }
+  }
+  /****************************************************************************
    * @return boolean true if staff member has catalog authorization
    * @access public
    ****************************************************************************
@@ -255,6 +281,27 @@ class Staff {
     }
   }
   /****************************************************************************
+   * @return boolean true if staff member has reports authorization
+   * @access public
+   ****************************************************************************
+   */
+  function hasReportsAuth() {
+    return $this->_reportsAuth;
+  }
+  /****************************************************************************
+   * @param boolean $ReportsAuth true if staff member has reports authorization
+   * @return void
+   * @access public
+   ****************************************************************************
+   */
+  function setReportsAuth($reportsAuth) {
+    if ($reportsAuth == true) {
+      $this->_reportsAuth = true;
+    } else {
+      $this->_reportsAuth = FALSE;
+    }
+  }
+  /****************************************************************************
    * @return boolean true if staff member account has been suspended
    * @access public
    ****************************************************************************
@@ -275,6 +322,27 @@ class Staff {
       $this->_suspended = false;
     }
   }
+
+  function getLastChangeDt() {
+    return $this->_lastChangeDt;
+  }
+  function getLastChangeUserid() {
+    return $this->_lastChangeUserid;
+  }
+  function getLastChangeUsername() {
+    return $this->_lastChangeUsername;
+  }
+  function setCreateDt($value) {
+    $this->_createDt = trim($value);
+  }
+  function setLastChangeDt($value) {
+    $this->_lastChangeDt = trim($value);
+  }
+  function setLastChangeUserid($value) {
+    $this->_lastChangeUserid = trim($value);
+  }
+
+
 }
 
 ?>

@@ -43,8 +43,8 @@
 <center>
 <form name="delstaffform" method="POST" action="../admin/materials_del.php?code=<?php echo $code;?>&desc=<?php echo urlencode($description);?>">
 Are you sure you want to delete material type, <?php echo $description;?>?<br><br>
-      <input type="submit" value="  Delete  ">
-      <input type="button" onClick="parent.location='../admin/materials_list.php'" value="  Cancel  ">
+      <input type="submit" value="  Delete  " class="button">
+      <input type="button" onClick="parent.location='../admin/materials_list.php'" value="  Cancel  " class="button">
 </form>
 </center>
 <?php include("../shared/footer.php"); ?>

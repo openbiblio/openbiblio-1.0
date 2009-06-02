@@ -4,6 +4,3 @@ create table mbr_classify_dm (
   ,default_flg char(1) not null
 )
 ;
-
-insert into mbr_classify_dm values ('a','adult','Y');
-insert into mbr_classify_dm values ('j','juvenile','N');

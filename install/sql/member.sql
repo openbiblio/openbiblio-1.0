@@ -1,8 +1,9 @@
 create table member (
   mbrid integer auto_increment primary key
-  ,barcode_nmbr bigint not null
-  ,create_dt date not null
-  ,last_updated_dt date not null
+  ,barcode_nmbr varchar(20) not null
+  ,create_dt datetime not null
+  ,last_change_dt datetime not null
+  ,last_change_userid integer not null
   ,last_name varchar(50) not null
   ,first_name varchar(50) not null
   ,address1 varchar(128) null
@@ -13,6 +14,7 @@ create table member (
   ,zip_ext smallint null
   ,home_phone varchar(15) null
   ,work_phone varchar(15) null
+  ,email varchar(128) null
   ,classification char(1) not null
   ,school_grade tinyint null
   ,school_teacher varchar(50) null

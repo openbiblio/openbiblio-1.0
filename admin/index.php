@@ -26,71 +26,13 @@
   include("../shared/read_settings.php");
   include("../shared/logincheck.php");
   include("../shared/header.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
 ?>
 
-<h1><img src="../images/admin.gif" border="0" width="50" height="50" align="top"> Admin</h1>
-Use the following functions located in the left hand navagation area to manage your library's staff
-and administrative records.  
-<br><br>
-<table class="primary">
-  <tr>
-    <th nowrap="true">Function</th><th align="left">Description</th>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary">Staff Admin</td>
-    <td class="primary">View the library staff member list.  From this list you can
-      <ul>
-        <li>build a new staff member</li>
-        <li>edit the staff member information</li>
-        <li>reset a staff member's password</li>
-        <li>delete a staff member</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary">Library Settings</td>
-    <td class="primary">Update general library settings.
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary">Material Types</td>
-    <td class="primary">View the list of library material types.  
-      A material type describes the physical appearance of a bibliography, such as
-      "book" or "video".  Checkout limits can be specified at the material type level.
-      From the material type list you can
-      <ul>
-        <li>build a new material type</li>
-        <li>edit a material type</li>
-        <li>delete a material type</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary">Collections</td>
-    <td class="primary">View the list of library collections.  
-      A collection describes a grouping of bibliographies in the library, such as
-      "reference" or "adult fiction".  Collections are usually more specific than
-      material types.  The days due back for a bibliography can be specified at a
-      collection level.  From the collection list you can.
-      <ul>
-        <li>build a new material type</li>
-        <li>edit a material type</li>
-        <li>delete a material type</li>
-      </ul>
-    </td>
-  </tr>
-  <tr>
-    <td nowrap="true" align="center" valign="top" class="primary">Theme Editor</td>
-    <td class="primary">View the list of library look and feel themes.  From this list you can 
-      <ul>
-        <li>set the theme in use for your library</li>
-        <li>build a new library theme</li>
-        <li>edit an existing library theme</li>
-        <li>delete a library theme</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+<h1><img src="../images/admin.png" border="0" width="30" height="30" align="top"> <?php echo $loc->getText("indexHdr");?></h1>
+<?php echo $loc->getText("indexDesc");?>
+<br><br><br><br><br>
 
 <?php include("../shared/footer.php"); ?>

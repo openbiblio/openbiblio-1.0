@@ -26,52 +26,211 @@
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
 
-  require_once("../classes/BiblioStatus.php");
-  require_once("../classes/BiblioStatusQuery.php");
+  require_once("../classes/BiblioCopy.php");
+  require_once("../classes/BiblioCopyQuery.php");
+  require_once("../classes/BiblioHoldQuery.php");
+  require_once("../classes/BiblioStatusHist.php");
+  require_once("../classes/BiblioStatusHistQuery.php");
+  require_once("../classes/MemberAccountQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../functions/formatFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
-
   if (count($HTTP_POST_VARS) == 0) {
-    header("Location: ../circ/mbr_search_form.php");
+    header("Location: ../circ/index.php");
     exit();
+  }
+  $barcode = $HTTP_POST_VARS["barcodeNmbr"];
+  $mbrid = $HTTP_POST_VARS["mbrid"];
+  $mbrClassification = $HTTP_POST_VARS["classification"];
+
+  #****************************************************************************
+  #*  Make sure member does not have outstanding balance due
+  #****************************************************************************
+  if (OBIB_BLOCK_CHECKOUTS_WHEN_FINES_DUE) {
+    $acctQ = new MemberAccountQuery();
+    $acctQ->connect();
+    if ($acctQ->errorOccurred()) {
+      $acctQ->close();
+      displayErrorPage($acctQ);
+    }
+    $balance = $acctQ->getBalance($mbrid);
+    if ($acctQ->errorOccurred()) {
+      $acctQ->close();
+      displayErrorPage($acctQ);
+    }
+    $acctQ->close();
+    if ($balance > 0) {
+      $pageErrors["barcodeNmbr"] = $loc->getText("checkoutBalErr");
+      $postVars["barcodeNmbr"] = $barcode;
+      $HTTP_SESSION_VARS["postVars"] = $postVars;
+      $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+      header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+      exit();
+    }
   }
 
   #****************************************************************************
-  #*  Validate data
+  #*  Edit input
   #****************************************************************************
-
-  $stat = new BiblioStatus();
-  $stat->setBarcodeNmbr($HTTP_POST_VARS["barcodeNmbr"]);
-  $HTTP_POST_VARS["barcodeNmbr"] = $stat->getBarcodeNmbr();
-  $stat->setClassification($HTTP_POST_VARS["classification"]);
-  $stat->setStatusCd("out");
-  $stat->setMbrid($HTTP_POST_VARS["mbrid"]);
-  $validData = $stat->validateData();
-  if (!$validData) {
-    $pageErrors["barcodeNmbr"] = $stat->getBarcodeNmbrError();
-    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
+  if (!ctypeAlnum(trim($barcode))) {
+    $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr1");
+    $postVars["barcodeNmbr"] = $barcode;
+    $HTTP_SESSION_VARS["postVars"] = $postVars;
     $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_view.php?mbrid=".$HTTP_POST_VARS["mbrid"]);
+    header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+    exit();
+  }
+
+  #****************************************************************************
+  #*  Read copy record
+  #****************************************************************************
+  $copyQ = new BiblioCopyQuery();
+  $copyQ->connect();
+  if ($copyQ->errorOccurred()) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  }
+  if (!$copy = $copyQ->queryByBarcode($barcode)) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  }
+
+  #****************************************************************************
+  #*  Edit results
+  #****************************************************************************
+  $foundError = false;
+  if ($copyQ->getRowCount() == 0) {
+    $foundError = true;
+    $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr2");
+  } else if ($copy->getStatusCd() == OBIB_STATUS_OUT) {
+    // copy is already checked out
+    $foundError = TRUE;
+    $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr3",array("barcode"=>$barcode));
+  } else {
+    // check days due back
+    // some collections will have days due back set to 0 so that those items can not be checked out.
+    $daysDueBack = $copyQ->getDaysDueBack($copy);
+    if ($copyQ->errorOccurred()) {
+      $copyQ->close();
+      displayErrorPage($copyQ);
+    }
+    if ($daysDueBack <= 0) {
+      $foundError = true;
+      $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr4",array("barcode"=>$barcode));
+    } else {
+      // check to see if collection max has been reached
+      $reachedLimit = $copyQ->hasReachedCheckoutLimit($mbrid,$mbrClassification,$copy->getBibid());
+      if ($copyQ->errorOccurred()) {
+        $copyQ->close();
+        displayErrorPage($copyQ);
+      }
+      if ($reachedLimit) {
+        $foundError = TRUE;
+        $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr6");
+      }
+    }
+  }
+
+  #**************************************************************************
+  #*  return to member view if there are checkout errors to show
+  #**************************************************************************
+  if ($foundError == TRUE) {
+    $copyQ->close();
+    $postVars["barcodeNmbr"] = $barcode;
+    $HTTP_SESSION_VARS["postVars"] = $postVars;
+    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
     exit();
   }
 
   #**************************************************************************
-  #*  Insert new library member
+  #*  Show hold edit if bibliography is currently on hold and 
+  #*  current member != first member in hold queue
   #**************************************************************************
-  $statQ = new BiblioStatusQuery();
-  $statQ->connect();
-  if ($statQ->errorOccurred()) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  if ($copy->getStatusCd() == OBIB_STATUS_ON_HOLD) {
+    // need to close copyQ connection so we can call hold functions
+    $copyQ->close();
+    // check copy hold queue
+    $holdQ = new BiblioHoldQuery();
+    $holdQ->connect();
+    if ($holdQ->errorOccurred()) {
+      $holdQ->close();
+      displayErrorPage($holdQ);
+    }
+    $hold = $holdQ->getFirstHold($copy->getBibid(),$copy->getCopyid());
+    if ($holdQ->errorOccurred()) {
+      $holdQ->close();
+      displayErrorPage($holdQ);
+    }
+    // make sure hold still exists.  if not continue on with checkout
+    if ($holdQ->getRowCount() > 0) {
+      if ($mbrid != $hold->getMbrid()) {
+        // show error if member who placed hold is not current member
+        $holdQ->close();
+        $pageErrors["barcodeNmbr"] = $loc->getText("checkoutErr5",array("barcode"=>$barcode));
+        $postVars["barcodeNmbr"] = $barcode;
+        $HTTP_SESSION_VARS["postVars"] = $postVars;
+        $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+        header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
+        exit();
+      } else {
+        // need to remove hold and continue on to checkout
+        $holdQ->delete($hold->getBibid(),$hold->getCopyid(),$hold->getHoldid());
+        if ($holdQ->errorOccurred()) {
+          $holdQ->close();
+          displayErrorPage($holdQ);
+        }
+        $holdQ->close();
+      }
+    }
+    // need to reestablish copyQ connection so we can update status
+    $copyQ->connect();
+    if ($copyQ->errorOccurred()) {
+      $copyQ->close();
+      displayErrorPage($copyQ);
+    }
   }
-  if (!$statQ->insert($stat)) {
-    $statQ->close();
-    displayErrorPage($statQ);
+
+  #**************************************************************************
+  #*  Update copy status code
+  #**************************************************************************
+  // we need to also insert into status history table
+  $copy->setStatusCd(OBIB_STATUS_OUT);
+  $copy->setMbrid($HTTP_POST_VARS["mbrid"]);
+  $copy->setDueBackDt($daysDueBack);
+  if (!$copyQ->update($copy,true)) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
   }
-  $statQ->close();
+  $copyQ->close();
+
+  #**************************************************************************
+  #*  Insert into biblio status history
+  #**************************************************************************
+  $hist = new BiblioStatusHist();
+  $hist->setBibid($copy->getBibid());
+  $hist->setCopyid($copy->getCopyid());
+  $hist->setStatusCd($copy->getStatusCd());
+  $hist->setDueBackDt($copy->getDueBackDt());
+  $hist->setMbrid($copy->getMbrid());
+
+  $histQ = new BiblioStatusHistQuery();
+  $histQ->connect();
+  if ($histQ->errorOccurred()) {
+    $histQ->close();
+    displayErrorPage($histQ);
+  }
+  $histQ->insert($hist);
+  if ($histQ->errorOccurred()) {
+    $histQ->close();
+    displayErrorPage($histQ);
+  }
+  $histQ->close();
 
   #**************************************************************************
   #*  Destroy form values and errors
@@ -82,5 +241,5 @@
   #**************************************************************************
   #*  Go back to member view
   #**************************************************************************
-  header("Location: ../circ/mbr_view.php?mbrid=".$HTTP_POST_VARS["mbrid"]);
+  header("Location: ../circ/mbr_view.php?mbrid=".$mbrid);
 ?>

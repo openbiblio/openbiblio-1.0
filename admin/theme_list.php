@@ -68,13 +68,13 @@
           }
         ?>
       </select>
-      <input type="submit" value="Update">
+      <input type="submit" value="Update" class="button">
     </td>
   </tr>
 </table>
+</form>
 
-<br>
-<a href="../admin/theme_new_form.php?reset=Y">Add New Theme</a><br><br>
+<a href="../admin/theme_new_form.php?reset=Y">Add New Theme</a><br>
 <h1>Themes:</h1>
 <table class="primary">
   <tr>

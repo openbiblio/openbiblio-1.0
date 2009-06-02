@@ -40,7 +40,7 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function execSelect($userid="") {
-    $sql = "select userid, last_name, first_name, username, circ_flg, catalog_flg, admin_flg, suspended_flg from staff";
+    $sql = "select * from staff";
     if ($userid != "") {
       $sql = $sql." where userid=".$userid;
     }
@@ -65,7 +65,7 @@ class StaffQuery extends Query {
    ****************************************************************************
    */
   function verifySignon($username, $pwd) {
-    $sql = "select userid, last_name, first_name, username, circ_flg, catalog_flg, admin_flg, suspended_flg from staff";
+    $sql = "select * from staff";
     $sql = $sql." where username = lower('".$username."') and pwd = password(lower('".$pwd."'))";
     $result = $this->_conn->exec($sql);
     if ($result == false) {
@@ -122,6 +122,11 @@ class StaffQuery extends Query {
     } else {
       $staff->setCircAuth(false);
     }
+    if ($array["circ_mbr_flg"] == "Y") {
+      $staff->setCircMbrAuth(TRUE);
+    } else {
+      $staff->setCircMbrAuth(FALSE);
+    }
     if ($array["catalog_flg"] == "Y") {
       $staff->setCatalogAuth(true);
     } else {
@@ -131,6 +136,11 @@ class StaffQuery extends Query {
       $staff->setAdminAuth(true);
     } else {
       $staff->setAdminAuth(false);
+    }
+    if ($array["reports_flg"] == "Y") {
+      $staff->setReportsAuth(TRUE);
+    } else {
+      $staff->setReportsAuth(FALSE);
     }
     if ($array["suspended_flg"] == "Y") {
       $staff->setSuspended(true);
@@ -182,7 +192,8 @@ class StaffQuery extends Query {
       $this->_error = "Username is already in use.";
       return false;
     }
-    $sql = "insert into staff values (null, curdate(), curdate(), ";
+    $sql = "insert into staff values (null, sysdate(), sysdate(), ";
+    $sql = $sql.$staff->getLastChangeUserid().", ";
     $sql = $sql."'".$staff->getUsername()."', ";
     $sql = $sql."password('".$staff->getPwd()."'), ";
     $sql = $sql."'".$staff->getLastName()."', ";
@@ -202,7 +213,17 @@ class StaffQuery extends Query {
     } else {
       $sql = $sql."'N', ";
     }
+    if ($staff->hasCircMbrAuth()) {
+      $sql = $sql."'Y', ";
+    } else {
+      $sql = $sql."'N', ";
+    }
     if ($staff->hasCatalogAuth()) {
+      $sql = $sql."'Y', ";
+    } else {
+      $sql = $sql."'N', ";
+    }
+    if ($staff->hasReportsAuth()) {
       $sql = $sql."'Y')";
     } else {
       $sql = $sql."'N')";
@@ -238,7 +259,8 @@ class StaffQuery extends Query {
       return false;
     }
 
-    $sql = "update staff set last_updated_dt = curdate(),";
+    $sql = "update staff set last_change_dt = sysdate(),";
+    $sql = $sql." last_change_userid=".$staff->getLastChangeUserid().", ";
     $sql = $sql." username='".$staff->getUsername()."',";
     $sql = $sql." last_name='".$staff->getLastName()."',";
     if ($staff->getFirstName() == "") {
@@ -261,10 +283,20 @@ class StaffQuery extends Query {
     } else {
       $sql = $sql." circ_flg='N',";
     }
-    if ($staff->hasCatalogAuth()) {
-      $sql = $sql." catalog_flg='Y'";
+    if ($staff->hasCircMbrAuth()) {
+      $sql = $sql." circ_mbr_flg='Y',";
     } else {
-      $sql = $sql." catalog_flg='N'";
+      $sql = $sql." circ_mbr_flg='N',";
+    }
+    if ($staff->hasCatalogAuth()) {
+      $sql = $sql." catalog_flg='Y',";
+    } else {
+      $sql = $sql." catalog_flg='N',";
+    }
+    if ($staff->hasReportsAuth()) {
+      $sql = $sql." reports_flg='Y'";
+    } else {
+      $sql = $sql." reports_flg='N'";
     }
     $sql = $sql." where userid = ".$staff->getUserid();
     $result = $this->_conn->exec($sql);

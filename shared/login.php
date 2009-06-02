@@ -26,7 +26,6 @@
   require_once("../classes/SessionQuery.php");
   require_once("../functions/errorFuncs.php");
 
-  session_start();
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
@@ -127,23 +126,15 @@
   unset($HTTP_SESSION_VARS["postVars"]);
   unset($HTTP_SESSION_VARS["pageErrors"]);
 
-  /* required for PHP 4.0 ??
-  session_register("username");
-  session_register("userid");
-  session_register("token");
-  session_register("loginAttempts");
-  session_register("hasAdminAuth");
-  session_register("hasCircAuth");
-  session_register("hasCatalogAuth");
-  */
-
   $HTTP_SESSION_VARS["username"] = $staff->getUsername();
   $HTTP_SESSION_VARS["userid"] = $staff->getUserid();
   $HTTP_SESSION_VARS["token"] = $token;
   $HTTP_SESSION_VARS["loginAttempts"] = 0;
   $HTTP_SESSION_VARS["hasAdminAuth"] = $staff->hasAdminAuth();
   $HTTP_SESSION_VARS["hasCircAuth"] = $staff->hasCircAuth();
+  $HTTP_SESSION_VARS["hasCircMbrAuth"] = $staff->hasCircMbrAuth();
   $HTTP_SESSION_VARS["hasCatalogAuth"] = $staff->hasCatalogAuth();
+  $HTTP_SESSION_VARS["hasReportsAuth"] = $staff->hasReportsAuth();
 
   #**************************************************************************
   #*  Redirect to return page

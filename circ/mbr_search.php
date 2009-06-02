@@ -61,7 +61,7 @@
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
   if (count($HTTP_POST_VARS) == 0) {
-    header("Location: ../circ/mbr_search_form.php");
+    header("Location: ../circ/index.php");
     exit();
   }
 
@@ -119,7 +119,7 @@
   if (($sType == OBIB_SEARCH_BARCODE) && ($mbrQ->getRowCount() == 1)) {
     $mbr = $mbrQ->fetchMember();
     $mbrQ->close();
-    header("Location: ../circ/mbr_view.php?mbrid=".$mbr->getMbrid());
+    header("Location: ../circ/mbr_view.php?mbrid=".$mbr->getMbrid()."&reset=Y");
     exit();
   }
 

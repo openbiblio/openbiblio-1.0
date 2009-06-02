@@ -122,7 +122,7 @@ function editTheme() {
 </script>
 
 
-<a href="javascript:previewTheme()">Preview Theme</a>
+<a href="javascript:previewTheme()">Preview Theme Changes</a><br /><br />
 
 <form name="newthemeform" method="POST" action="../admin/theme_new.php">
 <?php include("../admin/theme_fields.php"); ?>

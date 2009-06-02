@@ -19,7 +19,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
-
+  $tab = "home";
+  $nav = "";
+  require_once("../shared/read_settings.php");
   include("../shared/header.php");
 
 ?>

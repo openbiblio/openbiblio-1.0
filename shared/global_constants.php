@@ -43,4 +43,25 @@ define("OBIB_SEARCH_TITLE","2");
 define("OBIB_SEARCH_AUTHOR","3");
 define("OBIB_SEARCH_SUBJECT","4");
 define("OBIB_SEARCH_NAME","5");
+
+/****************************************************************************
+ *  Misc. system constants
+ ****************************************************************************
+ */
+define("OBIB_DEFAULT_STATUS","in");
+define("OBIB_STATUS_IN","in");
+define("OBIB_STATUS_OUT","out");
+define("OBIB_STATUS_ON_LOAN","ln");
+define("OBIB_STATUS_ON_ORDER","ord");
+define("OBIB_STATUS_SHELVING_CART","crt");
+define("OBIB_STATUS_ON_HOLD","hld");
+define("OBIB_MBR_CLASSIFICATION_JUVENILE","j");
+define("OBIB_DEMO_FLG",false);
+define("OBIB_HIGHLIGHT_I18N_FLG",false);
+define("OBIB_SEARCH_MAXPAGES",20);
+
+define("OBIB_MYSQL_DATETIME_TYPE","datetime");
+define("OBIB_MYSQL_DATETIME_FORMAT","Y-m-d H:i:s");
+define("OBIB_MYSQL_DATE_TYPE","date");
+define("OBIB_MYSQL_DATE_FORMAT","Y-m-d");
 ?>

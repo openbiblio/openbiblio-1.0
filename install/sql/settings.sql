@@ -10,21 +10,10 @@ create table settings (
   ,items_per_page tinyint not null
   ,version varchar(10) not null
   ,themeid smallint not null
-)
-;
-
-insert into settings
-values (
-  'Your Library Name Goes Here'
-  ,null
-  ,'N'
-  ,'M-F 8am-9pm, Sa noon-5pm, Su 1-5pm'
-  ,'111-222-3333'
-  ,'../home/index.php'
-  ,'../opac/index.php'
-  ,20
-  ,10
-  ,'0.3.0'
-  ,1
+  ,purge_history_after_months smallint not null
+  ,block_checkouts_when_fines_due char(1) not null
+  ,locale varchar(8) not null
+  ,charset varchar(20) null
+  ,html_lang_attr varchar(8) null
 )
 ;

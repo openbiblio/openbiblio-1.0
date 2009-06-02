@@ -22,22 +22,24 @@
 
   session_cache_limiter(null);
 
-
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
   if (count($HTTP_POST_VARS) == 0) {
-    header("Location: ../catalog/biblio_search_form.php");
+    header("Location: ../catalog/index.php");
     exit();
   }
 
   #****************************************************************************
   #*  Checking for tab name to show OPAC look and feel if searching from OPAC
   #****************************************************************************
+  $tab = "cataloging";
+  $lookup = "N";
   if (isset($HTTP_POST_VARS["tab"])) {
     $tab = $HTTP_POST_VARS["tab"];
-  } else {
-    $tab = "cataloging";
+  }
+  if (isset($HTTP_POST_VARS["lookup"])) {
+    $lookup = $HTTP_POST_VARS["lookup"];
   }
 
   $nav = "search";
@@ -45,19 +47,22 @@
   if ($tab != "opac") {
     require_once("../shared/logincheck.php");
   }
-  require_once("../classes/Biblio.php");
-  require_once("../classes/BiblioQuery.php");
+  require_once("../classes/BiblioSearch.php");
+  require_once("../classes/BiblioSearchQuery.php");
   require_once("../functions/searchFuncs.php");
   require_once("../classes/DmQuery.php");
 
   #****************************************************************************
   #*  Function declaration only used on this page.
   #****************************************************************************
-  function printResultPages($currPage, $pageCount, $sort) {
-    echo "Result Pages: ";
-    $maxPg = 21;
+  function printResultPages(&$loc, $currPage, $pageCount, $sort) {
+    if ($pageCount <= 1) {
+      return false;
+    }
+    echo $loc->getText("biblioSearchResultPages").": ";
+    $maxPg = OBIB_SEARCH_MAXPAGES + 1;
     if ($currPage > 1) {
-      echo "<a href=\"javascript:changePage(".($currPage-1).",'".$sort."')\">&laquo;prev</a> ";
+      echo "<a href=\"javascript:changePage(".($currPage-1).",'".$sort."')\">&laquo;".$loc->getText("biblioSearchPrev")."</a> ";
     }
     for ($i = 1; $i <= $pageCount; $i++) {
       if ($i < $maxPg) {
@@ -71,8 +76,21 @@
       }
     }
     if ($currPage < $pageCount) {
-      echo "<a href=\"javascript:changePage(".($currPage+1).",'".$sort."')\">next&raquo;</a> ";
+      echo "<a href=\"javascript:changePage(".($currPage+1).",'".$sort."')\">".$loc->getText("biblioSearchNext")."&raquo;</a> ";
     }
+  }
+
+  function printCopySection($copyBarcodes,$copyStatus) {
+    echo "<tr><td class=\"primary\" valign=\"top\"><font class=\"small\">";
+    echo "<b>Barcode</b></font></td>";
+    echo "<td class=\"primary\" nowrap=\"true\" valign=\"top\"><font class=\"small\">";
+    echo "<b>Status</b></font></td></tr>";
+    echo "<tr><td class=\"primary\" valign=\"top\" height=\"50\"><font class=\"small\">";
+    echo $copyBarcodes;
+    echo "</font></td>";
+    echo "<td class=\"primary\" nowrap=\"true\" valign=\"top\"><font class=\"small\">";
+    echo $copyStatus;
+    echo "</font></td></tr>";
   }
 
 
@@ -133,17 +151,24 @@
   #****************************************************************************
   #*  Search database
   #****************************************************************************
-  $biblioQ = new BiblioQuery();
+  $biblioQ = new BiblioSearchQuery();
   $biblioQ->setItemsPerPage(OBIB_ITEMS_PER_PAGE);
   $biblioQ->connect();
   if ($biblioQ->errorOccurred()) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
-  if (!$biblioQ->execSearch($sType,$words,$currentPageNmbr,$sortBy)) {
+  # checking to see if we are in the opac search or logged in
+  if ($tab == "opac") {
+    $opacFlg = true;
+  } else {
+    $opacFlg = false;
+  }
+  if (!$biblioQ->search($sType,$words,$currentPageNmbr,$sortBy,$opacFlg)) {
     $biblioQ->close();
     displayErrorPage($biblioQ);
   }
+
   #**************************************************************************
   #*  Show search results
   #**************************************************************************
@@ -152,11 +177,13 @@
   } else {
     require_once("../shared/header.php");
   }
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,"shared");
 
   # Display no results message if no results returned from search.
   if ($biblioQ->getRowCount() == 0) {
     $biblioQ->close();
-    echo "No results found.";
+    echo $loc->getText("biblioSearchNoResults");
     require_once("../shared/footer.php");
     exit();
   }
@@ -191,15 +218,19 @@ function changePage(page,sort)
 <!--**************************************************************************
     *  Printing result stats and page nav
     ************************************************************************** -->
-<?php echo $biblioQ->getRowCount();?> results found sorted by <?php echo $sortBy;?>
-<?php
-  if ($sortBy == "author") {
-    echo "(<a href=\"javascript:changePage(".$currentPageNmbr.",'title')\">sort by title</a>).<br>";
-  } else {
-    echo "(<a href=\"javascript:changePage(".$currentPageNmbr.",'author')\">sort by author</a>).<br>";
+<?php 
+  echo $loc->getText("biblioSearchResultTxt",array("items"=>$biblioQ->getRowCount()));
+  if ($biblioQ->getRowCount() > 1) {
+    echo $loc->getText("biblioSearch".$sortBy);
+    if ($sortBy == "author") {
+      echo "(<a href=\"javascript:changePage(".$currentPageNmbr.",'title')\">".$loc->getText("biblioSearchSortByTitle")."</a>).";
+    } else {
+      echo "(<a href=\"javascript:changePage(".$currentPageNmbr.",'author')\">".$loc->getText("biblioSearchSortByAuthor")."</a>).";
+    }
   }
 ?>
-<?php printResultPages($currentPageNmbr, $biblioQ->getPageCount(), $sortBy); ?><br>
+<br />
+<?php printResultPages($loc, $currentPageNmbr, $biblioQ->getPageCount(), $sortBy); ?><br>
 <br>
 
 <!--**************************************************************************
@@ -207,35 +238,89 @@ function changePage(page,sort)
     ************************************************************************** -->
 <table class="primary">
   <tr>
-    <th valign="top" nowrap="yes" align="left" colspan="2">
-      Search Results:
+    <th valign="top" nowrap="yes" align="left" colspan="3">
+      <?php echo $loc->getText("biblioSearchResults"); ?>:
     </th>
   </tr>
   <?php
-    while ($biblio = $biblioQ->fetchBiblio()) {
+    $priorBibid = 0;
+    while ($biblio = $biblioQ->fetchRow()) {
+      if ($biblio->getBibid() == $priorBibid) {
+        if ($biblio->getBarcodeNmbr() != "") {
+          #************************************
+          #* print copy line only
+          #************************************
+          ?>
+          <tr>
+            <td nowrap="true" class="primary" valign="top" align="center"><font class="small">
+              <?php echo $biblioQ->getCurrentRowNmbr();?>.
+            </font></td>
+            <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
+              <?php if ($lookup == 'Y') { ?>
+                <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr',<?php echo $biblio->getBarcodeNmbr();?>)">select</a>
+              <?php } ?>
+            </font></td>
+            <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>
+          </tr>
+          <?php 
+        }
+      } else {
+        $priorBibid = $biblio->getBibid();
+
   ?>
+
   <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo $biblioQ->getCurrentRowNmbr();?>.
-    </td>
-    <td nowrap="true" class="primary">
+    <td nowrap="true" class="primary" valign="top" align="center" rowspan="2">
+      <?php echo $biblioQ->getCurrentRowNmbr();?>.<br />
       <a href="../shared/biblio_view.php?bibid=<?php echo $biblio->getBibid();?>&tab=<?php echo $tab;?>">
       <img src="../images/<?php echo $materialImageFiles[$biblio->getMaterialCd()];?>" width="20" height="20" border="0" align="bottom" alt="<?php echo $materialTypeDm[$biblio->getMaterialCd()];?>"></a>
-      <a href="../shared/biblio_view.php?bibid=<?php echo $biblio->getBibid();?>&tab=<?php echo $tab;?>"><?php echo $biblio->getTitle();?></a><br>
-      <?php if ($biblio->getAuthor() != "") echo $biblio->getAuthor()."<br>";?>
-      <?php if ($biblio->getPublicationDt() != "") echo $biblio->getPublicationDt()."<br>";?>
-      <b>Type:</b> <?php echo $materialTypeDm[$biblio->getMaterialCd()];?>
-      <b>Collection:</b> <?php echo $collectionDm[$biblio->getCollectionCd()];?>
-      <b>Call #:</b> <?php echo $biblio->getCallNmbr();?>
-      <b>Status:</b> <?php echo $biblioStatusDm[$biblio->getStatusCd()];?>
+    </td>
+    <td class="primary" valign="top" colspan="2">
+      <table class="primary" width="100%">
+        <tr>
+          <td class="noborder" width="1%" valign="top"><b><?php echo $loc->getText("biblioSearchTitle"); ?>:</b></td>
+          <td class="noborder" colspan="3"><a href="../shared/biblio_view.php?bibid=<?php echo $biblio->getBibid();?>&tab=<?php echo $tab;?>"><?php echo $biblio->getTitle();?></a></td>
+        </tr>
+        <tr>
+          <td class="noborder" valign="top"><b><?php echo $loc->getText("biblioSearchAuthor"); ?>:</b></td>
+          <td class="noborder" colspan="3"><?php if ($biblio->getAuthor() != "") echo $biblio->getAuthor();?></td>
+        </tr>
+        <tr>
+          <td class="noborder" valign="top"><font class="small"><b><?php echo $loc->getText("biblioSearchMaterial"); ?>:</b></font></td>
+          <td class="noborder" colspan="3"><font class="small"><?php echo $materialTypeDm[$biblio->getMaterialCd()];?></font></td>
+        </tr>
+        <tr>
+          <td class="noborder" valign="top"><font class="small"><b><?php echo $loc->getText("biblioSearchCollection"); ?>:</b></font></td>
+          <td class="noborder" colspan="3"><font class="small"><?php echo $collectionDm[$biblio->getCollectionCd()];?></font></td>
+        </tr>
+        <tr>
+          <td class="noborder" valign="top" nowrap="yes"><font class="small"><b><?php echo $loc->getText("biblioSearchCall"); ?>:</b></font></td>
+          <td class="noborder" colspan="3"><font class="small"><?php echo $biblio->getCallNmbr1()." ".$biblio->getCallNmbr2()." ".$biblio->getCallNmbr3();?></font></td>
+        </tr>
+      </table>
     </td>
   </tr>
-
-
   <?php
+    if ($biblio->getBarcodeNmbr() != "") {
+      ?>
+      <tr>
+        <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
+          <?php if ($lookup == 'Y') { ?>
+            <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr',<?php echo $biblio->getBarcodeNmbr();?>)">select</a>
+          <?php } ?>
+        </font></td>
+        <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>
+      </tr>
+    <?php } else { ?>
+      <tr>
+         <td class="primary" colspan="2" ><font class="small"><?php echo $loc->getText("biblioSearchNoCopies"); ?></font></td>
+      </tr>
+    <?php 
+    }
+      }
     }
     $biblioQ->close();
   ?>
   </table><br>
-<?php printResultPages($currentPageNmbr, $biblioQ->getPageCount(), $sortBy); ?><br>
+<?php printResultPages($loc, $currentPageNmbr, $biblioQ->getPageCount(), $sortBy); ?><br>
 <?php require_once("../shared/footer.php"); ?>

@@ -22,6 +22,7 @@
 
   $tab = "admin";
   $nav = "themes";
+  $restrictInDemo = true;
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
 

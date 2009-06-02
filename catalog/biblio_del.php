@@ -27,6 +27,8 @@
   require_once("../shared/logincheck.php");
   require_once("../classes/BiblioQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   $bibid = $HTTP_GET_VARS["bibid"];
   $title = $HTTP_GET_VARS["title"];
@@ -51,7 +53,10 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Bibliography, "<?php echo $title;?>", has been deleted.<br><br>
-<a href="../catalog/biblio_search_form.php">return to bibliography search</a>
+<center>
+  <?php echo $loc->getText("biblioDelMsg",array("title"=>$title)); ?>
+  <br><br>
+  <a href="../catalog/index.php"><?php echo $loc->getText("biblioDelReturn"); ?></a>
+</center>
 
 <?php require_once("../shared/footer.php"); ?>

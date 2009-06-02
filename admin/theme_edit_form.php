@@ -126,7 +126,7 @@ function editTheme() {
 </script>
 
 
-<a href="javascript:previewTheme()">Preview Theme Changes</a>
+<a href="javascript:previewTheme()">Preview Theme Changes</a><br /><br />
 
 <form name="editthemeform" method="POST" action="../admin/theme_edit.php">
 <input type="hidden" name="themeid" value="<?php echo $postVars["themeid"];?>">

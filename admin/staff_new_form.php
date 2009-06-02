@@ -96,18 +96,24 @@
       <input type="checkbox" name="circ_flg" value="CHECKED"
         <?php if (isset($postVars["circ_flg"])) echo $postVars["circ_flg"]; ?> >
       Circ
+      <input type="checkbox" name="circ_mbr_flg" value="CHECKED"
+        <?php if (isset($postVars["circ_mbr_flg"])) echo $postVars["circ_mbr_flg"]; ?> >
+      Update Member
       <input type="checkbox" name="catalog_flg" value="CHECKED"
         <?php if (isset($postVars["catalog_flg"])) echo $postVars["catalog_flg"]; ?> >
       Catalog
       <input type="checkbox" name="admin_flg" value="CHECKED"
         <?php if (isset($postVars["admin_flg"])) echo $postVars["admin_flg"]; ?> >
       Admin
+      <input type="checkbox" name="reports_flg" value="CHECKED"
+        <?php if (isset($postVars["reports_flg"])) echo $postVars["reports_flg"]; ?> >
+      Reports
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Submit  ">
-      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  Cancel  ">
+      <input type="submit" value="  Submit  " class="button">
+      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  Cancel  " class="button">
     </td>
   </tr>
 

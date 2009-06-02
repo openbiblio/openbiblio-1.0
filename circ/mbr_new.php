@@ -21,6 +21,7 @@
  */
 
   $tab = "circulation";
+  $restrictToMbrAuth = TRUE;
   $nav = "newconfirm";
   $restrictInDemo = true;
   require_once("../shared/read_settings.php");
@@ -29,6 +30,8 @@
   require_once("../classes/Member.php");
   require_once("../classes/MemberQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -44,6 +47,7 @@
   $mbr = new Member();
   $mbr->setBarcodeNmbr($HTTP_POST_VARS["barcodeNmbr"]);
   $HTTP_POST_VARS["barcodeNmbr"] = $mbr->getBarcodeNmbr();
+  $mbr->setLastChangeUserid($HTTP_SESSION_VARS["userid"]);
   $mbr->setLastName($HTTP_POST_VARS["lastName"]);
   $HTTP_POST_VARS["lastName"] = $mbr->getLastName();
   $mbr->setFirstName($HTTP_POST_VARS["firstName"]);
@@ -63,6 +67,8 @@
   $HTTP_POST_VARS["homePhone"] = $mbr->getHomePhone();
   $mbr->setWorkPhone($HTTP_POST_VARS["workPhone"]);
   $HTTP_POST_VARS["workPhone"] = $mbr->getWorkPhone();
+  $mbr->setEmail($HTTP_POST_VARS["email"]);
+  $HTTP_POST_VARS["email"] = $mbr->getEmail();
   $mbr->setClassification($HTTP_POST_VARS["classification"]);
   $mbr->setSchoolGrade($HTTP_POST_VARS["schoolGrade"]);
   $HTTP_POST_VARS["schoolGrade"] = $mbr->getSchoolGrade();
@@ -83,7 +89,7 @@
   }
 
   #**************************************************************************
-  #*  Insert new library member
+  #*  Check for duplicate barcode number
   #**************************************************************************
   $mbrQ = new MemberQuery();
   $mbrQ->connect();
@@ -91,7 +97,23 @@
     $mbrQ->close();
     displayErrorPage($mbrQ);
   }
-  if (!$mbrQ->insert($mbr)) {
+  $dupBarcode = $mbrQ->DupBarcode($mbr->getBarcodeNmbr(),$mbr->getMbrid());
+  if ($mbrQ->errorOccurred()) {
+    $mbrQ->close();
+    displayErrorPage($mbrQ);
+  }
+  if ($dupBarcode) {
+    $pageErrors["barcodeNmbr"] = $loc->getText("mbrDupBarcode",array("barcode"=>$mbr->getBarcodeNmbr()));
+    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
+    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    header("Location: ../circ/mbr_new_form.php");
+    exit();
+  }
+
+  #**************************************************************************
+  #*  Insert new library member
+  #**************************************************************************
+  if (!($mbrid = $mbrQ->insert($mbr))) {
     $mbrQ->close();
     displayErrorPage($mbrQ);
   }
@@ -103,12 +125,8 @@
   unset($HTTP_SESSION_VARS["postVars"]);
   unset($HTTP_SESSION_VARS["pageErrors"]);
 
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
-  require_once("../shared/header.php");
+  $msg = $loc->getText("mbrNewSuccess");
+  $msg = urlencode($msg);
+  header("Location: ../circ/mbr_view.php?mbrid=".$mbrid."&reset=Y&msg=".$msg);
+  exit();
 ?>
-Member, <?php echo $mbr->getFirstName();?> <?php echo $mbr->getLastName();?>, has been added.<br><br>
-<a href="../circ/index.php">return to circulation summary</a>
-
-<?php require_once("../shared/footer.php"); ?>

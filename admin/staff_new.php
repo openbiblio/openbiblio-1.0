@@ -43,6 +43,7 @@
   #*  Validate data
   #****************************************************************************
   $staff = new Staff();
+  $staff->setLastChangeUserid($HTTP_SESSION_VARS["userid"]);
   $staff->setLastName($HTTP_POST_VARS["last_name"]);
   $HTTP_POST_VARS["last_name"] = $staff->getLastName();
   $staff->setFirstName($HTTP_POST_VARS["first_name"]);
@@ -54,8 +55,10 @@
   $staff->setPwd2($HTTP_POST_VARS["pwd2"]);
   $HTTP_POST_VARS["pwd2"] = $staff->getPwd2();
   $staff->setCircAuth(isset($HTTP_POST_VARS["circ_flg"]));
+  $staff->setCircMbrAuth(isset($HTTP_POST_VARS["circ_mbr_flg"]));
   $staff->setCatalogAuth(isset($HTTP_POST_VARS["catalog_flg"]));
   $staff->setAdminAuth(isset($HTTP_POST_VARS["admin_flg"]));
+  $staff->setReportsAuth(isset($HTTP_POST_VARS["reports_flg"]));
   $validData = $staff->validateData();
   $validPwd = $staff->validatePwd();
   if (!($validData && $validPwd)) {

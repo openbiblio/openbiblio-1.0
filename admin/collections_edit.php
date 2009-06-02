@@ -49,10 +49,13 @@
   $HTTP_POST_VARS["description"] = $dm->getDescription();
   $dm->setDaysDueBack($HTTP_POST_VARS["daysDueBack"]);
   $HTTP_POST_VARS["daysDueBack"] = $dm->getDaysDueBack();
+  $dm->setDailyLateFee($HTTP_POST_VARS["dailyLateFee"]);
+  $HTTP_POST_VARS["dailyLateFee"] = $dm->getDailyLateFee();
 
   if (!$dm->validateData()) {
     $pageErrors["description"] = $dm->getDescriptionError();
     $pageErrors["daysDueBack"] = $dm->getDaysDueBackError();
+    $pageErrors["dailyLateFee"] = $dm->getDailyLateFeeError();
     $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
     $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
     header("Location: ../admin/collections_edit_form.php");

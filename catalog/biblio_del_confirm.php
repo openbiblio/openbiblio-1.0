@@ -24,64 +24,70 @@
   $nav = "delete";
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
-
-  require_once("../classes/BiblioStatus.php");
-  require_once("../classes/BiblioStatusQuery.php");
-  require_once("../classes/DmQuery.php");
+  require_once("../classes/BiblioCopyQuery.php");
+  require_once("../classes/BiblioHoldQuery.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   $bibid = $HTTP_GET_VARS["bibid"];
   $title = $HTTP_GET_VARS["title"];
 
   #****************************************************************************
-  #*  Loading a few domain tables into associative arrays
+  #*  Check for copies and holds
   #****************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  if ($dmQ->errorOccurred()) {
-    $dmQ->close();
-    displayErrorPage($dmQ);
+  $copyQ = new BiblioCopyQuery();
+  $copyQ->connect();
+  if ($copyQ->errorOccurred()) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
   }
-  $dmQ->execSelect("biblio_status_dm");
-  $biblioStatusDm = $dmQ->fetchRows();
-  $dmQ->close();
+  $copyQ->execSelect($bibid);
+  if ($copyQ->errorOccurred()) {
+    $copyQ->close();
+    displayErrorPage($copyQ);
+  }
+  $copyCount = $copyQ->getRowCount();
+  $copyQ->close();
 
-  #****************************************************************************
-  #*  Search database for BiblioStatus data
-  #****************************************************************************
-  $statQ = new BiblioStatusQuery();
-  $statQ->connect();
-  if ($statQ->errorOccurred()) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  $holdQ = new BiblioHoldQuery();
+  $holdQ->connect();
+  if ($holdQ->errorOccurred()) {
+    $holdQ->close();
+    displayErrorPage($holdQ);
   }
-  $statusCd = $statQ->getStatusCd($bibid);
-  if (!$statusCd) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  $holdQ->queryByBibid($bibid);
+  if ($holdQ->errorOccurred()) {
+    $holdQ->close();
+    displayErrorPage($holdQ);
   }
-  if ($statQ->getRowCount() > 0) {
-    require_once("../shared/header.php");
-    ?>
-      Bibliography title "<?php echo $title;?>" is currently in status,
-      <?php echo $biblioStatusDm[$statusCd];?>.
-      This bibliography must be checked in before it can be deleted.
-    <?php
-    include("../shared/footer.php");
-    exit();
-  }
-  $statQ->close();
-
+  $holdCount = $holdQ->getRowCount();
+  $holdQ->close();
 
   #**************************************************************************
   #*  Show confirm page
   #**************************************************************************
   require_once("../shared/header.php");
+
+  if (($copyCount > 0) or ($holdCount > 0)) {
 ?>
 <center>
-<form name="delbiblioform" method="POST" action="../catalog/biblio_del.php?bibid=<?php echo $bibid;?>&title=<?php echo urlencode($title);?>">
-Are you sure you want to delete bibliography title "<?php echo $title;?>"?<br><br>
-      <input type="submit" value="  Delete  ">
-      <input type="button" onClick="parent.location='../shared/biblio_view.php?bibid=<?php echo $bibid;?>'" value="  Cancel  ">
+  <?php echo $loc->getText("biblioDelConfirmWarn",array("copyCount"=>$copyCount,"holdCount"=>$holdCount)); ?>
+  <br><br>
+  <a href="../shared/biblio_view.php?bibid=<?php echo $bibid;?>"><?php echo $loc->getText("biblioDelConfirmReturn"); ?></a>
+</center>
+
+<?php
+  } else {
+?>
+<center>
+<form name="delbiblioform" method="POST" action="../shared/biblio_view.php?bibid=<?php echo $bibid;?>">
+<?php echo $loc->getText("biblioDelConfirmMsg",array("title"=>$title)); ?>
+<br><br>
+      <input type="button" onClick="parent.location='../catalog/biblio_del.php?bibid=<?php echo $bibid;?>&title=<?php echo urlencode($title);?>'" value="<?php echo $loc->getText("catalogDelete"); ?>" class="button">
+      <input type="submit" value="<?php echo $loc->getText("catalogCancel"); ?>" class="button">
 </form>
 </center>
-<?php include("../shared/footer.php"); ?>
+<?php 
+  }
+  include("../shared/footer.php");
+?>

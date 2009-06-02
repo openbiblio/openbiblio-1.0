@@ -20,9 +20,11 @@
  **********************************************************************************
  */
 
+  require_once("../classes/Localize.php");
+
 /******************************************************************************
- * Staff represents a library staff member.  Contains business rules for
- * staff member data validation.
+ * Biblio represents a library bibliography record.  Contains business rules for
+ * bibliography data validation.
  *
  * @author David Stevens <dave@stevens.name>;
  * @version 1.0
@@ -31,40 +33,23 @@
  */
 class Biblio {
   var $_bibid = "";
-  var $_barcodeNmbr = "";
-  var $_barcodeNmbrError = "";
   var $_createDt = "";
-  var $_lastUpdatedDt = "";
+  var $_lastChangeDt = "";
+  var $_lastChangeUserid = "";
+  var $_lastChangeUsername = "";
   var $_materialCd = "";
   var $_collectionCd = "";
-  var $_title = "";
-  var $_titleError = "";
-  var $_subtitle = "";
-  var $_author = "";
-  var $_addAuthor = "";
-  var $_edition = "";
-  var $_summary = "";
-  var $_callNmbr = "";
+  var $_callNmbr1 = "";
+  var $_callNmbr2 = "";
+  var $_callNmbr3 = "";
   var $_callNmbrError = "";
-  var $_lccnNmbr = "";
-  var $_isbnNmbr = "";
-  var $_lcCallNmbr = "";
-  var $_lcItemNmbr = "";
-  var $_udcNmbr = "";
-  var $_udcEdNmbr = "";
-  var $_publisher = "";
-  var $_publicationDt = "";
-  var $_publicationLoc = "";
-  var $_pages = "";
-  var $_physicalDetails = "";
-  var $_dimensions = "";
-  var $_accompanying = "";
-  var $_price = "";
-  var $_priceError = "";
-  var $_statusCd = "";
-  var $_statusMbrid = "";
-  var $_dueBackDt = "";
-  var $_holdMbrid = "";
+  var $_biblioFields = array();
+  var $_opacFlg = true;
+  var $_loc;
+
+  function Biblio () {
+    $this->_loc = new Localize(OBIB_LOCALE,"classes");
+  }
 
   /****************************************************************************
    * @return boolean true if data is valid, otherwise false.
@@ -73,30 +58,14 @@ class Biblio {
    */
   function validateData() {
     $valid = true;
-    if ($this->_barcodeNmbr == "") {
+    if ($this->_callNmbr1 == "") {
       $valid = false;
-      $this->_barcodeNmbrError = "Barcode number is required.";
-    } else {
-      if (!is_numeric($this->_barcodeNmbr)) {
+      $this->_callNmbrError = $this->_loc->getText("biblioError1");
+    }
+    foreach ($this->_biblioFields as $key => $value) {
+      if (!$this->_biblioFields[$key]->validateData()) {
         $valid = false;
-        $this->_barcodeNmbrError = "Barcode number must be numeric.";
       }
-    }
-    if (strrpos($this->_barcodeNmbr,".")) {
-      $valid = false;
-      $this->_barcodeNmbrError = "Barcode number must not contain a decimal point.";
-    }
-    if ($this->_title == "") {
-      $valid = false;
-      $this->_titleError = "Title is required.";
-    }
-    if ($this->_callNmbr == "") {
-      $valid = false;
-      $this->_callNmbrError = "Call number is required.";
-    }
-    if (!is_numeric($this->_price)) {
-      $valid = false;
-      $this->_priceError = "Price must be numeric.";
     }
     return $valid;
   }
@@ -110,17 +79,17 @@ class Biblio {
   function getBibid() {
     return $this->_bibid;
   }
-  function getBarcodeNmbr() {
-    return $this->_barcodeNmbr;
-  }
-  function getBarcodeNmbrError() {
-    return $this->_barcodeNmbrError;
-  }
   function getCreateDt() {
     return $this->_createDt;
   }
-  function getLastUpdatedDt() {
-    return $this->_lastUpdatedDt;
+  function getLastChangeDt() {
+    return $this->_lastChangeDt;
+  }
+  function getLastChangeUserid() {
+    return $this->_lastChangeUserid;
+  }
+  function getLastChangeUsername() {
+    return $this->_lastChangeUsername;
   }
   function getMaterialCd() {
     return $this->_materialCd;
@@ -128,89 +97,23 @@ class Biblio {
   function getCollectionCd() {
     return $this->_collectionCd;
   }
-  function getTitle() {
-    return $this->_title;
+  function getCallNmbr1() {
+    return $this->_callNmbr1;
   }
-  function getTitleError() {
-    return $this->_titleError;
+  function getCallNmbr2() {
+    return $this->_callNmbr2;
   }
-  function getSubtitle() {
-    return $this->_subtitle;
-  }
-  function getAuthor() {
-    return $this->_author;
-  }
-  function getAddAuthor() {
-    return $this->_addAuthor;
-  }
-  function getEdition() {
-    return $this->_edition;
-  }
-  function getSummary() {
-    return $this->_summary;
-  }
-  function getCallNmbr() {
-    return $this->_callNmbr;
+  function getCallNmbr3() {
+    return $this->_callNmbr3;
   }
   function getCallNmbrError() {
     return $this->_callNmbrError;
   }
-  function getLccnNmbr() {
-    return $this->_lccnNmbr;
+  function getBiblioFields() {
+    return $this->_biblioFields;
   }
-  function getIsbnNmbr() {
-    return $this->_isbnNmbr;
-  }
-  function getLcCallNmbr() {
-    return $this->_lcCallNmbr;
-  }
-  function getLcItemNmbr() {
-    return $this->_lcItemNmbr;
-  }
-  function getUdcNmbr() {
-    return $this->_udcNmbr;
-  }
-  function getUdcEdNmbr() {
-    return $this->_udcEdNmbr;
-  }
-  function getPublisher() {
-    return $this->_publisher;
-  }
-  function getPublicationDt() {
-    return $this->_publicationDt;
-  }
-  function getPublicationLoc() {
-    return $this->_publicationLoc;
-  }
-  function getPages() {
-    return $this->_pages;
-  }
-  function getPhysicalDetails() {
-    return $this->_physicalDetails;
-  }
-  function getDimensions() {
-    return $this->_dimensions;
-  }
-  function getAccompanying() {
-    return $this->_accompanying;
-  }
-  function getPrice() {
-    return $this->_price;
-  }
-  function getPriceError() {
-    return $this->_priceError;
-  }
-  function getStatusCd() {
-    return $this->_statusCd;
-  }
-  function getStatusMbrid() {
-    return $this->_statusMbrid;
-  }
-  function getDueBackDt() {
-    return $this->_dueBackDt;
-  }
-  function getHoldMbrid() {
-    return $this->_holdMbrid;
+  function showInOpac() {
+    return $this->_opacFlg;
   }
 
   /****************************************************************************
@@ -223,14 +126,17 @@ class Biblio {
   function setBibid($value) {
     $this->_bibid = trim($value);
   }
-  function setBarcodeNmbr($value) {
-    $this->_barcodeNmbr = trim($value);
-  }
   function setCreateDt($value) {
     $this->_createDt = trim($value);
   }
-  function setLastUpdatedDt($value) {
-    $this->_lastUpdatedDt = trim($value);
+  function setLastChangeDt($value) {
+    $this->_lastChangeDt = trim($value);
+  }
+  function setLastChangeUserid($value) {
+    $this->_lastChangeUserid = trim($value);
+  }
+  function setLastChangeUsername($value) {
+    $this->_lastChangeUsername = trim($value);
   }
   function setMaterialCd($value) {
     $this->_materialCd = trim($value);
@@ -238,97 +144,35 @@ class Biblio {
   function setCollectionCd($value) {
     $this->_collectionCd = trim($value);
   }
-  function setTitle($value) {
-    $this->_title = trim($value);
+  function setCallNmbr1($value) {
+    $this->_callNmbr1 = trim($value);
   }
-  function setSubtitle($value) {
-    $this->_subtitle = trim($value);
+  function setCallNmbr2($value) {
+    $this->_callNmbr2 = trim($value);
   }
-  function setAuthor($value) {
-    $this->_author = trim($value);
-  }
-  function setAddAuthor($value) {
-    $this->_addAuthor = trim($value);
-  }
-  function setEdition($value) {
-    $this->_edition = trim($value);
-  }
-  function setSummary($value) {
-    $this->_summary = trim($value);
-  }
-  function setCallNmbr($value) {
-    $this->_callNmbr = trim($value);
+  function setCallNmbr3($value) {
+    $this->_callNmbr3 = trim($value);
   }
   function setCallNmbrError($value) {
     $this->_callNmbrError = trim($value);
   }
-  function setLccnNmbr($value) {
-    $this->_lccnNmbr = trim($value);
-  }
-  function setIsbnNmbr($value) {
-    $this->_isbnNmbr = trim($value);
-  }
-  function setLcCallNmbr($value) {
-    $this->_lcCallNmbr = trim($value);
-  }
-  function setLcItemNmbr($value) {
-    $this->_lcItemNmbr = trim($value);
-  }
-  function setUdcNmbr($value) {
-    $this->_udcNmbr = trim($value);
-  }
-  function setUdcEdNmbr($value) {
-    $this->_udcEdNmbr = trim($value);
-  }
-  function setPublisher($value) {
-    $this->_publisher = trim($value);
-  }
-  function setPublicationDt($value) {
-    $this->_publicationDt = trim($value);
-  }
-  function setPublicationLoc($value) {
-    $this->_publicationLoc = trim($value);
-  }
-  function setPages($value) {
-    $this->_pages = trim($value);
-  }
-  function setPhysicalDetails($value) {
-    $this->_physicalDetails = trim($value);
-  }
-  function setDimensions($value) {
-    $this->_dimensions = trim($value);
-  }
-  function setAccompanying($value) {
-    $this->_accompanying = trim($value);
-  }
-  function setPrice($value) {
-    if (is_numeric($value)) {
-      $this->_price = number_format($value,2,".","");
+  function setOpacFlg($flag) {
+    if ($flag == true) {
+      $this->_opacFlg = true;
     } else {
-      if (trim($value) == "") {
-        $this->_price = "0";
+      $this->_opacFlg = false;
+    }
+  }
+  function addBiblioField($index, $value) {
+    $keySuffix = "";
+    while (array_key_exists($index.$keySuffix, $this->_biblioFields)) {
+      if ($keySuffix == "") {
+        $keySuffix = 1;
       } else {
-        $this->_price = trim($value);
+        $keySuffix = $keySuffix + 1;
       }
-    }
-  }
-  function setPriceError($value) {
-    $this->_priceError = trim($value);
-  }
-  function setStatusCd($value) {
-    if ($value == "") {
-      $value = "in";
-    }
-    $this->_statusCd = trim($value);
-  }
-  function setStatusMbrid($value) {
-    $this->_statusMbrid = trim($value);
-  }
-  function setDueBackDt($value) {
-    $this->_dueBackDt = trim($value);
-  }
-  function setHoldMbrid($value) {
-    $this->_holdMbrid = trim($value);
+    }    
+    $this->_biblioFields[$index.$keySuffix] = $value;
   }
 }
 

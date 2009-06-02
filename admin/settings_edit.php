@@ -59,10 +59,20 @@
   $HTTP_POST_VARS["sessionTimeout"] = $set->getSessionTimeout();
   $set->setItemsPerPage($HTTP_POST_VARS["itemsPerPage"]);
   $HTTP_POST_VARS["itemsPerPage"] = $set->getItemsPerPage();
+  $set->setPurgeHistoryAfterMonths($HTTP_POST_VARS["purgeHistoryAfterMonths"]);
+  $HTTP_POST_VARS["purgeHistoryAfterMonths"] = $set->getPurgeHistoryAfterMonths();
+  $set->setBlockCheckoutsWhenFinesDue(isset($HTTP_POST_VARS["isBlockCheckoutsWhenFinesDue"]));
+  $set->setLocale($HTTP_POST_VARS["locale"]);
+  $HTTP_POST_VARS["locale"] = $set->getLocale();
+  $set->setCharset($HTTP_POST_VARS["charset"]);
+  $HTTP_POST_VARS["charset"] = $set->getCharset();
+  $set->setHtmlLangAttr($HTTP_POST_VARS["htmlLangAttr"]);
+  $HTTP_POST_VARS["htmlLangAttr"] = $set->getHtmlLangAttr();
 
   if (!$set->validateData()) {
     $pageErrors["sessionTimeout"] = $set->getSessionTimeoutError();
     $pageErrors["itemsPerPage"] = $set->getItemsPerPageError();
+    $pageErrors["purgeHistoryAfterMonths"] = $set->getPurgeHistoryAfterMonthsError();
     $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
     $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
     header("Location: ../admin/settings_edit_form.php");
@@ -92,4 +102,5 @@
   unset($HTTP_SESSION_VARS["pageErrors"]);
 
   header("Location: ../admin/settings_edit_form.php?reset=Y&updated=Y");
+  exit();
 ?>

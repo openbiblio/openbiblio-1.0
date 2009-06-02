@@ -61,7 +61,7 @@
     <th rowspan="2" valign="top">
       Userid
     </th>
-    <th colspan="3">
+    <th colspan="5">
       Authorization
     </th>
     <th rowspan="2" valign="top">
@@ -73,10 +73,16 @@
       Circ
     </th>
     <th>
+      Member
+    </th>
+    <th>
       Catalog
     </th>
     <th>
       Admin
+    </th>
+    <th>
+      Reports
     </th>
   </tr>
   <?php
@@ -110,6 +116,13 @@
       } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
+      <?php if ($staff->hasCircMbrAuth()) {
+        echo "yes";
+      } else {
+        echo "no";
+      } ?>
+    </td>
+    <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasCatalogAuth()) {
         echo "yes";
       } else {
@@ -118,6 +131,13 @@
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasAdminAuth()) {
+        echo "yes";
+      } else {
+        echo "no";
+      } ?>
+    </td>
+    <td valign="top" class="<?php echo $row_class;?>">
+      <?php if ($staff->hasReportsAuth()) {
         echo "yes";
       } else {
         echo "no";

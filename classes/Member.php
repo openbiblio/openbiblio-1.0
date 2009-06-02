@@ -20,6 +20,8 @@
  **********************************************************************************
  */
 
+  require_once("../functions/formatFuncs.php");
+
 /******************************************************************************
  * Member represents a library member.  Contains business rules for
  * member data validation.
@@ -34,7 +36,9 @@ class Member {
   var $_barcodeNmbr = 0;
   var $_barcodeNmbrError = "";
   var $_createDt = "";
-  var $_lastUpdatedDt = "";
+  var $_lastChangeDt = "";
+  var $_lastChangeUserid = "";
+  var $_lastChangeUsername = "";
   var $_lastName = "";
   var $_lastNameError = "";
   var $_firstName = "";
@@ -49,6 +53,7 @@ class Member {
   var $_zipExtError = "";
   var $_homePhone = "";
   var $_workPhone = "";
+  var $_email = "";
   var $_classification = "";
   var $_schoolGrade = "";
   var $_schoolGradeError = "";
@@ -64,15 +69,9 @@ class Member {
     if ($this->_barcodeNmbr == "") {
       $valid = false;
       $this->_barcodeNmbrError = "Card number is required.";
-    } else {
-      if (!is_numeric($this->_barcodeNmbr)) {
-        $valid = false;
-        $this->_barcodeNmbrError = "Card number must be numeric.";
-      }
-    }
-    if (strrpos($this->_barcodeNmbr,".")) {
-      $valid = false;
-      $this->_barcodeNmbrError = "Card number must not contain a decimal point.";
+    } else if (!ctypeAlnum($this->_barcodeNmbr)) {
+      $valid = FALSE;
+      $this->_barcodeNmbrError = "Card number must be all alphabetic and numeric characters.";
     }
     if ($this->_lastName == "") {
       $valid = false;
@@ -128,8 +127,14 @@ class Member {
   function getCreateDt() {
     return $this->_createDt;
   }
-  function getLastUpdatedDt() {
-    return $this->_lastUpdatedDt;
+  function getLastChangeDt() {
+    return $this->_lastChangeDt;
+  }
+  function getLastChangeUserid() {
+    return $this->_lastChangeUserid;
+  }
+  function getLastChangeUsername() {
+    return $this->_lastChangeUsername;
   }
   function getLastName() {
     return $this->_lastName;
@@ -142,6 +147,12 @@ class Member {
   }
   function getFirstNameError() {
     return $this->_firstNameError;
+  }
+  function getFirstLastName() {
+    return $this->_firstName." ".$this->_lastName;
+  }
+  function getLastFirstName() {
+    return $this->_lastName.",".$this->_firstName;
   }
   function getAddress1() {
     return $this->_address1;
@@ -173,6 +184,9 @@ class Member {
   function getWorkPhone() {
     return $this->_workPhone;
   }
+  function getEmail() {
+    return $this->_email;
+  }
   function getClassification() {
     return $this->_classification;
   }
@@ -202,8 +216,14 @@ class Member {
   function setCreateDt($value) {
     $this->_createDt = trim($value);
   }
-  function setLastUpdatedDt($value) {
-    $this->_lastUpdatedDt = trim($value);
+  function setLastChangeDt($value) {
+    $this->_lastChangeDt = trim($value);
+  }
+  function setLastChangeUserid($value) {
+    $this->_lastChangeUserid = trim($value);
+  }
+  function setLastChangeUsername($value) {
+    $this->_lastChangeUsername = trim($value);
   }
   function setLastName($value) {
     $this->_lastName = trim($value);
@@ -256,6 +276,9 @@ class Member {
   }
   function setWorkPhone($value) {
     $this->_workPhone = trim($value);
+  }
+  function setEmail($value) {
+    $this->_email = trim($value);
   }
   function setClassification($value) {
     $this->_classification = trim($value);

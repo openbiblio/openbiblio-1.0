@@ -26,8 +26,8 @@
   require_once("../classes/Dm.php");
   require_once("../classes/DmQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../functions/formatFuncs.php");
   require_once("../shared/read_settings.php");
-
   require_once("../shared/logincheck.php");
 
   require_once("../shared/header.php");
@@ -45,7 +45,7 @@
   }
 
 ?>
-<a href="../admin/collections_new_form.php?reset=Y">Add New Collection</a><br><br>
+<a href="../admin/collections_new_form.php?reset=Y">Add New Collection</a><br>
 <h1>Collections:</h1>
 <table class="primary">
   <tr>
@@ -57,6 +57,9 @@
     </th>
     <th valign="top">
       Days<br>Due Back
+    </th>
+    <th valign="top">
+      Daily<br>Late Fee
     </th>
     <th valign="top">
       Bibliography<br>Count
@@ -80,6 +83,9 @@
     </td>
     <td valign="top" align="center" class="<?php echo $row_class;?>">
       <?php echo $dm->getDaysDueBack();?>
+    </td>
+    <td valign="top" align="center" class="<?php echo $row_class;?>">
+      <?php echo moneyFormat($dm->getDailyLateFee(),2); ?>
     </td>
     <td valign="top" align="center"  class="<?php echo $row_class;?>">
       <?php echo $dm->getCount();?>

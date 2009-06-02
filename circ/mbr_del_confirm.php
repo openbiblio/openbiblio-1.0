@@ -21,52 +21,94 @@
  */
 
   $tab = "circulation";
+  $restrictToMbrAuth = TRUE;
   $nav = "delete";
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
-
-  require_once("../classes/BiblioStatus.php");
-  require_once("../classes/BiblioStatusQuery.php");
+  require_once("../classes/Member.php");
+  require_once("../classes/MemberQuery.php");
+  require_once("../classes/BiblioSearchQuery.php");
+  require_once("../classes/BiblioHoldQuery.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   $mbrid = $HTTP_GET_VARS["mbrid"];
-  $mbrName = $HTTP_GET_VARS["name"];
 
   #****************************************************************************
-  #*  Search database for BiblioStatus data
+  #*  Getting member name
   #****************************************************************************
-  $statQ = new BiblioStatusQuery();
-  $statQ->connect();
-  if ($statQ->errorOccurred()) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  $mbrQ = new MemberQuery();
+  $mbrQ->connect();
+  if ($mbrQ->errorOccurred()) {
+    $mbrQ->close();
+    displayErrorPage($mbrQ);
   }
-  if (!$statQ->execSelect("out",$mbrid)) {
-    $statQ->close();
-    displayErrorPage($statQ);
+  if (!$mbrQ->execSelect($mbrid)) {
+    $mbrQ->close();
+    displayErrorPage($mbrQ);
   }
-  if ($statQ->getRowCount() > 0) {
-    $stat = $statQ->fetchBiblioStatus();
-    require_once("../shared/header.php");
-    ?>
-      Library member, <?php echo $mbrName;?>, still has 
-      <?php echo $statQ->getRowCount()?> bibliographies checked out.
-      Please check-in all of these bibliographies before deleting this member.
-    <?php 
-    include("../shared/footer.php");
-    exit();
-  }
-  $statQ->close();
+  $mbr = $mbrQ->fetchMember();
+  $mbrQ->close();
+  $mbrName = $mbr->getFirstName()." ".$mbr->getLastName();
 
+  #****************************************************************************
+  #*  Getting checkout count
+  #****************************************************************************
+  $biblioQ = new BiblioSearchQuery();
+  $biblioQ->connect();
+  if ($biblioQ->errorOccurred()) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
+  }
+  if (!$biblioQ->query(OBIB_STATUS_OUT,$mbrid)) {
+    $biblioQ->close();
+    displayErrorPage($biblioQ);
+  }
+  $checkoutCount = $biblioQ->getRowCount();
+  $biblioQ->close();
+
+  #****************************************************************************
+  #*  Getting hold request count
+  #****************************************************************************
+  $holdQ = new BiblioHoldQuery();
+  $holdQ->connect();
+  if ($holdQ->errorOccurred()) {
+    $holdQ->close();
+    displayErrorPage($holdQ);
+  }
+  $holdQ->queryByMbrid($mbrid);
+  if ($holdQ->errorOccurred()) {
+    $holdQ->close();
+    displayErrorPage($holdQ);
+  }
+  $holdCount = $holdQ->getRowCount();
+  $holdQ->close();
+  
   #**************************************************************************
   #*  Show confirm page
   #**************************************************************************
   require_once("../shared/header.php");
+
+  if (($checkoutCount > 0) or ($holdCount > 0)) {
 ?>
 <center>
-<form name="delmbrform" method="POST" action="../circ/mbr_del.php?mbrid=<?php echo $mbrid;?>&name=<?php echo urlencode($mbrName);?>">
-Are you sure you want to delete library member, <?php echo $mbrName;?>?<br><br>
-      <input type="submit" value="  Delete  ">
-      <input type="button" onClick="parent.location='../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>&reset=Y'" value="  Cancel  ">
+  <?php echo $loc->getText("mbrDelConfirmWarn",array("name"=>$mbrName,"checkoutCount"=>$checkoutCount,"holdCount"=>$holdCount)); ?>
+  <br><br>
+  <a href="../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>&reset=Y"><?php echo $loc->getText("mbrDelConfirmReturn"); ?></a>
+</center>
+
+<?php
+  } else {
+?>
+<center>
+<form name="delbiblioform" method="POST" action="../circ/mbr_view.php?mbrid=<?php echo $mbrid;?>&reset=Y">
+<?php echo $loc->getText("mbrDelConfirmMsg",array("name"=>$mbrName)); ?>
+<br><br>
+      <input type="button" onClick="parent.location='../circ/mbr_del.php?mbrid=<?php echo $mbrid;?>&name=<?php echo urlencode($mbrName);?>'" value="<?php echo $loc->getText("circDelete"); ?>" class="button">
+      <input type="submit" value="<?php echo $loc->getText("circCancel"); ?>" class="button">
 </form>
 </center>
-<?php include("../shared/footer.php"); ?>
+<?php 
+  }
+  include("../shared/footer.php");
+?>

@@ -23,6 +23,7 @@
   session_cache_limiter(null);
 
   $tab = "circulation";
+  $restrictToMbrAuth = TRUE;
   $nav = "edit";
   $focus_form_name = "editMbrform";
   $focus_form_field = "barcodeNmbr";
@@ -71,6 +72,7 @@
     $postVars["zipExt"] = $mbr->getZipExt();
     $postVars["homePhone"] = $mbr->getHomePhone();
     $postVars["workPhone"] = $mbr->getWorkPhone();
+    $postVars["email"] = $mbr->getEmail();
     $postVars["classification"] = $mbr->getClassification();
     $postVars["schoolGrade"] = $mbr->getSchoolGrade();
     $postVars["schoolTeacher"] = $mbr->getSchoolTeacher();

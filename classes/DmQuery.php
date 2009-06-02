@@ -73,11 +73,11 @@ class DmQuery extends Query {
     if ($table == "collection_dm") {
       $sql = "select collection_dm.*, count(biblio.bibid) row_count ";
       $sql = $sql."from collection_dm left join biblio on collection_dm.code = biblio.collection_cd ";
-      $sql = $sql."group by 1, 2, 3, 4 ";
+      $sql = $sql."group by 1, 2, 3, 4, 5 ";
     } elseif ($table == "material_type_dm") {
       $sql = "select material_type_dm.*, count(biblio.bibid) row_count ";
       $sql = $sql."from material_type_dm left join biblio on material_type_dm.code = biblio.material_cd ";
-      $sql = $sql."group by 1, 2, 3, 4, 5 ";
+      $sql = $sql."group by 1, 2, 3, 4, 5, 6 ";
     } else {
       $this->_errorOccurred = true;
       $this->_error = "Can only retrieve stats on collections and material types.";
@@ -105,10 +105,10 @@ class DmQuery extends Query {
    */
   function execCheckoutStats($mbrid) {
     $sql = "select mat.* ";
-    $sql = $sql.",count(stat.mbrid) row_count ";
+    $sql = $sql.",count(copy.mbrid) row_count ";
     $sql = $sql."from material_type_dm mat left outer join biblio bib on mat.code = bib.material_cd ";
-    $sql = $sql."left outer join biblio_status stat on bib.bibid = stat.bibid ";
-    $sql = $sql."where stat.mbrid = ".$mbrid." or stat.mbrid is null ";
+    $sql = $sql."left outer join biblio_copy copy on bib.bibid = copy.bibid ";
+    $sql = $sql."where copy.mbrid = ".$mbrid." or copy.mbrid is null ";
     $sql = $sql."group by mat.code, mat.description, mat.default_flg, mat.adult_checkout_limit, mat.juvenile_checkout_limit ";
     $sql = $sql."order by mat.description ";
     $result = $this->_conn->exec($sql);
@@ -141,6 +141,7 @@ class DmQuery extends Query {
     $dm->setDefaultFlg($array["default_flg"]);
     if ($this->_tableNm == "collection_dm") {
       $dm->setDaysDueBack($array["days_due_back"]);
+      $dm->setDailyLateFee($array["daily_late_fee"]);
     } elseif ($this->_tableNm == "material_type_dm") {
       $dm->setAdultCheckoutLimit($array["adult_checkout_limit"]);
       $dm->setJuvenileCheckoutLimit($array["juvenile_checkout_limit"]);
@@ -179,7 +180,8 @@ class DmQuery extends Query {
     $sql = "insert into ".$table." values (null, ";
     $sql = $sql."'".$dm->getDescription()."','N', ";
     if ($table == "collection_dm") {
-      $sql = $sql.$dm->getDaysDueBack().")";
+      $sql = $sql.$dm->getDaysDueBack().", ";
+      $sql = $sql.$dm->getDailyLateFee().")";
     } elseif ($table == "material_type_dm") {
       $sql = $sql.$dm->getAdultCheckoutLimit().", ";
       $sql = $sql.$dm->getJuvenileCheckoutLimit().", ";
@@ -216,7 +218,8 @@ class DmQuery extends Query {
     $sql = $sql."description='".$dm->getDescription()."', ";
     $sql = $sql." default_flg = 'N', ";
     if ($table == "collection_dm") {
-      $sql = $sql." days_due_back = ".$dm->getDaysDueBack()." ";
+      $sql = $sql." days_due_back = ".$dm->getDaysDueBack().", ";
+      $sql = $sql." daily_late_fee = ".$dm->getDailyLateFee()." ";
     } elseif ($table == "material_type_dm") {
       $sql = $sql." adult_checkout_limit = ".$dm->getAdultCheckoutLimit().", ";
       $sql = $sql." juvenile_checkout_limit = ".$dm->getJuvenileCheckoutLimit().", ";

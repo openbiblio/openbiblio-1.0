@@ -45,7 +45,7 @@
   }
 
 ?>
-<a href="../admin/materials_new_form.php?reset=Y">Add New Material Type</a><br><br>
+<a href="../admin/materials_new_form.php?reset=Y">Add New Material Type</a><br>
 <h1> Material Types:</h1>
 <table class="primary">
   <tr>

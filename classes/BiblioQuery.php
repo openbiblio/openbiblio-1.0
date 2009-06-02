@@ -22,6 +22,8 @@
 
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
+require_once("../classes/BiblioField.php");
+require_once("../classes/Localize.php");
 
 /******************************************************************************
  * BiblioQuery data access component for library bibliographies
@@ -38,6 +40,12 @@ class BiblioQuery extends Query {
   var $_currentPageNmbr = 0;
   var $_rowCount = 0;
   var $_pageCount = 0;
+  var $_loc;
+
+  function BiblioQuery () {
+    $this->_loc = new Localize(OBIB_LOCALE,"classes");
+  }
+
 
   function setItemsPerPage($value) {
     $this->_itemsPerPage = $value;
@@ -54,183 +62,161 @@ class BiblioQuery extends Query {
 
   /****************************************************************************
    * Executes a query
-   * @param string $type one of the global constants
-   *               OBIB_SEARCH_BARCODE,
-   *               OBIB_SEARCH_TITLE,
-   *               OBIB_SEARCH_AUTHOR,
-   *               or OBIB_SEARCH_SUBJECT
-   * @param string @$words pointer to an array containing words to search for
-   * @param integer $page What page should be returned if results are more than one page
-   * @param string $sortBy column name to sort by.  Can be title or author
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function execSearch($type, &$words, $page, $sortBy) {
-    # reset stats
-    $this->_rowNmbr = 0;
-    $this->_currentRowNmbr = 0;
-    $this->_currentPageNmbr = $page;
-    $this->_rowCount = 0;
-    $this->_pageCount = 0;
-
-    # Building sql statements
-    if ($type == OBIB_SEARCH_BARCODE) {
-      $col = "barcode_nmbr";
-    } elseif ($type == OBIB_SEARCH_AUTHOR) {
-      $col = "author";
-#    } elseif ($type == OBIB_SEARCH_SUBJECT) {
-#      $col = "";
-    } else {
-      $col = "title";
-    }
-
-    # setting selection criteria sql
-    $criteria = "where ".$col." like '%".$words[0]."%'";
-    for ($i = 1; $i < sizeof($words); $i++) {
-      $criteria = $criteria." and ".$col." like '%".$words[$i]."%'";
-    }
-
-    # setting count query
-    $sqlcount = "select count(*) as rowcount from biblio ".$criteria;
-
-    # setting query that will return all the data
-    $sql = "select biblio.*, ";
-    $sql = $sql."biblio_status.status_cd, ";
-    $sql = $sql."biblio_status.mbrid status_mbrid, ";
-    $sql = $sql."biblio_status.due_back_dt ";
-    $sql = $sql."from biblio ";
-    $sql = $sql."left join biblio_status on biblio.bibid=biblio_status.bibid ";
-    $sql = $sql.$criteria;
-    $sql = $sql." order by ".$sortBy;
-
-    # setting limit so we can page through the results
-    $offset = ($page - 1) * $this->_itemsPerPage;
-    $limit = $this->_itemsPerPage;
-    $sql = $sql." limit ".$offset.",".$limit;
-
-    #echo "sqlcount=[".$sqlcount."]<br>\n";
-    #echo "sql=[".$sql."]<br>\n";
-
-    # Running row count sql statement
-    $countResult = $this->_conn->exec($sqlcount);
-    if ($countResult == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error counting bibliography search results.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-
-    # Calculate stats based on row count
-    $array = $this->_conn->fetchRow();
-    $this->_rowCount = $array["rowcount"];
-    $this->_pageCount = ceil($this->_rowCount / $this->_itemsPerPage);
-
-    # Running search sql statement
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error searching bibliography information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
-
-    return $result;
-  }
-
-  /****************************************************************************
-   * Executes a query
    * @param string $bibid bibid of bibliography to select
-   * @return boolean returns false, if error occurs
+   * @return Biblio a bibliography object or false if error occurs
    * @access public
    ****************************************************************************
    */
-  function execSelect($bibid) {
+  /*###########################
+    # WORKS WITH NEW FORMAT   #
+    ###########################*/
+  function query($bibid) {
     # reset rowNmbr
     $this->_rowNmbr = 0;
     $this->_currentRowNmbr = 1;
     $this->_rowCount = 1;
     $this->_pageCount = 1;
 
-    # setting query that will return all the data
+    /***********************************************************
+     *  Reading biblio data
+     ***********************************************************/
+    # setting query that will return all the data in biblio
     $sql = "select biblio.*, ";
-    $sql = $sql."biblio_status.status_cd, ";
-    $sql = $sql."biblio_status.mbrid status_mbrid, ";
-    $sql = $sql."biblio_status.due_back_dt, ";
-    $sql = $sql."biblio_hold.mbrid hold_mbrid ";
-    $sql = $sql."from biblio ";
-    $sql = $sql."left join biblio_status on biblio.bibid=biblio_status.bibid ";
-    $sql = $sql."left join biblio_hold on biblio.bibid=biblio_hold.bibid ";
+    $sql = $sql."staff.username ";
+    $sql = $sql."from biblio, staff ";
     $sql = $sql."where biblio.bibid = ".$bibid;
+    $sql = $sql." and biblio.last_change_userid = staff.userid";
 
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
-      $this->_error = "Error accessing bibliography information.";
+      $this->_error = $this->_loc->getText("biblioQueryQueryErr1");
       $this->_dbErrno = $this->_conn->getDbErrno();
       $this->_dbError = $this->_conn->getDbError();
       $this->_SQL = $sql;
       return false;
     }
-    $this->_rowCount = $this->_conn->numRows();
-    return $result;
-  }
-  /****************************************************************************
-   * Fetches a row from the query result and populates the Biblio object.
-   * @return Biblio returns bibliography or false if no more bibliographies to fetch
-   * @access public
-   ****************************************************************************
-   */
-  function fetchBiblio() {
+
     $array = $this->_conn->fetchRow();
-    if ($array == false) {
+    $bib = new Biblio();
+    $bib->setBibid($array["bibid"]);
+    $bib->setCreateDt($array["create_dt"]);
+    $bib->setLastChangeDt($array["last_change_dt"]);
+    $bib->setLastChangeUserid($array["last_change_userid"]);
+    if (isset($array["username"])) {
+      $bib->setLastChangeUsername($array["username"]);
+    }
+    $bib->setMaterialCd($array["material_cd"]);
+    $bib->setCollectionCd($array["collection_cd"]);
+    $bib->setCallNmbr1($array["call_nmbr1"]);
+    $bib->setCallNmbr2($array["call_nmbr2"]);
+    $bib->setCallNmbr3($array["call_nmbr3"]);
+    if ($array["opac_flg"] == "Y") {
+      $bib->setOpacFlg(true);
+    } else {
+      $bib->setOpacFlg(false);
+    }
+
+    /***********************************************************
+     *  Reading biblio_field data
+     ***********************************************************/
+    # setting query that will return all the data in biblio
+    $sql = "select biblio_field.* ";
+    $sql = $sql."from biblio_field ";
+    $sql = $sql."where biblio_field.bibid = ".$bibid;
+    $sql = $sql." order by tag, subfield_cd";
+    $result = $this->_conn->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("biblioQueryQueryErr2");
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
       return false;
     }
 
-    # increment rowNmbr
-    $this->_rowNmbr = $this->_rowNmbr + 1;
-    $this->_currentRowNmbr = $this->_rowNmbr + (($this->_currentPageNmbr - 1) * $this->_itemsPerPage);
+    /***********************************************************
+     *  Adding fields from biblio to Biblio object 
+     ***********************************************************/
+    $this->_addField(245,"a",$array["title"],$bib);
+    $this->_addField(245,"b",$array["title_remainder"],$bib);
+    $this->_addField(245,"c",$array["responsibility_stmt"],$bib);
+    $this->_addField(100,"a",$array["author"],$bib);
+    $this->_addField(650,"a",$array["topic1"],$bib);
+    $this->_addField(650,"a",$array["topic2"],$bib,"1");
+    $this->_addField(650,"a",$array["topic3"],$bib,"2");
+    $this->_addField(650,"a",$array["topic4"],$bib,"3");
+    $this->_addField(650,"a",$array["topic5"],$bib,"4");
 
-    $bib = new Biblio();
-    $bib->setBibid($array["bibid"]);
-    $bib->setBarcodeNmbr($array["barcode_nmbr"]);
-    $bib->setCreateDt($array["create_dt"]);
-    $bib->setLastUpdatedDt($array["last_updated_dt"]);
-    $bib->setMaterialCd($array["material_cd"]);
-    $bib->setCollectionCd($array["collection_cd"]);
-    $bib->setTitle($array["title"]);
-    $bib->setSubtitle($array["subtitle"]);
-    $bib->setAuthor($array["author"]);
-    $bib->setAddAuthor($array["add_author"]);
-    $bib->setEdition($array["edition"]);
-    $bib->setCallNmbr($array["call_nmbr"]);
-    $bib->setLccnNmbr($array["lccn_nmbr"]);
-    $bib->setIsbnNmbr($array["isbn_nmbr"]);
-    $bib->setLcCallNmbr($array["lc_call_nmbr"]);
-    $bib->setLcItemNmbr($array["lc_item_nmbr"]);
-    $bib->setUdcNmbr($array["udc_nmbr"]);
-    $bib->setUdcEdNmbr($array["udc_ed_nmbr"]);
-    $bib->setPublisher($array["publisher"]);
-    $bib->setPublicationDt($array["publication_dt"]);
-    $bib->setPublicationLoc($array["publication_loc"]);
-    $bib->setSummary($array["summary"]);
-    $bib->setPages($array["pages"]);
-    $bib->setPhysicalDetails($array["physical_details"]);
-    $bib->setDimensions($array["dimensions"]);
-    $bib->setAccompanying($array["accompanying"]);
-    $bib->setPrice($array["price"]);
-    $bib->setStatusCd($array["status_cd"]);
-    $bib->setStatusMbrid($array["status_mbrid"]);
-    $bib->setDueBackDt($array["due_back_dt"]);
-    if (isset($array["hold_mbrid"])) {
-      $bib->setHoldMbrid($array["hold_mbrid"]);
+    /***********************************************************
+     *  Adding fields from biblio_field to Biblio object 
+     ***********************************************************/
+    # subfieldIdx will be used to construct index
+    $subfieldIdx = 0;
+    $saveTag = "";
+    $saveSubfield = "";
+    while ($array = $this->_conn->fetchRow()) {
+      $tag=$array["tag"];
+      $subfieldCd=$array["subfield_cd"];
+
+      # checking for tag and subfield break in order to set the subfield Idx correctly.
+      if (($tag == $saveTag) and ($subfieldCd == $saveSubfield)) {
+        $subfieldIdx = $subfieldIdx + 1;
+      } else {
+        $subfieldIdx = 0;
+        $saveTag = $tag;
+        $saveSubfield = $subfieldCd;
+      }
+
+      # setting the index.
+      # format is ttts[i] where 
+      #    t=tag
+      #    s=subfield code
+      #    i=subfield index if > 0
+      # examples: 020a 650a 650a1 650a2
+      $index = sprintf("%03d",$tag).$subfieldCd;
+      if ($subfieldIdx > 0) {
+        $index = $index.$subfieldIdx;
+      }
+
+      $bibFld = new BiblioField();
+      $bibFld->setBibid($array["bibid"]);
+      $bibFld->setFieldid($array["fieldid"]);
+      $bibFld->setTag($array["tag"]);
+      $bibFld->setInd1Cd($array["ind1_cd"]);
+      $bibFld->setInd2Cd($array["ind2_cd"]);
+      $bibFld->setSubfieldCd($array["subfield_cd"]);
+      $bibFld->setFieldData($array["field_data"]);
+      $bib->addBiblioField($index,$bibFld);
     }
     return $bib;
   }
+
+
+  /****************************************************************************
+   * Utility function to add a field to a Biblio object
+   * @return void
+   * @access private
+   ****************************************************************************
+   */
+  /*###########################
+    # WORKS WITH NEW FORMAT   #
+    ###########################*/
+  function _addField($tag,$subfieldCd,$value,&$bib,$seq="") {
+    if ($value == "") {
+      return;
+    }
+    $index = sprintf("%03d",$tag).$subfieldCd;
+    if ($seq != "") {
+      $index = $index.$seq;
+    }
+    $bibFld = new BiblioField();
+    $bibFld->setTag($tag);
+    $bibFld->setSubfieldCd($subfieldCd);
+    $bibFld->setFieldData($value);
+    $bib->addBiblioField($index,$bibFld);
+  }
+
 
   /****************************************************************************
    * Returns true if barcode number already exists
@@ -261,58 +247,67 @@ class BiblioQuery extends Query {
 
 
   /****************************************************************************
-   * Inserts a new bibliography into the biblio table.
+   * Inserts new bibliography info into the biblio and biblio_field tables.
    * @param Biblio $biblio bibliography to insert
-   * @return boolean returns false, if error occurs
+   * @return int returns bibid or false, if error occurs
    * @access public
    ****************************************************************************
    */
+  /*###########################
+    # WORKS WITH NEW FORMAT   #
+    ###########################*/
   function insert($biblio) {
-    # checking for duplicate barcode number
-    $dupBarcode = $this->_dupBarcode($biblio->getBarcodeNmbr());
-    if ($this->errorOccurred()) return false;
-    if ($dupBarcode) {
-      $this->_errorOccurred = true;
-      $this->_error = "Barcode number ".$biblio->getBarcodeNmbr()." is already in use.";
-      return false;
-    }
+    // inserting biblio row
+    $biblioFlds = $biblio->getBiblioFields();
+    $title = $biblioFlds["245a"]->getFieldData();
+    $titleRemainder = $biblioFlds["245b"]->getFieldData();
+    $responsibility = $biblioFlds["245c"]->getFieldData();
+    if ($biblioFlds["100a"]->getFieldid() == "") $author = $biblioFlds["100a"]->getFieldData();
+    if ($biblioFlds["650a"]->getFieldid() == "") $topic1 = $biblioFlds["650a"]->getFieldData();
+    if ($biblioFlds["650a1"]->getFieldid() == "") $topic2 = $biblioFlds["650a1"]->getFieldData();
+    if ($biblioFlds["650a2"]->getFieldid() == "") $topic3 = $biblioFlds["650a2"]->getFieldData();
+    if ($biblioFlds["650a3"]->getFieldid() == "") $topic4 = $biblioFlds["650a3"]->getFieldData();
+    if ($biblioFlds["650a4"]->getFieldid() == "") $topic5 = $biblioFlds["650a4"]->getFieldData();
 
     $sql = "insert into biblio values (null, ";
-    $sql = $sql.$biblio->getBarcodeNmbr().", ";
-    $sql = $sql."curdate(), curdate(), ";
+    $sql = $sql."sysdate(), sysdate(), ";
+    $sql = $sql.$biblio->getLastChangeUserid().", ";
     $sql = $sql.$biblio->getMaterialCd().", ";
     $sql = $sql.$biblio->getCollectionCd().", ";
-    $sql = $sql."'".$biblio->getTitle()."', ";
-    $sql = $sql."'".$biblio->getSubtitle()."', ";
-    $sql = $sql."'".$biblio->getAuthor()."', ";
-    $sql = $sql."'".$biblio->getAddAuthor()."', ";
-    $sql = $sql."'".$biblio->getEdition()."', ";
-    $sql = $sql."'".$biblio->getCallNmbr()."', ";
-    $sql = $sql."'".$biblio->getLccnNmbr()."', ";
-    $sql = $sql."'".$biblio->getIsbnNmbr()."', ";
-    $sql = $sql."'".$biblio->getLcCallNmbr()."', ";
-    $sql = $sql."'".$biblio->getLcItemNmbr()."', ";
-    $sql = $sql."'".$biblio->getUdcNmbr()."', ";
-    $sql = $sql."'".$biblio->getUdcEdNmbr()."', ";
-    $sql = $sql."'".$biblio->getPublisher()."', ";
-    $sql = $sql."'".$biblio->getPublicationDt()."', ";
-    $sql = $sql."'".$biblio->getPublicationLoc()."', ";
-    $sql = $sql."'".$biblio->getSummary()."', ";
-    $sql = $sql."'".$biblio->getPages()."', ";
-    $sql = $sql."'".$biblio->getPhysicalDetails()."', ";
-    $sql = $sql."'".$biblio->getDimensions()."', ";
-    $sql = $sql."'".$biblio->getAccompanying()."', ";
-    $sql = $sql."'".$biblio->getPrice()."')";
+    $sql = $sql."'".$biblio->getCallNmbr1()."', ";
+    $sql = $sql."'".$biblio->getCallNmbr2()."', ";
+    $sql = $sql."'".$biblio->getCallNmbr3()."', ";
+    $sql = $sql."'".$title."', ";
+    $sql = $sql."'".$titleRemainder."', ";
+    $sql = $sql."'".$responsibility."', ";
+    $sql = $sql."'".$author."', ";
+    $sql = $sql."'".$topic1."', ";
+    $sql = $sql."'".$topic2."', ";
+    $sql = $sql."'".$topic3."', ";
+    $sql = $sql."'".$topic4."', ";
+    $sql = $sql."'".$topic5."', ";
+    if ($biblio->showInOpac()) {
+      $sql = $sql."'Y')";
+    } else {
+      $sql = $sql."'N')";
+    }
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
-      $this->_error = "Error inserting new bibliography information.";
+      $this->_error = $this->_loc->getText("biblioQueryInsertErr1");
       $this->_dbErrno = $this->_conn->getDbErrno();
       $this->_dbError = $this->_conn->getDbError();
       $this->_SQL = $sql;
       return false;
     }
-    return $result;
+    $bibid = $this->_conn->getInsertId();
+
+    # inserting biblio_field rows
+    if (!($this->_insertFields($biblioFlds, $bibid))) {
+      return false;
+    }
+
+    return $bibid;
   }
 
   /****************************************************************************
@@ -322,52 +317,118 @@ class BiblioQuery extends Query {
    * @access public
    ****************************************************************************
    */
+  /*###########################
+    # WORKS WITH NEW FORMAT   #
+    ###########################*/
   function update($biblio) {
-    # checking for duplicate barcode number
-    $dupBarcode = $this->_dupBarcode($biblio->getBarcodeNmbr(), $biblio->getBibid());
-    if ($this->errorOccurred()) return false;
-    if ($dupBarcode) {
-      $this->_errorOccurred = true;
-      $this->_error = "Barcode number ".$biblio->getBarcodeNmbr()." is already in use.";
-      return false;
-    }
-    $sql = "update biblio set last_updated_dt = curdate(), ";
-    $sql = $sql."barcode_nmbr=".$biblio->getBarcodeNmbr().", ";
+    $biblioFlds = $biblio->getBiblioFields();
+    $title = $biblioFlds["245a"]->getFieldData();
+    $titleRemainder = $biblioFlds["245b"]->getFieldData();
+    $responsibility = $biblioFlds["245c"]->getFieldData();
+    $author = $biblioFlds["100a"]->getFieldData();
+    $topic1 = $biblioFlds["650a"]->getFieldData();
+    $topic2 = $biblioFlds["650a1"]->getFieldData();
+    $topic3 = $biblioFlds["650a2"]->getFieldData();
+    $topic4 = $biblioFlds["650a3"]->getFieldData();
+    $topic5 = $biblioFlds["650a4"]->getFieldData();
+
+    // updating biblio table
+    $sql = "update biblio set last_change_dt = sysdate(), ";
+    $sql = $sql."last_change_userid=".$biblio->getLastChangeUserid().", ";
     $sql = $sql."material_cd=".$biblio->getMaterialCd().", ";
     $sql = $sql."collection_cd=".$biblio->getCollectionCd().", ";
-    $sql = $sql."title='".$biblio->getTitle()."', ";
-    $sql = $sql."subtitle='".$biblio->getSubtitle()."', ";
-    $sql = $sql."author='".$biblio->getAuthor()."', ";
-    $sql = $sql."add_author='".$biblio->getAddAuthor()."', ";
-    $sql = $sql."edition='".$biblio->getEdition()."', ";
-    $sql = $sql."call_nmbr='".$biblio->getCallNmbr()."', ";
-    $sql = $sql."lccn_nmbr='".$biblio->getLccnNmbr()."', ";
-    $sql = $sql."isbn_nmbr='".$biblio->getIsbnNmbr()."', ";
-    $sql = $sql."lc_call_nmbr='".$biblio->getLcCallNmbr()."', ";
-    $sql = $sql."lc_item_nmbr='".$biblio->getLcItemNmbr()."', ";
-    $sql = $sql."udc_nmbr='".$biblio->getUdcNmbr()."', ";
-    $sql = $sql."udc_ed_nmbr='".$biblio->getUdcEdNmbr()."', ";
-    $sql = $sql."publisher='".$biblio->getPublisher()."', ";
-    $sql = $sql."publication_dt='".$biblio->getPublicationDt()."', ";
-    $sql = $sql."publication_loc='".$biblio->getPublicationLoc()."', ";
-    $sql = $sql."summary='".$biblio->getSummary()."', ";
-    $sql = $sql."pages='".$biblio->getPages()."', ";
-    $sql = $sql."physical_details='".$biblio->getPhysicalDetails()."', ";
-    $sql = $sql."dimensions='".$biblio->getDimensions()."', ";
-    $sql = $sql."accompanying='".$biblio->getAccompanying()."', ";
-    $sql = $sql."price=".$biblio->getPrice()." ";
-    $sql = $sql."where bibid=".$biblio->getBibid();
+    $sql = $sql."call_nmbr1='".$biblio->getCallNmbr1()."', ";
+    $sql = $sql."call_nmbr2='".$biblio->getCallNmbr2()."', ";
+    $sql = $sql."call_nmbr3='".$biblio->getCallNmbr3()."', ";
+    $sql = $sql."title='".$title."', ";
+    $sql = $sql."title_remainder='".$titleRemainder."', ";
+    $sql = $sql."responsibility_stmt='".$responsibility."', ";
+    $sql = $sql."author='".$author."', ";
+    $sql = $sql."topic1='".$topic1."', ";
+    $sql = $sql."topic2='".$topic2."', ";
+    $sql = $sql."topic3='".$topic3."', ";
+    $sql = $sql."topic4='".$topic4."', ";
+    $sql = $sql."topic5='".$topic5."', ";
+    if ($biblio->showInOpac()) {
+      $sql = $sql."opac_flg='Y'";
+    } else {
+      $sql = $sql."opac_flg='N'";
+    }
+    $sql = $sql." where bibid=".$biblio->getBibid();
 
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
-      $this->_error = "Error updating bibliography information.";
+      $this->_error = $this->_loc->getText("biblioQueryUpdateErr1");
       $this->_dbErrno = $this->_conn->getDbErrno();
       $this->_dbError = $this->_conn->getDbError();
       $this->_SQL = $sql;
       return false;
     }
+
+    // inserting (or upating) biblio_field rows from update Biblio object.
+    if (!($this->_insertFields($biblioFlds, $biblio->getBibid()))) {
+      return false;
+    }
+
     return $result;
+  }
+
+
+  /****************************************************************************
+   * Inserts biblio_field rows
+   * @param array reference $biblioFlds an array of BiblioField objects
+   * @param int bibid id of bibliography to insert fields into
+   * @return boolean returns false if error occurs
+   * @access private
+   ****************************************************************************
+   */
+  function _insertFields(&$biblioFlds, $bibid) {
+    foreach ($biblioFlds as $key => $value) {
+      # do not insert empty fields and fields that are stored in the biblio table
+      if ( !(($value->getTag() == 245) && ($value->getSubfieldCd() == "a") && ($value->getFieldid() == ""))
+        && !(($value->getTag() == 245) && ($value->getSubfieldCd() == "b") && ($value->getFieldid() == ""))
+        && !(($value->getTag() == 245) && ($value->getSubfieldCd() == "c") && ($value->getFieldid() == ""))
+        && !(($value->getTag() == 100) && ($value->getSubfieldCd() == "a") && ($value->getFieldid() == ""))
+        && !(($value->getTag() == 650) && ($value->getSubfieldCd() == "a") && ($value->getFieldid() == "")) ) {
+        
+        if ($value->getFieldData() == "") {
+          // value has been set to spaces, we may need to delete it
+          if ($value->getFieldid() == "") {
+            $sql = NULL;
+          } else {
+            $sql = "delete from biblio_field ";
+            $sql = $sql."where bibid=".$value->getBibid();
+            $sql = $sql." and fieldid=".$value->getFieldid();
+          }          
+        } elseif ($value->getFieldid() == "") {
+          // new value
+          $sql = "insert into biblio_field values (".$bibid.",null,";
+          $sql = $sql."'".$value->getTag()."', ";
+          $sql = $sql."'N','N',";
+          $sql = $sql."'".$value->getSubfieldCd()."',";
+          $sql = $sql."'".$value->getFieldData()."')";
+        } else {
+          // existing value
+          $sql = "update biblio_field set field_data = '".$value->getFieldData()."' ";
+          $sql = $sql."where bibid=".$value->getBibid();
+          $sql = $sql." and fieldid=".$value->getFieldid();
+        }
+      
+        if ($sql != NULL) {
+          $result = $this->_conn->exec($sql);
+          if ($result == FALSE) {
+            $this->_errorOccurred = TRUE;
+            $this->_error = $this->_loc->getText("biblioQueryInsertErr2");
+            $this->_dbErrno = $this->_conn->getDbErrno();
+            $this->_dbError = $this->_conn->getDbError();
+            $this->_SQL = $sql;
+            return FALSE;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   /****************************************************************************
@@ -378,21 +439,11 @@ class BiblioQuery extends Query {
    ****************************************************************************
    */
   function delete($bibid) {
-    $sql = "delete from biblio_topic where bibid = ".$bibid;
-    $result = $this->_conn->exec($sql);
-    if ($result == false) {
-      $this->_errorOccurred = true;
-      $this->_error = "Error deleting bibliography information.";
-      $this->_dbErrno = $this->_conn->getDbErrno();
-      $this->_dbError = $this->_conn->getDbError();
-      $this->_SQL = $sql;
-      return false;
-    }
     $sql = "delete from biblio where bibid = ".$bibid;
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
-      $this->_error = "Error deleting bibliography information.";
+      $this->_error = $this->_loc->getText("biblioQueryDeleteErr");
       $this->_dbErrno = $this->_conn->getDbErrno();
       $this->_dbError = $this->_conn->getDbError();
       $this->_SQL = $sql;

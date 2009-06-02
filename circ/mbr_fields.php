@@ -32,7 +32,7 @@
       <?php print $loc->getText("mbrFldsCardNmbr"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
+      <?php printInputText("barcodeNmbr",20,20,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
@@ -56,7 +56,7 @@
       <?php print $loc->getText("mbrFldsAddr1"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("address1",40,50,$postVars,$pageErrors); ?>
+      <?php printInputText("address1",40,128,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
@@ -64,7 +64,7 @@
       <?php print $loc->getText("mbrFldsAddr2"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("address2",40,50,$postVars,$pageErrors); ?>
+      <?php printInputText("address2",40,128,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
@@ -102,6 +102,14 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
+      <?php print $loc->getText("mbrFldsEmail"); ?>
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("email",40,128,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
+    <td nowrap="true" class="primary">
       <?php print $loc->getText("mbrFldsClassify"); ?>
     </td>
     <td valign="top" class="primary">
@@ -126,8 +134,8 @@
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="<?php print $loc->getText("mbrFldsSubmit"); ?>">
-      <input type="button" onClick="parent.location='<?php echo $cancelLocation;?>'" value="<?php print $loc->getText("mbrFldsCancel"); ?>">
+      <input type="submit" value="<?php print $loc->getText("mbrFldsSubmit"); ?>" class="button">
+      <input type="button" onClick="parent.location='<?php echo $cancelLocation;?>'" value="<?php print $loc->getText("mbrFldsCancel"); ?>" class="button">
     </td>
   </tr>
 

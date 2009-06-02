@@ -19,25 +19,33 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
-?>
 
-<?php if (!isset($sess_userid) or (isset($sess_userid) and $sess_userid == "")) { ?>
-  <a href="../shared/loginform.php?RET=<?php echo $PHP_SELF;?>"><img src="../images/login.gif" width="64" height="20" border="0"></a>
+  require_once("../classes/Localize.php");
+  $navLoc = new Localize(OBIB_LOCALE,"navbars");
+
+
+ if (isset($HTTP_SESSION_VARS["userid"])) {
+   $sess_userid = $HTTP_SESSION_VARS["userid"];
+ } else {
+   $sess_userid = "";
+ }
+ if ($sess_userid == "") { ?>
+  <input type="button" onClick="parent.location='../shared/loginform.php?RET=<?php echo $HTTP_SERVER_VARS["PHP_SELF"];?>'" value="<?php echo $navLoc->getText("login");?>" class="navbutton">
 <?php } else { ?>
-  <a href="../shared/logout.php"><img src="../images/logout.gif" width="64" height="20" border="0"></a>
+  <input type="button" onClick="parent.location='../shared/logout.php'" value="<?php echo $navLoc->getText("logout");?>" class="navbutton">
 <?php } ?>
-<br><br>
+<br /><br />
 
 <?php if ($nav == "home") { ?>
- &raquo; Home<br>
+ &raquo; <?php echo $navLoc->getText("homeHomeLink");?><br>
 <?php } else { ?>
- <a href="../home/index.php" class="alt1">Home</a><br>
+ <a href="../home/index.php" class="alt1"><?php echo $navLoc->getText("homeHomeLink");?></a><br>
 <?php } ?>
 
 <?php if ($nav == "license") { ?>
- &raquo; License<br>
+ &raquo; <?php echo $navLoc->getText("homeLicenseLink");?><br>
 <?php } else { ?>
- <a href="../home/license.php" class="alt1">License</a><br>
+ <a href="../home/license.php" class="alt1"><?php echo $navLoc->getText("homeLicenseLink");?></a><br>
 <?php } ?>
 
-<a href="javascript:popSecondary('../doc/index.php?tab=<?php echo $tab;?>@nav=<?php echo $nav;?>')">Help</a>
+<a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')"><?php echo $navLoc->getText("help");?></a>

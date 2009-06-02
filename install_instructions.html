@@ -11,39 +11,95 @@
      * OpenBiblio logo and black background with links and date
      **************************************************************************************-->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="#000000">
-    <td align="left"><a href="http://obiblio.sourceforge.net/"><img src="images/logo-small.gif" width="220" height="50" border="0"></a></td>
+  <tr bgcolor="#bebdbe">
+    <td align="left"><img src="images/obiblio_logo.gif" width="170" height="35" border="0"></td>
     <td align="right" valign="top" width="100%"><font color="#ffffff">
     </td>
   </tr>
 </table>
-<br>
 <font class="primary">
 
+<h1>Version Notes:</h1>
+<ul>
+<li><font color="red"><b>CAUTION!</b> - version 0.4.0 is still considered <b>beta</b> software since some features
+have still not been implemented.  Use at your own risk.</font>
+</li>
+<li>With the arrival of version 0.4.0 the database structure
+has become much more stable.  Therefore, future versions will provide conversion utitlities to upgrade from version
+0.4.x.
+</li>
+<li>OpenBiblio version 0.4.x does not have a utility to convert the 0.3.x database to the 0.4.x format.
+</li>
+<li>OpenBiblio version 0.4.x requires PHP version 4.2.0 or higher.
+</li>
+<li>The label printing feature of OpenBiblio dynamically produces a PDF file that causes
+problems with Internet Explorer 5.5 and lower.  IE 6.0 and Mozilla 1.x handles the dynamically
+produced PDF files fine.
+<li>OpenBiblio version 0.4.0 test scenarios ran succussfully on the following configurations:
+<blockquote>
+<table>
+  <tr>
+    <td><font class="primary">Operating System:</font></td>
+    <td><font class="primary">Windows 2000</font></td>
+    <td><font class="primary">Windows 98</font></td>
+  </tr>
+  <tr>
+    <td><font class="primary">PHP Version</font></td>
+    <td><font class="primary">4.3.1 (module)</font></td>
+    <td><font class="primary">4.2.3 (cgi)</font></td>
+  </tr>
+  <tr>
+    <td><font class="primary">Web Server</font></td>
+    <td><font class="primary">Apache 2.0.44</font></td>
+    <td><font class="primary">Apache 2.0.43</font></td>
+  </tr>
+  <tr>
+    <td><font class="primary">MySql Version</font></td>
+    <td><font class="primary">4.0.10-gamma-max-nt</font></td>
+    <td><font class="primary">4.0.4-beta-max-debug</font></td>
+  </tr>
+  <tr>
+    <td><font class="primary">Browser</font></td>
+    <td><font class="primary">Mozilla 1.3a and IE 6.0.2600</font></td>
+    <td><font class="primary">Mozilla 1.1</font></td>
+  </tr>
+</ul>
+</blockquote>
 
-<h1>Updating an Older Version of OpenBiblio:</h1>
-
-If you have already created the OpenBiblio database when installing a prior beta version (vs 0.x.x) you can
-<a href="#step7">skip to step 7</a>.
-
-<h1>Installing OpenBiblio for the First Time:</h1>
+<h1>OpenBiblio 0.4.x Install Instructions:</h1>
 <ol>
-  <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that can
-     execute cgi applications.  If you install Apache, get familiar with starting 
+  <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that is
+     compatible with PHP.  If you install Apache, get familiar with starting 
      and stopping your Apache Web Server. If you are running Windows 95 or Windows 98 
      there will be "Start Apache" and "Stop Apache" icons that will help you start 
      and stop your web server. You may want to consider adding the "Start Apache" 
-     icon to your startup folder. If you are running NT you can add Apache as a 
+     icon to your startup folder. If you are running NT or Windows 2000 you can add Apache as a 
      service which will be running, even if you are logged off.  If you are running Linux
      your Apache server should be packaged with your Linux installation and will start when
      you start Linux.
   </li>
-
+  <li>Add PHP to your web server as a CGI or a module.  If you are using Apache 2.0, I would highly
+     recommend that you install PHP as a module instead of a cgi application.  In my experience the
+     Apache PHP module performed over 4 times faster than the cgi PHP.  See 
+     <a href="http://www.php.net/manual/en/install.apache2.php">Example 3-9. PHP and Apache 2.0 as Module</a>
+     in the <a href="http://www.php.net/manual/en/">PHP Manual</a> for more info on how to install PHP
+     as a module.
+     <p>OpenBiblio uses session data.  Therefore, you will need to make sure PHP sessions is turned on.
+     Be sure to create a directory for your session data on your server and specify the session.save_path
+     in your php.ini file.  The default php.ini sets session.save_path to "/tmp".  Therefore, you have
+     to create a directory called c:/tmp (for Windows) users.  However, I usually create a more descriptive name
+     inside my PHP directory and then change my php.ini file to match it.
+     <p>Example php.ini directive:
+     <pre>session.save_path = d:\PHP\sessiondata</pre>
+     
+     <p>See section <a href="http://www.php.net/manual/en/ref.session.php">XCIII. Session handling functions</a>
+     in the PHP manual for more details on PHP sessions.
+  </li>
   <li>Install the MySQL database from <a href="http://www.mysql.com/">http://www.mysql.com/</a>.
      Get familiar with starting and stopping your MySQL Server.  See
      <a href="http://www.mysql.com/doc/W/i/Win95_start.html">Starting MySQL on Windows 95 or
      Windows 98</a> for more information.<br><br>
-     If you are running NT, setup MySQL as a service so it starts whenever the machine
+     If you are running NT or Windows 2000, setup MySQL as a service so it starts whenever the machine
      powers up.  See <a href="http://www.mysql.com/doc/N/T/NT_start.html">Starting MySQL on Windows NT or Windows 2000</a>
      for more information on starting MySQL as a service.<br><br>
      If you are running Linux, MySQL should be packaged with your Linux installation and will start when
@@ -52,7 +108,7 @@ If you have already created the OpenBiblio database when installing a prior beta
 
   <li>Get familiar with logging into MySQL with your admin account within a DOS prompt window.  You can use the following command sequence as a test.
 <blockquote><pre>
-C:\><b>c:\mysql\bin\mysql -uadmin -p mysql</b>
+C:\><b>c:\mysql\bin\mysql -uroot mysql</b>
 Enter password: <b>*********</b>
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 8 to server version: 3.23.26-beta
@@ -125,7 +181,7 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
    located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
    assuming you placed the openbiblio directory in the root htdocs directory.
   </li>
-  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.php">http://localhost/openbiblio/index.php</a>
+  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.html">http://localhost/openbiblio/index.html</a>
    assuming you placed the openbiblio directory in the root htdocs directory.  Enter
    "admin" for both the userid and password whenever you are prompted to signon.  You can
    change the admin password from the "Admin" tab -> staff list, where you can also add
@@ -133,11 +189,6 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
   </li>
     
 
-<br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br><br>
 </ol>
 
 

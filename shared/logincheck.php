@@ -79,9 +79,11 @@
   #*  Checking authorization for this tab
   #*  The session authorization flags were set at login in login.php
   #****************************************************************************
-
   if ($tab == "circulation"){
     if (!$HTTP_SESSION_VARS["hasCircAuth"]) {
+      header("Location: ../circ/noauth.php");
+      exit();
+    } elseif (isset($restrictToMbrAuth) and !$HTTP_SESSION_VARS["hasCircMbrAuth"]) {
       header("Location: ../circ/noauth.php");
       exit();
     }
@@ -93,6 +95,11 @@
   } elseif ($tab == "admin") {
     if (!$HTTP_SESSION_VARS["hasAdminAuth"]) {
       header("Location: ../admin/noauth.php");
+      exit();
+    }
+  } elseif ($tab == "reports") {
+    if (!$HTTP_SESSION_VARS["hasReportsAuth"]) {
+      header("Location: ../reports/noauth.php");
       exit();
     }
   }

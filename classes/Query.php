@@ -140,6 +140,7 @@ class Query {
   function getSQL() {
     return $this->_SQL;
   }
+
 }
 
 ?>
