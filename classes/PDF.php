@@ -494,6 +494,23 @@ class PDF {
     //Check for decimal separator
     if(sprintf('%.1f',1.0)!='1.0')
       setlocale(LC_NUMERIC,'C');
+    # Work-around for some versions of IE that need the web page's
+    # 'file name' to end with '.pdf'.
+    if (isset($_SERVER['HTTP_USER_AGENT'])
+        && strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')) {
+      $a = explode('?', $_SERVER['REQUEST_URI']);
+      if (count($a) > 2) {
+        return; # invalide URI, don't even try
+      }
+      $path = $a[0];
+      @$query = $a[1];
+      if (!eregi('\.pdf$', $path)) {
+        $path .= '/dummy.pdf';
+        # Whatever's making this PDF had better be using only GET params
+        header('Location: '.$path.'?'.$query);
+        exit();
+      }
+    }
   }
   
   function _getfontpath()

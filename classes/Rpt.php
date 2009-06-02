@@ -92,8 +92,11 @@ class Rpt {
 #			;
 # items:	  /* empty */
 #		| items 'item' WORD params
-#		| items 'sql' SQLCODE end
+#		| items 'sql' SQLCODE item_sql end
 #		;
+# item_sql:	  /* empty */
+#			| SQLCODE item_sql
+#			;
 # sql_form:	  sql_exprs subselects end
 #			;
 # sql_exprs:	  /* empty */
@@ -293,8 +296,10 @@ class RptParser {
       }
     }
     # hack to force proper whitespace
-    $sql .= ' ';
-    array_push($list, array('SQLCODE', $sql));
+    if (count($list) != 0 || strlen($sql) != 0) {
+      $sql .= ' ';
+      array_push($list, array('SQLCODE', $sql));
+    }
     return $list;
   }
 
@@ -447,6 +452,10 @@ class RptParser {
         }
         $sql = $this->lat[1];
         $this->lex();
+        while ($this->lat[0] == 'SQLCODE') {
+          $sql .= ' '.$this->lat[1];
+          $this->lex();
+        }
         $result = $this->p_end();
         if (is_a($result, 'Error')) {
           return $result;

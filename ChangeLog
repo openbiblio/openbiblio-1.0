@@ -1,3 +1,11 @@
+---- 0.6.1 ----
+* Import missing classes/Search.php
+* Fix some whitespace problems in Rpt
+* Fix a few compatibility problems with PHP 4.2
+* Work around a bug in some versions of IE that requires
+  downloaded PDFs to come from an URL with '.pdf'
+  in the 'filename'.
+
 ---- 0.6.0 ----
 * Track create_dt for copies
 * Add iterators and the Iter class

@@ -68,14 +68,14 @@
   define("OBIB_HOLD_MAX_DAYS",$set->getHoldMaxDays());
   define("OBIB_LOCALE",$set->getLocale());
   if ($set->getLocale()=="de") {
-    setlocale(LC_MONETARY, 'de_DE', 'de_DE@euro', 'de', 'ge', 'deu_deu', 'deu', 'Germany', 'de_DE.ISO8859-1');
-    setlocale(LC_NUMERIC, 'de_DE', 'de_DE@euro', 'de', 'ge', 'deu_deu', 'deu', 'Germany', 'de_DE.ISO8859-1');
+    obib_setlocale(LC_MONETARY, 'de_DE', 'de_DE@euro', 'de', 'ge', 'deu_deu', 'deu', 'Germany', 'de_DE.ISO8859-1');
+    obib_setlocale(LC_NUMERIC, 'de_DE', 'de_DE@euro', 'de', 'ge', 'deu_deu', 'deu', 'Germany', 'de_DE.ISO8859-1');
   } elseif ($set->getLocale()=="en") {
-    setlocale(LC_MONETARY,'en_US.iso885915', 'en', 'en_US', 'eng');
-    setlocale(LC_NUMERIC,'en_US.iso885915', 'en', 'en_US', 'eng');
+    obib_setlocale(LC_MONETARY,'en_US.iso885915', 'en', 'en_US', 'eng');
+    obib_setlocale(LC_NUMERIC,'en_US.iso885915', 'en', 'en_US', 'eng');
   } else {
-    setlocale(LC_MONETARY,$set->getLocale());
-    setlocale(LC_NUMERIC,$set->getLocale());
+    obib_setlocale(LC_MONETARY,$set->getLocale());
+    obib_setlocale(LC_NUMERIC,$set->getLocale());
   }
   define("OBIB_CHARSET",$set->getCharset());
   define("OBIB_HTML_LANG_ATTR",$set->getHtmlLangAttr());

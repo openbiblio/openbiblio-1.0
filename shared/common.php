@@ -52,6 +52,25 @@
     return urlencode($s);
   }
   
+  # Compatibility
+  $phpver = explode('.', PHP_VERSION);
+  if (!function_exists('mysql_real_escape_string')) {		# PHP < 4.3.0
+    function mysql_real_escape_string($s, $link) {
+      return mysql_escape_string($s);
+    }
+  }
+  if ($phpver[0]>=5 || ($phpver[0]==4 && $phpver[1]>=3)) {
+    function obib_setlocale() {
+      $a = func_get_args();
+      call_user_func_array('setlocale', $a);
+    }
+  } else {
+    function obib_setlocale() {
+      $a = func_get_args();
+      setlocale($a[0], $a[1]);
+    }
+  }
+  
   require_once('../database_constants.php');
   require_once('../shared/global_constants.php');
   require_once('../classes/Error.php');
