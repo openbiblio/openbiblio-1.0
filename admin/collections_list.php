@@ -29,7 +29,9 @@
   require_once("../functions/formatFuncs.php");
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   require_once("../shared/header.php");
 
   $dmQ = new DmQuery();
@@ -45,24 +47,24 @@
   }
 
 ?>
-<a href="../admin/collections_new_form.php?reset=Y">Add New Collection</a><br>
-<h1>Collections:</h1>
+<a href="../admin/collections_new_form.php?reset=Y"><? echo $loc->getText("adminCollections_listAddNewCollection"); ?></a><br>
+<h1><? echo $loc->getText("adminCollections_listCollections"); ?></h1>
 <table class="primary">
   <tr>
-    <th colspan="2" valign="top">
-      <font class="small">*</font>Function
+    <th colspan="2" valign="top"><? echo $loc->getText("adminCollections_listFunction"); ?>
+      <font class="small">*</font>
     </th>
     <th valign="top">
-      Description
+      <? echo $loc->getText("adminCollections_listDescription"); ?>
     </th>
     <th valign="top">
-      Days<br>Due Back
+      <? echo $loc->getText("adminCollections_listDaysdueback"); ?>
     </th>
     <th valign="top">
-      Daily<br>Late Fee
+      <? echo $loc->getText("adminCollections_listDailylatefee"); ?>
     </th>
     <th valign="top">
-      Bibliography<br>Count
+      <? echo $loc->getText("adminCollections_listBibliographycount"); ?>
     </th>
   </tr>
   <?php
@@ -71,11 +73,11 @@
   ?>
   <tr>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/collections_edit_form.php?code=<?php echo $dm->getCode();?>" class="<?php echo $row_class;?>">edit</a>
+      <a href="../admin/collections_edit_form.php?code=<?php echo $dm->getCode();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminCollections_listEdit"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($dm->getCount() == 0) { ?>
-        <a href="../admin/collections_del_confirm.php?code=<?php echo $dm->getCode();?>&desc=<?php echo urlencode($dm->getDescription());?>" class="<?php echo $row_class;?>">del</a>
+        <a href="../admin/collections_del_confirm.php?code=<?php echo $dm->getCode();?>&desc=<?php echo urlencode($dm->getDescription());?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminCollections_listDel"); ?></a>
       <?php } else { echo "del"; }?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
@@ -103,9 +105,7 @@
   ?>
 </table>
 <br>
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small">*Note:</font></td>
-<td class="noborder"><font class="small">The delete function is only available on collections that have a bibliography count of zero.
-If you wish to delete a collection with a bibliography count greater than zero you will first need to
-change the material type on those bibliographies to another material type.<br></font>
+<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><? echo $loc->getText("adminCollections_ListNote"); ?></font></td>
+<td class="noborder"><font class="small"><? echo $loc->getText("adminCollections_ListNoteText"); ?><br></font>
 </td></tr></table>
 <?php include("../shared/footer.php"); ?>

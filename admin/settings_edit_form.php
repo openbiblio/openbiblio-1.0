@@ -31,6 +31,8 @@
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/header.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
@@ -86,7 +88,7 @@
   #****************************************************************************
   if (isset($HTTP_GET_VARS["updated"])){
 ?>
-  <font class="error">Data has been updated.</font>
+  <font class="error"><? echo $loc->getText("admin_settingsUpdated"); ?></font>
 <?php
   }
 ?>
@@ -96,12 +98,12 @@
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      Edit Library Settings:
+      <? echo $loc->getText("admin_settingsEditsettings"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Library Name:
+      <? echo $loc->getText("admin_settingsLibName"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("libraryName",40,128,$postVars,$pageErrors); ?>
@@ -109,7 +111,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Library Image URL:
+      <? echo $loc->getText("admin_settingsLibimageurl"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("libraryImageUrl",40,300,$postVars,$pageErrors); ?>
@@ -117,7 +119,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Only Show Image in Header:
+      <? echo $loc->getText("admin_settingsOnlyshowimginheader"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="isUseImageSet" value="CHECKED"
@@ -126,7 +128,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Library Hours:
+      <? echo $loc->getText("admin_settingsLibhours"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("libraryHours",40,128,$postVars,$pageErrors); ?>
@@ -134,7 +136,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Library Phone:
+      <? echo $loc->getText("admin_settingsLibphone"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("libraryPhone",40,40,$postVars,$pageErrors); ?>
@@ -142,7 +144,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Library URL:
+      <? echo $loc->getText("admin_settingsLibURL"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("libraryUrl",40,300,$postVars,$pageErrors); ?>
@@ -150,7 +152,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      OPAC URL:
+      <? echo $loc->getText("admin_settingsOPACURL"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("opacUrl",40,300,$postVars,$pageErrors); ?>
@@ -158,31 +160,31 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Session Timeout:
+     <? echo $loc->getText("admin_settingsSessionTimeout"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("sessionTimeout",3,3,$postVars,$pageErrors); ?> minutes
+      <?php printInputText("sessionTimeout",3,3,$postVars,$pageErrors); ?> <? echo $loc->getText("admin_settingsMinutes"); ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Search Results:
+      <? echo $loc->getText("admin_settingsSearchResults"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("itemsPerPage",2,2,$postVars,$pageErrors); ?> items per page
+      <?php printInputText("itemsPerPage",2,2,$postVars,$pageErrors); ?><? echo $loc->getText("admin_settingsItemsperpage"); ?>
     </td>
   </tr>
   <tr>
     <td class="primary" valign="top">
-      Purge Bibliography History After:
+      <? echo $loc->getText("admin_settingsPurgebibhistory"); ?>
     </td>
     <td valign="top" class="primary">
-      <?php printInputText("purgeHistoryAfterMonths",2,2,$postVars,$pageErrors); ?> months
+      <?php printInputText("purgeHistoryAfterMonths",2,2,$postVars,$pageErrors); ?><? echo $loc->getText("admin_settingsmonths"); ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Block Checkouts When Fines Due:
+      <? echo $loc->getText("admin_settingsBlockCheckouts"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="isBlockCheckoutsWhenFinesDue" value="CHECKED"
@@ -191,13 +193,14 @@
   </tr>
   <tr>
     <td class="primary" valign="top">
-      Locale:
+      <? echo $loc->getText("admin_settingsLocale"); ?>
     </td>
     <td valign="top" class="primary">
       <select name="locale">
         <?php
-          require_once("../locale/language_list.php");
-          foreach($locales as $langCode => $langDesc) {
+          $stng = new Settings();
+          $arr_lang = $stng->getLocales();
+          foreach ($arr_lang as $langCode => $langDesc) {
             echo "<option value=\"".$langCode."\"";
             if ($langCode == $postVars["locale"]) {
               echo " selected";
@@ -210,7 +213,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      HTML Charset:
+      <? echo $loc->getText("admin_settingsHTMLChar"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("charset",20,20,$postVars,$pageErrors); ?>
@@ -218,7 +221,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      HTML Tag Lang Attribute:
+      <? echo $loc->getText("admin_settingsHTMLTagLangAttr"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("htmlLangAttr",8,8,$postVars,$pageErrors); ?>
@@ -226,7 +229,7 @@
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Update  " class="button">
+      <input type="submit" value="  <? echo $loc->getText("adminUpdate"); ?>  " class="button">
     </td>
   </tr>
 

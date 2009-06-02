@@ -29,7 +29,9 @@
   require_once("../classes/Theme.php");
   require_once("../classes/ThemeQuery.php");
   require_once("../functions/errorFuncs.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
@@ -160,7 +162,7 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Theme, <?php echo $theme->getThemeName();?>, has been updated.<br><br>
-<a href="../admin/theme_list.php">return to theme list</a>
+<? echo $loc->getText("adminTheme_Theme"); ?><?php echo $theme->getThemeName();?><? echo $loc->getText("adminTheme_Updated"); ?><br><br>
+<a href="../admin/theme_list.php"><? echo $loc->getText("adminTheme_Return"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

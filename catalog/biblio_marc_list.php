@@ -92,6 +92,13 @@
     displayErrorPage($fieldQ);
   }
 
+  function getDescription(&$dm, $key) {
+    if (array_key_exists($key, $dm)) {
+      return $dm[$key]->getDescription();
+    } else {
+      return '';
+    }
+  }
   #****************************************************************************
   #*  Start of body
   #****************************************************************************
@@ -166,7 +173,7 @@
         <?php echo $tag; ?>
       </td>
       <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $marcTags[$fld->getTag()]->getDescription(); ?>
+        <?php echo getDescription($marcTags, $fld->getTag()); ?>
       </td>
       <td valign="top" class="<?php echo $row_class;?>">
         <?php echo $fld->getInd1Cd(); ?>
@@ -178,7 +185,7 @@
         <?php echo $fld->getSubfieldCd(); ?>
       </td>
       <td valign="top" class="<?php echo $row_class;?>">
-        <?php echo $marcSubflds[$subfldIndex]->getDescription(); ?>
+        <?php echo getDescription($marcSubflds, $subfldIndex); ?>
       </td>
       <td valign="top" class="<?php echo $row_class;?>">
         <?php echo $fld->getFieldData(); ?>

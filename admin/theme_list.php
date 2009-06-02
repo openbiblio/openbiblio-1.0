@@ -27,7 +27,9 @@
   require_once("../classes/ThemeQuery.php");
   require_once("../functions/errorFuncs.php");
   require_once("../shared/read_settings.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   require_once("../shared/logincheck.php");
 
   require_once("../shared/header.php");
@@ -51,12 +53,12 @@
 <table class="primary">
   <tr>
     <th nowrap="yes" align="left">
-      Change Theme In Use:
+      <? echo $loc->getText("adminTheme_Changetheme"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Choose a New Theme:
+      <? echo $loc->getText("adminTheme_Choosetheme"); ?>
       <select name="themeid">
         <?php
           while ($theme = $themeQ->fetchTheme()) {
@@ -68,24 +70,23 @@
           }
         ?>
       </select>
-      <input type="submit" value="Update" class="button">
+      <input type="submit" value="<? echo $loc->getText("adminUpdate"); ?>" class="button">
     </td>
   </tr>
 </table>
 </form>
-
-<a href="../admin/theme_new_form.php?reset=Y">Add New Theme</a><br>
-<h1>Themes:</h1>
+<a href="../admin/theme_new_form.php?reset=Y"><? echo $loc->getText("adminTheme_Addnew"); ?></a><br>
+<h1><? echo $loc->getText("adminTheme_themes"); ?></h1>
 <table class="primary">
   <tr>
     <th colspan="3" valign="top">
-      <font class="small">*</font>Function</font>
+      <font class="small">*</font><? echo $loc->getText("adminTheme_function"); ?></font>
     </th>
     <th valign="top">
-      Theme Name</font>
+      <? echo $loc->getText("adminTheme_Themename"); ?></font>
     </th>
     <th valign="top">
-      Usage</font>
+      <? echo $loc->getText("adminTheme_Usage"); ?></font>
     </th>
   </tr>
   <?php
@@ -95,21 +96,21 @@
   ?>
   <tr>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/theme_edit_form.php?themeid=<?php echo $theme->getThemeid();?>" class="<?php echo $row_class;?>">edit</a>
+      <a href="../admin/theme_edit_form.php?themeid=<?php echo $theme->getThemeid();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminTheme_Edit"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/theme_new_form.php?themeid=<?php echo $theme->getThemeid();?>" class="<?php echo $row_class;?>">copy</a>
+      <a href="../admin/theme_new_form.php?themeid=<?php echo $theme->getThemeid();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminTheme_Copy"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
-      <?php if ($theme->getThemeid() == OBIB_THEMEID) { echo "del"; } else { ?>
-        <a href="../admin/theme_del_confirm.php?themeid=<?php echo $theme->getThemeid();?>&name=<?php echo urlencode($theme->getThemeName());?>" class="<?php echo $row_class;?>">del</a>
+      <?php if ($theme->getThemeid() == OBIB_THEMEID) { echo $loc->getText("adminTheme_Del"); } else { ?>
+        <a href="../admin/theme_del_confirm.php?themeid=<?php echo $theme->getThemeid();?>&name=<?php echo urlencode($theme->getThemeName());?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminTheme_Del"); ?></a>
       <?php } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php echo $theme->getThemeName();?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
-      <?php if ($theme->getThemeid() == OBIB_THEMEID) { echo "in use"; } else { echo "&nbsp;"; } ?>
+      <?php if ($theme->getThemeid() == OBIB_THEMEID) { echo $loc->getText("adminTheme_Inuse"); } else { echo "&nbsp;"; } ?>
     </td>
   </tr>
   <?php
@@ -124,8 +125,7 @@
   ?>
 </table>
 <br>
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small">*Note:</font></td>
-<td class="noborder"><font class="small">The delete function is not available on the theme that is currently in use.
-</font>
+<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><? echo $loc->getText("adminTheme_Note"); ?></font></td>
+<td class="noborder"><font class="small"><? echo $loc->getText("adminTheme_Notetext"); ?></font>
 </td></tr></table>
 <?php include("../shared/footer.php"); ?>

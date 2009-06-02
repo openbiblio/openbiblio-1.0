@@ -73,6 +73,7 @@ $trans["adminSettings"]            = "\$text = 'Library Settings';";
 $trans["adminMaterialTypes"]       = "\$text = 'Material Types';";
 $trans["adminCollections"]         = "\$text = 'Collections';";
 $trans["adminThemes"]              = "\$text = 'Themes';";
+$trans["adminTranslation"]         = "\$text = 'Translation';";
 
 #****************************************************************************
 #*  Translation text for page cataloging.php
@@ -92,6 +93,7 @@ $trans["catalogCopyEdit"]          = "\$text = 'Edit Copy';";
 $trans["catalogHolds"]             = "\$text = 'Hold Requests';";
 $trans["catalogDelete"]            = "\$text = 'Delete';";
 $trans["catalogBibNew"]            = "\$text = 'New Bibliography';";
+$trans["Upload Marc Data"]         = "\$text = 'Upload Marc Data';";
 
 #****************************************************************************
 #*  Translation text for page reports.php
@@ -99,5 +101,25 @@ $trans["catalogBibNew"]            = "\$text = 'New Bibliography';";
 $trans["reportsSummary"]           = "\$text = 'Reports Summary';";
 $trans["reportsReportListLink"]    = "\$text = 'Report List';";
 $trans["reportsLabelsLink"]        = "\$text = 'Print Labels';";
+$trans["reportsLettersLink"]        = "\$text = 'Print Letters';";
 
+#****************************************************************************
+#*  Translation text for page opac.php
+#****************************************************************************
+$trans["catalogSearch1"]           = "\$text = 'Search';";
+$trans["catalogSearch2"]           = "\$text = 'Bibliography Search';";
+$trans["catalogResults"]           = "\$text = 'Search Results';";
+$trans["catalogBibInfo"]           = "\$text = 'Biblio Info';";
+
+#Added
+
+$trans["memberInfo"]="\$text = 'Member Info';";
+$trans["memberSearch"]="\$text = 'Member Search';";
+$trans["editInfo"]="\$text = 'Edit Info';";
+$trans["checkoutHistory"]= "\$text = 'Checkout History';";
+$trans["account"]="\$text = 'Account';";
+$trans["checkIn"]="\$text = 'Check In';";
+$trans["memberSearch"]= "\$text = 'Member Search';";
+$trans["newMember"]= "\$text = 'New Member';";
+//$trans["account"]        	= "\$text = 'Account';";
 ?>

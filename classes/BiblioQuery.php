@@ -41,11 +41,22 @@ class BiblioQuery extends Query {
   var $_rowCount = 0;
   var $_pageCount = 0;
   var $_loc;
+  var $_fieldsInBiblio;
 
   function BiblioQuery () {
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
+    $this->_fieldsInBiblio = array(
+      '100a' => 'author',
+      '245a' => 'title',
+      '245b' => 'title_remainder',
+      '245c' => 'responsibility_stmt',
+      '650a' => 'topic1',
+      '650a1' => 'topic2',
+      '650a2' => 'topic3',
+      '650a3' => 'topic4',
+      '650a4' => 'topic5',
+    );
   }
-
 
   function setItemsPerPage($value) {
     $this->_itemsPerPage = $value;
@@ -83,9 +94,9 @@ class BiblioQuery extends Query {
     # setting query that will return all the data in biblio
     $sql = "select biblio.*, ";
     $sql = $sql."staff.username ";
-    $sql = $sql."from biblio, staff ";
+    $sql = $sql."from biblio ";
+    $sql = $sql." left join staff on biblio.last_change_userid = staff.userid ";
     $sql = $sql."where biblio.bibid = ".$bibid;
-    $sql = $sql." and biblio.last_change_userid = staff.userid";
 
     $result = $this->_conn->exec($sql);
     if ($result == false) {
@@ -138,15 +149,15 @@ class BiblioQuery extends Query {
     /***********************************************************
      *  Adding fields from biblio to Biblio object 
      ***********************************************************/
-    $this->_addField(245,"a",$array["title"],$bib);
-    $this->_addField(245,"b",$array["title_remainder"],$bib);
-    $this->_addField(245,"c",$array["responsibility_stmt"],$bib);
-    $this->_addField(100,"a",$array["author"],$bib);
-    $this->_addField(650,"a",$array["topic1"],$bib);
-    $this->_addField(650,"a",$array["topic2"],$bib,"1");
-    $this->_addField(650,"a",$array["topic3"],$bib,"2");
-    $this->_addField(650,"a",$array["topic4"],$bib,"3");
-    $this->_addField(650,"a",$array["topic5"],$bib,"4");
+    foreach ($this->_fieldsInBiblio as $key => $name) {
+      $tag = substr($key, 0, 3);
+      $subfieldCd = substr($key, 3, 1);
+      $subfieldIdx = '';
+      if (count($key) > 4) {
+        $index = substr($key, 4);
+      }
+      $this->_addField($tag, $subfieldCd, $array[$name], $bib, $subfieldIdx);
+    }
 
     /***********************************************************
      *  Adding fields from biblio_field to Biblio object 
@@ -259,33 +270,34 @@ class BiblioQuery extends Query {
   function insert($biblio) {
     // inserting biblio row
     $biblioFlds = $biblio->getBiblioFields();
-    $title = $biblioFlds["245a"]->getFieldData();
-    $titleRemainder = $biblioFlds["245b"]->getFieldData();
-    $responsibility = $biblioFlds["245c"]->getFieldData();
-    if ($biblioFlds["100a"]->getFieldid() == "") $author = $biblioFlds["100a"]->getFieldData();
-    if ($biblioFlds["650a"]->getFieldid() == "") $topic1 = $biblioFlds["650a"]->getFieldData();
-    if ($biblioFlds["650a1"]->getFieldid() == "") $topic2 = $biblioFlds["650a1"]->getFieldData();
-    if ($biblioFlds["650a2"]->getFieldid() == "") $topic3 = $biblioFlds["650a2"]->getFieldData();
-    if ($biblioFlds["650a3"]->getFieldid() == "") $topic4 = $biblioFlds["650a3"]->getFieldData();
-    if ($biblioFlds["650a4"]->getFieldid() == "") $topic5 = $biblioFlds["650a4"]->getFieldData();
+
+    $bibfields = array();	// fields in biblio table
+    foreach ($this->_fieldsInBiblio as $key => $name) {
+      if (array_key_exists($key, $biblioFlds) and $biblioFlds[$key]->getFieldid() == '') {
+        $bibfields[$name] = $biblioFlds[$key]->getFieldData();
+        unset($biblioFlds[$key]);
+      } else {
+        $bibfields[$name] = '';
+      }
+    }
 
     $sql = "insert into biblio values (null, ";
     $sql = $sql."sysdate(), sysdate(), ";
-    $sql = $sql.$biblio->getLastChangeUserid().", ";
-    $sql = $sql.$biblio->getMaterialCd().", ";
-    $sql = $sql.$biblio->getCollectionCd().", ";
-    $sql = $sql."'".$biblio->getCallNmbr1()."', ";
-    $sql = $sql."'".$biblio->getCallNmbr2()."', ";
-    $sql = $sql."'".$biblio->getCallNmbr3()."', ";
-    $sql = $sql."'".$title."', ";
-    $sql = $sql."'".$titleRemainder."', ";
-    $sql = $sql."'".$responsibility."', ";
-    $sql = $sql."'".$author."', ";
-    $sql = $sql."'".$topic1."', ";
-    $sql = $sql."'".$topic2."', ";
-    $sql = $sql."'".$topic3."', ";
-    $sql = $sql."'".$topic4."', ";
-    $sql = $sql."'".$topic5."', ";
+    $sql = $sql.addslashes($biblio->getLastChangeUserid()).", ";
+    $sql = $sql.addslashes($biblio->getMaterialCd()).", ";
+    $sql = $sql.addslashes($biblio->getCollectionCd()).", ";
+    $sql = $sql."'".addslashes($biblio->getCallNmbr1())."', ";
+    $sql = $sql."'".addslashes($biblio->getCallNmbr2())."', ";
+    $sql = $sql."'".addslashes($biblio->getCallNmbr3())."', ";
+    $sql = $sql."'".addslashes($bibfields['title'])."', ";
+    $sql = $sql."'".addslashes($bibfields['title_remainder'])."', ";
+    $sql = $sql."'".addslashes($bibfields['responsibility_stmt'])."', ";
+    $sql = $sql."'".addslashes($bibfields['author'])."', ";
+    $sql = $sql."'".addslashes($bibfields['topic1'])."', ";
+    $sql = $sql."'".addslashes($bibfields['topic2'])."', ";
+    $sql = $sql."'".addslashes($bibfields['topic3'])."', ";
+    $sql = $sql."'".addslashes($bibfields['topic4'])."', ";
+    $sql = $sql."'".addslashes($bibfields['topic5'])."', ";
     if ($biblio->showInOpac()) {
       $sql = $sql."'Y')";
     } else {
@@ -322,33 +334,23 @@ class BiblioQuery extends Query {
     ###########################*/
   function update($biblio) {
     $biblioFlds = $biblio->getBiblioFields();
-    $title = $biblioFlds["245a"]->getFieldData();
-    $titleRemainder = $biblioFlds["245b"]->getFieldData();
-    $responsibility = $biblioFlds["245c"]->getFieldData();
-    $author = $biblioFlds["100a"]->getFieldData();
-    $topic1 = $biblioFlds["650a"]->getFieldData();
-    $topic2 = $biblioFlds["650a1"]->getFieldData();
-    $topic3 = $biblioFlds["650a2"]->getFieldData();
-    $topic4 = $biblioFlds["650a3"]->getFieldData();
-    $topic5 = $biblioFlds["650a4"]->getFieldData();
 
     // updating biblio table
     $sql = "update biblio set last_change_dt = sysdate(), ";
-    $sql = $sql."last_change_userid=".$biblio->getLastChangeUserid().", ";
-    $sql = $sql."material_cd=".$biblio->getMaterialCd().", ";
-    $sql = $sql."collection_cd=".$biblio->getCollectionCd().", ";
-    $sql = $sql."call_nmbr1='".$biblio->getCallNmbr1()."', ";
-    $sql = $sql."call_nmbr2='".$biblio->getCallNmbr2()."', ";
-    $sql = $sql."call_nmbr3='".$biblio->getCallNmbr3()."', ";
-    $sql = $sql."title='".$title."', ";
-    $sql = $sql."title_remainder='".$titleRemainder."', ";
-    $sql = $sql."responsibility_stmt='".$responsibility."', ";
-    $sql = $sql."author='".$author."', ";
-    $sql = $sql."topic1='".$topic1."', ";
-    $sql = $sql."topic2='".$topic2."', ";
-    $sql = $sql."topic3='".$topic3."', ";
-    $sql = $sql."topic4='".$topic4."', ";
-    $sql = $sql."topic5='".$topic5."', ";
+    $sql = $sql."last_change_userid=".addslashes($biblio->getLastChangeUserid()).", ";
+    $sql = $sql."material_cd=".addslashes($biblio->getMaterialCd()).", ";
+    $sql = $sql."collection_cd=".addslashes($biblio->getCollectionCd()).", ";
+    $sql = $sql."call_nmbr1='".addslashes($biblio->getCallNmbr1())."', ";
+    $sql = $sql."call_nmbr2='".addslashes($biblio->getCallNmbr2())."', ";
+    $sql = $sql."call_nmbr3='".addslashes($biblio->getCallNmbr3())."', ";
+    foreach ($this->_fieldsInBiblio as $key => $name) {
+      if (array_key_exists($key, $biblioFlds) and $biblioFlds[$key]->getFieldid() == '') {
+        $sql .= $name."='".addslashes($biblioFlds[$key]->getFieldData())."', ";
+        unset($biblioFlds[$key]);
+      } else {
+        $sql .= $name."='', ";
+      }
+    }
     if ($biblio->showInOpac()) {
       $sql = $sql."opac_flg='Y'";
     } else {
@@ -385,46 +387,38 @@ class BiblioQuery extends Query {
    */
   function _insertFields(&$biblioFlds, $bibid) {
     foreach ($biblioFlds as $key => $value) {
-      # do not insert empty fields and fields that are stored in the biblio table
-      if ( !(($value->getTag() == 245) && ($value->getSubfieldCd() == "a") && ($value->getFieldid() == ""))
-        && !(($value->getTag() == 245) && ($value->getSubfieldCd() == "b") && ($value->getFieldid() == ""))
-        && !(($value->getTag() == 245) && ($value->getSubfieldCd() == "c") && ($value->getFieldid() == ""))
-        && !(($value->getTag() == 100) && ($value->getSubfieldCd() == "a") && ($value->getFieldid() == ""))
-        && !(($value->getTag() == 650) && ($value->getSubfieldCd() == "a") && ($value->getFieldid() == "")) ) {
-        
-        if ($value->getFieldData() == "") {
-          // value has been set to spaces, we may need to delete it
-          if ($value->getFieldid() == "") {
-            $sql = NULL;
-          } else {
-            $sql = "delete from biblio_field ";
-            $sql = $sql."where bibid=".$value->getBibid();
-            $sql = $sql." and fieldid=".$value->getFieldid();
-          }          
-        } elseif ($value->getFieldid() == "") {
-          // new value
-          $sql = "insert into biblio_field values (".$bibid.",null,";
-          $sql = $sql."'".$value->getTag()."', ";
-          $sql = $sql."'N','N',";
-          $sql = $sql."'".$value->getSubfieldCd()."',";
-          $sql = $sql."'".$value->getFieldData()."')";
+      if ($value->getFieldData() == "") {
+        // value has been set to spaces, we may need to delete it
+        if ($value->getFieldid() == "") {
+          $sql = NULL;
         } else {
-          // existing value
-          $sql = "update biblio_field set field_data = '".$value->getFieldData()."' ";
+          $sql = "delete from biblio_field ";
           $sql = $sql."where bibid=".$value->getBibid();
           $sql = $sql." and fieldid=".$value->getFieldid();
-        }
-      
-        if ($sql != NULL) {
-          $result = $this->_conn->exec($sql);
-          if ($result == FALSE) {
-            $this->_errorOccurred = TRUE;
-            $this->_error = $this->_loc->getText("biblioQueryInsertErr2");
-            $this->_dbErrno = $this->_conn->getDbErrno();
-            $this->_dbError = $this->_conn->getDbError();
-            $this->_SQL = $sql;
-            return FALSE;
-          }
+        }          
+      } elseif ($value->getFieldid() == "") {
+        // new value
+        $sql = "insert into biblio_field values (".$bibid.",null,";
+        $sql = $sql."'".addslashes($value->getTag())."', ";
+        $sql = $sql."'N','N',";
+        $sql = $sql."'".addslashes($value->getSubfieldCd())."',";
+        $sql = $sql."'".addslashes($value->getFieldData())."')";
+      } else {
+        // existing value
+        $sql = "update biblio_field set field_data = '".addslashes($value->getFieldData())."' ";
+        $sql = $sql."where bibid=".$value->getBibid();
+        $sql = $sql." and fieldid=".$value->getFieldid();
+      }
+    
+      if ($sql != NULL) {
+        $result = $this->_conn->exec($sql);
+        if ($result == FALSE) {
+          $this->_errorOccurred = TRUE;
+          $this->_error = $this->_loc->getText("biblioQueryInsertErr2");
+          $this->_dbErrno = $this->_conn->getDbErrno();
+          $this->_dbError = $this->_conn->getDbError();
+          $this->_SQL = $sql;
+          return FALSE;
         }
       }
     }
@@ -439,6 +433,16 @@ class BiblioQuery extends Query {
    ****************************************************************************
    */
   function delete($bibid) {
+    $sql = "delete from biblio_field where bibid = ".$bibid;
+    $result = $this->_conn->exec($sql);
+    if ($result == false) {
+      $this->_errorOccurred = true;
+      $this->_error = $this->_loc->getText("biblioQueryDeleteErr");
+      $this->_dbErrno = $this->_conn->getDbErrno();
+      $this->_dbError = $this->_conn->getDbError();
+      $this->_SQL = $sql;
+      return false;
+    }
     $sql = "delete from biblio where bibid = ".$bibid;
     $result = $this->_conn->exec($sql);
     if ($result == false) {

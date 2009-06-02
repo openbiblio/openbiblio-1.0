@@ -1,4 +1,4 @@
-create table member (
+create table %prfx%member (
   mbrid integer auto_increment primary key
   ,barcode_nmbr varchar(20) not null
   ,create_dt datetime not null

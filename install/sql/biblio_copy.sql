@@ -1,4 +1,4 @@
-create table biblio_copy (
+create table %prfx%biblio_copy (
   bibid integer not null
   ,copyid integer auto_increment not null
   ,copy_desc varchar(160) null

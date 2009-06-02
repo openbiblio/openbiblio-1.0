@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002-2004 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -23,11 +23,7 @@
 
 ?>
 <br>
-<h1>OpenBiblio Installation:</h1>
 
-<!--This install module is still not complete.  Please follow the 
-<a href="../install_instructions.html">Install Instructions</a> to install OpenBiblio
-instead of this module.<br><br-->
 <?php
   require_once("../classes/InstallQuery.php");
 
@@ -57,7 +53,9 @@ instead of this module.<br><br-->
   echo "Database connection is good.  Please choose a language and press the install button.<br>\n";
 
 ?>
-  <br>
+<br>
+<h1>OpenBiblio Installation:</h1>
+<blockquote>
   <form name="installForm" method="POST" action="../install/install.php">
     <table cellpadding=0 cellspacing=0 border=0>
       <tr>
@@ -80,6 +78,14 @@ instead of this module.<br><br-->
       </tr>
     </table>
   </form>
-
+</blockquote>
+<br>
+<h1>Update Version 0.3.x to Version 0.4.0 / 0.5.0:</h1>
+<blockquote>
+  <font class="error">WARNING - Please back up your database before updating from version 0.3.x to version 0.4.0 / 0.5.0.</font>
+  <form name="updateForm" method="POST" action="../install/update030.php">
+  <input type="submit" value="Update"></td>
+  </form>
+</blockquote>
 
 <?php include("../install/footer.php"); ?>

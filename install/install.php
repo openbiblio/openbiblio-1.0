@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002, 2003 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -31,50 +31,14 @@
   require_once("../classes/SettingsQuery.php");
   require_once("../classes/Settings.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../install/installFuncs.php");
+  require_once("../install/tableList.php");
 
   $locale = $HTTP_POST_VARS["locale"];
 
   # table array
   $sqlDir="sql/";
   $domainDataDir="../locale/".$locale."/sql/";
-  $tables = array(
-    "biblio"
-    ,"biblio_field"
-    ,"biblio_copy"
-    ,"biblio_hold"
-    ,"biblio_status_dm"
-    ,"biblio_status_hist"
-    ,"collection_dm"
-    ,"material_type_dm"
-    ,"mbr_classify_dm"
-    ,"member"
-    ,"member_account"
-    ,"session"
-    ,"settings"
-    ,"staff"
-    ,"state_dm"
-    ,"theme"
-    ,"usmarc_block_dm"
-    ,"usmarc_indicator_dm"
-    ,"usmarc_subfield_dm"
-    ,"usmarc_tag_dm"
-    ,"transaction_type_dm"
-  );
-  $domainTables = array(
-    "biblio_status_dm"
-    ,"collection_dm"
-    ,"material_type_dm"
-    ,"mbr_classify_dm"
-    ,"settings"
-    ,"staff"
-    ,"state_dm"
-    ,"theme"
-    ,"usmarc_block_dm"
-    ,"usmarc_indicator_dm"
-    ,"usmarc_subfield_dm"
-    ,"usmarc_tag_dm"
-    ,"transaction_type_dm"
-  );
 
   if (isset($HTTP_POST_VARS["installTestData"])) {
     if ($HTTP_POST_VARS["installTestData"] == "yes") {
@@ -84,40 +48,6 @@
     }
   }
   
-  /**********************************************************************************
-   * Function to read through an sql file executing SQL only when ";" is encountered
-   **********************************************************************************/
-  function executeSqlFile (&$installQ, $filename) {
-    $fp = fopen($filename, "r");
-    # show error if file could not be opened
-    if ($fp == false) {
-      echo "Error reading file ".$filename.".<br>\n";
-      return false;
-    } else {
-      $sqlStmt = "";
-      while (!feof ($fp)) {
-        $char = fgetc($fp);
-        if ($char == ";") {
-          #echo "process sql [".$sqlStmt."]<br>";
-          $result = $installQ->exec($sqlStmt);
-          if ($installQ->errorOccurred()) {
-            $installQ->close();
-            displayErrorPage($installQ);
-            fclose($fp);
-            return false;
-          }
-          $sqlStmt = "";
-        } else {
-          $sqlStmt = $sqlStmt.$char;
-        }
-      }
-      fclose($fp);
-      return true;
-    }
-  }
-
-
-
 ?>
 <br>
 <h1>OpenBiblio Installation:</h1>

@@ -50,6 +50,8 @@
   $rptid = $HTTP_POST_VARS["rptid"];
   $title = $HTTP_POST_VARS["title"];
   $label = $HTTP_POST_VARS["label"];
+  $letter = $HTTP_POST_VARS["letter"];
+  $initialSort = $HTTP_POST_VARS["initialSort"];
   $baseSql = stripslashes($HTTP_POST_VARS["sql"]);
 
   #****************************************************************************
@@ -80,7 +82,7 @@
     $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
     $urlTitle = urlencode($title);
     $urlSql = urlencode($baseSql);
-    header("Location: ../reports/report_criteria.php?rptid=".$rptid."&title=".$urlTitle."&sql=".$urlSql."&label=".$label);
+    header("Location: ../reports/report_criteria.php?rptid=".$rptid."&title=".$urlTitle."&sql=".$urlSql."&label=".$label."&letter=".$letter."&initialSort=".$initialSort);
     exit();
   }
 

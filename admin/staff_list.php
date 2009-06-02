@@ -28,6 +28,9 @@
   require_once("../functions/errorFuncs.php");
   require_once("../shared/read_settings.php");
 
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+
   require_once("../shared/logincheck.php");
 
   require_once("../shared/header.php");
@@ -45,44 +48,44 @@
   }
 
 ?>
-<a href="../admin/staff_new_form.php?reset=Y">Add New Staff Member</a><br><br>
-<h1> Staff Members:</h1>
+<a href="../admin/staff_new_form.php?reset=Y"><? echo $loc->getText("adminStaff_list_formHeader"); ?></a><br><br>
+<h1><? echo $loc->getText("adminStaff_list_Columnheader"); ?></h1>
 <table class="primary">
   <tr>
     <th colspan="3" rowspan="2" valign="top">
-      Function
+      <? echo $loc->getText("adminStaff_list_Function"); ?>
     </th>
     <th rowspan="2" valign="top" nowrap="yes">
-      Last Name
+      <? echo $loc->getText("adminStaff_edit_formLastname"); ?>
     </th>
     <th rowspan="2" valign="top" nowrap="yes">
-      First Name
+      <? echo $loc->getText("adminStaff_edit_formFirstname"); ?>
     </th>
     <th rowspan="2" valign="top">
-      Userid
+      <? echo $loc->getText("adminStaff_edit_formLogin"); ?>
     </th>
     <th colspan="5">
-      Authorization
+      <? echo $loc->getText("adminStaff_edit_formAuth"); ?>
     </th>
     <th rowspan="2" valign="top">
-      Suspended
+      <? echo $loc->getText("adminStaff_edit_formSuspended"); ?>
     </th>
   </tr>
   <tr>
     <th>
-      Circ
+      <? echo $loc->getText("adminStaff_edit_formCirc"); ?>
     </th>
     <th>
-      Member
+      <? echo $loc->getText("adminStaff_edit_formUpdatemember"); ?>
     </th>
     <th>
-      Catalog
+      <? echo $loc->getText("adminStaff_edit_formCatalog"); ?>
     </th>
     <th>
-      Admin
+      <? echo $loc->getText("adminStaff_edit_formAdmin"); ?>
     </th>
     <th>
-      Reports
+      <? echo $loc->getText("adminStaff_edit_formReports"); ?>
     </th>
   </tr>
   <?php
@@ -91,13 +94,13 @@
   ?>
   <tr>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/staff_edit_form.php?UID=<?php echo $staff->getUserid();?>" class="<?php echo $row_class;?>">edit</a>
+      <a href="../admin/staff_edit_form.php?UID=<?php echo $staff->getUserid();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminStaff_list_Edit"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/staff_pwd_reset_form.php?UID=<?php echo $staff->getUserid();?>" class="<?php echo $row_class;?>">pwd</a>
+      <a href="../admin/staff_pwd_reset_form.php?UID=<?php echo $staff->getUserid();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminStaff_list_Pwd"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/staff_del_confirm.php?UID=<?php echo $staff->getUserid();?>&LAST=<?php echo urlencode($staff->getLastName());?>&FIRST=<?php echo urlencode($staff->getFirstName());?>" class="<?php echo $row_class;?>">del</a>
+      <a href="../admin/staff_del_confirm.php?UID=<?php echo $staff->getUserid();?>&LAST=<?php echo urlencode($staff->getLastName());?>&FIRST=<?php echo urlencode($staff->getFirstName());?>" class="<?php echo $row_class;?>"><? echo $loc->getText("adminStaff_list_Del"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php echo $staff->getLastName();?>
@@ -110,44 +113,44 @@
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasCircAuth()) {
-        echo "yes";
+        echo $loc->getText("adminStaff_Yes");
       } else {
-        echo "no";
+        echo $loc->getText("adminStaff_No");
       } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasCircMbrAuth()) {
-        echo "yes";
+        echo $loc->getText("adminStaff_Yes");
       } else {
-        echo "no";
+        echo $loc->getText("adminStaff_No");
       } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasCatalogAuth()) {
-        echo "yes";
+        echo $loc->getText("adminStaff_Yes");
       } else {
-        echo "no";
+        echo $loc->getText("adminStaff_No");
       } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasAdminAuth()) {
-        echo "yes";
+        echo $loc->getText("adminStaff_Yes");
       } else {
-        echo "no";
+        echo $loc->getText("adminStaff_No");
       } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->hasReportsAuth()) {
-        echo "yes";
+        echo $loc->getText("adminStaff_Yes");
       } else {
-        echo "no";
+        echo $loc->getText("adminStaff_No");
       } ?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($staff->isSuspended()) {
-        echo "yes";
+        echo $loc->getText("adminStaff_Yes");
       } else {
-        echo "no";
+        echo $loc->getText("adminStaff_No");
       } ?>
     </td>
   </tr>

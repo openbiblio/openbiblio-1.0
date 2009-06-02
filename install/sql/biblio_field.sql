@@ -1,4 +1,4 @@
-create table biblio_field (
+create table %prfx%biblio_field (
   bibid integer not null
   ,fieldid integer auto_increment not null
   ,tag smallint not null

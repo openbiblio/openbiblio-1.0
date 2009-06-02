@@ -1,4 +1,4 @@
-create table biblio_hold (
+create table %prfx%biblio_hold (
   bibid integer not null
   ,copyid integer not null
   ,holdid integer auto_increment not null

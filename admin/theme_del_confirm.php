@@ -24,7 +24,9 @@
   $nav = "themes";
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   #****************************************************************************
   #*  Checking for query string.  Go back to theme list if none found.
   #****************************************************************************
@@ -42,9 +44,9 @@
 ?>
 <center>
 <form name="delstaffform" method="POST" action="../admin/theme_del.php?themeid=<?php echo $themeid;?>&name=<?php echo urlencode($name);?>">
-Are you sure you want to delete theme, <?php echo $name;?>?<br><br>
-      <input type="submit" value="  Delete  " class="button">
-      <input type="button" onClick="parent.location='../admin/theme_list.php'" value="  Cancel  " class="button">
+<? echo $loc->getText("adminTheme_Deleteconfirm"); ?><?php echo $name;?>?<br><br>
+      <input type="submit" value="  <? echo $loc->getText("adminDelete"); ?>  " class="button">
+      <input type="button" onClick="parent.location='../admin/theme_list.php'" value="  <? echo $loc->getText("adminCancel"); ?>  " class="button">
 </form>
 </center>
 <?php include("../shared/footer.php"); ?>

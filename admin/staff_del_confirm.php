@@ -43,7 +43,7 @@
 ?>
 <center>
 <form name="delstaffform" method="POST" action="../admin/staff_del.php?UID=<?php echo $userid;?>&LAST=<?php echo $last_name;?>&FIRST=<?php echo $first_name;?>">
-Are you sure you want to delete staff member, <?php echo $first_name;?> <?php echo $last_name;?>?<br><br>
+<? getText("adminStaff_del_confirmConfirmText"); ?><?php echo $first_name;?> <?php echo $last_name;?>?<br><br>
       <input type="submit" value="  Delete  " class="button">
       <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  Cancel  " class="button">
 </form>

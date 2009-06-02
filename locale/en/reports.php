@@ -63,19 +63,25 @@ $trans["indexHdr"]                 = "\$text = 'Reports';";
 $trans["indexDesc"]                = "\$text = 'Use the report or label list located in the left hand navagation area to produce reports or labels.';";
 
 #****************************************************************************
-#*  Translation text for page reportList.php
+#*  Translation text for page report_list.php
 #****************************************************************************
 $trans["reportListHdr"]            = "\$text = 'Report List';";
 $trans["reportListDesc"]           = "\$text = 'Choose from one of the following links to run a report.';";
 $trans["reportListXmlErr"]         = "\$text = 'Error occurred parsing report definition xml.';";
 
 #****************************************************************************
-#*  Translation text for page reportList.php
+#*  Translation text for page label_list.php
 #****************************************************************************
 $trans["labelListHdr"]             = "\$text = 'Label List';";
 $trans["labelListDesc"]            = "\$text = 'Choose from one of the following links to produce labels in pdf format.';";
-$trans["labelListHdr"]             = "\$text = 'Label List';";
 $trans["displayLabelsXmlErr"]      = "\$text = 'Error occurred parsing report definition xml.  Error = ';";
+
+#****************************************************************************
+#*  Translation text for page letter_list.php
+#****************************************************************************
+$trans["letterListHdr"]            = "\$text = 'Letter List';";
+$trans["letterListDesc"]           = "\$text = 'Choose from one of the following links to produce letters in pdf format.';";
+$trans["displayLettersXmlErr"]      = "\$text = 'Error occurred parsing report definition xml.  Error = ';";
 
 #****************************************************************************
 #*  Translation text for page report_criteria.php
@@ -155,18 +161,29 @@ $trans["biblio.title"]             = "\$text = 'Title';";
 $trans["biblio.author"]            = "\$text = 'Author';";
 $trans["biblio_copy.status_begin_dt"]   = "\$text = 'Status Begin Date';";
 $trans["biblio_copy.due_back_dt"]       = "\$text = 'Due Back Date';";
+$trans["member.mbrid"]             = "\$text = 'Member ID';";
 $trans["member.barcode_nmbr"]      = "\$text = 'Member Barcode';";
 $trans["member.last_name"]         = "\$text = 'Last Name';";
 $trans["member.first_name"]        = "\$text = 'First Name';";
 $trans["member.address1"]          = "\$text = 'Address1';";
 $trans["member.address2"]          = "\$text = 'Address2';";
+$trans["member.city"]              = "\$text = 'City';";
+$trans["member.state"]             = "\$text = 'State';";
+$trans["member.zip"]               = "\$text = 'Zip';";
+$trans["member.zip_ext"]           = "\$text = 'Ext';";
 $trans["biblio_hold.hold_begin_dt"] = "\$text = 'Hold Begin Date';";
 $trans["member.home_phone"]        = "\$text = 'Home Phone';";
 $trans["member.work_phone"]        = "\$text = 'Work Phone';";
 $trans["member.email"]             = "\$text = 'Email';";
 $trans["member.school_grade"]      = "\$text = 'Grade';";
 $trans["biblio_status_dm.description"] = "\$text = 'Status';";
+$trans["settings.library_name"]    = "\$text = 'Library Name';";
+$trans["settings.library_hours"]   = "\$text = 'Library Hours';";
+$trans["settings.library_phone"]   = "\$text = 'Library Phone';";
 $trans["days_late"]                = "\$text = 'Days Late';";
+$trans["title"]                    = "\$text = 'Title';";
+$trans["author"]                   = "\$text = 'Author';";
+$trans["due_back_dt"]              = "\$text = 'Due Back';";
 $trans["checkoutCount"]            = "\$text = 'Checkout Count';";
 
 ?>

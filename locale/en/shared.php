@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002-2004 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -76,6 +76,7 @@ $trans["biblioViewNoAddInfo"]      = "\$text = 'No additional bibliographic info
 $trans["biblioViewNoCopies"]       = "\$text = 'No copies have been created.';";
 $trans["biblioViewOpacFlg"]        = "\$text = 'Show in OPAC';";
 $trans["biblioViewNewCopy"]        = "\$text = 'Add New Copy';";
+$trans["biblioViewNeweCopy"]        = "\$text = 'Add New Electronic Copy';";
 
 #****************************************************************************
 #*  Translation text for page biblio_search.php
@@ -128,5 +129,31 @@ $trans["helpHeaderTitle"]          = "\$text='OpenBiblio Help';";
 $trans["helpHeaderCloseWin"]       = "\$text='Close Window';";
 $trans["helpHeaderContents"]       = "\$text='Contents';";
 $trans["helpHeaderPrint"]          = "\$text='Print';";
+
+$trans["catalogResults"]           = "\$text='Search Results';";
+
+#****************************************************************************
+#*  Translation text for page header.php and header_opac.php
+#****************************************************************************
+$trans["headerTodaysDate"]         = "\$text='today\'s date:';";
+$trans["headerLibraryHours"]       = "\$text='library hours:';";
+$trans["headerLibraryPhone"]       = "\$text='library phone:';";
+$trans["headerHome"]               = "\$text='Home';";
+$trans["headerCirculation"]        = "\$text='Circulation';";
+$trans["headerCataloging"]         = "\$text='Cataloging';";
+$trans["headerAdmin"]              = "\$text='Admin';";
+$trans["headerReports"]            = "\$text='Reports';";
+
+#****************************************************************************
+#*  Translation text for page footer.php
+#****************************************************************************
+$trans["footerLibraryHome"]        = "\$text='Library Home';";
+$trans["footerOPAC"]               = "\$text='OPAC';";
+$trans["footerHelp"]               = "\$text='Help';";
+$trans["footerPoweredBy"]          = "\$text='Powered by OpenBiblio version';";
+$trans["footerDatabaseVersion"]    = "\$text='database version';";
+$trans["footerCopyright"]          = "\$text='Copyright';";
+$trans["footerUnderThe"]           = "\$text='under the';";
+$trans["footerGPL"]                = "\$text='GNU General Public License';";
 
 ?>

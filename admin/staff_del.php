@@ -27,7 +27,8 @@
   require_once("../shared/logincheck.php");
   require_once("../classes/StaffQuery.php");
   require_once("../functions/errorFuncs.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
   #****************************************************************************
   #*  Checking for query string.  Go back to staff list if none found.
   #****************************************************************************
@@ -59,7 +60,7 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Staff member, <?php echo $first_name;?> <?php echo $last_name;?>, has been deleted.<br><br>
-<a href="../admin/staff_list.php">return to staff list</a>
+<? echo $loc->getText("adminStaff_Staffmember"); ?> <?php echo $first_name;?> <?php echo $last_name;?><? echo $loc->getText("adminStaff_delDeleted"); ?><br><br>
+<a href="../admin/staff_list.php"><? echo $loc->getText("adminStaff_Return"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

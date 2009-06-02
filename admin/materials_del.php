@@ -27,7 +27,8 @@
   require_once("../shared/logincheck.php");
   require_once("../classes/DmQuery.php");
   require_once("../functions/errorFuncs.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
   #****************************************************************************
   #*  Checking for query string.  Go back to material type list if none found.
   #****************************************************************************
@@ -58,7 +59,9 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Material type, <?php echo $description;?>, has been deleted.<br><br>
-<a href="../admin/materials_list.php">return to material type list</a>
+<? echo $loc->getText("admin_materials_delMaterialType"); ?>
+<?php echo $description;?><? echo $loc->getText("admin_materials_delMaterialdeleted"); ?>
+<br><br>
+<a href="../admin/materials_list.php"><? echo $loc->getText("admin_materials_Return"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

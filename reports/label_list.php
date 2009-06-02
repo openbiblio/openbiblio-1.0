@@ -32,43 +32,35 @@
   require_once("../classes/Localize.php");
   $loc = new Localize(OBIB_LOCALE,$tab);
   define("LABEL_DEFS_DIR","../reports/labeldefs");
-  define("LABEL_DEF_FILE","../reports/reportdefs/labels.xml");
-
-  #****************************************************************************
-  #*  Read label query sql from report definition xml
-  #****************************************************************************
-  $sql = NULL;
-//  $xml = file_get_contents(LABEL_DEF_FILE);
-  $xml = fileGetContents(LABEL_DEF_FILE);
-  $rptDef = new ReportDefinition();
-  if ($rptDef->parse($xml)) {
-    $sql = $rptDef->getSql();
-  } else {
-    echo $loc->getText("reportListXmlErr");
-    echo "<pre>file name: ".$fileName."\n".$rptDef->getXmlErrorString()."</pre>";
-    exit();
-  }
-  $rptDef->destroy();
-  unset($rptDef);
+  define("REPORT_DEFS_DIR","../reports/reportdefs");
 
   #****************************************************************************
   #*  Read label layout definition xml
   #****************************************************************************
   $labelids = array();
   $labelTitles = array();
+  $sqlStatements = array();
   $labelFiles = array();
   
   if ($handle = opendir(LABEL_DEFS_DIR)) {
     while (false !== ($file = readdir($handle))) { 
-      if ($file != "." && $file != "..") {
+      if ($file[0] != "." && !is_dir($file)) {
         $fileName = LABEL_DEFS_DIR."/".$file;
         //$xml = file_get_contents($fileName);
         $xml = fileGetContents($fileName);
+        if ($xml === FALSE) {
+          echo '<p><font class="error">';
+          echo $loc->getText('Cannot read label file: %fileName%',
+            array('fileName' => basename($fileName)));
+          echo '</font></p>';
+          continue;
+        }
         $labelDef = new LabelFormat();
         if ($labelDef->parse($xml)) {
           $labelid = $labelDef->getId();
           $labelids[] = $labelid;
           $labelTitles[$labelid] = $labelDef->getTitle();
+          $reportDefFilename = REPORT_DEFS_DIR."/".$labelDef->getReportDefFilename();
           $labelFiles[$labelid] = $fileName;
         } else {
           echo $loc->getText("reportListXmlErr");
@@ -77,10 +69,38 @@
         }
         $labelDef->destroy();
         unset($labelDef);
+        
+        #****************************************************************************
+        #*  Read label query sql from report definition xml
+        #****************************************************************************
+        $xml = fileGetContents($reportDefFilename);
+        if ($xml === FALSE) {
+          array_pop($labelids);
+          unset($labelTitles[$labelid]);
+          unset($labelFiles[$labelid]);
+          echo '<p><font class="error">';
+          echo $loc->getText('Cannot read report file: %fileName%',
+            array('fileName' => basename($reportDefFilename)));
+          echo '</font></p>';
+          continue;
+        }
+        $rptDef = new ReportDefinition();
+        if ($rptDef->parse($xml)) {
+          $sqlStatements[$labelid] = $rptDef->getSql();
+        } else {
+          echo $loc->getText("reportListXmlErr");
+          echo "<pre>file name: ".$fileName."\n".$rptDef->getXmlErrorString()."</pre>";
+          exit();
+        }
+        $rptDef->destroy();
+        unset($rptDef);
+        
+        
       } 
     }
     closedir($handle); 
   }
+
 
 ?>
 
@@ -93,6 +113,7 @@
     $rptTitle = $loc->getText($labelTitles[$lblid]);
     $title = urlencode($rptTitle);
     $file = urlencode($labelFiles[$lblid]);
+    $sql = urlencode($sqlStatements[$lblid]);
     echo "<li><a href=\"../reports/report_criteria.php?reset=Y&rptid=".$lblid."&title=".$title."&sql=".$sql."&label=".$file."\">".$rptTitle."</a></li>";
   }
 ?>

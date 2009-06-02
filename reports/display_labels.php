@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002, 2003, 2004 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -43,6 +43,20 @@
   #****************************************************************************
   include("../reports/run_report.php");
 
+  function fatalError($msg=NULL) {
+    global $rptid, $title, $baseSql, $label;
+    $s = "Location: ../reports/report_criteria.php"
+         . "?rptid=".urlencode($rptid)
+         . "&title=".urlencode($title)
+         . "&sql=".urlencode($baseSql)
+         . "&label=".urlencode($label);
+    if ($msg) {
+      $s .= '&msg='.urlencode($msg);
+    }
+    header($s);
+    exit();
+  }
+
   #****************************************************************************
   #*  Validate start on label # field
   #****************************************************************************
@@ -51,10 +65,7 @@
   if (!is_numeric($startOnLabel)) {
     $pageErrors["startOnLabel"] = $loc->getText("displayLabelsStartOnLblErr");
     $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
-    $urlTitle = urlencode($title);
-    $urlSql = urlencode($baseSql);
-    header("Location: ../reports/report_criteria.php?rptid=".$rptid."&title=".$urlTitle."&sql=".$urlSql."&label=".$label);
-    exit();
+    fatalError();
   }
 
   #****************************************************************************
@@ -63,24 +74,19 @@
   $fileName = $label;
 //  $xml = file_get_contents($fileName);
   $xml = fileGetContents($fileName);
+  if ($xml === FALSE) {
+    fatalError($loc->getText('Cannot read label file: %fileName%',
+               array('fileName' => basename($fileName))));
+  }
   $labelDef = new LabelFormat();
   if (!$labelDef->parse($xml)) {
     $msg = $loc->getText("displayLabelsXmlErr");
     $msg = $msg.$labelDef->getXmlErrorString();
-    $msg = urlencode($msg);
-    $urlTitle = urlencode($title);
-    $urlSql = urlencode($baseSql);
-    header("Location: ../reports/report_criteria.php?rptid=".$rptid."&title=".$urlTitle."&sql=".$urlSql."&label=".$label."&msg=".$msg);
-    exit();
+    fatalError($msg);
   }
   $validDef = $labelDef->validate();
   if (!$validDef) {
-    $msg = $labelDef->getErrorMsg();
-    $msg = urlencode($msg);
-    $urlTitle = urlencode($title);
-    $urlSql = urlencode($baseSql);
-    header("Location: ../reports/report_criteria.php?rptid=".$rptid."&title=".$urlTitle."&sql=".$urlSql."&label=".$label."&msg=".$msg);
-    exit();
+    fatalError($labelDef->getErrorMsg());
   }
 
 //  header("Content-type: application/pdf");
@@ -90,6 +96,7 @@
 echo "<br>getTitle()=".$labelDef->getTitle();
 echo "<br>getFontType()=".$labelDef->getFontType();
 echo "<br>getFontSize()=".$labelDef->getFontSize();
+echo "<br>getFontSize()=".$labelDef->getUnitOfMeasure();
 echo "<br>getLeftMargin()=".$labelDef->getLeftMargin();
 echo "<br>getTopMargin()=".$labelDef->getTopMargin();
 echo "<br>getColumns()=".$labelDef->getColumns();
@@ -106,8 +113,8 @@ exit();
   $fontFile = FONT_DIR.$labelDef->getFontType().".afm";
   $pdf->selectFont($fontFile);
   $fontSize = $labelDef->getFontSize();
-  $labelRows = floor(PAGE_HEIGHT / $labelDef->getHeight());
-  $labelCols = min($labelDef->getColumns(), floor(PAGE_WIDTH / $labelDef->getWidth()));
+  $labelRows = floor(PAGE_HEIGHT / $labelDef->getHeightInPdfUnits());
+  $labelCols = min($labelDef->getColumns(), floor(PAGE_WIDTH / $labelDef->getWidthInPdfUnits()));
   $fontHeight = $pdf->getFontHeight($fontSize);
 
   $col = 1;
@@ -126,29 +133,34 @@ exit();
       }
     }
   }
-  
+
   // main report loop
   while ($array = $reportQ->fetchRowAssoc()) {
     // calc x and y based on col and row
-    $y = PAGE_HEIGHT - ($labelDef->getHeight() * ($row - 1)) - $labelDef->getTopMargin();
-    $x = ($labelDef->getWidth() * ($col - 1)) + $labelDef->getLeftMargin();
+    $y = PAGE_HEIGHT - ($labelDef->getHeightInPdfUnits() * ($row - 1)) - $labelDef->getTopMarginInPdfUnits();
+    $x = ($labelDef->getWidthInPdfUnits() * ($col - 1)) + $labelDef->getLeftMarginInPdfUnits();
 
     // print label and its subLabels
     $subLabels = $labelDef->getSubLabels();
     foreach($subLabels as $subLabel) {
       $suby = $y - $fontSize - $subLabel->getTop();
       $subx = $x + $subLabel->getLeft();
-      $subw = $labelDef->getWidth() - $subLabel->getLeft();
+      $subw = $labelDef->getWidthInPdfUnits() - $subLabel->getLeft();
       if ($subw <= 0) {
-        $subw = $labelDef->getWidth();
+        $subw = $labelDef->getWidthInPdfUnits();
       }
       foreach($subLabel->getLines() as $line) {
-        $pdf->addTextWrap($subx,$suby,$subw,$fontSize,$array[$line]);
-//        $pdf->addText($subx,$suby,$fontSize,$array[$line]);
+        $resultLine = $line->getFormattedText($array);
+
+//echo "list=".$line->isList()." groupBy=".$line->getGroupBy()." text=".$resultLine."<br>";
+        
+        $pdf->addTextWrap($subx,$suby,$subw,$fontSize,$resultLine);
+//      $pdf->addText($subx,$suby,$fontSize,$array[$line]);
         $suby = $suby - $fontSize;
+
       }
     }
-     
+
     // column, row and page breaks
     $col++;
     if ($col > $labelCols) {
@@ -161,7 +173,9 @@ exit();
     }
 
   }
+
   $reportQ->close();
+//  exit();
   $pdf->stream();
 
 ?>

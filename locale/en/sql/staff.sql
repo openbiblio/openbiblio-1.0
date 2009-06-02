@@ -1,4 +1,4 @@
-insert into staff
+insert into %prfx%staff
 values (null
   ,sysdate()
   ,sysdate()

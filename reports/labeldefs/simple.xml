@@ -1,25 +1,51 @@
 <!--
-  *********************************************************************************
-  *  element descriptions:
-  *  left_margin = left page margin in units (72 = 1 inch, 28.35 = 1 cm)
-  *********************************************************************************
+  ********************************************************************************************
+  *  element               description
+  *  ===================== ==================================================================
+  *  <id>                  - a unique identifier for this label specification
+  *  <report_def_filename> - the file name of the report definition containing the
+  *                          database query
+  *  <title>               - the label title that users will see on the web page
+  *                          for this label report
+  *  <font_type>           - options are Courier, Helvetica, Times
+  *  <font_size>           - controls the size of the font for all text
+  *  <unit_of_measure>     - options are in or cm (default is cm)
+  *  <left_margin>         - size of left margin in units specified in unit_of_measure
+  *  <top_margin>          - size of top margin in units specified in unit_of_measure
+  *  <columns>             - number of label columns on the page
+  *  <width>               - width of each label in units specified in unit_of_measure
+  *  <height>              - height of each label in units specified in unit_of_measure
+  *  <sub_label>           - OPTIONAL tag to represent a section of a label with a given
+  *                          offset within the label
+  *                          attributes:
+  *                            left - left offset in units specified in unit_of_measure
+  *                            top  - top offset in units specified in unit of measure
+  *  <layout>              - represents a label layout
+  *    <line>              - represents one line within a label
+  *      <column>          - represents a column name from the database query specified
+  *                          by the report definition (see <report_def_filename>)
+  *                          attributes:
+  *                            name - name of the column as specified in the database query
+  ********************************************************************************************
 -->
 
 <label>
   <id>simple</id>
+  <report_def_filename>labels.xml</report_def_filename>
   <title>labelsSimple</title>
   <font_type>Helvetica</font_type>
   <font_size>10</font_size>
-  <left_margin>72</left_margin>
-  <top_margin>15</top_margin>
-  <columns>2</columns>
-  <width>216</width>
-  <height>200</height>
+  <unit_of_measure>in</unit_of_measure>
+  <left_margin>1</left_margin>
+  <top_margin>0.5</top_margin>
+  <columns>3</columns>
+  <width>2</width>
+  <height>1</height>
   <layout>
-    <line>title</line>
-    <line>barcode_nmbr</line>
-    <line>call_nmbr1</line>
-    <line>call_nmbr2</line>
-    <line>call_nmbr3</line>
+    <line><column name="title"/></line>d
+    <line>       <column name="barcode_nmbr"/></line>
+    <line>call1: <column name="call_nmbr1"/></line>
+    <line>call2: <column name="call_nmbr2"/></line>
+    <line>call3: <column name="call_nmbr3"/></line>
   </layout>
 </label>

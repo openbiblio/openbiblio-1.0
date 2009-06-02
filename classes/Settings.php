@@ -50,6 +50,30 @@ class Settings {
   var $_htmlLangAttr = "";
 
   /****************************************************************************
+  * @return array with code and description of installed locales
+  * @access public
+  ****************************************************************************
+  */
+  function getLocales () {
+    $dir_handle = opendir(OBIB_LOCALE_ROOT);
+    $arr_locale = array();
+    
+    while (false!==($file=readdir($dir_handle))) {
+      if ($file != '.' && $file != '..') {
+        if (is_dir (OBIB_LOCALE_ROOT."/".$file)) {
+          if (file_exists(OBIB_LOCALE_ROOT.'/'.$file.'/metadata.php')) {
+            include(OBIB_LOCALE_ROOT.'/'.$file.'/metadata.php');
+	    $arr_temp = array($file => $lang_metadata['locale_description']);
+	    $arr_locale = array_merge($arr_locale, $arr_temp);
+          }
+        }
+      }
+    }
+    closedir($dir_handle);
+    return $arr_locale;
+  }
+
+  /****************************************************************************
    * @return boolean true if data is valid, otherwise false.
    * @access public
    ****************************************************************************

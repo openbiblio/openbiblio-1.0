@@ -1,4 +1,4 @@
-create table material_type_dm (
+create table %prfx%material_type_dm (
   code smallint auto_increment primary key
   ,description varchar(40) not null
   ,default_flg char(1) not null

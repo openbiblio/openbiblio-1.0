@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002-2004 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -19,6 +19,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
+  require_once("../classes/Localize.php");
+  $headerLoc = new Localize(OBIB_LOCALE,"shared");
 
 // code html tag with language attribute if specified.
 echo "<html";
@@ -85,15 +87,15 @@ function backToMain(URL) {
     <td valign="top">
       <table class="primary" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="title" nowrap="yes"><font class="small">today's date:</font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php print $headerLoc->getText("headerTodaysDate"); ?></font></td>
           <td class="title" nowrap="yes"><font class="small"><?php print date("m.d.Y");?></font></td>
         </tr>
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") echo "library hours:";?></font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") print $headerLoc->getText("headerLibraryHours");?></font></td>
           <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") echo OBIB_LIBRARY_HOURS;?></font></td>
         </tr>
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") echo "library phone:";?></font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") print $headerLoc->getText("headerLibraryPhone");?></font></td>
           <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") echo OBIB_LIBRARY_PHONE;?></font></td>
         </tr>
       </table>
@@ -174,11 +176,11 @@ function backToMain(URL) {
   <tr bgcolor="<?php echo OBIB_TITLE_BG;?>">
     <?php if ($tab == "home") { ?>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> Home</td>
+      <td class="tab1" nowrap="yes"> <?php print $headerLoc->getText("headerHome"); ?></td>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } else { ?>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../home/index.php" class="tab">Home</a> </td>
+      <td class="tab2" nowrap="yes"> <a href="../home/index.php" class="tab"><?php print $headerLoc->getText("headerHome"); ?></a> </td>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } ?>
 
@@ -186,11 +188,11 @@ function backToMain(URL) {
 
     <?php if ($tab == "circulation") { ?>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> Circulation</td>
+      <td class="tab1" nowrap="yes"> <?php print $headerLoc->getText("headerCirculation"); ?></td>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } else { ?>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../circ/index.php" class="tab">Circulation</a> </td>
+      <td class="tab2" nowrap="yes"> <a href="../circ/index.php" class="tab"><?php print $headerLoc->getText("headerCirculation"); ?></a> </td>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } ?>
 
@@ -198,11 +200,11 @@ function backToMain(URL) {
 
     <?php if ($tab == "cataloging") { ?>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> Cataloging</td>
+      <td class="tab1" nowrap="yes"> <?php print $headerLoc->getText("headerCataloging"); ?></td>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } else { ?>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../catalog/index.php" class="tab">Cataloging</a> </td>
+      <td class="tab2" nowrap="yes"> <a href="../catalog/index.php" class="tab"><?php print $headerLoc->getText("headerCataloging"); ?></a> </td>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } ?>
 
@@ -210,11 +212,11 @@ function backToMain(URL) {
 
     <?php if ($tab == "admin") { ?>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> Admin</td>
+      <td class="tab1" nowrap="yes"> <?php print $headerLoc->getText("headerAdmin"); ?></td>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } else { ?>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../admin/index.php" class="tab">Admin</a> </td>
+      <td class="tab2" nowrap="yes"> <a href="../admin/index.php" class="tab"><?php print $headerLoc->getText("headerAdmin"); ?></a> </td>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } ?>
 
@@ -222,11 +224,11 @@ function backToMain(URL) {
 
     <?php if ($tab == "reports") { ?>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab1" nowrap="yes"> Reports</td>
+      <td class="tab1" nowrap="yes"> <?php print $headerLoc->getText("headerReports"); ?></td>
       <td  bgcolor="<?php echo OBIB_ALT1_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } else { ?>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
-      <td class="tab2" nowrap="yes"> <a href="../reports/index.php" class="tab">Reports</a> </td>
+      <td class="tab2" nowrap="yes"> <a href="../reports/index.php" class="tab"><?php print $headerLoc->getText("headerReports"); ?></a> </td>
       <td  bgcolor="<?php echo OBIB_ALT2_BG;?>"><img src="../images/shim.gif" width="1" height="1" border="0"></td>
     <?php } ?>
 

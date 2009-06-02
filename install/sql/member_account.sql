@@ -1,4 +1,4 @@
-create table member_account (
+create table %prfx%member_account (
   mbrid integer not null
   ,transid integer auto_increment not null
   ,create_dt datetime not null

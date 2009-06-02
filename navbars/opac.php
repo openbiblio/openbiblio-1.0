@@ -19,21 +19,24 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
+
+  require_once("../classes/Localize.php");
+  $navLoc = new Localize(OBIB_LOCALE,"navbars");
 ?>
 
 
 <?php if ($nav == "home") { ?>
- &raquo; Biblio Search<br>
+ &raquo; <?php echo $navLoc->getText("catalogSearch1"); ?><br>
 <?php } else { ?>
- <a href="../opac/index.php" class="alt1">Bibliography Search</a><br>
+ <a href="../opac/index.php" class="alt1"><?php echo $navLoc->getText("catalogSearch2"); ?></a><br>
 <?php } ?>
 
 <?php if ($nav == "search") { ?>
- &raquo; Search Results<br>
+ &raquo; <?php echo $navLoc->getText("catalogResults"); ?><br>
 <?php } ?>
 
 <?php if ($nav == "view") { ?>
- &raquo; Biblio Info<br>
+ &raquo; <?php echo $navLoc->getText("catalogBibInfo"); ?><br>
 <?php } ?>
 
-<a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')">Help</a>
+<a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')"><?php echo $navLoc->getText("Help"); ?></a>

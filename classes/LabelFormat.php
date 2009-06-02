@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002, 2003, 2004 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -21,6 +21,7 @@
  */
 
   require_once("../classes/SubLabel.php");
+  require_once("../classes/PdfLine.php");
   require_once("../classes/Localize.php");
 
 /******************************************************************************
@@ -33,9 +34,11 @@
  */
 class LabelFormat {
   var $_id = "";
+  var $_reportDefFilename = "";
   var $_title = "";
   var $_fontType = "";
   var $_fontSize = "";
+  var $_unitOfMeasure = "";
   var $_leftMargin = "";
   var $_topMargin = "";
   var $_columns = "";
@@ -44,7 +47,7 @@ class LabelFormat {
   var $_subLabels;
   var $_subLabelCount = 0;
   var $_currentSubLabel = NULL;
-  var $_currentLine = "";
+  var $_currentLine;
   var $_parser;
   var $_tag;
   var $_tagLvl = 1;
@@ -55,6 +58,7 @@ class LabelFormat {
     $this->_loc = new Localize(OBIB_LOCALE,"classes");
     $this->_subLabels = Array();
     $this->_currentSubLabel = new SubLabel();
+    $this->_currentLine = new PdfLine();
     $this->_tag = Array();
     $this->_tag[$this->_tagLvl] = NULL;
 
@@ -83,11 +87,18 @@ class LabelFormat {
           $top = $attrValue;
         }
       }
-      $this->_currentSubLabel->setLeft($left);
-      $this->_currentSubLabel->setTop($top);
+      $this->_currentSubLabel->setLeft($this->_toPdfUnits($left));
+      $this->_currentSubLabel->setTop($this->_toPdfUnits($top));
+      $this->_tag[$this->_tagLvl++] = $tag;
+      $this->_tag[$this->_tagLvl] = NULL;
+    } elseif (strcasecmp($tag,"line") == 0) {
       $this->_tag[$this->_tagLvl++] = $tag;
       $this->_tag[$this->_tagLvl] = NULL;
     // non grouping tags
+    } elseif (strcasecmp($tag,"column") == 0) {
+      $colName = $attributes["NAME"];
+      $colLoc = strlen($this->_currentLine->getText());
+      $this->_currentLine->addColumn($colName,$colLoc);
     } else {
       $this->_tag[$this->_tagLvl] = $tag;
     }
@@ -96,12 +107,16 @@ class LabelFormat {
   function cdata($parser, $cdata) {
     if (strcasecmp($this->_tag[$this->_tagLvl],"id") == 0) {
       $this->_id = $this->_id.trim($cdata);
+    } elseif (strcasecmp($this->_tag[$this->_tagLvl],"report_def_filename") == 0) {
+      $this->_reportDefFilename = $this->_reportDefFilename.trim($cdata);
     } elseif (strcasecmp($this->_tag[$this->_tagLvl],"title") == 0) {
       $this->_title = $this->_title.trim($cdata);
     } elseif (strcasecmp($this->_tag[$this->_tagLvl],"font_type") == 0) {
       $this->_fontType = $this->_fontType.trim($cdata);
     } elseif (strcasecmp($this->_tag[$this->_tagLvl],"font_size") == 0) {
       $this->_fontSize = $this->_fontSize.trim($cdata);
+    } elseif (strcasecmp($this->_tag[$this->_tagLvl],"unit_of_measure") == 0) {
+      $this->_unitOfMeasure = $this->_unitOfMeasure.trim($cdata);
     } elseif (strcasecmp($this->_tag[$this->_tagLvl],"left_margin") == 0) {
       $this->_leftMargin = $this->_leftMargin.trim($cdata);
     } elseif (strcasecmp($this->_tag[$this->_tagLvl],"top_margin") == 0) {
@@ -112,8 +127,13 @@ class LabelFormat {
       $this->_width = $this->_width.trim($cdata);
     } elseif (strcasecmp($this->_tag[$this->_tagLvl],"height") == 0) {
       $this->_height = $this->_height.trim($cdata);
-    } elseif (strcasecmp($this->_tag[$this->_tagLvl],"line") == 0) {
-      $this->_currentLine = $this->_currentLine.trim($cdata);
+    } else {
+      if ($this->_tagLvl > 1) {
+        $parentTag = $this->_tag[$this->_tagLvl - 1];
+        if (strcasecmp($parentTag,"line") == 0) {
+          $this->_currentLine->setText($this->_currentLine->getText().$cdata);
+        }
+      }
     }
   }
 
@@ -130,10 +150,12 @@ class LabelFormat {
       $this->_subLabelCount++;
       $this->_currentSubLabel = new SubLabel();
       $this->_tag[$this->_tagLvl--] = NULL;
-    // non grouping tags
-    } elseif (strcasecmp($this->_tag[$this->_tagLvl],"line") == 0) {
+    } elseif (strcasecmp($tag,"line") == 0) {
       $this->_currentSubLabel->addLine($this->_currentLine);
-      $this->_currentLine = "";
+      $this->_currentLine = new PdfLine();
+      $this->_tag[$this->_tagLvl--] = NULL;
+
+    // non grouping tags
     } else {      
       $this->_tag[$this->_tagLvl] = NULL;
     }
@@ -218,6 +240,9 @@ class LabelFormat {
   function getId() {
     return $this->_id;
   }
+  function getReportDefFilename() {
+    return $this->_reportDefFilename;
+  }
   function getTitle() {
     return $this->_title;
   }
@@ -227,11 +252,35 @@ class LabelFormat {
   function getFontSize() {
     return $this->_fontSize;
   }
+  function getUnitOfMeasure() {
+    $returnValue = "cm";
+    if (strcasecmp($this->_unitOfMeasure,"in") == 0) {
+      $returnValue = "in";
+    } elseif (strcasecmp($this->_unitOfMeasure,"cm") == 0) {
+      $returnValue = "cm";
+    }
+    return $returnValue;
+  }
+  function _toPdfUnits($units) {
+    $returnUnits = $units;
+    if ($this->getUnitOfMeasure() == "in") {
+      $returnUnits = $units * 72;
+    } elseif ($this->getUnitOfMeasure() == "cm") {
+      $returnUnits = $units * 28.35;
+    }
+    return $returnUnits;
+  }
   function getLeftMargin() {
     return $this->_leftMargin;
   }
+  function getLeftMarginInPdfUnits() {
+    return $this->_toPdfUnits($this->_leftMargin);
+  }
   function getTopMargin() {
     return $this->_topMargin;
+  }
+  function getTopMarginInPdfUnits() {
+    return $this->_toPdfUnits($this->_topMargin);
   }
   function getColumns() {
     return $this->_columns;
@@ -239,8 +288,14 @@ class LabelFormat {
   function getWidth() {
     return $this->_width;
   }
+  function getWidthInPdfUnits() {
+    return $this->_toPdfUnits($this->_width);
+  }
   function getHeight() {
     return $this->_height;
+  }
+  function getHeightInPdfUnits() {
+    return $this->_toPdfUnits($this->_height);
   }
   function getSubLabels() {
     return $this->_subLabels;

@@ -1,6 +1,6 @@
 <?php
 /**********************************************************************************
- *   Copyright(C) 2002 David Stevens
+ *   Copyright(C) 2002-2004 David Stevens
  *
  *   This file is part of OpenBiblio.
  *
@@ -19,6 +19,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  **********************************************************************************
  */
+  require_once("../classes/Localize.php");
+  $headerLoc = new Localize(OBIB_LOCALE,"shared");
 
 // code html tag with language attribute if specified.
 echo "<html";
@@ -78,15 +80,15 @@ function returnLookup(formName,fieldName,val) {
     <td valign="top">
       <table class="primary" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td class="title" nowrap="yes"><font class="small">today's date:</font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php print $headerLoc->getText("headerTodaysDate"); ?></font></td>
           <td class="title" nowrap="yes"><font class="small"><?php print date("m.d.Y");?></font></td>
         </tr>
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") echo "library hours:";?></font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") print $headerLoc->getText("headerLibraryHours");?></font></td>
           <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_HOURS != "") echo OBIB_LIBRARY_HOURS;?></font></td>
         </tr>
         <tr>
-          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") echo "library phone:";?></font></td>
+          <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") print $headerLoc->getText("headerLibraryPhone");?></font></td>
           <td class="title" nowrap="yes"><font class="small"><?php if (OBIB_LIBRARY_PHONE != "") echo OBIB_LIBRARY_PHONE;?></font></td>
         </tr>
       </table>

@@ -1,4 +1,4 @@
-create table staff (
+create table %prfx%staff (
   userid integer auto_increment primary key
   ,create_dt datetime not null
   ,last_change_dt datetime not null

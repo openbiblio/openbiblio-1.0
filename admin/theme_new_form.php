@@ -33,7 +33,9 @@
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
   require_once("../shared/header.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
   #*  This is only used when copying an existing theme.
@@ -122,7 +124,7 @@ function editTheme() {
 </script>
 
 
-<a href="javascript:previewTheme()">Preview Theme Changes</a><br /><br />
+<a href="javascript:previewTheme()"><? echo $loc->getText("adminTheme_Preview"); ?></a><br /><br />
 
 <form name="newthemeform" method="POST" action="../admin/theme_new.php">
 <?php include("../admin/theme_fields.php"); ?>

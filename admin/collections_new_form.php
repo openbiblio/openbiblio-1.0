@@ -31,6 +31,9 @@
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   require_once("../shared/header.php");
 
 ?>
@@ -39,12 +42,12 @@
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      Add New Collection:
+      <? echo $loc->getText("adminCollections_new_formAddnewcollection"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Description:
+      <? echo $loc->getText("adminCollections_new_formDescription"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("description",40,40,$postVars,$pageErrors); ?>
@@ -52,7 +55,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <font class="small">*</font>Days Due Back:
+      <font class="small">*</font><? echo $loc->getText("adminCollections_new_formDaysdueback"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("daysDueBack",2,2,$postVars,$pageErrors); ?>
@@ -60,7 +63,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <font class="small">*</font>Daily Late Fee:
+      <font class="small">*</font><? echo $loc->getText("adminCollections_new_formDailylatefee"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("dailyLateFee",7,7,$postVars,$pageErrors); ?>
@@ -68,16 +71,15 @@
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Submit  " class="button">
-      <input type="button" onClick="parent.location='../admin/collections_list.php'" value="  Cancel  " class="button">
+      <input type="submit" value="  <? echo $loc->getText("adminSubmit"); ?>  " class="button">
+      <input type="button" onClick="parent.location='../admin/collections_list.php'" value="  <? echo $loc->getText("adminCancel"); ?>  " class="button">
     </td>
   </tr>
 
 </table>
       </form>
-<table><tr><td valign="top"><font class="small">*Note:</font></td>
-<td><font class="small">Setting the days due back to zero 
-makes the entire collection unavailable for checkout.<br></font>
+<table><tr><td valign="top"><font class="small"><? echo $loc->getText("adminCollections_new_formNote"); ?></font></td>
+<td><font class="small"><? echo $loc->getText("adminCollections_new_formNoteText"); ?><br></font>
 </td></tr></table>
 
 

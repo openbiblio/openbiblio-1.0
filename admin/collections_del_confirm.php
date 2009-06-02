@@ -24,7 +24,9 @@
   $nav = "collections";
   require_once("../shared/read_settings.php");
   require_once("../shared/logincheck.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   #****************************************************************************
   #*  Checking for query string.  Go back to collection list if none found.
   #****************************************************************************
@@ -42,9 +44,9 @@
 ?>
 <center>
 <form name="delstaffform" method="POST" action="../admin/collections_del.php?code=<?php echo $code;?>&desc=<?php echo urlencode($description);?>">
-Are you sure you want to delete collection, <?php echo $description;?>?<br><br>
-      <input type="submit" value="  Delete  " class="button">
-      <input type="button" onClick="parent.location='../admin/collections_list.php'" value="  Cancel  " class="button">
+<? echo $loc->getText("adminCollections_del_confirmText"); ?><?php echo $description;?>?<br><br>
+      <input type="submit" value="  <? echo $loc->getText("adminDelete"); ?>  " class="button">
+      <input type="button" onClick="parent.location='../admin/collections_list.php'" value="  <? echo $loc->getText("adminCancel"); ?>  " class="button">
 </form>
 </center>
 <?php include("../shared/footer.php"); ?>

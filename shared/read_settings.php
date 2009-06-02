@@ -79,7 +79,7 @@
   define("OBIB_OPAC_URL",$set->getOpacUrl());
   define("OBIB_SESSION_TIMEOUT",$set->getSessionTimeout());
   define("OBIB_ITEMS_PER_PAGE",$set->getItemsPerPage());
-  define("OBIB_VERSION",$set->getVersion());
+  define("OBIB_DB_VERSION",$set->getVersion());
   define("OBIB_THEMEID",$set->getThemeid());
   define("OBIB_BLOCK_CHECKOUTS_WHEN_FINES_DUE",$set->isBlockCheckoutsWhenFinesDue());
   define("OBIB_LOCALE",$set->getLocale());

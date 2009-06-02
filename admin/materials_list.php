@@ -29,8 +29,11 @@
   require_once("../shared/read_settings.php");
 
   require_once("../shared/logincheck.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   require_once("../shared/header.php");
+
 
   $dmQ = new DmQuery();
   $dmQ->connect();
@@ -45,32 +48,32 @@
   }
 
 ?>
-<a href="../admin/materials_new_form.php?reset=Y">Add New Material Type</a><br>
-<h1> Material Types:</h1>
+<a href="../admin/materials_new_form.php?reset=Y"><? echo $loc->getText("admin_materials_listAddmaterialtypes"); ?></a><br>
+<h1> <? echo $loc->getText("admin_materials_listMaterialtypes"); ?></h1>
 <table class="primary">
   <tr>
     <th colspan="2" rowspan="2" valign="top">
-      <font class="small">*</font>Function
+      <font class="small">*</font><? echo $loc->getText("admin_materials_listFunction"); ?>
     </th>
     <th rowspan="2" valign="top" nowrap="yes">
-      Description
+      <? echo $loc->getText("admin_materials_listDescription"); ?>
     </th>
     <th colspan="2" valign="top">
-      Checkout Limit
+      <? echo $loc->getText("admin_materials_listCheckoutlimit"); ?>
     </th>
     <th rowspan="2" valign="top">
-      Image<br>File
+      <? echo $loc->getText("admin_materials_listImageFile"); ?>
     </th>
     <th rowspan="2" valign="top">
-      Bibliography<br>Count
+      <? echo $loc->getText("admin_materials_listBibcount"); ?>
     </th>
   </tr>
   <tr>
     <th valign="top">
-      Adult
+      <? echo $loc->getText("admin_materials_listAdult"); ?>
     </th>
     <th>
-      Juvenile
+      <? echo $loc->getText("admin_materials_listJuvenile"); ?>
     </th>
   </tr>
   <?php
@@ -79,12 +82,12 @@
   ?>
   <tr>
     <td valign="top" class="<?php echo $row_class;?>">
-      <a href="../admin/materials_edit_form.php?code=<?php echo $dm->getCode();?>" class="<?php echo $row_class;?>">edit</a>
+      <a href="../admin/materials_edit_form.php?code=<?php echo $dm->getCode();?>" class="<?php echo $row_class;?>"><? echo $loc->getText("admin_materials_listEdit"); ?></a>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php if ($dm->getCount() == 0) { ?>
-        <a href="../admin/materials_del_confirm.php?code=<?php echo $dm->getCode();?>&desc=<?php echo urlencode($dm->getDescription());?>" class="<?php echo $row_class;?>">del</a>
-      <?php } else { echo "del"; }?>
+        <a href="../admin/materials_del_confirm.php?code=<?php echo $dm->getCode();?>&desc=<?php echo urlencode($dm->getDescription());?>" class="<?php echo $row_class;?>"><? echo $loc->getText("admin_materials_listDel"); ?></a>
+      <?php } else { echo $loc->getText("admin_materials_listDel"); }?>
     </td>
     <td valign="top" class="<?php echo $row_class;?>">
       <?php echo $dm->getDescription();?>
@@ -115,9 +118,7 @@
   ?>
 </table>
 <br>
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small">*Note:</font></td>
-<td class="noborder"><font class="small">The delete function is only available on material types that have a bibliography count of zero.
-If you wish to delete a material type with a bibliography count greater than zero you will first need to
-change the material type on those bibliographies to another material type.<br></font>
+<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><? echo $loc->getText("admin_materials_listNote"); ?></font></td>
+<td class="noborder"><font class="small"><? echo $loc->getText("admin_materials_listNoteText"); ?><br></font>
 </td></tr></table>
 <?php include("../shared/footer.php"); ?>

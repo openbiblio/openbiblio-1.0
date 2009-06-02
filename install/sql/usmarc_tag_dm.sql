@@ -1,4 +1,4 @@
-CREATE TABLE usmarc_tag_dm (
+CREATE TABLE %prfx%usmarc_tag_dm (
   block_nmbr tinyint NOT NULL
   ,tag smallint NOT NULL
   ,description varchar(80) NOT NULL

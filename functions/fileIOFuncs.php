@@ -28,12 +28,21 @@
  */
 function fileGetContents($filename){
   $result = "";
-  $handle = fopen ($filename, "r");
+  $handle = @fopen ($filename, "rb");
+  if ($handle === FALSE) {
+    return FALSE;
+  }
   while (!feof ($handle)) {
     $buffer = fgets($handle, 4096);
-    $result = $result.$buffer;
+    if ($buffer === FALSE && !feof($handle)) {
+      return FALSE;
+    }
+    $result .= $buffer;
   }
-  fclose ($handle);
+  if (!fclose ($handle)) {
+    /* We don't care because we've finished reading. */
+    // return FALSE;
+  }
   return $result;
 }
 ?>

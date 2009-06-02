@@ -28,7 +28,8 @@
   include("../shared/read_settings.php");
   include("../shared/logincheck.php");
   include("../shared/header.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Checking for query string flag to read data from database.
@@ -50,12 +51,12 @@
 <table class="primary">
   <tr>
     <th colspan="2" valign="top" nowrap="yes" align="left">
-      Reset Staff Member Password:
+      <? echo $loc->getText("adminStaff_pwd_reset_form_Resetheader"); ?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Password:
+      <? echo $loc->getText("adminStaff_new_form_Password"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="password" name="pwd" size="20" maxlength="20"
@@ -66,7 +67,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Re-enter Password:
+      <? echo $loc->getText("adminStaff_new_form_Reenterpassword"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="password" name="pwd2" size="20" maxlength="20"
@@ -77,8 +78,8 @@
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Submit  " class="button">
-      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  Cancel  " class="button">
+      <input type="submit" value="  <? echo $loc->getText("adminSubmit"); ?>  " class="button">
+      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  <? echo $loc->getText("adminCancel"); ?>  " class="button">
     </td>
   </tr>
 

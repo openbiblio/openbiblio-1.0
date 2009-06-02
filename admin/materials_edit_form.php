@@ -30,6 +30,8 @@
   require_once("../shared/read_settings.php");
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
   require_once("../shared/header.php");
 
   #****************************************************************************
@@ -71,12 +73,12 @@
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      Edit Material Type:
+      <? echo $loc->getText("admin_materials_delEditmaterialtype"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Description:
+      <? echo $loc->getText("admin_materials_delDescription"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("description",40,40,$postVars,$pageErrors); ?>
@@ -84,7 +86,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Adult Checkout Limit:<br><font class="small">(enter 0 for unlimited)</font>
+      <? echo $loc->getText("admin_materials_delAdultLimit"); ?><br><font class="small"><? echo $loc->getText("admin_materials_delunlimited"); ?></font>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("adultCheckoutLimit",2,2,$postVars,$pageErrors); ?>
@@ -92,7 +94,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Juvenile Checkout Limit:<br><font class="small">(enter 0 for unlimited)</font>
+      <br><? echo $loc->getText("admin_materials_delJuvenileLimit"); ?><font class="small"><? echo $loc->getText("admin_materials_delunlimited"); ?></font>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("juvenileCheckoutLimit",2,2,$postVars,$pageErrors); ?>
@@ -100,7 +102,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      <font class="small">*</font>Image File:
+      <font class="small">*</font><? echo $loc->getText("admin_materials_delImagefile"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("imageFile",40,128,$postVars,$pageErrors); ?>
@@ -108,16 +110,16 @@
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Submit  " class="button">
-      <input type="button" onClick="parent.location='../admin/materials_list.php'" value="  Cancel  " class="button">
+      <input type="submit" value="  <? echo $loc->getText("adminSubmit"); ?>  " class="button">
+      <input type="button" onClick="parent.location='../admin/materials_list.php'" value="  <? echo $loc->getText("adminCancel"); ?>  " class="button">
     </td>
   </tr>
 
 </table>
       </form>
 
-<table class="primary"><tr><td valign="top" class="noborder"><font class="small">*Note:</font></td>
-<td class="noborder"><font class="small">Image files must be located in the openbiblio/images directory.<br></font>
+<table class="primary"><tr><td valign="top" class="noborder"><font class="small"><? echo $loc->getText("admin_materials_delNote"); ?></font></td>
+<td class="noborder"><font class="small"><? echo $loc->getText("admin_materials_delNoteText"); ?><br></font>
 </td></tr></table>
 
 <?php include("../shared/footer.php"); ?>

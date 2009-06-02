@@ -1,4 +1,4 @@
-create table theme (
+create table %prfx%theme (
   themeid smallint auto_increment primary key
   ,theme_name varchar(40) not null
   ,title_bg varchar(20) not null

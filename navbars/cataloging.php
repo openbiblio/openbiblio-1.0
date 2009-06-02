@@ -128,5 +128,10 @@
  <a href="../catalog/biblio_new_form.php?reset=Y" class="alt1"><?php echo $navLoc->getText("catalogBibNew");?></a><br>
 <?php } ?>
 
+<?php if ($nav == "upload_usmarc") { ?>
+ &raquo; <?php echo $navLoc->getText("Upload Marc Data");?><br>
+<?php } else { ?>
+ <a href="../catalog/upload_usmarc_form.php" class="alt1"><?php echo $navLoc->getText("Upload Marc Data");?></a><br>
+<?php } ?>
 
 <a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')"><?php echo $navLoc->getText("help");?></a>

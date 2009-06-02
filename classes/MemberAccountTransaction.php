@@ -60,6 +60,9 @@ class MemberAccountTransaction {
     } else if (!is_numeric($this->_amount)) {
       $valid = FALSE;
       $this->_amountError = $this->_loc->getText("memberAccountTransError2");
+    } else if ($this->_amount <= 0) {
+      $valid = FALSE;
+      $this->_amountError = $this->_loc->getText("Amount must be greater than zero.");
     }
     if ($this->_description == "") {
       $valid = false;

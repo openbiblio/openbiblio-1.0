@@ -19,18 +19,28 @@
 </table>
 <font class="primary">
 
-<h1>Version Notes:</h1>
+<h1>Index:</h1>
 <ul>
-<li><font color="red"><b>CAUTION!</b> - version 0.4.0 is still considered <b>beta</b> software since some features
+    <li><a href="#releaseNotes">Release Notes</a></li>
+    <li><a href="#install">OpenBiblio 0.5.x Install Instructions (New Systems)</a></li>
+    <li><a href="#update030">Updating Your System From OpenBiblio 0.3.x to 0.5.x Instructions</a></li>
+    <li><a href="#update040">Updating Your System From OpenBiblio 0.4.x to 0.5.x Instructions</a></li>
+</ul>
+<br>
+<a name="releaseNotes">
+<h1>Release Notes:</h1>
+</a>
+<ul>
+<li><font color="red"><b>CAUTION!</b> - version 0.5.0 is still considered <b>beta</b> software since some features
 have still not been implemented.  Use at your own risk.</font>
 </li>
-<li>With the arrival of version 0.4.0 the database structure
-has become much more stable.  Therefore, future versions will provide conversion utitlities to upgrade from version
-0.4.x.
+<li>Version 0.5.0 has the exact same database structure as version 0.4.0.  So, if you are
+using verion 0.4.0 you will <b>not</b> need to update your database to version 0.5.0.
 </li>
-<li>OpenBiblio version 0.4.x does not have a utility to convert the 0.3.x database to the 0.4.x format.
+<li>Starting with 0.5.0, all future versions will include conversion software so that you can convert your database to the latest version.  A conversion 
+utility for converting version 0.3.0 data to the version 0.4.0 database format (works with 0.5.0 code base) has been included with this version.
 </li>
-<li>OpenBiblio version 0.4.x requires PHP version 4.2.0 or higher.
+<li>OpenBiblio version 0.5.x requires PHP version 4.2.0 or higher.
 </li>
 <li>The label printing feature of OpenBiblio dynamically produces a PDF file that causes
 problems with Internet Explorer 5.5 and lower.  IE 6.0 and Mozilla 1.x handles the dynamically
@@ -63,10 +73,38 @@ produced PDF files fine.
     <td><font class="primary">Mozilla 1.3a and IE 6.0.2600</font></td>
     <td><font class="primary">Mozilla 1.1</font></td>
   </tr>
-</ul>
+</table>
 </blockquote>
+<li>Bug Fixes:<br>
+<pre>
+763846	Focus fails on some pages
+761369	Shelved books can be checked in
+761290	Zero and Negative transactions allowed
+758393	report_list.php broken if reportdefs contains directory
+555049	Unable to add new member
+</pre>
+</li>
+<li>Known Bugs:
+<pre>
+890988	Edit-Basic: contamination of empty fields
+859290	biblio_search.php and apostrophes
+844825	Broken Database Format
+777883	Double quotes not shown on Biblio - Edit-BASIC
+774560	staff.pwd field not big enough for MySQL 4.1.0
+768408	Edit-Basic duplicates MARC fields
+763855	Report search &amp; sort criteria don't work with count()
+761213	Checked in books are holdable
+758405	&quot;Error running report.&quot; after timed out session.
+758396	Can place book on hold that a member already has checked out
+</pre>
+</li>
 
-<h1>OpenBiblio 0.4.x Install Instructions:</h1>
+</ul>
+<br>
+
+<a name="install">
+<h1>OpenBiblio 0.5.x Install Instructions (New Systems):</h1>
+</a>
 <ol>
   <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that is
      compatible with PHP.  If you install Apache, get familiar with starting 
@@ -156,7 +194,7 @@ mysql> <b>show databases;</b>
     and run the following SQL command, substituting <i>obiblio_user</i> and <i>obiblio_password</i> with the userid and password of your choice.
 <blockquote><pre>
 mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
-    -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>
+    -> <b>identified by '<i>obiblio_password</i>';</b>
 </pre></blockquote>
   </li>
   </a>
@@ -191,6 +229,51 @@ mysql> <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost<
 
 </ol>
 
+
+<br>
+<a name="update030">
+<h1>Updating Your System From OpenBiblio 0.3.x to 0.5.x Instructions:</h1>
+<ol>
+  <a name="step7">
+  <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
+    root or any subdirectory within the htdocs root.
+  </li></a>
+  <a name="step8">
+  <li>Edit the database_constants.php file (located in the main openbiblio directory)
+    with the text editor of your choice.
+    Change the username and password to match the new MySQL user and password that you 
+    created in the previous steps.
+  </li></a>
+  <li>Backup your database.  See your MySQL documentation for instructions.
+  </li>
+  <li>Update your OpenBiblio database tables by using the conversion tool located at
+   <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
+   assuming you placed the openbiblio directory in the root htdocs directory.
+  </li>
+</ol>
+</a>
+<br>
+<a name="update040">
+<h1>Updating Your System From OpenBiblio 0.4.x to 0.5.x Instructions:</h1>
+</a>
+<ol>
+  <a name="step7">
+  <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
+    root or any subdirectory within the htdocs root.
+  </li></a>
+  <a name="step8">
+  <li>Edit the database_constants.php file (located in the main openbiblio directory)
+    with the text editor of your choice.
+    Change the username and password to match the new MySQL user and password that you 
+    created in the previous steps.
+  </li></a>
+  <li>No update of the database is necessary.
+  </li>
+</ol>
+
+<br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br>
 
 
 </font>

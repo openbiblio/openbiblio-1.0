@@ -1,4 +1,4 @@
-insert into settings
+insert into %prfx%settings
 values (
   'Your Library Name'
   ,'../images/sampleLogo.png'

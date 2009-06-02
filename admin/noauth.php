@@ -24,10 +24,12 @@
   $nav = "";
 
   include("../shared/read_settings.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+
   include("../shared/header.php");
 
+ echo $loc->getText("admin_noauth");
+
+  include("../shared/footer.php");
 ?>
-
-You are not authorized to use the Admin tab.
-
-<?php include("../shared/footer.php"); ?>

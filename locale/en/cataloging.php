@@ -211,4 +211,35 @@ $trans["biblioHoldListHdr4"]       = "\$text = 'Member';";
 $trans["biblioHoldListHdr5"]       = "\$text = 'Status';";
 $trans["biblioHoldListHdr6"]       = "\$text = 'Due Back';";
 
+#****************************************************************************
+#*  Translation text for page noauth.php
+#****************************************************************************
+$trans["NotAuth"]                 = "\$text = 'You are not authorized to use the Cataloging tab';";
+
+#****************************************************************************
+#*  Translation text for page upload_usmarc.php and upload_usmarc_form.php
+#****************************************************************************
+$trans["MarcUploadTest"]            = "\$text = 'Test Load';";
+$trans["MarcUploadTestTrue"]        = "\$text = 'True';";
+$trans["MarcUploadTestFalse"]       = "\$text = 'False';";
+$trans["MarcUploadTestFileUpload"]  = "\$text = 'USMarc Input File';";
+$trans["MarcUploadRecordsUploaded"] = "\$text = 'Records Uploaded';";
+$trans["MarcUploadMarcRecord"]      = "\$text = 'MARC Record';";
+$trans["MarcUploadTag"]             = "\$text = 'Tag';";
+$trans["MarcUploadSubfield"]        = "\$text = 'Sub';";
+$trans["MarcUploadData"]            = "\$text = 'Data';";
+$trans["MarcUploadRawData"]         = "\$text = 'Raw Data:';";
+
+#****************************************************************************
+#*  Translation text for page usmarc_select.php
+#****************************************************************************
+$trans["PoweredByOB"]                 = "\$text = 'Powered by OpenBiblio';";
+$trans["Copyright"]                   = "\$text = 'Copyright &copy; 2002';";
+$trans["underthe"]                    = "\$text = 'under the';";
+$trans["GNU"]                 = "\$text = 'GNU General Public License';";
+
+$trans["catalogResults"]                 = "\$text = 'Search Results';";
+
+
+
 ?>

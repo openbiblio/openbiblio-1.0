@@ -1,4 +1,4 @@
-create table biblio (
+create table %prfx%biblio (
   bibid integer auto_increment primary key
   ,create_dt datetime not null
   ,last_change_dt datetime not null

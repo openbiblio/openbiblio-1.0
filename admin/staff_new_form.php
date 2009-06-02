@@ -31,6 +31,9 @@
   require_once("../functions/inputFuncs.php");
   require_once("../shared/logincheck.php");
   require_once("../shared/get_form_vars.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   require_once("../shared/header.php");
 
 ?>
@@ -39,12 +42,12 @@
 <table class="primary">
   <tr>
     <th colspan="2" nowrap="yes" align="left">
-      Add New Staff Member:
+      <? echo $loc->getText("adminStaff_new_form_Header"); ?>
     </th>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Last Name:
+      <? echo $loc->getText("adminStaff_edit_formLastname"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("last_name",30,30,$postVars,$pageErrors); ?>
@@ -52,7 +55,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      First Name:
+      <? echo $loc->getText("adminStaff_edit_formFirstname"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("first_name",30,30,$postVars,$pageErrors); ?>
@@ -60,7 +63,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Login Username:
+      <? echo $loc->getText("adminStaff_edit_formLogin"); ?>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("username",20,20,$postVars,$pageErrors); ?>
@@ -68,7 +71,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Password:
+      <? echo $loc->getText("adminStaff_new_form_Password"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="password" name="pwd" size="20" maxlength="20"
@@ -79,7 +82,7 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Re-enter Password:
+      <? echo $loc->getText("adminStaff_new_form_Reenterpassword"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="password" name="pwd2" size="20" maxlength="20"
@@ -90,30 +93,30 @@
   </tr>
   <tr>
     <td nowrap="true" class="primary">
-      Authorization:
+      <? echo $loc->getText("adminStaff_edit_formAuth"); ?>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" name="circ_flg" value="CHECKED"
         <?php if (isset($postVars["circ_flg"])) echo $postVars["circ_flg"]; ?> >
-      Circ
+      <? echo $loc->getText("adminStaff_edit_formCirc"); ?>
       <input type="checkbox" name="circ_mbr_flg" value="CHECKED"
         <?php if (isset($postVars["circ_mbr_flg"])) echo $postVars["circ_mbr_flg"]; ?> >
-      Update Member
+      <? echo $loc->getText("adminStaff_edit_formUpdatemember"); ?>
       <input type="checkbox" name="catalog_flg" value="CHECKED"
         <?php if (isset($postVars["catalog_flg"])) echo $postVars["catalog_flg"]; ?> >
-      Catalog
+      <? echo $loc->getText("adminStaff_edit_formCatalog"); ?>
       <input type="checkbox" name="admin_flg" value="CHECKED"
         <?php if (isset($postVars["admin_flg"])) echo $postVars["admin_flg"]; ?> >
-      Admin
+      <? echo $loc->getText("adminStaff_edit_formAdmin"); ?>
       <input type="checkbox" name="reports_flg" value="CHECKED"
         <?php if (isset($postVars["reports_flg"])) echo $postVars["reports_flg"]; ?> >
-      Reports
+      <? echo $loc->getText("adminStaff_edit_formReports"); ?>
     </td>
   </tr>
   <tr>
     <td align="center" colspan="2" class="primary">
-      <input type="submit" value="  Submit  " class="button">
-      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  Cancel  " class="button">
+      <input type="submit" value="  <? echo $loc->getText("adminSubmit"); ?>  " class="button">
+      <input type="button" onClick="parent.location='../admin/staff_list.php'" value="  <? echo $loc->getText("adminCancel"); ?>  " class="button">
     </td>
   </tr>
 

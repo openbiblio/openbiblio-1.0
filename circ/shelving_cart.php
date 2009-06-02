@@ -47,7 +47,7 @@
     header("Location: ../circ/checkin_form.php?reset=Y");
     exit();
   }
-  $barcode = $HTTP_POST_VARS["barcodeNmbr"];
+  $barcode = trim($HTTP_POST_VARS["barcodeNmbr"]);
 
   #****************************************************************************
   #*  Edit input

@@ -44,9 +44,9 @@
     header("Location: ../circ/index.php");
     exit();
   }
-  $barcode = $HTTP_POST_VARS["barcodeNmbr"];
-  $mbrid = $HTTP_POST_VARS["mbrid"];
-  $mbrClassification = $HTTP_POST_VARS["classification"];
+  $barcode = trim($HTTP_POST_VARS["barcodeNmbr"]);
+  $mbrid = trim($HTTP_POST_VARS["mbrid"]);
+  $mbrClassification = trim($HTTP_POST_VARS["classification"]);
 
   #****************************************************************************
   #*  Make sure member does not have outstanding balance due

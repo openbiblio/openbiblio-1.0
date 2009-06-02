@@ -29,7 +29,8 @@
   require_once("../classes/Dm.php");
   require_once("../classes/DmQuery.php");
   require_once("../functions/errorFuncs.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
   #****************************************************************************
@@ -88,7 +89,7 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Material type, <?php echo $dm->getDescription();?>, has been added.<br><br>
-<a href="../admin/materials_list.php">return to material type list</a>
+<? echo $loc->getText("admin_materials_delMaterialType"); ?><?php echo $dm->getDescription();?><br><br>
+<a href="../admin/materials_list.php"><? echo $loc->getText("admin_materials_Return"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

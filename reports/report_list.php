@@ -41,10 +41,17 @@
   
   if ($handle = opendir(REPORT_DEFS_DIR)) {
     while (false !== ($file = readdir($handle))) { 
-      if ($file != "." && $file != "..") {
+      if ($file[0] != "." && !is_dir($file)) {
         $fileName = REPORT_DEFS_DIR."/".$file;
         //$xml = file_get_contents($fileName);
         $xml = fileGetContents($fileName);
+        if ($xml === FALSE) {
+          echo '<p><font class="error">';
+          echo $loc->getText('Cannot read report file: %fileName%',
+            array('fileName' => basename($fileName)));
+          echo '</font></p>';
+          continue;
+        }
         $rptDef = new ReportDefinition();
         if ($rptDef->parse($xml)) {
           $rptid = $rptDef->getId();

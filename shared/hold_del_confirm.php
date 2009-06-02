@@ -33,7 +33,7 @@
     $returnUrl = "../circ/mbr_view.php?mbrid=".$mbrid;
   } else {
     $mbrid = "";
-    $tab = "catalog";
+    $tab = "cataloging";
     $nav = "holds";
     $returnUrl = "../catalog/biblio_hold_list.php?bibid=".$bibid;
   }

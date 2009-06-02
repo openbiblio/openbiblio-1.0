@@ -39,8 +39,8 @@
     header("Location: ../circ/index.php");
     exit();
   }
-  $barcode = $HTTP_POST_VARS["holdBarcodeNmbr"];
-  $mbrid = $HTTP_POST_VARS["mbrid"];
+  $barcode = trim($HTTP_POST_VARS["holdBarcodeNmbr"]);
+  $mbrid = trim($HTTP_POST_VARS["mbrid"]);
 
   #****************************************************************************
   #*  Edit input

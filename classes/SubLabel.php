@@ -20,8 +20,6 @@
  **********************************************************************************
  */
 
-  require_once("../classes/Localize.php");
-
 /******************************************************************************
  * LabelFormat represents a label format specification
  *
@@ -34,10 +32,8 @@ class SubLabel {
   var $_left = 0;
   var $_top = 0;
   var $_lines;
-  var $_loc;
 
   function SubLabel () {
-    $this->_loc = new Localize(OBIB_LOCALE,"classes");
     $this->_lines = Array();
   }
 
@@ -70,8 +66,8 @@ class SubLabel {
   function setTop($value) {
     $this->_top = trim($value);
   }
-  function addLine($value) {
-    $this->_lines[] = trim($value);
+  function addLine($line) {
+    $this->_lines[] = $line;
   }
 
 }

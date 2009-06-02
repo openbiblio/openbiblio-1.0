@@ -21,9 +21,8 @@
  */
 
   $tab = "reports";
-  $nav = "reportcriteria";
   $focus_form_name = "reportcriteriaform";
-  $focus_form_field = "useCrit1";
+  $focus_form_field = "fieldId1";
 
   include("../shared/read_settings.php");
   include("../shared/logincheck.php");
@@ -35,6 +34,15 @@
   #****************************************************************************
   #*  page functions
   #****************************************************************************
+  function getFullColumnName($fieldIds,$initialSort) {
+    foreach($fieldIds as $fldid) {
+      if (strpos($fldid,".".$initialSort)) {
+        return $fldid;
+      }
+    }
+    return "";
+  }
+
   function printCriteriaFields($index,&$fieldIds,&$fieldNames,&$fieldTypes,&$fieldNumericFlgs,&$postVars,&$pageErrors,&$loc,&$fieldValuebVisibility){
     $fldIndex = "fieldId".$index;
     echo "<select name=\"".$fldIndex."\">";
@@ -103,31 +111,11 @@
     echo ">".$loc->getText("reportCriteriaDescending")."</input>";
   }
 
-?>
-
-  <script language="JavaScript">
-  <!--
-  function comparitorOnChange(inputElem,critNmbr) {
-    elem = document.getElementById("fieldValue" + critNmbr + "b")
-    andElem = document.getElementById("and" + critNmbr)
-    if (inputElem.value == "bt") {
-      elem.style.visibility = "visible";
-      andElem.style.visibility = "visible";
-    } else {
-      elem.style.visibility = "hidden";
-      andElem.style.visibility = "hidden";
-    }
-  }
-  -->
-  </script>
-
-<?php
-  include("../shared/header.php");
-
   #****************************************************************************
   #*  getting form vars
   #****************************************************************************
   require("../shared/get_form_vars.php");
+ 
   for ($i = 1; $i <= 4; $i++) {
     if (!isset($postVars["comparitor".$i])) {
       $postVars["comparitor".$i] = "";
@@ -146,12 +134,26 @@
   $title = $HTTP_GET_VARS["title"];
   $sql = stripslashes($HTTP_GET_VARS["sql"]);
   if (isset($HTTP_GET_VARS["label"]) and $HTTP_GET_VARS["label"]!="") {
+    $nav = "labellist";
     $label = $HTTP_GET_VARS["label"];
+    $letter = "";
+    $initialSort = "";
     $okAction = "../reports/display_labels.php";
     $cancelAction = "../reports/label_list.php";
     $showStartLabelFld = TRUE;
-  } else {
+  } elseif (isset($HTTP_GET_VARS["letter"]) and $HTTP_GET_VARS["letter"]!="") {
+    $nav = "letterlist";
     $label = "";
+    $letter = $HTTP_GET_VARS["letter"];
+    $initialSort = $HTTP_GET_VARS["initialSort"];
+    $okAction = "../reports/display_letters.php";
+    $cancelAction = "../reports/letter_list.php";
+    $showStartLabelFld = FALSE;
+  } else {
+    $nav = "reportlist";
+    $label = "";
+    $letter = "";
+    $initialSort = "";
     $okAction = "../reports/display_report.php";
     $cancelAction = "../reports/report_list.php";
     $showStartLabelFld = FALSE;
@@ -197,6 +199,33 @@
   $rowCount = $reportQ->getRowCount();
   $reportQ->close();
 
+
+  // load initial sort if passed as query string
+  if (($initialSort != "") and !isset($postVars["sortOrder1"])) {
+    $intialSortValue = getFullColumnName($fieldIds,$initialSort);
+    $postVars["sortOrder1"] = $intialSortValue;
+  }
+
+?>
+
+  <script language="JavaScript">
+  <!--
+  function comparitorOnChange(inputElem,critNmbr) {
+    elem = document.getElementById("fieldValue" + critNmbr + "b")
+    andElem = document.getElementById("and" + critNmbr)
+    if (inputElem.value == "bt") {
+      elem.style.visibility = "visible";
+      andElem.style.visibility = "visible";
+    } else {
+      elem.style.visibility = "hidden";
+      andElem.style.visibility = "hidden";
+    }
+  }
+  -->
+  </script>
+
+<?php
+  include("../shared/header.php");
 ?>
 
 <h1><?php echo $title.":";?></h1>
@@ -291,6 +320,8 @@
   <input type="hidden" name="title" value="<?php echo $title;?>">
   <input type="hidden" name="sql" value="<?php echo $sql;?>">
   <input type="hidden" name="label" value="<?php echo $label;?>">
+  <input type="hidden" name="letter" value="<?php echo $letter;?>">
+  <input type="hidden" name="initialSort" value="<?php echo $initialSort;?>">
 <br>
   <center>
     <input type="submit" value="<?php echo $loc->getText("reportCriteriaRunReport"); ?>" class="button">

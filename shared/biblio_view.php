@@ -126,7 +126,6 @@
     displayErrorPage($biblioQ);
   }
   $biblioFlds = $biblio->getBiblioFields();
-  $title = urlencode($biblioFlds["245a"]->getFieldData());
 
   #**************************************************************************
   #*  Show bibliography info.

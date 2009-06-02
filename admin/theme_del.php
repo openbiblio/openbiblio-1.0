@@ -27,7 +27,9 @@
   require_once("../shared/logincheck.php");
   require_once("../classes/ThemeQuery.php");
   require_once("../functions/errorFuncs.php");
-
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
+  
   #****************************************************************************
   #*  Checking for query string.  Go back to theme list if none found.
   #****************************************************************************
@@ -58,7 +60,7 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Theme, <?php echo $name;?>, has been deleted.<br><br>
-<a href="../admin/theme_list.php">return to theme list</a>
+<? echo $loc->getText("adminTheme_Theme"); ?> <?php echo $name;?><? echo $loc->getText("adminTheme_Deleted"); ?><br><br>
+<a href="../admin/theme_list.php"><? echo $loc->getText("adminTheme_Return"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

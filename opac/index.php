@@ -24,10 +24,11 @@
 
   $tab = "opac";
   $nav = "home";
-  $focus_form_name = "barcodesearch";
+  $focus_form_name = "phrasesearch";
   $focus_form_field = "searchText";
-
   require_once("../shared/read_settings.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
   require_once("../shared/header_opac.php");
 
   $lookup = "N";
@@ -36,29 +37,28 @@
   }
 ?>
 
-<h1>Online Public Access Catalog (OPAC)</h1>
-Welcome to our library's oline public access catalog.  Search our catalog
-to view bibliography information on holdings we have in our library.
+<h1><?php echo $loc->getText("opac_Header");?></h1>
+<?php echo $loc->getText("opac_WelcomeMsg");?>
 <form name="phrasesearch" method="POST" action="../shared/biblio_search.php">
 <br />
 <table class="primary">
   <tr>
     <th valign="top" nowrap="yes" align="left">
-      Search Bibliography by Search Phrase:
+      <?php echo $loc->getText("opac_SearchTitle");?>
     </td>
   </tr>
   <tr>
     <td nowrap="true" class="primary">
       <select name="searchType">
-        <option value="title" selected>Title
-        <option value="author">Author
-        <option value="subject">Subject
+        <option value="title" selected><?php echo $loc->getText("opac_Title");?>
+        <option value="author"><?php echo $loc->getText("opac_Author");?>
+        <option value="subject"><?php echo $loc->getText("opac_Subject");?>
       </select>
       <input type="text" name="searchText" size="30" maxlength="256">
       <input type="hidden" name="sortBy" value="default">
       <input type="hidden" name="tab" value="<?php echo $tab; ?>">
       <input type="hidden" name="lookup" value="<?php echo $lookup; ?>">
-      <input type="submit" value="Search" class="button">
+      <input type="submit" value="<?php echo $loc->getText("opac_Search");?>" class="button">
     </td>
   </tr>
 </table>

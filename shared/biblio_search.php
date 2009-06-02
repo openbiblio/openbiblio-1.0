@@ -211,6 +211,7 @@ function changePage(page,sort)
   <input type="hidden" name="searchType" value="<?php echo $HTTP_POST_VARS["searchType"];?>">
   <input type="hidden" name="searchText" value="<?php echo $HTTP_POST_VARS["searchText"];?>">
   <input type="hidden" name="sortBy" value="<?php echo $HTTP_POST_VARS["sortBy"];?>">
+  <input type="hidden" name="lookup" value="<?php echo $HTTP_POST_VARS["lookup"];?>">
   <input type="hidden" name="page" value="1">
   <input type="hidden" name="tab" value="<?php echo $tab;?>">
 </form>
@@ -257,7 +258,7 @@ function changePage(page,sort)
             </font></td>
             <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
               <?php if ($lookup == 'Y') { ?>
-                <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr',<?php echo $biblio->getBarcodeNmbr();?>)">select</a>
+                <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo $biblio->getBarcodeNmbr();?>')">select</a>
               <?php } ?>
             </font></td>
             <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>
@@ -306,7 +307,7 @@ function changePage(page,sort)
       <tr>
         <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyBCode"); ?></b>: <?php echo $biblio->getBarcodeNmbr();?>
           <?php if ($lookup == 'Y') { ?>
-            <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr',<?php echo $biblio->getBarcodeNmbr();?>)">select</a>
+            <a href="javascript:returnLookup('holdForm','holdBarcodeNmbr','<?php echo $biblio->getBarcodeNmbr();?>')">select</a>
           <?php } ?>
         </font></td>
         <td class="primary" ><font class="small"><b><?php echo $loc->getText("biblioSearchCopyStatus"); ?></b>: <?php echo $biblioStatusDm[$biblio->getStatusCd()];?></font></td>

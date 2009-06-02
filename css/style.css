@@ -13,6 +13,12 @@ font.primary {
   font-size: 13px;
   font-family: verdana,arial,helvetica;
 }
+font.error {
+  color: #aa0000;
+  font-size: 13px;
+  font-family: verdana,arial,helvetica;
+  font-weight: bold;
+}
 h1 {
   font-size: 16px;
   font-family: verdana,arial,helvetica;

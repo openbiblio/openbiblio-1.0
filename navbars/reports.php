@@ -54,4 +54,10 @@
  <a href="../reports/label_list.php" class="alt1"><?php echo $navLoc->getText("reportsLabelsLink");?></a><br>
 <?php } ?>
 
+<?php if ($nav == "letterlist") { ?>
+ &raquo; <?php echo $navLoc->getText("reportsLettersLink");?><br>
+<?php } else { ?>
+ <a href="../reports/letter_list.php" class="alt1"><?php echo $navLoc->getText("reportsLettersLink");?></a><br>
+<?php } ?>
+
 <a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')"><?php echo $navLoc->getText("help");?></a>

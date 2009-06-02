@@ -27,6 +27,8 @@
   require_once("../shared/logincheck.php");
   require_once("../classes/DmQuery.php");
   require_once("../functions/errorFuncs.php");
+  require_once("../classes/Localize.php");
+  $loc = new Localize(OBIB_LOCALE,$tab);
 
   #****************************************************************************
   #*  Checking for query string.  Go back to collection list if none found.
@@ -58,7 +60,9 @@
   #**************************************************************************
   require_once("../shared/header.php");
 ?>
-Collection, <?php echo $description;?>, has been deleted.<br><br>
-<a href="../admin/collections_list.php">return to collection list</a>
+<? echo $loc->getText("adminCollections_delStart"); ?>
+<?php echo $description;?>
+<? echo $loc->getText("adminCollections_delEnd"); ?><br><br>
+<a href="../admin/collections_list.php"><? echo $loc->getText("adminCollections_delReturn"); ?></a>
 
 <?php require_once("../shared/footer.php"); ?>

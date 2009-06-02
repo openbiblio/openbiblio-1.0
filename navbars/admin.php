@@ -63,5 +63,13 @@
  <a href="../admin/theme_list.php" class="alt1"><?php echo $navLoc->getText("adminThemes");?></a><br>
 <?php } ?>
 
+<!--
+< ?php if ($nav == "translation") { ?>
+ &raquo; < ?php echo $navLoc->getText("adminTranslation");?><br>
+< ?php } else { ?>
+ <a href="../admin/translation_list.php" class="alt1">< ?php echo $navLoc->getText("adminTranslation");?></a><br>
+< ?php } ?>
+-->
+
 <a href="javascript:popSecondary('../shared/help.php<?php if (isset($helpPage)) echo "?page=".$helpPage; ?>')"><?php echo $navLoc->getText("help");?></a>
 

@@ -1,0 +1,85 @@
+<!--
+  *********************************************************************************
+  *  element               description
+  *  ===================== ==================================================================
+  *  <id>                  - a unique identifier for this label specification
+  *  <report_def_filename> - the file name of the report definition containing the
+  *                          database query
+  *  <group_by>            - the column to group the letters by.  Each disticut value of
+  *                          this column will get its own letter.  Multiple column groupings
+  *                          are not supported yet.
+  *                          attributes:
+  *                            name - name of the column as specified in the database query
+  *  <title>               - the label title that users will see on the web page
+  *                          for this label report
+  *  <font_type>           - options are Courier, Helvetica, Times
+  *  <font_size>           - controls the size of the font for all text
+  *  <unit_of_measure>     - options are in (English) or cm (Metric which is the default)
+  *  <left_margin>         - size of left margin in units specified in unit_of_measure
+  *  <right_margin>        - size of right margin in units specified in unit_of_measure
+  *  <top_margin>          - size of top margin in units specified in unit_of_measure
+  *  <bottom_margin>       - size of bottom margin in units specified in unit_of_measure
+  *  <layout>              - represents a letter layout
+  *    <line>              - represents one line within the letter
+  *                          attributes:
+  *                            indent - width of line indent in units specified in unit_of_measure
+  *      <column>          - represents a column name from the database query specified
+  *                          by the report definition (see <report_def_filename>)
+  *                          attributes:
+  *                            name - name of the column as specified in the database query
+  *    <report>            - represents the layout of the report to show at the end of 
+  *                          each letter
+  *      <column>          - represents a column name from the database query specified
+  *                          by the report definition (see <report_def_filename>)
+  *                          attributes:
+  *                            name - name of the column as specified in the database query
+  *                                   Note: if you wish the column heading to show different than
+  *                                   the database column name for readability or internationalization
+  *                                   purposes, you will need to add the column name (without the table)
+  *                                   to the \locale\[lang]\reports.php file.
+  *                            width - width of the column in the report data
+  *********************************************************************************
+-->
+
+<letter>
+  <id>overdueLetters</id>
+  <report_def_filename>overdueLetters.xml</report_def_filename>
+  <group_by name="mbrid"/>
+  <title>Over Due Letters</title>
+  <font_type>Helvetica</font_type>
+  <font_size>10</font_size>
+  <unit_of_measure>in</unit_of_measure>
+  <left_margin>1</left_margin>
+  <right_margin>1</right_margin>
+  <top_margin>1</top_margin>
+  <bottom_margin>1</bottom_margin>
+  <layout>
+    <line indent="3.25"><column name="date"/></line>
+    <line/>
+    <line indent="3.25"><column name="library_name"/></line>
+    <line indent="3.25">101 1st Street</line>
+    <line indent="3.25">Busytown, IA 11111-2222</line>
+    <line indent="3.25">phone: <column name="library_phone"/></line>
+    <line indent="3.25">hours: <column name="library_hours"/></line>
+    <line/>
+    <line><column name="first_name"/> <column name="last_name"/></line>
+    <line><column name="address1"/> <column name="address2"/></line>
+    <line><column name="city"/> <column name="state"/>, <column name="zip"/></line>
+    <line/>
+    <line>Dear <column name="first_name"/> <column name="last_name"/></line>
+    <line/>
+    <line>Our records show that the following library items are checked out under your name and are past due.</line>
+    <line>Please return them as soon as possible and pay any late fees due.</line>
+    <line/>
+    <line/>
+    <line>Sincerely,</line>
+    <line/>
+    <line>The library staff at <column name="library_name"/></line>
+  </layout>
+  <report>
+    <column name="title" width="1.5"/>
+    <column name="author" width="1.5"/>
+    <column name="due_back_dt" width="1"/>
+    <column name="days_late" width=".75"/>
+  </report>
+</letter>

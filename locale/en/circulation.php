@@ -56,6 +56,7 @@
 #****************************************************************************
 $trans["circCancel"]              = "\$text = 'Cancel';";
 $trans["circDelete"]              = "\$text = 'Delete';";
+$trans["circLogout"]              = "\$text = 'Logout';";
 $trans["circAdd"]                 = "\$text = 'Add';";
 $trans["mbrDupBarcode"]           = "\$text = 'Barcode number, %barcode%, is currently in use.';";
 

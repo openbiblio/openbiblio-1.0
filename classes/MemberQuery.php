@@ -128,9 +128,9 @@ class MemberQuery extends Query {
   function execSelect($mbrid) {
     $sql = "select member.*, ";
     $sql = $sql."staff.username ";
-    $sql = $sql."from member,staff ";
+    $sql = $sql."from member ";
+    $sql = $sql." left join staff on member.last_change_userid = staff.userid ";
     $sql = $sql."where mbrid=".$mbrid;
-    $sql = $sql." and member.last_change_userid = staff.userid";
     $result = $this->_conn->exec($sql);
     if ($result == false) {
       $this->_errorOccurred = true;
