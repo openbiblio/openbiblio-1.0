@@ -9,15 +9,15 @@
   $nav = "integrity";
 
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../classes/IntegrityQuery.php"));
+  require_once(REL(__FILE__, "../model/Integrity.php"));
 
 
   $fix = false;
   if (isset($_REQUEST['fix']) and $_REQUEST['fix']) {
     $fix = true;
   }
-  $integrityQ = new IntegrityQuery;
-  $errors = $integrityQ->check_el($fix);
+  $integrity = new Integrity;
+  $errors = $integrity->check_el($fix);
 
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 

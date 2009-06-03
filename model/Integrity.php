@@ -5,9 +5,9 @@
 
 require_once(REL(__FILE__, "../classes/Query.php"));
 
-class IntegrityQuery extends Query {
-  function IntegrityQuery() {
-    $this->Query();
+class Integrity {
+  function Integrity() {
+    $this->db = new Query;
     $this->checks = array(
       array(
         'error' => T("%count% unattached MARC fields"),
@@ -177,7 +177,7 @@ class IntegrityQuery extends Query {
     foreach ($this->checks as $chk) {
       assert('isset($chk["error"])');
       if (isset($chk['countSql'])) {
-        $row = $this->select1($chk['countSql']);
+        $row = $this->db->select1($chk['countSql']);
         $count = $row["count"];
       } elseif (isset($chk['countFn'])) {
         $fn = $chk['countFn'];
@@ -190,7 +190,7 @@ class IntegrityQuery extends Query {
         $msg = $this->_loc->getText($chk["error"], array('count'=>$count));
         if ($fix) {
           if (isset($chk['fixSql'])) {
-            $this->act($chk['fixSql']);
+            $this->db->act($chk['fixSql']);
             $msg .= ' <b>'.T("FIXED").'</b> ';
           } elseif (isset($chk['fixFn'])) {
             $fn = $chk['fixFn'];
@@ -215,7 +215,7 @@ class IntegrityQuery extends Query {
     $sql = 'select histid, copyid, status_cd from biblio_status_hist order by histid ';
     $status = array();
     $errors = 0;
-    $r = $this->select($sql);
+    $r = $this->db->select($sql);
     while ($row = $r->next()) {
       if ($row['status_cd'] == 'out' and isset($status[$row['copyid']])) {
         if ($status[$row['copyid']]['status_cd'] == 'out') {
