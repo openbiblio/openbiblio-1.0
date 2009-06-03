@@ -44,7 +44,9 @@ class Query {
   }
 
   function act($sql) {
+    $this->lock();
     $results = $this->_act($sql);
+    $this->unlock();
     if (!is_bool($results)) {
       Fatal::dbError($sql, T("Action query returned results."), T("No DBMS error."));
     }
