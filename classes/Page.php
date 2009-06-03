@@ -9,6 +9,7 @@ class Page {
 		$params = Page::clean_params($params);
 		$_Page_params = $params;
 		require_once(REL(__FILE__, '../shared/menu.php'));
+		staff_menu();
 		require_once($params['theme_dir']."/header.php");
 	}
 	function footer() {
@@ -21,6 +22,7 @@ class Page {
 		$params = Page::clean_params($params);
 		$_Page_params = $params;
 		require_once(REL(__FILE__, '../opac/menu.php'));
+		opac_menu();
 		require_once($params['theme_dir']."/header_opac.php");
 	}
 	function footer_opac() {
