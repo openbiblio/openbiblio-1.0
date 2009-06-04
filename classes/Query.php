@@ -125,8 +125,11 @@ class Query {
     }
     $_Query_lock_depth--;
     if ($_Query_lock_depth == 0) {
-      $this->act($this->mkSQL('do release_lock(%Q)',
-                             OBIB_LOCK_NAME));
+      $row = $this->select1($this->mkSQL('select release_lock(%Q) as unlocked',
+        OBIB_LOCK_NAME));
+      if (!isset($row['unlocked']) or $row['unlocked'] != 1) {
+        Fatal::internalError(T("Can't release lock"));
+      }
     }
   }
 
