@@ -26,8 +26,8 @@
   if ($tab != "opac") {
     require_once(REL(__FILE__, "../shared/logincheck.php"));
   }
-  require_once(REL(__FILE__, "../classes/ImageQuery.php"));
   require_once(REL(__FILE__, "../model/Biblios.php"));
+  require_once(REL(__FILE__, "../model/BiblioImages.php"));
   require_once(REL(__FILE__, "../model/MaterialTypes.php"));
   require_once(REL(__FILE__, "../model/MaterialFields.php"));
   require_once(REL(__FILE__, "../classes/Report.php"));
@@ -160,7 +160,7 @@
 <div class="search_terms"><?php echo 'search terms: FIXME'; ?></div>
 <?php
   $biblios = new Biblios;
-  $imgq = new ImageQuery;
+  $bibimages = new BiblioImages;
   $mats = new MaterialTypes;
   $mf = new MaterialFields;
   echo '<div class="results_list">';
@@ -174,10 +174,11 @@
     }
     $mat = $mats->getOne($row['material_cd']);
     echo '<table class="search_result"><tr>';
-    $imgs = $imgq->get($row['bibid']);
+    $imgs = $bibimages->getByBibid($row['bibid']);
     echo '<td class="cover_image">';
-    if (isset($imgs[0])) {
-      $img = '<img src="'.H($imgs[0]['imgurl']).'" alt="'.T("Item Image").'" />';
+    if ($imgs->count() != 0) {
+      $img = $imgs->next();
+      $html = '<img src="'.H($img['imgurl']).'" alt="'.T("Item Image").'" />';
       echo Links::mkLink('biblio', $row['bibid'], $img);
     }
     echo '</td>';

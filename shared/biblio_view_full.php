@@ -29,7 +29,7 @@
     require_once(REL(__FILE__, "../shared/logincheck.php"));
   }
   require_once(REL(__FILE__, "../model/Biblios.php"));
-  require_once(REL(__FILE__, "../classes/ImageQuery.php"));
+  require_once(REL(__FILE__, "../model/BiblioImages.php"));
   require_once(REL(__FILE__, "../model/Collections.php"));
   require_once(REL(__FILE__, "../model/Stock.php"));
   require_once(REL(__FILE__, "../classes/Cart.php"));
@@ -121,9 +121,10 @@
   </tr>
 </table>
 <?php
-    $images = new ImageQuery;
+    $bibimages = new BiblioImages;
     echo '<div class="biblio_images">';
-    foreach ($images->get($biblio['bibid']) as $img) {
+    $imgs = $bibimages->getByBibid($biblio['bibid'])
+    while ($img = $imgs->next()) {
       echo '<div class="biblio_image">';
       if ($img['url']) {
         echo '<a href="'.H($img['url']).'">';

@@ -8,38 +8,19 @@
   $tab = "cataloging";
   $nav = "delimage";
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../classes/ImageQuery.php"));
+  require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
-
-  #****************************************************************************
-  #*  Retrieving get var
-  #****************************************************************************
   $bibid = $_REQUEST["bibid"];
   $imgurl = $_REQUEST["imgurl"];
+  $bibimages = new BiblioImages;
+  $img = $bibimages->maybeGetOne($bibid, $imgurl);
 
-  $imgq = new ImageQuery();
-  $imgq->connect();
-  if ($imgq->errorOccurred()) {
-    $imgq->close();
-    displayErrorPage($imgq);
-  }
-  $imgs = $imgq->get($bibid, $imgurl);
-  if ($imgq->errorOccurred()) {
-    $imgq->close();
-    displayErrorPage($imgq);
-  }
-  $imgq->close();
-
-  #**************************************************************************
-  #*  Show confirm page
-  #**************************************************************************
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-  if (count($imgs) != 1) {
+  if (!$img) {
 ?>
 <p class="error"><?php echo T("No such image."); ?></p>
 <?php
   } else {
-    $img = $imgs[0];
 ?>
 <center>
 <a href="<?php echo H($img['url']) ?>"><img src="<?php echo H($imgurl) ?>" alt="<?php echo H($img['caption']) ?>" /></a><br />

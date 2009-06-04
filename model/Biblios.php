@@ -5,6 +5,7 @@
 
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../classes/MarcQuery.php"));
+require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
 class BiblioIter extends Iter {
   function BiblioIter($rows) {
@@ -83,6 +84,8 @@ class Biblios extends CoreTable {
   }
   function deleteOne($bibid) {
     $this->db->lock();
+    $imgs = new BiblioImages;
+    $imgs->deleteByBibid($bibid);
     $this->marcq->delete($bibid);
     parent::deleteOne($bibid);
     $this->db->unlock();

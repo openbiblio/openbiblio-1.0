@@ -6,21 +6,16 @@
   require_once("../shared/common.php");
 
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../classes/ImageQuery.php"));
+  require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
-  $imgq = new ImageQuery();
-  $imgq->connect();
-  if ($imgq->errorOccurred()) {
-    $imgq->close();
-    displayErrorPage($imgq);
-  }
+  $bibimages = new BiblioImages;
   switch ($_REQUEST['action']) {
   case add:
     if ($_REQUEST['type'] == 'Link') {
-      $imgq->appendLink($_REQUEST['bibid'], $_REQUEST['caption'],
+      $err = $bibimages->appendLink_e($_REQUEST['bibid'], $_REQUEST['caption'],
                          $_FILES['image'], $_REQUEST['url']);
     } else {
-      $imgq->appendThumb($_REQUEST['bibid'], $_REQUEST['caption'],
+      $err = $bibimages->appendThumb_e($_REQUEST['bibid'], $_REQUEST['caption'],
                          $_FILES['image']);
     }
     break;
@@ -29,18 +24,17 @@
       include(REL(__FILE__, "../catalog/image_del_confirm.php"));
       exit();
     }
-    $imgq->delete($_REQUEST['bibid'], $_REQUEST['imgurl']);
+    $bibimages->deleteOne($_REQUEST['bibid'], $_REQUEST['imgurl']);
+    $err = NULL;
     break;
   case update_caption:
-    $imgq->updateCaption($_REQUEST['bibid'], $_REQUEST['imgurl'], $_REQUEST['caption']);
+    $err = $bibimages->updateCaption_e($_REQUEST['bibid'], $_REQUEST['imgurl'], $_REQUEST['caption']);
     break;
   case reposition:
-    $imgq->reposition($_REQUEST['bibid'], $_REQUEST['imgurl'], $_REQUEST['position']);
+    $bibimages->reposition($_REQUEST['bibid'], $_REQUEST['imgurl'], $_REQUEST['position']);
     break;
   }
-  if ($imgq->errorOccurred()) {
-    $imgq->close();
-    displayErrorPage($imgq);
-  }
 
+  // FIXME -- handle errors
+  
   header("Location: ../catalog/image_manage.php?bibid=".U($_REQUEST['bibid']));

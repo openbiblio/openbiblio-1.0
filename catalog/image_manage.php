@@ -8,22 +8,14 @@
   $tab = "cataloging";
   $nav = "biblio/images";
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../classes/ImageQuery.php"));
+  require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
   $bibid = $_REQUEST['bibid'];
 
-  $imgq = new ImageQuery();
-  $imgq->connect();
-  if ($imgq->errorOccurred()) {
-    $imgq->close();
-    displayErrorPage($imgq);
-  }
-  $images = $imgq->get($bibid);
-  if ($imgq->errorOccurred()) {
-    $imgq->close();
-    displayErrorPage($imgq);
-  }
-
+  $bibimages = new BiblioImages;
+  $res = $bibimages->getByBibid($bibid);
+  $images = $res->toArray();
+  
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
   echo '<table>';
   for ($i=0; $i < count($images); $i++) {
