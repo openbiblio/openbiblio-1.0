@@ -15,8 +15,7 @@
   require_once(REL(__FILE__, "../model/Collections.php"));
   require_once(REL(__FILE__, "../model/Holds.php"));
   require_once(REL(__FILE__, "../model/Bookings.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountTransaction.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../model/MemberAccounts.php"));
   require_once(REL(__FILE__, "../functions/errorFuncs.php"));
   require_once(REL(__FILE__, "../functions/formatFuncs.php"));
 
@@ -92,26 +91,14 @@
     $coll = $collections->getByBibid($booking['bibid']);
     $dailyLateFee = $coll['daily_late_fee'];
     if (($daysLate > 0) and ($dailyLateFee > 0)) {
+      $acct = new MemberAccounts;
       $fee = $dailyLateFee * $daysLate;
-      $trans = new MemberAccountTransaction();
-      $trans->setMbrid($saveMbrid);
-      $trans->setCreateUserid($_SESSION["userid"]);
-      $trans->setTransactionTypeCd("+c");
-      $trans->setAmount($fee);
-      $trans->setDescription(T("Late fee (barcode=%barcode%)", array("barcode" => $barcode)));
-
-      $transQ = new MemberAccountQuery();
-      $transQ->connect();
-      if ($transQ->errorOccurred()) {
-        $transQ->close();
-        displayErrorPage($transQ);
-      }
-      $trans = $transQ->insert($trans);
-      if ($transQ->errorOccurred()) {
-        $transQ->close();
-        displayErrorPage($transQ);
-      }
-      $transQ->close();
+      $acct->insert(array(
+        'mbrid'=>$saveMbrid,
+        'transaction_type_cd'=>'+c',
+        'amount'=>$fee,
+        'description'=>T("Late fee (barcode=%barcode%)", array("barcode" => $barcode))
+      ));
     }
   }
 

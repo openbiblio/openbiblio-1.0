@@ -14,9 +14,8 @@
   require_once(REL(__FILE__, "../functions/formatFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
   require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+  require_once(REL(__FILE__, "../model/MemberAccounts.php"));
   require_once(REL(__FILE__, "../model/TransactionTypes.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountTransaction.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
 
 
   #****************************************************************************
@@ -59,7 +58,7 @@
     <td valign="top" class="primary">
       <?php
         $transtypes = new TransactionTypes;
-        echo inputfield('select', 'transactionTypeCd','' , NULL, $transtypes->getSelect());
+        echo inputfield('select', 'transaction_type_cd','' , NULL, $transtypes->getSelect());
       ?>
     </td>
   </tr>
@@ -92,8 +91,8 @@
   #****************************************************************************
   #*  Search database for member account info
   #****************************************************************************
-  $transQ = new MemberAccountQuery();
-  $transactions = $transQ->getByMbrid($mbrid);
+  $acct = new MemberAccounts;
+  $transactions = $acct->getByMbrid($mbrid);
 
 ?>
 
@@ -121,7 +120,7 @@
   </tr>
 
 <?php
-  if (empty($transactions)) {
+  if ($transactions->count() === 0) {
 ?>
   <tr>
     <td class="primary" align="center" colspan="6">
@@ -135,24 +134,24 @@
     <tr><td class="primary" colspan="5"><?php echo T("Opening Balance"); ?></td><td class="primary"><?php echo moneyFormat($bal,2); ?></td></tr>
 
     <?php
-    foreach ($transactions as $trans) {
-      $bal = $bal + $trans->getAmount();
+    while (($trans = $transactions->next()) !== NULL) {
+      $bal += $trans['amount'];
 ?>
   <tr>
     <td class="primary" valign="top" >
-      <a href="../circ/mbr_transaction_del_confirm.php?mbrid=<?php echo $mbrid;?>&transid=<?php echo $trans->getTransid();?>"><?php echo T("del");?></a>
+      <a href="../circ/mbr_transaction_del_confirm.php?mbrid=<?php echo HURL($mbrid);?>&amp;transid=<?php echo HURL($trans['transid']);?>"><?php echo T("del");?></a>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $trans->getCreateDt();?>
+      <?php echo H($trans['create_dt']);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $trans->getTransactionTypeDesc();?>
+      <?php echo T('trans_type|'.H($trans['transaction_type_cd']));?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo $trans->getDescription();?>
+      <?php echo H($trans['description']);?>
     </td>
     <td class="primary" valign="top" >
-      <?php echo moneyFormat($trans->getAmount(),2);?>
+      <?php echo moneyFormat($trans['amount'],2);?>
     </td>
     <td class="primary" valign="top" >
       <?php echo moneyFormat($bal,2);?>

@@ -5,6 +5,7 @@
 
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+require_once(REL(__FILE__, "../model/MemberAccounts.php"));
 
 class Members extends CoreTable {
   function Members() {
@@ -117,8 +118,19 @@ class Members extends CoreTable {
     return $row['calendar'];
   }
   function deleteOne($mbrid) {
-    # FIXME - history, account
+    # FIXME - history
+    $this->custom->deleteMatches(array('mbrid'=>$mbrid));
+    $acct = new MemberAccounts;
+    $acct->deleteByMbrid($mbrid);
     parent::deleteOne($mbrid);
+  }
+  function deleteMatches($fields) {
+    $this->db->lock();
+    $rows = $this->getMatches($fields);
+    while (($row = $rows->next()) !== NULL) {
+      $this->deleteOne($row['mbrid']);
+    }
+    $this->db->unlock();
   }
   function getCustomFields($mbrid) {
     return $this->custom->getMatches(array('mbrid'=>$mbrid));

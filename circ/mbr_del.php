@@ -11,7 +11,6 @@
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
   require_once(REL(__FILE__, "../model/Members.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
   require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 
@@ -40,22 +39,6 @@
   }
   $histQ->close();
 *****************/
-
-  #**************************************************************************
-  #*  Delete Member Account
-  #**************************************************************************
-  $transQ = new MemberAccountQuery();
-  $transQ->connect();
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  $trans = $transQ->delete($mbrid);
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  $transQ->close();
 
   #**************************************************************************
   #*  Show success page

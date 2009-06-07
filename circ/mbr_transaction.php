@@ -10,8 +10,7 @@
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once(REL(__FILE__, "../classes/MemberAccountTransaction.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../model/MemberAccounts.php"));
   require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 
@@ -33,43 +32,17 @@
       $mbrName = "";
   }
 
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
-  $trans = new MemberAccountTransaction();
-  $trans->setMbrid($mbrid);
-  $trans->setCreateUserid($_SESSION["userid"]);
-  $trans->setTransactionTypeCd($_POST["transactionTypeCd"]);
-  $_POST["transactionTypeCd"] = $trans->getTransactionTypeCd();
-  $trans->setAmount($_POST["amount"]);
-  $_POST["amount"] = $trans->getAmount();
-  $trans->setDescription($_POST["description"]);
-  $_POST["description"] = $trans->getDescription();
-  $validData = $trans->validateData();
-  if (!$validData) {
-    $pageErrors["amount"] = $trans->getAmountError();
-    $pageErrors["description"] = $trans->getDescriptionError();
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../circ/mbr_account.php?mbrid=".$mbrid."&name=".$mbrName);
-    exit();
+  $acct = new MemberAccounts;
+  list($id, $errs) = $acct->insert_el(array(
+    'mbrid'=>$mbrid,
+    'transaction_type_cd'=>$_POST["transaction_type_cd"],
+    'amount'=>trim($_POST["amount"]),
+    'description'=>trim($_POST["description"]),
+  ));
+  if ($errs) {
+    $url = "../circ/mbr_account.php?mbrid=".U($mbrid)."&name=".U($mbrName);
+    FieldError::backToForm($url, $errs);
   }
-
-  #**************************************************************************
-  #*  Insert new member transaction
-  #**************************************************************************
-  $transQ = new MemberAccountQuery();
-  $transQ->connect();
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  $trans = $transQ->insert($trans);
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  $transQ->close();
 
   $msg = T("Transaction successfully completed.");
   header("Location: ../circ/mbr_account.php?mbrid=".$mbrid."&name=".$mbrName."&reset=Y&msg=".U($msg));

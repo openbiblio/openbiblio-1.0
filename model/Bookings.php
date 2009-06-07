@@ -9,7 +9,7 @@ require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/History.php"));
 require_once(REL(__FILE__, "../model/Collections.php"));
 require_once(REL(__FILE__, "../model/Calendars.php"));
-require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+require_once(REL(__FILE__, "../model/MemberAccounts.php"));
 
 class Bookings extends CoreTable {
   function Bookings() {
@@ -338,9 +338,9 @@ class Bookings extends CoreTable {
       }
       if (Settings::get('block_checkouts_when_fines_due')) {
         $all_fined = true;
-        $acctQ = new MemberAccountQuery();
+        $acct = new MemberAccounts;
         foreach ($booking['mbrids'] as $mbrid) {
-          if ($acctQ->getBalance($mbrid) == 0) {
+          if ($acct->getBalance($mbrid) == 0) {
             $all_fined = false;
             break;
           }

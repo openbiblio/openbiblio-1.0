@@ -20,7 +20,7 @@
   require_once(REL(__FILE__, "../model/History.php"));
   require_once(REL(__FILE__, "../model/MaterialTypes.php"));
   require_once(REL(__FILE__, "../model/Bookings.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../model/MemberAccounts.php"));
   require_once(REL(__FILE__, "../classes/Report.php"));
   require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 
@@ -58,18 +58,8 @@
   #****************************************************************************
   #*  Check for outstanding balance due
   #****************************************************************************
-  $acctQ = new MemberAccountQuery();
-  $acctQ->connect();
-  if ($acctQ->errorOccurred()) {
-    $acctQ->close();
-    displayErrorPage($acctQ);
-  }
-  $balance = $acctQ->getBalance($mbrid);
-  if ($acctQ->errorOccurred()) {
-    $acctQ->close();
-    displayErrorPage($acctQ);
-  }
-  $acctQ->close();
+  $acct = new MemberAccounts;
+  $balance = $acct->getBalance($mbrid);
   $balMsg = "";
   if ($balance != 0) {
     $balText = moneyFormat($balance,2);

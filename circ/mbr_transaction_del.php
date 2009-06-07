@@ -10,8 +10,7 @@
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once(REL(__FILE__, "../classes/MemberAccountTransaction.php"));
-  require_once(REL(__FILE__, "../classes/MemberAccountQuery.php"));
+  require_once(REL(__FILE__, "../model/MemberAccounts.php"));
   require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 
@@ -24,18 +23,8 @@
   #**************************************************************************
   #*  Delete member transaction
   #**************************************************************************
-  $transQ = new MemberAccountQuery();
-  $transQ->connect();
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  $trans = $transQ->delete($mbrid,$transid);
-  if ($transQ->errorOccurred()) {
-    $transQ->close();
-    displayErrorPage($transQ);
-  }
-  $transQ->close();
+  $acct  = new MemberAccounts;
+  $acct->deleteOne($transid);
 
   $msg = T("Transaction successfully deleted.");
   header("Location: ../circ/mbr_account.php?mbrid=".$mbrid."&reset=Y&msg=".U($msg));
