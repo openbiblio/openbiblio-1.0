@@ -39,23 +39,9 @@ class Biblios extends CoreTable {
     ));
     $this->setKey('bibid');
     $this->setSequenceField('bibid');
-
+    $this->setIter('BiblioIter');
+    
     $this->marc = new MarcStore;
-  }
-  function getOne($bibid) {
-    $row = parent::getOne($bibid);
-    if (!$row)
-      return NULL;
-    $row['marc'] = $this->marc->get($bibid);
-    return $row;
-  }
-  function getAll() {
-    $rows = parent::getAll();
-    return new BiblioIter($rows);
-  }
-  function getMatches($fields) {
-    $rows = parent::getMatches($fields);
-    return new BiblioIter($rows);
   }
   function insert_el($biblio) {
     $this->db->lock();
