@@ -27,12 +27,45 @@ class Staff extends CoreTable {
   }
   function validate_el($rec, $insert) {
     $errors = array();
-    foreach (array('username') as $req) {
+    foreach (array('username', 'last_name') as $req) {
       if ($insert and !isset($rec[$req])
           or isset($rec[$req]) and $rec[$req] == '') {
         $errors[] = new FieldError($req, T("Required field missing"));
       }
     }
+    if (isset($rec['pwd'])) {
+      if (!isset($rec['pwd2']) or $rec['pwd'] != $rec['pwd2']) {
+        $errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
+      }
+    }
+    if (isset($rec['username'])) {
+      $sql = $this->db->mkSQL("SELECT * FROM staff WHERE username=%Q ");
+      if (isset($rec['userid'])) {
+        $sql .= $this->db->mkSQL("AND userid <> %N ", $rec['userid']);
+      }
+      $rows = $this->db->select($sql);
+      if ($rows->count() != 0) {
+        $errors[] = new FieldError('username', T("Username already taken by another user."));
+      }
+    }
     return $errors;
+  }
+  function insert_el($rec, $confirmed=false) {
+    if(isset($rec['pwd'])) {
+      $rec['pwd'] == md5(strtolower($rec['pwd']));
+    }
+    if(isset($rec['pwd2'])) {
+      $rec['pwd2'] == md5(strtolower($rec['pwd2']));
+    }
+    return parent::insert_el($rec, $confirmed);
+  }
+  function update_el($rec, $confirmed=false) {
+    if(isset($rec['pwd'])) {
+      $rec['pwd'] == md5(strtolower($rec['pwd']));
+    }
+    if(isset($rec['pwd2'])) {
+      $rec['pwd2'] == md5(strtolower($rec['pwd2']));
+    }
+    return parent::update_el($rec, $confirmed);
   }
 }

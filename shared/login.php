@@ -5,72 +5,45 @@
 
   require_once("../shared/common.php");
 
-  require_once(REL(__FILE__, "../classes/Staff.php"));
-  require_once(REL(__FILE__, "../classes/StaffQuery.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+  require_once(REL(__FILE__, "../model/Staff.php"));
 
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
   $pageErrors = "";
   if (count($_POST) == 0) {
     header("Location: ../shared/loginform.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  Username edits
-  #****************************************************************************
   $username = $_POST["username"];
+  $error_found = false;
   if ($username == "") {
     $error_found = true;
     $pageErrors["username"] = T("Username is required.");
   }
-
-  #****************************************************************************
-  #*  Password edits
-  #****************************************************************************
-  $error_found = false;
   $pwd = $_POST["pwd"];
   if ($pwd == "") {
     $error_found = true;
     $pageErrors["pwd"] = T("Password is required.");
-  } else {
-
-
-    $staffQ = new StaffQuery();
-    $staffQ->connect();
-    if ($staffQ->errorOccurred()) {
-      displayErrorPage($staffQ);
-    }
-    $staffQ->verifySignon($username, $pwd);
-    if ($staffQ->errorOccurred()) {
-      displayErrorPage($staffQ);
-    }
-    $staff = $staffQ->fetchStaff();
-    if ($staff == false) {
-      # invalid password.  Add one to login attempts.
+  }
+  
+  if (!$error_found) {
+    $staff = new Staff;
+    $rows = $staff->getMatches(array('username'=>$username, 'pwd'=>md5($pwd)));
+    if ($rows->count() == 1) {
+      $user = $rows->next();
+    } else {
+      # invalid username or password.  Add one to login attempts.
       $error_found = true;
       $pageErrors["pwd"] = T("Invalid signon.");
-      if (!isset($_SESSION["loginAttempts"]) || ($_SESSION["loginAttempts"] == "")) {
-        $sess_login_attempts = 1;
-      } else {
-        $sess_login_attempts = $_SESSION["loginAttempts"] + 1;
-      }
-      # Suspend userid if login attempts >= 3
-      if ($sess_login_attempts >= 3) {
-        $staffQ->suspendStaff($username);
-        $staffQ->close();
-        header("Location: suspended.php");
-        exit();
-      }
+      
+      # FIXME - The old code would suspend a user's account after three
+      # failed login attempts.  That's a very easy denial of service,
+      # if you know the staff usernames.  I've removed that feature,
+      # but we are now open to an online dictionary attack.  A better
+      # method might be to disallow login from a particular IP for a
+      # time after several failed attempts.
     }
-    $staffQ->close();
   }
 
-  #****************************************************************************
-  #*  Redirect back to form if error occured
-  #****************************************************************************
   if ($error_found == true) {
     $_SESSION["postVars"] = $_POST;
     $_SESSION["pageErrors"] = $pageErrors;
@@ -78,31 +51,22 @@
     exit();
   }
 
-  #****************************************************************************
-  #*  Redirect to suspended message if suspended
-  #****************************************************************************
-  if ($staff->isSuspended()) {
+  if ($user->isSuspended()) {
     header("Location: ../shared/suspended.php");
     exit();
   }
 
-  #**************************************************************************
-  #*  Destroy form values and errors and reset signon variables
-  #**************************************************************************
   unset($_SESSION["postVars"]);
   unset($_SESSION["pageErrors"]);
 
-  $_SESSION["username"] = $staff->getUsername();
-  $_SESSION["userid"] = $staff->getUserid();
+  $_SESSION["username"] = $user['username'];
+  $_SESSION["userid"] = $user['userid'];
   $_SESSION["loginAttempts"] = 0;
-  $_SESSION["hasAdminAuth"] = $staff->hasAdminAuth();
-  $_SESSION["hasCircAuth"] = $staff->hasCircAuth();
-  $_SESSION["hasCircMbrAuth"] = $staff->hasCircMbrAuth();
-  $_SESSION["hasCatalogAuth"] = $staff->hasCatalogAuth();
-  $_SESSION["hasReportsAuth"] = $staff->hasReportsAuth();
+  $_SESSION["hasAdminAuth"] = ($user['admin_flg'] == 'Y');
+  $_SESSION["hasCircAuth"] = ($user['circ_flg'] == 'Y');
+  $_SESSION["hasCircMbrAuth"] = ($user['circ_mbr_flg'] == 'Y');
+  $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
+  $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 
-  #**************************************************************************
-  #*  Redirect to return page
-  #**************************************************************************
   header("Location: ".$_SESSION["returnPage"]);
   exit();

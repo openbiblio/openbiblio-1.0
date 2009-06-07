@@ -9,54 +9,23 @@
   $nav = "staff";
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
+  require_once(REL(__FILE__, "../model/Staff.php"));
 
-  require_once(REL(__FILE__, "../classes/Staff.php"));
-  require_once(REL(__FILE__, "../classes/StaffQuery.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
   if (count($_POST) == 0) {
     header("Location: ../admin/staff_list.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
-  $staff = new Staff();
-  $staff->setUserid($_POST["userid"]);
-  $staff->setPwd($_POST["pwd"]);
-  $_POST["pwd"] = $staff->getPwd();
-  $staff->setPwd2($_POST["pwd2"]);
-  $_POST["pwd2"] = $staff->getPwd2();
-  if (!$staff->validatePwd()) {
-    $pageErrors["pwd"] = $staff->getPwdError();
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../admin/staff_pwd_reset_form.php");
-    exit();
+  $staff = new Staff;
+  $errs = $staff->update_el(array(
+    'userid'=>$_POST['userid'],
+    'pwd'=>$_POST['pwd'],
+    'pwd2'=>$_POST['pwd2']
+  ));
+  if ($errs) {
+    FieldError::backToForm('../admin/staff_pwd_reset_form.php', $errs);
   }
 
-  #**************************************************************************
-  #*  Update staff member
-  #**************************************************************************
-  $staffQ = new StaffQuery();
-  $staffQ->connect();
-  if ($staffQ->errorOccurred()) {
-    $staffQ->close();
-    displayErrorPage($staffQ);
-  }
-  if (!$staffQ->resetPwd($staff)) {
-    $staffQ->close();
-    displayErrorPage($staffQ);
-  }
-  $staffQ->close();
-
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   echo T("Password has been reset.").'<br /><br />';

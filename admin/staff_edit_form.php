@@ -16,60 +16,18 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  #****************************************************************************
-  #*  Checking for query string flag to read data from database.
-  #****************************************************************************
   if (isset($_GET["UID"])){
     $postVars["userid"] = $_GET["UID"];
-    include_once(REL(__FILE__, "../classes/Staff.php"));
-    include_once(REL(__FILE__, "../classes/StaffQuery.php"));
-    include_once(REL(__FILE__, "../functions/errorFuncs.php"));
-    $staffQ = new StaffQuery();
-    $staffQ->connect();
-    if ($staffQ->errorOccurred()) {
-      $staffQ->close();
-      displayErrorPage($staffQ);
+    include_once(REL(__FILE__, "../model/Staff.php"));
+    $staff = new Staff;
+    $postVars = $staff->getOne($postVars["userid"]);
+    foreach (array('circ', 'circ_mbr', 'admin', 'reports', 'suspended') as $flg) {
+      if ($postvars[$flg.'_flg'] == 'Y') {
+        $postVars[$flg.'_flg'] = "CHECKED";
+      } else {
+        $postVars[$flg.'_flg'] = "";
+      }
     }
-    $staffQ->execSelect($postVars["userid"]);
-    if ($staffQ->errorOccurred()) {
-      $staffQ->close();
-      displayErrorPage($staffQ);
-    }
-    $staff = $staffQ->fetchStaff();
-    $postVars["last_name"] = $staff->getLastName();
-    $postVars["first_name"] = $staff->getFirstName();
-    $postVars["username"] = $staff->getUsername();
-    if ($staff->hasCircAuth()) {
-      $postVars["circ_flg"] = "CHECKED";
-    } else {
-      $postVars["circ_flg"] = "";
-    }
-    if ($staff->hasCircMbrAuth()) {
-      $postVars["circ_mbr_flg"] = "CHECKED";
-    } else {
-      $postVars["circ_mbr_flg"] = "";
-    }
-    if ($staff->hasCatalogAuth()) {
-      $postVars["catalog_flg"] = "CHECKED";
-    } else {
-      $postVars["catalog_flg"] = "";
-    }
-    if ($staff->hasAdminAuth()) {
-      $postVars["admin_flg"] = "CHECKED";
-    } else {
-      $postVars["admin_flg"] = "";
-    }
-    if ($staff->hasReportsAuth()) {
-      $postVars["reports_flg"] = "CHECKED";
-    } else {
-      $postVars["reports_flg"] = "";
-    }
-    if ($staff->isSuspended()) {
-      $postVars["suspended_flg"] = "CHECKED";
-    } else {
-      $postVars["suspended_flg"] = "";
-    }
-    $staffQ->close();
   } else {
     require(REL(__FILE__, "../shared/get_form_vars.php"));
   }
