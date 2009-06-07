@@ -362,4 +362,8 @@ class UpgradeQuery extends InstallQuery {
     $notices = array();
     return array($notices, NULL);
   }
+  function _upgrade040mps3_e($prfx, $tmpPrfx) {
+    # FIXME -- not done yet
+    # delete session table
+  }
 }

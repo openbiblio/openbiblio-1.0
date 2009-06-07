@@ -7,7 +7,6 @@
 
   require_once(REL(__FILE__, "../classes/Staff.php"));
   require_once(REL(__FILE__, "../classes/StaffQuery.php"));
-  require_once(REL(__FILE__, "../classes/SessionQuery.php"));
   require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
   #****************************************************************************
@@ -88,23 +87,6 @@
   }
 
   #**************************************************************************
-  #*  Insert new session row with random token
-  #**************************************************************************
-
-  $sessionQ = new SessionQuery();
-  $sessionQ->connect();
-  if ($sessionQ->errorOccurred()) {
-    $sessionQ->close();
-    displayErrorPage($sessionQ);
-  }
-  $token = $sessionQ->getToken($staff->getUserid());
-  if ($token == false) {
-    $sessionQ->close();
-    displayErrorPage($sessionQ);
-  }
-  $sessionQ->close();
-
-  #**************************************************************************
   #*  Destroy form values and errors and reset signon variables
   #**************************************************************************
   unset($_SESSION["postVars"]);
@@ -112,7 +94,6 @@
 
   $_SESSION["username"] = $staff->getUsername();
   $_SESSION["userid"] = $staff->getUserid();
-  $_SESSION["token"] = $token;
   $_SESSION["loginAttempts"] = 0;
   $_SESSION["hasAdminAuth"] = $staff->hasAdminAuth();
   $_SESSION["hasCircAuth"] = $staff->hasCircAuth();

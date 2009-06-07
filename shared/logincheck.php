@@ -3,13 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-#*********************************************************************************
-#*  checklogin.php
-#*  Description: Used to verify signon token on every secured page.
-#*               Redirects to the login page if token not valid.
-#*********************************************************************************
-
-  require_once(REL(__FILE__, "../classes/SessionQuery.php"));
   require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
   #****************************************************************************
@@ -34,28 +27,6 @@
     header("Location: ../shared/loginform.php");
     exit();
   }
-  if (!isset($_SESSION["token"]) or ($_SESSION["token"] == "")) {
-    header("Location: ../shared/loginform.php");
-    exit();
-  }
-
-  #****************************************************************************
-  #*  Checking session table to see if session_id has timed out
-  #****************************************************************************
-  $sessQ = new SessionQuery();
-  $sessQ->connect();
-  if ($sessQ->errorOccurred()) {
-    displayErrorPage($sessQ);
-  }
-  if (!$sessQ->validToken($_SESSION["userid"], $_SESSION["token"])) {
-    if ($sessQ->errorOccurred()) {
-      displayErrorPage($sessQ);
-    }
-    $sessQ->close();
-    header("Location: ../shared/loginform.php?RET=".$returnPage);
-    exit();
-  }
-  $sessQ->close();
 
   #****************************************************************************
   #*  Checking authorization for this tab
