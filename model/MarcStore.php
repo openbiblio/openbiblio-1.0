@@ -6,29 +6,39 @@
 require_once(REL(__FILE__, "../classes/Query.php"));
 require_once(REL(__FILE__, "../classes/Marc.php"));
 
-class MarcQuery extends Query {
+# Note: this doesn't follow the standard table API.
+# It's really only intended to be used by Biblios.php
 
-  function MarcQuery () {
-    $this->Query();
+class MarcStore {
+  function MarcStore () {
+    $this->db = new Query;
+  }
+  function delete($bibid) {
+    $this->db->lock();
+    $subsql = $this->db->mkSQL("delete from biblio_subfield where bibid=%N ", $bibid);
+    $fldsql = $this->db->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
+    $this->db->act($subsql);
+    $this->db->act($fldsql);
+    $this->db->unlock();
   }
   function get($bibid) {
-    $sql = $this->mkSQL("select * "
+    $sql = $this->db->mkSQL("select * "
                         . "from biblio_field as bf "
                         . "left join biblio_subfield as bs "
                         . "on bf.fieldid=bs.fieldid "
                         . "where bf.bibid=%N "
                         . "order by bf.seq, bf.fieldid, bs.seq ",
                         $bibid);
-    $rows = $this->eexec($sql);
+    $rows = $this->db->select($sql);
 
-    if (empty($rows)) {
+    if ($rows->count() == 0) {
       return NULL;
     }
 
     $rec = new MarcRecord();
     $fieldid = NULL;
     $field = NULL;
-    foreach ($rows as $row) {
+    while (($row = $rows->next()) !== NULL) {
       if ($row['fieldid'] != $fieldid) {
         if ($field) {
           array_push($rec->fields, $field);
@@ -65,73 +75,58 @@ class MarcQuery extends Query {
   }
 
   function put($bibid, $record) {
-    $this->lock();
+    $this->db->lock();
     $this->delete($bibid);
     $fldseq = 1;
     if (!$this->_putControl($bibid, $fldseq, "LDR", $record->getLeader())) {
-      $this->unlock();
+      $this->db->unlock();
       return false;
     }
     foreach ($record->fields as $field) {
       $fldseq += 1;
       if (is_a($field, 'MarcControlField')) {
         if (!$this->_putControl($bibid, $fldseq, $field->tag, $field->data)) {
-          $this->unlock();
+          $this->db->unlock();
           return false;
         }
       } else {
         $fieldid = $this->_putData($bibid, $fldseq, $field->tag, $field->indicators);
         if (!$fieldid) {
-          $this->unlock();
+          $this->db->unlock();
           return false;
         }
         $subseq = 1;
         foreach ($field->subfields as $subf) {
           if (!$this->_putSub($bibid, $fieldid, $subseq++,
                               $subf->identifier, $subf->data)) {
-            $this->unlock();
+            $this->db->unlock();
             return false;
           }
         }
       }
     }
-    $this->unlock();
+    $this->db->unlock();
     return true;
   }
-  function _insert($sql, $error) {
-    if (!$this->_query($sql, T($error))) {
-      return false;
-    }
-    return $this->_conn->getInsertId();
-  }
   function _putControl($bibid, $seq, $tag, $data) {
-    $sql = $this->mkSQL("insert into biblio_field values "
+    $sql = $this->db->mkSQL("insert into biblio_field values "
                         . "(%N, NULL, %N, %Q, NULL, NULL, %Q, NULL) ",
                         $bibid, $seq, $tag, $data);
-    return $this->_insert($sql, T("Error inserting control field"));
+    $this->db->act($sql);
+    return $this->db->getInsertID();
   }
   function _putData($bibid, $seq, $tag, $ind) {
-    $sql = $this->mkSQL("insert into biblio_field values "
+    $sql = $this->db->mkSQL("insert into biblio_field values "
                         . "(%N, NULL, %N, %Q, %Q, %Q, NULL, NULL) ",
                         $bibid, $seq, $tag, $ind{0}, $ind{1});
-    return $this->_insert($sql, T("Error inserting data field"));
+    $this->db->act($sql);
+    return $this->db->getInsertID();
   }
   function _putSub($bibid, $fieldid, $seq, $identifier, $data) {
-    $sql = $this->mkSQL("insert into biblio_subfield values "
+    $sql = $this->db->mkSQL("insert into biblio_subfield values "
                         . "(%N, %N, NULL, %N, %Q, %Q) ",
                         $bibid, $fieldid, $seq, $identifier, $data);
-    return $this->_insert($sql, T("Error inserting subfield"));
-  }
-  function delete($bibid) {
-    $this->lock();
-    $subsql = $this->mkSQL("delete from biblio_subfield where bibid=%N ", $bibid);
-    $fldsql = $this->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
-    if (!$this->exec($subsql)) {
-      $this->unlock();
-      return false;
-    }
-    $r = $this->exec($fldsql);
-    $this->unlock();
-    return $r;
+    $this->db->act($sql);
+    return $this->db->getInsertID();
   }
 }

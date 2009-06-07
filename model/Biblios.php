@@ -4,19 +4,19 @@
  */
 
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
-require_once(REL(__FILE__, "../classes/MarcQuery.php"));
+require_once(REL(__FILE__, "../model/MarcStore.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
 class BiblioIter extends Iter {
   function BiblioIter($rows) {
     $this->rows = $rows;
-    $this->marcq = new MarcQuery;
+    $this->marc = new MarcStore;
   }
   function next() {
     $row = $this->rows->next();
     if (!$row)
       return NULL;
-    $row['marc'] = $this->marcq->get($row['bibid']);
+    $row['marc'] = $this->marc->get($row['bibid']);
     return $row;
   }
   function skip() {
@@ -40,13 +40,13 @@ class Biblios extends CoreTable {
     $this->setKey('bibid');
     $this->setSequenceField('bibid');
 
-    $this->marcq = new MarcQuery;
+    $this->marc = new MarcStore;
   }
   function getOne($bibid) {
     $row = parent::getOne($bibid);
     if (!$row)
       return NULL;
-    $row['marc'] = $this->marcq->get($bibid);
+    $row['marc'] = $this->marc->get($bibid);
     return $row;
   }
   function getAll() {
@@ -66,7 +66,7 @@ class Biblios extends CoreTable {
     if ($errors) {
       return array($bibid, $errors);
     }
-    $this->marcq->put($bibid, $biblio['marc']);
+    $this->marc->put($bibid, $biblio['marc']);
     $this->db->unlock();
     return array($bibid, NULL);
   }
@@ -76,7 +76,7 @@ class Biblios extends CoreTable {
       Fatal::internalError(T("No bibid set in biblio update"));
     }
     if (isset($biblio['marc']) and is_a($biblio['marc'], 'MarcRecord')) {
-      $this->marcq->put($biblio['bibid'], $biblio['marc']);
+      $this->marc->put($biblio['bibid'], $biblio['marc']);
     }
     $r = parent::update_el($biblio);
     $this->db->unlock();
@@ -86,7 +86,7 @@ class Biblios extends CoreTable {
     $this->db->lock();
     $imgs = new BiblioImages;
     $imgs->deleteByBibid($bibid);
-    $this->marcq->delete($bibid);
+    $this->marc->delete($bibid);
     parent::deleteOne($bibid);
     $this->db->unlock();
   }

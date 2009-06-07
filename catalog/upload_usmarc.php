@@ -13,7 +13,6 @@ set_time_limit(120);
 
 require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../classes/Marc.php"));
-require_once(REL(__FILE__, "../classes/MarcQuery.php"));
 require_once(REL(__FILE__, "../classes/Cart.php"));
 
 require_once(REL(__FILE__, "../shared/logincheck.php"));

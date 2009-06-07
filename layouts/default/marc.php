@@ -3,19 +3,19 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once(REL(__FILE__, '../../classes/MarcQuery.php'));
+  require_once(REL(__FILE__, '../../model/Biblios.php'));
 
   class Layout_marc {
     function render($rpt) {
       header('Content-Type: application/marc');
       header('Content-disposition: inline; filename="export.mrc"');
-      $marcQ = new MarcQuery();
+      $biblios = new Biblios;
       while ($row = $rpt->each()) {
-        $marc = $marcQ->get($row['bibid']);
-        if (!$marc) {
+        $bib = $biblios->getOne($row['bibid']);
+        if (!$bib['marc']) {
           continue;
         }
-        list($rec, $err) = $marc->get();
+        list($rec, $err) = $bib['marc']->get();
         assert('!$err');
         echo $rec;
       }
