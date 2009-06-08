@@ -50,7 +50,7 @@ define("OBIB_DEMO_FLG",false);
 define("OBIB_HIGHLIGHT_I18N_FLG",true);
 define("OBIB_SEARCH_MAXPAGES",10);
 
-define("OBIB_UPLOAD_DIR","../uploads/");
+define("OBIB_UPLOAD_DIR",REL(__FILE__, "../uploads/"));
 
 define("OBIB_MASTER_CALENDAR",1);
 
