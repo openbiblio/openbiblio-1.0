@@ -15,24 +15,13 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  #****************************************************************************
-  #*  Checking for query string flag to read data from database.
-  #****************************************************************************
   if (isset($_GET["code"])){
     unset($_SESSION["postVars"]);
     unset($_SESSION["pageErrors"]);
 
-    $code = $_GET["code"];
-    $postVars["code"] = $code;
-    include_once(REL(__FILE__, "../classes/Dm.php"));
-    include_once(REL(__FILE__, "../classes/DmQuery.php"));
-    include_once(REL(__FILE__, "../functions/errorFuncs.php"));
-    $dmQ = new DmQuery();
-    $dmQ->connect();
-    $dm = $dmQ->get1("member_fields_dm",$code);
-    $postVars["code"] = $dm->getCode();
-    $postVars["description"] = $dm->getDescription();
-    $dmQ->close();
+    include_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+    $fields = new MemberCustomFields;
+    $postVars = $fields->getOne($_GET["code"]);
   } else {
     require(REL(__FILE__, "../shared/get_form_vars.php"));
   }

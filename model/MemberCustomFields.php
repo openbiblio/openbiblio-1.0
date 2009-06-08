@@ -16,5 +16,14 @@ class MemberCustomFields extends DmTable {
     ));
     $this->setKey('code');
   }
+  function validate_el($rec, $insert) {
+    $errors = array();
+    foreach (array('description', 'code') as $req) {
+      if ($insert and !isset($rec[$req])
+          or isset($rec[$req]) and $rec[$req] == '') {
+        $errors[] = new FieldError($req, T("Required field missing"));
+      }
+    }
+    return $errors;
+  }
 }
-

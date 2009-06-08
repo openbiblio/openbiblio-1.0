@@ -8,54 +8,25 @@
   $nav = "member_fields";
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-
-  require_once(REL(__FILE__, "../classes/Dm.php"));
-  require_once(REL(__FILE__, "../classes/DmQuery.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
+  require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
   if (count($_POST) == 0) {
     header("Location: ../admin/member_fields_list.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
-  $dm = new Dm();
-  $dm->setCode($_POST["code"]);
-  $_POST["code"] = $dm->getCode();
-  $dm->setDescription($_POST["description"]);
-  $_POST["description"] = $dm->getDescription();
-
-  if (!$dm->validateData()) {
-    $pageErrors["description"] = $dm->getDescriptionError();
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../admin/member_fields_edit_form.php");
-    exit();
+  $fields = new MemberCustomFields;
+  $errs = $fields->update_el(array(
+    'code'=>@$_POST["code"],
+    'description'=>@$_POST["description"],
+  ));
+  if ($errs) {
+    FieldError::backToForm('../admin/member_fields_edit_form.php', $errs);
   }
 
-  #**************************************************************************
-  #*  Update domain table row
-  #**************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dmQ->update("member_fields_dm",$dm);
-  $dmQ->close();
-
-  #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
   unset($_SESSION["postVars"]);
   unset($_SESSION["pageErrors"]);
 
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   echo T("Member field, %desc%, has been updated.", array('desc'=>$dm->getDescription())).'<br /><br />';

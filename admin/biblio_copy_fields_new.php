@@ -10,7 +10,6 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
   require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
   #****************************************************************************
   #*  Checking for post vars.  Go back to form if none found.
@@ -34,17 +33,6 @@
     header("Location: ../admin/member_fields_new_form.php");
     exit();
   }
-
-  #**************************************************************************
-  #*  Insert new domain table row
-  #**************************************************************************
-#  $dm = new Dm();
-#  $dm->setCode($_POST["code"]);
-#  $dm->setDescription($_POST["description"]);
-#  $dmQ = new DmQuery();
-#  $dmQ->connect();
-#  $dmQ->insert("member_fields_dm",$dm);
-#  $dmQ->close();
 
   $BCQ = new BiblioCopyFields;
   $biblioCopyField = array(

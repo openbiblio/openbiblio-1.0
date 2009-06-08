@@ -9,59 +9,27 @@
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once(REL(__FILE__, "../classes/Dm.php"));
-  require_once(REL(__FILE__, "../classes/DmQuery.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
-  #****************************************************************************
-  #*  Checking for post vars.  Go back to form if none found.
-  #****************************************************************************
+  require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
   if (count($_POST) == 0) {
     header("Location: ../admin/member_fields_new_form.php");
     exit();
   }
 
-  #****************************************************************************
-  #*  Validate data
-  #****************************************************************************
-  $pageErrors = array();
-  if (!isset($_POST['code']) or !$_POST['code']) {
-    $pageErrors['code'] = T("This is a required field.");
+  $fields = new MemberCustomFields;
+  list($id, $errs) = $fields->insert_el(array(
+    'code'=>@$_POST['code'],
+    'description'=>@$_POST['description'],
+  ));
+  if ($errs) {
+    FieldError::backToForm('../admin/member_fields_new_form.php', $errs);
   }
-  if (!isset($_POST['description']) or !$_POST['description']) {
-    $pageErrors['description'] = T("This is a required field.");
-  }
-  if (!empty($pageErrors)) {
-    $_SESSION["postVars"] = $_POST;
-    $_SESSION["pageErrors"] = $pageErrors;
-    header("Location: ../admin/member_fields_new_form.php");
-    exit();
-  }
-
-  #**************************************************************************
-  #*  Insert new domain table row
-  #**************************************************************************
-  $dm = new Dm();
-  $dm->setCode($_POST["code"]);
-  $dm->setDescription($_POST["description"]);
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dmQ->insert("member_fields_dm",$dm);
-  $dmQ->close();
-
-  #**************************************************************************
-  #*  Destroy form values and errors
-  #**************************************************************************
   unset($_SESSION["postVars"]);
   unset($_SESSION["pageErrors"]);
 
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  echo T("Member field, %desc%, has been added.", array('desc'=>$dm->getDescription())).'<br /><br />';
+  echo T("Member field, %desc%, has been added.", array('desc'=>H(@$_POST['descripton']))).'<br /><br />';
   echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
 
   Page::footer();

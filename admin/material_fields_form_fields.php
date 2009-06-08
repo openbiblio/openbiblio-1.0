@@ -10,13 +10,6 @@
 </tr>
 <tr>
 <td  align="right" class="primary"><?php T("Material Type");?></td>
-<?php
-  //$dmQ = new DmQuery();
-  //$dmQ->connect();
-  //$dm = $dmQ->get1("material_type_dm",$materialCd);
-  //$material_type= $dm->getDescription();
-  //$dmQ->close();
-?>
 <td  align="Left" class="primary">
 <?php
 echo H($material_type);

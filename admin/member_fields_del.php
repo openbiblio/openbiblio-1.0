@@ -8,12 +8,8 @@
   $nav = "member_fields";
   $restrictInDemo = true;
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../classes/DmQuery.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+  require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
-  #****************************************************************************
-  #*  Checking for query string.  Go back to list if none found.
-  #****************************************************************************
   if (!isset($_GET["code"])){
     header("Location: ../admin/member_fields_list.php");
     exit();
@@ -21,17 +17,9 @@
   $code = $_GET["code"];
   $description = $_GET["desc"];
 
-  #**************************************************************************
-  #*  Delete row
-  #**************************************************************************
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dmQ->delete("member_fields_dm",$code);
-  $dmQ->close();
+  $fields = new MemberCustomFields;
+  $fields->deleteOne($code);
 
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
   echo T('memberFieldsDelMsg', array('desc'=>$description)).'<br /><br />';

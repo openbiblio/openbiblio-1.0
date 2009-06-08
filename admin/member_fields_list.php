@@ -7,19 +7,14 @@
   $tab = "admin";
   $nav = "member_fields";
 
-  require_once(REL(__FILE__, "../classes/Dm.php"));
-  require_once(REL(__FILE__, "../classes/DmQuery.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
+  require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
   Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 
-  $dmQ = new DmQuery();
-  $dmQ->connect();
-  $dms = $dmQ->get("member_fields_dm");
-  $dmQ->close();
+  $membfields = new MemberCustomFields;
+  $fields = $membfields->getAll();
 
 ?>
 <h1><?php echo T("Custom Member Fields"); ?></h1>
@@ -38,20 +33,20 @@
   </tr>
   <?php
     $row_class = "primary";
-    foreach ($dms as $dm) {
+    while (($field = $fields->next()) !== NULL) {
   ?>
   <tr>
     <td valign="top" class="<?php echo H($row_class); ?>">
-      <a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($dm->getCode()); ?>" class="<?php echo H($row_class); ?>"><?php echo T("edit"); ?></a>
+      <a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($field['code']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("edit"); ?></a>
     </td>
     <td valign="top" class="<?php echo H($row_class); ?>">
-      <a href="../admin/member_fields_del_confirm.php?code=<?php echo HURL($dm->getCode()); ?>&amp;desc=<?php echo HURL($dm->getDescription()); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
+      <a href="../admin/member_fields_del_confirm.php?code=<?php echo HURL($field['code']); ?>&amp;desc=<?php echo HURL($field['description']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
     </td>
     <td valign="top" class="<?php echo H($row_class); ?>">
-      <?php echo H($dm->getCode()); ?>
+      <?php echo H($field['code']); ?>
     </td>
     <td valign="top" class="<?php echo H($row_class); ?>">
-      <?php echo H($dm->getDescription()); ?>
+      <?php echo H($field['description']); ?>
     </td>
   </tr>
   <?php
