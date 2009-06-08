@@ -26,19 +26,7 @@
   #**************************************************************************
   #*  Delete Member History
   #**************************************************************************
-/**** FIXME !!!! ***
-  $histQ = new BiblioStatusHistQuery();
-  $histQ->connect();
-  if ($histQ->errorOccurred()) {
-    $histQ->close();
-    displayErrorPage($histQ);
-  }
-  if (!$histQ->deleteByMbrid($mbrid)) {
-    $histQ->close();
-    displayErrorPage($histQ);
-  }
-  $histQ->close();
-*****************/
+  /*** FIXME  - Do something with member history NOT DELETION ***/
 
   #**************************************************************************
   #*  Show success page
