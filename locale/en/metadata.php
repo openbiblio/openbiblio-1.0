@@ -3,11 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-#****************************************************************************
-#*  Translation Metadata
-#****************************************************************************
-class enMetaData {
-	function enMetaData() {
+class EnMetaData {
+	function EnMetaData() {
 		$this->locale_description = "English";
 	}
 }
