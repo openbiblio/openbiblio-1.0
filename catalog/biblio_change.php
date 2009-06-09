@@ -10,7 +10,6 @@ require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../classes/Marc.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 #****************************************************************************
 #*  Checking for post vars.  Go back to search if none found.

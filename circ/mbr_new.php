@@ -12,8 +12,6 @@ $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 require_once(REL(__FILE__, "../model/Members.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
 
 if (count($_POST) == 0) {
 	header("Location: ../circ/mbr_new_form.php");

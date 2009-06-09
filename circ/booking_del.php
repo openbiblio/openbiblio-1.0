@@ -11,8 +11,6 @@ $nav = "booking_deleted";
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/Bookings.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
 
 $bookingid = $_REQUEST["bookingid"];
 $bookings = new Bookings;

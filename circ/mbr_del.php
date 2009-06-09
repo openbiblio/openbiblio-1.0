@@ -11,8 +11,6 @@
 	$restrictInDemo = true;
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../model/Members.php"));
-	require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
 
 	$mbrid = $_GET["mbrid"];
 	$mbrName = $_GET["name"];

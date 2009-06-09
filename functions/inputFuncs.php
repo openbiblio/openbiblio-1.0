@@ -3,8 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	$s = "";
 	if (isset($_SESSION['postVars'])) {

@@ -8,7 +8,6 @@ require_once("../shared/common.php");
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 #****************************************************************************
 #*  Checking for query string.  Go back to collection list if none found.

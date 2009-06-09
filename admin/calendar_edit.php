@@ -8,7 +8,6 @@ require_once("../shared/common.php");
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 require_once(REL(__FILE__, "../model/Calendars.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 if (count($_POST) == 0) {
 	header("Location: ../admin/calendars_list.php");

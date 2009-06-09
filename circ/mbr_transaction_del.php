@@ -11,21 +11,12 @@ $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 require_once(REL(__FILE__, "../model/MemberAccounts.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
-
-#****************************************************************************
-#*  Retrieving get var
-#****************************************************************************
 $mbrid = $_GET["mbrid"];
 $transid = $_GET["transid"];
 
-#**************************************************************************
-#*  Delete member transaction
-#**************************************************************************
 $acct  = new MemberAccounts;
 $acct->deleteOne($transid);
 
 $msg = T("Transaction successfully deleted.");
 header("Location: ../circ/mbr_account.php?mbrid=".$mbrid."&reset=Y&msg=".U($msg));
-exit();

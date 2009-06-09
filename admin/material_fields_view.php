@@ -22,8 +22,6 @@
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-	require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
 	if (!isset($_GET["material_cd"]) || $_GET["material_cd"] == "") {
 		Fatal::internalError('material_cd not set');
 	}

@@ -20,7 +20,6 @@
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-	require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 	echo $msg;
 ?>

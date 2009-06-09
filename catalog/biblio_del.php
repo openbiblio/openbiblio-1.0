@@ -11,7 +11,6 @@ $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../classes/Report.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 
 $bibid = $_GET["bibid"];

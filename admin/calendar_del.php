@@ -9,7 +9,6 @@ $tab = "admin";
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/Calendars.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 if (!isset($_REQUEST["calendar"])){
 	header("Location: ../admin/calendars_list.php");

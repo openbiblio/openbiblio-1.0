@@ -9,7 +9,6 @@ $nav = "new";
 require_once("../shared/common.php");
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/MaterialFields.php"));
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 #****************************************************************************
 #*  Checking for post vars.  Go back to form if none found.

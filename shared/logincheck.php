@@ -3,8 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../functions/errorFuncs.php"));
-
 #****************************************************************************
 #*  Temporarily disabling security for demo since sourceforge.net
 #*  seems to be using mirrored servers that do not share session info.

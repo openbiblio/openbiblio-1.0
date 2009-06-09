@@ -8,7 +8,6 @@
 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
-	require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 	require_once(REL(__FILE__, "../catalog/inputFuncs.php"));
 
 ?>
