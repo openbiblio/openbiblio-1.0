@@ -3,8 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-class EnMetaData {
-	function EnMetaData() {
+class enMetaData {
+	function enMetaData() {
 		$this->locale_description = "English";
 	}
 	function pluralForm($n) {

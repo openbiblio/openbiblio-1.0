@@ -23,7 +23,7 @@ class Localize {
 		}
 		include($this->localePath.'metadata.php');
 		
-		$classname = ucfirst($locale).'MetaData';
+		$classname = $locale.'MetaData';
 		if (!class_exists($classname)) {
 			Fatal::internalError('Locale has no metadata class');
 		}
@@ -125,7 +125,7 @@ class Localize {
 				continue;
 			}
 			include_once(LOCALE_ROOT.'/'.$file.'/metadata.php');
-			$classname = ucfirst($file).'MetaData';
+			$classname = $file.'MetaData';
 			if (!class_exists($classname)) {
 				Fatal::internalError(T("Bad locale metadata: %file%: No class", array('file'=>$file)));
 			}
