@@ -13,7 +13,6 @@
 	$error = $installQ->connect_e();
 	if (!$error) {
 		$version = $installQ->getCurrentDatabaseVersion();
-		$installQ->close();
 	}
 
 	include(REL(__FILE__, "../install/header.php"));

@@ -5,7 +5,7 @@
 
 require_once("../shared/common.php");
 
-require_once(REL(__FILE__, "../classes/Cart.php"));
+require_once(REL(__FILE__, "../model/Cart.php"));
 $cart = getCart($_REQUEST['name']);
 if (isset($_REQUEST['id'])) {
 	foreach ($_REQUEST['id'] as $id) {

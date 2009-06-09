@@ -12,9 +12,9 @@
 	require_once(REL(__FILE__, "../model/Bookings.php"));
 	require_once(REL(__FILE__, "../model/Members.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
+	require_once(REL(__FILE__, "../model/Cart.php"));
 	require_once(REL(__FILE__, "../classes/Buttons.php"));
 	require_once(REL(__FILE__, "../classes/Report.php"));
-	require_once(REL(__FILE__, "../classes/Cart.php"));
 
 
 	#****************************************************************************

@@ -59,7 +59,6 @@
 				<input type="button" onClick="self.location='../install/cancel_msg.php'" value="Cancel">
 				</form>
 			<?php
-			$setQ->close();
 			include(REL(__FILE__, "../install/footer.php"));
 			exit();
 		}
@@ -67,8 +66,6 @@
 	echo "Building OpenBiblio tables, please wait...<br />\n";
 
 	$installQ->freshInstall($locale, $installTestData);
-	$installQ->close();
-
 ?>
 <br />
 OpenBiblio tables have been created successfully!<br />

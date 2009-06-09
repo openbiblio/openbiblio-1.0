@@ -26,8 +26,6 @@
 		echo H($error->toStr());
 		exit();
 	}
-	$upgradeQ->close();
-
 ?>
 <br />
 OpenBiblio tables have been updated successfully!<br />

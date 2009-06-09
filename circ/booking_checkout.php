@@ -9,7 +9,7 @@ $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 require_once(REL(__FILE__, "../model/Bookings.php"));
-require_once(REL(__FILE__, "../classes/Cart.php"));
+require_once(REL(__FILE__, "../model/Cart.php"));
 $tab="circulation";
 $nav = "pending";
 

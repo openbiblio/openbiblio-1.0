@@ -12,8 +12,8 @@ $nav = "upload_usmarc";
 set_time_limit(120);
 
 require_once(REL(__FILE__, "../model/Biblios.php"));
+require_once(REL(__FILE__, "../model/Cart.php"));
 require_once(REL(__FILE__, "../classes/Marc.php"));
-require_once(REL(__FILE__, "../classes/Cart.php"));
 
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 

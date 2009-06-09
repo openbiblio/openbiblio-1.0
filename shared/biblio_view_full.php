@@ -32,7 +32,7 @@
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/Stock.php"));
-	require_once(REL(__FILE__, "../classes/Cart.php"));
+	require_once(REL(__FILE__, "../model/Cart.php"));
 	require_once(REL(__FILE__, "../classes/Report.php"));
 	require_once(REL(__FILE__, "../functions/info_boxes.php"));
 
