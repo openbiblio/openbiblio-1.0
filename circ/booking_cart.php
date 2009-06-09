@@ -71,7 +71,7 @@ function setCheckboxes()
 <input type="hidden" name="name" value="bookingid" />
 <table class="resultshead">
 	<tr>
-			<th><?php echo T("Booking Cart'); ?></th>
+			<th><?php echo T("Booking Cart"); ?></th>
 		<td class="resultshead">
 <table class="buttons">
 <tr>

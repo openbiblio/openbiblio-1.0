@@ -17,7 +17,7 @@
 
 $core = false;
 $args = $_SERVER['argv'];
-$prog_name = array_shift(args);
+$prog_name = array_shift($args);
 while (isset($args[0]) and strlen($args[0]>1) and $args[0]{0} == '-') {
 	$arg = array_shift($args);
 	if ($arg{1} == '-') {

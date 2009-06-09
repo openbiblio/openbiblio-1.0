@@ -123,7 +123,7 @@
 <?php
 		$bibimages = new BiblioImages;
 		echo '<div class="biblio_images">';
-		$imgs = $bibimages->getByBibid($biblio['bibid'])
+		$imgs = $bibimages->getByBibid($biblio['bibid']);
 		while ($img = $imgs->next()) {
 			echo '<div class="biblio_image">';
 			if ($img['url']) {

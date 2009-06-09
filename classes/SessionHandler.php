@@ -6,7 +6,7 @@
 require_once(REL(__FILE__, "../classes/Query.php"));
 
 class SessionHandler {
-	function SessionHandler {
+	function SessionHandler() {
 		$this->db = new Query;
 	}
 	function open($save_path, $session_name) {

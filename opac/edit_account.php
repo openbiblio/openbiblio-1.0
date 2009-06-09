@@ -39,7 +39,7 @@ $form = array(
 			'default'=>$mbr['email']),
 		array('name'=>'password', 'type'=>'password', 'title'=>T("Password:"),
 			'attrs'=>array('size'=>10, 'onchange'=>'document.forms["edit_account"].elements["confirm-pw"].value=""'),
-			default=>$mbr['password']),
+			'default'=>$mbr['password']),
 		array('name'=>'confirm-pw', 'type'=>'password', 'title'=>T("Password (Confirm):"), 'attrs'=>array('size'=>10),
 			'default'=>$mbr['password']),
 	),

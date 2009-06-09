@@ -9,7 +9,7 @@ $tab = "circ";
 $nav = "";
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-echo '<p>'.T('demoMsg').'</p>;
+echo '<p>'.T('demoMsg').'</p>';
 
 Page::footer();
 exit();
