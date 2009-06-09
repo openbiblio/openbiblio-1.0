@@ -59,15 +59,14 @@ class biblio_search_rpt extends BiblioRows {
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {
-		$this->q->eexec($this->q->mkSQL('delete from %I', $to));
+		$this->q->act($this->q->mkSQL('delete from %I', $to));
 		$sql = $this->q->mkSQL('insert into %I select distinct b.bibid ', $to);
 		array_unshift($query['from'], $this->q->mkSQL('%I as b ', $from));
 		$sql .= 'from '.implode(', ', $query['from']).' ';
 		$sql .= $query['where'];
-		$this->q->eexec($sql);
-		$rows = $this->q->eexec($this->q->mkSQL('select count(*) as rowcount from %I', $to));
-		assert('count($rows) == 1');
-		return $rows[0]['rowcount'];
+		$this->q->act($sql);
+		$row = $this->q->select1($this->q->mkSQL('select count(*) as rowcount from %I', $to));
+		return $row['rowcount'];
 	}
 	// This function uses temporary tables to get around MySQL's join limitations,
 	// It returns a query that will retrieve the results from the final temporary table.
@@ -160,8 +159,8 @@ class biblio_search_rpt extends BiblioRows {
 			return array('from'=>'from '.implode(' join ', $q['from']).' ', 'where'=>$q['where']);
 		}
 		foreach (array('tmp0', 'tmp1') as $t) {
-			$this->q->eexec($this->q->mkSQL('drop temporary table if exists %I', $t));
-			$this->q->eexec($this->q->mkSQL('create temporary table %I (bibid integer)', $t));
+			$this->q->act($this->q->mkSQL('drop temporary table if exists %I', $t));
+			$this->q->act($this->q->mkSQL('create temporary table %I (bibid integer)', $t));
 		}
 		// these get switched before they're used
 		$to = 'biblio';

@@ -247,63 +247,6 @@ class Query {
 			return "0";
 		}
 	}
-
-	/* Everything below is just a compatibility interface
-	 * for the last few iterations of this design.  Don't use
-	 * it.  This will be removed as soon as I get time to
-	 * update everything that depends on this stuff.
-	 */
-	function connect($conn=false) {
-		return true;
-	}
-	function close() {
-		return true;
-	}
-	function exec($sql) {
-		$r = $this->_act($sql);
-		$this->_conn = new DbOld($r, $this->getInsertId());
-		if (is_bool($r)) {
-			return $r;
-		} else {
-			$rows = array();
-			while($row = mysql_fetch_assoc($r)) {
-				$rows[] = $row;
-			}
-			return $rows;
-		}
-	}
-	function eexec($sql) {
-		return $this->exec($sql);
-	}
-	function _query($sql, $msg) {
-		$r = $this->_act($sql);
-		$this->_conn = new DbOld($r, $this->getInsertId());
-		return $r;
-	}
-	function _checkSubQuery(&$q, $result) {
-		return $result;
-	}
-	function resetResult() {
-		$this->_conn->resetResult();
-	}
-	function clearErrors() {
-		return;
-	}
-	function errorOccurred() {
-		return false;
-	}
-	function getError() {
-		return "";
-	}
-	function getDbErrno() {
-		return 0;
-	}
-	function getDbError() {
-		return "";
-	}
-	function getSQL() {
-		return "";
-	}
 }
 
 class DbIter extends Iter {
@@ -319,41 +262,5 @@ class DbIter extends Iter {
 			return NULL;
 		}
 		return $r;
-	}
-}
-
-/* More compatibility for old Query/DbConnection classes.
- * FIXME - lose this cruft.
- */
-class DbOld {
-	function DbOld($results, $id) {
-		$this->results = $results;
-		$this->id = $id;
-	}
-	function getInsertId() {
-		return $this->id;
-	}
-	function numRows() {
-		return mysql_num_rows($this->results);
-	}
-	function fetchRow($arrayType=OBIB_ASSOC) {
-		if (is_bool($this->results)) {
-			return false;
-		}
-		switch ($arrayType) {
-			case OBIB_NUM:
-				return mysql_fetch_row($this->results);
-				break;
-			case OBIB_BOTH:
-				return mysql_fetch_array($this->results, MYSQL_BOTH);
-				break;
-			case OBIB_ASSOC:
-			default:
-				return mysql_fetch_assoc($this->results);
-		}
-		return false;
-	}
-	function resetResult() {
-		mysql_data_seek($this->results, 0);
 	}
 }

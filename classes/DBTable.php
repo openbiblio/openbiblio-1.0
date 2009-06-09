@@ -146,7 +146,7 @@ class DBTable {
 			if (isset($rec[$this->sequence])) {
 				$seq_val = $rec[$this->sequence];
 			} else {
-				$seq_val = $this->db->getInsertId();
+				$seq_val = $this->db->getInsertID();
 			}
 		} else {
 			$seq_val = NULL;
