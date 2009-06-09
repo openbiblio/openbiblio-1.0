@@ -3,100 +3,100 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  $tab = "admin";
-  $focus_form_name = "editsiteform";
-  $focus_form_field = "name";
+	$tab = "admin";
+	$focus_form_name = "editsiteform";
+	$focus_form_field = "name";
 
-  require_once(REL(__FILE__, "../model/Calendars.php"));
-  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+	require_once(REL(__FILE__, "../model/Calendars.php"));
+	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  if (isset($_REQUEST["siteid"])) {
-    $siteid = $_REQUEST["siteid"];
-  } else {
-    require(REL(__FILE__, "../shared/get_form_vars.php"));
-    $siteid = $postVars['siteid'];
-  }
-  $site = array('siteid'=>$siteid, 'calendar'=>'');
-  if (is_numeric($siteid)){
-    include_once(REL(__FILE__, "../model/Sites.php"));
-    $sites = new Sites;
-    $site = $sites->getOne($_REQUEST["siteid"]);
-    $nav = "sites/edit";
-  } else {
-    $nav = "sites/new";
-  }
+	if (isset($_REQUEST["siteid"])) {
+		$siteid = $_REQUEST["siteid"];
+	} else {
+		require(REL(__FILE__, "../shared/get_form_vars.php"));
+		$siteid = $postVars['siteid'];
+	}
+	$site = array('siteid'=>$siteid, 'calendar'=>'');
+	if (is_numeric($siteid)){
+		include_once(REL(__FILE__, "../model/Sites.php"));
+		$sites = new Sites;
+		$site = $sites->getOne($_REQUEST["siteid"]);
+		$nav = "sites/edit";
+	} else {
+		$nav = "sites/new";
+	}
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
 <form name="editsiteform" method="post" action="../admin/sites_edit.php">
 <input type="hidden" name="siteid" value="<?php echo H($site["siteid"]) ?>" />
 <table class="primary">
-  <tr>
-    <th colspan="2" nowrap="yes" align="left">
-      <?php echo T("Edit Site"); ?>
-    </th>
-  </tr>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php echo T("Calendar:"); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php
-        $calendars = new Calendars;
-        echo inputfield('select', 'calendar', $site['calendar'], NULL, $calendars->getSelect());
-      ?>
-    </td>
-  </tr>
+	<tr>
+		<th colspan="2" nowrap="yes" align="left">
+			<?php echo T("Edit Site"); ?>
+		</th>
+	</tr>
+	<tr>
+		<td nowrap="true" class="primary">
+			<?php echo T("Calendar:"); ?>
+		</td>
+		<td valign="top" class="primary">
+			<?php
+				$calendars = new Calendars;
+				echo inputfield('select', 'calendar', $site['calendar'], NULL, $calendars->getSelect());
+			?>
+		</td>
+	</tr>
 <?php
-  $fields = array(
-    'name' => T("Name"),
-    'code' => T("Code"),
-    'address1' => T("Address Line 1"),
-    'address2' => T("Address Line 2"),
-    'city' => T("City"),
-    'state' => T("State"),
-    'zip' =>T("Zip Code"),
-    'phone' => T("Phone"),
-    'fax' => T("Fax"),
-    'email' => T("Email"),
-  );
-  foreach ($fields as $n => $title) {
+	$fields = array(
+		'name' => T("Name"),
+		'code' => T("Code"),
+		'address1' => T("Address Line 1"),
+		'address2' => T("Address Line 2"),
+		'city' => T("City"),
+		'state' => T("State"),
+		'zip' =>T("Zip Code"),
+		'phone' => T("Phone"),
+		'fax' => T("Fax"),
+		'email' => T("Email"),
+	);
+	foreach ($fields as $n => $title) {
 ?>
-  <tr>
-    <td nowrap="true" class="primary">
-      <?php echo H($title) ?>:
-    </td>
-    <td valign="top" class="primary">
-      <?php echo inputfield('text', $n, $site[$n]); ?>
-    </td>
-  </tr>
+	<tr>
+		<td nowrap="true" class="primary">
+			<?php echo H($title) ?>:
+		</td>
+		<td valign="top" class="primary">
+			<?php echo inputfield('text', $n, $site[$n]); ?>
+		</td>
+	</tr>
 <?php
-  }
+	}
 ?>
-  <tr>
-    <td nowrap="true" class="primary" valign="top">
-      <?php echo T('sitesEditFormDelNote'); ?>
-    </td>
-    <td valign="top" class="primary">
-      <?php
-        echo inputfield('textarea', 'delivery_note', $site['delivery_note']);
-      ?>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2" class="primary">
-      <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
-      <a class="small_button" href="../admin/sites_list.php"><?php echo T("Cancel"); ?></a>
-    </td>
-  </tr>
+	<tr>
+		<td nowrap="true" class="primary" valign="top">
+			<?php echo T('sitesEditFormDelNote'); ?>
+		</td>
+		<td valign="top" class="primary">
+			<?php
+				echo inputfield('textarea', 'delivery_note', $site['delivery_note']);
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" colspan="2" class="primary">
+			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+			<a class="small_button" href="../admin/sites_list.php"><?php echo T("Cancel"); ?></a>
+		</td>
+	</tr>
 
 </table>
 </form>
 
 <?php
 
-  Page::footer();
+	Page::footer();

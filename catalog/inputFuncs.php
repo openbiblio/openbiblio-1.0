@@ -24,69 +24,69 @@ define("OBIB_TEXTAREA_CNTRL", "1");
  *********************************************************************************
  */
 function printUsmarcInputText($tag,$subfieldCd,$required,&$fieldIds,&$postVars,&$pageErrors,&$marcTags,&$marcSubflds,$showTagDesc,$cntrlType,$occur=""){
-  $arrayIndex = sprintf("%03d",$tag).$subfieldCd;
-  $formIndex = $arrayIndex.$occur;
-  $size = 40;
-  $maxLen = 300;
-  $cols = 35;
-  $rows = 4;
+	$arrayIndex = sprintf("%03d",$tag).$subfieldCd;
+	$formIndex = $arrayIndex.$occur;
+	$size = 40;
+	$maxLen = 300;
+	$cols = 35;
+	$rows = 4;
 
-  if (!isset($fieldIds)) {
-    $fieldId = "";
-  } elseif (!isset($fieldIds[$arrayIndex])) {
-      $fieldId = "";
-  } else {
-      $fieldId = $fieldIds[$arrayIndex];
-  }
-  if (!isset($postVars)) {
-    $value = "";
-  } elseif (!isset($postVars[$formIndex])) {
-      $value = "";
-  } else {
-      $value = $postVars[$formIndex];
-  }
-  if (!isset($pageErrors)) {
-    $error = "";
-  } elseif (!isset($pageErrors[$formIndex])) {
-      $error = "";
-  } else {
-      $error = $pageErrors[$formIndex];
-  }
+	if (!isset($fieldIds)) {
+		$fieldId = "";
+	} elseif (!isset($fieldIds[$arrayIndex])) {
+			$fieldId = "";
+	} else {
+			$fieldId = $fieldIds[$arrayIndex];
+	}
+	if (!isset($postVars)) {
+		$value = "";
+	} elseif (!isset($postVars[$formIndex])) {
+			$value = "";
+	} else {
+			$value = $postVars[$formIndex];
+	}
+	if (!isset($pageErrors)) {
+		$error = "";
+	} elseif (!isset($pageErrors[$formIndex])) {
+			$error = "";
+	} else {
+			$error = $pageErrors[$formIndex];
+	}
 
 
-  echo "<tr><td class=\"primary\" valign=\"top\">\n";
-  if ($required) {
-    echo "<sup>*</sup> ";
-  }
-  if (($showTagDesc)
-    && (isset($marcTags[$tag]))
-    && (isset($marcSubflds[$arrayIndex]))){
-    echo $marcTags[$tag]->getDescription();
-    echo " (".$marcSubflds[$arrayIndex]->getDescription().")";
-  } elseif (isset($marcSubflds[$arrayIndex])){
-    echo $marcSubflds[$arrayIndex]->getDescription();
-  }
-  if ($occur != "") {
-    echo " ".($occur+1);
-  }
-  echo ":\n</td>\n";
-  echo "<td valign=\"top\" class=\"primary\">\n";
-  if ($cntrlType == OBIB_TEXTAREA_CNTRL) {
-    echo "<textarea name=\"values[".$formIndex."]\" cols=\"".$cols."\" rows=\"".$rows."\">";
-    echo $value."</textarea>";
-  } else {
-    echo "<input type=\"text\"";
-    echo "\" name=\"values[".$formIndex."]\" size=\"".$size."\" maxlength=\"".$maxLen."\" ";
-    echo "value=\"".$value."\" />";
-  }
-  if ($error != "") {
-    echo "<br /><span class=\"error\">";
-    echo $error."</span>";
-  }
-  echo "<input type=\"hidden\" name=\"indexes[]\" value=\"".$formIndex."\" />\n";
-  echo "<input type=\"hidden\" name=\"tags[".$formIndex."]\" value=\"".$tag."\" />\n";
-  echo "<input type=\"hidden\" name=\"subfieldCds[".$formIndex."]\" value=\"".$subfieldCd."\" />\n";
-  echo "<input type=\"hidden\" name=\"fieldIds[".$formIndex."]\" value=\"".$fieldId."\" />\n";
-  echo "<input type=\"hidden\" name=\"requiredFlgs[".$formIndex."]\" value=\"".$required."\" />\n";
-  echo "</td></tr>\n";
+	echo "<tr><td class=\"primary\" valign=\"top\">\n";
+	if ($required) {
+		echo "<sup>*</sup> ";
+	}
+	if (($showTagDesc)
+		&& (isset($marcTags[$tag]))
+		&& (isset($marcSubflds[$arrayIndex]))){
+		echo $marcTags[$tag]->getDescription();
+		echo " (".$marcSubflds[$arrayIndex]->getDescription().")";
+	} elseif (isset($marcSubflds[$arrayIndex])){
+		echo $marcSubflds[$arrayIndex]->getDescription();
+	}
+	if ($occur != "") {
+		echo " ".($occur+1);
+	}
+	echo ":\n</td>\n";
+	echo "<td valign=\"top\" class=\"primary\">\n";
+	if ($cntrlType == OBIB_TEXTAREA_CNTRL) {
+		echo "<textarea name=\"values[".$formIndex."]\" cols=\"".$cols."\" rows=\"".$rows."\">";
+		echo $value."</textarea>";
+	} else {
+		echo "<input type=\"text\"";
+		echo "\" name=\"values[".$formIndex."]\" size=\"".$size."\" maxlength=\"".$maxLen."\" ";
+		echo "value=\"".$value."\" />";
+	}
+	if ($error != "") {
+		echo "<br /><span class=\"error\">";
+		echo $error."</span>";
+	}
+	echo "<input type=\"hidden\" name=\"indexes[]\" value=\"".$formIndex."\" />\n";
+	echo "<input type=\"hidden\" name=\"tags[".$formIndex."]\" value=\"".$tag."\" />\n";
+	echo "<input type=\"hidden\" name=\"subfieldCds[".$formIndex."]\" value=\"".$subfieldCd."\" />\n";
+	echo "<input type=\"hidden\" name=\"fieldIds[".$formIndex."]\" value=\"".$fieldId."\" />\n";
+	echo "<input type=\"hidden\" name=\"requiredFlgs[".$formIndex."]\" value=\"".$required."\" />\n";
+	echo "</td></tr>\n";
 }

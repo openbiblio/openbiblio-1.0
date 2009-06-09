@@ -6,7 +6,7 @@
 // code html tag with language attribute if specified.
 echo "<html";
 if (Settings::get('html_lang_attr') != "") {
-  echo " lang=\"".H(Settings::get('html_lang_attr'))."\"";
+	echo " lang=\"".H(Settings::get('html_lang_attr'))."\"";
 }
 echo ">\n";
 
@@ -23,10 +23,10 @@ if (Settings::get('charset') != "") { ?>
 <script type="text/javascript">
 <!--
 function popSecondaryLarge(url) {
-    var SecondaryWin;
-    //SecondaryWin = window.open(url,"inet","toolbar=yes,resizable=yes,scrollbars=yes,width=700,height=500");
-    SecondaryWin = window.open(url,"inet");
-    self.name="main";
+		var SecondaryWin;
+		//SecondaryWin = window.open(url,"inet","toolbar=yes,resizable=yes,scrollbars=yes,width=700,height=500");
+		SecondaryWin = window.open(url,"inet");
+		self.name="main";
 }
 -->
 </script>
@@ -37,28 +37,28 @@ function popSecondaryLarge(url) {
 
 
 <!-- **************************************************************************************
-     * Library Name and hours
-     **************************************************************************************-->
+		 * Library Name and hours
+		 **************************************************************************************-->
 <table class="help_head" width="100%">
-  <tr>
-    <td align="left">
-      <?php echo T("OpenBiblio Help"); ?>
-    </td>
-    <td align="right"><a href="javascript:window.close()"><?php echo T("Close Window"); ?></a>&nbsp;&nbsp;</td>
-  </tr>
+	<tr>
+		<td align="left">
+			<?php echo T("OpenBiblio Help"); ?>
+		</td>
+		<td align="right"><a href="javascript:window.close()"><?php echo T("Close Window"); ?></a>&nbsp;&nbsp;</td>
+	</tr>
 </table>
 <!-- **************************************************************************************
-     * Left nav
-     **************************************************************************************-->
+		 * Left nav
+		 **************************************************************************************-->
 <table id="main" height="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr>
-    <td id="help_sidebar">
-      <?php if (!isset($_GET["page"])) {
-        echo "&raquo; ".T("Contents");
-      } else { ?>
-        <a href="../shared/help.php" class="alt1"><?php echo T("Contents"); ?></a>
-      <?php } ?>
-      <br />
-      <a href="javascript:self.print();" class="alt1"><?php echo T("Print"); ?></a><br />
-    </td>
-    <td id="content">
+	<tr>
+		<td id="help_sidebar">
+			<?php if (!isset($_GET["page"])) {
+				echo "&raquo; ".T("Contents");
+			} else { ?>
+				<a href="../shared/help.php" class="alt1"><?php echo T("Contents"); ?></a>
+			<?php } ?>
+			<br />
+			<a href="javascript:self.print();" class="alt1"><?php echo T("Print"); ?></a><br />
+		</td>
+		<td id="content">

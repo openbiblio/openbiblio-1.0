@@ -50,7 +50,7 @@ if (isset($_REQUEST['bibid'])) {
 	}
 	Nav::node('cataloging/biblio', T("Item Info"),
 		"../shared/biblio_view.php?".$params);
-      	Nav::node('cataloging/biblio/edit', T("Edit"),
+				Nav::node('cataloging/biblio/edit', T("Edit"),
 		"../catalog/biblio_edit_form.php?".$params);
 	Nav::node('cataloging/biblio/editmarc', T("Edit MARC"),
 		"../catalog/biblio_marc_edit_form.php?".$params);

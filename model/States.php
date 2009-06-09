@@ -6,14 +6,14 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class States extends DmTable {
-  function States() {
-    $this->DmTable();
-    $this->setName('state_dm');
-    $this->setFields(array(
-      'code'=>'string',
-      'description'=>'string',
-      'default_flg'=>'string',
-    ));
-    $this->setKey('code');
-  }
+	function States() {
+		$this->DmTable();
+		$this->setName('state_dm');
+		$this->setFields(array(
+			'code'=>'string',
+			'description'=>'string',
+			'default_flg'=>'string',
+		));
+		$this->setKey('code');
+	}
 }

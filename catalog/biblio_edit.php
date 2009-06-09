@@ -3,6 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  $tab = "cataloging";
-  $nav = "edit";
-  require_once(REL(__FILE__, "../catalog/biblio_change.php"));
+$tab = "cataloging";
+$nav = "edit";
+require_once(REL(__FILE__, "../catalog/biblio_change.php"));

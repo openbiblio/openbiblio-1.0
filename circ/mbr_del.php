@@ -3,36 +3,36 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  $tab = "circulation";
-  $restrictToMbrAuth = TRUE;
-  $nav = "deletedone";
-  $restrictInDemo = true;
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../model/Members.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+	$tab = "circulation";
+	$restrictToMbrAuth = TRUE;
+	$nav = "deletedone";
+	$restrictInDemo = true;
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	require_once(REL(__FILE__, "../model/Members.php"));
+	require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
 
-  $mbrid = $_GET["mbrid"];
-  $mbrName = $_GET["name"];
+	$mbrid = $_GET["mbrid"];
+	$mbrName = $_GET["name"];
 
-  #**************************************************************************
-  #*  Delete library member
-  #**************************************************************************
-  $members = new Members;
-  $members->deleteOne($mbrid);
+	#**************************************************************************
+	#*  Delete library member
+	#**************************************************************************
+	$members = new Members;
+	$members->deleteOne($mbrid);
 
-  #**************************************************************************
-  #*  Delete Member History
-  #**************************************************************************
-  /*** FIXME  - Do something with member history NOT DELETION ***/
+	#**************************************************************************
+	#*  Delete Member History
+	#**************************************************************************
+	/*** FIXME  - Do something with member history NOT DELETION ***/
 
-  #**************************************************************************
-  #*  Show success page
-  #**************************************************************************
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-  echo T("Member, %name%, has been deleted.", array("name"=>$mbrName));
+	#**************************************************************************
+	#*  Show success page
+	#**************************************************************************
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	echo T("Member, %name%, has been deleted.", array("name"=>$mbrName));
 
 ?>
 <br /><br />
@@ -40,4 +40,4 @@
 
 <?php
 
-  Page::footer();
+	Page::footer();

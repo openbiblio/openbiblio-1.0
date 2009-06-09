@@ -3,33 +3,33 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
-  $tab = "admin";
-  $nav = "member_fields";
-  $restrictInDemo = true;
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+require_once("../shared/common.php");
+$tab = "admin";
+$nav = "member_fields";
+$restrictInDemo = true;
+require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
-  if (count($_POST) == 0) {
-    header("Location: ../admin/member_fields_new_form.php");
-    exit();
-  }
+if (count($_POST) == 0) {
+	header("Location: ../admin/member_fields_new_form.php");
+	exit();
+}
 
-  $fields = new MemberCustomFields;
-  list($id, $errs) = $fields->insert_el(array(
-    'code'=>@$_POST['code'],
-    'description'=>@$_POST['description'],
-  ));
-  if ($errs) {
-    FieldError::backToForm('../admin/member_fields_new_form.php', $errs);
-  }
-  unset($_SESSION["postVars"]);
-  unset($_SESSION["pageErrors"]);
+$fields = new MemberCustomFields;
+list($id, $errs) = $fields->insert_el(array(
+	'code'=>@$_POST['code'],
+	'description'=>@$_POST['description'],
+));
+if ($errs) {
+	FieldError::backToForm('../admin/member_fields_new_form.php', $errs);
+}
+unset($_SESSION["postVars"]);
+unset($_SESSION["pageErrors"]);
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  echo T("Member field, %desc%, has been added.", array('desc'=>H(@$_POST['descripton']))).'<br /><br />';
-  echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
+echo T("Member field, %desc%, has been added.", array('desc'=>H(@$_POST['descripton']))).'<br /><br />';
+echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
 
-  Page::footer();
+Page::footer();

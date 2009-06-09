@@ -3,13 +3,13 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+require_once("../shared/common.php");
 
-  $tab = "admin";
-  $nav = "";
+$tab = "admin";
+$nav = "";
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  echo '<p class="error">'.T('adminNoauth').'</p>';
+echo '<p class="error">'.T('adminNoauth').'</p>';
 
-  Page::footer();
+Page::footer();

@@ -3,26 +3,26 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  $tab = "circulation";
-  $nav = "bookings/delete";
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+	$tab = "circulation";
+	$nav = "bookings/delete";
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 
-  $bookingid = $_GET["bookingid"];
+	$bookingid = $_GET["bookingid"];
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <center>
-  <form method="post" action="../circ/booking_del.php">
-    <?php echo T("Really delete this booking?"); ?>
-    <br /><br />
-    <input type="hidden" name="bookingid" value="<?php echo H($bookingid) ?>" />
-      <input type="submit" class="button" value="<?php echo T("Yes"); ?>" />
-      <a href="../circ/booking_view.php?bookingid=<?php echo H($bookingid) ?>" class="small_button"><?php echo T("No"); ?></a>
+	<form method="post" action="../circ/booking_del.php">
+		<?php echo T("Really delete this booking?"); ?>
+		<br /><br />
+		<input type="hidden" name="bookingid" value="<?php echo H($bookingid) ?>" />
+			<input type="submit" class="button" value="<?php echo T("Yes"); ?>" />
+			<a href="../circ/booking_view.php?bookingid=<?php echo H($bookingid) ?>" class="small_button"><?php echo T("No"); ?></a>
 </form>
 
 <?php
 
-  Page::footer();
+	Page::footer();

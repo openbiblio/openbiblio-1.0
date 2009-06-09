@@ -8,21 +8,21 @@ require_once(REL(__FILE__, "../model/Members.php"));
 
 $msg = '';
 if (isset($_POST['id']) and isset($_POST['password'])) {
-  $members = new Members;
-  $mbrid = $members->loginMbrid($_POST['id'], $_POST['password']);
-  if ($mbrid) {
-    $_SESSION['authMbrid'] = $mbrid;
-    header("Location: ../opac/my_account.php");
-    exit();
-  } else {
-    $msg = T("Invalid ID or password");
-  }
+	$members = new Members;
+	$mbrid = $members->loginMbrid($_POST['id'], $_POST['password']);
+	if ($mbrid) {
+		$_SESSION['authMbrid'] = $mbrid;
+		header("Location: ../opac/my_account.php");
+		exit();
+	} else {
+		$msg = T("Invalid ID or password");
+	}
 }
 
 Page::header_opac(array('nav'=>$nav, 'title'=>''));
 
 if ($msg) {
-  echo '<p class="error">'.H($msg).'</p>';
+	echo '<p class="error">'.H($msg).'</p>';
 }
 
 ?>

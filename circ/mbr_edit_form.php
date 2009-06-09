@@ -3,38 +3,38 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  session_cache_limiter(null);
+	session_cache_limiter(null);
 
-  $tab = "circulation";
-  $restrictToMbrAuth = TRUE;
-  $nav = "mbr/edit";
-  $focus_form_name = "editMbrform";
-  $focus_form_field = "barcodeNmbr";
-  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+	$tab = "circulation";
+	$restrictToMbrAuth = TRUE;
+	$nav = "mbr/edit";
+	$focus_form_name = "editMbrform";
+	$focus_form_field = "barcodeNmbr";
+	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  require_once(REL(__FILE__, "../model/Members.php"));
+	require_once(REL(__FILE__, "../model/Members.php"));
 
-  if (isset($_GET["mbrid"])){
-    $members = new Members;
-    $mbr = $members->getOne($_GET["mbrid"]);
-    $_SESSION["postVars"] = $mbr;
-    $custom = $members->getCustomFields($_GET["mbrid"]);
-    while ($row = $custom->next() ) {
-      $_SESSION["postVars"]['custom_'.$row["code"]] = $row["data"];
-    }
-    $postVars = $_SESSION["postVars"];
-  } else {
-    require(REL(__FILE__, "../shared/get_form_vars.php"));
-  }
-  $mbrid = $postVars[mbrid]; # For nav menu
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	if (isset($_GET["mbrid"])){
+		$members = new Members;
+		$mbr = $members->getOne($_GET["mbrid"]);
+		$_SESSION["postVars"] = $mbr;
+		$custom = $members->getCustomFields($_GET["mbrid"]);
+		while ($row = $custom->next() ) {
+			$_SESSION["postVars"]['custom_'.$row["code"]] = $row["data"];
+		}
+		$postVars = $_SESSION["postVars"];
+	} else {
+		require(REL(__FILE__, "../shared/get_form_vars.php"));
+	}
+	$mbrid = $postVars[mbrid]; # For nav menu
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  $headerWording = T("edit");
+	$headerWording = T("edit");
 
-  $cancelLocation = "../circ/mbr_view.php?mbrid=".$postVars["mbrid"]."&reset=Y";
+	$cancelLocation = "../circ/mbr_view.php?mbrid=".$postVars["mbrid"]."&reset=Y";
 ?>
 
 <form name="editMbrform" method="post" action="../circ/mbr_edit.php">
@@ -42,5 +42,5 @@
 
 <?php
 
-  include(REL(__FILE__, "../circ/mbr_fields.php"));
-  Page::footer();
+	include(REL(__FILE__, "../circ/mbr_fields.php"));
+	Page::footer();

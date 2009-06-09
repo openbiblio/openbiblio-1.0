@@ -3,25 +3,25 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  $tab = "admin";
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+	$tab = "admin";
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  #****************************************************************************
-  #*  Checking for query string.  Go back to collection list if none found.
-  #****************************************************************************
-  if (!isset($_GET["code"])){
-    header("Location: ../admin/biblio_copy_fields_list.php");
-    exit();
-  }
-  $code = $_GET["code"];
-  $description = $_GET["desc"];
+	#****************************************************************************
+	#*  Checking for query string.  Go back to collection list if none found.
+	#****************************************************************************
+	if (!isset($_GET["code"])){
+		header("Location: ../admin/biblio_copy_fields_list.php");
+		exit();
+	}
+	$code = $_GET["code"];
+	$description = $_GET["desc"];
 
-  #**************************************************************************
-  #*  Show confirm page
-  #**************************************************************************
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	#**************************************************************************
+	#*  Show confirm page
+	#**************************************************************************
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <center>
 <form name="delcopyform" method="post" action="../admin/biblio_copy_fields_del.php?code=<?php echo $code;?>&desc=<?php echo U($description);?>">
@@ -35,4 +35,4 @@
 </center>
 <?php
 
-  Page::footer();
+	Page::footer();

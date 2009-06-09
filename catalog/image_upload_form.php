@@ -3,18 +3,18 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  $tab = "cataloging";
-  $nav = "biblio/images/new";
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+	$tab = "cataloging";
+	$nav = "biblio/images/new";
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  $bibid = $_REQUEST['bibid'];
+	$bibid = $_REQUEST['bibid'];
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <form name="imageupload" enctype="multipart/form-data"
-      action="../catalog/image_manage_action.php" method="post">
+			action="../catalog/image_manage_action.php" method="post">
 <input type="hidden" name="action" value="add" />
 <input type="hidden" name="bibid" value="<?php echo H($bibid); ?>" />
 <table>
@@ -36,4 +36,4 @@ type="radio" name="type" value="Link" /><?php echo T("Link"); ?></label>
 
 <?php
 
-  Page::footer();
+	Page::footer();

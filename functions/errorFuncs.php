@@ -11,8 +11,8 @@
  *********************************************************************************
  */
 function displayErrorPage($query){
-  echo "\n<pre>db_errno = ".htmlspecialchars($query->getDbErrno())."\n";
-  echo "db_error = ".htmlspecialchars($query->getDbError())."\n";
-  echo "SQL = ".htmlspecialchars($query->getSQL())."\n</pre>";
-  exit($query->getError());
+	echo "\n<pre>db_errno = ".htmlspecialchars($query->getDbErrno())."\n";
+	echo "db_error = ".htmlspecialchars($query->getDbError())."\n";
+	echo "SQL = ".htmlspecialchars($query->getSQL())."\n</pre>";
+	exit($query->getError());
 }

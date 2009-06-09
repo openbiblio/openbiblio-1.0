@@ -4,14 +4,14 @@
  */
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 class CopiesCustomFields extends DmTable {
-  function CopiesCustomFields() {
-    $this->DmTable();
-    $this->setName('biblio_copy_fields_dm');
-    $this->setFields(array(
-      'code'=>'string',
-      'description'=>'string',
-      'default_flg'=>'string',
-    ));
-    $this->setKey('code');
-  }
+	function CopiesCustomFields() {
+		$this->DmTable();
+		$this->setName('biblio_copy_fields_dm');
+		$this->setFields(array(
+			'code'=>'string',
+			'description'=>'string',
+			'default_flg'=>'string',
+		));
+		$this->setKey('code');
+	}
 }

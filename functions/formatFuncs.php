@@ -11,14 +11,14 @@
  *********************************************************************************
  */
 function ctypeAlnum($text){
-  ereg("[a-zA-Z0-9]+",$text,$regs);
-  if (count($regs) == 0) {
-    return false;
-  }
-  if ($regs[0] == $text) {
-    return true;
-  }
-  return false;
+	ereg("[a-zA-Z0-9]+",$text,$regs);
+	if (count($regs) == 0) {
+		return false;
+	}
+	if ($regs[0] == $text) {
+		return true;
+	}
+	return false;
 }
 
 /*********************************************************************************
@@ -31,67 +31,67 @@ function ctypeAlnum($text){
  *********************************************************************************
  */
 function moneyFormat($amount,$decimals){
-  // get local info
-  $localeInfo = localeconv();
-  if ($amount < 0) {
-    $prefix = "n";
-    $sign = $localeInfo["negative_sign"];
-  } else {
-    $prefix = "p";
-    $sign = $localeInfo["positive_sign"];
-  }
-  $currencySymbol = $localeInfo["currency_symbol"];
-  $dec_point = $localeInfo["mon_decimal_point"];
-  $thousand_sep = $localeInfo["mon_thousands_sep"];
-  if ($localeInfo[$prefix."_sep_by_space"]) {
-    $sep = " ";
-  } else {
-    $sep = "";
-  }
+	// get local info
+	$localeInfo = localeconv();
+	if ($amount < 0) {
+		$prefix = "n";
+		$sign = $localeInfo["negative_sign"];
+	} else {
+		$prefix = "p";
+		$sign = $localeInfo["positive_sign"];
+	}
+	$currencySymbol = $localeInfo["currency_symbol"];
+	$dec_point = $localeInfo["mon_decimal_point"];
+	$thousand_sep = $localeInfo["mon_thousands_sep"];
+	if ($localeInfo[$prefix."_sep_by_space"]) {
+		$sep = " ";
+	} else {
+		$sep = "";
+	}
 
-  // format number
-  $result = number_format(abs($amount),$decimals,$dec_point,$thousand_sep);
+	// format number
+	$result = number_format(abs($amount),$decimals,$dec_point,$thousand_sep);
 
 /* add currency symbol and sign
-   _sign_posn doc:
-   0 Parentheses surround the quantity and currency_symbol
-   1 The sign string precedes the quantity and currency_symbol
-   2 The sign string succeeds the quantity and currency_symbol
-   3 The sign string immediately precedes the currency_symbol
-   4 The sign string immediately succeeds the currency_symbol
+	 _sign_posn doc:
+	 0 Parentheses surround the quantity and currency_symbol
+	 1 The sign string precedes the quantity and currency_symbol
+	 2 The sign string succeeds the quantity and currency_symbol
+	 3 The sign string immediately precedes the currency_symbol
+	 4 The sign string immediately succeeds the currency_symbol
 */
 
-  if ($localeInfo[$prefix."_sign_posn"] == 0) {
-    if ($localeInfo[$prefix."_cs_precedes"]) {
-      $result = "(".$currencySymbol.$sep.$result.")";
-    } else {
-      $result = "(".$result.$sep.$currencySymbol.")";
-    }
-  }elseif ($localeInfo[$prefix."_sign_posn"] == 1) {
-    if ($localeInfo[$prefix."_cs_precedes"]) {
-      $result = $sign.$currencySymbol.$sep.$result;
-    } else {
-      $result = $sign.$result.$sep.$currencySymbol;
-    }
-  }elseif ($localeInfo[$prefix."_sign_posn"] == 2) {
-    if ($localeInfo[$prefix."_cs_precedes"]) {
-      $result = $currencySymbol.$sep.$result.$sign;
-    } else {
-      $result = $result.$sep.$currencySymbol.$sign;
-    }
-  }elseif ($localeInfo[$prefix."_sign_posn"] == 3) {
-    if ($localeInfo[$prefix."_cs_precedes"]) {
-      $result = $sign.$currencySymbol.$sep.$result;
-    } else {
-      $result = $result.$sep.$sign.$currencySymbol;
-    }
-  }elseif ($localeInfo[$prefix."_sign_posn"] == 4) {
-    if ($localeInfo[$prefix."_cs_precedes"]) {
-      $result = $currencySymbol.$sign.$sep.$result;
-    } else {
-      $result = $result.$sep.$currencySymbol.$sign;
-    }
-  }
+	if ($localeInfo[$prefix."_sign_posn"] == 0) {
+		if ($localeInfo[$prefix."_cs_precedes"]) {
+			$result = "(".$currencySymbol.$sep.$result.")";
+		} else {
+			$result = "(".$result.$sep.$currencySymbol.")";
+		}
+	}elseif ($localeInfo[$prefix."_sign_posn"] == 1) {
+		if ($localeInfo[$prefix."_cs_precedes"]) {
+			$result = $sign.$currencySymbol.$sep.$result;
+		} else {
+			$result = $sign.$result.$sep.$currencySymbol;
+		}
+	}elseif ($localeInfo[$prefix."_sign_posn"] == 2) {
+		if ($localeInfo[$prefix."_cs_precedes"]) {
+			$result = $currencySymbol.$sep.$result.$sign;
+		} else {
+			$result = $result.$sep.$currencySymbol.$sign;
+		}
+	}elseif ($localeInfo[$prefix."_sign_posn"] == 3) {
+		if ($localeInfo[$prefix."_cs_precedes"]) {
+			$result = $sign.$currencySymbol.$sep.$result;
+		} else {
+			$result = $result.$sep.$sign.$currencySymbol;
+		}
+	}elseif ($localeInfo[$prefix."_sign_posn"] == 4) {
+		if ($localeInfo[$prefix."_cs_precedes"]) {
+			$result = $currencySymbol.$sign.$sep.$result;
+		} else {
+			$result = $result.$sep.$currencySymbol.$sign;
+		}
+	}
 
-  return $result;
+	return $result;
 }

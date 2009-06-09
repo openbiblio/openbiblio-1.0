@@ -3,57 +3,57 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  session_cache_limiter(null);
+	session_cache_limiter(null);
 
-  $tab = "admin";
-  $nav = "new";
-  $focus_form_name = "custommarceditform";
-  $focus_form_field = "tag";
+	$tab = "admin";
+	$nav = "new";
+	$focus_form_name = "custommarceditform";
+	$focus_form_field = "tag";
 
-  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../model/MaterialFields.php"));
+	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 
-  $postVars = array();
-  $pageErrors = array();
-  if (isset($_GET["material_field_id"])) {
-    $material_field_id =$_GET["material_field_id"];
-    $mf = new MaterialFields;
-    $postVars = $mf->getOne($material_field_id);
-  } else if (isset($_SESSION['postVars'])) {
-    $postVars = $_SESSION['postVars'];
-    if (isset($_SESSION['pageErrors'])) {
-      $pageErrors = $_SESSION['pageErrors'];
-    }
-    $material_field_id = $postVars['material_field_id'];
-  }
-  $material_cd = $postVars['material_cd'];
-  if (isset($_GET["tag"])) {
-    $postVars["tag"] = $_GET["tag"];
-  }
-  if (isset($_GET["subfld"])) {
-    $postVars["subfield_cd"] = $_GET["subfld"];
-  }
-  if (isset($_GET["label"])) {
-    $postVars["label"] = $_GET["label"];
-  }
+	$postVars = array();
+	$pageErrors = array();
+	if (isset($_GET["material_field_id"])) {
+		$material_field_id =$_GET["material_field_id"];
+		$mf = new MaterialFields;
+		$postVars = $mf->getOne($material_field_id);
+	} else if (isset($_SESSION['postVars'])) {
+		$postVars = $_SESSION['postVars'];
+		if (isset($_SESSION['pageErrors'])) {
+			$pageErrors = $_SESSION['pageErrors'];
+		}
+		$material_field_id = $postVars['material_field_id'];
+	}
+	$material_cd = $postVars['material_cd'];
+	if (isset($_GET["tag"])) {
+		$postVars["tag"] = $_GET["tag"];
+	}
+	if (isset($_GET["subfld"])) {
+		$postVars["subfield_cd"] = $_GET["subfld"];
+	}
+	if (isset($_GET["label"])) {
+		$postVars["label"] = $_GET["label"];
+	}
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  $returnPg = "../admin/material_fields_edit_form.php?material_cd=".U($material_cd)."&material_field_id=".U($material_field_id);
-  $fieldid = "";
-  $cancelLocation ="../admin/material_fields_view.php?material_cd=$material_cd";
-  if (isset($_GET["msg"])) {
-    $msg = '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
-  } else {
-    $msg = "";
-  }
+	$returnPg = "../admin/material_fields_edit_form.php?material_cd=".U($material_cd)."&material_field_id=".U($material_field_id);
+	$fieldid = "";
+	$cancelLocation ="../admin/material_fields_view.php?material_cd=$material_cd";
+	if (isset($_GET["msg"])) {
+		$msg = '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
+	} else {
+		$msg = "";
+	}
 
-  #****************************************************************************
-  #*  Start of body
-  #****************************************************************************
+	#****************************************************************************
+	#*  Start of body
+	#****************************************************************************
 echo $msg;
 ?>
 
@@ -66,4 +66,4 @@ echo $msg;
 
 <?php
 
-  Page::footer();
+	Page::footer();

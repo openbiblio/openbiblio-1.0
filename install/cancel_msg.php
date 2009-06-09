@@ -3,10 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  $doing_install=1;
-  require_once('../shared/common.php');
+	$doing_install=1;
+	require_once('../shared/common.php');
 
-  include(REL(__FILE__, "../install/header.php"));
+	include(REL(__FILE__, "../install/header.php"));
 
 ?>
 <br />
@@ -17,4 +17,4 @@ OpenBiblio install process has been cancelled.<br /><br />
 
 <?php
 
-  include(REL(__FILE__, "../install/footer.php"));
+	include(REL(__FILE__, "../install/footer.php"));

@@ -6,14 +6,14 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class MemberTypes extends DmTable {
-  function MemberTypes() {
-    $this->DmTable();
-    $this->setName('mbr_classify_dm');
-    $this->setFields(array(
-      'code'=>'string',
-      'description'=>'string',
-      'default_flg'=>'string',
-    ));
-    $this->setKey('code');
-  }
+	function MemberTypes() {
+		$this->DmTable();
+		$this->setName('mbr_classify_dm');
+		$this->setFields(array(
+			'code'=>'string',
+			'description'=>'string',
+			'default_flg'=>'string',
+		));
+		$this->setKey('code');
+	}
 }

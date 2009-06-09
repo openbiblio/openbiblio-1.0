@@ -12,52 +12,52 @@
  ******************************************************************************
  */
 class UsmarcSubfieldDm {
-  var $_tag = "";
-  var $_subfieldCd = "";
-  var $_description = "";
-  var $_repeatableFlg = "";
+	var $_tag = "";
+	var $_subfieldCd = "";
+	var $_description = "";
+	var $_repeatableFlg = "";
 
-  /****************************************************************************
-   * Getter methods for all fields
-   * @return string
-   * @access public
-   ****************************************************************************
-   */
-  function getTag() {
-    return $this->_tag;
-  }
-  function getSubfieldCd() {
-    return $this->_subfieldCd;
-  }
-  function getDescription() {
-    return $this->_description;
-  }
-  function getRepeatableFlg() {
-    return $this->_repeatableFlg;
-  }
+	/****************************************************************************
+	 * Getter methods for all fields
+	 * @return string
+	 * @access public
+	 ****************************************************************************
+	 */
+	function getTag() {
+		return $this->_tag;
+	}
+	function getSubfieldCd() {
+		return $this->_subfieldCd;
+	}
+	function getDescription() {
+		return $this->_description;
+	}
+	function getRepeatableFlg() {
+		return $this->_repeatableFlg;
+	}
 
-  /****************************************************************************
-   * Setter methods for all fields
-   * @param string $value new value to set
-   * @return void
-   * @access public
-   ****************************************************************************
-   */
-  function setTag($value) {
-    if (trim($value) == "") {
-      $this->_tag = "0";
-    } else {
-      $this->_tag = trim($value);
-    }
-  }
-  function setSubfieldCd($value) {
-    $this->_subfieldCd = substr(trim($value),0,1);
-  }
-  function setDescription($value) {
-    $this->_description = trim($value);
-  }
-  function setRepeatableFlg($value) {
-    $this->_repeatableFlg = trim($value);
-  }
+	/****************************************************************************
+	 * Setter methods for all fields
+	 * @param string $value new value to set
+	 * @return void
+	 * @access public
+	 ****************************************************************************
+	 */
+	function setTag($value) {
+		if (trim($value) == "") {
+			$this->_tag = "0";
+		} else {
+			$this->_tag = trim($value);
+		}
+	}
+	function setSubfieldCd($value) {
+		$this->_subfieldCd = substr(trim($value),0,1);
+	}
+	function setDescription($value) {
+		$this->_description = trim($value);
+	}
+	function setRepeatableFlg($value) {
+		$this->_repeatableFlg = trim($value);
+	}
 
 }

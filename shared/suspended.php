@@ -3,13 +3,13 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+require_once("../shared/common.php");
 
-  $tab = "circ";
-  $nav = "";
+$tab = "circ";
+$nav = "";
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  echo '<p class="error">'.T("Your userid has been suspended.").'</p>';
+echo '<p class="error">'.T("Your userid has been suspended.").'</p>';
 
-  Page::footer();
+Page::footer();

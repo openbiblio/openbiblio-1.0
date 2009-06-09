@@ -6,27 +6,27 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class DmTable extends DBTable {
-  function DmTable() {
-    $this->DBTable();
-  }
-  function getSelect($all=false) {
-    $select = array();
-    if ($all) {
-      $select['all'] = 'All';
-    }
-    $recs = $this->getAll('description');
-    while ($rec = $recs->next()) {
-      $select[$rec['code']] = $rec['description'];
-    }
-    return $select;
-  }
-  function getDefault() {
-    $recs = $this->getMatches(array('default_flg'=>'Y'));
-    if ($recs->count() != 1) {
-      return NULL;
-    } else {
-      $r = $recs->next();
-      return $r['code'];
-    }
-  }
+	function DmTable() {
+		$this->DBTable();
+	}
+	function getSelect($all=false) {
+		$select = array();
+		if ($all) {
+			$select['all'] = 'All';
+		}
+		$recs = $this->getAll('description');
+		while ($rec = $recs->next()) {
+			$select[$rec['code']] = $rec['description'];
+		}
+		return $select;
+	}
+	function getDefault() {
+		$recs = $this->getMatches(array('default_flg'=>'Y'));
+		if ($recs->count() != 1) {
+			return NULL;
+		} else {
+			$r = $recs->next();
+			return $r['code'];
+		}
+	}
 }

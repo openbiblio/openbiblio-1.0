@@ -14,56 +14,56 @@ require_once(REL(__FILE__, "../classes/Query.php"));
  ******************************************************************************
  */
 class UsmarcBlockDmQuery extends Query {
-  var $_loc;
+	var $_loc;
 
-  function UsmarcBlockDmQuery () {
-    $this->Query();
-  }
+	function UsmarcBlockDmQuery () {
+		$this->Query();
+	}
 
-  /****************************************************************************
-   * Executes a query
-   * @param string $table table name of domain table to query
-   * @param int $code (optional) code of row to fetch
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function execSelect() {
-    $sql = "select * from usmarc_block_dm order by block_nmbr ";
-    return $this->_query($sql, T("Error accessing the marc block data."));
-  }
+	/****************************************************************************
+	 * Executes a query
+	 * @param string $table table name of domain table to query
+	 * @param int $code (optional) code of row to fetch
+	 * @return boolean returns false, if error occurs
+	 * @access public
+	 ****************************************************************************
+	 */
+	function execSelect() {
+		$sql = "select * from usmarc_block_dm order by block_nmbr ";
+		return $this->_query($sql, T("Error accessing the marc block data."));
+	}
 
-  /****************************************************************************
-   * Fetches a row from the query result and populates the Dm object.
-   * @return Dm returns domain object or false if no more domain rows to fetch
-   * @access public
-   ****************************************************************************
-   */
-  function fetchRow() {
-    $result = $this->_conn->fetchRow();
-    if ($result == false) {
-      return false;
-    }
-    $dm = new UsmarcBlockDm();
-    $dm->setBlockNmbr($result["block_nmbr"]);
-    $dm->setDescription($result["description"]);
-    return $dm;
-  }
+	/****************************************************************************
+	 * Fetches a row from the query result and populates the Dm object.
+	 * @return Dm returns domain object or false if no more domain rows to fetch
+	 * @access public
+	 ****************************************************************************
+	 */
+	function fetchRow() {
+		$result = $this->_conn->fetchRow();
+		if ($result == false) {
+			return false;
+		}
+		$dm = new UsmarcBlockDm();
+		$dm->setBlockNmbr($result["block_nmbr"]);
+		$dm->setDescription($result["description"]);
+		return $dm;
+	}
 
-  /****************************************************************************
-   * Fetches all rows from the query result.
-   * @return assocArray returns associative array indexed by block nmbr containing UsmarcBlockDm objects.
-   * @access public
-   ****************************************************************************
-   */
-  function fetchRows() {
-    while ($result = $this->_conn->fetchRow()) {
-      $dm = new UsmarcBlockDm();
-      $dm->setBlockNmbr($result["block_nmbr"]);
-      $dm->setDescription($result["description"]);
-      $assoc[$result["block_nmbr"]] = $dm;
-    }
-    return $assoc;
-  }
+	/****************************************************************************
+	 * Fetches all rows from the query result.
+	 * @return assocArray returns associative array indexed by block nmbr containing UsmarcBlockDm objects.
+	 * @access public
+	 ****************************************************************************
+	 */
+	function fetchRows() {
+		while ($result = $this->_conn->fetchRow()) {
+			$dm = new UsmarcBlockDm();
+			$dm->setBlockNmbr($result["block_nmbr"]);
+			$dm->setDescription($result["description"]);
+			$assoc[$result["block_nmbr"]] = $dm;
+		}
+		return $assoc;
+	}
 
 }

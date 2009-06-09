@@ -6,14 +6,14 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class TransactionTypes extends DmTable {
-  function TransactionTypes() {
-    $this->DmTable();
-    $this->setName('transaction_type_dm');
-    $this->setFields(array(
-      'code'=>'string',
-      'description'=>'string',
-      'default_flg'=>'string',
-    ));
-    $this->setKey('code');
-  }
+	function TransactionTypes() {
+		$this->DmTable();
+		$this->setName('transaction_type_dm');
+		$this->setFields(array(
+			'code'=>'string',
+			'description'=>'string',
+			'default_flg'=>'string',
+		));
+		$this->setKey('code');
+	}
 }

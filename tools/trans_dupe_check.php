@@ -8,9 +8,9 @@ if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 
 ?>
 
-  Usage: ./trans_dupe_check %locale% %file%
+	Usage: ./trans_dupe_check %locale% %file%
 
-  Where:
+	Where:
 	%locale% = the two letter abbreviation for the locale (en)
 	%file%   = the name of the file to be checked for duplicates
 

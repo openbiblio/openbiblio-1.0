@@ -10,12 +10,12 @@
  *********************************************************************************
  */
 function fileGetContents($filename){
-  $result = "";
-  $handle = fopen ($filename, "r");
-  while (!feof ($handle)) {
-    $buffer = fgets($handle, 4096);
-    $result = $result.$buffer;
-  }
-  fclose ($handle);
-  return $result;
+	$result = "";
+	$handle = fopen ($filename, "r");
+	while (!feof ($handle)) {
+		$buffer = fgets($handle, 4096);
+		$result = $result.$buffer;
+	}
+	fclose ($handle);
+	return $result;
 }

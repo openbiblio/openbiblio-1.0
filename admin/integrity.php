@@ -3,14 +3,14 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
-  $tab = "admin";
-  $nav = "integrity";
+	$tab = "admin";
+	$nav = "integrity";
 
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <h3><?php echo T("Check Database Integrity"); ?></h3>
 
@@ -22,4 +22,4 @@
 
 <?php
 
-  Page::footer();
+	Page::footer();

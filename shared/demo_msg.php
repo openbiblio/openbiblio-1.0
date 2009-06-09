@@ -3,13 +3,13 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+require_once("../shared/common.php");
 
-  $tab = "circ";
-  $nav = "";
-  Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+$tab = "circ";
+$nav = "";
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-  echo '<p>'.T('demoMsg').'</p>;
+echo '<p>'.T('demoMsg').'</p>;
 
-  Page::footer();
-  exit();
+Page::footer();
+exit();

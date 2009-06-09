@@ -5,20 +5,20 @@
  
 ?>
 <!-- **************************************************************************************
-     * Footer
-     **************************************************************************************-->
+		 * Footer
+		 **************************************************************************************-->
 <br /><br /><br />
 </font>
 <font face="Arial, Helvetica, sans-serif" size="1">
 <center>
-  Powered by OpenBiblio<br />
-  OpenBiblio is free software, copyright by its authors.<br />
-  Get <a href="../COPYRIGHT.html">more information</a>.
+	Powered by OpenBiblio<br />
+	OpenBiblio is free software, copyright by its authors.<br />
+	Get <a href="../COPYRIGHT.html">more information</a>.
 </center>
 <br />
 </font>
-    </td>
-  </tr>
+		</td>
+	</tr>
 </table>
 </body>
 </html>

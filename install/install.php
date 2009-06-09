@@ -3,71 +3,71 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  $doing_install = true;
-  require_once("../shared/common.php");
+	$doing_install = true;
+	require_once("../shared/common.php");
 
-  if (count($_POST) == 0) {
-    header("Location: ../install/index.php");
-    exit();
-  }
+	if (count($_POST) == 0) {
+		header("Location: ../install/index.php");
+		exit();
+	}
 
-  require_once(REL(__FILE__, "../install/InstallQuery.php"));
+	require_once(REL(__FILE__, "../install/InstallQuery.php"));
 
-  $locale = 'en';
-  $installTestData = false;
+	$locale = 'en';
+	$installTestData = false;
 
-  if (isset($_POST['locale'])) {
-    if (!ereg('^[-_a-zA-Z0-9]+$', $_POST['locale'])) {
-      Fatal::internalError("Bad locale name.");
-    }
-    $locale = $_POST['locale'];
-  }
-  if (isset($_POST['installTestData'])) {
-    $installTestData = ($_POST["installTestData"] == "yes");
-  }
+	if (isset($_POST['locale'])) {
+		if (!ereg('^[-_a-zA-Z0-9]+$', $_POST['locale'])) {
+			Fatal::internalError("Bad locale name.");
+		}
+		$locale = $_POST['locale'];
+	}
+	if (isset($_POST['installTestData'])) {
+		$installTestData = ($_POST["installTestData"] == "yes");
+	}
 
-  include(REL(__FILE__, "../install/header.php"));
+	include(REL(__FILE__, "../install/header.php"));
 ?>
 <br />
 <h1>OpenBiblio Installation:</h1>
 
 <?php
 
-  # testing connection and current version
-  $installQ = new InstallQuery();
-  $err = $installQ->connect_e();
-  if ($err) {
-    Fatal::dbError($e->sql, $e->msg, $e->dberror);
-  }
-  $version = $installQ->getCurrentDatabaseVersion();
-  echo "Database connection is good.<br />\n";
+	# testing connection and current version
+	$installQ = new InstallQuery();
+	$err = $installQ->connect_e();
+	if ($err) {
+		Fatal::dbError($e->sql, $e->msg, $e->dberror);
+	}
+	$version = $installQ->getCurrentDatabaseVersion();
+	echo "Database connection is good.<br />\n";
 
-  #************************************************************************************
-  #* show warning message if database exists.
-  #************************************************************************************
-  if ($version) {
-    if (!isset($_POST["confirm"]) or ($_POST["confirm"] != "yes")){
-      ?>
-        <form method="POST" action="../install/install.php">
-        OpenBiblio (version <?php echo H($version);?>) is already installed.
-        Are you sure you want to delete all library data and create new OpenBiblio
-        tables?<br />
-        <input type="hidden" name="confirm" value="yes">
-        <input type="hidden" name="locale" value="<?php echo H($locale); ?>">
-        <input type="hidden" name="installTestData" value="<?php if (isset($_POST["installTestData"])) echo "yes"; ?>">
-        <input type="submit" value="Continue">
-        <input type="button" onClick="self.location='../install/cancel_msg.php'" value="Cancel">
-        </form>
-      <?php
-      $setQ->close();
-      include(REL(__FILE__, "../install/footer.php"));
-      exit();
-    }
-  }
-  echo "Building OpenBiblio tables, please wait...<br />\n";
+	#************************************************************************************
+	#* show warning message if database exists.
+	#************************************************************************************
+	if ($version) {
+		if (!isset($_POST["confirm"]) or ($_POST["confirm"] != "yes")){
+			?>
+				<form method="POST" action="../install/install.php">
+				OpenBiblio (version <?php echo H($version);?>) is already installed.
+				Are you sure you want to delete all library data and create new OpenBiblio
+				tables?<br />
+				<input type="hidden" name="confirm" value="yes">
+				<input type="hidden" name="locale" value="<?php echo H($locale); ?>">
+				<input type="hidden" name="installTestData" value="<?php if (isset($_POST["installTestData"])) echo "yes"; ?>">
+				<input type="submit" value="Continue">
+				<input type="button" onClick="self.location='../install/cancel_msg.php'" value="Cancel">
+				</form>
+			<?php
+			$setQ->close();
+			include(REL(__FILE__, "../install/footer.php"));
+			exit();
+		}
+	}
+	echo "Building OpenBiblio tables, please wait...<br />\n";
 
-  $installQ->freshInstall($locale, $installTestData);
-  $installQ->close();
+	$installQ->freshInstall($locale, $installTestData);
+	$installQ->close();
 
 ?>
 <br />
@@ -76,4 +76,4 @@ OpenBiblio tables have been created successfully!<br />
 
 <?php
 
-  include(REL(__FILE__, "../install/footer.php"));
+	include(REL(__FILE__, "../install/footer.php"));

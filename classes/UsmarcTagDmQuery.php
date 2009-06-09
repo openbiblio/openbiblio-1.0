@@ -14,102 +14,102 @@ require_once(REL(__FILE__, "../classes/Query.php"));
  ******************************************************************************
  */
 class UsmarcTagDmQuery extends Query {
-  var $_loc;
+	var $_loc;
 
-  function UsmarcTagDmQuery () {
-    $this->Query();
-  }
+	function UsmarcTagDmQuery () {
+		$this->Query();
+	}
 
-  /****************************************************************************
-   * Executes a query
-   * @param int $code (optional) code of row to fetch
-   * @return boolean returns false, if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function execSelect($blockNmbr = "") {
-    $sql = "select * from usmarc_tag_dm ";
-    if ($blockNmbr != "") {
-      $sql .= $this->mkSQL("where block_nmbr = %N ", $blockNmbr);
-    }
-    $sql .= "order by tag ";
-    return $this->_query($sql, T("Error accessing the marc tag data."));
-  }
+	/****************************************************************************
+	 * Executes a query
+	 * @param int $code (optional) code of row to fetch
+	 * @return boolean returns false, if error occurs
+	 * @access public
+	 ****************************************************************************
+	 */
+	function execSelect($blockNmbr = "") {
+		$sql = "select * from usmarc_tag_dm ";
+		if ($blockNmbr != "") {
+			$sql .= $this->mkSQL("where block_nmbr = %N ", $blockNmbr);
+		}
+		$sql .= "order by tag ";
+		return $this->_query($sql, T("Error accessing the marc tag data."));
+	}
 
-  /****************************************************************************
-   * Formats a tag object from the selected row result
-   * @param int $result fetched row
-   * @return UsmarcTagDm returns UsMarcTagDm object
-   * @access private
-   ****************************************************************************
-   */
-  function _formatTag($result) {
-    $dm = new UsmarcTagDm();
-    $dm->setBlockNmbr($result["block_nmbr"]);
-    $dm->setTag($result["tag"]);
-    $dm->setDescription($result["description"]);
-    $dm->setInd1Description($result["ind1_description"]);
-    $dm->setInd2Description($result["ind2_description"]);
-    $dm->setRepeatableFlg($result["repeatable_flg"]);
-    return $dm;
-  }
+	/****************************************************************************
+	 * Formats a tag object from the selected row result
+	 * @param int $result fetched row
+	 * @return UsmarcTagDm returns UsMarcTagDm object
+	 * @access private
+	 ****************************************************************************
+	 */
+	function _formatTag($result) {
+		$dm = new UsmarcTagDm();
+		$dm->setBlockNmbr($result["block_nmbr"]);
+		$dm->setTag($result["tag"]);
+		$dm->setDescription($result["description"]);
+		$dm->setInd1Description($result["ind1_description"]);
+		$dm->setInd2Description($result["ind2_description"]);
+		$dm->setRepeatableFlg($result["repeatable_flg"]);
+		return $dm;
+	}
 
-  /****************************************************************************
-   * Executes a query
-   * @param int $tag tag of row to fetch
-   * @return UsmarcTagDm returns UsMarcTagDm object or false if error occurs
-   * @access public
-   ****************************************************************************
-   */
-  function get($tag) {
-    $sql = $this->mkSQL("select * from usmarc_tag_dm where tag=%N ", $tag);
-    $rows = $this->eexec($sql);
-    if (empty($rows)) {
-      return NULL;
-    }
-    assert('count($rows) == 1');
-    return $this->_formatTag($rows[0]);
-  }
+	/****************************************************************************
+	 * Executes a query
+	 * @param int $tag tag of row to fetch
+	 * @return UsmarcTagDm returns UsMarcTagDm object or false if error occurs
+	 * @access public
+	 ****************************************************************************
+	 */
+	function get($tag) {
+		$sql = $this->mkSQL("select * from usmarc_tag_dm where tag=%N ", $tag);
+		$rows = $this->eexec($sql);
+		if (empty($rows)) {
+			return NULL;
+		}
+		assert('count($rows) == 1');
+		return $this->_formatTag($rows[0]);
+	}
 
-  /****************************************************************************
-   * Fetches a row from the query result and populates the Dm object.
-   * @return Dm returns domain object or false if no more domain rows to fetch
-   * @access public
-   ****************************************************************************
-   */
-  function fetchRow() {
-    $result = $this->_conn->fetchRow();
-    if ($result == false) {
-      return false;
-    }
-    $dm = $this->_formatTag($result);
-    return $dm;
-  }
+	/****************************************************************************
+	 * Fetches a row from the query result and populates the Dm object.
+	 * @return Dm returns domain object or false if no more domain rows to fetch
+	 * @access public
+	 ****************************************************************************
+	 */
+	function fetchRow() {
+		$result = $this->_conn->fetchRow();
+		if ($result == false) {
+			return false;
+		}
+		$dm = $this->_formatTag($result);
+		return $dm;
+	}
 
-  /****************************************************************************
-   * Fetches all rows from the query result.
-   * @return assocArray returns associative array indexed by tag containing UsmarcTagDm objects.
-   * @access public
-   ****************************************************************************
-   */
-  function fetchRows() {
-    $tagsFound = false;
-    while ($result = $this->_conn->fetchRow()) {
-      $tagsFound = true;
-      $dm = new UsmarcTagDm();
-      $dm->setBlockNmbr($result["block_nmbr"]);
-      $dm->setTag($result["tag"]);
-      $dm->setDescription($result["description"]);
-      $dm->setInd1Description($result["ind1_description"]);
-      $dm->setInd2Description($result["ind2_description"]);
-      $dm->setRepeatableFlg($result["repeatable_flg"]);
-      $assoc[$result["tag"]] = $dm;
-    }
-    if ($tagsFound) {
-      return $assoc;
-    } else {
-      return false;
-    }
-  }
+	/****************************************************************************
+	 * Fetches all rows from the query result.
+	 * @return assocArray returns associative array indexed by tag containing UsmarcTagDm objects.
+	 * @access public
+	 ****************************************************************************
+	 */
+	function fetchRows() {
+		$tagsFound = false;
+		while ($result = $this->_conn->fetchRow()) {
+			$tagsFound = true;
+			$dm = new UsmarcTagDm();
+			$dm->setBlockNmbr($result["block_nmbr"]);
+			$dm->setTag($result["tag"]);
+			$dm->setDescription($result["description"]);
+			$dm->setInd1Description($result["ind1_description"]);
+			$dm->setInd2Description($result["ind2_description"]);
+			$dm->setRepeatableFlg($result["repeatable_flg"]);
+			$assoc[$result["tag"]] = $dm;
+		}
+		if ($tagsFound) {
+			return $assoc;
+		} else {
+			return false;
+		}
+	}
 
 }

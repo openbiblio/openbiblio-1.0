@@ -12,38 +12,38 @@
  ******************************************************************************
  */
 class UsmarcBlockDm {
-  var $_blockNmbr = "";
-  var $_description = "";
+	var $_blockNmbr = "";
+	var $_description = "";
 
-  /****************************************************************************
-   * Getter methods for all fields
-   * @return string
-   * @access public
-   ****************************************************************************
-   */
-  function getBlockNmbr() {
-    return $this->_blockNmbr;
-  }
-  function getDescription() {
-    return $this->_description;
-  }
+	/****************************************************************************
+	 * Getter methods for all fields
+	 * @return string
+	 * @access public
+	 ****************************************************************************
+	 */
+	function getBlockNmbr() {
+		return $this->_blockNmbr;
+	}
+	function getDescription() {
+		return $this->_description;
+	}
 
-  /****************************************************************************
-   * Setter methods for all fields
-   * @param string $value new value to set
-   * @return void
-   * @access public
-   ****************************************************************************
-   */
-  function setBlockNmbr($value) {
-    if (trim($value) == "") {
-      $this->_blockNmbr = "0";
-    } else {
-      $this->_blockNmbr = trim($value);
-    }
-  }
-  function setDescription($value) {
-    $this->_description = trim($value);
-  }
+	/****************************************************************************
+	 * Setter methods for all fields
+	 * @param string $value new value to set
+	 * @return void
+	 * @access public
+	 ****************************************************************************
+	 */
+	function setBlockNmbr($value) {
+		if (trim($value) == "") {
+			$this->_blockNmbr = "0";
+		} else {
+			$this->_blockNmbr = trim($value);
+		}
+	}
+	function setDescription($value) {
+		$this->_description = trim($value);
+	}
 
 }

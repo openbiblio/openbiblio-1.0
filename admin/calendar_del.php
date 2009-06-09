@@ -3,24 +3,24 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+require_once("../shared/common.php");
 
-  $tab = "admin";
-  $restrictInDemo = true;
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../model/Calendars.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+$tab = "admin";
+$restrictInDemo = true;
+require_once(REL(__FILE__, "../shared/logincheck.php"));
+require_once(REL(__FILE__, "../model/Calendars.php"));
+require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
-  if (!isset($_REQUEST["calendar"])){
-    header("Location: ../admin/calendars_list.php");
-    exit();
-  }
+if (!isset($_REQUEST["calendar"])){
+	header("Location: ../admin/calendars_list.php");
+	exit();
+}
 
-  if ($_REQUEST["calendar"] != OBIB_MASTER_CALENDAR) {
-    $calendars = new Calendars;
-    $calendars->deleteOne($_REQUEST["calendar"]);
-		$msg = T("Calendar Deleted");
-  } else {
-    $msg = T("Cannot Delete Master Calendar");
-  }
-  header("Location: ../admin/calendars_list.php?msg=".U($msg));
+if ($_REQUEST["calendar"] != OBIB_MASTER_CALENDAR) {
+	$calendars = new Calendars;
+	$calendars->deleteOne($_REQUEST["calendar"]);
+	$msg = T("Calendar Deleted");
+} else {
+	$msg = T("Cannot Delete Master Calendar");
+}
+header("Location: ../admin/calendars_list.php?msg=".U($msg));

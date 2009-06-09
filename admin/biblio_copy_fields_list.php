@@ -27,12 +27,12 @@
 <br />
 <a href="biblio_copy_fields_new_form.php"><?php echo T("Add a custom biblio copy field"); ?></a><br /><br />
 <?php
-  $BCQ = new BiblioCopyFields;
-  $rows = $BCQ->getAll();
+	$BCQ = new BiblioCopyFields;
+	$rows = $BCQ->getAll();
 
-  if (empty($rows)) {
-    echo T("No fields found!");
-  } else {
+	if (empty($rows)) {
+		echo T("No fields found!");
+	} else {
 ?>
 
 <table class="primary">
@@ -54,7 +54,7 @@ while ($row = $rows->next()) {
 <td class="primary" align="center"><?php echo H($row['description']);?></td>
 </tr>
 <?php
-    }
-    echo "</table>";
-  }
-  Page::footer();
+		}
+		echo "</table>";
+	}
+	Page::footer();

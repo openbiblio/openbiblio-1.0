@@ -10,7 +10,7 @@
 //*   the html tag.
 //*********************************************************************************
 
-  $locales = array(
-    "en"=>"English"
-    ,"de"=>"German"
-  );
+	$locales = array(
+		"en"=>"English"
+		,"de"=>"German"
+	);

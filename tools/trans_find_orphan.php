@@ -16,16 +16,16 @@ if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 
 ?>
 
-  Usage: ./trans_dupe_check %locale% %module%
+	Usage: ./trans_dupe_check %locale% %module%
 
-  Where:
-        %locale% = the two letter abbreviation for the locale (en)
+	Where:
+				%locale% = the two letter abbreviation for the locale (en)
 	%module% = the name of the module directory to scan for orphans.
 
 <?php
 } else {
-        echo "Checking locale: " .$argv[1]."\n";
-        echo "Checking module:   " .$argv[2]."\n";
+				echo "Checking locale: " .$argv[1]."\n";
+				echo "Checking module:   " .$argv[2]."\n";
 	echo "Loading $argv[1] files";
 	require(REL(__FILE__, "../locale/$argv[1]/trans.php"));
 
@@ -35,7 +35,7 @@ if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 
 	        if ($file != '.' && $file != '..')
 			$files[] = $file;
-    	}
+			}
 	closedir($handler);
 	
 	foreach ($files as $file) {

@@ -43,12 +43,12 @@
 <br />
 <a href="material_fields_add_form.php?material_cd=<?php echo HURL($material_cd);?>&amp;reset=Y"><?php echo T("materialFieldsViewAddField");?></a> (<?php echo $material_type; ?>)<br /><br />
 <?php
-  $mf = new MaterialFields;
-  $rows = $mf->getMatches(array('material_cd'=>$material_cd));
+	$mf = new MaterialFields;
+	$rows = $mf->getMatches(array('material_cd'=>$material_cd));
 
-  if ($rows->count() == 0) {
-    echo T("No fields found!");
-  } else {
+	if ($rows->count() == 0) {
+		echo T("No fields found!");
+	} else {
 ?>
 
 <table class="primary">
@@ -62,7 +62,7 @@
 <th><?php echo T("Repeatable?"); ?></th>
 </tr>
 <?php
-    while ($row = $rows->next()) {
+		while ($row = $rows->next()) {
 ?>
 <tr>
 <td valign="top" class="primary">
@@ -94,7 +94,7 @@ if ($row["repeatable"]=='1') {
 ?></td>
 </tr>
 <?php
-    }
-    echo "</table>";
-  }
-  Page::footer();
+		}
+		echo "</table>";
+	}
+	Page::footer();

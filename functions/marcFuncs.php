@@ -13,15 +13,15 @@
  *********************************************************************************
  */
 function printUsmarcText($tag,$subfieldCd,&$marcTags,&$marcSubflds,$showTagDesc){
-  $arrayIndex = sprintf("%03d",$tag).$subfieldCd;
+	$arrayIndex = sprintf("%03d",$tag).$subfieldCd;
 
-  if (($showTagDesc)
-    && (isset($marcTags[$tag]))
-    && (isset($marcSubflds[$arrayIndex]))){
-    echo $marcTags[$tag]->getDescription();
-    echo " (".$marcSubflds[$arrayIndex]->getDescription().")";
-  } elseif (isset($marcSubflds[$arrayIndex])){
-    echo $marcSubflds[$arrayIndex]->getDescription();
-  }
+	if (($showTagDesc)
+		&& (isset($marcTags[$tag]))
+		&& (isset($marcSubflds[$arrayIndex]))){
+		echo $marcTags[$tag]->getDescription();
+		echo " (".$marcSubflds[$arrayIndex]->getDescription().")";
+	} elseif (isset($marcSubflds[$arrayIndex])){
+		echo $marcSubflds[$arrayIndex]->getDescription();
+	}
 }
 

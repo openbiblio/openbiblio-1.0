@@ -3,24 +3,24 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  #****************************************************************************
-  #*  Reset all form values
-  #****************************************************************************
-  if (isset($_REQUEST["reset"])){
-    unset($_SESSION["postVars"]);
-    unset($_SESSION["pageErrors"]);
-  }
+#****************************************************************************
+#*  Reset all form values
+#****************************************************************************
+if (isset($_REQUEST["reset"])){
+	unset($_SESSION["postVars"]);
+	unset($_SESSION["pageErrors"]);
+}
 
-  #****************************************************************************
-  #*  Getting page errors and previous post variables from session.
-  #****************************************************************************
-  if (isset($_SESSION["postVars"])){
-    $postVars = $_SESSION["postVars"];
-  } else {
-    $postVars = NULL;
-  }
-  if (isset($_SESSION["pageErrors"])){
-    $pageErrors = $_SESSION["pageErrors"];
-  } else {
-    $pageErrors = NULL;
-  }
+#****************************************************************************
+#*  Getting page errors and previous post variables from session.
+#****************************************************************************
+if (isset($_SESSION["postVars"])){
+	$postVars = $_SESSION["postVars"];
+} else {
+	$postVars = NULL;
+}
+if (isset($_SESSION["pageErrors"])){
+	$pageErrors = $_SESSION["pageErrors"];
+} else {
+	$pageErrors = NULL;
+}
