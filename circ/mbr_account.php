@@ -131,7 +131,7 @@
 	} else {
 		$bal = 0;
 		?>
-		<tr><td class="primary" colspan="5"><?php echo T("Opening Balance"); ?></td><td class="primary"><?php echo moneyFormat($bal,2); ?></td></tr>
+		<tr><td class="primary" colspan="5"><?php echo T("Opening Balance"); ?></td><td class="primary"><?php echo $LOC->moneyFormat($bal); ?></td></tr>
 
 		<?php
 		while (($trans = $transactions->next()) !== NULL) {
@@ -151,10 +151,10 @@
 			<?php echo H($trans['description']);?>
 		</td>
 		<td class="primary" valign="top" >
-			<?php echo moneyFormat($trans['amount'],2);?>
+			<?php echo $LOC->moneyFormat($trans['amount']);?>
 		</td>
 		<td class="primary" valign="top" >
-			<?php echo moneyFormat($bal,2);?>
+			<?php echo $LOC->moneyFormat($bal);?>
 		</td>
 	</tr>
 <?php

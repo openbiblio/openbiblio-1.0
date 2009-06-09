@@ -3,23 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../shared/global_constants.php"));
 require_once(REL(__FILE__, "../classes/Query.php"));
-
-if (!function_exists('file_get_contents')) {
-	function file_get_contents ($filename) {
-		$s = "";
-		$f = @fopen($filename, "r");
-		if (!$f) {
-			return false;
-		}
-		while (!feof($f)) {
-			$s .= fgets($f, 4096);
-		}
-		fclose ($f);
-		return $s;
-	}
-}
 
 class InstallQuery extends Query {
 	/* Override constructor so the installer can test the database connection */

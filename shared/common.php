@@ -90,6 +90,7 @@ function mkPostVars() {
 	return _mkPostVars($_REQUEST, NULL);
 }
 
+require_once(REL(__FILE__, 'compat.php'));
 require_once(REL(__FILE__, '../database_constants.php'));
 require_once(REL(__FILE__, '../shared/global_constants.php'));
 require_once(REL(__FILE__, '../classes/Error.php'));
@@ -121,8 +122,6 @@ if (!isset($doing_install) or !$doing_install) {
 	global $LOC;
 	$LOC = new Localize;
 	$LOC->init(Settings::get('locale'));
-	setlocale(LC_MONETARY,Settings::get('locale'));
-	setlocale(LC_NUMERIC,Settings::get('locale'));
 
 	include_once(REL(__FILE__, "../classes/Page.php"));
 }

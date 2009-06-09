@@ -62,7 +62,7 @@
 	$balance = $acct->getBalance($mbrid);
 	$balMsg = "";
 	if ($balance != 0) {
-		$balText = moneyFormat($balance,2);
+		$balText = $LOC->moneyFormat($balance);
 		$balMsg = '<p class="error">'.T("Note: Mbr outstanding balance %bal%", array("bal"=>$balText)).'</p><br /><br />';
 	}
 

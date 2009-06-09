@@ -108,6 +108,9 @@ class Localize {
 		$suffix = '|'.$this->meta->pluralForm($n);
 		return $this->getText($key, $vars, $suffix);
 	}
+	function moneyFormat($amount) {
+		return $this->meta->moneyFormat($amount);
+	}
 	function getLocales () {
 		$dir = opendir(LOCALE_ROOT);
 		$locales = array();
