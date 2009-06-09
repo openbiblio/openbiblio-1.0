@@ -5,47 +5,11 @@
 
 	require_once("../shared/common.php");
 
-	require_once(REL(__FILE__, "../classes/UsmarcTagDm.php"));
-	require_once(REL(__FILE__, "../classes/UsmarcTagDmQuery.php"));
-	require_once(REL(__FILE__, "../classes/UsmarcSubfieldDm.php"));
-	require_once(REL(__FILE__, "../classes/UsmarcSubfieldDmQuery.php"));
 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 	require_once(REL(__FILE__, "../catalog/inputFuncs.php"));
-
-	#****************************************************************************
-	#*  Loading up an array ($marcArray) with the USMarc tag descriptions.
-	#****************************************************************************
-
-	$marcTagDmQ = new UsmarcTagDmQuery();
-	$marcTagDmQ->connect();
-	if ($marcTagDmQ->errorOccurred()) {
-		$marcTagDmQ->close();
-		displayErrorPage($marcTagDmQ);
-	}
-	$marcTagDmQ->execSelect();
-	if ($marcTagDmQ->errorOccurred()) {
-		$marcTagDmQ->close();
-		displayErrorPage($marcTagDmQ);
-	}
-	$marcTags = $marcTagDmQ->fetchRows();
-	$marcTagDmQ->close();
-
-	$marcSubfldDmQ = new UsmarcSubfieldDmQuery();
-	$marcSubfldDmQ->connect();
-	if ($marcSubfldDmQ->errorOccurred()) {
-		$marcSubfldDmQ->close();
-		displayErrorPage($marcSubfldDmQ);
-	}
-	$marcSubfldDmQ->execSelect();
-	if ($marcSubfldDmQ->errorOccurred()) {
-		$marcSubfldDmQ->close();
-		displayErrorPage($marcSubfldDmQ);
-	}
-	$marcSubflds = $marcSubfldDmQ->fetchRows();
-	$marcSubfldDmQ->close();
 
 ?>
 <p class="note">
@@ -110,15 +74,15 @@
 	</tr>
 <?php
 	function getlabel($f) {
-		global $marcSubflds, $marcTags;
+		global $LOC;
 		$label = "";
 		if ($f['label'] != "") {
 			$label = $f['label'];
 		} elseif ($f['subfield'] != "") {
-			$idx = sprintf("%03d%s", $f['tag'], $f['subfield']);
-			$label = $marcSubflds[$idx]->getDescription();
+			$idx = sprintf("%03d$%s", $f['tag'], $f['subfield']);
+			$label = $LOC->getMarc($idx);
 		} else {
-			$label = $marcTags[$f['tag']]->getDescription();
+			$label = $LOC->getMarc($f['tag']);
 		}
 		return $label;
 	}
