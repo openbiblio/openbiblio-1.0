@@ -51,7 +51,7 @@ if ($error_found == true) {
 	exit();
 }
 
-if ($user->isSuspended()) {
+if ($user['suspended_flg'] == 'Y') {
 	header("Location: ../shared/suspended.php");
 	exit();
 }
