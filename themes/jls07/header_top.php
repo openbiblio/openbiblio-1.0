@@ -71,7 +71,7 @@ if (isset($confirm_links) and $confirm_links) {
 		echo "<body>\n";
 	} else {
 		echo "</head>\n";
-		echo "<body onload="init" >\n";
+		echo "<body onload=\"init();\" >\n";
 	}
 	## ---------------------------------------------------------------------
 	?>
