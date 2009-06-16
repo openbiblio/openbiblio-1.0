@@ -1,0 +1,84 @@
+<?php
+#****************************************************************************
+#*  Translation text for page lookup_form.php
+#****************************************************************************
+$trans["lookup_z3950Search"]     = 'On-line search';
+$trans["lookup_isbn"]            = 'ISBN';
+$trans["lookup_issn"]            = 'ISSN';
+$trans["lookup_lccn"]            = 'LCCN';
+$trans["lookup_title"]           = 'Title';
+$trans["lookup_author"]          = 'Author';
+$trans["lookup_keyword"]         = 'Keyword anywhere';
+$trans["lookup_publisher"]       = 'Name of Publisher';
+$trans["lookup_pubLoc"]          = 'Place of Publication';
+$trans["lookup_pubDate"]         = 'Date of Publication';
+$trans["lookup_andOpt"]          = 'AND (optional)';
+$trans["lookup_search"]          = 'Search';
+$trans["lookup_repository"]		   = 'Repository';
+$trans["lookup_yazSetupFailed"]  = 'YAZ setup failed for host: !';
+$trans["lookup_badQuery"]        = 'Bad Query';
+$trans["lookup_patience"]        = 'Please be patient. this may take a while.';
+$trans["lookup_resetInstr"]      = 'After 30 secs. Press F5 to try again.';
+$trans["lookup_goBack"]  	       = 'Go Back';
+$trans["lookup_abandon"]  	     = 'Stop Search';
+$trans["lookup_yazError"]        = 'Lookup YAZ Error: ';
+$trans["lookup_nothingFound"]    = 'Nothing found for ';
+$trans["lookup_tooManyHits"]     = 'Too many hits to display, ';
+$trans["lookup_refineSearch"]    = 'Please refine the search and try again.';
+$trans["lookup_success"]         = 'Success! Z39.50 search data is shown below!';
+$trans["lookup_hits"]            = ' hits, please select one.';
+$trans["lookup_callNmbrType"]    = 'Your my_callNmbrType is invalid!';
+$trans['lookup_useThis']         = 'This One';
+$trans['lookup_searchError']     = 'SEARCH ERROR:Send this to system administrator:';
+
+#****************************************************************************
+#*  Translation text for page lookupOptsForm.php
+#****************************************************************************
+$trans["lookup_opts"]       			     = 'Lookup Options.';
+$trans["lookup_optsUpdated"]           = 'Lookup Settings have been updated.';
+$trans["lookup_optsSettings"]      		 = 'Edit Lookup Options:';
+$trans["lookup_optsProtocol"]          = 'Protocol:';
+$trans["lookup_optsMaxHits"]           = 'Maximum no of hits:';
+$trans["lookup_optsKeepDashes"]        = 'Keep Dashes:';
+$trans["lookup_optsCallNmbrType"]      = 'Call Number Type:';
+$trans["lookup_optsAutoDewey"]         = 'Use Default Dewey:';
+$trans["lookup_optsDefaultDewey"]      = 'Default Dewey Code:';
+$trans["lookup_optsAutoCutter"]        = 'Generate Cutter if none:';
+$trans["lookup_optsCutterType"]        = 'Cutter Type to create:';
+$trans["lookup_optsCutterWord"]        = 'Dewey Cutter Word No.:';
+$trans["lookup_optsAutoCollection"]    = 'Use Auto Collection:';
+$trans["lookup_optsFictionName"]       = 'Fiction Collection Name:';
+$trans["lookup_optsFictionCode"]       = 'Index no. of Fiction Code to use:';
+$trans["lookup_optsLocFictionCodes"]   = 'LoC Fiction Codes';
+$trans["lookup_optsDewFictionCodes"]   = 'Dewey Fiction codes:';
+$trans["lookup_callNmbrType"]          = 'Your call Number Type is invalid!';
+$trans["lookup_optsUpdtBtn"]           = 'Update';
+
+#****************************************************************************
+#*  Translation text for page lookupHostsForm.php
+#****************************************************************************
+$trans["lookup_hosts"]       			     = 'Lookup Hosts.';
+$trans["lookup_rqdNote"]       			 	 = ' - required fields.';
+$trans["lookup_hostsUpdated"]          = 'Lookup Settings have been updated.';
+$trans["lookup_hostsConfirmDelete"]    = 'Are you sure you want to delete this host?';
+$trans["lookup_hostsListFunction"]   	 = 'Function:';
+$trans["lookup_hostsListHeader"]       = 'View Lookup Hosts:';
+$trans["lookup_hostsEditHeader"]       = 'Edit Host Properrties:';
+$trans["lookup_hostsNewHeader"]        = 'Enter New Host Properrties:';
+$trans["lookup_hostsSeqNo"]    	     	 = 'Order:';
+$trans["lookup_hostsActive"]           = 'Use:';
+$trans["lookup_hostsHost"]       			 = 'URL:port';
+$trans["lookup_hostsName"]     				 = 'Name:';
+$trans["lookup_hostsDb"]        			 = 'Database:';
+$trans["lookup_hostsUser"]      			 = 'User Id:';
+$trans["lookup_hostsPw"]        			 = 'Password:';
+$trans["lookup_hostsAddNewBtn"]        = 'Add New Host';
+$trans["lookup_hostsUpdtBtn"]          = 'Update';
+#****************************************************************************
+
+#****************************************************************************
+#*  Translation text for page lookup.php for lookup2
+#****************************************************************************
+$trans["lookup"]                = 'On-line Search v2';
+$trans["lookup_opts"]       		= 'Lookup Options';
+$trans["lookup_hosts"]       		= 'Lookup Hosts';

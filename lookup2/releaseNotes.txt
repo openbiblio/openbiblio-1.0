@@ -1,0 +1,355 @@
+issues -----------------------------------------------------------------------
+- response to non-existant isbn is BAD.  Needs improvement ASAP.
+- auto collection needs more categories.
+
+2009-06-15 -----------------------------------------------------------------------
+- temporarily deactivated login checks in ../shared/login.php
+- began work on ver3 for openbiblio 1.0
+
+2009-06-14 -----------------------------------------------------------------------
+- removed annoying 'null' from host list.
+- OPAC flag set as default is now working correctly.
+- now respects default collection set in DB, but how to set is undetermined!
+- added licensing object to customHead.php as 'lookup' object available to all
+
+2009-06-13 -----------------------------------------------------------------------
+- added provision for custom navigation items with out modifying openbiblio files.
+- added provision for custom Javascript &CSS with out modifying openbiblio files.
+- fixed several bugs that got missed in prior releases.
+- caught up most the 'minor' openBiblio coding standards for eventual incorporation
+	like: use of REL for includes, copyright notices, coding consistencies.
+
+2009-06-11 -----------------------------------------------------------------------
+- removed references in install instructions to older versions.
+- major re-write in many areas; display code now in HTML/CSS/JavaScript files.
+- added 'Lookup Settings' screen to Admin tab for most configuration options.
+- added 'Lookup Hosts' screen to Admin tab for host info maintenance.
+- moved all lookup files into own new directory '.../openbiblio/lookup2'
+- incorporated SRU protocall as an option to YAZ based on Dec2006 work of Ritteh.
+	use of YAZ is now optional.
+- improved usability by making use of AJAX technology. JavaScript is now required.
+- changes to Author or Title by user will result in new Cutter if 'AutoDewey' in effect.
+- now possible to backup from a choice on a multi-hit list without haveing to do
+	a new search - all data is retained at the browser.
+
+2008-04-13 -----------------------------------------------------------------------
+- patch from MAB to deal with cases of author in various combinations of 100a & 700a.
+
+2007-07-10 -----------------------------------------------------------------------
+- added support for UDC in auto call-numbers as requested by Josep M Solé.
+- fixed bug in dash removal code
+- Failure now returns new search screen rather than in incorrectly filled form
+
+2007-05-16 -----------------------------------------------------------------------
+- added conf file option to not remove dashes from entered ISBN
+
+2007-03-11 -----------------------------------------------------------------------
+- modified to work with v0.6.0
+- minor change in installation sequence
+- update of YAZ references.
+
+2006-12-08 -----------------------------------------------------------------------
+- modified ISBN handler to strip extraneous text at end of some Z3950 generated ISBNs
+- added a few patches to improve handling of the multi-host, multi-hit cases
+
+2006-10-31 -----------------------------------------------------------------------
+- added type '979' to bar code test per info from Cristoph Lange
+- improved code for multiple libraries per suggestions from Hans van der Weij
+
+2006-10-10 -----------------------------------------------------------------------
+- fixed bug in prior release that prevented it from displaying any search results
+- clarified installation notes for auto 'new copy'
+
+2006-09-01 -----------------------------------------------------------------------
+- bar-code reading fixed, including better diagnostic messages
+- multi-repository search now available via config file settings
+- name of repository library included in multi-hit responses
+
+2006-03-17 -----------------------------------------------------------------------
+- now requires release v0.51-pre4 or later
+- now handles correctly multiple hits with user selection having multiple ISBN
+
+2005-07-11 -----------------------------------------------------------------------
+- lookup-install now mentions the lookup.js file
+
+2005-07-05 -----------------------------------------------------------------------
+- moved Lookup to own form shown in nav bar. 
+- lookup now uses localization functions for all displayed text
+- added "Z39.50 search" to .../navbars/cataloging.php & .../locale/en/navbars.php
+- added text for all displayed text to .../locale/en/cataloging.php
+- moved z3950 search code to new file .../catalog/lookup_z3950_search.php
+- increased number of Z3950 search criteria from 2 to 5
+- added Publication data as search criteria
+
+2005-06-26 -----------------------------------------------------------------------
+- YAZ activtion instructions expanded in lookup_install.txt.
+
+2005-05-25 -----------------------------------------------------------------------
+- ISBN now verified if input from a barcode scanner
+- fixed mis-handling of "not found" when 2 search criteria are specified
+- added missing "{" in installation instructions.
+- "keyword anywhere" choice added to 2nd search criteria
+
+2005-04-17 -----------------------------------------------------------------------
+- new single-button selection of multiple hit choice
+
+2005-04-15 -----------------------------------------------------------------------
+- support functions broken out into seperate file 'lookup_func.php'
+- simple, crude, auto-collection mechanism, sets colection to 'Fiction' based on LC codes
+- Cutter-Sanborn cutter mechanism modified to work with mySQL ver older than 4.1
+- short titles (e.g. "The Source") now generate a correct cutter sufix (e.g. "s")
+- auto-dewey function now considers LC classes "PR..PZ", and dewey class "[FIC]" as fiction
+
+2005-04-08 -----------------------------------------------------------------------
+- tested OK with PHP 4.1.10; does not work with 5.03, or 4.0.x
+- added Cutter-Sanborn 3-digit table option for auto-cutter (made it default choice)
+- user configuration section moved to "lookup_conf.php"
+- auto-dewey works from both 'PS' & 'PZ' LoC call numbers
+- lookup-install file renamed to lookup_install
+- this file renamed from "lookup-releaseNotes.txt"
+- max Hits Displayed made a user choice
+- fixed bug in ISBN validity check introduced in prior release
+
+2005-03-24 -----------------------------------------------------------------------
+- created a seperate installation file, but left old information in this file
+- sample copies of modified openbiblio files no longer provided in .zip file
+- fix cutter suffix bug when noise word occurs as first word of title
+- fix default dewey call number bug
+
+2005-03-23 -----------------------------------------------------------------------
+- improve parsing of dewey call numbers to assure xxx/.xx/xx forms retain the first 
+  group of digits after the '.', but loose the preceding '/'
+- show number of hits if more than one
+- allow user to specify which word of a title is to be used in cutter
+- cutter generation defaulted to off
+- call number generation defaulted to off
+
+2005-03-22 -----------------------------------------------------------------------
+- tested to work with version 0.51, and Firefox 1.0
+- improved interface for multiple hits.  Formatted output from which ISBN or LCCN
+  can be copied and pasted directly into a new search. For Ivan's case below, you 
+  will have to do the second search using the LCCN number.
+- added optional internal cutter generator for dewey call numbers (per LOC rules)
+- added optional user assigned default dewey call number for LOC 'PZ' books 
+
+2005-03-03 -----------------------------------------------------------------------
+- make provisions for a user specified id and password for the search server
+- query format changed to allow for multiple search criteria "similar to US LOC"
+- User may specify up to 2 criteria (such as Author & title) (crude display)
+- crude display of multiple hits, user can then copy ISBN, LCCN, etc and back up to 
+  original query
+
+2005-02-13 -----------------------------------------------------------------------
+- correct few syntax errors 
+
+2004-12-25 -----------------------------------------------------------------------
+- fix validator to allow ISSN and LCCN.
+- fix validator to allow bar code scanner input of ISBN.
+- modify "nothing found! to display code searched for.
+
+2004-12-20 -----------------------------------------------------------------------
+- add process to cleanup ISSN ('-' now allowed, but not required.)
+- validate ISBN on entry before sending form to MARC server. This prevents having a 
+  lookup failure due to a typing error appear as if no database entry exists.
+- as an interim solution to the multiple hit problem, all hits will be posted to all 
+  tag fields.  This usually results in duplicates of most values, but at least nothing
+  is lost or hidden.  If you have a better display idea, please let me know.  To see 
+  the effect on a known case, try ISBN "188-127-3156", which was provided by Ivan.
+
+2004-09-21 -----------------------------------------------------------------------
+- fixed bug in lookup regarding hit counter.
+
+- To have focus in lookup so it appears in lookup value field as it did in ver 0.4,
+  You should modify biblio_new_form.php to the following:
+  $tab = "cataloging";
+  $nav = "new";
+  $helpPage = "biblioEdit";
+  $cancelLocation = "../catalog/index.php";
+
+	if (!isset($HTTP_GET_VARS["lookupVal"]) && !isset($HTTP_GET_VARS["srchBy"])) 
+		$focus_form_name = "lookupform";
+		$focus_form_field = "lookupVal";
+	} else {
+		$focus_form_name = "newbiblioform";
+		$focus_form_field = "materialCd";
+	}
+
+  require_once("../shared/read_settings.php");
+  require_once("../functions/inputFuncs.php");
+
+2004-07-11 -----------------------------------------------------------------------
+- code modified to work with ver 0.5
+
+2004-04-04 -----------------------------------------------------------------------
+- Use of '-' in ISBN or LCCN now allowed, but not required.
+- Removed leading '; ' from 1st additional author.
+- Added note asking that lookup value be saved in the event of multiple hits.  A test
+	case is needed to write code to handle this frequent problem.
+- Major simplification of "extract_marc_fields()" function using generic code for all 
+	MARC fields except 538(Systems Details Note) & 650(Topical Term).  538 is not
+	normally handled by OpenBiblio at all, and 650 data is handled outside of MARC.
+
+- if you would like to have the "new copy" form automatically appear when finished
+	adding new bibliographic data, change the end of "biblio_new.php" to read:
+  
+  #**************************************************************************
+  #*  Must select one of the following lines
+  #**************************************************************************
+  //following line requires manual access to new copy form (original function)
+  //header("Location: ../shared/biblio_view.php?bibid=".$bibid."&msg=".$msg);
+  //following line auto transfers to new copy form (new function)
+  header("Location: ../catalog/biblio_copy_new_form.php?bibid=".$bibid."&msg=".$msg);
+  exit();
+ 
+2003-08-11 -----------------------------------------------------------------------
+- Added 'my_call_nmbr_type' variable to top of lookup.php to allow user to select 
+	which of LoC, Dewey, or local call numbers are to be placed into the Call_Nmbr1,2,3 fields.
+	Thanks to Richard June for the idea.
+- Corrected the Z3950 search_by attribute for LCCN to be '9'.  Thanks to A.J. Gatlin.
+- Added handler for tag 538a at popular request. (Matt & Richard)
+- Temporarily disabled for() loop for handling multiple records since it performed no
+	useful function as written.  Also commented out residual <dl></dl> pair
+
+2003-08-04 -----------------------------------------------------------------------
+Code has been thoroughly tested with 0.40.  I have added some 30 books using
+this version, perhaps 10 of those using a cuecat bar code reader to enter the 
+ISBN from the book jacket or inside cover.
+
+Be sure to follow the recommendations at the bottom of this document regarding
+session_data and implementing YAZ in your PHP.
+
+Fixed a problem when the remote server provides 2 or more LoC Call numbers for
+a single book.  They are now seperated by '; '.
+
+Now supports 'Additional authors' if you change biblio_fields.php as follows:
+  <?php printUsmarcInputText(100,"a",TRUE,$fieldIds,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
+
+  <?php // added for additional authors (fl) ?>
+  <?php printUsmarcInputText(700,"a",FALSE,$fieldIds,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
+
+  <?php printUsmarcInputText(650,"a",FALSE,$fieldIds,$postVars,$pageErrors,$marcTags, $marcSubflds, FALSE,OBIB_TEXT_CNTRL);?>
+  
+I found it convenient to change the content of the description column of the 
+usmarc_subfield_dm table for row 100a to be "Personal name - Author".  I also changed 
+the description for row 700a to "Personal name - additional author".
+
+Changed the 'extract_marc_fields()' function to use a switch / case statement in place 
+of the long set of if statements.
+
+All documntation comments use the '#' form.  '//' is used only for disabling 
+development debug statements.  All of these may be removed if you prefer.
+
+You should modify biblio_new_form.php to the following:
+  $helpPage = "biblioEdit";
+  $cancelLocation = "../catalog/index.php";
+
+		if (empty($lookupVal) || empty($srchBy)) { ##<<<<<<<<<<<<<<<<<<<<< 
+			$focus_form_name = "lookupform";
+			$focus_form_field = "lookupVal";
+		} else {
+			$focus_form_name = "newbiblioform";
+			$focus_form_field = "materialCd";
+		}
+
+  require_once("../shared/read_settings.php");
+  require_once("../functions/inputFuncs.php");
+
+Made several other small changes I have forgotten.
+
+2003-07-06 ----------------------------------------------------------------------- 
+The tested code is for version 0.30 of OpenBiblio.
+I have included a modified version of the php code for 0.4 prepared by Matt Boytim
+even though I have not tried it myself.  Also included is an add-on he suggests to 
+move the web page focus to the ISBN entry line.
+
+2002-9-18 -----------------------------------------------------------------------
+1. $ removed from prices
+2. multiple entries now properly seperated by ';'
+3. '00' removed from isbn
+4. bar code now filled only with LC control number
+5. leading spaces removed from LC cntl number
+6. remove title choice from form, reformat and add notes
+7. remove some unused code
+
+Known Problems 9-18:
+none at this time
+
+===============================================================================
+All of the following refers to the 0.30 version.
+
+This is an addon to OpenBiblio that allows you to do a search of a Z3950 
+catalog with auto posting of the resulting MARC data to the 'new bibliography' 
+page. It's admitidly crude, being my first php effort. This code is an embelishment
+of the examples shown at: www.indexdata.dk/phpyaz/. 
+
+This module allows you to specify isbn, lccn or title for the search and the 
+value to search for. The input form (all 3 lines of it is placed just above 
+the current new_biblio form. Output is directly to the normal input fields 
+to allow user verification and editing before submission. Provission is made 
+in the code (marked as #<<<<<<<<<<<<<<<<<<<<<<<)to display the actual MARC 
+formatted lines, but that is currently disabled by '//' marks. 
+
+In my experience, this search only works for books published since about
+1972.  I would guess that US lib of Congress has decided not add isbn or LCCN 
+searches to the z3950 server for anything older than that.  For older
+books I use 'title + author' using the advanced search at
+www.loc.gov/z3950/.
+
+I've added some 1000+ books to my catalog using this code and it definately works 
+for me using the Lib of Congress voyager server. Another server could be
+easily substituted. Just search for the following and substitute the
+server of choice.  
+
+	$host = 	'z3950.loc.gov:7090';
+	$database = 	'voyager';
+
+A list of servers can be found at www.loc.gov/z3950/
+
+The mod to openBiblio involves adding this single line to biblio_new_form.php 
+just above the existing <form ... > statement near the end of the file. 
+
+<?php include("../catalog/lookup.php");?> 
+
+Then of course you add the lookup.php file to the indicated directory. Thats it! 
+(Assuming you have YAZ installed in your php installation.)
+
+While, all may go perfectly for you the first time, I found it useful to make a few
+additions to biblio_new.php. Locate the '!validData' string as shown below, and insert
+the new lines beginning with 'echo' as shown.
+
+  $validData = $biblio->validateData();
+  if (!$validData) {
+    echo 'Validation failed!' . '<br>'; #<<<<<<<<<<<<<<<<<<<<<<<<
+    echo 'one or more of the following has an invalid character:' . '<br>'; #<<<
+    echo '  isbn = ' . $HTTP_POST_VARS["isbnNmbr"] . '<br>'; #<<<<<<<<<<<<<<<<<<
+    echo '  bar Code = ' . $HTTP_POST_VARS["barcodeNmbr"] . '<br>'; #<<<<<<<<<<<
+    echo '  title = ' . $HTTP_POST_VARS["title"] . '<br>'; #<<<<<<<<<<<<<<<<<<<<
+    echo '  call Nmbr = ' . $HTTP_POST_VARS["callNmbr"] . '<br>'; #<<<<<<<<<<<<<
+    echo '  price = ' . $HTTP_POST_VARS["price"] . '<br>'; #<<<<<<<<<<<<<<<<<<<<
+    echo 'please correct the invalid entries and try again.' . '<br>'; #<<<<<<<<
+    $pageErrors["barcodeNmbr"] = $biblio->getBarcodeNmbrError();
+    $pageErrors["title"] = $biblio->getTitleError();
+    $pageErrors["callNmbr"] = $biblio->getCallNmbrError();
+    $pageErrors["price"] = $biblio->getPriceError();
+    $HTTP_SESSION_VARS["postVars"] = $HTTP_POST_VARS;
+    $HTTP_SESSION_VARS["pageErrors"] = $pageErrors;
+    header("Location: ../catalog/biblio_new_form.php");
+    exit();
+  }
+
+Then when I do get some incorrect data into the data entry form, I can see what 
+caused the problem.
+
+
+Note: if you are using windows, check that your installation of php created a 
+'.../php/sessionData' dir.  OpenBiblio will require it to run correctly.
+
+My installation of php (4.23 for Windows 2000) came with YAZ already
+installed. All I needed to do was to move the accompanying yaz.dll to
+my c:\winnt\system32 dir. The indexdata page can help with linux/unix
+systems.
+
+
+Fred LaPlante
+flaplante@flos-inc.com
+
