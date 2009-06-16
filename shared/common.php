@@ -125,3 +125,38 @@ if (!isset($doing_install) or !$doing_install) {
 
 	include_once(REL(__FILE__, "../classes/Page.php"));
 }
+
+  ###################################################################
+  ## plugin Support
+  ###################################################################
+  function getPlugIns($wanted) {
+		clearstatcache();
+		$lists = array();
+  	if (is_dir('../plugins')) {
+			//echo "Plugin Dir found: <br />";
+  	  ## find all plugin directories
+			if ($dirHndl = opendir('../plugins')) {
+		    # look at all plugin dirs
+		    while (false !== ($plug = readdir($dirHndl))) {
+		      if (($plug == '.') || ($plug == '..')) continue;
+					//echo "plugin => $plug<br />";
+  	      $plugPath = "../plugins/$plug";
+  	      if (is_dir($plugPath)) {
+						if ($filHndl = opendir($plugPath)) {
+		    			while (false !== ($file = readdir($filHndl))) {
+		    			  if (($file == '.') || ($file == '..')) continue;
+								//echo "file => $file<br />";
+  	      			if ($file == $wanted) {
+									//echo "got one => $plugPath/$file<br />";
+									$list[] = "$plugPath/$file";
+								}
+  	      		}
+  	      		closedir($filHndl);
+						}
+					}
+  		  }
+  		  closedir($dirHndl);
+			}
+		}
+		return $list;
+	}

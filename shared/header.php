@@ -111,6 +111,7 @@ if (isset($_SESSION['rpt_Report'])) {
 		'../reports/run_report.php?type=previous');
 }
 
+
 $helpurl = "javascript:popSecondary('../shared/help.php";
 if (isset($helpPage)) {
 	$helpurl .= "?page=".$helpPage;
@@ -119,3 +120,13 @@ $helpurl .= "')";
 Nav::node('help', T("Help"), $helpurl);
 
 require_once($ThemeDir."/header.php");
+
+	## #######################################
+	## For plug-in support
+	## #######################################
+	$list = getPlugIns('nav.nav');
+	for ($x=0; $x<count($list); $x++) {
+		//echo "adding: $list[$x]<br />";
+		include_once ($list[$x]);
+	}
+	## #######################################

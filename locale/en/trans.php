@@ -1036,3 +1036,11 @@ $trans["requestSendPleaseSend"]          = "Please send me an e-mail confirmatio
 $trans["requestSendPleaseSelect"]          = "Please select alternate titles if items I've requested are not available.";
 $trans["requestSendMustEnterDate"]          = "You must enter a request date and/or check the box for the soonest delivery date available.";
 
+    ## ##################################
+    ## adds suport for plugins - fl, 2009
+    ## ##################################
+		$list = getPlugIns('tran.tran');
+		for ($x=0; $x<count($list); $x++) {
+			include($list[$x]);
+		}
+    ## ##################################

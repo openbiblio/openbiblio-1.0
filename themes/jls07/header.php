@@ -3,7 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-	include($params['theme_dir']."/header_top.php");
+//	include($params['theme_dir']."/header_top.php");
+	include(REL(__FILE__,"/header_top.php"));
 ?>
 
 <h1 class="staff_head"><?php echo T("%library%: Staff Interface", array('library'=>H(Settings::get('library_name')))) ?></h1>

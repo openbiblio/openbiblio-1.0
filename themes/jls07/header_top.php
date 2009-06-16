@@ -59,8 +59,16 @@ if (isset($confirm_links) and $confirm_links) {
 }
 -->
 </script>
+	
+	<?php
+	## ---------------------------------------------------------------------
+	## --- added for Fred LaPlante's Lookup Function -----------------------
+	if (file_exists('custom_head.php')) {
+		include ('custom_head.php');
+	}
+echo "</head>\n";
+echo "<body>\n";
+	## ---------------------------------------------------------------------
+	?>
+	
 
-
-</head>
-
-<body onLoad="init()">

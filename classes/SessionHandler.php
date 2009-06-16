@@ -45,10 +45,13 @@ class SessionHandler {
 	}
 }
 $_session_handler = new SessionHandler();
+/*
 session_set_save_handler(
-	array(&$_session_handler, 'open'),
-	array(&$_session_handler, 'close'),
-	array(&$_session_handler, 'read'),
-	array(&$_session_handler, 'write'),
-	array(&$_session_handler, 'destroy'),
-	array(&$_session_handler, 'gc'));
+	 array(&$_session_handler, 'open')
+	,array(&$_session_handler, 'close')
+	,array(&$_session_handler, 'read')
+	,array(&$_session_handler, 'write')
+	,array(&$_session_handler, 'destroy')
+	,array(&$_session_handler, 'gc')
+	);
+*/

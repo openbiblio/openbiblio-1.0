@@ -45,7 +45,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		$s .= "</select>\n";
 		break;
 	case 'textarea':
-		$s .= '<textarea name="'.H($name).'" ';
+		$s .= '<textarea id="'.H($name).'" name="'.H($name).'" ';
 		$s .= 'id="'.H($name).'" ';
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
@@ -54,7 +54,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		break;
 	case 'checkbox':
 		$s .= '<input type="checkbox" ';
-		$s .= 'name="'.H($name).'" ';
+		$s .= 'id="'.H($name).'" name="'.H($name).'" ';
 		//$s .= 'value="'.H($data).'" ';
 		if ($value == $data) {
 			$s .= 'checked="checked" ';
@@ -66,7 +66,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		break;
 	default:
 		$s .= '<input type="'.H($type).'" ';
-		$s .= 'name="'.H($name).'" ';
+		$s .= 'id="'.H($name).'" name="'.H($name).'" ';
 		if ($value != "") {
 			$s .= 'value="'.H($value).'" ';
 		}

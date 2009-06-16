@@ -36,13 +36,14 @@ table.sigh { width: 100%; }
 table.sigh .spacer { width: 5px; }
 #sidebar {
 	vertical-align: top;
-	width: 126px;
+	/* width: 150px; */
+	width: 160px; /*flos change  */
 	border: solid black 2px;
 	padding: 10px;
 }
 
 /* Using list-style-image because IE has an odd circle list-style-type. */
-ul.nav_main { margin-top: 0; margin-left: 0; padding-left: 0; list-style-type: none; }
+ul.nav_main { width: 130px; /*flos change  */ margin-top: 0; margin-left: 0; padding-left: 0; list-style-type: none; }
 ul.nav_main li { margin-bottom: 1.1em; white-space: nowrap; }
 ul.nav_main > li.nav_selected {
 	border: solid black 2px;
@@ -53,7 +54,7 @@ ul.nav_main > li.nav_selected {
 	padding: 2px;
 	position: relative;
 }
-ul.nav_sub { margin-left: 0; padding-left: 2em; list-style-type: circle; list-style-image: url("../images/bulleto.png"); }
+ul.nav_sub { width: 120px; /*flos change  */ margin-left: 0; padding-left: 2em; list-style-type: circle; list-style-image: url("../images/bulleto.png"); }
 ul.nav_sub ul.nav_sub { padding-left: 1em }
 ul.nav_sub li { margin-bottom: 0; font-weight: normal; }
 ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; list-style-image: url("../images/bulletc.png"); }
@@ -194,3 +195,7 @@ a.button:hover {
 	text-align: center;
 	font: 12px serif;
 }
+/* flos additions */
+span.highLite {
+  color: #FF8A00;
+	}

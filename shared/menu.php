@@ -7,6 +7,7 @@ function staff_menu() {
 	Nav::node('circulation', T("Circulation"), '../circ/index.php');
 	Nav::node('circulation/searchform', T("Member Search"), '../circ/index.php');
 	Nav::node('circulation/search', T("Search Results"));
+
 	if (isset($mbrid)) {
 		$params = 'mbrid='.U($mbrid);
 		if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
@@ -19,10 +20,13 @@ function staff_menu() {
 		Nav::node('circulation/mbr/account', T("Account"), '../circ/mbr_account.php?'.$params.'&reset=Y');
 		Nav::node('circulation/mbr/hist', T("Checkout History"), '../circ/mbr_history.php?'.$params);
 	}
+
 	Nav::node('circulation/new', T("New Member"), '../circ/mbr_new_form.php?reset=Y');
 	Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
 	Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
 	Nav::node('circulation/bookings/pending', T("Pending Bookings"));
+
+
 	if (isset($bookingid)) {
 		$params = 'bookingid='.U($bookingid);
 		if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
@@ -33,22 +37,27 @@ function staff_menu() {
 			'../circ/booking_view.php?'.$params);
 		Nav::node('circulation/bookings/deleted', T("Deleted"));
 	}
+
 	Nav::node('circulation/bookings/book', T("Create Booking"));
 	Nav::node('circulation/checkin', T("Check In"), '../circ/checkin_form.php?reset=Y');
 	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 	Nav::node('cataloging/searchform', T("New Search"), "../catalog/index.php");
 	Nav::node('cataloging/images', T("Browse Images"), '../shared/image_browse.php');
+
 	if (isset($_SESSION['rpt_BiblioSearch'])) {
 		Nav::node('cataloging/search', T("Search Results"),
 			'../shared/biblio_search.php?searchType=previous&tab='.U($tab));
 	}
+
 	Nav::node('cataloging/cart', T("Request Cart"), '../shared/req_cart.php?tab='.U($tab));
+
 	if (isset($_REQUEST['bibid'])) {
 		$params = 'bibid='.U($_REQUEST['bibid']);
 		if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
 			$params .= '&rpt='.U($_REQUEST['rpt']);
 			$params .= '&seqno='.U($_REQUEST['seqno']);
 		}
+
 		Nav::node('cataloging/biblio', T("Item Info"),
 			"../shared/biblio_view.php?".$params);
 	      	Nav::node('cataloging/biblio/edit', T("Edit"),
@@ -75,6 +84,7 @@ function staff_menu() {
 		Nav::node('cataloging/biblio/delete', T("Delete"),
 			"../catalog/biblio_del_confirm.php?".$params);
 	}
+
 	Nav::node('cataloging/new', T("New Item"),
 		"../catalog/biblio_new_form.php?reset=Y");
 	Nav::node('cataloging/upload_usmarc', T("MARC Import"),
@@ -88,17 +98,21 @@ function staff_menu() {
 	Nav::node('admin/calendars', T("Calendars"), '../admin/calendars_list.php');
 	Nav::node('admin/calendars/new', T("New Calendar"), '../admin/calendar_edit_form.php');
 	Nav::node('admin/calendars/edit', T("Edit Calendar"));
+
 	if (isset($calendar) and $calendar != OBIB_MASTER_CALENDAR) {
 		Nav::node('admin/calendars/del', T("Delete Calendar"),
 			'../admin/calendar_del_confirm.php?calendar='.U($calendar));
 	}
+
 	Nav::node('admin/sites', T("Sites"), '../admin/sites_list.php');
 	Nav::node('admin/sites/new', T("New Site"), '../admin/sites_edit_form.php');
 	Nav::node('admin/sites/edit', T("Edit Site"));
+
 	if (isset($siteid)) {
 		Nav::node('admin/sites/del', T("Delete Site"),
 			'../admin/sites_del_confirm.php?siteid='.U($siteid));
 	}
+
 	Nav::node('admin/memberfields', T("Member Fields"), '../admin/member_fields_list.php');
 	Nav::node('admin/biblio_copy_fields', T("Biblio Copy Fields"),
 		'../admin/biblio_copy_fields_list.php');
@@ -108,15 +122,27 @@ function staff_menu() {
 	Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
 	Nav::node('reports', T("Reports"), '../reports/index.php');
 	Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
+
 	if (isset($_SESSION['rpt_Report'])) {
 		Nav::node('reports/results', T("Report Results"),
 			'../reports/run_report.php?type=previous');
 	}
 	
 	$helpurl = "javascript:popSecondary('../shared/help.php";
+
 	if (isset($helpPage)) {
 		$helpurl .= "?page=".$helpPage;
 	}
 	$helpurl .= "')";
 	Nav::node('help', T("Help"), $helpurl);
+
+	## #######################################
+	## For plug-in support
+	## #######################################
+	$list = getPlugIns('nav.nav');
+	for ($x=0; $x<count($list); $x++) {
+		//echo "adding: $list[$x]<br />";
+		include_once ($list[$x]);
+	}
+	## #######################################
 }
