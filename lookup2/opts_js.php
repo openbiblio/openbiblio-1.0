@@ -18,7 +18,7 @@ oed = {
 	  
 		oed.initWidgets();
 
-		oed.url = 'lookupOptsData.php';
+		oed.url = 'adminSrvr.php';
 		oed.editForm = $('#editForm');
 
 	  $('#editHdr').html(oed.editHdr);
@@ -75,7 +75,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 	  if (!oed.doValidate()) return;
 
 		$('#msgDiv').hide();
-		$('#mode').val('update');
+		$('#mode').val('updateOpts');
 		var parms = $('#editForm').serialize();
 		//console.log(parms);
 		$.post(oed.url, parms, function(response) {

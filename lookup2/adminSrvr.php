@@ -6,7 +6,7 @@
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	require_once(REL(__FILE__, "../lookup2/lookupDBs.php"));
+	require_once(REL(__FILE__, "../lookup2/AdminDBs.php"));
 
 
 	switch ($_REQUEST[mode]){
@@ -30,7 +30,9 @@
 			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
 			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
 			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
-			echo $optr->update($_POST);
+			$rslt = $optr->update($_POST);
+			if(empty($rslt)) $rslt = '1';
+			echo $rslt;
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
@@ -38,7 +40,7 @@
 			## prepare list of hosts
 			$hptr = new Hosts;
 		  $hosts = array();
-			$hSet = $hptr->getAll();
+			$hSet = $hptr->getAll('seq');
 			while ($row = $hSet->next()) {
 			  $hosts[] = $row;
 			}

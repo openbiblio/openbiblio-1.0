@@ -97,7 +97,7 @@ hed = {
 	},
 	doEdit: function (e) {
 	  var theHostId = $(this).next().val();
-console.log('you wish to edit host #'+theHostId);
+		//console.log('you wish to edit host #'+theHostId);
 		for (nHost in hed.hostJSON) {
 		  if (hed.hostJSON[nHost]['id'] == theHostId) {
 				hed.showHost(hed.hostJSON[nHost]);
@@ -113,7 +113,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 	doAddHost: function () {
 	  if (!hed.doValidate()) return;
 
-		$('#mode').val('addNew');
+		$('#mode').val('addNewHost');
 		var parms = $('#hostForm').serialize();
 		//console.log(parms);
 		$.post(hed.url, parms, function(response) {
@@ -133,7 +133,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
-		$('#mode').val('update');
+		$('#mode').val('updateHost');
 		var parms = $('#hostForm').serialize();
 		//console.log(parms);
 		$.post(hed.url, parms, function(response) {
@@ -156,7 +156,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 		var msg = hed.delConfirmMsg+'\n>>> '+$('#hostForm tbody #name').val()+' <<<';
 	  if (confirm(msg)) {
 	  	$.get(hed.url,
-								{	mode:'d-3-L-3-t',
+								{	mode:'d-3-L-3-tHost',
 									id:$('#hostForm tbody #id').val()
 								},
 								function(response){
@@ -175,7 +175,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 	},
 
 	showHost: function (host) {
-console.log('showing : '+host['name']);
+		//console.log('showing : '+host['name']);
 	  $('#hostHdr').html(hed.editHdr);
 	  $('#hostForm tfoot #addBtn').hide();
 	  $('#hostForm tfoot #updtBtn').show();
@@ -186,9 +186,6 @@ console.log('showing : '+host['name']);
 		$('#editTbl td #name').val(host['name']);
 		$('#editTbl td #db').val(host['db']);
 		$('#editTbl td #seq').val(host['seq']);
-//		if (host['active'] == '1') {
-//			$('#editTbl td #active').attr('checked','checked');
-//		}
     $('#editTbl td #active').val([host['active']]);
 		$('#editTbl td #user').val(host['user']);
 		$('#editTbl td #pw').val(host['pw']);

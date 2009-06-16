@@ -24,7 +24,7 @@
 <table id="optsShow" name="optsShow" class="primary">
 	<tbody>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="protocol"><?php echo T("lookup_optsProtocol"); ?></label>
     </td>
     <td valign="top" class="primary">
@@ -36,7 +36,7 @@
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="maxHits"><?php echo T("lookup_optsMaxHits"); ?></label>
     </td>
     <td valign="top" class="primary">
@@ -44,7 +44,7 @@
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="keepDashes"><?php echo T("lookup_optsKeepDashes"); ?></label>
     </td>
     <td valign="top" class="primary">
@@ -53,10 +53,10 @@
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="callNmbrType"><?php echo T("lookup_optsCallNmbrType"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <select id="callNmbrType" name="callNmbrType">
         <option value="   "  >     </option>
         <option value="LoC"  >LoC  </option>
@@ -67,36 +67,36 @@
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="autoDewey"><?php echo T("lookup_optsAutoDewey"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <input type="checkbox" id="autoDewey" name="autoDewey" value="y"
         <?php //if (isset($postVars["autoDewey"])) echo H($postVars["autoDewey"]); ?> >
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="defaultDewey"><?php echo T("lookup_optsDefaultDewey"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <?php printInputText("defaultDewey",10,10,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="autoCutter"><?php echo T("lookup_optsAutoCutter"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <input type="checkbox" id="autoCutter" name="autoCutter" value="y"
         <?php //if (isset($postVars["autoCutter"])) echo H($postVars["autoCutter"]); ?> >
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
      <label for="cutterType"><?php echo T("lookup_optsCutterType"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <select id="cutterType" name="cutterType">
         <option value="   ">   </option>
         <option value="LoC">LoC</option>
@@ -105,51 +105,51 @@
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="cutterWord"><?php echo T("lookup_optsCutterWord"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <?php printInputText("cutterWord",10,10,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
-    <td class="primary" valign="top">
+    <td class="primary lblFld">
       <label for="autoCollect"><?php echo T("lookup_optsAutoCollection"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <input type="checkbox" id="autoCollect" name="autoCollect" value="y"
         <?php //if (isset($postVars["autoCollect"])) echo H($postVars["autoCollect"]); ?> >
     </td>
   </tr>
   <tr>
-    <td nowrap="true" class="primary">
+    <td class="primary lblFld">
       <label for="fictionName"><?php echo T("lookup_optsFictionName"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <?php printInputText("fictionName",10,10,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
-    <td class="primary" valign="top">
+    <td class="primary lblFld">
       <label for="fictionCode"><?php echo T("lookup_optsFictionCode"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <?php printInputText("fictionCode",10,10,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
-    <td class="primary" valign="top">
+    <td class="primary lblFld">
       <label for="fictionLoC"><?php echo T("lookup_optsLocFictionCodes"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <?php printInputText("fictionLoC",30,50,$postVars,$pageErrors); ?>
     </td>
   </tr>
   <tr>
-    <td class="primary" valign="top">
+    <td class="primary lblFld">
       <label for="fictionDew"><?php echo T("lookup_optsDewFictionCodes"); ?></label>
     </td>
-    <td valign="top" class="primary">
+    <td class="primary inptFld">
       <?php printInputText("fictionDew",30,50,$postVars,$pageErrors); ?>
     </td>
   </tr>

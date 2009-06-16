@@ -65,9 +65,14 @@ if (isset($confirm_links) and $confirm_links) {
 	## --- added for Fred LaPlante's Lookup Function -----------------------
 	if (file_exists('custom_head.php')) {
 		include ('custom_head.php');
+		// in this case, the local javascript is responsible for calling the core
+		// code's init() routine at an appropriate time.
+		echo "</head>\n";
+		echo "<body>\n";
+	} else {
+		echo "</head>\n";
+		echo "<body onload="init" >\n";
 	}
-echo "</head>\n";
-echo "<body>\n";
 	## ---------------------------------------------------------------------
 	?>
 	

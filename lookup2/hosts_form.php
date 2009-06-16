@@ -44,7 +44,7 @@
     <td><input type="hidden" id="xxx" name="xxx" value=""></td>
   </tr>
 	<tr>
-	  <td colspan="8" class="primary btnField">
+	  <td colspan="8" class="primary btnFld">
 			<input type="button" id="newBtn" value="<?php echo T("lookup_hostsAddNewBtn"); ?>" class="button" />
 		</td>
 	</tr>
