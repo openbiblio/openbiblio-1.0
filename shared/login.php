@@ -51,10 +51,10 @@ if ($error_found == true) {
 	exit();
 }
 
-//if ($user->isSuspended()) {
-//	header("Location: ../shared/suspended.php");
-//	exit();
-//}
+if ($user['suspended_flg'] == 'Y') {
+	header("Location: ../shared/suspended.php");
+	exit();
+}
 
 unset($_SESSION["postVars"]);
 unset($_SESSION["pageErrors"]);

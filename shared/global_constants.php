@@ -47,7 +47,7 @@ define("OBIB_STATUS_SHELVING_CART","crt");
 define("OBIB_STATUS_ON_HOLD","hld");
 define("OBIB_MBR_CLASSIFICATION_JUVENILE","j");
 define("OBIB_DEMO_FLG",false);
-define("OBIB_HIGHLIGHT_I18N_FLG",true);
+define("OBIB_HIGHLIGHT_I18N_FLG",false);
 define("OBIB_SEARCH_MAXPAGES",10);
 
 define("OBIB_UPLOAD_DIR",REL(__FILE__, "../uploads/"));

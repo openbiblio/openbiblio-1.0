@@ -12,6 +12,9 @@ class SessionHandler {
 	function open($save_path, $session_name) {
 		return true;
 	}
+	function close() {
+		return true;
+	}
 	function read($id) {
 		$sql = $this->db->mkSQL("select data from php_sess where id=%Q ", $id);
 		$row = $this->db->select01($sql);
