@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-		require_once (REL(__FILE__, 'lookupYazFunc.php'));	## support functions
+		require_once (REL(__FILE__, 'yazFunc.php'));	## support functions
 		
 		$syntax =	"usmarc";
 		$srchType = "rpn";
@@ -28,6 +28,7 @@
 		//echo 'Query specification is: ' . htmlspecialchars($qry) . '<br />';
 
 		//showMeComplex('host array',$postVars[hosts]);
+		//echo "using $postVars[numHosts] host(s)<br />";
 		for ($i=0; $i<$postVars[numHosts]; $i++) {
 			//			$ptr = ($useHost == -1)?$i:$useHost;
 			$ptr=$i;
@@ -37,6 +38,7 @@
 			$aHost = $postVars[hosts][$ptr][host];
 			$aUser = $postVars[hosts][$ptr][user];
 			$aPw   = $postVars[hosts][$ptr][pw];
+			//echo "connecting to: $aHost<br />";
 			$connOK = yaz_connect($aHost, array("user"=>$aUser,"password"=>$aPw) );
 			if (! $connOK) {
 				echo 'yaz setup not successful! <br />';
@@ -58,10 +60,11 @@
 
 		$waitOpts = array("timeout"=>$postVars[timeout]);
 		//echo "<br /> waiting $waitOpts[timeout] seconds for responses. <br />";
-		//yaz_wait($waitOpts);
-		yaz_wait();
+		yaz_wait($waitOpts);
+		//yaz_wait();
 
 		$ttlHits = 0;
+		//echo "processing rslts for $numHosts host(s)<br />";
 		for ($i=0; $i<$numHosts; $i++) {
 			## did we make it?
 //			$ptr = ($useHost == -1)?$i:$useHost;
@@ -70,7 +73,7 @@
 			if (!empty($error)) {
 			  ## NO
 				//trigger_error("Z39.50 error <br />", E_USER_ERROR);
-				echo T("lookup_YAZerror").$error." (";
+				echo T("lookup_yazError").$error." (";
 				echo yaz_errno($id[$ptr]) . ') ' . yaz_addinfo($id[$ptr]);
 				echo "<br />";
 			} else {

@@ -138,6 +138,11 @@
 	}
 
 	foreach ($inputs as $n => $i) {
+##  ##################################################
+##  lookup mod fl june 2009
+##  ##################################################
+$theId = H($i['tag']).H($i['subfield']);
+##  ##################################################
 ?>
 	<tr>
 		<td class="primary" valign="top" style="width: 30%">
@@ -159,9 +164,11 @@
 						 value="<?php echo H($i['subfieldid']); ?>" />
 <?php
 		if ($i['form_type'] == 'text') {
+		  ## folowing input line 'id=' and 'class=' additions by fl june 2009 for Lookup
 ?>
 			<input style="width: 100%" type="text" name="fields[<?php echo H($n); ?>][data]"
-				value="<?php echo H($i['data']); ?>" />
+			  id="<?php echo $theId;?>"
+				value="<?php echo H($i['data']); ?>" class="marcBiblioFld"/>
 <?php
 		} else {
 			// IE seems to make the font-size of a textarea overly small under

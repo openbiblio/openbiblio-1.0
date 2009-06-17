@@ -8,8 +8,8 @@
 // lookup Javascript
 lkup = {
 <?php
-	require_once(REL(__FILE__, "../classes/Localize.php"));
-	$jsLoc = new Localize(OBIB_LOCALE,$tab);
+//	require_once(REL(__FILE__, "../classes/Localize.php"));
+//	$jsLoc = new Localize(OBIB_LOCALE,$tab);
 
 //	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
 	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
@@ -45,7 +45,7 @@ lkup = {
 		// get header stuff going first
 		lkup.initWidgets();
 
-		lkup.url = 'lookupSrvr.php';
+		lkup.url = 'srvr.php';
 		lkup.form = $('#lookupForm');
 		
 		// button on search screen gets special treatment
@@ -69,9 +69,9 @@ lkup = {
 		$('#selectionDiv font').css('color','red');
 		
 		$('#selectionDiv sup').css('color','red');
-		lkup.inputColor = $('input[name=callNmbr1]').css('color');
-		$('#selectionDiv input[name=values[100a]]').bind('change',null,lkup.fixAuthor);
-		$('#selectionDiv input[name=values[245a]]').bind('change',null,lkup.fixTitle);
+		lkup.inputColor = $('#99').css('color');
+		$('#100a').bind('change',null,lkup.fixAuthor);
+		$('#245a').bind('change',null,lkup.fixTitle);
 
     // find title line of edit form and add another 'cancel' button
     $('#selectionDiv form tbody th').attr('colspan','1');
@@ -89,13 +89,13 @@ lkup = {
 	
 	resetForm: function () {
 	  //console.log('resetting Search Form');
-		//$('#help').hide();
+		$('#help').hide();
 	  $('#searchHdr').html(lkup.searchHdr);
 		$('#searchDiv').show();
-		//$('#waitDiv').hide();
-		//$('#retryDiv').hide();
-		//$('#choiceDiv').hide();
-		//$('#selectionDiv').hide();
+		$('#waitDiv').hide();
+		$('#retryDiv').hide();
+		$('#choiceDiv').hide();
+		$('#selectionDiv').hide();
 
 		//lkup.form[0].reset();
 		$('#lookupVal').focus();
@@ -159,26 +159,27 @@ lkup = {
 		theTxt += '</h5>';
 	  $('#waitText').html(theTxt);
 	  
-		$('#searchDiv').hide('slow');
-		$('#waitDiv').show('slow');
+		$('#searchDiv').hide();
+		$('#waitDiv').show();
 		
 		// note for this to work, all form fields MUST have a 'name' attribute
 		$('lookupForm #mode').val('search');
 		var srchParms = $('#lookupForm').serialize();
 		//console.log(srchParms);
 		$.post(lkup.url, srchParms, function(response) {
-			$('#waitDiv').hide(1000);
+			$('#waitDiv').hide();
 			
 			if ($.trim(response).substr(0,1) != '{') {
 				$('#retryHead').empty();
 				$('#retryHead').html(lkup.searchError);
 				$('#retryMsg').empty();
 				$('#retryMsg').html(response);
-				$('#retryDiv').show(1000);
+				$('#retryDiv').show();
 			}
 			else {
-			
+				//console.log('got something, JSON: '+response);
 				var rslts = eval('('+response+')'); // JSON 'interpreter'
+				//console.log('rslts : '+rslts);
 				console.log('ttl hits = '+rslts.ttlHits);
 				if (rslts.ttlHits < 1) {
 					console.log('nothing found');
@@ -193,7 +194,7 @@ lkup = {
 					$('#retryHead').html(lkup.nothingFound);
 					$('#retryMsg').empty();
 					$('#retryMsg').html(str);
-					$('#retryDiv').show(1000);
+					$('#retryDiv').show();
 				}
 			
 				else if (rslts.ttlHits >= rslts.maxHits) {
@@ -205,7 +206,7 @@ lkup = {
 					$('#retryHead').html(lkup.tooMany);
 					$('#retryMsg').empty();
 					$('#retryMsg').html(str);
-					$('#retryDiv').show(1000);
+					$('#retryDiv').show();
 				}
 			
 				else if (rslts.ttlHits > 1){
@@ -216,12 +217,13 @@ lkup = {
 					var nHits = 0;
 					lkup.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
-					  $('#choiceSpace').append('<hr width="50%">');
+					  //$('#choiceSpace').append('<hr width="50%">');
 					  if (typeof(hostData) != undefined) {
 					  $('#choiceSpace').append('<h4>Repository: '+lkup.hostJSON[hostIndex].name+'</h4>');
 					  $.each(hostData, function(hitIndex,hitData) {
 					    nHits++;
-					    var html = '<form class="hitForm"><table border="0">';
+					    html  = '<hr width="50%">';
+					    html += '<form class="hitForm"><table border="0">';
 					    html += '<tr><td class="primary">LCCN</th><td class="primary">'+hitData['010a']+'</td></tr>';
 					    html += '<tr><td class="primary">ISBN</th><td class="primary">'+hitData['020a']+'</td></tr>';
 					    html += '<tr><td class="primary">Title</th><td class="primary">'+hitData['245a']+'</td></tr>';
@@ -242,7 +244,7 @@ lkup = {
 					//$('#choiceSpace').append(response);
 					$('#biblioBtn').bind('click',null,lkup.doBackToChoice);
 					$('#biblioBtn2').bind('click',null,lkup.doBackToChoice);
-					$('#choiceDiv').show('slow');
+					$('#choiceDiv').show();
 				} // else if (rslts.ttlHits > 1)
 				else if (rslts.ttlHits == 1){
 				  var data;
@@ -270,6 +272,7 @@ lkup = {
 	},
 	doShowOne: function (data){
 		// setting defaults
+/*
   	$('input[name=callNmbr1]').val('call nmbr required');
   	$('input[name=callNmbr1]').css('color','red');
   	$('input[name=values[245a]').val('title required');
@@ -277,15 +280,30 @@ lkup = {
   	$('input[name=values[100a]]').val('author required');
   	$('input[name=values[100a]]').css('color','red');
 		$('input[name=opacFlg]').val(['CHECKED']);
+*/
+  	$('#245a').val('title required');
+  	$('#245a').css('color','red');
+  	$('#100a').val('author required');
+  	$('#100a').css('color','red');
 
 		var tag;
 		for (tag in data) {
-			//console.log('tag='+tag);
 			if (data[tag] != '') {
+/*
 				$('input[name=values['+tag+']]').val(data[tag]);
 				$('input[name=values['+tag+']]').css('color',lkup.inputColor);
+*/
+				$('#'+tag).val(data[tag]);
+				$('#'+tag).css('color',lkup.inputColor);
 			}
 		}
+		
+		// hide any unused MARC fields
+    $(".marcBiblioFld").each(function(){
+			if (($(this).val()).length == 0) {
+				$(this).parent().parent().hide();
+			}
+		});
 		
 		lkup.setCallNmbr(data);
 		lkup.setCollection(data);
@@ -296,19 +314,22 @@ lkup = {
 	setCallNmbr: function (data) {
 		switch (lkup.opts['callNmbrType'].toLowerCase())  {
 		case 'loc':
-    	$('input[name=callNmbr1]').val(data['050a']);
-    	$('input[name=callNmbr2]').val(data['050b']);
+//    	$('input[name=callNmbr1]').val(data['050a']);
+//    	$('input[name=callNmbr2]').val(data['050b']);
+			$('#99').val(data['050a']+data['050b']);
 			break;
 		case 'dew':
 		  var callNmbr = lkup.makeCallNmbr(data['082a']);
-    	$('input[name=callNmbr1]').val(callNmbr);
+//    	$('input[name=callNmbr1]').val(callNmbr);
     	var cutter = lkup.makeCutter(data['100a'], data['245a']);
-    	$('input[name=callNmbr2]').val(cutter); // just for show, posting done in called routine
+//    	$('input[name=callNmbr2]').val(cutter); // just for show, posting done in called routine
+			$('#99').val(callNmbr+cutter);
 			break;
 		case 'udc':
 		  var callNmbr = lkup.makeCallNmbr(data['080a']);
-    	$('input[name=callNmbr1]').val(callNmbr);
-    	$('input[name=callNmbr2]').val(data['080b']);
+//    	$('input[name=callNmbr1]').val(callNmbr);
+//    	$('input[name=callNmbr2]').val(data['080b']);
+			$('#99').val(callNmbr+data['080b']);
 			break;
 		case 'local':
 			// leave the fields blank for user entry
@@ -316,8 +337,8 @@ lkup = {
 		default:
 		  break;
 		}
-		if ($('input[name=callNmbr1]').val() != '') {
-    	$('input[name=callNmbr1]').css('color',lkup.inputColor);
+		if ($('#99').val() != '') {
+    	$('#99').css('color',lkup.inputColor);
 		}
 	},
 

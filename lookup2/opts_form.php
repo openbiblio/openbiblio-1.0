@@ -45,6 +45,14 @@
   </tr>
   <tr>
     <td class="primary lblFld">
+      <label for="timeout"><?php echo T("lookup_optsTimeout"); ?></label>
+    </td>
+    <td valign="top" class="primary">
+      <?php printInputText("timeout",10,10,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
+    <td class="primary lblFld">
       <label for="keepDashes"><?php echo T("lookup_optsKeepDashes"); ?></label>
     </td>
     <td valign="top" class="primary">
@@ -114,6 +122,14 @@
   </tr>
   <tr>
     <td class="primary lblFld">
+      <label for="noiseWords"><?php echo T("lookup_optsNoiseWords"); ?></label>
+    </td>
+    <td class="primary inptFld">
+      <?php printInputText("noiseWords",30,100,$postVars,$pageErrors); ?>
+    </td>
+  </tr>
+  <tr>
+    <td class="primary lblFld">
       <label for="autoCollect"><?php echo T("lookup_optsAutoCollection"); ?></label>
     </td>
     <td class="primary inptFld">
@@ -159,7 +175,7 @@
     <td><input type="hidden" id="mode" name="mode" value=""></td>
   </tr>
   <tr>
-    <td align="center" colspan="2" class="primary">
+    <td colspan="2" class="primary btnFld">
       <input type="button" id="updtBtn" name="updtBtn" class="button"
 			 value="<?php echo T("lookup_optsUpdtBtn"); ?>" />
     </td>

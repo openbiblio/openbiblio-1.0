@@ -51,6 +51,7 @@ oed = {
 	  $.getJSON(oed.url,{mode:'getOpts'}, function(data){
 	  	$('#protocol').val(data.protocol);
 			$('#maxHits').val(data.maxHits);
+			$('#timeout').val(data.timeout);
 			$('#keepDashes').val([data.keepDashes]);
 			$('#callNmbrType').val(data.callNmbrType);
 			$('#autoDewey').val([data.autoDewey]);
@@ -58,6 +59,7 @@ oed = {
 			$('#autoCutter').val([data.autoCutter]);
 			$('#cutterType').val(data.cutterType);
 			$('#cutterWord').val(data.cutterWord);
+			$('#noiseWords').val(data.noiseWords);
 			$('#autoCollect').val([data.autoCollect]);
 			$('#fictionName').val(data.fictionName);
 			$('#fictionCode').val(data.fictionCode);

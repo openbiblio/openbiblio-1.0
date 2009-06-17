@@ -4,17 +4,17 @@
  */
 
 		# prepare user search criteria
-		require_once(REL(__FILE__, 'lookupSrchVals.php'));
+		require_once(REL(__FILE__, 'srchVals.php'));
 		
 		$numHosts = $postVars[numHosts];
-		//print("trying $numHosts host(s)<br />");
+		//print("will be trying $numHosts host(s)");
 
 	   if ($postVars[protocol] == 'YAZ') {
 			//print("using YAZ protocol<br />");
-			require_once (REL(__FILE__, 'lookupYazSrch.php'));
+			require_once (REL(__FILE__, 'yazSrch.php'));
 		} else if ($postVars[protocol] == 'SRU') {
 			//print("using SRU protocol<br />");
-			require_once (REL(__FILE__, 'lookupSruSrch.php'));
+			require_once (REL(__FILE__, 'sruSrch.php'));
 		} else {
 			echo "Invalid protocol specified.<br />";
 		}

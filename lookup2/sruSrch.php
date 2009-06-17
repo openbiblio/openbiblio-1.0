@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once (REL(__FILE__, 'lookupSruFunc.php'));	## support functions
+	require_once (REL(__FILE__, 'sruFunc.php'));	## support functions
 	$displayXML = FALSE;
 
 	$process = array();
@@ -60,7 +60,7 @@
       	// read the header
       	$headerdone = true;
       } else if ($headerdone) {
-      	// header has been read. now read the contents
+      	// header has been read. now build the contents
       	$hitList .= $line;
       }
   	}
@@ -74,6 +74,7 @@
 
 	### parse downloaded XML and create
 	$xml_parser = xml_parser_create();
+	$ttlHits = 0;
 	for($i = 0; $i < $postVars[numHosts]; $i++) {
 	  if (!empty($resp[$i])) {
 			xml_parse_into_struct($xml_parser, $resp[$i], $hostRecords[$i]);

@@ -5,10 +5,10 @@
 
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+//  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
-	require_once(REL(__FILE__, 'lookupDBs.php'));
-	require_once(REL(__FILE__, 'lookupFunc.php'));	## general support functions
+	require_once(REL(__FILE__, 'AdminDBs.php'));
+	require_once(REL(__FILE__, 'srvrFuncs.php'));	## general support functions
 
 	## fetch user options and post to $postVars
 	# MUST BE FIRST !!!!!
@@ -19,8 +19,9 @@
 ####################################################################
 ####################################################################
   ## not yet in database or user opts screens, but should be!!!!
-  $postVars["timeout"] = 60;
-  $postVars["noiseWords"] = 'a an and for of the this those';
+//  $postVars["timeout"] = 60; // done!
+if(empty($postVars[timeout])) echo "You blew it on 'timeout'<br />";
+//  $postVars["noiseWords"] = 'a an and for of the this those'; //done!
 ####################################################################
 ####################################################################
 
@@ -33,7 +34,7 @@
 	# results are in $postVars[hosts] & $postVars[numHosts]
 	$hptr = new Hosts;
 	$hosts = array();
-	$hSet = $hptr->getAll();
+	$hSet = $hptr->getAll('seq');
 	$n=0;
 	while ($row = $hSet->next()) {
 		if ($row['active'] == 'y') {
@@ -73,10 +74,10 @@ switch ($_REQUEST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getCutter':
 		if ($postVars[cutterType] == 'LoC') {
-			require_once('lookupCutterLoc.php');
+			require_once('cutterLoc.php');
 		}
 		elseif ($postVars[cutterType] == 'CS3') {
-			require_once('lookupCutterCs3.php');
+			require_once('cutterCs3.php');
 		}
 		else {
 			echo "Invalid cutter type selection - '$postVars[cutterType]'. <br />";
@@ -87,7 +88,7 @@ switch ($_REQUEST[mode]){
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'search':
-		include('lookupSrchPrep.php'); ## will respond directly, depending on what is received
+		include('srchPrep.php'); ## will respond directly, depending on what is received
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-

@@ -42,14 +42,22 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-	<div id="searchDiv">
 		<h1><span id="searchHdr" class="title"></span></h1>
+	<div id="searchDiv">
 		<form id="lookupForm" name="lookupForm" >
 		<table class="primary">
+		<thead>
+		<tr>
+		  <th class="colLbl">Text or Number to search for:</th>
+		  <th class="colLbl">Which is a:</th>
+		</tr>
+		</thead>
 		<tbody>
 		<tr id="fldset1">
-		  <td class="primary">
+		  <td class="primary inptFld">
 				<input type="text" size="30" id="lookupVal" name="lookupVal" class='criteria' value="" />
+			</td>
+		  <td class="primary inptFld">
     		<select id="srchBy" name="srchBy" class='criteria' >
 					<option value="7" selected><?php echo T("lookup_isbn");?></option>
 					<option value="8"><?php echo T("lookup_issn");?></option>
@@ -64,8 +72,10 @@
 			<td class="primary"><?php echo T("lookup_andOpt");?></td>
 		</tr>
 		<tr id="fldset2">
-		  <td class="primary">
+		  <td class="primary inptFld">
 				<input type="text" size="30" id="lookupVal2" name="lookupVal2" class='criteria' value="" />
+			</td>
+		  <td class="primary inptFld">
 				<select id="srchBy2" name="srchBy2" class='criteria' >
 					<option value="0" selected></option>
 					<option value="1004"><?php echo T("lookup_author");?></option>
@@ -78,8 +88,10 @@
 			<td class="primary"><?php echo T("lookup_andOpt");?></td>
 		</tr>
 		<tr id="fldset3">
-			<td class="primary">
+			<td class="primary inptFld">
 				<input type="text" size="30" id="lookupVal3" name="lookupVal3" class='criteria' value="" />
+			</td>
+		  <td class="primary inptFld">
     		<select id="srchBy3" name="srchBy3" class='criteria' >
 					<option value="0" selected></option>
 					<option value="1018"><?php echo T("lookup_publisher");?></option>
@@ -94,8 +106,10 @@
 			<td class="primary"><?php echo T("lookup_andOpt");?></td>
 		</tr>
 		<tr id="fldset4">
-			<td class="primary">
+			<td class="primary inptFld">
 				<input type="text" size="30" id="lookupVal4" name="lookupVal4" class='criteria' value="" />
+			</td>
+		  <td class="primary inptFld">
     		<select id="srchBy4" name="srchBy4" class='criteria' >
 					<option value="0" selected>
 					<option value="59"><?php echo T("lookup_pubLoc");?></option>
@@ -110,8 +124,10 @@
 			<td class="primary"><?php echo T("lookup_andOpt");?></td>
 		</tr>
 		<tr id="fldset5">
-			<td class="primary">
+			<td class="primary inptFld">
 				<input type="text" size="30" id="lookupVal5" name="lookupVal5" class='criteria' value="" />
+			</td>
+		  <td class="primary inptFld">
     		<select id="srchBy5" name="srchBy5" class='criteria' >
 					<option value="0" selected>
 					<option value="31"><?php echo T("lookup_pubDate");?></option>
@@ -131,10 +147,9 @@
 
 		<tfoot>
 		<tr>
-		  <td align="center" >
-				<input type="button" id="srchBtn" name="srchBtn"
-							 value="<?php echo T("lookup_search");?>"
-							 class="button" />
+		  <td class="primary btnFld" >
+				<input type="button" id="srchBtn" name="srchBtn" class="button"
+							 value="<?php echo T("lookup_search");?>" />
 			</td>
 		</tr>
 		</tfoot>
@@ -169,37 +184,38 @@
 			<td colspan="3" id="retryMsg" class="primary"></td>
 		</tr>
 		<tr>
-	    <td align="center" colspan="3" class="primary">
-				<input id="retryBtn" type="button"
-							 value="<?php echo T("lookup_goBack");?>"
-							 class="button" />
+	    <td colspan="3" class="primary btnFld">
+				<input id="retryBtn" type="button" class="button"
+							 value="<?php echo T("lookup_goBack");?>" />
 			</td>
 		</tr>
 		</table>
 	</div>
 
 	<div id="choiceDiv">
-		<input id="choiceBtn1" type="button"
-					 value="<?php echo T("lookup_goBack");?>"
-					 class="button" />
+		<input id="choiceBtn1" type="button" class="button btnFld"
+					 value="<?php echo T("lookup_goBack");?>" />
 	  <span id="choiceSpace">
 	  	Search Results go here
 	  </span>
-		<input id="choiceBtn2" type="button"
-					 value="<?php echo T("lookup_goBack");?>"
-					 class="button" />
+		<input id="choiceBtn2" type="button" class="button btnFld"
+					 value="<?php echo T("lookup_goBack");?>" />
 	</div>
 
 	<div id="selectionDiv">
 	  <?php
+
+			$helpPage = "biblioEdit";
+			$cancelLocation = "../lookup2/lookup.php";
   		$focus_form_name = "newbiblioform";
   		$focus_form_field = "materialCd";
+			require_once(REL(__FILE__, "../shared/get_form_vars.php"));
   		$loc = new Localize(OBIB_LOCALE,$tab);
-  		$headerWording=$loc->getText("biblioNewFormLabel");
+  		//$headerWording=$loc->getText("biblioNewFormLabel");
   		
   		## we use original biblio edit screen, but will replace existing 'Cancel' button
    		print '<form name="newbiblioform" method="POST" action="../catalog/biblio_new.php" >';
-			include("../catalog/biblio_fields.php");
+			include(REL(__FILE__,"../catalog/biblio_fields.php"));
 		?>
 	</div>
 <?php
