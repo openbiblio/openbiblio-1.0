@@ -16,11 +16,14 @@
 </p>
 
 <table class="primary" width="100%">
+	<thead>
 	<tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
 			<?php echo T("Item"); ?>
 		</th>
 	</tr>
+	</thead>
+	<tbody>
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Type of Material:"); ?>
@@ -138,7 +141,7 @@
 	}
 
 	foreach ($inputs as $n => $i) {
-		$inputFldId = H($i['tag']).H($i['subfield']);
+		$marcInputFld = H($i['tag']).H($i['subfield']);
 ?>
 	<tr>
 		<td class="primary" valign="top" style="width: 30%">
@@ -151,18 +154,22 @@
 		</td>
 		<td valign="top" class="primary">
 			<input type="hidden" name="fields[<?php echo H($n); ?>][tag]"
+             id="fields[<?php echo H($n); ?>][tag]"
 						 value="<?php echo H($i['tag']); ?>" />
 			<input type="hidden" name="fields[<?php echo H($n); ?>][subfield_cd]"
+             id="fields[<?php echo H($n); ?>][subfield_cd]"
 						 value="<?php echo H($i['subfield']); ?>" />
 			<input type="hidden" name="fields[<?php echo H($n); ?>][fieldid]"
+             id="fields[<?php echo H($n); ?>][fieldid]"
 						 value="<?php echo H($i['fieldid']); ?>" />
 			<input type="hidden" name="fields[<?php echo H($n); ?>][subfieldid]"
+             id="fields[<?php echo H($n); ?>][subfieldid]"
 						 value="<?php echo H($i['subfieldid']); ?>" />
 <?php
 		if ($i['form_type'] == 'text') {
 ?>
 			<input style="width: 100%" type="text" name="fields[<?php echo H($n); ?>][data]"
-			  id="<?php echo $inputFldIdId;?>" class="marcBiblioFld"
+			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld"
 				value="<?php echo H($i['data']); ?>" />
 <?php
 		} else {
@@ -171,20 +178,25 @@
 			// though I have some misgivings about it.  This will make
 			// the font smaller for some people.
 ?>
-			<textarea style="width: 100%; font-size: 10pt; font-weight: normal" rows="7" name="fields[<?php echo H($n); ?>][data]"><?php echo H($i['data']); ?></textarea>
+			<textarea style="width: 100%; font-size: 10pt; font-weight: normal" rows="7"
+			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld"
+				name="fields[<?php echo H($n); ?>][data]" >
+				<?php echo H($i['data']); ?></textarea>
 <?php
 		}
 ?>
 		</td>
 	</tr>
+	</tbody>
 <?php
 	}
 ?>
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onclick="parent.location='<?php echo H($cancelLocation);?>'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
-
+	</tfoot>
 </table>

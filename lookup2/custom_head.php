@@ -55,9 +55,9 @@ td.btnFld {
 
 //license data object
 lookup = {
-	version:		'3.0.0',
+	version:		'3.0.1',
 	author:			'Fred LaPlante',
-	date:       '15 June 2009',
+	date:       '17 June 2009',
 	license:		'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
 	copyright:	'2004,5,6,7,8,9 All Rights Reserved.',
 	email:			'flaplante at flos-inc dot com',
