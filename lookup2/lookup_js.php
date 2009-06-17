@@ -307,7 +307,7 @@ lkup = {
 		
 		lkup.setCallNmbr(data);
 		lkup.setCollection(data);
-		
+
 		lkup.doStriping();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
