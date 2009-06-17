@@ -86,6 +86,9 @@ ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; list-styl
 	background: white;
 	padding: 7px;
 }
+#content .altBG {
+	background: #dddddd;
+}
 
 #catalog_search h3 {
 	font: 20px sans-serif;

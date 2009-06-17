@@ -51,7 +51,6 @@ lkup = {
 		// button on search screen gets special treatment
 		lkup.srchBtn = $('#srchBtn');
 		lkup.resetForm();
-		//lkup.disableSrchBtn();
 		lkup.srchBtn.bind('click',null,lkup.doSearch);
 
     $('.criteria').bind('change',null,lkup.enableSrchBtn);
@@ -72,12 +71,13 @@ lkup = {
 		lkup.inputColor = $('#99').css('color');
 		$('#100a').bind('change',null,lkup.fixAuthor);
 		$('#245a').bind('change',null,lkup.fixTitle);
+		$('#biblioFldTbl').addClass('striped');
 
     // find title line of edit form and add another 'cancel' button
-    $('#selectionDiv form tbody th').attr('colspan','1');
+    $('#selectionDiv form thead th').attr('colspan','1');
 		var newBtn = '<input id="newGoBkBtn" type="button" class="button" value="'+lkup.goBack+'" />'
 		$('<td id="biblioBtn2" class="primary" align="center")>'+newBtn+'</td>')
-			.appendTo($('#selectionDiv form tbody tr:first-child'));
+			.appendTo($('#selectionDiv form thead tr:first-child'));
 
 		lkup.fetchHosts();  //on completion, search form will appear
 		lkup.fetchOpts();  //for debug use
@@ -270,66 +270,62 @@ lkup = {
 		//console.log('hit #'+hit+' of host #'+host);
 		lkup.doShowOne(data);
 	},
+
+	doStriping: function () {
+		//console.log('striping!');
+		//console.log($('table tbody tr:not(.filtered)'));
+		$('#biblioFldTbl').each(function() {
+			var $table = $(this);
+				$table.find('tbody#marcBody tr:not(.hidden):even').addClass('altBG');
+		});
+	},
+
 	doShowOne: function (data){
-		// setting defaults
-/*
-  	$('input[name=callNmbr1]').val('call nmbr required');
-  	$('input[name=callNmbr1]').css('color','red');
-  	$('input[name=values[245a]').val('title required');
-  	$('input[name=values[245a]').css('color','red');
-  	$('input[name=values[100a]]').val('author required');
-  	$('input[name=values[100a]]').css('color','red');
-		$('input[name=opacFlg]').val(['CHECKED']);
-*/
-  	$('#245a').val('title required');
-  	$('#245a').css('color','red');
-  	$('#100a').val('author required');
-  	$('#100a').css('color','red');
+		// assure all are visible at start
+    $(".marcBiblioFld").each(function(){
+			$(this).parent().parent().show();
+		});
 
 		var tag;
 		for (tag in data) {
 			if (data[tag] != '') {
-/*
-				$('input[name=values['+tag+']]').val(data[tag]);
-				$('input[name=values['+tag+']]').css('color',lkup.inputColor);
-*/
 				$('#'+tag).val(data[tag]);
 				$('#'+tag).css('color',lkup.inputColor);
+			} else {
+				$('#'+tag).val('entry required here');
+				$('#'+tag).css('color','red');
 			}
 		}
-		
+		$('#opacFlg').val(['CHECKED']);
+
 		// hide any unused MARC fields
     $(".marcBiblioFld").each(function(){
 			if (($(this).val()).length == 0) {
-				$(this).parent().parent().hide();
+				$(this).parent().parent().hide().addClass('hidden');
 			}
 		});
 		
 		lkup.setCallNmbr(data);
 		lkup.setCollection(data);
 		
+		lkup.doStriping();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
 	},
+	
 	setCallNmbr: function (data) {
 		switch (lkup.opts['callNmbrType'].toLowerCase())  {
 		case 'loc':
-//    	$('input[name=callNmbr1]').val(data['050a']);
-//    	$('input[name=callNmbr2]').val(data['050b']);
-			$('#99').val(data['050a']+data['050b']);
+			$('#099a').val(data['050a']+' '+data['050b']);
 			break;
 		case 'dew':
 		  var callNmbr = lkup.makeCallNmbr(data['082a']);
-//    	$('input[name=callNmbr1]').val(callNmbr);
     	var cutter = lkup.makeCutter(data['100a'], data['245a']);
-//    	$('input[name=callNmbr2]').val(cutter); // just for show, posting done in called routine
-			$('#99').val(callNmbr+cutter);
+			$('#099a').val(callNmbr+cutter);
 			break;
 		case 'udc':
 		  var callNmbr = lkup.makeCallNmbr(data['080a']);
-//    	$('input[name=callNmbr1]').val(callNmbr);
-//    	$('input[name=callNmbr2]').val(data['080b']);
-			$('#99').val(callNmbr+data['080b']);
+			$('#099a').val(callNmbr+' '+data['080b']);
 			break;
 		case 'local':
 			// leave the fields blank for user entry
@@ -337,8 +333,9 @@ lkup = {
 		default:
 		  break;
 		}
-		if ($('#99').val() != '') {
-    	$('#99').css('color',lkup.inputColor);
+		if ($('#099a').val() != '') {
+			$('#099a').css('color',lkup.inputColor);
+			$('#099a').parent().parent().show().removeClass('hidden');
 		}
 	},
 
@@ -369,26 +366,26 @@ lkup = {
 	},
 	
 	fixTitle: function () {
-	  var titl = $('input[name=values[245a]]').val();
+	  var titl = $('#245a').val();
 		if (titl != '') {
-    	$('input[name=values[245a]]').css('color',lkup.inputColor);
-    	var auth = $('input[name=values[100a]]').val();
+    	$('#245a').css('color',lkup.inputColor);
+    	var auth = $('#100a').val();
 	  	lkup.makeCutter(auth, titl); // will post direct to screen
 		}
 		else {
-    	$('input[name=values[245a]]').css('color','red');
+    	$('#245a').css('color','red');
 		}
 	},
 	
 	fixAuthor: function () {
-	  var auth = $('input[name=values[100a]]').val();
+	  var auth = $('#100a').val();
 		if (auth != '') {
-    	$('input[name=values[100a]]').css('color',lkup.inputColor);
-    	var titl = $('input[name=values[245a]]').val();
+    	$('#100a').css('color',lkup.inputColor);
+    	var titl = $('#245a').val();
 	  	lkup.makeCutter(auth, titl);
 		}
 		else {
-    	$('input[name=values[100a]]').css('color','red');
+    	$('#100a').css('color','red');
 		}
 	},
 
@@ -398,13 +395,13 @@ lkup = {
 				var cutter = data['cutter'];
 	  		if (lkup.opts['cutterType'] == 'Dew') {
 			  	// suffix is first char of a specified word in title
-					cutter += lkup.makeSuffix($('input[name=values[245a]]').val());
+					cutter += lkup.makeSuffix($('#245a').val());
 				}
 				else if (lkup.opts['cutterType'] == 'LoC') {
 					// add copyright year as suffix
-					cutter += ' '+($('input[name=values[260c]]').val()).substr(1,4);
+					cutter += ' '+($('#260c').val()).substr(1,4);
 				}
-				$('input[name=callNmbr2]').val(cutter);
+				$('#099a').val($('#099a').val()+cutter);
 			});
 		}
 	},

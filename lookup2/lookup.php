@@ -147,7 +147,7 @@
 
 		<tfoot>
 		<tr>
-		  <td class="primary btnFld" >
+		  <td colspan="2" class="primary btnFld" >
 				<input type="button" id="srchBtn" name="srchBtn" class="button"
 							 value="<?php echo T("lookup_search");?>" />
 			</td>

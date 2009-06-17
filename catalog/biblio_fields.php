@@ -15,7 +15,7 @@
 <?php echo T("Fields marked are required"); ?>
 </p>
 
-<table class="primary" width="100%">
+<table id="biblioFldTbl" class="primary" width="100%">
 	<thead>
 	<tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
@@ -23,10 +23,11 @@
 		</th>
 	</tr>
 	</thead>
-	<tbody>
+	<tbody id="nonMarcBody">
 	<tr>
 		<td nowrap="true" class="primary">
-			<sup>*</sup><?php echo T("Type of Material:"); ?>
+			<sup>*</sup>
+			<label for="materialCd"><?php echo T("Type of Material:"); ?></label>
 		</td>
 		<td valign="top" class="primary">
 <?php
@@ -45,7 +46,8 @@
 	</tr>
 	<tr>
 		<td nowrap="true" class="primary">
-			<sup>*</sup><?php echo T("Collection:"); ?>
+			<sup>*</sup>
+			<label for="collectionCd"><?php echo T("Collection:"); ?></label>
 		</td>
 		<td valign="top" class="primary">
 			<?php
@@ -61,19 +63,21 @@
 	</tr>
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
-			<?php echo T("Show in OPAC:"); ?>
+			<label for="opacFlg"><?php echo T("Show in OPAC:"); ?></label>
 		</td>
 		<td valign="top" class="primary">
-			<input type="checkbox" name="opacFlg" value="CHECKED"
+			<input type="checkbox" id="opacFlg" name="opacFlg" value="CHECKED"
 				<?php if (isset($biblio) and $biblio['opac_flg'] == 'Y') echo H('checked="checked"'); ?> />
 		</td>
 	</tr>
-
 	<tr>
 		<td colspan="2" nowrap="true" class="primary">
 			<b><?php echo T("USMarc Fields:"); ?></b>
 		</td>
 	</tr>
+	</tbody>
+	
+	<tbody id="marcBody">
 <?php
 	function getlabel($f) {
 		global $LOC;
@@ -146,10 +150,13 @@
 	<tr>
 		<td class="primary" valign="top" style="width: 30%">
 <?php
-		if ($i['required'] == 'Y') {
+//		if ($i['required'] == 'Y') {  // db field is defined as TinyInt not char
+		if ($i['required']) {
 			echo '<sup>*</sup>';
 		}
-		echo H($i['label'].":");
+		echo "<label for=\"$marcInputFld\">"
+					.H($i['label'].":")
+					."</label>";
 ?>
 		</td>
 		<td valign="top" class="primary">
@@ -169,7 +176,7 @@
 		if ($i['form_type'] == 'text') {
 ?>
 			<input style="width: 100%" type="text" name="fields[<?php echo H($n); ?>][data]"
-			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld"
+			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld <?php echo (($i['required'])?'reqd':'') ?>"
 				value="<?php echo H($i['data']); ?>" />
 <?php
 		} else {
@@ -179,7 +186,7 @@
 			// the font smaller for some people.
 ?>
 			<textarea style="width: 100%; font-size: 10pt; font-weight: normal" rows="7"
-			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld"
+			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld <?php echo (($i['required'])?'reqd':'') ?>"
 				name="fields[<?php echo H($n); ?>][data]" >
 				<?php echo H($i['data']); ?></textarea>
 <?php
@@ -187,10 +194,11 @@
 ?>
 		</td>
 	</tr>
-	</tbody>
 <?php
 	}
 ?>
+	</tbody>
+
 	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
