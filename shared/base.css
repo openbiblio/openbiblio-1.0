@@ -1,0 +1,38 @@
+/* CSS Document */
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+
+/*************************************************/
+body {
+	padding: 0px;
+	margin: 0;
+	font: 16px serif;
+	}
+/*************************************************/
+div#master {
+	position: absolute; top: 0; left: 0; width: 100%
+	}
+/*************************************************/
+div#header  {
+	position: absolute; top:0; left: 0;
+	width: 100%; height: 4em;
+	}
+/*************************************************/
+div#content {
+	position: absolute; top:4.5em; left: 12em;
+	margin-left: 1em; width: 700px;
+	}
+/*************************************************/
+div#footer {
+	margin-top: 1em;
+	padding-top:0.33em;
+	border-top: 1px solid gray;
+	width: 100%;
+	}
+/*************************************************/
+div#sidebar {
+	position: absolute; top:4.5em; left: 0;
+	margin-left: 2px; width: 12em;
+	padding: 10px;
+	}

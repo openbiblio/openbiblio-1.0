@@ -1,0 +1,37 @@
+- FILE NAMING:
+If there's a system, the only one I've been able to divine is that
+files that are accessed directly by the browser or contain mostly HTML
+use lowercase_with_underscores; files containing a class or set of
+classes are CamelCase with an initial capital and the file name
+matches the main class defined in the file; files that are meant as
+includes that contain functions rather than classes are camelCase with
+an initial lowercase letter.  I don't know that there are any benefits
+to this scheme, it's just what we have. (Micah, June 2009)
+
+- GENERAL GUIDANCE:
+I think I've hinted several times at the fact that I won't be offended
+if you decide something needs a rewrite.  I'm starting to sound like a
+broken record, so I'll write a paragraph on it and not mention it to
+you again.  Feel free to clean up wherever the code is imperfect,
+which means everywhere.  I've worked with some people who seem to feel
+that 'clean' means following some 'industry standard' convention that
+invariably makes the code longer and harder to read.  I have the
+feeling that you aren't one of those people.  By clean, I generally
+mean less code; easier to read; easier to debug.  I can be a ruthless
+editor, and I want you to feel free to edit ruthlessly as well.  My
+pet goal is for the 1.0 core to be smaller in terms of code lines than
+0.6, even though it has much greater function.  Currently, the counts
+are close to the same, but I'm sure there are many places where fat
+can be trimmed.  Trim away. (Micah, June 2009)
+
+- ADMIN MENUS:
+I'm not against options, but they should be options that are really
+likely to be customized by most (or at least many) libraries.  For
+instance, when I added image upload support, I made the thumbnail size
+a parameter.  This was just laziness because I didn't want to make a
+clear decision.  I can guarantee you that none of my librarians has
+ever changed it.  It shouldn't be there.  I don't want to see more of
+those. (Micah, June 2009)
+
+
+

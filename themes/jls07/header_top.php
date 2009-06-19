@@ -8,11 +8,15 @@
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
+
 <?php // code character set if specified
 if (Settings::get('charset') != "") { ?>
 <meta http-equiv="content-type" content="text/html; charset=<?php echo H(Settings::get('charset')); ?>" />
 <?php } ?>
+
+<link rel="stylesheet" type="text/css" href="../shared/base.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
+
 <title><?php echo H(Settings::get('library_name'));?></title>
 <script language="JavaScript">
 <!--

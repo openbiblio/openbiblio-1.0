@@ -28,7 +28,7 @@ biblioFlds = {
 </script
 
 <style>
-fieldset {
+#typeChoice fieldset {
 	width: 500px;
 	text-align: center;
 	}
@@ -40,9 +40,6 @@ h5 {
 	}
 h5#updateMsg {
 	color: red;
-	}
-table#showList tr {
-	height: 1.3em;
 	}
 th.colHead {
   text-align: top; white-space: nowrap;
