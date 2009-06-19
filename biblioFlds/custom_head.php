@@ -9,29 +9,28 @@
  * Provisions to include material unique to a particular portion is
  * at the end of thie file.
  */
-
-//	require_once("../shared/common.php");
 ?>
-<!-- custom header material for lookup plugin -->
 
+<!-- custom header material for biblioFlds plugin -->
 <script language="JavaScript1.4" >
 //console.log('js file loaded');
 
 //license data object
-lookup = {
-	version:		'3.0.1',
+biblioFlds = {
+	version:		'1.0.0',
 	author:			'Fred LaPlante',
 	date:       '17 June 2009',
 	license:		'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
-	copyright:	'2004,5,6,7,8,9 All Rights Reserved.',
+	copyright:	'2009 All Rights Reserved.',
 	email:			'flaplante at flos-inc dot com',
 	comment:    'add-on/plugin for OpenBiblio v1.0+'
 }
-</script>
+</script
 
 <style>
 fieldset {
-	width: 50%;
+	width: 500px;
+	text-align: center;
 	}
 h4 {
 	margin: 0; padding: 0; text-align: left; color: blue;
@@ -66,9 +65,8 @@ td.btnFld {
 <script src="../plugins/jQuery.js" type="text/javascript"></script>
 
 <script language="JavaScript1.4" >
-
 //------------------------------------------------------------------------------
-// jQuery plugins for openBiblio
+// jQuery plugins for lookup
 // element enable/disable - 'jQuery in Action', p12, 22Aug2008 - fl
 $.fn.disable = function () {
 	return this.each(function () {
@@ -142,19 +140,12 @@ flos = {
 $meName = $_SERVER[PHP_SELF];
 $meParts = explode('/',$meName);
 $fn = $meParts[3];
+//echo "matching file name: $fn<br />";
 switch ($fn) {
-	case 'lookup.php':
-		require_once(REL(__FILE__, "lookup_js.php"));
-	  break;
-
-	case 'hosts_form.php':
-		require_once(REL(__FILE__, "hosts_js.php"));
+	case 'flds_form.php':
+		require_once(REL(__FILE__, "flds_js.php"));
 		break;
-
-	case 'opts_form.php':
-		require_once(REL(__FILE__, "opts_js.php"));
-		break;
-
+		
 	default:
 	  echo "custom_head.php is unable to load JS file for: $_SERVER[PHP_SELF] ?<br />";
 }

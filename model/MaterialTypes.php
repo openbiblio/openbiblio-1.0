@@ -33,6 +33,11 @@ class MaterialTypes extends DmTable {
 			. "ORDER BY t.description ";
 		return $this->db->select($sql);
 	}
+	function getAll($orderBy=null) {
+		$sql = "SELECT * FROM material_type_dm "
+				 . " ORDER BY $orderBy ";
+		return $this->db->select($sql);
+	}
 	function validate_el($rec, $insert) {
 		$errors = array();
 		foreach (array('description', 'adult_checkout_limit', 'juvenile_checkout_limit') as $req) {

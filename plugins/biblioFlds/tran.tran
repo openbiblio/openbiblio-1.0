@@ -1,0 +1,7 @@
+<?php
+#****************************************************************************
+#*  Translation text for page lookup_form.php
+#****************************************************************************
+$trans["BiblioFieldsEditor"]    = 'Biblio Fields Editor';
+$trans["MatlTypeListLabel"]     = 'Material Type:';
+$trans["UpdateSuccess"]     		= 'Update Successful:';
