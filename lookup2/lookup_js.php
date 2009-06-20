@@ -180,8 +180,10 @@ lkup = {
 				//console.log('got something, JSON: '+response);
 				var rslts = eval('('+response+')'); // JSON 'interpreter'
 				//console.log('rslts : '+rslts);
-				console.log('ttl hits = '+rslts.ttlHits);
-				if (rslts.ttlHits < 1) {
+				var numHits = parseInt(rslts.ttlHits);
+				var maxHits = parseInt(rslts.maxHits);
+				console.log('ttl hits = '+numHits+'; max = '+maxHits);
+				if (numHits < 1) {
 					console.log('nothing found');
 				  //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
@@ -197,19 +199,19 @@ lkup = {
 					$('#retryDiv').show();
 				}
 			
-				else if (rslts.ttlHits >= rslts.maxHits) {
+				else if (numHits >= maxHits) {
 					console.log('too many hits');
 		  		//{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',
 					// 'msg':'$msg1', 'msg2':'$msg2'}
 					var str = rslts.msg+' ('+rslts.ttlHits+' ).<br />'+rslts.msg2;
 					$('#retryHead').empty();
-					$('#retryHead').html(lkup.tooMany);
+					$('#retryHead').html(rslts.msg);
 					$('#retryMsg').empty();
 					$('#retryMsg').html(str);
 					$('#retryDiv').show();
 				}
 			
-				else if (rslts.ttlHits > 1){
+				else if (numHits > 1){
 					console.log('more than one hit');
 					$('#choiceSpace').empty();
 					$('#choiceSpace').append('<h3>Success!  <span id="ttlHits"></span></h3>');

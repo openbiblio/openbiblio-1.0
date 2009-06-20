@@ -41,8 +41,8 @@
 		}
 		## TOO MANY
 		else if ($ttlHits > $postVars[maxHits]) {
-			$msg1 = T('lookup_TooManyHits');
-			$msg2 = T('lookup_RefineSearch');
+			$msg1 = T('lookup_tooManyHits');
+			$msg2 = T('lookup_refineSearch');
 			 # JSON object follows
 		  $s =  "{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',".
 						"'msg':'$msg1', 'msg2':'$msg2' ".

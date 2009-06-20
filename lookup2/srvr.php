@@ -16,15 +16,6 @@
 	$opts = $optr->getAll();
 	$postVars = $opts->next();
 
-####################################################################
-####################################################################
-  ## not yet in database or user opts screens, but should be!!!!
-//  $postVars["timeout"] = 60; // done!
-if(empty($postVars[timeout])) echo "You blew it on 'timeout'<br />";
-//  $postVars["noiseWords"] = 'a an and for of the this those'; //done!
-####################################################################
-####################################################################
-
 	## get default collection name
 	$cptr = new myColl;
 	$coll = $cptr->getDefault();
