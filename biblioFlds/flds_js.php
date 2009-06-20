@@ -6,23 +6,31 @@
 // JavaScript Document
 mtl = {
 	<?php
-	echo 'successMsg : "'.T('updateSuccess').'",'."\n";
+	echo 'successMsg 		: "'.T('updateSuccess').'",'."\n";
+	echo 'delConfirmMsg : "'.T('confirmDelete').'",'."\n";
+	echo 'goBackLbl			: "'.T('Go Back').'",'."\n";
+	echo 'cancelLbl			: "'.T('Cancel').'",'."\n";
+	echo 'updateLbL			: "'.T('Update').'",'."\n";
+	echo 'addNewLbl			: "'.T('Add New').'",'."\n";
+	echo 'deleteLbl			: "'.T('Delete').'",'."\n";
+	echo 'editLbl				: "'.T('Edit').'",'."\n";
 	?>
 	
 	init: function () {
 	  init(); // part of original openbiblio js code
-
 		mtl.initWidgets();
 
 		mtl.url = 'fldsSrvr.php';
 		mtl.editForm = $('#workForm');
 		
+		$('#reqdNote').css('color','red');
+		$('.reqd sup').css('color','red');
+		$('#updateMsg').hide();
+
 		$('#typeList').bind('change',null,mtl.fetchMatlFlds)
-
-
-//		$('#workForm tFoot #newBtn').bind('click',null,mtl.doAddFldset);
-		$('#workForm tFoot #updtBtn').bind('click',null,mtl.doUpdateFldset);
-//		$('#workForm tFoot #deltBtn').bind('click',null,mtl.doDeleteFldset);
+		$('#editCnclBtn').bind('click',null,mtl.doBackToList);
+		$('#editDeltBtn').bind('click',null,mtl.doDeleteFldset);
+		$('#editUpdtBtn').bind('click',null,mtl.doUpdateFldset);
 
 		mtl.fetchMatlTypes();
 		mtl.resetForms();
@@ -36,16 +44,22 @@ mtl = {
 
 	  $('#pageHdr').html(mtl.pageHdr);
 		$('#workDiv').hide();
+		$('#editDiv').hide();
 	  $('#msgDiv').hide();
 		$('#updateMsg').hide();
-		//$('#listDiv').show();
-    //$('#hostForm tFoot #cnclBtn').val('Cancel');
     
 		$('#typeList').focus();
 	},
 	doBackToList: function () {
-		mtl.fetchMatlTypes();
-		mtl.resetForms();
+		$('#workDiv').show();
+		$('#editDiv').hide();
+	  $('#msgDiv').hide();
+		$('#updateMsg').hide();
+		$('#editCnclBtn').val(mtl.cancelLbl);
+	},
+	doReloadList: function () {
+		mtl.fetchMatlFlds();
+		mtl.doBackToList();
 	},
 	
 	//------------------------------
@@ -69,15 +83,19 @@ mtl = {
 			if (data.length > 0) {
 				for (n in data) {
 				  var recId = 'mtl'+data[n]['material_field_id'];
+				  var btnId = 'btn'+data[n]['material_field_id'];
 	    		html  = '<tr id="'+recId+'">\n';
     			html += '<td valign="top" class="primary">\n';
+ 					html += '<input type="button" id="'+btnId+'" value="'+mtl.editLbl+'" align="center" class="button editBtn" />\n';
  					html += '<input type="hidden" name="material_field_id" class="fldData" value="'+data[n]['material_field_id']+'" />\n';
-					html += '<input type="text" name="position" class="primary fldData" size="4" value="'+data[n]['position']+'" />\n';
 					html += '</td>';
-    			html += '<td valign="top" class="primary">\n';
+					html += '<td>';
+    			html += '<input type="text" name="position" class="primary fldData" size="4" value="'+data[n]['position']+'" />\n';
+					html += '</td>';
+	   			html += '<td valign="top" class="primary">\n';
  					html += '<input type="hidden" name="tag" class="fldData" value="'+data[n]['tag']+'" />\n';
  					html += '<input type="hidden" name="subfield_cd" class="fldData" value="'+data[n]['subfield_cd']+'" />\n';
-					html += data[n]['tag']+data[n]['subfield_cd'];
+					html += '<span class="fldData">'+data[n]['tag']+data[n]['subfield_cd']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
 					html += '<input type="text" name="label" class="primary fldData" size="30" value="'+data[n]['label']+'" />\n';
@@ -95,17 +113,14 @@ mtl = {
     			html += '<td valign="top" class="primary">\n';
 					html += '<input type="text"  name="repeatable" class="primary fldData" size="5" value="'+data[n]['repeatable']+'" />\n';
 					html += '</td>';
-    			//html += '<td valign="top" name="search_results" class="primary">'+data[n]['search_results']+'</td>\n';
 					html += '</tr>\n';
 					$('#fldSet').append(html);
-//					$('#'+recId+' td').find('input,select,checkbox').bind('change',{'recId':recId},mtl.doUpdateFldset);
-					$('#'+recId+' td .fldData').bind('change',{'recId':recId},mtl.doUpdateFldset);
 				}
-				$('#fldSet tr:even td').addClass('altBG');
-				$('#fldSet tr:even td input').addClass('altBG');
+				$('table.striped tbody tr:odd td .fldData').addClass('altBG');
+				$('.editBtn').bind('click',null,mtl.doEdit);
 			}
 			else {
- 				html = "<h3>Nothing found for this material.<br />Click 'Add New' to create new entries.</h3>";
+ 				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('AddNewMtlMsg').'"'; ?>+"</h3>";
 				$('#msgArea').html(html);
 				$('#msgDiv').show();
 			}
@@ -113,15 +128,35 @@ mtl = {
 		});
 	},
 	
-	doUpdateFldset: function (e) {
+	doEdit: function (e) {
+		$('#workDiv').hide();
+		$('#msgDiv').hide();
+		$('#addBtn').hide();
+		$('#editDiv').show();
+		
+	  var theTagId = $(this).next().val();
+		var mtlId ='mtl'+theTagId;
+		var parms = $('#'+mtlId+' .fldData').serializeArray();
+		for(n in parms) {
+			var fldName = parms[n]['name']
+			if ((fldName == 'required') || (fldName == 'form_type')) {
+			  // for radio-buttons, checkboxes, selects
+				$('#editTbl #'+fldName).val([parms[n]['value']]);
+			}
+			else {
+			  // all else
+				$('#editTbl #'+fldName).val(parms[n]['value']);
+			}
+		}
+	},
+	
+	doUpdateFldset: function () {
 	  //if (!mtl.doValidate(e)) return;
-
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
-		$('#mode').val('updateFldSet');
-		var mtlId =e.data['recId'];
-		var parms = 'mode=updateFldSet&' + $('#'+mtlId+' .fldData').serialize();
-		//console.log(parms);
+		$('#editMode').val('updateFldSet');
+
+		var parms = $('#editForm').serialize();
 
 		$.post(mtl.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
@@ -130,25 +165,21 @@ mtl = {
 				$('#msgDiv').show();
 			}
 			else {
-//				if (response.substr(0,1)){
-					mtl.fetchMatlFlds();
-//					$('#updateMsg').html(mtl.successMsg);
-//					$('#updateMsg').show();
-//					$('#msgArea').html(mtl.successMsg);
-//					$('#msgDiv').show();
-//				}
-			  //mtl.doBackToStart();
+				$('#updateMsg').html(mtl.successMsg);
+				$('#updateMsg').show();
+				$('#msgArea').html(mtl.successMsg);
+				$('#msgDiv').show();
+				$('#editCnclBtn').val(mtl.gobackLbl)
 			}
 		});
-
 	},
 
 	doDeleteFldset: function (e) {
-		var msg = mtl.delConfirmMsg+'\n>>> '+$('#hostForm tbody #name').val()+' <<<';
+		var msg = mtl.delConfirmMsg+'\n>>> '+$('#editForm tbody #label').val()+' <<<';
 	  if (confirm(msg)) {
 	  	$.get(mtl.url,
-								{	mode:'d-3-L-3-tHost',
-									id:$('#hostForm tbody #id').val()
+								{	mode:'d-3-L-3-tFld',
+									material_field_id:$('#editForm #material_field_id').val()
 								},
 								function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
@@ -156,10 +187,8 @@ mtl = {
 					$('#msgArea').html(response);
 					$('#msgDiv').show();
 				}
-//				else if (($.trim(response))== '') {
-//				}
 				else {
-			  	mtl.doBackToList();
+			  	mtl.doReloadList();
 				}
 			});
 		}

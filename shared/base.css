@@ -21,7 +21,7 @@ div#header  {
 /*************************************************/
 div#content {
 	position: absolute; top:4.5em; left: 12em;
-	margin-left: 1em; width: 700px;
+	margin-left: 1em; xwidth: 700px;
 	}
 /*************************************************/
 div#footer {

@@ -6,6 +6,10 @@
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
+	if ((empty($_REQUEST[mode]))&& (!empty($_REQUEST[editMode]))) {
+    $_REQUEST[mode] = $_REQUEST[editMode];
+	}
+	
 	switch ($_REQUEST[mode]){
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMtlTypes':
@@ -45,6 +49,15 @@
 			echo $fptr->update($_POST);
 			break;
 
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'd-3-L-3-tFld':
+			## delete Material_fields database entry
+			require_once(REL(__FILE__, "../model/MaterialFields.php"));
+			$fptr = new MaterialFields;
+			//$sql = "DELETE FROM $fptr->name WHERE `material_field_id`=$_GET[material_field_id]";
+			//$fptr->db->act($sql);
+			echo $fptr->deleteOne($_GET[material_field_id]);
+			break;
 /*
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getOpts':
@@ -100,14 +113,6 @@
 			echo $hptr->update($_POST);
 			break;
 
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'd-3-L-3-tHost':
-			## delete host database entry
-			$hptr = new Hosts;
-			$key = $hptr->key;
-			$sql = "DELETE FROM $hptr->name WHERE `id`=$_GET[id]";
-			$hptr->db->act($sql);
-			break;
 */
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:

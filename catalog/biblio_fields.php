@@ -16,6 +16,7 @@
 </p>
 
 <table id="biblioFldTbl" class="primary" width="100%">
+	<?php ## ----------------------- ## ?>
 	<thead>
 	<tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
@@ -23,6 +24,8 @@
 		</th>
 	</tr>
 	</thead>
+	
+	<?php ## ----------------------- ## ?>
 	<tbody id="nonMarcBody">
 	<tr>
 		<td nowrap="true" class="primary">
@@ -31,16 +34,16 @@
 		</td>
 		<td valign="top" class="primary">
 <?php
-	$mattypes = new MaterialTypes;
+	$matTypes = new MaterialTypes;
 
 	if (isset($biblio['material_cd'])) {
 		$material_cd_value = $biblio['material_cd'];
 	} elseif (isset($_GET['material_cd'])) {
 	  $material_cd_value = $_GET['material_cd'];
 	} else {
-		$material_cd_value = $mattypes->getDefault();
+		$material_cd_value = $matTypes->getDefault();
 	}
-	echo inputfield('select', "materialCd", $material_cd_value, array('onchange'=>"matCdReload()"), $mattypes->getSelect());
+	echo inputfield('select', "materialCd", $material_cd_value, array('onchange'=>"matCdReload()"), $matTypes->getSelect());
 			?>
 		</td>
 	</tr>
@@ -76,7 +79,8 @@
 		</td>
 	</tr>
 	</tbody>
-	
+
+	<?php ## ----------------------- ## ?>
 	<tbody id="marcBody">
 <?php
 	function getlabel($f) {
@@ -104,16 +108,18 @@
 	}
 
 	$mf = new MaterialFields;
+	// get field specs in 'display postition' order
 	$fields = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
+
+	## anything to process for current media ype (material_cd) ?
 	if ($fields->count() == 0) {
-?>
-	<tr>
-		<td colspan="2" class="primary"><?php echo T('No fields to fill in.'); ?></td>
-	</tr>
-<?php
+		echo "<tr><td colspan=\"2\" class=\"primary\">.T('No fields to fill in.').</td></tr>\n";
 	}
+	
+	## build an array of fields to be displayed on user form
 	$inputs = array();
-	while (($f=$fields->next()) !== NULL) {
+	while (($f=$fields->next())) {
+		// make a set of marc tags to be processed
 		$tags = array();
 		if (isset($biblio)) {
 			$tags = $biblio['marc']->getFields($f['tag']);
@@ -121,29 +127,37 @@
 				$tags = array($tags[0]);
 			}
 		}
-		foreach ($tags as $t) {
-			$subfs = array();
-			if ($f['subfield_cd'] != "") {
-				$subfs = $t->getSubfields($f['subfield_cd']);
-				if ($f['auto_repeat'] != Subfield && count($subfs) > 0) {
-					$subfs = array($subfs[0]);
+		if (count($tags) > 0) {
+			foreach ($tags as $t) {
+				$subfs = array();
+				if ($f['subfield_cd'] != "") {
+					$subfs = $t->getSubfields($f['subfield_cd']);
+					if ($f['auto_repeat'] != Subfield && count($subfs) > 0) {
+						$subfs = array($subfs[0]);
+					}
+				}
+				foreach ($subfs as $sf) {
+					array_push($inputs,
+						mkinput($t->fieldid,
+							$sf->subfieldid,
+							$sf->data, $f));
+				}
+				if (count($subfs) == 0 || $f['auto_repeat'] == 'Subfield') {
+					array_push($inputs, mkinput($t->fieldid, NULL, NULL, $f));
+				}
+				for ($n=0; $n<$f['repeatable']; $n++) {
+					array_push($inputs, mkinput($t->fieldid, NULL, NULL, $f));
 				}
 			}
-			foreach ($subfs as $sf) {
-				array_push($inputs,
-					mkinput($t->fieldid,
-						$sf->subfieldid,
-						$sf->data, $f));
-			}
-			if (count($subfs) == 0 || $f['auto_repeat'] == 'Subfield') {
-				array_push($inputs, mkinput($t->fieldid, NULL, NULL, $f));
-			}
 		}
-		if (count($tags) == 0 || $f['auto_repeat'] == 'Tag') {
-			array_push($inputs, mkinput(NULL, NULL, NULL, $f));
+		else if (count($tags) == 0 ) {
+			for ($n=0; $n<=$f['repeatable']; $n++) {
+				array_push($inputs, mkinput(NULL, NULL, NULL, $f));
+			}
 		}
 	}
 
+	## now builf html for those input fields
 	foreach ($inputs as $n => $i) {
 		$marcInputFld = H($i['tag']).H($i['subfield']);
 ?>
@@ -199,6 +213,7 @@
 ?>
 	</tbody>
 
+	<?php ## ----------------------- ## ?>
 	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
