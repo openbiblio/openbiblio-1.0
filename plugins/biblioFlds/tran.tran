@@ -2,8 +2,13 @@
 #****************************************************************************
 #*  Translation text for page lookup_form.php
 #****************************************************************************
-$trans["BiblioFieldsEditor"]    = 'Biblio Fields Editor';
+$trans["BiblioFieldsEditor"]    = 'Biblio Fields Maintenance';
 $trans["MatlTypeListLabel"]     = 'Material Type:';
+$trans["configLayout"]          = 'Add to / Modify Layout';
+$trans["saveLayout"]          	= 'Save Layout';
+$trans["BiblioFieldsConfig"]    = 'Biblio Fields Configuration for ';
+$trans["waitForServer"]         = 'Waiting for server response';
+$trans["marcBlock"]         		= 'Marc Category:';
 $trans["updateSuccess"]     		= 'Update Successful:';
 $trans["tagLable"]     					= 'Tag:';
 $trans["labelLabel"]     				= 'Label:';

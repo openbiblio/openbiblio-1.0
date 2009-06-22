@@ -13,7 +13,6 @@
 
 <!-- custom header material for biblioFlds plugin -->
 <script language="JavaScript1.4" >
-//console.log('js file loaded');
 
 //license data object
 biblioFlds = {
@@ -23,12 +22,16 @@ biblioFlds = {
 	license:		'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
 	copyright:	'2009 All Rights Reserved.',
 	email:			'flaplante at flos-inc dot com',
-	comment:    'add-on/plugin for OpenBiblio v1.0+'
+	comment:    'Biblio Fields Maintenance add-on/plugin for OpenBiblio v1.0+'
 }
 </script
 
 <style>
+#content .title {
+	margin-top:5px; margin-bottom:5px;
+	}
 #typeChoice fieldset {
+	margin: 0; padding: 5px;
 	width: 500px;
 	text-align: center;
 	}
@@ -40,6 +43,9 @@ h5 {
 	}
 h5#updateMsg {
 	color: red;
+	}
+label {
+	font-weight: bold;
 	}
 th.colHead {
   text-align: top; white-space: nowrap;
@@ -56,10 +62,47 @@ td.btnFld {
 .editBtn {
 	margin: 0; padding: 0; height: 1.5em; text-align:center;
 	}
+	
+/* for draggable configuration screen */
+/*
+#configDiv fieldset.configArea {
+	width: 300px; float: left;
+	}
+*/
+div#configDiv{
+	width: 750px;
+	}
+#configDiv fieldset#existingSpace {
+	width: 255px; float: left;
+	}
+#configDiv fieldset#potentialSpace {
+  float: right;
+	/*width: 350px;*/
+	}
+#configDiv fieldset#potentialSpace select {
+	margin-bottom: 10px;
+	}
+#configDiv ul#existing,ul#potential {
+	list-style-type: none;
+	margin: 0; padding: 0; margin-right: 5px;
+	}
+#configDiv ul#existing li,ul#potential li {
+	margin-bottom: 2px;
+	width: 270px;
+	font-size: 1.2em;
+	}
+#configDiv ul#existing li {
+	color: black; background: #FFFF99;
+	}
+#configDiv ul#potential li {
+	color: black; background: #CCFFFF;
+	}
 </style>
 
-<!-- load common jQuery library -->
+<!-- load common jQuery library(s) -->
 <script src="../plugins/jQuery.js" type="text/javascript"></script>
+<script type="text/javascript" src="../plugins/ui.core.js"></script>
+<script type="text/javascript" src="../plugins/ui.sortable.js"></script>
 
 <script language="JavaScript1.4" >
 //------------------------------------------------------------------------------

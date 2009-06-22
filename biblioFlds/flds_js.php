@@ -4,6 +4,18 @@
  */
 
 // JavaScript Document
+	$(function() {
+		$("#existing, #potential").sortable({
+			connectWith: '.connectedSortable',
+			receive: mtl.receiveMarcFld
+//			,handle: '.handle'
+//			,update: function() {
+//			  var order = $('#sortable1').sortable( 'serialize');
+//        console.log(order);
+//      	$("#info").load("srvrTest.php?"+order);
+//			}
+		}).disableSelection();
+	});
 mtl = {
 	<?php
 	echo 'successMsg 		: "'.T('updateSuccess').'",'."\n";
@@ -26,11 +38,25 @@ mtl = {
 		$('#reqdNote').css('color','red');
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
+		
+/*
+//getter
+var cursor = $('.selector').sortable('option', 'cursor');
+//setter
+$('.selector').sortable('option', 'cursor', 'crosshair');
+*/
 
+		mtl.configBtn = $('#configBtn');
+		mtl.saveBtn = $('#saveBtn');
+		
 		$('#typeList').bind('change',null,mtl.fetchMatlFlds)
+		$('#configBtn').bind('click',null,mtl.doConfigLayout);
+		$('#saveBtn').bind('click',null,mtl.doSaveLayout);
 		$('#editCnclBtn').bind('click',null,mtl.doBackToList);
 		$('#editDeltBtn').bind('click',null,mtl.doDeleteFldset);
 		$('#editUpdtBtn').bind('click',null,mtl.doUpdateFldset);
+		$('#marcBlocks').bind('change',null,mtl.fetchMarcTags);
+		$('#marcTags').bind('change',null,mtl.fetchMarcFields);
 
 		mtl.fetchMatlTypes();
 		mtl.resetForms();
@@ -44,18 +70,45 @@ mtl = {
 
 	  $('#pageHdr').html(mtl.pageHdr);
 		$('#workDiv').hide();
+		$('#configDiv').hide();
 		$('#editDiv').hide();
 	  $('#msgDiv').hide();
 		$('#updateMsg').hide();
-    
+		mtl.disableConfigBtn();
+		mtl.disableSaveBtn();
+
 		$('#typeList').focus();
 	},
+	
+	disableConfigBtn: function () {
+	  mtl.configBtnBgClr = mtl.configBtn.css('color');
+	  mtl.configBtn.css('color', '#888888');
+		mtl.configBtn.disable();
+	},
+	enableConfigBtn: function () {
+	  mtl.configBtn.css('color', mtl.configBtnBgClr);
+		mtl.configBtn.enable();
+	},
+	
+	disableSaveBtn: function () {
+	  mtl.saveBtnBgClr = mtl.saveBtn.css('color');
+	  mtl.saveBtn.css('color', '#888888');
+		mtl.saveBtn.disable();
+	},
+	enableSaveBtn: function () {
+	  mtl.saveBtn.css('color', mtl.saveBtnBgClr);
+		mtl.saveBtn.enable();
+	},
+
 	doBackToList: function () {
 		$('#workDiv').show();
+		$('#configDiv').hide();
 		$('#editDiv').hide();
 	  $('#msgDiv').hide();
 		$('#updateMsg').hide();
 		$('#editCnclBtn').val(mtl.cancelLbl);
+		mtl.disableConfigBtn();
+		mtl.disableSaveBtn();
 	},
 	doReloadList: function () {
 		mtl.fetchMatlFlds();
@@ -66,13 +119,97 @@ mtl = {
 	fetchMatlTypes: function () {
 	  $.getJSON(mtl.url,{mode:'getMtlTypes'}, function(data){
 			var html = "<option value=\"0\">Choose One</option>\n";
-			for (nTypes in data) {
-				html += "<option value="+data[nTypes]['code']+">"+data[nTypes]['description']+"</option>\n";
+			for (n in data) {
+				html += '<option value="'+data[n]['code']+'">'+data[n]['description']+'</option>\n';
 			}
 			$('#typeList').html(html);
-		})
+		});
 	},
 
+	//------------------------------
+	doConfigLayout: function () {
+	  $('#workDiv').hide();
+	  $('#msgDiv').hide();
+	  $('#marcTags').hide()
+	  var matlSet = $('#typeList').text();
+	  var matlCd = $('#typeList').val();
+	  var matlArray = matlSet.split('\n');
+	  var matl = matlArray[matlCd];
+	  $('#configTitle').append("'"+matl+"'");
+	  mtl.fetchMarcBlocks();
+		mtl.enableSaveBtn();
+		mtl.disableConfigBtn();
+		$('#configDiv').show();
+	},
+	fetchMarcBlocks: function () {
+	  $.getJSON(mtl.url,{mode:'getMarcBlocks'}, function(data){
+			var html = "<option value=\"0\">Choose a Block</option>\n";
+			for (n in data) {
+				html += '<option value="'+data[n]['block_nmbr']+'">'
+						 +   data[n]['block_nmbr']+' - '+data[n]['description']
+						 +  '</option>\n';
+			}
+			$('#marcBlocks').html(html);
+		});
+	},
+	fetchMarcTags: function () {
+	  $('#potential').html('');
+	  mtl.blockNmbr = $('#marcBlocks').val();
+	  $.getJSON(mtl.url,{mode:'getMarcTags',block_nmbr:mtl.blockNmbr}, function(data){
+			var html = "<option value=\"0\">Choose a Tag</option>\n";
+			for (n in data) {
+				html += '<option value="'+data[n]['tag']+'">'
+						 +   data[n]['tag']+' - '+data[n]['description']
+						 +  '</option>\n';
+			}
+			$('#marcTags').html(html).show();
+		});
+	},
+	fetchMarcFields: function () {
+	  mtl.tagNmbr = $('#marcTags').val();
+	  $.getJSON(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
+			var html = '';
+			for (n in data) {
+			  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
+				html += '<li '
+						 +  'tag="'+data[n]['tag']+'" '
+						 +	'subFld="'+data[n]['subfield_cd']+'" '
+						 +	'>'
+						 +	id+' - '+data[n]['description']
+						 +	"</li>\n";
+			}
+			$('#potential').html(html);
+		});
+	},
+  receiveMarcFld: function (e,ui){
+console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
+	},
+	doSaveLayout: function () {
+		// collect current line data in an array
+		var arayd = $('#existing').sortable( 'toArray');
+		// now build a JSON structure for server
+		var jsonStr = '';
+		for (n in arayd) {
+		  // param name & value MUST be in double quotes
+			jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'"},';
+			if ($.trim(arayd[n]) == ""){
+			  var entry = $('#existing li:nth-child(n+1)');
+				var tag = entry.attr('tag');
+				var subFld = entry.attr('subFld');
+				var label = entry.text();
+				console.log('new entry for pos #'+n+': tag='+tag+', subfld='+subFld+' - '+label);
+			}
+		}
+		// trailing comma not allowed
+		var howLong =(jsonStr.length)-1;
+		var outStr = jsonStr.substr(0,howLong);
+		// and off to server
+		var parms = "mode=updateMarcFields&jsonStr=["+outStr+"]";
+console.log('to srvr-->'+outStr);
+		$.post(mtl.url, parms, function(response) {
+		});
+	},
+	
 	//------------------------------
 	fetchMatlFlds: function (e) {
 		//console.log ('in showWorkForm()');
@@ -80,6 +217,7 @@ mtl = {
 		$('#fldSet').empty();
 	  $.getJSON(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
 			var html = '';
+			var html2 = '';
 			if (data.length > 0) {
 				for (n in data) {
 				  var recId = 'mtl'+data[n]['material_field_id'];
@@ -115,7 +253,19 @@ mtl = {
 					html += '</td>';
 					html += '</tr>\n';
 					$('#fldSet').append(html);
+
+					//html2 += "<li>"+data[n]['label']+"</li>\n";
+					html2 += '<li '
+							  +  'id="'+data[n]['material_field_id']+'" '
+								+	 'tag="'+data[n]['tag']+'" '
+							  +	 'subFld="'+data[n]['subfield_cd']+'" '
+							  +	 '>'
+							  +	 data[n]['tag']+data[n]['subfield_cd']+' - '+data[n]['label']
+							  +	 "</li>\n";
+
 				}
+				$('#existing').html(html2);
+				mtl.enableConfigBtn();
 				$('table.striped tbody tr:odd td .fldData').addClass('altBG');
 				$('.editBtn').bind('click',null,mtl.doEdit);
 			}
@@ -124,10 +274,9 @@ mtl = {
 				$('#msgArea').html(html);
 				$('#msgDiv').show();
 			}
-				$('#workDiv').show();
+			$('#workDiv').show();
 		});
 	},
-	
 	doEdit: function (e) {
 		$('#workDiv').hide();
 		$('#msgDiv').hide();
@@ -149,7 +298,6 @@ mtl = {
 			}
 		}
 	},
-	
 	doUpdateFldset: function () {
 	  //if (!mtl.doValidate(e)) return;
 		$('#updateMsg').hide();
@@ -173,7 +321,6 @@ mtl = {
 			}
 		});
 	},
-
 	doDeleteFldset: function (e) {
 		var msg = mtl.delConfirmMsg+'\n>>> '+$('#editForm tbody #label').val()+' <<<';
 	  if (confirm(msg)) {
@@ -193,7 +340,6 @@ mtl = {
 			});
 		}
 	},
-	
 	doNewFldset: function (e) {
 	  $('#hostHdr').html(mtl.newHdr);
 	  $('#hostForm tfoot #updtBtn').hide();
@@ -207,118 +353,7 @@ mtl = {
 	doValidate: function () {
 console.log('user input validation not available!!!!, see admin/settings_edit');
 		return true;
-/*
-	},
-	 
-	
-	doNewHost: function (e) {
-	  $('#hostHdr').html(mtl.newHdr);
-	  $('#hostForm tfoot #updtBtn').hide();
-	  $('#hostForm tfoot #addBtn').show();
-	  $('#hostForm tbody #name').focus();
-	  
-		$('#listDiv').hide();
-		$('#editDiv').show();
-	},
-	doEdit: function (e) {
-	  var theHostId = $(this).next().val();
-		//console.log('you wish to edit host #'+theHostId);
-		for (nHost in mtl.hostJSON) {
-		  if (mtl.hostJSON[nHost]['id'] == theHostId) {
-				mtl.showHost(mtl.hostJSON[nHost]);
-			}
-		}
-	},
-	
-	doValidate: function () {
-console.log('user input validation not available!!!!, see admin/settings_edit');
-		return true;
-	},
-	
-	doAddHost: function () {
-	  if (!mtl.doValidate()) return;
-
-		$('#mode').val('addNewHost');
-		var parms = $('#hostForm').serialize();
-		//console.log(parms);
-		$.post(mtl.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else {
-			  mtl.doBackToList();
-			}
-		});
-	},
-
-	doUpdateHost: function () {
-	  if (!mtl.doValidate()) return;
-
-		$('#updateMsg').hide();
-		$('#msgDiv').hide();
-		$('#mode').val('updateHost');
-		var parms = $('#hostForm').serialize();
-		//console.log(parms);
-		$.post(mtl.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else {
-				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html(mtl.successMsg);
-					$('#updateMsg').show();
-				}
-			  mtl.doBackToList();
-			}
-		});
-	},
-	
-	doDeleteHost: function (e) {
-		var msg = mtl.delConfirmMsg+'\n>>> '+$('#hostForm tbody #name').val()+' <<<';
-	  if (confirm(msg)) {
-	  	$.get(mtl.url,
-								{	mode:'d-3-L-3-tHost',
-									id:$('#hostForm tbody #id').val()
-								},
-								function(response){
-				if (($.trim(response)).substr(0,1)=='<') {
-					console.log('rcvd error msg from server :<br />'+response);
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				}
-//				else if (($.trim(response))== '') {
-//				}
-				else {
-			  	mtl.doBackToList();
-				}
-			});
-		}
-	},
-
-	showHost: function (host) {
-		//console.log('showing : '+host['name']);
-	  $('#hostHdr').html(mtl.editHdr);
-	  $('#hostForm tfoot #addBtn').hide();
-	  $('#hostForm tfoot #updtBtn').show();
-	  $('#hostForm tbody #name').focus();
-
-		$('#editTbl td #id').val(host['id']);
-		$('#editTbl td #host').val(host['host']);
-		$('#editTbl td #name').val(host['name']);
-		$('#editTbl td #db').val(host['db']);
-		$('#editTbl td #seq').val(host['seq']);
-    $('#editTbl td #active').val([host['active']]);
-		$('#editTbl td #user').val(host['user']);
-		$('#editTbl td #pw').val(host['pw']);
-
-		$('#listDiv').hide();
-		$('#editDiv').show();
-*/
-	}
+ }
 };
 
 $(document).ready(mtl.init);

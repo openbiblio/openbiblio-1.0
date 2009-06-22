@@ -192,7 +192,6 @@ class DBTable {
 		$this->db->lock();
 		$sql = $this->db->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
-echo"sql=$sql<br />";
 		$this->db->act($sql);
 		$this->db->unlock();
 	}

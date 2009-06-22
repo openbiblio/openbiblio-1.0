@@ -17,14 +17,45 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-<h1><span id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></span></h1>
+<!--h1><span id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></span></h1-->
+<h1 id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></h1>
 
 <div id='typeChoice'>
 	<fieldset id='choiceTyp'>
 		<label for="typeList"><?php echo T('MatlTypeListLabel');?></label>
 		<select id='typeList'></select>
+
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type=button id="configBtn" name="configBtn"
+					 value="<?php echo T("configLayout"); ?>" class="button" />
+
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type=button id="saveBtn" name="saveBtn"
+					 value="<?php echo T("saveLayout"); ?>" class="button" />
 	</fieldset>
 </div
+
+<div id="configDiv">
+	<h3 id="configTitle"><?php echo T('BiblioFieldsConfig'); ?></h3>
+
+	<fieldset id="existingSpace" class="configArea">
+	  <legend>Existing (drag to re-arange)</legend>
+		<ul id="existing" class="connectedSortable">
+			<li><?php echo T("waitForServer"); ?></li>
+		</ul>
+	</fieldset>
+	
+	<fieldset id="potentialSpace" class="configArea">
+	  <legend>Available (select, then drag to add)</legend>
+		<select id="marcBlocks"></select>
+		<br />
+		<select id="marcTags"></select>
+		<br />
+		<ul id="potential" class="connectedSortable">
+			<!--li><?php echo T("waitForServer"); ?></li-->
+		</ul>
+	</fieldset>
+</div>
 
 <div id="workDiv">
 <form id="workForm" name="workForm" class="form">
@@ -46,22 +77,9 @@
 	</tbody>
 	<tfoot>
   <tr>
-  	<!-- acts as a spacer used to slightly seperate button from form body -->
+  	<!-- placed here to slightly seperate any buttons from form body -->
     <td><input type="hidden" id="mode" name="mode" value=""></td>
   </tr>
-	<!--tr>
-		<td colspan="1">&nbsp;</td>
-	  <td colspan="3" class="primary btnFld">
-			<input type="button" id="updtBtn" value="<?php echo T("Update"); ?>" class="button" />
-			<input type="button" id="newBtn" value="<?php echo T("AddNew"); ?>" class="button" />
-		</td>
-		<td colspan="1">
-			&nbsp;
-		</td>
-		<td colspan="2">
-			<input type="button" id="deltBtn" value="<?php echo T("Delete"); ?>" class="button" />
-		</td>
-	</tr-->
 	</tfoot>
 </table>
 </form>
@@ -69,7 +87,6 @@
 
 <div id="editDiv">
 <form id="editForm" name="tagForm" class="form">
-<!--h1><span id="editHdr" class="title"></span></h1-->
 <h5 id="reqdNote" class="reqd"><sup>*</sup><?php echo T("lookup_rqdNote"); ?></h5>
 <table id="editTbl" class="primary" border="1"">
 	<thead>

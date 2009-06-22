@@ -39,25 +39,80 @@
 			//print_r($hosts);
 			echo json_encode($flds);
 			break;
-			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'updateFldSet':
 			## update material fields for a specific material type
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
-			$fptr = new MaterialFields;
+			$ptr = new MaterialFields;
 			if (empty($_POST[required])) $_POST[required] = '0';
-			echo $fptr->update($_POST);
+			echo $ptr->update_el($_POST);
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'd-3-L-3-tFld':
 			## delete Material_fields database entry
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
-			$fptr = new MaterialFields;
-			//$sql = "DELETE FROM $fptr->name WHERE `material_field_id`=$_GET[material_field_id]";
-			//$fptr->db->act($sql);
+			$ptr = new MaterialFields;
 			echo $fptr->deleteOne($_GET[material_field_id]);
 			break;
+
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getMarcBlocks':
+			## prepare list of MARC Blocks
+			require_once(REL(__FILE__, "../model/MarcDBs.php"));
+			$ptr = new MarcBlocks;
+		  $vals = array();
+			$rslt = $ptr->getAll();
+			while ($row = $rslt->next('block_nmbr')) {
+			  $vals[] = $row;
+			}
+			//print_r($blks);
+			echo json_encode($vals);
+			break;
+
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getMarcTags':
+			## prepare list of MARC tags for specified block
+			require_once(REL(__FILE__, "../model/MarcDBs.php"));
+			$ptr = new MarcTags;
+			$params = array('block_nmbr' => $_GET['block_nmbr']);
+//print_r($params);
+		  $vals = array();
+			$rslt = $ptr->getMatches($params,'tag');
+			while ($row = $rslt->next()) {
+			  $vals[] = $row;
+			}
+			//print_r($tags);
+			echo json_encode($vals);
+			break;
+
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getMarcFields':
+			## prepare list of MARC subfields for specified tags
+			require_once(REL(__FILE__, "../model/MarcDBs.php"));
+			$ptr = new MarcSubfields;
+			$params = array('tag' => $_GET['tag']);
+		  $vals = array();
+			$rslt = $ptr->getMatches($params,'subfield_cd');
+			while ($row = $rslt->next()) {
+			  $vals[] = $row;
+			}
+			//print_r($hosts);
+			echo json_encode($vals);
+			break;
+
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'updateMarcFields':
+			require_once(REL(__FILE__, "../model/MaterialFields.php"));
+			$fldSet = json_decode($_REQUEST['jsonStr'],true);
+			foreach ($fldSet as $line) {
+				$ptr = new MaterialFields;
+				$line['material_field_id'] = $line['id'];
+    		$line['id'] = NULL;
+				$ptr->update_el($line);
+			}
+			break;
+			
 /*
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getOpts':
