@@ -211,6 +211,7 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 			if (response.length > 0) {
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
+			}
 		});
 	},
 	
