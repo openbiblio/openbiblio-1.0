@@ -53,7 +53,7 @@
 			## delete Material_fields database entry
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
 			$ptr = new MaterialFields;
-			echo $fptr->deleteOne($_GET[material_field_id]);
+			echo $ptr->deleteOne($_GET[material_field_id]);
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
@@ -76,13 +76,11 @@
 			require_once(REL(__FILE__, "../model/MarcDBs.php"));
 			$ptr = new MarcTags;
 			$params = array('block_nmbr' => $_GET['block_nmbr']);
-//print_r($params);
 		  $vals = array();
 			$rslt = $ptr->getMatches($params,'tag');
 			while ($row = $rslt->next()) {
 			  $vals[] = $row;
 			}
-			//print_r($tags);
 			echo json_encode($vals);
 			break;
 
@@ -97,7 +95,6 @@
 			while ($row = $rslt->next()) {
 			  $vals[] = $row;
 			}
-			//print_r($hosts);
 			echo json_encode($vals);
 			break;
 
@@ -107,68 +104,20 @@
 			$fldSet = json_decode($_REQUEST['jsonStr'],true);
 			foreach ($fldSet as $line) {
 				$ptr = new MaterialFields;
-				$line['material_field_id'] = $line['id'];
-    		$line['id'] = NULL;
-				$ptr->update_el($line);
+				if (substr($line['id'],0,5) == 'zqzqz') {
+				  ## add new entries
+    			$line['id'] = NULL;
+					$ptr->insert_el($line);
+				}
+				else {
+				  ## update position of existing material
+					$line['material_field_id'] = $line['id'];
+    			$line['id'] = NULL;
+					$ptr->update_el($line);
+				}
 			}
 			break;
 			
-/*
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getOpts':
-			## prepare list of hosts
-			$optr = new Opts;
-	  	$opts = array();
-			$oSet = $optr->getAll();
-			$row = $oSet->next();
-			//print_r($hosts);
-			echo json_encode($row);
-			break;
-
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'updateOpts':
-			## update host database entry
-			$optr = new Opts;
-		  $_POST[id] = 1;
-			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
-			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
-			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
-			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
-			$rslt = $optr->update($_POST);
-			if(empty($rslt)) $rslt = '1';
-			echo $rslt;
-			break;
-
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getHosts':
-			## prepare list of hosts
-			$hptr = new Hosts;
-		  $hosts = array();
-			$hSet = $hptr->getAll('seq');
-			while ($row = $hSet->next()) {
-			  $hosts[] = $row;
-			}
-			//print_r($hosts);
-			echo json_encode($hosts);
-			break;
-
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'addNewHost':
-			## add new host database entry
-			$hptr = new Hosts;
-			if (empty($_POST[active])) $_POST[active] = 'n';
-			echo $hptr->insert($_POST);
-			break;
-
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'updateHost':
-			## update host database entry
-			$hptr = new Hosts;
-			if (empty($_POST[active])) $_POST[active] = 'n';
-			echo $hptr->update($_POST);
-			break;
-
-*/
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
 		  echo "<h4>invalid mode: $_REQUEST[mode]</h4><br />";

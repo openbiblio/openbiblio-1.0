@@ -38,7 +38,7 @@ mtl = {
 		$('#reqdNote').css('color','red');
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
-		
+
 /*
 //getter
 var cursor = $('.selector').sortable('option', 'cursor');
@@ -46,12 +46,14 @@ var cursor = $('.selector').sortable('option', 'cursor');
 $('.selector').sortable('option', 'cursor', 'crosshair');
 */
 
+		mtl.btnColor = [];
 		mtl.configBtn = $('#configBtn');
 		mtl.saveBtn = $('#saveBtn');
 		
 		$('#typeList').bind('change',null,mtl.fetchMatlFlds)
 		$('#configBtn').bind('click',null,mtl.doConfigLayout);
 		$('#saveBtn').bind('click',null,mtl.doSaveLayout);
+		$('#goBackBtn').bind('click',null,mtl.doBackToList);
 		$('#editCnclBtn').bind('click',null,mtl.doBackToList);
 		$('#editDeltBtn').bind('click',null,mtl.doDeleteFldset);
 		$('#editUpdtBtn').bind('click',null,mtl.doUpdateFldset);
@@ -74,30 +76,23 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 		$('#editDiv').hide();
 	  $('#msgDiv').hide();
 		$('#updateMsg').hide();
-		mtl.disableConfigBtn();
-		mtl.disableSaveBtn();
+		mtl.disableBtn('configBtn');
+		mtl.disableBtn('saveBtn');
+		mtl.disableBtn('goBackBtn');
+//		mtl.disableConfigBtn();
+//		mtl.disableSaveBtn();
 
 		$('#typeList').focus();
 	},
 	
-	disableConfigBtn: function () {
-	  mtl.configBtnBgClr = mtl.configBtn.css('color');
-	  mtl.configBtn.css('color', '#888888');
-		mtl.configBtn.disable();
+	disableBtn: function (btnId) {
+		mtl.btnColor[btnId] = $('#'+btnId).css('color');
+		$('#'+btnId).css('color', '#888888');
+		$('#'+btnId).disable();
 	},
-	enableConfigBtn: function () {
-	  mtl.configBtn.css('color', mtl.configBtnBgClr);
-		mtl.configBtn.enable();
-	},
-	
-	disableSaveBtn: function () {
-	  mtl.saveBtnBgClr = mtl.saveBtn.css('color');
-	  mtl.saveBtn.css('color', '#888888');
-		mtl.saveBtn.disable();
-	},
-	enableSaveBtn: function () {
-	  mtl.saveBtn.css('color', mtl.saveBtnBgClr);
-		mtl.saveBtn.enable();
+	enableBtn: function (btnId) {
+	  $('#'+btnId).css('color', mtl.btnColor[btnId]);
+		$('#'+btnId).enable();
 	},
 
 	doBackToList: function () {
@@ -107,8 +102,9 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 	  $('#msgDiv').hide();
 		$('#updateMsg').hide();
 		$('#editCnclBtn').val(mtl.cancelLbl);
-		mtl.disableConfigBtn();
-		mtl.disableSaveBtn();
+		mtl.enableBtn('configBtn');
+		mtl.disableBtn('saveBtn');
+		mtl.disableBtn('goBackBtn');
 	},
 	doReloadList: function () {
 		mtl.fetchMatlFlds();
@@ -137,8 +133,9 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 	  var matl = matlArray[matlCd];
 	  $('#configTitle').append("'"+matl+"'");
 	  mtl.fetchMarcBlocks();
-		mtl.enableSaveBtn();
-		mtl.disableConfigBtn();
+		mtl.disableBtn('configBtn');
+		mtl.enableBtn('saveBtn');
+		mtl.enableBtn('goBackBtn');
 		$('#configDiv').show();
 	},
 	fetchMarcBlocks: function () {
@@ -171,7 +168,7 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 			var html = '';
 			for (n in data) {
 			  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
-				html += '<li '
+				html += '<li id="'+'zqzqz'+id+'" '
 						 +  'tag="'+data[n]['tag']+'" '
 						 +	'subFld="'+data[n]['subfield_cd']+'" '
 						 +	'>'
@@ -182,7 +179,7 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 		});
 	},
   receiveMarcFld: function (e,ui){
-console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
+		//console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
 	},
 	doSaveLayout: function () {
 		// collect current line data in an array
@@ -190,14 +187,19 @@ console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
 		// now build a JSON structure for server
 		var jsonStr = '';
 		for (n in arayd) {
-		  // param name & value MUST be in double quotes
-			jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'"},';
-			if ($.trim(arayd[n]) == ""){
-			  var entry = $('#existing li:nth-child(n+1)');
+			if (($.trim(arayd[n])).substr(0,5) == "zqzqz"){
+				// deal with additions
+			  var entry = $('#'+arayd[n]);
+			  var id = (arayd[n]).substr(5,99);
 				var tag = entry.attr('tag');
 				var subFld = entry.attr('subFld');
 				var label = entry.text();
-				console.log('new entry for pos #'+n+': tag='+tag+', subfld='+subFld+' - '+label);
+				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'","material_cd":"'+$('#typeList').val()+'"'+
+									 ',"tag":"'+tag+'","subfield_cd":"'+subFld+'","label":"'+label+'"},';
+			} else {
+				// position of holdovers from original layout
+		  	// param name & value MUST be in double quotes
+				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'"},';
 			}
 		}
 		// trailing comma not allowed
@@ -205,8 +207,10 @@ console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
 		var outStr = jsonStr.substr(0,howLong);
 		// and off to server
 		var parms = "mode=updateMarcFields&jsonStr=["+outStr+"]";
-console.log('to srvr-->'+outStr);
 		$.post(mtl.url, parms, function(response) {
+			if (response.length > 0) {
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
 		});
 	},
 	
@@ -254,7 +258,6 @@ console.log('to srvr-->'+outStr);
 					html += '</tr>\n';
 					$('#fldSet').append(html);
 
-					//html2 += "<li>"+data[n]['label']+"</li>\n";
 					html2 += '<li '
 							  +  'id="'+data[n]['material_field_id']+'" '
 								+	 'tag="'+data[n]['tag']+'" '
@@ -265,15 +268,15 @@ console.log('to srvr-->'+outStr);
 
 				}
 				$('#existing').html(html2);
-				mtl.enableConfigBtn();
 				$('table.striped tbody tr:odd td .fldData').addClass('altBG');
 				$('.editBtn').bind('click',null,mtl.doEdit);
 			}
 			else {
- 				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('AddNewMtlMsg').'"'; ?>+"</h3>";
+ 				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('addNewMtlMsg').'"'; ?>+"</h3>";
 				$('#msgArea').html(html);
 				$('#msgDiv').show();
 			}
+			mtl.enableBtn('configBtn');
 			$('#workDiv').show();
 		});
 	},

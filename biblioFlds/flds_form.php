@@ -24,14 +24,18 @@
 	<fieldset id='choiceTyp'>
 		<label for="typeList"><?php echo T('MatlTypeListLabel');?></label>
 		<select id='typeList'></select>
+		<br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type=button id="saveBtn" name="saveBtn"
+					 value="<?php echo T("saveLayout"); ?>" class="button" />
 
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type=button id="configBtn" name="configBtn"
 					 value="<?php echo T("configLayout"); ?>" class="button" />
 
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type=button id="saveBtn" name="saveBtn"
-					 value="<?php echo T("saveLayout"); ?>" class="button" />
+		<input type=button id="goBackBtn" name="goBackBtn"
+					 value="<?php echo T("goBack"); ?>" class="button" />
 	</fieldset>
 </div
 
