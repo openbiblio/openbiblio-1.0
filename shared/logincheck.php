@@ -13,6 +13,7 @@ if (!OBIB_DEMO_FLG) {
 		'circulation'=>'../circ/index.php',
 		'cataloging'=>'../catalog/index.php',
 		'admin'=>'../admin/index.php',
+		'tools'=>'../tools/index.php',
 		'reports'=>'../reports/index.php',
 	);
 $returnPage = $pages[$tab];
@@ -51,6 +52,11 @@ if ($tab == "circulation"){
 } elseif ($tab == "reports") {
 	if (!$_SESSION["hasReportsAuth"]) {
 		header("Location: ../reports/noauth.php");
+		exit();
+	}
+} elseif ($tab == "tools") {
+	if (!$_SESSION["hasToolsAuth"]) {
+		header("Location: ../tools/noauth.php");
 		exit();
 	}
 }

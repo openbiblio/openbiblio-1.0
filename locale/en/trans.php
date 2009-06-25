@@ -1040,12 +1040,20 @@ $trans["requestSendMustEnterDate"]          = "You must enter a request date and
 #****************************************************************************
 #*  Translation text for tools/index.php
 #****************************************************************************
-$trans["toolsIndexDesc"]                = "Use the functions located in the left hand navigation area ".
-																					"to manage the internal workings of your copy of OpenBiblio.<br />".
-																					" - Biblio Fields allows the user to determine what data to display and where it is to appear.<br />".
-																					" - Plugin Manager might determine which, if any, plugin to allow.<br />".
-																					" - Search Options could include which type of search is to be at top of screen or have focus.<br />".
-																					" - Barcodes could determine if barcodes are to be used. Some SMALL libraries work on a 'well known person' basis.'";
+$trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area ".
+														"to manage the internal workings of your copy of OpenBiblio.<br />".
+														" - Biblio Fields allows the user to determine what data to display and where it is to appear.<br />".
+														" - Plugin Manager might determine which, if any, plugin to allow.<br />".
+														" - Search Options could include which type of search is to be at top of screen or have focus.<br />".
+														" - Barcodes could determine if barcodes are to be used. Some SMALL libraries work on a 'well known person' basis.'";
+
+#****************************************************************************
+#*  Translation text for admin/noauth.php
+#****************************************************************************
+$trans["toolsNoauth"]          = "You are not authorized to use the Tools tab.";
+
+
+
 
 
 

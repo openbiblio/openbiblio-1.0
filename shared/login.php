@@ -67,6 +67,7 @@ $_SESSION["hasCircAuth"] = ($user['circ_flg'] == 'Y');
 $_SESSION["hasCircMbrAuth"] = ($user['circ_mbr_flg'] == 'Y');
 $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
 $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
+$_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
 
 header("Location: ".$_SESSION["returnPage"]);
 exit();

@@ -358,4 +358,9 @@ class UpgradeQuery extends InstallQuery {
 		# FIXME -- not done yet
 		# delete session table
 	}
+	function _upgrade100_e($prfx,tmpPrfx) {
+		# FIXME -- not done yet by a LONG ways
+		$this->act('ALTER TABLE '.$prfx.'staff '
+								. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
+	}
 }
