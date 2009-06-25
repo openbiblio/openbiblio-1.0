@@ -31,7 +31,7 @@
 		<th rowspan="2" valign="top">
 			<?php echo T("Userid"); ?>
 		</th>
-		<th colspan="5">
+		<th colspan="6">
 			<?php echo T("Authorization"); ?>
 		</th>
 		<th rowspan="2" valign="top">
@@ -49,10 +49,13 @@
 		 <?php echo T("Catalog"); ?>
 		</th>
 		<th>
+		 <?php echo T("Reports"); ?>
+		</th>
+		<th>
 			<?php echo T("Admin"); ?>
 		</th>
 		<th>
-		 <?php echo T("Reports"); ?>
+			<?php echo T("Tools"); ?>
 		</th>
 	</tr>
 	<?php
@@ -89,10 +92,13 @@
 			<?php echo H($s['catalog_flg']);?>
 		</td>
 		<td valign="top" class="<?php echo $row_class; ?>">
+			<?php echo H($s['reports_flg']);?>
+		</td>
+		<td valign="top" class="<?php echo $row_class; ?>">
 			<?php echo H($s['admin_flg']);?>
 		</td>
 		<td valign="top" class="<?php echo $row_class; ?>">
-			<?php echo H($s['reports_flg']);?>
+			<?php echo H($s['tools_flg']);?>
 		</td>
 		<td valign="top" class="<?php echo $row_class; ?>">
 			<?php echo H($s['suspended_flg']); ?>

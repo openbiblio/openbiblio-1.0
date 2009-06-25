@@ -3,4 +3,4 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	Nav::node('admin/biblioFlds', T("Biblio Fields"), '../biblioFlds/flds_form.php');
+	Nav::node('tools/biblioFlds', T("Biblio Fields"), '../biblioFlds/flds_form.php');

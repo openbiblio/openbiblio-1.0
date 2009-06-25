@@ -32,7 +32,7 @@ biblioFlds = {
 	}
 #typeChoice fieldset {
 	margin: 0; padding: 5px;
-	width: 500px;
+	/*width: 500px;*/
 	text-align: center;
 	}
 h4 {
@@ -73,7 +73,8 @@ div#configDiv{
 	width: 750px;
 	}
 #configDiv fieldset#existingSpace {
-	width: 255px; float: left;
+	width: 255px;
+	float: left;
 	}
 #configDiv fieldset#potentialSpace {
   float: right;

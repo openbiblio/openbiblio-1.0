@@ -128,6 +128,11 @@ function staff_menu() {
 			'../reports/run_report.php?type=previous');
 	}
 	
+	Nav::node('tools', T("Tools"), '../tools/index.php');
+	Nav::node('tools/barcodes', T("Barcodes Y/N?"), '../tools/barcodes.php');
+	Nav::node('tools/biblioSrch', T("Biblio Search Opts."), '../tools/biblioSrch.php');
+	Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugins.php');
+
 	$helpurl = "javascript:popSecondary('../shared/help.php";
 
 	if (isset($helpPage)) {

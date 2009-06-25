@@ -2,14 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-
-	// FIXME fl - remove this crap
-	//$gotISBN = array();
-	//$gotLCCN = array();
-	//$gotLoc = array();
-	//$gotPub = array();
-	//$gotDate = array();
-
+/*
 	##-----------
 	function showMeSimple ($prefix,$stuff) {
 		echo "<fieldset>$prefix:<br />";
@@ -23,7 +16,7 @@
 		print_r($stuff);
 		echo "</fieldset>";
 	}
-
+*/
 	##-----------
 	function verifyLCCN () {
 			## remove "-" and fill with "0" to make 8 char long
@@ -85,31 +78,8 @@
 	}
 
 	##-----------
-	// FIXME - fl doubtful its being used
-	function xprocessSelection($ar,$id, $host,$hit) {
-		## display single MARC record posted to OpenBiblio form
-		global $my_callNmbrType;
-		global $postVars;
-		global $hostName;
-		global $fictionPrefixes;
-		global $fictionCode;
-
-		//echo "using hit #$hit for host $hostName[$host] <br />";
-
-		echo "<br />";
-		//print_r($ar); echo "<br />";		
-		if (empty($ar)) echo "empty array encountered. <br />";
-		if (! empty($ar)) {
-			$rec = yaz_record($id[$host],$hit,"string");
-			if (empty($rec)) echo "empty record encountered. <br />";
-			extract_marc_fields($ar, true, $hit, $host); // results are placed into $_POST
-		}
-		$_POST['mode'] = 'edit';
-		//echo "now posting data to display fields <br />";
-	}
-
-	##-----------
 	function doOneHost($host, $hits, $id) {
+/*
 		global $gotISBN;
 		global $gotLCCN;
 		global $gotLoc;
@@ -118,7 +88,7 @@
 		global $lookLoc;
 		global $postVars;
 		$rslt = array();
-
+*/
 		for ($hit = 1; $hit<=$hits[$host]; $hit++) {
 			//print "handling record #$hit of $hits[$host] for host #$host <br />";
 			//print_r($postVars[hosts][$host]);echo "<br />";
@@ -136,13 +106,14 @@
 				//## deal with local opts like call numbers, etc.
 				//$rslt[$hit] = postProcess($rslt[$hit]);
 			}
+/*
 			## clear flags for a repeated use
 			unset ($gotISBN[$hit]);
 			unset ($gotLCCN[$hit]);
 			unset ($gotPub[$hit]);
 			unset ($gotLoc[$hit]);
 			unset ($gotDate[$hit]);
-		}
+*/		}
 		return $rslt;
 	}
 	##-----------

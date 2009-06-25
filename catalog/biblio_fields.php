@@ -15,7 +15,7 @@
 <?php echo T("Fields marked are required"); ?>
 </p>
 
-<table id="biblioFldTbl" class="primary" width="100%">
+<table id="biblioFldTbl" class="primary">
 	<?php ## ----------------------- ## ?>
 	<thead>
 	<tr>
@@ -35,7 +35,7 @@
 		<td valign="top" class="primary">
 <?php
 	$matTypes = new MaterialTypes;
-
+	$attrs = array('onchange'=>"matCdReload()");
 	if (isset($biblio['material_cd'])) {
 		$material_cd_value = $biblio['material_cd'];
 	} elseif (isset($_GET['material_cd'])) {
@@ -43,8 +43,8 @@
 	} else {
 		$material_cd_value = $matTypes->getDefault();
 	}
-	echo inputfield('select', "materialCd", $material_cd_value, array('onchange'=>"matCdReload()"), $matTypes->getSelect());
-			?>
+	echo inputfield('select', "materialCd", $material_cd_value, $attrs, $matTypes->getSelect());
+?>
 		</td>
 	</tr>
 	<tr>
@@ -55,12 +55,13 @@
 		<td valign="top" class="primary">
 			<?php
 				$collections = new Collections;
+				$attrs = array();
 				if (isset($biblio['collection_cd'])) {
 					$value = $biblio['collection_cd'];
 				} else {
 					$value = $collections->getDefault();
 				}
-				echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
+				echo inputfield('select', "collectionCd", $value, $attrs, $collections->getSelect());
 			?>
 		</td>
 	</tr>
@@ -108,10 +109,11 @@
 	}
 
 	$mf = new MaterialFields;
+
 	// get field specs in 'display postition' order
 	$fields = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
 
-	## anything to process for current media ype (material_cd) ?
+	## anything to process for current media type (material_cd) ?
 	if ($fields->count() == 0) {
 		echo "<tr><td colspan=\"2\" class=\"primary\">.T('No fields to fill in.').</td></tr>\n";
 	}
@@ -157,58 +159,47 @@
 		}
 	}
 
-	## now builf html for those input fields
+	## now build html for those input fields
 	foreach ($inputs as $n => $i) {
 		$marcInputFld = H($i['tag']).H($i['subfield']);
-?>
-	<tr>
-		<td class="primary" valign="top" style="width: 30%">
-<?php
+		echo "<tr> \n";
+		echo "	<td class=\"primary\" valign=\"top\"> \n";
+
 //		if ($i['required'] == 'Y') {  // db field is defined as TinyInt not char
 		if ($i['required']) {
-			echo '<sup>*</sup>';
+			echo '	<sup>*</sup>';
 		}
-		echo "<label for=\"$marcInputFld\">"
-					.H($i['label'].":")
-					."</label>";
-?>
-		</td>
-		<td valign="top" class="primary">
-			<input type="hidden" name="fields[<?php echo H($n); ?>][tag]"
-             id="fields[<?php echo H($n); ?>][tag]"
-						 value="<?php echo H($i['tag']); ?>" />
-			<input type="hidden" name="fields[<?php echo H($n); ?>][subfield_cd]"
-             id="fields[<?php echo H($n); ?>][subfield_cd]"
-						 value="<?php echo H($i['subfield']); ?>" />
-			<input type="hidden" name="fields[<?php echo H($n); ?>][fieldid]"
-             id="fields[<?php echo H($n); ?>][fieldid]"
-						 value="<?php echo H($i['fieldid']); ?>" />
-			<input type="hidden" name="fields[<?php echo H($n); ?>][subfieldid]"
-             id="fields[<?php echo H($n); ?>][subfieldid]"
-						 value="<?php echo H($i['subfieldid']); ?>" />
-<?php
+		echo "	<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
+
+		echo "	</td> \n";
+		echo "	<td valign=\"top\" class=\"primary\"> \n";
+
+		echo inputfield('hidden', "fields[".H($n)."][tag]",         H($i['tag']))." \n";
+		echo inputfield('hidden', "fields[".H($n)."][subfield_cd]", H($i['subfield']))." \n";
+		echo inputfield('hidden', "fields[".H($n)."][fieldid]",     H($i['fieldid']))." \n";
+		echo inputfield('hidden', "fields[".H($n)."][subfieldid]",  H($i['subfieldid']))." \n";
+
+		$attrs = array("id"=>"$marcInputFld");
+		if ($i['required']) {
+		  $attrs["class"] = "marcBiblioFld reqd";
+		}
+		else {
+		  $attrs["class"] = "marcBiblioFld";
+		}
 		if ($i['form_type'] == 'text') {
-?>
-			<input style="width: 100%" type="text" name="fields[<?php echo H($n); ?>][data]"
-			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld <?php echo (($i['required'])?'reqd':'') ?>"
-				value="<?php echo H($i['data']); ?>" />
-<?php
+		  $attrs["size"] = "50"; $attrs["maxLength"] = "75";
+			echo inputfield('text', "fields[".H($n)."][data]", H($i['data']),$attrs)." \n";
 		} else {
 			// IE seems to make the font-size of a textarea overly small under
 			// certain circumstances.  We force it to a sane value, even
 			// though I have some misgivings about it.  This will make
 			// the font smaller for some people.
-?>
-			<textarea style="width: 100%; font-size: 10pt; font-weight: normal" rows="7"
-			  id="<?php echo $marcInputFld;?>" class="marcBiblioFld <?php echo (($i['required'])?'reqd':'') ?>"
-				name="fields[<?php echo H($n); ?>][data]" >
-				<?php echo H($i['data']); ?></textarea>
-<?php
+			$attrs["style"] = "font-size:10pt; font-weight: normal;";
+			$attrs["rows"] = "7"; $attrs["cols"] = "38";
+			echo inputfield('textarea', "fields[".H($n)."][data]", H($i['data']),$attrs)." \n";
 		}
-?>
-		</td>
-	</tr>
-<?php
+		echo "</td> \n";
+	echo "</tr> \n";
 	}
 ?>
 	</tbody>

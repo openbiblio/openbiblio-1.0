@@ -7,7 +7,7 @@
 
 	session_cache_limiter(null);
 
-  $tab = "admin";
+  $tab = "tools";
   $nav = "biblioFlds";
   $focus_form_name = "workForm";
   $focus_form_field = "name";
@@ -24,15 +24,13 @@
 	<fieldset id='choiceTyp'>
 		<label for="typeList"><?php echo T('MatlTypeListLabel');?></label>
 		<select id='typeList'></select>
-		<br />
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<hr id="topSeperator" width="75%" />
+
 		<input type=button id="saveBtn" name="saveBtn"
 					 value="<?php echo T("saveLayout"); ?>" class="button" />
-
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type=button id="configBtn" name="configBtn"
 					 value="<?php echo T("configLayout"); ?>" class="button" />
-
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type=button id="goBackBtn" name="goBackBtn"
 					 value="<?php echo T("goBack"); ?>" class="button" />
@@ -40,7 +38,7 @@
 </div
 
 <div id="configDiv">
-	<h3 id="configTitle"><?php echo T('BiblioFieldsConfig'); ?></h3>
+	<h3 id="configTitle"><?php echo T('BiblioFieldsConfig'); ?><span id="configName"></span></h3>
 
 	<fieldset id="existingSpace" class="configArea">
 	  <legend>Existing (drag to re-arange)</legend>
@@ -56,7 +54,7 @@
 		<select id="marcTags"></select>
 		<br />
 		<ul id="potential" class="connectedSortable">
-			<!--li><?php echo T("waitForServer"); ?></li-->
+			<!--li class="waitLabel"><?php //echo T("waitForServer"); ?></li-->
 		</ul>
 	</fieldset>
 </div>
@@ -148,17 +146,14 @@
   <tfoot>
   <tr>
     <td colspan="1" class="primary" align="left">
-			<input type="button" id="editAddBtn" value="<?php echo T("Add New"); ?>" class="button" />
 			<input type="button" id="editUpdtBtn" value="<?php echo T("Update"); ?>" class="button" />
-			<input type="button" id="editCnclBtn" value="<?php echo T("Cancel"); ?>" class="button" />
+			<input type="button" id="editCnclBtn" value="<?php echo T("goBack"); ?>" class="button" />
     </td>
     <td colspan="2" colspan="1" class="primary" align="right">
 			<input type="button" id="editDeltBtn" value="<?php echo T("Delete"); ?>" class="button" />
     </td>
   </tr>
   </tfoot>
-  </tbody>
-
 </table>
 </form>
 </div>

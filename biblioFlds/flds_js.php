@@ -4,18 +4,6 @@
  */
 
 // JavaScript Document
-	$(function() {
-		$("#existing, #potential").sortable({
-			connectWith: '.connectedSortable',
-			receive: mtl.receiveMarcFld
-//			,handle: '.handle'
-//			,update: function() {
-//			  var order = $('#sortable1').sortable( 'serialize');
-//        console.log(order);
-//      	$("#info").load("srvrTest.php?"+order);
-//			}
-		}).disableSelection();
-	});
 mtl = {
 	<?php
 	echo 'successMsg 		: "'.T('updateSuccess').'",'."\n";
@@ -39,21 +27,14 @@ mtl = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-/*
-//getter
-var cursor = $('.selector').sortable('option', 'cursor');
-//setter
-$('.selector').sortable('option', 'cursor', 'crosshair');
-*/
-
-		mtl.btnColor = [];
+		//mtl.btnColor = [];
 		mtl.configBtn = $('#configBtn');
 		mtl.saveBtn = $('#saveBtn');
 		
-		$('#typeList').bind('change',null,mtl.fetchMatlFlds)
+		$('#typeList').bind('change',null,mtl.doShowForm)
 		$('#configBtn').bind('click',null,mtl.doConfigLayout);
 		$('#saveBtn').bind('click',null,mtl.doSaveLayout);
-		$('#goBackBtn').bind('click',null,mtl.doBackToList);
+		$('#goBackBtn').bind('click',null,mtl.doReloadList);
 		$('#editCnclBtn').bind('click',null,mtl.doBackToList);
 		$('#editDeltBtn').bind('click',null,mtl.doDeleteFldset);
 		$('#editUpdtBtn').bind('click',null,mtl.doUpdateFldset);
@@ -66,6 +47,16 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 	
 	//------------------------------
 	initWidgets: function () {
+		var sortOpts1 = {
+		  axis:   'y',
+			cursor: 'move',
+		};
+		var sortOpts2 = {
+			connectWith: '#existing',
+			cursor: 'move',
+		};
+		$("#existing").sortable(sortOpts1).disableSelection();
+		$("#potential").sortable(sortOpts2).disableSelection();
 	},
 	resetForms: function () {
 		//console.log('resetting!');
@@ -79,23 +70,34 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 		mtl.disableBtn('configBtn');
 		mtl.disableBtn('saveBtn');
 		mtl.disableBtn('goBackBtn');
-//		mtl.disableConfigBtn();
-//		mtl.disableSaveBtn();
 
 		$('#typeList').focus();
 	},
 	
 	disableBtn: function (btnId) {
-		mtl.btnColor[btnId] = $('#'+btnId).css('color');
+		mtl.btnColor = $('#'+btnId).css('color');
 		$('#'+btnId).css('color', '#888888');
 		$('#'+btnId).disable();
 	},
 	enableBtn: function (btnId) {
-	  $('#'+btnId).css('color', mtl.btnColor[btnId]);
+	  $('#'+btnId).css('color', mtl.btnColor);
 		$('#'+btnId).enable();
+	},
+	hideTopBtns: function() {
+		$('#configBtn').hide();
+		$('#saveBtn').hide();
+		$('#goBackBtn').hide();
+		$('#topSeperator').hide();
+	},
+	showTopBtns: function() {
+		$('#configBtn').show();
+		$('#saveBtn').show();
+		$('#goBackBtn').show();
+		$('#topSeperator').show();
 	},
 
 	doBackToList: function () {
+	  $('#typeList').enable();
 		$('#workDiv').show();
 		$('#configDiv').hide();
 		$('#editDiv').hide();
@@ -105,9 +107,10 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 		mtl.enableBtn('configBtn');
 		mtl.disableBtn('saveBtn');
 		mtl.disableBtn('goBackBtn');
+		mtl.showTopBtns();
 	},
 	doReloadList: function () {
-		mtl.fetchMatlFlds();
+		mtl.doShowForm();
 		mtl.doBackToList();
 	},
 	
@@ -123,7 +126,15 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 	},
 
 	//------------------------------
+	doShowForm: function () {
+		mtl.fetchMatlFlds();
+		mtl.enableBtn('configBtn');
+		$('#workDiv').show();
+	},
+
+	//------------------------------
 	doConfigLayout: function () {
+	  $('#typeList').disable();
 	  $('#workDiv').hide();
 	  $('#msgDiv').hide();
 	  $('#marcTags').hide()
@@ -131,7 +142,7 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 	  var matlCd = $('#typeList').val();
 	  var matlArray = matlSet.split('\n');
 	  var matl = matlArray[matlCd];
-	  $('#configTitle').append("'"+matl+"'");
+	  $('#configName').html("'"+matl+"'");
 	  mtl.fetchMarcBlocks();
 		mtl.disableBtn('configBtn');
 		mtl.enableBtn('saveBtn');
@@ -212,6 +223,7 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			}
+			mtl.fetchMatlFlds();
 		});
 	},
 	
@@ -220,6 +232,9 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 		//console.log ('in showWorkForm()');
 		var matl = $('#typeList').val();
 		$('#fldSet').empty();
+		$('#existing').empty();
+		$('#msgArea').hide();
+		$('#msgArea').empty();
 	  $.getJSON(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
 			var html = '';
 			var html2 = '';
@@ -276,15 +291,15 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
  				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('addNewMtlMsg').'"'; ?>+"</h3>";
 				$('#msgArea').html(html);
 				$('#msgDiv').show();
+				$('<li id="waitClass"><?php echo T("waitForServer");?></li>').appendTo('#existing');
 			}
-			mtl.enableBtn('configBtn');
-			$('#workDiv').show();
 		});
 	},
 	doEdit: function (e) {
 		$('#workDiv').hide();
 		$('#msgDiv').hide();
 		$('#addBtn').hide();
+		mtl.hideTopBtns();
 		$('#editDiv').show();
 		
 	  var theTagId = $(this).next().val();
@@ -317,6 +332,7 @@ $('.selector').sortable('option', 'cursor', 'crosshair');
 				$('#msgDiv').show();
 			}
 			else {
+			  mtl.fetchMatlFlds();
 				$('#updateMsg').html(mtl.successMsg);
 				$('#updateMsg').show();
 				$('#msgArea').html(mtl.successMsg);

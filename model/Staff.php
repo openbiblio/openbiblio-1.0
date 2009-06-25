@@ -17,6 +17,7 @@ class Staff extends CoreTable {
 			'first_name'=>'string',
 			'suspended_flg'=>'string',
 			'admin_flg'=>'string',
+			'tools_flg'=>'string',
 			'circ_flg'=>'string',
 			'circ_mbr_flg'=>'string',
 			'catalog_flg'=>'string',
@@ -39,7 +40,7 @@ class Staff extends CoreTable {
 			}
 		}
 		if (isset($rec['username'])) {
-			$sql = $this->db->mkSQL("SELECT * FROM staff WHERE username=%Q ");
+			$sql = $this->db->mkSQL("SELECT * FROM staff WHERE username=%Q ", $rec['username']);
 			if (isset($rec['userid'])) {
 				$sql .= $this->db->mkSQL("AND userid <> %N ", $rec['userid']);
 			}

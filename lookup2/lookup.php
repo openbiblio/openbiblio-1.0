@@ -42,7 +42,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-		<h1><span id="searchHdr" class="title"></span></h1>
+	<h1><span id="searchHdr" class="title"></span></h1>
 	<div id="searchDiv">
 		<form id="lookupForm" name="lookupForm" >
 		<table class="primary">
@@ -204,13 +204,13 @@
 
 	<div id="selectionDiv">
 	  <?php
-
 			$helpPage = "biblioEdit";
 			$cancelLocation = "../lookup2/lookup.php";
   		$focus_form_name = "newbiblioform";
   		$focus_form_field = "materialCd";
+
 			require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-  		$loc = new Localize(OBIB_LOCALE,$tab);
+  		//$loc = new Localize(OBIB_LOCALE,$tab);
   		//$headerWording=$loc->getText("biblioNewFormLabel");
   		
   		## we use original biblio edit screen, but will replace existing 'Cancel' button

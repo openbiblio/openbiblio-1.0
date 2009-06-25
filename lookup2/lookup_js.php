@@ -269,13 +269,10 @@ lkup = {
 	  var host = e.data.host;
 	  var hit = e.data.hit;
 	  var data = e.data.data;
-		//console.log('hit #'+hit+' of host #'+host);
 		lkup.doShowOne(data);
 	},
 
 	doStriping: function () {
-		//console.log('striping!');
-		//console.log($('table tbody tr:not(.filtered)'));
 		$('#biblioFldTbl').each(function() {
 			var $table = $(this);
 				$table.find('tbody#marcBody tr:not(.hidden):even').addClass('altBG');
@@ -350,7 +347,6 @@ lkup = {
 					&&
 					(fictionDew.indexOf(code) >= 0)
 				 ) {
-				//echo "using default dewey code" . '</br />';
 				dew = lkup.opts['defaultDewey'];
 			}
 

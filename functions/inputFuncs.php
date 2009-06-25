@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+## if no 'id' is specified in $attrs, 'id' will be same as 'name'
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	$s = "";
 	if (isset($_SESSION['postVars'])) {
@@ -11,7 +12,8 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		$postVars = array();
 	}
 	if (isset($postVars[$name])) {
-		$value = $postVars[$name];
+		//$value = $postVars[$name];
+		$data = $postVars[$name];
 	}
 	if (isset($_SESSION['pageErrors'])) {
 		$pageErrors = $_SESSION['pageErrors'];
@@ -27,10 +29,14 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	if (!isset($attrs['onChange'])) {
 		$attrs['onChange'] = 'modified=true';
 	}
+	if (!isset($attrs['id'])) {
+		$attrs['id'] = $name;
+	}
+
 	switch ($type) {
 	// FIXME radio
 	case 'select':
-		$s .= '<select id="'.H($name).'" name="'.H($name).'" ';
+		$s .= '<select name="'.H($name).'" ';
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
@@ -45,16 +51,15 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		$s .= "</select>\n";
 		break;
 	case 'textarea':
-		$s .= '<textarea id="'.H($name).'" name="'.H($name).'" ';
-		$s .= 'id="'.H($name).'" ';
+		$s .= '<textarea name="'.H($name).'" ';
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
-		$s .= ">".H($value)."</textarea>";
+		//$s .= ">".H($value)."</textarea>";
+		$s .= ">".H($data)."</textarea>";
 		break;
 	case 'checkbox':
-		$s .= '<input type="checkbox" ';
-		$s .= 'id="'.H($name).'" name="'.H($name).'" ';
+		$s .= '<input type="checkbox" name="'.H($name).'" ';
 		//$s .= 'value="'.H($data).'" ';
 		if ($value == $data) {
 			$s .= 'checked="checked" ';
@@ -65,8 +70,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		$s .= "/>";
 		break;
 	default:
-		$s .= '<input type="'.H($type).'" ';
-		$s .= 'id="'.H($name).'" name="'.H($name).'" ';
+		$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
 		if ($value != "") {
 			$s .= 'value="'.H($value).'" ';
 		}

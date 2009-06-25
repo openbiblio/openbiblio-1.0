@@ -31,10 +31,10 @@
 	$bibid = $_GET["bibid"];
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-		$BCQ = new BiblioCopyFields;
+	$BCQ = new BiblioCopyFields;
 
 	$fields = array(
-			T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$pageErrors),
+		T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$pageErrors),
 		T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,NULL,$pageErrors),
 		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40), $pageErrors),
 	);
