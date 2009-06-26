@@ -28,9 +28,9 @@ class Settings {
 		global $_settings_cache;
 		return $_settings_cache;
 	}
-	function getFormFields() {
+	function getFormFields($menu) {
 		$db = new Query;
-		$r = $db->select("SELECT * FROM settings WHERE title <> ''");
+		$r = $db->select("SELECT * FROM settings WHERE title <> '' AND menu = '$menu' ");
 		$fields = array();
 		while ($s = $r->next()) {
 			$fields[] = Settings::_mkField($s);

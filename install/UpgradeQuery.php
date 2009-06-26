@@ -362,5 +362,12 @@ class UpgradeQuery extends InstallQuery {
 		# FIXME -- not done yet by a LONG ways
 		$this->act('ALTER TABLE '.$prfx.'staff '
 								. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
+		$this->act("INSERT INTO ".$prfx."`settings` ".
+							."(`name`,`position`,`title`,`type`,`width`,`type_data`,`validator`,`value`)"
+							."VALUES "
+							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N'),"
+							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N')");
+ 		$this->act("ALTER TABLE ".$prfx."`settings` "
+		 					."ADD `menu` ENUM('admin','tools') NOT NULL DEFAULT 'admin'");
 	}
 }

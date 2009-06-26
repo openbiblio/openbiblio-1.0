@@ -123,11 +123,13 @@ class Form {
 			$s .= "</select>\n";
 			break;
 		case 'textarea':
-			$s .= '<textarea name="'.H($field['name']).'" '
-				. $attrs.">".H($field['value'])."</textarea>";
+			$s .= '<textarea id="'.H($field['name']).'" '
+				 . 'name="'.H($field['name']).'" '
+				 . $attrs.">".H($field['value'])."</textarea>";
 			break;
 		case 'bool':
 			$s .= '<input type="checkbox" ';
+			$s .= 'id="'.H($field['name']).'" ';
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="Y" ';
 			if ($field['value'] == 'Y') {
@@ -140,6 +142,7 @@ class Form {
 			break;
 		default:
 			$s .= '<input type="'.H($field['type']).'" ';
+			$s .= 'id="'.H($field['name']).'" ';
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="'.H($field['value']).'" ';
 			$s .= $attrs."/>";

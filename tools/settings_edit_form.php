@@ -8,10 +8,10 @@ require_once(REL(__FILE__, "../classes/Form.php"));
 
 session_cache_limiter(null);
 
-$tab = "admin";
+$tab = "tools";
 $nav = "settings";
 $focus_form_name = "editsettingsform";
-$focus_form_field = "library_name";
+$focus_form_field = "???????";
 
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
@@ -23,11 +23,11 @@ if (isset($_REQUEST["updated"])){
 	echo '<p class="error">'.T("Data has been updated.").'</p>';
 }
 Form::display(array(
-	'title'=>T("Edit Library Settings"),
+	'title'=>T("Edit System Settings"),
 	'name'=>'editsettingsform',
-	'action'=>'../admin/settings_edit.php',
+	'action'=>'../tools/settings_edit.php',
 	'submit'=>T("Update"),
-	'fields'=>Settings::getFormFields('admin'),
+	'fields'=>Settings::getFormFields('tools'),
 ));
 
 Page::footer();

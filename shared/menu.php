@@ -129,6 +129,7 @@ function staff_menu() {
 	}
 	
 	Nav::node('tools', T("Tools"), '../tools/index.php');
+	Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 	Nav::node('tools/barcodes', T("Barcodes Y/N?"), '../tools/barcodes.php');
 	Nav::node('tools/biblioSrch', T("Biblio Search Opts."), '../tools/biblioSrch.php');
 	Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugins.php');

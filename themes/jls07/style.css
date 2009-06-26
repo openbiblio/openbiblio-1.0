@@ -26,19 +26,19 @@ div#header  {
 	color: white;
 	margin: 0;
 	}
-#banner {
+#header #banner {
 	text-align: center; margin-bottom: 16px;
 	}
-#library_name {
+#header #library_name {
 	margin-left: 160px;
 	font: 28px sans-serif;
 	color: white;
 	}
-#library_hours {
+#header #library_hours {
 	margin-left: 160px;
 	font: 12px sans-serif;
 	}
-#library_phone {
+#header #library_phone {
 	margin-left: 160px;
 	font: 12px sans-serif;
 	}

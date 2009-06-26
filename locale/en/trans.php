@@ -1045,12 +1045,18 @@ $trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigati
 														" - Biblio Fields allows the user to determine what data to display and where it is to appear.<br />".
 														" - Plugin Manager might determine which, if any, plugin to allow.<br />".
 														" - Search Options could include which type of search is to be at top of screen or have focus.<br />".
-														" - Barcodes could determine if barcodes are to be used. Some SMALL libraries work on a 'well known person' basis.'";
+														" - Barcodes could determine if barcodes are to be used. Some SMALL libraries work on a 'well known person' basis.'<br />".
+														" - Settings Manager could maintain Library Settings form in 'settings' table of DB";
 
 #****************************************************************************
-#*  Translation text for admin/noauth.php
+#*  Translation text for tools/noauth.php
 #****************************************************************************
 $trans["toolsNoauth"]          = "You are not authorized to use the Tools tab.";
+
+#****************************************************************************
+#*  Translation text for tools/settings_edit_form.php
+#****************************************************************************
+$trans["System Settings"]          = "System Settings";
 
 
 

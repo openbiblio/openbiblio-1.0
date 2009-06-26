@@ -12,20 +12,20 @@ $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 if (count($_POST) == 0) {
-	header("Location: ../admin/settings_edit_form.php");
+	header("Location: ../tools/settings_edit_form.php");
 	exit();
 }
 
-list($settings, $errs) = Form::getCgi_el(Settings::getFormFields('admin'));
+list($settings, $errs) = Form::getCgi_el(Settings::getFormFields('tools'));
 if (empty($errs)) {
 	$errs = Settings::setAll_el($settings);
 }
 if (!empty($errs)) {
 	$_SESSION["postVars"] = $_POST;
 	$_SESSION["pageErrors"] = $errs;
-	header("Location: ../admin/settings_edit_form.php");
+	header("Location: ../tools/settings_edit_form.php");
 	exit();
 }
 
-header("Location: ../admin/settings_edit_form.php?updated=Y");
+header("Location: ../tools/settings_edit_form.php?updated=Y");
 exit();
