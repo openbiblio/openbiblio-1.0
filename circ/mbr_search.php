@@ -66,6 +66,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 	# Display no results message if no results returned from search.
+	## FIXME - needs a 'goBack' ability so search criteria can be modified and re-submitted
 	if ($rpt->count() == 0) {
 		echo T("No results found.");
 		Page::footer();

@@ -69,5 +69,8 @@ $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
 $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 $_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
 
+$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
+$_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
+
 header("Location: ".$_SESSION["returnPage"]);
 exit();

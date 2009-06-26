@@ -19,6 +19,9 @@
 ?>
 
 <h1><img src="../images/circ.png" border="0" width="30" height="30" align="top"> <?php echo T("Circulation"); ?></h1>
+<?php
+	if ($_SESSION['mbrBarcode_flg'] != 'N') {
+?>
 <form name="barcodesearch" method="post" action="../circ/mbr_search.php">
 <table class="primary">
 	<tr>
@@ -37,7 +40,9 @@
 	</tr>
 </table>
 </form>
-
+<?php
+	}
+?>
 
 <form name="phrasesearch" method="post" action="../circ/mbr_search.php">
 <table class="primary">
