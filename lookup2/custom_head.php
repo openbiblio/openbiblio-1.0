@@ -65,12 +65,14 @@ td.btnFld {
 <!-- load common jQuery library -->
 <script src="../plugins/jQuery.js" type="text/javascript"></script>
 
+<script src="../shared/jsLib.js" type="text/javascript"></script>
+?>
 <script language="JavaScript1.4" >
 
 //------------------------------------------------------------------------------
 // jQuery plugins for openBiblio
 // element enable/disable - 'jQuery in Action', p12, 22Aug2008 - fl
-$.fn.disable = function () {
+/*$.fn.disable = function () {
 	return this.each(function () {
 					if (typeof this.disabled != "undefined)") this.disabled = true;
 				 });
@@ -84,7 +86,7 @@ $.fn.enable = function () {
 // flos-lib stuff for lookup
 // get/set selected value or text
 flos = {
-	getSelectBox: function  (boxId, getText/*boolean*/) {
+	getSelectBox: function  (boxId, getText/*boolean*//*) {
 		if (typeof(boxId) === 'string')
 			sel = $('#'+boxId);
 		else
@@ -96,7 +98,7 @@ flos = {
 			rslt = sel[0].options[choice].value;
 		return rslt;
 	},
-/* --------------------------------- */
+// --------------------------------- //
 	setSelectBox: function  (boxId,optText,exactMatch) {
 		var theBox;
 		if (typeof(boxId) === 'string')
@@ -136,6 +138,7 @@ flos = {
 		}
 	}
 }
+*/
 </script>
 
 <?php

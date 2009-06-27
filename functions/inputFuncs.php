@@ -3,7 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-## if no 'id' is specified in $attrs, 'id' will be same as 'name'
+## ############################################################## ##
+## if no 'id' is specified in $attrs, 'id' will be same as 'name' ##
+## ############################################################## ##
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	$s = "";
 	if (isset($_SESSION['postVars'])) {
@@ -61,6 +63,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	case 'checkbox':
 		$s .= '<input type="checkbox" name="'.H($name).'" ';
 		//$s .= 'value="'.H($data).'" ';
+		$s .= 'value="'.H($value).'" ';
 		if ($value == $data) {
 			$s .= 'checked="checked" ';
 		}

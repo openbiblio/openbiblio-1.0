@@ -1058,6 +1058,13 @@ $trans["toolsNoauth"]          = "You are not authorized to use the Tools tab.";
 #****************************************************************************
 $trans["System Settings"]          = "System Settings";
 
+#****************************************************************************
+#*  Translation text for tools/plugin_mgr_form.php
+#****************************************************************************
+$trans["Plugins Allowed?"]          = "Plugins Allowed?";
+$trans["No Plugins found"]          = "No Plugins found.";
+$trans["Select Plugins"]          	= "Select Plugins to be used.";
+
 
 
 

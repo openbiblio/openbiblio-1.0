@@ -28,9 +28,14 @@ class Settings {
 		global $_settings_cache;
 		return $_settings_cache;
 	}
-	function getFormFields($menu) {
+	function getFormFields($menu=NULL) {
 		$db = new Query;
-		$r = $db->select("SELECT * FROM settings WHERE title <> '' AND menu = '$menu' ");
+		$sql = "SELECT * FROM settings WHERE title <> '' ";
+		if (!empty($menu)) {
+			$sql.=" AND menu = '$menu' ";
+		}
+		$sql .= ")";
+		$r = $db->select($sql);
 		$fields = array();
 		while ($s = $r->next()) {
 			$fields[] = Settings::_mkField($s);
@@ -45,6 +50,15 @@ class Settings {
 		$db->act($sql);
 		$db->unlock();
 		return NULL;
+	}
+	function setOne_el($name, $value) {
+		# FIXME - VALIDATE
+		$db = new Query;
+		$db->lock();
+		$sql = $db->mkSQL('UPDATE settings SET value=%Q WHERE name=%Q', $value, $name);
+		$db->act($sql);
+		$db->unlock();
+		return $errors;
 	}
 	function setAll_el($settings) {
 		$errors = array();

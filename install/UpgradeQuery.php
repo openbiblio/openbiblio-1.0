@@ -362,12 +362,14 @@ class UpgradeQuery extends InstallQuery {
 		# FIXME -- not done yet by a LONG ways
 		$this->act('ALTER TABLE '.$prfx.'staff '
 								. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
-		$this->act("INSERT INTO ".$prfx."`settings` ".
-							."(`name`,`position`,`title`,`type`,`width`,`type_data`,`validator`,`value`)"
-							."VALUES "
-							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N'),"
-							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N')");
  		$this->act("ALTER TABLE ".$prfx."`settings` "
-		 					."ADD `menu` ENUM('admin','tools') NOT NULL DEFAULT 'admin'");
+		 					."ADD `menu` ENUM('admin','tools','none') NOT NULL DEFAULT 'admin'");
+		$this->act("INSERT INTO ".$prfx."`settings` ".
+							."(`name`,`position`,`title`,`type`,`width`,`type_data`,`validator`,`value`,`menu`)"
+							."VALUES "
+							."('plugins_list',NULL,NULL,'text',NULL,NULL,NULL,NULL,'none'),"
+							."('allow_plugins_flg',NULL,'Allow Plugins','bool',NULL,NULL,NULL,'Y','tools'),"
+							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N','tools'),"
+							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools')");
 	}
 }

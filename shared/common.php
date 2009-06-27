@@ -130,8 +130,14 @@ if (!isset($doing_install) or !$doing_install) {
   ## plugin Support
   ###################################################################
   function getPlugIns($wanted) {
+		## determine what is allowed
+    if ($_SESSION['allow_plugins_flg'] != 'Y') return NULL;
+		$list = $_SESSION['plugin_list'];
+		$aray = explode(',', $list);
+							
+		## make connections where allowed
 		clearstatcache();
-		$lists = array();
+		$pluginSet = array();
   	if (is_dir('../plugins')) {
 			//echo "Plugin Dir found: <br />";
   	  ## find all plugin directories
@@ -142,13 +148,14 @@ if (!isset($doing_install) or !$doing_install) {
 					//echo "plugin => $plug<br />";
   	      $plugPath = "../plugins/$plug";
   	      if (is_dir($plugPath)) {
+  	        if (!in_array($plug, $aray)) continue; // not allowed
 						if ($filHndl = opendir($plugPath)) {
 		    			while (false !== ($file = readdir($filHndl))) {
 		    			  if (($file == '.') || ($file == '..')) continue;
 								//echo "file => $file<br />";
   	      			if ($file == $wanted) {
 									//echo "got one => $plugPath/$file<br />";
-									$list[] = "$plugPath/$file";
+									$pluginSet[] = "$plugPath/$file";
 								}
   	      		}
   	      		closedir($filHndl);
@@ -158,5 +165,5 @@ if (!isset($doing_install) or !$doing_install) {
   		  closedir($dirHndl);
 			}
 		}
-		return $list;
+		return $pluginSet;
 	}
