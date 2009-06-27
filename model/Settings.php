@@ -30,11 +30,10 @@ class Settings {
 	}
 	function getFormFields($menu=NULL) {
 		$db = new Query;
-		$sql = "SELECT * FROM settings WHERE title <> '' ";
+		$sql = "SELECT * FROM settings WHERE (title <> '') ";
 		if (!empty($menu)) {
-			$sql.=" AND menu = '$menu' ";
+			$sql .= " AND (menu = '$menu') ";
 		}
-		$sql .= ")";
 		$r = $db->select($sql);
 		$fields = array();
 		while ($s = $r->next()) {

@@ -1040,13 +1040,12 @@ $trans["requestSendMustEnterDate"]          = "You must enter a request date and
 #****************************************************************************
 #*  Translation text for tools/index.php
 #****************************************************************************
-$trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area ".
-														"to manage the internal workings of your copy of OpenBiblio.<br />".
-														" - Biblio Fields allows the user to determine what data to display and where it is to appear.<br />".
-														" - Plugin Manager might determine which, if any, plugin to allow.<br />".
-														" - Search Options could include which type of search is to be at top of screen or have focus.<br />".
-														" - Barcodes could determine if barcodes are to be used. Some SMALL libraries work on a 'well known person' basis.'<br />".
-														" - Settings Manager could maintain Library Settings form in 'settings' table of DB";
+$trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area "
+													.	"to manage the internal workings of your copy of OpenBiblio.<br />"
+													.	" - Settings Settings: maintain options not appropriate to day-to-day managers.<br />"
+													.	" - Biblio Fields: determine what data to display and where it is to appear.<br />"
+													.	" - Plugin Manager: determine which, if any, plugin to allow.<br />"
+													.	" - Search Options could include which type of search is to be at top of screen or have focus.<br />";
 
 #****************************************************************************
 #*  Translation text for tools/noauth.php
