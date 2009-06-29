@@ -35,7 +35,7 @@ div#listDiv h5{
 plm = {
 	
 	init: function () {
-	  init(); // part of original openbiblio js code
+	  //init(); // part of original openbiblio js code
 		plm.initWidgets();
 
 		plm.url = 'plugMgrSrvr.php';

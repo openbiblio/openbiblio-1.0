@@ -187,7 +187,7 @@ class Integrity {
 				assert('NULL');
 			}
 			if ($count) {
-				$msg = $this->_loc->getText($chk["error"], array('count'=>$count));
+				$msg = T($chk["error"], array('count'=>$count));
 				if ($fix) {
 					if (isset($chk['fixSql'])) {
 						$this->db->act($chk['fixSql']);

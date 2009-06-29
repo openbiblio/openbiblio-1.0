@@ -11,7 +11,7 @@ session_cache_limiter(null);
 $tab = "tools";
 $nav = "settings";
 $focus_form_name = "editsettingsform";
-$focus_form_field = "???????";
+$focus_form_field = "";
 
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));

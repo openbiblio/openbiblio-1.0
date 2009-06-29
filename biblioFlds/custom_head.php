@@ -101,9 +101,9 @@ div#configDiv{
 </style>
 
 <!-- load common jQuery library(s) -->
-<script src="../plugins/jQuery.js" type="text/javascript"></script>
-<script type="text/javascript" src="../plugins/ui.core.js"></script>
-<script type="text/javascript" src="../plugins/ui.sortable.js"></script>
+<!--script src="../plugins/jQuery.js" type="text/javascript"></script-->
+<script type="text/javascript" src="../shared/jquery/ui.core.js"></script>
+<script type="text/javascript" src="../shared/jquery/ui.sortable.js"></script>
 
 <script language="JavaScript1.4" >
 //------------------------------------------------------------------------------

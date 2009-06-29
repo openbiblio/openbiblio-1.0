@@ -9,7 +9,7 @@
 	$nav = "collections";
 
 	require_once(REL(__FILE__, "../model/Collections.php"));
-	require_once(REL(__FILE__, "../functions/formatFuncs.php"));
+//	require_once(REL(__FILE__, "../functions/formatFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));

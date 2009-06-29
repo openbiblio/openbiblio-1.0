@@ -8,9 +8,6 @@
 // lookup Javascript
 lkup = {
 <?php
-//	require_once(REL(__FILE__, "../classes/Localize.php"));
-//	$jsLoc = new Localize(OBIB_LOCALE,$tab);
-
 //	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
 	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
 	echo 'isbn							:"'.T("lookup_isbn").'",'."\n";

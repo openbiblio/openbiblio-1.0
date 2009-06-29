@@ -14,7 +14,7 @@ hed = {
 	?>
 	
 	init: function () {
-	  init(); // part of original openbiblio js code
+	  //init(); // part of original openbiblio js code
 
 		hed.initWidgets();
 

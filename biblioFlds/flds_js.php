@@ -17,7 +17,7 @@ mtl = {
 	?>
 	
 	init: function () {
-	  init(); // part of original openbiblio js code
+	  //init(); // part of original openbiblio js code
 		mtl.initWidgets();
 
 		mtl.url = 'fldsSrvr.php';

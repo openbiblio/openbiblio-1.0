@@ -10,11 +10,11 @@ oed = {
 	$jsLoc = new Localize(OBIB_LOCALE,$tab);
 
 	echo 'editHdr 	 : "'.T('lookup_optsSettings').'",'."\n";
-	echo 'successMsg : "'.$jsLoc->getText('lookup_optsUpdated').'",'."\n";
+	echo 'successMsg : "'.T('lookup_optsUpdated').'",'."\n";
 	?>
 	init: function () {
 		//console.log('in oed init');
-	  init(); // openbiblio parent init
+	  //init(); // openbiblio parent init
 	  
 		oed.initWidgets();
 

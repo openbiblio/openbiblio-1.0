@@ -181,26 +181,26 @@ function display_records($marc) {
     if(isset($hit['245a'])) { // Book must have a title
       echo "  <tr>\n";
       echo "    <td class='primary'>\n";
-      echo "      <b>" . $lookLoc->getText('locsru_Title') .": </b>" . $hit[MARC_TITLE] . "<br />\n";
+      echo "      <b>" . T('locsru_Title') .": </b>" . $hit[MARC_TITLE] . "<br />\n";
       if(isset($hit[MARC_AUTHOR])) {
-        echo "      <b>" . $lookLoc->getText('locsru_Author') .": </b>" . $hit[MARC_AUTHOR] . "<br />\n";
+        echo "      <b>" . T('locsru_Author') .": </b>" . $hit[MARC_AUTHOR] . "<br />\n";
       }
       if(isset($hit['020a'])) {
-        echo "      <b>" . $lookLoc->getText('locsru_ISBN') . ": </b>" . $hit[MARC_ISBN] . "<br />\n";
+        echo "      <b>" . T('locsru_ISBN') . ": </b>" . $hit[MARC_ISBN] . "<br />\n";
       }
       if(isset($hit[MARC_PUBLICATION_PLACE]) && isset($hit[MARC_PUBLISHER])) {
-        echo '      <b>' . $lookLoc->getText('locsru_Publication') . ': </b>' . $hit[MARC_PUBLICATION_PLACE] . ': ' .$hit[MARC_PUBLISHER] . "<br />\n";
+        echo '      <b>' . T('locsru_Publication') . ': </b>' . $hit[MARC_PUBLICATION_PLACE] . ': ' .$hit[MARC_PUBLISHER] . "<br />\n";
       }
       else if(isset($hit[MARC_PUBLISHER])) {
-        echo '      <b>' . $lookLoc->getText('locsru_Publisher') . ': </b>' . $hit[MARC_PUBLISHER] . "<br />\n";
+        echo '      <b>' . T('locsru_Publisher') . ': </b>' . $hit[MARC_PUBLISHER] . "<br />\n";
       }
       if(isset($hit[MARC_PUBLICATION_DATE]))  {
-        echo '      <b>' . $lookLoc->getText('locsru_PublicationDate') . ': </b>' . $hit[MARC_PUBLICATION_DATE] . "<br />\n";
+        echo '      <b>' . T('locsru_PublicationDate') . ': </b>' . $hit[MARC_PUBLICATION_DATE] . "<br />\n";
       }
       echo "    </td>\n";
       echo "    <td valign='top'>\n";
       echo "      <form name=\"form$key\" action=\"$_SERVER[PHP_SELF]\" method=\"POST\"> \n";
-      echo "        <input type='submit' name='submit' value='" . $lookLoc->getText('lookup_UseThis') . "' class='button' />\n";
+      echo "        <input type='submit' name='submit' value='" . TS('lookup_UseThis') . "' class='button' />\n";
       echo "        <input type='hidden' name='mode' value='edit' />\n";
       foreach($hit AS $k => $v)       {
         echo "        <input type='hidden' name='" . $k ."' value='". htmlentities($v, ENT_QUOTES) ."' />\n";

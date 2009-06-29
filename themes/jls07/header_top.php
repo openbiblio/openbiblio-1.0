@@ -22,8 +22,48 @@ if (Settings::get('charset') != "") { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
 <title><?php echo H(Settings::get('library_name'));?></title>
+
+<!-- jQuery kernal, needed for all that follows -->
+<script src="../shared/jquery/jQuery.js" type="text/javascript"></script>
+<!-- home-grown add-ons to the jQuery library, feel free to add your own -->
+<script src="../shared/jsLib.js" type="text/javascript"></script>
+
 <script language="JavaScript">
 <!--
+// main javascript functionality set in own namespace to avoid potential conflict
+obib = {
+	<?php
+	echo "focusFormName:  '$focus_form_name',\n";
+	echo "focusFormField:	'$focus_form_field',\n";
+	if (isset($confirm_links) and $confirm_links) {
+		echo "confirmLinks:		$confirm_links,\n";
+	}
+	?>
+
+	init: function() {
+		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
+		  $('#'+obib.focusFormField).focus();
+		}
+		
+		// suggest this should be in code local to desired function unless widely used -- Fred
+		// bind the confirmLink routine to all <a> tags on the current form
+		if (obib.confirmLinks) {
+			$('a').bind('click',null,obib.confirmLink);
+		}
+	},
+	//-------------------------
+	confirmLink: function(e) {
+		if (modified) {
+			return confirm("<?php echo addslashes(T("This will discard any changes you've made on this page.  Are you sure?")) ?>");
+		} else {
+			return true;
+		}
+	}
+}
+
+// hold off javascript until DOM is fully loaded, images, etc, may not all be loaded yet.
+$(document).ready(obib.init);
+
 function popSecondary(url) {
 		var SecondaryWin;
 		SecondaryWin = window.open(url,"secondary","resizable=yes,scrollbars=yes,width=535,height=400");
@@ -41,48 +81,21 @@ function backToMain(URL) {
 		this.close();
 }
 var modified = false;
-function confirmLink(e) {
-		if (modified) {
-			return confirm("<?php echo addslashes(T("This will discard any changes you've made on this page.  Are you sure?")) ?>");
-		} else {
-			return true;
-		}
-}
 
-function init() {
-<?php
-if (!empty($focus_form_name)) {
-	echo "self.focus();";
-	echo "document.getElementById('$focus_form_field').focus();";
-}
-if (isset($confirm_links) and $confirm_links) {
-?>
-	elems = document.getElementsByTagName('a');
-	for (i=0; i<elems.length; i++) {
-		if (!elems[i].onclick) {
-			elems[i].onclick = l=confirmLink;
-			if (elems[i].captureEvents) elems[i].captureEvents(Event.CLICK);
-		}
-	}
-<?php } ?>
-}
+
 -->
 </script>
 	
 	<?php
 	## ---------------------------------------------------------------------
-	## --- added plugin support -----------------------
+	## --- added plugin support -- Fred -----------------------
 	if (file_exists('custom_head.php')) {
 		include ('custom_head.php');
-		// in this case, the local javascript is responsible for calling the core
-		// code's init() routine at an appropriate time.
-		echo "</head>\n";
-		echo "<body>\n";
-	} else {
-		echo "</head>\n";
-		echo "<body onload=\"init();\" >\n";
 	}
 	## ---------------------------------------------------------------------
 	?>
+
+	</head>
+	<body>
 	
 

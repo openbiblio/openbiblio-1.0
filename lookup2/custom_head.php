@@ -63,9 +63,6 @@ td.btnFld {
 </style>
 
 <!-- load common jQuery library -->
-<script src="../plugins/jQuery.js" type="text/javascript"></script>
-
-<script src="../shared/jsLib.js" type="text/javascript"></script>
 ?>
 <script language="JavaScript1.4" >
 

@@ -42,7 +42,7 @@
 			$connOK = yaz_connect($aHost, array("user"=>$aUser,"password"=>$aPw) );
 			if (! $connOK) {
 				echo 'yaz setup not successful! <br />';
-				trigger_error($lookLoc->getText("lookup_yaz_setup_failed").$postVars[hosts][$ptr][name]."<br />", E_USER_ERROR);
+				trigger_error(T("lookup_yaz_setup_failed").$postVars[hosts][$ptr][name]."<br />", E_USER_ERROR);
 			} else {
 				//echo 'yaz setup successful! <br />';
 				$id[$ptr] = $connOK;
@@ -54,7 +54,7 @@
 
 				//echo "sending: $qry <br />";
 				if (! yaz_search($id[$ptr], $srchType, $qry)) 
-					trigger_error($lookLoc->getText("lookup_badQuery")."<br />", E_USER_NOTICE);
+					trigger_error(T("lookup_badQuery")."<br />", E_USER_NOTICE);
 			}
 		}
 

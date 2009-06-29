@@ -33,5 +33,13 @@ clear decision.  I can guarantee you that none of my librarians has
 ever changed it.  It shouldn't be there.  I don't want to see more of
 those. (Micah, June 2009)
 
+- jQuery:
+> I would like to get your OK to permanently add jQuery to the ../shared
+> directory so that I/we can use it to solve some of the simpler problems
+
+You've got it.  I'm starting to use jQuery in the other web app
+project I'm working on right now, and I agree that it will be a big
+help in obiblio. (Micah, 29 June 2009)
+
 
 
