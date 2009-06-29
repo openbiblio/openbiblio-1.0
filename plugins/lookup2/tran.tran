@@ -20,6 +20,7 @@ $trans["lookup_badQuery"]        = 'Bad Query';
 $trans["lookup_patience"]        = 'Please be patient. this may take a while.';
 $trans["lookup_resetInstr"]      = 'After 30 secs. Press F5 to try again.';
 $trans["lookup_goBack"]  	       = 'Go Back';
+$trans["lookup_accept"]  	       = 'Accept';
 $trans["lookup_abandon"]  	     = 'Stop Search';
 $trans["lookup_yazError"]        = 'Lookup YAZ Error: ';
 $trans["lookup_nothingFound"]    = 'Nothing found for ';

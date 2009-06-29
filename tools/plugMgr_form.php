@@ -18,7 +18,6 @@
 
 	require_once(REL(__FILE__, "plugMgr_js.php"));
 ?>
-<!--h1><span id="pageHdr" class="title"><?php //echo T('PLugin Manager'); ?></span></h1-->
 <h1 id="pageHdr" class="title"><?php echo T('Plugin Manager'); ?></h1>
 
 <div id="listDiv">
@@ -30,12 +29,6 @@
 		  <h5><?php echo T('Select Plugins'); ?></h5>
    		<ul id="pluginList" ></ul>
 		</fieldset>
-
-		<!--input type="hidden" id="editMode" name="editMode" value="">
-    <input type="hidden" id="material_field_id" name="material_field_id" value="">
-		<input type="button" id="editUpdtBtn" value="<?php //echo T("Update"); ?>" class="button" />
-		<input type="button" id="editCnclBtn" value="<?php //echo T("goBack"); ?>" class="button" />
-		<input type="button" id="editDeltBtn" value="<?php //echo T("Delete"); ?>" class="button" /-->
 	</form>
 </div>
 

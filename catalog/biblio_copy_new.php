@@ -34,6 +34,9 @@ $bibid=$_POST["bibid"];
 #* either cause the duplicate barcode check to fail or cause duplicate barcodes
 #* to be entered.  This can be fixed with a lock or by an atomic
 #* get-and-increment-sequence-value operation.  I'll fix it later. -- Micah
+#*
+#* perhaps a random number would be a better choice, then two near simultaneous 
+#* requests would be even less likely to be duplicates. -- Fred
 #****************************************************************************
 
 if (isset($_POST["autobarco"]) and $_POST["autobarco"]) {

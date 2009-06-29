@@ -99,7 +99,7 @@
 			if (! empty($ar)) {
 				$formName = "hitForm".$host."_".$hit;
 				$rec = yaz_record($id[$host],$hit,'string');
-				
+
 				## make sense of the received MARC records
 				$rslt[$hit] = extract_marc_fields($ar, true, $hit, $host); // an array of hits
 				

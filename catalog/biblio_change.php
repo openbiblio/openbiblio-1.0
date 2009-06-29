@@ -187,5 +187,8 @@ if ($nav == "newconfirm") {
 }
 
 $msg = T("Item successfully updated.");
-header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));
+
+#### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
+//header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));
+header("Location: ../catalog/biblio_copy_new_form.php?resey=Y&bibid=".$bibid."&msg=".U($msg));
 exit();

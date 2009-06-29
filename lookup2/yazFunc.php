@@ -11,7 +11,7 @@
 		$nHost = "host$host";
 		$nHit = "hit$hit";
 		$rslt = array();
-		
+
     while(list($key,list($tagpath,$data))=each($ar)) {
       if (ereg("^\(3,([^)]*)\)\(3,([^)]*)\)$",$tagpath,$res)) {
 				if (!empty($theTag)) {

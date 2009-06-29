@@ -360,6 +360,7 @@ class UpgradeQuery extends InstallQuery {
 	}
 	function _upgrade100_e($prfx,tmpPrfx) {
 		# FIXME -- not done yet by a LONG ways
+		# this is mods made to wip structure for F.L. software adds/mods
 		$this->act('ALTER TABLE '.$prfx.'staff '
 								. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
  		$this->act("ALTER TABLE ".$prfx."`settings` "
@@ -369,7 +370,37 @@ class UpgradeQuery extends InstallQuery {
 							."VALUES "
 							."('plugins_list',NULL,NULL,'text',NULL,NULL,NULL,NULL,'none'),"
 							."('allow_plugins_flg',NULL,'Allow Plugins','bool',NULL,NULL,NULL,'Y','tools'),"
+							."('item_autoBarcode_flg', NULL , 'Item Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
+							."('mbr_autoBarcode_flg', NULL , 'Member Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
 							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N','tools'),"
 							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools')");
+
+		### ################################################### ###
+		### conversion process begins here.
+		### ################################################### ###
+		## Biblio support tables
+		$sql = "INSERT INTO `openbibliowork`.`collection_dm` "
+					."(`code`,`description`,`default_flg`,`type`)"
+					."SELECT `code`,`description`,`default_flg`,'Circulated' "
+					."  FROM `openbiblio`.`collection_dm` "
+					;
+    $this->act($sql);
+    //-------------------------//
+		$sql = "INSERT INTO `openbibliowork`.`material_type_dm` "
+					."(`code`,`description`,`default_flg`,`adult_checkout_limit`,`juvenile_checkout_limit`,`image_file`)"
+					."SELECT `code`,`description`,`default_flg`,'10','5',`image_file` "
+					."  FROM `openbiblio`.`material_type_dm` "
+					;
+    $this->act($sql);
+	}
+    //-------------------------//
+		$sql = "INSERT INTO `openbibliowork`.`biblio` "
+					."(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`)"
+					."SELECT `bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg` "
+					."  FROM `openbiblio`.`biblio` "
+					;
+    $this->act($sql);
+    //------------------------//
+
 	}
 }

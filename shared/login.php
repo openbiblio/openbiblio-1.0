@@ -73,6 +73,8 @@ $_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 $_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
 $_SESSION['allow_plugins_flg'] = Settings::get('allow_plugins_flg');
 $_SESSION['plugin_list'] = Settings::get('plugin_list');
+$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
+$_SESSION['mbr_autoBarcode_flg'] = Settings::get('mbr_autoBarcode_flg');
 
 header("Location: ".$_SESSION["returnPage"]);
 exit();

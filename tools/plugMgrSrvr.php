@@ -4,7 +4,7 @@
  */
 
   require_once("../shared/common.php");
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+  //require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	if ((empty($_REQUEST[mode]))&& (!empty($_REQUEST[editMode]))) {
     $_REQUEST[mode] = $_REQUEST[editMode];

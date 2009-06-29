@@ -11,6 +11,39 @@
 	$nav = "biblio/newcopy";
 	$focus_form_name = "newCopyForm";
 	$focus_form_field = "barcode_nmbr";
+	
+#### this all belongs in header.php if to be universally used
+?>
+<script src="../plugins/jQuery.js" type="text/javascript"></script>
+<script src="../shared/jsLib.js" type="text/javascript"></script>
+<?php
+#### while this part would stay here
+?>
+<script language="JavaScript1.4" >
+bcnf = {
+	init: function () {
+	  // set 'required' marker on 'barcode_nmbr' field label; probably a simpler way!
+	  $('<sup>*</sup>').prependTo($('#newCpyTbl tbody tr:first td:first'));
+	  
+	  // to handle startup condition
+		if ($('#autobarco:checked').length > 0) {
+			$('#barcode_nmbr').disable();
+		}
+		// if user changes his/her mind
+		$('#autobarco').bind('change',null,function (){
+		  if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
+			}
+			else {
+				$('#barcode_nmbr').enable();
+			}
+		})
+	}
+}
+$(document).ready(bcnf.init);
+</script>
+
+<?php
 
 	#****************************************************************************
 	#*  Checking for get vars.  Go back to form if none found.
@@ -34,15 +67,17 @@
 	$BCQ = new BiblioCopyFields;
 
 	$fields = array(
-		T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$pageErrors),
-		T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,NULL,$pageErrors),
-		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40), $pageErrors),
+	  ### corrected to suit inputfield (which gets $pageErrors internally) -- Fred
+		T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20)),
+		T("Auto Barcode") => inputfield("checkbox","autobarco",'Y',NULL,$_SESSION['item_autoBarcode_flg']),
+		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40)),
 	);
 
 	$rows = $BCQ->getAll();
 
 	while ($row = $rows->next()) {
-		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["description"], NULL,NULL,$pageErrors);
+	  ### corrected to suit inputfield (which gets $pageErrors internally) -- Fred
+		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["description"], NULL,NULL);
 	}
 ?>
 
@@ -51,12 +86,15 @@
 </p>
 
 <form name="newCopyForm" method="post" action="../catalog/biblio_copy_new.php">
-<table class="primary">
+<table id="newCpyTbl" class="primary">
+	<thead>
 	<tr>
 		<th colspan="2" nowrap="yes" align="left">
 			<?php echo T("Add New Copy"); ?>
 		</th>
 	</tr>
+	</thead>
+	<tbody>
 <?php
 	foreach ($fields as $title => $html) {
 ?>
@@ -71,14 +109,15 @@
 <?php
 	}
 ?>
-
+	</tbody>
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onclick="parent.location='../shared/biblio_view.php?bibid=<?php echo $bibid; ?>'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
-
+	</tfoot>
 </table>
 <input type="hidden" name="bibid" value="<?php echo $bibid;?>" />
 </form>

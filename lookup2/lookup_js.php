@@ -31,6 +31,7 @@ lkup = {
 	echo 'patience					:"'.T("lookup_patience").'",'."\n";
 	echo 'resetInstr				:"'.T("lookup_resetInstr").'",'."\n";
 	echo 'goBack						:"'.T("lookup_goBack").'",'."\n";
+	echo 'accept						:"'.T("lookup_accept").'",'."\n";
 	echo 'yazError					:"'.T("lookup_yazError").'",'."\n";
 	echo 'nothingFound			:"'.T("lookup_nothingFound").'",'."\n";
 	echo 'tooManyHits				:"'.T("lookup_tooManyHits").'",'."\n";
@@ -62,7 +63,8 @@ lkup = {
 		// modify original biblioFields form to better suit our needs
 		$('#selectionDiv input[value="Cancel"]').removeAttr('onClick');
 		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
-		$('#selectionDiv input[value="Cancel"]').attr('value','Go Back');
+		$('#selectionDiv input[value="Cancel"]').attr('value',lkup.goBack);
+		$('#selectionDiv input[value="Submit"]').attr('value',lkup.accept);
 
 		// FIXME - fl only '*' should be colored
 		$('#selectionDiv font').css('color','red');
