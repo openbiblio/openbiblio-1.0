@@ -398,8 +398,10 @@ lkup = {
 					cutter += lkup.makeSuffix($('#245a').val());
 				}
 				else if (lkup.opts['cutterType'] == 'LoC') {
-					// add copyright year as suffix
-					cutter += ' '+($('#260c').val()).substr(1,4);
+					// add copyright year as suffix -- FIXME numeric year only!!!
+					//var cpyYr = $.trim($('#260c').val()).replace('.','');
+					//cutter += ' '+cpyYr.substr(1,4);
+					cutter += ' '+$('#260c').val();
 				}
 				$('#099a').val($('#099a').val()+cutter);
 			});
