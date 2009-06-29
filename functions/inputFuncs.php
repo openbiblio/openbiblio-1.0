@@ -22,9 +22,6 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	} else {
 		$pageErrors = array();
 	}
-	if (isset($pageErrors[$name])) {
-		$s .= '<span class="error">'.H($pageErrors[$name]).'</span><br />';
-	}
 	if (!$attrs) {
 		$attrs = array();
 	}
@@ -82,6 +79,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		}
 		$s .= "/>";
 		break;
+	}
+	#### place error messages to right of effected field -- Fred
+	if (isset($pageErrors[$name])) {
+		$s .= '<span class="error">'.H($pageErrors[$name]).'</span><br />';
 	}
 	return $s;
 }

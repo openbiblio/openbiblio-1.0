@@ -2,8 +2,12 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+
+		### following needed since this is included from within a class method -- Fred
+		global $nav, $tab, $focus_form_name, $focus_form_field;
+		
 ?>
-<!DOCTYPE html 
+<!DOCTYPE html
 		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -44,11 +48,12 @@ function confirmLink(e) {
 			return true;
 		}
 }
+
 function init() {
 <?php
-if (isset($focus_form_name) && ($focus_form_name != "")) {
-	echo 'self.focus();';
-	echo 'document.'.$focus_form_name.'.'.$focus_form_field.'.focus();';
+if (!empty($focus_form_name)) {
+	echo "self.focus();";
+	echo "document.getElementById('$focus_form_field').focus();";
 }
 if (isset($confirm_links) and $confirm_links) {
 ?>
@@ -66,7 +71,7 @@ if (isset($confirm_links) and $confirm_links) {
 	
 	<?php
 	## ---------------------------------------------------------------------
-	## --- added for Fred LaPlante's Lookup Function -----------------------
+	## --- added plugin support -----------------------
 	if (file_exists('custom_head.php')) {
 		include ('custom_head.php');
 		// in this case, the local javascript is responsible for calling the core

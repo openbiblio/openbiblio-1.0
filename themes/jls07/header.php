@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
+
 //	include($params['theme_dir']."/header_top.php");
 	include(REL(__FILE__,"/header_top.php"));
 ?>

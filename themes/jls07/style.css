@@ -264,7 +264,10 @@ table.sigh .spacer {
 	width: 5px;
 	}
 
-/* flos additions */
+/* Fred LaPlante additions */
 span.highLite {
   color: #FF8A00;
+	}
+span.error {
+	color: red;
 	}

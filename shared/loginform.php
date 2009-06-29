@@ -4,7 +4,7 @@
  */
 
 	require_once("../shared/common.php");
-
+	require_once(REL(__FILE__,"../functions/inputFuncs.php"));
 
 	$temp_return_page = "";
 	if (isset($_GET["RET"])){
@@ -18,6 +18,9 @@
 
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
+	# for later use by inputfields()
+	$attrs = array(size=>"20", maxlength=>"20");
 
 ?>
 
@@ -36,11 +39,9 @@
 			<?php echo T("Username:"); ?>
 		</td>
 		<td valign="top" class="noborder">
-			<input type="text" name="username" size="20" maxlength="20"
-			value="<?php if (isset($postVars["username"])) echo $postVars["username"]; ?>" />
-			<?php if (isset($pageErrors["username"])) {
-				echo '<span class="error">'.$pageErrors["username"].'</span>';
-				} ?>
+			<?php
+				echo inputfield('text','username',$postVars["username"],$attrs);
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -48,11 +49,9 @@
 			<?php echo T("Password:"); ?>
 		</td>
 		<td valign="top" class="noborder">
-			<input type="password" name="pwd" size="20" maxlength="20"
-			value="<?php if (isset($postVars["pwd"])) echo $postVars["pwd"]; ?>" />
-			<?php if (isset($pageErrors["pwd"])) {
-				echo '<span class="error">'.$pageErrors["pwd"].'</span>';
-				} ?>
+			<?php
+				echo inputfield('password','pwd',$postVars["pwd"],$attrs);
+			?>
 		</td>
 	</tr>
 

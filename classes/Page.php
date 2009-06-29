@@ -6,6 +6,7 @@
 class Page {
 	function header($params=array()) {
 		global $_Page_params;
+		global $nav, $tab, $focus_form_name, $focus_form_field;
 		$params = Page::clean_params($params);
 		$_Page_params = $params;
 		require_once(REL(__FILE__, '../shared/menu.php'));

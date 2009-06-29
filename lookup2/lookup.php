@@ -34,8 +34,8 @@
 
 	$tab = "cataloging";
 	$nav = "lookup";
-  $focus_form_name = "editForm";
-  $focus_form_field = "protocol";
+  $focus_form_name = "lookupForm";
+  $focus_form_field = "lookupVal";
 
   require_once(REL(__FILE__, "../functions/inputFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
