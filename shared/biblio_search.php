@@ -165,9 +165,11 @@
 	$bibimages = new BiblioImages;
 	$mats = new MaterialTypes;
 	$mf = new MaterialFields;
+	
 	echo '<div class="results_list">';
 	$page = $rpt->pageIter($currentPageNmbr);
 	while($row = $page->next()) {
+print_r($row);echo"<br />";
 		$bib = $biblios->getOne($row['bibid']);
 		$title = Links::mkLink('biblio', $row['bibid'], $row['title_a'].' '.$row['title_b']);
 		if (time() - strtotime($bib['create_dt']) < 365*86400) {
@@ -175,23 +177,23 @@
 			# FIXME
 		}
 		$mat = $mats->getOne($row['material_cd']);
-		echo '<table class="search_result"><tr>';
+		echo "<table class=\"search_result\"><tr>\n";
 		$imgs = $bibimages->getByBibid($row['bibid']);
-		echo '<td class="cover_image">';
+		echo "<td class=\"cover_image\">\n";
 		if ($imgs->count() != 0) {
 			$img = $imgs->next();
-			$html = '<img src="'.H($img['imgurl']).'" alt="'.T("Item Image").'" />';
+			$html = '	<img src="'.H($img['imgurl']).'" alt="'.T("Item Image")."\" />\n";
 			echo Links::mkLink('biblio', $row['bibid'], $img);
 		}
-		echo '</td>';
-		echo '<td class="call_media">';
-		echo '<div class="call_number">'.H($row['callno']).'</div>';
+		echo "</td>\n";
+		echo "<td class=\"call_media\">\n";
+		echo "<div class=\"call_number\">".H($row['callno'])."</div>\n";
 		if ($mat['image_file']) {
-			echo '<img class="material" src="../images/'.H($mat['image_file']).'" />';
+			echo "<img class=\"material\" src=\"../images/".H($mat['image_file'])."\" />\n";
 		}
-		echo '</td>';
+		echo "</td>\n";
 		$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
-		echo '<td class="material_fields">';
+		echo "<td class=\"material_fields\">\n";
 		$d = new CompactInfoDisplay;
 		$d->title = $title;
 		echo $d->begin();
@@ -206,13 +208,13 @@
 			}
 		}
 		echo $d->end();
-		echo '</td>';
-		echo '<td class="right_info">';
-		echo '<a class="button" href="#">'.T("Add To Cart").'</a>';
-		echo '<div class="available">1 of 1 Available</div>';
-		echo '</td>';
-		echo '</tr></table>';
+		echo "</td>\n";
+		echo "<td class=\"right_info\">\n";
+		echo "<a class=\"button\" href=\"#\">".T("Add To Cart")."</a>\n";
+		echo "<div class=\"available\">1 of 1 Available</div>\n";
+		echo "</td>\n";
+		echo "</tr>\n</table>\n";
 	}
-	echo '</div>';
+	echo "</div>\n";
 
 	Page::footer();

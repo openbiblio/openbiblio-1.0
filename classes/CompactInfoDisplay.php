@@ -12,22 +12,23 @@ class CompactInfoDisplay {
 		$this->buttons = array();
 	}
 	function begin() {
-		$s = "<div class='compact_info_display'>\n";
+		$s = "<div class=\"compact_info_display\">\n";
 		if ($this->title) {
-			$s .= '<table class="header"><th class="title">'.$this->title.'</tg>';
+			$s .= "<table class=\"header\">\n<tr>\n"
+					. "<th class=\"title\">".$this->title."</th>\n";
 			if ($this->buttons) {
-				$s .= '<td class="buttons">'.Buttons::display($this->buttons).'</td>';
+				$s .= "<td class=\"buttons\">".Buttons::display($this->buttons)."</td>\n";
 			}
-			$s .= "</table>\n";
+			$s .= "</tr>\n</table>\n";
 		}
-		$s .= "<ul>";
+		$s .= "<ul>\n";
 		return $s;
 	}
 	function row($heading, $value) {
-		return '<li><span class="heading">'.$heading.'</span> '.$value.'</li>'."\n";
+		return "<li><span class=\"heading\">".$heading."</span>".$value."</li>\n";
 	}
 	function end() {
-		return "</ul></div>\n";
+		return "</ul>\n</div>\n";
 	}
 }
 

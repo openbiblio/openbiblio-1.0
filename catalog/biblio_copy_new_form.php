@@ -12,19 +12,32 @@
 	$focus_form_name = "newCopyForm";
 	$focus_form_field = "barcode_nmbr";
 	
-#### this all belongs in header.php if to be universally used
+	#****************************************************************************
+	#*  Checking for get vars.  Go back to form if none found.
+	#****************************************************************************
+	if (count($_GET) == 0) {
+		header("Location: ../catalog/index.php");
+		exit();
+	}
+
+	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+
+	#****************************************************************************
+	#*  Retrieving get var
+	#****************************************************************************
+	$bibid = $_GET["bibid"];
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<script src="../plugins/jQuery.js" type="text/javascript"></script>
-<script src="../shared/jsLib.js" type="text/javascript"></script>
-<?php
-#### while this part would stay here
-?>
+
 <script language="JavaScript1.4" >
 bcnf = {
 	init: function () {
 	  // set 'required' marker on 'barcode_nmbr' field label; probably a simpler way!
 	  $('<sup>*</sup>').prependTo($('#newCpyTbl tbody tr:first td:first'));
-	  
+
 	  // to handle startup condition
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
@@ -44,26 +57,6 @@ $(document).ready(bcnf.init);
 </script>
 
 <?php
-
-	#****************************************************************************
-	#*  Checking for get vars.  Go back to form if none found.
-	#****************************************************************************
-	if (count($_GET) == 0) {
-		header("Location: ../catalog/index.php");
-		exit();
-	}
-
-	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
-	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-
-	#****************************************************************************
-	#*  Retrieving get var
-	#****************************************************************************
-	$bibid = $_GET["bibid"];
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
 	$BCQ = new BiblioCopyFields;
 
 	$fields = array(
