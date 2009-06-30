@@ -46,6 +46,6 @@ class Links {
 			Fatal::internalError(T("No such link type: ").$type);
 		}
 		$url = $_Links_urls[$type]->get($id, $params);
-		return "<a href=\"".H($url)."\>".$text."</a>\n";
+		return "<a href=\"".H($url)."\">".$text."</a>\n";
 	}
 }

@@ -165,11 +165,11 @@
 	$bibimages = new BiblioImages;
 	$mats = new MaterialTypes;
 	$mf = new MaterialFields;
-	
-	echo '<div class="results_list">';
+?>
+	<div class="results_list">
+<?php
 	$page = $rpt->pageIter($currentPageNmbr);
 	while($row = $page->next()) {
-print_r($row);echo"<br />";
 		$bib = $biblios->getOne($row['bibid']);
 		$title = Links::mkLink('biblio', $row['bibid'], $row['title_a'].' '.$row['title_b']);
 		if (time() - strtotime($bib['create_dt']) < 365*86400) {
@@ -177,44 +177,60 @@ print_r($row);echo"<br />";
 			# FIXME
 		}
 		$mat = $mats->getOne($row['material_cd']);
-		echo "<table class=\"search_result\"><tr>\n";
-		$imgs = $bibimages->getByBibid($row['bibid']);
-		echo "<td class=\"cover_image\">\n";
-		if ($imgs->count() != 0) {
-			$img = $imgs->next();
-			$html = '	<img src="'.H($img['imgurl']).'" alt="'.T("Item Image")."\" />\n";
-			echo Links::mkLink('biblio', $row['bibid'], $img);
-		}
-		echo "</td>\n";
-		echo "<td class=\"call_media\">\n";
-		echo "<div class=\"call_number\">".H($row['callno'])."</div>\n";
-		if ($mat['image_file']) {
-			echo "<img class=\"material\" src=\"../images/".H($mat['image_file'])."\" />\n";
-		}
-		echo "</td>\n";
-		$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
-		echo "<td class=\"material_fields\">\n";
-		$d = new CompactInfoDisplay;
-		$d->title = $title;
-		echo $d->begin();
-		while ($f = $fields->next()) {
-			if ($f['search_results'] != 'Y') {
-				continue;
+		?>
+		<table class="search_result">
+		<tr>
+			<td class="cover_image">
+			<?php
+			$imgs = $bibimages->getByBibid($row['bibid']);
+			if ($imgs->count() != 0) {
+				$img = $imgs->next();
+				$html = '<img src="'.H($img['imgurl']).'" alt="'.T("Item Image")."\" />\n";
+				Links::mkLink('biblio', $row['bibid'], $img);
 			}
-			$m = new MarcDisplay($f, $bib);
-			$v = $m->htmlValues();
-			if (strlen($v)) {
-				echo $d->row($m->title().':', $v);
+			else {
+				echo "<img src=\"../images/shim.gif\" />\n";
 			}
-		}
-		echo $d->end();
-		echo "</td>\n";
-		echo "<td class=\"right_info\">\n";
-		echo "<a class=\"button\" href=\"#\">".T("Add To Cart")."</a>\n";
-		echo "<div class=\"available\">1 of 1 Available</div>\n";
-		echo "</td>\n";
-		echo "</tr>\n</table>\n";
+			?>
+			</td>
+			<td class="call_media">
+				<div class="call_number"><?php echo H($row['callno']);?></div>
+				<?php
+				if ($mat['image_file']) {
+					echo "<img class=\"material\" src=\"../images/".H($mat['image_file'])."\" />\n";
+				}
+				?>
+			</td>
+			<td class=\"material_fields\">
+				<?php
+				$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
+				$d = new CompactInfoDisplay;
+				$d->title = $title;
+				echo $d->begin();
+				while ($f = $fields->next()) {
+					if ($f['search_results'] != 'Y') {
+						//echo "</td></tr></table>\n";
+						continue;
+					}
+					$m = new MarcDisplay($f, $bib);
+					$v = $m->htmlValues();
+					if (strlen($v)) {
+						echo $d->row($m->title().':', $v);
+					}
+				}
+				echo $d->end();
+				?>
+			</td>
+			<td class=\"right_info\">
+				<a class="button" href="#"><?php echo T("Add To Cart"); ?></a>
+				<div class=\"available\">1 of 1 Available</div>
+			</td>
+		</tr>
+		</table>
+		<?php
 	}
-	echo "</div>\n";
+	?>
+	</div>
+	<?php
 
 	Page::footer();

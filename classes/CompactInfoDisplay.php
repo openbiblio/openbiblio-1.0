@@ -14,12 +14,14 @@ class CompactInfoDisplay {
 	function begin() {
 		$s = "<div class=\"compact_info_display\">\n";
 		if ($this->title) {
-			$s .= "<table class=\"header\">\n<tr>\n"
-					. "<th class=\"title\">".$this->title."</th>\n";
+			$s .= "<table class=\"header\">\n";
+			$s .= "<tr>\n";
+			$s .= "	<th class=\"title\">".$this->title."</th>\n";
 			if ($this->buttons) {
-				$s .= "<td class=\"buttons\">".Buttons::display($this->buttons)."</td>\n";
+				$s .= "	<td class=\"buttons\">".Buttons::display($this->buttons)."</td>\n";
 			}
-			$s .= "</tr>\n</table>\n";
+			$s .= "</tr>\n";
+			$s .= "</table>\n";
 		}
 		$s .= "<ul>\n";
 		return $s;
