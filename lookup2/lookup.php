@@ -210,8 +210,6 @@
   		$focus_form_field = "materialCd";
 
 			require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-  		//$loc = new Localize(OBIB_LOCALE,$tab);
-  		//$headerWording=$loc->getText("biblioNewFormLabel");
   		
   		## we use original biblio edit screen, but will replace existing 'Cancel' button
    		print '<form name="newbiblioform" method="POST" action="../catalog/biblio_new.php" >';

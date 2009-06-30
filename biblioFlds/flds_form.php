@@ -17,7 +17,6 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-<!--h1><span id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></span></h1-->
 <h1 id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></h1>
 
 <div id='typeChoice'>
@@ -66,12 +65,12 @@
 	<thead>
   <tr>
     <th class="colHead">&nbsp</th>
-    <th class="colHead"><?php echo T("SeqNo"); ?></th>
+    <th class="colHead"><?php echo T("Seq"); ?></th>
     <th class="colHead"><?php echo T("Tag"); ?></th>
     <th class="colHead"><?php echo T("Label"); ?></th>
-    <th class="colHead"><?php echo T("Data Type"); ?></th>
-    <th class="colHead"><?php echo T("Required"); ?></th>
-    <th class="colHead"><?php echo T("Repeats"); ?></th>
+    <th class="colHead"><?php echo T("Type"); ?></th>
+    <th class="colHead"><?php echo T("Reqd"); ?></th>
+    <th class="colHead"><?php echo T("Rpts"); ?></th>
   </tr>
 	</thead>
 	<tbody id="fldSet">

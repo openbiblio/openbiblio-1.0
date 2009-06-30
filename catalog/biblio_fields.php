@@ -34,8 +34,9 @@
 		</td>
 		<td valign="top" class="primary">
 <?php
+	# fetch a complete set of all material types
 	$matTypes = new MaterialTypes;
-	$attrs = array('onchange'=>"matCdReload()");
+	# determine which is to be 'selected'
 	if (isset($biblio['material_cd'])) {
 		$material_cd_value = $biblio['material_cd'];
 	} elseif (isset($_GET['material_cd'])) {
@@ -43,6 +44,8 @@
 	} else {
 		$material_cd_value = $matTypes->getDefault();
 	}
+	# if selection is changed, a new set of data entry fields will be displayed
+	//$attrs = array('onchange'=>"matCdReload()");
 	echo inputfield('select', "materialCd", $material_cd_value, $attrs, $matTypes->getSelect());
 ?>
 		</td>
@@ -55,12 +58,12 @@
 		<td valign="top" class="primary">
 			<?php
 				$collections = new Collections;
-				$attrs = array();
 				if (isset($biblio['collection_cd'])) {
 					$value = $biblio['collection_cd'];
 				} else {
 					$value = $collections->getDefault();
 				}
+				$attrs = array();
 				echo inputfield('select', "collectionCd", $value, $attrs, $collections->getSelect());
 			?>
 		</td>

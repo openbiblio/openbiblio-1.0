@@ -248,7 +248,7 @@ mtl = {
  					html += '<input type="hidden" name="material_field_id" class="fldData" value="'+data[n]['material_field_id']+'" />\n';
 					html += '</td>';
 					html += '<td>';
-    			html += '<input type="text" name="position" class="primary fldData" size="4" value="'+data[n]['position']+'" />\n';
+					html += '<span class="fldData">'+data[n]['position']+'</span>';
 					html += '</td>';
 	   			html += '<td valign="top" class="primary">\n';
  					html += '<input type="hidden" name="tag" class="fldData" value="'+data[n]['tag']+'" />\n';
@@ -256,20 +256,16 @@ mtl = {
 					html += '<span class="fldData">'+data[n]['tag']+data[n]['subfield_cd']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<input type="text" name="label" class="primary fldData" size="30" value="'+data[n]['label']+'" />\n';
+					html += '<span class="fldData">'+data[n]['label']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-    			html +=   '<select name="form_type" class="fldData">\n';
-    			html +=     '<option value="text" '+(data[n]['form_type']=='text'?'selected':'')+'>Single Line</option>\n';
-    			html +=     '<option value="textarea" '+(data[n]['form_type']=='textarea'?'selected':'')+'>Multi Line</option>\n';
-    			html +=   '</select>\n';
+					html += '<span class="fldData">'+data[n]['form_type']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<input type="checkbox" name="required" class="primary fldData" size="4" value="1" '+
-									(data[n]['required']=='1'?'checked':'')+'" />\n';
+					html += '<span class="fldData">'+(data[n]['required']=='1'?'Y':'N')+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<input type="text"  name="repeatable" class="primary fldData" size="5" value="'+data[n]['repeatable']+'" />\n';
+					html += '<span class="fldData">'+data[n]['repeatable']+'</span>';
 					html += '</td>';
 					html += '</tr>\n';
 					$('#fldSet').append(html);
@@ -284,7 +280,7 @@ mtl = {
 
 				}
 				$('#existing').html(html2);
-				$('table.striped tbody tr:odd td .fldData').addClass('altBG');
+				$('table.striped tbody tr:even').addClass('altBG');
 				$('.editBtn').bind('click',null,mtl.doEdit);
 			}
 			else {
