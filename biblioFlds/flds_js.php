@@ -126,13 +126,7 @@ mtl = {
 	},
 
 	//------------------------------
-	doShowForm: function () {
-		mtl.fetchMatlFlds();
-		mtl.enableBtn('configBtn');
-		$('#workDiv').show();
-	},
-
-	//------------------------------
+	// this section is for the drag & drop layout display
 	doConfigLayout: function () {
 	  $('#typeList').disable();
 	  $('#workDiv').hide();
@@ -189,9 +183,9 @@ mtl = {
 			$('#potential').html(html);
 		});
 	},
-  receiveMarcFld: function (e,ui){
+  //receiveMarcFld: function (e,ui){
 		//console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
-	},
+	//},
 	doSaveLayout: function () {
 		// collect current line data in an array
 		var arayd = $('#existing').sortable( 'toArray');
@@ -228,6 +222,13 @@ mtl = {
 	},
 	
 	//------------------------------
+	// this portion is for the original page layout
+	doShowForm: function () {
+		mtl.fetchMatlFlds();
+		mtl.enableBtn('configBtn');
+		$('#workDiv').show();
+	},
+
 	fetchMatlFlds: function (e) {
 		//console.log ('in showWorkForm()');
 		var matl = $('#typeList').val();
@@ -248,24 +249,24 @@ mtl = {
  					html += '<input type="hidden" name="material_field_id" class="fldData" value="'+data[n]['material_field_id']+'" />\n';
 					html += '</td>';
 					html += '<td>';
-					html += '<span class="fldData">'+data[n]['position']+'</span>';
+					html += '<span name="position" class="fldData">'+data[n]['position']+'</span>';
 					html += '</td>';
 	   			html += '<td valign="top" class="primary">\n';
  					html += '<input type="hidden" name="tag" class="fldData" value="'+data[n]['tag']+'" />\n';
  					html += '<input type="hidden" name="subfield_cd" class="fldData" value="'+data[n]['subfield_cd']+'" />\n';
-					html += '<span class="fldData">'+data[n]['tag']+data[n]['subfield_cd']+'</span>';
+					html += '<span name="info" class="fldData">'+data[n]['tag']+data[n]['subfield_cd']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<span class="fldData">'+data[n]['label']+'</span>';
+					html += '<span name="label" class="fldData">'+data[n]['label']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<span class="fldData">'+data[n]['form_type']+'</span>';
+					html += '<span name="form_type" class="fldData">'+data[n]['form_type']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<span class="fldData">'+(data[n]['required']=='1'?'Y':'N')+'</span>';
+					html += '<span name="required" class="fldData">'+(data[n]['required']=='1'?'Y':'N')+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
-					html += '<span class="fldData">'+data[n]['repeatable']+'</span>';
+					html += '<span name="repeatable" class="fldData">'+data[n]['repeatable']+'</span>';
 					html += '</td>';
 					html += '</tr>\n';
 					$('#fldSet').append(html);
@@ -291,16 +292,35 @@ mtl = {
 			}
 		});
 	},
+	
+	collectSpanData: function (id) {
+	  // collect data from a single line in preparation for editing; return as array of JSON
+	  var rslt = '[';
+		var entry = '';
+	  $('#'+id+' span.fldData').each(function (n) {
+			entry = "{'name':'"+$(this).attr('name')+"','value':'"+$(this).html()+"'},";
+			rslt += entry;
+		});
+	  $('#'+id+' input.fldData:hidden').each(function (n) {
+			entry = "{'name':'"+$(this).attr('name')+"','value':'"+$(this).val()+"'},";
+			rslt += entry;
+		});
+		return rslt.substr(0,rslt.length-1)+']';
+	},
+	
 	doEdit: function (e) {
+	  // come here as result of pressing a line's edit button
 		$('#workDiv').hide();
 		$('#msgDiv').hide();
 		$('#addBtn').hide();
+		$('#typeList').disable();
 		mtl.hideTopBtns();
 		$('#editDiv').show();
 		
 	  var theTagId = $(this).next().val();
 		var mtlId ='mtl'+theTagId;
-		var parms = $('#'+mtlId+' .fldData').serializeArray();
+		var inpt = mtl.collectSpanData(mtlId);
+		var parms = eval('('+inpt+')');
 		for(n in parms) {
 			var fldName = parms[n]['name']
 			if ((fldName == 'required') || (fldName == 'form_type')) {
@@ -313,6 +333,7 @@ mtl = {
 			}
 		}
 	},
+	
 	doUpdateFldset: function () {
 	  //if (!mtl.doValidate(e)) return;
 		$('#updateMsg').hide();
@@ -337,6 +358,7 @@ mtl = {
 			}
 		});
 	},
+	
 	doDeleteFldset: function (e) {
 		var msg = mtl.delConfirmMsg+'\n>>> '+$('#editForm tbody #label').val()+' <<<';
 	  if (confirm(msg)) {
@@ -356,6 +378,7 @@ mtl = {
 			});
 		}
 	},
+	
 	doNewFldset: function (e) {
 	  $('#hostHdr').html(mtl.newHdr);
 	  $('#hostForm tfoot #updtBtn').hide();

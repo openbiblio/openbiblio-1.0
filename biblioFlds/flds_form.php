@@ -125,7 +125,8 @@
       <label for="required"><?php echo T("requiredLabel"); ?>
     </td>
     <td colspan="2" valign="top" class="primary inptFld">
-			<input type="checkbox" id="required" name="required" class="primary fldData" size="4" value="1" />
+			<!--input type="checkbox" id="required" name="required" class="primary fldData" size="4" value="1" /-->
+      <?php echo inputfield('checkbox', 'required', '1', array('class'=>'primary fldData')); ?>
 		</td>
   </tr>
   <tr>
