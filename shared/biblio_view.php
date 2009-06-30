@@ -45,7 +45,8 @@
 	#****************************************************************************
 	$bibid = $_REQUEST["bibid"];
 	if (isset($_REQUEST["msg"])) {
-		$msg = '<p class="error">'.htmlspecialchars($_REQUEST["msg"]).'</p><br /><br />';
+//		$msg = '<p class="error">'.htmlspecialchars($_REQUEST["msg"]).'</p><br /><br />';
+		$msg = '<p class="error">'.htmlspecialchars($_REQUEST["msg"]).'</p>';
 	} else {
 		$msg = "";
 	}
@@ -64,7 +65,19 @@
 	} else {
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
+?>
 
+<script language="JavaScript1.4" >
+bv = {
+	init: function () {
+	  $('table.striped tr:odd').addClass('altBG');
+	  
+	}
+}
+$(document).ready(bv.init);
+</script>
+
+<?php
 	echo $msg;
 
 	currentMbrBox();
@@ -74,38 +87,50 @@
 	} else {
 		$rpt = NULL;
 	}
+
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
-		echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
+		echo "<table style=\"margin-bottom: 10px\" width=\"60%\" align=\"center\">\n";
+		echo "<tr>\n";
+		echo "<td align=\"left\">\n";
 		if ($p) {
-			echo '<a href="../shared/biblio_view.php?bibid='.HURL($p['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($p['.seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
+			echo "<a href=\"../shared/biblio_view.php?bibid="
+			.HURL($p['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($p['.seqno'])
+			."\" accesskey=\"p\">&laquo;".T('Prev')
+			."</a>\n";
 		}
-		echo '</td><td align="center">';
+		echo "</td>\n";
+		echo "<td align=\"center\">\n";
 		echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
-		echo '</td><td align="right">';
+		echo "</td>\n";
+		echo "<td align=\"right\">\n";
 		if ($n) {
-			echo '<a href="../shared/biblio_view.php?bibid='.HURL($n['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($n['.seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
+			echo "<a href=\"../shared/biblio_view.php?bibid=".HURL($n['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($n['.seqno'])."\" accesskey=\"n\">".T("Next")."&raquo;</a>\n";
 		}
-		echo '</td></tr></table>';
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
 	}
 
 	$bibimages = new BiblioImages;
-	echo '<div class="biblio_images">';
+	echo "<div class=\"biblio_images\">\n";
 	$images = $bibimages->getByBibid($biblio['bibid']);
 	while ($img = $images->next()) {
-		echo '<div class="biblio_image">';
+		echo "<div class=\"biblio_image\">\n";
 		if ($img['url']) {
-			echo '<a href="'.H($img['url']).'">';
+			echo "<a href=\"".H($img['url'])."\">\n";
 		}
-		echo '<img src="'.H($img['imgurl']).'" alt="'.H($img['caption']).'" /><br />';
-		echo '<span class="img_caption">'.H($img['caption']).'</span><br />';
+//		echo "<img src="'.H($img['imgurl']).'" alt="'.H($img['caption']).'" /><br />\n";
+		echo "<img src=\"".H($img['imgurl'])."\" alt=\"".H($img['caption'])."\" />\n";
+//		echo "<span class="img_caption">'.H($img['caption']).'</span><br />\n";
+		echo "<span class=\"img_caption\">".H($img['caption'])."</span>\n";
 		if ($img['url']) {
-			echo '</a>';
+			echo "</a>\n";
 		}
-		echo '</div>';
+		echo "</div>\n";
 	}
-	echo '</div>';
+	echo "</div>\n";
 
 	$d = new InfoDisplay;
 	$d->title = T("Item Info");
@@ -143,15 +168,18 @@
 </td>
 	</tr>
 </table>
-<table class="biblio_view">
+<table class="biblio_view striped">
+<thead>
 <tr>
 	<td colspan=2 align=right>
-		<a href="biblio_view_full.php?bibid=<?php echo $bibid;?>"><?php echo T("Detailed View"); ?></a>&nbsp;|&nbsp;
-		<a href="biblio_view_marc.php?bibid=<?php echo $bibid;?>"><?php echo T("MARC View"); ?></a>&nbsp;|&nbsp;
+		<a href="biblio_view_full.php?bibid=<?php echo $bibid;?>"><?php echo T("Detailed View"); ?></a>
+		&nbsp;|&nbsp;
+		<a href="biblio_view_marc.php?bibid=<?php echo $bibid;?>"><?php echo T("MARC View"); ?></a>
+		&nbsp;|&nbsp;
 		<a href="biblio_cite.php?bibid=<?php echo $bibid;?>" target="_citation"><?php echo T("Citation"); ?></a>
 	</td>
 </tr>
-
+</thead>
 <?php
 function mkfield() {
 	$args = func_get_args();
@@ -204,10 +232,10 @@ function catalog_search($type, $value) {
 		. '&amp;tab=' . HURL($tab)
 		. '&amp;exact=1">'
 		. H($value)
-		. '</a>';
+		. "</a>\n";
 }
 function link856($value) {
-	return '<a href="'.H($value).'">'.H($value).'</a>';
+	return "<a href=\"".H($value)."\">".H($value)."</a>\n";
 }
 
 foreach ($fields as $f) {
@@ -228,7 +256,7 @@ foreach ($fields as $f) {
 				}
 			}
 		}
-		$prefix = "<br />";
+//		$prefix = "<br />";
 	}
 	$value = trim($value);
 	if ($value == "") {
@@ -244,8 +272,8 @@ foreach ($fields as $f) {
 <?php
 }
 if ($tab == "cataloging") {
-	echo '<tr><td class="name">'.T("Date Added:").'</td>';
-	echo '<td class="value">'.H(date('m/d/Y', strtotime($biblio['create_dt']))).'</td></tr>';
+	echo "<tr><td class=\"name\">".T("Date Added:")."</td>\n";
+	echo "<td class=\"value\">".H(date('m/d/Y', strtotime($biblio['create_dt'])))."</td></tr>\n";
 }
 ?>
 </table>

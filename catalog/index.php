@@ -31,11 +31,6 @@
 <fieldset>
 <legend><?php echo T("Find Item by Barcode Number"); ?></legend>
 <table class="primary">
-	<!--tr>
-		<th valign="top" nowrap="yes" align="left">
-			<?php //echo T("Find Item by Barcode Number"); ?>
-		</th>
-	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
 			<label for="searchText"><?php echo T("Barcode Number:");?></label>

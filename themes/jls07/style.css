@@ -280,3 +280,6 @@ span.highLite {
 span.error {
 	color: red;
 	}
+p.error {
+	color: red;
+	}
