@@ -7,15 +7,17 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 ?>
 <form name="phrasesearch" method="get" action="../shared/biblio_search.php">
+<fieldset>
+<legend><?php echo T("Search Catalog"); ?></legend>
 <table class="primary" width="100%">
-	<tr>
+	<!--tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Search Catalog"); ?>
+			<?php //echo T("Search Catalog"); ?>
 		</th>
-	</tr>
+	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
-			<select name="searchType">
+			<select id="searchType" name="searchType">
 				<option value="keyword" selected="selected"><?php echo T("Keyword"); ?></option>
 				<option value="title"><?php echo T("Title"); ?></option>
 				<option value="subject"><?php echo T("Subject"); ?></option>
@@ -25,16 +27,17 @@
 			</select>
 		</td>
 		<td class="primary">
-			<input style="width: 100%" type="text" name="searchText" size="30" maxlength="256" />
-			<input type="hidden" name="sortBy" value="title" />
-			<input type="hidden" name="tab" value="<?php echo $tab; ?>" />
-			<input type="hidden" name="lookup" value="<?php echo $lookup; ?>" />
+			<!--input style="width: 100%" type="text" name="searchText" size="30" maxlength="256" /-->
+			<?php echo inputfield('text','searchText','',
+														array('size'=>'30','maxlength'=>'256','style'=>'width: 100%')); ?>
+			<?php echo inputfield('hidden','sortBy','title'); ?>
+			<?php echo inputfield('hidden','tab',$tab); ?>
+			<?php echo inputfield('hidden','lookup',$lookup); ?>
 		</td>
 		<td id="searchsubmit">
 			<input type="submit" value="<?php echo T("Search"); ?>" class="button" />
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
 	<tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
 			<?php echo T("Limit Search Results"); ?>
@@ -52,7 +55,7 @@
 	<tr>
 		<td align="right" class="primary"><strong><?php echo T("Audience Level:"); ?></strong></td>
 		<td class="primary">
-			<select name="audienceLevel">
+			<select id="audienceLevel" name="audienceLevel">
 				<option value="all" selected="selected"><?php echo T("All"); ?></option>
 				<option value="K"><?php echo T("Kindergarten"); ?></option>
 				<option value="P"><?php echo T("Primary"); ?></option>
@@ -73,4 +76,5 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>

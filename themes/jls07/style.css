@@ -225,6 +225,15 @@ div#content {
 sup {
 	color: red;
 	}
+fieldset {
+	background-color: #ffffdd;
+	}
+legend {
+	font-weight: bold;
+	}
+label {
+	font-weight: bold;
+	}
 input.button {
 	background: #b2dae4;
 	border: solid black 2px;

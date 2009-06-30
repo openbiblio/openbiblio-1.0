@@ -28,24 +28,27 @@
 ?>
 
 <form name="barcodesearch" method="post" action="../shared/biblio_search.php">
+<fieldset>
+<legend><?php echo T("Find Item by Barcode Number"); ?></legend>
 <table class="primary">
-	<tr>
+	<!--tr>
 		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Find Item by Barcode Number"); ?>
+			<?php //echo T("Find Item by Barcode Number"); ?>
 		</th>
-	</tr>
+	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
-			<?php echo T("Barcode Number:");?>
-			<input type="text" name="searchText" size="20" maxlength="20" />
-			<input type="hidden" name="searchType" value="barcodeNmbr" />
-			<input type="hidden" name="sortBy" value="default" />
+			<label for="searchText"><?php echo T("Barcode Number:");?></label>
+			<?php echo inputfield('text','searchText','',array('size'=>'20','maxlength'=>'20')); ?>
+			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
+			<?php echo inputfield('hidden','sortBy','default'); ?>
 			<input type="submit" value="<?php echo T("Search"); ?>" class="button" />
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
-
+<br />
 <?php
 
 	include(REL(__FILE__, "../shared/searchbar.php"));
