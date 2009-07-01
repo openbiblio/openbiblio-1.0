@@ -42,6 +42,9 @@ h5 {
 h5#updateMsg {
 	color: red;
 	}
+p#errMsgTxt {
+	color: red; text-align: center;
+	}
 table#showList tr {
 	height: 1.3em;
 	}

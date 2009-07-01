@@ -49,7 +49,7 @@ lkup = {
 		// button on search screen gets special treatment
 		lkup.srchBtn = $('#srchBtn');
 		lkup.resetForm();
-		lkup.srchBtn.bind('click',null,lkup.doSearch);
+		lkup.srchBtn.bind('click',null,lkup.doValidate);
 
     $('.criteria').bind('change',null,lkup.enableSrchBtn);
 		$('#quitBtn').bind('click',null,lkup.doAbandon);
@@ -91,6 +91,7 @@ lkup = {
 		$('#help').hide();
 	  $('#searchHdr').html(lkup.searchHdr);
 		$('#searchDiv').show();
+		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
 		$('#choiceDiv').hide();
@@ -141,12 +142,100 @@ lkup = {
 	},
 
 	//------------------------------
+	// search related stuff
+	chkIsbn: function (isbn) {
+		// validate isbn string; return TRUE if checksum is valid
+		var nSum = 0;
+		var sSum = '';
+		var nAdr = 0;
+		var rslt = true;
+		var msg = '';
+		if (isbn.length < 10) {
+			msg = "<br />(length is "+isbn.length+"; Not enough digits for isbn)";
+			rslt = false;
+		}
+		else if (isbn.substr(0,3) == "978") {
+			// this is a bar code reader input
+			if (isNaN(parseInt(isbn.substr(9,1))) ) {
+				msg = "(Bar-Code ISBN Entry does not start with a digit)";
+				rslt = false;
+			}
+		}
+		else {	// test check digit
+			for (var i=0; i<9; i++) {
+				nAdr = isbn.substr(i,1);
+				nSum += (10-i) * nAdr;
+			}
+			nSum = nSum % 11;
+			nSum = 11 - nSum;
+			if (nSum == 10)
+				sSum = "X";
+			else if (nSum == 11)
+				sSum = "0";
+			else
+				sSum = nSum.toString();
+			//console.log("\nisbn chk digit="+isbn.substr(9,1)+"\ncomputed ="+sSum);
+			if (sSum != isbn.substr(9,1)) {
+				msg = "<br />(ISBN checksum fails)";
+				rslt = false;
+			}
+		}
+		if (!rslt) {
+			$('#srchBy').focus();
+			$('#errMsgTxt').html(msg+"<br />Correct it and try again.");
+		}
+		return rslt;
+	},
+	
+	doValidate: function () {
+		var nType = $('#srchBy').val();
+	  var val = $('#lookupVal').val();
+	  var rslt = true;
+	  var test = val.replace(/-| /g, '');
+	  switch (parseInt(nType)) {
+	  case 4: // Text input
+	  	if (!isNaN(parseInt(test))) {
+				rslt = false;
+				msg = "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.";
+			}
+			break;
+		case 7: //ISBN
+	   	if ((isNaN(parseInt(test))) || (!lkup.chkIsbn(test))) {
+				rslt = false;
+				msg = "This is not a valid ISBN.";
+			}
+			break;
+		 case 8: // ISSN
+	   	if (isNaN(parseInt(test))) {
+				rslt = false;
+				msg = "This is not a valid ISSN.";
+			}
+			break;
+		case 9: // LCCN
+	   	if (isNaN(parseInt(test))) {
+				rslt = false;
+				msg = "This is not a valid LCCN.";
+			}
+			break;
+		}
+
+		if (rslt) {
+		  lkup.doSearch();
+		}
+		else {
+			$('#srchBy').focus();
+			$('#errMsgTxt').prepend(msg);
+			return rslt;
+		}
+	},
 	doSearch: function () {
-	  // advise user that this takes time to complete
 	  var srchBy = flos.getSelectBox($('#srchBy'),'getText');
+	  var lookupVal = $('#lookupVal').val();
+
+	  // advise user that this takes time to complete
 	  var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
 	  var theTxt = '<h5>';
-		theTxt += "Looking for "+srchBy+" '" + $('#lookupVal').val() + "'<br />";
+		theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
 	  if ($('#lookupVal2').val() != '')
 			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
 		theTxt += 'at :<br />';
@@ -454,4 +543,106 @@ lkup = {
 };
 
 $(document).ready(lkup.init);
+
+	function chkIsbn (sInput) {
+		// validate isbn string; return TRUE if checksum is valid
+		var isbn = '';
+		var nSum = 0;
+		var sSum = '';
+		var nAdr = 0;
+		//alert('checking ISBN: '+sInput);
+
+//		if (keepIsbnDashes) {
+//alert("keep any '-' char user may have entered");
+//			isbn = sInput.replace(/ /g, '');
+//		} else {
+			//alert("remove all '-' or spaces from ISBN");
+			isbn = sInput.replace(/-| /g, '');
+//		}
+//alert('using ISBN: '+isbn);
+
+		if (isbn.length < 10) {
+			alert("\nNot enough digits for isbn!\n\nCorrect it and try again.");
+			return false;
+		}
+		else if (isbn.substr(0,3) == "978") {
+			// this is a bar code reader input
+			if (isNaN(parseInt(isbn.substr(9,1))) ) {
+				alert("\nBar-Code ISBN Entry does not start with a digit\n\nPlease correct it and try again.");
+				return false;
+			} else
+				return true;
+		}
+		else {	// test check digit
+			for (var i=0; i<9; i++) {
+				nAdr = isbn.substr(i,1);
+				nSum += (10-i) * nAdr;
+			}
+			nSum = nSum % 11;
+			nSum = 11 - nSum;
+			if (nSum == 10)
+				sSum = "X";
+			else if (nSum == 11)
+				sSum = "0";
+			else
+				sSum = nSum.toString();
+			//alert("\nisbn chk digit="+isbn.substr(9,1)+"\ncomputed ="+sSum);
+			if (sSum != isbn.substr(9,1)) {
+				alert("\nISBN checksum fails!\n\nPlease correct it and try again.");
+				return false;
+			} else
+				return true;
+		}
+	}
+
+	function chkBookId () {
+		var list1 = document.lookupform.srchBy;
+		var i = list1.selectedIndex;
+		var nType = list1.options[i].value;
+		var sId = document.lookupform.lookupVal.value;
+		//alert("in chkBookId, sID="+sId+", nType="+nType);
+
+		var rslt = false;
+		if (nType == 7) {
+			//alert('you are searching by ISBN');
+			rslt = chkIsbn(sId);
+			if (rslt != true)
+				document.lookupform.lookupVal.focus();
+		}
+		else if (nType == 8)
+			rslt = true;	// ISSN
+		else if (nType == 9)
+			rslt = true;	// LCCN
+		else if (nType == 4)
+			rslt = true;	// TITL
+		return rslt;
+	}
+
+	function selectThis (host,hit) {
+		//alert('using form: '+	'hitForm'+host+'_'+hit);
+		aForm = document.getElementById('hitForm'+host+'_'+hit);
+		if(!aForm) alert('hitForm not available');
+
+		theForm = document.getElementById('lookupform');
+		if(!theForm) alert('lookupForm not available');
+
+		var lccn = "";
+		var isbn = "";
+
+		// setup ISBN or LCCN as appropriate
+		if (aForm.elements["isbn"+hit] != null) {
+			isbn = aForm.elements["isbn"+hit].value;
+			useTag = "ISBN";
+			theForm.lookupVal.value = isbn;
+		}
+		else if (aForm.elements["lccn"+hit] != null) {
+			lccn = aForm.elements["lccn"+hit].value;
+			useTag = "LCCN";
+			theForm.lookupVal.value = stripJunk(lccn, '0123456789');
+		}
+		else {
+			useTag = "N/A";
+			alert ("invalid choice");
+		}
+	}
 </script>

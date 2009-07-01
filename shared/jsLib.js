@@ -12,8 +12,8 @@ $.fn.enable = function () {
 				 });
 };
 //------------------------------------------------------------------------------
-// flos-lib stuff for lookup
-// get/set selected value or text
+// legacy javascript that I can't find a jQuery equivalent of
+// needs to be made into a jQuery plugin as above
 flos = {
 	getSelectBox: function  (boxId, getText/*boolean*/) {
 		if (typeof(boxId) === 'string')
@@ -34,30 +34,23 @@ flos = {
 			theBox = $('#'+boxId);
 		else
 	   	theBox = boxId;
-		//console.log('theBox is '+theBox);
 
 		if (!theBox)alert('cant find select box with ID='+boxId);
 		var opts = theBox[0].options;
 		if (exactMatch == null) exactMatch = true;
-		//console.log('in select box: '+boxId+'; match='+exactMatch+'; look for '+optText);
 		for (var i=0; i<opts.length; i++) {
-			//console.log('want:'+optText+'; have:'+opts[i].text+' ('+opts[i].value+'); #'+i+' of '+opts.length);
 			if (opts[i].selected) opts[i].selected=false;
 			if (exactMatch == 'useId') {
-				//console.log('with useId"');
 			  if (opts[i].value == optText) {
 					opts[i].selected = true;
 					return;
 				}
 			} else if (exactMatch == true) {
-				//console.log('w/exact, want:'+optText+'; have:'+opts[i].text+' ('+opts[i].value+'); #'+i+' of '+opts.length);
 				if (opts[i].text.replace(/ /g,'') == optText.replace(/ /g,'')) {
 					opts[i].selected = true;
 					return;
 				}
 			} else {
-				//console.log('w/???');
-				//alert('want:'+optText+'; have:'+opts[i].text+' ('+opts[i].value+'); #'+i+' of '+opts.length);
 			   if (optText == '-') return;
 				if (opts[i].text.indexOf(optText)>0) {
 					opts[i].selected = true;
@@ -65,5 +58,19 @@ flos = {
 				}
 		  }
 		}
+	},
+/* --------------------------------- */
+	stripJunk: function (str, bag) {
+		// Removes all characters from string 'str' which do NOT appear in string 'bag'.
+   	var i;
+    var returnString = "";
+
+    // Search through string's characters one by one.
+    // If character is in bag, append to returnString.
+    for (i = 0; i < str.length; i++) {
+        var c = str.charAt(i);
+        if (bag.indexOf(c) != -1) returnString += c;
+    }
+    return returnString;
 	}
 }

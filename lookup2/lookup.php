@@ -45,6 +45,7 @@
 	<h1><span id="searchHdr" class="title"></span></h1>
 	<div id="searchDiv">
 		<form id="lookupForm" name="lookupForm" >
+		<fieldset>
 		<table class="primary">
 		<thead>
 		<tr>
@@ -53,18 +54,26 @@
 		</tr>
 		</thead>
 		<tbody>
+		<?php
+		  $isbnTxt    = T("lookup_isbn");
+		  $issnTxt    = T("lookup_issn");
+		  $lccnTxt    = T("lookup_lccn");
+		  $titleTxt   = T("lookup_title");
+		  $authorTxt  = T("lookup_author");
+			$keywordTxt = T("lookup_keyword");
+			$pubDateTxt = T("lookup_pubDate");
+			$pubNameTxt = T("lookup_publisher");
+			$pubLocTxt  = T("lookup_pubLoc");
+		?>
 		<tr id="fldset1">
 		  <td class="primary inptFld">
-				<input type="text" size="30" id="lookupVal" name="lookupVal" class='criteria' value="" />
+				<?php echo inputfield('text','lookupVal','',array('class'=>'criteria')); ?>
 			</td>
 		  <td class="primary inptFld">
-    		<select id="srchBy" name="srchBy" class='criteria' >
-					<option value="7" selected><?php echo T("lookup_isbn");?></option>
-					<option value="8"><?php echo T("lookup_issn");?></option>
-					<option value="9"><?php echo T("lookup_lccn");?></option>
-					<option value="4"><?php echo T("lookup_title");?></option>
-					<option value="1016"><?php echo T("lookup_keyword");?></option>
-				</select>
+				<?php
+				echo inputfield('select','srchBy','7',array('class'=>'criteria'),
+						 array('7'=>"$isbnTxt",'8'=>"$issnTxt",'9'=>"$lccnTxt",'4'=>"$titleTxt",'1016'=>"$keywordTxt"));
+				?>
 			</td>
 		</tr>
 		
@@ -73,14 +82,13 @@
 		</tr>
 		<tr id="fldset2">
 		  <td class="primary inptFld">
-				<input type="text" size="30" id="lookupVal2" name="lookupVal2" class='criteria' value="" />
+				<?php echo inputfield('text','lookupVal2','',array('class'=>'criteria')); ?>
 			</td>
 		  <td class="primary inptFld">
-				<select id="srchBy2" name="srchBy2" class='criteria' >
-					<option value="0" selected></option>
-					<option value="1004"><?php echo T("lookup_author");?></option>
-					<option value="1016"><?php echo T("lookup_keyword");?></option>
-				</select>
+				<?php
+				echo inputfield('select','srchBy2','0',array('class'=>'criteria'),
+						 array('0'=>' ','1004'=>"$authorTxt",'1016'=>"$keywordTxt"));
+				?>
 			</td>
 		</tr>
 		
@@ -89,16 +97,13 @@
 		</tr>
 		<tr id="fldset3">
 			<td class="primary inptFld">
-				<input type="text" size="30" id="lookupVal3" name="lookupVal3" class='criteria' value="" />
+				<?php echo inputfield('text','lookupVal3','',array('class'=>'criteria')); ?>
 			</td>
 		  <td class="primary inptFld">
-    		<select id="srchBy3" name="srchBy3" class='criteria' >
-					<option value="0" selected></option>
-					<option value="1018"><?php echo T("lookup_publisher");?></option>
-					<option value="59"><?php echo T("lookup_pubLoc");?></option>
-					<option value="31"><?php echo T("lookup_pubDate");?></option>
-					<option value="1016"><?php echo T("lookup_keyword");?></option>
-				</select>
+				<?php
+				echo inputfield('select','srchBy3','0',array('class'=>'criteria'),
+						 array('0'=>' ','1018'=>"$pubNameTxt",'59'	=>"$pubLocTxt",'31'	=>"$pubDateTxt",'1016'=>"$keywordTxt"));
+				?>
 			</td>
 		</tr>
 		
@@ -107,16 +112,13 @@
 		</tr>
 		<tr id="fldset4">
 			<td class="primary inptFld">
-				<input type="text" size="30" id="lookupVal4" name="lookupVal4" class='criteria' value="" />
+				<?php echo inputfield('text','lookupVal4','',array('class'=>'criteria')); ?>
 			</td>
 		  <td class="primary inptFld">
-    		<select id="srchBy4" name="srchBy4" class='criteria' >
-					<option value="0" selected>
-					<option value="59"><?php echo T("lookup_pubLoc");?></option>
-					<option value="1018"><?php echo T("lookup_publisher");?></option>
-					<option value="31"><?php echo T("lookup_pubDate");?></option>
-					<option value="1016"><?php echo T("lookup_keyword");?></option>
-				</select>
+				<?php
+				echo inputfield('select','srchBy4','0',array('class'=>'criteria'),
+						 array('0'=>' ','59'	=>"$pubLocTxt",'1018'=>"$pubNameTxt",'31'	=>"$pubDateTxt",'1016'=>"$keywordTxt"));
+				?>
 			</td>
 		</tr>
 		
@@ -125,16 +127,13 @@
 		</tr>
 		<tr id="fldset5">
 			<td class="primary inptFld">
-				<input type="text" size="30" id="lookupVal5" name="lookupVal5" class='criteria' value="" />
+				<?php echo inputfield('text','lookupVal5','',array('class'=>'criteria')); ?>
 			</td>
 		  <td class="primary inptFld">
-    		<select id="srchBy5" name="srchBy5" class='criteria' >
-					<option value="0" selected>
-					<option value="31"><?php echo T("lookup_pubDate");?></option>
-					<option value="1018"><?php echo T("lookup_publisher");?></option>
-					<option value="59"><?php echo T("lookupPub_loc");?></option>
-					<option value="1016"><?php echo T("lookup_keyword");?></option>
-				</select>
+				<?php
+				echo inputfield('select','srchBy5','0',array('class'=>'criteria'),
+						 array('0'=>' ','31'	=>"$pubDateTxt",'1018'=>"$pubNameTxt",'59'	=>"$pubLocTxt",'1016'=>"$keywordTxt"));
+				?>
 			</td>
 		</tr>
 
@@ -154,6 +153,8 @@
 		</tr>
 		</tfoot>
 		</table>
+		</fieldset>
+		<p id="errMsgTxt"></p>
 		</form>
 	</div>
 	
