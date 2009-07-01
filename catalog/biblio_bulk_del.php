@@ -9,6 +9,7 @@ $tab = "cataloging";
 $nav = "bulk_delete";
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
+require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/Biblios.php"));
 
@@ -74,43 +75,76 @@ function doConfirm($barcode_list, $del_items) {
 function showConfirm($del_copyids, $del_bibids) {
 	global $tab, $nav;
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-	echo '<center><form method="post" action="../catalog/biblio_bulk_del.php">';
-	echo '<p>'.T('biblioBulkDelWantToDel', array('copy'=>H(count($del_copyids)), 'item'=>H(count($del_bibids)))).'</p>';
-	echo '<input type="hidden" name="posted" value="1" />';
-	echo '<input type="hidden" name="confirmed" value="1" />';
-	foreach ($del_copyids as $id) {
-		echo '<input type="hidden" name="del_copyids[]" value="'.H($id).'" />';
-	}
-	foreach ($del_bibids as $id) {
-		echo '<input type="hidden" name="del_bibids[]" value="'.H($id).'" />';
-	}
-	echo '<input type="submit" class="button" value="'.T("Delete").'" />  ';
-	echo '<a href="../catalog/biblio_bulk_del.php" class="small_button">'.T("Cancel").'</a>';
-	echo '</form></center>';
+	?>
+	<style>
+	  form#bulkDelForm {
+			text-align: center;
+			}
+	</style>
+	<form id="bulkDelForm" method="post" action="../catalog/biblio_bulk_del.php">;
+	<fieldset>
+		<p>
+			<?php
+			  $txt1 = H(count($del_copyids)); $txt2 = H(count($del_bibids));
+				echo T('biblioBulkDelWantToDel',array('copy'=>"$txt1",'item'=>"$txt2"));
+			?>
+		</p>';
+
+		<?php
+			echo inputfield('hidden','posted','1');
+			echo inputfield('hidden','confirmed','1');
+			foreach ($del_copyids as $id) {
+				echo inputfield('hidden','del_copyids[]',H($id));
+			}
+			foreach ($del_bibids as $id) {
+				echo inputfield('hidden','del_bibids[]',H($id));
+			}
+		?>
+	
+		<input type="submit" class="button" value="<?php echo T("Delete");?>" />
+		<a href="../catalog/biblio_bulk_del.php" class="small_button"><?php echo T("Cancel");?></a>
+	</fieldset>
+	</form>
+	<?php
 	Page::footer();
 }
+
 function showForm($vars, $errors=array()) {
 	global $tab, $nav;
 	$focus_form_name=bulk_delete;
 	$focus_form_field=barcodes;
+	
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-	echo '<h2>'.T("Bulk Delete").'</h2>';
+	
+	echo "<h1><span id=\"searchHdr\" class=\"title\">".T('Bulk Delete')."</span></h1>\n";
 	if (isset($_REQUEST['msg'])) {
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 	}
-	echo '<p>'.T("Enter barcodes to delete below, one per line.").'</p>';
 	foreach ($errors as $e) {
 		echo '<p class="error">'.H($e->toStr()).'</p><br />';
 	}
-	echo '<form name="bulk_delete" method="post" action="../catalog/biblio_bulk_del.php">';
-	echo '<input type="hidden" name="posted" value="1" />';
-	echo '<textarea name="barcodes" rows="12">'.H($vars['barcodes']).'</textarea>';
-	echo '<p><input type="checkbox" name="del_items" value="1" ';
-	if ($vars['del_items']) {
-		echo 'checked="checked" ';
-	}
-	echo  '/>'.T("Delete items if all copies are deleted.").'</p>';
-	echo '<input type="submit" class="button" value="'.T("Submit").'" />';
-	echo '</form>';
+	?>
+	
+	<form name="bulk_delete" method="post" action="../catalog/biblio_bulk_del.php">
+	<fieldset>
+		<legend><?php echo T("Enter barcodes to delete below, one per line."); ?></legend>
+		<!--input type="hidden" name="posted" value="1" /-->
+		<?php echo inputfield('hidden','posted','1'); ?>
+		<!--textarea name="barcodes" rows="12">'.H($vars['barcodes']).'</textarea-->
+		<?php echo inputfield('textarea','barcodes','',array('rows'=>'12'),H($vars['barcodes'])); ?>
+		<br />
+		<label for="del_items">
+			<!--input type="checkbox" name="del_items" value="1"
+							<?php //if ($vars['del_items']) echo 'checked="checked" '; ?>
+							/>'.T("Delete items if all copies are deleted.") -->
+			<?php echo inputfield('checkbox','del_items','1','',($vars['del_items']?'1':'')); ?>
+			<?php echo T("Delete items if all copies are deleted.") ?>
+		</label>
+		<br />
+		<input type="submit" class="button" value="<?php echo T("Submit");?>" />
+	</fieldset>
+	</form>
+	
+	<?php
 	Page::footer();
 }
