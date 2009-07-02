@@ -44,7 +44,7 @@
 ?>
 	<h1><span id="searchHdr" class="title"></span></h1>
 	<div id="searchDiv">
-		<form id="lookupForm" name="lookupForm" >
+		<form id="lookupForm" name="lookupForm" action="" >
 		<fieldset>
 		<table class="primary">
 		<thead>
@@ -147,7 +147,7 @@
 		<tfoot>
 		<tr>
 		  <td colspan="2" class="primary btnFld" >
-				<input type="button" id="srchBtn" name="srchBtn" class="button"
+				<input type="submit" id="srchBtn" name="srchBtn" class="button"
 							 value="<?php echo T("lookup_search");?>" />
 			</td>
 		</tr>

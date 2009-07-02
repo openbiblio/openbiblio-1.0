@@ -24,49 +24,38 @@
 
 ?>
 
-<br />
-<center>
+<h1><span id="searchHdr" class="title"><?php echo T("Staff Login"); ?></span></h1>
 <form name="loginform" method="post" action="../shared/login.php">
+<fieldset>
 <table class="primary">
-	<tr>
-		<th><?php echo T("Staff Login"); ?></th>
-	</tr>
-	<tr>
-		<td valign="top" class="primary" align="left">
-<table class="primary">
+	<tbody>
 	<tr>
 		<td valign="top" class="noborder">
-			<?php echo T("Username:"); ?>
+			<label for="username"><?php echo T("Username:"); ?></label>
 		</td>
 		<td valign="top" class="noborder">
-			<?php
-				echo inputfield('text','username',$postVars["username"],$attrs);
-			?>
+			<?php echo inputfield('text','username',$postVars["username"],$attrs); ?>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top" class="noborder">
-			<?php echo T("Password:"); ?>
+			<label for="password"><?php echo T("Password:"); ?></label>
 		</td>
 		<td valign="top" class="noborder">
-			<?php
-				echo inputfield('password','pwd',$postVars["pwd"],$attrs);
-			?>
+			<?php echo inputfield('password','pwd',$postVars["pwd"],$attrs); ?>
 		</td>
 	</tr>
-
+	</tbody>
+	<tfoot>
 	<tr>
 		<td colspan="2" align="center" class="noborder">
 			<input type="submit" value="<?php echo T("Login"); ?>" class="button" />
 		</td>
 	</tr>
+	<tfoot>
 </table>
-		</td>
-	</tr>
-</table>
-
+</fieldset>
 </form>
-</center>
 
 <?php
 

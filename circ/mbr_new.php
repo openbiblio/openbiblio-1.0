@@ -44,6 +44,8 @@ if ($errors) {
 	FieldError::backToForm('../circ/mbr_new_form.php', $errors);
 }
 
+/*
+FIXME -- broken code - fred
 	$customFields = new MemberCustomFields;
 $custom = array();
 foreach ($customFields->getSelect() as $name => $title) {
@@ -52,6 +54,7 @@ foreach ($customFields->getSelect() as $name => $title) {
 	}
 	}
 $members->setCustomFields($mbrid, $custom);
+*/
 
 $msg = T("Member has been successfully added.");
 header("Location: ../circ/mbr_view.php?mbrid=".U($mbrid)."&reset=Y&msg=".U($msg));

@@ -11,6 +11,28 @@ $.fn.enable = function () {
 					if (typeof this.disabled != "undefined)") this.disabled = false;
 				 });
 };
+// <select> empty / load - 'jQuery in Action', p246, 1Jul2009 - fl
+$.fn.emptySelect = function () {
+	return this.each(function () {
+		if (this.tagName=='SELECT') this.options.length=0;
+	});
+}
+$.fn.loadSelect = function (optionsDataArray) {
+	return this.emptySelect().each(function() {
+		if (this.tagName=='SELECT') {
+			var selectElement = this;
+			$.each(optionsDataArray,function(index,optiondata) {
+				var option = new Option(optionsData.caption, optionsData.value);
+				if ($.browser.msie) {
+					selectElement.add(option);
+				} else {
+				  selectElement.add(option,null);
+				}
+			});
+		}
+	});
+};
+
 //------------------------------------------------------------------------------
 // legacy javascript that I can't find a jQuery equivalent of
 // needs to be made into a jQuery plugin as above

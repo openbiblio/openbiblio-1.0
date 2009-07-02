@@ -49,14 +49,18 @@ lkup = {
 		// button on search screen gets special treatment
 		lkup.srchBtn = $('#srchBtn');
 		lkup.resetForm();
-		lkup.srchBtn.bind('click',null,lkup.doValidate);
 
     $('.criteria').bind('change',null,lkup.enableSrchBtn);
 		$('#quitBtn').bind('click',null,lkup.doAbandon);
 		$('#retryBtn').bind('click',null,lkup.doBackToSrch);
 		$('#choiceBtn1').bind('click',null,lkup.doBackToSrch);
 		$('#choiceBtn2').bind('click',null,lkup.doBackToSrch);
-		
+		//lkup.srchBtn.bind('click',null,lkup.doValidate);
+		$('#lookupForm').bind('submit',null,function(){
+			lkup.doValidate();
+			return false;
+		});
+
 		// modify original biblioFields form to better suit our needs
 		$('#selectionDiv input[value="Cancel"]').removeAttr('onClick');
 		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
@@ -544,105 +548,4 @@ lkup = {
 
 $(document).ready(lkup.init);
 
-	function chkIsbn (sInput) {
-		// validate isbn string; return TRUE if checksum is valid
-		var isbn = '';
-		var nSum = 0;
-		var sSum = '';
-		var nAdr = 0;
-		//alert('checking ISBN: '+sInput);
-
-//		if (keepIsbnDashes) {
-//alert("keep any '-' char user may have entered");
-//			isbn = sInput.replace(/ /g, '');
-//		} else {
-			//alert("remove all '-' or spaces from ISBN");
-			isbn = sInput.replace(/-| /g, '');
-//		}
-//alert('using ISBN: '+isbn);
-
-		if (isbn.length < 10) {
-			alert("\nNot enough digits for isbn!\n\nCorrect it and try again.");
-			return false;
-		}
-		else if (isbn.substr(0,3) == "978") {
-			// this is a bar code reader input
-			if (isNaN(parseInt(isbn.substr(9,1))) ) {
-				alert("\nBar-Code ISBN Entry does not start with a digit\n\nPlease correct it and try again.");
-				return false;
-			} else
-				return true;
-		}
-		else {	// test check digit
-			for (var i=0; i<9; i++) {
-				nAdr = isbn.substr(i,1);
-				nSum += (10-i) * nAdr;
-			}
-			nSum = nSum % 11;
-			nSum = 11 - nSum;
-			if (nSum == 10)
-				sSum = "X";
-			else if (nSum == 11)
-				sSum = "0";
-			else
-				sSum = nSum.toString();
-			//alert("\nisbn chk digit="+isbn.substr(9,1)+"\ncomputed ="+sSum);
-			if (sSum != isbn.substr(9,1)) {
-				alert("\nISBN checksum fails!\n\nPlease correct it and try again.");
-				return false;
-			} else
-				return true;
-		}
-	}
-
-	function chkBookId () {
-		var list1 = document.lookupform.srchBy;
-		var i = list1.selectedIndex;
-		var nType = list1.options[i].value;
-		var sId = document.lookupform.lookupVal.value;
-		//alert("in chkBookId, sID="+sId+", nType="+nType);
-
-		var rslt = false;
-		if (nType == 7) {
-			//alert('you are searching by ISBN');
-			rslt = chkIsbn(sId);
-			if (rslt != true)
-				document.lookupform.lookupVal.focus();
-		}
-		else if (nType == 8)
-			rslt = true;	// ISSN
-		else if (nType == 9)
-			rslt = true;	// LCCN
-		else if (nType == 4)
-			rslt = true;	// TITL
-		return rslt;
-	}
-
-	function selectThis (host,hit) {
-		//alert('using form: '+	'hitForm'+host+'_'+hit);
-		aForm = document.getElementById('hitForm'+host+'_'+hit);
-		if(!aForm) alert('hitForm not available');
-
-		theForm = document.getElementById('lookupform');
-		if(!theForm) alert('lookupForm not available');
-
-		var lccn = "";
-		var isbn = "";
-
-		// setup ISBN or LCCN as appropriate
-		if (aForm.elements["isbn"+hit] != null) {
-			isbn = aForm.elements["isbn"+hit].value;
-			useTag = "ISBN";
-			theForm.lookupVal.value = isbn;
-		}
-		else if (aForm.elements["lccn"+hit] != null) {
-			lccn = aForm.elements["lccn"+hit].value;
-			useTag = "LCCN";
-			theForm.lookupVal.value = stripJunk(lccn, '0123456789');
-		}
-		else {
-			useTag = "N/A";
-			alert ("invalid choice");
-		}
-	}
 </script>

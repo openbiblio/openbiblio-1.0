@@ -19,8 +19,25 @@ require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 $headerWording = T("Add New");
+?>
+<script>
+mnf = {
+	init: function () {
+		//$('form').bind('submit',null,function(){
+		//	alert('you hit a submit button');
+		//	return false;
+		//});
+		//$('table.striped tbody tr:even').addClass('altBG');
+		$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
+	}
+};
+$(document).ready(mnf.init);
 
-echo '<form name="newmbrform" method="post" action="../circ/mbr_new.php">';
+</script>
 
+<h1><span id="searchHdr" class="title"><?php echo$headerWording;?> <?php echo T("Member"); ?></span></h1>
+<form id="newmbrform" name="newmbrform" method="post" action="../circ/mbr_new.php">
+
+<?php>
 include(REL(__FILE__, "../circ/mbr_fields.php"));
 Page::footer();

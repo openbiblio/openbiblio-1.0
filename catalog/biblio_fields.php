@@ -14,8 +14,8 @@
 <p class="note">
 <?php echo T("Fields marked are required"); ?>
 </p>
-
-<table id="biblioFldTbl" class="primary">
+<fieldset>
+<table id="biblioFldTbl" class="primary striped">
 	<?php ## ----------------------- ## ?>
 	<thead>
 	<tr>
@@ -217,3 +217,4 @@
 	</tr>
 	</tfoot>
 </table>
+</fieldset>

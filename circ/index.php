@@ -23,12 +23,9 @@
 	if ($_SESSION['mbrBarcode_flg'] != 'N') {
 ?>
 <form name="barcodesearch" method="post" action="../circ/mbr_search.php">
+<fieldset>
+<legend><?php echo T("Get Member by Card Number"); ?></legend>
 <table class="primary">
-	<tr>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Get Member by Card Number"); ?>
-		</th>
-	</tr>
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Card Number:"); ?>
@@ -39,18 +36,16 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 <?php
 	}
 ?>
 
 <form name="phrasesearch" method="post" action="../circ/mbr_search.php">
+<fieldset>
+<legend><?php echo T("Search Member by Name"); ?></legend>
 <table class="primary">
-	<tr>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Search Member by Name"); ?>
-		</td>
-	</tr>
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Name Contains:"); ?>
@@ -61,6 +56,7 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 
 <?php
