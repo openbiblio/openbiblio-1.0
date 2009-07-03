@@ -21,14 +21,16 @@
 	$collections = new Collections;
 
 ?>
-
+<h3><?php echo T("Collections"); ?></h3>
+<fieldset>
+<legend><?php echo T("Add New Collection"); ?></legend>
 <form name="newcollectionform" method="post" action="../admin/collections_new.php">
 <table class="primary">
-	<tr>
+	<!--tr>
 		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Add New Collection"); ?>
+			<?php //echo T("Add New Collection"); ?>
 		</th>
-	</tr>
+	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Description:"); ?>
@@ -43,7 +45,7 @@
 		</td>
 		<td valign="top" class="primary">
 			<?php echo inputfield('select', 'type','Circulated',
-				array('onChange'=>'modified=true;switchType()', 'id'=>'type'),
+				array('onChange'=>'modified=true;switchType()',''),
 				$collections->getTypeSelect()); ?>
 		</td>
 	</tr>
@@ -79,6 +81,7 @@
 	</tr>
 
 </table>
+</fieldset>
 </form>
 <p class="note">
 <sup>*</sup><?php echo T("Note:"); ?><br />
@@ -86,8 +89,10 @@
 
 <script type="text/javascript"><!--
 function switchType() {
-	var rows = document.getElementsByTagName("tr");
-	var type = document.getElementById("type");
+//	var rows = document.getElementsByTagName("tr");
+//	var type = document.getElementById("type");
+	var rows = $("tr");
+	var type = $("#type");
 	for(var i=0; i<rows.length; i++) {
 		if (rows[i].getAttribute("class") == null)
 			continue;

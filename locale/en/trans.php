@@ -764,7 +764,7 @@ $trans["collectionsDelConfirmMsg"] = "Are you sure you want to delete collection
 #****************************************************************************
 #*  Translation text for collections_list.php
 #****************************************************************************
-$trans["collectionsListNoteMsg"]          = "The delete function is only available on collections that have an item count of zero. If you wish to delete a collection with an item count greater than zero you will first need to change the material type on those items to another material type.";
+$trans["collectionsListNoteMsg"]          = "The delete function is only available on collections that have an item count of zero.<br />If you wish to delete a collection with an item count greater than zero<br/>you will first need to change the material type on those items to another material type.";
 
 
 

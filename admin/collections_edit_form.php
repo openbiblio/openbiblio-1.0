@@ -25,29 +25,34 @@
 		include_once(REL(__FILE__, "../model/Collections.php"));
 		$collections = new Collections;
 		$coll = $collections->getOne($code);
-		$postVars = $coll;
+print_r($coll);echo"<br />";
+//		$postVars = $coll;
 		$t = $collections->getTypeData($coll);
+print_r($t);echo"<br />";
 		$postVars = array_merge($postVars, $t);
 		$_SESSION['postVars'] = $postVars;
 	} else {
 		require(REL(__FILE__, "../shared/get_form_vars.php"));
 	}
 ?>
+<h3><?php echo T("Collections"); ?></h3>
 
 <form name="editcollectionform" method="post" action="../admin/collections_edit.php">
+<fieldset>
+<legend><?php echo T("Edit Collection:"); ?></legend>
 <input type="hidden" name="code" value="<?php echo $postVars["code"];?>">
 <table class="primary">
-	<tr>
+	<!--tr>
 		<th colspan="2" nowrap="yes" align="left">
 			<?php echo T("Edit Collection:"); ?>
 		</th>
-	</tr>
+	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Description:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text','description'); ?>
+			<?php echo inputfield('text','description',$coll[description]); ?>
 		</td>
 	</tr>
 	<tr>
@@ -56,7 +61,7 @@
 		</td>
 		<td valign="top" class="primary">
 			<?php echo inputfield('select', 'type','Circulated',
-				array('onChange'=>'modified=true;switchType()', 'id'=>'type'),
+				array('onChange'=>'modified=true;switchType()', ''),
 				$collections->getTypeSelect()); ?>
 		</td>
 	</tr>
@@ -92,6 +97,7 @@
 	</tr>
 
 </table>
+</fieldset>
 </form>
 <p class="note">
 <sup>*</sup><?php echo T("Note:"); ?><br />

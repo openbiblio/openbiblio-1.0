@@ -137,7 +137,8 @@ div#content {
 #content .altBG {
 	background: #dddddd;
 	}
-#catalog_search h3 {
+/*#catalog_search h3 {*/
+h3 {
 	font: 20px sans-serif;
 	text-align: center;
 	color: white;
@@ -224,6 +225,9 @@ div#content {
 }
 sup {
 	color: red;
+	}
+p {
+	margin:2px; padding:0;
 	}
 fieldset {
 	background-color: #ffffdd;
