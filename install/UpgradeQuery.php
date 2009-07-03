@@ -374,7 +374,10 @@ class UpgradeQuery extends InstallQuery {
 							."('mbr_autoBarcode_flg', NULL , 'Member Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
 							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N','tools'),"
 							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools')");
-
+		$this->act("ALTER TABLE `member` "
+							."CHANGE `create_dt` `create_dt` DATETIME NOT NULL ,"
+							."CHANGE `last_change_dt` `last_change_dt` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL");
+							
 		### ################################################### ###
 		### conversion process begins here.
 		### ################################################### ###

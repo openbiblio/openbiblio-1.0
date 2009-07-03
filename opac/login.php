@@ -4,7 +4,10 @@
  */
 
 require_once("../shared/common.php");
+require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 require_once(REL(__FILE__, "../model/Members.php"));
+$tab = "opac";
+$nav = "home";
 
 $msg = '';
 if (isset($_POST['id']) and isset($_POST['password'])) {
@@ -29,15 +32,30 @@ if ($msg) {
 <form action="../opac/login.php" method="post">
 <table>
 <tr>
-<td align="right"><b><?php echo T("Email or ID Number:"); ?></b></td>
-<td><input type="text" name="id" value="<?php if (isset($_POST[id])) echo H($_POST[id]) ?>" /></td>
+	<td align="right">
+		<label for="id"><?php echo T("Email or ID Number:"); ?></label>
+	</td>
+	<td>
+		<?php echo inputfield('text',"id",H($_POST[id])); ?>
+  </td>
 </tr>
 <tr>
-<td align="right"><b><?php echo T("Password:"); ?></b></td>
-<td><input type="password" name="password" /></td>
+	<td align="right">
+		<label for="password"><?php echo T("Password:"); ?><label>
+	</td>
+	<td>
+		<?php echo inputfield('password','password',''); ?>
+	</td>
 </tr>
-<tr><td></td><td><input class="button" type="submit" value="<?php echo T("Login"); ?>" /></td></tr>
+<tr>
+	<td>
+	</td>
+	<td>
+		<input class="button" type="submit" value="<?php echo T("Login"); ?>" />
+	</td>
+</tr>
 </table>
 </form>
+
 <?php
 Page::footer();
