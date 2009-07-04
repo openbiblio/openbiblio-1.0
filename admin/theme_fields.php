@@ -6,17 +6,18 @@
 ?>
 
 <table class="primary">
-	<tr>
+	<!--tr>
 		<th colspan="5" valign="top" nowrap="yes" align="left">
-			<?php echo $headerWording;?> <?php echo T("Theme"); ?>
+			<?php //echo $headerWording;?> <?php //echo T("Theme"); ?>
 		</td>
-	</tr>
+	</tr-->
+	<tbody id="part1">
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Theme Name"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php printInputText("themeName",40,40,$postVars,$pageErrors); ?>
+			<?php	echo inputfield('text',"themeName",'',array('size'=>'40','maxlength'=>'40')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -24,7 +25,7 @@
 			<?php echo T("Table Border Color:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php printInputText("borderColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"borderColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -32,7 +33,7 @@
 			<?php echo T("Error Color:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php printInputText("primaryErrorColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"primaryErrorColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -40,7 +41,8 @@
 			<?php echo T("Table Border Width:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php printInputText("borderWidth",2,2,$postVars,$pageErrors); ?><?php echo T("px"); ?>
+			<?php echo inputfield('text',"borderWidth",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo T("px"); ?>
 		</td>
 	</tr>
 	<tr>
@@ -48,11 +50,13 @@
 			<?php echo T("Table Cell Padding:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php printInputText("tablePadding",2,2,$postVars,$pageErrors); ?><?php echo T("px"); ?>
+			<?php echo inputfield('text',"tablePadding",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo T("px"); ?>
 		</td>
 	</tr>
-
-
+	</tbody>
+	
+	<txhead>
 	<tr>
 		<th valign="top">
 			&nbsp;
@@ -70,23 +74,24 @@
 			<?php echo T("Tabs"); ?>
 		</td>
 	</tr>
-
-
+	</xthead>
+	
+	<tbody id="part2">
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Background Color:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("titleBg",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"titleBg",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("primaryBg",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"primaryBg",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt1Bg",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt1Bg",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt2Bg",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt2Bg",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -94,16 +99,16 @@
 			<?php echo T("Font Face:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("titleFontFace",10,128,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"titleFontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("primaryFontFace",10,128,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"primaryFontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt1FontFace",10,128,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt1FontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt2FontFace",10,128,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt2FontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -111,21 +116,23 @@
 			<?php echo T("Font Size:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("titleFontSize",2,2,$postVars,$pageErrors); ?><?php echo T("px"); ?>
-			<input type="checkbox" name="titleFontBold" value="CHECKED"
-				<?php if (isset($postVars["titleFontBold"])) echo $postVars["titleFontBold"]; ?> />
+			<?php echo inputfield('text',"titleFontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo T("px"); ?>
+			<?php echo inputfield('checkbox',"titleFontBold",'CHECKED',null,$postVars["titleFontBold"]); ?>
 			<?php echo T("bold");?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("primaryFontSize",2,2,$postVars,$pageErrors); ?><?php echo T("px"); ?>
+			<?php echo inputfield('text',"primaryFontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo T("px"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt1FontSize",2,2,$postVars,$pageErrors); ?><?php echo T("px"); ?>
+			<?php echo inputfield('text',"alt1FontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo T("px"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt2FontSize",2,2,$postVars,$pageErrors); ?><?php echo T("px"); ?>
-			<input type="checkbox" name="alt2FontBold" value="CHECKED"
-				<?php if (isset($postVars["alt2FontBold"])) echo $postVars["alt2FontBold"]; ?> />
+			<?php echo inputfield('text',"alt2FontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo T("px"); ?>
+			<?php echo inputfield('checkbox',"alt2FontBold",'CHECKED',null,$postVars["alt2FontBold"]); ?>
 			<?php echo T("bold");?>
 		</td>
 	</tr>
@@ -134,16 +141,16 @@
 			<?php echo T("Font Color:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("titleFontColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"titleFontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("primaryFontColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"primaryFontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt1FontColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt1FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt2FontColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt2FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -154,13 +161,13 @@
 			&nbsp;
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("primaryLinkColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"primaryFontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt1LinkColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt1FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("alt2LinkColor",10,20,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text',"alt2FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -168,28 +175,22 @@
 			<?php echo T("Align:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<select name="titleAlign">
-				<option value="left"
-					<?php if ($postVars["titleAlign"] == "left") echo " selected"; ?>
-				 ><?php echo T("left"); ?>
-				<option value="center"
-					<?php if ($postVars["titleAlign"] == "center") echo " selected"; ?>
-				 ><?php echo T("center"); ?>
-				<option value="right"
-					<?php if ($postVars["titleAlign"] == "right") echo " selected"; ?>
-				><?php echo T("right"); ?>
-			</select>
+			<?php
+			  $data = array('left'=>'left','center'=>'center','right'=>'right');
+				echo inputfield('select','titleAlign',$postVars['titleAlign'],NULL,$data);
+			?>
 		</td>
 		<td colspan="3" valign="top" class="primary">
 			&nbsp;
 		</td>
 	</tr>
-
+	</tbody>
+	<tfoot>
 	<tr>
 		<td align="center" colspan="5" class="primary">
 			<input type="button" onclick="editTheme()" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onclick="parent.location='../admin/theme_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
-
+	</tfoot>
 </table>

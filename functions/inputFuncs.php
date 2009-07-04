@@ -13,10 +13,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	} else {
 		$postVars = array();
 	}
-	if (isset($postVars[$name])) {
+//	if (isset($postVars[$name])) {  // FIXME - is this right, or useful, messes up <select> - Fred
 		//$value = $postVars[$name];
-		$data = $postVars[$name];
-	}
+//		$data = $postVars[$name];
+//	}
 	if (isset($_SESSION['pageErrors'])) {
 		$pageErrors = $_SESSION['pageErrors'];
 	} else {

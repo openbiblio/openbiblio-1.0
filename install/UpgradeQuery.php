@@ -381,6 +381,13 @@ class UpgradeQuery extends InstallQuery {
 		### ################################################### ###
 		### conversion process begins here.
 		### ################################################### ###
+    //------------------------//
+		## Admin support tables
+		$sql = "INSERT INTO `openbibliowork`.`theme` "
+					."SELECT * "
+					."  FROM `openbiblio`.`theme` "
+					;
+    $this->act($sql);
 		## Biblio support tables
 		$sql = "INSERT INTO `openbibliowork`.`collection_dm` "
 					."(`code`,`description`,`default_flg`,`type`)"
@@ -403,7 +410,6 @@ class UpgradeQuery extends InstallQuery {
 					."  FROM `openbiblio`.`biblio` "
 					;
     $this->act($sql);
-    //------------------------//
 
 	}
 }
