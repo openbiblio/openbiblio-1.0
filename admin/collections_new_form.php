@@ -21,6 +21,22 @@
 	$collections = new Collections;
 
 ?>
+<script>
+cnf = {
+	init: function () {
+	  $("#type").bind('change',null,cnf.switchType);
+	  cnf.switchType();
+	},
+	switchType: function () {
+		var type = $('#type').val();
+		$('.switchable').hide();
+		$('tr.colltype_'+type).show();
+	}
+};
+$(document).ready(cnf.init);
+
+</script>
+
 <h3><?php echo T("Collections"); ?></h3>
 <fieldset>
 <legend><?php echo T("Add New Collection"); ?></legend>
@@ -44,12 +60,10 @@
 			<?php echo T("Type:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('select', 'type','Circulated',
-				array('onChange'=>'modified=true;switchType()',''),
-				$collections->getTypeSelect()); ?>
+			<?php echo inputfield('select', 'type','Circulated','',$collections->getTypeSelect()); ?>
 		</td>
 	</tr>
-	<tr class="colltype_Circulated">
+	<tr class="switchable colltype_Circulated">
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Days Due Back:"); ?>
 		</td>
@@ -57,7 +71,7 @@
 			<?php echo inputfield('text', 'days_due_back'); ?>
 		</td>
 	</tr>
-	<tr class="colltype_Circulated">
+	<tr class="switchable colltype_Circulated">
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Daily Late Fee:"); ?>
 		</td>
@@ -65,7 +79,7 @@
 			<?php echo inputfield('text', 'daily_late_fee'); ?>
 		</td>
 	</tr>
-	<tr class="colltype_Distributed">
+	<tr class="switchable colltype_Distributed">
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Restock amount:"); ?>
 		</td>
@@ -86,25 +100,6 @@
 <p class="note">
 <sup>*</sup><?php echo T("Note:"); ?><br />
 <?php echo T("Setting zero days no checkout"); ?></p>
-
-<script type="text/javascript"><!--
-function switchType() {
-//	var rows = document.getElementsByTagName("tr");
-//	var type = document.getElementById("type");
-	var rows = $("tr");
-	var type = $("#type");
-	for(var i=0; i<rows.length; i++) {
-		if (rows[i].getAttribute("class") == null)
-			continue;
-		if (rows[i].getAttribute("class") == 'colltype_'+type.value)
-			rows[i].style.display="table-row";
-		else if (rows[i].getAttribute("class").indexOf("colltype_") == 0)
-			rows[i].style.display="none";
-	}
-}
-switchType();
---></script>
-
 
 <?php
 
