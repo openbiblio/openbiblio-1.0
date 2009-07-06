@@ -126,6 +126,13 @@ class Collections extends DmTable {
 		}
 		return $errors;
 	}
+	function get_name($code) {
+		$sql = "SELECT description "
+			. "FROM collection_dm "
+			. "WHERE code='".$code."';";
+		$row = $this->db->select1($sql);
+		return $row['description'];
+	}
 	function insert_el($rec) {
 		list ($id, $errs) = DBTable::insert_el($rec);
 		if ($errs)

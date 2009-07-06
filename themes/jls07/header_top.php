@@ -41,6 +41,9 @@ obib = {
 	?>
 
 	init: function() {
+		obib.reStripe();
+
+	  // set focus to specified field in all pages
 		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
 		  $('#'+obib.focusFormField).focus();
 		}
@@ -50,6 +53,12 @@ obib = {
 		if (obib.confirmLinks) {
 			$('a').bind('click',null,obib.confirmLink);
 		}
+	},
+	//-------------------------
+	reStripe: function(e) {
+		// re-stripe all tables so classed on all pages
+	  $('table tbody.striped tr:even').addClass('altBG');
+//	  $('table tbody.striped tr:odd').removeClass('altBG');
 	},
 	//-------------------------
 	confirmLink: function(e) {
@@ -81,7 +90,6 @@ function backToMain(URL) {
 		this.close();
 }
 var modified = false;
-
 
 -->
 </script>

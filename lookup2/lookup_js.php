@@ -74,7 +74,7 @@ lkup = {
 		lkup.inputColor = $('#99').css('color');
 		$('#100a').bind('change',null,lkup.fixAuthor);
 		$('#245a').bind('change',null,lkup.fixTitle);
-		$('#biblioFldTbl').addClass('striped');
+//		$('#biblioFldTbl').addClass('striped');
 
     // find title line of edit form and add another 'cancel' button
     $('#selectionDiv form thead th').attr('colspan','1');

@@ -61,7 +61,7 @@
 <div id="workDiv">
 <form id="workForm" name="workForm" class="form">
 <h5 id="updateMsg"></h5>
-<table id="showList" name="showList" class="primary striped">
+<table id="showList" name="showList" class="primary">
 	<thead>
   <tr>
     <th class="colHead">&nbsp</th>
@@ -73,7 +73,7 @@
     <th class="colHead"><?php echo T("Rpts"); ?></th>
   </tr>
 	</thead>
-	<tbody id="fldSet">
+	<tbody id="fldSet" class="striped">
 	  <!--to be generated and filled in by Javascript from Server-->
 	</tbody>
 	<tfoot>

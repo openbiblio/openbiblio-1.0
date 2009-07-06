@@ -80,8 +80,8 @@ hed = {
 				html += '</tr>\n';
 			}
 			$('#showList tBody').html(html);
-			$('table.striped tbody tr:odd td').addClass('altBG');
-			$('table.striped tbody tr:even td').addClass('altBG2');
+			$('table tbody.striped tr:odd td').addClass('altBG');
+			$('table tbody.striped tr:even td').addClass('altBG2');
 			$('.editBtn').bind('click',null,hed.doEdit);
 		});
 	},

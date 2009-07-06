@@ -28,29 +28,22 @@
 	#****************************************************************************
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<h1><?php echo T("Hold Requests"); ?></h1>
+<h3><?php echo T("Hold Requests"); ?></h3>
 <?php echo $msg ?>
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Function"); ?>
-		</th>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Copy"); ?>
-		</th>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Placed On Hold"); ?>
-		</th>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Member"); ?>
-		</th>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Status"); ?>
-		</th>
-		<th valign="top" nowrap="yes" align="left">
-			<?php echo T("Due Back"); ?>
-		</th>
+		<th valign="top" nowrap="yes" align="left"><?php echo T("Function"); ?></th>
+		<th valign="top" nowrap="yes" align="left"><?php echo T("Copy"); ?></th>
+		<th valign="top" nowrap="yes" align="left"><?php echo T("Placed On Hold"); ?></th>
+		<th valign="top" nowrap="yes" align="left"><?php echo T("Member"); ?></th>
+		<th valign="top" nowrap="yes" align="left"><?php echo T("Status"); ?></th>
+		<th valign="top" nowrap="yes" align="left"><?php echo T("Due Back"); ?></th>
 	</tr>
+	</thead>
+	
+	<tbody class="unStriped">
 <?php
 
 
@@ -63,6 +56,9 @@
 	} else {
 		while ($hold = $holds->each()) {
 ?>
+	</tbody>
+	
+	<tbody class="striped">
 	<tr>
 		<td class="primary" valign="top" nowrap="yes">
 			<a href="../shared/hold_del_confirm.php?bibid=<?php echo HURL($hold['bibid']); ?>&amp;holdid=<?php echo HURL($hold['holdid']); ?>"><?php echo T("del"); ?></a>
@@ -87,9 +83,9 @@
 		}
 	}
 ?>
-
+	</tbody>
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();

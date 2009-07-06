@@ -61,7 +61,7 @@ class MaterialTypes extends DmTable {
 			. "FROM material_type_dm t "
 			. "WHERE code='".$code."';";
 		$row = $this->db->select1($sql);
-	return $row['description'];
+		return $row['description'];
 	}
 
 }

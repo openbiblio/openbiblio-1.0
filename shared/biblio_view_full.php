@@ -60,6 +60,17 @@
 	} else {
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
+?>
+
+<script language="JavaScript1.4" >
+bvf = {
+	init: function () {
+	}
+}
+$(document).ready(bvf.init);
+</script>
+
+<?php
 
 	echo $msg;
 
@@ -73,20 +84,38 @@
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
-		echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
-		if ($p) {
-			echo '<a href="../shared/biblio_view.php?bibid='.HURL($p['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($p['.seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
-		}
-		echo '</td><td align="center">';
-		echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
-		echo '</td><td align="right">';
-		if ($n) {
-			echo '<a href="../shared/biblio_view.php?bibid='.HURL($n['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($n['.seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
-		}
-		echo '</td></tr></table>';
-	}
-
 ?>
+		<fieldset>
+		<table style="margin-bottom: 10px" width="60%" align="center">
+		<tr>
+			<td align="left">
+<?php if ($p) { ?>
+				<a href="../shared/biblio_view.php?bibid=<?php echo HURL($p['bibid']);?>
+																					&amp;tab=<?php echo H($tab);?>
+																					&amp;rpt=<?php echo H($rpt->name);?>
+																					&amp;seqno=<?php echo H($p['.seqno']);?>"
+					 accesskey="p">&laquo;<?php echo T('Prev');?>
+				</a>
+<?php } ?>
+			</td>
+		<td align="center">
+			<?php echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));?>
+		</td>
+		<td align="right">
+<?php if ($n) { ?>
+			<a href="../shared/biblio_view.php?bibid=<?php echo HURL($n['bibid']);?>
+																				&amp;tab=<?php echo H($tab);?>
+																				&amp;rpt=<?php echo H($rpt->name);?>
+																				&amp;seqno=<?php echo H($n['.seqno']);?>
+				 accesskey="n"><?php echo T("Next");?>&raquo;
+			</a>;
+<?php	} ?>
+		</td>
+		</tr>
+		</table>
+		</fieldset>
+<?php	} ?>
+
 <table class="resultshead">
 	<tr>
 			<th><?php echo T("Item Information"); ?></th>
@@ -138,7 +167,9 @@
 		}
 		echo '</div>';
 ?>
+<fieldset>
 <table class="biblio_view">
+<thead>
 <tr>
 	<td colspan=2 align=right>
 		<a href="biblio_view.php?bibid=<?php echo $bibid;?>"><?php echo T("Simple View"); ?></a>&nbsp;|&nbsp;
@@ -146,7 +177,8 @@
 		<a href="biblio_cite.php?bibid=<?php echo $bibid;?>" target="_citation"><?php echo T("Citation"); ?></a>
 	</td>
 </tr>
-
+<thead>
+<tbody class="striped">
 <?php
 foreach ($biblio['marc']->getFields() as $f) {
 	$value = "";
@@ -167,11 +199,15 @@ foreach ($biblio['marc']->getFields() as $f) {
 <?php
 }
 if ($tab == "cataloging") {
-	echo '<tr><td class="name">'.T("Date Added:").'</td>';
-	echo '<td class="value">'.H(date('m/d/Y', strtotime($biblio['create_dt']))).'</td></tr>';
+	echo "<tr>";
+	echo '	<td class="name">'.T("Date Added:").'</td>';
+	echo '	<td class="value">'.H(date('m/d/Y', strtotime($biblio['create_dt']))).'</td>';
+	echo '</tr>';
 }
 ?>
+</tbody>
 </table>
+</fieldset>
 
 <?php
 	# Info below shouldn't be shown in the OPAC

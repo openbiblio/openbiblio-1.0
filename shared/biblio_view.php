@@ -70,8 +70,6 @@
 <script language="JavaScript1.4" >
 bv = {
 	init: function () {
-	  $('table.striped tr:odd').addClass('altBG');
-	  
 	}
 }
 $(document).ready(bv.init);
@@ -91,6 +89,7 @@ $(document).ready(bv.init);
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
+		echo "<fieldset>\n";
 		echo "<table style=\"margin-bottom: 10px\" width=\"60%\" align=\"center\">\n";
 		echo "<tr>\n";
 		echo "<td align=\"left\">\n";
@@ -111,6 +110,7 @@ $(document).ready(bv.init);
 		echo "</td>\n";
 		echo "</tr>\n";
 		echo "</table>\n";
+		echo "</fieldset>\n";
 	}
 
 	$bibimages = new BiblioImages;
@@ -163,12 +163,15 @@ $(document).ready(bv.init);
 	echo $d->row(T("Title:"), 'Foo');
 	echo $d->end();
 ?>
-</tr>
+
+<!--/tr> - leftover, or something I broke? -- Fred
 </table>
 </td>
 	</tr>
-</table>
-<table class="biblio_view striped">
+</table-->
+
+<fieldset>
+<table class="biblio_view">
 <thead>
 <tr>
 	<td colspan=2 align=right>
@@ -180,6 +183,7 @@ $(document).ready(bv.init);
 	</td>
 </tr>
 </thead>
+<tbody class="striped">
 <?php
 function mkfield() {
 	$args = func_get_args();
@@ -276,7 +280,9 @@ if ($tab == "cataloging") {
 	echo "<td class=\"value\">".H(date('m/d/Y', strtotime($biblio['create_dt'])))."</td></tr>\n";
 }
 ?>
+	</tbody>
 </table>
+</fieldset>
 
 <?php
 	# Info below shouldn't be shown in the OPAC

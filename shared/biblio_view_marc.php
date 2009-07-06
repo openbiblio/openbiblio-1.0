@@ -60,20 +60,14 @@
 		echo '</td></tr></table>';
 	}
 ?>
+	<a href="biblio_view_full.php?bibid=<?php echo $bibid;?>"><?php echo T("Detailed View"); ?></a>&nbsp;|&nbsp;
+	<a href="biblio_view_marc.php?bibid=<?php echo $bibid;?>"><?php echo T("MARC View"); ?></a>&nbsp;|&nbsp;
+	<a href="biblio_cite.php?bibid=<?php echo $bibid;?>" target="_citation"><?php echo T("Citation"); ?></a>
 
-<table class="primary" width="100%">
-<tr>
-				<td colspan=2 align=right>
-								<a href="biblio_view_full.php?bibid=<?php echo $bibid;?>"><?php echo T("Detailed View"); ?></a>&nbsp;|&nbsp;
-								<a href="biblio_view_marc.php?bibid=<?php echo $bibid;?>"><?php echo T("MARC View"); ?></a>&nbsp;|&nbsp;
-								<a href="biblio_cite.php?bibid=<?php echo $bibid;?>" target="_citation"><?php echo T("Citation"); ?></a>
-				</td>
-</tr>
-	<tr>
-		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Item"); ?>
-		</th>
-	</tr>
+	<fieldset>
+	<legend><?php echo T("Item"); ?></legend>
+	<table class="primary" width="100%">
+	<tbody id="nonMarcBody">
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Type of Material:"); ?>
@@ -94,7 +88,6 @@
 				$collections = new Collections;
 				echo $collections->get_name($biblio['collection_cd']);
 			?>
-
 		</td>
 	</tr>
 	<tr>
@@ -103,10 +96,10 @@
 		</td>
 		<td valign="top" class="primary">
 			<?php if ($biblio['opac_flg']=='Y'){
-		echo 'Yes';
-	} else {
-		echo 'No';
-	};; ?>
+				echo 'Yes';
+			} else {
+				echo 'No';
+			}; ?>
 		</td>
 	</tr>
 	<tr>
@@ -114,19 +107,16 @@
 			<b><?php echo T("MARC Record:"); ?></b>
 		</td>
 	</tr>
+	<tbody id="marcBody">
 	<tr>
 		<td colspan="2" nowrap="true" class="primary">
-	<?php 
-
-	echo nl2br($biblio['marc']->getMnem()); 
-
-	?>
-
-
+			<?php echo nl2br($biblio['marc']->getMnem()); ?>
 		</td>
 	</tr>
-</table>
-
+	<tbody>
+	</table>
+	</fieldset>
+	
 <?php
 
 	Page::footer();

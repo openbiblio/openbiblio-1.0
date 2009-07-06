@@ -22,8 +22,8 @@ oed = {
 		oed.editForm = $('#editForm');
 
 	  $('#editHdr').html(oed.editHdr);
-		$('table.striped tbody tr:odd td').addClass('altBG');
-		$('table.striped tbody tr:even td').addClass('altBG2');
+//		$('table tbody.striped tr:odd td').addClass('altBG');
+//		$('table tbody.striped tr:even td').addClass('altBG2');
 		$('#updtBtn').bind('click',null,oed.doUpdate);
 
 		oed.fetchOpts();

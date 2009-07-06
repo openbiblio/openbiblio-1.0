@@ -22,8 +22,6 @@ cl = {
 		//	return false;
 		//});
 		//$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
-
-		$('table.striped tbody tr:even').addClass('altBG');
 	}
 };
 $(document).ready(cl.init);
@@ -58,7 +56,7 @@ $(document).ready(cl.init);
 <a href="../admin/collections_new_form.php?reset=Y"><?php echo T("Add New Collection"); ?></a>
 <br />
 <fieldset>
-<table class="primary striped">
+<table class="primary">
 <thead>
 	<tr>
 		<th colspan="2" valign="top">
@@ -75,7 +73,7 @@ $(document).ready(cl.init);
 		</th>
 	</tr>
 <thead>
-<tbody>
+<tbody class="striped">
 	<?php
 		while ($col = $cols->next()) {
 	?>

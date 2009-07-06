@@ -51,7 +51,7 @@
 </p>
 
 <fieldset>
-<table class="primary striped">
+<table class="primary">
 	<thead>
 	<!--tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
@@ -59,7 +59,7 @@
 		</td>
 	</tr-->
 	</thead>
-	<tbody>
+	<tbody class="striped">
 <?php
 	foreach ($fields as $title => $html) {
 	  if (($title == 'cardNumber') && ($_SESSION['mbrBarcode_flg']=='N')) continue;

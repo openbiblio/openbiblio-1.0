@@ -79,11 +79,12 @@ class Form {
 				$rows[] = array('title'=>$f['title'], 'html'=>$html, 'error'=>$error);
 			}
 		}
-		echo '<table class="form">';
+		echo '<table class="form"><thead>';
 		echo '<tr><th colspan="2" class="title">'.H($params['title']).'</td></tr>';
 		if ($msg) {
-			echo '<tr><td colspan="2" class="error">'.H($msg).'</td></tr>';
+			echo '<tr><td colspan="2" class="error">'.H($msg).'</td></tr></thead>';
 		}
+		echo "<tbody>"
 		foreach ($rows as $r) {
 			echo "<tr>";
 			echo "<th>".H($r['title'])."</th>";
@@ -94,12 +95,13 @@ class Form {
 			}
 			echo '<td>'.$err.$r['html']."</td></tr>\n";
 		}
-		echo "<tr><td></td><td class='buttons'>";
+		echo "</tbody>"
+		echo "<tfoot><tr><td class='buttons'>";
 		echo "<input class='button' type='submit' value='".H($params['submit'])."' />\n";
 		if ($params['cancel']) {
 			echo '<a class="small_button" href="'.H($params['cancel']).'">'.T("Cancel").'</a> ';
 		}
-		echo '</td></tr></table>';
+		echo '</td></tr></tfoot></table>';
 		echo "</form>\n";
 	}
 	function _inputField($field) {

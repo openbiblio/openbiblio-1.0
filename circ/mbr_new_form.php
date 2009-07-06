@@ -27,7 +27,6 @@ mnf = {
 		//	alert('you hit a submit button');
 		//	return false;
 		//});
-		//$('table.striped tbody tr:even').addClass('altBG');
 		$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
 	}
 };

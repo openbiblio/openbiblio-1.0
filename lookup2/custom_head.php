@@ -49,7 +49,7 @@ table#showList tr {
 	height: 1.3em;
 	}
 th.colHead {
-  text-align: top; white-space: nowrap;
+  white-space: nowrap;
 	}
 td.lblFld {
   white-space: nowrap;

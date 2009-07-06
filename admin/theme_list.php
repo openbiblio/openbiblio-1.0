@@ -55,6 +55,7 @@
 			<?php echo T("Usage"); ?>
 		</th>
 	</tr>
+	<tbody class="striped">
 	<?php
 		$row_class = "primary";
 		$current = Settings::get('themeid');
@@ -88,6 +89,7 @@
 			}
 		}
 	?>
+	</tbody>
 </table>
 <br />
 <p class="note">

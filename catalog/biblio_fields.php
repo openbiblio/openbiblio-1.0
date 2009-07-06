@@ -15,15 +15,10 @@
 <?php echo T("Fields marked are required"); ?>
 </p>
 <fieldset>
-<table id="biblioFldTbl" class="primary striped">
+<legend><?php echo T("Item"); ?></legend>
+<table id="biblioFldTbl" class="primary">
 	<?php ## ----------------------- ## ?>
-	<thead>
-	<tr>
-		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Item"); ?>
-		</th>
-	</tr>
-	</thead>
+	<thead></thead>
 	
 	<?php ## ----------------------- ## ?>
 	<tbody id="nonMarcBody">
@@ -85,7 +80,7 @@
 	</tbody>
 
 	<?php ## ----------------------- ## ?>
-	<tbody id="marcBody">
+	<tbody id="marcBody" class="striped">
 <?php
 	function getlabel($f) {
 		global $LOC;
@@ -211,8 +206,8 @@
 	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
-			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
-			<input type="button" onclick="parent.location='<?php echo H($cancelLocation);?>'" value="<?php echo T("Cancel"); ?>" class="button" />
+			<input type="submit" id="submitBtn" value="<?php echo T("Submit"); ?>" class="button" />
+			<input type="button" id="cnclBtn" onclick="parent.location='<?php echo H($cancelLocation);?>'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
 	</tfoot>

@@ -20,8 +20,11 @@
 	$errors = $integrity->check_el($fix);
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
+	<h3><?php echo T("Checking Database Integrity"); ?></h3>
 
-	echo '<h3>'.T("Checking Database Integrity").'</h3>';
+	<fieldset>
+<?php
 	if (empty($errors)) {
 		echo '<p>'.T("No errors found").'</p>';
 	} else {
@@ -33,27 +36,28 @@
 	}
 ?>
 
-<table>
-<tr>
-<td>
-<form method="post" action="../admin/integrity_check.php">
-<input type="submit" class="button" value="<?php echo T("Recheck"); ?>" />
-</form>
-</td>
+	<table>
+	<tr>
+		<td>
+			<form method="post" action="../admin/integrity_check.php">
+				<input type="submit" class="button" value="<?php echo T("Recheck"); ?>" />
+			</form>
+		</td>
 <?php
 	if (!empty($errors)) {
 ?>
-<td>
-<form method="post" action="../admin/integrity_check.php">
-<input type="hidden" name="fix" value="1" />
-<input type="submit" class="button" value="<?php echo T("Try to Fix Errors"); ?>" />
-</form>
-</td>
+		<td>
+			<form method="post" action="../admin/integrity_check.php">
+				<input type="hidden" name="fix" value="1" />
+				<input type="submit" class="button" value="<?php echo T("Try to Fix Errors"); ?>" />
+			</form>
+		</td>
 <?php
 	}
 ?>
-</tr>
-</table>
+	</tr>
+	</table>
+	</fieldset>
 
 <?php
 

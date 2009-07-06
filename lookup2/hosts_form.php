@@ -22,7 +22,7 @@
 <form id="showForm" name="showForm" class="form">
 <h5 id="updateMsg"></h5>
 <h1><span id="listHdr" class="title"></span></h1>
-<table id="showList" name="showList" class="primary striped">
+<table id="showList" name="showList" class="primary">
 	<thead>
   <tr>
     <th colspan="1"  class="colHead">&nbsp;</th>
@@ -35,7 +35,7 @@
     <th class="colHead"><?php echo T("lookup_hostsPw"); ?></th>
   </tr>
 	</thead>
-	<tbody>
+	<tbody class="striped">
 	  <!--to be generated and filled in by Javascript and Server-->
 	</tbody>
 	<tfoot>

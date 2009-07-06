@@ -778,7 +778,7 @@ $trans["adminIndexDesc"]                = "Use the functions located in the left
 #****************************************************************************
 #*  Translation text for integrity.php
 #****************************************************************************
-$trans["integrityMsg"]          = "OpenBiblio can check its database for inconsistencies. Would you like to do so now?";
+$trans["integrityMsg"]          = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
 
 
 #****************************************************************************
@@ -864,28 +864,28 @@ $trans["biblioCopyDelSuccess"]     = "Copy with barcode %barcode% was successful
 #****************************************************************************
 #*  Translation text for biblio_copy_del_confirm.php
 #****************************************************************************
-$trans["biblioCopyDelConfirmErr1"] = "Could not delete copy.  A copy must be checked in before it can be deleted.";
-$trans["biblioCopyDelConfirmMsg"]  = "Are you sure you want to delete the copy with barcode %barcodeNmbr%?  This will also delete all status change history for this copy.";
+$trans["biblioCopyDelConfirmErr1"] = "Could not delete copy.<br />A copy must be checked in before it can be deleted.";
+$trans["biblioCopyDelConfirmMsg"]  = "Are you sure you want to delete the copy with barcode %barcodeNmbr%?<br />This will also delete all status change history for this copy.";
 
 
 #****************************************************************************
 #*  Translation text for biblio_del_confirm.php
 #****************************************************************************
-$trans["biblioDelConfirmWarn"]     = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).  Please delete these copies and/or hold requests before deleting this bibliography.";
+$trans["biblioDelConfirmWarn"]     = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).<br />Please delete these copies and/or hold requests before deleting this bibliography.";
 $trans["biblioDelConfirmMsg"]      = "Are you sure you want to delete the item with title %title%?";
 
 
 #****************************************************************************
 #*  Translation text for page hold_message.php
 #****************************************************************************
-$trans["holdMessageMsg1"]         = "The copy with barcode number %barcode% that you are attempting to check in has one or more hold requests placed on it. <b>Please file this copy with your held items instead of placing it on your shelving cart.</b> The status code for this copy has been set to hold.";
+$trans["holdMessageMsg1"]         = "The copy with barcode number %barcode% that you are attempting to check<br />in has one or more hold requests placed on it. <b>Please file this copy with your held items instead of placing it on your shelving cart.</b> The status code for this copy has been set to hold.";
 
 
 #****************************************************************************
 #*  Translation text for mbr_del_confirm.php
 #****************************************************************************
-$trans["mbrDelConfirmWarn"]       = "Member, %name%, has %checkoutCount% checkout(s) and %holdCount% hold request(s). All checked out materials must be checked in and all hold requests deleted before deleting this member.";
-$trans["mbrDelConfirmMsg"]        = "Are you sure you want to delete the member, %name%?  This will also delete all checkout history for this member.";
+$trans["mbrDelConfirmWarn"]       = "Member, %name%, has %checkoutCount% checkout(s) and %holdCount% hold request(s). All checked out materials must be checked in and<br />all hold requests deleted before deleting this member.";
+$trans["mbrDelConfirmMsg"]        = "Are you sure you want to delete the member, %name%?<br />This will also delete all checkout history for this member.";
 
 
 #****************************************************************************
@@ -976,12 +976,12 @@ $trans["bookItemOnlyStaff"]          = "Only staff may book items for today or e
 #****************************************************************************
 #*  Translation text for register.php
 #****************************************************************************
-$trans["registerNoMatch"]          = "The information you entered does not exactly match any member in our database. Please try again or call the Media Center for assistance.";
-$trans["registerGotLogin"]          = "That member has already setup a login ID. If you need to change it, please call the Media Center for assistance.";
+$trans["registerNoMatch"]          = "The information you entered does not exactly match any member in our database.<br />Please try again or call the Media Center for assistance.";
+$trans["registerGotLogin"]          = "That member has already setup a login ID.<br />If you need to change it, please call the Media Center for assistance.";
 $trans["registerYouHaveRegd"]          = "You have successfully registered and are now logged in.";
-$trans["registerNextTime"]          = "<strong>To log in next time</strong>, use the password you just set with your card number (%barcode%) or the email address you entered as ID.";
-$trans["registerEditInfo"]          = "If you like, you can %link%edit your account info%end% to change your password or email address at any time.";
-$trans["registerMustMatch"]          = "The site and member name below must match our records exactly in order for you to register.  If you have trouble, please call the Media Center for assistance.";
+$trans["registerNextTime"]          = "<strong>To log in next time</strong>,<br />use the password you just set with your card number (%barcode%)<br />or the email address you entered as ID.";
+$trans["registerEditInfo"]          = "If you like, you can %link%edit your account info%end%<br />to change your password or email address at any time.";
+$trans["registerMustMatch"]          = "The site and member name below must match our records exactly in order for you to register.<br />If you have trouble, please call the Media Center for assistance.";
 
 
 #****************************************************************************
@@ -1005,7 +1005,7 @@ $trans["biblioSearchMsg"]          = "%nrecs% records found. Showing results %st
 #****************************************************************************
 #*  Translation text for demo_msg.php
 #****************************************************************************
-$trans["demoMsg"]       = "This function is not available in the demo version of OpenBiblio in order to limit the demo database size and to keep the data presentable.";
+$trans["demoMsg"]       = "This function is not available in the demo version of OpenBiblio<br />in order to limit the demo database size and to keep the data presentable.";
 
 
 #****************************************************************************
