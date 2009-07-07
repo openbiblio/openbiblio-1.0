@@ -16,7 +16,7 @@ require_once(REL(__FILE__, "../model/Collections.php"));
 require_once(REL(__FILE__, "../model/Holds.php"));
 require_once(REL(__FILE__, "../model/Bookings.php"));
 require_once(REL(__FILE__, "../model/MemberAccounts.php"));
-require_once(REL(__FILE__, "../functions/formatFuncs.php"));
+//require_once(REL(__FILE__, "../functions/formatFuncs.php"));
 
 
 #****************************************************************************
@@ -54,6 +54,8 @@ if (!$copy) {
 
 $history = new History;
 $status = $history->getOne($copy['histid']);
+## FIXME? book may not have been checked out, wrong valid barcode, etc.
+
 $bookings = new Bookings;
 $booking = $bookings->getByHistid($copy['histid']);	# May be null
 

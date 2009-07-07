@@ -11,7 +11,7 @@
 	$focus_form_field = "searchText";
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../functions/formatFuncs.php"));
+//	require_once(REL(__FILE__, "../functions/formatFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../model/Members.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
@@ -94,7 +94,9 @@
 	#*  Show member information
 	#**************************************************************************
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
+?>
+	<h3><?php echo T('Circulation'); ?></h3>
+<?php
 	if (isset($_REQUEST['rpt'])) {
 		$rpt = Report::load($_REQUEST['rpt']);
 	} else {
@@ -103,6 +105,7 @@
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
+		echo '<fieldset>';
 		echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
 		if ($p) {
 			echo '<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
@@ -114,35 +117,34 @@
 			echo '<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
 		}
 		echo '</td></tr></table>';
+		echo '</fieldset>';
 	}
 ?>
 
 <?php echo $balMsg ?>
 <?php echo $msg ?>
 
+<fieldset>
+<legend><?php echo T("Member Information"); ?></legend>
 <form name="selection" id="selection" class="not_block" action="../shared/dispatch.php" method="post">
 <input type="hidden" name="tab" value="<?php echo H($tab)?>" />
 <table class="resultshead">
 	<tr>
-			<th><?php echo T("Member Information"); ?></th>
-		<td class="resultshead">
-<table class="buttons">
-<tr>
+		<td class="resultshead buttons">
 <?php
 if ($_SESSION['currentBookingid']) {
 	echo '<td>';
-	echo '<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
-	echo '<input type="hidden" name="id[]" value="'.H($mbrid).'" />';
-	echo '<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
+	echo '	<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
+	echo '	<input type="hidden" name="id[]" value="'.H($mbrid).'" />';
+	echo '	<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
 	echo '</td>';
 }
 ?>
-</tr>
-</table>
-</td>
-</tr>
+		</td>
+	</tr>
 </table>
 </form>
+
 <table class="biblio_view">
 	<tr>
 		<td class="name"><?php echo T("Name:"); ?></td>
@@ -151,43 +153,27 @@ if ($_SESSION['currentBookingid']) {
 		</td>
 	</tr>
 	<tr>
-		<td class="name">
-			<?php echo T("Site:"); ?>
-		</td>
-		<td class="value">
-			<?php echo H($site['name']) ?>
-		</td>
+		<td class="name"><?php echo T("Site:"); ?></td>
+		<td class="value"><?php echo H($site['name']) ?></td>
 	</tr>
 	<tr>
-		<td class="name">
-			<?php echo T("Card Number:"); ?>
-		</td>
-		<td class="value">
-			<?php echo H($mbr['barcode_nmbr']);?>
-		</td>
+		<td class="name"><?php echo T("Card Number:"); ?></td>
+		<td class="value"><?php echo H($mbr['barcode_nmbr']);?></td>
 	</tr>
 	<tr>
-		<td class="name">
-			<?php echo T("School Grade:"); ?>
-		</td>
-		<td class="value">
-			<?php echo H($mbr['school_grade']);?>
-		</td>
+		<td class="name"><?php echo T("School Grade:"); ?></td>
+		<td class="value"><?php echo H($mbr['school_grade']);?></td>
 	</tr>
 </table>
-
-<br />
+</fieldset>
 
 <!--****************************************************************************
 		*  Checkout form
 		**************************************************************************** -->
 <form name="bookingsearch" method="get" action="../shared/biblio_search.php">
+<fieldset>
+<legend><?php echo T("Make Booking"); ?></legend>
 <table class="primary">
-	<tr>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Make Booking"); ?>
-		</th>
-	</tr>
 	<tr>
 		<td nowrap="nowrap" class="primary">
 			<select name="searchType">
@@ -206,15 +192,13 @@ if ($_SESSION['currentBookingid']) {
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 
 <form name="barcodesearch" method="post" action="../circ/checkout.php">
+<fieldset>
+<legend><?php echo T("Quick Check Out"); ?></legend>
 <table class="primary">
-	<tr>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Quick Check Out"); ?>
-		</th>
-	</tr>
 	<tr>
 		<td nowrap="nowrap" class="primary">
 			<?php echo T("Barcode Number:"); ?>
@@ -226,30 +210,21 @@ if ($_SESSION['currentBookingid']) {
 	</tr>
 </table>
 </form>
+</fieldset>
 
-<h1><?php echo T("Items Currently Checked Out"); ?></h1>
+<fieldset>
+<legend><?php echo T("Items Currently Checked Out"); ?></legend>
 <table class="primary">
+	<thead>
 	<tr>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Checked Out"); ?>
-		</th>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Material"); ?>
-		</th>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Barcode"); ?>
-		</th>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Title"); ?>
-		</th>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Due Back"); ?>
-		</th>
-		<th valign="top" align="left">
-			<?php echo T("Days Late"); ?>
-		</th>
+		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Checked Out"); ?></th>
+		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Material"); ?></th>
+		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Barcode"); ?></th>
+		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Title"); ?></th>
+		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Due Back"); ?></th>
+		<th valign="top" align="left"><?php echo T("Days Late"); ?></th>
 	</tr>
-
+	</thead>
 <?php
 	#****************************************************************************
 	#*  Get copies this member has out.
@@ -258,13 +233,17 @@ if ($_SESSION['currentBookingid']) {
 	$checkouts = $copies->getMemberCheckouts($mbrid);
 	if ($checkouts->count() == 0) {
 ?>
+	<tbody class="unStriped">
 	<tr>
 		<td class="primary" align="center" colspan="6">
 			<?php echo T("No items are currently checked out."); ?>
 		</td>
 	</tr>
+	</tbody>
+
 <?php
 	} else {
+	  echo '<tbody class="striped">';
 		while ($copy = $checkouts->next()) {
 			$history = new History;
 			$biblio = $biblios->getOne($copy['bibid']);
@@ -297,22 +276,19 @@ if ($_SESSION['currentBookingid']) {
 	</tr>
 <?php
 		}
+	echo '</tbody>';
 	}
 ?>
-
 </table>
+</fieldset>
 
-<br />
 <!--****************************************************************************
 		*  Hold form
 		**************************************************************************** -->
 <form name="holdForm" method="post" action="../circ/place_hold.php">
+<fieldset>
+<legend><?php echo T("Place Hold"); ?></legend>
 <table class="primary">
-	<tr>
-		<th valign="top" nowrap="nowrap" align="left">
-			<?php echo T("Place Hold"); ?>
-		</th>
-	</tr>
 	<tr>
 		<td nowrap="nowrap" class="primary">
 			<?php echo T("Barcode Number"); ?>
@@ -324,10 +300,13 @@ if ($_SESSION['currentBookingid']) {
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 
-<h1><?php echo T("Copies Currently On Hold"); ?></h1>
+<fieldset>
+<legend><?php echo T("Copies Currently On Hold"); ?></legend>
 <table class="primary">
+	<thead>
 	<tr>
 		<th valign="top" nowrap="nowrap" align="left">
 			<?php echo T("Function"); ?>
@@ -348,6 +327,7 @@ if ($_SESSION['currentBookingid']) {
 			<?php echo T("Due Back"); ?>
 		</th>
 	</tr>
+	</thead>
 <?php
 	#****************************************************************************
 	#*  Search database for BiblioHold data
@@ -356,13 +336,16 @@ if ($_SESSION['currentBookingid']) {
 	$holds->init(array('mbrid'=>$mbrid));
 	if ($holds->count() == 0) {
 ?>
+	<tbody class="unstriped">
 	<tr>
 		<td class="primary" align="center" colspan="7">
 			<?php echo T("No copies on hold"); ?>
 		</td>
 	</tr>
+	</tbody>
 <?php
 	} else {
+	  echo '<tbody class="striped">';
 		while ($hold = $holds->each()) {
 ?>
 	<tr>
@@ -387,11 +370,12 @@ if ($_SESSION['currentBookingid']) {
 	</tr>
 <?php
 		}
+		echo '</tbody>';
 	}
 ?>
 
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();

@@ -160,17 +160,12 @@ $(document).ready(bv.init);
 		);
 	}
 	echo $d->begin();
-	echo $d->row(T("Title:"), 'Foo');
+//	echo $d->row(T("Title:"), 'Foo'); // ??? - Fred
 	echo $d->end();
 ?>
 
-<!--/tr> - leftover, or something I broke? -- Fred
-</table>
-</td>
-	</tr>
-</table-->
-
 <fieldset>
+<legend></legend>
 <table class="biblio_view">
 <thead>
 <tr>

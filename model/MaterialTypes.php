@@ -33,7 +33,8 @@ class MaterialTypes extends DmTable {
 			. "ORDER BY t.description ";
 		return $this->db->select($sql);
 	}
-	function getAll($orderBy=null) {
+//	function getAll($orderBy=null) {
+	function getAll($orderBy='description') {
 		$sql = "SELECT * FROM material_type_dm "
 				 . " ORDER BY $orderBy ";
 		return $this->db->select($sql);

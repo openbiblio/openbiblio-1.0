@@ -43,7 +43,7 @@
 	}
 	function getRpt() {
 		global $tab;
-
+print_r($_REQUEST);
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('BiblioSearch');
 
@@ -55,27 +55,18 @@
 
 		$searches = array(
 			"barcodeNmbr" => "barcode",
-			 "author" => "author",
-			"subject" => "subject",
-			"title" => "title",
-			"publisher" => "publisher",
-			"series" => "series",
-			"callno" => "callno",
-			"keyword" => "keyword",
+			"author" 			=> "author",
+			"subject" 		=> "subject",
+			"title" 			=> "title",
+			"publisher" 	=> "publisher",
+			"series" 			=> "series",
+			"callno" 			=> "callno",
+			"keyword" 		=> "keyword",
 		);
 		if (in_array($_REQUEST["searchType"], array_keys($searches))) {
 			$sType = $searches[$_REQUEST["searchType"]];
 		} else {
 			$sType = "keyword";
-		}
-		if (isset($_REQUEST['sortBy'])) {
-			$sortBy = $_REQUEST["sortBy"];
-		} else {
-			if ($sType == "author") {
-				$sortBy = $_REQUEST["sortBy"] = "author";
-			} else {
-				$sortBy = $_REQUEST["sortBy"] = "title";
-			}
 		}
 
 		$terms = array();
@@ -96,6 +87,16 @@
 		$rpt = Report::create('biblio_search', 'BiblioSearch');
 		if (!$rpt) {
 			return false;
+		}
+
+		if (isset($_REQUEST['sortBy'])) {
+			$sortBy = $_REQUEST["sortBy"];
+		} else {
+			if ($sType == "author") {
+				$sortBy = $_REQUEST["sortBy"] = "author";
+			} else {
+				$sortBy = $_REQUEST["sortBy"] = "title";
+			}
 		}
 		$rpt->init(array('terms'=>$terms,
 										 'order_by'=>$sortBy));

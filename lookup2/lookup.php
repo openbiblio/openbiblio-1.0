@@ -177,6 +177,7 @@
 	</div>
 
 	<div id="retryDiv">
+	  <form action="">
 		<table class="primary">
 		<tr>
 			<th colspan="3" id="retryHead"></th>
@@ -186,7 +187,7 @@
 		</tr>
 		<tr>
 	    <td colspan="3" class="primary btnFld">
-				<input id="retryBtn" type="button" class="button"
+				<input id="retryBtn" type="submit" class="button"
 							 value="<?php echo T("lookup_goBack");?>" />
 			</td>
 		</tr>
