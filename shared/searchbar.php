@@ -38,11 +38,14 @@
 		</td>
 	</tr>
 	<tr>
-	  <td colspan="3"><hr /></td>
+	  <td colspan="3">
+	    <label for="advanceQ"><?php echo T('Advanced Search?'); ?></label>
+			<?php echo inputfield('checkbox','advanceQ','Y',null,null); ?>
+		</td>
 	</tr>
 	<tr>
 	  <td colspan="3">
-	  <fieldset>
+	  <fieldset id="advancedSrch">
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
 		<tr>
@@ -96,3 +99,14 @@
 </table>
 </fieldset>
 </form>
+<script>
+	$(document).ready(function () {
+		$('#advancedSrch').hide();
+		$('#advanceQ').bind('click',null,function(){
+			if ($('#advanceQ:checked').val() == 'Y')
+				$('#advancedSrch').show();
+			else
+				$('#advancedSrch').hide();
+		});
+	});
+</script>
