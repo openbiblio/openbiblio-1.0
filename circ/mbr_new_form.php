@@ -23,15 +23,10 @@ $headerWording = T("Add New");
 <script>
 mnf = {
 	init: function () {
-		//$('form').bind('submit',null,function(){
-		//	alert('you hit a submit button');
-		//	return false;
-		//});
 		$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
 	}
 };
 $(document).ready(mnf.init);
-
 </script>
 
 <h1><span id="searchHdr" class="title"><?php echo$headerWording;?> <?php echo T("Member"); ?></span></h1>

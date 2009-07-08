@@ -56,6 +56,7 @@ class biblio_search_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
+//echo "sql=$sql";
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {

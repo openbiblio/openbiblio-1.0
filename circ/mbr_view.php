@@ -38,7 +38,7 @@
 	#****************************************************************************
 	$mbrid = $_GET["mbrid"];
 	if ($_GET["msg"]) {
-		$msg = '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
+		$msg = '<p class="error">'.H($_GET["msg"]).'</p>';
 	} else {
 		$msg = "";
 	}
@@ -105,18 +105,25 @@
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
+echo "seqNo={$_REQUEST['seqno']}; prior=$p; next=$n <br />";
 		echo '<fieldset>';
-		echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
+		echo '<table style="margin-bottom: 10px" width="60%" align="center">';
+		echo '<tr>';
+		echo '	<td align="left">';
 		if ($p) {
-			echo '<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
+			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
 		}
-		echo '</td><td align="center">';
-		echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
-		echo '</td><td align="right">';
+		echo '	</td>';
+		echo '	<td align="center">';
+		echo 			T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
+		echo '	</td>';
+		echo '	<td align="right">';
 		if ($n) {
-			echo '<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
+			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
 		}
-		echo '</td></tr></table>';
+		echo '	</td>';
+		echo '</tr>';
+		echo '</table>';
 		echo '</fieldset>';
 	}
 ?>

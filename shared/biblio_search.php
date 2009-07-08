@@ -43,7 +43,6 @@
 	}
 	function getRpt() {
 		global $tab;
-print_r($_REQUEST);
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('BiblioSearch');
 

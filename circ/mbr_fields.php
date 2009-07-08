@@ -20,6 +20,7 @@
 	$states = new States;
 	$mbrtypes = new MemberTypes;
 	$customFields = new MemberCustomFields;
+
 	$fields = array(
 		'site' => inputfield('select', 'siteid', NULL, NULL, $sites),
 		'cardNumber' => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$pageErrors),
@@ -40,11 +41,12 @@
 	);
 	
 /*
-	FIXME -- table does not exist; legacy code perhaps? -- fred
+	FIXME -- 'MemberCustomFields' table does not exist; legacy code perhaps? -- fred
 	foreach ($customFields->getSelect() as $name=>$title) {
 		$fields[$title.':'] = inputfield('text', 'custom_'.$name, NULL,NULL,$pageErrors);
 	}
 */
+
 ?>
 <p class="note">
 <?php echo T("Fields marked are required"); ?>
@@ -55,14 +57,23 @@
 	<thead>
 	<!--tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php //echo $headerWording;?> <?php echo T("Member"); ?>
+			<?php //echo $headerWording;?> <?php //echo T("Member"); ?>
 		</td>
 	</tr-->
 	</thead>
+	
 	<tbody class="striped">
 <?php
 	foreach ($fields as $title => $html) {
-	  if (($title == 'cardNumber') && ($_SESSION['mbrBarcode_flg']=='N')) continue;
+	  if (($title == 'cardNumber') && ($_SESSION['mbrBarcode_flg']=='N')){
+?>
+	<tr>
+		<td colspan="2">
+			<?php echo inputfield('hidden',"barcode_nmbr",'000000'); ?>
+		</td>
+	</tr>
+<?php
+		} else {
 ?>
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
@@ -73,9 +84,11 @@
 		</td>
 	</tr>
 <?php
+		}
 	}
 ?>
 	</tbody>
+	
 	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">

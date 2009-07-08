@@ -55,7 +55,7 @@ class Members extends CoreTable {
 			}
 		}
 		# Check for duplicate barcodes
-		if (isset($mbr['barcode_nmbr'])) {
+		if (isset($mbr['barcode_nmbr']) && ($mbr['barcode_nmbr'] != '000000')) {
 			$sql = $this->db->mkSQL("SELECT COUNT(*) duplicates FROM member "
 				. "WHERE barcode_nmbr = %Q ",
 				$mbr['barcode_nmbr']);

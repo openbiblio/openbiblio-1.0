@@ -281,21 +281,24 @@ class Params {
 		return array(NULL, $noerrors);
 	}
 	function getOrderExpr($name, $list, $desc) {
+//echo "<br />name=$name<br />list=";print_r($list);echo "<br />desc=$desc<br />";
 		$expr = false;
 		foreach ($list as $v) {
-			if ($v[0] != $name) {
-				continue;
-			}
+//echo "v[0]=";print_r($v);echo"<br />"; // callno
+			if ($v[0] != $name) continue;
 			if (isset($v[1]['expr']) and $v[1]['expr']) {
 				$expr = $v[1]['expr'];
 			} else {
 				$expr = $name;
 			}
+//echo "expr=$expr <br />"; // callno
 			if (!isset($v[1]['type']) or !$v[1]['type']) {
 				$v[1]['type'] = 'alnum';
 			}
+//echo "v[1]['type']=$v[1]['type'] <br />"; // alnum
 			switch ($v[1]['type']) {
 			case 'MARC':
+//echo "its 'MARC'";
 				if (!isset($v[1]['skip_indicator'])) {
 					Fatal::internalError(T("MARC sort without skip indicator"));
 				}
@@ -303,11 +306,13 @@ class Params {
 				$expr = "ifnull(substring($expr, $skip+1), $expr)";
 				/* fall through */
 			case 'alnum':
+//echo "its 'alnum'";
 				$expr = "if($expr regexp '^ *[0-9]', "
-					. "concat('0', ifnull(floor(log10($expr)), 0), "
-					. "$expr), $expr)".$desc;
+								 . "concat('0', ifnull(floor(log10($expr)), 0), $expr), "
+								 . "$expr)".$desc;
 				break;
 			case 'multi':
+//echo "its 'multi'";
 				$sorts = explode(',', $expr);
 				$expr = '';
 				foreach ($sorts as $s) {
@@ -318,6 +323,7 @@ class Params {
 				}
 				break;
 			default:
+//echo "its 'default'";
 				$expr .= $desc;
 				break;
 			}
