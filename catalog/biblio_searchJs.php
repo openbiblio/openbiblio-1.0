@@ -37,7 +37,7 @@ bs = {
 		// for the search results section
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-		//$('.gobkBtn').bind('click',null,bs.rtnToSrch);
+		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
 
 		// for the copy editor function
 		// to handle startup condition
@@ -54,8 +54,6 @@ bs = {
 			}
 		});
 
-		$('#editSubmitBtn').val('Update');
-		$('#editSubmitBtn').bind('click',null,bs.doCopyUpdate);
 		$('#editCancelBtn').bind('click',null,bs.rtnFmCopyEdit);
 
 		bs.fetchCrntMbrInfo();
@@ -233,6 +231,14 @@ bs = {
 				$('.deltBtn').bind('click',null,bs.doCopyDelete);
 	  });
 	},
+	makeNewCopy: function () {
+		$('#biblioDiv').hide();
+		if ($('#autobarco:checked').length > 0) {
+			bs.doGetBarcdNmbr();
+		}
+		$('#copyEditorDiv').show();
+		$('#editSubmitBtn').bind('click',null,bs.doCopyNew);
+	},
 	doCopyDelete: function () {
 	  $(this).parent().parent().addClass('hilite');
 	  if (confirm('Are you sure you want to delete this copy ?')) {
@@ -256,6 +262,8 @@ bs = {
 		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
+		$('#editSubmitBtn').val('Update');
+		$('#editSubmitBtn').bind('click',null,bs.doCopyUpdate);
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
 		return false;
@@ -263,6 +271,23 @@ bs = {
 	rtnFmCopyEdit: function () {
 		$('#copyEditorDiv').hide();
 		$('#biblioDiv').show();
+	},
+	doGetBarcdNmbr: function () {
+		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
+		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
+		});
+	},
+	doCopyNew: function () {
+		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+bs.biblio.bibid;
+		if ($('#autobarco:checked').length > 0) {
+			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
+		}
+	  $.post(bs.url,params, function(response){
+	  	$('#editRsltMsg').html(response);
+	  	bs.fetchCopyInfo(); // refresh copy display
+	    $('#editCancelBtn').val('Go Back');
+	  });
+	  return false;
 	},
 	doCopyUpdate: function () {
 		if ($('#copyTbl #barcode_nmbr').attr('disabled')) {
@@ -277,9 +302,9 @@ bs = {
 						+"&status_cd="+statusCd;
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
+	  	bs.fetchCopyInfo(); // refresh copy display
 	    $('#editCancelBtn').val('Go Back');
 	  });
-	  bs.fetchCopyInfo(); // refresh copy display
 	  return false;
 	}
 };

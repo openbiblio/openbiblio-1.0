@@ -96,6 +96,34 @@ class SrchDb {
 		}
 		return $rslt;
 	}
+	function insertCopy($bibid) {
+		$this->db->lock();
+		$sql = "INSERT `biblio_copy` SET "
+		      ."`bibid` = $bibid,"
+		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
+		      ."`create_dt` = NOW(),"
+		      ."`last_change_dt` = NOW(),"
+		      ."`last_change_userid` = $_SESSION[userid],"
+		      ."`copy_desc` = '$_POST[copy_desc]' ";
+		//echo "sql=$sql<br />";
+		$rows = $this->db->act($sql);
+		$copyid = $this->db->getInsertID();
+		$sql = "Insert `biblio_status_hist` SET "
+		      ."`bibid` = $bibid,"
+		      ."`copyid` = $copyid,"
+		      ."`status_cd` = '$_POST[status_cd]',"
+		      ."`status_begin_dt` = NOW()";
+		//echo "sql=$sql<br />";
+		$rows = $this->db->act($sql);
+		$histid = $this->db->getInsertID();
+		$sql = "Update `biblio_copy` SET "
+		      ."`histid` = '$histid' "
+					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
+		//echo "sql=$sql<br />";
+		$rows = $this->db->act($sql);
+		$this->db->unlock();
+		return T('Update completed');
+	}
 	function updateCopy($bibid,$copyid) {
 		$this->db->lock();
 		$sql = "UPDATE `biblio_copy` SET "
@@ -133,6 +161,13 @@ class SrchDb {
 
 	#****************************************************************************
 	switch ($_REQUEST[mode]) {
+	case 'getBarcdNmbr':
+		require_once(REL(__FILE__, "../model/Copies.php"));
+		$copies = new Copies;
+		$CopyNmbr= $copies->getNextCopy();
+		echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
+	  break;
+	  
 	case 'deleteCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->deleteCopy($_REQUEST[bibid],$_REQUEST[copyid]);
@@ -141,6 +176,11 @@ class SrchDb {
 	case 'updateCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		break;
+
+	case 'newCopy':
+	  $theDb = new SrchDB;
+		echo $theDb->insertCopy($_REQUEST[bibid]);
 		break;
 
 	case 'getCrntMbrInfo':

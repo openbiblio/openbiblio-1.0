@@ -171,6 +171,8 @@
 		</table>
 	</fieldset>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
 </div>
 
 <div id="copyEditorDiv">

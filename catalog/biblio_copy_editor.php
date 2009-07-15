@@ -40,13 +40,14 @@
 			<label for="status_cd"><?php echo T("Status:");?></label></td>
 		<td valign="top" class="primary">
 			</select>
-			<?php echo inputfield("select", "status_cd", "in", NULL,array(
-                            "in" =>"IN",
-														"out"=>"OUT",
-														"ln"=>"LOAN",
-														"ord"=>"ON_ORDER",
-														"crt"=>"SHELVING_CART",
-														"hld"=>"ON_HOLD",
+			<?php echo inputfield("select", "status_cd", "na", NULL,array(
+			                      "na" =>"",
+                            "in" =>T("IN"),
+														"out"=>T("OUT"),
+														"ln" =>T("LOAN"),
+														"ord"=>T("ON_ORDER"),
+														"crt"=>T("SHELVING_CART"),
+														"hld"=>T("ON_HOLD"),
 														));
 			?>
 		</td>
