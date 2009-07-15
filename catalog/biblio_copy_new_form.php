@@ -79,14 +79,9 @@ $(document).ready(bcnf.init);
 </p>
 
 <form name="newCopyForm" method="post" action="../catalog/biblio_copy_new.php">
+<fieldset>
+<legend><?php echo T("Add New Copy"); ?></legend>
 <table id="newCpyTbl" class="primary">
-	<thead>
-	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Add New Copy"); ?>
-		</th>
-	</tr>
-	</thead>
 	<tbody>
 <?php
 	foreach ($fields as $title => $html) {
@@ -113,6 +108,7 @@ $(document).ready(bcnf.init);
 	</tfoot>
 </table>
 <input type="hidden" name="bibid" value="<?php echo $bibid;?>" />
+</fieldset>
 </form>
 
 

@@ -37,7 +37,6 @@
 	require_once(REL(__FILE__, "../classes/MarcDisplay.php"));
 	require_once(REL(__FILE__, "../functions/info_boxes.php"));
 
-
 	function mkTerm($type, $text, $exact='0') {
 		return array('type'=>$type, 'text'=>$text, 'exact'=>$exact);
 	}

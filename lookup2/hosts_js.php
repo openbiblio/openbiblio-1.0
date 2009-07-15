@@ -64,8 +64,8 @@ hed = {
 				//console.log(data[nHost]);
 	    	html += '<tr>\n';
     		html += '<td valign="top" class="primary">\n';
-				html += '<input type="button" value="edit" align="center" class="button editBtn" />\n';
-				html += '<input type="hidden" value="'+hed.hostJSON[nHost]['id']+'" />\n';
+				html += '	<input type="button" value="edit" align="center" class="button editBtn" />\n';
+				html += '	<input type="hidden" value="'+hed.hostJSON[nHost]['id']+'" />\n';
 				html += '</td>\n';
     		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['seq']+'</td>\n';
     		var str = ((hed.hostJSON[nHost]['active']=='y')?'yes':'no');

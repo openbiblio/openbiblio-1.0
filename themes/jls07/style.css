@@ -215,6 +215,9 @@ h3 {
 .compact_info_display .heading {
 	font-weight: bold;
 	}
+.hilite {
+	color: white; background-color: green;
+	}
 .search_result .right_info {
 	width: 125px;
 	text-align: center; vertical-align: middle

@@ -54,18 +54,44 @@
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 		$BCQ = new BiblioCopyFields;
 		$fields = array(
-			T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$postVars),
-		T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,$attr=array("size"=>1,"max"=>1),$postVars),
+	  ### corrected to suit inputfield (which gets $pageErrors internally) -- Fred
+		T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$postVars),
+//		T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,$attr=array("size"=>1,"max"=>1),$postVars),
+		T("Auto Barcode") => inputfield("checkbox","autobarco",'Y',NULL,$_SESSION['item_autoBarcode_flg']),
 		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40), $postVars),
 	);
+?>
 
+<script language="JavaScript1.4" >
+bcnf = {
+	init: function () {
+	  // set 'required' marker on 'barcode_nmbr' field label; probably a simpler way!
+	  $('<sup>*</sup>').prependTo($('#newCpyTbl tbody tr:first td:first'));
+
+	  // to handle startup condition
+		if ($('#autobarco:checked').length > 0) {
+			$('#barcode_nmbr').disable();
+		}
+		// if user changes his/her mind
+		$('#autobarco').bind('change',null,function (){
+		  if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
+			}
+			else {
+				$('#barcode_nmbr').enable();
+			}
+		})
+	}
+}
+$(document).ready(bcnf.init);
+</script>
+
+<?php
 	$rows = $BCQ->getAll();
 
 	while ($row = $rows->next()) {
 		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["description"], NULL,NULL,$postVars);
 	}
-
-
 ?>
 
 <p class="note">
@@ -73,15 +99,13 @@
 </p>
 
 <form name="editCopyForm" method="post" action="../catalog/biblio_copy_edit.php">
+<fieldset>
+<legend><?php echo T("Edit Copy"); ?></legend>
 <table class="primary">
-	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Edit Copy"); ?>
-		</th>
-	</tr>
 <?php
 	foreach ($fields as $title => $html) {
 ?>
+	<tbody class="unstriped">
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
 			<?php echo T($title); ?>
@@ -93,8 +117,6 @@
 <?php
 	}
 ?>
-
-
 
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
@@ -121,9 +143,9 @@
 	echo inputfield(select, status_cd, $postVars['status_cd'], $attrs, $state_select);
 ?>
 
-
 		</td>
 	</tr>
+	</tbody>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
@@ -133,6 +155,7 @@
 
 </table>
 <input type="hidden" name="copyid" value="<?php echo $copyid;?>" />
+</fieldset>
 </form>
 
 <?php
