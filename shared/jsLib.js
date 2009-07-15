@@ -15,6 +15,12 @@ $.fn.enable = function () {
 };
 
 //-------------------------------------------------------------------
+// replace existing content with new - 'jQuery in Action', p77, 15Jul2009 - fl
+$.fn.replaceWith = function (html) {
+	return this.after(html).remove();
+};
+
+//-------------------------------------------------------------------
 // <select> empty / load - 'jQuery in Action', p246, 1Jul2009 - fl
 $.fn.emptySelect = function () {
 	return this.each(function () {

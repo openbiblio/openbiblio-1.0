@@ -1,8 +1,17 @@
-<script language="JavaScript" >
+<?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+?>
+<style>
+.biblioImage {
+	float left;
+	border: 3px solid green;
+	height: 50px; width: 50px;
+	}
+</style>
 
+<script language="JavaScript" >
 // JavaScript Document
 //------------------------------------------------------------------------------
 // lookup Javascript
@@ -28,7 +37,7 @@ bs = {
 		// for the search results section
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-		$('.gobkBtn').bind('click',null,bs.rtnToSrch);
+		//$('.gobkBtn').bind('click',null,bs.rtnToSrch);
 
 		// for the copy editor function
 		// to handle startup condition
@@ -47,7 +56,6 @@ bs = {
 
 		$('#editSubmitBtn').val('Update');
 		$('#editSubmitBtn').bind('click',null,bs.doCopyUpdate);
-
 		$('#editCancelBtn').bind('click',null,bs.rtnFmCopyEdit);
 
 		bs.fetchCrntMbrInfo();
@@ -74,7 +82,15 @@ bs = {
 	  $('#biblioListDiv').hide();
 	  $('#searchDiv').show();
 	},
-	
+
+	rtnToList: function () {
+	  $('#rsltMsg').html('');
+	  $('#editRsltMsg').html('');
+	  $('#biblioDiv').hide();
+	  $('#biblioListDiv').show();
+	  $('#searchDiv').hide();
+	},
+
 	//------------------------------
 	fetchCrntMbrInfo: function () {
 	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){
@@ -101,7 +117,8 @@ bs = {
 	  			$('#search_results').html('<p>Nothing Found</p>');
 				}
 				else {
-					bs.showOneBiblio(bs.biblio.data)
+					$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
 	    }
@@ -110,47 +127,60 @@ bs = {
 	},
 	doPhraseSearch: function (e) {
 	  $('#errSpace').html('');
+		$('#srchRsltsDiv').html('');
 	  var params = $('#phraseSearch').serialize();
 		params += '&mode=doPhraseSearch';
 	  $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				bs.biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				if (bs.biblioList.length == 0) {
+				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
+				if (biblioList.length == 0) {
 	  			$('#rsltQuan').html('<p>Nothing Found</p>');
 				}
 				else {
-					$('#rsltQuan').html(bs.biblioList.length+' items found')
-				  for (var nBiblio in bs.biblioList) {
-				    var html = '<fieldset>';
-						var biblio = eval('('+bs.biblioList[nBiblio]+')');
-				    var imgFile = biblio.image_file;
-				    var data = biblio.data;
-console.log('data:'+data);
+					$('#rsltQuan').html(biblioList.length+' items found');
+					bs.biblio = Array();
+				  for (var nBiblio in biblioList) {
+				    var html = "<fieldset>\n<table>\n<tr> \n";
+						var biblio = eval('('+biblioList[nBiblio]+')');
+						bs.biblio[biblio.bibid] = biblio;
 						var callNo = ''; var title = '';
-						$.each(data, function (fldIndex, fldData) {
-console.log('item:'+fldData);
+						$.each(biblio.data, function (fldIndex, fldData) {
 		  				var tmp = eval('('+fldData+')');
 				      if (tmp.label == 'Title') 			title = tmp.value;
 				      if (tmp.label == 'Call Number') callNo = tmp.value;
 						});
-						html+='<img src="../images/'+imgFile+'" />';
-						html+=callNo+'<br />';
-						html+=title+'<br />';
-				    html +='</fieldset>';
+						html += '<td class="biblioImage"><img src=\"../images/shim.gif\" /></td>'+"\n";
+						html += '<td><img src="../images/'+biblio.imageFile+'" />'+title+"\n";
+						html += '<br />'+callNo+"\n";
+						html += '<div class="biblioBtn">'+"\n";
+						html += '	<input type="hidden" value="'+biblio.bibid+'" />'+"\n";
+						html += '	<input type="button" class="moreBtn" value="This One!" />'+"\n";
+						html += "</div> \n";
+				    html += "</tr>\n</table>\n</fieldset> \n";
 				    $('#srchRsltsDiv').append(html);
 					}
 				}
+				$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
+				$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 		  	$('#searchDiv').hide();
         $('#biblioListDiv').show()
 	    }
+
 		});
 		return false;
 	},
-	showOneBiblio: function (data) {
+	getPhraseSrchDetails: function () {
+	  var bibid = $(this).prev().val();
+		bs.biblio.bibid = bibid;
+		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToList);
+		bs.showOneBiblio(bs.biblio[bibid]);
+		bs.fetchCopyInfo();
+	},
+	showOneBiblio: function (biblio) {
 	  var txt = '';
-		$.each(data, function(fldIndex,fldData) {
+		$.each(biblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
 		  txt += "<tr>\n";
 			txt += "	<td>"+tmp.label+"</td>\n";
@@ -159,11 +189,12 @@ console.log('item:'+fldData);
 		});
 		txt += "<tr>\n";
 		txt += "	<td>Date Added</td>\n";
-		txt += "	<td>"+bs.biblio.createDt+"</td>\n";
+		txt += "	<td>"+biblio.createDt+"</td>\n";
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe();
 	  $('#searchDiv').hide();
+    $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
 	},
 	makeDueDateStr: function (dtOut) {

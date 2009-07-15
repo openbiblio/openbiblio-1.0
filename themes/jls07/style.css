@@ -139,11 +139,13 @@ div#content {
 	}
 /*#catalog_search h3 {*/
 h3 {
-	font: 20px sans-serif;
-	text-align: center;
-	color: white;
-	background: #ccb470;
+	font: 20px sans-serif; text-align: center;
+	color: white; background: #ccb470;
 	border: solid black 2px;
+	margin: 2px;
+	}
+h4 {
+	margin: 2px;
 	}
 .title {
 	font: 20px sans-serif;

@@ -47,11 +47,11 @@ class SrchDb {
 		return $rslt;
 	}
 	function getBiblioInfo($bibid) {
-	  if (!empty($bibid)) $this->bibid=$bibid;
+	  $this->bibid =$bibid;
 		$sql = "SELECT DISTINCT b.*, m.description, cd.description, cc.`days_due_back`, m.image_file "
 					."	FROM `biblio_copy` bc,`biblio` b,`material_type_dm` m,"
 					."			 `collection_dm` cd, `collection_circ` cc"
-					." WHERE (b.`bibid` = '$this->bibid')"
+					." WHERE (b.`bibid` = '$bibid')"
 					."	 AND (m.`code` = b.`material_cd`)"
 					."	 AND (cd.`code` = b.`collection_cd`)"
 					."	 AND (cc.`code` = b.`collection_cd`)";
@@ -61,6 +61,7 @@ class SrchDb {
 		$this->daysDueBack = $rcd[days_due_back];
 		$this->matlcd = $rcd[material_cd];
 		$this->collCd = $rcd[collection_cd];
+		$this->imageFile =$rcd[image_file];
 		return $rcd;
 	}
 	function getBiblioDetail() {
@@ -162,8 +163,8 @@ class SrchDb {
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
 	  $theDb->getBiblioByBarcd($_REQUEST[searchText]);
-	  $theDb->getBiblioInfo();
-		echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid',"
+	  $theDb->getBiblioInfo($theDb->bibid);
+		echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
 				."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
 				."'data':".json_encode($theDb->getBiblioDetail())
 				."}";
@@ -188,7 +189,7 @@ class SrchDb {
 		}
 		foreach ($biblioLst as $bibid) {
 			$theDb->getBiblioInfo($bibid);
-			$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid',"
+			$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
 									."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
 									."'data':".json_encode($theDb->getBiblioDetail())
 									."}";
