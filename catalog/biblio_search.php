@@ -24,13 +24,7 @@
 
 <div id="crntMbrDiv">to be filled by server</div>
 
-<div id="errSpace">to be filled by server
-	<?php
-	if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
-		echo '<p class="error">'.H($_REQUEST["msg"]).'</p>';
-	}
-	?>
-</div>
+<p class="error">to be filled by server</p>
 
 <div id="searchDiv">
 <form id="barcodeSearch" name="barcodeSearch" method="post">
@@ -145,14 +139,15 @@
 	</div>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
 	<span id="rsltQuan"></span>
-	<div id="srchRsltsDiv">
-	</div>
+	<div id="srchRsltsDiv"></div>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 </div
 
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="marcBtn" class="button" value="<?php echo T('Marc Tags'); ?>">
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">

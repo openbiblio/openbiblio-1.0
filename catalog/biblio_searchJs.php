@@ -26,6 +26,7 @@ bs = {
 
 		bs.url = 'biblio_searchSrvr.php';
 
+    $('#advanceQ').disable();
 		$('#advancedSrch').hide();
 		$('#advanceQ').bind('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
@@ -67,7 +68,7 @@ bs = {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
 	  $('#searchDiv').show();
-		$('#errSpace').hide();
+		$('p.error').hide();
 	  $('#biblioDiv').hide();
 	  $('#biblioListDiv').hide();
 	  $('#copyEditorDiv').hide();
@@ -103,7 +104,7 @@ bs = {
 	
 	//------------------------------
 	doBarcdSearch: function (e) {
-	  $('#errSpace').html('');
+	  $('p.error').html('').hide();
 	  var params = $('#barcodeSearch').serialize();
 		params += '&mode=doBarcdSearch';
 	  $.post(bs.url,params, function(jsonInpt){
@@ -111,8 +112,8 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				if (bs.biblio.data == null) {
-	  			$('#search_results').html('<p>Nothing Found</p>');
+				if (!bs.biblio.data) {
+	  			$('p.error').html('Nothing Found').show();
 				}
 				else {
 					$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
@@ -181,16 +182,20 @@ bs = {
 		$.each(biblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
 		  txt += "<tr>\n";
+			txt += "	<td class=\"filterable\">"+tmp.marcTag+"</td>\n";
 			txt += "	<td>"+tmp.label+"</td>\n";
 			txt += "	<td>"+tmp.value+"</td>\n";
 			txt += "</tr>\n";
 		});
 		txt += "<tr>\n";
+		txt += "	<td class=\"filterable\">&nbsp</td>\n";
 		txt += "	<td>Date Added</td>\n";
 		txt += "	<td>"+biblio.createDt+"</td>\n";
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe();
+		$('#biblioDiv td.filterable').hide();
+		$('#marcBtn').bind('click',null,function () { $('#biblioDiv td.filterable').toggle()});
 	  $('#searchDiv').hide();
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();

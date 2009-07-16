@@ -17,7 +17,7 @@ class SrchDb {
 					." WHERE (bc.`barcode_nmbr` = $barcd)"
 					."	 AND (b.`bibid` = bc.`bibid`)";
 		//echo "sql=$sql<br />";
-		$rcd = $this->db->select1($sql);
+		$rcd = $this->db->select01($sql);
 		$this->barCd = $barcd;
 		$this->bibid = $rcd[bibid];
 		return $rcd;
@@ -202,12 +202,16 @@ class SrchDb {
 
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
-	  $theDb->getBiblioByBarcd($_REQUEST[searchText]);
-	  $theDb->getBiblioInfo($theDb->bibid);
-		echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
-				."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
-				."'data':".json_encode($theDb->getBiblioDetail())
-				."}";
+	  $rslt = $theDb->getBiblioByBarcd($_REQUEST[searchText]);
+	  if ($rslt != NULL) {
+	  	$theDb->getBiblioInfo($theDb->bibid);
+			echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
+					."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
+					."'data':".json_encode($theDb->getBiblioDetail())
+					."}";
+		} else {
+			echo "{'data':null}";
+		}
 	  break;
 
 	case 'doPhraseSearch':
