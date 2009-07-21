@@ -205,6 +205,12 @@ h4 {
 	font: 16px serif regular;
 	text-align: left;
 	}
+.compact_info_display th.author {
+	background: none;
+	border: none;
+	font: 16px serif regular;
+	text-align: left;
+	}
 .compact_info_display ul {
 	margin: 0; padding: 0;
 	list-style-type: none;

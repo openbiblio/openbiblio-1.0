@@ -7,8 +7,10 @@ require_once(REL(__FILE__, "../classes/Buttons.php"));
 
 class CompactInfoDisplay {
 	var $title;
+	var $author;
 	function CompactInfoDisplay() {
 		$this->title = NULL;
+		$this->author = NULL;
 		$this->buttons = array();
 	}
 	function begin() {
@@ -21,6 +23,11 @@ class CompactInfoDisplay {
 				$s .= "	<td class=\"buttons\">".Buttons::display($this->buttons)."</td>\n";
 			}
 			$s .= "</tr>\n";
+			if ($this->author) {
+				$s .= "<tr>\n";
+				$s .= "	<th class=\"author\" >".$this->author."</th>\n";
+				$s .= "</tr>\n";
+			}
 			$s .= "</table>\n";
 		}
 		$s .= "<ul>\n";

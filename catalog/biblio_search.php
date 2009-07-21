@@ -87,7 +87,7 @@
 		<tr>
 			<td colspan="2" valign="top" nowrap="yes" align="left">
 				<label for="mediaType"><?php echo T("Media Type:"); ?> </label>
-					<span id="matTypes">to be filled by server</span>
+					<span id="srchMatTypes">to be filled by server</span>
 						<br /><br />
 				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
 					<?php echo inputfield('select','audienceLevel','all',null,array(
@@ -147,7 +147,9 @@
 	<p id="rsltMsg" class="error"></p>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="marcBtn" class="button" value="<?php echo T('Marc Tags'); ?>">
+	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">
@@ -168,6 +170,12 @@
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
+</div>
+
+<div id="itemEditorDiv">
+  <form id="biblioEditForm" name="biblioEditForm" method="POST" >
+	<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
+	</form>
 </div>
 
 <div id="copyEditorDiv">

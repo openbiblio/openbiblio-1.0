@@ -44,7 +44,6 @@
 		global $tab;
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('BiblioSearch');
-
 			if ($rpt && $_REQUEST['rpt_order_by']) {
 				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
 			}
@@ -205,6 +204,7 @@
 				$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
 				$d = new CompactInfoDisplay;
 				$d->title = $title;
+				$d->author = H($row['author']);
 				echo $d->begin();
 				while ($f = $fields->next()) {
 					if ($f['search_results'] != 'Y') {

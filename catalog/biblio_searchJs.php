@@ -24,7 +24,7 @@ bs = {
 		bs.initWidgets();
 		bs.resetForms();
 
-		bs.url = 'biblio_searchSrvr.php';
+		bs.url = 'biblio_server.php';
 
     $('#advanceQ').disable();
 		$('#advancedSrch').hide();
@@ -34,10 +34,10 @@ bs = {
 			else
 				$('#advancedSrch').hide();
 		});
-		
-		// for the search results section
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
+
+		// for the search results section
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
 
 		// for the copy editor function
@@ -55,8 +55,6 @@ bs = {
 			}
 		});
 
-		$('#editCancelBtn').bind('click',null,bs.rtnFmCopyEdit);
-
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 	},
@@ -71,15 +69,20 @@ bs = {
 		$('p.error').hide();
 	  $('#biblioDiv').hide();
 	  $('#biblioListDiv').hide();
+	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	},
 	
 	rtnToSrch: function () {
+  	$('tbody#biblio').html('');
+  	$('tbody#copies').html('');
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
 	  $('#biblioDiv').hide();
 	  $('#biblioListDiv').hide();
 	  $('#searchDiv').show();
+	  $('#itemEditorDiv').hide();
+	  $('#copyEditorDiv').hide();
 	},
 
 	rtnToList: function () {
@@ -88,6 +91,18 @@ bs = {
 	  $('#biblioDiv').hide();
 	  $('#biblioListDiv').show();
 	  $('#searchDiv').hide();
+	  $('#itemEditorDiv').hide();
+	  $('#copyEditorDiv').hide();
+	},
+
+	rtnToBiblio: function () {
+	  $('#rsltMsg').html('');
+	  $('#editRsltMsg').html('');
+	  $('#biblioDiv').show();
+	  $('#biblioListDiv').hide();
+	  $('#searchDiv').hide();
+	  $('#itemEditorDiv').hide();
+	  $('#copyEditorDiv').hide();
 	},
 
 	//------------------------------
@@ -98,10 +113,16 @@ bs = {
 	},
 	fetchMaterialList: function () {
 	  $.get(bs.url,{mode:'getMaterialList'}, function(data){
-			$('#matTypes').html(data);
+			$('#srchMatTypes').html(data);
+			$('#itemMediaTypes').html(data);
 		});
 	},
-	
+	fetchCollectionList: function () {
+	  $.get(bs.url,{mode:'getCollectionList'}, function(data){
+			$('#itemEditColls').html(data);
+		});
+	},
+
 	//------------------------------
 	doBarcdSearch: function (e) {
 	  $('p.error').html('').hide();
@@ -116,11 +137,13 @@ bs = {
 	  			$('p.error').html('Nothing Found').show();
 				}
 				else {
-					$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
 	    }
+		  $('#searchDiv').hide();
+	    $('#biblioDiv').show();
+			$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 		});
 		return false;
 	},
@@ -194,8 +217,10 @@ bs = {
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe();
-		$('#biblioDiv td.filterable').hide();
+		$('#biblioEditBtn').bind('click',null,bs.doItemEdit);
 		$('#marcBtn').bind('click',null,function () { $('#biblioDiv td.filterable').toggle()});
+
+		$('#biblioDiv td.filterable').hide();
 	  $('#searchDiv').hide();
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
@@ -236,17 +261,50 @@ bs = {
 				$('.deltBtn').bind('click',null,bs.doCopyDelete);
 	  });
 	},
-	makeNewCopy: function () {
-		$('#biblioDiv').hide();
-		if ($('#autobarco:checked').length > 0) {
-			bs.doGetBarcdNmbr();
-		}
-		$('#copyEditorDiv').show();
-		$('#editSubmitBtn').bind('click',null,bs.doCopyNew);
+
+	//------------------------------
+	doItemEdit: function () {
+		bs.fetchCollectionList();
+	  $('#biblioDiv').hide();
+	  $.get(bs.url,{'mode':'getBiblioFields',
+									'bibid':bs.biblio.bibid,
+									'matlCd':bs.biblio.matlCd,
+									'collCd':bs.biblio.collCd},
+									function (response) {
+			$('#marcBody').html(response);
+			
+			// now fill fields with data on hand
+			$('#nonMarcBody #mediaType').val([bs.biblio.matlCd]);
+			$('#nonMarcBody #collectionCd').val([bs.biblio.collCd]);
+			$('#nonMarcBody #opacFlg').val([bs.biblio.opacFlg]);
+			$.each(bs.biblio.data, function(fldIndex,fldData) {
+			  var tmp = eval('('+fldData+')');
+			  $('#marcBody #'+tmp.marcTag).val(tmp.value);
+			  $('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
+			  $('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
+			});
+		});
+		
+		$('#itemEditorDiv fieldset legend').html('<?php echo T('Edit Item Properties'); ?>');
+		$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
+											 .bind('click',null,bs.doItemUpdate);
+		$('.itemGobkBtn').bind('click',null,function () {
+    	$('#itemEditorDiv').hide();
+	  	$('#biblioDiv').show();
+		});
+    $('#itemEditorDiv').show();
 	},
-	doCopyDelete: function () {
-	  $(this).parent().parent().addClass('hilite');
-	  if (confirm('Are you sure you want to delete this copy ?')) {
+	doItemUpdate: function () {
+		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +'&'+ $('#biblioEditForm').serialize();
+	  $.post(bs.url,params, function(response){
+	  	$('#itemRsltMsg').html(response);
+			bs.rtnToBiblio()
+	  });
+	  return false;
+	},
+	doItemDelete: function () {
+	  //### FIXME - must have NO copies to allow delete !!!!!!
+	  if (confirm('<?php echo T('Are you sure you want to delete this item ?'); ?>')) {
 	  	var copyid = $(this).next().val();
 	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
 	  	$.post(bs.url,params, function(response){
@@ -257,6 +315,8 @@ bs = {
 	  $(this).parent().parent().removeClass('hilite');
 		return false;
 	},
+
+	//------------------------------
 	doCopyEdit: function (e) {
  	  $('#editRsltMsg').html('');
 	  var copyid = $(this).next().next().val();
@@ -267,15 +327,25 @@ bs = {
 		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
-		$('#editSubmitBtn').val('Update');
+		$('#copyEditorDiv fieldset legend').html('<?php echo T('Edit Copy Properties'); ?>');
+		$('#editSubmitBtn').val('<?php echo T('Update'); ?>');
 		$('#editSubmitBtn').bind('click',null,bs.doCopyUpdate);
+		$('#editCancelBtn').val('<?php echo T('Go Back'); ?>');
+		$('#editCancelBtn').bind('click',null,function () {
+			$('#copyEditorDiv').hide();
+			$('#biblioDiv').show();
+		});
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
 		return false;
 	},
-	rtnFmCopyEdit: function () {
-		$('#copyEditorDiv').hide();
-		$('#biblioDiv').show();
+	makeNewCopy: function () {
+		$('#biblioDiv').hide();
+		if ($('#autobarco:checked').length > 0) {
+			bs.doGetBarcdNmbr();
+		}
+		$('#copyEditorDiv').show();
+		$('#editSubmitBtn').bind('click',null,bs.doCopyNew);
 	},
 	doGetBarcdNmbr: function () {
 		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
@@ -311,6 +381,19 @@ bs = {
 	    $('#editCancelBtn').val('Go Back');
 	  });
 	  return false;
+	},
+	doCopyDelete: function () {
+	  $(this).parent().parent().addClass('hilite');
+	  if (confirm('<?php echo T('Are you sure you want to delete this copy ?'); ?>')) {
+	  	var copyid = $(this).next().val();
+	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
+	  	$.post(bs.url,params, function(response){
+	  	  $('#rsltMsg').html(response);
+	  		bs.fetchCopyInfo(); // refresh copy display
+	  	});
+		};
+	  $(this).parent().parent().removeClass('hilite');
+		return false;
 	}
 };
 $(document).ready(bs.init);

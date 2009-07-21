@@ -39,6 +39,7 @@ class biblio_search_rpt extends BiblioRows {
 			array('order_by', 'order_by', array(), array(
 				array('callno', array('title'=>'Call No.')),
 				array('title', array('title'=>'Title')),
+array('author', array('title'=>'Author')),
 				array('date', array('title'=>'Date')),
 				array('length', array('title'=>'Length')),
 			)),
@@ -56,7 +57,6 @@ class biblio_search_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
-//echo "sql=$sql";
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {
