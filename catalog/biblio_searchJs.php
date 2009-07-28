@@ -158,7 +158,7 @@ bs = {
 			} else {
 				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
 				if (biblioList.length == 0) {
-	  			$('#rsltQuan').html('<p>Nothing Found</p>');
+	  			$('#rsltQuan').html('<p class="error">Nothing Found</p>');
 				}
 				else {
 					$('#rsltQuan').html(biblioList.length+' items found');
@@ -168,11 +168,15 @@ bs = {
 						var biblio = eval('('+biblioList[nBiblio]+')');
 						bs.biblio[biblio.bibid] = biblio;
 						var callNo = ''; var title = '';
+						if (biblio.data) {
 						$.each(biblio.data, function (fldIndex, fldData) {
 		  				var tmp = eval('('+fldData+')');
 				      if (tmp.label == 'Title') 			title = tmp.value;
 				      if (tmp.label == 'Call Number') callNo = tmp.value;
 						});
+						} else {
+              title = 'unknown'; callNo = 'not assigned';
+						}
 						html += '<td class="biblioImage"><img src=\"../images/shim.gif\" /></td>'+"\n";
 						html += '<td><img src="../images/'+biblio.imageFile+'" />'+title+"\n";
 						html += '<br />'+callNo+"\n";

@@ -343,6 +343,7 @@ class SrchDb {
 	  		echo "<h5>Invalid Search Type: $_REQUEST[srchBy]</h5>";
 	  		exit;
 		}
+		if (sizeof($biblioLst) > 0) {
 		foreach ($biblioLst as $bibid) {
 			$theDb->getBiblioInfo($bibid);
 			$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
@@ -352,6 +353,9 @@ class SrchDb {
 									."}";
 		}
 		echo json_encode($biblio);
+		} else {
+			echo '[]';
+		}
 		break;
 		
 	case 'getBarcdNmbr':
