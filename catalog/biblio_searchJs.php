@@ -364,7 +364,7 @@ bs = {
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
 	  	bs.fetchCopyInfo(); // refresh copy display
-	    $('#editCancelBtn').val('Go Back');
+//	    $('#editCancelBtn').val('Go Back');
 	  });
 	  return false;
 	},

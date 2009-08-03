@@ -387,7 +387,7 @@ class SrchDb {
 
 	case 'newCopy':
 	  $theDb = new SrchDB;
-		echo $theDb->insertCopy($_REQUEST[bibid]);
+		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
 	case 'deleteCopy':
