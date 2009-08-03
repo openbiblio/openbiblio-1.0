@@ -65,7 +65,8 @@
 
 	# Display no results message if no results returned from search.
 	if ($rpt->count() == 0) {
-		echo T("No results found.");
+	  echo "<h3>Browse Images</h3>";
+		echo "<p class=\"error\">".T("No images found")."</p>";
 		Page::footer();
 		exit();
 	}

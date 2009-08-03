@@ -4,24 +4,22 @@
  */
 
 	require_once("../shared/common.php");
-
-
-	$nav = "cart";
-	if (isset($_REQUEST["tab"])) {
+	$tab = "cataloging";
+//	if (isset($_REQUEST["tab"])) {
+	if (!empty($_REQUEST["tab"])) { // tab was SET to '' by menu functions
 		$tab = $_REQUEST["tab"];
-	} else {
-		$tab = "cataloging";
 	}
 	$_REQUEST['tab'] = $tab;
+
+	$nav = "cart";
+	if ($tab != "opac") {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+	}
 	require_once(REL(__FILE__, "../classes/Report.php"));
 	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Links.php"));
 	require_once(REL(__FILE__, "../functions/info_boxes.php"));
-
-	if ($tab != "opac") {
-		require_once(REL(__FILE__, "../shared/logincheck.php"));
-	}
 
 	$rpt = Report::create('biblio_cart', 'BiblioCart');
 	if (!$rpt) {
@@ -48,7 +46,8 @@
 	}
 	# Display no results message if no results returned from search.
 	if ($total_items == 0) {
-		echo T("Request cart is empty");
+	  echo "<h3>Request Cart</h3>";
+		echo "<p class=\"error\">".T("Cart is empty")."</p>";
 		Page::footer();
 		exit();
 	}
