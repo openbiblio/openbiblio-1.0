@@ -36,9 +36,11 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-
+		
 		// for the search results section
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
+		$('#addList2CartBtn').bind('click',null,bs.doAddListToCart);
+		$('#addItem2CartBtn').bind('click',null,bs.doAddItemToCart);
 
 		// for the copy editor function
 		// to handle startup condition
@@ -122,7 +124,7 @@ bs = {
 			$('#itemEditColls').html(data);
 		});
 	},
-
+	
 	//------------------------------
 	doBarcdSearch: function (e) {
 	  $('p.error').html('').hide();
@@ -197,12 +199,28 @@ bs = {
 		});
 		return false;
 	},
+	doAddListToCart:function () {
+    var params = "mode=addToCart&name=bibid&tab=catalog";
+		for (var bibid in bs.biblio) {
+	  	params += "&id[]="+bibid;
+		}
+	  $.post(bs.url,params, function(response){
+	    $('#results_found').html(response);
+	  });
+	},
 	getPhraseSrchDetails: function () {
 	  var bibid = $(this).prev().val();
 		bs.biblio.bibid = bibid;
 		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToList);
 		bs.showOneBiblio(bs.biblio[bibid]);
 		bs.fetchCopyInfo();
+	},
+	doAddItemToCart:function () {
+    var params = "mode=addToCart&name=bibid&tab=catalog";
+	  params += "&id[]="+bs.biblio.bibid;
+	  $.post(bs.url,params, function(response){
+	    $('#results_found').html(response);
+	  });
 	},
 	showOneBiblio: function (biblio) {
 	  var txt = '';

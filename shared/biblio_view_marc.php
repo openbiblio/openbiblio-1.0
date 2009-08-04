@@ -67,7 +67,7 @@
 	<fieldset>
 	<legend><?php echo T("Item"); ?></legend>
 	<table class="primary" width="100%">
-	<tbody id="nonMarcBody">
+	<tbody id="nonMarcBody" class="unstriped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Type of Material:"); ?>
@@ -107,7 +107,7 @@
 			<b><?php echo T("MARC Record:"); ?></b>
 		</td>
 	</tr>
-	<tbody id="marcBody">
+	<tbody id="marcBody" class="unstriped">
 	<tr>
 		<td colspan="2" nowrap="true" class="primary">
 			<?php echo nl2br($biblio['marc']->getMnem()); ?>

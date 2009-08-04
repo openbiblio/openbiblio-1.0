@@ -134,10 +134,13 @@
 
 <div id="biblioListDiv">
 	<h4><?php echo T("Search Results"); ?></h4>
-	<div class="results_found">
+	<div id="results_found">
 		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="addList2CartBtn" class="button" value="<?php echo T('Add List To Cart'); ?>" />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<span id="rsltQuan"></span>
 	<div id="srchRsltsDiv"></div>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
@@ -150,6 +153,8 @@
 	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">

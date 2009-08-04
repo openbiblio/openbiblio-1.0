@@ -358,6 +358,18 @@ class SrchDb {
 		}
 		break;
 		
+	case 'addToCart':
+		require_once(REL(__FILE__, "../model/Cart.php"));
+		$name = $_REQUEST['name'];
+		$cart = getCart($name);
+		if (isset($_REQUEST['id'])) {
+			foreach ($_REQUEST['id'] as $id) {
+				$rslt = $cart->contains($id);
+				if (!$rslt) $cart->add($id);
+			}
+		}
+	  break;
+
 	case 'getBarcdNmbr':
 		require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
