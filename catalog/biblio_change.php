@@ -14,7 +14,6 @@ require_once(REL(__FILE__, "../classes/Marc.php"));
 #****************************************************************************
 #*  Checking for post vars.  Go back to search if none found.
 #****************************************************************************
-
 if (count($_POST) == 0) {
 	if ($nav == "newconfirm") {
 		header("Location: ../catalog/biblio_new_form.php");

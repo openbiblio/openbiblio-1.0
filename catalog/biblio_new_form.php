@@ -34,7 +34,7 @@
 bnf = {
 	init: function () {
 	  $('#materialCd').bind('change',null,bnf.matCdReload);
-		$('#biblioFldTbl tbody#marcBody tr:not(.hidden):even').addClass('altBG');
+//		$('#biblioFldTbl tbody#marcBody tr:not(.hidden):even').addClass('altBG');
 	},
 	matCdReload: function (){
 		var material_cd_value = $('#materialCd').val();

@@ -1044,7 +1044,7 @@ $trans["requestSendMustEnterDate"]          = "You must enter a request date and
 #****************************************************************************
 $trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area "
 													.	"to manage the internal workings of your copy of OpenBiblio.<br />"
-													.	" - Settings Settings: maintain options not appropriate to day-to-day managers.<br />"
+													.	" - System Settings: maintain options not appropriate to day-to-day managers.<br />"
 													.	" - Biblio Fields: determine what data to display and where it is to appear.<br />"
 													.	" - Plugin Manager: determine which, if any, plugin to allow.<br />"
 													.	" - Search Options could include which type of search is to be at top of screen or have focus.<br />";

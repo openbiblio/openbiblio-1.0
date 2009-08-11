@@ -204,19 +204,26 @@
 					 value="<?php echo T("lookup_goBack");?>" />
 	</div>
 
-	<div id="selectionDiv">
-	  <?php
-			$helpPage = "biblioEdit";
-			$cancelLocation = "../lookup2/lookup.php";
-  		$focus_form_name = "newbiblioform";
-  		$focus_form_field = "materialCd";
+<div id="divTest">
+<form id="frmTest">
+</form>
+</div>
 
-			require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-  		
-  		## we use original biblio edit screen, but will replace existing 'Cancel' button
-   		print '<form name="newbiblioform" method="POST" action="../catalog/biblio_new.php" >';
+	<div id="selectionDiv">
+   	<form id="newbiblioform" name="newbiblioform" method="POST" action="chng-wrap.php" >
+			<?php
+//  		## we use original biblio edit screen, but will replace existing 'Cancel' button
+//   		//<form name="newbiblioform" method="POST" action="../catalog/biblio_new.php" >
+//
+//			$cancelLocation = "../lookup2/lookup.php";
+//  		$focus_form_name = "newbiblioform";
+//  		$focus_form_field = "materialCd";
+//
+//			require_once(REL(__FILE__, "../shared/get_form_vars.php"));
+//
 			include(REL(__FILE__,"../catalog/biblio_fields.php"));
-		?>
+			?>
+		</form>
 	</div>
 <?php
 	## needed for all cases

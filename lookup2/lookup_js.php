@@ -43,7 +43,7 @@ lkup = {
 		// get header stuff going first
 		lkup.initWidgets();
 
-		lkup.url = 'srvr.php';
+		lkup.url = 'server.php';
 		lkup.form = $('#lookupForm');
 		
 		// button on search screen gets special treatment
@@ -55,32 +55,34 @@ lkup = {
 		$('#retryBtn').bind('click',null,lkup.doBackToSrch);
 		$('#choiceBtn1').bind('click',null,lkup.doBackToSrch);
 		$('#choiceBtn2').bind('click',null,lkup.doBackToSrch);
-		//lkup.srchBtn.bind('click',null,lkup.doValidate);
 		$('#lookupForm').bind('submit',null,function(){
 			lkup.doValidate();
 			return false;
 		});
 
 		// modify original biblioFields form to better suit our needs
+		$('#reqdNote').css({display:'inline', width:'10em'});
+		$('<input type="button" id="biblioBtn2" class="button" value="<?php echo T('Go Back');?>" />')
+			.insertAfter('#reqdNote');
+		$('<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>')
+			.insertBefore('#biblioBtn2');
 		$('#selectionDiv input[value="Cancel"]').removeAttr('onClick');
 		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
 		$('#selectionDiv input[value="Cancel"]').attr('value',lkup.goBack);
-		$('#selectionDiv input[value="Submit"]').attr('value',lkup.accept);
+		$('#submitBtn').val(lkup.accept);
+		$('#newbiblioform').bind('submit',null,function(){
+console.log('callnmbr='+$('#099a').val());
+	  	var parms=$('#newbiblioform').serialize();
+			console.log('submitting parms: '+parms);
+			return true;
+		});
 
 		// FIXME - fl only '*' should be colored
 		$('#selectionDiv font').css('color','red');
-		
 		$('#selectionDiv sup').css('color','red');
 		lkup.inputColor = $('#99').css('color');
 		$('#100a').bind('change',null,lkup.fixAuthor);
 		$('#245a').bind('change',null,lkup.fixTitle);
-//		$('#biblioFldTbl').addClass('striped');
-
-    // find title line of edit form and add another 'cancel' button
-    $('#selectionDiv form thead th').attr('colspan','1');
-		var newBtn = '<input id="newGoBkBtn" type="button" class="button" value="'+lkup.goBack+'" />'
-		$('<td id="biblioBtn2" class="primary" align="center")>'+newBtn+'</td>')
-			.appendTo($('#selectionDiv form thead tr:first-child'));
 
 		lkup.fetchHosts();  //on completion, search form will appear
 		lkup.fetchOpts();  //for debug use
@@ -101,7 +103,6 @@ lkup = {
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 
-		//lkup.form[0].reset();
 		$('#lookupVal').focus();
 		lkup.disableSrchBtn();
 	},
@@ -257,7 +258,6 @@ lkup = {
 		// note for this to work, all form fields MUST have a 'name' attribute
 		$('lookupForm #mode').val('search');
 		var srchParms = $('#lookupForm').serialize();
-		//console.log(srchParms);
 		$.post(lkup.url, srchParms, function(response) {
 			$('#waitDiv').hide();
 			
@@ -269,12 +269,9 @@ lkup = {
 				$('#retryDiv').show();
 			}
 			else {
-				//console.log('got something, JSON: '+response);
 				var rslts = eval('('+response+')'); // JSON 'interpreter'
-				//console.log('rslts : '+rslts);
 				var numHits = parseInt(rslts.ttlHits);
 				var maxHits = parseInt(rslts.maxHits);
-				console.log('ttl hits = '+numHits+'; max = '+maxHits);
 				if (numHits < 1) {
 					console.log('nothing found');
 				  //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
@@ -334,7 +331,7 @@ lkup = {
 						} // if (lkup.hostJason[hostIndex])
 					}); // $.each(rslts.data...
 					$('#ttlHits').html(nHits+' hits found.')
-					console.log('all choices drawn')
+					//console.log('all choices drawn')
 					//$('#choiceSpace').append(response);
 					$('#biblioBtn').bind('click',null,lkup.doBackToChoice);
 					$('#biblioBtn2').bind('click',null,lkup.doBackToChoice);

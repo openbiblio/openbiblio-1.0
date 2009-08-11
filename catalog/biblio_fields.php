@@ -11,38 +11,41 @@
 	require_once(REL(__FILE__, "../catalog/inputFuncs.php"));
 
 ?>
-<p class="note">
-<?php echo T("Fields marked are required"); ?>
-</p>
+<div id="fldsHdr">
+	<div id="reqdNote"><span class="note">
+		<?php echo T("Fields marked are required"); ?>
+	</span></div>
+</div>
+
 <fieldset>
 <legend><?php echo T("Item"); ?></legend>
-<table id="biblioFldTbl" class="primary">
+<table id="biblioFldTbl" name="biblioFldTbl" class="primary">
 	<?php ## ----------------------- ## ?>
 	<thead></thead>
 	
 	<?php ## ----------------------- ## ?>
-	<tbody id="nonMarcBody">
+	<tbody id="nonMarcBody unstriped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup>
 			<label for="materialCd"><?php echo T("Type of Material:"); ?></label>
 		</td>
 		<td valign="top" class="primary">
-<?php
-	# fetch a complete set of all material types
-	$matTypes = new MaterialTypes;
-	# determine which is to be 'selected'
-	if (isset($biblio['material_cd'])) {
-		$material_cd_value = $biblio['material_cd'];
-	} elseif (isset($_GET['material_cd'])) {
-	  $material_cd_value = $_GET['material_cd'];
-	} else {
-		$material_cd_value = $matTypes->getDefault();
-	}
-	# if selection is changed, a new set of data entry fields will be displayed
-	//$attrs = array('onchange'=>"matCdReload()");
-	echo inputfield('select', "materialCd", $material_cd_value, $attrs, $matTypes->getSelect());
-?>
+			<?php
+				# fetch a complete set of all material types
+				$matTypes = new MaterialTypes;
+				# determine which is to be 'selected'
+				if (isset($biblio['material_cd'])) {
+					$material_cd_value = $biblio['material_cd'];
+				} elseif (isset($_GET['material_cd'])) {
+				  $material_cd_value = $_GET['material_cd'];
+				} else {
+					$material_cd_value = $matTypes->getDefault();
+				}
+				# if selection is changed, a new set of data entry fields will be displayed
+				//$attrs = array('onchange'=>"matCdReload()");
+				echo inputfield('select', "materialCd", $material_cd_value, $attrs, $matTypes->getSelect());
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -168,10 +171,9 @@
 			echo '	<sup>*</sup>';
 		}
 		echo "	<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
-
 		echo "	</td> \n";
+		
 		echo "	<td valign=\"top\" class=\"primary\"> \n";
-
 		echo inputfield('hidden', "fields[".H($n)."][tag]",         H($i['tag']))." \n";
 		echo inputfield('hidden', "fields[".H($n)."][subfield_cd]", H($i['subfield']))." \n";
 		echo inputfield('hidden', "fields[".H($n)."][fieldid]",     H($i['fieldid']))." \n";
