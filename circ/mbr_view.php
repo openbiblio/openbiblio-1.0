@@ -11,9 +11,9 @@
 	$focus_form_field = "searchText";
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-//	require_once(REL(__FILE__, "../functions/formatFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../model/Members.php"));
+	require_once(REL(__FILE__, "../model/MemberTypes.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
@@ -71,7 +71,9 @@
 	#****************************************************************************
 	$members = new Members;
 	$mbr = $members->maybeGetOne($mbrid);
-
+	$mbrTypes = new MemberTypes;
+	$mbrType = $mbrTypes->getOne($mbr['classification']);
+	
 	if ($mbr) {
 		$_SESSION['currentMbrid'] = $mbrid;
 	} else {
@@ -105,7 +107,6 @@
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
-echo "seqNo={$_REQUEST['seqno']}; prior=$p; next=$n <br />";
 		echo '<fieldset>';
 		echo '<table style="margin-bottom: 10px" width="60%" align="center">';
 		echo '<tr>';
@@ -127,9 +128,6 @@ echo "seqNo={$_REQUEST['seqno']}; prior=$p; next=$n <br />";
 		echo '</fieldset>';
 	}
 ?>
-
-<?php echo $balMsg ?>
-<?php echo $msg ?>
 
 <fieldset>
 <legend><?php echo T("Member Information"); ?></legend>
@@ -173,10 +171,12 @@ if ($_SESSION['currentBookingid']) {
 	</tr>
 </table>
 </fieldset>
-
-<!--****************************************************************************
-		*  Checkout form
-		**************************************************************************** -->
+<?php
+		##****************************************************************************
+		## Patron Action forms
+		##****************************************************************************
+if (strtolower($mbrType[description]) != 'denied') {
+?>
 <form name="bookingsearch" method="get" action="../shared/biblio_search.php">
 <fieldset>
 <legend><?php echo T("Make Booking"); ?></legend>
@@ -219,6 +219,38 @@ if ($_SESSION['currentBookingid']) {
 </form>
 </fieldset>
 
+<form name="holdForm" method="post" action="../circ/place_hold.php">
+<fieldset>
+<legend><?php echo T("Place On Hold"); ?></legend>
+<table class="primary">
+	<tr>
+		<td nowrap="nowrap" class="primary">
+			<?php echo T("Barcode Number"); ?>
+			<?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
+			<a href="javascript:popSecondaryLarge(../opac/index.php?lookup=Y)">search</a>
+			<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
+			<input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
+			<input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
+		</td>
+	</tr>
+</table>
+</fieldset>
+</form>
+<?php
+} else {
+?>
+<fieldset>
+	<legend>Service Denied</legend>
+	<p class="error"><?php echo T("This patron's checkout privileges have been canceled."); ?></p>
+	<p><?php echo T("Contact Library Administration for assistance."); ?></p>
+</fieldset>
+<?php
+}
+
+	#****************************************************************************
+	#*  Stuff checked out.
+	#****************************************************************************
+?>
 <fieldset>
 <legend><?php echo T("Items Currently Checked Out"); ?></legend>
 <table class="primary">
@@ -290,26 +322,8 @@ if ($_SESSION['currentBookingid']) {
 </fieldset>
 
 <!--****************************************************************************
-		*  Hold form
+		*  Stuff on Hold
 		**************************************************************************** -->
-<form name="holdForm" method="post" action="../circ/place_hold.php">
-<fieldset>
-<legend><?php echo T("Place Hold"); ?></legend>
-<table class="primary">
-	<tr>
-		<td nowrap="nowrap" class="primary">
-			<?php echo T("Barcode Number"); ?>
-			<?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
-			<a href="javascript:popSecondaryLarge(../opac/index.php?lookup=Y)">search</a>
-			<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
-			<input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
-			<input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
-		</td>
-	</tr>
-</table>
-</fieldset>
-</form>
-
 <fieldset>
 <legend><?php echo T("Copies Currently On Hold"); ?></legend>
 <table class="primary">

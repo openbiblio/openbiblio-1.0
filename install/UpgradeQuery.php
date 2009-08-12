@@ -360,7 +360,9 @@ class UpgradeQuery extends InstallQuery {
 	}
 	function _upgrade100_e($prfx,tmpPrfx) {
 		# FIXME -- not done yet by a LONG ways
-		# this is mods made to wip structure for F.L. software adds/mods
+		### ################################################### ###
+		### mods made to wip structure for F.L. software adds/mods
+		### ################################################### ###
 		$this->act('ALTER TABLE '.$prfx.'staff '
 								. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
  		$this->act("ALTER TABLE ".$prfx."`settings` "
@@ -377,10 +379,16 @@ class UpgradeQuery extends InstallQuery {
 		$this->act("ALTER TABLE `member` "
 							."CHANGE `create_dt` `create_dt` DATETIME NOT NULL ,"
 							."CHANGE `last_change_dt` `last_change_dt` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL");
-							
+
 		### ################################################### ###
 		### conversion process begins here.
 		### ################################################### ###
+    //------------------------//
+		$this->act("CREATE TABLE `member_fields_dm` ("
+  						."`code` varchar(16) NOT NULL, "
+  						."`description` char(32) NOT NULL, "
+  						."`default_flg` char(1) NOT NULL, "
+  						."PRIMARY KEY  (`code`)");
     //------------------------//
 		## Admin support tables
 		$sql = "INSERT INTO `openbibliowork`.`theme` "
@@ -402,7 +410,6 @@ class UpgradeQuery extends InstallQuery {
 					."  FROM `openbiblio`.`material_type_dm` "
 					;
     $this->act($sql);
-	}
     //-------------------------//
 		$sql = "INSERT INTO `openbibliowork`.`biblio` "
 					."(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`)"
@@ -410,6 +417,12 @@ class UpgradeQuery extends InstallQuery {
 					."  FROM `openbiblio`.`biblio` "
 					;
     $this->act($sql);
-
+		//-------------------------//
+		## member loan priveleges denied support
+    $sql = "INSERT INTO `openbibliowork`.`mbr_classify_dm` "
+					."(`code`, `description`, `default_flg`) VALUES ('3', 'denied', 'N')
+					;
+	  $this->act($sql);
+		}
 	}
 }
