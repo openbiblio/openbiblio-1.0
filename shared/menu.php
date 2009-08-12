@@ -8,8 +8,8 @@ function staff_menu() {
 	Nav::node('circulation/searchform', T("Member Search"), '../circ/index.php');
 	Nav::node('circulation/search', T("Search Results"));
 
-	if (isset($mbrid)) {
-		$params = 'mbrid='.U($mbrid);
+	if (isset($_REQUEST[mbrid])) {
+		$params = 'mbrid='.U($_REQUEST[mbrid]);
 		if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
 			$params .= '&rpt='.U($_REQUEST['rpt']);
 			$params .= '&seqno='.U($_REQUEST['seqno']);
@@ -26,9 +26,8 @@ function staff_menu() {
 	Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
 	Nav::node('circulation/bookings/pending', T("Pending Bookings"));
 
-
-	if (isset($bookingid)) {
-		$params = 'bookingid='.U($bookingid);
+	if (isset($_REQUEST[bookingid])) {
+		$params = 'bookingid='.U($_REQUEST[bookingid]);
 		if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
 			$params .= '&rpt='.U($_REQUEST['rpt']);
 			$params .= '&seqno='.U($_REQUEST['seqno']);
@@ -40,6 +39,8 @@ function staff_menu() {
 
 	Nav::node('circulation/bookings/book', T("Create Booking"));
 	Nav::node('circulation/checkin', T("Check In"), '../circ/checkin_form.php?reset=Y');
+	##-------------------------------------------------------------------------------------##
+	
 	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 	Nav::node('cataloging/searchform', T("New Search"), "../catalog/index.php");
 	Nav::node('cataloging/localSearch', T("Local Search"), "../catalog/biblio_search.php");
@@ -92,6 +93,8 @@ function staff_menu() {
 		"../catalog/upload_usmarc_form.php");
 	Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
 		"../catalog/biblio_bulk_del.php");
+	##-------------------------------------------------------------------------------------##
+
 	Nav::node('admin', T("Admin"), '../admin/index.php');
 	Nav::node('admin/summary', T("Admin Summary"), '../admin/index.php');
 	Nav::node('admin/staff', T("Staff Admin"), '../admin/staff_list.php');
@@ -122,6 +125,7 @@ function staff_menu() {
 	Nav::node('admin/themes', T("Themes"), '../admin/theme_list.php');
 	Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
 	Nav::node('admin/opac', T("View Opac"), '../opac/index.php');
+	##-------------------------------------------------------------------------------------##
 
 	Nav::node('reports', T("Reports"), '../reports/index.php');
 	Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
@@ -130,11 +134,14 @@ function staff_menu() {
 		Nav::node('reports/results', T("Report Results"),
 			'../reports/run_report.php?type=previous');
 	}
-	
+	##-------------------------------------------------------------------------------------##
+
+
 	Nav::node('tools', T("Tools"), '../tools/index.php');
 	Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 	Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 	Nav::node('tools/biblioSrch', T("Biblio Search Opts."), '../tools/biblioSrch.php');
+	##-------------------------------------------------------------------------------------##
 
 	$helpurl = "javascript:popSecondary('../shared/help.php";
 
