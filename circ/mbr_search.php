@@ -59,12 +59,17 @@
 	}
 
 	Nav::node('circulation/search/member_list', T("Print List"), '../shared/layout.php?name=member_list&rpt=MemberSearch');
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
+?>
+
+	<h3><?php echo T("Search Results"); ?></h3>
+
+<?php
 
 	#**************************************************************************
 	#*  Show search results
 	#**************************************************************************
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
 	# Display no results message if no results returned from search.
 	## FIXME - needs a 'goBack' ability so search criteria can be modified and re-submitted
 	if ($rpt->count() == 0) {
@@ -99,7 +104,6 @@ function setCheckboxes()
 </script>
 <form name="selection" id="selection" action="../shared/dispatch.php" method="post">
 <fieldset>
-<legend><?php echo T("Search Results"); ?></legend>
 <input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
 <table>
 <?php

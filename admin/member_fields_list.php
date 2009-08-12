@@ -17,24 +17,27 @@
 	$fields = $membfields->getAll();
 
 ?>
-<h1><?php echo T("Custom Member Fields"); ?></h1>
+<h3><?php echo T("Custom Member Fields"); ?></h3>
 <a href="../admin/member_fields_new_form.php?reset=Y"><?php echo T("Add new custom field"); ?></a><br />
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
-		<th colspan="2" valign="top">
+		<th colspan="2" valign="bottom">
 			<sup>*</sup><?php echo T("Function"); ?>
 		</th>
-		<th valign="top" nowrap="yes">
+		<th valign="bottom" nowrap="yes">
 			<?php echo T("Code"); ?>
 		</th>
-		<th valign="top" nowrap="yes">
+		<th valign="bottom" nowrap="yes">
 			<?php echo T("Description"); ?>
 		</th>
 	</tr>
+	</thead>
 	<?php
-		$row_class = "primary";
 		while (($field = $fields->next()) !== NULL) {
 	?>
+	<tbody class="striped">
 	<tr>
 		<td valign="top" class="<?php echo H($row_class); ?>">
 			<a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($field['code']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("edit"); ?></a>
@@ -49,17 +52,12 @@
 			<?php echo H($field['description']); ?>
 		</td>
 	</tr>
+	<tbody>
 	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
 		}
 	?>
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();
