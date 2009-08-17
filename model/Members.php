@@ -28,8 +28,8 @@ class Members extends CoreTable {
 			'email'=>'string',
 			'password'=>'string',
 			'classification'=>'string',
-			//'school_grade'=>'string',
-			//'school_teacher'=>'string',
+			'school_grade'=>'string',
+			'school_teacher'=>'string',
 		));
 		$this->setKey('mbrid');
 		$this->setSequenceField('mbrid');

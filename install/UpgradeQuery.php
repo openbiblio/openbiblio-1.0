@@ -384,12 +384,6 @@ class UpgradeQuery extends InstallQuery {
 		### conversion process begins here.
 		### ################################################### ###
     //------------------------//
-		$this->act("CREATE TABLE `member_fields_dm` ("
-  						."`code` varchar(16) NOT NULL, "
-  						."`description` char(32) NOT NULL, "
-  						."`default_flg` char(1) NOT NULL, "
-  						."PRIMARY KEY  (`code`)");
-    //------------------------//
 		## Admin support tables
 		$sql = "INSERT INTO `openbibliowork`.`theme` "
 					."SELECT * "

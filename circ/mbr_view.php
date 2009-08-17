@@ -112,7 +112,7 @@
 		echo '<tr>';
 		echo '	<td align="left">';
 		if ($p) {
-			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
+			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['.seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
 		}
 		echo '	</td>';
 		echo '	<td align="center">';
@@ -120,7 +120,7 @@
 		echo '	</td>';
 		echo '	<td align="right">';
 		if ($n) {
-			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
+			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['.seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
 		}
 		echo '	</td>';
 		echo '</tr>';
