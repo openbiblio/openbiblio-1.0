@@ -11,7 +11,6 @@
 	$focus_form_field = "transactionTypeCd";
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-//	require_once(REL(__FILE__, "../functions/formatFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	require_once(REL(__FILE__, "../model/MemberAccounts.php"));
