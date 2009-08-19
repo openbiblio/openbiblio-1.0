@@ -25,10 +25,7 @@
 		include_once(REL(__FILE__, "../model/Collections.php"));
 		$collections = new Collections;
 		$coll = $collections->getOne($code);
-print_r($coll);echo"<br />";
-//		$postVars = $coll; //-- causes crash - Fred
 		$t = $collections->getTypeData($coll);
-print_r($t);echo"<br />";
 		$postVars = array_merge($postVars, $t);
 		$_SESSION['postVars'] = $postVars;
 	} else {
@@ -63,11 +60,6 @@ $(document).ready(cef.init);
 	<?php echo inputfield('hidden','code',$postVars["code"]); ?>
 
 <table class="primary">
-	<!--tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php //echo T("Edit Collection:"); ?>
-		</th>
-	</tr-->
 	<tbody>
 	<tr>
 		<td nowrap="true" class="primary">
@@ -90,7 +82,7 @@ $(document).ready(cef.init);
 			<sup>*</sup><?php echo T("Days Due Back:");?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text', 'days_due_back'); ?>
+			<?php echo inputfield('text', 'days_due_back',$t[days_due_back]); ?>
 		</td>
 	</tr>
 	<tr class="switchable colltype_Circulated">
@@ -98,7 +90,7 @@ $(document).ready(cef.init);
 			<sup>*</sup><?php echo T("Daily Late Fee:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text', 'daily_late_fee'); ?>
+			<?php echo inputfield('text', 'daily_late_fee',$t[daily_late_fee]); ?>
 		</td>
 	</tr>
 	<tr class="switchable colltype_Distributed">
