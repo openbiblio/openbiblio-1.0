@@ -364,7 +364,7 @@ class UpgradeQuery extends InstallQuery {
 		### mods made to wip structure for F.L. software adds/mods
 		### ################################################### ###
 		$this->act('ALTER TABLE '.$prfx.'staff '
-								. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
+							. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
  		$this->act("ALTER TABLE ".$prfx."`settings` "
 		 					."ADD `menu` ENUM('admin','tools','none') NOT NULL DEFAULT 'admin'");
 		$this->act("INSERT INTO ".$prfx."`settings` ".
@@ -379,7 +379,12 @@ class UpgradeQuery extends InstallQuery {
 		$this->act("ALTER TABLE `member` "
 							."CHANGE `create_dt` `create_dt` DATETIME NOT NULL ,"
 							."CHANGE `last_change_dt` `last_change_dt` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL");
-
+		$this->act("ALTER TABLE `member` "
+							."ADD `address2` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `address1` ,"
+							."ADD `city` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `address2` ,"
+							."ADD `state` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `city` ,"
+							."ADD `zip` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `state` ,"
+							."ADD `zip_ext` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `zip` ";
 		### ################################################### ###
 		### conversion process begins here.
 		### ################################################### ###

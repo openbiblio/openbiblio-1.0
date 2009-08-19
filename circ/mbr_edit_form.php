@@ -32,10 +32,11 @@
 	$mbrid = $postVars[mbrid]; # For nav menu
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-	$headerWording = T("edit");
+	$headerWording = T("Edit");
 
 	$cancelLocation = "../circ/mbr_view.php?mbrid=".$postVars["mbrid"]."&reset=Y";
 ?>
+<h3>			<?php echo $headerWording;?> <?php echo T("Member"); ?></h3>
 
 <form name="editMbrform" method="post" action="../circ/mbr_edit.php">
 <input type="hidden" name="mbrid" value="<?php echo $postVars["mbrid"];?>" />
