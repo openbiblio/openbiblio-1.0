@@ -13,7 +13,7 @@ class Localize {
 	var $marc = array();
 
 	function init($locale) {
-		if (!ereg("^[A-Za-z0-9][A-Za-z0-9_]*$", $locale)) {
+		if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $locale)) {
 			Fatal::internalError("Invalid Locale: >$locale<");
 		}
 		

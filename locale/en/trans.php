@@ -790,7 +790,9 @@ $trans["materialsDelConfirmMsg"]          = "Are you sure you want to delete mat
 #****************************************************************************
 #*  Translation text for materials_list.php
 #****************************************************************************
-$trans["materialsListNoteMsg"]          = "The delete function is only available on material types that have an item count of zero. If you wish to delete a material type with an item count greater than zero you will first need to change the material type on those items to another material type.";
+$trans["materialsListNoteMsg"]          = "The delete function is only available on material types that have an item count of zero. <br />"
+																					."If you wish to delete a material type with an item count greater than zero, <br />"
+																					."you will first need to change the material type on those items to another material type.";
 
 
 

@@ -12,6 +12,6 @@ if (isset($_GET["page"])) {
 } else {
 	$page = "contents";
 }
-assert('ereg("^[A-Za-z0-9_]+\\$", $page)');
+assert('preg_match("/^[A-Za-z0-9_]+\\$/", $page)');
 include("../locale/".Settings::get('locale')."/help/".$page.".php");
 include(REL(__FILE__, "../shared/help_footer.php"));

@@ -31,15 +31,13 @@
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
+<h3><?php echo T("Edit Site"); ?></h3>
 
 <form name="editsiteform" method="post" action="../admin/sites_edit.php">
 <input type="hidden" name="siteid" value="<?php echo H($site["siteid"]) ?>" />
+<fieldset>
 <table class="primary">
-	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Edit Site"); ?>
-		</th>
-	</tr>
+	<tbody class="striped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Calendar:"); ?>
@@ -87,14 +85,19 @@
 			?>
 		</td>
 	</tr>
+	</tbody>
+	
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<a class="small_button" href="../admin/sites_list.php"><?php echo T("Cancel"); ?></a>
 		</td>
 	</tr>
-
+	</tfoot>
+	
 </table>
+</fieldset>
 </form>
 
 <?php

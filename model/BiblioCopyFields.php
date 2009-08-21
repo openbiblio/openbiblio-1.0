@@ -10,7 +10,7 @@ class BiblioCopyFields extends DmTable {
 		$this->DmTable();
 		$this->setName('biblio_copy_fields_dm');
 		$this->setFields(array(
-			'code'=>'number',
+			'code'=>'string',
 			'description'=>'string',
 			'default_flg'=>'string',
 		));

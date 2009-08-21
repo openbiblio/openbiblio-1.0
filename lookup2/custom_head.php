@@ -30,9 +30,6 @@ lookup = {
 </script>
 
 <style>
-fieldset {
-	width: 50%;
-	}
 h4 {
 	margin: 0; padding: 0; text-align: left; color: blue;
 	}

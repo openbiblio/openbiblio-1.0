@@ -15,6 +15,9 @@
 	require_once(REL(__FILE__, "../classes/Links.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
+	<h3><?php echo T("Sites"); ?></h3>
+<?php
 
 	if ($_REQUEST['type'] == 'previous') {
 		$rpt = Report::load('Report');
@@ -45,15 +48,8 @@
 	echo T("%count% sites.", array('count'=>$rpt->count()));
 	echo '</div>';
 	echo $disp->pages($page_url, $currentPageNmbr);
-?>
 
-<table class="resultshead">
-	<tr>
-		<th><?php echo T("Sites"); ?></th>
-		<td class="resultshead"></td>
-	</tr>
-</table>
-<?php
+	echo "<fieldset> \n";
 
 	$sort_url = new LinkUrl("../admin/sites_list.php",
 		'rpt_order_by', array('type'=>'previous'));
@@ -65,6 +61,8 @@
 		echo $t->rowArray($disp->row($r));
 	}
 	echo $t->end();
+
+	echo "</fieldset> \n";
 
 	echo $disp->pages($page_url, $currentPageNmbr);
 	Page::footer();

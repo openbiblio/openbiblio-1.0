@@ -9,9 +9,9 @@
 div#listDiv h5{
 	text-align: left; margin:0; padding:0;
 	}
-#listDiv fieldset {
+/*#pluginSet {
 	margin: 0; padding: 0;
-	}
+	}*/
 #listDiv ul {
 	list-style-type: none; text-decoration: none;
 	display: block; text-align: left; margin:0; padding:0;
@@ -19,9 +19,9 @@ div#listDiv h5{
 #listDiv label {
 	text-align: left; margin:0; padding:0;
 	}
-#msgDiv fieldset {
+/*#msgDiv fieldset {
 		padding: 5px;
-	}
+	}*/
 #msgArea h4 {
 	margin: 0; padding: 2px;
 	color: red;

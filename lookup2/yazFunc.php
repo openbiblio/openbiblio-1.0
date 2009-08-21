@@ -13,14 +13,14 @@
 		$rslt = array();
 
     while(list($key,list($tagpath,$data))=each($ar)) {
-      if (ereg("^\(3,([^)]*)\)\(3,([^)]*)\)$",$tagpath,$res)) {
+      if (preg_match("/^\(3,([^)]*)\)\(3,([^)]*)\)$/",$tagpath,$res)) {
 				if (!empty($theTag)) {
 					$marcFlds["$theTag"] = $subFlds;	// store previous data
 				}
         $theTag = "$res[1]";
         $subFlds = array(); //reset($subFlds);
     	}
-    	elseif (ereg("^\(3,([^)]*)\)\(3,([^)]*)\)\(3,([^)]*)\)$",$tagpath,$res)) {
+    	elseif (preg_match("/^\(3,([^)]*)\)\(3,([^)]*)\)\(3,([^)]*)\)$/",$tagpath,$res)) {
         $subFlds["$res[3]"] = "$data";
 
         $data = trim(htmlspecialchars($data));

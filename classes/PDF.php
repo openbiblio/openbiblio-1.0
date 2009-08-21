@@ -329,7 +329,7 @@ class PDF {
 
 	function _loadFont($name) {
 		global $PDF_font;
-		assert('ereg("^[-_/A-Za-z0-9]+\$", $name)');
+		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $name)');
 		$fname = $this->_getfontpath().$name.'.php';
 		$PDF_font = false;
 		@include_once($fname);

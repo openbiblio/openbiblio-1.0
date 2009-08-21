@@ -18,7 +18,7 @@
 
 	require_once(REL(__FILE__, "plugMgr_js.php"));
 ?>
-<h1 id="pageHdr" class="title"><?php echo T('Plugin Manager'); ?></h1>
+<h3 id="pageHdr" class="title"><?php echo T('Plugin Manager'); ?></h3>
 
 <div id="listDiv">
 	<form id="listForm" name="listForm" class="form">
@@ -26,7 +26,7 @@
   	<?php echo inputfield('checkbox', 'pluginOK', 'Y', NULL, $_SESSION['allow_plugins_flg']); ?>
 
 		<fieldset id="pluginSet">
-		  <h5><?php echo T('Select Plugins'); ?></h5>
+		  <legend><?php echo T('Select Plugins'); ?></legend>
    		<ul id="pluginList" ></ul>
 		</fieldset>
 	</form>

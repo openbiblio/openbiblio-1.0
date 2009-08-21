@@ -15,9 +15,11 @@
 	$staff = new Staff;
 
 ?>
-<h1><?php echo T("Staff Members"); ?></h1>
+<h3><?php echo T("Staff Members"); ?></h3>
 <a href="../admin/staff_new_form.php?reset=Y"><?php echo T("Add New Staff Member"); ?></a><br /><br />
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
 		<th colspan="3" rowspan="2" valign="top">
 			<?php echo T("Function"); ?>
@@ -58,6 +60,9 @@
 			<?php echo T("Tools"); ?>
 		</th>
 	</tr>
+	</thead>
+	
+	<tbody class="striped">
 	<?php
 		$row_class = "primary";
 		$staff_list = $staff->getAll('last_name');
@@ -104,17 +109,10 @@
 			<?php echo H($s['suspended_flg']); ?>
 		</td>
 	</tr>
-	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
-		}
-	?>
+	<?php } ?>
+	</tbody>
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();

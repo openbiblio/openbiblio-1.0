@@ -19,10 +19,11 @@ if (ini_get('register_globals')) {
 /****************************************************************************
  * Cover up for the magic_quotes disaster.
  * Modified from ryan@wonko.com.
+ *
+ * magic_quotes deprecated as of PHP v3.0, removed in 6.0 - Fred
  ****************************************************************************
  */
-set_magic_quotes_runtime(0);
-
+/*
 if (get_magic_quotes_gpc()) {
 	function magicSlashes($element) {
 		if (is_array($element))
@@ -37,6 +38,7 @@ if (get_magic_quotes_gpc()) {
 	$_COOKIE = array_map("magicSlashes", $_COOKIE);
 	$_REQUEST = array_map("magicSlashes", $_REQUEST);
 }
+*/
 
 #apd_set_pprof_trace();
 error_reporting(E_ALL ^ E_NOTICE);

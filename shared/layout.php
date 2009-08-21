@@ -17,7 +17,7 @@
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
 	}
 
-	assert('ereg("^[-_A-Za-z0-9]+\$", $_REQUEST["name"])');
+	assert('preg_match("/^[-_A-Za-z0-9]+\$/", $_REQUEST["name"])');
 	$filename = '../layouts/'.$_REQUEST["name"].'.php';
 	if (!is_readable($filename)) {
 		$filename = '../layouts/default/'.$_REQUEST["name"].'.php';

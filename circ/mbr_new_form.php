@@ -32,6 +32,6 @@ $(document).ready(mnf.init);
 <h1><span id="searchHdr" class="title"><?php echo$headerWording;?> <?php echo T("Member"); ?></span></h1>
 <form id="newmbrform" name="newmbrform" method="post" action="../circ/mbr_new.php">
 
-<?php>
+<?php
 include(REL(__FILE__, "../circ/mbr_fields.php"));
 Page::footer();

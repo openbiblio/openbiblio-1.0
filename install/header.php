@@ -14,8 +14,8 @@
 </head>
 <body bgcolor="#ffffff" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" <?php
 	if (isset($focus_form_name) && ($focus_form_name != "")) {
-		if (ereg('^[a-zA-Z0-9_]+$', $focus_form_name)
-				&& ereg('^[a-zA-Z0-9_]+$', $focus_form_field)) {
+		if (preg_match('/^[a-zA-Z0-9_]+$/', $focus_form_name)
+				&& preg_match('/^[a-zA-Z0-9_]+$/', $focus_form_field)) {
 			echo 'onLoad="self.focus();document.'.$focus_form_name.".".$focus_form_field.'.focus()"';
 		}
 	} ?> >

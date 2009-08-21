@@ -42,14 +42,15 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-	<h1><span id="searchHdr" class="title"></span></h1>
+	<h3 id="searchHdr"></h3>
+	<br />
 	<div id="searchDiv">
 		<form id="lookupForm" name="lookupForm" action="" >
 		<fieldset>
 		<table class="primary">
 		<thead>
 		<tr>
-		  <th class="colLbl">Text or Number to search for:</th>
+		  <th class="colLbl">What to search for:</th>
 		  <th class="colLbl">Which is a:</th>
 		</tr>
 		</thead>

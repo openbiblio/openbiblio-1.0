@@ -45,7 +45,7 @@ class MarcStore {
 				}
 				$field = NULL;
 				$fieldid = $row['fieldid'];
-				if (eregi('000|LDR', $row['tag'])) {
+				if (preg_match('/000|LDR/i', $row['tag'])) {
 					$err = $rec->setLeader($row['field_data']);
 					assert('!$err');
 					continue;

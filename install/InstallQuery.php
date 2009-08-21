@@ -101,7 +101,7 @@ class InstallQuery extends Query {
 		if (is_dir($dir)) {
 			if ($dh = opendir($dir)) {
 				while (($filename = readdir($dh)) !== false) {
-					if(ereg('\\.sql$', $filename)) {
+					if(preg_match('/\\.sql$/', $filename)) {
 						$this->executeSqlFile($dir.'/'.$filename, $tablePrfx);
 					}
 				}

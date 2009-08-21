@@ -21,7 +21,7 @@
 .end parameters
 
 .sql
-	select b.bibid, concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
+	select distinct b.bibid, concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
 		cs.subfield_data as item_num,
 		cos.subfield_data as copyright,
 		date_format(b.create_dt, '%%m/%%d/%%Y') as added

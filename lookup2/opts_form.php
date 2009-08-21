@@ -18,11 +18,13 @@
 
 ?>
 
-<form id="editForm" name="editForm" class="form">
+<h3 id="editHdr"></h3>
 <h5 id="updateMsg"></h5>
-<h1><span id="editHdr" class="title"></span></h1>
+<br />
+<form id="editForm" name="editForm" class="form">
+<fieldset>
 <table id="optsShow" name="optsShow" class="primary">
-	<tbody>
+	<tbody class="striped">
   <tr>
     <td class="primary lblFld">
       <label for="protocol"><?php echo T("lookup_optsProtocol"); ?></label>
@@ -182,6 +184,7 @@
   </tr>
 	</tfoot>
 </table>
+</fieldset>
 </form>
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 

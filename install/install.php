@@ -17,7 +17,7 @@
 	$installTestData = false;
 
 	if (isset($_POST['locale'])) {
-		if (!ereg('^[-_a-zA-Z0-9]+$', $_POST['locale'])) {
+		if (!preg_match('/^[-_a-zA-Z0-9]+$/', $_POST['locale'])) {
 			Fatal::internalError("Bad locale name.");
 		}
 		$locale = $_POST['locale'];

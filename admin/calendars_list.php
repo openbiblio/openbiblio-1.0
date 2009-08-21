@@ -15,6 +15,7 @@ require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 require_once(REL(__FILE__, "../classes/Links.php"));
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+echo '<h3>'.T("Calendars").'</h3>';
 
 if (isset($_REQUEST['msg'])) {
 	echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
@@ -50,8 +51,7 @@ echo T("%count% calendars.", array('count'=>$rpt->count()));
 echo '</div>';
 echo $disp->pages($page_url, $currentPageNmbr);
 
-echo '<h1>'.T("Calendars").'</h1>';
-
+echo "<fieldset>";
 $sort_url = new LinkUrl("../admin/calendars_list.php",
 	'rpt_order_by', array('type'=>'previous'));
 $t = new TableDisplay;
@@ -62,6 +62,7 @@ while ($r = $page->next()) {
 	echo $t->rowArray($disp->row($r));
 }
 echo $t->end();
+echo "</fieldset>";
 
 echo $disp->pages($page_url, $currentPageNmbr);
 Page::footer();

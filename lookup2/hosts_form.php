@@ -19,9 +19,11 @@
 ?>
 
 <div id="listDiv">
-<form id="showForm" name="showForm" class="form">
+<h3 id="listHdr"></h3>
 <h5 id="updateMsg"></h5>
-<h1><span id="listHdr" class="title"></span></h1>
+<br />
+<form id="showForm" name="showForm" class="form">
+<fieldset>
 <table id="showList" name="showList" class="primary">
 	<thead>
   <tr>
@@ -50,6 +52,7 @@
 	</tr>
 	</tfoot>
 </table>
+</fieldset>
 </form>
 </div>
 
