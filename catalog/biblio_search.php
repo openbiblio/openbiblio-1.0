@@ -24,7 +24,7 @@
 
 <div id="crntMbrDiv">to be filled by server</div>
 
-<p class="error">to be filled by server</p>
+<p id="errSpace" class="error">to be filled by server</p>
 
 <div id="searchDiv">
 <form id="barcodeSearch" name="barcodeSearch" method="post">

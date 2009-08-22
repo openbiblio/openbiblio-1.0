@@ -9,6 +9,14 @@
 
 	## --------------------- ##
 class SrchDb {
+	public $bibid;
+	public $createDt;
+	public $daysDueBack;
+	public $matlCd;
+	public $collCd;
+	public $imageFile;
+	public $opacFlg;
+
 	function SrchDb () {
 		$this->db = new Query;
 	}
@@ -53,14 +61,13 @@ class SrchDb {
 	function getBiblioInfo($bibid) {
 	  $this->bibid =$bibid;
 		$sql = "SELECT DISTINCT b.*, m.description, cd.description, cc.`days_due_back`, m.image_file "
-					."	FROM `biblio_copy` bc,`biblio` b,`material_type_dm` m,"
+					."	FROM `biblio` b,`material_type_dm` m,"
 					."			 `collection_dm` cd, `collection_circ` cc"
 					." WHERE (b.`bibid` = '$bibid')"
 					."	 AND (m.`code` = b.`material_cd`)"
 					."	 AND (cd.`code` = b.`collection_cd`)"
 					."	 AND (cc.`code` = b.`collection_cd`)";
-		//echo "sql=$sql<br />";
-		$rcd = $this->db->select1($sql);
+		$rcd = $this->db->select01($sql);
 		$this->createDt = $rcd[create_dt];
 		$this->daysDueBack = $rcd[days_due_back];
 		$this->matlCd = $rcd[material_cd];
@@ -344,15 +351,15 @@ class SrchDb {
 	  		exit;
 		}
 		if (sizeof($biblioLst) > 0) {
-		foreach ($biblioLst as $bibid) {
-			$theDb->getBiblioInfo($bibid);
-			$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
-									."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
-									."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',"
-									."'data':".json_encode($theDb->getBiblioDetail())
-									."}";
-		}
-		echo json_encode($biblio);
+			foreach ($biblioLst as $bibid) {
+				$theDb->getBiblioInfo($bibid);
+				$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
+										."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
+										."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',"
+										."'data':".json_encode($theDb->getBiblioDetail())
+										."}";
+			}
+			echo json_encode($biblio);
 		} else {
 			echo '[]';
 		}

@@ -136,7 +136,8 @@ bs = {
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
 				if (!bs.biblio.data) {
-	  			$('p.error').html('Nothing Found').show();
+//	  			$('p.error').html('Nothing Found by bar cd search').show();
+	  			$('#rsltMsg').html('Nothing Found by bar cd search').show();
 				}
 				else {
 					bs.showOneBiblio(bs.biblio)
@@ -160,7 +161,12 @@ bs = {
 			} else {
 				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
 				if (biblioList.length == 0) {
-	  			$('#rsltQuan').html('<p class="error">Nothing Found</p>');
+	  			$('#rsltQuan').html('<p class="error">Nothing Found by text search</p>');
+				}
+				else if (biblioList.length == 1) {
+					bs.biblio = eval('('+biblioList[0]+')');
+					bs.showOneBiblio(bs.biblio)
+					bs.fetchCopyInfo();
 				}
 				else {
 					$('#rsltQuan').html(biblioList.length+' items found');
@@ -189,11 +195,11 @@ bs = {
 				    html += "</tr>\n</table>\n</fieldset> \n";
 				    $('#srchRsltsDiv').append(html);
 					}
+					$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
+					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+        	$('#biblioListDiv').show()
+		  		$('#searchDiv').hide();
 				}
-				$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
-				$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
-		  	$('#searchDiv').hide();
-        $('#biblioListDiv').show()
 	    }
 
 		});
