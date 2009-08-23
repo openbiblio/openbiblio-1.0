@@ -18,14 +18,12 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
+<h3><?php echo T("Add New Staff Member");?></h3>
 
 <form name="newstaffform" method="post" action="../admin/staff_new.php">
+<fieldset>
 <table class="primary">
-	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Add New Staff Member");?>
-		</th>
-	</tr>
+	<tbody class="striped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Last Name:");?>
@@ -79,31 +77,39 @@
 			<?php echo T("Authorization:");?>
 		</td>
 		<td valign="top" class="primary">
-			<input type="checkbox" name="circ_flg" value="CHECKED"
-				<?php if (isset($postVars["circ_flg"])) echo $postVars["circ_flg"]; ?> />
-			<?php echo T("Circ");?>
-			<input type="checkbox" name="circ_mbr_flg" value="CHECKED"
-				<?php if (isset($postVars["circ_mbr_flg"])) echo $postVars["circ_mbr_flg"]; ?> />
-			<?php echo T("Update Member"); ?>
-			<input type="checkbox" name="catalog_flg" value="CHECKED"
-				<?php if (isset($postVars["catalog_flg"])) echo $postVars["catalog_flg"]; ?> />
-			<?php echo T("Catalog"); ?>
-			<input type="checkbox" name="admin_flg" value="CHECKED"
-				<?php if (isset($postVars["admin_flg"])) echo $postVars["admin_flg"]; ?> />
-			<?php echo T("Admin");?>
-			<input type="checkbox" name="reports_flg" value="CHECKED"
-				<?php if (isset($postVars["reports_flg"])) echo $postVars["reports_flg"]; ?> />
-		 <?php echo T("Reports"); ?>
+			<?php echo inputField('checkbox','circ_flg','CHECKED',NULL,$postVars["circ_flg"]); ?>
+		  <label for="circ_flg"><?php echo T("Circ");?></label>
+
+			<?php echo inputField('checkbox','circ_mbr_flg','CHECKED',NULL,$postVars["circ_mbr_flg"]); ?>
+		  <label for="circ_mbr_flg"><?php echo T("Update Member");?></label>
+
+			<?php echo inputField('checkbox','catalog_flg','CHECKED',NULL,$postVars["catalog_flg"]); ?>
+		  <label for="catalog_flg"><?php echo T("Catalog");?></label>
+			<br />
+
+			<?php echo inputField('checkbox','admin_flg','CHECKED',NULL,$postVars["admin_flg"]); ?>
+		  <label for="admin_flg"><?php echo T("Admin");?></label>
+
+			<?php echo inputField('checkbox','tools_flg','CHECKED',NULL,$postVars["tools_flg"]); ?>
+		  <label for="tools_flg"><?php echo T("Tools");?></label>
+
+			<?php echo inputField('checkbox','reports_flg','CHECKED',NULL,$postVars["reports_flg"]); ?>
+		  <label for="reports_flg"><?php echo T("Reports");?></label>
 		</td>
 	</tr>
+	</tbody>
+	
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onClick="parent.location='../admin/staff_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
-
+	</tfoot>
+	
 </table>
+</fieldset>
 </form>
 
 <?php

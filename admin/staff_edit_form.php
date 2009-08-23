@@ -33,13 +33,15 @@
 		require(REL(__FILE__, "../shared/get_form_vars.php"));
 	}
 ?>
+<h3><?php echo T("Edit Staff Member Information"); ?></h3>
 
 <form name="editstaffform" method="post" action="../admin/staff_edit.php">
+<fieldset>
 <input type="hidden" name="userid" value="<?php echo $postVars["userid"];?>">
 <table class="primary">
 	<tr>
 		<th align="left" colspan="2" nowrap="yes">
-			<?php echo T("Edit Staff Member Information"); ?>
+			
 		</th>
 	</tr>
 	<tr>
@@ -73,22 +75,23 @@
 		</td>
 		<td valign="top" class="primary">
 			<?php echo inputField('checkbox','circ_flg','CHECKED',NULL,$postVars["circ_flg"]); ?>
-			<?php echo T("Circ");?>
+		  <label for="circ_flg"><?php echo T("Circ");?></label>
 
 			<?php echo inputField('checkbox','circ_mbr_flg','CHECKED',NULL,$postVars["circ_mbr_flg"]); ?>
-			<?php echo T("Update Member"); ?>
+		  <label for="circ_mbr_flg"><?php echo T("Update Member");?></label>
 
 			<?php echo inputField('checkbox','catalog_flg','CHECKED',NULL,$postVars["catalog_flg"]); ?>
-			<?php echo T("Catalog");?>
-
+		  <label for="catalog_flg"><?php echo T("Catalog");?></label>
+			<br />
+			
 			<?php echo inputField('checkbox','admin_flg','CHECKED',NULL,$postVars["admin_flg"]); ?>
-			<?php echo T("Admin");?>
+		  <label for="admin_flg"><?php echo T("Admin");?></label>
 
 			<?php echo inputField('checkbox','tools_flg','CHECKED',NULL,$postVars["tools_flg"]); ?>
-			<?php echo T("Tools");?>
+		  <label for="tools_flg"><?php echo T("Tools");?></label>
 
 			<?php echo inputField('checkbox','reports_flg','CHECKED',NULL,$postVars["reports_flg"]); ?>
-			<?php echo T("Reports"); ?>
+		  <label for="reports_flg"><?php echo T("Reports");?></label>
 		</td>
 	</tr>
 	<tr>
@@ -106,6 +109,7 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 
 <?php

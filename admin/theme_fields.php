@@ -4,14 +4,10 @@
  */
 
 ?>
-
+<fieldset>
+<legend><?php echo $headerWording;?> <?php echo T("Theme"); ?></legend>
 <table class="primary">
-	<!--tr>
-		<th colspan="5" valign="top" nowrap="yes" align="left">
-			<?php //echo $headerWording;?> <?php //echo T("Theme"); ?>
-		</td>
-	</tr-->
-	<tbody id="part1">
+	<tbody id="part1" class="unstriped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Theme Name"); ?>
@@ -56,7 +52,7 @@
 	</tr>
 	</tbody>
 	
-	<txhead>
+	<tbody class="unstriped">
 	<tr>
 		<th valign="top">
 			&nbsp;
@@ -74,9 +70,9 @@
 			<?php echo T("Tabs"); ?>
 		</td>
 	</tr>
-	</xthead>
+	</tbody class="unstriped">
 	
-	<tbody id="part2">
+	<tbody id="part2" class="striped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Background Color:"); ?>
@@ -185,6 +181,7 @@
 		</td>
 	</tr>
 	</tbody>
+	
 	<tfoot>
 	<tr>
 		<td align="center" colspan="5" class="primary">
@@ -194,3 +191,4 @@
 	</tr>
 	</tfoot>
 </table>
+</fieldset>

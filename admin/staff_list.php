@@ -41,24 +41,24 @@
 		</th>
 	</tr>
 	<tr>
-		<th>
+		<td>
 			<?php echo T("Circ"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 			<?php echo T("Member"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 		 <?php echo T("Catalog"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 		 <?php echo T("Reports"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 			<?php echo T("Admin"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 			<?php echo T("Tools"); ?>
-		</th>
+		</td>
 	</tr>
 	</thead>
 	
