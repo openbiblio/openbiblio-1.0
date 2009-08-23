@@ -19,7 +19,8 @@ div#header  {
 	}
 /*************************************************/
 div#content {
-	position: absolute; top:4.5em; left: 12.5em;
+	/*position: absolute; top:4.5em; left: 12.5em;*/
+	position: absolute; top:0; left: 12.5em;
 	padding:0;
 	}
 /*************************************************/
@@ -31,7 +32,8 @@ div#footer {
 	}
 /*************************************************/
 div#sidebar {
-	position: absolute; top:4.5em; left: .5em;
+	/*position: absolute; top:4.5em; left: .5em;*/
+	position: absolute; top:0; left: .5em;
 	width: 12em;
 	padding: 10px;
 	}

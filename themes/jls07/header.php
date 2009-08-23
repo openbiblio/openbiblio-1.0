@@ -7,13 +7,13 @@
 	include(REL(__FILE__,"/header_top.php"));
 ?>
 
-<div id="header">
+<!--div id="header">
 	<img id="headLogo" src="../images/sampleLogo.png">
 
 	<h1 class="staff_head">
 			<?php echo T("%library%: Staff Interface", array('library'=>H(Settings::get('library_name')))) ?>
 	</h1>
-</div>
+</div-->
 
 <!-- **************************************************************************************
 		 * Left nav
@@ -23,10 +23,14 @@
 // support for CSS2's border-spacing property.
 ?>
 <div id="sidebar">
+	<h3 class="staff_head">
+			<?php echo T("%library%:<br />Staff Interface", array('library'=>H(Settings::get('library_name')))) ?>
+	</h3>
+	<br />
 	<form method="get" action="../shared/logout.php">
 		<input type="submit" value="<?php echo T("Logout") ?>" class="button">
 	</form>
-
+	<br />
 	<?php Nav::display($params['nav']); ?>
 
 	<div id="footer">
