@@ -13,7 +13,11 @@ include(REL(__FILE__, "../shared/logincheck.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 echo '<h1><img src="../images/tools.png" border="0" width="30" height="30" align="top"> '.T("Tools").'</h1>';
+
+echo "<fieldset> \n";
 echo T("toolsIndexDesc");
+echo "</fieldset> \n";
 
 ReportDisplaysUI::display('tools');
+
 Page::footer();
