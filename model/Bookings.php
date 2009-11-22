@@ -442,8 +442,8 @@ class Bookings extends CoreTable {
 			Fatal::internalError(T("Unexpected date error: ").$err->toStr());
 		}
 		$due_dt = Date::addDays($book_dt, $daysDueBack);
-		$booking = new Booking($copy['bibid'], $book_dt, $due_dt, $mbrids);
-		list($bookingid, $err) = $this->insert_e($booking);
+		$booking = new Bookings($copy['bibid'], $book_dt, $due_dt, $mbrids);
+		list($bookingid, $err) = $this->insert_el($booking);
 		if ($err) {
 			$this->db->unlock();
 			return $err;

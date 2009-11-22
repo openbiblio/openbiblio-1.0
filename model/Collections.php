@@ -94,7 +94,7 @@ class Collections extends DmTable {
 		return $types;
 	}
 	function getByBibid($bibid) {
-		$sql = "SELECT c.* FROM collection_dm c, biblio b "
+		$sql = "SELECT c.* FROM collection_circ c, biblio b "
 			. "WHERE c.code=b.collection_cd "
 			. $this->db->mkSQL("AND b.bibid=%N ", $bibid);
 		return $this->db->select1($sql);
