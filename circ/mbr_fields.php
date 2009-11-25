@@ -21,22 +21,22 @@
 	$mbrtypes = new MemberTypes;
 
 	$fields = array(
-		'site' => inputfield('select', 'siteid', NULL, NULL, $sites),
-		'cardNumber' => inputfield("text","barcode_nmbr",$mbr[barcode_nmbr],$attr=array("size"=>20,"max"=>20),$pageErrors),
-		'lastName' => inputfield("text","last_name",$mbr[last_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
-		'firstName' => inputfield("text","first_name",$mbr[first_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
-		'address1' => inputfield("text","address1",$mbr[address1],$attr=array("size"=>40,"max"=>128),$pageErrors),
-		'address2' => inputfield("text","address2",$mbr[address2],$attr=array("size"=>40,"max"=>128),$pageErrors),
-		'city' => inputfield("text","city",$mbr[city],$attr=array("size"=>30,"max"=>50),$pageErrors),
-		'state' => inputfield("select","state",$mbr[state], NULL, $states->getSelect()),
-		'zip' => inputfield("text","zip",$mbr[zip],$attr=array("size"=>5,"max"=>5),$pageErrors),
-		"zip_ext" => inputfield("text","zip_ext",$mbr[zip_ext],$attr=array("size"=>4,"max"=>4),$pageErrors),
-		"homePhone" => inputfield("text","home_phone",$mbr[home_phone],$attr=array("class"=>"required","size"=>15,"max"=>15),$pageErrors),
-		"workPhone" => inputfield("text","work_phone",$mbr[work_phone],$attr=array("size"=>15,"max"=>15),$pageErrors),
-		"emailAddress" => inputfield("text","email",$mbr[email],$attr=array("size"=>40,"max"=>128),$pageErrors),
-		"password" => inputfield("password","password",$mbr[password],$attr=array("class"=>"required","size"=>10),$pageErrors),
-		"passwordConfirm" => inputfield("password","confirm-pw",$mbr[passwordConfirm],$attr=array("class"=>"required","size"=>10),$pageErrors),
-		"classification" => inputfield("select", "classification",$mbr[classification], NULL, $mbrtypes->getSelect()),
+		'Site' => inputfield('select', 'siteid', NULL, NULL, $sites),
+		'Card Number' => inputfield("text","barcode_nmbr",$mbr[barcode_nmbr],$attr=array("size"=>20,"max"=>20),$pageErrors),
+		'Last Name' => inputfield("text","last_name",$mbr[last_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
+		'First Name' => inputfield("text","first_name",$mbr[first_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
+		'Address 1' => inputfield("text","address1",$mbr[address1],$attr=array("size"=>40,"max"=>128),$pageErrors),
+		'Address 2' => inputfield("text","address2",$mbr[address2],$attr=array("size"=>40,"max"=>128),$pageErrors),
+		'City' => inputfield("text","city",$mbr[city],$attr=array("size"=>30,"max"=>50),$pageErrors),
+		'State' => inputfield("select","state",$mbr[state], NULL, $states->getSelect()),
+		'Zip' => inputfield("text","zip",$mbr[zip],$attr=array("size"=>5,"max"=>5),$pageErrors),
+		"Zip ext" => inputfield("text","zip_ext",$mbr[zip_ext],$attr=array("size"=>4,"max"=>4),$pageErrors),
+		"Home Phone" => inputfield("text","home_phone",$mbr[home_phone],$attr=array("class"=>"required","size"=>15,"max"=>15),$pageErrors),
+		"Work Phone" => inputfield("text","work_phone",$mbr[work_phone],$attr=array("size"=>15,"max"=>15),$pageErrors),
+		"email Address" => inputfield("text","email",$mbr[email],$attr=array("size"=>40,"max"=>128),$pageErrors),
+		//"password" => inputfield("password","password",$mbr[password],$attr=array("class"=>"required","size"=>10),$pageErrors),
+		//"passwordConfirm" => inputfield("password","confirm-pw",$mbr[passwordConfirm],$attr=array("class"=>"required","size"=>10),$pageErrors),
+		"Classification" => inputfield("select", "classification",$mbr[classification], NULL, $mbrtypes->getSelect()),
 	);
 
 	## add custom fields to array to be displayed
@@ -53,7 +53,7 @@
 	<tbody class="striped">
 <?php
 	foreach ($fields as $title => $html) {
-	  if (($title == 'cardNumber') && ($_SESSION['mbrBarcode_flg']=='N')){
+	  if (($title == 'Card Number') && ($_SESSION['mbrBarcode_flg']=='N')){
 ?>
 			<tr>
 				<td colspan="2">

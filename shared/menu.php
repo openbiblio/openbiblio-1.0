@@ -44,7 +44,6 @@ function staff_menu() {
 	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 	Nav::node('cataloging/searchform', T("New Search"), "../catalog/index.php");
 	Nav::node('cataloging/localSearch', T("Local Search"), "../catalog/biblio_search.php");
-	Nav::node('cataloging/images', T("Browse Images"), '../shared/image_browse.php');
 
 	if (isset($_SESSION['rpt_BiblioSearch'])) {
 		Nav::node('cataloging/search', T("Search Results"),
@@ -87,6 +86,7 @@ function staff_menu() {
 			"../catalog/biblio_del_confirm.php?".$params);
 	}
 
+	Nav::node('cataloging/images', T("Browse Images"), '../shared/image_browse.php');
 	Nav::node('cataloging/new', T("New Item"),
 		"../catalog/biblio_new_form.php?reset=Y");
 	Nav::node('cataloging/upload_usmarc', T("MARC Import"),

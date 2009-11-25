@@ -26,7 +26,7 @@ class Members extends CoreTable {
 			'home_phone'=>'string',
 			'work_phone'=>'string',
 			'email'=>'string',
-			'password'=>'string',
+//			'password'=>'string',
 			'classification'=>'string',
 			'school_grade'=>'string',
 			'school_teacher'=>'string',
