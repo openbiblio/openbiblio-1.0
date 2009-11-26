@@ -24,7 +24,7 @@ if (Settings::get('charset') != "") { ?>
 <title><?php echo H(Settings::get('library_name'));?></title>
 
 <!-- jQuery kernal, needed for all that follows -->
-<script src="../shared/jquery/jQuery.js" type="text/javascript"></script>
+<script src="../shared/jquery/jquery.js" type="text/javascript"></script>
 <!-- home-grown add-ons to the jQuery library, feel free to add your own -->
 <script src="../shared/jsLib.js" type="text/javascript"></script>
 
