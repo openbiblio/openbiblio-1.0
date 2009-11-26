@@ -19,7 +19,13 @@ if (count($_POST) == 0) {
 $bookings = new Bookings;
 $err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
 if ($err) {
-	$pageErrors["barcodeNmbr"] = $err->toStr();
+	if(is_array($err)){
+		$errors = "";
+		foreach($err as $error)	$errors .= " - " . $error->toStr();
+	} else {
+		$errors = $err;
+	}
+	$pageErrors["barcodeNmbr"] = $errors;
 	$postVars["barcodeNmbr"] = $barcode;
 	$_SESSION["postVars"] = $postVars;
 	$_SESSION["pageErrors"] = $pageErrors;
