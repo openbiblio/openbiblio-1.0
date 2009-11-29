@@ -412,7 +412,9 @@ lkup = {
 			break;
 		case 'dew':
 		  var callNmbr = lkup.makeCallNmbr(data['082a']);
+			//console.log('callNmbr='+callNmbr)
     	var cutter = lkup.makeCutter(data['100a'], data['245a']);
+			//console.log('cutter='+cutter)
 			$('#099a').val(callNmbr+cutter);
 			break;
 		case 'udc':
@@ -432,6 +434,7 @@ lkup = {
 	},
 
 	makeCallNmbr: function (code) {
+		//console.log('code='+code)
 		if ((code) && ((lkup.opts['callNmbrType']).toLowerCase() == "dew")) {
 			var fictionDew = lkup.opts['fictionDew'].split(' ');
 			if (lkup.opts['autoDewey']
@@ -451,7 +454,7 @@ lkup = {
 				callNmbr += '.'+base2;
 			}
 			callNmbr = callNmbr.replace('/', '');
-
+			//console.log('callNmbr()='+callNmbr)
 			return callNmbr;
 		}
 	},
@@ -481,10 +484,14 @@ lkup = {
 	},
 
 	makeCutter: function (auth,titl) {
-		if ((auth != 'undefined') && (lkup.opts['autoCutter'])) {
+		//console.log('auth=<'+auth+'>; titl=<'+titl+'>');
+	  var cutter = '';
+	  auth = auth.trim(); titl = titl.trim();
+		if ((lkup.opts['autoCutter']) && ((auth != '') && (auth != 'undefined'))  ) {
 	  	$.getJSON(lkup.url,{mode:'getCutter', author:auth}, function(data){
-				var cutter = data['cutter'];
-	  		if (lkup.opts['cutterType'] == 'Dew') {
+				//console.log('data='+data)
+				cutter = data['cutter'];
+	  		if (lkup.opts['cutterType'] == 'CS3') {
 			  	// suffix is first char of a specified word in title
 					cutter += lkup.makeSuffix($('#245a').val());
 				}
@@ -494,31 +501,36 @@ lkup = {
 					//cutter += ' '+cpyYr.substr(1,4);
 					cutter += ' '+$('#260c').val();
 				}
-				$('#099a').val($('#099a').val()+cutter);
+				$('#099a').val($('#099a').val()+' '+cutter);
 			});
 		}
+		else if ((auth == '') || (auth == 'undefined')) {
+		  cutter = 'no Author found'
+		}
+		return cutter;
 	},
 
 	makeSuffix: function (s) {
-		inputWords = s.split('/');
+		inputWords = (s.toLowerCase()).split(' ');
 
 		var nWords = 0;
 		var goodWords = '';
 		for (var index in inputWords) {
-			if ((inputWords[index] != ' ') && ((lkup.opts['noiseWords']).indexOf(inputWords[index]) < 0)) {
+			if ((inputWords[index] != ' ') &&
+					((lkup.opts['noiseWords']).indexOf(inputWords[index]) < 0)) {
 				goodWords+=' '+inputWords[index];
 				nWords++;
 			}
 		}
 		goodWords = $.trim(goodWords);
 		wordArray = goodWords.split(/\s+/);
-
+		useWordNo = lkup.opts['cutterWord'];
 		if (nWords == 1)
 			var sufx = (wordArray[0]).substr(0,1);
-		else if (nWords <= lkup.opts['cutterWord'])
+		else if (nWords <= useWordNo)
 			sufx = (wordArray[nWords-1]).substr(0,1);
-		else if (nWords > lkup.opts['cutterWord'])
-			sufx = (wordArray[lkup.opts['cutterWord']-1]).substr(0,1);
+		else if (nWords > useWordNo)
+			sufx = (wordArray[useWordNo-1]).substr(0,1);
 
 		return sufx.toLowerCase();
 	},

@@ -4,9 +4,13 @@
  */
 
 require_once("../shared/global_constants.php");
-require_once("../classes/Query.php");
-
-class ctrQuery extends Query {
+//require_once("../classes/Query.php");
+require_once("../classes/DBTable.php");
+/*
+class ctrQuery {
+	function ctrQuery() {
+		$this->db = new Query();
+	}
 
 	function execSelect($aName) {
 		$sql = "select theNmbr from cutter ";
@@ -22,66 +26,45 @@ class ctrQuery extends Query {
 
 	function getNmbrPt1($theName) {
 		$sql .= "select max(theName) as name from cutter where theName < '" . $theName . "'";
-		if (! $this->_query($sql, "Error in trying to match name in cutter table.")) {
+		if (! $this->db->select1($sql, "Error in trying to match name in cutter table.")) {
 			return "???";	
 		} else {
-			$array = $this->_conn->fetchRow(); 
+			$array = $this->db->fetchRow();
 			$name = $array['name'];	
 			return $name;
 		}
 	}
 	function getNmbrPt2($theName) {
 		$sql = "select theNmbr from cutter where theName = '" . $theName . "'";
-		if (! $this->_query($sql, "Error in trying to fetch number from cutter table.")) {
+		if (! $this->db->select01($sql, "Error in trying to fetch number from cutter table.")) {
 			return "XXX";	
 		} else {
-			$array = $this->_conn->fetchRow(); 
+			$array = $this->db->fetchRow();
 			$nmbr = $array['theNmbr'];
 			return $nmbr;
 		}
 	}
 }
-
+*/
 function getCutter ($aName) {
 	##### implementation of Cutter - Sanborn 3-digit table
-	//echo "cutter input string: " . $aName . "<br />";
 
-	## remove spaces from text before comparrison to table entries
-	$aName = str_replace(" ", "", $aName);
+	## remove apostrophes, commas from text before comparrison to table entries
+	$aName = str_replace(array(",","'"), "", $aName);
+	//echo "looking for '$aName'<br />";
 
-	## what follows, while simpler only works with mySQL ver 4.1 and later
-//	$ctrQ = new ctrQuery();
-// 	$ctrQ->connect();
-//  if ($ctrQ->errorOccurred()) {
-//    $ctrQ->close();
-//    displayErrorPage($ctrQ);
-//  } 
-//
-//  $ctrQ->execSelect($aName);
-//  $result = $ctrQ->fetchfield('theNmbr');
-//  $ctrQ->close();
-//	return substr($aName,0,1) . $result;
+	$ctrQ = new DBTable();
+	$ctrQ->setName('cutter');
+	$ctrQ->setFields(array('theName'=>'string', 'theNmbr'=>'number'));
+	$ctrQ->setKey('theName');
 
-	## this more complex process works all the time.
-	$ctrQ = new ctrQuery();
- 	$ctrQ->connect();
-  if ($ctrQ->errorOccurred()) {
-    $ctrQ->close();
-    displayErrorPage($ctrQ);
-  } 
-	$rslt1 = $ctrQ->getNmbrPt1($aName);
-	$ctrQ->close();
+	$sql = $ctrQ->db->mkSQL("SELECT MAX(`theName`) as name FROM `cutter` WHERE `theName` < '$aName'" );
+	$rslt1 = $ctrQ->db->select1($sql);
+	$name = $rslt1[name];
+	//echo "using key '$name' <br />";
 
-	$ctrQ = new ctrQuery();
- 	$ctrQ->connect();
-  if ($ctrQ->errorOccurred()) {
-    $ctrQ->close();
-    displayErrorPage($ctrQ);
-  } 
-	$rslt2 = $ctrQ->getNmbrPt2($rslt1);
-	$ctrQ->close();
-
-	return substr($aName,0,1) . $rslt2;
+	$sql = $ctrQ->db->mkSQL("SELECT `theNmbr` FROM `cutter` WHERE `theName` = '$name'" );
+	$rslt2 = $ctrQ->db->select1($sql);
+  return substr($aName,0,1) . $rslt2[theNmbr];
 }
-//echo "loaded cs3_cutter file. <br />";
 ?>
