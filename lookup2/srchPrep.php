@@ -7,9 +7,9 @@
 		require_once(REL(__FILE__, 'srchVals.php'));
 		
 		$numHosts = $postVars[numHosts];
-		//print("will be trying $numHosts host(s)");
+		//print("will be trying $numHosts host(s)<br />");
 
-	   if ($postVars[protocol] == 'YAZ') {
+	  if ($postVars[protocol] == 'YAZ') {
 			//print("using YAZ protocol<br />");
 			require_once (REL(__FILE__, 'yazSrch.php'));
 		} else if ($postVars[protocol] == 'SRU') {

@@ -71,7 +71,7 @@ lkup = {
 		$('#selectionDiv input[value="Cancel"]').attr('value',lkup.goBack);
 		$('#submitBtn').val(lkup.accept);
 		$('#newbiblioform').bind('submit',null,function(){
-console.log('callnmbr='+$('#099a').val());
+			//console.log('callnmbr='+$('#099a').val());
 	  	var parms=$('#newbiblioform').serialize();
 			console.log('submitting parms: '+parms);
 			return true;
@@ -119,6 +119,10 @@ console.log('callnmbr='+$('#099a').val());
 
 	doBackToSrch: function () {
 		lkup.resetForm();
+		//$('#retryDiv').hide();
+		//$('#searchDiv').show();
+		//$('#lookupVal').focus();
+		//lkup.disableSrchBtn();
 	},
 
 	doBackToChoice: function () {

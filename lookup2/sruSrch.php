@@ -10,7 +10,7 @@
 	$subfields = array();
 	$subfieldcount = 0;
 
-	#### SRU Create query
+	#### SRU Create query using data from $_POST[] and .../srchVals.php
 	$queryStr = "$sruQry$lookupVal";
 	if (!empty($lookupVal2)) $queryStr .= " and $sruQry2$lookupVal2";
 	if (!empty($lookupVal3)) $queryStr .= " and $sruQry3lookupVal3";
@@ -18,10 +18,11 @@
 	if (!empty($lookupVal5)) $queryStr .= " and $sruQry5$lookupVal5";
  	$qry ="version=1.1".
 	  		"&operation=searchRetrieve".
-			 	"&query=".strtolower($queryStr).
+			 	//"&query=".strtolower($queryStr).
+			 	"&query=".$queryStr.
 			 	"&maximumRecords=$postVars[maxHits]".
 			 	"&recordSchema=marcxml";
-				//echo "query: $qry <br />";
+	//echo "query: $qry <br />";
 
 
 	#### send query to each host in turn and get response

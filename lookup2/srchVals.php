@@ -20,14 +20,15 @@
 		#### First search criteria line
 		switch($srchBy) {
 		case "4":
-			$srchByName = 'Title ';
+			$srchByName = 'Title';
 			$sruQry = 'dc.title=';
 			$lookupVal = '"' . $lookupVal . '"';
 			break;
 
 		case "7":
 			$srchByName = 'ISBN';
-			$sruQry = 'dc.identifier=/bib.identifierAuthority=isbn ';
+			//$sruQry = 'dc.identifier=/bib.identifierAuthority=isbn ';
+			$sruQry = '';
 			//echo "input ISBN=$lookupVal <br />";
 			$lookupVal = verifyISBN($lookupVal,$keepIsbnDashes);
 			//echo 'final isbn: ' . $lookupVal . '<br />';
