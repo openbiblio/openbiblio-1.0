@@ -443,7 +443,7 @@ class Bookings extends CoreTable {
 		}
 		$due_dt = Date::addDays($book_dt, $daysDueBack);
 		$booking = new Bookings($copy['bibid'], $book_dt, $due_dt, $mbrids);
-		list($bookingid, $err) = $this->insert_el($booking);
+		list($bookingid, $err) = $this->insert_el(array("book_dt" => $book_dt, "bibid" => $copy['bibid'], "bidid2" => $bidid, "due_dt" => $due_dt, "mbrids" => $mbrids));
 		if ($err) {
 			$this->db->unlock();
 			return $err;

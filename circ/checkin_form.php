@@ -61,8 +61,8 @@ function checkin(massCheckinFlg)
 
 <fieldset>
 <legend><?php echo T("Current Shelving Cart List"); ?></legend>
-<a href="javascript:checkin(N)"><?php echo T("Check in selected items"); ?></a> |
-<a href="javascript:checkin(Y)"><?php echo T("Check in all items"); ?></a><br />
+<a href="javascript:checkin('N')"><?php echo T("Check in selected items"); ?></a> |
+<a href="javascript:checkin('Y')"><?php echo T("Check in all items"); ?></a><br />
 	<table>
 	<thead>
 	<tr>
@@ -120,8 +120,8 @@ function checkin(massCheckinFlg)
 ?>
 </table>
 
-<a href="javascript:checkin(N)"><?php echo T("Check in selected items"); ?></a> |
-<a href="javascript:checkin(Y)"><?php echo T("Check in all items"); ?></a>
+<a href="javascript:checkin('N')"><?php echo T("Check in selected items"); ?></a> |
+<a href="javascript:checkin('Y')"><?php echo T("Check in all items"); ?></a>
 </fieldset>
 </form>
 
