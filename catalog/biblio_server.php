@@ -36,13 +36,14 @@ class SrchDb {
 	function getBiblioByPhrase($jsonSpec) {
 	  $spec = json_decode($jsonSpec, true);
 	  $sql = "SELECT DISTINCT bs.bibid "
-					."  FROM `biblio_field` bf, `biblio_subfield` as bs "
+					."  FROM `biblio_field` bf, `biblio_subfield` bs "
 					." WHERE (1=1) AND ";
 		$firstLine = true;
 		foreach ($spec as $item) {
-		  if (!$firstLine) $sql .= " OR ";
-				else
-			$firstLine = false;
+		  if (!$firstLine)
+				$sql .= " OR ";
+			else
+				$firstLine = false;
 			$sql .= "   ( (bf.`tag` = '$item[tag]') "
 			      . "	AND (bs.`bibid` = bf.`bibid`) "
 			      . "	AND (bs.`fieldid` = bf.`fieldid`) "
@@ -50,7 +51,7 @@ class SrchDb {
 			      . " AND (bs.`subfield_data` LIKE '%$_REQUEST[searchText]%') "
 			      . " )";
 		}
-		//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
 			$rslt[] = $row[bibid];
@@ -341,7 +342,8 @@ class SrchDb {
 			case 'author': 		$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"100","suf":"a"},
 					 																						 {"tag":"245","suf":"c"}]'); break;
 			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"650","suf":"a"}]'); break;
-			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
+			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"245","suf":"a"},
+																											 {"tag":"650","suf":"a"}]'); break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
 			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('[{"tag":"260","suf":"b"}]'); break;
 			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"099","suf":"a"}]'); break;

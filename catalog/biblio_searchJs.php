@@ -180,13 +180,15 @@ bs = {
 						bs.biblio[biblio.bibid] = biblio;
 						var callNo = ''; var title = '';
 						if (biblio.data) {
-						$.each(biblio.data, function (fldIndex, fldData) {
-		  				var tmp = eval('('+fldData+')');
-				      if (tmp.label == 'Title') 			title = tmp.value;
-				      if (tmp.label == 'Call Number') callNo = tmp.value;
-						});
+							$.each(biblio.data, function (fldIndex, fldData) {
+		  					var tmp = eval('('+fldData+')');
+				    	  if (tmp.label == 'Title') 			title = tmp.value;
+				    	  if (tmp.label == 'Call Number') callNo = tmp.value;
+							});
 						} else {
+						  // skip these
               title = 'unknown'; callNo = 'not assigned';
+              continue;
 						}
 						html += '<td class="biblioImage"><img src=\"../images/shim.gif\" /></td>'+"\n";
 						html += '<td><img src="../images/'+biblio.imageFile+'" />'+title+"\n";
