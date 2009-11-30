@@ -160,8 +160,11 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				if (biblioList.length == 0) {
+				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 	  			$('#rsltQuan').html('<p class="error">Nothing Found by text search</p>');
+					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+        	$('#biblioListDiv').show()
+		  		$('#searchDiv').hide();
 				}
 				else if (biblioList.length == 1) {
 					bs.biblio = eval('('+biblioList[0]+')');
