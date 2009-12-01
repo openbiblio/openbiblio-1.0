@@ -375,7 +375,10 @@ class UpgradeQuery extends InstallQuery {
 							."('item_autoBarcode_flg', NULL , 'Item Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
 							."('mbr_autoBarcode_flg', NULL , 'Member Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
 							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N','tools'),"
-							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools')");
+							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_checkout_mbr',NULL,'Show member who has an item checkout','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_detail_opac',NULL,'Show copy details in OPAC','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_copy_site',NULL,'Show site of a copy','bool',NULL,NULL,NULL,'N','tools')");
 		$this->act("ALTER TABLE `member` "
 							."CHANGE `create_dt` `create_dt` DATETIME NOT NULL ,"
 							."CHANGE `last_change_dt` `last_change_dt` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL");
@@ -385,6 +388,8 @@ class UpgradeQuery extends InstallQuery {
 							."ADD `state` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `city` ,"
 							."ADD `zip` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `state` ,"
 							."ADD `zip_ext` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `zip` ";
+		$this->act("ALTER TABLE `biblio_copy` "
+							."ADD  `siteid` TINYINT( 3 ) NOT NULL DEFAULT  '1'";
 		### ################################################### ###
 		### conversion process begins here.
 		### ################################################### ###

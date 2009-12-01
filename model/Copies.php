@@ -20,12 +20,14 @@ class Copies extends CoreTable {
 			#'price'=>'string',
 			#'expiration'=>'string',
 			'histid'=>'number',
+			'siteid'=>'number',
 		));
 		$this->setKey('copyid');
 		$this->setSequenceField('copyid');
 		$this->setForeignKey('bibid', 'biblio', 'bibid');
 		$this->setForeignKey('histid', 'biblio_status_hist', 'histid');
-
+		$this->setForeignKey('siteid', 'site', 'siteid');
+		
 		$this->custom = new DBTable;
 		$this->custom->setName('biblio_copy_fields');
 		$this->custom->setFields(array(
@@ -49,7 +51,7 @@ class Copies extends CoreTable {
 		if (!$errors) {
 			$history = new History;
 			$history->insert(array(
-				'bibid'=>$copy['bibid'], 'copyid'=>$id, 'status_cd'=>'in',
+				'bibid'=>$copy['bibid'], 'copyid'=>$id, 'status_cd'=>'in', 'siteid'=>$copy['siteid'],
 			));
 		}
 		$this->db->unlock();
@@ -102,6 +104,17 @@ class Copies extends CoreTable {
 		$sql .= $this->db->mkSQL("and bkm.mbrid=%N ", $mbrid);
 		return $this->db->select($sql);
 	}
+	# Added this function to lookup the member who has the copy, for detailed view (not sure if there is a shorter way - LJ
+	# Also, I return the member recod directly to prevent unnecisairy code, even though I am not sure if that is accroding to the design idea
+	function getCheckoutMember($histid) {
+		$sql = "select mbr.* "
+			. "from member mbr, booking bk, booking_member bkm "
+			. "where mbr.mbrid=bkm.mbrid "
+			. "and bkm.bookingid=bk.bookingid ";
+		$sql .= $this->db->mkSQL("and bk.out_histid=%N ", $histid);
+		$result = $this->db->select($sql);
+		return ($result->next());
+	}	
 	function lookupBulk_el($barcodes) {
 		$copyids = array();
 		$bibids = array();

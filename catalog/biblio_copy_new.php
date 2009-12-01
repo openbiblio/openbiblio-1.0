@@ -45,7 +45,7 @@ if (isset($_POST["autobarco"]) and $_POST["autobarco"]) {
 	$_POST["barcode_nmbr"] = sprintf("%0".$nzeros."s",$bibid).$CopyNmbr;
 }
 
-$fields = array(bibid, barcode_nmbr, copy_desc);
+$fields = array(bibid, barcode_nmbr, copy_desc, siteid);
 	# vendor, fund, price, expiration);
 $copy = array();
 foreach ($fields as $f) {

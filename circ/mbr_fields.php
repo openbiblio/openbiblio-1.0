@@ -21,7 +21,7 @@
 	$mbrtypes = new MemberTypes;
 
 	$fields = array(
-		'Site' => inputfield('select', 'siteid', NULL, NULL, $sites),
+		'Site' => inputfield('select', 'siteid', $mbr[siteid], NULL, $sites),
 		'Card Number' => inputfield("text","barcode_nmbr",$mbr[barcode_nmbr],$attr=array("size"=>20,"max"=>20),$pageErrors),
 		'Last Name' => inputfield("text","last_name",$mbr[last_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
 		'First Name' => inputfield("text","first_name",$mbr[first_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),

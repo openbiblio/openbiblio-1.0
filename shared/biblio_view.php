@@ -280,8 +280,12 @@ if ($tab == "cataloging") {
 </fieldset>
 
 <?php
-	# Info below shouldn't be shown in the OPAC
-	if ($tab != "cataloging") {
+	# Info below shouldn't be shown in the OPAC unless show_detail_opac setting is set to Y
+	# Have to lookup the value as if not set as normally for OPAC this info is not loaded (maybe not the most nice solution) - LJ
+	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
+	if(empty($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	
+	if (($tab != "cataloging") && ($_SESSION['show_detail_opac'] != 'Y')) {
 		Page::footer();
 		exit();
 	}
@@ -291,7 +295,8 @@ if ($tab == "cataloging") {
 	switch($coll['type']) {
 	case 'Circulated':
 		include_once(REL(__FILE__, "../catalog/biblio_copy_info.php"));
-		showCopyInfo($bibid, $collections->getTypeData($coll));
+		# Added $tab for the opotion to show details in OPAC - LJ
+		showCopyInfo($bibid, $collections->getTypeData($coll), $tab);
 		break;
 	case 'Distributed':
 		include_once(REL(__FILE__, "../catalog/biblio_stock_info.php"));
