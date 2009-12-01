@@ -104,12 +104,12 @@ plm = {
 					html += data[n]['name'];
 					html += '</li>\n';
 				}
-				$('#pluginList').html(html)
-				$('#pluginList input').bind('click',null,plm.doUpdateList);
 			}
 			else {
-				html = <h5><?php echo T('No Plugins found'); ?></h5>
+				html = "<h5>No Plugins found</h5>"
 			}
+				$('#pluginList').html(html)
+				$('#pluginList input').bind('click',null,plm.doUpdateList);
 			plm.checkPluginOK();
 		});
 	},
