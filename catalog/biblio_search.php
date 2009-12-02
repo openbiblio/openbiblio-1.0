@@ -171,13 +171,13 @@
 		<thead>
 		<tr>
 				<?php if ($tab != "opac"){ ?>
-					<th colspan="2" nowrap="yes"><?php echo T("Function"); ?></th>
+					<th nowrap="yes"><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
 				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
 				<?php
 					if($_SESSION['show_copy_site'] == "Y"){
-						echo "<th align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";
+						echo "<th id=\"siteFld\" align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";
 					}
 				?>
 				<th align="left" nowrap="yes"><?php echo T("Status"); ?></th>

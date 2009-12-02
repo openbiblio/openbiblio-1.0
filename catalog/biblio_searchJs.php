@@ -26,7 +26,7 @@ bs = {
 
 		bs.url = 'biblio_server.php';
 
-    $('#advanceQ').disable();
+    //$('#advanceQ').disable();
 		$('#advancedSrch').hide();
 		$('#advanceQ').bind('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
@@ -251,11 +251,14 @@ bs = {
   	$('tbody#biblio').html(txt);
 		obib.reStripe();
 		$('#biblioEditBtn').bind('click',null,bs.doItemEdit);
-		//$('#marcBtn').bind('click',null,function () { $('#biblioDiv td.filterable').toggle()});
-		$('#marcBtn').disable();
+		$('#biblioDiv td.filterable').hide();
+		$('#marcBtn').bind('click',null,function () {
+		  //console.log('swapping state to MARC column');
+			$('#biblioDiv td.filterable').toggle()
+			}
+		);
 		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 
-		$('#biblioDiv td.filterable').hide();
 	  $('#searchDiv').hide();
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
@@ -324,6 +327,7 @@ bs = {
 			$('#nonMarcBody #opacFlg').val([bs.biblio.opacFlg]);
 			$.each(bs.biblio.data, function(fldIndex,fldData) {
 			  var tmp = eval('('+fldData+')');
+console.log('#'+fldIndex+'; '+tmp.marcTag+' -> '+tmp.value);
 			  $('#marcBody #'+tmp.marcTag).val(tmp.value);
 			  $('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
 			  $('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
