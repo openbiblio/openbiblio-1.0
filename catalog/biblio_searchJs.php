@@ -251,7 +251,9 @@ bs = {
   	$('tbody#biblio').html(txt);
 		obib.reStripe();
 		$('#biblioEditBtn').bind('click',null,bs.doItemEdit);
-		$('#marcBtn').bind('click',null,function () { $('#biblioDiv td.filterable').toggle()});
+		//$('#marcBtn').bind('click',null,function () { $('#biblioDiv td.filterable').toggle()});
+		$('#marcBtn').disable();
+		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 
 		$('#biblioDiv td.filterable').hide();
 	  $('#searchDiv').hide();
@@ -283,9 +285,19 @@ bs = {
 					html += "	</td>\n";
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
-					html += "	<td>"+crntCopy.status_cd+"</td>\n";
-					html += "	<td>"+crntCopy.status_begin_dt+"</td>\n";
-					html += "	<td>"+bs.makeDueDateStr(crntCopy.status_begin_dt)+"</td>\n";
+					if (crntCopy.siteName) {
+						html += "	<td>"+crntCopy.siteName+"</td>\n";
+					}
+					else {
+						$('#siteFld').hide();
+					}
+					html += "	<td>"+crntCopy.status
+					if (crntCopy.mbrId)
+					  html += ' to <a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
+								 + crntCopy.mbrName+'</a>';
+					html += "</td>\n";
+					html += "	<td>"+crntCopy.last_change_dt+"</td>\n";
+					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);

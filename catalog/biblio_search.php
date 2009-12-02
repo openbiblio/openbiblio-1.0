@@ -168,11 +168,25 @@
 	<fieldset>
 		<legend><?php echo T("Copy Information"); ?></legend>
 		<table id="copyList">
+		<thead>
 		<tr>
-			<th>Function</th><th>Barcode</th><th>Descrition</th>
-									<th>Status</th><th>Status Date</th><th>Due Back</th>
+				<?php if ($tab != "opac"){ ?>
+					<th colspan="2" nowrap="yes"><?php echo T("Function"); ?></th>
+				<?php } ?>
+				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
+				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
+				<?php
+					if($_SESSION['show_copy_site'] == "Y"){
+						echo "<th align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";
+					}
+				?>
+				<th align="left" nowrap="yes"><?php echo T("Status"); ?></th>
+				<th align="left" nowrap="yes"><?php echo T("Status Dt"); ?></th>
+				<th align="left" nowrap="yes"><?php echo T("Due Back"); ?></th>
 		</tr>
-		<tbody id="copies" class="striped"></tbody>
+		</thead>
+		<tbody id="copies" class="striped">
+		</tbody>
 		</table>
 	</fieldset>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">

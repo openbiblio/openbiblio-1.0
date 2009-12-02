@@ -104,13 +104,15 @@ class Copies extends CoreTable {
 		$sql .= $this->db->mkSQL("and bkm.mbrid=%N ", $mbrid);
 		return $this->db->select($sql);
 	}
-	# Added this function to lookup the member who has the copy, for detailed view (not sure if there is a shorter way - LJ
-	# Also, I return the member recod directly to prevent unnecisairy code, even though I am not sure if that is accroding to the design idea
+	# Added this function to lookup the member who has the copy,
+	#	for detailed view (not sure if there is a shorter way - LJ
+	# Also, I return the member record directly to prevent unnecisary code,
+	#	even though I am not sure if that is accroding to the design idea
 	function getCheckoutMember($histid) {
 		$sql = "select mbr.* "
-			. "from member mbr, booking bk, booking_member bkm "
-			. "where mbr.mbrid=bkm.mbrid "
-			. "and bkm.bookingid=bk.bookingid ";
+				 . "from member mbr, booking bk, booking_member bkm "
+				 . "where mbr.mbrid=bkm.mbrid "
+				 . "and bkm.bookingid=bk.bookingid ";
 		$sql .= $this->db->mkSQL("and bk.out_histid=%N ", $histid);
 		$result = $this->db->select($sql);
 		return ($result->next());

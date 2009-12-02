@@ -6,6 +6,9 @@
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../classes/Query.php"));
+	require_once(REL(__FILE__, "../model/Sites.php"));
+	require_once(REL(__FILE__, "../model/Copies.php"));
+	require_once(REL(__FILE__, "../model/CopyStates.php"));
 
 	## --------------------- ##
 class SrchDb {
@@ -51,7 +54,7 @@ class SrchDb {
 			      . " AND (bs.`subfield_data` LIKE '%$_REQUEST[searchText]%') "
 			      . " )";
 		}
-//echo "sql=$sql<br />";
+		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
 			$rslt[] = $row[bibid];
@@ -99,16 +102,28 @@ class SrchDb {
 	}
 	## ========================= ##
 	function getCopyInfo ($bibid) {
-		$sql = "SELECT * "
-		      ."	FROM `biblio_copy` c, `biblio_status_hist` h"
-		      ." WHERE (c.`bibid` = $bibid)"
-		      ."	 AND (h.`bibid` = c.`bibid`)"
-		      ."	 AND (h.`copyid` = c.`copyid`)"
-		      ." ORDER BY c.`create_dt`";
-		//echo "sql=$sql<br />";
-		$rows = $this->db->select($sql);
-		while (($row = $rows->next()) !== NULL) {
-			$rslt[] = json_encode($row);
+		$copies = new Copies; // needed later
+		$bcopies = $copies->getMatches(array('bibid'=>$bibid));
+		$copy_states = new CopyStates;
+		$states = $copy_states->getSelect();
+		$history = new History;
+		$bookings = new Bookings;
+
+		while ($copy = $bcopies->next()) {
+			$status = $history->getOne($copy['histid']);
+			$booking = $bookings->getByHistid($copy['histid']);
+	  	if ($_SESSION['show_copy_site'] == 'Y') {
+				$sites_table = new Sites;
+				$sites = $sites_table->getSelect();
+				$copy['site'] = $sites[$copy[siteid]];
+			}
+			$copy['status'] = $states[$status[status_cd]];
+			if($_SESSION['show_checkout_mbr'] == "Y" && $status[status_cd] == "out"){
+				$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
+				$copy['mbrId'] = $checkout_mbr[mbrid];
+				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
+			}
+			$rslt[] = json_encode($copy);
 		}
 		return $rslt;
 	}
