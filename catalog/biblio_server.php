@@ -36,9 +36,13 @@ class SrchDb {
 		return $rcd;
 	}
 	## ========================= ##
-	function getBiblioByPhrase($jsonSpec) {
+	function getBiblioByPhrase($mode, $jsonSpec) {
 	  $spec = json_decode($jsonSpec, true);
-		$keywords = explode(' ',$_REQUEST[searchText]);
+	  if ($mode == 'words')
+			$keywords = explode(' ',$_REQUEST[searchText]);
+		else
+			$keywords[] = $_REQUEST[searchText];
+
 //print_r($_REQUEST[searchText]);echo "<br />";
 //print_r($keywords);echo "<br />";
 
@@ -340,18 +344,18 @@ class SrchDb {
 	case 'doPhraseSearch':
 	  $theDb = new SrchDB;
 	  switch ($_REQUEST[searchType]) {
-	    case 'title': 		$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"245","suf":"a"},
+	    case 'title': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"245","suf":"a"},
 																											 {"tag":"245","suf":"b"}]'); break;
-			case 'author': 		$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"100","suf":"a"},
+			case 'author': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"100","suf":"a"},
 					 																						 {"tag":"245","suf":"c"}]'); break;
-			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"650","suf":"a"}]'); break;
-			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"245","suf":"a"},
+			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('words','[{"tag":"650","suf":"a"}]'); break;
+			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('words','[{"tag":"245","suf":"a"},
 																											 {"tag":"650","suf":"a"},
 																											 {"tag":"100","suf":"a"},
 					 																						 {"tag":"245","suf":"c"}]'); break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
-			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('[{"tag":"260","suf":"b"}]'); break;
-			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"099","suf":"a"}]'); break;
+			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"260","suf":"b"}]'); break;
+			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"099","suf":"a"}]'); break;
 	    
 	  	default:
 	  		echo "<h5>Invalid Search Type: $_REQUEST[srchBy]</h5>";
