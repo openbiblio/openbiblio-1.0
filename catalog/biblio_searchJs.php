@@ -288,7 +288,6 @@ bs = {
 					html += "	</td>\n";
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
-console.log('site:'+crntCopy.site)
 					if (crntCopy.site) {
 						html += "	<td>"+crntCopy.site+"</td>\n";
 					}
@@ -358,7 +357,7 @@ console.log('site:'+crntCopy.site)
 			});
 			// then repeaters
 			bs.lastFldTag = ''; 
-			$('#marcBody input.rptd:text').each(function (){
+			$('#marcBody input.rptd:text').not('.onln').each(function (){
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;

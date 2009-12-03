@@ -38,10 +38,15 @@ class SrchDb {
 	## ========================= ##
 	function getBiblioByPhrase($jsonSpec) {
 	  $spec = json_decode($jsonSpec, true);
+		$keywords = explode(' ',$_REQUEST[searchText]);
+//print_r($_REQUEST[searchText]);echo "<br />";
+//print_r($keywords);echo "<br />";
+
 	  $sql = "SELECT DISTINCT bs.bibid "
 					."  FROM `biblio_field` bf, `biblio_subfield` bs "
 					." WHERE (1=1) AND ";
 		$firstLine = true;
+		foreach ($keywords as $kwd) {
 		foreach ($spec as $item) {
 		  if (!$firstLine)
 				$sql .= " OR ";
@@ -51,10 +56,12 @@ class SrchDb {
 			      . "	AND (bs.`bibid` = bf.`bibid`) "
 			      . "	AND (bs.`fieldid` = bf.`fieldid`) "
 			      . "	AND (bs.`subfield_cd` = '$item[suf]') "
-			      . " AND (bs.`subfield_data` LIKE '%$_REQUEST[searchText]%') "
+//			      . " AND (bs.`subfield_data` LIKE '%$_REQUEST[searchText]%') "
+			      . " AND (bs.`subfield_data` LIKE '%$kwd%') "
 			      . " )";
 		}
-		//echo "sql=$sql<br />";
+		}
+//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
 			$rslt[] = $row[bibid];
@@ -218,7 +225,47 @@ class SrchDb {
 				'form_type' => $f['form_type'],
 				'repeat' => $f['repeatable']);
 		}
+		function mkFldSet($n, $i, $marcInputFld, $mode) {
+			echo "	<td valign=\"top\" class=\"primary\"> \n";
+		  if ($mode == 'onlnCol') {
+				$namePrefix = "onln[$n]";
+		    echo "<input type=\"button\" value=\"accept\" id=\"$namePrefix"."_btn\" /> \n";
+			}
+			else if ($mode == 'editCol') {
+				$namePrefix = 'fields['.H($n).']';
+				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
+				echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
+				echo inputfield('hidden', $namePrefix."[fieldid]",     H($i['fieldid']),
+												array('id'=>$marcInputFld.'_fieldid'))." \n";
+				echo inputfield('hidden', $namePrefix."[subfieldid]",  H($i['subfieldid']),
+												array('id'=>$marcInputFld.'_subfieldid'))." \n";
+			}
+			
+			$attrs = array("id"=>"$marcInputFld");
+			$attrStr = "marcBiblioFld";
+			if ($i['required'])
+			  $attrStr .= " reqd";
+			if ($i['repeat'])
+			  $attrStr .= " rptd";
+			else
+			  $attrStr .= " only1";
+			$attrs["class"] = $attrStr;
 
+			if ($i['form_type'] == 'text') {
+			  $attrs["size"] = "50"; $attrs["maxLength"] = "75";
+				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
+			} else {
+				// IE seems to make the font-size of a textarea overly small under
+				// certain circumstances.  We force it to a sane value, even
+				// though I have some misgivings about it.  This will make
+				// the font smaller for some people.
+				$attrs["style"] = "font-size:10pt; font-weight: normal;";
+				$attrs["rows"] = "7"; $attrs["cols"] = "38";
+				echo inputfield('textarea', $namePrefix."[data]", H($i['data']),$attrs)." \n";
+			}
+			echo "</td> \n";
+		}
+		
 		$mf = new MaterialFields;
 
 		// get field specs in 'display postition' order
@@ -248,37 +295,10 @@ class SrchDb {
 			}
 			echo "		<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
 			echo "	</td> \n";
-			echo "	<td valign=\"top\" class=\"primary\"> \n";
-			echo inputfield('hidden', "fields[".H($n)."][tag]",         H($i['tag']))." \n";
-			echo inputfield('hidden', "fields[".H($n)."][subfield_cd]", H($i['subfield']))." \n";
-			echo inputfield('hidden', "fields[".H($n)."][fieldid]",     H($i['fieldid']),
-											array('id'=>$marcInputFld.'_fieldid'))." \n";
-			echo inputfield('hidden', "fields[".H($n)."][subfieldid]",  H($i['subfieldid']),
-											array('id'=>$marcInputFld.'_subfieldid'))." \n";
+			
+			mkFldSet($n, $i, $marcInputFld, 'editCol');	// normal local edit column
+			mkFldSet($n, $i, $marcInputFld, 'onlnCol');  // update on-line column
 
-			$attrs = array("id"=>"$marcInputFld");
-			$attrStr = "marcBiblioFld";
-			if ($i['required'])
-			  $attrStr .= " reqd";
-			if ($i['repeat'])
-			  $attrStr .= " rptd";
-			else
-			  $attrStr .= " only1";
-			$attrs["class"] = $attrStr;
-
-			if ($i['form_type'] == 'text') {
-			  $attrs["size"] = "50"; $attrs["maxLength"] = "75";
-				echo inputfield('text', "fields[".H($n)."][data]", H($i['data']),$attrs)." \n";
-			} else {
-				// IE seems to make the font-size of a textarea overly small under
-				// certain circumstances.  We force it to a sane value, even
-				// though I have some misgivings about it.  This will make
-				// the font smaller for some people.
-				$attrs["style"] = "font-size:10pt; font-weight: normal;";
-				$attrs["rows"] = "7"; $attrs["cols"] = "38";
-				echo inputfield('textarea', "fields[".H($n)."][data]", H($i['data']),$attrs)." \n";
-			}
-			echo "</td> \n";
 		echo "</tr> \n";
 		}
 	}

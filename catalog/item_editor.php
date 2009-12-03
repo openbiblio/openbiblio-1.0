@@ -40,9 +40,11 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" nowrap="true" class="primary">
-			<b><?php echo T("USMarc Fields:"); ?></b>
+		<td colspan="1" nowrap="true" class="primary">
+			<b><?php echo T("Marc Fields:"); ?></b>
 		</td>
+		<td><h4>Local Data</h4></td>
+		<td><h4 class="online">On-Line Data</h4></td>
 	</tr>
 	</tbody>
 
