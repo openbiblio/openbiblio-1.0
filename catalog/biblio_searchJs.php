@@ -288,8 +288,9 @@ bs = {
 					html += "	</td>\n";
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
-					if (crntCopy.siteName) {
-						html += "	<td>"+crntCopy.siteName+"</td>\n";
+console.log('site:'+crntCopy.site)
+					if (crntCopy.site) {
+						html += "	<td>"+crntCopy.site+"</td>\n";
 					}
 					else {
 						$('#siteFld').hide();
