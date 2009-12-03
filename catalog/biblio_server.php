@@ -207,14 +207,16 @@ class SrchDb {
 			return $label;
 		}
 		function mkinput($fid, $sfid, $data, $f) {
+//print_r($f);echo "<br />";
 			return array('fieldid' => $fid,
 				'subfieldid' => $sfid,
 				'data' => $data,
 				'tag' => $f['tag'],
-					'subfield' => $f['subfield_cd'],
-			'label' => getlabel($f),
+				'subfield' => $f['subfield_cd'],
+				'label' => getlabel($f),
 				'required' => $f['required'],
-				'form_type' => $f['form_type']);
+				'form_type' => $f['form_type'],
+				'repeat' => $f['repeatable']);
 		}
 
 		$mf = new MaterialFields;
@@ -230,41 +232,9 @@ class SrchDb {
 		## build an array of fields to be displayed on user form
 		$inputs = array();
 		while (($f=$fields->next())) {
-			// make a set of marc tags to be processed
-			$tags = array();
-			if (isset($biblio)) {
-				$tags = $biblio['marc']->getFields($f['tag']);
-				if ($f['auto_repeat'] != Tag && count($tags) > 0) {
-					$tags = array($tags[0]);
-				}
-			}
-			if (count($tags) > 0) {
-				foreach ($tags as $t) {
-					$subfs = array();
-					if ($f['subfield_cd'] != "") {
-						$subfs = $t->getSubfields($f['subfield_cd']);
-						if ($f['auto_repeat'] != Subfield && count($subfs) > 0) {
-							$subfs = array($subfs[0]);
-						}
-					}
-					foreach ($subfs as $sf) {
-						array_push($inputs,
-							mkinput($t->fieldid,
-								$sf->subfieldid,
-								$sf->data, $f));
-					}
-					if (count($subfs) == 0 || $f['auto_repeat'] == 'Subfield') {
-						array_push($inputs, mkinput($t->fieldid, NULL, NULL, $f));
-					}
-					for ($n=0; $n<$f['repeatable']; $n++) {
-						array_push($inputs, mkinput($t->fieldid, NULL, NULL, $f));
-					}
-				}
-			}
-			else if (count($tags) == 0 ) {
-				for ($n=0; $n<=$f['repeatable']; $n++) {
-					array_push($inputs, mkinput(NULL, NULL, NULL, $f));
-				}
+		  #  make multiples of those so flagged
+			for ($n=0; $n<=$f['repeatable']; $n++) {
+				array_push($inputs, mkinput(NULL, NULL, NULL, $f));
 			}
 		}
 
@@ -273,31 +243,29 @@ class SrchDb {
 			$marcInputFld = H($i['tag']).H($i['subfield']);
 			echo "<tr> \n";
 			echo "	<td class=\"primary\" valign=\"top\"> \n";
-
-//		if ($i['required'] == 'Y') {  // db field is defined as TinyInt not char
 			if ($i['required']) {
 				echo '	<sup>*</sup>';
 			}
-			echo "	<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
-
+			echo "		<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
 			echo "	</td> \n";
 			echo "	<td valign=\"top\" class=\"primary\"> \n";
-
 			echo inputfield('hidden', "fields[".H($n)."][tag]",         H($i['tag']))." \n";
 			echo inputfield('hidden', "fields[".H($n)."][subfield_cd]", H($i['subfield']))." \n";
-
 			echo inputfield('hidden', "fields[".H($n)."][fieldid]",     H($i['fieldid']),
 											array('id'=>$marcInputFld.'_fieldid'))." \n";
 			echo inputfield('hidden', "fields[".H($n)."][subfieldid]",  H($i['subfieldid']),
 											array('id'=>$marcInputFld.'_subfieldid'))." \n";
 
 			$attrs = array("id"=>"$marcInputFld");
-			if ($i['required']) {
-			  $attrs["class"] = "marcBiblioFld reqd";
-			}
-			else {
-			  $attrs["class"] = "marcBiblioFld";
-			}
+			$attrStr = "marcBiblioFld";
+			if ($i['required'])
+			  $attrStr .= " reqd";
+			if ($i['repeat'])
+			  $attrStr .= " rptd";
+			else
+			  $attrStr .= " only1";
+			$attrs["class"] = $attrStr;
+
 			if ($i['form_type'] == 'text') {
 			  $attrs["size"] = "50"; $attrs["maxLength"] = "75";
 				echo inputfield('text', "fields[".H($n)."][data]", H($i['data']),$attrs)." \n";
@@ -358,7 +326,9 @@ class SrchDb {
 					 																						 {"tag":"245","suf":"c"}]'); break;
 			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"650","suf":"a"}]'); break;
 			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"245","suf":"a"},
-																											 {"tag":"650","suf":"a"}]'); break;
+																											 {"tag":"650","suf":"a"},
+																											 {"tag":"100","suf":"a"},
+					 																						 {"tag":"245","suf":"c"}]'); break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
 			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('[{"tag":"260","suf":"b"}]'); break;
 			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('[{"tag":"099","suf":"a"}]'); break;

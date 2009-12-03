@@ -311,6 +311,25 @@ bs = {
 	},
 
 	//------------------------------
+	findMarcField: function (tag) {
+	  for (var i=0; i< bs.biblio.data.length; i++) {
+			var tmp = eval('('+bs.biblio.data[i]+')');
+			if (tmp.marcTag == tag) {
+				return tmp;
+			}
+		};
+		return null;
+	},
+	findMarcFieldSet: function (tag) {
+	  var fldSet = []; var n = 0;
+	  for (var i=0; i< bs.biblio.data.length; i++) {
+			var tmp = eval('('+bs.biblio.data[i]+')');
+			if (tmp.marcTag == tag) {
+				fldSet[n] = tmp;  n++;
+			}
+		}
+		return fldSet;
+	},
 	doItemEdit: function () {
 		bs.fetchCollectionList();
 	  $('#biblioDiv').hide();
@@ -321,16 +340,40 @@ bs = {
 									function (response) {
 			$('#marcBody').html(response);
 			
-			// now fill fields with data on hand
+			// fill non-MARC fields with data on hand
 			$('#nonMarcBody #mediaType').val([bs.biblio.matlCd]);
 			$('#nonMarcBody #collectionCd').val([bs.biblio.collCd]);
 			$('#nonMarcBody #opacFlg').val([bs.biblio.opacFlg]);
-			$.each(bs.biblio.data, function(fldIndex,fldData) {
-			  var tmp = eval('('+fldData+')');
-console.log('#'+fldIndex+'; '+tmp.marcTag+' -> '+tmp.value);
-			  $('#marcBody #'+tmp.marcTag).val(tmp.value);
-			  $('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
-			  $('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
+			
+			// fill MARC fields with data on hand
+			// first non-repeating fields
+			$('#marcBody input.only1:text').each(function (){
+			  var tmp = bs.findMarcField(this.id);
+			  if (tmp){
+			  	$('#marcBody #'+tmp.marcTag).val(tmp.value);
+			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
+			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
+			  }
+			});
+			// then repeaters
+			bs.lastFldTag = ''; 
+			$('#marcBody input.rptd:text').each(function (){
+				var fldNamePrefix = (this.name.split(']'))[0]+']';
+			  if (this.id != bs.lastFldTag) {
+					bs.lastFldTag = this.id;
+			  	bs.tmpList = bs.findMarcFieldSet(this.id);
+			  	bs.fldNo = 0; bs.maxFldNo = bs.tmpList.length;
+				}
+				if (bs.fldNo < bs.maxFldNo) {
+				  var tmp = bs.tmpList;
+					var selector1 = 'input'+'[name="'+fldNamePrefix+'[data]"]';
+			  	$(selector1).val(tmp[bs.fldNo].value);
+			  	var selector2 = 'input'+'[name="'+fldNamePrefix+'[fieldid]"]';
+			  	$(selector2).val(tmp[bs.fldNo].fieldid);
+			  	var selector3 = 'input'+'[name="'+fldNamePrefix+'[subfieldid]"]';
+			  	$(selector3).val(tmp[bs.fldNo].subfieldid);
+			  	bs.fldNo++;
+			  }
 			});
 		});
 		
