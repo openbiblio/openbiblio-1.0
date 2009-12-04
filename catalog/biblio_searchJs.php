@@ -360,8 +360,9 @@ bs = {
 			});
 			// then repeaters
 			bs.lastFldTag = ''; 
-			$('#marcBody input.rptd:text').not('.onln').each(function (){
+			$('#marcBody input.rptd:text').not('.online').each(function (){
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
+console.log('processing '+fldNamePrefix);
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;
 			  	bs.tmpList = bs.findMarcFieldSet(this.id);
