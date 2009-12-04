@@ -38,32 +38,39 @@ class SrchDb {
 	## ========================= ##
 	function getBiblioByPhrase($mode, $jsonSpec) {
 	  $spec = json_decode($jsonSpec, true);
+	  $srchTxt = strtolower($_REQUEST[searchText]);
 	  if ($mode == 'words')
-			$keywords = explode(' ',$_REQUEST[searchText]);
+			$keywords = explode(' ',$srchTxt);
 		else
-			$keywords[] = $_REQUEST[searchText];
+			$keywords[] = $srchTxt;
+//		$useAND = in_array('and', $keywords);
+//		$useOR  = in_array('or', $keywords);
 
-//print_r($_REQUEST[searchText]);echo "<br />";
+//print_r($srchTxt);echo "<br />";
 //print_r($keywords);echo "<br />";
 
 	  $sql = "SELECT DISTINCT bs.bibid "
 					."  FROM `biblio_field` bf, `biblio_subfield` bs "
 					." WHERE (1=1) AND ";
 		$firstLine = true;
-		foreach ($keywords as $kwd) {
 		foreach ($spec as $item) {
-		  if (!$firstLine)
-				$sql .= " OR ";
-			else
-				$firstLine = false;
-			$sql .= "   ( (bf.`tag` = '$item[tag]') "
-			      . "	AND (bs.`bibid` = bf.`bibid`) "
-			      . "	AND (bs.`fieldid` = bf.`fieldid`) "
-			      . "	AND (bs.`subfield_cd` = '$item[suf]') "
-//			      . " AND (bs.`subfield_data` LIKE '%$_REQUEST[searchText]%') "
-			      . " AND (bs.`subfield_data` LIKE '%$kwd%') "
-			      . " )";
-		}
+			foreach ($keywords as $kwd) {
+			  if (($kwd != 'and') && ($kwd != 'or')) {
+				  if (!$firstLine)
+//						if ($useAND)
+//							$sql .= " AND ";
+//						else
+							$sql .= " OR ";
+					else
+						$firstLine = false;
+					$sql .= "   ( (bf.`tag` = '$item[tag]') "
+					      . "	AND (bs.`bibid` = bf.`bibid`) "
+					      . "	AND (bs.`fieldid` = bf.`fieldid`) "
+					      . "	AND (bs.`subfield_cd` = '$item[suf]') "
+					      . " AND (bs.`subfield_data` LIKE '%$kwd%') "
+					      . " )";
+				}
+			}
 		}
 //echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
@@ -230,12 +237,13 @@ class SrchDb {
 				'repeat' => $f['repeatable']);
 		}
 		function mkFldSet($n, $i, $marcInputFld, $mode) {
-			echo "	<td valign=\"top\" class=\"primary\"> \n";
 		  if ($mode == 'onlnCol') {
-				$namePrefix = "onln[$n]";
-		    echo "<input type=\"button\" value=\"accept\" id=\"$namePrefix"."_btn\" /> \n";
+				echo "	<td valign=\"top\" class=\"primary filterable\"> \n";
+				$namePrefix = "onln_$n";
+		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" /> \n";
 			}
 			else if ($mode == 'editCol') {
+				echo "	<td valign=\"top\" class=\"primary\"> \n";
 				$namePrefix = 'fields['.H($n).']';
 				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
 				echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
@@ -253,6 +261,8 @@ class SrchDb {
 			  $attrStr .= " rptd";
 			else
 			  $attrStr .= " only1";
+		  if ($mode == 'onlnCol')
+		    $attrStr .= " online";
 			$attrs["class"] = $attrStr;
 
 			if ($i['form_type'] == 'text') {
@@ -345,14 +355,15 @@ class SrchDb {
 	  $theDb = new SrchDB;
 	  switch ($_REQUEST[searchType]) {
 	    case 'title': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"245","suf":"a"},
-																											 {"tag":"245","suf":"b"}]'); break;
+																											 										{"tag":"245","suf":"b"}]'); break;
 			case 'author': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"100","suf":"a"},
-					 																						 {"tag":"245","suf":"c"}]'); break;
-			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('words','[{"tag":"650","suf":"a"}]'); break;
-			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('words','[{"tag":"245","suf":"a"},
-																											 {"tag":"650","suf":"a"},
-																											 {"tag":"100","suf":"a"},
-					 																						 {"tag":"245","suf":"c"}]'); break;
+					 																						 										{"tag":"245","suf":"c"}]'); break;
+			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('words', '[{"tag":"650","suf":"a"}]'); break;
+			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('words', '[{"tag":"245","suf":"a"},
+																											 										{"tag":"650","suf":"a"},
+																											 										{"tag":"100","suf":"a"},
+					 																																{"tag":"245","suf":"b"},
+																											 										{"tag":"245","suf":"c"}]'); break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
 			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"260","suf":"b"}]'); break;
 			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"099","suf":"a"}]'); break;

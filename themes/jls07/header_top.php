@@ -55,10 +55,23 @@ obib = {
 		}
 	},
 	//-------------------------
-	reStripe: function(e) {
+	reStripe: function(which) {
 		// re-stripe all tables so classed on all pages
-	  $('table tbody.striped tr:even').addClass('altBG');
-//	  $('table tbody.striped tr:odd').removeClass('altBG');
+	  	$('table tbody.striped tr:even').addClass('altBG');
+	  	$('table tbody.striped tr:odd').removeClass('altBG');
+	},
+	reStripe2: function(tblName, oddEven) {
+		// re-stripe specified table
+		if (oddEven == 'even') {
+console.log('striping even rows of table: '+tblName);
+	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
+	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
+		}
+		else if (oddEven == 'odd') {
+console.log('striping odd rows of table: '+tblName);
+	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
+	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
+	 }
 	},
 	//-------------------------
 	confirmLink: function(e) {

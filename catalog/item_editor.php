@@ -7,7 +7,9 @@
 
 ?>
 <p class="note"><?php echo T("Fields marked are required"); ?></p>
-<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
+<input type="button" class="button itemGobkBtn" value="<?php echo T('Go_Back'); ?>" />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch_On-Line_Data'); ?>" />
 
 <fieldset>
 <legend><?php echo T("Item"); ?></legend>
@@ -42,13 +44,15 @@
 	<tr>
 		<td colspan="1" nowrap="true" class="primary">
 			<b><?php echo T("Marc Fields:"); ?></b>
+		<td colspan="1" nowrap="true" class="primary">
+			<b><?php echo T("Local_Data"); ?></b>
+		<td id="onlnColTitle" colspan="1" nowrap="true" class="primary filterable">
+			<b><?php echo T("On-Line_Data"); ?></b>
 		</td>
-		<td><h4>Local Data</h4></td>
-		<td><h4 class="online">On-Line Data</h4></td>
-	</tr>
 	</tbody>
 
 	<tbody id="marcBody" class="striped">
+	</tr>
 	</tbody>
 </table>
 </fieldset>

@@ -249,7 +249,7 @@ bs = {
 		txt += "	<td>"+biblio.createDt+"</td>\n";
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
-		obib.reStripe();
+		obib.reStripe2('biblioTbl','odd');
 		$('#biblioEditBtn').bind('click',null,bs.doItemEdit);
 		$('#biblioDiv td.filterable').hide();
 		$('#marcBtn').bind('click',null,function () {
@@ -304,7 +304,7 @@ bs = {
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
-				obib.reStripe();
+				obib.reStripe2('copyList','odd');
 				$('.editBtn').bind('click',null,bs.doCopyEdit);
 				$('.deltBtn').bind('click',null,bs.doCopyDelete);
 	  });
@@ -339,7 +339,10 @@ bs = {
 									'collCd':bs.biblio.collCd},
 									function (response) {
 			$('#marcBody').html(response);
-			
+			$('#itemEditorDiv fieldset legend').html('<?php echo T('Edit Item Properties'); ?>');
+			$('#itemEditorDiv td.filterable').hide();
+			obib.reStripe2('biblioFldTbl','odd');
+
 			// fill non-MARC fields with data on hand
 			$('#nonMarcBody #mediaType').val([bs.biblio.matlCd]);
 			$('#nonMarcBody #collectionCd').val([bs.biblio.collCd]);
@@ -375,16 +378,28 @@ bs = {
 			  	bs.fldNo++;
 			  }
 			});
+
+	  	$('#onlnUpdtBtn').bind('click',null,function (){
+	  	  var hidingRows = $('#itemEditorDiv td.filterable');
+	  	  if (hidingRows.is(':hidden')) {
+	  	    // here is where we would go get on-line data using the lookup2 engine.
+					$('#itemEditorDiv td.filterable').show();
+				}
+				else
+					$('#itemEditorDiv td.filterable').hide();
+			});
+
+			$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
+												 .bind('click',null,bs.doItemUpdate);
+												 
+			$('.itemGobkBtn').bind('click',null,function () {
+   	 		$('#itemEditorDiv').hide();
+		  	$('#biblioDiv').show();
+			});
+
+    	$('#itemEditorDiv').show();
 		});
 		
-		$('#itemEditorDiv fieldset legend').html('<?php echo T('Edit Item Properties'); ?>');
-		$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
-											 .bind('click',null,bs.doItemUpdate);
-		$('.itemGobkBtn').bind('click',null,function () {
-    	$('#itemEditorDiv').hide();
-	  	$('#biblioDiv').show();
-		});
-    $('#itemEditorDiv').show();
 	},
 	doItemUpdate: function () {
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +'&'+ $('#biblioEditForm').serialize();

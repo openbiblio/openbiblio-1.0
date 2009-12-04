@@ -151,13 +151,13 @@
 
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
-	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkBtn button" value="<?php echo T('Go_Back'); ?>" />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
+	<input type="button" id="marcBtn" class="button" value="<?php echo T('View_Marc_Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
+	<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit_This_Item'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
+	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add_To_Cart'); ?>" />
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">
@@ -185,13 +185,12 @@
 				<th align="left" nowrap="yes"><?php echo T("Due Back"); ?></th>
 		</tr>
 		</thead>
-		<tbody id="copies" class="striped">
-		</tbody>
+		<tbody id="copies" class="striped"></tbody>
 		</table>
 	</fieldset>
-	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
+	<input type="button" class="gobkBtn button" value="<?php echo T('Go_Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
+	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add_New_Copy'); ?>">
 </div>
 
 <div id="itemEditorDiv">
