@@ -240,7 +240,7 @@ class SrchDb {
 		  if ($mode == 'onlnCol') {
 				echo "	<td valign=\"top\" class=\"primary filterable\"> \n";
 				$namePrefix = "onln_$n";
-		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" /> \n";
+		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
 			}
 			else if ($mode == 'editCol') {
 				echo "	<td valign=\"top\" class=\"primary\"> \n";

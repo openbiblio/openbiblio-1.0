@@ -113,7 +113,7 @@ bs = {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 			if (jsonData.lookupAvail == 1) {
 				bs.lookupAvailable = true;
-console.log('lookup engine available');
+				console.log('lookup engine available');
 			}
 		});
 	},
@@ -412,7 +412,9 @@ console.log('lookup engine available');
 		
 	},
 	fetchOnlnData: function () {
-	  params = "&mode=search&srchBy=999&lookupVal=ajax hacks";
+	  var title = $('#marcBody input.offline:text').filter('#245a').val();
+	  params = "&mode=search&srchBy=999&lookupVal="+title;
+	  
 	  $.post(bs.urlLookup,params,function(response){
 			var rslts = eval('('+response+')'); // JSON 'interpreter'
 			var numHits = parseInt(rslts.ttlHits);
@@ -435,12 +437,20 @@ console.log('lookup engine available');
 					  data = hitData;
 				  }); // .each
 				}); // .each
-
 				for (var tag in data) {
 					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);
 				}
+				$('#marcBody input.accptBtn').bind('click',null,bs.doFldUpdt);
 			} // else
 		}); // .post
+	},
+	doFldUpdt: function (e) {
+		var rowNmbr = ((e.target.id).split('_'))[1];
+		var srcId = '#marcBody input[name="onln_'+rowNmbr+'[data]"]';
+		var text = $(srcId).val();
+console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
+		var destId = '#marcBody input[name="fields['+rowNmbr+'][data]"]';
+		$(destId).val(text);
 	},
 	doItemUpdate: function () {
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +'&'+ $('#biblioEditForm').serialize();
