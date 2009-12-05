@@ -63,12 +63,12 @@ obib = {
 	reStripe2: function(tblName, oddEven) {
 		// re-stripe specified table
 		if (oddEven == 'even') {
-console.log('striping even rows of table: '+tblName);
+			//console.log('striping even rows of table: '+tblName);
 	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
 	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
 		}
 		else if (oddEven == 'odd') {
-console.log('striping odd rows of table: '+tblName);
+			//console.log('striping odd rows of table: '+tblName);
 	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
 	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
 	 }
@@ -83,7 +83,7 @@ console.log('striping odd rows of table: '+tblName);
 	}
 }
 
-// hold off javascript until DOM is fully loaded, images, etc, may not all be loaded yet.
+// hold off javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
 $(document).ready(obib.init);
 
 function popSecondary(url) {

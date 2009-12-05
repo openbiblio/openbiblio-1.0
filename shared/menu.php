@@ -42,11 +42,11 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 	
 	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
-	Nav::node('cataloging/searchform', T("New Search"), "../catalog/index.php");
 	Nav::node('cataloging/localSearch', T("Local Search"), "../catalog/biblio_search.php");
 
+	Nav::node('cataloging/searchform', T("old search"), "../catalog/old_search.php");
 	if (isset($_SESSION['rpt_BiblioSearch'])) {
-		Nav::node('cataloging/search', T("Search Results"),
+		Nav::node('cataloging/search', T("old search results"),
 			'../shared/biblio_search.php?searchType=previous&tab='.U($tab));
 	}
 

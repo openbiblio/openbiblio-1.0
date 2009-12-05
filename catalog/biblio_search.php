@@ -23,6 +23,16 @@
 	include_once(REL(__FILE__,'biblio_searchJs.php'));
 	
 ?>
+<script language="JavaScript">
+	<?php
+		if ($_SESSION[show_item_photos]=='Y') {
+		  echo "var showBiblioPhotos = true;";
+		}
+		else {
+		  echo "var showBiblioPhotos = false;";
+		}
+	?>
+</script>
 	<h3><?php echo T("Local Search"); ?></h3>
 
 <div id="crntMbrDiv">to be filled by server</div>

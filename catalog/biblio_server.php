@@ -72,7 +72,7 @@ class SrchDb {
 				}
 			}
 		}
-//echo "sql=$sql<br />";
+		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
 			$rslt[] = $row[bibid];

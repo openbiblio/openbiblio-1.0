@@ -201,7 +201,14 @@ bs = {
               title = 'unknown'; callNo = 'not assigned';
               continue;
 						}
-						html += '<td class="biblioImage"><img src=\"../images/shim.gif\" /></td>'+"\n";
+						if (showBiblioPhotos) {
+							html += '<td id="photo_'+biblio.bibid+'" class="biblioImage">'+
+											'		<img src=\"../images/shim.gif\" />'+
+											'</td>'+"\n";
+	  					$.get(bs.url,{mode:'getPhoto'}, function(data){
+	  					  $('#srchRsltsDiv #photo_'+biblio.bibid).html(data);
+	  					});
+						}
 						html += '<td><img src="../images/'+biblio.imageFile+'" />'+title+"\n";
 						html += '<br />'+callNo+"\n";
 						html += '<div class="biblioBtn">'+"\n";
@@ -455,7 +462,7 @@ bs = {
 		var rowNmbr = ((e.target.id).split('_'))[1];
 		var srcId = '#marcBody input[name="onln_'+rowNmbr+'[data]"]';
 		var text = $(srcId).val();
-console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
+		//console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
 		var destId = '#marcBody input[name="fields['+rowNmbr+'][data]"]';
 		$(destId).val(text);
 	},

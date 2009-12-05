@@ -44,15 +44,6 @@ $trans["headerDateFormat"]	 = "m.d.Y";
 #*  Common translation text
 #****************************************************************************
 
-
-
-
-
-
-
-
-
-
 $trans[" THIS ITEM WAS NOT CHECKED OUT."] = " THIS ITEM WAS NOT CHECKED OUT.";
 $trans["\$t != \"string\""] = "\$t != \"string\"";
 $trans["\$type != \"order_by\""] = "\$type != \"order_by\"";
@@ -767,6 +758,12 @@ $trans["collectionsDelConfirmMsg"] = "Are you sure you want to delete collection
 $trans["collectionsListNoteMsg"]          = "The delete function is only available on collections that have an item count of zero.<br />If you wish to delete a collection with an item count greater than zero<br/>you will first need to change the material type on those items to another material type.";
 
 
+
+
+#****************************************************************************
+#*  Translation text for catalog/index.php
+#****************************************************************************
+$trans["catalogIndexDesc"]                = "Use the functions located in the left hand navigation area to manage your library's collection efforts.";
 
 
 #****************************************************************************

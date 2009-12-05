@@ -378,7 +378,8 @@ class UpgradeQuery extends InstallQuery {
 							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools'),"
 							."('show_checkout_mbr',NULL,'Show member who has an item checkout','bool',NULL,NULL,NULL,'N','tools'),"
 							."('show_detail_opac',NULL,'Show copy details in OPAC','bool',NULL,NULL,NULL,'N','tools'),"
-							."('show_copy_site',NULL,'Show site of a copy','bool',NULL,NULL,NULL,'N','tools')");
+							."('show_copy_site',NULL,'Show site of a copy','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_item_photos',NULL,'Show Item Photos','bool',NULL,NULL,NULL,'N','tools')");
 		$this->act("ALTER TABLE `member` "
 							."CHANGE `create_dt` `create_dt` DATETIME NOT NULL ,"
 							."CHANGE `last_change_dt` `last_change_dt` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL");
