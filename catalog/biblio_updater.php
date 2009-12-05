@@ -69,6 +69,8 @@ $fields = array();
  * sufficient for the easy-edit interface.
  */
 foreach ($_POST[fields] as $f) {
+print_r($f);echo"<br />";
+
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		continue;
 	}
@@ -144,7 +146,8 @@ for ($i=0; $i < count($mrc->fields); $i++) {
 		$mrc->fields[$i]->indicators{0} = 0;
 		$a = $mrc->fields[$i]->getValue(a);
 		/* Set non-filing characters */
-		if (eregi("^((a |an |the )?[^a-z0-9]*)", $a, $regs) and strlen($regs[1]) <= 9) {
+//		if (eregi("^((a |an |the )?[^a-z0-9]*)", $a, $regs) and strlen($regs[1]) <= 9) {
+		if (preg_match('/^((a |an |the )?[^a-z0-9]*)/i', $a, $regs) and strlen($regs[1]) <= 9) {
 			$mrc->fields[$i]->indicators{1} = strlen($regs[1]);
 		} else {
 			$mrc->fields[$i]->indicators{1} = 0;

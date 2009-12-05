@@ -136,6 +136,7 @@ bs = {
 	
 	//------------------------------
 	doBarcdSearch: function (e) {
+	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
 	  var params = $('#barcodeSearch').serialize();
 		params += '&mode=doBarcdSearch';
@@ -160,6 +161,7 @@ bs = {
 		return false;
 	},
 	doPhraseSearch: function (e) {
+	  bs.srchType = 'phrase';
 	  $('#errSpace').html('');
 		$('#srchRsltsDiv').html('');
 	  var params = $('#phraseSearch').serialize();
@@ -412,8 +414,13 @@ bs = {
 		
 	},
 	fetchOnlnData: function () {
-	  var title = $('#marcBody input.offline:text').filter('#245a').val();
-	  params = "&mode=search&srchBy=999&lookupVal="+title;
+	  var title =  $('#marcBody input.offline:text').filter('#245a').val();
+	  var author=  $('#marcBody input.offline:text').filter('#100a').val();
+	  var isbn  = ($('#marcBody input.offline:text').filter('#020a').val()).split(',')[0];
+	  if (isbn)
+	  	params = "&mode=search&srchBy=7&lookupVal="+isbn;
+  	else
+	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 	  
 	  $.post(bs.urlLookup,params,function(response){
 			var rslts = eval('('+response+')'); // JSON 'interpreter'
@@ -453,10 +460,13 @@ console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
 		$(destId).val(text);
 	},
 	doItemUpdate: function () {
-		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +'&'+ $('#biblioEditForm').serialize();
+		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
+						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
 	  	$('#itemRsltMsg').html(response);
 			bs.rtnToBiblio()
+			if (bs.srchType == 'barCd') bs.doBarCdSearch();
+			else if (bs.srchType = 'phrase') bs.doPhraseSearch();
 	  });
 	  return false;
 	},
