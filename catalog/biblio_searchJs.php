@@ -25,6 +25,7 @@ bs = {
 		bs.resetForms();
 
 		bs.url = 'biblio_server.php';
+		bs.urlLookup = '../lookup2/server.php'; //may not exist
 
     //$('#advanceQ').disable();
 		$('#advancedSrch').hide();
@@ -56,7 +57,7 @@ bs = {
 				$('#barcode_nmbr').enable();
 			}
 		});
-
+		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 	},
@@ -108,6 +109,14 @@ bs = {
 	},
 
 	//------------------------------
+	fetchOpts: function () {
+	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
+			if (jsonData.lookupAvail == 1) {
+				bs.lookupAvailable = true;
+console.log('lookup engine available');
+			}
+		});
+	},
 	fetchCrntMbrInfo: function () {
 	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){
 			$('#crntMbrDiv').empty().html(data).show();
@@ -258,7 +267,7 @@ bs = {
 			}
 		);
 		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
-
+		if (!bs.lookupAvailable)$('#onlnUpdtBtn').hide();
 	  $('#searchDiv').hide();
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
@@ -362,7 +371,6 @@ bs = {
 			bs.lastFldTag = ''; 
 			$('#marcBody input.rptd:text').not('.online').each(function (){
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
-console.log('processing '+fldNamePrefix);
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;
 			  	bs.tmpList = bs.findMarcFieldSet(this.id);
@@ -385,6 +393,7 @@ console.log('processing '+fldNamePrefix);
 	  	  if (hidingRows.is(':hidden')) {
 	  	    // here is where we would go get on-line data using the lookup2 engine.
 					$('#itemEditorDiv td.filterable').show();
+					bs.fetchOnlnData();
 				}
 				else
 					$('#itemEditorDiv td.filterable').hide();
@@ -401,6 +410,37 @@ console.log('processing '+fldNamePrefix);
     	$('#itemEditorDiv').show();
 		});
 		
+	},
+	fetchOnlnData: function () {
+	  params = "&mode=search&srchBy=999&lookupVal=ajax hacks";
+	  $.post(bs.urlLookup,params,function(response){
+			var rslts = eval('('+response+')'); // JSON 'interpreter'
+			var numHits = parseInt(rslts.ttlHits);
+			var maxHits = parseInt(rslts.maxHits);
+			if (numHits < 1) {
+				console.log('nothing found');
+			}
+			else if (numHits >= maxHits) {
+				console.log('too many hits');
+			}
+			else if (numHits > 1){
+				console.log('more than one hit');
+			}
+			else if (rslts.ttlHits == 1){
+			  var data;
+				console.log('single hit found');
+				bs.hostData = rslts.data;
+				$.each(rslts.data, function(hostIndex,hostData) {
+				  $.each(hostData, function(hitIndex,hitData) {
+					  data = hitData;
+				  }); // .each
+				}); // .each
+
+				for (var tag in data) {
+					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);
+				}
+			} // else
+		}); // .post
 	},
 	doItemUpdate: function () {
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +'&'+ $('#biblioEditForm').serialize();

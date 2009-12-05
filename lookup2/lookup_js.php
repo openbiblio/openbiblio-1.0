@@ -378,8 +378,7 @@ lkup = {
 			$(this).parent().parent().show();
 		});
 
-		var tag;
-		for (tag in data) {
+		for (var tag in data) {
 			if (data[tag] != '') {
 				$('#'+tag).val(data[tag]);
 				$('#'+tag).css('color',lkup.inputColor);

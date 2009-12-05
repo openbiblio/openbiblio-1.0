@@ -263,6 +263,8 @@ class SrchDb {
 			  $attrStr .= " only1";
 		  if ($mode == 'onlnCol')
 		    $attrStr .= " online";
+			else
+			  $attrStr .= " offline";
 			$attrs["class"] = $attrStr;
 
 			if ($i['form_type'] == 'text') {
@@ -318,7 +320,16 @@ class SrchDb {
 	}
 }
 	#****************************************************************************
+//
+//if (in_array('lookup2',$_SESSION)) {
+//	echo "Lookup2 system code available.<br />";
+//}
+
 	switch ($_REQUEST[mode]) {
+	case 'getOpts':
+	  echo "{'lookupAvail':".in_array('lookup2',$_SESSION)."}";
+	  break;
+	  
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();

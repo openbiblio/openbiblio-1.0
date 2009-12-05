@@ -47,6 +47,13 @@
 			$lookupVal = verifyLCCN($lookupVal,$keepIsbnDashes);
 			//echo 'final lccn: ' . $lookupVal . '<br />';
 		   break;
+
+		case "999":
+		  ## special for external use as an general search engine
+		  $srchByName = 'general';
+		  $sruQuery = '';
+			$lookupVal = '"' . $lookupVal . '"';
+			break;
 		}
 
 		#### Second search criteria line
