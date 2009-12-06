@@ -41,19 +41,25 @@
 		if(!isset($port) || empty($port)) $port = 7090;  // default port
 		//echo "url: 'http://$theHost:$port'  <br />";
 		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
+
 		if (!$fp) trigger_error("Socket error: $errMsg ($errNmbr)");
 
 		### send the query
-	  $text = $header . $qry;
+		$text = $header . $qry;
 		//echo "sending request: <br />".nl2br($text)."<br />via socket. <br />";
 		fputs($fp, $text);
+		
+		### Added timeout on the stream itself (also in loop)- LJ
+		stream_set_timeout($fp, $postVars[timeout]);
+		$info = stream_get_meta_data($fp); 
 		
 		### fetch the response, if any
 		//echo "preparing to read any responses <br />";
 		$hitList = '';
     $headerdone = false;
-    while(!feof($fp)) {
+    while(!feof($fp) && (!$info['timed_out'])) {
       $line = fgets($fp, 2048);
+	  $info = stream_get_meta_data($fp); 
       if (!line) {
       	echo "Failure while reading response from $theHost <br />";
       	break;
