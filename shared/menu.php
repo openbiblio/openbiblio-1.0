@@ -124,7 +124,8 @@ function staff_menu() {
 	Nav::node('admin/collections', T("Collections"), '../admin/collections_list.php');
 	Nav::node('admin/themes', T("Themes"), '../admin/theme_list.php');
 	Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
-	Nav::node('admin/opac', T("View Opac"), '../opac/index.php');
+//	Nav::node('admin/opac', T("View Opac"), '../opac/index.php');
+	Nav::node('admin/opac', T("View Opac"), '../catalog/biblio_search.php?tab=OPAC');
 	##-------------------------------------------------------------------------------------##
 
 	Nav::node('reports', T("Reports"), '../reports/index.php');

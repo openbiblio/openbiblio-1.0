@@ -9,18 +9,26 @@
 
 	session_cache_limiter(null);
 
-	$tab = "cataloging";
+	if(empty($_REQUEST[tab]))
+		$tab = "cataloging";
+	else
+	  $tab = $_REQUEST[tab];
 	$nav = "localSearch";
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "searchText";
 
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	if (strtolower($tab) == 'opac') {
+		Page::header_opac(array('nav'=>$nav, 'title'=>''));
+	}
+	else {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+		
+		Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
+		Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
+		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Local Search'));
+	}
 	
-	Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
-	Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Local Search'));
-
-	include_once(REL(__FILE__,'biblio_searchJs.php'));
+	include_once(REL(__FILE__,'/biblio_searchJs.php'));
 	
 ?>
 <script language="JavaScript">
@@ -165,8 +173,10 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="marcBtn" class="button" value="<?php echo T('View_Marc_Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit_This_Item'); ?>">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<?php if (strtolower($tab) != 'opac') {?>
+		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit_This_Item'); ?>">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<?php }?>
 	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add_To_Cart'); ?>" />
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
@@ -200,7 +210,9 @@
 	</fieldset>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go_Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?php if (strtolower($tab) != 'opac') { ?>
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add_New_Copy'); ?>">
+<?php } ?>
 </div>
 
 <div id="itemEditorDiv">
