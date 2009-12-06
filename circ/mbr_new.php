@@ -38,7 +38,31 @@ $mbr = array(
 	//'school_grade'=>$_POST["school_grade"],
 	//'school_teacher'=>$_POST["school_teacher"],
 );
+
+#****************************************************************************
+#*  Autobarco
+#*
+#* FIXME RACE: User A and User B each try to insert a copy concurrently.
+#* User A's process gets next copy id, then checks for a duplicate barcode,
+#* Before the final insert, though, User B's process asks for the next copy id
+#* and checks for a duplicate barcode.  At that point, both inserts will succeed
+#* and two copies will have the same barcode.  Several different interleavings
+#* either cause the duplicate barcode check to fail or cause duplicate barcodes
+#* to be entered.  This can be fixed with a lock or by an atomic
+#* get-and-increment-sequence-value operation.  I'll fix it later. -- Micah
+#*
+#* perhaps a random number would be a better choice, then two near simultaneous
+#* requests would be even less likely to be duplicates. -- Fred
+#****************************************************************************
 $members = new Members;
+
+if (($_SESSION['mbrBarcode_flg']=='Y') and ($_SESSION['mbr_autoBarcode_flg']=='Y')) {
+	$nzeros = "5";
+	$mbrNmbr= $members->getNextMbr();
+	$_POST["barcode_nmbr"] = sprintf("%0".$nzeros."s",$mbrNmbr);
+	$mbr['barcode_nmbr'] = $_POST["barcode_nmbr"];
+}
+
 list($mbrid, $errors) = $members->insert_el($mbr);
 if ($errors) {
 	FieldError::backToForm('../circ/mbr_new_form.php', $errors);

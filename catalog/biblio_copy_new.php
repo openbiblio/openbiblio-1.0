@@ -39,7 +39,7 @@ $bibid=$_POST["bibid"];
 #* requests would be even less likely to be duplicates. -- Fred
 #****************************************************************************
 
-if (isset($_POST["autobarco"]) and $_POST["autobarco"]) {
+if (isset($_POST["mbr_autobarco"]) and $_POST["mbr_autobarco"]) {
 	$nzeros = "5";
 	$CopyNmbr= $copies->getNextCopy();
 	$_POST["barcode_nmbr"] = sprintf("%0".$nzeros."s",$bibid).$CopyNmbr;

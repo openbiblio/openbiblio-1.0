@@ -26,6 +26,10 @@ if (!empty($errs)) {
 	header("Location: ../tools/settings_edit_form.php");
 	exit();
 }
+else {
+	//$errs = Settings::load();
+	setSessionFmSettings();
+}
 
 header("Location: ../tools/settings_edit_form.php?updated=Y");
 exit();

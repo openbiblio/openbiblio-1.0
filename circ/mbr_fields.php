@@ -22,7 +22,7 @@
 
 	$fields = array(
 		'Site' => inputfield('select', 'siteid', $mbr[siteid], NULL, $sites),
-		'Card Number' => inputfield("text","barcode_nmbr",$mbr[barcode_nmbr],$attr=array("size"=>20,"max"=>20),$pageErrors),
+		'Card Number' => inputfield("text","barcode_nmbr",$mbr[barcode_nmbr],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
 		'Last Name' => inputfield("text","last_name",$mbr[last_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
 		'First Name' => inputfield("text","first_name",$mbr[first_name],$attr=array("class"=>"required","size"=>20,"max"=>20),$pageErrors),
 		'Address 1' => inputfield("text","address1",$mbr[address1],$attr=array("size"=>40,"max"=>128),$pageErrors),
@@ -53,25 +53,16 @@
 	<tbody class="striped">
 <?php
 	foreach ($fields as $title => $html) {
-	  if (($title == 'Card Number') && ($_SESSION['mbrBarcode_flg']=='N')){
-?>
-			<tr>
-				<td colspan="2">
-					<?php echo inputfield('hidden',"barcode_nmbr",'000000'); ?>
-				</td>
-			</tr>
-<?php
-		} else {
-?>
-			<tr>
-				<td nowrap="true" class="primary" valign="top">
-					<?php echo T($title); ?>
-				</td>
-				<td valign="top" class="primary">
-					<?php echo $html; ?>
-				</td>
-			</tr>
-<?php
+	  if (($title == 'Card Number') && (($_SESSION[mbrBarcode_flg]=='N') || ($_SESSION[mbr_autoBarcode_flg]=='Y'))){
+			echo "<tr>\n";
+			echo "	<td colspan=\"2\">";inputfield('hidden',"barcode_nmbr",'000000');echo "	</td>\n";
+			echo "</tr>\n";
+		}
+		else {
+			echo "<tr>\n";
+			echo "	<td nowrap=\"true\" class=\"primary\" valign=\"top\">";echo T($title); echo "	</td>\n";
+			echo "<td valign=\"top\" class=\"primary\">";echo $html; echo "</td>\n";
+			echo "</tr>\n";
 		}
 	}
 ?>

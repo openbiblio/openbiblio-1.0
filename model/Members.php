@@ -28,8 +28,8 @@ class Members extends CoreTable {
 			'email'=>'string',
 //			'password'=>'string',
 			'classification'=>'string',
-			'school_grade'=>'string',
-			'school_teacher'=>'string',
+//			'school_grade'=>'string',
+//			'school_teacher'=>'string',
 		));
 		$this->setKey('mbrid');
 		$this->setSequenceField('mbrid');
@@ -43,12 +43,27 @@ class Members extends CoreTable {
 			'code'=>'string',
 			'data'=>'string',
 		));
+		$this->reqdFlds = array(
+			'last_name',
+			'first_name',
+			'home_phone',
+		);
+		if ($_SESSION[mbrBarcode_flg]=='Y') {
+		  $this->reqdFlds[] = 'barcode_nmbr';
+		}
 		$this->custom->setKey('mbrid', 'code');
 		$this->custom->setForeignKey('mbrid', 'member', 'mbrid');
 	}
+	
+	function getNextMbr() {
+		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastMbr from member");
+		$lastMbr = $this->db->select1($sql);
+		return $lastMbr["lastMbr"]+1;
+	}
+	
 	function validate_el($mbr, $insert) {
 		$errors = array();
-		foreach (array('barcode_nmbr', 'last_name', 'first_name') as $req) {
+		foreach ($this->reqdFlds as $req) {
 			if ($insert and !isset($mbr[$req])
 					or isset($mbr[$req]) and $mbr[$req] == '') {
 				$errors[] = new FieldError($req, T("Required field missing"));

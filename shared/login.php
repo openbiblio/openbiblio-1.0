@@ -68,7 +68,7 @@ $_SESSION["hasCircMbrAuth"] = ($user['circ_mbr_flg'] == 'Y');
 $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
 $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 $_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
-
+/*
 $_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 $_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
 $_SESSION['allow_plugins_flg'] = Settings::get('allow_plugins_flg');
@@ -78,6 +78,8 @@ $_SESSION['mbr_autoBarcode_flg'] = Settings::get('mbr_autoBarcode_flg');
 $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');
 $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
 $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+*/
+setSessionFmSettings();
 
 header("Location: ".$_SESSION["returnPage"]);
 exit();

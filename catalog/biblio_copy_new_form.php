@@ -62,7 +62,6 @@ $(document).ready(bcnf.init);
 	$fields = array(
 	  ### corrected to suit inputfield (which gets $pageErrors internally) -- Fred
 		T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20)),
-		//T("Auto Barcode") => inputfield("checkbox","autobarco","Y"),
 		T("Auto Barcode") => inputfield("checkbox","autobarco",$_SESSION['item_autoBarcode_flg'],NULL,$_SESSION['item_autoBarcode_flg']),
 		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40)));
 	if($_SESSION['show_copy_site'] == "Y"){

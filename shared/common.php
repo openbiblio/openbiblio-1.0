@@ -92,6 +92,20 @@ function mkPostVars() {
 	return _mkPostVars($_REQUEST, NULL);
 }
 
+### needs to be here so changes in settings are picked up when entered
+function setSessionFmSettings() {
+	$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
+	$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
+	$_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
+	$_SESSION['mbr_autoBarcode_flg'] = Settings::get('mbr_autoBarcode_flg');
+	$_SESSION['allow_plugins_flg'] = Settings::get('allow_plugins_flg');
+	$_SESSION['plugin_list'] = Settings::get('plugin_list');
+	$_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');
+	$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
+	$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	$_SESSION['show_item_photos'] = Settings::get('show_item_photos');
+}
+
 require_once(REL(__FILE__, 'compat.php'));
 require_once(REL(__FILE__, '../database_constants.php'));
 require_once(REL(__FILE__, '../shared/global_constants.php'));
