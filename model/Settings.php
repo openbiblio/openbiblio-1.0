@@ -4,6 +4,7 @@
  */
  
 require_once(REL(__FILE__, '../classes/Query.php'));
+require_once(REL(__FILE__, '../model/Sites.php'));
 
 global $_settings_cache, $_settings_validators;
 $_settings_cache = array();
@@ -92,6 +93,10 @@ class Settings {
 			# FIXME - handle other selects
 			if ($s['name'] == 'locale') {
 				$options = Localize::getLocales();
+			}
+			if ($s['name'] == 'library_name') {
+			  $sites = new Sites;
+				$options = $sites->getSelect();
 			}
 		}
 		

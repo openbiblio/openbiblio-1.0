@@ -21,7 +21,14 @@ if (Settings::get('charset') != "") { ?>
 <link rel="stylesheet" type="text/css" href="../shared/base.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
-<title><?php echo H(Settings::get('library_name'));?></title>
+<title>
+<?php
+	$sit = new Sites;
+	$lib = $sit->getOne(Settings::get('library_name'));
+	//echo H(Settings::get('library_name'));
+	echo H($lib[name]);
+?>
+</title>
 
 <!-- jQuery kernal, needed for all that follows -->
 <script src="../shared/jquery/jquery.js" type="text/javascript"></script>

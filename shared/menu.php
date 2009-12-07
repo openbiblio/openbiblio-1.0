@@ -96,7 +96,7 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 
 	Nav::node('admin', T("Admin"), '../admin/index.php');
-	Nav::node('admin/summary', T("Admin Summary"), '../admin/index.php');
+	//Nav::node('admin/summary', T("Admin Summary"), '../admin/index.php');
 	Nav::node('admin/staff', T("Staff Admin"), '../admin/staff_list.php');
 	Nav::node('admin/settings', T("Library Settings"), '../admin/settings_edit_form.php?reset=Y');
 	Nav::node('admin/calendars', T("Calendars"), '../admin/calendars_list.php');
