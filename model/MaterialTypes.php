@@ -22,15 +22,15 @@ class MaterialTypes extends DmTable {
 	}
 	function getAllWithStats() {
 		$sql = "SELECT t.code, t.description, t.default_flg, "
-			. "t.adult_checkout_limit, t.juvenile_checkout_limit, "
-			. "t.image_file, COUNT(distinct b.bibid) as count "
-			. "FROM material_type_dm t "
-			. "LEFT JOIN biblio b "
-			. "ON b.material_cd=t.code "
-			. "GROUP BY t.code, t.description, t.default_flg, "
-			. "t.adult_checkout_limit, t.juvenile_checkout_limit, "
-			. "t.image_file "
-			. "ORDER BY t.description ";
+				 . 				"t.adult_checkout_limit, t.juvenile_checkout_limit, "
+				 . 				"t.image_file, COUNT(distinct b.bibid) as count "
+				 . " FROM material_type_dm t "
+				 . " LEFT JOIN biblio b "
+				 . "   ON b.material_cd=t.code "
+				 . "GROUP BY t.code, t.description, t.default_flg, "
+				 . "				 t.adult_checkout_limit, t.juvenile_checkout_limit, "
+				 . "				 t.image_file "
+				 . "ORDER BY t.description ";
 		return $this->db->select($sql);
 	}
 //	function getAll($orderBy=null) {

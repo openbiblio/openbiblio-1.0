@@ -25,6 +25,7 @@
 		include_once(REL(__FILE__, "../model/MaterialTypes.php"));
 		$mattypes = new MaterialTypes;
 		$type = $mattypes->getOne($code);
+
 		$postVars["description"] = $type['description'];
 		$postVars["adult_checkout_limit"] = $type['adult_checkout_limit'];
 		$postVars["juvenile_checkout_limit"] = $type['juvenile_checkout_limit'];
@@ -32,6 +33,10 @@
 	} else {
 		require(REL(__FILE__, "../shared/get_form_vars.php"));
 	}
+	$attrs = array('size'=>40,
+								 'maxlength'=>40,
+								 'style'=>"visibility: visible");
+
 ?>
 <h3><?php echo T("Edit Material Type"); ?></h3>
 
@@ -46,7 +51,7 @@
 			<?php echo T("Description:"); ?>
 		</td>
 		<td colspan="2" valign="top" class="primary">
-			<?php printInputText("description",40,40,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text','description',$postVars["description"],$attrs); ?>
 		</td>
 	</tr>
 	  <td>&nbsp;</td>
@@ -55,14 +60,16 @@
 	<tr>
 	</tr>
 	<tr>
+	  <?php $attrs[size]= 2; $attrs[maxlength] = 2; ?>
 		<td nowrap="true" class="primary">
 			<?php echo T("Checkout Limit:");?><br /><span class="small"><?php echo T("(enter 0 for unlimited)"); ?></span>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("adult_checkout_limit",2,2,$postVars,$pageErrors); ?>
+		  
+			<?php echo inputfield('text','adult_checkout_limit',$postVars["adult_checkout_limit"],$attrs); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("juvenile_checkout_limit",2,2,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text','juvenile_checkout_limit',$postVars["juvenile_checkout_limit"],$attrs); ?>
 		</td>
 	</tr>
 	<tr>
@@ -70,7 +77,8 @@
 			<sup>*</sup><?php echo T("Image File:");?>
 		</td>
 		<td colspan="2" valign="top" class="primary">
-			<?php printInputText("image_file",40,128,$postVars,$pageErrors); ?>
+	  	<?php $attrs[size]= 40; $attrs[maxlength] = 128; ?>
+			<?php echo inputfield('text','image_file',$postVars["image_file"],$attrs); ?>
 		</td>
 	</tr>
 	</tbody>
