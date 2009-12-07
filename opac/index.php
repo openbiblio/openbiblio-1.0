@@ -3,6 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+##### temporary redirection to force move to 'Local Search'
+header("Location: ../catalog/biblio_search.php?tab=OPAC");
+
 require_once("../shared/common.php");
 
 session_cache_limiter(null);
