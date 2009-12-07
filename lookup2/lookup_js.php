@@ -277,7 +277,7 @@ lkup = {
 				var numHits = parseInt(rslts.ttlHits);
 				var maxHits = parseInt(rslts.maxHits);
 				if (numHits < 1) {
-					console.log('nothing found');
+					//console.log('nothing found');
 				  //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
@@ -293,7 +293,7 @@ lkup = {
 				}
 			
 				else if (numHits >= maxHits) {
-					console.log('too many hits');
+					//console.log('too many hits');
 		  		//{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',
 					// 'msg':'$msg1', 'msg2':'$msg2'}
 					var str = rslts.msg+' ('+rslts.ttlHits+' ).<br />'+rslts.msg2;
@@ -305,7 +305,7 @@ lkup = {
 				}
 			
 				else if (numHits > 1){
-					console.log('more than one hit');
+					//console.log('more than one hit');
 					$('#choiceSpace').empty();
 					$('#choiceSpace').append('<h3>Success!  <span id="ttlHits"></span></h3>');
 
@@ -317,7 +317,7 @@ lkup = {
 					  $('#choiceSpace').append('<h4>Repository: '+lkup.hostJSON[hostIndex].name+'</h4>');
 					  $.each(hostData, function(hitIndex,hitData) {
 					    nHits++;
-					    html  = '<hr width="50%">';
+					    html  = '<fieldset>';
 					    html += '<form class="hitForm"><table border="0">';
 					    html += '<tr><td class="primary">LCCN</th><td class="primary">'+hitData['010a']+'</td></tr>';
 					    html += '<tr><td class="primary">ISBN</th><td class="primary">'+hitData['020a']+'</td></tr>';
@@ -328,7 +328,7 @@ lkup = {
 					    html += '<tr><td class="primary">Date</th><td class="primary">'+hitData['260c']+'</td>';
 							var id = 'host'+hostIndex+'-hit'+hitIndex;
 					    html += '<td id="'+id+'" class="primary"><input type="button" value="This One" class="button" /></td></tr>';
-							html += '</table></form>';
+							html += '</table></form></fieldset>';
 							$('#choiceSpace').append(html);
 							$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},lkup.doSelectOne);
 						}); // $.each(hostData...
@@ -343,7 +343,7 @@ lkup = {
 				} // else if (rslts.ttlHits > 1)
 				else if (rslts.ttlHits == 1){
 				  var data;
-					console.log('single hit found');
+					//console.log('single hit found');
 					lkup.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  $.each(hostData, function(hitIndex,hitData) {

@@ -9,6 +9,9 @@
 	border: 3px solid green;
 	height: 50px; width: 50px;
 	}
+#onlineMsg {
+	color: blue;
+	}
 </style>
 
 <script language="JavaScript" >
@@ -422,29 +425,34 @@ bs = {
 	},
 	fetchOnlnData: function () {
 	  var title =  $('#marcBody input.offline:text').filter('#245a').val();
-	  var author=  $('#marcBody input.offline:text').filter('#100a').val();
+	  var author= ($('#marcBody input.offline:text').filter('#100a').val()).split(',')[0];
 	  var isbn  = ($('#marcBody input.offline:text').filter('#020a').val()).split(',')[0];
-	  if (isbn)
+	  if (isbn) {
+	  	var msgText = 'Searching for ISBN: "'+isbn;
 	  	params = "&mode=search&srchBy=7&lookupVal="+isbn;
-  	else
+		}
+  	else {
+	  	var msgText = 'Searching for<br />Title: "'+title+'",<br />by '+author;
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
+		}
 	  
+		$('#onlineMsg').html(msgText+'.<br />this may take a moment.');
 	  $.post(bs.urlLookup,params,function(response){
 			var rslts = eval('('+response+')'); // JSON 'interpreter'
 			var numHits = parseInt(rslts.ttlHits);
 			var maxHits = parseInt(rslts.maxHits);
 			if (numHits < 1) {
-				console.log('nothing found');
+				$('#onlineMsg').html('nothing found');
 			}
 			else if (numHits >= maxHits) {
-				console.log('too many hits');
+				$('#onlineMsg').html(numHits+'hits found, too many to process.');
 			}
 			else if (numHits > 1){
-				console.log('more than one hit');
+				$('#onlineMsg').html(numHits+'hits found, this version can only handle one.');
 			}
 			else if (rslts.ttlHits == 1){
 			  var data;
-				console.log('single hit found');
+				$('#onlineMsg').html('Success,<br />click the arrow buton to enter online data.');
 				bs.hostData = rslts.data;
 				$.each(rslts.data, function(hostIndex,hostData) {
 				  $.each(hostData, function(hitIndex,hitData) {

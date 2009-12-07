@@ -18,6 +18,7 @@
 		<td valign="top" class="primary">
 				<span id="itemMediaTypes">to be filled by server</span>
 		</td>
+		<td rowspan="3" class="online"><div id="onlineMsg"></div></td>
 	</tr>
 	<tr>
 		<td nowrap="true" class="primary">

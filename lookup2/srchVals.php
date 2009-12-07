@@ -60,7 +60,8 @@
 		if (!empty($lookupVal2)) {
 			if ($srchBy2 == "1004") {
 				$srchByName2 = 'Author';
-				$sruQry2 = 'bib.NamePersonal=/bib.role=author/bib.roleAuthority=marcrelator ';
+//				$sruQry2 = 'bib.NamePersonal=/bib.role=author/bib.roleAuthority=marcrelator ';
+				$sruQry2 = 'dc.creator=';
 			}	else if ($srchBy2 == "1016") {
 				$srchByName2 = 'Keyword';
 				$sruQry2 = 'dc.subject=';
