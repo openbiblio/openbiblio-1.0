@@ -34,6 +34,7 @@ class Settings {
 		if (!empty($menu)) {
 			$sql .= " AND (menu = '$menu') ";
 		}
+		$sql .= " ORDER BY position ";
 		$r = $db->select($sql);
 		$fields = array();
 		while ($s = $r->next()) {
