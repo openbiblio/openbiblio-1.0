@@ -24,13 +24,16 @@ $user = array(
 	'pwd'=>$_POST['pwd'],
 	'pwd2'=>$_POST['pwd2'],
 );
-foreach (array('circ', 'circ_mbr', 'admin', 'reports', 'suspended') as $flg) {
+
+## this array has to be kept in sync with ../model/Staff.php
+foreach (array('suspended','admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
 	if (isset($_POST[$flg.'_flg'])) {
 		$user[$flg.'_flg'] = 'Y';
 	} else {
 		$user[$flg.'_flg'] = 'N';
 	}
 }
+
 list($id, $errs) = $staff->insert_el($user);
 if ($errs) {
 	FieldError::backToForm("../admin/staff_new_form.php", $errs);

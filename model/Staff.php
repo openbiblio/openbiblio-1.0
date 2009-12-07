@@ -9,6 +9,7 @@ class Staff extends CoreTable {
 	function Staff() {
 		$this->DBTable();
 		$this->setName('staff');
+		# if you add to this array, check with array in ../circ/staff_new_form.php
 		$this->setFields(array(
 			'userid'=>'number',
 			'username'=>'string',
