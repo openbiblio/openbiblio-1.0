@@ -17,8 +17,6 @@
 <div id="sidebar">
 	<h3 class="staff_head">
 			<?php
-			$sit = new Sites;
-			$lib = $sit->getOne(Settings::get('library_name'));
 			echo T("%library%:<br />Staff Interface", array('library'=>$lib[name]));
 			?>
 	</h3>

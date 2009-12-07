@@ -9,7 +9,10 @@
 
 <div id="sidebar">
 	<h3 class="staff_head">
-			<?php echo T("%library%:<br />OPAC Interface", array('library'=>H(Settings::get('library_name')))) ?>
+			<?php
+			echo T("%library%:<br />OPAC Interface", array('library'=>$lib[name]));
+			?>
+			<?php //echo T("%library%:<br />OPAC Interface", array('library'=>H(Settings::get('library_name')))) ?>
 	</h3>
 	<div id="library_hours"><?php echo T(Settings::get('library_hours')) ?></div>
 	<div id="library_phone"><?php echo H(Settings::get('library_phone')) ?></div>
