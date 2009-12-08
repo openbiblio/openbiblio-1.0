@@ -59,6 +59,7 @@
 	<?php
 		$row_class = "primary";
 		$current = Settings::get('themeid');
+
 		foreach ($tl as $id=>$name) {
 	?>
 	<tr>
@@ -80,15 +81,9 @@
 			<?php if ($id == $current) { echo T("in use"); } else { echo "&nbsp;"; } ?>
 		</td>
 	</tr>
-	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
-		}
-	?>
+
+<?php } ?>
+
 	</tbody>
 </table>
 <br />

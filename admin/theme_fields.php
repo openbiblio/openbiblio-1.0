@@ -13,7 +13,7 @@
 			<?php echo T("Theme Name"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php	echo inputfield('text',"themeName",'',array('size'=>'40','maxlength'=>'40')); ?>
+			<?php	echo inputfield('text',"themeName",$postVars['themeName'],array('size'=>'40','maxlength'=>'40')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -21,7 +21,7 @@
 			<?php echo T("Table Border Color:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php echo inputfield('text',"borderColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"borderColor",$postVars['borderColor'],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -29,7 +29,7 @@
 			<?php echo T("Error Color:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php echo inputfield('text',"primaryErrorColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"primaryErrorColor",$postVars['primaryErrorColor'],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -37,7 +37,7 @@
 			<?php echo T("Table Border Width:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php echo inputfield('text',"borderWidth",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo inputfield('text',"borderWidth",$postVars['borderWidth'],array('size'=>'2','maxlength'=>'2')); ?>
 			<?php echo T("px"); ?>
 		</td>
 	</tr>
@@ -46,7 +46,7 @@
 			<?php echo T("Table Cell Padding:"); ?>
 		</td>
 		<td colspan="4" valign="top" class="primary">
-			<?php echo inputfield('text',"tablePadding",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo inputfield('text',"tablePadding",$postVars['tablePadding'],array('size'=>'2','maxlength'=>'2')); ?>
 			<?php echo T("px"); ?>
 		</td>
 	</tr>
@@ -78,16 +78,16 @@
 			<?php echo T("Background Color:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"titleBg",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"titleBg",$postVars['titleBg'],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"primaryBg",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"primaryBg",$postVars['primaryBg'],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt1Bg",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"alt1Bg",$postVars['alt1Bg'],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt2Bg",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"alt2Bg",$postVars['alt2Bg'],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -95,16 +95,16 @@
 			<?php echo T("Font Face:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"titleFontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
+			<?php echo inputfield('text',"titleFontFace",$postVars["titleFontFace"],array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"primaryFontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
+			<?php echo inputfield('text',"primaryFontFace",$postVars["primaryFontFace"],array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt1FontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
+			<?php echo inputfield('text',"alt1FontFace",$postVars["alt1FontFace"],array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt2FontFace",'',array('size'=>'10','maxlength'=>'128')); ?>
+			<?php echo inputfield('text',"alt2FontFace",$postVars["alt2FontFace"],array('size'=>'10','maxlength'=>'128')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -112,21 +112,21 @@
 			<?php echo T("Font Size:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"titleFontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo inputfield('text',"titleFontSize",$postVars["titleFontSize"],array('size'=>'2','maxlength'=>'2')); ?>
 			<?php echo T("px"); ?>
 			<?php echo inputfield('checkbox',"titleFontBold",'CHECKED',null,$postVars["titleFontBold"]); ?>
 			<?php echo T("bold");?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"primaryFontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo inputfield('text',"primaryFontSize",$postVars["primaryFontSize"],array('size'=>'2','maxlength'=>'2')); ?>
 			<?php echo T("px"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt1FontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo inputfield('text',"alt1FontSize",$postVars["alt1FontSize"],array('size'=>'2','maxlength'=>'2')); ?>
 			<?php echo T("px"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt2FontFace",'',array('size'=>'2','maxlength'=>'2')); ?>
+			<?php echo inputfield('text',"alt2FontSize",$postVars["alt2FontSize"],array('size'=>'2','maxlength'=>'2')); ?>
 			<?php echo T("px"); ?>
 			<?php echo inputfield('checkbox',"alt2FontBold",'CHECKED',null,$postVars["alt2FontBold"]); ?>
 			<?php echo T("bold");?>
@@ -137,16 +137,16 @@
 			<?php echo T("Font Color:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"titleFontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"titleFontColor",$postVars["alt2FontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"primaryFontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"primaryFontColor",$postVars["alt2FontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt1FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"alt1FontColor",$postVars["alt2FontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt2FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"alt2FontColor",$postVars["alt2FontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
@@ -157,13 +157,13 @@
 			&nbsp;
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"primaryFontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"primaryFontColor",$postVars["primaryFontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt1FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"alt1FontColor",$postVars["alt1FontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text',"alt2FontColor",'',array('size'=>'10','maxlength'=>'20')); ?>
+			<?php echo inputfield('text',"alt2FontColor",$postVars["alt2FontColor"],array('size'=>'10','maxlength'=>'20')); ?>
 		</td>
 	</tr>
 	<tr>
