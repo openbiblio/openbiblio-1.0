@@ -80,7 +80,8 @@ class Copies extends CoreTable {
 		return $errors;
 	}
 	function normalizeBarcode($barcode) {
-		return ereg_replace('^([A-Za-z]+)?0*(.*)', '\\1\\2', $barcode);
+		//return ereg_replace('^([A-Za-z]+)?0*(.*)', '\\1\\2', $barcode);
+		return preg_replace('/^([A-Za-z]+)?0*(.*)/', '\\1\\2', $barcode);
 	}
 	function getByBarcode($barcode) {
 		$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));

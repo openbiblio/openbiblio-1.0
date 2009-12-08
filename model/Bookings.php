@@ -414,7 +414,9 @@ class Bookings extends CoreTable {
 		$copy = $copies->getByBarcode($barcode);
 		if (!$copy) {
 			$this->db->unlock();
-			return new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
+			//return new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
+			//return new Error($errMsg);
+			return T("No copy with barcode %barcode%", array('barcode'=>$barcode));
 		}
 		$history = new History;
 		$status = $history->getOne($copy['histid']);

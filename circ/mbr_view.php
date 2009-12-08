@@ -209,7 +209,8 @@ if (strtolower($mbrType[description]) != 'denied') {
 	<tr>
 		<td nowrap="nowrap" class="primary">
 			<?php echo T("Barcode Number:"); ?>
-			<?php printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
+			<?php //printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
+			<?php echo inputfield('text','barcodeNmbr',$postVars[barcodeNmbr],array('size'=>18)); ?>
 			<input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>" />
 			<input type="hidden" name="classification" value="<?php echo H($mbr['classification']);?>" />
 			<input type="submit" value="<?php echo T("Check Out"); ?>" class="button" />

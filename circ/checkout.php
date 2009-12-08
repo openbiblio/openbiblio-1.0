@@ -20,13 +20,17 @@ $bookings = new Bookings;
 $err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
 if ($err) {
 	if(is_array($err)){
-		$errors = "";
-		foreach($err as $error)	$errors .= " - " . $error->toStr();
+		$errors = ""; $nErr = 0;
+		foreach($err as $error)	{
+			if ($nErr > 0) $errors .= '<br />';
+			$errors .= $error->toStr();
+			$nErr++;
+		}
 	} else {
 		$errors = $err;
 	}
 	$pageErrors["barcodeNmbr"] = $errors;
-	$postVars["barcodeNmbr"] = $barcode;
+	$postVars["barcodeNmbr"] = $_POST["barcodeNmbr"];
 	$_SESSION["postVars"] = $postVars;
 	$_SESSION["pageErrors"] = $pageErrors;
 	header("Location: ../circ/mbr_view.php?mbrid=".U($_POST["mbrid"]));
