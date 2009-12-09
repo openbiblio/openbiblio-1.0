@@ -19,16 +19,13 @@ if (count($_POST) == 0) {
 list($settings, $errs) = Form::getCgi_el(Settings::getFormFields('tools'));
 if (empty($errs)) {
 	$errs = Settings::setAll_el($settings);
+	setSessionFmSettings();
 }
-if (!empty($errs)) {
+else if (!empty($errs)) {
 	$_SESSION["postVars"] = $_POST;
 	$_SESSION["pageErrors"] = $errs;
 	header("Location: ../tools/settings_edit_form.php");
 	exit();
-}
-else {
-	//$errs = Settings::load();
-	setSessionFmSettings();
 }
 
 header("Location: ../tools/settings_edit_form.php?updated=Y");
