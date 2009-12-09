@@ -320,7 +320,7 @@ if (!empty($mbr['school_grade'])) {
 		<td nowrap="nowrap" class="primary">
 			<?php echo T("Barcode Number"); ?>
 			<?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
-			<a href="javascript:popSecondaryLarge(../opac/index.php?lookup=Y)">search</a>
+			<a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')">search</a>
 			<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
 			<input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
 			<input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
