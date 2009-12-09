@@ -107,25 +107,25 @@
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
-		echo '<fieldset>';
-		echo '<table style="margin-bottom: 10px" width="60%" align="center">';
-		echo '<tr>';
-		echo '	<td align="left">';
+		//echo '<fieldset>';
+		//echo '<table style="margin-bottom: 10px" width="60%" align="center">';
+		//echo '<tr>';
+		//echo '	<td align="left">';
 		if ($p) {
 			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($p['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($p['.seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
 		}
-		echo '	</td>';
-		echo '	<td align="center">';
+		//echo '	</td>';
+		//echo '	<td align="center">';
 		echo 			T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
-		echo '	</td>';
-		echo '	<td align="right">';
+		//echo '	</td>';
+		//echo '	<td align="right">';
 		if ($n) {
 			echo '	<a href="../circ/mbr_view.php?mbrid='.HURL($n['mbrid']).'&amp;tab='.HURL($tab).'&amp;rpt='.HURL($rpt->name).'&amp;seqno='.HURL($n['.seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
 		}
-		echo '	</td>';
-		echo '</tr>';
-		echo '</table>';
-		echo '</fieldset>';
+		//echo '	</td>';
+		//echo '</tr>';
+		//echo '</table>';
+		//echo '</fieldset>';
 	}
 ?>
 
@@ -179,21 +179,29 @@ if (!empty($mbr['school_grade'])) {
 		##****************************************************************************
 		## Patron Action forms
 		##****************************************************************************
-
-### this line is to prevent Checkout, Bookings, orPlace On Hold
-### if this user's privileges are currently denied
-if (strtolower($mbrType[description]) != 'denied') {
 ?>
 
+<?php if (strtolower($mbrType[description]) == 'denied') { ?>
+<fieldset>
+	<legend>Service Denied</legend>
+	<p class="error"><?php echo T("This patron's checkout privileges have been canceled."); ?></p>
+	<p><?php echo T("Contact Library Administration for assistance."); ?></p>
+</fieldset>
+<?php } ?>
+
+<?php
+	#****************************************************************************
+	#*  check out.
+	#****************************************************************************
+?>
+<?php if (strtolower($mbrType[description]) != 'denied') { ?>
 <form name="barcodesearch" method="post" action="../circ/checkout.php">
 <fieldset>
-<!--legend><?php //echo T("Quick Check Out"); ?></legend-->
 <legend><?php echo T("Check Out"); ?></legend>
 <table class="primary">
 	<tr>
 		<td nowrap="nowrap" class="primary">
 			<?php echo T("Barcode Number:"); ?>
-			<?php //printInputText("barcodeNmbr",18,18,$postVars,$pageErrors); ?>
 			<?php echo inputfield('text','barcodeNmbr',$postVars[barcodeNmbr],array('size'=>18)); ?>
 			<input type="hidden" name="mbrid" value="<?php echo H($mbrid);?>" />
 			<input type="hidden" name="classification" value="<?php echo H($mbr['classification']);?>" />
@@ -203,66 +211,16 @@ if (strtolower($mbrType[description]) != 'denied') {
 </table>
 </form>
 </fieldset>
+<?php } ?>
 
-<form name="bookingsearch" method="get" action="../shared/biblio_search.php">
-<fieldset>
-<legend><?php echo T("Make Booking"); ?></legend>
-<table class="primary">
-	<tr>
-		<td nowrap="nowrap" class="primary">
-			<select name="searchType">
-				<option value="keyword"><?php echo T("Keyword"); ?></option>
-				<option value="title"><?php echo T("Title"); ?></option>
-				<option value="subject"><?php echo T("Subject"); ?></option>
-				<option value="series"><?php echo T("Series"); ?></option>
-				<option value="publisher"><?php echo T("Publisher"); ?></option>
-				<option value="callno" selected><?php echo T("Item Number"); ?></option>
-			</select>
-			<input type="text" name="searchText" size="30" maxlength="256" />
-			<input type="hidden" name="sortBy" value="default" />
-			<input type="hidden" name="tab" value="<?php echo H($circ); ?>" />
-			<input type="hidden" name="lookup" value="<?php echo H($lookup); ?>" />
-			<input type="submit" value="<?php echo T("Search"); ?>" class="button" />
-		</td>
-	</tr>
-</table>
-</fieldset>
-</form>
-
-<form name="holdForm" method="post" action="../circ/place_hold.php">
-<fieldset>
-<legend><?php echo T("Place On Hold"); ?></legend>
-<table class="primary">
-	<tr>
-		<td nowrap="nowrap" class="primary">
-			<?php echo T("Barcode Number"); ?>
-			<?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
-			<a href="javascript:popSecondaryLarge(../opac/index.php?lookup=Y)">search</a>
-			<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
-			<input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
-			<input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
-		</td>
-	</tr>
-</table>
-</fieldset>
-</form>
 <?php
-} else {
-?>
-<fieldset>
-	<legend>Service Denied</legend>
-	<p class="error"><?php echo T("This patron's checkout privileges have been canceled."); ?></p>
-	<p><?php echo T("Contact Library Administration for assistance."); ?></p>
-</fieldset>
-<?php
-}
-
 	#****************************************************************************
 	#*  Stuff checked out.
 	#****************************************************************************
 	$copies = new Copies;
 	$checkouts = $copies->getMemberCheckouts($mbrid);
 ?>
+
 <fieldset>
 <legend><?php echo T("Items Currently Checked Out"); ?></legend>
 <table class="primary">
@@ -326,6 +284,53 @@ if (strtolower($mbrType[description]) != 'denied') {
 </table>
 </fieldset>
 
+<?php if (strtolower($mbrType[description]) != 'denied') { ?>
+<form name="bookingsearch" method="get" action="../shared/biblio_search.php">
+<fieldset>
+<legend><?php echo T("Make Booking"); ?></legend>
+<table class="primary">
+	<tr>
+		<td nowrap="nowrap" class="primary">
+			<select name="searchType">
+				<option value="keyword"><?php echo T("Keyword"); ?></option>
+				<option value="title"><?php echo T("Title"); ?></option>
+				<option value="subject"><?php echo T("Subject"); ?></option>
+				<option value="series"><?php echo T("Series"); ?></option>
+				<option value="publisher"><?php echo T("Publisher"); ?></option>
+				<option value="callno" selected><?php echo T("Item Number"); ?></option>
+			</select>
+			<input type="text" name="searchText" size="30" maxlength="256" />
+			<input type="hidden" name="sortBy" value="default" />
+			<input type="hidden" name="tab" value="<?php echo H($circ); ?>" />
+			<input type="hidden" name="lookup" value="<?php echo H($lookup); ?>" />
+			<input type="submit" value="<?php echo T("Search"); ?>" class="button" />
+		</td>
+	</tr>
+</table>
+</fieldset>
+</form>
+<?php } ?>
+
+<?php if (strtolower($mbrType[description]) != 'denied') { ?>
+<form name="holdForm" method="post" action="../circ/place_hold.php">
+<fieldset>
+<legend><?php echo T("Place On Hold"); ?></legend>
+<table class="primary">
+	<tr>
+		<td nowrap="nowrap" class="primary">
+			<?php echo T("Barcode Number"); ?>
+			<?php printInputText("holdBarcodeNmbr",18,18,$postVars,$pageErrors); ?>
+			<a href="javascript:popSecondaryLarge(../opac/index.php?lookup=Y)">search</a>
+			<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
+			<input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
+			<input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
+		</td>
+	</tr>
+</table>
+</fieldset>
+</form>
+<?php } ?>
+
 <!--****************************************************************************
 		*  Stuff on Hold
 		**************************************************************************** -->
@@ -359,6 +364,7 @@ if (strtolower($mbrType[description]) != 'denied') {
 		</th>
 	</tr>
 	</thead>
+
 <?php
 	#****************************************************************************
 	#*  Search database for BiblioHold data
@@ -400,6 +406,6 @@ if (strtolower($mbrType[description]) != 'denied') {
 
 </table>
 </fieldset>
-<?php
 
+<?php
 	Page::footer();
