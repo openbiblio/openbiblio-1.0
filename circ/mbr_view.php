@@ -165,10 +165,14 @@ if ($_SESSION['currentBookingid']) {
 		<td class="name"><?php echo T("Card Number:"); ?></td>
 		<td class="value"><?php echo H($mbr['barcode_nmbr']);?></td>
 	</tr>
-	<tr>
-		<td class="name"><?php echo T("School Grade:"); ?></td>
-		<td class="value"><?php echo H($mbr['school_grade']);?></td>
-	</tr>
+<?php
+if (!empty($mbr['school_grade'])) {
+	echo "<tr>\n";
+	echo "	<td class=\"name\">".T('School Grade:')."</td>\n";
+	echo "	<td class=\"value\">".H($mbr['school_grade'])."</td>\n";
+	echo "</tr>\n";
+}
+?>
 </table>
 </fieldset>
 <?php
