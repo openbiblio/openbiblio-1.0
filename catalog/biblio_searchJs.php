@@ -272,7 +272,9 @@ bs = {
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe2('biblioTbl','odd');
-		$('#biblioEditBtn').bind('click',null,bs.doItemEdit);
+		$('#biblioEditBtn').bind('click',null,function () {
+			bs.doItemEdit(biblio);
+		});
 		$('#biblioDiv td.filterable').hide();
 		$('#marcBtn').bind('click',null,function () {
 		  //console.log('swapping state to MARC column');
@@ -333,35 +335,35 @@ bs = {
 	},
 
 	//------------------------------
-	findMarcField: function (tag) {
-	  for (var i=0; i< bs.biblio.data.length; i++) {
-			var tmp = eval('('+bs.biblio.data[i]+')');
+	findMarcField: function (biblio, tag) {
+	  for (var i=0; i< biblio.data.length; i++) {
+			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {
 				return tmp;
 			}
 		};
 		return null;
 	},
-	findMarcFieldSet: function (tag) {
+	findMarcFieldSet: function (biblio, tag) {
 	  var fldSet = []; var n = 0;
-	  for (var i=0; i< bs.biblio.data.length; i++) {
-			var tmp = eval('('+bs.biblio.data[i]+')');
+	  for (var i=0; i< biblio.data.length; i++) {
+			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {
 				fldSet[n] = tmp;  n++;
 			}
 		}
 		return fldSet;
 	},
-	doItemEdit: function () {
+	doItemEdit: function (biblio) {
 		bs.fetchCollectionList();
 		$('#onlnUpdtBtn').show();
 		$('#onlnDoneBtn').hide();
 
 	  $('#biblioDiv').hide();
 	  $.get(bs.url,{'mode':'getBiblioFields',
-									'bibid':bs.biblio.bibid,
-									'matlCd':bs.biblio.matlCd,
-									'collCd':bs.biblio.collCd},
+									'bibid':biblio.bibid,
+									'matlCd':biblio.matlCd,
+									'collCd':biblio.collCd},
 									function (response) {
 			$('#marcBody').html(response);
 			$('#itemEditorDiv fieldset legend').html('<?php echo T('Edit Item Properties'); ?>');
@@ -369,14 +371,14 @@ bs = {
 			obib.reStripe2('biblioFldTbl','odd');
 
 			// fill non-MARC fields with data on hand
-			$('#nonMarcBody #mediaType').val([bs.biblio.matlCd]);
-			$('#nonMarcBody #collectionCd').val([bs.biblio.collCd]);
-			$('#nonMarcBody #opacFlg').val([bs.biblio.opacFlg]);
+			$('#nonMarcBody #mediaType').val([biblio.matlCd]);
+			$('#nonMarcBody #collectionCd').val([biblio.collCd]);
+			$('#nonMarcBody #opacFlg').val([biblio.opacFlg]);
 			
 			// fill MARC fields with data on hand
 			// first non-repeating fields
 			$('#marcBody input.only1:text').each(function (){
-			  var tmp = bs.findMarcField(this.id);
+			  var tmp = bs.findMarcField(biblio, this.id);
 			  if (tmp){
 			  	$('#marcBody #'+tmp.marcTag).val(tmp.value);
 			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
@@ -389,7 +391,7 @@ bs = {
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;
-			  	bs.tmpList = bs.findMarcFieldSet(this.id);
+			  	bs.tmpList = bs.findMarcFieldSet(biblio, this.id);
 			  	bs.fldNo = 0; bs.maxFldNo = bs.tmpList.length;
 				}
 				if (bs.fldNo < bs.maxFldNo) {
