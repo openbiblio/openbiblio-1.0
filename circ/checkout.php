@@ -26,6 +26,8 @@ if ($err) {
 			$errors .= $error->toStr();
 			$nErr++;
 		}
+	} elseif (is_object($err)) {
+		$errors = $err->toStr();
 	} else {
 		$errors = $err;
 	}

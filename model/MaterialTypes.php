@@ -39,6 +39,11 @@ class MaterialTypes extends DmTable {
 				 . " ORDER BY $orderBy ";
 		return $this->db->select($sql);
 	}
+	function getByBibid($bibid) {
+		$sql = "SELECT m.* FROM material_type_dm m, biblio b"
+				 . " WHERE $bibid = b.bibid AND m.code = b.material_cd";
+		return $this->db->select1($sql);
+	}
 	function validate_el($rec, $insert) {
 		$errors = array();
 		foreach (array('description', 'adult_checkout_limit', 'juvenile_checkout_limit') as $req) {
