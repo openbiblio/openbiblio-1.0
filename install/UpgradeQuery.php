@@ -395,6 +395,9 @@ class UpgradeQuery extends InstallQuery {
 		### conversion process begins here.
 		### ################################################### ###
     //------------------------//
+
+		#### see also module convert06To10.php to copy legacy biblio data to new structure
+
 		## Admin support tables
 		$sql = "INSERT INTO `openbibliowork`.`theme` "
 					."SELECT * "
@@ -436,5 +439,6 @@ class UpgradeQuery extends InstallQuery {
 					;
 	  $this->act($sql);
 		}
+		
 	}
 }

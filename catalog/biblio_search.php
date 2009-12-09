@@ -214,6 +214,7 @@
 		<input type="button" class="button itemGobkBtn" value="<?php echo T('Go_Back'); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch_On-Line_Data'); ?>" />
+		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
 	<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
 	

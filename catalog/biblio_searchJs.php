@@ -115,10 +115,10 @@ bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
-//			if (bs.opts.lookupAvail == 1) {
-//				bs.lookupAvailable = true;
-//				//console.log('lookup engine available');
-//			}
+			if (bs.opts.lookupAvail == 1) {
+				bs.lookupAvailable = true;
+				//console.log('lookup engine available');
+			}
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -354,6 +354,9 @@ bs = {
 	},
 	doItemEdit: function () {
 		bs.fetchCollectionList();
+		$('#onlnUpdtBtn').show();
+		$('#onlnDoneBtn').hide();
+
 	  $('#biblioDiv').hide();
 	  $.get(bs.url,{'mode':'getBiblioFields',
 									'bibid':bs.biblio.bibid,
@@ -401,15 +404,17 @@ bs = {
 			  }
 			});
 
+	  	 var hidingRows = $('#itemEditorDiv td.filterable');
 	  	$('#onlnUpdtBtn').bind('click',null,function (){
-	  	  var hidingRows = $('#itemEditorDiv td.filterable');
-	  	  if (hidingRows.is(':hidden')) {
-	  	    // here is where we would go get on-line data using the lookup2 engine.
+					$('#onlnDoneBtn').show();
+					$('#onlnUpdtBtn').hide();
 					$('#itemEditorDiv td.filterable').show();
 					bs.fetchOnlnData();
-				}
-				else
+			});
+	  	$('#onlnDoneBtn').bind('click',null,function (){
 					$('#itemEditorDiv td.filterable').hide();
+					$('#onlnUpdtBtn').show();
+					$('#onlnDoneBtn').hide();
 			});
 
 			$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
@@ -422,7 +427,6 @@ bs = {
 
     	$('#itemEditorDiv').show();
 		});
-		
 	},
 	fetchOnlnData: function () {
 	  var title =  $('#marcBody input.offline:text').filter('#245a').val();
@@ -430,8 +434,10 @@ bs = {
 
 	  var isbn  = ($('#marcBody input.offline:text').filter('#020a').val()).split(',');
 	  for (var i=0; i<isbn.length; i++) {
-	    if ((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10)) continue;
-	    var ISBN = isbn[i];
+	    if (!((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10))) {
+	    	var ISBN = isbn[i];
+	    	break;
+			}
 		}
 		
 	  if (ISBN) {
