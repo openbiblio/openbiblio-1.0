@@ -114,10 +114,11 @@ bs = {
 	//------------------------------
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
-			if (jsonData.lookupAvail == 1) {
-				bs.lookupAvailable = true;
-				console.log('lookup engine available');
-			}
+	    bs.opts = jsonData
+//			if (bs.opts.lookupAvail == 1) {
+//				bs.lookupAvailable = true;
+//				//console.log('lookup engine available');
+//			}
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -204,7 +205,7 @@ bs = {
               title = 'unknown'; callNo = 'not assigned';
               continue;
 						}
-						if (showBiblioPhotos) {
+						if (bs.opts.showBiblioPhotos == 'Y') {
 							html += '<td id="photo_'+biblio.bibid+'" class="biblioImage">'+
 											'		<img src=\"../images/shim.gif\" />'+
 											'</td>'+"\n";
@@ -426,10 +427,16 @@ bs = {
 	fetchOnlnData: function () {
 	  var title =  $('#marcBody input.offline:text').filter('#245a').val();
 	  var author= ($('#marcBody input.offline:text').filter('#100a').val()).split(',')[0];
-	  var isbn  = ($('#marcBody input.offline:text').filter('#020a').val()).split(',')[0];
-	  if (isbn) {
-	  	var msgText = 'Searching for ISBN: "'+isbn;
-	  	params = "&mode=search&srchBy=7&lookupVal="+isbn;
+
+	  var isbn  = ($('#marcBody input.offline:text').filter('#020a').val()).split(',');
+	  for (var i=0; i<isbn.length; i++) {
+	    if ((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10)) continue;
+	    var ISBN = isbn[i];
+		}
+		
+	  if (ISBN) {
+	  	var msgText = 'Searching for ISBN: "'+ISBN+'"';
+	  	params = "&mode=search&srchBy=7&lookupVal="+ISBN;
 		}
   	else {
 	  	var msgText = 'Searching for<br />Title: "'+title+'",<br />by '+author;
@@ -452,7 +459,9 @@ bs = {
 			}
 			else if (rslts.ttlHits == 1){
 			  var data;
-				$('#onlineMsg').html('Success,<br />click the arrow buton to enter online data.');
+				$('#onlineMsg').html('Success!!<br /><br />'+
+														 'Click the arrow buton to enter online data,<br />'+
+														 'then click "Update" at the bottom of the page.');
 				bs.hostData = rslts.data;
 				$.each(rslts.data, function(hostIndex,hostData) {
 				  $.each(hostData, function(hitIndex,hitData) {

@@ -225,7 +225,6 @@ class SrchDb {
 			return $label;
 		}
 		function mkinput($fid, $sfid, $data, $f) {
-//print_r($f);echo "<br />";
 			return array('fieldid' => $fid,
 				'subfieldid' => $sfid,
 				'data' => $data,
@@ -327,7 +326,9 @@ class SrchDb {
 
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
-	  echo "{'lookupAvail':".in_array('lookup2',$_SESSION)."}";
+		//setSessionFmSettings(); // only activate for debugging!
+		echo "{'lookupAvail':'".in_array('lookup2',$_SESSION)."'"
+				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'}";
 	  break;
 	  
 	case 'getCrntMbrInfo':
@@ -447,6 +448,11 @@ class SrchDb {
 		echo $theDb->deleteCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
+	case 'getPhoto':
+	  ## place keeper for this release
+	  echo "<img src=\"../images/shim.gif\" />";
+	  break;
+	  
 	default:
 	  echo "<h5>Invalid mode: $_REQUEST[mode]</h5>";
 	}

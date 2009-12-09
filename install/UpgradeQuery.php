@@ -422,6 +422,13 @@ class UpgradeQuery extends InstallQuery {
 					."  FROM `openbiblio`.`biblio` "
 					;
     $this->act($sql);
+    //-------------------------//
+		$sql = "INSERT INTO `openbibliowork`.`biblio_field` "
+					."(`bibid`,`fieldid`,`seq`,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,`display`)"
+					."SELECT `bibid`,`fieldid`,NULL,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,NULL "
+					."  FROM `openbiblio`.`biblio_field` "
+					;
+    $this->act($sql);
 		//-------------------------//
 		## member loan priveleges denied support
     $sql = "INSERT INTO `openbibliowork`.`mbr_classify_dm` "
