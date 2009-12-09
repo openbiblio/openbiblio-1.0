@@ -179,8 +179,12 @@ if (!empty($mbr['school_grade'])) {
 		##****************************************************************************
 		## Patron Action forms
 		##****************************************************************************
+
+### this line is to prevent Checkout, Bookings, orPlace On Hold
+### if this user's privileges are currently denied
 if (strtolower($mbrType[description]) != 'denied') {
 ?>
+
 <form name="barcodesearch" method="post" action="../circ/checkout.php">
 <fieldset>
 <!--legend><?php //echo T("Quick Check Out"); ?></legend-->
@@ -256,10 +260,13 @@ if (strtolower($mbrType[description]) != 'denied') {
 	#****************************************************************************
 	#*  Stuff checked out.
 	#****************************************************************************
+	$copies = new Copies;
+	$checkouts = $copies->getMemberCheckouts($mbrid);
 ?>
 <fieldset>
 <legend><?php echo T("Items Currently Checked Out"); ?></legend>
 <table class="primary">
+<?php 	if ($checkouts->count() > 0) {  ?>
 	<thead>
 	<tr>
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Checked Out"); ?></th>
@@ -274,20 +281,6 @@ if (strtolower($mbrType[description]) != 'denied') {
 	#****************************************************************************
 	#*  Get copies this member has out.
 	#****************************************************************************
-	$copies = new Copies;
-	$checkouts = $copies->getMemberCheckouts($mbrid);
-	if ($checkouts->count() == 0) {
-?>
-	<tbody class="unStriped">
-	<tr>
-		<td class="primary" align="center" colspan="6">
-			<?php echo T("No items are currently checked out."); ?>
-		</td>
-	</tr>
-	</tbody>
-
-<?php
-	} else {
 	  echo '<tbody class="striped">';
 		while ($copy = $checkouts->next()) {
 			$history = new History;
@@ -319,11 +312,17 @@ if (strtolower($mbrType[description]) != 'denied') {
 			<?php echo H($bookings->getDaysLate($booking));?>
 		</td>
 	</tr>
-<?php
-		}
-	echo '</tbody>';
-	}
-?>
+	<?php } ?>
+	</tbody>
+<?php } else {  ?>
+	<tbody class="unStriped">
+	<tr>
+		<td class="primary" align="center" colspan="6">
+			<?php echo T("No items are currently checked out."); ?>
+		</td>
+	</tr>
+	</tbody>
+<?php } ?>
 </table>
 </fieldset>
 
@@ -333,6 +332,11 @@ if (strtolower($mbrType[description]) != 'denied') {
 <fieldset>
 <legend><?php echo T("Copies Currently On Hold"); ?></legend>
 <table class="primary">
+<?php
+	$holds = Report::create('holds');
+	$holds->init(array('mbrid'=>$mbrid));
+	if ($holds->count() > 0) {
+?>
 	<thead>
 	<tr>
 		<th valign="top" nowrap="nowrap" align="left">
@@ -359,19 +363,6 @@ if (strtolower($mbrType[description]) != 'denied') {
 	#****************************************************************************
 	#*  Search database for BiblioHold data
 	#****************************************************************************
-	$holds = Report::create('holds');
-	$holds->init(array('mbrid'=>$mbrid));
-	if ($holds->count() == 0) {
-?>
-	<tbody class="unstriped">
-	<tr>
-		<td class="primary" align="center" colspan="7">
-			<?php echo T("No copies on hold"); ?>
-		</td>
-	</tr>
-	</tbody>
-<?php
-	} else {
 	  echo '<tbody class="striped">';
 		while ($hold = $holds->each()) {
 ?>
@@ -395,11 +386,17 @@ if (strtolower($mbrType[description]) != 'denied') {
 			<?php echo H($hold['due']);?>
 		</td>
 	</tr>
-<?php
-		}
-		echo '</tbody>';
-	}
-?>
+<?php } ?>
+	</tbody>
+<?php } else { ?>
+	<tbody class="unstriped">
+	<tr>
+		<td class="primary" align="center" colspan="7">
+			<?php echo T("No copies on hold"); ?>
+		</td>
+	</tr>
+	</tbody>
+<?php } ?>
 
 </table>
 </fieldset>
