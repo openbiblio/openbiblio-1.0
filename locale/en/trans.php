@@ -380,6 +380,7 @@ $trans["Member Account Transactions"] = "Member Account Transactions";
 $trans["Member field, %desc%, has been added."] = "Member field '%desc%' has been added.";
 $trans["Member field, %desc%, has been updated."] = "Member field '%desc%' has been updated.";
 $trans["Member Fields"] = "Member Fields";
+$trans["Member has exceeded %number% items"] = "exceeded %number% items that can be checked-out of this type";
 $trans["Member has been successfully added."] = "Member has been successfully added.";
 $trans["Member has been successfully updated."] = "Member has been successfully updated.";
 $trans["Member Info"] = "Member Info";
