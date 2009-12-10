@@ -34,7 +34,7 @@
 ?>
 <script language="JavaScript">
 <?php
-	if($tab = 'opac')
+	if($tab == 'opac')
 	  echo "var opacMode = true;";
 	else
 	  echo "var opacMode = false;";
