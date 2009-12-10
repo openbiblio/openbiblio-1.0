@@ -20,8 +20,11 @@
 // lookup Javascript
 bs = {
 <?php
+		#### Translation table entries for JS use go here
 //	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
 ?>
+	multiMode: false,
+	
 	init: function () {
 		// get header stuff going first
 		bs.initWidgets();
@@ -77,6 +80,7 @@ bs = {
 	  $('#biblioListDiv').hide();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
+	  bs.multiMode = false;
 	},
 	
 	rtnToSrch: function () {
@@ -150,7 +154,6 @@ bs = {
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
 				if (!bs.biblio.data) {
-//	  			$('p.error').html('Nothing Found by bar cd search').show();
 	  			$('#rsltMsg').html('Nothing Found by bar cd search').show();
 				}
 				else {
@@ -176,17 +179,20 @@ bs = {
 			} else {
 				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
+				  bs.multiMode = false;
 	  			$('#rsltQuan').html('<p class="error">Nothing Found by text search</p>');
 					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
         	$('#biblioListDiv').show()
 		  		$('#searchDiv').hide();
 				}
 				else if (biblioList.length == 1) {
+				  bs.multiMode = false;
 					bs.biblio = eval('('+biblioList[0]+')');
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
 				else {
+				  bs.multiMode = true;
 					$('#rsltQuan').html(biblioList.length+' items found');
 					bs.biblio = Array();
 				  for (var nBiblio in biblioList) {
@@ -281,7 +287,13 @@ bs = {
 			$('#biblioDiv td.filterable').toggle()
 			}
 		);
-		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+//		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+		$('#biblioDiv .gobkBtn').bind('click',null,function () {
+		  if (bs.multiMode)
+				bs.rtnToList();
+			else
+			  bs.rtnToSrch();
+		});
 		if (!bs.lookupAvailable)$('#onlnUpdtBtn').hide();
 	  $('#searchDiv').hide();
     $('#biblioListDiv').hide()
