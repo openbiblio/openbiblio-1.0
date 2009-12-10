@@ -13,6 +13,7 @@
 		$tab = "cataloging";
 	else
 	  $tab = $_REQUEST[tab];
+
 	$nav = "localSearch";
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "searchText";
@@ -32,6 +33,13 @@
 	
 ?>
 <script language="JavaScript">
+<?php
+	if($tab = 'opac')
+	  echo "var opacMode = true;";
+	else
+	  echo "var opacMode = false;";
+?>
+console.log('opacMode='+opacMode);
 </script>
 
 <h3><?php echo T("Local Search"); ?></h3>

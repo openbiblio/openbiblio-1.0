@@ -305,11 +305,14 @@ bs = {
 				for (nCopy in bs.copyJSON) {
 				  var crntCopy = eval('('+bs.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
+					if (!opacMode) {
 					html += "	<td>\n";
-					html += "		<a href='' class=\"editBtn\" >edit</a>\n";
-					html += "		<a href='' class=\"deltBtn\" >del</a>\n";
-					html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
+						html += "		<a href='' class=\"editBtn\" >edit</a>\n";
+						html += "		<a href='' class=\"deltBtn\" >del</a>\n";
+//					} else {
+//						html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 					html += "	</td>\n";
+					}
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
 					if (crntCopy.site) {
@@ -319,6 +322,7 @@ bs = {
 						$('#siteFld').hide();
 					}
 					html += "	<td>"+crntCopy.status
+					html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
 					if (crntCopy.mbrId)
 					  html += ' to <a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
 								 + crntCopy.mbrName+'</a>';
