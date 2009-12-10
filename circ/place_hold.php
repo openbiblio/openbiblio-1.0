@@ -12,6 +12,7 @@ require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/Holds.php"));
+require_once(REL(__FILE__, "../model/History.php"));
 
 
 #****************************************************************************
@@ -42,6 +43,17 @@ $holds->insert(array(
 	'mbrid'=>$mbrid,
 ));
 
+// And also put the current copy on hold if available - LJ
+$history = new History;
+$status = $history->getOne($copy['histid']);
+if ($status['status_cd'] == OBIB_DEFAULT_STATUS || $status['status_cd'] == OBIB_STATUS_IN || $status['status_cd'] == OBIB_STATUS_SHELVING_CART) {
+	$hist = array(
+		'bibid'=>$copy['bibid'],
+		'copyid'=>$copy['copyid'],
+		'status_cd'=>OBIB_STATUS_ON_HOLD,
+	);
+	$history->insert($hist);
+}
 #**************************************************************************
 #*  Go back to member view
 #**************************************************************************

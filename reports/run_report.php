@@ -41,7 +41,7 @@
 	} else {
 		$errs = $rpt->initCgi_el();
 		if (!empty($errs)) {
-			FieldError::backToForm('../reports/report_criteria.php', $errors);
+			FieldError::backToForm('../reports/report_criteria.php', $errs);
 		}
 	}
 	if ($_REQUEST['page']) {

@@ -2,13 +2,14 @@
 .category "Cataloging"
 .layout barcode_33up title="Barcodes (33up)"
 .layout barcode_98up title="Barcodes (98up)"
+.layout barcode_dwl1784  title="Barcodes (DWL1784)"
 .column copyid hidden
 .column bibid hidden
 .column barcode_nmbr title="Barcode" sort=barcode_nmbr
 .column title func=biblio_link title=Title sort=title
 .parameters
 .	string barcode title="Barcode Starts With"
-.	date newer title="Newer than"
+.	date newer title="Newer than (yyyy-mm-dd)"
 .	select cart title="Only In Item Cart" default=''
 .		item none title="No"
 .		item bibid title="Yes"
