@@ -9,6 +9,12 @@
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
+	
+	// Load session data in case of OPAC (eg no user logged on)
+	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
+	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
+	if(empty($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	if(empty($_SESSION['show_item_photos'])) $_SESSION['show_item_photos'] = Settings::get('show_item_photos');	
 
 	## --------------------- ##
 class SrchDb {
@@ -19,6 +25,7 @@ class SrchDb {
 	public $collCd;
 	public $imageFile;
 	public $opacFlg;
+	public $avIcon = "circle_green.png";
 
 	function SrchDb () {
 		$this->db = new Query;
@@ -96,6 +103,24 @@ class SrchDb {
 		$this->collCd = $rcd[collection_cd];
 		$this->imageFile =$rcd[image_file];
 		$this->opacFlg = $rcd[opac_flg];
+		
+		// If the show details OPAC  flag is set get info on the copies	
+		if($_SESSION['show_detail_opac'] == 'Y'){
+			$copies = $this->getCopyInfo($bibid);
+			// Need to add site specific code in here in here, for now just look for 
+			// status options: available, available on other site, on hold, not available
+			foreach($copies as $copyEnc){
+				$copy = json_decode($copyEnc, true);		
+				if($copy['statusCd'] == "in") {
+					// One item available is enough
+					$this->avIcon = "circle_green.png";
+					break;
+				}
+				elseif($copy[statusCd] == "hld") $this->avIcon = "circle_blue.png";
+				else $this->avIcon = "circle_red.png";
+			}
+			$rcd['avIcon'] = $this->avIcon;
+		}
 		return $rcd;
 	}
 	## ========================= ##
@@ -130,12 +155,13 @@ class SrchDb {
 		while ($copy = $bcopies->next()) {
 			$status = $history->getOne($copy['histid']);
 			$booking = $bookings->getByHistid($copy['histid']);
-	  	if ($_SESSION['show_copy_site'] == 'Y') {
+		if ($_SESSION['show_copy_site'] == 'Y') {
 				$sites_table = new Sites;
 				$sites = $sites_table->getSelect();
 				$copy['site'] = $sites[$copy[siteid]];
 			}
 			$copy['status'] = $states[$status[status_cd]];
+			$copy['statusCd'] = $status[status_cd];
 			if($_SESSION['show_checkout_mbr'] == "Y" && $status[status_cd] == "out"){
 				$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
 				$copy['mbrId'] = $checkout_mbr[mbrid];
@@ -405,11 +431,13 @@ class SrchDb {
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
 				$theDb->getBiblioInfo($bibid);
-				$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
+				$copyData = "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
 										."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
-										."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',"
-										."'data':".json_encode($theDb->getBiblioDetail())
+										."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',";
+				if($_SESSION['show_detail_opac'] == 'Y') $copyData .= "'avIcon':'$theDb->avIcon',";
+				$copyData .=			"'data':".json_encode($theDb->getBiblioDetail())
 										."}";
+				$biblio[] = $copyData;
 			}
 			echo json_encode($biblio);
 		} else {

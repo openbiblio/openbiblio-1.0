@@ -213,12 +213,19 @@ bs = {
 				    var html = "<tr> \n";
 						var biblio = eval('('+biblioList[nBiblio]+')');
 						bs.biblio[biblio.bibid] = biblio;
-						var callNo = ''; var title = '';
+						var callNo = ''; var title = ''; var author='';
 						if (biblio.data) {
 							$.each(biblio.data, function (fldIndex, fldData) {
 		  					var tmp = eval('('+fldData+')');
-				    	  if (tmp.label == 'Title') 			title = tmp.value;
-				    	  if (tmp.label == 'Call Number') callNo = tmp.value;
+							if (tmp.label == 'Title'){
+								title = tmp.value;
+								if(title.length>50) title = title.substring(0,50)+'...';
+							}
+							if (tmp.label == 'Author') {
+								author = tmp.value;
+								if(author.length>30) author = author.substring(0,30)+'...';							
+							}							
+							if (tmp.label == 'Call Number') callNo = tmp.value;
 							});
 						} else {
 							// skip these
@@ -235,9 +242,9 @@ bs = {
 						}
 						html += '	<input type="hidden" value="'+biblio.bibid+'" />'+"\n";
 						html += '	<input type="button" class="moreBtn" value="More info" />'+"\n";
-						html += '<td>---</td>\n';						
+						html += '<td><img src="../images/'+biblio.avIcon+'" /></td>\n';						
 						html += '<td><img src="../images/'+biblio.imageFile+'" /></td><td>'+title+"</td>\n";
-						html += '<td>'+callNo+"</td>\n";
+						html += '<td>'+author+'</td><td>'+callNo+"</td>\n";
 						html += '<td><div class="biblioBtn">'+"\n";
 						html += "</div></td> \n";
 						html += "</tr>\n";
@@ -273,9 +280,11 @@ bs = {
 		return false;
 	},
 	goNextPage:function (firstItem) {
+		$('#biblioListDiv .goNextBtn').disable();
 		bs.doPhraseSearch(null,firstItem);
 	},
 	goPrevPage:function (firstItem) {
+		$('#biblioListDiv .goPrevBtn').disable();
 		bs.doPhraseSearch(null,firstItem);
 	},
 	doAddListToCart:function () {
