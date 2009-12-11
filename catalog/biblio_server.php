@@ -385,7 +385,25 @@ class SrchDb {
 	  		exit;
 		}
 		if (sizeof($biblioLst) > 0) {
+			// Add amount of search results.
+			if($_REQUEST['firstItem'] == null){
+				$firstItem = 0;
+			} else {
+				$firstItem = $_REQUEST['firstItem'];
+			}
+			if(Settings::get('items_per_page') <= sizeof($biblioLst) - $firstItem){
+				$lastItem = $firstItem + Settings::get('items_per_page');
+			} else {
+				$lastItem = sizeof($biblioLst);
+			}
+			$biblio[] = "{'totalNum':'" . sizeof($biblioLst) . "','firstItem':'" . $firstItem . "','lastItem':'". $lastItem . "','itemsPage':'". Settings::get('items_per_page') . "'}";
+			// Only show as many as in the settings (not the most efficient way to get the whole result query, this should be rewritten
+			$iterCounter = 0;		
 			foreach ($biblioLst as $bibid) {
+				// Skip if before requested items and break when amount of items is past - LJ
+				$iterCounter++;
+				if($iterCounter - 1 < $firstItem) continue;
+				if($iterCounter > $lastItem) break;
 				$theDb->getBiblioInfo($bibid);
 				$biblio[] =  "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
 										."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
