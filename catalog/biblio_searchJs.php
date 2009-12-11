@@ -64,6 +64,13 @@ bs = {
 			}
 		});
 		
+		// for the multi-hit list
+		$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+		$('#biblioListDiv .goPrevBtn').bind('click',null,function () {bs.goPrevPage(bs.previousPageItem);});
+		$('#biblioListDiv .goNextBtn').bind('click',null,function () {bs.goNextPage(bs.nextPageItem);});
+		$('#biblioListDiv .goNextBtn').disable();
+		$('#biblioListDiv .goPrevBtn').disable();
+
 		// for the single biblio display screen
 		$('#biblioEditBtn').bind('click',null,function () {
 			bs.doItemEdit(bs.theBiblio);
@@ -212,7 +219,6 @@ bs = {
 	    }
 		  $('#searchDiv').hide();
 	    $('#biblioDiv').show();
-//			$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 		});
 		return false;
 	},
@@ -233,15 +239,15 @@ bs = {
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
 	  			$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
-				$('#biblioListDiv .goNextBtn').disable();
-				$('#biblioListDiv .goPrevBtn').disable();
-				$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+					$('#biblioListDiv .goNextBtn').disable();
+					$('#biblioListDiv .goPrevBtn').disable();
         	$('#biblioListDiv').show()
 		  		$('#searchDiv').hide();
-				} // Changed to two, as an extra record is added with the amount of records etc. (also, if not first page ignore this) - LJ
+				}
+				// Changed to two, as an extra record is added with the amount of records etc. (also, if not first page ignore this) - LJ
 				else if (biblioList.length == 2 && firstItem == 0) {
 				  bs.multiMode = false;
-				    // Changed from 0 to 1 as the first row shows record info
+      		// Changed from 0 to 1 as the first row shows record info
 					bs.biblio = eval('('+biblioList[1]+')');
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
@@ -309,15 +315,13 @@ bs = {
 					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 									
 					if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
-						var previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);					
-						$('#biblioListDiv .goPrevBtn').bind('click',null,function () {bs.goPrevPage(previousPageItem);});					
+						bs.previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);
 						$('#biblioListDiv .goPrevBtn').enable();
 					} else {
 						$('#biblioListDiv .goPrevBtn').disable();
 					}
 					if((parseInt(queryInfo.itemsPage) + parseInt(firstItem) <= parseInt(queryInfo.lastItem))&&(parseInt(queryInfo.totalNum)!=parseInt(queryInfo.lastItem))){
-						var nextPageItem = parseInt(queryInfo.itemsPage) + parseInt(firstItem);
-						$('#biblioListDiv .goNextBtn').bind('click',null,function () {bs.goNextPage(nextPageItem);});
+						bs.nextPageItem = parseInt(queryInfo.itemsPage) + parseInt(firstItem);
 						$('#biblioListDiv .goNextBtn').enable();
 					} else {
 						$('#biblioListDiv .goNextBtn').disable();
@@ -350,7 +354,6 @@ bs = {
 	getPhraseSrchDetails: function () {
 	  var bibid = $(this).prev().val();
 		bs.biblio.bibid = bibid;
-//		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToList);
 		bs.showOneBiblio(bs.biblio[bibid]);
 		bs.fetchCopyInfo();
 	},
@@ -379,14 +382,7 @@ bs = {
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe2('biblioTbl','odd');
-//		$('#biblioEditBtn').bind('click',null,function () {
-//			bs.doItemEdit(bs.theBiblio);
-//		});
 		$('#biblioDiv td.filterable').hide();
-//		$('#marcBtn').bind('click',null,function () {
-//		  //console.log('swapping state to MARC column');
-//			$('#biblioDiv td.filterable').toggle()
-//		});
 
 		if (!bs.lookupAvailable)$('#onlnUpdtBtn').hide();
 	  $('#searchDiv').hide();
@@ -578,7 +574,7 @@ console.log('params='+params)
 					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);
 				}
 
-				// button created dynamicly by server
+				// this button created dynamicly by server
 				$('#marcBody input.accptBtn').bind('click',null,bs.doFldUpdt);
 			} // else
 		}); // .post
@@ -628,17 +624,15 @@ console.log('params='+params)
 		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
-		$('#copyEditorDiv fieldset legend').html('<?php echo T('Edit Copy Properties'); ?>');
-//		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
+//		var msgText = <?php echo T('Edit Copy Properties'); ?>;
+		$('#copyEditorDiv fieldset legend').html('Edit Copy Properties');
+
+		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
 			bs.rtnToBiblio();
 		});
-//		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
-//		$('#copyCancelBtn').bind('click',null,function () {
-//			bs.rtnToBiblio();
-//		});
 
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
@@ -650,14 +644,13 @@ console.log('params='+params)
 			bs.doGetBarcdNmbr();
 		}
 		$('#copyEditorDiv').show();
+
+		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyNew();
 			bs.rtnToBiblio();
 		});
-//		$('#copyCancelBtn').bind('click',null,function () {
-//			bs.rtnToBiblio();
-//		});
 	},
 	doGetBarcdNmbr: function () {
 		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
