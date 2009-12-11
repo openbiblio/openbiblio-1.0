@@ -39,11 +39,11 @@
 	</tr>
 	<tr>
 		<td colspan="1" nowrap="true" class="primary">
-			<b><?php echo T("Marc Fields:"); ?></b>
+			<b><?php echo T("MARC Fields:"); ?></b>
 		<td colspan="1" nowrap="true" class="primary">
-			<b><?php echo T("Local_Data"); ?></b>
+			<b><?php echo T("Local Data"); ?></b>
 		<td id="onlnColTitle" colspan="1" nowrap="true" class="primary filterable">
-			<b><?php echo T("On-Line_Data"); ?></b>
+			<b><?php echo T("Online Data"); ?></b>
 		</td>
 	</tbody>
 

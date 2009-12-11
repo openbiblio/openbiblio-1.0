@@ -2,7 +2,7 @@
 #****************************************************************************
 #*  Translation text for page lookup_form.php
 #****************************************************************************
-$trans["lookup_z3950Search"]     = 'On-line search';
+$trans["lookup_onlineSearch"]     = 'On-line search';
 $trans["lookup_isbn"]            = 'ISBN';
 $trans["lookup_issn"]            = 'ISSN';
 $trans["lookup_lccn"]            = 'LCCN';
@@ -35,7 +35,7 @@ $trans['lookup_searchError']     = 'SEARCH ERROR:Send this to system administrat
 #****************************************************************************
 #*  Translation text for page lookupOptsForm.php
 #****************************************************************************
-$trans["lookup_opts"]       			     = 'Lookup Options.';
+$trans["lookup_options"]       			     = 'Lookup Options.';
 $trans["lookup_optsUpdated"]           = 'Lookup Settings have been updated.';
 $trans["lookup_optsSettings"]      		 = 'Edit Lookup Options:';
 $trans["lookup_optsProtocol"]          = 'Protocol:';

@@ -33,7 +33,6 @@ bs = {
 		bs.url = 'biblio_server.php';
 		bs.urlLookup = '../lookup2/server.php'; //may not exist
 
-    //$('#advanceQ').disable();
 		$('#advancedSrch').hide();
 		$('#advanceQ').bind('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
@@ -195,8 +194,11 @@ bs = {
 				  bs.multiMode = true;
 					$('#rsltQuan').html(biblioList.length+' items found');
 					bs.biblio = Array();
+					var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
+				  $('#srchRsltsDiv').html(header);
+
 				  for (var nBiblio in biblioList) {
-				    var html = "<fieldset>\n<table>\n<tr> \n";
+				    var html = "<tr> \n";
 						var biblio = eval('('+biblioList[nBiblio]+')');
 						bs.biblio[biblio.bibid] = biblio;
 						var callNo = ''; var title = '';
@@ -225,9 +227,13 @@ bs = {
 						html += '	<input type="hidden" value="'+biblio.bibid+'" />'+"\n";
 						html += '	<input type="button" class="moreBtn" value="This One!" />'+"\n";
 						html += "</div> \n";
-				    html += "</tr>\n</table>\n</fieldset> \n";
-				    $('#srchRsltsDiv').append(html);
+				    html += "</td>\n</tr>\n";
+						$('#listTbl tbody').append(html);
 					}
+					var trailer = "</tbody>\n</table>\n</fieldset>\n";
+				  $('#srchRsltsDiv').append(trailer);
+				  obib.reStripe();
+				  
 					$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
 					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
         	$('#biblioListDiv').show()
@@ -287,7 +293,7 @@ bs = {
 			$('#biblioDiv td.filterable').toggle()
 			}
 		);
-//		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+
 		$('#biblioDiv .gobkBtn').bind('click',null,function () {
 		  if (bs.multiMode)
 				bs.rtnToList();
@@ -318,12 +324,10 @@ bs = {
 				  var crntCopy = eval('('+bs.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
 					if (!opacMode) {
-					html += "	<td>\n";
+						html += "	<td>\n";
 						html += "		<a href='' class=\"editBtn\" >edit</a>\n";
 						html += "		<a href='' class=\"deltBtn\" >del</a>\n";
-//					} else {
-//						html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-					html += "	</td>\n";
+						html += "	</td>\n";
 					}
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
@@ -335,10 +339,11 @@ bs = {
 					}
 					html += "	<td>"+crntCopy.status
 					html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
-					if (crntCopy.mbrId)
+					if (crntCopy.mbrId) {
 					  html += ' to <a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
 								 + crntCopy.mbrName+'</a>';
-					html += "</td>\n";
+					}
+					html += "	</td>\n";
 					html += "	<td>"+crntCopy.last_change_dt+"</td>\n";
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
 					html += "</tr>\n";
@@ -429,6 +434,7 @@ bs = {
 					$('#itemEditorDiv td.filterable').show();
 					bs.fetchOnlnData();
 			});
+			
 	  	$('#onlnDoneBtn').bind('click',null,function (){
 					$('#itemEditorDiv td.filterable').hide();
 					$('#onlnUpdtBtn').show();
@@ -459,11 +465,11 @@ bs = {
 		}
 		
 	  if (ISBN) {
-	  	var msgText = 'Searching for ISBN: "'+ISBN+'"';
+	  	var msgText = <?php T('Searching for ISBN'); ?>+ISBN+'"';
 	  	params = "&mode=search&srchBy=7&lookupVal="+ISBN;
 		}
   	else {
-	  	var msgText = 'Searching for<br />Title: "'+title+'",<br />by '+author;
+	  	var msgText = <?php T('Searching for<br />Title: "'); ?>+title+'",<br />by '+author;
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 		}
 	  
@@ -473,7 +479,7 @@ bs = {
 			var numHits = parseInt(rslts.ttlHits);
 			var maxHits = parseInt(rslts.maxHits);
 			if (numHits < 1) {
-				$('#onlineMsg').html('nothing found');
+				$('#onlineMsg').html(<?php T('nothing found');?>);
 			}
 			else if (numHits >= maxHits) {
 				$('#onlineMsg').html(numHits+'hits found, too many to process.');
@@ -544,12 +550,14 @@ bs = {
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
 		$('#copyEditorDiv fieldset legend').html('<?php echo T('Edit Copy Properties'); ?>');
-		$('#editSubmitBtn').val('<?php echo T('Update'); ?>');
-		$('#editSubmitBtn').bind('click',null,bs.doCopyUpdate);
-		$('#editCancelBtn').val('<?php echo T('Go Back'); ?>');
-		$('#editCancelBtn').bind('click',null,function () {
-			$('#copyEditorDiv').hide();
-			$('#biblioDiv').show();
+		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
+		$('#copySubmitBtn').bind('click',null,function () {
+			bs.doCopyUpdate();
+			bs.rtnToBiblio();
+		});
+		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
+		$('#copyCancelBtn').bind('click',null,function () {
+			bs.rtnToBiblio();
 		});
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
@@ -561,7 +569,13 @@ bs = {
 			bs.doGetBarcdNmbr();
 		}
 		$('#copyEditorDiv').show();
-		$('#editSubmitBtn').bind('click',null,bs.doCopyNew);
+		$('#copySubmitBtn').bind('click',null,function () {
+			bs.doCopyNew();
+			bs.rtnToBiblio();
+		});
+		$('#copyCancelBtn').bind('click',null,function () {
+			bs.rtnToBiblio();
+		});
 	},
 	doGetBarcdNmbr: function () {
 		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
@@ -576,7 +590,6 @@ bs = {
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
 	  	bs.fetchCopyInfo(); // refresh copy display
-//	    $('#editCancelBtn').val('Go Back');
 	  });
 	  return false;
 	},

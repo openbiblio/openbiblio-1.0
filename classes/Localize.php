@@ -9,7 +9,7 @@
 class Localize {
 	var $localePath = '';
 	var $meta;
-	var $trans = array();
+	var $trans = array(); // memory image of translation table
 	var $marc = array();
 
 	function init($locale) {
@@ -96,6 +96,9 @@ class Localize {
 		$text = $k[count($k)-1];
 		if (isset($this->trans[$key])) {
 			$text = $this->trans[$key];
+		}
+		else{
+			$text = '<font color="#990099">'.$text."</font>";
 		}
 		$text = $this->_substituteVars($text, $vars);
 

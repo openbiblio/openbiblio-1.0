@@ -64,43 +64,45 @@
 		$bib[title] = preg_replace("/'/","''",$bib[title]);
  		$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[title].'"),'; $subid++;
 		$bib[title_remainder] = preg_replace("/'/","''",$bib[title_remainder]);
-		if ($bib[title_remainder]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "b", "'.$bib[title_remainder].'"),'; $subid++;
+		if ($bib[title_remainder]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "b", "'.$bib[title_remainder].'"),'; $subid++;}
 		$bib[responsibility_stmt] = preg_replace("/'/","''",$bib[responsibility_stmt]);
-		if ($bib[responsibility_stmt]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "c", "'.$bib[responsibility_stmt].'"),'; $subid++;
+		if ($bib[responsibility_stmt]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "c", "'.$bib[responsibility_stmt].'"),'; $subid++;}
     $fldid++;
     
 		$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "100", NULL, NULL, NULL, NULL),';  
 		$bib[author] = preg_replace("/'/","''",$bib[author]);
-		if ($bib[author]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[author].'"),'; $subid++;
+		if ($bib[author]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[author].'"),'; $subid++;}
     $fldid++;
     
-		$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';  $fldid++;
-		if ($bib[call_nmbr1]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[call_nmbr1].'"),'; $subid++;
+		$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';
+		if ($bib[call_nmbr1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[call_nmbr1].'"),'; $subid++;}
+    $fldid++;
 
 		$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "650", NULL, NULL, NULL, NULL),';  
 		$bib[topic1] = preg_replace("/'/","''",$bib[topic1]);
-		if ($bib[topic1]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[topic1].'"),'; $subid++;
+		if ($bib[topic1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[topic1].'"),'; $subid++;}
 		$bib[topic2] = preg_replace("/'/","''",$bib[topic2]);
-		if ($bib[topic2]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 1, "a", "'.$bib[topic2].'"),'; $subid++;
+		if ($bib[topic2]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 1, "a", "'.$bib[topic2].'"),'; $subid++;}
 		$bib[topic3] = preg_replace("/'/","''",$bib[topic3]);
-		if ($bib[topic3]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 2, "a", "'.$bib[topic3].'"),'; $subid++;
+		if ($bib[topic3]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 2, "a", "'.$bib[topic3].'"),'; $subid++;}
 		$bib[topic4] = preg_replace("/'/","''",$bib[topic4]);
-		if ($bib[topic4]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 3, "a", "'.$bib[topic4].'"),'; $subid++;
+		if ($bib[topic4]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 3, "a", "'.$bib[topic4].'"),'; $subid++;}
 		$bib[topic5] = preg_replace("/'/","''",$bib[topic5]);
-		if ($bib[topic5]) $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 4, "a", "'.$bib[topic5].'"),'; $subid++;
+		if ($bib[topic5]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 4, "a", "'.$bib[topic5].'"),'; $subid++;}
     $fldid++;
     
 		### get each biblio_field entry for this biblio in MARC tag order
 		$sql = "SELECT * FROM `$oldDb`.`biblio_field` WHERE (bibid=$bib[bibid]) ORDER BY `tag` ";
 		$flds = $db->select($sql);
 		while ($fld = $flds->next()) {
-			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "'.$fld[tag].'", NULL, NULL, NULL, NULL),'; 
+		  $tag = sprintf("%03d",$fld[tag]);
+			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
 			$fld[field_data] = preg_replace("/'/","''",$fld[field_data]);
 			$fld[field_data] = preg_replace('/"/','',$fld[field_data]);
 			$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld[subfield_cd].'", "'.$fld[field_data].'"),'; $subid++;
       $fldid++;
 		}
-		//if ($n>10)break;
+		//if ($n=1)break; ## for bebug only
 	}
 	$bibSql = substr($bibSql,0,-1);
 	echo "$n biblio records written.<br />";

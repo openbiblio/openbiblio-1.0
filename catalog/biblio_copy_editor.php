@@ -57,8 +57,8 @@
 	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
-			<input type="submit" id="editSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
-			<input type="button" id="editCancelBtn" value="<?php echo T("Cancel"); ?>" class="button" />
+			<input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
+			<input type="button" id="copyCancelBtn" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
 	</tfoot>

@@ -170,15 +170,15 @@ console.log('opacMode='+opacMode);
 
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
-	<input type="button" class="gobkBtn button" value="<?php echo T('Go_Back'); ?>" />
+	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="marcBtn" class="button" value="<?php echo T('View_Marc_Tags'); ?>">
+	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php if (strtolower($tab) != 'opac') {?>
-		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit_This_Item'); ?>">
+		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<?php }?>
-	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add_To_Cart'); ?>" />
+	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">
@@ -209,19 +209,19 @@ console.log('opacMode='+opacMode);
 		<tbody id="copies" class="striped"></tbody>
 		</table>
 	</fieldset>
-	<input type="button" class="gobkBtn button" value="<?php echo T('Go_Back'); ?>">
+	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php if (strtolower($tab) != 'opac') { ?>
-	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add_New_Copy'); ?>">
+	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
 <?php } ?>
 </div>
 
 <div id="itemEditorDiv">
   <form id="biblioEditForm" name="biblioEditForm" method="POST" >
 		<p class="note"><?php echo T("Fields marked are required"); ?></p>
-		<input type="button" class="button itemGobkBtn" value="<?php echo T('Go_Back'); ?>" />
+		<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch_On-Line_Data'); ?>" />
+		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
 	<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>

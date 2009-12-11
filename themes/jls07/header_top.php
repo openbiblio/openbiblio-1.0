@@ -61,6 +61,7 @@ obib = {
 			$('a').bind('click',null,obib.confirmLink);
 		}
 	},
+
 	//-------------------------
 	reStripe: function(which) {
 		// re-stripe all tables so classed on all pages
