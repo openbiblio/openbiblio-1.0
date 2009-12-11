@@ -47,6 +47,7 @@ bs = {
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
 		$('#addList2CartBtn').bind('click',null,bs.doAddListToCart);
 		$('#addItem2CartBtn').bind('click',null,bs.doAddItemToCart);
+		$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 
 		// for the copy editor function
 		// to handle startup condition
@@ -62,6 +63,55 @@ bs = {
 				$('#barcode_nmbr').enable();
 			}
 		});
+		
+		// for the single biblio display screen
+		$('#biblioEditBtn').bind('click',null,function () {
+			bs.doItemEdit(biblio);
+		});
+		$('#marcBtn').bind('click',null,function () {
+		  //console.log('swapping state to MARC column');
+			$('#biblioDiv td.filterable').toggle()
+		});
+		$('#biblioDiv .gobkBtn').bind('click',null,function () {
+		  if (bs.multiMode)
+				bs.rtnToList();
+			else
+			  bs.rtnToSrch();
+		});
+
+		// for the item edit and online update functions
+	  	$('#onlnUpdtBtn').bind('click',null,function (){
+					$('#onlnDoneBtn').show();
+					$('#onlnUpdtBtn').hide();
+					$('#itemEditorDiv td.filterable').show();
+					bs.fetchOnlnData();
+			});
+
+	  	$('#onlnDoneBtn').bind('click',null,function (){
+					$('#itemEditorDiv td.filterable').hide();
+					$('#onlnUpdtBtn').show();
+					$('#onlnDoneBtn').hide();
+			});
+
+			$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
+												 .bind('click',null,bs.doItemUpdate);
+
+			$('.itemGobkBtn').bind('click',null,function () {
+   	 		$('#itemEditorDiv').hide();
+		  	$('#biblioDiv').show();
+			});
+			
+		// for the copy editor screen
+		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
+		$('#copySubmitBtn').bind('click',null,function () {
+			bs.doCopyUpdate();
+			bs.rtnToBiblio();
+		});
+		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
+		$('#copyCancelBtn').bind('click',null,function () {
+			bs.rtnToBiblio();
+		});
+
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
@@ -162,7 +212,7 @@ bs = {
 	    }
 		  $('#searchDiv').hide();
 	    $('#biblioDiv').show();
-			$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+//			$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 		});
 		return false;
 	},
@@ -254,6 +304,7 @@ bs = {
 					$('#srchRsltsDiv').append(trailer);
 				    obib.reStripe();
 				  
+				  // subject button is created dynamically, so duplicate binding is not possible
 					$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
 					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 									
@@ -299,7 +350,7 @@ bs = {
 	getPhraseSrchDetails: function () {
 	  var bibid = $(this).prev().val();
 		bs.biblio.bibid = bibid;
-		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToList);
+//		$('#biblioDiv .gobkBtn').bind('click',null,bs.rtnToList);
 		bs.showOneBiblio(bs.biblio[bibid]);
 		bs.fetchCopyInfo();
 	},
@@ -327,22 +378,15 @@ bs = {
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe2('biblioTbl','odd');
-		$('#biblioEditBtn').bind('click',null,function () {
-			bs.doItemEdit(biblio);
-		});
+//		$('#biblioEditBtn').bind('click',null,function () {
+//			bs.doItemEdit(biblio);
+//		});
 		$('#biblioDiv td.filterable').hide();
-		$('#marcBtn').bind('click',null,function () {
-		  //console.log('swapping state to MARC column');
-			$('#biblioDiv td.filterable').toggle()
-			}
-		);
+//		$('#marcBtn').bind('click',null,function () {
+//		  //console.log('swapping state to MARC column');
+//			$('#biblioDiv td.filterable').toggle()
+//		});
 
-		$('#biblioDiv .gobkBtn').bind('click',null,function () {
-		  if (bs.multiMode)
-				bs.rtnToList();
-			else
-			  bs.rtnToSrch();
-		});
 		if (!bs.lookupAvailable)$('#onlnUpdtBtn').hide();
 	  $('#searchDiv').hide();
     $('#biblioListDiv').hide()
@@ -393,6 +437,8 @@ bs = {
 				}
   			$('tbody#copies').html(html);
 				obib.reStripe2('copyList','odd');
+
+				// dynamically created buttons
 				$('.editBtn').bind('click',null,bs.doCopyEdit);
 				$('.deltBtn').bind('click',null,bs.doCopyDelete);
 	  });
@@ -471,26 +517,6 @@ bs = {
 			});
 
 	  	 var hidingRows = $('#itemEditorDiv td.filterable');
-	  	$('#onlnUpdtBtn').bind('click',null,function (){
-					$('#onlnDoneBtn').show();
-					$('#onlnUpdtBtn').hide();
-					$('#itemEditorDiv td.filterable').show();
-					bs.fetchOnlnData();
-			});
-			
-	  	$('#onlnDoneBtn').bind('click',null,function (){
-					$('#itemEditorDiv td.filterable').hide();
-					$('#onlnUpdtBtn').show();
-					$('#onlnDoneBtn').hide();
-			});
-
-			$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
-												 .bind('click',null,bs.doItemUpdate);
-												 
-			$('.itemGobkBtn').bind('click',null,function () {
-   	 		$('#itemEditorDiv').hide();
-		  	$('#biblioDiv').show();
-			});
 
     	$('#itemEditorDiv').show();
 		});
@@ -506,26 +532,32 @@ bs = {
 	    	break;
 			}
 		}
-		
+
 	  if (ISBN) {
-	  	var msgText = <?php T('Searching for ISBN'); ?>+ISBN+'"';
+	  	//var msgText = <?php T("Searching for ISBN %isbn%", ISBN); ?>;
+	  	var msgText = "Searching for ISBN "+ISBN;
 	  	params = "&mode=search&srchBy=7&lookupVal="+ISBN;
+	  	var item = ISBN
 		}
-  	else {
-	  	var msgText = <?php T('Searching for<br />Title: "'); ?>+title+'",<br />by '+author;
+  	else if (title && author) {
+	  	var msgText = "Searching for<br />Title: '"+title+"',<br />by "+author;
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
+	  	var item = '"'+title+'", by '+author;
 		}
-	  
-		$('#onlineMsg').html(msgText+'.<br />this may take a moment.');
+	  msgText += '.<br />' + <?php T('this may take a moment.');?>
+		$('#onlineMsg').html(msgText);
+		
 	  $.post(bs.urlLookup,params,function(response){
+console.log('params='+params)
 			var rslts = eval('('+response+')'); // JSON 'interpreter'
 			var numHits = parseInt(rslts.ttlHits);
 			var maxHits = parseInt(rslts.maxHits);
 			if (numHits < 1) {
-				$('#onlineMsg').html(<?php T('nothing found');?>);
+				$('#onlineMsg').html(rslts.msg+' '+item);
 			}
 			else if (numHits >= maxHits) {
-				$('#onlineMsg').html(numHits+'hits found, too many to process.');
+			  msgText = <?php T('hits found, too many to process',numHits); ?>+'.';
+				$('#onlineMsg').html();
 			}
 			else if (numHits > 1){
 				$('#onlineMsg').html(numHits+'hits found, this version can only handle one.');
@@ -544,6 +576,8 @@ bs = {
 				for (var tag in data) {
 					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);
 				}
+
+				// button created dynamicly by server
 				$('#marcBody input.accptBtn').bind('click',null,bs.doFldUpdt);
 			} // else
 		}); // .post
@@ -564,6 +598,7 @@ bs = {
 			bs.rtnToBiblio()
 			if (bs.srchType == 'barCd') bs.doBarCdSearch();
 			else if (bs.srchType = 'phrase') bs.doPhraseSearch();
+			bs.rtnToBiblio()
 	  });
 	  return false;
 	},
@@ -593,15 +628,17 @@ bs = {
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
 		$('#copyEditorDiv fieldset legend').html('<?php echo T('Edit Copy Properties'); ?>');
-		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
+//		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
+		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
 			bs.rtnToBiblio();
 		});
-		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
-		$('#copyCancelBtn').bind('click',null,function () {
-			bs.rtnToBiblio();
-		});
+//		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
+//		$('#copyCancelBtn').bind('click',null,function () {
+//			bs.rtnToBiblio();
+//		});
+
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
 		return false;
@@ -612,12 +649,13 @@ bs = {
 			bs.doGetBarcdNmbr();
 		}
 		$('#copyEditorDiv').show();
+		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyNew();
 			bs.rtnToBiblio();
 		});
-		$('#copyCancelBtn').bind('click',null,function () {
-			bs.rtnToBiblio();
+//		$('#copyCancelBtn').bind('click',null,function () {
+//			bs.rtnToBiblio();
 		});
 	},
 	doGetBarcdNmbr: function () {
