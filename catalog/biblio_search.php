@@ -159,9 +159,35 @@ console.log('opacMode='+opacMode);
 	<div id="results_found">
 		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
-	<table width="100%"><tr><td><input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" /></td><td><input type="button" id="addList2CartBtn" class="button" value="<?php echo T('Add List To Cart'); ?>" /></td><td width="80%" align="right"><input type="button" class="goPrevBtn button" value="<?php echo T('Previous Page'); ?>"><span id="rsltQuan"></span><input type="button" class="goNextBtn button" value="<?php echo T('Next Page'); ?>"></td></tr></table>
-	<fieldset><div id="srchRsltsDiv"></div></fieldset>
-	<table width="100%"><tr><td width="20%"><input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>"></td><td width="80%" align="right"><input type="button" class="goPrevBtn button" value="<?php echo T('Previous Page'); ?>"><input type="button" class="goNextBtn button" value="<?php echo T('Next Page'); ?>"></td></tr></table>
+	<table width="100%">
+	<tr>
+		<td>
+			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
+		</td>
+		<td>
+			<input type="button" id="addList2CartBtn" class="button" value="<?php echo T('Add List To Cart'); ?>" />
+		</td>
+		<td width="80%" align="right">
+			<input type="button" class="goPrevBtn button" value="<?php echo T('Previous Page'); ?>">
+			<span id="rsltQuan"></span>
+			<input type="button" class="goNextBtn button" value="<?php echo T('Next Page'); ?>">
+		</td>
+	</tr>
+	</table>
+	<!--fieldset-->
+	<div id="srchRsltsDiv"></div>
+	<!--/fieldset-->
+	<table width="100%">
+	<tr>
+		<td width="20%">
+			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
+		</td>
+		<td width="80%" align="right">
+			<input type="button" class="goPrevBtn button" value="<?php echo T('Previous Page'); ?>">
+			<input type="button" class="goNextBtn button" value="<?php echo T('Next Page'); ?>">
+		</td>
+	</tr>
+	</table>
 </div
 
 <div id="biblioDiv">

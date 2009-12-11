@@ -66,7 +66,7 @@ bs = {
 		
 		// for the single biblio display screen
 		$('#biblioEditBtn').bind('click',null,function () {
-			bs.doItemEdit(biblio);
+			bs.doItemEdit(bs.theBiblio);
 		});
 		$('#marcBtn').bind('click',null,function () {
 		  //console.log('swapping state to MARC column');
@@ -232,14 +232,10 @@ bs = {
 				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-<<<<<<< local
-	  			$('#rsltQuan').html('<p class="error">Nothing Found by text search</p>');
-=======
 	  			$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
 				$('#biblioListDiv .goNextBtn').disable();
 				$('#biblioListDiv .goPrevBtn').disable();
 				$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
->>>>>>> other
         	$('#biblioListDiv').show()
 		  		$('#searchDiv').hide();
 				} // Changed to two, as an extra record is added with the amount of records etc. (also, if not first page ignore this) - LJ
@@ -310,8 +306,6 @@ bs = {
 				  
 				  // subject button is created dynamically, so duplicate binding is not possible
 					$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
-<<<<<<< local
-=======
 					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 									
 					if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
@@ -328,7 +322,6 @@ bs = {
 					} else {
 						$('#biblioListDiv .goNextBtn').disable();
 					}
->>>>>>> other
         	$('#biblioListDiv').show()
 		  		$('#searchDiv').hide();
 				}
@@ -369,8 +362,9 @@ bs = {
 	  });
 	},
 	showOneBiblio: function (biblio) {
+	  bs.theBiblio = biblio;
 	  var txt = '';
-		$.each(biblio.data, function(fldIndex,fldData) {
+		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
 		  txt += "<tr>\n";
 			txt += "	<td class=\"filterable\">"+tmp.marcTag+"</td>\n";
@@ -381,12 +375,12 @@ bs = {
 		txt += "<tr>\n";
 		txt += "	<td class=\"filterable\">&nbsp</td>\n";
 		txt += "	<td>Date Added</td>\n";
-		txt += "	<td>"+biblio.createDt+"</td>\n";
+		txt += "	<td>"+bs.theBiblio.createDt+"</td>\n";
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe2('biblioTbl','odd');
 //		$('#biblioEditBtn').bind('click',null,function () {
-//			bs.doItemEdit(biblio);
+//			bs.doItemEdit(bs.theBiblio);
 //		});
 		$('#biblioDiv td.filterable').hide();
 //		$('#marcBtn').bind('click',null,function () {
@@ -663,7 +657,7 @@ console.log('params='+params)
 		});
 //		$('#copyCancelBtn').bind('click',null,function () {
 //			bs.rtnToBiblio();
-		});
+//		});
 	},
 	doGetBarcdNmbr: function () {
 		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
