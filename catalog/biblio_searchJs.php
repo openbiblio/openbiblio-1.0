@@ -397,7 +397,12 @@ bs = {
 		var theMo = datAray[1]-1;
 		var theDy = datAray[2];
 		var dateOut = new Date(theYr,theMo,theDy);
-		dateOut.setDate(dateOut.getDate() + parseInt(bs.biblio.daysDueBack));
+		// Sometimes the info has to come ou of an array (if coming from list) - LJ
+		var daysDueBack = parseInt(bs.biblio.daysDueBack);
+		if(isNaN(daysDueBack)) {			
+			daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
+		}
+		dateOut.setDate(dateOut.getDate() + daysDueBack);
 		return dateOut.toDateString();
 	},
 	fetchCopyInfo: function () {

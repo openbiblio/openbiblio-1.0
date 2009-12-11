@@ -7,6 +7,9 @@
 	require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
+	// In case of OPAC
+	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
+	
 	session_cache_limiter(null);
 
 	if(empty($_REQUEST[tab]))
@@ -159,8 +162,8 @@ console.log('opacMode='+opacMode);
 	<div id="results_found">
 		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
+	<fieldset>
 	<table width="100%">
-	<tr>
 		<td>
 			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
 		</td>
@@ -174,15 +177,13 @@ console.log('opacMode='+opacMode);
 		</td>
 	</tr>
 	</table>
-	<!--fieldset-->
-	<div id="srchRsltsDiv"></div>
-	<!--/fieldset-->
-	<table width="100%">
-	<tr>
-		<td width="20%">
-			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
-		</td>
-		<td width="80%" align="right">
+		<div id="srchRsltsDiv"></div>
+		<?php 
+			if($_SESSION['show_detail_opac'] == "Y"){
+		?>
+		<div><table><tr><td width="125"><img src="../images/circle_green.png"/> <?php echo T('Available'); ?></td><td width="150"><img src="../images/circle_orange.png"/> <?php echo T('Available elsewhere'); ?></td><td width="105"><img src="../images/circle_blue.png"/> <?php echo T('On hold'); ?></td><td width="175"><img src="../images/circle_red.png"/> <?php echo T('On loan/not available'); ?></td></table></div>
+		<?php } ?>		
+	</fieldset>
 			<input type="button" class="goPrevBtn button" value="<?php echo T('Previous Page'); ?>">
 			<input type="button" class="goNextBtn button" value="<?php echo T('Next Page'); ?>">
 		</td>
