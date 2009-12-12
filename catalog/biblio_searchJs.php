@@ -391,19 +391,15 @@ bs = {
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
 	},
-	makeDueDateStr: function (dtOut) {
+	makeDueDateStr: function (dtOut, daysDueBack) {
+		if(daysDueBack==null) daysDueBack=0;
 		var dt = dtOut.split(' ');
-		var dat = dt[0]; var tm = dt[1];
+		var dat = dt[0]; var tm = dt[1];daysDueBack
 		var datAray = dat.split('-');
 		var theYr = datAray[0];
 		var theMo = datAray[1]-1;
 		var theDy = datAray[2];
 		var dateOut = new Date(theYr,theMo,theDy);
-		// Sometimes the info has to come ou of an array (if coming from list) - LJ
-		var daysDueBack = parseInt(bs.biblio.daysDueBack);
-		if(isNaN(daysDueBack)) {			
-			daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
-		}
 		dateOut.setDate(dateOut.getDate() + daysDueBack);
 		return dateOut.toDateString();
 	},
@@ -437,8 +433,13 @@ bs = {
 								 + crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
-					html += "	<td>"+crntCopy.last_change_dt+"</td>\n";
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
+					// Sometimes the info has to come ou of an array (if coming from list) - LJ
+					var daysDueBack = parseInt(bs.biblio.daysDueBack);
+					if(isNaN(daysDueBack)) {			
+						daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
+					}					
+					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
