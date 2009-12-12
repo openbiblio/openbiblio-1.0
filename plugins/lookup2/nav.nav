@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	Nav::node('cataloging/lookup', T("lookup_onlineSearch"), "../lookup2/lookup.php");
+	Nav::node('cataloging/lookup', T("lookup_z3950Search"), "../lookup2/lookup.php");
 
 	Nav::node('admin/lookup', T("lookup_options"), '../lookup2/opts_form.php');
 	Nav::node('admin/lookup', T("lookup_hosts"), '../lookup2/hosts_form.php');

@@ -368,7 +368,7 @@ lkup = {
 	doStriping: function () {
 		$('#biblioFldTbl').each(function() {
 			var $table = $(this);
-				$table.find('tbody#marcBody tr:not(.hidden):even').addClass('altBG');
+				$table.find('tbody#marcBody tr:not(:hidden):even').addClass('altBG');
 		});
 	},
 
@@ -390,11 +390,11 @@ lkup = {
 		$('#opacFlg').val(['CHECKED']);
 
 		// hide any unused MARC fields
-    $(".marcBiblioFld").each(function(){
-			if (($(this).val()).length == 0) {
-				$(this).parent().parent().hide().addClass('hidden');
-			}
-		});
+//    $(".marcBiblioFld").each(function(){
+//			if (($(this).val()).length == 0) {
+//				$(this).parent().parent().hide().addClass('hidden');
+//			}
+//		});
 		
 		lkup.setCallNmbr(data);
 		lkup.setCollection(data);
