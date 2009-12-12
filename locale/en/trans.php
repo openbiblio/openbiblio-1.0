@@ -95,6 +95,7 @@ $trans["Amount is required."] = "Amount is required.";
 $trans["Amount must be numeric."] = "Amount must be numeric.";
 $trans["Amount"] = "Amount";
 $trans["Amount:"] = "Amount:";
+$trans["Are you sure you want to delete this copy ?"] = "Are you sure you want to delete this copy ?";
 $trans["Audience Level:"] = "Audience Level:";
 $trans["Author"] = "Author";
 $trans["Authorization"] = "Authorization";

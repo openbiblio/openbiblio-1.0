@@ -111,18 +111,19 @@ class SrchDb {
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
 			if (!empty($copies)) {
-			foreach($copies as $copyEnc){
-				$copy = json_decode($copyEnc, true);		
-				if($copy['statusCd'] == "in") {
-					// One item available is enough
-					$this->avIcon = "circle_green.png";
-					break;
+				foreach($copies as $copyEnc){
+					$copy = json_decode($copyEnc, true);
+					if($copy['statusCd'] == "in") {
+						$this->avIcon = "circle_green.png"; // one or more available
+						break;
+					}
+					else if($copy[statusCd] == "hld")
+						$this->avIcon = "circle_blue.png"; // only copy is on hold
+					else
+						$this->avIcon = "circle_red.png"; // copy not available
 				}
-				else if($copy[statusCd] == "hld")
-					$this->avIcon = "circle_blue.png";
-				else
-					$this->avIcon = "circle_red.png";
-			}
+			} else {
+				$this->avIcon = "circle_red.png"; // no copy found
 			}
 			$rcd['avIcon'] = $this->avIcon;
 		}
