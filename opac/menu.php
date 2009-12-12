@@ -10,9 +10,9 @@ function opac_menu() {
 //		Nav::node('search', T("Search Results"),
 //			'../shared/biblio_search.php?searchType=previous&tab='.U($tab));
 //	}
-	Nav::node('images', T("Browse Images"), '../shared/image_browse.php?tab='.U($tab));
+	Nav::node('images', T("Browse Images"), '../shared/image_browse.php?tab=opac');
 	Nav::node('biblio', T("Record Info"));
-	Nav::node('cart', T("Request Cart"), '../shared/req_cart.php');
+	Nav::node('cart', T("Request Cart"), '../shared/req_cart.php?tab=opac');
 	Nav::node('request', T("Booking Request"));
 	if (isset($_SESSION['authMbrid'])) {
 		Nav::node('account', T("My Account"), '../opac/my_account.php');
