@@ -50,36 +50,27 @@ class SrchDb {
 			$keywords = explode(' ',$srchTxt);
 		else
 			$keywords[] = $srchTxt;
-			
-//		$useAND = in_array('and', $keywords);
-//		$useOR  = in_array('or', $keywords);
 
-//print_r($srchTxt);echo "<br />";
-//print_r($keywords);echo "<br />";
-
-	  $sql = "SELECT DISTINCT bs.bibid "
-					."  FROM `biblio_field` bf, `biblio_subfield` bs "
-					." WHERE (1=1) AND ";
-		$firstLine = true;
-		foreach ($spec as $item) {
-			foreach ($keywords as $kwd) {
-			  if (($kwd != 'and') && ($kwd != 'or')) {
-				  if (!$firstLine)
-//						if ($useAND)
-//							$sql .= " AND ";
-//						else
-							$sql .= " OR ";
-					else
-						$firstLine = false;
-					$sql .= "   ( (bf.`tag` = '$item[tag]') "
-					      . "	AND (bs.`bibid` = bf.`bibid`) "
-					      . "	AND (bs.`fieldid` = bf.`fieldid`) "
-					      . "	AND (bs.`subfield_cd` = '$item[suf]') "
-					      . " AND (bs.`subfield_data` LIKE '%$kwd%') "
-					      . " )";
-				}
+		$sqlSelect= "SELECT DISTINCT b.bibid FROM `biblio` AS b";	
+		$sqlWhere = " WHERE (1=1)";
+		$keywordnr = 1;
+		foreach ($keywords as $kwd) {
+			// Add Join
+			$sqlSelect .= " JOIN `biblio_field` bf$keywordnr JOIN `biblio_subfield` bs$keywordnr";
+			$sqlWhere .= " AND bf$keywordnr.bibid = b.bibid AND bs$keywordnr.fieldid = bf$keywordnr.fieldid AND bs$keywordnr.`subfield_data` LIKE '%$kwd%'";
+			$termnr = 1;
+			$sqlWhere .= " AND (";
+			$firstLoop = true;
+			foreach ($spec as $item) {
+				if(!$firstLoop) $sqlWhere .= " OR";
+				$firstLoop = false;
+				$sqlWhere .= " bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "'";
+				$termnr++;
 			}
+			$sqlWhere .= ")";
+			$keywordnr++;
 		}
+		$sql = $sqlSelect . $sqlWhere;
 		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
@@ -168,7 +159,7 @@ class SrchDb {
 			}
 			$copy['status'] = $states[$status[status_cd]];
 			$copy['statusCd'] = $status[status_cd];
-			if($_SESSION['show_checkout_mbr'] == "Y" && $status[status_cd] == "out"){
+			if($_SESSION['show_checkout_mbr'] == "Y" && ($status[status_cd] == "out" || $status[status_cd] == "hld")){
 				$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
 				$copy['mbrId'] = $checkout_mbr[mbrid];
 				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
@@ -399,15 +390,15 @@ class SrchDb {
 	  $theDb = new SrchDB;
 	  switch ($_REQUEST[searchType]) {
 	    case 'title': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"245","suf":"a"},
-																											 										{"tag":"245","suf":"b"}]'); break;
+					{"tag":"245","suf":"b"}]'); break;
 			case 'author': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"100","suf":"a"},
-					 																						 										{"tag":"245","suf":"c"}]'); break;
+					{"tag":"245","suf":"c"}]'); break;
 			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('words', '[{"tag":"650","suf":"a"}]'); break;
 			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('words', '[{"tag":"245","suf":"a"},
-																											 										{"tag":"650","suf":"a"},
-																											 										{"tag":"100","suf":"a"},
-					 																																{"tag":"245","suf":"b"},
-																											 										{"tag":"245","suf":"c"}]'); break;
+					{"tag":"650","suf":"a"},
+					{"tag":"100","suf":"a"},
+					{"tag":"245","suf":"b"},
+					{"tag":"245","suf":"c"}]'); break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
 			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"260","suf":"b"}]'); break;
 			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"099","suf":"a"}]'); break;

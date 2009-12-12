@@ -220,6 +220,7 @@ bs = {
 		return false;
 	},
 	doPhraseSearch: function (e,firstItem) {
+	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';
 	  $('#errSpace').html('');
 		$('#srchRsltsDiv').html('');
