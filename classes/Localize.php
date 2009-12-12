@@ -98,7 +98,7 @@ class Localize {
 			$text = $this->trans[$key];
 		}
 		else{
-			$text = '<font color="#990099">'.$text."</font>";
+			$text = 'T!'.$text."T!";
 		}
 		$text = $this->_substituteVars($text, $vars);
 
