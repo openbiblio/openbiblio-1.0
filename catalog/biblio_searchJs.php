@@ -48,6 +48,10 @@ bs = {
 		$('#addList2CartBtn').bind('click',null,bs.doAddListToCart);
 		$('#addItem2CartBtn').bind('click',null,bs.doAddItemToCart);
 		$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
+		$('#biblioListDiv .goPrevBtn').bind('click',null,function () {bs.goPrevPage(bs.previousPageItem);});
+		$('#biblioListDiv .goNextBtn').bind('click',null,function () {bs.goNextPage(bs.nextPageItem);});
+		$('#biblioListDiv .goNextBtn').disable();
+		$('#biblioListDiv .goPrevBtn').disable();
 
 		// for the copy editor function
 		// to handle startup condition
@@ -64,13 +68,6 @@ bs = {
 			}
 		});
 		
-		// for the multi-hit list
-		$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
-		$('#biblioListDiv .goPrevBtn').bind('click',null,function () {bs.goPrevPage(bs.previousPageItem);});
-		$('#biblioListDiv .goNextBtn').bind('click',null,function () {bs.goNextPage(bs.nextPageItem);});
-		$('#biblioListDiv .goNextBtn').disable();
-		$('#biblioListDiv .goPrevBtn').disable();
-
 		// for the single biblio display screen
 		$('#biblioEditBtn').bind('click',null,function () {
 			bs.doItemEdit(bs.theBiblio);
@@ -253,15 +250,16 @@ bs = {
 					bs.fetchCopyInfo();
 				}
 				else {
-				  // Added table for showing a list view and better alignment
-				  var header = "<table id=\"listTbl\">\n<tbody class=\"striped\">";
-				  $('#srchRsltsDiv').append(header);
+//				  var header = "<table id=\"listTbl\">\n<tbody class=\"striped\">";
+//				  $('#srchRsltsDiv').append(header);
 				  bs.multiMode = true;
 					// Modified in order to limit results per page. First "record" contains this data - LJ
 					var queryInfo = eval('('+biblioList[0]+')');
 					var modFirstItem = parseInt(queryInfo.firstItem) + 1;
 					$('#rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 					bs.biblio = Array();
+
+				  // Added table for showing a list view and better alignment
 					var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
 				  $('#srchRsltsDiv').html(header);
 				  
@@ -279,8 +277,8 @@ bs = {
 							}
 							if (tmp.label == 'Author') {
 								author = tmp.value;
-								if(author.length>30) author = author.substring(0,30)+'...';							
-							}							
+								if (author && (author.length>30)) author = author.substring(0,30)+'...';
+							}
 							if (tmp.label == 'Call Number') callNo = tmp.value;
 							});
 						} else {
@@ -312,7 +310,6 @@ bs = {
 				  
 				  // subject button is created dynamically, so duplicate binding is not possible
 					$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
-					$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
 									
 					if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
 						bs.previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);
@@ -545,7 +542,7 @@ bs = {
 		$('#onlineMsg').html(msgText);
 		
 	  $.post(bs.urlLookup,params,function(response){
-console.log('params='+params)
+			//console.log('params='+params)
 			var rslts = eval('('+response+')'); // JSON 'interpreter'
 			var numHits = parseInt(rslts.ttlHits);
 			var maxHits = parseInt(rslts.maxHits);
@@ -625,17 +622,19 @@ console.log('params='+params)
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
 //		var msgText = <?php echo T('Edit Copy Properties'); ?>;
-		$('#copyEditorDiv fieldset legend').html('Edit Copy Properties');
+		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
 
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
 			bs.rtnToBiblio();
+			return false;
 		});
 
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
+	  // prevent submit button from firing a 'submit' action
 		return false;
 	},
 	makeNewCopy: function () {
@@ -650,7 +649,10 @@ console.log('params='+params)
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyNew();
 			bs.rtnToBiblio();
+			return false;
 		});
+	  // prevent submit button from firing a 'submit' action
+		return false;
 	},
 	doGetBarcdNmbr: function () {
 		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
@@ -665,7 +667,9 @@ console.log('params='+params)
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
 	  	bs.fetchCopyInfo(); // refresh copy display
+	  	return false;
 	  });
+	  // prevent submit button from firing a 'submit' action
 	  return false;
 	},
 	doCopyUpdate: function () {
@@ -684,6 +688,7 @@ console.log('params='+params)
 	  	bs.fetchCopyInfo(); // refresh copy display
 	    $('#editCancelBtn').val('Go Back');
 	  });
+	  // prevent submit button from firing a 'submit' action
 	  return false;
 	},
 	doCopyDelete: function () {

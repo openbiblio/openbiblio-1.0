@@ -50,6 +50,7 @@ class SrchDb {
 			$keywords = explode(' ',$srchTxt);
 		else
 			$keywords[] = $srchTxt;
+			
 //		$useAND = in_array('and', $keywords);
 //		$useOR  = in_array('or', $keywords);
 
@@ -105,10 +106,11 @@ class SrchDb {
 		$this->opacFlg = $rcd[opac_flg];
 		
 		// If the show details OPAC  flag is set get info on the copies	
-		if($_SESSION['show_detail_opac'] == 'Y'){
+		if ($_SESSION['show_detail_opac'] == 'Y'){
 			$copies = $this->getCopyInfo($bibid);
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
+			if (!empty($copies)) {
 			foreach($copies as $copyEnc){
 				$copy = json_decode($copyEnc, true);		
 				if($copy['statusCd'] == "in") {
@@ -116,8 +118,11 @@ class SrchDb {
 					$this->avIcon = "circle_green.png";
 					break;
 				}
-				elseif($copy[statusCd] == "hld") $this->avIcon = "circle_blue.png";
-				else $this->avIcon = "circle_red.png";
+				else if($copy[statusCd] == "hld")
+					$this->avIcon = "circle_blue.png";
+				else
+					$this->avIcon = "circle_red.png";
+			}
 			}
 			$rcd['avIcon'] = $this->avIcon;
 		}

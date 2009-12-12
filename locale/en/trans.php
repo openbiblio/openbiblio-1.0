@@ -238,6 +238,7 @@ $trans["Edit Biblio Copy Field:"] = "Edit Biblio Copy Field:";
 $trans["Edit Calendar"] = "Edit Calendar";
 $trans["Edit Collection:"] = "Edit Collection:";
 $trans["Edit Copy"] = "Edit Copy";
+$trans["Edit Copy Properties"] = "Edit Copy Properties";
 $trans["Edit Info"] = "Edit Info";
 $trans["Edit Item"] = "Edit Item";
 $trans["Edit Item Properties"] = "Edit Item Properties";
