@@ -50,6 +50,7 @@ class SrchDb {
 			$keywords = explode(' ',$srchTxt);
 		else
 			$keywords[] = $srchTxt;
+			
 //		$useAND = in_array('and', $keywords);
 //		$useOR  = in_array('or', $keywords);
 
@@ -105,19 +106,24 @@ class SrchDb {
 		$this->opacFlg = $rcd[opac_flg];
 		
 		// If the show details OPAC  flag is set get info on the copies	
-		if($_SESSION['show_detail_opac'] == 'Y'){
+		if ($_SESSION['show_detail_opac'] == 'Y'){
 			$copies = $this->getCopyInfo($bibid);
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
-			foreach($copies as $copyEnc){
-				$copy = json_decode($copyEnc, true);		
-				if($copy['statusCd'] == "in") {
-					// One item available is enough
-					$this->avIcon = "circle_green.png";
-					break;
+			if (!empty($copies)) {
+				foreach($copies as $copyEnc){
+					$copy = json_decode($copyEnc, true);
+					if($copy['statusCd'] == "in") {
+						$this->avIcon = "circle_green.png"; // one or more available
+						break;
+					}
+					else if($copy[statusCd] == "hld")
+						$this->avIcon = "circle_blue.png"; // only copy is on hold
+					else
+						$this->avIcon = "circle_red.png"; // copy not available
 				}
-				elseif($copy[statusCd] == "hld") $this->avIcon = "circle_blue.png";
-				else $this->avIcon = "circle_red.png";
+			} else {
+				$this->avIcon = "circle_red.png"; // no copy found
 			}
 			$rcd['avIcon'] = $this->avIcon;
 		}
