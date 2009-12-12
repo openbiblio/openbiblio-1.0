@@ -41,23 +41,24 @@
 	$sql = "TRUNCATE TABLE $newDb.`biblio_subfield`";
 	$rslt = $db->Act($sql); echo "$sql<br />";
 
+	#### scan all existing biblio entries in biblio_id order
+	$sql = "SELECT * FROM `$oldDb`.`biblio` ORDER BY `bibid` ";
+	$bibs = $db->select($sql);
+	$n = 0; $fldid = 1; $subid = 1;
+	
 	$bibSql = "INSERT INTO $newDb.`biblio` "
 					. "(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`) "
 					. "VALUES ";
+	while (($bib = $bibs->next()) != NULL) {
+		$n++;
+		$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'.$bib[last_change_userid].'", "'.$bib[material_cd].'", "'.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
+
 	$fldSql = "INSERT INTO $newDb.`biblio_field` "
 					. "(`bibid`,`fieldid`,`seq`,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,`display`) "
 					. "VALUES ";
 	$subSql = "INSERT INTO $newDb.`biblio_subfield` "
 					. "(`bibid`,`fieldid`,`subfieldid`,`seq`,`subfield_cd`,`subfield_data`) "
 					. "VALUES ";
-
-	#### scan all existing biblio entries in biblio_id order
-	$sql = "SELECT * FROM `$oldDb`.`biblio` ORDER BY `bibid` ";
-	$bibs = $db->select($sql);
-	$n = 0; $fldid = 1; $subid = 1;
-	while (($bib = $bibs->next()) != NULL) {
-		$n++;
-		$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'.$bib[last_change_userid].'", "'.$bib[material_cd].'", "'.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
 
 		### get those fields & sub-fields previosly kept in biblio table
 		$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", "0", "245", NULL, NULL, NULL, NULL),';
@@ -102,22 +103,21 @@
 			$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld[subfield_cd].'", "'.$fld[field_data].'"),'; $subid++;
       $fldid++;
 		}
-		//if ($n=1)break; ## for bebug only
-	}
 	$bibSql = substr($bibSql,0,-1);
-	echo "$n biblio records written.<br />";
 	//echo "biblio==>$bibSql<br />";
 	$rslt = $db->Act($bibSql);
-
 	$fldSql = substr($fldSql,0,-1);
-	echo "$fldid field records written.<br />";
 	//echo "fields==>$fldSql<br />";
 	$rslt = $db->Act($fldSql);
-	
 	$subSql = substr($subSql,0,-1);
-	echo "$subid sub-field records written.<br />";
 	//echo "subFields==>$subSql<br />";
 	$rslt = $db->Act($subSql);
+
+		//if ($n=1)break; ## for bebug only
+	}
+	echo "$n biblio records written.<br />";
+	echo "$fldid field records written.<br />";
+	echo "$subid sub-field records written.<br />";
 ?>
 
 </body>
