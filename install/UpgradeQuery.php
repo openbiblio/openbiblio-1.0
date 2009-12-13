@@ -433,6 +433,15 @@ class UpgradeQuery extends InstallQuery {
 					;
     $this->act($sql);
 		//-------------------------//
+		#### this is not ready! there are several tables involved which I cannot decode - FL
+		$sql = "Insert into `openbibliowork`.`biblio_copy` "
+		      ."(`bibid`,`copyid`,`create_dt`,`last_change_dt`,`last_change_userid`,"
+					." `barcode_nmbr`,`copy_desc`,`vendor`,`fund`,`price`,`experation`,`histid`,`siteid`)"
+		      ."SELECT `bibid`,`copyid`,`create_dt`,NULL,NULL,`barcode_nmbr`,NULL,NULL,NULL,NULL,NULL,NULL,'3' "
+		      ."  FROM `openbiblio`.`biblio_copy`"
+		      ;
+    $this->act($sql);
+		//-------------------------//
 		## member loan priveleges denied support
     $sql = "INSERT INTO `openbibliowork`.`mbr_classify_dm` "
 					."(`code`, `description`, `default_flg`) VALUES ('3', 'denied', 'N')
