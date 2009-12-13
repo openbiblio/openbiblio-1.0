@@ -84,26 +84,26 @@ bs = {
 		});
 
 		// for the item edit and online update functions
-	  	$('#onlnUpdtBtn').bind('click',null,function (){
-					$('#onlnDoneBtn').show();
-					$('#onlnUpdtBtn').hide();
-					$('#itemEditorDiv td.filterable').show();
-					bs.fetchOnlnData();
-			});
+	  $('#onlnUpdtBtn').bind('click',null,function (){
+			$('#onlnDoneBtn').show();
+			$('#onlnUpdtBtn').hide();
+			$('#itemEditorDiv td.filterable').show();
+			bs.fetchOnlnData();
+		});
 
-	  	$('#onlnDoneBtn').bind('click',null,function (){
-					$('#itemEditorDiv td.filterable').hide();
-					$('#onlnUpdtBtn').show();
-					$('#onlnDoneBtn').hide();
-			});
+	  $('#onlnDoneBtn').bind('click',null,function (){
+			$('#itemEditorDiv td.filterable').hide();
+			$('#onlnUpdtBtn').show();
+			$('#onlnDoneBtn').hide();
+		});
 
-			$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
-												 .bind('click',null,bs.doItemUpdate);
+		$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
+											 .bind('click',null,bs.doItemUpdate);
 
-			$('.itemGobkBtn').bind('click',null,function () {
-   	 		$('#itemEditorDiv').hide();
-		  	$('#biblioDiv').show();
-			});
+		$('.itemGobkBtn').bind('click',null,function () {
+   		$('#itemEditorDiv').hide();
+		 	$('#biblioDiv').show();
+		});
 			
 		// for the copy editor screen
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
@@ -231,6 +231,8 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
+				
+				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
 	  			$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
@@ -239,6 +241,8 @@ bs = {
         	$('#biblioListDiv').show()
 		  		$('#searchDiv').hide();
 				}
+
+				// single hit
 				// Changed to two, as an extra record is added with the amount of records etc. (also, if not first page ignore this) - LJ
 				else if (biblioList.length == 2 && firstItem == 0) {
 				  bs.multiMode = false;
@@ -247,12 +251,13 @@ bs = {
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
+
+				// multiple hits
 				else {
-//				  var header = "<table id=\"listTbl\">\n<tbody class=\"striped\">";
-//				  $('#srchRsltsDiv').append(header);
 				  bs.multiMode = true;
 				  bs.showList(firstItem, biblioList);
 				}
+//				bs.rtnToList();
 	    }
 
 		});
@@ -309,7 +314,8 @@ bs = {
 			html += '	<input type="button" class="moreBtn" value="More info" />'+"\n";
 			html += '<td>\n';
 			html += '<td><img src="../images/'+biblio.avIcon+'" alt="Grn: available<br />Blu: on hold<br />Red: not available" /></td>\n';
-			html += '<td><img src="../images/'+biblio.imageFile+'" /></td><td>'+title+"</td>\n";
+			html += '<td><img src="../images/'+biblio.imageFile+'" /></td>'+"\n";
+			html += '<td>'+title+"</td>\n";
 			html += '<td>'+author+'</td><td>'+callNo+"</td>\n";
 			html += '<td><div class="biblioBtn">'+"\n";
 			html += "</div></td> \n";
@@ -604,9 +610,11 @@ bs = {
 	  $.post(bs.url,params, function(response){
 	  	$('#itemRsltMsg').html(response);
 			bs.rtnToBiblio()
-			if (bs.srchType == 'barCd') bs.doBarCdSearch();
-			else if (bs.srchType = 'phrase') bs.doPhraseSearch();
-			bs.rtnToBiblio()
+			if (bs.srchType == 'barCd')
+				bs.doBarCdSearch();
+			else if (bs.srchType = 'phrase')
+				bs.doPhraseSearch();
+//			bs.rtnToBiblio()
 	  });
 	  return false;
 	},
