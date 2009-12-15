@@ -177,12 +177,14 @@ class SrchDb {
 		$sql = "INSERT `biblio_copy` SET "
 		      ."`bibid` = $bibid,"
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
+		      ."`siteid` = ".Settings::get('library_name')."," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '$_POST[copy_desc]' ";
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
+		
 		$copyid = $this->db->getInsertID();
 		$sql = "Insert `biblio_status_hist` SET "
 		      ."`bibid` = $bibid,"
@@ -192,6 +194,7 @@ class SrchDb {
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		$histid = $this->db->getInsertID();
+		
 		$sql = "Update `biblio_copy` SET "
 		      ."`histid` = '$histid' "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
