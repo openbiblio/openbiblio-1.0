@@ -62,16 +62,53 @@ class SrchDb {
 									." AND bs$keywordnr.`subfield_data` LIKE '%$kwd%'";
 			$termnr = 1;
 			$sqlWhere .= " AND (";
-			$firstLoop = true;
+			$firstWhere = true;
 			foreach ($spec as $item) {
-				if(!$firstLoop) $sqlWhere .= " OR";
-				$firstLoop = false;
+				// Continue when the item has to do with selecting and ordering
+				if(!isset($item['tag'])) continue;
+				if(!$firstWhere) $sqlWhere .= " OR";
+				$firstWhere = false;
 				$sqlWhere .= " bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "'";
-				$termnr++;
+				$termnr++;					
 			}
 			$sqlWhere .= ")";
 			$keywordnr++;
+		}		
+		// Now do the selecting and ordering
+		$selectNr = 1;
+		foreach ($spec as $item) {
+			if(isset($item['orderTag'])){
+				$sqlSelect .= " LEFT JOIN biblio_field AS sortf ON sortf.bibid = `b`.`bibid`"
+					." AND sortf.tag = '" . $item['orderTag'] . "'"
+					." LEFT JOIN biblio_subfield AS sorts ON sorts.fieldid = sortf.fieldid"
+					." AND sorts.subfield_cd = '" . $item['orderSuf'] . "'";
+				$sqlOrder = " ORDER BY sorts.`subfield_data`;";					
+			}
+			if(isset($item['mediaTag'])){
+//				$searchTags .= '{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaValue'] . '"}';						
+				
+			}
+			if(isset($item['audienceTag'])){
+//				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
+				}	
+			if(isset($item['toTag'])){
+				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
+				$sqlWhere .= " AND (sf$selectNr.bibid = b.bibid "
+									." AND ss$selectNr.fieldid = sf$selectNr.fieldid"
+									." AND sf$selectNr.tag='" . $item['toTag'] . "' AND ss$selectNr.subfield_cd = '" . $item['toSuf'] . "'"									
+									." AND ss$selectNr.`subfield_data` < " . $item['toValue'] . ")";
+			}	
+			if(isset($item['fromTag'])){
+				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
+				$sqlWhere .= " AND (sf$selectNr.bibid = b.bibid "
+									." AND ss$selectNr.fieldid = sf$selectNr.fieldid"
+									." AND sf$selectNr.tag='" . $item['fromTag'] . "' AND ss$selectNr.subfield_cd = '" . $item['fromSuf'] . "'"										
+									." AND ss$selectNr.`subfield_data` > " . $item['fromValue'] . ")";					
+			}
+			$selectNr++;
 		}
+		
+		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
 		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
@@ -390,24 +427,65 @@ class SrchDb {
 	case 'doPhraseSearch':
 	  $theDb = new SrchDB;
 	  switch ($_REQUEST[searchType]) {
-	    case 'title': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"245","suf":"a"},
-					{"tag":"245","suf":"b"}]'); break;
-			case 'author': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"100","suf":"a"},
-					{"tag":"245","suf":"c"}]'); break;
-			case 'subject': 	$biblioLst = $theDb->getBiblioByPhrase('words', '[{"tag":"650","suf":"a"}]'); break;
-			case 'keyword': 	$biblioLst = $theDb->getBiblioByPhrase('words', '[{"tag":"245","suf":"a"},
-					{"tag":"650","suf":"a"},
-					{"tag":"100","suf":"a"},
-					{"tag":"245","suf":"b"},
-					{"tag":"245","suf":"c"}]'); break;
+	    case 'title': 		$type = 'phrase';
+							$params = '{"tag":"245","suf":"a"},
+								{"tag":"245","suf":"b"}'; 
+							break;
+			case 'author': 		$type = 'phrase';
+								$params ='{"tag":"100","suf":"a"},
+								{"tag":"245","suf":"c"}'; 
+							break;
+			case 'subject': 	$type = 'words';
+								$params = '{"tag":"650","suf":"a"}'; 
+								break;
+			case 'keyword': 	$type = 'words';
+								$params ='{"tag":"245","suf":"a"},
+									{"tag":"650","suf":"a"},
+									{"tag":"100","suf":"a"},
+									{"tag":"245","suf":"b"},
+									{"tag":"245","suf":"c"}'; 
+								break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
-			case 'publisher': $biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"260","suf":"b"}]'); break;
-			case 'callno': 		$biblioLst = $theDb->getBiblioByPhrase('phrase','[{"tag":"099","suf":"a"}]'); break;
+			case 'publisher': 	$type = 'phrase';
+								$params = '{"tag":"260","suf":"b"}'; 
+								break;
+			case 'callno': 		$type = 'phrase';
+								$params = '{"tag":"099","suf":"a"}'; 
+								break;
 	    
 	  	default:
 	  		echo "<h5>Invalid Search Type: $_REQUEST[srchBy]</h5>";
 	  		exit;
 		}
+		// Add search params
+		$searchTags = "";
+		
+		if(isset($_REQUEST['sortBy'])){
+				switch ($_REQUEST['sortBy']){
+				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
+				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
+				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
+			}
+		}		
+		if($_REQUEST['advanceQ']=='Y'){
+			if(isset($_REQUEST['mediaType'])){
+				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaValue'] . '"}';
+			}
+			if(isset($_REQUEST['audienceLevel'])){
+				//Not sure which field this, so leave this for now - LJ
+				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
+			}
+			if(isset($_REQUEST['to']) && strlen($_REQUEST['to']) == 4){
+				$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $_REQUEST['to'] . '"}';
+			}
+			if(isset($_REQUEST['from']) && strlen($_REQUEST['from']) == 4){
+				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $_REQUEST['from'] . '"}';		
+			}
+		}			
+				
+		$paramStr = "[" . $params . "," . $searchTags . "]";
+		$biblioLst = $theDb->getBiblioByPhrase($type, $paramStr);
 		if (sizeof($biblioLst) > 0) {
 			// Add amount of search results.
 			if($_REQUEST['firstItem'] == null){
