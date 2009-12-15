@@ -6,6 +6,7 @@
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../classes/Query.php"));
+	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
@@ -72,6 +73,7 @@ class SrchDb {
 			$sqlWhere .= ")";
 			$keywordnr++;
 		}
+		$sql = $sqlSelect.$sqlWhere;
 		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
@@ -476,7 +478,13 @@ class SrchDb {
 	case 'updateBiblio':
 	  require_once(REL(__FILE__,"biblio_updater.php"));
 	  break;
-	  
+
+	case 'deleteBiblio':
+	  $theDb = new Biblios;
+	  $theDb->deleteOne($_REQUEST[bibid]);
+	  echo T("Delete completed");
+	  break;
+
 	case 'updateCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);

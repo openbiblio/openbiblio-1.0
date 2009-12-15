@@ -194,14 +194,16 @@ console.log('opacMode='+opacMode);
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<?php if (strtolower($tab) != 'opac') {?>
-		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<?php }?>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
+	<?php if (strtolower($tab) != 'opac') {?>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" id="biblioDeleteBtn" class="button" value="<?php echo T('Delete This Item'); ?>">
+	<?php }?>
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">
@@ -233,7 +235,7 @@ console.log('opacMode='+opacMode);
 		</table>
 	</fieldset>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php if (strtolower($tab) != 'opac') { ?>
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
 <?php } ?>

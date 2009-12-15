@@ -17,7 +17,7 @@
 <script language="JavaScript" >
 // JavaScript Document
 //------------------------------------------------------------------------------
-// lookup Javascript
+// biblio_search Javascript
 bs = {
 <?php
 		#### Translation table entries for JS use go here
@@ -71,6 +71,9 @@ bs = {
 		// for the single biblio display screen
 		$('#biblioEditBtn').bind('click',null,function () {
 			bs.doItemEdit(bs.theBiblio);
+		});
+		$('#biblioDeleteBtn').bind('click',null,function () {
+			bs.doItemDelete(bs.theBiblio);
 		});
 		$('#marcBtn').bind('click',null,function () {
 		  //console.log('swapping state to MARC column');
@@ -412,9 +415,12 @@ bs = {
 	},
 	fetchCopyInfo: function () {
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
-				if (!jsonInpt) return false; // no copies found
-				
 				bs.copyJSON = jsonInpt;
+				if (!bs.copyJSON) {
+  				$('tbody#copies').html('<?php T("No Copies."); ?>');
+					return false; // no copies found
+				}
+				
 				var html = '';
 				for (nCopy in bs.copyJSON) {
 				  var crntCopy = eval('('+bs.copyJSON[nCopy]+')')
@@ -618,17 +624,24 @@ bs = {
 	  });
 	  return false;
 	},
-	doItemDelete: function () {
-	  //### FIXME - must have NO copies to allow delete !!!!!!
-	  if (confirm('<?php echo T('Are you sure you want to delete this item ?'); ?>')) {
-	  	var copyid = $(this).next().val();
-	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
-	  	$.post(bs.url,params, function(response){
-	  	  $('#rsltMsg').html(response);
-	  		bs.fetchCopyInfo(); // refresh copy display
-	  	});
-		};
-	  $(this).parent().parent().removeClass('hilite');
+	doItemDelete: function (biblio) {
+		//console.log('there are '+bs.copyJSON.length+' copies.');
+		if (bs.copyJSON) {
+			alert('You must delete all copies before you can delete an item!');
+		}
+		else {
+	  	if (confirm('<?php echo T('Are you sure you want to delete this item?'); ?>')) {
+	    	var params = "&mode=deleteBiblio&bibid="+bs.biblio.bibid;
+	  		$.post(bs.url,params, function(response){
+	  		  $('#rsltMsg').html(response);
+					if (bs.srchType == 'barCd')
+						bs.doBarCdSearch();
+					else if (bs.srchType = 'phrase')
+						bs.doPhraseSearch();
+	  			$('#biblioDiv').hide();
+	  		});
+			}
+		}
 		return false;
 	},
 
@@ -714,7 +727,7 @@ bs = {
 	},
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
-	  if (confirm('<?php echo T('Are you sure you want to delete this copy ?'); ?>')) {
+	  if (confirm('<?php echo T('Are you sure you want to delete this copy?'); ?>')) {
 	  	var copyid = e.data.copyid;
 	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
 	  	$.post(bs.url,params, function(response){
