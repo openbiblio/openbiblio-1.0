@@ -80,10 +80,13 @@ bs = {
 			$('#biblioDiv td.filterable').toggle()
 		});
 		$('#biblioDiv .gobkBtn').bind('click',null,function () {
-		  if (bs.multiMode)
+		  if ((bs.multiMode) || (bs.srchType = 'phrase')) {
+				bs.doPhraseSearch();
 				bs.rtnToList();
-			else
+			} else {
+				bs.doBarCdSearch();
 			  bs.rtnToSrch();
+			}
 		});
 
 		// for the item edit and online update functions
@@ -93,16 +96,13 @@ bs = {
 			$('#itemEditorDiv td.filterable').show();
 			bs.fetchOnlnData();
 		});
-
 	  $('#onlnDoneBtn').bind('click',null,function (){
 			$('#itemEditorDiv td.filterable').hide();
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
 		});
-
 		$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
 											 .bind('click',null,bs.doItemUpdate);
-
 		$('.itemGobkBtn').bind('click',null,function () {
    		$('#itemEditorDiv').hide();
 		 	$('#biblioDiv').show();
