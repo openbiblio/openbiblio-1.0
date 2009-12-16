@@ -6,8 +6,7 @@
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	require_once(REL(__FILE__, "../lookup2/AdminDBs.php"));
-
+	require_once(REL(__FILE__, "../model/Online.php"));
 
 	switch ($_REQUEST[mode]){
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-

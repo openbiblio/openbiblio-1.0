@@ -9,8 +9,8 @@ oed = {
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	$jsLoc = new Localize(OBIB_LOCALE,$tab);
 
-	echo 'editHdr 	 : "'.T('lookup_optsSettings').'",'."\n";
-	echo 'successMsg : "'.T('lookup_optsUpdated').'",'."\n";
+	echo 'editHdr 	 : "'.T('Online Options').'",'."\n";
+	echo 'successMsg : "'.T('Updated successfully').'",'."\n";
 	?>
 	init: function () {
 		//console.log('in oed init');
@@ -18,12 +18,10 @@ oed = {
 	  
 		oed.initWidgets();
 
-		oed.url = 'adminSrvr.php';
+		oed.url = 'onlineSrvr.php';
 		oed.editForm = $('#editForm');
 
-	  $('#editHdr').html(oed.editHdr);
-//		$('table tbody.striped tr:odd td').addClass('altBG');
-//		$('table tbody.striped tr:even td').addClass('altBG2');
+	  $('#editHdr').html(<?php echo "'".T('Online Options')."'"; ?>);
 		$('#updtBtn').bind('click',null,oed.doUpdate);
 
 		oed.fetchOpts();
@@ -69,7 +67,7 @@ oed = {
 	},
 
 	doValidate: function () {
-console.log('user input validation not available!!!!, see admin/settings_edit');
+		//console.log('user input validation not available!!!!, see admin/settings_edit');
 		return true;
 	},
 
@@ -82,7 +80,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 		//console.log(parms);
 		$.post(oed.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
-				console.log('rcvd error msg from server :<br />'+response);
+				//console.log('rcvd error msg from server :<br />'+response);
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			}

@@ -8,18 +8,21 @@
 	session_cache_limiter(null);
 
   $tab = "admin";
-  $nav = "lookupHosts";
+  $nav = "onlineHosts";
   $focus_form_name = "editForm";
   $focus_form_field = "name";
 
   require_once(REL(__FILE__, "../functions/inputFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
+  
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
+	require_once(REL(__FILE__, "online_hosts_js.php"));
+
 ?>
+<h3 id="listHdr"><?php echo T('Online Hosts'); ?></h3>
 
 <div id="listDiv">
-<h3 id="listHdr"></h3>
 <h5 id="updateMsg"></h5>
 <br />
 <form id="showForm" name="showForm" class="form">
@@ -28,13 +31,13 @@
 	<thead>
   <tr>
     <th colspan="1"  class="colHead">&nbsp;</th>
-    <th class="colHead"><?php echo T("lookup_hostsSeqNo"); ?></th>
-    <th class="colHead"><?php echo T("lookup_hostsActive"); ?></th>
-    <th class="colHead"><?php echo T("lookup_hostsHost"); ?></th>
-    <th class="colHead"><?php echo T("lookup_hostsName"); ?></th>
-    <th class="colHead"><?php echo T("lookup_hostsDb"); ?></th>
-    <th class="colHead"><?php echo T("lookup_hostsUser"); ?></th>
-    <th class="colHead"><?php echo T("lookup_hostsPw"); ?></th>
+    <th class="colHead"><?php echo T("Sequence"); ?></th>
+    <th class="colHead"><?php echo T("Active"); ?></th>
+    <th class="colHead"><?php echo T("Host URL"); ?></th>
+    <th class="colHead"><?php echo T("Name"); ?></th>
+    <th class="colHead"><?php echo T("Database"); ?></th>
+    <th class="colHead"><?php echo T("Userid"); ?></th>
+    <th class="colHead"><?php echo T("Password"); ?></th>
   </tr>
 	</thead>
 	<tbody class="striped">
@@ -47,7 +50,7 @@
   </tr>
 	<tr>
 	  <td colspan="8" class="primary btnFld">
-			<input type="button" id="newBtn" value="<?php echo T("lookup_hostsAddNewBtn"); ?>" class="button" />
+			<input type="button" id="newBtn" value="<?php echo T("Add New"); ?>" class="button" />
 		</td>
 	</tr>
 	</tfoot>
@@ -59,15 +62,17 @@
 
 <div id="editDiv">
 <form id="hostForm" name="editForm" class="form">
-<h1><span id="hostHdr" class="title"></span></h1>
-<h5 id="reqdNote" class="reqd"><sup>*</sup><?php echo T("lookup_rqdNote"); ?></h5>
+<!--h1><span id="hostHdr" class="title"><?php echo T('Host Editor'); ?></span></h1-->
+<h5 id="reqdNote" class="reqd"><sup>*</sup><?php echo T("Required note"); ?></h5>
+<fieldset>
+<legend><?php echo T('Host Editor'); ?></legend>
 <table id="editTbl" class="primary">
 	<thead>
   </thead>
   <tbody>
   <tr>
     <td class="primary lblFld">
-      <label for="name" class="reqd"><sup>*</sup><?php echo T("lookup_hostsName"); ?>
+      <label for="name" class="reqd"><sup>*</sup><?php echo T("Name"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("name",32,32,$postVars,$pageErrors); ?>
@@ -75,7 +80,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="host" class="reqd"><sup>*</sup><?php echo T("lookup_hostsHost"); ?>
+      <label for="host" class="reqd"><sup>*</sup><?php echo T("Host URL"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("host",32,32,$postVars,$pageErrors); ?>
@@ -83,7 +88,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="db" class="reqd"><sup>*</sup><?php echo T("lookup_hostsDb"); ?>
+      <label for="db" class="reqd"><sup>*</sup><?php echo T("Database"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("db",16,16,$postVars,$pageErrors); ?>
@@ -91,7 +96,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="seq" class="reqd"><sup>*</sup><?php echo T("lookup_hostsSeqNo"); ?></label>
+      <label for="seq" class="reqd"><sup>*</sup><?php echo T("Sequence"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("seq",3,3,$postVars,$pageErrors); ?>
@@ -99,7 +104,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="active"><?php echo T("lookup_hostsActive"); ?></label>
+      <label for="active"><?php echo T("Active"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <input type="checkbox" id="active" name="active" value="y"
@@ -108,7 +113,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="user"><?php echo T("lookup_hostsUser"); ?>
+      <label for="user"><?php echo T("Userid"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("user",10,10,$postVars,$pageErrors); ?>
@@ -116,7 +121,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="pw"><?php echo T("lookup_hostsPw"); ?>
+      <label for="pw"><?php echo T("Password"); ?>:</label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("pw",10,10,$postVars,$pageErrors); ?>
@@ -141,6 +146,7 @@
   </tbody>
 
 </table>
+</fieldset>
 </form>
 </div>
 

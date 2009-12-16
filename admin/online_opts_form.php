@@ -8,13 +8,15 @@
   session_cache_limiter(null);
 
   $tab = "admin";
-  $nav = "lookupOpts";
+  $nav = "onlineOpts";
   $focus_form_name = "editForm";
   $focus_form_field = "protocol";
 
   require_once(REL(__FILE__, "../functions/inputFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
+	require_once(REL(__FILE__, "online_opts_js.php"));
 
 ?>
 
@@ -27,19 +29,19 @@
 	<tbody class="striped">
   <tr>
     <td class="primary lblFld">
-      <label for="protocol"><?php echo T("lookup_optsProtocol"); ?></label>
+      <label for="protocol"><?php echo T("Online Protocol"); ?></label>
     </td>
     <td valign="top" class="primary">
       <select id="protocol" name="protocol">
         <option value="   ">   </option>
-        <option value="YAZ">YAZ</option>
-        <option value="SRU">SRU</option>
+        <option value="YAZ"><?php echo T('YAZ');?></option>
+        <option value="SRU"><?php echo T('SRU');?></option>
       </select>
     </td>
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="maxHits"><?php echo T("lookup_optsMaxHits"); ?></label>
+      <label for="maxHits"><?php echo T("Maximum Hits"); ?></label>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("maxHits",10,10,$postVars,$pageErrors); ?>
@@ -47,7 +49,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="timeout"><?php echo T("lookup_optsTimeout"); ?></label>
+      <label for="timeout"><?php echo T("Timeout"); ?></label>
     </td>
     <td valign="top" class="primary">
       <?php printInputText("timeout",10,10,$postVars,$pageErrors); ?>
@@ -55,7 +57,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="keepDashes"><?php echo T("lookup_optsKeepDashes"); ?></label>
+      <label for="keepDashes"><?php echo T("Keep Dashes"); ?></label>
     </td>
     <td valign="top" class="primary">
       <input type="checkbox" id="keepDashes" name="keepDashes" value="y"
@@ -64,7 +66,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="callNmbrType"><?php echo T("lookup_optsCallNmbrType"); ?></label>
+      <label for="callNmbrType"><?php echo T("Call Nmbr Type"); ?></label>
     </td>
     <td class="primary inptFld">
       <select id="callNmbrType" name="callNmbrType">
@@ -78,7 +80,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="autoDewey"><?php echo T("lookup_optsAutoDewey"); ?></label>
+      <label for="autoDewey"><?php echo T("Auto Dewey"); ?></label>
     </td>
     <td class="primary inptFld">
       <input type="checkbox" id="autoDewey" name="autoDewey" value="y"
@@ -87,7 +89,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="defaultDewey"><?php echo T("lookup_optsDefaultDewey"); ?></label>
+      <label for="defaultDewey"><?php echo T("Default Dewey"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("defaultDewey",10,10,$postVars,$pageErrors); ?>
@@ -95,7 +97,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="autoCutter"><?php echo T("lookup_optsAutoCutter"); ?></label>
+      <label for="autoCutter"><?php echo T("Auto Cutter"); ?></label>
     </td>
     <td class="primary inptFld">
       <input type="checkbox" id="autoCutter" name="autoCutter" value="y"
@@ -104,7 +106,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-     <label for="cutterType"><?php echo T("lookup_optsCutterType"); ?></label>
+     <label for="cutterType"><?php echo T("Cutter Type"); ?></label>
     </td>
     <td class="primary inptFld">
       <select id="cutterType" name="cutterType">
@@ -116,7 +118,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="cutterWord"><?php echo T("lookup_optsCutterWord"); ?></label>
+      <label for="cutterWord"><?php echo T("Cutter Word"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("cutterWord",10,10,$postVars,$pageErrors); ?>
@@ -124,7 +126,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="noiseWords"><?php echo T("lookup_optsNoiseWords"); ?></label>
+      <label for="noiseWords"><?php echo T("Noise Words"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("noiseWords",30,100,$postVars,$pageErrors); ?>
@@ -132,7 +134,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="autoCollect"><?php echo T("lookup_optsAutoCollection"); ?></label>
+      <label for="autoCollect"><?php echo T("Auto Collection"); ?></label>
     </td>
     <td class="primary inptFld">
       <input type="checkbox" id="autoCollect" name="autoCollect" value="y"
@@ -141,7 +143,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="fictionName"><?php echo T("lookup_optsFictionName"); ?></label>
+      <label for="fictionName"><?php echo T("Fiction Name"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("fictionName",10,10,$postVars,$pageErrors); ?>
@@ -149,7 +151,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="fictionCode"><?php echo T("lookup_optsFictionCode"); ?></label>
+      <label for="fictionCode"><?php echo T("Fiction Code"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("fictionCode",10,10,$postVars,$pageErrors); ?>
@@ -157,7 +159,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="fictionLoC"><?php echo T("lookup_optsLocFictionCodes"); ?></label>
+      <label for="fictionLoC"><?php echo T("Fiction Codes - LoC"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("fictionLoC",30,50,$postVars,$pageErrors); ?>
@@ -165,7 +167,7 @@
   </tr>
   <tr>
     <td class="primary lblFld">
-      <label for="fictionDew"><?php echo T("lookup_optsDewFictionCodes"); ?></label>
+      <label for="fictionDew"><?php echo T("Fiction Codes - Dewey"); ?></label>
     </td>
     <td class="primary inptFld">
       <?php printInputText("fictionDew",30,50,$postVars,$pageErrors); ?>
@@ -179,7 +181,7 @@
   <tr>
     <td colspan="2" class="primary btnFld">
       <input type="button" id="updtBtn" name="updtBtn" class="button"
-			 value="<?php echo T("lookup_optsUpdtBtn"); ?>" />
+			 value="<?php echo T("Update"); ?>" />
     </td>
   </tr>
 	</tfoot>

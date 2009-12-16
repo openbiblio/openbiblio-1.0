@@ -6,11 +6,11 @@
 // JavaScript Document
 hed = {
 	<?php
-	echo 'listHdr : "'.T('lookup_hostsListHeader').'",'."\n";
-	echo 'editHdr : "'.T('lookup_hostsEditHeader').'",'."\n";
-	echo 'newHdr  : "'.T('lookup_hostsNewHeader').'",'."\n";
-	echo 'successMsg : "'.T('lookup_optsUpdated').'",'."\n";
-	echo 'delConfirmMsg  : "'.T('lookup_hostsConfirmDelete').'",'."\n";
+//	echo 'listHdr : "'.T('lookup_hostsListHeader').'",'."\n";
+//	echo 'editHdr : "'.T('lookup_hostsEditHeader').'",'."\n";
+//	echo 'newHdr  : "'.T('lookup_hostsNewHeader').'",'."\n";
+//	echo 'successMsg : "'.T('lookup_optsUpdated').'",'."\n";
+//	echo 'delConfirmMsg  : "'.T('lookup_hostsConfirmDelete').'",'."\n";
 	?>
 	
 	init: function () {
@@ -18,7 +18,7 @@ hed = {
 
 		hed.initWidgets();
 
-		hed.url = 'adminSrvr.php';
+		hed.url = 'onlineSrvr.php';
 		hed.editForm = $('#editForm');
 
 		$('#reqdNote').css('color','red');
@@ -91,10 +91,13 @@ hed = {
 	  $('#hostForm tfoot #updtBtn').hide();
 	  $('#hostForm tfoot #addBtn').show();
 	  $('#hostForm tbody #name').focus();
+	  $('#hostForm #id').val('');
+	  document.forms['editForm'].reset();
 	  
 		$('#listDiv').hide();
 		$('#editDiv').show();
 	},
+	
 	doEdit: function (e) {
 	  var theHostId = $(this).next().val();
 		//console.log('you wish to edit host #'+theHostId);
@@ -106,7 +109,7 @@ hed = {
 	},
 	
 	doValidate: function () {
-console.log('user input validation not available!!!!, see admin/settings_edit');
+		//console.log('user input validation not available!!!!, see admin/settings_edit');
 		return true;
 	},
 	
@@ -144,7 +147,7 @@ console.log('user input validation not available!!!!, see admin/settings_edit');
 			}
 			else {
 				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html(hed.successMsg);
+					$('#updateMsg').html('<?php echo T('Updated');?>');
 					$('#updateMsg').show();
 				}
 			  hed.doBackToList();
