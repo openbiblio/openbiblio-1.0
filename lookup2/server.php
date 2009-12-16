@@ -10,6 +10,17 @@
 	require_once(REL(__FILE__, 'AdminDBs.php'));
 	require_once(REL(__FILE__, 'srvrFuncs.php'));	## general support functions
 
+	function postNewBiblio() {
+		require_once(REL(__FILE__, "../model/Biblios.php"));
+		require_once(REL(__FILE__, "../classes/Marc.php"));
+
+	  $nav = "newconfirm";
+	  
+	  include(REL(__FILE__,'../catalog/biblio_change.php'));
+	  
+	  echo $msg;
+	}
+
 	## fetch user options and post to $postVars
 	# MUST BE FIRST !!!!!
 	$optr = new Opts;
@@ -52,6 +63,11 @@
 
 ## main body of code
 switch ($_REQUEST[mode]){
+  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	case 'doInsertBiblio':
+	  postNewBiblio();
+	  break;
+	  
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getHosts':
 		echo json_encode($postVars[hosts]);

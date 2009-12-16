@@ -211,7 +211,9 @@
 </div>
 
 	<div id="selectionDiv">
-   	<form id="newbiblioform" name="newbiblioform" method="POST" action="chng-wrap.php" >
+   	<!--form id="newbiblioform" name="newbiblioform" method="POST" action="chng-wrap.php" -->
+  	<!-- submit action will now be handled by javascript code -->
+   	<form id="newbiblioform" name="newbiblioform" action="" >
 			<?php
 //  		## we use original biblio edit screen, but will replace existing 'Cancel' button
 //   		//<form name="newbiblioform" method="POST" action="../catalog/biblio_new.php" >
@@ -226,6 +228,11 @@
 			?>
 		</form>
 	</div>
+
+<div id="copyEditorDiv">
+	<?php include_once(REL(__FILE__,"biblio_copy_editor.php"));?>
+</div>
+
 <?php
 	## needed for all cases
 	include("../shared/footer.php");

@@ -70,11 +70,9 @@ lkup = {
 		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
 		$('#selectionDiv input[value="Cancel"]').attr('value',lkup.goBack);
 		$('#submitBtn').val(lkup.accept);
-		$('#newbiblioform').bind('submit',null,function(){
-			//console.log('callnmbr='+$('#099a').val());
-	  	var parms=$('#newbiblioform').serialize();
-			console.log('submitting parms: '+parms);
-			return true;
+		$('#submitBtn').bind('click',null,function(){
+			lkup.doInsertNew();
+			return false;
 		});
 
 		// FIXME - fl only '*' should be colored
@@ -102,6 +100,7 @@ lkup = {
 		$('#retryDiv').hide();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
+		$('#copyEditorDiv').hide();
 
 		$('#lookupVal').focus();
 		lkup.disableSrchBtn();
@@ -150,8 +149,17 @@ lkup = {
 		});
 	},
 
-	//------------------------------
-	// search related stuff
+	//------------------------------------------------------------------------------------------
+	// manual 'new biblio' related stuff
+	doInsertNew: function () {
+	 	var parms=$('#newbiblioform').serialize();
+		parms += '&mode=doInsertBiblio';
+	  $.post(lkup.url,parms, function(response){
+		});
+	},
+
+	//------------------------------------------------------------------------------------------
+	// on-line search related stuff
 	chkIsbn: function (isbn) {
 		// validate isbn string; return TRUE if checksum is valid
 		var nSum = 0;
