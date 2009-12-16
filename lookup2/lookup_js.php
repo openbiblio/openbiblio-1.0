@@ -9,7 +9,7 @@
 lkup = {
 <?php
 //	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
-	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
+//	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
 	echo 'isbn							:"'.T("lookup_isbn").'",'."\n";
 	echo 'issn							:"'.T("lookup_issn").'",'."\n";
 	echo 'lccn							:"'.T("lookup_lccn").'",'."\n";
@@ -47,11 +47,13 @@ lkup = {
 		lkup.form = $('#lookupForm');
 		lkup.bs_url = '../catalog/biblio_server.php';
 		
-		// button on search screen gets special treatment
 		lkup.srchBtn = $('#srchBtn');
 		lkup.resetForm();
 
+		// search form functions
     $('.criteria').bind('change',null,lkup.enableSrchBtn);
+    $('#manualBtn').bind('click',null,lkup.doShowOne);
+    
 		$('#quitBtn').bind('click',null,lkup.doAbandon);
 		$('#retryBtn').bind('click',null,lkup.doBackToSrch);
 		$('#choiceBtn1').bind('click',null,lkup.doBackToSrch);
@@ -117,7 +119,6 @@ lkup = {
 	resetForm: function () {
 	  //console.log('resetting Search Form');
 		$('#help').hide();
-	  $('#searchHdr').html(lkup.searchHdr);
 		$('#searchDiv').show();
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
@@ -434,6 +435,7 @@ lkup = {
 	},
 
 	doShowOne: function (data){
+	  $('#searchDiv').hide();
 		// assure all are visible at start
     $(".marcBiblioFld").each(function(){
 			$(this).parent().parent().show();
