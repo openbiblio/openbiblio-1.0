@@ -181,10 +181,10 @@ $biblio[marc] = $mrc;
 #**************************************************************************
 #*  Insert/Update bibliography
 #**************************************************************************
-echo "Posting insert/update now.<br />";
+//echo "Posting insert/update now.<br />";
 if ($nav == "newconfirm") {
 	$bibid = $biblios->insert($biblio);
-	$msg = T("Item successfully added.");
+	$msg = "{'bibid':$bibid}";
 } else {
 	$bibid = $_POST["bibid"];
 	$biblios->update($biblio);

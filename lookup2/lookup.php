@@ -230,7 +230,7 @@
 	</div>
 
 <div id="copyEditorDiv">
-	<?php include_once(REL(__FILE__,"biblio_copy_editor.php"));?>
+	<?php include_once(REL(__FILE__,"../catalog/biblio_copy_editor.php"));?>
 </div>
 
 <?php
