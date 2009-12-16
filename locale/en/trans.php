@@ -573,6 +573,7 @@ $trans["Site, %name%, updated."] = "Site, %name%, updated.";
 $trans["Site"] = "Site";
 $trans["Site:"] = "Site:";
 $trans["Sites"] = "Sites";
+$trans["Sort by: "] = "Sort by:";
 $trans["Staff Admin"] = "Staff Admin";
 $trans["Staff Login"] = "Staff Login";
 $trans["Staff member, %name%, has been added."] = "Staff member, %name%, has been added.";

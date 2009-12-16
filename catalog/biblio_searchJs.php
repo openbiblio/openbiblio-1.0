@@ -80,11 +80,14 @@ bs = {
 			$('#biblioDiv td.filterable').toggle()
 		});
 		$('#biblioDiv .gobkBtn').bind('click',null,function () {
-		  if ((bs.multiMode) || (bs.srchType = 'phrase')) {
-				bs.doPhraseSearch();
+		  if (bs.multiMode) {
+				if (bs.srchType = 'phrase')
+					bs.doPhraseSearch();
+				else
+					bs.doBarCdSearch();
 				bs.rtnToList();
 			} else {
-				bs.doBarCdSearch();
+				//bs.doBarCdSearch();
 			  bs.rtnToSrch();
 			}
 		});
