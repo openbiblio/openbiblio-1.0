@@ -43,6 +43,7 @@ function staff_menu() {
 	
 	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 	Nav::node('cataloging/localSearch', T("Local Search"), "../catalog/biblio_search.php");
+	Nav::node('cataloging/newItem', T("New Item"), "../online/new_item.php");
 
 	//Nav::node('cataloging/searchform', T("old search"), "../catalog/old_search.php");
 	if (isset($_SESSION['rpt_BiblioSearch'])) {

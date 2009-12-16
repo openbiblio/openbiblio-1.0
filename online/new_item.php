@@ -1,47 +1,25 @@
 <?php
-	// this program is an adjunct to Biblio_New_Form.php, a part of OpenBiblio,
-	// and is intended to add Z39.50 and/or SRU search capabilities to it.
-	//
-	// This code was developed by Fred LaPlante, Mercer, Maine, U.S.A.
-	// and is placed in the public domain for the benifit of all.
-	// Please credit the Author in any derivative work.
-
-	##### works with OpenBiblio 0.4.0 thru 0.6.1
-
-/**
- * LookUp - Library of Congress Lookup mod for OpenBiblio
- *
- * Current functionality:
- *
- *  * Lookup data from library of congress
- *  * Automatically fill bibliography information
- *
- * @package	OpenBiblio 0.6.0 - lookup
- * @version	see customHead.php
- * @author	Fred LaPlante
- * @date
- * @license     http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License
- *
- * @copyright Copyright &copy; 2004,5,6,7,8,9 All Rights Reserved.
- * @filesource
- *
- *    "Fred LaPlante" <flaplante@flos-inc.com>
- *
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
  */
+
   require_once("../shared/common.php");
 
   session_cache_limiter(null);
 
 	$tab = "cataloging";
-	$nav = "lookup";
+	$nav = "newItem";
   $focus_form_name = "lookupForm";
   $focus_form_field = "lookupVal";
 
   require_once(REL(__FILE__, "../functions/inputFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
+  
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
+	include_once(REL(__FILE__,'/new_itemJs.php'));
 ?>
+
 	<h3><?php echo T('Add New Item'); ?></h3>
 
 	<div id="searchDiv">
@@ -59,15 +37,15 @@
 		</thead>
 		<tbody>
 		<?php
-		  $isbnTxt    = T("lookup_isbn");
-		  $issnTxt    = T("lookup_issn");
-		  $lccnTxt    = T("lookup_lccn");
-		  $titleTxt   = T("lookup_title");
-		  $authorTxt  = T("lookup_author");
-			$keywordTxt = T("lookup_keyword");
-			$pubDateTxt = T("lookup_pubDate");
-			$pubNameTxt = T("lookup_publisher");
-			$pubLocTxt  = T("lookup_pubLoc");
+		  $isbnTxt    = T("ISBN");
+		  $issnTxt    = T("ISSN");
+		  $lccnTxt    = T("LCCN");
+		  $titleTxt   = T("Title");
+		  $authorTxt  = T("Author");
+			$keywordTxt = T("Keyword");
+			$pubDateTxt = T("Publication Date");
+			$pubNameTxt = T("Publisher");
+			$pubLocTxt  = T("Publication Location");
 		?>
 		<tr id="fldset1">
 		  <td class="primary inptFld">
@@ -82,7 +60,7 @@
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("lookup_andOpt");?></td>
+			<td class="primary"><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset2">
 		  <td class="primary inptFld">
@@ -97,7 +75,7 @@
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("lookup_andOpt");?></td>
+			<td class="primary"><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset3">
 			<td class="primary inptFld">
@@ -112,7 +90,7 @@
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("lookup_andOpt");?></td>
+			<td class="primary"><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset4">
 			<td class="primary inptFld">
@@ -127,7 +105,7 @@
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("lookup_andOpt");?></td>
+			<td class="primary"><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset5">
 			<td class="primary inptFld">
@@ -152,7 +130,7 @@
 		<tr>
 		  <td colspan="2" class="primary btnFld" >
 				<input type="submit" id="srchBtn" name="srchBtn" class="button"
-							 value="<?php echo T("lookup_search");?>" />
+							 value="<?php echo T("Search");?>" />
 			</td>
 		</tr>
 		</tfoot>
@@ -192,20 +170,23 @@
 		<tr>
 	    <td colspan="3" class="primary btnFld">
 				<input id="retryBtn" type="submit" class="button"
-							 value="<?php echo T("lookup_goBack");?>" />
+							 value="<?php echo T("Go Back");?>" />
 			</td>
 		</tr>
 		</table>
 	</div>
 
 	<div id="choiceDiv">
-		<input id="choiceBtn1" type="button" class="button btnFld"
-					 value="<?php echo T("lookup_goBack");?>" />
-	  <span id="choiceSpace">
-	  	Search Results go here
-	  </span>
-		<input id="choiceBtn2" type="button" class="button btnFld"
-					 value="<?php echo T("lookup_goBack");?>" />
+		<input id="choiceBtn1" type="button" class="button btnFld"value="<?php echo T("Go Back");?>" />
+		<span id="hitInfo">
+			<?php echo T("Success!")." "; ?>
+				<span id="ttlHhits"></span>
+			<?php echo " ".T("hits found!"); ?>
+		</span>
+	  <div id="choiceSpace">
+			Search Results go here
+		</div>
+		<input id="choiceBtn2" type="button" class="button btnFld" value="<?php echo T("Go Back");?>" />
 	</div>
 
 <div id="divTest">

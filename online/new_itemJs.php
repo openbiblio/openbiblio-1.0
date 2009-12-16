@@ -1,15 +1,50 @@
-<script language="JavaScript" >
-/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
- * See the file COPYRIGHT.html for more details.
- */
-
-// JavaScript Document
-//------------------------------------------------------------------------------
-// lookup Javascript
-lkup = {
 <?php
-//	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
-//	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+   See the file COPYRIGHT.html for more details.
+ */
+?>
+
+<style>
+h4 {
+	margin: 0; padding: 0; text-align: left; color: blue;
+	}
+h5 {
+	margin: 0; padding: 0; text-align: left; color: blue;
+	}
+h5#updateMsg {
+	color: red;
+	}
+p#errMsgTxt {
+	color: red; text-align: center;
+	}
+table#showList tr {
+	height: 1.3em;
+	}
+th.colHead {
+  white-space: nowrap;
+	}
+td.lblFld {
+  white-space: nowrap;
+	}
+td.inptFld {
+  vertical-align: top;
+	}
+td.btnFld {
+  text-align: center;
+	}
+.editBtn {
+	margin: 0; padding: 0; height: 1.5em; text-align:center;
+	}
+</style>
+
+<script language="JavaScript" >
+//------------------------------------------------------------------------------
+// newItem Javascript
+ni = {
+<?php
+/*
+	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
+	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
 	echo 'isbn							:"'.T("lookup_isbn").'",'."\n";
 	echo 'issn							:"'.T("lookup_issn").'",'."\n";
 	echo 'lccn							:"'.T("lookup_lccn").'",'."\n";
@@ -38,28 +73,29 @@ lkup = {
 	echo 'callNmbrType			:"'.T("lookup_callNmbrType").'",'."\n";
 	echo 'useThis						:"'.T("lookup_useThis").'",'."\n";
 	echo 'searchError				:"'.T("lookup_searchError").'",'."\n";
+*/
 ?>
 	init: function () {
 		// get header stuff going first
-		lkup.initWidgets();
+		ni.initWidgets();
 
-		lkup.url = 'server.php';
-		lkup.form = $('#lookupForm');
-		lkup.bs_url = '../catalog/biblio_server.php';
+		ni.url = 'server.php';
+		ni.form = $('#lookupForm');
+		ni.bs_url = '../catalog/biblio_server.php';
 		
-		lkup.srchBtn = $('#srchBtn');
-		lkup.resetForm();
+		ni.srchBtn = $('#srchBtn');
+		ni.resetForm();
 
 		// search form functions
-    $('.criteria').bind('change',null,lkup.enableSrchBtn);
-    $('#manualBtn').bind('click',null,lkup.doShowOne);
+    $('.criteria').bind('change',null,ni.enableSrchBtn);
+    $('#manualBtn').bind('click',null,ni.doShowOne);
     
-		$('#quitBtn').bind('click',null,lkup.doAbandon);
-		$('#retryBtn').bind('click',null,lkup.doBackToSrch);
-		$('#choiceBtn1').bind('click',null,lkup.doBackToSrch);
-		$('#choiceBtn2').bind('click',null,lkup.doBackToSrch);
+		$('#quitBtn').bind('click',null,ni.doAbandon);
+		$('#retryBtn').bind('click',null,ni.doBackToSrch);
+		$('#choiceBtn1').bind('click',null,ni.doBackToSrch);
+		$('#choiceBtn2').bind('click',null,ni.doBackToSrch);
 		$('#lookupForm').bind('submit',null,function(){
-			lkup.doValidate();
+			ni.doValidate();
 			return false;
 		});
 
@@ -71,21 +107,21 @@ lkup = {
 			.insertBefore('#biblioBtn2');
 		$('#selectionDiv input[value="Cancel"]').removeAttr('onClick');
 		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
-		$('#selectionDiv input[value="Cancel"]').attr('value',lkup.goBack);
-		$('#newbiblioform #submitBtn').val(lkup.accept);
+		$('#selectionDiv input[value="Cancel"]').attr('value',ni.goBack);
+		$('#newbiblioform #submitBtn').val(ni.accept);
 		$('#newbiblioform #submitBtn').bind('click',null,function(){
-			lkup.doInsertNew();
+			ni.doInsertNew();
 			return false;
 		});
 
 		// for the copy editor functions
 		// to handle startup condition
 		$('#copySubmitBtn').bind('click',null,function () {
-			return lkup.doCopyNew();
+			return ni.doCopyNew();
 			//return false;
 		});
 		$('#copyCancelBtn').bind('click',null,function () {
-			return lkup.doBackToSrch();
+			return ni.doBackToSrch();
 			//return false;
 		});
 		if ($('#autobarco:checked').length > 0) {
@@ -104,12 +140,12 @@ lkup = {
 		// FIXME - fl only '*' should be colored
 		$('#selectionDiv font').css('color','red');
 		$('#selectionDiv sup').css('color','red');
-		lkup.inputColor = $('#99').css('color');
-		$('#100a').bind('change',null,lkup.fixAuthor);
-		$('#245a').bind('change',null,lkup.fixTitle);
+		ni.inputColor = $('#99').css('color');
+		$('#100a').bind('change',null,ni.fixAuthor);
+		$('#245a').bind('change',null,ni.fixTitle);
 
-		lkup.fetchHosts();  //on completion, search form will appear
-		lkup.fetchOpts();  //for debug use
+		ni.fetchHosts();  //on completion, search form will appear
+		ni.fetchOpts();  //for debug use
 	},
 	
 	//------------------------------
@@ -128,25 +164,25 @@ lkup = {
 		$('#copyEditorDiv').hide();
 
 		$('#lookupVal').focus();
-		lkup.disableSrchBtn();
+		ni.disableSrchBtn();
 	},
 	
 	disableSrchBtn: function () {
-	  lkup.srchBtnBgClr = lkup.srchBtn.css('color');
-	  lkup.srchBtn.css('color', '#888888');
-		lkup.srchBtn.disable();
+	  ni.srchBtnBgClr = ni.srchBtn.css('color');
+	  ni.srchBtn.css('color', '#888888');
+		ni.srchBtn.disable();
 	},
 	enableSrchBtn: function () {
-	  lkup.srchBtn.css('color', lkup.srchBtnBgClr);
-		lkup.srchBtn.enable();
+	  ni.srchBtn.css('color', ni.srchBtnBgClr);
+		ni.srchBtn.enable();
 	},
 
 	doBackToSrch: function () {
-		lkup.resetForm();
+		ni.resetForm();
 		//$('#retryDiv').hide();
 		//$('#searchDiv').show();
 		//$('#lookupVal').focus();
-		//lkup.disableSrchBtn();
+		//ni.disableSrchBtn();
 	},
 	
 	doBackToChoice: function () {
@@ -155,21 +191,21 @@ lkup = {
 	},
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(lkup.url,{mode:'getOpts'}, function(data){
-			lkup.opts = data;
+	  $.getJSON(ni.url,{mode:'getOpts'}, function(data){
+			ni.opts = data;
 		});
 	},
 
 	fetchHosts: function () {
-	  $.getJSON(lkup.url,{mode:'getHosts'}, function(data){
-			lkup.hostJSON = data;
+	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
+			ni.hostJSON = data;
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
 		});
 	},
 
 	doAbandon: function () {
-	  $.getJSON(lkup.url,{mode:'abandon'}, function(data){
+	  $.getJSON(ni.url,{mode:'abandon'}, function(data){
 			$('#searchDiv').show();
 		});
 	},
@@ -179,35 +215,35 @@ lkup = {
 	doInsertNew: function () {
 	 	var parms=$('#newbiblioform').serialize();
 		parms += '&mode=doInsertBiblio';
-	  $.post(lkup.url,parms, function(jsonInpt){
+	  $.post(ni.url,parms, function(jsonInpt){
 	    var rslt = eval('('+jsonInpt+')');
-	    lkup.bibid = rslt.bibid;
-	  	lkup.showCopyEditor();
+	    ni.bibid = rslt.bibid;
+	  	ni.showCopyEditor();
 		});
 	},
 	
 	showCopyEditor: function () {
   	$('#selectionDiv').hide();
 		if ($('#autobarco:checked').length > 0) {
-			lkup.doGetBarcdNmbr(lkup.bibid);
+			ni.doGetBarcdNmbr(ni.bibid);
 		}
 		$('#copyEditorDiv').show();
 	},
 
 	doCopyNew: function () {
-		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+lkup.bibid;
+		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+ni.bibid;
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
-	  $.post(lkup.bs_url,params, function(response){
+	  $.post(ni.bs_url,params, function(response){
 			//console.log(response);
-	  	lkup.doBackToSrch();
+	  	ni.doBackToSrch();
 	  });
 	  return false;
 	},
 
 	doGetBarcdNmbr: function () {
-		$.getJSON(lkup.bs_url,{'mode':'getBarcdNmbr','bibid':lkup.bibid}, function(jsonInpt){
+		$.getJSON(ni.bs_url,{'mode':'getBarcdNmbr','bibid':ni.bibid}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},
@@ -271,7 +307,7 @@ lkup = {
 			}
 			break;
 		case 7: //ISBN
-	   	if ((isNaN(parseInt(test))) || (!lkup.chkIsbn(test))) {
+	   	if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
 				msg = "This is not a valid ISBN.";
 			}
@@ -291,7 +327,7 @@ lkup = {
 		}
 
 		if (rslt) {
-		  lkup.doSearch();
+		  ni.doSearch();
 		}
 		else {
 			$('#srchBy').focus();
@@ -311,8 +347,8 @@ lkup = {
 			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
 		theTxt += 'at :<br />';
 		var n=1;
-		for (nHost in lkup.hostJSON) {
-			theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+lkup.hostJSON[nHost].name+'<br />';
+		for (nHost in ni.hostJSON) {
+			theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+ni.hostJSON[nHost].name+'<br />';
 			n++;
 		}
 		theTxt += '</h5>';
@@ -324,12 +360,12 @@ lkup = {
 		// note for this to work, all form fields MUST have a 'name' attribute
 		$('lookupForm #mode').val('search');
 		var srchParms = $('#lookupForm').serialize();
-		$.post(lkup.url, srchParms, function(response) {
+		$.post(ni.url, srchParms, function(response) {
 			$('#waitDiv').hide();
 			
 			if ($.trim(response).substr(0,1) != '{') {
 				$('#retryHead').empty();
-				$('#retryHead').html(lkup.searchError);
+				$('#retryHead').html(ni.searchError);
 				$('#retryMsg').empty();
 				$('#retryMsg').html(response);
 				$('#retryDiv').show();
@@ -348,7 +384,7 @@ lkup = {
 					if (rslts.srch2.lookupVal != '')
 						str += '<br />&nbsp;&nbsp;&nbsp;'+rslts.srch2.byName+' = '+rslts.srch2.lookupVal;
 					$('#retryHead').empty();
-					$('#retryHead').html(lkup.nothingFound);
+					$('#retryHead').html('<?php echo T("Nothing Found"); ?>');
 					$('#retryMsg').empty();
 					$('#retryMsg').html(str);
 					$('#retryDiv').show();
@@ -369,14 +405,13 @@ lkup = {
 				else if (numHits > 1){
 					//console.log('more than one hit');
 					$('#choiceSpace').empty();
-					$('#choiceSpace').append('<h3>Success!  <span id="ttlHits"></span></h3>');
 
 					var nHits = 0;
-					lkup.hostData = rslts.data;
+					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  //$('#choiceSpace').append('<hr width="50%">');
 					  if (typeof(hostData) != undefined) {
-					  $('#choiceSpace').append('<h4>Repository: '+lkup.hostJSON[hostIndex].name+'</h4>');
+					  $('#choiceSpace').append('<h4>Repository: '+ni.hostJSON[hostIndex].name+'</h4>');
 					  $.each(hostData, function(hitIndex,hitData) {
 					    nHits++;
 					    html  = '<fieldset>';
@@ -392,29 +427,29 @@ lkup = {
 					    html += '<td id="'+id+'" class="primary"><input type="button" value="This One" class="button" /></td></tr>';
 							html += '</table></form></fieldset>';
 							$('#choiceSpace').append(html);
-							$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},lkup.doSelectOne);
+							$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
 						}); // $.each(hostData...
-						} // if (lkup.hostJason[hostIndex])
+						} // if (ni.hostJason[hostIndex])
 					}); // $.each(rslts.data...
-					$('#ttlHits').html(nHits+' hits found.')
+					$('#ttlHits').html(nHits)
 					//console.log('all choices drawn')
 					//$('#choiceSpace').append(response);
-					$('#biblioBtn').bind('click',null,lkup.doBackToChoice);
-					$('#biblioBtn2').bind('click',null,lkup.doBackToChoice);
+					$('#biblioBtn').bind('click',null,ni.doBackToChoice);
+					$('#biblioBtn2').bind('click',null,ni.doBackToChoice);
 					$('#choiceDiv').show();
 				} // else if (rslts.ttlHits > 1)
 				else if (rslts.ttlHits == 1){
 				  var data;
 					//console.log('single hit found');
-					lkup.hostData = rslts.data;
+					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  $.each(hostData, function(hitIndex,hitData) {
 					  	data = hitData;
 					  });
 					});
-					$('#biblioBtn').bind('click',null,lkup.doBackToSrch);
-					$('#biblioBtn2').bind('click',null,lkup.doBackToSrch);
-					lkup.doShowOne(data);
+					$('#biblioBtn').bind('click',null,ni.doBackToSrch);
+					$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
+					ni.doShowOne(data);
 				}
 			} // else
 		}); // .post
@@ -424,7 +459,7 @@ lkup = {
 	  var host = e.data.host;
 	  var hit = e.data.hit;
 	  var data = e.data.data;
-		lkup.doShowOne(data);
+		ni.doShowOne(data);
 	},
 
 	doStriping: function () {
@@ -444,7 +479,7 @@ lkup = {
 		for (var tag in data) {
 			if (data[tag] != '') {
 				$('#'+tag).val(data[tag]);
-				$('#'+tag).css('color',lkup.inputColor);
+				$('#'+tag).css('color',ni.inputColor);
 			} else {
 				$('#'+tag).val('entry required here');
 				$('#'+tag).css('color','red');
@@ -459,28 +494,28 @@ lkup = {
 //			}
 //		});
 		
-		lkup.setCallNmbr(data);
-		lkup.setCollection(data);
+		ni.setCallNmbr(data);
+		ni.setCollection(data);
 
-		lkup.doStriping();
+		ni.doStriping();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
 	},
 	
 	setCallNmbr: function (data) {
-		switch (lkup.opts['callNmbrType'].toLowerCase())  {
+		switch (ni.opts['callNmbrType'].toLowerCase())  {
 		case 'loc':
 			$('#099a').val(data['050a']+' '+data['050b']);
 			break;
 		case 'dew':
-		  var callNmbr = lkup.makeCallNmbr(data['082a']);
+		  var callNmbr = ni.makeCallNmbr(data['082a']);
 			//console.log('callNmbr='+callNmbr)
-    	var cutter = lkup.makeCutter(data['100a'], data['245a']);
+    	var cutter = ni.makeCutter(data['100a'], data['245a']);
 			//console.log('cutter='+cutter)
 			$('#099a').val(callNmbr+cutter);
 			break;
 		case 'udc':
-		  var callNmbr = lkup.makeCallNmbr(data['080a']);
+		  var callNmbr = ni.makeCallNmbr(data['080a']);
 			$('#099a').val(callNmbr+' '+data['080b']);
 			break;
 		case 'local':
@@ -490,22 +525,22 @@ lkup = {
 		  break;
 		}
 		if ($('#099a').val() != '') {
-			$('#099a').css('color',lkup.inputColor);
+			$('#099a').css('color',ni.inputColor);
 			$('#099a').parent().parent().show().removeClass('hidden');
 		}
 	},
 
 	makeCallNmbr: function (code) {
 		//console.log('code='+code)
-		if ((code) && ((lkup.opts['callNmbrType']).toLowerCase() == "dew")) {
-			var fictionDew = lkup.opts['fictionDew'].split(' ');
-			if (lkup.opts['autoDewey']
+		if ((code) && ((ni.opts['callNmbrType']).toLowerCase() == "dew")) {
+			var fictionDew = ni.opts['fictionDew'].split(' ');
+			if (ni.opts['autoDewey']
 					&&
 					((code == "") || (code == "[Fic]"))
 					&&
 					(fictionDew.indexOf(code) >= 0)
 				 ) {
-				dew = lkup.opts['defaultDewey'];
+				dew = ni.opts['defaultDewey'];
 			}
 
 			var parts = code.split('.');
@@ -524,9 +559,9 @@ lkup = {
 	fixTitle: function () {
 	  var titl = $('#245a').val();
 		if (titl != '') {
-    	$('#245a').css('color',lkup.inputColor);
+    	$('#245a').css('color',ni.inputColor);
     	var auth = $('#100a').val();
-	  	lkup.makeCutter(auth, titl); // will post direct to screen
+	  	ni.makeCutter(auth, titl); // will post direct to screen
 		}
 		else {
     	$('#245a').css('color','red');
@@ -536,9 +571,9 @@ lkup = {
 	fixAuthor: function () {
 	  var auth = $('#100a').val();
 		if (auth != '') {
-    	$('#100a').css('color',lkup.inputColor);
+    	$('#100a').css('color',ni.inputColor);
     	var titl = $('#245a').val();
-	  	lkup.makeCutter(auth, titl);
+	  	ni.makeCutter(auth, titl);
 		}
 		else {
     	$('#100a').css('color','red');
@@ -549,15 +584,15 @@ lkup = {
 		//console.log('auth=<'+auth+'>; titl=<'+titl+'>');
 	  var cutter = '';
 	  auth = auth.trim(); titl = titl.trim();
-		if ((lkup.opts['autoCutter']) && ((auth != '') && (auth != 'undefined'))  ) {
-	  	$.getJSON(lkup.url,{mode:'getCutter', author:auth}, function(data){
+		if ((ni.opts['autoCutter']) && ((auth != '') && (auth != 'undefined'))  ) {
+	  	$.getJSON(ni.url,{mode:'getCutter', author:auth}, function(data){
 				//console.log('data='+data)
 				cutter = data['cutter'];
-	  		if (lkup.opts['cutterType'] == 'CS3') {
+	  		if (ni.opts['cutterType'] == 'CS3') {
 			  	// suffix is first char of a specified word in title
-					cutter += lkup.makeSuffix($('#245a').val());
+					cutter += ni.makeSuffix($('#245a').val());
 				}
-				else if (lkup.opts['cutterType'] == 'LoC') {
+				else if (ni.opts['cutterType'] == 'LoC') {
 					// add copyright year as suffix -- FIXME numeric year only!!!
 					//var cpyYr = $.trim($('#260c').val()).replace('.','');
 					//cutter += ' '+cpyYr.substr(1,4);
@@ -579,14 +614,14 @@ lkup = {
 		var goodWords = '';
 		for (var index in inputWords) {
 			if ((inputWords[index] != ' ') &&
-					((lkup.opts['noiseWords']).indexOf(inputWords[index]) < 0)) {
+					((ni.opts['noiseWords']).indexOf(inputWords[index]) < 0)) {
 				goodWords+=' '+inputWords[index];
 				nWords++;
 			}
 		}
 		goodWords = $.trim(goodWords);
 		wordArray = goodWords.split(/\s+/);
-		useWordNo = lkup.opts['cutterWord'];
+		useWordNo = ni.opts['cutterWord'];
 		if (nWords == 1)
 			var sufx = (wordArray[0]).substr(0,1);
 		else if (nWords <= useWordNo)
@@ -600,20 +635,20 @@ lkup = {
 	setCollection: function (data) {
 		//// -- attempt to determine proper collection from LOC call number
 		//				this is experimental and may not be to your taste
-		if (lkup.opts['autoCollect']) {
-			var index = lkup.opts['fictionCode'];
-			var collection = lkup.opts['defaultCollect'];
+		if (ni.opts['autoCollect']) {
+			var index = ni.opts['fictionCode'];
+			var collection = ni.opts['defaultCollect'];
 
-			if ((data['050a']) && (lkup.opts['callNmbrType'] == 'LoC')) {
+			if ((data['050a']) && (ni.opts['callNmbrType'] == 'LoC')) {
 				var locClass = (data['050a']).substr(0,2);
-				if ((lkup.opts['fictionLoc']).indexOf(locClass) >= 0) {
-					collection = $.trim(lkup.opts['fictionName']);
+				if ((ni.opts['fictionLoc']).indexOf(locClass) >= 0) {
+					collection = $.trim(ni.opts['fictionName']);
 				}
 			}
-			else if ((data['082a']) && (lkup.opts['callNmbrType'] == 'Dew')) {
+			else if ((data['082a']) && (ni.opts['callNmbrType'] == 'Dew')) {
 				var dewClass = (data['082a']).substr(0,3);
-				if ((lkup.opts['fictionDew']).indexOf(dewClass) >= 0) {
-					collection = $.trim(lkup.opts['fictionName']);
+				if ((ni.opts['fictionDew']).indexOf(dewClass) >= 0) {
+					collection = $.trim(ni.opts['fictionName']);
 				}
 			}
 			$('#collectionCd').val(collection);
@@ -621,6 +656,6 @@ lkup = {
 	}
 };
 
-$(document).ready(lkup.init);
+$(document).ready(ni.init);
 
 </script>
