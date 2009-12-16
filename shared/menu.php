@@ -44,7 +44,7 @@ function staff_menu() {
 	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 	Nav::node('cataloging/localSearch', T("Local Search"), "../catalog/biblio_search.php");
 
-	Nav::node('cataloging/searchform', T("old search"), "../catalog/old_search.php");
+	//Nav::node('cataloging/searchform', T("old search"), "../catalog/old_search.php");
 	if (isset($_SESSION['rpt_BiblioSearch'])) {
 		Nav::node('cataloging/search', T("old search results"),
 			'../shared/biblio_search.php?searchType=previous&tab='.U($tab));
@@ -71,9 +71,9 @@ function staff_menu() {
 			"../catalog/image_upload_form.php?".$params);
 		Nav::node('cataloging/biblio/images/del', T("Delete Image"));
 		Nav::node('cataloging/biblio/editstock', T("Edit Stock Info"));
-		Nav::node('cataloging/biblio/newcopy', T("New Copy"));
+		//Nav::node('cataloging/biblio/newcopy', T("New Copy"));
 	 	Nav::node('cataloging/biblio/newlike', T("New Like"), "../catalog/biblio_new_like.php?".$menu_params);
-		Nav::node('cataloging/biblio/editcopy', T("Edit Copy"));
+		//Nav::node('cataloging/biblio/editcopy', T("Edit Copy"));
 		Nav::node('cataloging/biblio/bookings', T("Item Bookings"),
 			"../reports/run_report.php?type=bookings"
 			. "&rpt_order_by=outd!r"
@@ -82,13 +82,13 @@ function staff_menu() {
 			. "&".$params);
 		Nav::node('cataloging/biblio/holds', T("Hold Requests"),
 			"../catalog/biblio_hold_list.php?".$params);
-		Nav::node('cataloging/biblio/delete', T("Delete"),
-			"../catalog/biblio_del_confirm.php?".$params);
+		//Nav::node('cataloging/biblio/delete', T("Delete"),
+		//	"../catalog/biblio_del_confirm.php?".$params);
 	}
 
 	Nav::node('cataloging/images', T("Browse Images"), '../shared/image_browse.php');
-	Nav::node('cataloging/new', T("New Item"),
-		"../catalog/biblio_new_form.php?reset=Y");
+	//Nav::node('cataloging/new', T("New Item"),
+	//	"../catalog/biblio_new_form.php?reset=Y");
 	Nav::node('cataloging/upload_usmarc', T("MARC Import"),
 		"../catalog/upload_usmarc_form.php");
 	Nav::node('cataloging/bulk_delete', T("Bulk Delete"),

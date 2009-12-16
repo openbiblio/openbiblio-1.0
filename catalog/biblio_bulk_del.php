@@ -116,7 +116,7 @@ function showForm($vars, $errors=array()) {
 	
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	
-	echo "<h1><span id=\"searchHdr\" class=\"title\">".T('Bulk Delete')."</span></h1>\n";
+	echo "<h3>".T('Bulk Delete')."</h3>\n";
 	if (isset($_REQUEST['msg'])) {
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 	}

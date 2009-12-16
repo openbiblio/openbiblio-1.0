@@ -43,10 +43,10 @@
 
 ?>
 	<h3><?php echo T('Add New Item'); ?></h3>
-	<br />
+
 	<div id="searchDiv">
 	  <input type="button" id="manualBtn" class="button" value="Manual Entry" />
-	  <br /><br />
+	  <br />
 		<form id="lookupForm" name="lookupForm" action="" >
 		<fieldset>
 		<legend>On-Line Search</legend>

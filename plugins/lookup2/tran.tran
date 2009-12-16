@@ -2,7 +2,7 @@
 #****************************************************************************
 #*  Translation text for page lookup_form.php
 #****************************************************************************
-$trans["lookup_z3950Search"]     = 'On-line search';
+$trans["lookup_z3950Search"]     = 'New Items';
 $trans["lookup_isbn"]            = 'ISBN';
 $trans["lookup_issn"]            = 'ISSN';
 $trans["lookup_lccn"]            = 'LCCN';
