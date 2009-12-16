@@ -40,7 +40,7 @@
 			<label for="status_cd"><?php echo T("Status:");?></label></td>
 		<td valign="top" class="primary">
 			</select>
-			<?php echo inputfield("select", "status_cd", "na", NULL,array(
+			<?php echo inputfield("select", "status_cd", "in", NULL,array(
 			                      "na" =>"",
                             "in" =>T("IN"),
 														"out"=>T("OUT"),

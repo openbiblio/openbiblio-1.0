@@ -45,6 +45,7 @@ lkup = {
 
 		lkup.url = 'server.php';
 		lkup.form = $('#lookupForm');
+		lkup.bs_url = '../catalog/biblio_server.php';
 		
 		// button on search screen gets special treatment
 		lkup.srchBtn = $('#srchBtn');
@@ -69,12 +70,29 @@ lkup = {
 		$('#selectionDiv input[value="Cancel"]').removeAttr('onClick');
 		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
 		$('#selectionDiv input[value="Cancel"]').attr('value',lkup.goBack);
-		$('#submitBtn').val(lkup.accept);
-		$('#newbiblioform').bind('submit',null,function(){
-			//console.log('callnmbr='+$('#099a').val());
-	  	var parms=$('#newbiblioform').serialize();
-			console.log('submitting parms: '+parms);
-			return true;
+		$('#newbiblioform #submitBtn').val(lkup.accept);
+		$('#newbiblioform #submitBtn').bind('click',null,function(){
+			lkup.doInsertNew();
+			return false;
+		});
+
+		// for the copy editor functions
+		// to handle startup condition
+		$('#copySubmitBtn').bind('click',null,function () {
+			bs.doCopyNew();
+			return false;
+		});
+		if ($('#autobarco:checked').length > 0) {
+			$('#barcode_nmbr').disable();
+		}
+		// if user changes his/her mind
+		$('#autobarco').bind('change',null,function (){
+		  if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
+			}
+			else {
+				$('#barcode_nmbr').enable();
+			}
 		});
 
 		// FIXME - fl only '*' should be colored
@@ -102,6 +120,7 @@ lkup = {
 		$('#retryDiv').hide();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
+		$('#copyEditorDiv').hide();
 
 		$('#lookupVal').focus();
 		lkup.disableSrchBtn();
@@ -124,7 +143,7 @@ lkup = {
 		//$('#lookupVal').focus();
 		//lkup.disableSrchBtn();
 	},
-
+	
 	doBackToChoice: function () {
 		$('#selectionDiv').hide();
 		$('#choiceDiv').show();
@@ -150,8 +169,46 @@ lkup = {
 		});
 	},
 
-	//------------------------------
-	// search related stuff
+	//------------------------------------------------------------------------------------------
+	// manual 'new biblio' related stuff
+	doInsertNew: function () {
+	 	var parms=$('#newbiblioform').serialize();
+		parms += '&mode=doInsertBiblio';
+	  $.post(lkup.url,parms, function(jsonInpt){
+	    var rslt = eval('('+jsonInpt+')');
+	    lkup.bibid = rslt.bibid;
+	  	lkup.showCopyEditor();
+		});
+	},
+	
+	showCopyEditor: function () {
+  	$('#selectionDiv').hide();
+		if ($('#autobarco:checked').length > 0) {
+			lkup.doGetBarcdNmbr(lkup.bibid);
+		}
+		$('#copyEditorDiv').show();
+	},
+
+	doCopyNew: function () {
+		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+lkup.bibid;
+		if ($('#autobarco:checked').length > 0) {
+			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
+		}
+	  $.post(lkup.bs_url,params, function(response){
+console.log(response);
+	  	lkup.doBackToSrch();
+	  });
+	  return false;
+	},
+
+	doGetBarcdNmbr: function () {
+		$.getJSON(lkup.bs_url,{'mode':'getBarcdNmbr','bibid':lkup.bibid}, function(jsonInpt){
+		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
+		});
+	},
+
+	//------------------------------------------------------------------------------------------
+	// on-line search related stuff
 	chkIsbn: function (isbn) {
 		// validate isbn string; return TRUE if checksum is valid
 		var nSum = 0;
