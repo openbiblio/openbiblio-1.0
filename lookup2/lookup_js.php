@@ -79,8 +79,12 @@ lkup = {
 		// for the copy editor functions
 		// to handle startup condition
 		$('#copySubmitBtn').bind('click',null,function () {
-			bs.doCopyNew();
-			return false;
+			return lkup.doCopyNew();
+			//return false;
+		});
+		$('#copyCancelBtn').bind('click',null,function () {
+			return lkup.doBackToSrch();
+			//return false;
 		});
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
@@ -195,7 +199,7 @@ lkup = {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
 	  $.post(lkup.bs_url,params, function(response){
-console.log(response);
+			//console.log(response);
 	  	lkup.doBackToSrch();
 	  });
 	  return false;
