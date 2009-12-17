@@ -51,6 +51,7 @@
 		</th>
 	</tr>
 	</thead>
+	
 	<tbody class="striped">
 	<?php
 		$row_class = "primary";
@@ -65,7 +66,7 @@
 				<a href="../admin/materials_del_confirm.php?code=<?php echo HURL($type['code']); ?>&desc=<?php echo HURL($type['description']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
 			<?php } else { echo T("del"); } ?>
 		</td>
-	<td valign="top" nowrap="true" class="<?php echo H($row_class); ?>">
+		<td valign="top" nowrap="true" class="<?php echo H($row_class); ?>">
 			<a href="../admin/material_fields_view.php?material_cd=<?php echo HURL($type['code']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("MARC Fields"); ?></a>
 	 	</td>
 		<td valign="top" class="<?php echo H($row_class); ?>">
