@@ -85,8 +85,8 @@ class SrchDb {
 					." AND sorts.subfield_cd = '" . $item['orderSuf'] . "'";
 				$sqlOrder = " ORDER BY sorts.`subfield_data`;";					
 			}
-			if(isset($item['mediaTag'])){
-//				$searchTags .= '{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaValue'] . '"}';						
+			if(isset($item['mediaTag'])){				
+				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";
 				
 			}
 			if(isset($item['audienceTag'])){
@@ -473,8 +473,9 @@ class SrchDb {
 			}
 		}		
 		if($_REQUEST['advanceQ']=='Y'){
-			if(isset($_REQUEST['mediaType'])){
-				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaValue'] . '"}';
+			if(isset($_REQUEST['mediaType']) && $_REQUEST['mediaType'] != 'all'){
+				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
+				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaType'] . '"}';
 			}
 			if(isset($_REQUEST['audienceLevel'])){
 				//Not sure which field this, so leave this for now - LJ
