@@ -7,7 +7,7 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 //  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 
-	require_once(REL(__FILE__, 'AdminDBs.php'));
+	require_once(REL(__FILE__, '../model/Online.php'));
 	require_once(REL(__FILE__, 'srvrFuncs.php'));	## general support functions
 
 	function postNewBiblio() {

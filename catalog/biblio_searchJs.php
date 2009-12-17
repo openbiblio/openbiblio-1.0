@@ -31,7 +31,7 @@ bs = {
 		bs.resetForms();
 
 		bs.url = 'biblio_server.php';
-		bs.urlLookup = '../lookup2/server.php'; //may not exist
+		bs.urlLookup = '../online/server.php'; //may not exist
 
 		$('#advancedSrch').hide();
 		$('#advanceQ').bind('click',null,function(){
