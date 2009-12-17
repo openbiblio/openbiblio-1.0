@@ -125,6 +125,7 @@ bs = {
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
+		bs.fetchSiteList();
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -200,6 +201,11 @@ bs = {
 			$('#itemEditColls').html(data);
 		});
 	},
+	fetchSiteList: function () {
+	  $.get(bs.url,{mode:'getSiteList'}, function(data){
+			$('#srchSites').html(data);
+		});
+	},	
 	
 	//------------------------------
 	doBarcdSearch: function (e) {

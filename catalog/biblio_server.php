@@ -16,6 +16,9 @@
 	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
 	if(empty($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
 	if(empty($_SESSION['show_item_photos'])) $_SESSION['show_item_photos'] = Settings::get('show_item_photos');	
+	if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = Settings::get('library_name');
+	if(empty($_SESSION['items_per_page'])) $_SESSION['items_per_page'] = Settings::get('items_per_page');
+	
 
 	## --------------------- ##
 class SrchDb {
@@ -85,9 +88,14 @@ class SrchDb {
 					." AND sorts.subfield_cd = '" . $item['orderSuf'] . "'";
 				$sqlOrder = " ORDER BY sorts.`subfield_data`;";					
 			}
+			if(isset($item['siteTag'])){
+			//				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['searchSite'] . '"}';
+					$sqlSelect .= " JOIN `biblio_copy` bc";
+					$sqlWhere .= " AND bc.bibid = b.bibid "
+									." AND bc.siteid = '" . $item['siteValue'] . "' ";					
+			}
 			if(isset($item['mediaTag'])){				
-				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";
-				
+				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";				
 			}
 			if(isset($item['audienceTag'])){
 //				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
@@ -141,16 +149,22 @@ class SrchDb {
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
 			if (!empty($copies)) {
+				$this->avIcon = null;
 				foreach($copies as $copyEnc){
 					$copy = json_decode($copyEnc, true);
 					if($copy['statusCd'] == "in") {
-						$this->avIcon = "circle_green.png"; // one or more available
-						break;
+						// See on which site
+						if($_SESSION['current_site'] == $copy['siteid'] || $_SESSION['show_copy_site'] != 'Y'){
+							$this->avIcon = "circle_green.png"; // one or more available
+							break;						
+						} else {
+							$this->avIcon = "circle_orange.png"; // one or more available on another site
+						}
 					}
 					else if($copy[statusCd] == "hld")
-						$this->avIcon = "circle_blue.png"; // only copy is on hold
+						if($this->avIcon == null) $this->avIcon = "circle_blue.png"; // only copy is on hold
 					else
-						$this->avIcon = "circle_red.png"; // copy not available
+						if($this->avIcon == null) $this->avIcon = "circle_red.png"; // copy not available
 				}
 			} else {
 				$this->avIcon = "circle_red.png"; // no copy found
@@ -213,7 +227,7 @@ class SrchDb {
 		$sql = "INSERT `biblio_copy` SET "
 		      ."`bibid` = $bibid,"
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
-		      ."`siteid` = ".Settings::get('library_name')."," // set to current site
+		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
@@ -413,6 +427,12 @@ class SrchDb {
 		echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
 	  break;
 
+	case 'getSiteList':
+		require_once(REL(__FILE__, "../model/Sites.php"));
+		$sites_table = new Sites;		
+		echo inputfield('select', 'searchSite', 'all', NULL, $sites = $sites_table->getSelect(true));
+	  break;	  
+	  
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
 	  $rslt = $theDb->getBiblioByBarcd($_REQUEST[searchText]);
@@ -473,10 +493,13 @@ class SrchDb {
 			}
 		}		
 		if($_REQUEST['advanceQ']=='Y'){
+			if(isset($_REQUEST['searchSite']) && $_REQUEST['searchSite'] != 'all'){
+				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['searchSite'] . '"}';
+			}
 			if(isset($_REQUEST['mediaType']) && $_REQUEST['mediaType'] != 'all'){
 				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
 				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaType'] . '"}';
-			}
+			}			
 			if(isset($_REQUEST['audienceLevel'])){
 				//Not sure which field this, so leave this for now - LJ
 				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
@@ -498,12 +521,12 @@ class SrchDb {
 			} else {
 				$firstItem = $_REQUEST['firstItem'];
 			}
-			if(Settings::get('items_per_page') <= sizeof($biblioLst) - $firstItem){
-				$lastItem = $firstItem + Settings::get('items_per_page');
+			if($_SESSION['items_per_page'] <= sizeof($biblioLst) - $firstItem){
+				$lastItem = $firstItem + $_SESSION['items_per_page'];
 			} else {
 				$lastItem = sizeof($biblioLst);
 			}
-			$biblio[] = "{'totalNum':'" . sizeof($biblioLst) . "','firstItem':'" . $firstItem . "','lastItem':'". $lastItem . "','itemsPage':'". Settings::get('items_per_page') . "'}";
+			$biblio[] = "{'totalNum':'" . sizeof($biblioLst) . "','firstItem':'" . $firstItem . "','lastItem':'". $lastItem . "','itemsPage':'". $_SESSION['items_per_page'] . "'}";
 			// Only show as many as in the settings (not the most efficient way to get the whole result query, this should be rewritten
 			$iterCounter = 0;		
 			foreach ($biblioLst as $bibid) {

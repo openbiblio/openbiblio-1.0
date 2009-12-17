@@ -34,10 +34,9 @@ $(document).ready(mnf.init);
 <form id="newmbrform" name="newmbrform" method="post" action="../circ/mbr_new.php">
 
 <?php
-
 	## default entries for operator convenience
 	$sit = new Sites;
-	$lib = $sit->getOne(Settings::get('library_name'));
+	$lib = $sit->getOne($_SESSION['current_site']);
 	$mbr[siteid] = $lib[siteid];
 	$mbr[city] = $lib[city];
 	$mbr[state] = $lib[state];

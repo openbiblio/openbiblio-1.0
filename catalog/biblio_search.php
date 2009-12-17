@@ -124,7 +124,10 @@ console.log('opacMode='+opacMode);
 											'A' 	=>T("Adult"),
 											'all'	=>T("All"),
 										));
-					?>
+				?><br /><br />	
+				<label for="searchSites"><?php echo T("Search site:"); ?> </label>
+					<span id="srchSites">to be filled by server</span>
+						<br /><br />												
 			</td>
 			<td colspan="1" valign="top" nowrap="yes" align="center">
 			  <fieldset style="margin:0; margin-bottom:5px;">

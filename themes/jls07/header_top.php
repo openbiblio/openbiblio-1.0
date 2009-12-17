@@ -6,6 +6,8 @@
 		### following needed since this is included from within a class method -- Fred
 		global $nav, $tab, $focus_form_name, $focus_form_field;
 		
+		if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = Settings::get('library_name');
+		
 ?>
 <!DOCTYPE html
 		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -24,7 +26,7 @@ if (Settings::get('charset') != "") { ?>
 <title>
 <?php
 	$sit = new Sites;
-	$lib = $sit->getOne(Settings::get('library_name'));
+	$lib = $sit->getOne($_SESSION['current_site']);
 	//echo H(Settings::get('library_name'));
 	echo H($lib[name]);
 ?>
