@@ -433,8 +433,12 @@ class SrchDb {
 		$sites = $sites_table->getSelect();
 		foreach ($sites as $val => $desc) {
 			$s .= '<option value="'.H($val).'" ';
+//			if ($val == 'all') {
+//				$s .= ' selected="selected"';
+//			}
 			$s .= ">".H($desc)."</option>\n";
 		}
+//		echo inputfield('select', 'srchSites', 'all', NULL, );
 		echo $s;
 	  break;
 	  

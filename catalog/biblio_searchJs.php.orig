@@ -30,7 +30,6 @@ bs = {
 		bs.urlLookup = '../online/server.php'; //may not exist
 
 		$('#advancedSrch').hide();
-		$('#advanceQ:checked').val(['N'])
 		$('#advanceQ').bind('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
 				$('#advancedSrch').show();

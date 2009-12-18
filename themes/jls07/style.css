@@ -298,3 +298,10 @@ span.error {
 p.error {
 	color: red;
 	}
+td.label {
+	text-align: left; vertical-align: center;
+	white-space: nowrap;
+	}
+tr.searchRow {
+	height: 35px;
+	}

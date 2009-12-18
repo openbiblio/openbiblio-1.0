@@ -109,12 +109,13 @@ console.log('opacMode='+opacMode);
 	  <fieldset id="advancedSrch">
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
-		<tr height="35">
-			<td valign="top" nowrap="yes" align="left">
+		<tr class="searchRow">
+			<td class="label">
 				<label for="mediaType"><?php echo T("Media Type:"); ?> </label>
-				</td><td>
+			</td>
+			<td>
 					<span id="srchMatTypes">to be filled by server</span>				
-				</td>
+			</td>
 			<td rowspan="3" valign="top" nowrap="yes" align="center">
 			  <fieldset style="margin:0; margin-bottom:5px;">
 				<legend><?php echo T("Sort by: "); ?></legend>
@@ -125,11 +126,13 @@ console.log('opacMode='+opacMode);
 										));
 					?>
 			  </fieldset>
-		</td>				
-				</tr><tr height="35">
-				<td>
+			</td>
+		</tr>
+		<tr class="searchRow">
+			<td class="label">
 				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
-				</td><td>
+			</td>
+			<td>
 					<?php echo inputfield('select','audienceLevel','all',null,array(
 											'K' 	=>T("Kindergarten"),
 											'P' 	=>T("Primary"),
@@ -139,38 +142,31 @@ console.log('opacMode='+opacMode);
 											'A' 	=>T("Adult"),
 											'all'	=>T("All"),
 										));
-<<<<<<< local
 				?>
-				</td>
-				</tr><tr height="35">
-				<td>
-				<label for="srchSites"><?php echo T("Search Site"); ?>:</label>
-				</td><td>
-				<select name="srchSites" id="srchSites">
-				    <option id= value="all" selected="selected">All<option>
-					<option>to be filled by server</option>
-				</select>
-				</td>
-=======
-				?><br /><br />	
-				<label for="searchSites"><?php echo T("Search Site"); ?> </label>
-				<select id="searchSites">
-				    <option value="All" selected="selected">All</option>
-        </select>
-				<br /><br />
->>>>>>> other
 			</td>
 		</tr>
-		<tr height="35">
-		<td align="right" class="primary">
-			<label><?php echo T("Production Date:"); ?></label>
-		</td><td colspan="2" >
-			<label for="from"><?php echo T("From Year:");?></label>
-				<?php echo inputfield('text','from',null,array('size'=>'4'))?>
-			<label for="to"><?php echo T("To Year:"); ?></label>
-				<?php echo inputfield('text','to',null,array('size'=>'4'))?>
+		<tr class="searchRow">
+			<td class="label">
+				<label for="srchSites"><?php echo T("Search Site"); ?>:</label>
+			</td>
+			<td>
+				<select name="srchSites" id="srchSites">
+				  <option id= value="all" selected="selected">All<option>
+					<option>to be filled by server</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="searchRow">
+			<td class="label primary">
+				<label><?php echo T("Production Date:"); ?></label>
+			</td>
+			<td colspan="2" >
+				<label for="from"><?php echo T("From Year:");?></label>
+					<?php echo inputfield('text','from',null,array('size'=>'4'))?>
+				<label for="to"><?php echo T("To Year:"); ?></label>
+					<?php echo inputfield('text','to',null,array('size'=>'4'))?>
 
-		</td>
+			</td>
 		</tr>
 		</table>
 		</fieldset>
