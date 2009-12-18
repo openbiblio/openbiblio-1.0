@@ -5,12 +5,19 @@
 
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__,"../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../model/Sites.php"));	
 
+	// Nee3d to be initialised to make the decission to show th site dropdown list - LJ
+	if(!isset($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	
 	$temp_return_page = "";
 	if (isset($_GET["RET"])){
 		$_SESSION["returnPage"] = $_GET["RET"];
 	}
 
+	$sites_table = new Sites;		
+	$sites = $sites_table->getSelect();	
+	
 	$tab = "circ";
 	$nav = "";
 	$focus_form_name = "loginform";
@@ -45,6 +52,16 @@
 			<?php echo inputfield('password','pwd',$postVars["pwd"],$attrs); ?>
 		</td>
 	</tr>
+	<?php if($_SESSION['show_copy_site'] == 'Y') { ?>
+	<tr>
+		<td>
+			<label for="selectSite"><?php echo T("Library site:"); ?></label>
+		</td>
+		<td>
+			<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>	
+		</td>
+	</tr>
+	<?php } ?>
 	</tbody>
 	<tfoot>
 	<tr>

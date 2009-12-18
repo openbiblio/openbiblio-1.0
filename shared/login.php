@@ -59,6 +59,10 @@ if ($user['suspended_flg'] == 'Y') {
 unset($_SESSION["postVars"]);
 unset($_SESSION["pageErrors"]);
 
+if(isset($_REQUEST['selectSite'])){
+	$_SESSION['current_site'] = $_REQUEST['selectSite'];
+}
+
 $_SESSION["username"] = $user['username'];
 $_SESSION["userid"] = $user['userid'];
 $_SESSION["loginAttempts"] = 0;
@@ -68,6 +72,7 @@ $_SESSION["hasCircMbrAuth"] = ($user['circ_mbr_flg'] == 'Y');
 $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
 $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 $_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
+
 /*
 $_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 $_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
