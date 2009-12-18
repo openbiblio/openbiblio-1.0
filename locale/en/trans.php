@@ -177,6 +177,7 @@ $trans["Check in selected items"] = "Check in selected items";
 $trans["Check In"] = "Check In";
 $trans["Check Now"] = "Check Now";
 $trans["Check Out"] = "Check Out";
+$trans["Checkout Limit"] = "Checkout Limit";
 $trans["Checked Out"] = "Checked Out";
 $trans["Checking Database Integrity"] = "Checking Database Integrity";
 $trans["Checking for MySQL Extension..."] = "Checking for MySQL Extension...";
@@ -263,6 +264,7 @@ $trans["Edit Item"] = "Edit Item";
 $trans["Edit Item Properties"] = "Edit Item Properties";
 $trans["Edit Library Settings"]          = "Edit Library Settings";
 $trans["Edit MARC"] = "Edit MARC";
+$trans["Edit Material Properties"] = "Edit Material Properties";
 $trans["Edit Material Type"]          = "Edit Material Type";
 $trans["Edit Member Field"] = "Edit Member Field";
 $trans["Edit Member Info"] = "Edit Member Info";
@@ -342,7 +344,7 @@ $trans["Hold Requests"] = "Hold Requests";
 $trans["Host Editor"] = "Host Editor";
 $trans["Host URL"] = "Host URL";
 $trans["Image file located in directory"] = "Image files must be located in the openbiblio/images directory.";
-$trans["Image File:"] = "Image File:";
+$trans["Image File"] = "Image File";
 $trans["IN"] = "IN";
 $trans["In Stock"] = "In Stock";
 $trans["in use"] = "in use";
@@ -864,7 +866,7 @@ $trans["integrityMsg"]          = "OpenBiblio can check its database for inconsi
 #****************************************************************************
 #*  Translation text for materials_del_confirm.php
 #****************************************************************************
-$trans["materialsDelConfirmMsg"]          = "Are you sure you want to delete material type, %desc%?";
+$trans["materialsDelConfirmMsg"]          = "Are you sure you want to delete material type, '%desc%'?";
 
 
 #****************************************************************************

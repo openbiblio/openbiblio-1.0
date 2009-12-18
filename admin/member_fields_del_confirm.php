@@ -23,13 +23,15 @@
 	#**************************************************************************
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<center>
+<h3><?php echo T("Custom Member Fields"); ?></h3>
 <form name="delstaffform" method="post" action="../admin/member_fields_del.php?code=<?php echo HURL($code);?>&amp;desc=<?php echo HURL($description);?>">
-<?php echo T('memberFieldsDelConfirmMsg', array('desc'=>$description)); ?><br /><br />
+<fieldset>
+	<input type="hidden" id="dummy" value="">
+<?php echo T('memberFieldsDelConfirmMsg', array('desc'=>$description)); ?>
+</fieldset>
 			<input type="submit" value="<?php echo T("Delete"); ?>" class="button" />
-			<input type="button" onclick="self.location='../admin/materials_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
+			<input type="button" onclick="self.location='../admin/member_fields_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 </form>
-</center>
 
 <?php
 

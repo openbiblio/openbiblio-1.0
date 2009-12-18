@@ -38,17 +38,18 @@
 								 'style'=>"visibility: visible");
 
 ?>
-<h3><?php echo T("Edit Material Type"); ?></h3>
+<h3><?php echo T("Material Types"); ?></h3>
 
 <form name="editmaterialform" method="post" action="../admin/materials_edit.php">
 <input type="hidden" name="code" value="<?php echo $postVars["code"];?>">
-<br />
+
 <fieldset>
+<legend><?php echo T("Edit Material Properties"); ?></legend>
 <table class="primary">
 	<tbody class="unstriped">
 	<tr>
 		<td nowrap="true" class="primary">
-			<?php echo T("Description:"); ?>
+			<?php echo T("Description"); ?>:
 		</td>
 		<td colspan="2" valign="top" class="primary">
 			<?php echo inputfield('text','description',$postVars["description"],$attrs); ?>
@@ -62,7 +63,7 @@
 	<tr>
 	  <?php $attrs[size]= 2; $attrs[maxlength] = 2; ?>
 		<td nowrap="true" class="primary">
-			<?php echo T("Checkout Limit:");?><br /><span class="small"><?php echo T("(enter 0 for unlimited)"); ?></span>
+			<?php echo T("Checkout Limit");?>:<br /><span class="small"><?php echo T("(enter 0 for unlimited)"); ?></span>
 		</td>
 		<td valign="top" class="primary">
 		  
@@ -74,7 +75,7 @@
 	</tr>
 	<tr>
 		<td nowrap="true" class="primary">
-			<sup>*</sup><?php echo T("Image File:");?>
+			<sup>*</sup><?php echo T("Image File");?>:
 		</td>
 		<td colspan="2" valign="top" class="primary">
 	  	<?php $attrs[size]= 40; $attrs[maxlength] = 128; ?>

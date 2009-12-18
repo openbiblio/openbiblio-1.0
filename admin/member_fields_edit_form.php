@@ -27,10 +27,11 @@
 	}
 ?>
 
-<h3><?php echo T("Edit Member Field"); ?></h3>
+<h3><?php echo T("Custom Member Fields"); ?></h3>
 
 <form name="editfieldform" method="post" action="../admin/member_fields_edit.php">
 <fieldset>
+<legend><?php echo T("Edit Member Field"); ?></legend>
 <input type="hidden" name="code" value="<?php echo H($postVars["code"]);?>" />
 <table class="primary">
 	<tbody class="unstriped">

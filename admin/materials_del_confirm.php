@@ -24,13 +24,14 @@
 	#**************************************************************************
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<center>
+<h3><?php echo T("Material Types"); ?></h3>
 <form name="delstaffform" method="post" action="../admin/materials_del.php?code=<?php echo $code;?>&desc=<?php echo urlencode($description);?>">
-<?php echo T('materialsDelConfirmMsg', array('desc'=>$description)); ?><br /><br />
+<fieldset>
+<?php echo T('materialsDelConfirmMsg', array('desc'=>$description)); ?>
+</fieldset>
 			<input type="submit" value="<?php echo T("Delete"); ?>" class="button" />
 			<input type="button" onClick="parent.location='../admin/materials_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 </form>
-</center>
 
 <?php
 

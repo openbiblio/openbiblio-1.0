@@ -730,7 +730,7 @@ bs = {
 		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
 					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
-console.log('params='+params);
+		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
 	  	bs.fetchCopyInfo(); // refresh copy display
