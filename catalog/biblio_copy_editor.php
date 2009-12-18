@@ -29,10 +29,18 @@
 	</tr>
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
-			<label for="copy_desc"><?php echo T("Description"); ?>
+			<label for="copy_desc"><?php echo T("Description"); ?></label>
 		</td>
 		<td valign="top" class="primary">
 			<?php echo inputfield("text", "copy_desc", NULL, array("size"=>40,"max"=>40)); ?>
+		</td>
+	</tr>
+	<tr>
+		<td nowrap="true" class="primary" valign="top">
+			<label for="copy_site"><?php echo T("Location"); ?></label>
+		</td>
+		<td valign="top" class="primary">
+    	<select id="copy_site" name="copy_site">to be filled in by server</span>
 		</td>
 	</tr>
 	<tr>

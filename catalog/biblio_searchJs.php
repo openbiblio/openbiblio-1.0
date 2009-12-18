@@ -204,6 +204,7 @@ bs = {
 	fetchSiteList: function () {
 	  $.get(bs.url,{mode:'getSiteList'}, function(data){
 			$('#srchSites').html(data);
+			$('#copy_site').html(data);
 		});
 	},	
 	
@@ -664,6 +665,7 @@ bs = {
 		}
 		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
+		$('#copyTbl #copy_site').val([bs.crntCopy.site]);
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
 		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
 
@@ -721,11 +723,14 @@ bs = {
 		} else {
 	  	var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
 	  }
+	  // serialize() ignores disabled fields, so cant reliably use in this case
 	  var copyDesc = $('#copyTbl #copy_desc').val();
 	  var statusCd = $('#copyTbl #status_cd').val();
+	  var siteid = $('#copyTbl #copy_site').val();
 		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
-						+"&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
-						+"&status_cd="+statusCd;
+					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
+					 + "&status_cd="+statusCd+"&siteid="+siteid;
+console.log('params='+params);
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
 	  	bs.fetchCopyInfo(); // refresh copy display

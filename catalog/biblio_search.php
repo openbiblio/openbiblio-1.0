@@ -113,7 +113,7 @@ console.log('opacMode='+opacMode);
 			<td colspan="2" valign="top" nowrap="yes" align="left">
 				<label for="mediaType"><?php echo T("Media Type:"); ?> </label>
 					<span id="srchMatTypes">to be filled by server</span>
-						<br /><br />
+					<br /><br />
 				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
 					<?php echo inputfield('select','audienceLevel','all',null,array(
 											'K' 	=>T("Kindergarten"),
@@ -126,8 +126,11 @@ console.log('opacMode='+opacMode);
 										));
 				?><br /><br />	
 				<label for="searchSites"><?php echo T("Search site:"); ?> </label>
-					<span id="srchSites">to be filled by server</span>
-						<br /><br />												
+				<select id="searchSites">
+				    <option value="All" selected="selected">All<option
+						<span id="srchSites">to be filled by server</span>
+        </select>
+				<br /><br />
 			</td>
 			<td colspan="1" valign="top" nowrap="yes" align="center">
 			  <fieldset style="margin:0; margin-bottom:5px;">

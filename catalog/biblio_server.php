@@ -257,8 +257,9 @@ class SrchDb {
 	function updateCopy($bibid,$copyid) {
 		$this->db->lock();
 		$sql = "UPDATE `biblio_copy` SET "
-		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
-		      ."`copy_desc` = '$_POST[copy_desc]' "
+		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]', "
+		      ."`copy_desc` = '$_POST[copy_desc]', "
+		      ."`siteid` = '$_POST[siteid]' "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
@@ -430,8 +431,17 @@ class SrchDb {
 	case 'getSiteList':
 		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
-		echo inputfield('select', 'searchSite', 'all', NULL, $sites = $sites_table->getSelect(true));
-	  break;	  
+		$sites = $sites_table->getSelect(true);
+		foreach ($sites as $val => $desc) {
+			$s .= '<option value="'.H($val).'" ';
+			if ($val == 'all') {
+				$s .= ' selected="selected"';
+			}
+			$s .= ">".H($desc)."</option>\n";
+		}
+//		echo inputfield('select', 'searchSite', 'all', NULL, );
+		echo $s;
+	  break;
 	  
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
