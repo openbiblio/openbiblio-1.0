@@ -139,6 +139,7 @@ console.log('opacMode='+opacMode);
 											'A' 	=>T("Adult"),
 											'all'	=>T("All"),
 										));
+<<<<<<< local
 				?>
 				</td>
 				</tr><tr height="35">
@@ -150,6 +151,14 @@ console.log('opacMode='+opacMode);
 					<option>to be filled by server</option>
 				</select>
 				</td>
+=======
+				?><br /><br />	
+				<label for="searchSites"><?php echo T("Search Site"); ?> </label>
+				<select id="searchSites">
+				    <option value="All" selected="selected">All</option>
+        </select>
+				<br /><br />
+>>>>>>> other
 			</td>
 		</tr>
 		<tr height="35">

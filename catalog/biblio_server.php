@@ -430,12 +430,16 @@ class SrchDb {
 	case 'getSiteList':
 		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
+<<<<<<< local
 		$sites = $sites_table->getSelect();
+=======
+		$sites = $sites_table->getSelect(false);
+>>>>>>> other
 		foreach ($sites as $val => $desc) {
 			$s .= '<option value="'.H($val).'" ';
-			if ($val == 'all') {
-				$s .= ' selected="selected"';
-			}
+//			if ($val == 'all') {
+//				$s .= ' selected="selected"';
+//			}
 			$s .= ">".H($desc)."</option>\n";
 		}
 //		echo inputfield('select', 'srchSites', 'all', NULL, );

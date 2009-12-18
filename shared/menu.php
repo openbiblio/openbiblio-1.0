@@ -41,7 +41,8 @@ function staff_menu() {
 	Nav::node('circulation/checkin', T("Check In"), '../circ/checkin_form.php?reset=Y');
 	##-------------------------------------------------------------------------------------##
 	
-	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
+//	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
+	Nav::node('cataloging', T("Cataloging"), '../catalog/biblio_search.php');
 	Nav::node('cataloging/localSearch', T("Local Search"), "../catalog/biblio_search.php");
 	Nav::node('cataloging/newItem', T("New Item"), "../online/new_item.php");
 
