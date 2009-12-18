@@ -127,8 +127,7 @@ console.log('opacMode='+opacMode);
 				?><br /><br />	
 				<label for="searchSites"><?php echo T("Search Site"); ?> </label>
 				<select id="searchSites">
-				    <option value="All" selected="selected">All<option
-						<span id="srchSites">to be filled by server</span>
+				    <option value="All" selected="selected">All</option>
         </select>
 				<br /><br />
 			</td>

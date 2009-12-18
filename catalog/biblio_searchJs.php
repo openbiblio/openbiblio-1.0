@@ -199,7 +199,7 @@ bs = {
 	},
 	fetchSiteList: function () {
 	  $.get(bs.url,{mode:'getSiteList'}, function(data){
-			$('#srchSites').html(data);
+			$('#searchSites').append(data);
 			$('#copy_site').html(data);
 		});
 	},	
