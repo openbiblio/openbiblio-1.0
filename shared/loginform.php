@@ -55,7 +55,7 @@
 	<?php if($_SESSION['show_copy_site'] == 'Y') { ?>
 	<tr>
 		<td>
-			<label for="selectSite"><?php echo T("Library site:"); ?></label>
+			<label for="selectSite"><?php echo T("Library Site"); ?>:</label>
 		</td>
 		<td>
 			<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>	

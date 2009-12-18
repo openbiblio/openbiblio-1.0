@@ -391,6 +391,7 @@ $trans["Length"] = "Length";
 $trans["Library Hours"] = "Library Hours";
 $trans["Library Phone"] = "Library Phone";
 $trans["Library Settings"] = "Library Settings";
+$trans["Library Site"] = "Library Site";
 $trans["Library Title"] = "Library Title";
 $trans["Limit Search Results"] = "Limit Search Results";
 $trans["Link Color:"] = "Link Color:";

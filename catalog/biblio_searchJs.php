@@ -19,10 +19,6 @@
 //------------------------------------------------------------------------------
 // biblio_search Javascript
 bs = {
-<?php
-		#### Translation table entries for JS use go here
-//	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
-?>
 	multiMode: false,
 	
 	init: function () {
@@ -179,10 +175,10 @@ bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
-			if (bs.opts.lookupAvail == 1) {
-				bs.lookupAvailable = true;
-				//console.log('lookup engine available');
-			}
+//			if (bs.opts.lookupAvail == 1) {
+//				bs.lookupAvailable = true;
+//				//console.log('lookup engine available');
+//			}
 		});
 	},
 	fetchCrntMbrInfo: function () {
