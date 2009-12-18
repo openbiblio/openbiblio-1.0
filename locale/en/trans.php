@@ -596,6 +596,7 @@ $trans["Search Catalog"] = "Search Catalog";
 $trans["Search Complete"] = "Search Complete";
 $trans["Search Member by Name"] = "Search Member by Name";
 $trans["Search Results"] = "Search Results";
+$trans["Search Site"] = "Search Site";
 $trans["Search"] = "Search";
 $trans["Searching for ISBN %isbn%"] = "Searching for ISBN %isbn%";
 $trans["Searching for<br />Title: '%title%',<br />by %author%"] = "Searching for<br />Title: '%title%',<br />by %author%";
