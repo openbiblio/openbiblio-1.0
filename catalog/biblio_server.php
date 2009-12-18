@@ -89,7 +89,6 @@ class SrchDb {
 				$sqlOrder = " ORDER BY sorts.`subfield_data`;";					
 			}
 			if(isset($item['siteTag'])){
-			//				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['searchSite'] . '"}';
 					$sqlSelect .= " JOIN `biblio_copy` bc";
 					$sqlWhere .= " AND bc.bibid = b.bibid "
 									." AND bc.siteid = '" . $item['siteValue'] . "' ";					
@@ -431,7 +430,7 @@ class SrchDb {
 	case 'getSiteList':
 		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
-		$sites = $sites_table->getSelect(true);
+		$sites = $sites_table->getSelect();
 		foreach ($sites as $val => $desc) {
 			$s .= '<option value="'.H($val).'" ';
 			if ($val == 'all') {
@@ -439,7 +438,7 @@ class SrchDb {
 			}
 			$s .= ">".H($desc)."</option>\n";
 		}
-//		echo inputfield('select', 'searchSite', 'all', NULL, );
+//		echo inputfield('select', 'srchSites', 'all', NULL, );
 		echo $s;
 	  break;
 	  
@@ -502,9 +501,10 @@ class SrchDb {
 				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
 			}
 		}		
+
 		if($_REQUEST['advanceQ']=='Y'){
-			if(isset($_REQUEST['searchSite']) && $_REQUEST['searchSite'] != 'all'){
-				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['searchSite'] . '"}';
+			if(isset($_REQUEST['srchSites']) && $_REQUEST['srchSites'] != 'all'){
+				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['srchSites'] . '"}';
 			}
 			if(isset($_REQUEST['mediaType']) && $_REQUEST['mediaType'] != 'all'){
 				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)

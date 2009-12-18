@@ -109,30 +109,13 @@ console.log('opacMode='+opacMode);
 	  <fieldset id="advancedSrch">
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
-		<tr>
-			<td colspan="2" valign="top" nowrap="yes" align="left">
+		<tr height="35">
+			<td valign="top" nowrap="yes" align="left">
 				<label for="mediaType"><?php echo T("Media Type:"); ?> </label>
-					<span id="srchMatTypes">to be filled by server</span>
-					<br /><br />
-				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
-					<?php echo inputfield('select','audienceLevel','all',null,array(
-											'K' 	=>T("Kindergarten"),
-											'P' 	=>T("Primary"),
-											'I' 	=>T("Intermediate"),
-											'J' 	=>T("Junior High"),
-											'S' 	=>T("Senior High"),
-											'A' 	=>T("Adult"),
-											'all'	=>T("All"),
-										));
-				?><br /><br />	
-				<label for="searchSites"><?php echo T("Search Site"); ?> </label>
-				<select id="searchSites">
-				    <option value="All" selected="selected">All<option
-						<span id="srchSites">to be filled by server</span>
-        </select>
-				<br /><br />
-			</td>
-			<td colspan="1" valign="top" nowrap="yes" align="center">
+				</td><td>
+					<span id="srchMatTypes">to be filled by server</span>				
+				</td>
+			<td rowspan="3" valign="top" nowrap="yes" align="center">
 			  <fieldset style="margin:0; margin-bottom:5px;">
 				<legend><?php echo T("Sort by: "); ?></legend>
 					<?php echo inputfield('select','sortBy','title',null,array(
@@ -142,11 +125,37 @@ console.log('opacMode='+opacMode);
 										));
 					?>
 			  </fieldset>
-		</td>
+		</td>				
+				</tr><tr height="35">
+				<td>
+				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
+				</td><td>
+					<?php echo inputfield('select','audienceLevel','all',null,array(
+											'K' 	=>T("Kindergarten"),
+											'P' 	=>T("Primary"),
+											'I' 	=>T("Intermediate"),
+											'J' 	=>T("Junior High"),
+											'S' 	=>T("Senior High"),
+											'A' 	=>T("Adult"),
+											'all'	=>T("All"),
+										));
+				?>
+				</td>
+				</tr><tr height="35">
+				<td>
+				<label for="srchSites"><?php echo T("Search Site"); ?>:</label>
+				</td><td>
+				<select name="srchSites" id="srchSites">
+				    <option id= value="all" selected="selected">All<option>
+					<option>to be filled by server</option>
+				</select>
+				</td>
+			</td>
 		</tr>
-		<tr>
-		<td colspan="3" align="right" class="primary">
+		<tr height="35">
+		<td align="right" class="primary">
 			<label><?php echo T("Production Date:"); ?></label>
+		</td><td colspan="2" >
 			<label for="from"><?php echo T("From Year:");?></label>
 				<?php echo inputfield('text','from',null,array('size'=>'4'))?>
 			<label for="to"><?php echo T("To Year:"); ?></label>

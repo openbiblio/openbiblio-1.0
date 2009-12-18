@@ -203,8 +203,10 @@ bs = {
 	},
 	fetchSiteList: function () {
 	  $.get(bs.url,{mode:'getSiteList'}, function(data){
-			$('#srchSites').html(data);
 			$('#copy_site').html(data);
+			// Add all for search sites
+			data = '<option value="all"  selected="selected">All</option>' + data;
+			$('#srchSites').html(data);
 		});
 	},	
 	
