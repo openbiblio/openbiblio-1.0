@@ -145,6 +145,7 @@ ni = {
 		$('#245a').bind('change',null,ni.fixTitle);
 
 		ni.fetchHosts();  //on completion, search form will appear
+		ni.fetchSiteList(); // for new copy use
 		ni.fetchOpts();  //for debug use
 	},
 	
@@ -204,6 +205,12 @@ ni = {
 		});
 	},
 
+	fetchSiteList: function () {
+	  $.get(ni.bs_url,{mode:'getSiteList'}, function(data){
+			$('#copy_site').html(data);
+		});
+	},
+
 	doAbandon: function () {
 	  $.getJSON(ni.url,{mode:'abandon'}, function(data){
 			$('#searchDiv').show();
@@ -224,6 +231,9 @@ ni = {
 	
 	showCopyEditor: function () {
   	$('#selectionDiv').hide();
+  	var crntsite = ni.opts.session.current_site
+		//console.log('crnt site='+crntsite);
+		$('#copyTbl #copy_site').val(crntsite);
 		if ($('#autobarco:checked').length > 0) {
 			ni.doGetBarcdNmbr(ni.bibid);
 		}

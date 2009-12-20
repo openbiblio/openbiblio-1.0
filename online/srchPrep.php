@@ -30,7 +30,7 @@
 		//echo "ttl hits= $ttlHits<br />";
 		## TOO FEW
 		if ($ttlHits == 0) {
-		  $msg1 = T('lookup_nothingFound');
+		  $msg1 = T('Nothing Found');
 		  # JSON object follows
 		  $s =  "{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],".
 						"'msg':'$msg1',".

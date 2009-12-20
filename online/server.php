@@ -75,6 +75,7 @@ switch ($_REQUEST[mode]){
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getOpts':
+	  $postVars['session'] = $_SESSION;
 		echo json_encode($postVars);
 		break;
 
