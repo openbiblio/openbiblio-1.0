@@ -294,14 +294,16 @@ bs = {
 			var html = "<tr> \n";
 			var biblio = eval('('+biblioList[nBiblio]+')');
 			bs.biblio[biblio.bibid] = biblio;
-			var callNo = ''; var title = ''; var author='';
+			var callNo = ''; var title = ''; var author=''; var subtitle='';
 			if (biblio.data) {
 				$.each(biblio.data, function (fldIndex, fldData) {
 					var tmp = eval('('+fldData+')');
 					if (tmp.label == 'Title'){
 						title = tmp.value;
-						if(title.length>50) title = title.substring(0,50)+'...';
 					}
+					if (tmp.label == 'Subtitle'){
+						subtitle = tmp.value;
+					}					
 					if (tmp.label == 'Author') {
 						author = tmp.value;
 						if (author && (author.length>30)) author = author.substring(0,30)+'...';
@@ -313,6 +315,10 @@ bs = {
 				title = 'unknown'; callNo = 'not assigned';
 				continue;
 			}
+			// Add subtitle to title and chop on 50 charaters if needed
+			title = title + ' ' + subtitle;
+			if(title.length>50) title = title.substring(0,50)+'...';
+			
 			if (bs.opts.showBiblioPhotos == 'Y') {
 				html += '<td id="photo_'+biblio.bibid+'" class="biblioImage">'+
 								'		<img src=\"../images/shim.gif\" />'+

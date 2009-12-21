@@ -163,7 +163,7 @@ class SrchDb {
 					else if($copy[statusCd] == "hld")
 						if($this->avIcon == null) $this->avIcon = "circle_blue.png"; // only copy is on hold
 					else
-						if($this->avIcon == null) $this->avIcon = "circle_red.png"; // copy not available
+						if($this->avIcon == null && $this->avIcon != "circle_blue.png" && $this->avIcon != "circle_orange.png") $this->avIcon = "circle_red.png"; // copy not available
 				}
 			} else {
 				$this->avIcon = "circle_red.png"; // no copy found
