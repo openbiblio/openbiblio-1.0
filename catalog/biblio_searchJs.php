@@ -444,6 +444,7 @@ bs = {
 						html += "	<td>\n";
 						html += "		<a href='' class=\"editBtn\" >edit</a>\n";
 						html += "		<a href='' class=\"deltBtn\" >del</a>\n";
+					html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
 						html += "	</td>\n";
 					}
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
@@ -455,7 +456,6 @@ bs = {
 						$('#siteFld').hide();
 					}
 					html += "	<td>"+crntCopy.status
-					html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
 					if (crntCopy.mbrId) {
 					  html += ' to <a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
 								 + crntCopy.mbrName+'</a>';
@@ -664,6 +664,7 @@ bs = {
 	doCopyEdit: function (e) {
 		$('#editRsltMsg').html('');
 		var copyid = $(this).next().next().val();
+console.log('copy id='+copyid);
 		for (nCopy in bs.copyJSON) {
 			bs.crntCopy = eval('('+bs.copyJSON[nCopy]+')')
 		  if (bs.crntCopy['copyid'] == copyid) break;
