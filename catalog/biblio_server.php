@@ -10,6 +10,7 @@
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
+	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
 	
 	// Load session data in case of OPAC (eg no user logged on)
 	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
@@ -152,7 +153,7 @@ class SrchDb {
 				$this->avIcon = "circle_red.png";
 				foreach($copies as $copyEnc){
 					$copy = json_decode($copyEnc, true);
-					if($copy['statusCd'] == "in") {
+					if($copy['statusCd'] == OBIB_STATUS_IN) {
 						// See on which site
 						if($_SESSION['current_site'] == $copy['siteid'] || $_SESSION['show_copy_site'] != 'Y'){
 							$this->avIcon = "circle_green.png"; // one or more available
@@ -161,7 +162,7 @@ class SrchDb {
 							$this->avIcon = "circle_orange.png"; // one or more available on another site
 						}
 					}
-					else if($copy[statusCd] == "hld" && $this->avIcon != "circle_orange.png")
+					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD && $this->avIcon != "circle_orange.png")
 						$this->avIcon = "circle_blue.png"; // only copy is on hold
 				}
 			} else {
@@ -210,14 +211,21 @@ class SrchDb {
 			}
 			$copy['status'] = $states[$status[status_cd]];
 			$copy['statusCd'] = $status[status_cd];
-			if($_SESSION['show_checkout_mbr'] == "Y" && ($status[status_cd] == "out" || $status[status_cd] == "hld")){
-				if($status[status_cd] == "out"){
+			if($_SESSION['show_checkout_mbr'] == "Y" && ($status[status_cd] == OBIB_STATUS_OUT || $status[status_cd] == OBIB_STATUS_ON_HOLD)){
+				if($status[status_cd] == OBIB_STATUS_OUT){
 					$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
 				} else {
 					$checkout_mbr = $copies->getHoldMember($copy[copyid]);
 				}
 				$copy['mbrId'] = $checkout_mbr[mbrid];
 				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
+				// Add custom fields
+				$custom = $copies->getCustomFields($copy[copyid]);
+				$copy['custFields'] = array();
+				while ($row = $custom->next() ) {
+					//echo "test"; 
+					$copy['custFields'][] = array('code' => $row["code"], 'data' => $row["data"]);
+				}
 			}
 			$rslt[] = json_encode($copy);
 		}
@@ -278,6 +286,17 @@ class SrchDb {
 			//echo "sql=$sql<br />";
 			$rows = $this->db->act($sql);
 		}
+		// Update custom fields if set
+		$copies = new Copies;
+		$customFields = new CopiesCustomFields;
+		$custom = array();
+		foreach ($customFields->getSelect() as $name => $title) {
+			if (isset($_REQUEST['custom_'.$name])) {
+				$custom[$name] = $_POST['custom_'.$name];
+			}
+		}
+		$copies->setCustomFields($copyid, $custom);		
+		
 		$this->db->unlock();
 		return T('Update completed');
 	}

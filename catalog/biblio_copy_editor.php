@@ -2,6 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+ 
+ 	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+	require_once(REL(__FILE__, "../model/Copies.php"));	
 ?>
 <p class="note"><?php echo T("Fields marked are required"); ?></p>
 
@@ -59,6 +62,19 @@
 														));
 			?>
 		</td>
+	</tr>
+	<!-- Custom fields /-->
+	<?php
+		$BCQ = new BiblioCopyFields;
+		$rows = $BCQ->getAll();
+			
+		while ($row = $rows->next()) {
+			echo "<tr>";
+			echo "<td nowrap=\"true\" class=\"primary\" valign=\"top\"><label for=\"custom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
+			echo "<td valign=\"top\" class=\"primary\">" . inputfield('text', 'custom_'.$row["code"], "",NULL) . "</td>";
+			echo "</tr>";
+		}					
+	?>
 	</tr>
 	</tbody>
 	

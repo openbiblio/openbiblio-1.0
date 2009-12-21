@@ -662,8 +662,8 @@ bs = {
 
 	//------------------------------
 	doCopyEdit: function (e) {
- 	  $('#editRsltMsg').html('');
-	  var copyid = $(this).next().next().val();
+		$('#editRsltMsg').html('');
+		var copyid = $(this).next().next().val();
 		for (nCopy in bs.copyJSON) {
 			bs.crntCopy = eval('('+bs.copyJSON[nCopy]+')')
 		  if (bs.crntCopy['copyid'] == copyid) break;
@@ -674,6 +674,11 @@ bs = {
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
 		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
 
+		// custom fields
+		for(nField in bs.crntCopy.custFields){
+			$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val(bs.crntCopy.custFields[nField].data);
+		}
+		
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
@@ -735,6 +740,10 @@ bs = {
 		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
 					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
+		// Custom fields
+		for(nField in bs.crntCopy.custFields){
+			params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
+		}					
 		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
