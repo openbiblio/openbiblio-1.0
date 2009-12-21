@@ -148,7 +148,8 @@ class SrchDb {
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
 			if (!empty($copies)) {
-				$this->avIcon = null;
+				// default copy not available
+				$this->avIcon = "circle_red.png";
 				foreach($copies as $copyEnc){
 					$copy = json_decode($copyEnc, true);
 					if($copy['statusCd'] == "in") {
@@ -160,10 +161,8 @@ class SrchDb {
 							$this->avIcon = "circle_orange.png"; // one or more available on another site
 						}
 					}
-					else if($copy[statusCd] == "hld")
-						if($this->avIcon == null) $this->avIcon = "circle_blue.png"; // only copy is on hold
-					else
-						if($this->avIcon == null && $this->avIcon != "circle_blue.png" && $this->avIcon != "circle_orange.png") $this->avIcon = "circle_red.png"; // copy not available
+					else if($copy[statusCd] == "hld" && $this->avIcon != "circle_orange.png")
+						$this->avIcon = "circle_blue.png"; // only copy is on hold
 				}
 			} else {
 				$this->avIcon = "circle_red.png"; // no copy found
@@ -204,7 +203,7 @@ class SrchDb {
 		while ($copy = $bcopies->next()) {
 			$status = $history->getOne($copy['histid']);
 			$booking = $bookings->getByHistid($copy['histid']);
-		if ($_SESSION['show_copy_site'] == 'Y') {
+			if ($_SESSION['show_copy_site'] == 'Y') {
 				$sites_table = new Sites;
 				$sites = $sites_table->getSelect();
 				$copy['site'] = $sites[$copy[siteid]];
@@ -212,7 +211,11 @@ class SrchDb {
 			$copy['status'] = $states[$status[status_cd]];
 			$copy['statusCd'] = $status[status_cd];
 			if($_SESSION['show_checkout_mbr'] == "Y" && ($status[status_cd] == "out" || $status[status_cd] == "hld")){
-				$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
+				if($status[status_cd] == "out"){
+					$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
+				} else {
+					$checkout_mbr = $copies->getHoldMember($copy[copyid]);
+				}
 				$copy['mbrId'] = $checkout_mbr[mbrid];
 				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
 			}

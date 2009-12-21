@@ -118,6 +118,18 @@ class Copies extends CoreTable {
 		$result = $this->db->select($sql);
 		return ($result->next());
 	}	
+	# Added this function to lookup the member who has the copy on hold,
+	#	for detailed view (not sure if there is a shorter way - LJ
+	# Also, I return the member record directly to prevent unnecisary code,
+	#	even though I am not sure if that is accroding to the design idea
+	function getHoldMember($copyid) {
+		$sql = "select mbr.* "
+				 . "from member mbr, biblio_hold bh "
+				 . "where mbr.mbrid=bh.mbrid ";
+		$sql .= $this->db->mkSQL("and bh.copyid=%N order by bh.hold_begin_dt", $copyid);
+		$result = $this->db->select($sql);
+		return ($result->next());
+	}	
 	function lookupBulk_el($barcodes) {
 		$copyids = array();
 		$bibids = array();
