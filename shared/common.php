@@ -92,7 +92,7 @@ function mkPostVars() {
 	return _mkPostVars($_REQUEST, NULL);
 }
 
-### needs to be here so changes in settings are picked up when entered
+### needs to be here so changes in settings are picked up when changes are entered
 function setSessionFmSettings() {
 	$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 	$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
@@ -104,6 +104,7 @@ function setSessionFmSettings() {
 	$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
 	$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
 	$_SESSION['show_item_photos'] = Settings::get('show_item_photos');
+  $_SESSION['site_login'] = Settings::get('site_login');
 }
 
 require_once(REL(__FILE__, 'compat.php'));

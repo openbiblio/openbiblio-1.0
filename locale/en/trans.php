@@ -270,6 +270,7 @@ $trans["Edit Material Type"]          = "Edit Material Type";
 $trans["Edit Member Field"] = "Edit Member Field";
 $trans["Edit Member Info"] = "Edit Member Info";
 $trans["Edit Site"] = "Edit Site";
+$trans["Edit System Settings"] = "Edit System Settings";
 $trans["Edit Staff Member Information"] = "Edit Staff Member Information";
 $trans["Edit Stock Info"] = "Edit Stock Info";
 $trans["Edit This Item"] = "Edit this Item";

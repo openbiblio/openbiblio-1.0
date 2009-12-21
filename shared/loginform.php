@@ -7,8 +7,12 @@
 	require_once(REL(__FILE__,"../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));	
 
-	// Nee3d to be initialised to make the decission to show th site dropdown list - LJ
-	if(!isset($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	## assure all session values are current
+	setSessionFmSettings(); // part of ../shared/common.php
+	
+	// Need to be initialised to make the decission to show the site dropdown list - LJ
+//	if(!isset($_SESSION['show_copy_site']))
+//		$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
 	
 	$temp_return_page = "";
 	if (isset($_GET["RET"])){
@@ -30,11 +34,12 @@
 	$attrs = array(size=>"20", maxlength=>"20");
 
 ?>
-
 <h1><span id="searchHdr" class="title"><?php echo T("Staff Login"); ?></span></h1>
+//<?php print_r($_SESSION); ?>  //debugging only
 <form name="loginform" method="post" action="../shared/login.php">
 <fieldset>
 <table class="primary">
+
 	<tbody>
 	<tr>
 		<td valign="top" class="noborder">
@@ -52,7 +57,7 @@
 			<?php echo inputfield('password','pwd',$postVars["pwd"],$attrs); ?>
 		</td>
 	</tr>
-	<?php if($_SESSION['show_copy_site'] == 'Y') { ?>
+	<?php if(($_SESSION['show_copy_site'] == 'Y') || ($_SESSION['site_login'] == 'Y')){ ?>
 	<tr>
 		<td>
 			<label for="selectSite"><?php echo T("Library Site"); ?>:</label>
@@ -63,6 +68,7 @@
 	</tr>
 	<?php } ?>
 	</tbody>
+	
 	<tfoot>
 	<tr>
 		<td colspan="2" align="center" class="noborder">
@@ -70,6 +76,7 @@
 		</td>
 	</tr>
 	<tfoot>
+	
 </table>
 </fieldset>
 </form>

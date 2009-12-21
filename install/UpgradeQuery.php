@@ -444,10 +444,20 @@ class UpgradeQuery extends InstallQuery {
 		//-------------------------//
 		## member loan priveleges denied support
     $sql = "INSERT INTO `openbibliowork`.`mbr_classify_dm` "
-					."(`code`, `description`, `default_flg`) VALUES ('3', 'denied', 'N')
+					."(`code`, `description`, `default_flg`) VALUES ('3', 'denied', 'N')"
 					;
 	  $this->act($sql);
-		}
-		
-	}
-}
+		//-------------------------//
+		## aditional tool setting
+	  $sql = "INSERT INTO `openbibliowork`.`settings` "
+					."(`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)"
+					."VALUES "
+					."('site_login', '25', 'Site Logon', 'bool', NULL , NULL , NULL , '''N''', 'tool')"
+     			;
+	  $this->act($sql);
+		//-------------------------//
+
+		}  //function
+
+	} //class
+
