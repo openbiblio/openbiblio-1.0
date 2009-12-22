@@ -462,12 +462,17 @@ bs = {
 					}
 					html += "	</td>\n";
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
-					// Sometimes the info has to come out of an array (if coming from list) - LJ
-					var daysDueBack = parseInt(bs.biblio.daysDueBack);
-					if(isNaN(daysDueBack)) {			
-						daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
-					}					
-					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
+					// Due back is onyl needed when checkked out - LJ
+					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
+						// Sometimes the info has to come out of an array (if coming from list) - LJ
+						var daysDueBack = parseInt(bs.biblio.daysDueBack);
+						if(isNaN(daysDueBack)) {			
+							daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
+						}					
+						html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
+					} else {
+						html += "<td>---</td>";
+					}
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
@@ -742,7 +747,10 @@ bs = {
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
 		// Custom fields
 		for(nField in bs.crntCopy.custFields){
-			params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
+			// Only add if has a value, or changed from a value to noihing
+			if($('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != bs.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != ""){
+				params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
+			}
 		}					
 		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
@@ -756,7 +764,8 @@ bs = {
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
 	  if (confirm('<?php echo T('Are you sure you want to delete this copy?'); ?>')) {
-	  	var copyid = e.data.copyid;
+	  	//var copyid = e.data.copyid;
+		var copyid = $(this).next().val();
 	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
 	  	$.post(bs.url,params, function(response){
 	  	  $('#rsltMsg').html(response);

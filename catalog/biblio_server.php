@@ -11,6 +11,8 @@
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
+ 	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+	
 	
 	// Load session data in case of OPAC (eg no user logged on)
 	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
@@ -201,6 +203,13 @@ class SrchDb {
 		$history = new History;
 		$bookings = new Bookings;
 
+		$BCQ = new BiblioCopyFields;
+		$custRows = $BCQ->getAll();			
+		$custFieldList = array();
+		while ($row = $custRows->next()) {
+			$custFieldList[$row["code"]] = "";
+		}			
+		
 		while ($copy = $bcopies->next()) {
 			$status = $history->getOne($copy['histid']);
 			$booking = $bookings->getByHistid($copy['histid']);
@@ -218,15 +227,21 @@ class SrchDb {
 					$checkout_mbr = $copies->getHoldMember($copy[copyid]);
 				}
 				$copy['mbrId'] = $checkout_mbr[mbrid];
-				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
-				// Add custom fields
-				$custom = $copies->getCustomFields($copy[copyid]);
-				$copy['custFields'] = array();
-				while ($row = $custom->next() ) {
-					//echo "test"; 
-					$copy['custFields'][] = array('code' => $row["code"], 'data' => $row["data"]);
-				}
+				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";				
 			}
+			// Add custom fields - Bit complicated, but seems the easiest way to populate empty fields (list compiled at beginning of procedure to lower databse queries)		
+			// Now populate data				
+			$custom = $copies->getCustomFields($copy[copyid]);
+			$copy['custFields'] = array();
+			$fieldList = $custFieldList;
+			while ($row = $custom->next() ) {
+				$fieldList[$row["code"]] = $row["data"];
+			}
+
+			//Finally add to copy
+			foreach($fieldList as $key => $value){
+				$copy['custFields'][] = array('code' => $key, 'data' => $value);
+			}			
 			$rslt[] = json_encode($copy);
 		}
 		return $rslt;
@@ -288,13 +303,14 @@ class SrchDb {
 		}
 		// Update custom fields if set
 		$copies = new Copies;
-		$customFields = new CopiesCustomFields;
 		$custom = array();
-		foreach ($customFields->getSelect() as $name => $title) {
-			if (isset($_REQUEST['custom_'.$name])) {
-				$custom[$name] = $_POST['custom_'.$name];
-			}
-		}
+		$BCQ = new BiblioCopyFields;
+		$rows = $BCQ->getAll();		
+		while ($row = $rows->next()) {
+			if (isset($_REQUEST['custom_'.$row["code"]])) {
+				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
+			}			
+		}		
 		$copies->setCustomFields($copyid, $custom);		
 		
 		$this->db->unlock();
