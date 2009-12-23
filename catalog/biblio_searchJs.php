@@ -283,12 +283,8 @@ bs = {
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = eval('('+biblioList[0]+')');
 		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
-		$('#rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
+		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
-
-		// Added table for showing a list view and better alignment
-		var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
-		$('#srchRsltsDiv').html(header);
 
 		for (var nBiblio in biblioList) {
 			var html = "<tr> \n";
@@ -338,15 +334,15 @@ bs = {
 			html += '<td><div class="biblioBtn">'+"\n";
 			html += "</div></td> \n";
 			html += "</tr>\n";
-			$('#listTbl tbody').append(html);
+			$('#listTbl tbody#srchRslts').append(html);
 		}
-		var trailer = "</tbody></table>";
-		$('#srchRsltsDiv').append(trailer);
-		   obib.reStripe();
+		obib.reStripe2('listTbl','odd');
 
-	  // subject button is created dynamically, so duplicate binding is not possible
+	  // this button is created dynamically, so duplicate binding is not possible
 		$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
-			if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
+		
+		// handle next / prev buttons
+		if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
 			bs.previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);
 			$('#biblioListDiv .goPrevBtn').enable();
 		} else {
@@ -358,7 +354,8 @@ bs = {
 		} else {
 			$('#biblioListDiv .goNextBtn').disable();
 		}
-     	$('#biblioListDiv').show()
+		
+    $('#biblioListDiv').show()
  		$('#searchDiv').hide();
 	},
 	goNextPage:function (firstItem) {
@@ -392,7 +389,11 @@ bs = {
 	  });
 	},
 	showOneBiblio: function (biblio) {
-	  bs.theBiblio = biblio;
+	  if(!biblio)
+			bs.theBiblio = $(this).prev().val();
+		else
+	  	bs.theBiblio = biblio;
+
 	  var txt = '';
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
@@ -462,17 +463,12 @@ bs = {
 					}
 					html += "	</td>\n";
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
-					// Due back is onyl needed when checkked out - LJ
-					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
-						// Sometimes the info has to come out of an array (if coming from list) - LJ
-						var daysDueBack = parseInt(bs.biblio.daysDueBack);
-						if(isNaN(daysDueBack)) {			
-							daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
-						}					
-						html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
-					} else {
-						html += "<td>---</td>";
-					}
+					// Sometimes the info has to come out of an array (if coming from list) - LJ
+					var daysDueBack = parseInt(bs.biblio.daysDueBack);
+					if(isNaN(daysDueBack)) {			
+						daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
+					}					
+					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
@@ -747,10 +743,7 @@ bs = {
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
 		// Custom fields
 		for(nField in bs.crntCopy.custFields){
-			// Only add if has a value, or changed from a value to noihing
-			if($('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != bs.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != ""){
-				params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
-			}
+			params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
 		}					
 		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
@@ -764,8 +757,7 @@ bs = {
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
 	  if (confirm('<?php echo T('Are you sure you want to delete this copy?'); ?>')) {
-	  	//var copyid = e.data.copyid;
-		var copyid = $(this).next().val();
+	  	var copyid = e.data.copyid;
 	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
 	  	$.post(bs.url,params, function(response){
 	  	  $('#rsltMsg').html(response);

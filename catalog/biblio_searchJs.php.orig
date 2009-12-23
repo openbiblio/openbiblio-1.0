@@ -30,6 +30,7 @@ bs = {
 		bs.urlLookup = '../online/server.php'; //may not exist
 
 		$('#advancedSrch').hide();
+		$('#advanceQ:checked').val(['N'])
 		$('#advanceQ').bind('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
 				$('#advancedSrch').show();
@@ -282,25 +283,23 @@ bs = {
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = eval('('+biblioList[0]+')');
 		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
-		$('#rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
+		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
-
-		// Added table for showing a list view and better alignment
-		var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
-		$('#srchRsltsDiv').html(header);
 
 		for (var nBiblio in biblioList) {
 			var html = "<tr> \n";
 			var biblio = eval('('+biblioList[nBiblio]+')');
 			bs.biblio[biblio.bibid] = biblio;
-			var callNo = ''; var title = ''; var author='';
+			var callNo = ''; var title = ''; var author=''; var subtitle='';
 			if (biblio.data) {
 				$.each(biblio.data, function (fldIndex, fldData) {
 					var tmp = eval('('+fldData+')');
 					if (tmp.label == 'Title'){
 						title = tmp.value;
-						if(title.length>50) title = title.substring(0,50)+'...';
 					}
+					if (tmp.label == 'Subtitle'){
+						subtitle = tmp.value;
+					}					
 					if (tmp.label == 'Author') {
 						author = tmp.value;
 						if (author && (author.length>30)) author = author.substring(0,30)+'...';
@@ -312,6 +311,10 @@ bs = {
 				title = 'unknown'; callNo = 'not assigned';
 				continue;
 			}
+			// Add subtitle to title and chop on 50 charaters if needed
+			title = title + ' ' + subtitle;
+			if(title.length>50) title = title.substring(0,50)+'...';
+			
 			if (bs.opts.showBiblioPhotos == 'Y') {
 				html += '<td id="photo_'+biblio.bibid+'" class="biblioImage">'+
 								'		<img src=\"../images/shim.gif\" />'+
@@ -331,15 +334,15 @@ bs = {
 			html += '<td><div class="biblioBtn">'+"\n";
 			html += "</div></td> \n";
 			html += "</tr>\n";
-			$('#listTbl tbody').append(html);
+			$('#listTbl tbody#srchRslts').append(html);
 		}
-		var trailer = "</tbody></table>";
-		$('#srchRsltsDiv').append(trailer);
-		   obib.reStripe();
+		obib.reStripe2('listTbl','odd');
 
-	  // subject button is created dynamically, so duplicate binding is not possible
+	  // this button is created dynamically, so duplicate binding is not possible
 		$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
-			if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
+		
+		// handle next / prev buttons
+		if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
 			bs.previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);
 			$('#biblioListDiv .goPrevBtn').enable();
 		} else {
@@ -351,7 +354,8 @@ bs = {
 		} else {
 			$('#biblioListDiv .goNextBtn').disable();
 		}
-     	$('#biblioListDiv').show()
+		
+    $('#biblioListDiv').show()
  		$('#searchDiv').hide();
 	},
 	goNextPage:function (firstItem) {
@@ -385,7 +389,11 @@ bs = {
 	  });
 	},
 	showOneBiblio: function (biblio) {
-	  bs.theBiblio = biblio;
+	  if(!biblio)
+			bs.theBiblio = $(this).prev().val();
+		else
+	  	bs.theBiblio = biblio;
+
 	  var txt = '';
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
@@ -437,6 +445,7 @@ bs = {
 						html += "	<td>\n";
 						html += "		<a href='' class=\"editBtn\" >edit</a>\n";
 						html += "		<a href='' class=\"deltBtn\" >del</a>\n";
+						html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
 						html += "	</td>\n";
 					}
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
@@ -448,14 +457,13 @@ bs = {
 						$('#siteFld').hide();
 					}
 					html += "	<td>"+crntCopy.status
-					html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
 					if (crntCopy.mbrId) {
 					  html += ' to <a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
 								 + crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
-					// Sometimes the info has to come ou of an array (if coming from list) - LJ
+					// Sometimes the info has to come out of an array (if coming from list) - LJ
 					var daysDueBack = parseInt(bs.biblio.daysDueBack);
 					if(isNaN(daysDueBack)) {			
 						daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
@@ -655,8 +663,8 @@ bs = {
 
 	//------------------------------
 	doCopyEdit: function (e) {
- 	  $('#editRsltMsg').html('');
-	  var copyid = $(this).next().next().val();
+		$('#editRsltMsg').html('');
+		var copyid = $(this).next().next().val();
 		for (nCopy in bs.copyJSON) {
 			bs.crntCopy = eval('('+bs.copyJSON[nCopy]+')')
 		  if (bs.crntCopy['copyid'] == copyid) break;
@@ -667,6 +675,11 @@ bs = {
 		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
 		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
 
+		// custom fields
+		for(nField in bs.crntCopy.custFields){
+			$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val(bs.crntCopy.custFields[nField].data);
+		}
+		
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
@@ -728,6 +741,10 @@ bs = {
 		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
 					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
+		// Custom fields
+		for(nField in bs.crntCopy.custFields){
+			params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
+		}					
 		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
 	  	$('#editRsltMsg').html(response);
