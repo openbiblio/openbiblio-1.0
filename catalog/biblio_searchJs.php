@@ -286,10 +286,6 @@ bs = {
 		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
 
-		// Added table for showing a list view and better alignment
-		//var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
-		//$('#srchRsltsDiv').html(header);
-
 		for (var nBiblio in biblioList) {
 			var html = "<tr> \n";
 			var biblio = eval('('+biblioList[nBiblio]+')');
@@ -340,9 +336,6 @@ bs = {
 			html += "</tr>\n";
 			$('#listTbl tbody#srchRslts').append(html);
 		}
-		//var trailer = "</tbody></table>";
-		//$('#srchRsltsDiv').append(trailer);
-		//obib.reStripe();
 		obib.reStripe2('listTbl','odd');
 
 	  // this button is created dynamically, so duplicate binding is not possible
