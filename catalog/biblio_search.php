@@ -45,6 +45,7 @@
 
 <p id="errSpace" class="error">to be filled by server</p>
 
+<!-- ------------------------------------------------------------------------ -->
 <div id="searchDiv">
 <form id="barcodeSearch" name="barcodeSearch" method="post">
 <fieldset>
@@ -171,6 +172,7 @@
 </form>
 </div>
 
+<!-- ------------------------------------------------------------------------ -->
 <div id="biblioListDiv">
 	<h4><?php echo T("Search Results"); ?></h4>
 	<div id="results_found">
@@ -227,6 +229,7 @@
 	</table>
 </div
 
+<!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
@@ -240,6 +243,7 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="biblioDeleteBtn" class="button" value="<?php echo T('Delete This Item'); ?>">
 	<?php }?>
+	
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
 		<table id="biblioTbl">
@@ -270,6 +274,7 @@
 		<tbody id="copies" class="striped"></tbody>
 		</table>
 	</fieldset>
+	
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php if (strtolower($tab) != 'opac') { ?>
@@ -277,6 +282,7 @@
 <?php } ?>
 </div>
 
+<!-- ------------------------------------------------------------------------ -->
 <div id="itemEditorDiv">
   <form id="biblioEditForm" name="biblioEditForm" method="POST" >
 		<p class="note"><?php echo T("Fields marked are required"); ?></p>
@@ -293,6 +299,7 @@
 	</form>
 </div>
 
+<!-- ------------------------------------------------------------------------ -->
 <div id="copyEditorDiv">
 	<?php include_once(REL(__FILE__,"biblio_copy_editor.php"));?>
 </div>

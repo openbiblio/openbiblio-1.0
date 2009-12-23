@@ -35,6 +35,7 @@ bs = {
 		bs.url = 'biblio_server.php';
 		bs.urlLookup = '../online/server.php'; //may not exist
 
+		// search form
 		$('#advancedSrch').hide();
 		$('#advanceQ:checked').val(['N'])
 		$('#advanceQ').bind('click',null,function(){
@@ -56,21 +57,6 @@ bs = {
 		$('#biblioListDiv .goNextBtn').disable();
 		$('#biblioListDiv .goPrevBtn').disable();
 
-		// for the copy editor function
-		// to handle startup condition
-		if ($('#autobarco:checked').length > 0) {
-			$('#barcode_nmbr').disable();
-		}
-		// if user changes his/her mind
-		$('#autobarco').bind('change',null,function (){
-		  if ($('#autobarco:checked').length > 0) {
-				$('#barcode_nmbr').disable();
-			}
-			else {
-				$('#barcode_nmbr').enable();
-			}
-		});
-		
 		// for the single biblio display screen
 		$('#biblioEditBtn').bind('click',null,function () {
 			bs.doItemEdit(bs.theBiblio);
@@ -114,6 +100,21 @@ bs = {
 		 	$('#biblioDiv').show();
 		});
 			
+		// for the new copy function
+		// to handle startup condition
+		if ($('#autobarco:checked').length > 0) {
+			$('#barcode_nmbr').disable();
+		}
+		// if user changes his/her mind
+		$('#autobarco').bind('change',null,function (){
+		  if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
+			}
+			else {
+				$('#barcode_nmbr').enable();
+			}
+		});
+
 		// for the copy editor screen
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
 		$('#copySubmitBtn').bind('click',null,function () {
@@ -130,6 +131,7 @@ bs = {
 		bs.fetchMaterialList();
 		bs.fetchSiteList();
 		
+		// alternate startup in response to remote package
 		<?php
 		if ($_REQUEST[barcd]) {
 			echo "$('#searchText').val($_REQUEST[barcd]);\n";
