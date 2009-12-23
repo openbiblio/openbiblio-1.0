@@ -138,6 +138,11 @@ bs = {
 		else if ($_REQUEST[bibid]) {
 			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
 		}
+		else if ($_REQUEST[searchText]) {
+			echo "$('#searchText').val($_REQUEST[searchText])";
+			echo "$('#searchType').val($_REQUEST[searchType])";
+			echo "bs.doPhraseSearch();\n";
+		}
 		?>
 	},
 	//------------------------------
