@@ -258,6 +258,13 @@ input.button {
 	font: 12px serif;
 	color: black;
 }
+input.pgBtn {
+	border: solid black 2px;
+	padding: 2px;
+	width: auto;
+	font: 12px serif; font-weight: bold
+	color: black;
+	}
 input.button:hover {
 	text-decoration: underline;
 }

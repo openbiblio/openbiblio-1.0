@@ -283,12 +283,12 @@ bs = {
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = eval('('+biblioList[0]+')');
 		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
-		$('#rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
+		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
 
 		// Added table for showing a list view and better alignment
-		var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
-		$('#srchRsltsDiv').html(header);
+		//var header = "<fieldset>\n<table id=\"listTbl\">\n<tbody class=\"striped\">\n";
+		//$('#srchRsltsDiv').html(header);
 
 		for (var nBiblio in biblioList) {
 			var html = "<tr> \n";
@@ -338,15 +338,18 @@ bs = {
 			html += '<td><div class="biblioBtn">'+"\n";
 			html += "</div></td> \n";
 			html += "</tr>\n";
-			$('#listTbl tbody').append(html);
+			$('#listTbl tbody#srchRslts').append(html);
 		}
-		var trailer = "</tbody></table>";
-		$('#srchRsltsDiv').append(trailer);
-		   obib.reStripe();
+		//var trailer = "</tbody></table>";
+		//$('#srchRsltsDiv').append(trailer);
+		//obib.reStripe();
+		obib.reStripe2('listTbl','odd');
 
-	  // subject button is created dynamically, so duplicate binding is not possible
+	  // this button is created dynamically, so duplicate binding is not possible
 		$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
-			if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
+		
+		// handle next / prev buttons
+		if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
 			bs.previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);
 			$('#biblioListDiv .goPrevBtn').enable();
 		} else {
@@ -358,7 +361,8 @@ bs = {
 		} else {
 			$('#biblioListDiv .goNextBtn').disable();
 		}
-     	$('#biblioListDiv').show()
+		
+    $('#biblioListDiv').show()
  		$('#searchDiv').hide();
 	},
 	goNextPage:function (firstItem) {
@@ -392,7 +396,11 @@ bs = {
 	  });
 	},
 	showOneBiblio: function (biblio) {
-	  bs.theBiblio = biblio;
+	  if(!biblio)
+			bs.theBiblio = $(this).prev().val();
+		else
+	  	bs.theBiblio = biblio;
+
 	  var txt = '';
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
