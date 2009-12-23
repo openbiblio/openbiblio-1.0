@@ -83,8 +83,8 @@ bs = {
 				else
 					bs.doBarCdSearch();
 				bs.rtnToList();
-			} else {
-				//bs.doBarCdSearch();
+			}
+			else {
 			  bs.rtnToSrch();
 			}
 		});
@@ -286,6 +286,7 @@ bs = {
 		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
 
+		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
 			var html = "<tr> \n";
 			var biblio = eval('('+biblioList[nBiblio]+')');
@@ -356,6 +357,7 @@ bs = {
 		}
 		
     $('#biblioListDiv').show()
+    $('#biblioDiv').hide()
  		$('#searchDiv').hide();
 	},
 	goNextPage:function (firstItem) {
