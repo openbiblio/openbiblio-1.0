@@ -491,6 +491,16 @@ class SrchDb {
 		}
 	  break;
 
+	case 'doBibidSearch':
+	  $theDb = new SrchDB;
+  	$theDb->getBiblioInfo($_REQUEST[bibid]);
+		echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
+				."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
+				."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',"
+				."'data':".json_encode($theDb->getBiblioDetail())
+				."}";
+	  break;
+
 	case 'doPhraseSearch':
 	  $theDb = new SrchDB;
 	  switch ($_REQUEST[searchType]) {

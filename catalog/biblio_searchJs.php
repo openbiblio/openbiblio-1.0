@@ -135,6 +135,9 @@ bs = {
 			echo "$('#searchText').val($_REQUEST[barcd]);\n";
 			echo "bs.doBarcdSearch();\n";
 		}
+		else if ($_REQUEST[bibid]) {
+			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
+		}
 		?>
 	},
 	//------------------------------
@@ -221,6 +224,28 @@ bs = {
 	},	
 	
 	//------------------------------
+	doBibidSearch: function (bibid) {
+	  bs.srchType = 'bibid';
+	  $('p.error').html('').hide();
+	  var params = '&mode=doBibidSearch&bibid='+bibid;
+	  $.post(bs.url,params, function(jsonInpt){
+			if ($.trim(jsonInpt).substr(0,1) != '{') {
+				$('#errSpace').html(jsonInpt).show();
+			} else {
+				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
+				if (!bs.biblio.data) {
+	  			$('#rsltMsg').html('<?php T('Nothing Found by bar cd search') ?>').show();
+				}
+				else {
+					bs.showOneBiblio(bs.biblio)
+					bs.fetchCopyInfo();
+				}
+	    }
+		  $('#searchDiv').hide();
+	    $('#biblioDiv').show();
+		});
+		return false;
+	},
 	doBarcdSearch: function (e) {
 	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
