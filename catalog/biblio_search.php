@@ -7,8 +7,10 @@
 	require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
+// I beleive this is now taken care of for all $_session stuff in common.php
 	// In case of OPAC
-	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
+//	if(empty($_SESSION['show_detail_opac']))
+//		$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
 	
 	session_cache_limiter(null);
 
@@ -45,6 +47,7 @@
 </script>
 
 <h3><?php echo T("Local Search"); ?></h3>
+<?php //print_r($_SESSION); // for debugging ?>
 
 <div id="crntMbrDiv">to be filled by server</div>
 

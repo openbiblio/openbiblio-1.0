@@ -135,7 +135,8 @@ if (!isset($doing_install) or !$doing_install) {
 			unset(${$k});
 		}
 	}
-
+  setSessionFmSettings();
+  
 	global $LOC;
 	$LOC = new Localize;
 	$LOC->init(Settings::get('locale'));
