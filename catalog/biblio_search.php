@@ -37,14 +37,6 @@
 	include_once(REL(__FILE__,'/biblio_searchJs.php'));
 	
 ?>
-<script language="JavaScript">
-<?php
-	if($tab == 'opac' || $tab == 'OPAC')
-	  echo "var opacMode = true;";
-	else
-	  echo "var opacMode = false;";
-?>
-</script>
 
 <h3><?php echo T("Local Search"); ?></h3>
 <?php //print_r($_SESSION); // for debugging ?>

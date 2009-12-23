@@ -16,6 +16,12 @@
 
 <script language="JavaScript" >
 // JavaScript Document
+<?php
+	if($tab == 'opac' || $tab == 'OPAC')
+	  echo "var opacMode = true;";
+	else
+	  echo "var opacMode = false;";
+?>
 //------------------------------------------------------------------------------
 // biblio_search Javascript
 bs = {
@@ -123,6 +129,13 @@ bs = {
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 		bs.fetchSiteList();
+		
+		<?php
+		if ($_REQUEST[barcd]) {
+			echo "$('#searchText').val($_REQUEST[barcd]);\n";
+			echo "bs.doBarcdSearch();\n";
+		}
+		?>
 	},
 	//------------------------------
 	initWidgets: function () {

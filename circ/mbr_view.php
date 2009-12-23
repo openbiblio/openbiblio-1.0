@@ -261,7 +261,8 @@ if (!empty($mbr['school_grade'])) {
 			<?php echo H($copy['barcode_nmbr']);?>
 		</td>
 		<td class="primary" valign="top" >
-			<a href="../shared/biblio_view.php?bibid=<?php echo HURL($copy['bibid']);?>"><?php echo H($biblio['marc']->getValue('245$a'));?></a>
+			<!--a href="../shared/biblio_view.php?bibid=<?php //echo HURL($copy['bibid']);?>"><?php //echo H($biblio['marc']->getValue('245$a'));?></a-->
+			<a href="../catalog/biblio_search.php?barcd=<?php echo HURL($copy['barcode_nmbr']);?>"><?php echo H($biblio['marc']->getValue('245$a'));?></a>
 		</td>
 		<td class="primary" valign="top" nowrap="nowrap">
 			<?php echo H($booking['due_dt']);?>
@@ -314,7 +315,7 @@ if (!empty($mbr['school_grade'])) {
 <?php if (strtolower($mbrType[description]) != 'denied') { ?>
 <form name="holdForm" method="post" action="../circ/place_hold.php">
 <fieldset>
-<legend><?php echo T("Place On Hold"); ?></legend>
+<legend><?php echo T("Place on Hold"); ?></legend>
 <table class="primary">
 	<tr>
 		<td nowrap="nowrap" class="primary">
@@ -323,7 +324,7 @@ if (!empty($mbr['school_grade'])) {
 			<a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')">search</a>
 			<input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
 			<input type="hidden" name="classification" value="<?php echo $mbr['classification'];?>" />
-			<input type="submit" value="<?php echo T("Place Hold"); ?>" class="button" />
+			<input type="submit" value="<?php echo T("Hold"); ?>" class="button" />
 		</td>
 	</tr>
 </table>
