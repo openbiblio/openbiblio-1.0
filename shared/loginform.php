@@ -35,7 +35,7 @@
 
 ?>
 <h1><span id="searchHdr" class="title"><?php echo T("Staff Login"); ?></span></h1>
-<?php //print_r($_SESSION); //debugging only ?>
+<?php //print_r($_SESSION); //debugging only?>  
 <form name="loginform" method="post" action="../shared/login.php">
 <fieldset>
 <table class="primary">
