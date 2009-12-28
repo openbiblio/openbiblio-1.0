@@ -95,16 +95,35 @@ function showXML($data,$display) {
 
 function get_marc_fields($xml) {
   $marc = array();
+  $respVersion = '';
   $recordposition = 0;
   $subcount = 0;
   $total_hits = 0;
+  $diagMsg = '';
+  $wantMsg = false;
+  
   foreach($xml AS $record)   {
     switch($record['tag'])     {
+    case 'ZS:VERSION':
+      $respVersion = $record['value'];
+      break;
     case 'ZS:NUMBEROFRECORDS':
       // Represents total number of records that matched, not actual returned.
       $total_hits = $record['value'];
       break;
-    case 'CONTROLFIELD':
+    case 'ZS:DIAGNOSTICS':
+      if ($record['type'] == 'open') {
+      	$attributes = $record['attributes'];
+      	$wantMsg = true;
+			}
+      break;
+    case 'MESSAGE':
+      if ($wantMsg)  {
+				$marc[$recordposition]['diagMsg'] = $record['value'];
+      	$wantMsg = false;
+			}
+      break;
+     case 'CONTROLFIELD':
       $attributes = $record['attributes'];
       $marc[$recordposition][$attributes['TAG']] = trim($record['value']);
       break;
@@ -122,7 +141,10 @@ function get_marc_fields($xml) {
       $extratrim = '';
       switch($indicie) {
       case MARC_ISBN:
-        $value = substr($value, 0, 10);
+        if (substr($value,0,3) == '978')
+        	$value = substr($value, 0, 13);
+				else
+        	$value = substr($value, 0, 10);
         break;
       case MARC_TITLE:
       case MARC_PUBLICATION_PLACE:
@@ -165,9 +187,8 @@ function get_marc_fields($xml) {
    * The ZS:RECORDPOSITION tag does not occur when only one record is returned.
    * Update recordposition to indicate 1 record.
    */
-  if($recordposition == 0 && $total_hits > 0)  {
+  if (($recordposition == 0) && ($total_hits > 0))
     $recordposition = 1;
-  }
 
   return array($recordposition, $marc);
 }

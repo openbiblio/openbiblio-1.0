@@ -15,13 +15,15 @@
 	$srchBy5 =		$_REQUEST[srchBy5];
 	$lookupVal5 =	$_REQUEST[lookupVal5];
 
+	$sruSchema = 'dc'; // Dublin Core shema
+
 		//echo 'original Query specification is: ' . htmlspecialchars("#$srchBy => $lookupVal") . '<br />';
 		//echo 'srchBy: ' . $srchBy . ', srchBy2: ' . $srchBy2 . '<br />';
 		#### First search criteria line
 		switch($srchBy) {
 		case "4":
 			$srchByName = 'Title';
-			$sruQry = 'dc.title=';
+			$sruQry = "$sruSchema.title=";
 			$lookupVal = '"' . $lookupVal . '"';
 			break;
 
@@ -36,13 +38,13 @@
 
 		case "8":
 			$srchByName = 'ISSN';
-			$sruQry = 'dc.identifier=/bib.identifierAuthority=issn ';
+			$sruQry = "$sruSchema.identifier=/bib.identifierAuthority=issn ";
 			//protocol requires that '-' be included in ISSN searches
 			break;
 
 		case "9":
 			$srchByName = 'LCCN';
-			$sruQry = 'dc.identifier=/bib.identifierAuthority=lccn ';
+			$sruQry = "$sruSchema.identifier=/bib.identifierAuthority=lccn ";
 			//echo "input lccn=$lookupVal <br />";
 			$lookupVal = verifyLCCN($lookupVal,$keepIsbnDashes);
 			//echo 'final lccn: ' . $lookupVal . '<br />';
@@ -61,10 +63,10 @@
 			if ($srchBy2 == "1004") {
 				$srchByName2 = 'Author';
 //				$sruQry2 = 'bib.NamePersonal=/bib.role=author/bib.roleAuthority=marcrelator ';
-				$sruQry2 = 'dc.creator=';
+				$sruQry2 = "$sruSchema.creator=";
 			}	else if ($srchBy2 == "1016") {
 				$srchByName2 = 'Keyword';
-				$sruQry2 = 'dc.subject=';
+				$sruQry2 = "$sruSchema.subject=";
   		}
 			$lookupVal2 = '"' . $lookupVal2 . '"';
 		}
@@ -73,16 +75,16 @@
 		if (!empty($lookupVal3)) {
 			if ($srchBy3 == "1018") {
 				$srchByName3 = 'Publisher';
-				$sruQry3 = 'dc.publisher=';
+				$sruQry3 = "$sruSchema.publisher=";
 			}	else if ($srchBy3 == "59") {
 				$srchByName3 = 'Pub Loc';
 				$sruQry3 = 'bib.originPlace=/bib.portion=city ';
 			}	else if ($srchBy3 == "31") {
 				$srchByName3 = 'Pub Date';
-				$sruQry3 = 'dc.date=';
+				$sruQry3 = "$sruSchema.date=";
 			}	else if ($srchBy3 == "1016") {
 				$srchByName3 = 'Keyword';
-				$sruQry3 = 'dc.subject=';
+				$sruQry3 = "$sruSchema.subject=";
 			}
 			$lookupVal3 = '"' . $lookupVal3 . '"';
 		}
@@ -91,16 +93,16 @@
 		if (!empty($lookupVal4)) {
 			if ($srchBy4 == "1018") {
 				$srchByName4 = 'Publisher';
-				$sruQry4 = 'dc.publisher=';
+				$sruQry4 = "$sruSchema.publisher=";
 			}	else if ($srchBy4 == "59") {
 				$srchByName4 = 'Pub Loc';
 				$sruQry4 = 'bib.originPlace=/bib.portion=city ';
 			}	else if ($srchBy4 == "31") {
 				$srchByName4 = 'Pub Date';
-				$sruQry4 = 'dc.date=';
+				$sruQry4 = "$sruSchema.date=";
 			}	else if ($srchBy4 == "1016") {
 				$srchByName4 = 'Keyword';
-				$sruQry4 = 'dc.subject=';
+				$sruQry4 = "$sruSchema.subject=";
 			}
 			$lookupVal4 = '"' . $lookupVal4 . '"';
 		}
@@ -109,16 +111,16 @@
 		if (!empty($lookupVal5)) {
 			if ($srchBy5 == "1018") {
 				$srchByName5 = 'Publisher';
-				$sruQry5 = 'dc.publisher=';
+				$sruQry5 = "$sruSchema.publisher=";
 			}	else if ($srchBy5 == "59") {
 				$srchByName5 = 'Pub Loc';
 				$sruQry5 = 'bib.originPlace=/bib.portion=city ';
 			}	else if ($srchBy5 == "31") {
 				$srchByName5 = 'Pub Date';
-				$sruQry5 = 'dc.date=';
+				$sruQry5 = "$sruSchema.date=";
 			}	else if ($srchBy5 == "1016") {
 				$srchByName5 = 'Keyword';
-				$sruQry5 = 'dc.subject=';
+				$sruQry5 = "$sruSchema.subject=";
 			}
 			$lookupVal5 = '"' . $lookupVal5 . '"';
 		}

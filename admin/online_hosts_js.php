@@ -5,17 +5,8 @@
 
 // JavaScript Document
 hed = {
-	<?php
-//	echo 'listHdr : "'.T('lookup_hostsListHeader').'",'."\n";
-//	echo 'editHdr : "'.T('lookup_hostsEditHeader').'",'."\n";
-//	echo 'newHdr  : "'.T('lookup_hostsNewHeader').'",'."\n";
-//	echo 'successMsg : "'.T('lookup_optsUpdated').'",'."\n";
-//	echo 'delConfirmMsg  : "'.T('lookup_hostsConfirmDelete').'",'."\n";
-	?>
 	
 	init: function () {
-	  //init(); // part of original openbiblio js code
-
 		hed.initWidgets();
 
 		hed.url = 'onlineSrvr.php';
@@ -25,7 +16,7 @@ hed = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm tFoot #newBtn').bind('click',null,hed.doNewHost);
+		$('#showForm tFoot .newBtn').bind('click',null,hed.doNewHost);
 		$('#hostForm tFoot #addBtn').bind('click',null,hed.doAddHost);
 		$('#hostForm tFoot #updtBtn').bind('click',null,hed.doUpdateHost);
 		$('#hostForm tFoot #cnclBtn').bind('click',null,hed.resetForms);

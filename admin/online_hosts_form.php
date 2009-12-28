@@ -26,6 +26,7 @@
 <h5 id="updateMsg"></h5>
 <br />
 <form id="showForm" name="showForm" class="form">
+<input type="button" class="newBtn button" value="<?php echo T("Add New"); ?>" class="button" />
 <fieldset>
 <table id="showList" name="showList" class="primary">
 	<thead>
@@ -48,14 +49,10 @@
   	<!-- spacer used to slightly seperate button from form body -->
     <td><input type="hidden" id="xxx" name="xxx" value=""></td>
   </tr>
-	<tr>
-	  <td colspan="8" class="primary btnFld">
-			<input type="button" id="newBtn" value="<?php echo T("Add New"); ?>" class="button" />
-		</td>
-	</tr>
 	</tfoot>
 </table>
 </fieldset>
+<input type="button" class="newBtn button" value="<?php echo T("Add New"); ?>" class="button" />
 </form>
 </div>
 

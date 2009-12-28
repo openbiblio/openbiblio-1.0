@@ -441,13 +441,14 @@ ni = {
 						}); // $.each(hostData...
 						} // if (ni.hostJason[hostIndex])
 					}); // $.each(rslts.data...
-					$('#ttlHits').html(nHits)
+
+					$('#ttlHits').html(numHits);
 					//console.log('all choices drawn')
-					//$('#choiceSpace').append(response);
 					$('#biblioBtn').bind('click',null,ni.doBackToChoice);
 					$('#biblioBtn2').bind('click',null,ni.doBackToChoice);
 					$('#choiceDiv').show();
 				} // else if (rslts.ttlHits > 1)
+				
 				else if (rslts.ttlHits == 1){
 				  var data;
 					//console.log('single hit found');

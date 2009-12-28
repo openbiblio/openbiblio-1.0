@@ -1,8 +1,11 @@
 <?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
+ *
+ * This process attempts to implement a query in accordance with
+ * SRU 1.1 and CQL 1.1 specifications . As written it uses the
+ * 'Dublin Core' (dc) query schema and the 'marcxml' record schema for response.
  */
-
 	require_once (REL(__FILE__, 'sruFunc.php'));	## support functions
 	$displayXML = FALSE;
 
@@ -18,8 +21,8 @@
 	if (!empty($lookupVal5)) $queryStr .= " and $sruQry5$lookupVal5";
  	$qry ="version=1.1".
 	  		"&operation=searchRetrieve".
-			 	//"&query=".strtolower($queryStr).
 			 	"&query=".$queryStr.
+			 	"&recordPacking=xml".
 			 	"&maximumRecords=$postVars[maxHits]".
 			 	"&recordSchema=marcxml";
 	//echo "query: $qry <br />";
@@ -37,12 +40,17 @@
 		//echo "header: $header <br />";
 
 		### establish a socket for this host
-		@list($theHost, $port) = explode(':', $postVars[hosts][$i][host]);
+		@list($theURL, $port) = explode(':', $postVars[hosts][$i][host]);
+		@list($theHost, $subDir) = explode('/', $theURL);
 		if(!isset($port) || empty($port)) $port = 7090;  // default port
-		//echo "url: 'http://$theHost:$port'  <br />";
-		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
-
-		if (!$fp) trigger_error("Socket error: $errMsg ($errNmbr)");
+		//echo "url: '$theHost:$port'<br />timeout=$postVars[timeout]seconds<br />";
+		try {
+			$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
+		}
+		catch (Exception $e ) {
+			trigger_error("Socket error: $errMsg ($errNmbr)");
+			exit;
+		}
 
 		### send the query
 		$text = $header . $qry;
@@ -87,7 +95,13 @@
 			xml_parse_into_struct($xml_parser, $resp[$i], $hostRecords[$i]);
 
 			//echo "host #$i strucured:<br />";print_r($hostRecords[$i]);echo "<br />---------<br />";
+
 			list($num_records, $marc[$i]) = get_marc_fields($hostRecords[$i]);
+			$msg = $marc[$i][0]['diagMsg'];
+			if (($num_Records == 0) && (!empty($msg))) {
+				echo "Host Diagnostic Response: $msg";
+				exit;
+			}
 			//echo "host #$i marc:<br />";print_r($marc[$i]);echo "<br />---------<br />";
 			$ttlHits += $num_records;
 		}

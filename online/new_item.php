@@ -160,9 +160,11 @@
 
 	<div id="retryDiv">
 	  <form action="">
+	  <fieldset>
+	  <legend id="retryHead"></legend>
 		<table class="primary">
 		<tr>
-			<th colspan="3" id="retryHead"></th>
+			<th colspan="3" ></th>
 		</tr>
 		<tr>
 			<td colspan="3" id="retryMsg" class="primary"></td>
@@ -174,14 +176,16 @@
 			</td>
 		</tr>
 		</table>
+		</fieldset>
+		</form>
 	</div>
 
 	<div id="choiceDiv">
 		<input id="choiceBtn1" type="button" class="button btnFld"value="<?php echo T("Go Back");?>" />
 		<span id="hitInfo">
 			<?php echo T("Success!")." "; ?>
-				<span id="ttlHhits"></span>
-			<?php echo " ".T("hits found!"); ?>
+				<span id="ttlHits"></span>
+			<?php echo " ".T("hits found"); ?>
 		</span>
 	  <div id="choiceSpace">
 			Search Results go here
