@@ -44,6 +44,13 @@ div#header  {
 	}
 
 /*************************************************/
+div#helpbar {
+	background: #a0c0c8; /*for development*/
+	vertical-align: top;
+	width: 125px;
+	border: solid black 2px;
+	}
+/*************************************************/
 div#sidebar {
 	background: #a0c0c8; /*for development*/
 	vertical-align: top;
@@ -125,7 +132,7 @@ div#footer {
 	margin-top: 10px;
 	text-align: center;
 	font: 12px serif;
-}
+	}
 
 /*************************************************/
 div#content {

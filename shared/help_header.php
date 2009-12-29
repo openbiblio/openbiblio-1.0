@@ -18,7 +18,24 @@ if (Settings::get('charset') != "") { ?>
 <!--link rel="stylesheet" type="text/css" href="../css/style.php" /-->
 <link rel="stylesheet" type="text/css" href="../shared/base.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $ThemeDirUrl; ?>/style.css" />
-
+<style>
+/*************************************************/
+div#sidebar {
+	position: absolute; top:0; left: .5em;
+	width: 7em;
+	margin: 0; padding: 10px;
+	background: #a0c0c8; /*for development*/
+	vertical-align: top;
+	border: solid black 2px;
+	}
+div#content {
+	position: absolute; top:0; left: 9.5em;
+	vertical-align: top;
+	border: solid black 2px;
+	background: white;
+	padding-left: 5px; padding-right: 5px; padding-bottom: 5px;
+	}
+</style>
 <meta name="description" content="OpenBiblio Library Automation System">
 <title><?php echo T("OpenBiblio Help"); ?></title>
 
@@ -42,11 +59,6 @@ function popSecondaryLarge(url) {
 <body onload="self.focus()">
 
 <div id="sidebar">
-	<h3 class="staff_head">
-			<?php echo T("OpenBiblio Help"); ?>
-	</h3>
-	<a href="javascript:window.close()"><?php echo T("Close Window"); ?></a>
-	<hr />
 	<?php include(REL(__FILE__, "../shared/help_nav.php")); ?>
 </div>
 
