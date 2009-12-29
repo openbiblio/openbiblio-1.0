@@ -105,6 +105,7 @@ function setSessionFmSettings() {
 	$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
 	$_SESSION['show_item_photos'] = Settings::get('show_item_photos');
   $_SESSION['site_login'] = Settings::get('site_login');
+  $_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 }
 
 require_once(REL(__FILE__, 'compat.php'));
@@ -126,6 +127,11 @@ if (!isset($doing_install) or !$doing_install) {
 	$SharedDirUrl = "../shared";
 	$HTMLHead = "";
 
+	/* Global variables for use with locales */
+	global $LocaleDirUrl, $LocaleDir, $SharedDirUrl, $HTMLHead;
+	$LocaleDirUrl = "../locale/".Settings::get('locale');
+	$LocaleDir = REL(__FILE__, $LocaleDirUrl);
+
 	/* Make session user info available on all pages. */
 	include_once(REL(__FILE__, "../classes/SessionHandler.php"));
 	session_start();
@@ -136,7 +142,7 @@ if (!isset($doing_install) or !$doing_install) {
 		}
 	}
   setSessionFmSettings();
-  
+
 	global $LOC;
 	$LOC = new Localize;
 	$LOC->init(Settings::get('locale'));
@@ -152,7 +158,7 @@ if (!isset($doing_install) or !$doing_install) {
     if ($_SESSION['allow_plugins_flg'] != 'Y') return NULL;
 		$list = $_SESSION['plugin_list'];
 		$aray = explode(',', $list);
-							
+
 		## make connections where allowed
 		clearstatcache();
 		$pluginSet = array();

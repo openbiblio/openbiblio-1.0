@@ -22,14 +22,14 @@ if (Settings::get('charset') != "") { ?>
 /*************************************************/
 div#sidebar {
 	position: absolute; top:0; left: .5em;
-	width: 7em;
-	margin: 0; padding: 10px;
+	width: 8em;
+	margin: 0; padding: 5px;
 	background: #a0c0c8; /*for development*/
 	vertical-align: top;
 	border: solid black 2px;
 	}
 div#content {
-	position: absolute; top:0; left: 9.5em;
+	position: absolute; top:0; left: 10.5em;
 	vertical-align: top;
 	border: solid black 2px;
 	background: white;
@@ -43,15 +43,16 @@ div#content {
 <script src="../shared/jquery/jquery.js" type="text/javascript"></script>
 <!-- home-grown add-ons to the jQuery library, feel free to add your own -->
 <script src="../shared/jsLib.js" type="text/javascript"></script>
+
+<?php include "../shared/help_js.php"; ?>
+
 <script type="text/javascript">
-<!--
 function popSecondaryLarge(url) {
 		var SecondaryWin;
 		//SecondaryWin = window.open(url,"inet","toolbar=yes,resizable=yes,scrollbars=yes,width=700,height=500");
 		SecondaryWin = window.open(url,"inet");
 		self.name="main";
 }
--->
 </script>
 
 

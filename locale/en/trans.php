@@ -369,6 +369,7 @@ $trans["Item Info"] = "Item Info";
 $trans["Item Information"] = "Item Information";
 $trans["Item Number"] = "Item Number";
 $trans["Item Number:"] = "Item Number:";
+$trans["Item Search"] = "Item Search";
 $trans["Item successfully updated."] = "Item successfully updated.";
 $trans["Item"] = "Item";
 $trans["Item#"] = "Item#";
