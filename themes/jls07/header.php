@@ -17,7 +17,6 @@
 <div id="sidebar">
 	<h3 class="staff_head">
 			<?php
-			//echo T("%library%:<br />Staff Interface", array('library'=>$lib[name]));
 			echo "$lib[name]:<br />Staff Interface";
 			?>
 	</h3>

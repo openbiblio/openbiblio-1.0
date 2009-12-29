@@ -1,13 +1,15 @@
-<h1>New Item and Edit Item Pages:</h1>
-The New Item and Edit Item (Edit-Basic) page fields are based on 
-the <a href="javascript:popSecondaryLarge('http://www.loc.gov/marc')">MARC 21</a> standard format.  Only
-a very small subset of the several hundred MARC fields are included on
-this basic edit page to make it easy to add items.  Once an items
-has been added you can then add any of the MARC 21 fields using the Edit-MARC page.
-<br /><br />
+<h3>New Item and Edit Item Pages:</h3>
+<p>
+The New Item and Edit Item (Edit-Basic) page fields are based on the
+<a href="javascript:popSecondaryLarge('http://www.loc.gov/marc')">MARC 21</a> standard format.
+Only a very small subset of the several hundred MARC fields are included on
+this basic edit page to make it easy to add items.
+Once an items has been added you can then add any of the MARC 21 fields using the Edit-MARC page.
+<p>
+<p>
 Once you have added a new item you will need to add copies to this
 item before the item is available for checkout.
-<br /><br />
+</p>
 Help Sub Sections:
 <ul>
 	<li><a href="#desc">Field Descriptions</a></li>
