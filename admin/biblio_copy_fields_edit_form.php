@@ -4,59 +4,64 @@
  */
 
 	require_once("../shared/common.php");
-
 	session_cache_limiter(null);
 
 	$tab = "admin";
-	$nav = "bibliocopys";
+	$nav = "biblio_copy_fields";
 	$focus_form_name = "editbibliocopyform";
 	$focus_form_field = "description";
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>T("Custom Copy Fields")));
 
-	#****************************************************************************
-	#*  Checking for query string flag to read data from database.
-	#****************************************************************************
 	if (isset($_GET["code"])){
-		$code = $_GET["code"];
-		$postVars["code"] = $code;
+		unset($_SESSION["postVars"]);
+		unset($_SESSION["pageErrors"]);
 
 		include_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-		$bibliocopys = new BiblioCopyFields;
-		$BCF = $bibliocopys->getOne($code);
-		$postVars = $BCF;
-		$_SESSION['postVars'] = $postVars;
+		$fields = new BiblioCopyFields;
+		$postVars = $fields->getOne($_GET["code"]);
 	} else {
 		require(REL(__FILE__, "../shared/get_form_vars.php"));
 	}
 ?>
 
 <form name="editbibliocopyform" method="post" action="../admin/biblio_copy_fields_edit.php">
-<input type="hidden" name="code" value="<?php echo $postVars["code"];?>">
+<fieldset>
+<legend><?php echo T("Edit Copy Field"); ?></legend>
+<input type="hidden" name="code" value="<?php echo H($postVars["code"]);?>" />
 <table class="primary">
+	<tbody class="unstriped">
 	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Edit Biblio Copy Field:"); ?>
+		<th nowrap="true" class="primary">
+			<?php echo T("Code:"); ?>
 		</th>
+		<td valign="top" class="primary">
+			<?php echo H($postVars['code']); ?>
+		</td>
 	</tr>
 	<tr>
-		<td nowrap="true" class="primary">
-			<sup>*</sup><?php echo T("Description:"); ?>
-		</td>
+		<th nowrap="true" class="primary">
+			<?php echo T("Description:"); ?>
+		</th>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text','description'); ?>
+			<?php echo inputField('text','description',$postVars[description],array('size'=>'40','maxlength'=>'40'));	?>
 		</td>
 	</tr>
+	</tbody>
+	
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
-			<input type="button" onclick="parent.location='../admin/biblio_copy_fields_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
+			<input type="button" onClick="self.location='../admin/biblio_copy_fields_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
+	</tfoot>
 
 </table>
+</fieldset>
 </form>
 
 <?php

@@ -4,8 +4,7 @@
  */
 
 require_once("../shared/common.php");
-$tab = "admin";
-$nav = "member_fields";
+
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
@@ -20,9 +19,5 @@ $description = $_GET["desc"];
 $fields = new MemberCustomFields;
 $fields->deleteOne($code);
 
-Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
-echo T('memberFieldsDelMsg', array('desc'=>$description)).'<br /><br />';
-echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
-
-Page::footer();
+$msg = T('memberFieldsDelMsg', array('desc'=>$description));
+header("Location: ../admin/member_fields_list.php?msg=".U($msg));

@@ -4,8 +4,7 @@
  */
 
 require_once("../shared/common.php");
-$tab = "admin";
-$nav = "member_fields";
+
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
@@ -24,12 +23,5 @@ if ($errs) {
 	FieldError::backToForm('../admin/member_fields_edit_form.php', $errs);
 }
 
-unset($_SESSION["postVars"]);
-unset($_SESSION["pageErrors"]);
-
-Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
-echo T("Member field, %desc%, has been updated.", array('desc'=>$dm->getDescription())).'<br /><br />';
-echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
-
-Page::footer();
+$msg = T('Member field, %desc%, has been updated.', array('desc'=>H(@$_POST["description"])));
+header("Location: ../admin/member_fields_list.php?msg=".U($msg));

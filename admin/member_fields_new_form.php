@@ -14,29 +14,29 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>T("Add custom member field")));
 
 ?>
 
 <form name="newfieldform" method="post" action="../admin/member_fields_new.php">
+<fieldset>
 <table class="primary">
 	<tr>
 		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Add custom member field"); ?>
 		</th>
 	</tr>
 	<tr>
-		<td nowrap="true" class="primary">
+		<th nowrap="true" class="primary">
 			<?php echo T("Code:"); ?>
-		</td>
+		</th>
 		<td valign="top" class="primary">
 			<?php printInputText("code",40,40,$postVars,$pageErrors); ?>
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true" class="primary">
+		<th nowrap="true" class="primary">
 			<?php echo T("Description:"); ?>
-		</td>
+		</th>
 		<td valign="top" class="primary">
 			<?php printInputText("description",40,40,$postVars,$pageErrors); ?>
 		</td>
@@ -47,8 +47,8 @@
 			<input type="button" onclick="self.location='../admin/member_fields_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
-
 </table>
+</fieldset>
 </form>
 
 <?php

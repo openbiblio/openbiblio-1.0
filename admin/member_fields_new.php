@@ -24,12 +24,5 @@ list($id, $errs) = $fields->insert_el(array(
 if ($errs) {
 	FieldError::backToForm('../admin/member_fields_new_form.php', $errs);
 }
-unset($_SESSION["postVars"]);
-unset($_SESSION["pageErrors"]);
-
-Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
-echo T("Member field, %desc%, has been added.", array('desc'=>H(@$_POST['descripton']))).'<br /><br />';
-echo '<a href="../admin/member_fields_list.php">'.T("Return to member fields list").'</a>';
-
-Page::footer();
+$msg = T('biblioCopyFieldsNewMsg', array('desc'=>H(@$_POST['description'])));
+header("Location: ../admin/member_fields_list.php?msg=".U($msg));

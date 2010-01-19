@@ -9,9 +9,6 @@ $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
-#****************************************************************************
-#*  Checking for query string.  Go back to collection list if none found.
-#****************************************************************************
 if (!isset($_GET["code"])){
 	header("Location: ../admin/biblio_copy_fields_list.php");
 	exit();
@@ -19,9 +16,8 @@ if (!isset($_GET["code"])){
 $code = $_GET["code"];
 $description = $_GET["desc"];
 
-$BCF = new BiblioCopyFields;
-$BCF->deleteOne($code);
+$fields = new BiblioCopyFields;
+$fields->deleteOne($code);
 
 $msg = T('biblioCopyFieldsDelMsg', array('desc'=>$description));
-
 header("Location: ../admin/biblio_copy_fields_list.php?msg=".U($msg));

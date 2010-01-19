@@ -4,56 +4,60 @@
  */
 
 	require_once("../shared/common.php");
-	session_cache_limiter(null);
-
 	$tab = "admin";
-	$nav = "new";
+	$nav = "biblio_copy_fields";
 	$helpPage = "customCopyFields";
 
-	if (isset($_GET["msg"])) {
-		$msg = '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
-	} else {
-		$msg = "";
-	}
-	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
-	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	echo $msg;
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>T("Custom Copy Fields")));
+
+	$fields = new BiblioCopyFields;
+	$rows = $fields->getAll();
 ?>
-<br />
-<a href="biblio_copy_fields_new_form.php"><?php echo T("Add a custom biblio copy field"); ?></a><br /><br />
-<?php
-	$BCQ = new BiblioCopyFields;
-	$rows = $BCQ->getAll();
-
-	if (empty($rows)) {
-		echo T("No fields found!");
-	} else {
-?>
-
+<a href="biblio_copy_fields_new_form.php"><?php echo T("Add a custom copy field"); ?></a>
+<fieldset>
 <table class="primary">
-<tr><th colspan="2" valign="top"><?php echo T("Function"); ?></th>
-<th><?php echo T("Label");?></th>
-</tr>
+	<thead>
+	<tr>
+		<th colspan="2" valign="bottom">
+			<sup>*</sup><?php echo T("Function"); ?>
+		</th>
+		<th valign="bottom" nowrap="yes">
+			<?php echo T("Code"); ?>
+		</th>
+		<th valign="bottom" nowrap="yes">
+			<?php echo T("Description"); ?>
+		</th>
+	</tr>
+	</thead>
+	<tbody class="striped">
 <?php
-while ($row = $rows->next()) {
+	if (empty($rows)) {
+		echo '<tr><td colspan="3">'.T("No fields found.").'</td></tr>';
+	} else while(($field = $rows->next()) !== NULL) {
 ?>
-<tr>
-<td valign="top" class="primary">
-<a href="biblio_copy_fields_edit_form.php?code=<?php echo HURL($row["code"])?>">
-<?php echo T("edit"); ?></a>
-</td>
-<td valign="top" class="primary">
-<a href="biblio_copy_fields_del_confirm.php?code=<?php echo HURL($row["code"])?>&amp;desc=<?php echo HURL($row['description'])?>">
-<?php echo T("del"); ?></a>
-</td>
-<td class="primary" align="center"><?php echo H($row['description']);?></td>
-</tr>
+	<tr>
+		<td valign="top">
+			<a href="../admin/biblio_copy_fields_edit_form.php?code=<?php echo HURL($field['code']); ?>"><?php echo T("edit"); ?></a>
+		</td>
+		<td valign="top">
+			<a href="../admin/biblio_copy_fields_del_confirm.php?code=<?php echo HURL($field['code']); ?>&amp;desc=<?php echo HURL($field['description']); ?>"><?php echo T("del"); ?></a>
+		</td>
+		<td valign="top">
+			<?php echo H($field['code']); ?>
+		</td>
+		<td valign="top">
+			<?php echo H($field['description']); ?>
+		</td>
+	</tr>
 <?php
-		}
-		echo "</table>";
 	}
+?>
+	</tbody>
+</table>
+</fieldset>
+<?php
+
 	Page::footer();

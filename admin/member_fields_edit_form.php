@@ -13,7 +13,7 @@
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>T("Custom Member Fields")));
 
 	if (isset($_GET["code"])){
 		unset($_SESSION["postVars"]);
@@ -28,37 +28,40 @@
 ?>
 
 <form name="editfieldform" method="post" action="../admin/member_fields_edit.php">
+<fieldset>
+<legend><?php echo T("Edit Member Field"); ?></legend>
 <input type="hidden" name="code" value="<?php echo H($postVars["code"]);?>" />
 <table class="primary">
+	<tbody class="unstriped">
 	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Edit Member Field"); ?>
-		</th>
-	</tr>
-	<tr>
-		<td nowrap="true" class="primary">
+		<th nowrap="true" class="primary">
 			<?php echo T("Code:"); ?>
-		</td>
+		</th>
 		<td valign="top" class="primary">
 			<?php echo H($postVars['code']); ?>
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true" class="primary">
+		<th nowrap="true" class="primary">
 			<?php echo T("Description:"); ?>
-		</td>
+		</th>
 		<td valign="top" class="primary">
-			<?php printInputText("description",40,40,$postVars,$pageErrors); ?>
+			<?php echo inputField('text','description',$postVars[description],array('size'=>'40','maxlength'=>'40'));	?>
 		</td>
 	</tr>
+	</tbody>
+	
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onClick="self.location='../admin/member_fields_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
+	</tfoot>
 
 </table>
+</fieldset>
 </form>
 
 <?php

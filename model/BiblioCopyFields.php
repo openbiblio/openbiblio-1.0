@@ -10,11 +10,21 @@ class BiblioCopyFields extends DmTable {
 		$this->DmTable();
 		$this->setName('biblio_copy_fields_dm');
 		$this->setFields(array(
-			'code'=>'number',
+			'code'=>'string',
 			'description'=>'string',
 			'default_flg'=>'string',
 		));
 		$this->setKey('code');
+	}
+	function validate_el($rec, $insert) {
+		$errors = array();
+		foreach (array('description', 'code') as $req) {
+			if ($insert and !isset($rec[$req])
+					or isset($rec[$req]) and $rec[$req] == '') {
+				$errors[] = new FieldError($req, T("Required field missing"));
+			}
+		}
+		return $errors;
 	}
 }
 

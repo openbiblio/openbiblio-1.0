@@ -10,56 +10,53 @@
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>T("Custom Member Fields")));
 
-
-	$membfields = new MemberCustomFields;
-	$fields = $membfields->getAll();
-
+	$fields = new MemberCustomFields;
+	$rows = $fields->getAll();
 ?>
-<h1><?php echo T("Custom Member Fields"); ?></h1>
-<a href="../admin/member_fields_new_form.php?reset=Y"><?php echo T("Add new custom field"); ?></a><br />
+<a href="../admin/member_fields_new_form.php?reset=Y"><?php echo T("Add new custom field"); ?></a>
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
-		<th colspan="2" valign="top">
+		<th colspan="2" valign="bottom">
 			<sup>*</sup><?php echo T("Function"); ?>
 		</th>
-		<th valign="top" nowrap="yes">
+		<th valign="bottom" nowrap="yes">
 			<?php echo T("Code"); ?>
 		</th>
-		<th valign="top" nowrap="yes">
+		<th valign="bottom" nowrap="yes">
 			<?php echo T("Description"); ?>
 		</th>
 	</tr>
-	<?php
-		$row_class = "primary";
-		while (($field = $fields->next()) !== NULL) {
-	?>
+	</thead>
+	<tbody class="striped">
+<?php
+	if (empty($rows)) {
+		echo '<tr><td colspan="3">'.T("No fields found.").'</td></tr>';
+	} else while (($field = $rows->next()) !== NULL) {
+?>
 	<tr>
-		<td valign="top" class="<?php echo H($row_class); ?>">
-			<a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($field['code']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("edit"); ?></a>
+		<td valign="top">
+			<a href="../admin/member_fields_edit_form.php?code=<?php echo HURL($field['code']); ?>"><?php echo T("edit"); ?></a>
 		</td>
-		<td valign="top" class="<?php echo H($row_class); ?>">
-			<a href="../admin/member_fields_del_confirm.php?code=<?php echo HURL($field['code']); ?>&amp;desc=<?php echo HURL($field['description']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
+		<td valign="top">
+			<a href="../admin/member_fields_del_confirm.php?code=<?php echo HURL($field['code']); ?>&amp;desc=<?php echo HURL($field['description']); ?>"><?php echo T("del"); ?></a>
 		</td>
-		<td valign="top" class="<?php echo H($row_class); ?>">
+		<td valign="top">
 			<?php echo H($field['code']); ?>
 		</td>
-		<td valign="top" class="<?php echo H($row_class); ?>">
+		<td valign="top">
 			<?php echo H($field['description']); ?>
 		</td>
 	</tr>
-	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
-		}
-	?>
+<?php
+	}
+?>
+	<tbody>
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();
