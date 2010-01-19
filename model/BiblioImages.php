@@ -56,7 +56,7 @@ class BiblioImages {
 		if (!is_numeric($bibid) or !is_numeric($position)) {
 			return new Error(T("Invalid bibid or position."));
 		}
-		if (ereg('\.(jpg|png)$', strtolower($file['name']), $regs)) {
+		if (preg_match('/\.(jpg|png)$/', strtolower($file['name']), $regs)) {
 			$ext = $regs[0];
 		} else {
 			return new Error(T("File name end not jpg or png"));
@@ -143,10 +143,10 @@ class BiblioImages {
 		$this->lock();
 		$img = $this->getOne($bibid, $imgurl);
 		if ($img['type'] == 'Thumb'
-				and ereg('^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+', $img['url'])) {
+				and preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $img['url'])) {
 			@unlink($img['url']);
 		}
-		if (ereg('^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+', $imgurl)) {
+		if (preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $imgurl)) {
 			@unlink($imgurl);
 		}
 		$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
@@ -159,10 +159,10 @@ class BiblioImages {
 		$imgs = $this->getByBibid($bibid);
 		while ($img = $imgs->next()) {
 			if ($img['type'] == 'Thumb'
-					and ereg('^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+', $img['url'])) {
+					and preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $img['url'])) {
 				@unlink($img['url']);
 			}
-			if (ereg('^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+', $imgurl)) {
+			if (preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $imgurl)) {
 				@unlink($imgurl);
 			}
 			$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",

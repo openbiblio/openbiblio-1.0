@@ -4,6 +4,7 @@
  */
  
 require_once(REL(__FILE__, '../classes/Query.php'));
+require_once(REL(__FILE__, '../model/Sites.php'));
 
 global $_settings_cache, $_settings_validators;
 $_settings_cache = array();
@@ -75,9 +76,16 @@ class Settings {
 		
 		$options = array();
 		if ($s['type'] == 'select') {
-			# FIXME - handle other selects
-			if ($s['name'] == 'locale') {
+			switch ($s['type_data']) {
+			case 'locales':
 				$options = Localize::getLocales();
+				break;
+			case 'sites':
+				$sites = new Sites;
+				$options = $sites->getSelect();
+				break;
+			case 'default':
+				Fatal::internalError("Unknown select type in settings");
 			}
 		}
 		
