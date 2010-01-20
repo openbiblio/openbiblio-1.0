@@ -16,7 +16,7 @@
 <div id="sidebar">
 	<h3 class="staff_head">
 			<?php
-			echo "$lib[name]:<br />Staff Interface";
+			echo Settings::get('library_name').":<br />Staff Interface";
 			?>
 	</h3>
 	<br />
