@@ -38,23 +38,23 @@
   					 	"Content-Type: application/x-www-form-urlencoded; charset=iso-8859-1\r\n".
   					 	"Content-Length: ".strlen($qry)."\r\n\r\n";
 		//echo "header: $header <br />";
+		$text = $header . $qry;
 
 		### establish a socket for this host
 		@list($theURL, $port) = explode(':', $postVars[hosts][$i][host]);
 		@list($theHost, $subDir) = explode('/', $theURL);
 		if(!isset($port) || empty($port)) $port = 7090;  // default port
 		//echo "url: '$theHost:$port'<br />timeout=$postVars[timeout]seconds<br />";
-		try {
-			$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
-		}
-		catch (Exception $e ) {
-			trigger_error("Socket error: $errMsg ($errNmbr)");
+		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
+		if(!$fp) {
+			echo "requested: <br />".nl2br($text)."<br />via socket on port $port. <br />";
+			echo "<br /><br />";
+			echo "Verify that your server has access to the web via the port specified.<br />";
+			//trigger_error("Socket error: $errMsg ($errNmbr)");
 			exit;
 		}
 
 		### send the query
-		$text = $header . $qry;
-		//echo "sending request: <br />".nl2br($text)."<br />via socket. <br />";
 		fputs($fp, $text);
 		
 		### Added timeout on the stream itself (also in loop)- LJ
@@ -78,6 +78,10 @@
       	// header has been read. now build the contents
       	$hitList .= $line;
       }
+      else {
+        // http header lines
+        echo "$line <br />";
+			}
   	}
   	if (!empty($hitList)) $resp[$i] = $hitList;
   	fclose($fp);

@@ -98,6 +98,9 @@ class Settings {
 			  $sites = new Sites;
 				$options = $sites->getSelect();
 			}
+			if ($s['name'] == 'checkout_interval') {
+				$options = array('Hours','Days');
+			}
 		}
 		
 		$label = '';
