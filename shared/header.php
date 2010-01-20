@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+####-------------------------------------------------####
 Nav::node('circulation', T("Circulation"), '../circ/index.php');
 Nav::node('circulation/searchform', T("Member Search"), '../circ/index.php');
 Nav::node('circulation/search', T("Search Results"));
@@ -34,6 +35,8 @@ if (isset($bookingid)) {
 }
 Nav::node('circulation/bookings/book', T("Create Booking"));
 Nav::node('circulation/checkin', T("Check In"), '../circ/checkin_form.php?reset=Y');
+
+####-------------------------------------------------####
 Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 Nav::node('cataloging/searchform', T("New Search"), "../catalog/index.php");
 Nav::node('cataloging/images', T("Browse Images"), '../shared/image_browse.php');
@@ -50,7 +53,7 @@ if (isset($_REQUEST['bibid'])) {
 	}
 	Nav::node('cataloging/biblio', T("Item Info"),
 		"../shared/biblio_view.php?".$params);
-				Nav::node('cataloging/biblio/edit', T("Edit"),
+	Nav::node('cataloging/biblio/edit', T("Edit"),
 		"../catalog/biblio_edit_form.php?".$params);
 	Nav::node('cataloging/biblio/editmarc', T("Edit MARC"),
 		"../catalog/biblio_marc_edit_form.php?".$params);
@@ -79,6 +82,8 @@ Nav::node('cataloging/upload_usmarc', T("MARC Import"),
 	"../catalog/upload_usmarc_form.php");
 Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
 	"../catalog/biblio_bulk_del.php");
+	
+####-------------------------------------------------####
 Nav::node('admin', T("Admin"), '../admin/index.php');
 Nav::node('admin/summary', T("Admin Summary"), '../admin/index.php');
 Nav::node('admin/staff', T("Staff Admin"), '../admin/staff_list.php');
@@ -104,12 +109,15 @@ Nav::node('admin/materials', T("Material Types"), '../admin/materials_list.php')
 Nav::node('admin/collections', T("Collections"), '../admin/collections_list.php');
 Nav::node('admin/themes', T("Themes"), '../admin/theme_list.php');
 Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
+
+####-------------------------------------------------####
 Nav::node('reports', T("Reports"), '../reports/index.php');
 Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 if (isset($_SESSION['rpt_Report'])) {
 	Nav::node('reports/results', T("Report Results"),
 		'../reports/run_report.php?type=previous');
 }
+
 
 $helpurl = "javascript:popSecondary('../shared/help.php";
 if (isset($helpPage)) {
@@ -119,3 +127,13 @@ $helpurl .= "')";
 Nav::node('help', T("Help"), $helpurl);
 
 require_once($ThemeDir."/header.php");
+
+	## #######################################
+	## For plug-in support
+	## #######################################
+	$list = getPlugIns('nav.nav');
+	for ($x=0; $x<count($list); $x++) {
+		//echo "adding: $list[$x]<br />";
+		include_once ($list[$x]);
+	}
+	## #######################################

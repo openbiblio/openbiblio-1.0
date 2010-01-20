@@ -21,7 +21,7 @@
 		}
 
 		$mbr = array(
-		'mbrid'=>$_POST["mbrid"],
+			'mbrid'=>$_POST["mbrid"],
 			'siteid'=>$_POST["siteid"],
 			'barcode_nmbr'=>$_POST["barcode_nmbr"],
 			'last_name'=>$_POST["last_name"],
@@ -46,7 +46,7 @@
 		FieldError::backToForm('../circ/mbr_edit_form.php', $errors);
 	}
 
-		$customFields = new MemberCustomFields;
+	$customFields = new MemberCustomFields;
 	$custom = array();
 	foreach ($customFields->getSelect() as $name => $title) {
 		if (isset($_REQUEST['custom_'.$name])) {
@@ -55,5 +55,5 @@
 		}
 	$members->setCustomFields($mbr['mbrid'], $custom);
 
-		$msg = T("Member has been successfully updated.");
-		header("Location: ../circ/mbr_view.php?mbrid=".U($mbr['mbrid'])."&reset=Y&msg=".U($msg));
+	$msg = T("Member has been successfully updated.");
+	header("Location: ../circ/mbr_view.php?mbrid=".U($mbr['mbrid'])."&reset=Y&msg=".U($msg));

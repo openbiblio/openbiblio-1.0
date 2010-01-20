@@ -4,6 +4,7 @@
  */
 
 require_once("../shared/common.php");
+require_once(REL(__FILE__, "../model/MemberTypes.php"));
 
 session_cache_limiter(null);
 
@@ -19,8 +20,30 @@ require_once(REL(__FILE__, "../shared/logincheck.php"));
 require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 $headerWording = T("Add New");
+?>
+<script>
+mnf = {
+	init: function () {
+		$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
+	}
+};
+$(document).ready(mnf.init);
+</script>
 
-echo '<form name="newmbrform" method="post" action="../circ/mbr_new.php">';
+<h1><span id="searchHdr" class="title"><?php echo$headerWording;?> <?php echo T("Member"); ?></span></h1>
+<form id="newmbrform" name="newmbrform" method="post" action="../circ/mbr_new.php">
+
+<?php
+	## default entries for operator convenience
+	$sit = new Sites;
+	$lib = $sit->getOne($_SESSION['current_site']);
+	$mbr[siteid] = $lib[siteid];
+	$mbr[city] = $lib[city];
+	$mbr[state] = $lib[state];
+	$mbr[zip] = $lib[zip];
+
+	$mbrtypes = new MemberTypes;
+	$mbr[classification] = $mbrtypes->getDefault();
 
 include(REL(__FILE__, "../circ/mbr_fields.php"));
 Page::footer();

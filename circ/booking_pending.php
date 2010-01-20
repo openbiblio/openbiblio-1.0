@@ -10,7 +10,9 @@
 
 	require_once(REL(__FILE__, "../classes/Date.php"));
 	require_once(REL(__FILE__, "../classes/Report.php"));
+	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Table.php"));
+	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 
 	$tab = "circulation";
 	$nav = "bookings/pending";
@@ -33,42 +35,33 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
+
 <script type="text/javascript">
-// based on a function from PhpMyAdmin
-function setCheckboxes()
-{
-	var checked = document.forms[selection].elements[all].checked;
-	var elts = document.forms[selection].elements[id[]];
-	if (typeof(elts.length) != undefined) {
-		for (var i = 0; i < elts.length; i++) {
-			elts[i].checked = checked;
-		}
-	} else {
-		elts.checked = checked;
-	}
-	return true;
-}
+	$(document).ready(function () {
+		$('#all').bind('click',null,function () {
+		  if ($('#all:checked').val() == 'all') {
+				$('checkbox.rowCkBox').attr('checked','CHECKED');
+			}
+		});
+	});
 </script>
+
 <form name="selection" id="selection" action="../circ/booking_checkout.php" method="post">
-<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
-<input type="hidden" name="name" value="bibid" />
-<table class="resultshead">
-	<tr>
-			<th><?php echo T("Pending Bookings"); ?></th>
-		<td class="resultshead">
-<table class="buttons">
-<tr>
-<td><input type="submit" value="<?php echo T("Check Out"); ?>" /></a></td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
+	<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
+	<input type="hidden" name="name" value="bibid" />
+	<fieldset>
+	<legend><?php echo T("Pending Bookings"); ?></legend>
+		<input type="submit" value="<?php echo T("Check Out"); ?>" /></a>
+
 <?php
 	$disp = new ReportDisplay($rpt);
 	$t = new TableDisplay;
 	$t->columns = $disp->columns();
-	array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" name="all" value="all" onclick="setCheckboxes()" />'));
+	//array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" id="all"  name="all" value="all" onclick="setCheckboxes()" />'));
+	$guts = '<label for="all">'.T("All").'</label><br />'
+				 .'<input type="checkbox" id="all" name="all" value="all" />';
+	array_unshift($t->columns, $t->mkCol($guts));
+
 	echo $t->begin();
 	$selected = array();
 	while ($r = $rpt->next()) {
@@ -78,7 +71,9 @@ function setCheckboxes()
 				$available[] = $c['barcode_nmbr'];
 			}
 		}
-		$checkbox = '<input type="checkbox" name="id[]" value="'.H($r['bookingid']).'" ';
+		$checkbox = '<input type="checkbox" id="id[]" name="id[]" '
+							 .'value="'.H($r['bookingid']).'" '
+							 .'class="rowCkBox" ';
 		if (empty($available)) {
 			$r['selected'] = '';
 			$checkbox .= '/>';
@@ -92,6 +87,9 @@ function setCheckboxes()
 		echo $t->rowArray($dr);
 	}
 	echo $t->end();
-	echo '</form>';
-
+?>
+	</fieldset>
+</form>
+	
+<?php
 	require_once(REL(__FILE__, "../shared/footer.php"));

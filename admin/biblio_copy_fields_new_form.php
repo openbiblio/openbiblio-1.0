@@ -21,10 +21,13 @@
 <form name="newfieldform" method="post" action="../admin/biblio_copy_fields_new.php">
 <fieldset>
 <table class="primary">
+	<thead>
 	<tr>
 		<th colspan="2" nowrap="yes" align="left">
 		</th>
 	</tr>
+	</thead>
+	
 	<tr>
 		<th nowrap="true" class="primary">
 			<?php echo T("Code:"); ?>
@@ -41,12 +44,15 @@
 			<?php printInputText("description",40,40,$postVars,$pageErrors); ?>
 		</td>
 	</tr>
+	
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onclick="self.location='../admin/biblio_copy_fields_list.php'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
+	</tfoot>
 </table>
 </fieldset>
 </form>

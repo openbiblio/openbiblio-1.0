@@ -45,7 +45,8 @@
 	#****************************************************************************
 	$bibid = $_REQUEST["bibid"];
 	if (isset($_REQUEST["msg"])) {
-		$msg = '<p class="error">'.htmlspecialchars($_REQUEST["msg"]).'</p><br /><br />';
+//		$msg = '<p class="error">'.htmlspecialchars($_REQUEST["msg"]).'</p><br /><br />';
+		$msg = '<p class="error">'.htmlspecialchars($_REQUEST["msg"]).'</p>';
 	} else {
 		$msg = "";
 	}
@@ -64,7 +65,17 @@
 	} else {
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
+?>
 
+<script language="JavaScript1.4" >
+bv = {
+	init: function () {
+	}
+}
+$(document).ready(bv.init);
+</script>
+
+<?php
 	echo $msg;
 
 	currentMbrBox();
@@ -74,38 +85,50 @@
 	} else {
 		$rpt = NULL;
 	}
+
 	if ($rpt and isset($_REQUEST['seqno'])) {
 		$p = $rpt->row($_REQUEST['seqno']-1);
 		$n = $rpt->row($_REQUEST['seqno']+1);
-		echo '<table style="margin-bottom: 10px" width="60%" align="center"><tr><td align="left">';
+		echo "<fieldset>\n";
+		echo "<table style=\"margin-bottom: 10px\" width=\"60%\" align=\"center\">\n";
+		echo "<tr>\n";
+		echo "<td align=\"left\">\n";
 		if ($p) {
-			echo '<a href="../shared/biblio_view.php?bibid='.HURL($p['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($p['.seqno']).'" accesskey="p">&laquo;'.T("Prev").'</a>';
+			echo "<a href=\"../shared/biblio_view.php?bibid="
+			.HURL($p['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($p['.seqno'])
+			."\" accesskey=\"p\">&laquo;".T('Prev')
+			."</a>\n";
 		}
-		echo '</td><td align="center">';
+		echo "</td>\n";
+		echo "<td align=\"center\">\n";
 		echo T("Record %item% of %items%", array('item'=>H($_REQUEST['seqno']+1), 'items'=>H($rpt->count())));
-		echo '</td><td align="right">';
+		echo "</td>\n";
+		echo "<td align=\"right\">\n";
 		if ($n) {
-			echo '<a href="../shared/biblio_view.php?bibid='.HURL($n['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($n['.seqno']).'" accesskey="n">'.T("Next").'&raquo;</a>';
+			echo "<a href=\"../shared/biblio_view.php?bibid=".HURL($n['bibid']).'&amp;tab='.H($tab).'&amp;rpt='.H($rpt->name).'&amp;seqno='.H($n['.seqno'])."\" accesskey=\"n\">".T("Next")."&raquo;</a>\n";
 		}
-		echo '</td></tr></table>';
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
+		echo "</fieldset>\n";
 	}
 
 	$bibimages = new BiblioImages;
-	echo '<div class="biblio_images">';
+	echo "<div class=\"biblio_images\">\n";
 	$images = $bibimages->getByBibid($biblio['bibid']);
 	while ($img = $images->next()) {
-		echo '<div class="biblio_image">';
+		echo "<div class=\"biblio_image\">\n";
 		if ($img['url']) {
-			echo '<a href="'.H($img['url']).'">';
+			echo "<a href=\"".H($img['url'])."\">\n";
 		}
-		echo '<img src="'.H($img['imgurl']).'" alt="'.H($img['caption']).'" /><br />';
-		echo '<span class="img_caption">'.H($img['caption']).'</span><br />';
+		echo "<img src=\"".H($img['imgurl'])."\" alt=\"".H($img['caption'])."\" />\n";
+		echo "<span class=\"img_caption\">".H($img['caption'])."</span>\n";
 		if ($img['url']) {
-			echo '</a>';
+			echo "</a>\n";
 		}
-		echo '</div>';
+		echo "</div>\n";
 	}
-	echo '</div>';
+	echo "</div>\n";
 
 	$d = new InfoDisplay;
 	$d->title = T("Item Info");
@@ -135,23 +158,25 @@
 		);
 	}
 	echo $d->begin();
-	echo $d->row(T("Title:"), 'Foo');
+//	echo $d->row(T("Title:"), 'Foo'); // ??? - Fred
 	echo $d->end();
 ?>
-</tr>
-</table>
-</td>
-	</tr>
-</table>
+
+<fieldset>
+<legend></legend>
 <table class="biblio_view">
+<thead>
 <tr>
 	<td colspan=2 align=right>
-		<a href="biblio_view_full.php?bibid=<?php echo $bibid;?>"><?php echo T("Detailed View"); ?></a>&nbsp;|&nbsp;
-		<a href="biblio_view_marc.php?bibid=<?php echo $bibid;?>"><?php echo T("MARC View"); ?></a>&nbsp;|&nbsp;
+		<a href="biblio_view_full.php?bibid=<?php echo $bibid;?>"><?php echo T("Detailed View"); ?></a>
+		&nbsp;|&nbsp;
+		<a href="biblio_view_marc.php?bibid=<?php echo $bibid;?>"><?php echo T("MARC View"); ?></a>
+		&nbsp;|&nbsp;
 		<a href="biblio_cite.php?bibid=<?php echo $bibid;?>" target="_citation"><?php echo T("Citation"); ?></a>
 	</td>
 </tr>
-
+</thead>
+<tbody class="striped">
 <?php
 function mkfield() {
 	$args = func_get_args();
@@ -204,10 +229,10 @@ function catalog_search($type, $value) {
 		. '&amp;tab=' . HURL($tab)
 		. '&amp;exact=1">'
 		. H($value)
-		. '</a>';
+		. "</a>\n";
 }
 function link856($value) {
-	return '<a href="'.H($value).'">'.H($value).'</a>';
+	return "<a href=\"".H($value)."\">".H($value)."</a>\n";
 }
 
 foreach ($fields as $f) {
@@ -228,7 +253,7 @@ foreach ($fields as $f) {
 				}
 			}
 		}
-		$prefix = "<br />";
+//		$prefix = "<br />";
 	}
 	$value = trim($value);
 	if ($value == "") {
@@ -244,15 +269,24 @@ foreach ($fields as $f) {
 <?php
 }
 if ($tab == "cataloging") {
-	echo '<tr><td class="name">'.T("Date Added:").'</td>';
-	echo '<td class="value">'.H(date('m/d/Y', strtotime($biblio['create_dt']))).'</td></tr>';
+	echo "<tr><td class=\"name\">".T("Date Added:")."</td>\n";
+	echo "<td class=\"value\">".H(date('m/d/Y', strtotime($biblio['create_dt'])))."</td></tr>\n";
 }
 ?>
+	</tbody>
 </table>
+</fieldset>
 
 <?php
-	# Info below shouldn't be shown in the OPAC
-	if ($tab != "cataloging") {
+	# Info below shouldn't be shown in the OPAC unless show_detail_opac setting is set to Y
+	# Have to lookup the value as if not set as normally for OPAC this info is not loaded
+	#		(maybe not the most nice solution) - LJ
+	if(empty($_SESSION['show_detail_opac']))
+		$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
+	if(empty($_SESSION['show_copy_site']))
+		$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	
+	if (($tab != "cataloging") && ($_SESSION['show_detail_opac'] != 'Y')) {
 		Page::footer();
 		exit();
 	}
@@ -262,7 +296,8 @@ if ($tab == "cataloging") {
 	switch($coll['type']) {
 	case 'Circulated':
 		include_once(REL(__FILE__, "../catalog/biblio_copy_info.php"));
-		showCopyInfo($bibid, $collections->getTypeData($coll));
+		# Added $tab for the opotion to show details in OPAC - LJ
+		showCopyInfo($bibid, $collections->getTypeData($coll), $tab);
 		break;
 	case 'Distributed':
 		include_once(REL(__FILE__, "../catalog/biblio_stock_info.php"));

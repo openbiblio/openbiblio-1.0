@@ -121,7 +121,8 @@ class ReportDisplayFuncs {
 	}
 	function biblio_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row['bibid'],
-			new LinkUrl('../shared/biblio_view.php', 'bibid', array())
+//			new LinkUrl('../shared/biblio_view.php', 'bibid', array())
+			new LinkUrl('../catalog/biblio_search.php', 'bibid', array())
 		);
 	}
 	function booking_link($col, $row, $rpt) {

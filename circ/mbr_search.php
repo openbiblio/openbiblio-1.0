@@ -59,13 +59,19 @@
 	}
 
 	Nav::node('circulation/search/member_list', T("Print List"), '../shared/layout.php?name=member_list&rpt=MemberSearch');
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
+?>
+
+	<h3><?php echo T("Search Results"); ?></h3>
+
+<?php
 
 	#**************************************************************************
 	#*  Show search results
 	#**************************************************************************
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
 	# Display no results message if no results returned from search.
+	## FIXME - needs a 'goBack' ability so search criteria can be modified and re-submitted
 	if ($rpt->count() == 0) {
 		echo T("No results found.");
 		Page::footer();
@@ -97,25 +103,19 @@ function setCheckboxes()
 }
 </script>
 <form name="selection" id="selection" action="../shared/dispatch.php" method="post">
+<fieldset>
 <input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
-<table class="resultshead">
-	<tr>
-		<th><?php echo T("Search Results"); ?></th>
-		<td class="resultshead">
-<table class="buttons">
-<tr>
+<table>
 <?php
 if ($_SESSION['currentBookingid']) {
-	echo '<td>';
-	echo '<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
-	echo '<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
-	echo '</td>';
+	echo '<tr>';
+	echo '	<td class="resultshead buttons">';
+	echo '		<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
+	echo '		<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
+	echo '	</td>';
+	echo '</tr>';
 }
 ?>
-</tr>
-</table>
-</td>
-	</tr>
 </table>
 <?php
 
@@ -132,7 +132,11 @@ while ($r = $page->next()) {
 }
 echo $t->end();
 
-echo '</form>';
+?>
 
+</fieldset>
+</form>
+
+<?php
 echo $disp->pages($page_url, $currentPageNmbr);
 Page::footer();

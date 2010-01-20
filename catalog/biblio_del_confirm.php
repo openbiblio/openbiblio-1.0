@@ -36,6 +36,7 @@
 
 	if (($copyCount > 0) or ($holdCount > 0)) {
 ?>
+<fieldset>
 <center>
 	<?php echo T("biblioDelConfirmWarn",array("copyCount"=>$copyCount,"holdCount"=>$holdCount)); ?>
 	<br /><br />
@@ -57,6 +58,7 @@
 			<input type="submit" value="<?php echo T("Cancel"); ?>" class="button" />
 </form>
 </center>
+</fieldset>
 <?php
 	}
 	Page::footer();

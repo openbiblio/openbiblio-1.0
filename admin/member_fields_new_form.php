@@ -18,6 +18,8 @@
 
 ?>
 
+<h3><?php echo T("Add custom member field"); ?></h3>
+<br />
 <form name="newfieldform" method="post" action="../admin/member_fields_new.php">
 <fieldset>
 <table class="primary">

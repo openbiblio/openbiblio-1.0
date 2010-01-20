@@ -23,7 +23,7 @@ $user = array(
 	'first_name'=>$_POST['first_name'],
 	'username'=>$_POST['username'],
 );
-foreach (array('circ', 'circ_mbr', 'admin', 'reports', 'suspended') as $flg) {
+foreach (array('circ', 'circ_mbr', 'admin', 'tools', 'reports', 'catalog', 'suspended') as $flg) {
 	if (isset($_POST[$flg.'_flg'])) {
 		$user[$flg.'_flg'] = 'Y';
 	} else {

@@ -14,10 +14,11 @@
 ?>
 <h3><?php echo T("Check Database Integrity"); ?></h3>
 
-<p><?php echo T('integrityMsg');?></p>
-
 <form method="post" action="../admin/integrity_check.php">
-<input type="submit" class="button" value="<?php echo T("Check Now"); ?>" />
+<fieldset>
+	<p><?php echo T('integrityMsg');?></p>
+	<input type="submit" class="button" value="<?php echo T("Check Now"); ?>" />
+</fieldset>
 </form>
 
 <?php

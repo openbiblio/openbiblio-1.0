@@ -18,14 +18,17 @@
 	$tl = $themes->getSelect();
 ?>
 
+<h3><?php echo T("Themes"); ?></h3>
 
 <form name="editthemeidform" method="post" action="../admin/theme_use.php">
+<fieldset>
+<legend><?php echo T("Change Theme In Use:"); ?></legend>
 <table class="primary">
-	<tr>
+	<!--tr>
 		<th nowrap="yes" align="left">
 			<?php echo T("Change Theme In Use:"); ?>
 		</th>
-	</tr>
+	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Choose a New Theme:"); ?>
@@ -34,10 +37,12 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 
 <a href="../admin/theme_new_form.php"><?php echo T("Add New Theme"); ?></a><br />
-<h1><?php echo T("Themes"); ?></h1>
+<fieldset>
+<legend><?php echo T("Available Themes"); ?></legend>
 <table class="primary">
 	<tr>
 		<th colspan="3" valign="top">
@@ -50,9 +55,11 @@
 			<?php echo T("Usage"); ?>
 		</th>
 	</tr>
+	<tbody class="striped">
 	<?php
 		$row_class = "primary";
 		$current = Settings::get('themeid');
+
 		foreach ($tl as $id=>$name) {
 	?>
 	<tr>
@@ -74,20 +81,16 @@
 			<?php if ($id == $current) { echo T("in use"); } else { echo "&nbsp;"; } ?>
 		</td>
 	</tr>
-	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
-		}
-	?>
+
+<?php } ?>
+
+	</tbody>
 </table>
 <br />
 <p class="note">
 <sup>*</sup><?php echo T("Note:"); ?><br />
 <?php echo T("No delete on active theme"); ?></p>
+</fieldset>
 
 <?php
 

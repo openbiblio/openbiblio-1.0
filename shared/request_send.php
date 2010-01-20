@@ -106,6 +106,8 @@ Page::header_opac(array('nav'=>$nav, 'title'=>''));
 if ($result) {
 	echo '<p>'.T("Request sent successfully.").'</p>';
 } else {
-	echo '<p>'.T("Request failed, call %library% %phone%", array('library'=>H(Settings::get('library_name')), 'phone'=>H(Settings::get('library_phone')))).'</p>';
+	$sites = new Sites;
+	$site = $sites->getSelect(Settings::get('library_name'));
+	echo '<p>'.T("Request failed, call %library% %phone%", array('library'=>H($site[name]), 'phone'=>H(Settings::get('library_phone')))).'</p>';
 }
 Page::footer();

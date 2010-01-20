@@ -21,7 +21,11 @@
 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
 
+<h3><?php echo T("Material Types"); ?></h3>
+
+<?php
 	if (!isset($_GET["material_cd"]) || $_GET["material_cd"] == "") {
 		Fatal::internalError('material_cd not set');
 	}
@@ -38,8 +42,9 @@
 
 	echo $msg;
 ?>
-<br />
+
 <a href="material_fields_add_form.php?material_cd=<?php echo HURL($material_cd);?>&amp;reset=Y"><?php echo T("materialFieldsViewAddField");?></a> (<?php echo $material_type; ?>)<br /><br />
+
 <?php
 	$mf = new MaterialFields;
 	$rows = $mf->getMatches(array('material_cd'=>$material_cd));
@@ -48,7 +53,8 @@
 		echo T("No fields found!");
 	} else {
 ?>
-
+<fieldset>
+<legend>Fields for <?php echo T("XXXXX"); ?>s</legend>
 <table class="primary">
 <tr>
 <th colspan="2" valign="top"><sup>*</sup><?php echo T("Function"); ?></th>
@@ -93,6 +99,7 @@ if ($row["repeatable"]=='1') {
 </tr>
 <?php
 		}
-		echo "</table>";
+		echo "</table>\n";
+		echo "</fieldset>\n";
 	}
 	Page::footer();

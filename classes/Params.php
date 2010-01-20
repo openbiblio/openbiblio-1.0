@@ -269,7 +269,7 @@ class Params {
 			case 'order_by':
 				$rawval = $val;
 				$desc = ' ';
-				if (ereg('!r$', $val)) {
+				if (preg_match('/!r$/', $val)) {
 					$desc = ' desc ';
 					$val = substr($val, 0, -2);
 				}
@@ -283,9 +283,7 @@ class Params {
 	function getOrderExpr($name, $list, $desc) {
 		$expr = false;
 		foreach ($list as $v) {
-			if ($v[0] != $name) {
-				continue;
-			}
+			if ($v[0] != $name) continue;
 			if (isset($v[1]['expr']) and $v[1]['expr']) {
 				$expr = $v[1]['expr'];
 			} else {
@@ -304,8 +302,8 @@ class Params {
 				/* fall through */
 			case 'alnum':
 				$expr = "if($expr regexp '^ *[0-9]', "
-					. "concat('0', ifnull(floor(log10($expr)), 0), "
-					. "$expr), $expr)".$desc;
+								 . "concat('0', ifnull(floor(log10($expr)), 0), $expr), "
+								 . "$expr)".$desc;
 				break;
 			case 'multi':
 				$sorts = explode(',', $expr);

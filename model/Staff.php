@@ -9,6 +9,7 @@ class Staff extends CoreTable {
 	function Staff() {
 		$this->DBTable();
 		$this->setName('staff');
+		# if you add to this array, check with array in ../circ/staff_new_form.php
 		$this->setFields(array(
 			'userid'=>'number',
 			'username'=>'string',
@@ -17,6 +18,7 @@ class Staff extends CoreTable {
 			'first_name'=>'string',
 			'suspended_flg'=>'string',
 			'admin_flg'=>'string',
+			'tools_flg'=>'string',
 			'circ_flg'=>'string',
 			'circ_mbr_flg'=>'string',
 			'catalog_flg'=>'string',
@@ -39,7 +41,7 @@ class Staff extends CoreTable {
 			}
 		}
 		if (isset($rec['username'])) {
-			$sql = $this->db->mkSQL("SELECT * FROM staff WHERE username=%Q ");
+			$sql = $this->db->mkSQL("SELECT * FROM staff WHERE username=%Q ", $rec['username']);
 			if (isset($rec['userid'])) {
 				$sql .= $this->db->mkSQL("AND userid <> %N ", $rec['userid']);
 			}
@@ -60,11 +62,11 @@ class Staff extends CoreTable {
 		return parent::insert_el($rec, $confirmed);
 	}
 	function update_el($rec, $confirmed=false) {
-		if(isset($rec['pwd'])) {
-			$rec['pwd'] == md5(strtolower($rec['pwd']));
+		if(isset($rec['pwd'])) {		
+			$rec['pwd'] = md5(strtolower($rec['pwd']));	
 		}
 		if(isset($rec['pwd2'])) {
-			$rec['pwd2'] == md5(strtolower($rec['pwd2']));
+			$rec['pwd2'] = md5(strtolower($rec['pwd2']));
 		}
 		return parent::update_el($rec, $confirmed);
 	}

@@ -15,9 +15,11 @@
 	$staff = new Staff;
 
 ?>
-<h1><?php echo T("Staff Members"); ?></h1>
+<h3><?php echo T("Staff Members"); ?></h3>
 <a href="../admin/staff_new_form.php?reset=Y"><?php echo T("Add New Staff Member"); ?></a><br /><br />
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
 		<th colspan="3" rowspan="2" valign="top">
 			<?php echo T("Function"); ?>
@@ -31,7 +33,7 @@
 		<th rowspan="2" valign="top">
 			<?php echo T("Userid"); ?>
 		</th>
-		<th colspan="5">
+		<th colspan="6">
 			<?php echo T("Authorization"); ?>
 		</th>
 		<th rowspan="2" valign="top">
@@ -39,22 +41,28 @@
 		</th>
 	</tr>
 	<tr>
-		<th>
+		<td>
 			<?php echo T("Circ"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 			<?php echo T("Member"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 		 <?php echo T("Catalog"); ?>
-		</th>
-		<th>
-			<?php echo T("Admin"); ?>
-		</th>
-		<th>
+		</td>
+		<td>
 		 <?php echo T("Reports"); ?>
-		</th>
+		</td>
+		<td>
+			<?php echo T("Admin"); ?>
+		</td>
+		<td>
+			<?php echo T("Tools"); ?>
+		</td>
 	</tr>
+	</thead>
+	
+	<tbody class="striped">
 	<?php
 		$row_class = "primary";
 		$staff_list = $staff->getAll('last_name');
@@ -89,26 +97,22 @@
 			<?php echo H($s['catalog_flg']);?>
 		</td>
 		<td valign="top" class="<?php echo $row_class; ?>">
+			<?php echo H($s['reports_flg']);?>
+		</td>
+		<td valign="top" class="<?php echo $row_class; ?>">
 			<?php echo H($s['admin_flg']);?>
 		</td>
 		<td valign="top" class="<?php echo $row_class; ?>">
-			<?php echo H($s['reports_flg']);?>
+			<?php echo H($s['tools_flg']);?>
 		</td>
 		<td valign="top" class="<?php echo $row_class; ?>">
 			<?php echo H($s['suspended_flg']); ?>
 		</td>
 	</tr>
-	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
-		}
-	?>
+	<?php } ?>
+	</tbody>
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();

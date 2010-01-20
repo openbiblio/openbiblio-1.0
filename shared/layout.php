@@ -17,7 +17,7 @@
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
 	}
 
-	assert('ereg("^[-_A-Za-z0-9]+\$", $_REQUEST["name"])');
+	assert('preg_match("/^[-_A-Za-z0-9]+\$/", $_REQUEST["name"])');
 	$filename = '../layouts/'.$_REQUEST["name"].'.php';
 	if (!is_readable($filename)) {
 		$filename = '../layouts/default/'.$_REQUEST["name"].'.php';
@@ -63,6 +63,7 @@
 	# Must ask for parameters
 	$nav = "layoutparams";
 	$focus_form_name = "layoutparamform";
+	$focus_form_field = "lay_skip";
 
 	if ($tab == 'opac') {
 		Page::header_opac(array('nav'=>$nav, 'title'=>''));
@@ -76,8 +77,11 @@
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 	}
 ?>
+<h3><?php echo T('Circulation'); ?></h3>
 
 <form name="layoutparamform" method="get" action="../shared/layout.php">
+<fieldset>
+<legend><?php echo T('Packing List'); ?></legend>
 <input type="hidden" name="name" value="<?php echo H($_REQUEST["name"]) ?>" />
 <input type="hidden" name="rpt" value="<?php echo H($_REQUEST["rpt"]) ?>" />
 <input type="hidden" name="tab" value="<?php echo H($tab) ?>" />
@@ -88,6 +92,7 @@
 ?>
 
 <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+</fieldset>
 </form>
 
 <?php

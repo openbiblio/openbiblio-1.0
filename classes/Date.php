@@ -7,19 +7,19 @@ class Date {
 	// Dates are represented internally as 'YYYY-mm-dd'
 	function read_e($datestr, $ref=NULL) {
 		$gotit = false;
-		if (ereg('^([0-9][0-9][0-9][0-9])-([0-9]+)-([0-9]+)$', $datestr, $m)) {
+		if (preg_match('{^([0-9][0-9][0-9][0-9])-([0-9]+)-([0-9]+)$}', $datestr, $m)) {
 			# Canonical (ISO 8601)
 			$year = $m[1];
 			$month = $m[2];
 			$day = $m[3];
 			$gotit = true;
-		} elseif (ereg('^([0-9]+)[-/]([0-9]+)[-/]([0-9]+)$', $datestr, $m)) {
+		} elseif (preg_match('{^([0-9]+)[-/]([0-9]+)[-/]([0-9]+)$}', $datestr, $m)) {
 			# American Style
 			$year = $m[3];
 			$month = $m[1];
 			$day = $m[2];
 			$gotit = true;
-		} elseif (ereg('^([0-9]+)\.([0-9]+)\.([0-9]+)$', $datestr, $m)) {
+		} elseif (preg_match('{^([0-9]+)\.([0-9]+)\.([0-9]+)$}', $datestr, $m)) {
 			# European Style
 			$year = $m[3];
 			$month = $m[2];

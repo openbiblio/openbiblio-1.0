@@ -777,8 +777,10 @@ class Lay {
 				$length = $m[1] * $sp['x'];
 			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)in$/', $len, $m)) {
 				$length = $m[1] * 72;	// 72 points/inch
+			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)mm$/', $len, $m)) {
+				$length = $m[1] * 2.8125;	// 2.835 points/mm				
 			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)cm$/', $len, $m)) {
-				$length = $m[1] * 28.35;	// 28.35 points/cm
+				$length = $m[1] * 28.125;	// 28.35 points/cm
 			}
 		}
 		return array($length, false);

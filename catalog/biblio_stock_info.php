@@ -15,22 +15,16 @@
 		}
 		$bibstock = $stock->getOne($bibid);
 ?>
-
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
-		<th align="left" nowrap="yes">
-			<?php echo T("In Stock"); ?>
-		</th>
-		<th align="left" nowrap="yes">
-			<?php echo T("Vendor"); ?>
-		</th>
-		<th align="left" nowrap="yes">
-			<?php echo T("Funding Source"); ?>
-		</th>
-		<th align="left" nowrap="yes">
-			<?php echo T("Price"); ?>
-		</th>
+		<th align="left" nowrap="yes"><?php echo T("In Stock"); ?></th>
+		<th align="left" nowrap="yes"><?php echo T("Vendor"); ?></th>
+		<th align="left" nowrap="yes"><?php echo T("Funding Source"); ?></th>
+		<th align="left" nowrap="yes"><?php echo T("Price"); ?></th>
 	</tr>
+	</thead>
 	<tr>
 		<td align="right" class="primary">
 			<?php
@@ -51,6 +45,7 @@
 			<?php echo H($bibstock['price']); ?>
 		</td>
 	</tr>
+	<tfoot>
 	<tr>
 		<td colspan="4" align="right" style="padding: 4px">
 			<a class="small_button" href="../catalog/biblio_stock_edit_form.php?bibid=<?php echo HURL($bibid) ?>">
@@ -58,9 +53,14 @@
 			</a>
 		</td>
 	</tr>
+	</tfoot>
 </table>
-<p>
+</fieldset>
+
+<br />
+
 <form name="stockedit" method="post" action="../catalog/biblio_stock_edit.php">
+<fieldset>
 <input type="hidden" name="bibid" value="<?php echo H($bibid) ?>" />
 <table class="primary">
 	<tr>
@@ -76,7 +76,8 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
-</p>
+
 <?php
 	}

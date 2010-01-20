@@ -10,6 +10,8 @@ require_once(REL(__FILE__, "../model/History.php"));
 require_once(REL(__FILE__, "../model/Collections.php"));
 require_once(REL(__FILE__, "../model/Calendars.php"));
 require_once(REL(__FILE__, "../model/MemberAccounts.php"));
+require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+require_once(REL(__FILE__, "../model/Members.php"));
 
 class Bookings extends CoreTable {
 	function Bookings() {
@@ -183,9 +185,9 @@ class Bookings extends CoreTable {
 		}
 
 		# FIXME - check that fulfilling this booking will not cause members
-		# to exceed their checkout limits.
+		# to exceed their checkout limits. (is done in verifyCheckout_e() - LJ)
 		# FIXME - check that the item's collection's default days due back
-		# field is nonzero, otherwise no checkouts are allowed.
+		# field is nonzero, otherwise no checkouts are allowed. (is done in verifyCheckout_e() - LJ)
 
 		if (isset($new['mbrids']) and !empty($booking['mbrids'])) {
 			$sql = $this->db->mkSQL('select c.date, c.open '
@@ -349,6 +351,36 @@ class Bookings extends CoreTable {
 					break;
 				}
 			}
+			# Check if collection allows checkout - added here as it seem the right place - LJ
+			$collections = new Collections;
+			$coll = $collections->getByBibid($copy['bibid']);
+			if ($coll['days_due_back'] <= 0) {
+				$err = new Error(T('modelBookingsNotAvailable'));
+				break;
+			}
+			# Check wherether the user can take out more books (not sure if I understand this) - LJ
+			$materialTypes = new MaterialTypes();
+			$material = $materialTypes->getByBibid($copy['bibid']);
+			$copies = new Copies;
+			$acct = new MemberAccounts;
+			$members = new Members();
+			$checkouts = 0;
+			foreach ($booking['mbrids'] as $mbrid) {
+				$checkouts .= $copies->getMemberCheckouts($mbrid)->count();
+				# Also get if an adult (1) or juvenile (2). Not sure why there can be more members, and assume it will only be one, 
+				# but will take adult as overruling if both are given - LJ
+				$mbr = $members->maybeGetOne($mbrid);
+				if($memberType != 1) $memberType = $mbr['classification'];			
+			}
+			if($memberType = 1){
+				$limit = $material['adult_checkout_limit'];
+			} else {
+				$limit = $material['juvenile_checkout_limit'];
+			}
+			if($limit <= $checkouts){
+				$err = new Error(T('Member has exceeded %number% items', array('number'=>$limit)));
+				break;
+			}
 		} while (0);
 		$this->db->unlock();
 		if ($err) {
@@ -414,7 +446,9 @@ class Bookings extends CoreTable {
 		$copy = $copies->getByBarcode($barcode);
 		if (!$copy) {
 			$this->db->unlock();
-			return new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
+			//return new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
+			//return new Error($errMsg);
+			return T("No copy with barcode %barcode%", array('barcode'=>$barcode));
 		}
 		$history = new History;
 		$status = $history->getOne($copy['histid']);
@@ -442,8 +476,8 @@ class Bookings extends CoreTable {
 			Fatal::internalError(T("Unexpected date error: ").$err->toStr());
 		}
 		$due_dt = Date::addDays($book_dt, $daysDueBack);
-		$booking = new Booking($copy['bibid'], $book_dt, $due_dt, $mbrids);
-		list($bookingid, $err) = $this->insert_e($booking);
+		$booking = new Bookings($copy['bibid'], $book_dt, $due_dt, $mbrids);
+		list($bookingid, $err) = $this->insert_el(array("book_dt" => $book_dt, "bibid" => $copy['bibid'], "bidid2" => $bidid, "due_dt" => $due_dt, "mbrids" => $mbrids));
 		if ($err) {
 			$this->db->unlock();
 			return $err;

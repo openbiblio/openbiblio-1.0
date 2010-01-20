@@ -25,11 +25,14 @@ class TableDisplay {
 			$s .= '<tr><th colspan="'.H(count($this->columns)+1).'" ><div class="title">'
 						. $this->title."</div></th></tr>\n";
 		}
+		$s .= '<thead>';
 		$s .= '<tr class="headings">';
 		foreach ($this->columns as $col) {
 			$s .= '<th>'.$col['title']."</th>\n";
 		}
 		$s .= "</tr>\n";
+		$s .= '</thead>';
+		$s .= '<tbody class="striped">';
 		return $s;
 	}
 	function row() {
@@ -56,7 +59,7 @@ class TableDisplay {
 		return $s;
 	}
 	function end() {
-		$s = '';
+		$s = '</tbody>';
 		if ($this->rown == 1) {
 			$s .= '<tr class="odd">'
 					 . '<td colspan="'.H(count($this->columns)).'">' . T("No results found.") . '</td></tr>';

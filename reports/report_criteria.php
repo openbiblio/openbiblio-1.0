@@ -35,7 +35,7 @@
 	#****************************************************************************
 	require(REL(__FILE__, "../shared/get_form_vars.php"));
 
-	echo '<h1>'.T($rpt->title()).'</h1>';
+	echo '<h3>'.T($rpt->title()).'</h3>';
 
 	if ($_REQUEST['msg']) {
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
@@ -43,6 +43,7 @@
 ?>
 
 <form name="reportcriteriaform" method="get" action="../reports/run_report.php">
+<fieldset>
 <input type="hidden" name="type" value="<?php echo H($rpt->type()) ?>" />
 
 <?php
@@ -50,6 +51,7 @@
 ?>
 
 <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+</fieldset>
 </form>
 
 <?php

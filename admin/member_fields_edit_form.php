@@ -27,6 +27,8 @@
 	}
 ?>
 
+<h3><?php echo T("Custom Member Fields"); ?></h3>
+
 <form name="editfieldform" method="post" action="../admin/member_fields_edit.php">
 <fieldset>
 <legend><?php echo T("Edit Member Field"); ?></legend>

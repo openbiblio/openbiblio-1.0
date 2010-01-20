@@ -37,7 +37,7 @@ $status = $history->getOne($copy['histid']);
 #*  Validate data
 #****************************************************************************
 $copyChanged = False;
-$fields = array('copyid', 'barcode_nmbr', 'copy_desc');
+$fields = array('copyid', 'barcode_nmbr', 'copy_desc', 'siteid');
 	#vendor, fund, price, expiration);
 foreach ($fields as $f) {
 	if ($_POST[$f] != $copy[$f]) {

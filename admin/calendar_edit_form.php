@@ -149,7 +149,9 @@
 		}
 	}
 </script>
-<h1><?php echo T("Edit Calendar"); ?></h1>
+<h3><?php echo T("Edit Calendar"); ?></h3>
+
+<fieldset>
 <p><?php echo T('calendarEditFormMsg');?></p>
 <form name="calendar_edit" id="calendar_edit" method="post" action="../admin/calendar_edit.php">
 <input type="hidden" name="calendar" value="<?php echo H($calendar); ?>" />
@@ -160,6 +162,8 @@
 <td class="value" valign="bottom"><input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" /></td>
 </tr>
 </table>
+</fieldset>
+<br />
 <?php
 
 	$d = getdate(time());

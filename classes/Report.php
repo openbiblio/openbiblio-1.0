@@ -71,7 +71,7 @@ class Report {
 	}
 	function _load_e($name, $cache) {
 		$this->name = $name;
-		assert('ereg("^[-_/A-Za-z0-9]+\$", $cache["type"])');
+		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
 		$fname = '../reports/defs/'.$cache['type'];
 		if (is_readable($fname.'.php')) {
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');

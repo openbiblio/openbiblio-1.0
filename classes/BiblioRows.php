@@ -14,6 +14,7 @@ class BiblioRows {
 			array('name'=>'create_dt', 'hidden'=>true),
 			array('name'=>'callno', 'title'=>'Call No.', 'sort'=>'callno'),
 			array('name'=>'title', 'title'=>'Title', 'func'=>'biblio_link', 'sort'=>'title'),
+			array('name'=>'author', 'title'=>'Author', 'sort'=>'author'),
 			array('name'=>'date', 'title'=>'Date', 'sort'=>'date'),
 			array('name'=>'level', 'title'=>'Grade Level'),
 			array('name'=>'length', 'title'=>'Length', 'sort'=>'length'),
@@ -29,6 +30,7 @@ class BiblioRows {
 			'title'=>array('field'=>'245$a',
 				'expr'=>'ifnull(substring(sorts.subfield_data, sortf.ind2_cd+1), '
 					. 'sorts.subfield_data)'),
+			'author'=>array('field'=>'100$a'),
 			'date'=>array('field'=>'260$c'),
 			'length'=>array('field'=>'300$a'),
 		);
@@ -87,6 +89,7 @@ class BiblioRowsIter extends Iter {
 			'title_a' => '245$a',
 			'title_b' => '245$b',
 			'date' => '260$c',
+			'author' => '100$a',
 			'level' => '521$a',
 			'length' => '300$a');
 		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, bf.tag, bs.subfield_cd, bs.subfield_data "

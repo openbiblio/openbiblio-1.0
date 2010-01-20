@@ -7,15 +7,17 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 ?>
 <form name="phrasesearch" method="get" action="../shared/biblio_search.php">
+<fieldset>
+<legend><?php echo T("Search Catalog"); ?></legend>
 <table class="primary" width="100%">
-	<tr>
+	<!--tr>
 		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Search Catalog"); ?>
+			<?php //echo T("Search Catalog"); ?>
 		</th>
-	</tr>
+	</tr-->
 	<tr>
 		<td nowrap="true" class="primary">
-			<select name="searchType">
+			<select id="searchType" name="searchType">
 				<option value="keyword" selected="selected"><?php echo T("Keyword"); ?></option>
 				<option value="title"><?php echo T("Title"); ?></option>
 				<option value="subject"><?php echo T("Subject"); ?></option>
@@ -25,52 +27,86 @@
 			</select>
 		</td>
 		<td class="primary">
-			<input style="width: 100%" type="text" name="searchText" size="30" maxlength="256" />
-			<input type="hidden" name="sortBy" value="title" />
-			<input type="hidden" name="tab" value="<?php echo $tab; ?>" />
-			<input type="hidden" name="lookup" value="<?php echo $lookup; ?>" />
+			<?php echo inputfield('text','searchText','',
+														array('size'=>'30','maxlength'=>'256','style'=>'width: 100%')); ?>
+			<?php //echo inputfield('hidden','sortBy','title'); ?>
+			<?php echo inputfield('hidden','tab',$tab); ?>
+			<?php echo inputfield('hidden','lookup',$lookup); ?>
 		</td>
 		<td id="searchsubmit">
 			<input type="submit" value="<?php echo T("Search"); ?>" class="button" />
 		</td>
 	</tr>
-	<tr><td>&nbsp;</td></tr>
 	<tr>
-		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Limit Search Results"); ?>
-		</th>
-	</tr>
-	<tr>
-		<td align="right" class="primary"><strong><?php echo T("Media Type:"); ?></strong></td>
-		<td class="primary">
-			<?php
-				$mattypes = new MaterialTypes;
-				echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
-			?>
+	  <td colspan="3">
+	    <label for="advanceQ"><?php echo T('Advanced Search?'); ?></label>
+			<?php echo inputfield('checkbox','advanceQ','Y',null,null); ?>
 		</td>
 	</tr>
 	<tr>
-		<td align="right" class="primary"><strong><?php echo T("Audience Level:"); ?></strong></td>
-		<td class="primary">
-			<select name="audienceLevel">
-				<option value="all" selected="selected"><?php echo T("All"); ?></option>
-				<option value="K"><?php echo T("Kindergarten"); ?></option>
-				<option value="P"><?php echo T("Primary"); ?></option>
-				<option value="I"><?php echo T("Intermediate"); ?></option>
-				<option value="J"><?php echo T("Junior High"); ?></option>
-				<option value="S"><?php echo T("Senior High"); ?></option>
-				<option value="A"><?php echo T("Adult"); ?></option>
-			</select>
+	  <td colspan="3">
+	  <fieldset id="advancedSrch">
+	  <legend><?php echo T("Limit Search Results"); ?></legend>
+	  <table border="0">
+		<tr>
+			<td colspan="2" valign="top" nowrap="yes" align="left">
+				<label for="mediaType">
+				<?php
+					echo T("Media Type:");
+					$mattypes = new MaterialTypes;
+					echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
+				?>
+				</label>
+				<br /><br />
+				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
+				<?php echo inputfield('select','audienceLevel','all',null,array(
+											'K' 	=>T("Kindergarten"),
+											'P' 	=>T("Primary"),
+											'I' 	=>T("Intermediate"),
+											'J' 	=>T("Junior High"),
+											'S' 	=>T("Senior High"),
+											'A' 	=>T("Adult"),
+											'all'	=>T("All"),
+										));
+				?>
+			</td>
+			<td colspan="1" valign="top" nowrap="yes" align="center">
+			  <fieldset style="margin:0; margin-bottom:5px;">
+				<legend><?php echo T("Sort by: "); ?></legend>
+				<?php echo inputfield('select','sortBy','title',null,array(
+											'author'=>'Author',
+											'callno'=>'Call Number',
+											'title' =>'Title'
+										));
+				?>
+			  </fieldset>
 		</td>
-	</tr>
+		</tr>
+		<tr>
+		<td colspan="3" align="right" class="primary">
+			<label><?php echo T("Production Date:"); ?></label>
+			<label for="from"><?php echo T("From Year:");?></label>
+			<?php echo inputfield('text','from',null,array('size'=>'4'))?>
+			<label for="to"><?php echo T("To Year:"); ?></label>
+			<?php echo inputfield('text','to',null,array('size'=>'4'))?>
+			
+		</td>
+		</tr>
+		</table>
+		</fieldset>
+		</td>
 	<tr>
-		<td align="right" class="primary"><strong><?php echo T("Production Date:"); ?></strong></td>
-		<td class="primary">
-			<strong>
-				<?php echo T("From Year:"); ?> <input type="text" name="from" size="4" />
-				<?php echo T("To Year:"); ?> <input type="text" name="to" size="4" />
-			</strong>
-		</td>
-	</tr>
 </table>
+</fieldset>
 </form>
+<script>
+	$(document).ready(function () {
+		$('#advancedSrch').hide();
+		$('#advanceQ').bind('click',null,function(){
+			if ($('#advanceQ:checked').val() == 'Y')
+				$('#advancedSrch').show();
+			else
+				$('#advancedSrch').hide();
+		});
+	});
+</script>

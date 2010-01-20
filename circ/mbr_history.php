@@ -86,10 +86,10 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-<h2><?php echo T("Booking History"); ?></h2>
+<h3><?php echo T("Booking History"); ?></h3>
 <table class="biblio_view">
 <tr>
-<td class="name"><?php echo T("Member:"); ?></td>
+<th class="name"><?php echo T("Member:"); ?></th>
 <td class="value">
 <?php
 		echo H($mbr['first_name']).' ' ;
@@ -99,6 +99,8 @@
 </td>
 </tr>
 </table>
+
+<fieldset>
 <?php
 
 	$d = getdate(time());
@@ -130,5 +132,8 @@
 		echo $t->rowArray($disp->row($r));
 	}
 	echo $t->end();
+?>
+</fieldset>
 
+<?php
 	Page::footer();

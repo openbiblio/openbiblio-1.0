@@ -48,20 +48,20 @@ class Query {
 		$results = $this->_act($sql);
 		$this->unlock();
 		if (!is_bool($results)) {
-			Fatal::dbError($sql, T("Action query returned results."), T("No DBMS error."));
+			Fatal::dbError($sql, T("Action query returned results."), T("No error."));
 		}
 	}
 	function select($sql) {
 		$results = $this->_act($sql);
 		if (is_bool($results)) {
-			Fatal::dbError($sql, T("Select did not return results."), T("No DBMS error."));
+			Fatal::dbError($sql, T("Select did not return results."), T("Nothing Found error."));
 		}
 		return new DbIter($results);
 	}
 	function select1($sql) {
 		$r = $this->select($sql);
 		if ($r->count() != 1) {
-			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("No DBMS error."));
+			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("Nothing Found error."));
 		} else {
 			return $r->next();
 		}
@@ -71,7 +71,7 @@ class Query {
 		if ($r->count() == 0) {
 			return NULL;
 		} else if ($r->count() != 1) {
-			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("No DBMS error."));
+			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("Wrong Number Found error."));
 		} else {
 			return $r->next();
 		}
@@ -241,7 +241,7 @@ class Query {
 		return str_replace('`', '', $i);
 	}
 	function _numstr($n) {
-		if (ereg("^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)", $n, $subs)) {
+		if (preg_match("/^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)/", $n, $subs)) {
 			return $subs[1];
 		} else {
 			return "0";

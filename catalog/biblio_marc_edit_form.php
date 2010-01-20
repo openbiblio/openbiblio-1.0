@@ -35,7 +35,9 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 	$cancelLocation = "../shared/biblio_view.php?bibid=".urlencode($bibid);
-
+?>
+	<h3><?php echo T('Edit MARC Record'); ?></h3>
+<?php
 	if (isset($_REQUEST["msg"])) {
 		echo '<p class="error">'.H($_REQUEST["msg"]).'</p>';
 	}
@@ -62,13 +64,11 @@
 ?>
 
 <form name="editmarcform" method="post" action="../catalog/biblio_marc_edit.php">
+<fieldset>
+<legend><?php echo T("Item"); ?></legend>
 <input type="hidden" name="bibid" value="<?php echo H($postVars["bibid"]);?>" />
 <table class="primary" width="100%">
-	<tr>
-		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Item"); ?>
-		</th>
-	</tr>
+	<tbody class="nonMarcBody">
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Type of Material:"); ?>
@@ -100,7 +100,9 @@
 					NULL, 'CHECKED'); ?>
 		</td>
 	</tr>
-
+	</tbody>
+	
+	<body  class="marcBody">
 	<tr>
 		<td colspan="2" nowrap="true" class="primary">
 			<b><?php echo T("MARC Record:"); ?></b>
@@ -111,14 +113,18 @@
 			<?php echo inputfield('textarea', 'marc', $biblio['marc']->getMnem(), array('rows'=>15)); ?>
 		</td>
 	</tr>
+	</tbody>
+	<tfoot>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 			<input type="button" onclick="parent.location='<?php echo H($cancelLocation);?>'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
+	</tfoot>
 </table>
-
+</fieldset>
+</form>
 <?php
 
 	Page::footer();

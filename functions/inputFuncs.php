@@ -3,6 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+## ############################################################## ##
+## if no 'id' is specified in $attrs, 'id' will be same as 'name' ##
+## ############################################################## ##
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	$s = "";
 	if (isset($_SESSION['postVars'])) {
@@ -10,16 +13,14 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	} else {
 		$postVars = array();
 	}
-	if (isset($postVars[$name])) {
-		$value = $postVars[$name];
-	}
+//	if (isset($postVars[$name])) {  // FIXME - is this right, or useful, messes up <select> - Fred
+		//$value = $postVars[$name];
+//		$data = $postVars[$name];
+//	}
 	if (isset($_SESSION['pageErrors'])) {
 		$pageErrors = $_SESSION['pageErrors'];
 	} else {
 		$pageErrors = array();
-	}
-	if (isset($pageErrors[$name])) {
-		$s .= '<span class="error">'.H($pageErrors[$name]).'</span><br />';
 	}
 	if (!$attrs) {
 		$attrs = array();
@@ -27,10 +28,14 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	if (!isset($attrs['onChange'])) {
 		$attrs['onChange'] = 'modified=true';
 	}
+	if (!isset($attrs['id'])) {
+		$attrs['id'] = $name;
+	}
+
 	switch ($type) {
 	// FIXME radio
 	case 'select':
-		$s .= '<select id="'.H($name).'" name="'.H($name).'" ';
+		$s .= '<select name="'.H($name).'" ';
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
@@ -46,16 +51,16 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		break;
 	case 'textarea':
 		$s .= '<textarea name="'.H($name).'" ';
-		$s .= 'id="'.H($name).'" ';
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
-		$s .= ">".H($value)."</textarea>";
+		//$s .= ">".H($value)."</textarea>";
+		$s .= ">".H($data)."</textarea>";
 		break;
 	case 'checkbox':
-		$s .= '<input type="checkbox" ';
-		$s .= 'name="'.H($name).'" ';
+		$s .= '<input type="checkbox" name="'.H($name).'" ';
 		//$s .= 'value="'.H($data).'" ';
+		$s .= 'value="'.H($value).'" ';
 		if ($value == $data) {
 			$s .= 'checked="checked" ';
 		}
@@ -65,8 +70,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		$s .= "/>";
 		break;
 	default:
-		$s .= '<input type="'.H($type).'" ';
-		$s .= 'name="'.H($name).'" ';
+		$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
 		if ($value != "") {
 			$s .= 'value="'.H($value).'" ';
 		}
@@ -75,6 +79,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		}
 		$s .= "/>";
 		break;
+	}
+	#### place error messages to right of effected field -- Fred
+	if (isset($pageErrors[$name])) {
+		$s .= '<span class="error">'.H($pageErrors[$name]).'</span><br />';
 	}
 	return $s;
 }

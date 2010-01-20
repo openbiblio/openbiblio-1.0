@@ -21,25 +21,27 @@
 		include_once(REL(__FILE__, "../model/Staff.php"));
 		$staff = new Staff;
 		$postVars = $staff->getOne($postVars["userid"]);
-		foreach (array('circ', 'circ_mbr', 'admin', 'reports', 'suspended') as $flg) {
-			if ($postvars[$flg.'_flg'] == 'Y') {
-				$postVars[$flg.'_flg'] = "CHECKED";
+		foreach (array('circ', 'circ_mbr', 'admin', 'tools', 'reports', 'suspended', 'catalog') as $flg) {
+			$flag = $flg.'_flg';
+			if ($postVars[$flag] == 'Y') {
+				$postVars[$flag] = "CHECKED";
 			} else {
-				$postVars[$flg.'_flg'] = "";
+				$postVars[$flag] = "";
 			}
 		}
 	} else {
 		require(REL(__FILE__, "../shared/get_form_vars.php"));
 	}
-
 ?>
+<h3><?php echo T("Edit Staff Member Information"); ?></h3>
 
 <form name="editstaffform" method="post" action="../admin/staff_edit.php">
+<fieldset>
 <input type="hidden" name="userid" value="<?php echo $postVars["userid"];?>">
 <table class="primary">
 	<tr>
 		<th align="left" colspan="2" nowrap="yes">
-			<?php echo T("Edit Staff Member Information"); ?>
+			
 		</th>
 	</tr>
 	<tr>
@@ -47,7 +49,8 @@
 			<?php echo T("Last Name:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("last_name",30,30,$postVars,$pageErrors); ?>
+			<?php $attrs = array('size'=>30, 'maxLength'=>30); ?>
+			<?php echo inputField('text','last_name',$postVars['last_name'],NULL,$attrs); ?>
 		</td>
 	</tr>
 	<tr>
@@ -55,7 +58,7 @@
 			<?php echo T("First Name:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("first_name",30,30,$postVars,$pageErrors); ?>
+			<?php echo inputField('text','first_name',$postVars['first_name'],NULL,$attrs); ?>
 		</td>
 	</tr>
 	<tr>
@@ -63,7 +66,7 @@
 			<?php echo T("Login Username:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php printInputText("username",20,20,$postVars,$pageErrors); ?>
+			<?php echo inputField('text','username',$postVars['username'],NULL,$attrs); ?>
 		</td>
 	</tr>
 	<tr>
@@ -71,21 +74,24 @@
 			<?php echo T("Authorization:");?>
 		</td>
 		<td valign="top" class="primary">
-			<input type="checkbox" name="circ_flg" value="CHECKED"
-				<?php if (isset($postVars["circ_flg"])) echo $postVars["circ_flg"]; ?> />
-			<?php echo T("Circ");?>
-			<input type="checkbox" name="circ_mbr_flg" value="CHECKED"
-				<?php if (isset($postVars["circ_mbr_flg"])) echo $postVars["circ_mbr_flg"]; ?> />
-			<?php echo T("Update Member"); ?>
-			<input type="checkbox" name="catalog_flg" value="CHECKED"
-				<?php if (isset($postVars["catalog_flg"])) echo $postVars["catalog_flg"]; ?> />
-			<?php echo T("Catalog");?>
-			<input type="checkbox" name="admin_flg" value="CHECKED"
-				<?php if (isset($postVars["admin_flg"])) echo $postVars["admin_flg"]; ?> />
-			<?php echo T("Admin");?>
-			<input type="checkbox" name="reports_flg" value="CHECKED"
-				<?php if (isset($postVars["reports_flg"])) echo $postVars["reports_flg"]; ?> />
-			<?php echo T("Reports"); ?>
+			<?php echo inputField('checkbox','circ_flg','CHECKED',NULL,$postVars["circ_flg"]); ?>
+		  <label for="circ_flg"><?php echo T("Circ");?></label>
+
+			<?php echo inputField('checkbox','circ_mbr_flg','CHECKED',NULL,$postVars["circ_mbr_flg"]); ?>
+		  <label for="circ_mbr_flg"><?php echo T("Update Member");?></label>
+
+			<?php echo inputField('checkbox','catalog_flg','CHECKED',NULL,$postVars["catalog_flg"]); ?>
+		  <label for="catalog_flg"><?php echo T("Catalog");?></label>
+			<br />
+			
+			<?php echo inputField('checkbox','admin_flg','CHECKED',NULL,$postVars["admin_flg"]); ?>
+		  <label for="admin_flg"><?php echo T("Admin");?></label>
+
+			<?php echo inputField('checkbox','tools_flg','CHECKED',NULL,$postVars["tools_flg"]); ?>
+		  <label for="tools_flg"><?php echo T("Tools");?></label>
+
+			<?php echo inputField('checkbox','reports_flg','CHECKED',NULL,$postVars["reports_flg"]); ?>
+		  <label for="reports_flg"><?php echo T("Reports");?></label>
 		</td>
 	</tr>
 	<tr>
@@ -93,8 +99,7 @@
 			<?php echo T("Suspended:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<input type="checkbox" name="suspended_flg" value="CHECKED"
-				<?php if (isset($postVars["suspended_flg"])) echo $postVars["suspended_flg"]; ?> />
+			<?php echo inputField('checkbox','suspended_flg','CHECKED',NULL,$postVars["suspended_flg"]); ?>
 		</td>
 	</tr>
 	<tr>
@@ -104,6 +109,7 @@
 		</td>
 	</tr>
 </table>
+</fieldset>
 </form>
 
 <?php

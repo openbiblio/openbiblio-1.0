@@ -31,16 +31,26 @@
 ?>
 	<script type="text/javascript">
 		<!--
-			function matCdReload(){
-	var material_cd_value = document.newbiblioform.materialCd.options[document.newbiblioform.materialCd.selectedIndex].value;
-				alert(material_cd_value);
-	window.location.href="<?php echo $_SERVER['PHP_SELF'];?>?material_cd="+material_cd_value;
-			}
+bnf = {
+	init: function () {
+	  $('#materialCd').bind('change',null,bnf.matCdReload);
+//		$('#biblioFldTbl tbody#marcBody tr:not(.hidden):even').addClass('altBG');
+	},
+	matCdReload: function (){
+		var material_cd_value = $('#materialCd').val();
+		//alert(material_cd_value);
+		window.location.href="<?php echo $_SERVER['PHP_SELF'];?>?material_cd="+material_cd_value;
+	}
+}
+$(document).ready(bnf.init);
 		//-->
 	</script>
-<form name="newbiblioform" method="post" action="../catalog/biblio_new.php">
-
+	
+	<h1><span id="searchHdr" class="title"><?php echo T('Add New Item'); ?></span></h1>
+	<form name="newbiblioform" method="post" action="../catalog/biblio_new.php">
 <?php
-
 	include(REL(__FILE__, "../catalog/biblio_fields.php"));
+?>
+	</form>
+<?php>
 	Page::footer();

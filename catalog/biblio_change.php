@@ -2,7 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-
+ 
+/*
+//moved to change-wrap.php
 require_once("../shared/common.php");
 
 $restrictInDemo = true;
@@ -14,7 +16,6 @@ require_once(REL(__FILE__, "../classes/Marc.php"));
 #****************************************************************************
 #*  Checking for post vars.  Go back to search if none found.
 #****************************************************************************
-
 if (count($_POST) == 0) {
 	if ($nav == "newconfirm") {
 		header("Location: ../catalog/biblio_new_form.php");
@@ -23,6 +24,7 @@ if (count($_POST) == 0) {
 	}
 	exit();
 }
+*/
 
 /* Closure class for sorting subfields */
 class SubfieldOrder {
@@ -152,7 +154,8 @@ for ($i=0; $i < count($mrc->fields); $i++) {
 		$mrc->fields[$i]->indicators{0} = 0;
 		$a = $mrc->fields[$i]->getValue(a);
 		/* Set non-filing characters */
-		if (eregi("^((a |an |the )?[^a-z0-9]*)", $a, $regs) and strlen($regs[1]) <= 9) {
+		//		if (eregi("^((a |an |the )?[^a-z0-9]*)", $a, $regs) and strlen($regs[1]) <= 9) {
+		if (preg_match("/^((a |an |the )?[^a-z0-9]*)/i", $a, $regs) and strlen($regs[1]) <= 9) {
 			$mrc->fields[$i]->indicators{1} = strlen($regs[1]);
 		} else {
 			$mrc->fields[$i]->indicators{1} = 0;
@@ -178,14 +181,19 @@ $biblio[marc] = $mrc;
 #**************************************************************************
 #*  Insert/Update bibliography
 #**************************************************************************
-
+//echo "Posting insert/update now.<br />";
 if ($nav == "newconfirm") {
 	$bibid = $biblios->insert($biblio);
+	$msg = "{'bibid':$bibid}";
 } else {
 	$bibid = $_POST["bibid"];
 	$biblios->update($biblio);
+	$msg = T("Item successfully updated.");
 }
 
-$msg = T("Item successfully updated.");
-header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));
-exit();
+
+#### ########  all below moved to chng-wrap.php so thi module can be used more freely
+#### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
+//header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));
+//header("Location: ../catalog/biblio_copy_new_form.php?resey=Y&bibid=".$bibid."&msg=".U($msg));
+//exit();

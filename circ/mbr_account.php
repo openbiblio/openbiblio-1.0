@@ -40,16 +40,14 @@
 	#****************************************************************************
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
+<h3><?php echo T("Member Account Transactions"); ?></h3>
 
 <?php echo $msg ?>
 
 <form name="accttransform" method="post" action="../circ/mbr_transaction.php">
+<fieldset>
+<legend><?php echo T("Add a Transaction"); ?></legend>
 <table class="primary">
-	<tr>
-		<th colspan="2" valign="top" nowrap="yes" align="left">
-			<?php echo T("Add a Transaction"); ?>
-		</td>
-	</tr>
 	<tr>
 		<td nowrap="true" class="primary">
 			<?php echo T("Transaction Type:"); ?>
@@ -84,6 +82,7 @@
 	</tr>
 </table>
 <input type="hidden" name="mbrid" value="<?php echo $mbrid;?>" />
+</fieldset>
 </form>
 
 <?php
@@ -94,9 +93,10 @@
 	$transactions = $acct->getByMbrid($mbrid);
 
 ?>
-
-<h1><?php echo T("Member Account Transactions"); ?></h1>
+<fieldset>
+<legend><?php echo T("Transaction Activity"); ?></legend>
 <table class="primary">
+	<thead>
 	<tr>
 		<th valign="top" nowrap="yes" align="left">
 			<?php echo T("Function"); ?>
@@ -117,7 +117,7 @@
 			<?php echo T("Balance"); ?>
 		</th>
 	</tr>
-
+	</thead>
 <?php
 	if ($transactions->count() === 0) {
 ?>
@@ -129,7 +129,7 @@
 <?php
 	} else {
 		$bal = 0;
-		?>
+		?><tbody class="striped">
 		<tr><td class="primary" colspan="5"><?php echo T("Opening Balance"); ?></td><td class="primary"><?php echo $LOC->moneyFormat($bal); ?></td></tr>
 
 		<?php
@@ -161,8 +161,9 @@
 	}
 
 ?>
+	</tbody>
 </table>
-
+</fieldset>
 <?php
 
 	Page::footer();

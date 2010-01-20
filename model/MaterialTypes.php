@@ -22,16 +22,27 @@ class MaterialTypes extends DmTable {
 	}
 	function getAllWithStats() {
 		$sql = "SELECT t.code, t.description, t.default_flg, "
-			. "t.adult_checkout_limit, t.juvenile_checkout_limit, "
-			. "t.image_file, COUNT(distinct b.bibid) as count "
-			. "FROM material_type_dm t "
-			. "LEFT JOIN biblio b "
-			. "ON b.material_cd=t.code "
-			. "GROUP BY t.code, t.description, t.default_flg, "
-			. "t.adult_checkout_limit, t.juvenile_checkout_limit, "
-			. "t.image_file "
-			. "ORDER BY t.description ";
+				 . 				"t.adult_checkout_limit, t.juvenile_checkout_limit, "
+				 . 				"t.image_file, COUNT(distinct b.bibid) as count "
+				 . " FROM material_type_dm t "
+				 . " LEFT JOIN biblio b "
+				 . "   ON b.material_cd=t.code "
+				 . "GROUP BY t.code, t.description, t.default_flg, "
+				 . "				 t.adult_checkout_limit, t.juvenile_checkout_limit, "
+				 . "				 t.image_file "
+				 . "ORDER BY t.description ";
 		return $this->db->select($sql);
+	}
+//	function getAll($orderBy=null) {
+	function getAll($orderBy='description') {
+		$sql = "SELECT * FROM material_type_dm "
+				 . " ORDER BY $orderBy ";
+		return $this->db->select($sql);
+	}
+	function getByBibid($bibid) {
+		$sql = "SELECT m.* FROM material_type_dm m, biblio b"
+				 . " WHERE $bibid = b.bibid AND m.code = b.material_cd";
+		return $this->db->select1($sql);
 	}
 	function validate_el($rec, $insert) {
 		$errors = array();
@@ -56,7 +67,7 @@ class MaterialTypes extends DmTable {
 			. "FROM material_type_dm t "
 			. "WHERE code='".$code."';";
 		$row = $this->db->select1($sql);
-	return $row['description'];
+		return $row['description'];
 	}
 
 }

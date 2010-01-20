@@ -9,23 +9,23 @@
 class Localize {
 	var $localePath = '';
 	var $meta;
-	var $trans = array();
+	var $trans = array(); // memory image of translation table
 	var $marc = array();
 
 	function init($locale) {
-		if (!ereg("^[A-Za-z0-9][A-Za-z0-9_]*$", $locale)) {
-			Fatal::internalError('Invalid Locale');
+		if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $locale)) {
+			Fatal::internalError("Invalid Locale: >$locale<");
 		}
 		
 		$this->localePath = LOCALE_ROOT."/".$locale."/";
 		if (!is_readable($this->localePath.'metadata.php')) {
-			Fatal::internalError('Locale has no metadata');
+			Fatal::internalError('Locale >$locale< has no metadata');
 		}
 		include($this->localePath.'metadata.php');
 		
 		$classname = $locale.'MetaData';
 		if (!class_exists($classname)) {
-			Fatal::internalError('Locale has no metadata class');
+			Fatal::internalError('Locale >$locale< has no metadata class');
 		}
 		$this->meta = new $classname;
 		$this->trans = array();
@@ -97,11 +97,14 @@ class Localize {
 		if (isset($this->trans[$key])) {
 			$text = $this->trans[$key];
 		}
+		else{
+			$text = 'T!'.$text."T!";
+		}
 		$text = $this->_substituteVars($text, $vars);
 
-		if (OBIB_HIGHLIGHT_I18N_FLG) {
-			$text = "<span color='#FF8A00'>".$text."</span>";
-		}
+//		if (OBIB_HIGHLIGHT_I18N_FLG) {
+//			$text = "<span color='#FF8A00'>".$text."</span>";
+//		}
 		return $text;
 	}
 	function nGetText($n, $key, $vars=NULL) {

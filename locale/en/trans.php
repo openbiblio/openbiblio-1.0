@@ -44,15 +44,6 @@ $trans["headerDateFormat"]	 = "m.d.Y";
 #*  Common translation text
 #****************************************************************************
 
-
-
-
-
-
-
-
-
-
 $trans[" THIS ITEM WAS NOT CHECKED OUT."] = " THIS ITEM WAS NOT CHECKED OUT.";
 $trans["\$t != \"string\""] = "\$t != \"string\"";
 $trans["\$type != \"order_by\""] = "\$type != \"order_by\"";
@@ -69,16 +60,20 @@ $trans["%count% unattached copy status history records"] = "%count% unattached c
 $trans["%count% unattached images"] = "%count% unattached images";
 $trans["%count% unattached MARC fields"] = "%count% unattached MARC fields";
 $trans["%count% unattached MARC subfields"] = "%count% unattached MARC subfields";
+$trans["%units% Late"] = "%units% Late";
 $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
 $trans["Accompanying Material"] = "Accompanying Material";
 $trans["Account"] = "Account";
+$trans["Active"] = "Active";
 $trans["Action query returned results."] = "Action query returned results.";
 $trans["Add a custom biblio copy field"] = "Add a custom biblio copy field";
 $trans["Add a Transaction"] = "Add a Transaction";
 $trans["Add custom member field"] = "Add custom member field";
+$trans["Add List To Cart"] = "Add List to Cart";
 $trans["Add Member..."] = "Add Member...";
 $trans["Add New Collection"] = "Add New Collection";
 $trans["Add New Copy"] = "Add New Copy";
+$trans["Add New Item"] = "Add New Item";
 $trans["Add new custom field"] = "Add new custom field";
 $trans["Add New Image..."] = "Add New Image...";
 $trans["Add New Material Type"] = "Add New Material Type";
@@ -95,25 +90,34 @@ $trans["Admin Summary"] = "Admin Summary";
 $trans["Admin"] = "Admin";
 $trans["Adult Checkout Limit:"] = "Adult Checkout Limit:";
 $trans["Adult"] = "Adult";
+$trans["Advanced Search?"] = "Advanced Search?";
 $trans["Align:"] = "Align:";
 $trans["All"] = "All";
 $trans["Amount is required."] = "Amount is required.";
 $trans["Amount must be numeric."] = "Amount must be numeric.";
 $trans["Amount"] = "Amount";
 $trans["Amount:"] = "Amount:";
+$trans["And"] = "And";
+$trans["Are you sure you want to delete this copy?"] = "Are you sure you want to delete this copy?";
+$trans["Are you sure you want to delete this item?"] = "Are you sure you want to delete this item?";
 $trans["Audience Level:"] = "Audience Level:";
 $trans["Author"] = "Author";
 $trans["Authorization"] = "Authorization";
 $trans["Authorization:"] = "Authorization:";
 $trans["Auto Barcode"] = "Auto Barcode";
+$trans["Auto Collection"] = "Auto Collection";
+$trans["Auto Cutter"] = "Auto Cutter";
+$trans["Auto Dewey"] = "Auto Dewey";
+$trans["Available"] = "Available";
+$trans["Available elsewhere"] = "Available elsewhere";
 $trans["Background Color:"] = "Background Color:";
 $trans["Bad collection type"] = "Bad collection type";
-$trans["Bad day number: %day%"] = "Bad day number: %day%";
+$trans["Bad day number: %day%"] = "Bad day number: %day% (please use yyyy-mm-dd)";
 $trans["Bad key (%key%) for %name% table"] = "Bad key (%key%) for %name% table";
 $trans["Bad locale metadata: %file%: No class"] = "Bad locale metadata: %file%: No class";
 $trans["Bad MARC record, giving up: %err%"] = "Bad MARC record, giving up: %err%";
 $trans["Bad mkSQL() format string."] = "Bad mkSQL() format string.";
-$trans["Bad month number: %month%"] = "Bad month number: %month%";
+$trans["Bad month number: %month%"] = "Bad month number: %month% (please use yyyy-mm-dd)";
 $trans["Balance"] = "Balance";
 $trans["Barcode number already in use."] = "Barcode number already in use.";
 $trans["Barcode number in use."] = "Barcode number in use.";
@@ -121,6 +125,9 @@ $trans["Barcode Number"] = "Barcode Number";
 $trans["Barcode Number:"] = "Barcode Number:";
 $trans["Barcode"] = "Barcode";
 $trans["Biblio Copy Fields"]      = "Biblio Copy Fields";
+$trans["Biblio Fields"]      = "Biblio Fields";
+$trans["Biblio Information"] = "Biblio Information";
+$trans["Biblio Search Opts."] = "Biblio Search Opts.";
 $trans["biblioMarcEditError"] = "An error occurred processing your request, see below for details.";
 $trans["bold"]                  = "bold";
 $trans["Book Item"] = "Book Item";
@@ -143,6 +150,7 @@ $trans["Calendar Deleted"] = "Calendar Deleted";
 $trans["Calendar"] = "Calendar";
 $trans["Calendar:"] = "Calendar:";
 $trans["Calendars"] = "Calendars";
+$trans["Call Nmbr Type"] = "Call Number Type";
 $trans["CAN'T FIX:"] = "CAN'T FIX:";
 $trans["Can't happen"] = "Can't happen";
 $trans["Cancel"] = "Cancel";
@@ -156,6 +164,7 @@ $trans["Cannot select database."] = "Cannot select database.";
 $trans["Cannot update history entries"] = "Cannot update history entries";
 $trans["Caption:"] = "Caption:";
 $trans["Card Number:"] = "Card Number:";
+$trans["Cart is empty"] = "Cart is empty";
 $trans["Catalog"] = "Catalog";
 $trans["Cataloging"] = "Cataloging";
 $trans["center"] = "center";
@@ -170,6 +179,7 @@ $trans["Check in selected items"] = "Check in selected items";
 $trans["Check In"] = "Check In";
 $trans["Check Now"] = "Check Now";
 $trans["Check Out"] = "Check Out";
+$trans["Checkout Limit"] = "Checkout Limit";
 $trans["Checked Out"] = "Checked Out";
 $trans["Checking Database Integrity"] = "Checking Database Integrity";
 $trans["Checking for MySQL Extension..."] = "Checking for MySQL Extension...";
@@ -208,6 +218,8 @@ $trans["Current Checkouts"] = "Current Checkouts";
 $trans["Current Patron:"] = "Current Patron:";
 $trans["Current Shelving Cart List"] = "Current Shelving Cart List";
 $trans["Custom Member Fields"] = "Custom Member Fields";
+$trans["Cutter Type"] = "Cutter Type";
+$trans["Cutter Word"] = "Cutter Word";
 $trans["Daily late fee can not be less than zero."] = "Daily late fee can not be less than zero.";
 $trans["Daily late fee must be numeric."] = "Daily late fee must be numeric.";
 $trans["Daily Late Fee:"] = "Daily Late Fee:";
@@ -217,6 +229,8 @@ $trans["Date Added:"] = "Date Added:";
 $trans["Date Due"] = "Date Due";
 $trans["Date Scanned"] = "Date Scanned";
 $trans["Date"] = "Date";
+$trans["Help"] = "Help";
+$trans["Database"] = "Database";
 $trans["Date:"] = "Date:";
 $trans["day"] = "day";
 $trans["Days due back can not be less than zero."] = "Days due back can not be less than zero.";
@@ -225,11 +239,14 @@ $trans["Days Due Back:"] = "Days Due Back:";
 $trans["Days Late"] = "Days Late";
 $trans["Days Out:"] = "Days Out:";
 $trans["days"] = "days";
+$trans["Default Dewey"] = "Default Dewey";
 $trans["del"] = "del";
 $trans["Delete Calendar"] = "Delete Calendar";
+$trans["Delete"] = "Delete";
+$trans["Delete completed"] = "Delete completed";
 $trans["Delete Image"] = "Delete Image";
 $trans["Delete Site"] = "Delete Site";
-$trans["Delete"] = "Delete";
+$trans["Delete This Item"] = "Delete this Item";
 $trans["Deleted"] = "Deleted";
 $trans["Description is required."] = "Description is required.";
 $trans["Description"] = "Description";
@@ -243,15 +260,21 @@ $trans["Edit Biblio Copy Field:"] = "Edit Biblio Copy Field:";
 $trans["Edit Calendar"] = "Edit Calendar";
 $trans["Edit Collection:"] = "Edit Collection:";
 $trans["Edit Copy"] = "Edit Copy";
+$trans["Edit Copy Properties"] = "Edit Copy Properties";
 $trans["Edit Info"] = "Edit Info";
+$trans["Edit Item"] = "Edit Item";
+$trans["Edit Item Properties"] = "Edit Item Properties";
 $trans["Edit Library Settings"]          = "Edit Library Settings";
 $trans["Edit MARC"] = "Edit MARC";
+$trans["Edit Material Properties"] = "Edit Material Properties";
 $trans["Edit Material Type"]          = "Edit Material Type";
 $trans["Edit Member Field"] = "Edit Member Field";
 $trans["Edit Member Info"] = "Edit Member Info";
 $trans["Edit Site"] = "Edit Site";
+$trans["Edit System Settings"] = "Edit System Settings";
 $trans["Edit Staff Member Information"] = "Edit Staff Member Information";
 $trans["Edit Stock Info"] = "Edit Stock Info";
+$trans["Edit This Item"] = "Edit this Item";
 $trans["Edit"] = "Edit";
 $trans["edit"] = "edit";
 $trans["Edition"] = "Edition";
@@ -284,6 +307,11 @@ $trans["Every calendar must have a name."] = "Every calendar must have a name.";
 $trans["expecting \"%exp%\""] = "expecting \"%exp%\"";
 $trans["Fatal Error"] = "Fatal Error";
 $trans["Fax"] = "Fax";
+$trans["Fiction Code"] = "Fiction Code";
+$trans["Fiction Codes - Dewey"] = "Dewey Fiction Codes";
+$trans["Fiction Codes - LoC"] = "LoC Fiction Codes";
+$trans["Fiction Name"] = "Fiction Name";
+$trans["Fetch On-line Data"] = "Fetch On-line Data";
 $trans["Field cannot be less than zero"]  = "Field cannot be less than zero";
 $trans["Field is required."] = "Field is required.";
 $trans["Field must be greater than zero"] = "Field must be greater than zero";
@@ -291,7 +319,7 @@ $trans["Field must be numeric"] = "Field must be numeric";
 $trans["Field Successfully Deleted"] = "Field Successfully Deleted";
 $trans["Field Updated successfully"] = "Field Updated successfully";
 $trans["Field"] = "Field";
-$trans["Fields marked are required"] = "Fields marked with * are required.";
+$trans["Fields marked are required"] = "Fields marked with <sup>*</sup> are required.";
 $trans["File name end not jpg or png"] = "File name does not end in '.jpg' or '.png'.";
 $trans["Find Item by Barcode Number"] = "Find Item by Barcode Number";
 $trans["First Name"] = "First Name";
@@ -309,22 +337,31 @@ $trans["Funding Source:"] = "Funding Source:";
 $trans["Get Member by Card Number"] = "Get Member by Card Number";
 $trans["getQuoted() called with empty \$str"] = "getQuoted() called with empty \$str";
 $trans["Grade Level"] = "Grade Level";
+$trans["Go Back"] = "Go Back";
 $trans["Grade"] = "Grade";
 $trans["Grade:"] = "Grade:";
 $trans["Help"] = "Help";
+$trans["%num% hits found, too many to process"] = "%num% hits found, too many to process";
+$trans["hits found"] = "hits found";
+$trans["Hold"] = "Hold";
 $trans["Hold Requests"] = "Hold Requests";
+$trans["Host Editor"] = "Host Editor";
+$trans["Host URL"] = "Host URL";
 $trans["Image file located in directory"] = "Image files must be located in the openbiblio/images directory.";
-$trans["Image File:"] = "Image File:";
+$trans["Image File"] = "Image File";
+$trans["IN"] = "IN";
 $trans["In Stock"] = "In Stock";
 $trans["in use"] = "in use";
 $trans["Insufficient stock"] = "Insufficient stock";
 $trans["Intermediate"] = "Intermediate";
 $trans["Internal Error: %msg%"] = "Internal Error: %msg%";
 $trans["Invalid bibid or position."] = "Invalid bibid or position.";
-$trans["Invalid date format"] = "Invalid date format";
+$trans["Invalid date format"] = "Invalid date format (please use yyyy-mm-dd)";
 $trans["Invalid domain table code"] = "Invalid domain table code";
 $trans["Invalid ID or password"] = "Invalid ID or password";
 $trans["Invalid signon."] = "Invalid signon.";
+$trans["ISBN"] = 'ISBN';
+$trans["ISSN"] = 'ISSN';
 $trans["Item Bookings"] = "Item Bookings";
 $trans["Item Count"] = "Item Count";
 $trans["Item Image"] = "Item Image";
@@ -332,6 +369,7 @@ $trans["Item Info"] = "Item Info";
 $trans["Item Information"] = "Item Information";
 $trans["Item Number"] = "Item Number";
 $trans["Item Number:"] = "Item Number:";
+$trans["Item Search"] = "Item Search";
 $trans["Item successfully updated."] = "Item successfully updated.";
 $trans["Item"] = "Item";
 $trans["Item#"] = "Item#";
@@ -343,6 +381,7 @@ $trans["Items Currently Checked Out"] = "Items Currently Checked Out";
 $trans["Junior High"] = "Junior High";
 $trans["Juvenile Checkout Limit:"] = "Juvenile Checkout Limit:";
 $trans["Juvenile"] = "Juvenile";
+$trans["Keep Dashes"] = "Keep Dashes";
 $trans["Key field %key% not in field list"] = "Key field %key% not in field list";
 $trans["Keyword"] = "Keyword";
 $trans["Kindergarten"] = "Kindergarten";
@@ -351,19 +390,27 @@ $trans["Last name is required."] = "Last name is required.";
 $trans["Last Name"] = "Last Name";
 $trans["Last Name:"] = "Last Name:";
 $trans["Late fee (barcode=%barcode%)"] = "Late fee (barcode=%barcode%)";
+$trans["LCCN"] = "LCCN";
 $trans["left"] = "left";
 $trans["Length"] = "Length";
 $trans["Library Hours"] = "Library Hours";
 $trans["Library Phone"] = "Library Phone";
 $trans["Library Settings"] = "Library Settings";
+$trans["Library Site"] = "Library Site";
 $trans["Library Title"] = "Library Title";
 $trans["Limit Search Results"] = "Limit Search Results";
 $trans["Link Color:"] = "Link Color:";
 $trans["Link"] = "Link";
 $trans["Links"] = "Links";
+$trans["LOAN"] = "ON LOAN";
+$trans["Local Data"] = "Local Data";
+$trans["Local Search"] = "Existing Items";
+$trans["Location"] = "Location";
 $trans["Login Username:"] = "Login Username:";
 $trans["Login"] = "Login";
 $trans["Logout"] = "Logout";
+$trans["lookup_patience"]        = 'Please be patient. this may take a while.';
+$trans["lookup_resetInstr"]      = 'After 30 secs. Press F5 to try again.';
 $trans["Lower"] = "Lower";
 $trans["Main Body"] = "Main Body";
 $trans["Make Booking"] = "Make Booking";
@@ -382,11 +429,13 @@ $trans["Material type, %desc%, has been updated."] = "Material type, %desc%, has
 $trans["Material Types"] = "Material Types";
 $trans["Material"] = "Material";
 $trans["material_field_id not set"] = "material_field_id not set";
+$trans["Maximum Hits"] = "Maximum Hits";
 $trans["Media Type:"] = "Media Type:";
 $trans["Member Account Transactions"] = "Member Account Transactions";
-$trans["Member field, %desc%, has been added."] = "Member field, %desc%, has been added.";
-$trans["Member field, %desc%, has been updated."] = "Member field, %desc%, has been updated.";
+$trans["Member field, %desc%, has been added."] = "Member field '%desc%' has been added.";
+$trans["Member field, %desc%, has been updated."] = "Member field '%desc%' has been updated.";
 $trans["Member Fields"] = "Member Fields";
+$trans["Member has exceeded %number% items"] = "exceeded %number% items that can be checked-out of this type";
 $trans["Member has been successfully added."] = "Member has been successfully added.";
 $trans["Member has been successfully updated."] = "Member has been successfully updated.";
 $trans["Member Info"] = "Member Info";
@@ -412,6 +461,7 @@ $trans["New Member"] = "New Member";
 $trans["New Search"] = "New Search";
 $trans["New Site"] = "New Site";
 $trans["Next"] = "Next";
+$trans["Next Page"] = "Next Page";
 $trans["No bibid set in biblio update"] = "No bibid set in biblio update";
 $trans["No bookings selected for checkout."] = "No bookings selected for checkout.";
 $trans["No calendars have been defined."] = "No calendars have been defined.";
@@ -426,6 +476,7 @@ $trans["No errors found"] = "No errors found";
 $trans["No fields found!"] = "No fields found!";
 $trans["No fields to fill in."] = "No fields to fill in.";
 $trans["No form action"] = "No form action";
+$trans["No images found"] = "No images found";
 $trans["No items are currently checked out."] = "No items are currently checked out.";
 $trans["No items have been selected."] = "No items have been selected.";
 $trans["No MARC record set"] = "No MARC record set";
@@ -437,23 +488,37 @@ $trans["No such image."] = "No such image.";
 $trans["No such link type: "] = "No such link type: ";
 $trans["No transactions found."] = "No transactions found.";
 $trans["No"] = "No";
+$trans["Noise Words"] = "Noise Words";
 $trans["Not authorized for cataloging"] = "You are not authorized to use the Cataloging tab.";
 $trans["Not enough arguments given to mkSQL()."] = "Not enough arguments given to mkSQL().";
 $trans["Note: Mbr outstanding balance %bal%"] = "Note: Member has an outstanding account balance of %bal%.";
 $trans["Note:"] = "Note:";
+$trans["Nothing Found"] = "Nothing Found";
 $trans["Number of items is required."] = "Number of items is required.";
+$trans["old search"] = "Old Search";
+$trans["Online Data"] = "Online Data";
+$trans["Online Protocol"] = "Online Protocol";
+$trans["ON_HOLD"] = "ON HOLD";
+$trans["ON_ORDER"] = "ON Order";
+$trans["On hold"] = "On hold";
+$trans["On loan/not available"] = "On loan/not available";
+$trans["Online Hosts"] = "Online Hosts";
+$trans["Online Options"] = "Online Options";
 $trans["OpenBiblio Help"] = "OpenBiblio Help";
 $trans["Opening Balance"] = "Opening Balance";
 $trans["Other Physical Details"] = "Other Physical Details";
 $trans["Out Date:"] = "Out Date:";
 $trans["Out"] = "Out";
+$trans["OUT"] = "OUT";
 $trans["Packing Slips"] = "Packing Slips";
+$trans["Packing List"] = "Packing List";
 $trans["Pages:"] = "Pages:";
 $trans["Password (Confirm):"] = "Password (Confirm):";
 $trans["Password at least 4 chars"] = "Password must be at least 4 characters long.";
 $trans["Password has been reset."] = "Password has been reset.";
 $trans["Password is required."] = "Password is required.";
 $trans["Password must not contain any spaces."] = "Password must not contain any spaces.";
+$trans["Password"] = "Password";
 $trans["Password:"] = "Password:";
 $trans["Passwords do not match."] = "Passwords do not match.";
 $trans["Patron #"] = "Patron #";
@@ -461,10 +526,12 @@ $trans["Patron #:"] = "Patron #:";
 $trans["Pending Bookings"] = "Pending Bookings";
 $trans["Phone"] = "Phone";
 $trans["Phone:"] = "Phone:";
-$trans["Place Hold"] = "Place Hold";
-$trans["Placed On Hold"] = "Placed On Hold";
+$trans["Place on Hold"] = "Place on Hold";
+$trans["Placed on Hold"] = "Placed on Hold";
+$trans["Plugin Manager"] = "Plugin Manager";
 $trans["Position"] = "Position";
 $trans["Prev"] = "Prev";
+$trans["Previous Page"] = "Previous Page";
 $trans["Preview Theme Changes"] = "Preview Theme Changes";
 $trans["Price"] = "Price";
 $trans["Price:"] = "Price:";
@@ -474,6 +541,7 @@ $trans["Print List"] = "Print List";
 $trans["Print"] = "Print";
 $trans["Production Date:"] = "Production Date:";
 $trans["Publication Date"] = "Publication Date";
+$trans["Publication Location"] = "Publication Location";
 $trans["Publisher"] = "Publisher";
 $trans["Pull List"] = "Pull List";
 $trans["pwd"] = "pwd";
@@ -483,8 +551,8 @@ $trans["Raise"] = "Raise";
 $trans["Re-enter Password:"] = "Re-enter Password:";
 $trans["Really delete booking of %item%?"] = "Are you sure you want to delete this booking of %item%?";
 $trans["Really delete this booking?"] = "Are you certain you want to delete this booking?";
-$trans["Really delete this image?"] = "Really delete this image?";
-$trans["Really delete transaction?"] = "Are you sure you want to delete this transaction?";
+$trans["Really delete this image?"] = "Are you certain you want to delete this image?";
+$trans["Really delete transaction?"] = "Are you certain you want to delete this transaction?";
 $trans["Recheck"] = "Recheck";
 $trans["Record %item% of %items%"] = "Record %item% out of %items% in sequence";
 $trans["Record Info"] = "Record Info";
@@ -503,6 +571,7 @@ $trans["Request cart is empty"] = "Request cart is empty";
 $trans["Request Cart"] = "Request Cart";
 $trans["Requested Delivery Date"] = "Requested Delivery Date";
 $trans["Required field missing"] = "Required field missing";
+$trans["Required note"] = " - required fields.";
 $trans["Required?"] = "Required?";
 $trans["Reset Staff Member Password"] = "Reset Staff Member Password";
 $trans["Restock amount:"] = "Restock amount:";
@@ -527,25 +596,35 @@ $trans["Sample Input"] = "Sample Input";
 $trans["Sample link"] = "Sample link";
 $trans["Sample List:"] = "Sample List:";
 $trans["Save Changes"] = "Save Changes";
+$trans["Schema"] = "Schema";
 $trans["School Grade:"] = "School Grade:";
 $trans["School"] = "School";
 $trans["School:"] = "School:";
 $trans["Search Catalog"] = "Search Catalog";
+$trans["Search Complete"] = "Search Complete";
 $trans["Search Member by Name"] = "Search Member by Name";
 $trans["Search Results"] = "Search Results";
+$trans["Search Site"] = "Search Site";
 $trans["Search"] = "Search";
+$trans["Searching for ISBN %isbn%"] = "Searching for ISBN %isbn%";
+$trans["Searching for<br />Title: '%title%',<br />by %author%"] = "Searching for<br />Title: '%title%',<br />by %author%";
 $trans["Select did not return results."] = "Select did not return results.";
 $trans["Select"] = "Select";
 $trans["Selecting database..."] = "Selecting database...";
 $trans["Senior High"] = "Senior High";
+$trans["Sequence"] = "Sequence";
 $trans["Series"] = "Series";
 $trans["Setting zero days no checkout"] = "Setting the days due back to zero makes the entire collection unavailable for checkout.";
+$trans["SHELVING_CART"] = "SHELVING CART";
 $trans["Show in OPAC:"] = "Show in OPAC:";
 $trans["Simple View"] = "Simple View";
 $trans["Site, %name%, has been deleted."] = "Site, %name%, has been deleted.";
 $trans["Site, %name%, updated."] = "Site, %name%, updated.";
+$trans["Site"] = "Site";
 $trans["Site:"] = "Site:";
 $trans["Sites"] = "Sites";
+$trans["Sort by: "] = "Sort by:";
+$trans["SRU"] = "SRU";
 $trans["Staff Admin"] = "Staff Admin";
 $trans["Staff Login"] = "Staff Login";
 $trans["Staff member, %name%, has been added."] = "Staff member, %name%, has been added.";
@@ -565,6 +644,7 @@ $trans["Subjects"] = "Subjects";
 $trans["Submit Request"] = "Submit Request";
 $trans["Submit"] = "Submit";
 $trans["Success"] = "Success";
+$trans["Success!"] = "Success!";
 $trans["Summary"] = "Summary";
 $trans["Supplied passwords do not match."] = "Supplied passwords do not match.";
 $trans["Suspended"] = "Suspended";
@@ -593,10 +673,12 @@ $trans["This item cannot be booked."] = "This item cannot be booked.";
 $trans["Thumbnailed"] = "Thumbnailed";
 $trans["Title"] = "Title";
 $trans["Title:"] = "Title:";
+$trans["Timeout"] = "Timeout (seconds)";
 $trans["To ignore book again"] = "To ignore this problem, submit the booking again.";
 $trans["To Year:"] = "To Year:";
 $trans["Today's Date"] = "Today's Date";
 $trans["Too many arguments to mkSQL()."] = "Too many arguments to mkSQL().";
+$trans["Tools"] = "Tools";
 $trans["Trans Type"] = "Trans Type";
 $trans["Transaction successfully completed."] = "Transaction successfully completed.";
 $trans["Transaction successfully deleted."] = "Transaction successfully deleted.";
@@ -609,6 +691,7 @@ $trans["Type:"] = "Type:";
 $trans["Unable to connect to database."] = "Unable to connect to database.";
 $trans["Unable to create thumbnail."] = "Unable to create thumbnail.";
 $trans["Unable to move uploaded file."] = "Unable to move uploaded file.";
+$trans["%count% unattached copy status history records"] = "%count% unattached copy status history records";
 $trans["Unexpected date error: "] = "Unexpected date error: ";
 $trans["Unexpected end of file"] = "Unexpected end of file";
 $trans["Unexpected error creating report"] = "Unexpected error creating report";
@@ -618,11 +701,13 @@ $trans["Unexpected hidden field error: %error%"] = "Unexpected hidden field erro
 $trans["Unexpected token \"%token%\""] = "Unexpected token \"%token%\"";
 $trans["Update Member"] = "Update Member";
 $trans["Update"] = "Update";
+$trans["Update completed"] = "Update completed";
+$trans["Update successful"] = "Update successful";
 $trans["Upload File"] = "Upload File";
 $trans["Upload Image"] = "Upload Image";
 $trans["URL:"] = "URL:";
 $trans["Usage"] = "Usage";
-$trans["Userid"] = "Userid";
+$trans["Userid"] = "User Id";
 $trans["Username is already in use."] = "Username is already in use.";
 $trans["Username is required."] = "Username is required.";
 $trans["Username must be at least 4 characters."] = "Username must be at least 4 characters.";
@@ -633,7 +718,10 @@ $trans["Value"] = "Value";
 $trans["Vendor"] = "Vendor";
 $trans["Vendor:"] = "Vendor:";
 $trans["View"] = "View";
+$trans["View Marc Tags"] = "View Marc Tags";
+$trans["View Opac"] = "View OPAC";
 $trans["Wrong key length"] = "Wrong key length";
+$trans["YAZ"] = "YAZ";
 $trans["Yes"] = "Yes";
 $trans["You must enter exactly 1 record"] = "You must enter exactly 1 record";
 $trans["Your userid has been suspended."] = "Your userid has been suspended.";
@@ -762,9 +850,15 @@ $trans["collectionsDelConfirmMsg"] = "Are you sure you want to delete collection
 #****************************************************************************
 #*  Translation text for collections_list.php
 #****************************************************************************
-$trans["collectionsListNoteMsg"]          = "The delete function is only available on collections that have an item count of zero. If you wish to delete a collection with an item count greater than zero you will first need to change the material type on those items to another material type.";
+$trans["collectionsListNoteMsg"]          = "The delete function is only available on collections that have an item count of zero.<br />If you wish to delete a collection with an item count greater than zero<br/>you will first need to change the material type on those items to another material type.";
 
 
+
+
+#****************************************************************************
+#*  Translation text for catalog/index.php
+#****************************************************************************
+$trans["catalogIndexDesc"]                = "Use the functions located in the left hand navigation area to manage your library's collection efforts.";
 
 
 #****************************************************************************
@@ -776,19 +870,21 @@ $trans["adminIndexDesc"]                = "Use the functions located in the left
 #****************************************************************************
 #*  Translation text for integrity.php
 #****************************************************************************
-$trans["integrityMsg"]          = "OpenBiblio can check its database for inconsistencies. Would you like to do so now?";
+$trans["integrityMsg"]          = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
 
 
 #****************************************************************************
 #*  Translation text for materials_del_confirm.php
 #****************************************************************************
-$trans["materialsDelConfirmMsg"]          = "Are you sure you want to delete material type, %desc%?";
+$trans["materialsDelConfirmMsg"]          = "Are you sure you want to delete material type, '%desc%'?";
 
 
 #****************************************************************************
 #*  Translation text for materials_list.php
 #****************************************************************************
-$trans["materialsListNoteMsg"]          = "The delete function is only available on material types that have an item count of zero. If you wish to delete a material type with an item count greater than zero you will first need to change the material type on those items to another material type.";
+$trans["materialsListNoteMsg"]          = "The delete function is only available on material types that have an item count of zero. <br />"
+																					."If you wish to delete a material type with an item count greater than zero, <br />"
+																					."you will first need to change the material type on those items to another material type.";
 
 
 
@@ -862,28 +958,28 @@ $trans["biblioCopyDelSuccess"]     = "Copy with barcode %barcode% was successful
 #****************************************************************************
 #*  Translation text for biblio_copy_del_confirm.php
 #****************************************************************************
-$trans["biblioCopyDelConfirmErr1"] = "Could not delete copy.  A copy must be checked in before it can be deleted.";
-$trans["biblioCopyDelConfirmMsg"]  = "Are you sure you want to delete the copy with barcode %barcodeNmbr%?  This will also delete all status change history for this copy.";
+$trans["biblioCopyDelConfirmErr1"] = "Could not delete copy.<br />A copy must be checked in before it can be deleted.";
+$trans["biblioCopyDelConfirmMsg"]  = "Are you sure you want to delete the copy with barcode %barcodeNmbr%?<br />This will also delete all status change history for this copy.";
 
 
 #****************************************************************************
 #*  Translation text for biblio_del_confirm.php
 #****************************************************************************
-$trans["biblioDelConfirmWarn"]     = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).  Please delete these copies and/or hold requests before deleting this bibliography.";
+$trans["biblioDelConfirmWarn"]     = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).<br />Please delete these copies and/or hold requests before deleting this bibliography.";
 $trans["biblioDelConfirmMsg"]      = "Are you sure you want to delete the item with title %title%?";
 
 
 #****************************************************************************
 #*  Translation text for page hold_message.php
 #****************************************************************************
-$trans["holdMessageMsg1"]         = "The copy with barcode number %barcode% that you are attempting to check in has one or more hold requests placed on it. <b>Please file this copy with your held items instead of placing it on your shelving cart.</b> The status code for this copy has been set to hold.";
+$trans["holdMessageMsg1"]         = "The copy with barcode number %barcode% that you are attempting to check<br />in has one or more hold requests placed on it. <b>Please file this copy with your held items instead of placing it on your shelving cart.</b> The status code for this copy has been set to hold.";
 
 
 #****************************************************************************
 #*  Translation text for mbr_del_confirm.php
 #****************************************************************************
-$trans["mbrDelConfirmWarn"]       = "Member, %name%, has %checkoutCount% checkout(s) and %holdCount% hold request(s). All checked out materials must be checked in and all hold requests deleted before deleting this member.";
-$trans["mbrDelConfirmMsg"]        = "Are you sure you want to delete the member, %name%?  This will also delete all checkout history for this member.";
+$trans["mbrDelConfirmWarn"]       = "Member, %name%, has %checkoutCount% checkout(s) and %holdCount% hold request(s). All checked out materials must be checked in and<br />all hold requests deleted before deleting this member.";
+$trans["mbrDelConfirmMsg"]        = "Are you sure you want to delete the member, %name%?<br />This will also delete all checkout history for this member.";
 
 
 #****************************************************************************
@@ -974,12 +1070,12 @@ $trans["bookItemOnlyStaff"]          = "Only staff may book items for today or e
 #****************************************************************************
 #*  Translation text for register.php
 #****************************************************************************
-$trans["registerNoMatch"]          = "The information you entered does not exactly match any member in our database. Please try again or call the Media Center for assistance.";
-$trans["registerGotLogin"]          = "That member has already setup a login ID. If you need to change it, please call the Media Center for assistance.";
+$trans["registerNoMatch"]          = "The information you entered does not exactly match any member in our database.<br />Please try again or call the Media Center for assistance.";
+$trans["registerGotLogin"]          = "That member has already setup a login ID.<br />If you need to change it, please call the Media Center for assistance.";
 $trans["registerYouHaveRegd"]          = "You have successfully registered and are now logged in.";
-$trans["registerNextTime"]          = "<strong>To log in next time</strong>, use the password you just set with your card number (%barcode%) or the email address you entered as ID.";
-$trans["registerEditInfo"]          = "If you like, you can %link%edit your account info%end% to change your password or email address at any time.";
-$trans["registerMustMatch"]          = "The site and member name below must match our records exactly in order for you to register.  If you have trouble, please call the Media Center for assistance.";
+$trans["registerNextTime"]          = "<strong>To log in next time</strong>,<br />use the password you just set with your card number (%barcode%)<br />or the email address you entered as ID.";
+$trans["registerEditInfo"]          = "If you like, you can %link%edit your account info%end%<br />to change your password or email address at any time.";
+$trans["registerMustMatch"]          = "The site and member name below must match our records exactly in order for you to register.<br />If you have trouble, please call the Media Center for assistance.";
 
 
 #****************************************************************************
@@ -1003,7 +1099,7 @@ $trans["biblioSearchMsg"]          = "%nrecs% records found. Showing results %st
 #****************************************************************************
 #*  Translation text for demo_msg.php
 #****************************************************************************
-$trans["demoMsg"]       = "This function is not available in the demo version of OpenBiblio in order to limit the demo database size and to keep the data presentable.";
+$trans["demoMsg"]       = "This function is not available in the demo version of OpenBiblio<br />in order to limit the demo database size and to keep the data presentable.";
 
 
 #****************************************************************************
@@ -1036,3 +1132,44 @@ $trans["requestSendPleaseSend"]          = "Please send me an e-mail confirmatio
 $trans["requestSendPleaseSelect"]          = "Please select alternate titles if items I've requested are not available.";
 $trans["requestSendMustEnterDate"]          = "You must enter a request date and/or check the box for the soonest delivery date available.";
 
+
+#****************************************************************************
+#*  Translation text for tools/index.php
+#****************************************************************************
+$trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area "
+													.	"to manage the internal workings of your copy of OpenBiblio.<br />"
+													.	" - System Settings: maintain options not appropriate to day-to-day managers.<br />"
+													.	" - Biblio Fields: determine what data to display and where it is to appear.<br />"
+													.	" - Plugin Manager: determine which, if any, plugin to allow.<br />"
+													.	" - Search Options could include which type of search is to be at top of screen or have focus.<br />";
+
+#****************************************************************************
+#*  Translation text for tools/noauth.php
+#****************************************************************************
+$trans["toolsNoauth"]          = "You are not authorized to use the Tools tab.";
+
+#****************************************************************************
+#*  Translation text for tools/settings_edit_form.php
+#****************************************************************************
+$trans["System Settings"]          = "System Settings";
+
+#****************************************************************************
+#*  Translation text for tools/plugin_mgr_form.php
+#****************************************************************************
+$trans["Plugins Allowed?"]          = "Plugins Allowed?";
+$trans["No Plugins found"]          = "No Plugins found.";
+$trans["Select Plugins"]          	= "Select Plugins to be used.";
+
+
+
+
+
+
+    ## ##################################
+    ## adds suport for plugins - fl, 2009
+    ## ##################################
+		$list = getPlugIns('tran.tran');
+		for ($x=0; $x<count($list); $x++) {
+			include($list[$x]);
+		}
+    ## ##################################

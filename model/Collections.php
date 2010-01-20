@@ -94,7 +94,7 @@ class Collections extends DmTable {
 		return $types;
 	}
 	function getByBibid($bibid) {
-		$sql = "SELECT c.* FROM collection_dm c, biblio b "
+		$sql = "SELECT c.* FROM collection_circ c, biblio b "
 			. "WHERE c.code=b.collection_cd "
 			. $this->db->mkSQL("AND b.bibid=%N ", $bibid);
 		return $this->db->select1($sql);
@@ -125,6 +125,13 @@ class Collections extends DmTable {
 			$errors[] = new FieldError('type', T("Bad collection type"));
 		}
 		return $errors;
+	}
+	function get_name($code) {
+		$sql = "SELECT description "
+			. "FROM collection_dm "
+			. "WHERE code='".$code."';";
+		$row = $this->db->select1($sql);
+		return $row['description'];
 	}
 	function insert_el($rec) {
 		list ($id, $errs) = DBTable::insert_el($rec);

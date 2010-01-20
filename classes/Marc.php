@@ -32,7 +32,7 @@ class MarcHelpers {
 				}
 			}
 			if (!$did_subst) {
-				if (ereg('^  +', $s, $m)) {
+				if (preg_match('/^  +/', $s, $m)) {
 					$t .= str_repeat('\\', strlen($m[0]));
 					$s = substr($s, strlen($m[0]));
 				} else {

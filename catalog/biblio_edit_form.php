@@ -65,15 +65,24 @@
 ?>
 	<script type="text/javascript">
 		<!--
-			function matCdReload(){
-	alert("test");
-				document.newbiblioform.posted.value='media_change';
-				document.newbiblioform.submit();
+		bef = {
+			init: function () {
+			  $('#materialCd').bind('change',null,bef.matCdReload);
+				$('#biblioFldTbl tbody#marcBody tr:not(.hidden):even').addClass('altBG');
+			},
+			matCdReload: function (){
+				//alert("test");
+				//document.newbiblioform.posted.value='media_change';
+				$('#editBiblioForm').submit();
 			}
+		}
+		$(document).ready(bef.init);
 		//-->
 	</script>
-<form name="editbiblioform" method="post" action="../catalog/biblio_edit.php">
-<input type="hidden" name="bibid" value="<?php echo H($postVars["bibid"]);?>" />
+	
+	<h1><span id="searchHdr" class="title"><?php echo T('Edit Item'); ?></span></h1>
+	<form id="editBiblioForm" name="editbiblioform" method="post" action="../catalog/biblio_edit.php">
+	<input type="hidden" name="bibid" value="<?php echo H($postVars["bibid"]);?>" />
 
 <?php
 

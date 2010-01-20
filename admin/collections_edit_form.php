@@ -25,7 +25,6 @@
 		include_once(REL(__FILE__, "../model/Collections.php"));
 		$collections = new Collections;
 		$coll = $collections->getOne($code);
-		$postVars = $coll;
 		$t = $collections->getTypeData($coll);
 		$postVars = array_merge($postVars, $t);
 		$_SESSION['postVars'] = $postVars;
@@ -34,20 +33,40 @@
 	}
 ?>
 
+<script>
+cef = {
+	init: function () {
+	  $("#type").bind('change',null,cef.switchType);
+	  cef.switchType();
+	},
+	switchType: function () {
+		var type = $('#type').val();
+		$('.switchable').hide();
+		$('tr.colltype_'+type).show();
+	}
+};
+$(document).ready(cef.init);
+
+</script>
+
+<h3><?php echo T("Collections"); ?></h3>
+
 <form name="editcollectionform" method="post" action="../admin/collections_edit.php">
-<input type="hidden" name="code" value="<?php echo $postVars["code"];?>">
+<p class="note">
+<?php echo T("Fields marked are required"); ?>
+</p>
+<fieldset>
+<legend><?php echo T("Edit Collection:"); ?></legend>
+	<?php echo inputfield('hidden','code',$postVars["code"]); ?>
+
 <table class="primary">
-	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Edit Collection:"); ?>
-		</th>
-	</tr>
+	<tbody>
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Description:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text','description'); ?>
+			<?php echo inputfield('text','description',$coll[description]); ?>
 		</td>
 	</tr>
 	<tr>
@@ -55,28 +74,26 @@
 			Type:
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('select', 'type','Circulated',
-				array('onChange'=>'modified=true;switchType()', 'id'=>'type'),
-				$collections->getTypeSelect()); ?>
+			<?php echo inputfield('select', 'type','Circulated','',$collections->getTypeSelect()); ?>
 		</td>
 	</tr>
-	<tr class="colltype_Circulated">
+	<tr class="switchable colltype_Circulated">
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Days Due Back:");?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text', 'days_due_back'); ?>
+			<?php echo inputfield('text', 'days_due_back',$t[days_due_back]); ?>
 		</td>
 	</tr>
-	<tr class="colltype_Circulated">
+	<tr class="switchable colltype_Circulated">
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Daily Late Fee:"); ?>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('text', 'daily_late_fee'); ?>
+			<?php echo inputfield('text', 'daily_late_fee',$t[daily_late_fee]); ?>
 		</td>
 	</tr>
-	<tr class="colltype_Distributed">
+	<tr class="switchable colltype_Distributed">
 		<td nowrap="true" class="primary">
 			<sup>*</sup><?php echo T("Restock amount:"); ?>
 		</td>
@@ -84,6 +101,7 @@
 			<?php echo inputfield('text', 'restock_threshold'); ?>
 		</td>
 	</tr>
+	<tbody id="switchable">
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
@@ -92,26 +110,11 @@
 	</tr>
 
 </table>
+</fieldset>
 </form>
 <p class="note">
 <sup>*</sup><?php echo T("Note:"); ?><br />
 <?php echo T("Setting zero days no checkout"); ?></p>
-
-<script type="text/javascript"><!--
-function switchType() {
-	var rows = document.getElementsByTagName("tr");
-	var type = document.getElementById("type");
-	for(var i=0; i<rows.length; i++) {
-		if (rows[i].getAttribute("class") == null)
-			continue;
-		if (rows[i].getAttribute("class") == 'colltype_'+type.value)
-			rows[i].style.display="table-row";
-		else if (rows[i].getAttribute("class").indexOf("colltype_") == 0)
-			rows[i].style.display="none";
-	}
-}
-switchType();
---></script>
 
 <?php
 

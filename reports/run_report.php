@@ -41,7 +41,7 @@
 	} else {
 		$errs = $rpt->initCgi_el();
 		if (!empty($errs)) {
-			FieldError::backToForm('../reports/report_criteria.php', $errors);
+			FieldError::backToForm('../reports/report_criteria.php', $errs);
 		}
 	}
 	if ($_REQUEST['page']) {
@@ -65,7 +65,9 @@
 		'../reports/report_criteria.php?type='.U($rpt->type()));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
+?>
+<h3><?php echo T("Report Results"); ?></h3>
+<?php
 	if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
 		echo '<p class="error">'.H($_REQUEST["msg"]).'</p><br /><br />';
 	}
@@ -88,21 +90,21 @@
 	echo $disp->pages($page_url, $page);
 	//echo '<p>'.$rpt->count().' results found.</p>';
 ?>
-
-<table class="resultshead">
+<!--table class="resultshead">
 	<tr>
 			<th><?php echo T("Report Results"); ?></th>
 		<td class="resultshead">
 <table class="buttons">
-<tr>
+<tr-->
 <?php
 # Fill in report actions here
 ?>
-</tr>
+<!--/tr>
 </table>
 </td>
 	</tr>
-</table>
+</table-->
+<fieldset>
 <?php
 	$t = new TableDisplay;
 	$t->columns = $disp->columns($sort_url);
@@ -114,4 +116,7 @@
 	echo $t->end();
 
 	echo $disp->pages($page_url, $page);
+?>
+</fieldset>
+<?php
 	Page::footer();

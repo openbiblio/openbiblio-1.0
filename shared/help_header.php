@@ -15,50 +15,53 @@ if (Settings::get('charset') != "") { ?>
 <META http-equiv="content-type" content="text/html; charset=<?php echo H(Settings::get('charset')); ?>">
 <?php } ?>
 
-<link rel="stylesheet" type="text/css" href="../css/style.php" />
+<!--link rel="stylesheet" type="text/css" href="../css/style.php" /-->
+<link rel="stylesheet" type="text/css" href="../shared/base.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $ThemeDirUrl; ?>/style.css" />
+<style>
+/*************************************************/
+div#sidebar {
+	position: absolute; top:0; left: .5em;
+	width: 8em;
+	margin: 0; padding: 5px;
+	background: #a0c0c8; /*for development*/
+	vertical-align: top;
+	border: solid black 2px;
+	}
+div#content {
+	position: absolute; top:0; left: 10.5em;
+	vertical-align: top;
+	border: solid black 2px;
+	background: white;
+	padding-left: 5px; padding-right: 5px; padding-bottom: 5px;
+	}
+</style>
 <meta name="description" content="OpenBiblio Library Automation System">
 <title><?php echo T("OpenBiblio Help"); ?></title>
 
+<!-- jQuery kernal, needed for all that follows -->
+<script src="../shared/jquery/jquery.js" type="text/javascript"></script>
+<!-- home-grown add-ons to the jQuery library, feel free to add your own -->
+<script src="../shared/jsLib.js" type="text/javascript"></script>
+
+<?php include "../shared/help_js.php"; ?>
 
 <script type="text/javascript">
-<!--
 function popSecondaryLarge(url) {
 		var SecondaryWin;
 		//SecondaryWin = window.open(url,"inet","toolbar=yes,resizable=yes,scrollbars=yes,width=700,height=500");
 		SecondaryWin = window.open(url,"inet");
 		self.name="main";
 }
--->
 </script>
 
 
 </head>
 <body onload="self.focus()">
 
+<div id="sidebar">
+	<?php include(REL(__FILE__, "../shared/help_nav.php")); ?>
+</div>
 
-<!-- **************************************************************************************
-		 * Library Name and hours
-		 **************************************************************************************-->
-<table class="help_head" width="100%">
-	<tr>
-		<td align="left">
-			<?php echo T("OpenBiblio Help"); ?>
-		</td>
-		<td align="right"><a href="javascript:window.close()"><?php echo T("Close Window"); ?></a>&nbsp;&nbsp;</td>
-	</tr>
-</table>
-<!-- **************************************************************************************
-		 * Left nav
-		 **************************************************************************************-->
-<table id="main" height="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
-	<tr>
-		<td id="help_sidebar">
-			<?php if (!isset($_GET["page"])) {
-				echo "&raquo; ".T("Contents");
-			} else { ?>
-				<a href="../shared/help.php" class="alt1"><?php echo T("Contents"); ?></a>
-			<?php } ?>
-			<br />
-			<a href="javascript:self.print();" class="alt1"><?php echo T("Print"); ?></a><br />
-		</td>
-		<td id="content">
+<div id="content">
+

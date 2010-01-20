@@ -53,6 +53,8 @@ if (!$copy) {
 
 $history = new History;
 $status = $history->getOne($copy['histid']);
+## FIXME? book may not have been checked out, wrong valid barcode, etc.
+
 $bookings = new Bookings;
 $booking = $bookings->getByHistid($copy['histid']);	# May be null
 

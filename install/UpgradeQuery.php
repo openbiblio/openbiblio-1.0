@@ -358,4 +358,106 @@ class UpgradeQuery extends InstallQuery {
 		# FIXME -- not done yet
 		# delete session table
 	}
-}
+	function _upgrade100_e($prfx,tmpPrfx) {
+		# FIXME -- not done yet by a LONG ways
+		### ################################################### ###
+		### mods made to wip structure for F.L. software adds/mods
+		### ################################################### ###
+		$this->act('ALTER TABLE '.$prfx.'staff '
+							. "ADD tools_flg CHAR(1) DEFAULT '' NOT NULL ");
+ 		$this->act("ALTER TABLE ".$prfx."`settings` "
+		 					."ADD `menu` ENUM('admin','tools','none') NOT NULL DEFAULT 'admin'");
+		$this->act("INSERT INTO ".$prfx."`settings` ".
+							."(`name`,`position`,`title`,`type`,`width`,`type_data`,`validator`,`value`,`menu`)"
+							."VALUES "
+							."('plugins_list',NULL,NULL,'text',NULL,NULL,NULL,NULL,'none'),"
+							."('allow_plugins_flg',NULL,'Allow Plugins','bool',NULL,NULL,NULL,'Y','tools'),"
+							."('item_autoBarcode_flg', NULL , 'Item Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
+							."('mbr_autoBarcode_flg', NULL , 'Member Auto Barcodes', 'bool', NULL , NULL , NULL , 'Y', 'tools'),"
+							."('item_barcode_flg','NULL','Use item barcodes','bool',NULL,NULL,NULL,'N','tools'),"
+							."('mbr_barcode_flg',NULL,'Use Member barcodes','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_checkout_mbr',NULL,'Show member who has an item checkout','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_detail_opac',NULL,'Show copy details in OPAC','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_copy_site',NULL,'Show site of a copy','bool',NULL,NULL,NULL,'N','tools'),"
+							."('show_item_photos',NULL,'Show Item Photos','bool',NULL,NULL,NULL,'N','tools')");
+		$this->act("ALTER TABLE `member` "
+							."CHANGE `create_dt` `create_dt` DATETIME NOT NULL ,"
+							."CHANGE `last_change_dt` `last_change_dt` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL");
+		$this->act("ALTER TABLE `member` "
+							."ADD `address2` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `address1` ,"
+							."ADD `city` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `address2` ,"
+							."ADD `state` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `city` ,"
+							."ADD `zip` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `state` ,"
+							."ADD `zip_ext` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `zip` ";
+		$this->act("ALTER TABLE `biblio_copy` "
+							."ADD  `siteid` TINYINT( 3 ) NOT NULL DEFAULT  '1'";
+		### ################################################### ###
+		### conversion process begins here.
+		### ################################################### ###
+    //------------------------//
+
+		#### see also module convert06To10.php to copy legacy biblio data to new structure
+
+		## Admin support tables
+		$sql = "INSERT INTO `openbibliowork`.`theme` "
+					."SELECT * "
+					."  FROM `openbiblio`.`theme` "
+					;
+    $this->act($sql);
+		## Biblio support tables
+		$sql = "INSERT INTO `openbibliowork`.`collection_dm` "
+					."(`code`,`description`,`default_flg`,`type`)"
+					."SELECT `code`,`description`,`default_flg`,'Circulated' "
+					."  FROM `openbiblio`.`collection_dm` "
+					;
+    $this->act($sql);
+    //-------------------------//
+		$sql = "INSERT INTO `openbibliowork`.`material_type_dm` "
+					."(`code`,`description`,`default_flg`,`adult_checkout_limit`,`juvenile_checkout_limit`,`image_file`)"
+					."SELECT `code`,`description`,`default_flg`,'10','5',`image_file` "
+					."  FROM `openbiblio`.`material_type_dm` "
+					;
+    $this->act($sql);
+    //-------------------------//
+		$sql = "INSERT INTO `openbibliowork`.`biblio` "
+					."(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`)"
+					."SELECT `bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg` "
+					."  FROM `openbiblio`.`biblio` "
+					;
+    $this->act($sql);
+    //-------------------------//
+		$sql = "INSERT INTO `openbibliowork`.`biblio_field` "
+					."(`bibid`,`fieldid`,`seq`,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,`display`)"
+					."SELECT `bibid`,`fieldid`,NULL,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,NULL "
+					."  FROM `openbiblio`.`biblio_field` "
+					;
+    $this->act($sql);
+		//-------------------------//
+		#### this is not ready! there are several tables involved which I cannot decode - FL
+		$sql = "Insert into `openbibliowork`.`biblio_copy` "
+		      ."(`bibid`,`copyid`,`create_dt`,`last_change_dt`,`last_change_userid`,"
+					." `barcode_nmbr`,`copy_desc`,`vendor`,`fund`,`price`,`experation`,`histid`,`siteid`)"
+		      ."SELECT `bibid`,`copyid`,`create_dt`,NULL,NULL,`barcode_nmbr`,NULL,NULL,NULL,NULL,NULL,NULL,'3' "
+		      ."  FROM `openbiblio`.`biblio_copy`"
+		      ;
+    $this->act($sql);
+		//-------------------------//
+		## member loan priveleges denied support
+    $sql = "INSERT INTO `openbibliowork`.`mbr_classify_dm` "
+					."(`code`, `description`, `default_flg`) VALUES ('3', 'denied', 'N')"
+					;
+	  $this->act($sql);
+		//-------------------------//
+		## aditional tool setting
+	  $sql = "INSERT INTO `openbibliowork`.`settings` "
+					."(`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)"
+					."VALUES "
+					."('site_login', '25', 'Site Logon', 'bool', NULL , NULL , NULL , '''N''', 'tool')"
+     			;
+	  $this->act($sql);
+		//-------------------------//
+
+		}  //function
+
+	} //class
+

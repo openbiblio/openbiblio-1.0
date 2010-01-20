@@ -17,6 +17,7 @@
 	require_once(REL(__FILE__, "../model/History.php"));
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
 	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+	require_once(REL(__FILE__, "../model/Sites.php"));
 
 
 	if (isset($_GET["copyid"])){
@@ -51,21 +52,57 @@
 		$statusDisabled = TRUE;
 	}
 
-		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-		$BCQ = new BiblioCopyFields;
-		$fields = array(
-			T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20),$postVars),
-		T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,$attr=array("size"=>1,"max"=>1),$postVars),
-		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40), $postVars),
-	);
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	$BCQ = new BiblioCopyFields;
+	$fields = array(
+	 ### corrected to suit inputfield (which gets $pageErrors internally) -- Fred
+	T("Barcode Number") => inputfield("text","barcode_nmbr",$_SESSION["postVars"]["barcode_nmbr"],$attr=array("size"=>20,"max"=>20)));
+		
+//	T("Auto Barcode") => inputfield("checkbox","autobarco",NULL,$attr=array("size"=>1,"max"=>1),$postVars),
+	// Seems that this should only be used on initial addition of a copy, and once a barcode is set not to be ticked any way - LJ
+	if(!empty($_SESSION["postVars"]["barcode_nmbr"])){
+		$fields[T("Auto Barcode")] = inputfield("checkbox","autobarco",'N',NULL);
+	} else {
+		$fields[T("Auto Barcode")] = inputfield("checkbox","autobarco",$_SESSION['item_autoBarcode_flg']);
+	}
+	$fields[T("Description")] = inputfield("text", "copy_desc", $_SESSION["postVars"]["copy_desc"], $attr=array("size"=>40,"max"=>40));
+	if($_SESSION['show_copy_site'] == "Y"){
+		$sites_table = new Sites;
+		$sites = $sites_table->getSelect();
+		$fields[T("Site:")] = inputfield("select", "siteid", $_SESSION["postVars"]["siteid"], NULL, $sites);
+	}
+?>
 
+<script language="JavaScript1.4" >
+bcnf = {
+	init: function () {
+	  // set 'required' marker on 'barcode_nmbr' field label; probably a simpler way!
+	  $('<sup>*</sup>').prependTo($('#newCpyTbl tbody tr:first td:first'));
+
+	  // to handle startup condition
+		if ($('#autobarco:checked').length > 0) {
+			$('#barcode_nmbr').disable();
+		}
+		// if user changes his/her mind
+		$('#autobarco').bind('change',null,function (){
+		  if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
+			}
+			else {
+				$('#barcode_nmbr').enable();
+			}
+		})
+	}
+}
+$(document).ready(bcnf.init);
+</script>
+
+<?php
 	$rows = $BCQ->getAll();
 
 	while ($row = $rows->next()) {
-		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["description"], NULL,NULL,$postVars);
+		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["code"], $_SESSION["postVars"]['custom_'.$row["code"]],NULL);
 	}
-
-
 ?>
 
 <p class="note">
@@ -73,15 +110,13 @@
 </p>
 
 <form name="editCopyForm" method="post" action="../catalog/biblio_copy_edit.php">
+<fieldset>
+<legend><?php echo T("Edit Copy"); ?></legend>
 <table class="primary">
-	<tr>
-		<th colspan="2" nowrap="yes" align="left">
-			<?php echo T("Edit Copy"); ?>
-		</th>
-	</tr>
 <?php
 	foreach ($fields as $title => $html) {
 ?>
+	<tbody class="unstriped">
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
 			<?php echo T($title); ?>
@@ -93,8 +128,6 @@
 <?php
 	}
 ?>
-
-
 
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
@@ -121,18 +154,19 @@
 	echo inputfield(select, status_cd, $postVars['status_cd'], $attrs, $state_select);
 ?>
 
-
 		</td>
 	</tr>
+	</tbody>
 	<tr>
 		<td align="center" colspan="2" class="primary">
 			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
-			<input type="button" onclick="parent.location='../shared/biblio_view.php?bibid=<?php echo $postVars[bibid]; ?>'" value="<?php echo T("Cancel"); ?>" class="button" />
+			<input type="button" onclick="parent.location='../shared/biblio_view.php?bibid=<?php echo $_GET[bibid] ?>'" value="<?php echo T("Cancel"); ?>" class="button" />
 		</td>
 	</tr>
 
 </table>
 <input type="hidden" name="copyid" value="<?php echo $copyid;?>" />
+</fieldset>
 </form>
 
 <?php

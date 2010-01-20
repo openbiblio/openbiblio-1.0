@@ -12,9 +12,25 @@
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
+<script>
+cl = {
+	init: function () {
+		//$('form').bind('submit',null,function(){
+		//	alert('you hit a submit button');
+		//	return false;
+		//});
+		//$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
+	}
+};
+$(document).ready(cl.init);
 
+</script>
+<h3><?php echo T("Collections"); ?></h3>
+
+<?php
 	if ($_GET["msg"]) {
-		echo '<p class="error">'.H($_GET["msg"])."</p><br /><br />";
+		echo '<p class="error">'.H($_GET["msg"])."</p><!--br /><br /-->";
 	}
 	$collections = new Collections;
 	$cols = $collections->getAllWithStats();
@@ -36,9 +52,11 @@
 	}
 ?>
 
-<h1><?php echo T("Collections"); ?></h1>
-<a href="../admin/collections_new_form.php?reset=Y"><?php echo T("Add New Collection"); ?></a><br />
+<a href="../admin/collections_new_form.php?reset=Y"><?php echo T("Add New Collection"); ?></a>
+<br />
+<fieldset>
 <table class="primary">
+<thead>
 	<tr>
 		<th colspan="2" valign="top">
 			<sup>*</sup><?php echo T("Function"); ?>
@@ -53,43 +71,41 @@
 			<?php echo T("Item<br />Count"); ?>
 		</th>
 	</tr>
+<thead>
+<tbody class="striped">
 	<?php
-		$row_class = "primary";
 		while ($col = $cols->next()) {
 	?>
 	<tr>
-		<td valign="top" class="<?php echo H($row_class);?>">
+		<td valign="top" class="primary">
 			<a href="../admin/collections_edit_form.php?code=<?php echo HURL($col['code']);?>" class="<?php echo H($row_class);?>"><?php echo T("edit"); ?></a>
 		</td>
-		<td valign="top" class="<?php echo H($row_class);?>">
+		<td valign="top" class="primary">
 			<?php if ($col['count'] == 0) { ?>
 				<a href="../admin/collections_del_confirm.php?code=<?php echo HURL($col['code']); ?>&amp;desc=<?php echo HURL($col['description']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
 			<?php } else { echo T("del"); } ?>
 		</td>
-		<td valign="top" class="<?php echo H($row_class); ?>">
+		<td valign="top" class="primary">
 			<?php echo H($col['description']); ?>
 		</td>
-		<td valign="top" align="center" class="<?php echo H($row_class); ?>">
+		<td valign="top" align="center" class="primary">
 			<?php echo H(_type_format($col['type'], $collections->getTypeData($col))); ?>
 		</td>
-		<td valign="top" align="center"  class="<?php echo H($row_class); ?>">
+		<td valign="top" align="center"  class="primary">
 			<?php echo H($col['count']); ?>
 		</td>
 	</tr>
 	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
 		}
 	?>
+</tbody>
 </table>
-<br />
+</fieldset>
+
 <p class="note">
-<sup>*</sup><?php echo T("Note:");?><br />
-<?php echo T('collectionsListNoteMsg'); ?></p>
+	<sup>*</sup>
+	<?php echo T("Note:");?><br /><?php echo T('collectionsListNoteMsg'); ?>
+</p>
 
 <?php
 

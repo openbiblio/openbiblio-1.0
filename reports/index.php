@@ -41,13 +41,14 @@ foreach (array_keys($reports) as $k) {
 }
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
 
-echo '<h1>'.T("Report List").'</h1>';
+<h3><?php echo T("Report List");?></h3>
+<fieldset>
+<legend><?php echo T("reportsDesc");?></legend>
+<ul>
 
-echo '<p>'.T("reportsDesc").'</p>';
-
-echo "<ul>\n";
-
+<?php
 foreach (array_keys($reports) as $category) {
 	echo '<li class="report_category"><strong>'.T($category).'</strong><ul>';
 	foreach ($reports[$category] as $type => $title) {
@@ -62,7 +63,9 @@ if ($errors) {
 	}
 	echo '</ul></li>';
 }
+?>
+</ul>
+</fieldset>
 
-echo "</ul>\n";
-
+<?php
 Page::footer();

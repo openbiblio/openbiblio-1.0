@@ -37,16 +37,13 @@
 	require_once(REL(__FILE__, "../classes/MarcDisplay.php"));
 	require_once(REL(__FILE__, "../functions/info_boxes.php"));
 
-
 	function mkTerm($type, $text, $exact='0') {
 		return array('type'=>$type, 'text'=>$text, 'exact'=>$exact);
 	}
 	function getRpt() {
 		global $tab;
-
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('BiblioSearch');
-
 			if ($rpt && $_REQUEST['rpt_order_by']) {
 				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
 			}
@@ -55,27 +52,18 @@
 
 		$searches = array(
 			"barcodeNmbr" => "barcode",
-			 "author" => "author",
-			"subject" => "subject",
-			"title" => "title",
-			"publisher" => "publisher",
-			"series" => "series",
-			"callno" => "callno",
-			"keyword" => "keyword",
+			"author" 			=> "author",
+			"subject" 		=> "subject",
+			"title" 			=> "title",
+			"publisher" 	=> "publisher",
+			"series" 			=> "series",
+			"callno" 			=> "callno",
+			"keyword" 		=> "keyword",
 		);
 		if (in_array($_REQUEST["searchType"], array_keys($searches))) {
 			$sType = $searches[$_REQUEST["searchType"]];
 		} else {
 			$sType = "keyword";
-		}
-		if (isset($_REQUEST['sortBy'])) {
-			$sortBy = $_REQUEST["sortBy"];
-		} else {
-			if ($sType == "author") {
-				$sortBy = $_REQUEST["sortBy"] = "author";
-			} else {
-				$sortBy = $_REQUEST["sortBy"] = "title";
-			}
 		}
 
 		$terms = array();
@@ -96,6 +84,16 @@
 		$rpt = Report::create('biblio_search', 'BiblioSearch');
 		if (!$rpt) {
 			return false;
+		}
+
+		if (isset($_REQUEST['sortBy'])) {
+			$sortBy = $_REQUEST["sortBy"];
+		} else {
+			if ($sType == "author") {
+				$sortBy = $_REQUEST["sortBy"] = "author";
+			} else {
+				$sortBy = $_REQUEST["sortBy"] = "title";
+			}
 		}
 		$rpt->init(array('terms'=>$terms,
 										 'order_by'=>$sortBy));
@@ -137,6 +135,7 @@
 		Page::header_opac(array('nav'=>$nav, 'title'=>''));
 	} else {
 		Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
+		Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
 
@@ -165,7 +164,9 @@
 	$bibimages = new BiblioImages;
 	$mats = new MaterialTypes;
 	$mf = new MaterialFields;
-	echo '<div class="results_list">';
+?>
+	<div class="results_list">
+<?php
 	$page = $rpt->pageIter($currentPageNmbr);
 	while($row = $page->next()) {
 		$bib = $biblios->getOne($row['bibid']);
@@ -175,44 +176,61 @@
 			# FIXME
 		}
 		$mat = $mats->getOne($row['material_cd']);
-		echo '<table class="search_result"><tr>';
-		$imgs = $bibimages->getByBibid($row['bibid']);
-		echo '<td class="cover_image">';
-		if ($imgs->count() != 0) {
-			$img = $imgs->next();
-			$html = '<img src="'.H($img['imgurl']).'" alt="'.T("Item Image").'" />';
-			echo Links::mkLink('biblio', $row['bibid'], $img);
-		}
-		echo '</td>';
-		echo '<td class="call_media">';
-		echo '<div class="call_number">'.H($row['callno']).'</div>';
-		if ($mat['image_file']) {
-			echo '<img class="material" src="../images/'.H($mat['image_file']).'" />';
-		}
-		echo '</td>';
-		$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
-		echo '<td class="material_fields">';
-		$d = new CompactInfoDisplay;
-		$d->title = $title;
-		echo $d->begin();
-		while ($f = $fields->next()) {
-			if ($f['search_results'] != 'Y') {
-				continue;
+		?>
+		<table class="search_result">
+		<tr>
+			<td class="cover_image">
+			<?php
+			$imgs = $bibimages->getByBibid($row['bibid']);
+			if ($imgs->count() != 0) {
+				$img = $imgs->next();
+				$html = '<img src="'.H($img['imgurl']).'" alt="'.T("Item Image")."\" />\n";
+				Links::mkLink('biblio', $row['bibid'], $img);
 			}
-			$m = new MarcDisplay($f, $bib);
-			$v = $m->htmlValues();
-			if (strlen($v)) {
-				echo $d->row($m->title().':', $v);
+			else {
+				echo "<img src=\"../images/shim.gif\" />\n";
 			}
-		}
-		echo $d->end();
-		echo '</td>';
-		echo '<td class="right_info">';
-		echo '<a class="button" href="#">'.T("Add To Cart").'</a>';
-		echo '<div class="available">1 of 1 Available</div>';
-		echo '</td>';
-		echo '</tr></table>';
+			?>
+			</td>
+			<td class="call_media">
+				<div class="call_number"><?php echo H($row['callno']);?></div>
+				<?php
+				if ($mat['image_file']) {
+					echo "<img class=\"material\" src=\"../images/".H($mat['image_file'])."\" />\n";
+				}
+				?>
+			</td>
+			<td class=\"material_fields\">
+				<?php
+				$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
+				$d = new CompactInfoDisplay;
+				$d->title = $title;
+				$d->author = H($row['author']);
+				echo $d->begin();
+				while ($f = $fields->next()) {
+					if ($f['search_results'] != 'Y') {
+						//echo "</td></tr></table>\n";
+						continue;
+					}
+					$m = new MarcDisplay($f, $bib);
+					$v = $m->htmlValues();
+					if (strlen($v)) {
+						echo $d->row($m->title().':', $v);
+					}
+				}
+				echo $d->end();
+				?>
+			</td>
+			<td class=\"right_info\">
+				<a class="button" href="#"><?php echo T("Add To Cart"); ?></a>
+				<div class=\"available\">1 of 1 Available</div>
+			</td>
+		</tr>
+		</table>
+		<?php
 	}
-	echo '</div>';
+	?>
+	</div>
+	<?php
 
 	Page::footer();

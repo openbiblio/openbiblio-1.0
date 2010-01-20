@@ -54,7 +54,7 @@
 <?php
 	}
 ?>
-	<tbody>
+	</tbody>
 </table>
 </fieldset>
 <?php

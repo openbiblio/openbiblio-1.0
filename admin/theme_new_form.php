@@ -87,6 +87,7 @@ function editTheme() {
 -->
 </script>
 
+<h3><?php echo T("Create New Theme");?></h3>
 
 <a href="javascript:previewTheme()"><?php echo T("Preview Theme Changes"); ?></a><br /><br />
 

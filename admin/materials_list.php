@@ -19,9 +19,12 @@
 	$mattypes = new MaterialTypes;
 	$types = $mattypes->getAllWithStats();
 ?>
-<h1><?php echo T("Material Types"); ?></h1>
-<a href="../admin/materials_new_form.php?reset=Y"><?php echo T("Add New Material Type"); ?></a><br />
+<h3><?php echo T("Material Types"); ?></h3>
+<a href="../admin/materials_new_form.php?reset=Y"><?php echo T("Add New Material Type"); ?></a>
+<br />
+<fieldset>
 <table class="primary">
+	<thead>
 	<tr>
 		<th colspan="3" rowspan="2" valign="top">
 			<sup>*</sup><?php echo T("Function"); ?>
@@ -47,6 +50,9 @@
 			<?php echo T("Juvenile"); ?>
 		</th>
 	</tr>
+	</thead>
+	
+	<tbody class="striped">
 	<?php
 		$row_class = "primary";
 		while ($type = $types->next()) {
@@ -60,7 +66,7 @@
 				<a href="../admin/materials_del_confirm.php?code=<?php echo HURL($type['code']); ?>&desc=<?php echo HURL($type['description']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("del"); ?></a>
 			<?php } else { echo T("del"); } ?>
 		</td>
-	<td valign="top" nowrap="true" class="<?php echo H($row_class); ?>">
+		<td valign="top" nowrap="true" class="<?php echo H($row_class); ?>">
 			<a href="../admin/material_fields_view.php?material_cd=<?php echo HURL($type['code']); ?>" class="<?php echo H($row_class); ?>"><?php echo T("MARC Fields"); ?></a>
 	 	</td>
 		<td valign="top" class="<?php echo H($row_class); ?>">
@@ -81,19 +87,15 @@
 		</td>
 	</tr>
 	<?php
-			# swap row color
-			if ($row_class == "primary") {
-				$row_class = "alt1";
-			} else {
-				$row_class = "primary";
-			}
-		}
+	}
 	?>
+	</tbody>
 </table>
-<br />
+</fieldset>
+
 <p class="note">
-<sup>*</sup><?php echo T("Note:"); ?><br />
-<?php echo T('materialsListNoteMsg'); ?></p>
+	<sup>*</sup><?php echo T("Note:"); ?><br /><?php echo T('materialsListNoteMsg'); ?>
+</p>
 
 <?php
 

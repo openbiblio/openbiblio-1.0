@@ -30,7 +30,7 @@ if (!isset($_POST['name']) or !$_POST['name']) {
 
 $days = array();
 foreach ($_POST as $k => $v) {
-	if (ereg('^input-[0-9]-([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])$', $k, $m)) {
+	if (preg_match('/^input-[0-9]-([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])$/', $k, $m)) {
 		$days[] = array($m[1], $v);
 	}
 }

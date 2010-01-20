@@ -27,7 +27,7 @@ Form::display(array(
 	'name'=>'editsettingsform',
 	'action'=>'../admin/settings_edit.php',
 	'submit'=>T("Update"),
-	'fields'=>Settings::getFormFields(),
+	'fields'=>Settings::getFormFields('admin'),
 ));
 
 Page::footer();

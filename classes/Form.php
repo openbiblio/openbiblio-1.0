@@ -51,6 +51,7 @@ class Form {
 			Fatal::internalError(T("No form action"));
 		}
 		$fields = Form::_cleanFields($params['fields']);
+		echo '<h3>'.H($params['title']).'</h3>';
 		echo "<form method='".H($params['method'])."' action='".H($params['action'])."'";
 		if ($params['name']) {
 			echo ' name="'.H($params['name']).'" id="'.H($params['name']).'"';
@@ -79,11 +80,12 @@ class Form {
 				$rows[] = array('title'=>$f['title'], 'html'=>$html, 'error'=>$error);
 			}
 		}
-		echo '<table class="form">';
-		echo '<tr><th colspan="2" class="title">'.H($params['title']).'</td></tr>';
+		echo "<fieldset>\n";
+		echo '<table class="form"><thead>';
 		if ($msg) {
-			echo '<tr><td colspan="2" class="error">'.H($msg).'</td></tr>';
+			echo '<tr><td colspan="2" class="error">'.H($msg).'</td></tr></thead>';
 		}
+		echo "<tbody class=\"striped\">";
 		foreach ($rows as $r) {
 			echo "<tr>";
 			echo "<th>".H($r['title'])."</th>";
@@ -94,12 +96,14 @@ class Form {
 			}
 			echo '<td>'.$err.$r['html']."</td></tr>\n";
 		}
-		echo "<tr><td></td><td class='buttons'>";
+		echo "</tbody>";
+		echo "<tfoot><tr><td class='buttons'>";
 		echo "<input class='button' type='submit' value='".H($params['submit'])."' />\n";
 		if ($params['cancel']) {
 			echo '<a class="small_button" href="'.H($params['cancel']).'">'.T("Cancel").'</a> ';
 		}
-		echo '</td></tr></table>';
+		echo '</td></tr></tfoot></table>';
+		echo "</fieldset>\n";
 		echo "</form>\n";
 	}
 	function _inputField($field) {
@@ -123,11 +127,13 @@ class Form {
 			$s .= "</select>\n";
 			break;
 		case 'textarea':
-			$s .= '<textarea name="'.H($field['name']).'" '
-				. $attrs.">".H($field['value'])."</textarea>";
+			$s .= '<textarea id="'.H($field['name']).'" '
+				 . 'name="'.H($field['name']).'" '
+				 . $attrs.">".H($field['value'])."</textarea>";
 			break;
 		case 'bool':
 			$s .= '<input type="checkbox" ';
+			$s .= 'id="'.H($field['name']).'" ';
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="Y" ';
 			if ($field['value'] == 'Y') {
@@ -140,6 +146,7 @@ class Form {
 			break;
 		default:
 			$s .= '<input type="'.H($field['type']).'" ';
+			$s .= 'id="'.H($field['name']).'" ';
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="'.H($field['value']).'" ';
 			$s .= $attrs."/>";

@@ -16,7 +16,7 @@ if (count($_POST) == 0) {
 	exit();
 }
 
-list($settings, $errs) = Form::getCgi_el(Settings::getFormFields());
+list($settings, $errs) = Form::getCgi_el(Settings::getFormFields('admin'));
 if (empty($errs)) {
 	$errs = Settings::setAll_el($settings);
 }
