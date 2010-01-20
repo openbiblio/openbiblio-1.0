@@ -388,9 +388,10 @@ class UpgradeQuery extends InstallQuery {
 							."ADD `city` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `address2` ,"
 							."ADD `state` VARCHAR( 32 ) NULL DEFAULT NULL AFTER `city` ,"
 							."ADD `zip` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `state` ,"
-							."ADD `zip_ext` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `zip` ";
+							."ADD `zip_ext` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `zip` ");
 		$this->act("ALTER TABLE `biblio_copy` "
-							."ADD  `siteid` TINYINT( 3 ) NOT NULL DEFAULT  '1'";
+							."ADD  `siteid` TINYINT( 3 ) NOT NULL DEFAULT  '1'");
+							 
 		### ################################################### ###
 		### conversion process begins here.
 		### ################################################### ###
@@ -452,7 +453,8 @@ class UpgradeQuery extends InstallQuery {
 	  $sql = "INSERT INTO `openbibliowork`.`settings` "
 					."(`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)"
 					."VALUES "
-					."('site_login', '25', 'Site Logon', 'bool', NULL , NULL , NULL , '''N''', 'tool')"
+					."('site_login', '25', 'Site Logon', 'bool', NULL , NULL , NULL , '''N''', 'tool'),"
+					."('checkout_interval','26','Checkout_Interval','select',NULL,NULL,NULL,'Days','tools')"
      			;
 	  $this->act($sql);
 		//-------------------------//

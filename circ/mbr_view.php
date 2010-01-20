@@ -219,6 +219,11 @@ if (!empty($mbr['school_grade'])) {
 	#****************************************************************************
 	$copies = new Copies;
 	$checkouts = $copies->getMemberCheckouts($mbrid);
+	if ($_SESSION[checkout_interval] == '0') {
+		$ckOutUnits = array('units'=>'Hours');
+	} else {
+		$ckOutUnits = array('units'=>'Days');
+	}
 ?>
 
 <fieldset>
@@ -232,7 +237,7 @@ if (!empty($mbr['school_grade'])) {
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Barcode"); ?></th>
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Title"); ?></th>
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Due Back"); ?></th>
-		<th valign="top" align="left"><?php echo T("Days Late"); ?></th>
+		<th valign="top" align="left"><?php echo T("%units% Late",$ckOutUnits); ?></th>
 	</tr>
 	</thead>
 <?php
