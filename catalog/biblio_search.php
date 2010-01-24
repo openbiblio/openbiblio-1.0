@@ -31,14 +31,14 @@
 		
 		Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
 		Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
-		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Local Search'));
+		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));
 	}
 	
 	include_once(REL(__FILE__,'/biblio_searchJs.php'));
 	
 ?>
 
-<h3><?php echo T("Local Search"); ?></h3>
+<!--h3><?php echo T("Existing Items"); ?></h3-->
 <?php //print_r($_SESSION); // for debugging ?>
 
 <div id="crntMbrDiv">to be filled by server</div>

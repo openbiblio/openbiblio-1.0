@@ -67,7 +67,7 @@
     $headerdone = false;
     while(!feof($fp) && (!$info['timed_out'])) {
       $line = fgets($fp, 2048);
-	  $info = stream_get_meta_data($fp); 
+	  	$info = stream_get_meta_data($fp);
       if (!line) {
       	echo "Failure while reading response from $theHost <br />";
       	break;
@@ -80,7 +80,7 @@
       }
       else {
         // http header lines
-        echo "$line <br />";
+        //echo "$line <br />";
 			}
   	}
   	if (!empty($hitList)) $resp[$i] = $hitList;
