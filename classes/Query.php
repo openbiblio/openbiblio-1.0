@@ -39,6 +39,13 @@ class Query {
 			if (!$rc) {
 				return array(NULL, new DbError(T("Selecting database..."), T("Cannot select database."), mysql_error($link)));
 			}
+			// Set to UTF8 characterset. This is NOT the prefered way, but mysql_set_charset is not supported until PHP 5.2.3 - LJ
+			$version = explode('.', phpversion());
+			if($version[0] >= 5 AND $version[1] >= 2 AND $version[2] >= 3){
+				mysql_set_charset("utf8");
+			} else {
+				mysql_query("set names utf8");
+			}			
 		}
 		return array($link, NULL);
 	}

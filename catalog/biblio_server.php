@@ -175,7 +175,7 @@ class SrchDb {
 		return $rcd;
 	}
 	## ========================= ##
-	function getBiblioDetail() {
+	function getBiblioDetail() {		
 		$sql = "SELECT  CONCAT(bf.tag,bs.subfield_cd) AS marcTag, "
 				 . "				m.label, bs.subfield_data AS value, "
 				 . "				bs.fieldid, bs.subfieldid "
@@ -190,9 +190,9 @@ class SrchDb {
 		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
-			//$rslt[] = json_encode($row);
-			$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes(utf8_encode($row[value])) . "'"
-							 .",'fieldid':'$row[fieldid]','subfieldid':'$row[subfieldid]'}";
+			$rslt[] = json_encode($row);
+			//$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes($row[value]) . "'"
+			//				 .",'fieldid':'$row[fieldid]','subfieldid':'$row[subfieldid]'}";
 		}
 		return $rslt;
 	}
