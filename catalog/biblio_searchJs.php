@@ -294,7 +294,8 @@ bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
+	  			//$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
+	  			$('#resultsArea').html('<p class="error">Nothing Found by text search</p>');
 					$('#biblioListDiv .goNextBtn').disable();
 					$('#biblioListDiv .goPrevBtn').disable();
         	$('#biblioListDiv').show()
