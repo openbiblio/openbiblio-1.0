@@ -269,7 +269,7 @@ input.pgBtn {
 	border: solid black 2px;
 	padding: 2px;
 	width: auto;
-	font: 12px serif; font-weight: bold
+	font: 12px serif; font-weight: bold;
 	color: black;
 	}
 input.button:hover {
@@ -313,7 +313,7 @@ p.error {
 	color: red;
 	}
 td.label {
-	text-align: left; vertical-align: center;
+	text-align: left; /*vertical-align: center;*/
 	white-space: nowrap;
 	}
 tr.searchRow {
