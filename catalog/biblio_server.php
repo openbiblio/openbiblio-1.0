@@ -191,7 +191,7 @@ class SrchDb {
 		$rows = $this->db->select($sql);
 		while (($row = $rows->next()) !== NULL) {
 			//$rslt[] = json_encode($row);
-			$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'$row[label]'"
+			$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes(utf8_encode($row[value])) . "'"
 							 .",'fieldid':'$row[fieldid]','subfieldid':'$row[subfieldid]'}";
 		}
 		return $rslt;
