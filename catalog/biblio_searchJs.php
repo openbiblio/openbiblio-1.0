@@ -5,7 +5,7 @@
 ?>
 <style>
 .biblioImage {
-	float left;
+	float: left;
 	border: 3px solid green;
 	height: 50px; width: 50px;
 	}
@@ -201,7 +201,9 @@ bs = {
 	    bs.opts = jsonData
 //			if (bs.opts.lookupAvail == 1) {
 //				bs.lookupAvailable = true;
-//				//console.log('lookup engine available');
+//				console.log('lookup engine available');
+//			} else {
+//				console.log('lookup engine not available');
 //			}
 		});
 	},
