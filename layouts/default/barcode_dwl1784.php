@@ -26,7 +26,7 @@ class Layout_barcode_dwl1784 {
 					list(, $skip) = $this->p->getFirst('skip');
 					for ($i = 0; $i < $skip; $i++) {
 						$lay->container('Column', array(
-							'height'=>'33.9mm', 'width'=>'63.5',
+							'height'=>'34.9mm', 'width'=>'63.5',
 						));
 						$lay->close();
 					}
@@ -45,10 +45,10 @@ class Layout_barcode_dwl1784 {
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
 								$lay->pushFont('Times-Roman', 10);
-									if (strlen($row['title']) > 35) {
-										$row['title'] = substr($row['author'], 0, 35)."...";
+									if (strlen($row['author']) > 35) {
+										$row['author'] = substr($row['author'], 0, 35)."...";
 									}
-									$lay->text($row['title']);
+									$lay->text($row['author']);
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
@@ -63,7 +63,7 @@ class Layout_barcode_dwl1784 {
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
 								$lay->pushFont('Times-Roman', 10);
-									$site = "Lib.: " . $row['siteid'];
+									$site = "Lib.: " . $row['site_name'];
 									$class = "Class: " . $row['callno'];
 									$lay->text(str_pad($site , 35 - strlen($class), ".") . $class);
 								$lay->popFont();

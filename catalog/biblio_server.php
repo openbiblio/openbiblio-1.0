@@ -621,7 +621,8 @@ class SrchDb {
 		require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$CopyNmbr= $copies->getNextCopy();
-		echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
+		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
+		echo "{'barcdNmbr':'" . sprintf("%07s",$CopyNmbr) . "'}";
 	  break;
 
 	case 'getBiblioFields':
