@@ -265,8 +265,10 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				if (!bs.biblio.data) {
-	  			$('#rsltMsg').html('<?php T('Nothing Found by bar cd search') ?>').show();
+				//if (!bs.biblio.data) {
+				if (bs.biblio.data == null) {
+				  var msgTxt =
+	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
 				}
 				else {
 					bs.showOneBiblio(bs.biblio)
@@ -295,7 +297,7 @@ bs = {
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
 	  			//$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
-	  			$('#resultsArea').html('<p class="error">Nothing Found by text search</p>');
+	  			$('#resultsArea').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
 					$('#biblioListDiv .goNextBtn').disable();
 					$('#biblioListDiv .goPrevBtn').disable();
         	$('#biblioListDiv').show()
