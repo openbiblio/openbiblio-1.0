@@ -458,8 +458,8 @@ ni = {
 					  	data = hitData;
 					  });
 					});
-					$('#biblioBtn').bind('click',null,ni.doBackToSrch);
-					$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
+					//$('#biblioBtn').bind('click',null,ni.doBackToSrch);
+					//$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
 					ni.doShowOne(data);
 				}
 			} // else
@@ -508,6 +508,8 @@ ni = {
 		ni.setCallNmbr(data);
 		ni.setCollection(data);
 
+		$('#biblioBtn').bind('click',null,ni.doBackToSrch);
+		$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
 		ni.doStriping();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();

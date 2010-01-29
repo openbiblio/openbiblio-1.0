@@ -12,9 +12,9 @@
 
 ?>
 <div id="fldsHdr">
-	<div id="reqdNote"><span class="note">
-		<?php echo T("Fields marked are required"); ?>
-	</span></div>
+	<div id="reqdNote">
+		<span class="note"><?php echo T("Fields marked are required"); ?></span>
+	</div>
 </div>
 
 <fieldset>
