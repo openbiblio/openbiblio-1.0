@@ -21,7 +21,7 @@
 ?>
 
 <h3 id="editHdr"></h3>
-<h5 id="updateMsg"></h5>
+<p id="updateMsg" class="error"></p>
 <br />
 <form id="editForm" name="editForm" class="form">
 <fieldset>

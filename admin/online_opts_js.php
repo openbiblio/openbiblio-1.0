@@ -10,7 +10,7 @@ oed = {
 	$jsLoc = new Localize(OBIB_LOCALE,$tab);
 
 	echo 'editHdr 	 : "'.T('Online Options').'",'."\n";
-	echo 'successMsg : "'.T('Updated successfully').'",'."\n";
+	echo 'successMsg : "'.T('Update successful').'",'."\n";
 	?>
 	init: function () {
 		//console.log('in oed init');

@@ -480,7 +480,7 @@ class SrchDb {
 	  
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
-	  $rslt = $theDb->getBiblioByBarcd($_REQUEST[searchText]);
+	  $rslt = $theDb->getBiblioByBarcd($_REQUEST[searchBarcd]);
 	  if ($rslt != NULL) {
 	  	$theDb->getBiblioInfo($theDb->bibid);
 			echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"

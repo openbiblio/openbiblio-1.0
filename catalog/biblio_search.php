@@ -21,7 +21,7 @@
 
 	$nav = "localSearch";
 	$focus_form_name = "barcodesearch";
-	$focus_form_field = "searchText";
+	$focus_form_field = "searchBarcd";
 
 	if (strtolower($tab) == 'opac') {
 		Page::header_opac(array('nav'=>$nav, 'title'=>''));
@@ -54,7 +54,7 @@
 	<tr>
 		<td nowrap="true" class="primary">
 			<label for="searchText"><?php echo T("Barcode Number:");?></label>
-			<?php echo inputfield('text','searchText','',array('size'=>'20','maxlength'=>'20')); ?>
+			<?php echo inputfield('text','searchBarcd','',array('size'=>'20','maxlength'=>'20')); ?>
 			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
 			<?php echo inputfield('hidden','sortBy','default'); ?>
 			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchBtn" />

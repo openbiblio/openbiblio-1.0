@@ -46,7 +46,9 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-		
+		$('#searchBarcd').bind('change',null,bs.enableSrchBtns);
+		$('#searchText').bind('change',null,bs.enableSrchBtns);
+
 		// for the search results section
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
 		$('#addList2CartBtn').bind('click',null,bs.doAddListToCart);
@@ -134,7 +136,7 @@ bs = {
 		// alternate startup in response to remote package
 		<?php
 		if ($_REQUEST[barcd]) {
-			echo "$('#searchText').val($_REQUEST[barcd]);\n";
+			echo "$('#searchBarcd').val($_REQUEST[barcd]);\n";
 			echo "bs.doBarcdSearch();\n";
 		}
 		else if ($_REQUEST[bibid]) {
@@ -151,6 +153,16 @@ bs = {
 	initWidgets: function () {
 	},
 
+	disableSrchBtns: function () {
+	  bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+	  $('.srchBtn').css('color', '#888888');
+		$('.srchBtn').disable();
+	},
+	enableSrchBtns: function () {
+	  $('.srchBtn').css('color', bs.srchBtnBgClr);
+		$('.srchBtn').enable();
+	},
+	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -161,6 +173,7 @@ bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
+	  bs.disableSrchBtns();
 	},
 	
 	rtnToSrch: function () {
@@ -173,6 +186,7 @@ bs = {
 	  $('#searchDiv').show();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
+	  bs.disableSrchBtns();
 	},
 
 	rtnToList: function () {
