@@ -16,7 +16,7 @@ hed = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm tFoot .newBtn').bind('click',null,hed.doNewHost);
+		$('#showForm .newBtn').bind('click',null,hed.doNewHost);
 		$('#hostForm tFoot #addBtn').bind('click',null,hed.doAddHost);
 		$('#hostForm tFoot #updtBtn').bind('click',null,hed.doUpdateHost);
 		$('#hostForm tFoot #cnclBtn').bind('click',null,hed.resetForms);
@@ -78,6 +78,7 @@ hed = {
 	},
 	
 	doNewHost: function (e) {
+console.log('newHost');
 	  $('#hostHdr').html(hed.newHdr);
 	  $('#hostForm tfoot #updtBtn').hide();
 	  $('#hostForm tfoot #addBtn').show();
