@@ -47,9 +47,11 @@
 		//echo "url: '$theHost:$port'<br />timeout=$postVars[timeout]seconds<br />";
 		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
 		if(!$fp) {
-			echo "requested: <br />".nl2br($text)."<br />via socket on port $port. <br />";
-			echo "<br /><br />";
-			echo "Verify that your server has access to the web via the port specified.<br />";
+			echo "<p class=\"error\">you requested:</strong></p>";
+			echo "<fieldset>".nl2br($text)."</fieldset>";
+			echo "<p class=\"error\">via socket on port $port. </p>";
+			echo "<h4>Please verify the correctness of your host URL and "
+					."that your server's firewall allows access to the web via the port specified.<h4>";
 			//trigger_error("Socket error: $errMsg ($errNmbr)");
 			exit;
 		}
