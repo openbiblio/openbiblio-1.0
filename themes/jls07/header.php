@@ -16,7 +16,8 @@
 <div id="sidebar">
 	<h3 class="staff_head">
 			<?php
-			echo Settings::get('library_name').":<br />Staff Interface";
+			// Libname is defined in header_top.php	
+			echo $libName . ":<br />Staff Interface";
 			?>
 	</h3>
 	<br />

@@ -10,7 +10,17 @@ require_once(REL(__FILE__, "../model/Sites.php"));
 $sites_table = new Sites;		
 $sites = $sites_table->getSelect();
 
-if(sizeof($sites) == 1) $_SESSION['current_site'] = Settings::get('library_name');
+// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
+if(sizeof($sites) == 1){ 
+	$libraryName  = Settings::get('library_name');
+	if($libraryName){
+		if(is_numeric($libraryName)){
+			$_SESSION['current_site'] = Settings::get('library_name');
+		} else {
+			$_SESSION['current_site'] = 1;
+		}
+	}
+}
 	
 if(isset($_REQUEST['selectSite'])){
 	$_SESSION['current_site'] =  $_REQUEST['selectSite'];

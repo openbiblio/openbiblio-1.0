@@ -12,7 +12,7 @@
 			<?php //echo T("%library%:<br />OPAC Interface", array('library'=>H(Settings::get('library_name')))) ?>
 			<?php
 //			echo T("%library%:<br />OPAC Interface", array('library'=>$lib[name]));
-			echo "$lib[name]:<br />OPAC Interface";
+			echo "$libName:<br />OPAC Interface";
 			?>
 	</h3>
 	<div id="library_hours"><?php echo T(Settings::get('library_hours')) ?></div>

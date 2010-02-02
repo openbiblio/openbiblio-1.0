@@ -22,10 +22,18 @@ if (Settings::get('charset') != "") { ?>
 
 <title>
 <?php
-	echo H(Settings::get('library_name'));
+	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
+	$libName = Settings::get('library_name');
+	if(is_numeric($libName)){
+		$sit = new Sites;
+		$lib = $sit->getOne($_SESSION['current_site']);
+		$libName = $lib[name];	
+	} 
+	
+	echo $libName;
 	if($params['title']) {
 		echo ': '.H($params['title']);
-	}
+	}		
 ?>
 </title>
 

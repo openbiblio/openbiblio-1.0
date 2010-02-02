@@ -19,9 +19,19 @@
 	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
 	if(empty($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
 	if(empty($_SESSION['show_item_photos'])) $_SESSION['show_item_photos'] = Settings::get('show_item_photos');	
-	if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = Settings::get('library_name');
 	if(empty($_SESSION['items_per_page'])) $_SESSION['items_per_page'] = Settings::get('items_per_page');
 	
+	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
+	if(empty($_SESSION['current_site'])) {
+		$libraryName  = Settings::get('library_name');
+		if($libraryName){
+			if(is_numeric($libraryName)){
+				$_SESSION['current_site'] = Settings::get('library_name');
+			} else {
+				$_SESSION['current_site'] = 1;
+			}
+		}	
+	}
 
 	## --------------------- ##
 class SrchDb {
