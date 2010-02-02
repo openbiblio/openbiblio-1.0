@@ -63,6 +63,30 @@ function U($s) {
 function HURL($s) {
 	return H(U($s));
 }
+function JS($s) {
+	$r=""; 
+	$l=strlen($s); 
+	$subs = array(
+		'<' => '\\u003c',
+		'>' => '\\u003e',
+		'&' => '\\u0026',
+		'\'' => '\\u0027',
+		'"' => '\\u0022',
+		'\\' => '\\\\',
+		"\n" => '\\n',
+		"\r" => '\\r',
+	);
+	for($i=0;$i<$l;$i++) {
+		if (isset($subs[$s[$i]])) {
+			$r .= $subs[$s[$i]];
+		} else if(ord($s[$i]) < 32) {
+			$r .= sprintf("\\u%04x", ord($s[$i]));
+		} else {
+			$r .= $s[$i];
+		}
+	} 
+	return $r; 
+}
 /* Translation */
 function T($s, $v=NULL) {
 	global $LOC;
