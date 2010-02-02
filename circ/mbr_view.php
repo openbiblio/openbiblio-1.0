@@ -237,7 +237,7 @@ if (!empty($mbr['school_grade'])) {
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Barcode"); ?></th>
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Title"); ?></th>
 		<th valign="top" nowrap="nowrap" align="left"><?php echo T("Due Back"); ?></th>
-		<th valign="top" align="left"><?php echo T("%units% Late",$ckOutUnits); ?></th>
+		<th valign="top" align="left"><?php echo T("%units% Late",array('units'=>$ckOutUnits)); ?></th>
 	</tr>
 	</thead>
 <?php
