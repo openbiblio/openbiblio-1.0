@@ -194,7 +194,8 @@
 	</tr>
 	<tr>
 	  <td colspan="3">
-			<fieldset id="resultsArea">
+			<fieldset>
+				<span id="resultsArea"></span>
 				<fieldset>
 					<table id="listTbl">
 						<tbody id="srchRslts" class="striped">
