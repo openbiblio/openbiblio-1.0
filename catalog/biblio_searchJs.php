@@ -136,15 +136,15 @@ bs = {
 		// alternate startup in response to remote package
 		<?php
 		if ($_REQUEST[barcd]) {
-			echo "$('#searchBarcd').val($_REQUEST[barcd]);\n";
+			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
 			echo "bs.doBarcdSearch();\n";
 		}
 		else if ($_REQUEST[bibid]) {
 			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
 		}
 		else if ($_REQUEST[searchText]) {
-			echo "$('#searchText').val($_REQUEST[searchText])";
-			echo "$('#searchType').val($_REQUEST[searchType])";
+			echo "$('#searchText').val('$_REQUEST[searchText]');\n";
+			echo "$('#searchType').val('$_REQUEST[searchType]');\n";
 			echo "bs.doPhraseSearch();\n";
 		}
 		?>
@@ -298,7 +298,10 @@ bs = {
 	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';
 	  $('#errSpace').html('');
-		$('#srchRsltsDiv').html('');
+		//$('#srchRsltsDiv').html('');
+		$('#srchRslts').html('');
+		$('.rsltQuan').html('');
+		$('#resultsArea').html('');
 	  var params = $('#phraseSearch').serialize();
 		params += '&mode=doPhraseSearch&firstItem='+firstItem;
 	  $.post(bs.url,params, function(jsonInpt){
