@@ -264,7 +264,8 @@ class SrchDb {
 		$sql = "INSERT `biblio_copy` SET "
 		      ."`bibid` = $bibid,"
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
-		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
+//		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
+		      ."`siteid` = '$_POST[siteid]'," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
