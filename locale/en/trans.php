@@ -406,6 +406,7 @@ $trans["Link"] = "Link";
 $trans["Links"] = "Links";
 $trans["LOAN"] = "ON LOAN";
 $trans["Local Data"] = "Local Data";
+$trans["Local Search"] = "Local Search";
 $trans["Location"] = "Location";
 $trans["Login Username:"] = "Login Username:";
 $trans["Login"] = "Login";
@@ -505,6 +506,7 @@ $trans["On hold"] = "On hold";
 $trans["On loan/not available"] = "On loan/not available";
 $trans["Online Hosts"] = "Online Hosts";
 $trans["Online Options"] = "Online Options";
+$trans["OPAC"] = "OPAC";
 $trans["OpenBiblio Help"] = "OpenBiblio Help";
 $trans["Opening Balance"] = "Opening Balance";
 $trans["Other Physical Details"] = "Other Physical Details";
@@ -1059,6 +1061,31 @@ $trans["modelBookingsPayFinesFirst"]          = "The members with this booking m
 $trans["modelBookingsHeldForOtherMember"]          = "The copy with barcode %barcode% is on hold for another member.";
 $trans["modelBookingsNotAvailable"]          = "The item with barcode %barcode% is not available for checkout.";
 
+$trans["Copy Search"]     = "Copy Search";
+$trans["Images"]          = "Images";
+$trans["Item Cart"]       = "Item Cart";
+$trans["New Items"]          = "New Items";
+$trans["Understocked Items"]          = "Understocked Items";
+$trans["Booking Search"]          = "Booking Search";
+$trans["Checkouts"]          = "Checkouts";
+$trans["Confirmation Notices"]          = "Confirmation Notices";
+$trans["Must Returns"]          = "Must Returns";
+$trans["Non-delivery List"]          = "Non-delivery List";
+$trans["Overdue Items"]          = "Overdue Items";
+$trans["Authority Search"]          = "Authority Search";
+$trans["Series Search"]          = "Series Search";
+$trans["Subject Search"]          = "Subject Search";
+$trans["MARC Reports"]          = "MARC Reports";
+$trans["Member Reports"]          = "Member Reports";
+$trans["Site List"]          = "Site List";
+$trans["tatistical Reports"]          = "tatistical Reports";
+$trans["Average Copyright Date"]          = "Average Copyright Date";
+$trans["Biblio Counts by Material Type"]          = "Biblio Counts by Material Type";
+$trans["Bookings by Site"]          = "Bookings by Site";
+$trans["Bookings by Title"]          = "Bookings by Title";
+$trans["Non-circulating Titles"]          = "Non-circulating Titles";
+$trans["Popular Titles"]          = "Popular Titles";
+$trans["Site Usage"]          = "Site Usage";
 
 #****************************************************************************
 #*  Translation text for Calendars.php

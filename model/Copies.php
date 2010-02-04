@@ -45,6 +45,13 @@ class Copies extends CoreTable {
 		return $nextCopy["nextCopy"]+1;
 	}
 
+	// Work in progress - LJ
+	function getNextBarcode() {
+		$sql = $this->db->mkSQL("SELECT MAX( barcode_nmbr ) AS nextBrcd FROM biblio_copy");
+		$nextBrcd = $this->db->select1($sql);
+		return $nextBrcd["nextBrcd"]+1;
+	}	
+	
 	function insert_el($copy) {
 		$this->db->lock();
 		list($id, $errors) = parent::insert_el($copy);
