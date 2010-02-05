@@ -455,6 +455,7 @@ class UpgradeQuery extends InstallQuery {
 					."VALUES "
 					."('site_login', '25', 'Site Logon', 'bool', NULL , NULL , NULL , '''N''', 'tool'),"
 					."('checkout_interval','26','Checkout_Interval','select',NULL,NULL,NULL,'Days','tools')"
+					."('item_barcode_width', '27', 'Item Barcode Width', 'int', NULL, NULL, NULL, 13, 'tools')"
      			;
 	  $this->act($sql);
 		//-------------------------//
