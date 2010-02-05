@@ -252,8 +252,13 @@ ni = {
 	  return false;
 	},
 
+//	doGetBarcdNmbr: function () {
+//		$.getJSON(ni.bs_url,{'mode':'getBarcdNmbr','bibid':ni.bibid}, function(jsonInpt){
+//		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
+//		});
+//	},
 	doGetBarcdNmbr: function () {
-		$.getJSON(ni.bs_url,{'mode':'getBarcdNmbr','bibid':ni.bibid}, function(jsonInpt){
+		$.getJSON(ni.url,{'mode':'getBarcdNmbr2','bibid':bs.biblio.bibid}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},

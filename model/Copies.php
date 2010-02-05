@@ -39,12 +39,18 @@ class Copies extends CoreTable {
 	 }
 
 	function getNextCopy() {
+	  ## deprecated - retained for compatability with legacy code
 		$sql = $this->db->mkSQL("select max(copyid) as nextCopy from biblio_copy");
 		$nextCopy = $this->db->select1($sql);
-		//print_r($nextCopy);
 		return $nextCopy["nextCopy"]+1;
 	}
-
+	function getNewBarCode($width) {
+		$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+		$nextCopy = $this->db->select1($sql) + 1;
+	  if(empty($width)) $w = 13; else $w = $width;
+		return sprintf("%0".$w."7s",$nextCopy);
+	}
+	
 	function insert_el($copy) {
 		$this->db->lock();
 		list($id, $errors) = parent::insert_el($copy);

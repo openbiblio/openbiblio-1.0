@@ -456,7 +456,8 @@ class SrchDb {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
 		echo "{'lookupAvail':'".in_array('lookup2',$_SESSION)."'"
-				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'}";
+				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'"
+				.",'barcdWidth':'$_SESSION[item_barcode_width]'}";
 	  break;
 	  
 	case 'getCrntMbrInfo':
@@ -627,11 +628,18 @@ class SrchDb {
 	  break;
 
 	case 'getBarcdNmbr':
+	  // deprecated - retained for legacy compatability only
 		require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$CopyNmbr= $copies->getNextCopy();
 		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
 		echo "{'barcdNmbr':'" . sprintf("%07s",$CopyNmbr) . "'}";
+	  break;
+
+	case 'getBarcdNmbr2':
+		require_once(REL(__FILE__, "../model/Copies.php"));
+		$copies = new Copies;
+		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
 	  break;
 
 	case 'getBiblioFields':
