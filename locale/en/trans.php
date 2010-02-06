@@ -352,6 +352,7 @@ $trans["Host URL"] = "Host URL";
 $trans["Image file located in directory"] = "Image files must be located in the openbiblio/images directory.";
 $trans["Image File"] = "Image File";
 $trans["IN"] = "IN";
+$trans["Insert Completed"] = "Insert Completed";
 $trans["In Stock"] = "In Stock";
 $trans["in use"] = "in use";
 $trans["Insufficient stock"] = "Insufficient stock";

@@ -268,7 +268,7 @@ class SrchDb {
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '$_POST[copy_desc]' ";
-		echo "sql=$sql<br />";
+		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		
 		$copyid = $this->db->getInsertID();
@@ -287,7 +287,19 @@ class SrchDb {
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		$this->db->unlock();
-		return T('Update completed');
+		
+		// Update custom fields if set
+		$copies = new Copies;
+		$custom = array();
+		$BCQ = new BiblioCopyFields;
+		$rows = $BCQ->getAll();
+		while ($row = $rows->next()) {
+			if (isset($_POST['custom_'.$row["code"]])) {
+				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
+			}
+		}
+		$copies->setCustomFields($copyid, $custom);
+		return T('Insert completed');
 	}
 	## ========================= ##
 	function updateCopy($bibid,$copyid) {
