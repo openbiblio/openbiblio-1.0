@@ -532,9 +532,11 @@ ni = {
 		case 'dew':
 		  var callNmbr = ni.makeCallNmbr(data['082a']);
 			//console.log('callNmbr='+callNmbr)
-    	var cutter = ni.makeCutter(data['100a'], data['245a']);
-			//console.log('cutter='+cutter)
-			$('#099a').val(callNmbr+cutter);
+//			if (ni.opts[autoCutter] == 'y') {
+    		var cutter = ni.makeCutter(data['100a'], data['245a']);
+				//console.log('cutter='+cutter)
+				$('#099a').val(callNmbr+cutter);
+//			}
 			break;
 		case 'udc':
 		  var callNmbr = ni.makeCallNmbr(data['080a']);
@@ -606,7 +608,9 @@ ni = {
 		//console.log('auth=<'+auth+'>; titl=<'+titl+'>');
 	  var cutter = '';
 	  auth = auth.trim(); titl = titl.trim();
-		if ((ni.opts['autoCutter']) && ((auth != '') && (auth != 'undefined'))  ) {
+	  if (ni.opts['autoCutter'] == 'n') return; // not wanted
+	  
+		if ((auth != '') && (auth != 'undefined')) {
 	  	$.getJSON(ni.url,{mode:'getCutter', author:auth}, function(data){
 				//console.log('data='+data)
 				cutter = data['cutter'];

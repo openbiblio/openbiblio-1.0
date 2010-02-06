@@ -96,6 +96,7 @@ switch ($_REQUEST[mode]){
 		}
 		else {
 			echo "Invalid cutter type selection - '$postVars[cutterType]'. <br />";
+			exit;
 		}
 
 		echo "{'cutter':'".getCutter($_REQUEST[author])."'}";
