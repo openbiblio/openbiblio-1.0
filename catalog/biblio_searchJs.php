@@ -785,7 +785,8 @@ bs = {
 		return false;
 	},
 	doGetBarcdNmbr: function () {
-		$.getJSON(bs.url,{'mode':'getNewBarcd','bibid':bs.biblio.bibid}, function(jsonInpt){
+//		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
+		$.getJSON(bs.url,{'mode':'getBarcdNmbr2'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},

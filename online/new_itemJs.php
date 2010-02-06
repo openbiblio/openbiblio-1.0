@@ -235,7 +235,7 @@ ni = {
 		//console.log('crnt site='+crntsite);
 		$('#copyTbl #copy_site').val(crntsite);
 		if ($('#autobarco:checked').length > 0) {
-			ni.doGetBarcdNmbr(ni.bibid);
+			ni.doGetBarcdNmbr2(ni.bibid);
 		}
 		$('#copyEditorDiv').show();
 	},
