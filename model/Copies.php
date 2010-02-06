@@ -44,11 +44,13 @@ class Copies extends CoreTable {
 		$nextCopy = $this->db->select1($sql);
 		return $nextCopy["nextCopy"]+1;
 	}
+	
 	function getNewBarCode($width) {
-		$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
-		$nextCopy = $this->db->select1($sql) + 1;
+		//$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
+		$cpy = $this->db->select1($sql);
 	  if(empty($width)) $w = 13; else $w = $width;
-		return sprintf("%0".$w."7s",$nextCopy);
+		return sprintf("%0".$w."s",($cpy[lastNmbr]+1));
 	}
 	
 	function insert_el($copy) {
