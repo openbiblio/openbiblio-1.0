@@ -18,6 +18,7 @@
 .		item barcode_nmbr title="Barcode"
 .		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
 .	end order_by
+.	string sitecode title="Site code"
 .	session_id
 .end parameters
 
@@ -48,6 +49,9 @@
 .	end if_set
 .	if_set newer
 		and c.create_dt >= %newer%
+.	end if_set
+.	if_set sitecode
+		and s.code = %sitecode%
 .	end if_set
 .	if_not_equal cart none
 		and cart.name='bibid' and cart.sess_id=%session_id%

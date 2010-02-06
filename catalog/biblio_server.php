@@ -263,12 +263,12 @@ class SrchDb {
 		      ."`bibid` = $bibid,"
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
 //		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
-		      ."`siteid` = '$_POST[siteid]'," // set to current site
+		      ."`siteid` = '$_POST[copy_site]'," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '$_POST[copy_desc]' ";
-		//echo "sql=$sql<br />";
+		echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		
 		$copyid = $this->db->getInsertID();
