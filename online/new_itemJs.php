@@ -257,7 +257,7 @@ ni = {
 //		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 //		});
 //	},
-	doGetBarcdNmbr: function () {
+	doGetBarcdNmbr2: function () {
 		$.getJSON(ni.url,{'mode':'getNewBarcd'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
