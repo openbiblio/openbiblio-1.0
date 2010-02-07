@@ -73,7 +73,8 @@ class Copies extends CoreTable {
 				$errors[] = new FieldError($req, T("Required field missing"));
 			}
 		}
-		/* Check for duplicate barcodes */
+		isDuplicateBarcd($copy['barcode_nmbr'], $copy['copyid']);
+/* Check for duplicate barcodes
 		if (isset($copy['barcode_nmbr'])) {
 			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
 				. "where barcode_nmbr=%Q ", $copy['barcode_nmbr']);
@@ -85,7 +86,24 @@ class Copies extends CoreTable {
 				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
 			}
 		}
+*/
 		return $errors;
+	}
+	function isDuplicateBarcd($barcd,$cpyid) {
+		/* Check for duplicate barcodes */
+		if (isset($barcd)) {
+			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
+				. "where barcode_nmbr=%Q ", $barcd);
+			if (isset($cpyid)) {
+				$sql .= $this->db->mkSQL("and not copyid=%N ", $cpuid);
+			}
+			$duplicates = $this->db->select1($sql);
+			if ($duplicates['count'] > 0) {
+				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+				return true;
+			}
+			return false;
+		}
 	}
 	function normalizeBarcode($barcode) {
 		//return ereg_replace('^([A-Za-z]+)?0*(.*)', '\\1\\2', $barcode);
