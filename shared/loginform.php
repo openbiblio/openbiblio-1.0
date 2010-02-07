@@ -21,6 +21,13 @@
 
 	$sites_table = new Sites;		
 	$sites = $sites_table->getSelect();	
+
+	// If the current_site is set, default to this site, otherwise default
+	if(isset($_REQUEST['selectSite'])){
+		$siteId = $_REQUEST['selectSite'];
+	} else {
+		$siteId = Settings::get('library_name');
+	}
 	
 	$tab = "circ";
 	$nav = "";
@@ -64,7 +71,9 @@
 			<label for="selectSite"><?php echo T("Library Site"); ?>:</label>
 		</td>
 		<td>
-			<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>	
+			<?php 
+				echo inputfield('select', 'selectSite', $siteId, NULL, $sites); 	
+			?>	
 		</td>
 	</tr>
 	<?php } ?>

@@ -23,7 +23,12 @@ $_SESSION["returnPage"] = $returnPage;
 #*  Checking to see if session variables exist
 #****************************************************************************
 if (!isset($_SESSION["userid"]) or ($_SESSION["userid"] == "")) {
-	header("Location: ../shared/loginform.php");
+	// If siteId is given, pass it on. This allows for an easy link to be setup on the desktop of a certai site
+	if(isset($_REQUEST['selectSite'])){
+		header("Location: ../shared/loginform.php?selectSite=" . $_REQUEST['selectSite']);
+	} else {
+		header("Location: ../shared/loginform.php");
+	}	
 	exit();
 }
 
