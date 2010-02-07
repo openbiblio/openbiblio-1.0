@@ -606,10 +606,10 @@ ni = {
 
 	makeCutter: function (auth,titl) {
 		//console.log('auth=<'+auth+'>; titl=<'+titl+'>');
-	  var cutter = '';
-	  auth = auth.trim(); titl = titl.trim();
 	  if (ni.opts['autoCutter'] == 'n') return; // not wanted
 	  
+	  var cutter = '';
+	  auth = auth.trim(); titl = titl.trim();
 		if ((auth != '') && (auth != 'undefined')) {
 	  	$.getJSON(ni.url,{mode:'getCutter', author:auth}, function(data){
 				//console.log('data='+data)
