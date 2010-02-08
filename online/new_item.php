@@ -12,6 +12,16 @@
   $focus_form_name = "lookupForm";
   $focus_form_field = "lookupVal";
 
+		  $isbnTxt    = T("ISBN");
+		  $issnTxt    = T("ISSN");
+		  $lccnTxt    = T("LCCN");
+		  $titleTxt   = T("Title");
+		  $authorTxt  = T("Author");
+			$keywordTxt = T("Keyword");
+			$pubDateTxt = T("Publication Date");
+			$pubNameTxt = T("Publisher");
+			$pubLocTxt  = T("Publication Location");
+		
   require_once(REL(__FILE__, "../functions/inputFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
   
@@ -36,17 +46,6 @@
 		</tr>
 		</thead>
 		<tbody>
-		<?php
-		  $isbnTxt    = T("ISBN");
-		  $issnTxt    = T("ISSN");
-		  $lccnTxt    = T("LCCN");
-		  $titleTxt   = T("Title");
-		  $authorTxt  = T("Author");
-			$keywordTxt = T("Keyword");
-			$pubDateTxt = T("Publication Date");
-			$pubNameTxt = T("Publisher");
-			$pubLocTxt  = T("Publication Location");
-		?>
 		<tr id="fldset1">
 		  <td class="primary inptFld">
 				<?php echo inputfield('text','lookupVal','',array('class'=>'criteria')); ?>
@@ -54,7 +53,12 @@
 		  <td class="primary inptFld">
 				<?php
 				echo inputfield('select','srchBy','7',array('class'=>'criteria'),
-						 array('7'=>"$isbnTxt",'8'=>"$issnTxt",'9'=>"$lccnTxt",'4'=>"$titleTxt",'1016'=>"$keywordTxt"));
+						 array('7'=>"$isbnTxt"
+						 			,'8'=>"$issnTxt"
+									,'9'=>"$lccnTxt"
+									,'4'=>"$titleTxt"
+//									,'1016'=>"$keywordTxt"
+									 ));
 				?>
 			</td>
 		</tr>
@@ -69,7 +73,10 @@
 		  <td class="primary inptFld">
 				<?php
 				echo inputfield('select','srchBy2','0',array('class'=>'criteria'),
-						 array('0'=>' ','1004'=>"$authorTxt",'1016'=>"$keywordTxt"));
+						 array('0'=>' '
+						 			,'1004'=>"$authorTxt"
+//									,'1016'=>"$keywordTxt"
+									));
 				?>
 			</td>
 		</tr>
@@ -84,7 +91,12 @@
 		  <td class="primary inptFld">
 				<?php
 				echo inputfield('select','srchBy3','0',array('class'=>'criteria'),
-						 array('0'=>' ','1018'=>"$pubNameTxt",'59'	=>"$pubLocTxt",'31'	=>"$pubDateTxt",'1016'=>"$keywordTxt"));
+						 array('0'=>' '
+						 			,'1018'=>"$pubNameTxt"
+									,'59'	=>"$pubLocTxt"
+									,'31'	=>"$pubDateTxt"
+//									,'1016'=>"$keywordTxt"
+									));
 				?>
 			</td>
 		</tr>
@@ -99,7 +111,12 @@
 		  <td class="primary inptFld">
 				<?php
 				echo inputfield('select','srchBy4','0',array('class'=>'criteria'),
-						 array('0'=>' ','59'	=>"$pubLocTxt",'1018'=>"$pubNameTxt",'31'	=>"$pubDateTxt",'1016'=>"$keywordTxt"));
+						 array('0'=>' '
+						 			,'59'	=>"$pubLocTxt"
+									,'1018'=>"$pubNameTxt"
+									,'31'	=>"$pubDateTxt"
+//									,'1016'=>"$keywordTxt"
+									));
 				?>
 			</td>
 		</tr>
@@ -114,7 +131,12 @@
 		  <td class="primary inptFld">
 				<?php
 				echo inputfield('select','srchBy5','0',array('class'=>'criteria'),
-						 array('0'=>' ','31'	=>"$pubDateTxt",'1018'=>"$pubNameTxt",'59'	=>"$pubLocTxt",'1016'=>"$keywordTxt"));
+						 array('0'=>' '
+						 			,'31'	=>"$pubDateTxt"
+									,'1018'=>"$pubNameTxt"
+									,'59'	=>"$pubLocTxt"
+//									,'1016'=>"$keywordTxt"
+									));
 				?>
 			</td>
 		</tr>
@@ -171,8 +193,7 @@
 		</tr>
 		<tr>
 	    <td colspan="3" class="primary btnFld">
-				<input id="retryBtn" type="submit" class="button"
-							 value="<?php echo T("Go Back");?>" />
+				<input id="retryBtn" type="submit" class="button" value="<?php echo T("Go Back");?>" />
 			</td>
 		</tr>
 		</table>

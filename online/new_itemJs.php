@@ -41,40 +41,6 @@ td.btnFld {
 //------------------------------------------------------------------------------
 // newItem Javascript
 ni = {
-<?php
-/*
-	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
-	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
-	echo 'isbn							:"'.T("lookup_isbn").'",'."\n";
-	echo 'issn							:"'.T("lookup_issn").'",'."\n";
-	echo 'lccn							:"'.T("lookup_lccn").'",'."\n";
-	echo 'title							:"'.T("lookup_title").'",'."\n";
-	echo 'author						:"'.T("lookup_author").'",'."\n";
-	echo 'keyword						:"'.T("lookup_keyword").'",'."\n";
-	echo 'publisher					:"'.T("lookup_publisher").'",'."\n";
-	echo 'pubLoc						:"'.T("lookup_pubLoc").'",'."\n";
-	echo 'pubDate						:"'.T("lookup_pubDate").'",'."\n";
-	echo 'andOpt						:"'.T("lookup_andOpt").'",'."\n";
-	echo 'search						:"'.T("lookup_search").'",'."\n";
-	echo 'abandon						:"'.T("lookup_abandon").'",'."\n";
-	echo 'repository				:"'.T("lookup_repository").'",'."\n";
-	echo 'yaz_setup_failed	:"'.T("lookup_yazSetupFailed").'",'."\n";
-	echo 'badQuery					:"'.T("lookup_badQuery").'",'."\n";
-	echo 'patience					:"'.T("lookup_patience").'",'."\n";
-	echo 'resetInstr				:"'.T("lookup_resetInstr").'",'."\n";
-	echo 'goBack						:"'.T("lookup_goBack").'",'."\n";
-	echo 'accept						:"'.T("lookup_accept").'",'."\n";
-	echo 'yazError					:"'.T("lookup_yazError").'",'."\n";
-	echo 'nothingFound			:"'.T("lookup_nothingFound").'",'."\n";
-	echo 'tooManyHits				:"'.T("lookup_tooManyHits").'",'."\n";
-	echo 'refineSearch			:"'.T("lookup_refineSearch").'",'."\n";
-	echo 'success						:"'.T("lookup_success").'",'."\n";
-	echo 'hits							:"'.T("lookup_hits").'",'."\n";
-	echo 'callNmbrType			:"'.T("lookup_callNmbrType").'",'."\n";
-	echo 'useThis						:"'.T("lookup_useThis").'",'."\n";
-	echo 'searchError				:"'.T("lookup_searchError").'",'."\n";
-*/
-?>
 	init: function () {
 		// get header stuff going first
 		ni.initWidgets();

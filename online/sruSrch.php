@@ -27,7 +27,6 @@
 			 	"&recordSchema=marcxml";
 	//echo "query: $qry <br />";
 
-
 	#### send query to each host in turn and get response
 	$resp = array();
 	for($i = 0; $i < $postVars[numHosts]; $i++) {
