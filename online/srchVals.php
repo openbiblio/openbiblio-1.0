@@ -46,7 +46,7 @@
 			$srchByName = 'LCCN';
 			$sruQry = "$sruSchema.lccn=";
 			//echo "input lccn=$lookupVal <br />";
-			$lookupVal = verifyLCCN($lookupVal,$keepIsbnDashes);
+			$lookupVal = verifyLCCN($lookupVal);
 			//echo 'final lccn: ' . $lookupVal . '<br />';
 		  break;
 
