@@ -257,6 +257,22 @@ class SrchDb {
 		return $rslt;
 	}
 	## ========================= ##
+	function isDuplicateBarcd($barcd,$cpyid) {
+		/* Check for duplicate barcodes */
+		$sql = "select count(*) count from biblio_copy "
+				 . "where (barcode_nmbr = $barcd)";
+		if (isset($cpyid)) {
+			$sql .= " AND (copyid != '$cpuid')";
+		}
+		//echo "sql=$sql<br />";
+		$dups = $this->db->select1($sql);
+		if ($dups[count] > 0) {
+			echo "$barcd ". T("Barcode number already in use.");
+			return true;
+		}
+		return false;
+	}
+	## ========================= ##
 	function insertCopy($bibid,$copyid) {
 		$this->db->lock();
 		$sql = "INSERT `biblio_copy` SET "
@@ -654,6 +670,11 @@ class SrchDb {
 		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
 	  break;
 
+	case 'chkBarcdForDupe':
+	  $theDb = new SrchDB;
+	  if ($theDb->isDuplicateBarcd($_REQUEST[barcode_nmbr],NULL)) return;
+		break;
+		
 	case 'getBiblioFields':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$theDb = new SrchDB;
@@ -677,11 +698,13 @@ class SrchDb {
 
 	case 'updateCopy':
 	  $theDb = new SrchDB;
+	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr], $copyid)) return;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
 	case 'newCopy':
 	  $theDb = new SrchDB;
+	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr], $copyid)) return;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 

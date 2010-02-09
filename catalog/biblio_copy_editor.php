@@ -7,9 +7,9 @@
 	require_once(REL(__FILE__, "../model/Copies.php"));	
 ?>
 <p class="note"><?php echo T("Fields marked are required"); ?></p>
+<p id="editRsltMsg" class="error"></p>
 
 <form id="copyForm" name="copyForm" >
-<p id="editRsltMsg" class="error"></p>
 <fieldset>
 <legend><?php echo T("Add New Copy"); ?></legend>
 <table id="copyTbl" class="primary">

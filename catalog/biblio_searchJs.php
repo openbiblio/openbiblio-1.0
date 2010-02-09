@@ -118,6 +118,7 @@ bs = {
 		});
 
 		// for the copy editor screen
+		$('#barcode_nmbr').bind('change',null,bs.chkBarcdForDupe);
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
@@ -788,6 +789,13 @@ bs = {
 		$.getJSON(bs.url,{'mode':'getBarcdNmbr2'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
+	},
+	chkBarcdForDupe: function () {
+		var barcd = $.trim($('#barcode_nmbr').val());
+	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
+console.log(response);
+	  	$('#editRsltMsg').html(response).show();
+		})
 	},
 	doCopyNew: function () {
 		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+bs.biblio.bibid;
