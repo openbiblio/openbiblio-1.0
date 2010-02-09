@@ -90,6 +90,7 @@ ni = {
 			return ni.doBackToSrch();
 			//return false;
 		});
+		$('#barcode_nmbr').bind('change',null,ni.chkBarcdForDupe);
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
 		}
@@ -195,6 +196,13 @@ ni = {
 		});
 	},
 	
+	chkBarcdForDupe: function () {
+		var barcd = $.trim($('#barcode_nmbr').val());
+	  $.get(ni.bs_url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
+	  	$('#editRsltMsg').html(response).show();
+		})
+	},
+
 	showCopyEditor: function () {
   	$('#selectionDiv').hide();
   	var crntsite = ni.opts.session.current_site

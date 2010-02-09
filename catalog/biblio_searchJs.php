@@ -793,7 +793,6 @@ bs = {
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
 	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
-console.log(response);
 	  	$('#editRsltMsg').html(response).show();
 		})
 	},
