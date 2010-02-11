@@ -748,7 +748,7 @@ bs = {
 		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #copy_site').val([bs.crntCopy.site]);
-		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
+		$('#copyTbl #status_cd').val(bs.crntCopy.statusCd);
 		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
 
 		// custom fields

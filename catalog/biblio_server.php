@@ -262,7 +262,7 @@ class SrchDb {
 		$sql = "select count(*) count from biblio_copy "
 				 . "where (barcode_nmbr = $barcd)";
 		if (isset($cpyid)) {
-			$sql .= " AND (copyid != '$cpuid')";
+			$sql .= " AND (copyid != '$cpyid')";
 		}
 		//echo "sql=$sql<br />";
 		$dups = $this->db->select1($sql);
@@ -698,13 +698,13 @@ class SrchDb {
 
 	case 'updateCopy':
 	  $theDb = new SrchDB;
-	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr], $copyid)) return;
+	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
 	case 'newCopy':
 	  $theDb = new SrchDB;
-	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr], $copyid)) return;
+	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr],  $_POST[copyid])) return;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
