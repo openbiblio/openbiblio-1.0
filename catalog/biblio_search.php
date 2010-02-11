@@ -238,7 +238,7 @@
 	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
-	<?php if (strtolower($tab) != 'opac') {?>
+	<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -257,7 +257,7 @@
 		<table id="copyList">
 		<thead>
 		<tr>
-				<?php if ($tab != "opac"){ ?>
+				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
 					<th nowrap="yes"><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
@@ -278,7 +278,7 @@
 	
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<?php if (strtolower($tab) != 'opac') { ?>
+<?php if (!(strtolower($tab) == 'opac' || !($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
 <?php } ?>
 </div>

@@ -45,9 +45,13 @@ if ($tab == "circulation"){
 		exit();
 	}
 } elseif ($tab == "cataloging") {
+	// I would like to make a distinction, as Circulation users should be able to view the catalogue as OPAC users.
+	// If hasCircAuth allow biblio_search.php
 	if (!$_SESSION["hasCatalogAuth"]) {
-		header("Location: ../catalog/noauth.php");
-		exit();
+		if(!((basename($_SERVER[PHP_SELF]) == "biblio_search.php") && $_SESSION["hasCircAuth"])){
+			header("Location: ../catalog/noauth.php");
+			exit();
+		}
 	}
 } elseif ($tab == "admin") {
 	if (!$_SESSION["hasAdminAuth"]) {

@@ -4,7 +4,6 @@
  */
 
 function staff_menu() {
-	Nav::node('opac', T("OPAC"), '../opac/index.php');
 	Nav::node('circulation', T("Circulation"), '../circ/index.php');
 	Nav::node('circulation/searchform', T("Member Search"), '../circ/index.php');
 	Nav::node('circulation/search', T("Search Results"));

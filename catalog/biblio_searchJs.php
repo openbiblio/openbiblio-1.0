@@ -17,7 +17,8 @@
 <script language="JavaScript" >
 // JavaScript Document
 <?php
-	if($tab == 'opac' || $tab == 'OPAC')
+	// If a circulation user and NOT a cataloging user the system should treat the user as opac
+	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
 	  echo "var opacMode = true;";
 	else
 	  echo "var opacMode = false;";
