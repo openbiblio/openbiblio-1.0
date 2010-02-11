@@ -73,7 +73,9 @@ class Copies extends CoreTable {
 				$errors[] = new FieldError($req, T("Required field missing"));
 			}
 		}
-		isDuplicateBarcd($copy['barcode_nmbr'], $copy['copyid']);
+		if($this->isDuplicateBarcd($copy['barcode_nmbr'], $copy['copyid'])){
+			$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+		}
 /* Check for duplicate barcodes
 		if (isset($copy['barcode_nmbr'])) {
 			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
