@@ -76,19 +76,6 @@ class Copies extends CoreTable {
 		if($this->isDuplicateBarcd($copy['barcode_nmbr'], $copy['copyid'])){
 			$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
 		}
-/* Check for duplicate barcodes
-		if (isset($copy['barcode_nmbr'])) {
-			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
-				. "where barcode_nmbr=%Q ", $copy['barcode_nmbr']);
-			if (isset($copy['copyid'])) {
-				$sql .= $this->db->mkSQL("and not copyid=%N ", $copy['copyid']);
-			}
-			$duplicates = $this->db->select1($sql);
-			if ($duplicates['count'] > 0) {
-				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
-			}
-		}
-*/
 		return $errors;
 	}
 	function isDuplicateBarcd($barcd,$cpyid) {
@@ -101,7 +88,7 @@ class Copies extends CoreTable {
 			}
 			$duplicates = $this->db->select1($sql);
 			if ($duplicates['count'] > 0) {
-				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+//				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
 				return true;
 			}
 			return false;

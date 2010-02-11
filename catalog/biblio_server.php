@@ -257,22 +257,6 @@ class SrchDb {
 		return $rslt;
 	}
 	## ========================= ##
-	function isDuplicateBarcd($barcd,$cpyid) {
-		/* Check for duplicate barcodes */
-		$sql = "select count(*) count from biblio_copy "
-				 . "where (barcode_nmbr = $barcd)";
-		if (isset($cpyid)) {
-			$sql .= " AND (copyid != '$cpyid')";
-		}
-		//echo "sql=$sql<br />";
-		$dups = $this->db->select1($sql);
-		if ($dups[count] > 0) {
-			echo "$barcd ". T("Barcode number already in use.");
-			return true;
-		}
-		return false;
-	}
-	## ========================= ##
 	function insertCopy($bibid,$copyid) {
 		$this->db->lock();
 		$sql = "INSERT `biblio_copy` SET "
@@ -506,7 +490,7 @@ class SrchDb {
 	  break;
 
 	case 'getSiteList':
-		require_once(REL(__FILE__, "../model/Sites.php"));
+//		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
 		$sites = $sites_table->getSelect();
 		foreach ($sites as $val => $desc) {
@@ -657,7 +641,7 @@ class SrchDb {
 
 	case 'getBarcdNmbr':
 	  // deprecated - retained for legacy compatability only
-		require_once(REL(__FILE__, "../model/Copies.php"));
+		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$CopyNmbr= $copies->getNextCopy();
 		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
@@ -665,14 +649,15 @@ class SrchDb {
 	  break;
 
 	case 'getBarcdNmbr2':
-		require_once(REL(__FILE__, "../model/Copies.php"));
+		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
 	  break;
 
 	case 'chkBarcdForDupe':
-	  $theDb = new SrchDB;
-	  if ($theDb->isDuplicateBarcd($_REQUEST[barcode_nmbr],NULL)) return;
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],NULL))
+			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 		break;
 		
 	case 'getBiblioFields':
@@ -698,13 +683,15 @@ class SrchDb {
 
 	case 'updateCopy':
 	  $theDb = new SrchDB;
-	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
 	case 'newCopy':
 	  $theDb = new SrchDB;
-	  if ($theDb->isDuplicateBarcd($_POST[barcode_nmbr],  $_POST[copyid])) return;
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
