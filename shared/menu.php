@@ -133,15 +133,16 @@ function staff_menu() {
 		Nav::node('admin/opac', T("View Opac"), '../catalog/biblio_search.php?tab=OPAC');
 		Nav::node('admin/online', T("Online Options"), '../admin/online_opts_form.php');
 		Nav::node('admin/hosts', T("Online Hosts"), '../admin/online_hosts_form.php');
+	}	
 		##-------------------------------------------------------------------------------------##
-		if($_SESSION["hasReportsAuth"]){
-			Nav::node('reports', T("Reports"), '../reports/index.php');
-			Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
+		
+	if($_SESSION["hasReportsAuth"]){
+		Nav::node('reports', T("Reports"), '../reports/index.php');
+		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 
-			if (isset($_SESSION['rpt_Report'])) {
-				Nav::node('reports/results', T("Report Results"),
-					'../reports/run_report.php?type=previous');
-			}
+		if (isset($_SESSION['rpt_Report'])) {
+			Nav::node('reports/results', T("Report Results"),
+				'../reports/run_report.php?type=previous');
 		}
 	}
 	##-------------------------------------------------------------------------------------##

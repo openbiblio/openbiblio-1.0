@@ -278,7 +278,7 @@
 	
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<?php if (!(strtolower($tab) == 'opac' || !($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
+<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
 <?php } ?>
 </div>
