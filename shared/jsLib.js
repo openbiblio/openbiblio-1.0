@@ -47,6 +47,15 @@ $.fn.loadSelect = function (optionsDataArray) {
 // legacy javascript that I can't find a jQuery equivalent of
 // - needs to be made into a jQuery plugin as above
 flos = {
+/* --------------------------------- */
+	// left pad a string 'str' with char 'ch' to width 'wid', 22Aug2008 - fl
+	pad: function (str, wid, ch) {
+	  var cStr = new String(ch);
+	  for (var i=0; i<wid; i++)
+	    cStr = cStr+ch;
+		return (cStr+str).substr(str.length+1);
+	},
+/* --------------------------------- */
 	getSelectBox: function  (boxId, getText/*boolean*/) {
 		if (typeof(boxId) === 'string')
 			sel = $('#'+boxId);
