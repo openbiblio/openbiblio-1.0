@@ -53,7 +53,7 @@
 <table class="primary">
 	<tr>
 		<td nowrap="true" class="primary">
-			<label for="searchText"><?php echo T("Barcode Number:");?></label>
+			<label for="searchBarcd"><?php echo T("Barcode Number:");?></label>
 			<?php echo inputfield('text','searchBarcd','',array('size'=>'20','maxlength'=>'20')); ?>
 			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
 			<?php echo inputfield('hidden','sortBy','default'); ?>
