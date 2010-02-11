@@ -17,7 +17,9 @@ if (count($_POST) == 0) {
 }
 
 $bookings = new Bookings;
-$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
+$barcd = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
+//$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
+$err = $bookings->quickCheckout_e($barcd, array($_POST["mbrid"]));
 if ($err) {
 	if(is_array($err)){
 		$errors = ""; $nErr = 0;
