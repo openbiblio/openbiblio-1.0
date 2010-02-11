@@ -272,6 +272,10 @@ bs = {
 		return false;
 	},
 	doBarcdSearch: function (e) {
+		var barcd = $.trim($('#searchBarcd').val());
+		barcd = flos.pad(barcd,13,'0');
+		$('#searchBarcd').val(barcd);
+		
 	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
 	  var params = $('#barcodeSearch').serialize();
