@@ -63,7 +63,7 @@ class Layout_barcode_dwl1784 {
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
 								$lay->pushFont('Times-Roman', 10);
-									$site = "Lib.: " . $row['site_name'];
+									$site = "Lib.: " . $row['site_code'];
 									$class = "Class: " . $row['callno'];
 									$lay->text(str_pad($site , 35 - strlen($class), ".") . $class);
 								$lay->popFont();

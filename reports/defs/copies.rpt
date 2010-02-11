@@ -23,7 +23,7 @@
 .end parameters
 
 .sql
-	select c.*, s.name as site_name, 
+	select c.*, s.name as site_name, s.code as site_code, 
 		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
 		concat(ts2.subfield_data, ' ', ifnull(sub2.subfield_data, '')) as author,
 		concat(ts3.subfield_data, ' ', ifnull(sub3.subfield_data, '')) as callno
