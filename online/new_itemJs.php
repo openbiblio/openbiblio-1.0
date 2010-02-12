@@ -464,7 +464,7 @@ ni = {
 	},
 	doShowOne: function (data){
 	  $('#searchDiv').hide();
-		// assure all are empty & visible at start
+		// assure all marc fields are empty & visible at start
     $(".marcBiblioFld").each(function(){
 			$(this).parent().parent().val('').show();
 		});
