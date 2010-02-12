@@ -215,12 +215,6 @@ bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
-//			if (bs.opts.lookupAvail == 1) {
-//				bs.lookupAvailable = true;
-//				console.log('lookup engine available');
-//			} else {
-//				console.log('lookup engine not available');
-//			}
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -285,7 +279,6 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				//if (!bs.biblio.data) {
 				if (bs.biblio.data == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
@@ -304,7 +297,6 @@ bs = {
 	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';
 	  $('#errSpace').html('');
-		//$('#srchRsltsDiv').html('');
 		$('#srchRslts').html('');
 		$('.rsltQuan').html('');
 		$('#resultsArea').html('');
@@ -319,7 +311,6 @@ bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			//$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
 	  			$('#resultsArea').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
 					$('#biblioListDiv .goNextBtn').disable();
 					$('#biblioListDiv .goPrevBtn').disable();
@@ -778,6 +769,9 @@ bs = {
 		if ($('#autobarco:checked').length > 0) {
 			bs.doGetBarcdNmbr();
 		}
+  	var crntsite = bs.opts.current_site
+		$('#copy_site').val(crntsite);
+		
 		$('#copyEditorDiv').show();
 
 		// unbind & bind needed here because of button reuse elsewhere

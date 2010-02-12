@@ -468,10 +468,11 @@ class SrchDb {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
 		echo "{'lookupAvail':'".in_array('lookup2',$_SESSION)."'"
+		    .",'current_site':'$_SESSION[current_site]'"
 				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'"
 				.",'barcdWidth':'$_SESSION[item_barcode_width]'}";
 	  break;
-	  
+
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
