@@ -439,8 +439,6 @@ ni = {
 					  	data = hitData;
 					  });
 					});
-					//$('#biblioBtn').bind('click',null,ni.doBackToSrch);
-					//$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
 					ni.doShowOne(data);
 				}
 			} // else
@@ -466,9 +464,9 @@ ni = {
 	},
 	doShowOne: function (data){
 	  $('#searchDiv').hide();
-		// assure all are visible at start
+		// assure all are empty & visible at start
     $(".marcBiblioFld").each(function(){
-			$(this).parent().parent().show();
+			$(this).parent().parent().val('').show();
 		});
 
 		for (var tag in data) {
