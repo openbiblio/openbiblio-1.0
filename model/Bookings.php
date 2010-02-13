@@ -452,6 +452,9 @@ class Bookings extends CoreTable {
 		}
 		$history = new History;
 		$status = $history->getOne($copy['histid']);
+		if($status['status_cd'] == OBIB_STATUS_NOT_ON_LOAN){
+			return new Error(T('modelBookingsNotOnLoan', array("barcode"=>$barcode)));
+		}
 		if ($status['status_cd'] == OBIB_STATUS_ON_HOLD) {
 			include_once(REL(__FILE__, "../model/Holds.php"));
 			$holds = new Holds;
