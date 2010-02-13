@@ -155,7 +155,8 @@ bs = {
 	initWidgets: function () {
 	},
 	checkSrchByPhraseBtn: function () {
-		if (this.textLength > 0) {
+		var txtLen = this.value;
+		if (txtLen.length > 0) {
 			$('.srchByPhraseBttn').css('color', bs.srchBtnBgClr);
 			$('.srchByPhraseBttn').enable();
 		} else {
@@ -165,7 +166,8 @@ bs = {
 		}		
 	},
 	checkSrchByBarcdBtn: function () {
-		if (this.textLength > 0) {
+		var txtLen = this.value;
+		if (txtLen.length > 0) {
 			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
 			$('.srchByBarcdBtn').enable();
 		} else {
@@ -173,6 +175,14 @@ bs = {
 			$('.srchByBarcdBtn').css('color', '#888888');
 			$('.srchByBarcdBtn').disable();
 		}
+	},
+	disableSrchBtns: function () {
+		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+		//$('.srchByBarcdBtn').css('color', '#888888');
+		$('.srchByBarcdBtn').disable();
+		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+		//$('.srchByPhraseBttn').css('color', '#888888');
+		$('.srchByPhraseBttn').disable();		
 	},	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
@@ -184,8 +194,7 @@ bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
-	  bs.checkSrchByPhraseBtn();
-	  bs.checkSrchByBarcdBtn();
+	  bs.disableSrchBtns();
 	},	
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
@@ -197,8 +206,7 @@ bs = {
 	  $('#searchDiv').show();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
-	  bs.checkSrchByPhraseBtn();
-	  bs.checkSrchByBarcdBtn();
+	  bs.disableSrchBtns();
 	},
 
 	rtnToList: function () {
