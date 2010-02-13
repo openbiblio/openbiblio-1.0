@@ -49,6 +49,11 @@
 <table class="primary">
 
 	<tbody>
+	<?php if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) { ?>
+		<tr>
+			<td colspan="2"><p><font color="red"><?php echo T("Browser not supported") ?></font></p></td>
+		</tr>
+	<?php } ?>
 	<tr>
 		<td valign="top" class="noborder">
 			<label for="username"><?php echo T("Username:"); ?></label>
