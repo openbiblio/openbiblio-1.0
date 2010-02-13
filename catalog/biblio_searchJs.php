@@ -47,8 +47,8 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-		$('#searchBarcd').bind('change',null,bs.enableSrchBtns);
-		$('#searchText').bind('change',null,bs.enableSrchBtns);
+		$('#searchBarcd').bind('keyup',null,bs.checkSrchByBarcdBtn);
+		$('#searchText').bind('keyup',null,bs.checkSrchByPhraseBtn);
 
 		// for the search results section
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
@@ -154,17 +154,26 @@ bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-
-	disableSrchBtns: function () {
-	  bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-	  $('.srchBtn').css('color', '#888888');
-		$('.srchBtn').disable();
+	checkSrchByPhraseBtn: function () {
+		if (this.textLength > 0) {
+			$('.srchByPhraseBttn').css('color', bs.srchBtnBgClr);
+			$('.srchByPhraseBttn').enable();
+		} else {
+			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+			$('.srchByPhraseBttn').css('color', '#888888');
+			$('.srchByPhraseBttn').disable();
+		}		
 	},
-	enableSrchBtns: function () {
-	  $('.srchBtn').css('color', bs.srchBtnBgClr);
-		$('.srchBtn').enable();
-	},
-	
+	checkSrchByBarcdBtn: function () {
+		if (this.textLength > 0) {
+			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
+			$('.srchByBarcdBtn').enable();
+		} else {
+			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+			$('.srchByBarcdBtn').css('color', '#888888');
+			$('.srchByBarcdBtn').disable();
+		}
+	},	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -175,9 +184,9 @@ bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
-	  bs.disableSrchBtns();
-	},
-	
+	  bs.checkSrchByPhraseBtn();
+	  bs.checkSrchByBarcdBtn();
+	},	
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
   	$('tbody#copies').html('');
@@ -188,7 +197,8 @@ bs = {
 	  $('#searchDiv').show();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
-	  bs.disableSrchBtns();
+	  bs.checkSrchByPhraseBtn();
+	  bs.checkSrchByBarcdBtn();
 	},
 
 	rtnToList: function () {

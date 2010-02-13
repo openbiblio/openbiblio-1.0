@@ -57,7 +57,7 @@
 			<?php echo inputfield('text','searchBarcd','',array('size'=>'20','maxlength'=>'20')); ?>
 			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
 			<?php echo inputfield('hidden','sortBy','default'); ?>
-			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchBtn" />
+			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchByBarcdBtn" />
 		</td>
 	</tr>
 </table>
@@ -89,7 +89,7 @@
 			<?php echo inputfield('hidden','lookup',$lookup); ?>
 		</td>
 		<td>
-			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchBtn" />
+			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBttn" />
 		</td>
 	</tr>
 	<tr>
