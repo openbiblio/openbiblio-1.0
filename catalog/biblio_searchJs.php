@@ -47,8 +47,8 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-		$('#searchBarcd').bind('change',null,bs.enableSrchBtns);
-		$('#searchText').bind('change',null,bs.enableSrchBtns);
+		$('#searchBarcd').bind('keyup',null,bs.checkSrchByBarcdBtn);
+		$('#searchText').bind('keyup',null,bs.checkSrchByPhraseBtn);
 
 		// for the search results section
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
@@ -154,17 +154,36 @@ bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-
+	checkSrchByPhraseBtn: function () {
+		var txtLen = this.value;
+		if (txtLen.length > 0) {
+			$('.srchByPhraseBttn').css('color', bs.srchBtnBgClr);
+			$('.srchByPhraseBttn').enable();
+		} else {
+			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+			$('.srchByPhraseBttn').css('color', '#888888');
+			$('.srchByPhraseBttn').disable();
+		}		
+	},
+	checkSrchByBarcdBtn: function () {
+		var txtLen = this.value;
+		if (txtLen.length > 0) {
+			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
+			$('.srchByBarcdBtn').enable();
+		} else {
+			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+			$('.srchByBarcdBtn').css('color', '#888888');
+			$('.srchByBarcdBtn').disable();
+		}
+	},
 	disableSrchBtns: function () {
-	  bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-	  $('.srchBtn').css('color', '#888888');
-		$('.srchBtn').disable();
-	},
-	enableSrchBtns: function () {
-	  $('.srchBtn').css('color', bs.srchBtnBgClr);
-		$('.srchBtn').enable();
-	},
-	
+		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+		//$('.srchByBarcdBtn').css('color', '#888888');
+		$('.srchByBarcdBtn').disable();
+		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+		//$('.srchByPhraseBttn').css('color', '#888888');
+		$('.srchByPhraseBttn').disable();		
+	},	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -176,8 +195,7 @@ bs = {
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
 	  bs.disableSrchBtns();
-	},
-	
+	},	
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
   	$('tbody#copies').html('');
@@ -215,12 +233,6 @@ bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
-//			if (bs.opts.lookupAvail == 1) {
-//				bs.lookupAvailable = true;
-//				console.log('lookup engine available');
-//			} else {
-//				console.log('lookup engine not available');
-//			}
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -285,7 +297,6 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				//if (!bs.biblio.data) {
 				if (bs.biblio.data == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
@@ -304,7 +315,6 @@ bs = {
 	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';
 	  $('#errSpace').html('');
-		//$('#srchRsltsDiv').html('');
 		$('#srchRslts').html('');
 		$('.rsltQuan').html('');
 		$('#resultsArea').html('');
@@ -319,7 +329,6 @@ bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			//$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
 	  			$('#resultsArea').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
 					$('#biblioListDiv .goNextBtn').disable();
 					$('#biblioListDiv .goPrevBtn').disable();
@@ -778,6 +787,9 @@ bs = {
 		if ($('#autobarco:checked').length > 0) {
 			bs.doGetBarcdNmbr();
 		}
+  	var crntsite = bs.opts.current_site
+		$('#copy_site').val(crntsite);
+		
 		$('#copyEditorDiv').show();
 
 		// unbind & bind needed here because of button reuse elsewhere
@@ -797,7 +809,7 @@ bs = {
 	},
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
-		barcd = flos.pad(barcd,13,'0');
+		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#barcode_nmbr').val(barcd);
 	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
 	  	$('#editRsltMsg').html(response).show();
