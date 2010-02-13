@@ -45,6 +45,7 @@ define("OBIB_STATUS_ON_LOAN","ln");
 define("OBIB_STATUS_ON_ORDER","ord");
 define("OBIB_STATUS_SHELVING_CART","crt");
 define("OBIB_STATUS_ON_HOLD","hld");
+define("OBIB_STATUS_NOT_ON_LOAN","nol");
 define("OBIB_MBR_CLASSIFICATION_JUVENILE","j");
 define("OBIB_DEMO_FLG",false);
 define("OBIB_HIGHLIGHT_I18N_FLG",false);

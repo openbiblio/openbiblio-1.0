@@ -98,11 +98,13 @@ $(document).ready(bcnf.init);
 </script>
 
 <?php
-	$rows = $BCQ->getAll();
 
+	## add custom copy fields
+	$rows = $BCQ->getAll();
 	while ($row = $rows->next()) {
 		$fields[$row["description"].':'] = inputfield('text', 'custom_'.$row["code"], $_SESSION["postVars"]['custom_'.$row["code"]],NULL);
 	}
+	
 ?>
 
 <p class="note">

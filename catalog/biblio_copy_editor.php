@@ -5,11 +5,12 @@
  
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));	
+	require_once(REL(__FILE__, "../model/CopyStates.php"));	
 ?>
 <p class="note"><?php echo T("Fields marked are required"); ?></p>
+<p id="editRsltMsg" class="error"></p>
 
 <form id="copyForm" name="copyForm" >
-<p id="editRsltMsg" class="error"></p>
 <fieldset>
 <legend><?php echo T("Add New Copy"); ?></legend>
 <table id="copyTbl" class="primary">
@@ -51,15 +52,25 @@
 			<label for="status_cd"><?php echo T("Status:");?></label></td>
 		<td valign="top" class="primary">
 			</select>
-			<?php echo inputfield("select", "status_cd", "in", NULL,array(
-			                      "na" =>"",
-                            "in" =>T("IN"),
-														"out"=>T("OUT"),
-														"ln" =>T("LOAN"),
-														"ord"=>T("ON_ORDER"),
-														"crt"=>T("SHELVING_CART"),
-														"hld"=>T("ON_HOLD"),
-														));
+			<?php 	
+				$states = new CopyStates;
+				$state_select = $states->getSelect();
+				// These should not be selectable
+				unset($state_select[OBIB_STATUS_OUT]);
+				unset($state_select[OBIB_STATUS_ON_HOLD]);
+				unset($state_select[OBIB_STATUS_SHELVING_CART]);
+				
+				echo inputfield(select, status_cd, "in", null, $state_select);
+			
+				//echo inputfield("select", "status_cd", "in", NULL,array(
+			    //                  "na" =>"",
+                //            "in" =>T("IN"),
+				//										"out"=>T("OUT"),
+				//										"ln" =>T("LOAN"),
+				//										"ord"=>T("ON_ORDER"),
+				//										"crt"=>T("SHELVING_CART"),
+				//										"hld"=>T("ON_HOLD"),
+				//										));
 			?>
 		</td>
 	</tr>

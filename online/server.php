@@ -80,6 +80,13 @@ switch ($_REQUEST[mode]){
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
+	case 'getNewBarcd':
+		require_once(REL(__FILE__, "../model/Copies.php"));
+		$copies = new Copies;
+		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
+	  break;
+
+  #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getCutter':
 		if ($postVars[cutterType] == 'LoC') {
 			require_once('cutterLoc.php');
@@ -89,6 +96,7 @@ switch ($_REQUEST[mode]){
 		}
 		else {
 			echo "Invalid cutter type selection - '$postVars[cutterType]'. <br />";
+			exit;
 		}
 
 		echo "{'cutter':'".getCutter($_REQUEST[author])."'}";

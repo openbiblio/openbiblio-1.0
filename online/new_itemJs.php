@@ -41,40 +41,6 @@ td.btnFld {
 //------------------------------------------------------------------------------
 // newItem Javascript
 ni = {
-<?php
-/*
-	echo 'editHdr 	 				:"'.T('lookup_optsSettings').'",'."\n";
-	echo 'searchHdr					:"'.T("lookup_z3950Search").'",'."\n";
-	echo 'isbn							:"'.T("lookup_isbn").'",'."\n";
-	echo 'issn							:"'.T("lookup_issn").'",'."\n";
-	echo 'lccn							:"'.T("lookup_lccn").'",'."\n";
-	echo 'title							:"'.T("lookup_title").'",'."\n";
-	echo 'author						:"'.T("lookup_author").'",'."\n";
-	echo 'keyword						:"'.T("lookup_keyword").'",'."\n";
-	echo 'publisher					:"'.T("lookup_publisher").'",'."\n";
-	echo 'pubLoc						:"'.T("lookup_pubLoc").'",'."\n";
-	echo 'pubDate						:"'.T("lookup_pubDate").'",'."\n";
-	echo 'andOpt						:"'.T("lookup_andOpt").'",'."\n";
-	echo 'search						:"'.T("lookup_search").'",'."\n";
-	echo 'abandon						:"'.T("lookup_abandon").'",'."\n";
-	echo 'repository				:"'.T("lookup_repository").'",'."\n";
-	echo 'yaz_setup_failed	:"'.T("lookup_yazSetupFailed").'",'."\n";
-	echo 'badQuery					:"'.T("lookup_badQuery").'",'."\n";
-	echo 'patience					:"'.T("lookup_patience").'",'."\n";
-	echo 'resetInstr				:"'.T("lookup_resetInstr").'",'."\n";
-	echo 'goBack						:"'.T("lookup_goBack").'",'."\n";
-	echo 'accept						:"'.T("lookup_accept").'",'."\n";
-	echo 'yazError					:"'.T("lookup_yazError").'",'."\n";
-	echo 'nothingFound			:"'.T("lookup_nothingFound").'",'."\n";
-	echo 'tooManyHits				:"'.T("lookup_tooManyHits").'",'."\n";
-	echo 'refineSearch			:"'.T("lookup_refineSearch").'",'."\n";
-	echo 'success						:"'.T("lookup_success").'",'."\n";
-	echo 'hits							:"'.T("lookup_hits").'",'."\n";
-	echo 'callNmbrType			:"'.T("lookup_callNmbrType").'",'."\n";
-	echo 'useThis						:"'.T("lookup_useThis").'",'."\n";
-	echo 'searchError				:"'.T("lookup_searchError").'",'."\n";
-*/
-?>
 	init: function () {
 		// get header stuff going first
 		ni.initWidgets();
@@ -124,6 +90,7 @@ ni = {
 			return ni.doBackToSrch();
 			//return false;
 		});
+		$('#barcode_nmbr').bind('change',null,ni.chkBarcdForDupe);
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
 		}
@@ -229,13 +196,22 @@ ni = {
 		});
 	},
 	
+	chkBarcdForDupe: function () {
+		var barcd = $.trim($('#barcode_nmbr').val());
+		barcd = flos.pad(barcd,13,'0');
+		$('#barcode_nmbr').val(barcd);
+	  $.get(ni.bs_url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
+	  	$('#editRsltMsg').html(response).show();
+		})
+	},
+
 	showCopyEditor: function () {
   	$('#selectionDiv').hide();
   	var crntsite = ni.opts.session.current_site
 		//console.log('crnt site='+crntsite);
 		$('#copyTbl #copy_site').val(crntsite);
 		if ($('#autobarco:checked').length > 0) {
-			ni.doGetBarcdNmbr(ni.bibid);
+			ni.doGetBarcdNmbr2(ni.bibid);
 		}
 		$('#copyEditorDiv').show();
 	},
@@ -252,8 +228,13 @@ ni = {
 	  return false;
 	},
 
-	doGetBarcdNmbr: function () {
-		$.getJSON(ni.bs_url,{'mode':'getBarcdNmbr','bibid':ni.bibid}, function(jsonInpt){
+//	doGetBarcdNmbr: function () {
+//		$.getJSON(ni.bs_url,{'mode':'getBarcdNmbr','bibid':ni.bibid}, function(jsonInpt){
+//		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
+//		});
+//	},
+	doGetBarcdNmbr2: function () {
+		$.getJSON(ni.url,{'mode':'getNewBarcd'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},
@@ -458,8 +439,6 @@ ni = {
 					  	data = hitData;
 					  });
 					});
-					//$('#biblioBtn').bind('click',null,ni.doBackToSrch);
-					//$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
 					ni.doShowOne(data);
 				}
 			} // else
@@ -485,9 +464,9 @@ ni = {
 	},
 	doShowOne: function (data){
 	  $('#searchDiv').hide();
-		// assure all are visible at start
+		// assure all marc fields are empty & visible at start
     $(".marcBiblioFld").each(function(){
-			$(this).parent().parent().show();
+			$(this).parent().parent().val('').show();
 		});
 
 		for (var tag in data) {
@@ -527,9 +506,11 @@ ni = {
 		case 'dew':
 		  var callNmbr = ni.makeCallNmbr(data['082a']);
 			//console.log('callNmbr='+callNmbr)
-    	var cutter = ni.makeCutter(data['100a'], data['245a']);
-			//console.log('cutter='+cutter)
-			$('#099a').val(callNmbr+cutter);
+//			if (ni.opts[autoCutter] == 'y') {
+    		var cutter = ni.makeCutter(data['100a'], data['245a']);
+				//console.log('cutter='+cutter)
+				$('#099a').val(callNmbr+cutter);
+//			}
 			break;
 		case 'udc':
 		  var callNmbr = ni.makeCallNmbr(data['080a']);
@@ -599,9 +580,11 @@ ni = {
 
 	makeCutter: function (auth,titl) {
 		//console.log('auth=<'+auth+'>; titl=<'+titl+'>');
+	  if (ni.opts['autoCutter'] == 'n') return; // not wanted
+	  
 	  var cutter = '';
 	  auth = auth.trim(); titl = titl.trim();
-		if ((ni.opts['autoCutter']) && ((auth != '') && (auth != 'undefined'))  ) {
+		if ((auth != '') && (auth != 'undefined')) {
 	  	$.getJSON(ni.url,{mode:'getCutter', author:auth}, function(data){
 				//console.log('data='+data)
 				cutter = data['cutter'];

@@ -47,7 +47,7 @@ class DBTable {
 	function setIter($classname) {
 		$this->iter = $classname;
 	}
-	/* OVERRIDE THIS */
+	/* Abstract Method OVERRIDE THIS */
 	function validate_el($rec, $insert) {
 		return array();
 	}

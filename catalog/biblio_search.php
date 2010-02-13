@@ -53,11 +53,11 @@
 <table class="primary">
 	<tr>
 		<td nowrap="true" class="primary">
-			<label for="searchText"><?php echo T("Barcode Number:");?></label>
+			<label for="searchBarcd"><?php echo T("Barcode Number:");?></label>
 			<?php echo inputfield('text','searchBarcd','',array('size'=>'20','maxlength'=>'20')); ?>
 			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
 			<?php echo inputfield('hidden','sortBy','default'); ?>
-			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchBtn" />
+			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchByBarcdBtn" />
 		</td>
 	</tr>
 </table>
@@ -89,7 +89,7 @@
 			<?php echo inputfield('hidden','lookup',$lookup); ?>
 		</td>
 		<td>
-			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchBtn" />
+			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBttn" />
 		</td>
 	</tr>
 	<tr>
@@ -238,7 +238,7 @@
 	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
-	<?php if (strtolower($tab) != 'opac') {?>
+	<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -257,7 +257,7 @@
 		<table id="copyList">
 		<thead>
 		<tr>
-				<?php if ($tab != "opac"){ ?>
+				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
 					<th nowrap="yes"><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
@@ -278,7 +278,7 @@
 	
 	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<?php if (strtolower($tab) != 'opac') { ?>
+<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
 <?php } ?>
 </div>

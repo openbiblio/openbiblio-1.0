@@ -17,7 +17,8 @@
 <script language="JavaScript" >
 // JavaScript Document
 <?php
-	if($tab == 'opac' || $tab == 'OPAC')
+	// If a circulation user and NOT a cataloging user the system should treat the user as opac
+	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
 	  echo "var opacMode = true;";
 	else
 	  echo "var opacMode = false;";
@@ -46,8 +47,8 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
-		$('#searchBarcd').bind('change',null,bs.enableSrchBtns);
-		$('#searchText').bind('change',null,bs.enableSrchBtns);
+		$('#searchBarcd').bind('keyup',null,bs.checkSrchByBarcdBtn);
+		$('#searchText').bind('keyup',null,bs.checkSrchByPhraseBtn);
 
 		// for the search results section
 		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
@@ -118,6 +119,7 @@ bs = {
 		});
 
 		// for the copy editor screen
+		$('#barcode_nmbr').bind('change',null,bs.chkBarcdForDupe);
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
@@ -152,17 +154,36 @@ bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-
+	checkSrchByPhraseBtn: function () {
+		var txtLen = this.value;
+		if (txtLen.length > 0) {
+			$('.srchByPhraseBttn').css('color', bs.srchBtnBgClr);
+			$('.srchByPhraseBttn').enable();
+		} else {
+			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+			$('.srchByPhraseBttn').css('color', '#888888');
+			$('.srchByPhraseBttn').disable();
+		}		
+	},
+	checkSrchByBarcdBtn: function () {
+		var txtLen = this.value;
+		if (txtLen.length > 0) {
+			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
+			$('.srchByBarcdBtn').enable();
+		} else {
+			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+			$('.srchByBarcdBtn').css('color', '#888888');
+			$('.srchByBarcdBtn').disable();
+		}
+	},
 	disableSrchBtns: function () {
-	  bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-	  $('.srchBtn').css('color', '#888888');
-		$('.srchBtn').disable();
-	},
-	enableSrchBtns: function () {
-	  $('.srchBtn').css('color', bs.srchBtnBgClr);
-		$('.srchBtn').enable();
-	},
-	
+		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+		//$('.srchByBarcdBtn').css('color', '#888888');
+		$('.srchByBarcdBtn').disable();
+		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
+		//$('.srchByPhraseBttn').css('color', '#888888');
+		$('.srchByPhraseBttn').disable();		
+	},	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -174,8 +195,7 @@ bs = {
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
 	  bs.disableSrchBtns();
-	},
-	
+	},	
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
   	$('tbody#copies').html('');
@@ -213,12 +233,6 @@ bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
-//			if (bs.opts.lookupAvail == 1) {
-//				bs.lookupAvailable = true;
-//				console.log('lookup engine available');
-//			} else {
-//				console.log('lookup engine not available');
-//			}
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -270,6 +284,10 @@ bs = {
 		return false;
 	},
 	doBarcdSearch: function (e) {
+		var barcd = $.trim($('#searchBarcd').val());
+		barcd = flos.pad(barcd,13,'0');
+		$('#searchBarcd').val(barcd);
+		
 	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
 	  var params = $('#barcodeSearch').serialize();
@@ -279,7 +297,6 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
-				//if (!bs.biblio.data) {
 				if (bs.biblio.data == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
@@ -298,7 +315,6 @@ bs = {
 	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';
 	  $('#errSpace').html('');
-		//$('#srchRsltsDiv').html('');
 		$('#srchRslts').html('');
 		$('.rsltQuan').html('');
 		$('#resultsArea').html('');
@@ -313,7 +329,6 @@ bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			//$('#srchRsltsDiv').html('<p class="error">Nothing Found by text search</p>');
 	  			$('#resultsArea').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
 					$('#biblioListDiv .goNextBtn').disable();
 					$('#biblioListDiv .goPrevBtn').disable();
@@ -746,7 +761,7 @@ bs = {
 		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #copy_site').val([bs.crntCopy.site]);
-		$('#copyTbl #status_cd').val(bs.crntCopy.status_cd);
+		$('#copyTbl #status_cd').val(bs.crntCopy.statusCd);
 		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
 
 		// custom fields
@@ -772,6 +787,9 @@ bs = {
 		if ($('#autobarco:checked').length > 0) {
 			bs.doGetBarcdNmbr();
 		}
+  	var crntsite = bs.opts.current_site
+		$('#copy_site').val(crntsite);
+		
 		$('#copyEditorDiv').show();
 
 		// unbind & bind needed here because of button reuse elsewhere
@@ -785,9 +803,17 @@ bs = {
 		return false;
 	},
 	doGetBarcdNmbr: function () {
-		$.getJSON(bs.url,{'mode':'getBarcdNmbr','bibid':bs.biblio.bibid}, function(jsonInpt){
+		$.getJSON(bs.url,{'mode':'getBarcdNmbr2'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
+	},
+	chkBarcdForDupe: function () {
+		var barcd = $.trim($('#barcode_nmbr').val());
+		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
+		$('#barcode_nmbr').val(barcd);
+	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
+	  	$('#editRsltMsg').html(response).show();
+		})
 	},
 	doCopyNew: function () {
 		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+bs.biblio.bibid;

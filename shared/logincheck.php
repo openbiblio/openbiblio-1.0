@@ -23,7 +23,12 @@ $_SESSION["returnPage"] = $returnPage;
 #*  Checking to see if session variables exist
 #****************************************************************************
 if (!isset($_SESSION["userid"]) or ($_SESSION["userid"] == "")) {
-	header("Location: ../shared/loginform.php");
+	// If siteId is given, pass it on. This allows for an easy link to be setup on the desktop of a certai site
+	if(isset($_REQUEST['selectSite'])){
+		header("Location: ../shared/loginform.php?selectSite=" . $_REQUEST['selectSite']);
+	} else {
+		header("Location: ../shared/loginform.php");
+	}	
 	exit();
 }
 
@@ -40,9 +45,13 @@ if ($tab == "circulation"){
 		exit();
 	}
 } elseif ($tab == "cataloging") {
+	// I would like to make a distinction, as Circulation users should be able to view the catalogue as OPAC users.
+	// If hasCircAuth allow biblio_search.php
 	if (!$_SESSION["hasCatalogAuth"]) {
-		header("Location: ../catalog/noauth.php");
-		exit();
+		if(!((basename($_SERVER[PHP_SELF]) == "biblio_search.php") && $_SESSION["hasCircAuth"])){
+			header("Location: ../catalog/noauth.php");
+			exit();
+		}
 	}
 } elseif ($tab == "admin") {
 	if (!$_SESSION["hasAdminAuth"]) {

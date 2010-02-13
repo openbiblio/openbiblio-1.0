@@ -120,6 +120,7 @@ function mkPostVars() {
 function setSessionFmSettings() {
 	$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 	$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
+	$_SESSION['item_barcode_width'] = Settings::get('item_barcode_width');
 	$_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
 	$_SESSION['mbr_autoBarcode_flg'] = Settings::get('mbr_autoBarcode_flg');
 	$_SESSION['allow_plugins_flg'] = Settings::get('allow_plugins_flg');

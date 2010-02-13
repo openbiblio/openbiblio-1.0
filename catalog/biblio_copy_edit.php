@@ -58,7 +58,7 @@ foreach ($customFields->getSelect() as $name => $title) {
 	if (isset($_REQUEST['custom_'.$name])) {
 		$custom[$name] = $_POST['custom_'.$name];
 	}
-	}
+}
 
 $copies->setCustomFields($copyid, $custom);
 

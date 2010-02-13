@@ -39,12 +39,20 @@ class Copies extends CoreTable {
 	 }
 
 	function getNextCopy() {
+	  ## deprecated - retained for compatability with legacy code
 		$sql = $this->db->mkSQL("select max(copyid) as nextCopy from biblio_copy");
 		$nextCopy = $this->db->select1($sql);
-		//print_r($nextCopy);
 		return $nextCopy["nextCopy"]+1;
 	}
-
+	
+	function getNewBarCode($width) {
+		//$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
+		$cpy = $this->db->select1($sql);
+	  if(empty($width)) $w = 13; else $w = $width;
+		return sprintf("%0".$w."s",($cpy[lastNmbr]+1));
+	}
+	
 	function insert_el($copy) {
 		$this->db->lock();
 		list($id, $errors) = parent::insert_el($copy);
@@ -65,19 +73,26 @@ class Copies extends CoreTable {
 				$errors[] = new FieldError($req, T("Required field missing"));
 			}
 		}
+		if($this->isDuplicateBarcd($copy['barcode_nmbr'], $copy['copyid'])){
+			$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+		}
+		return $errors;
+	}
+	function isDuplicateBarcd($barcd,$cpyid) {
 		/* Check for duplicate barcodes */
-		if (isset($copy['barcode_nmbr'])) {
+		if (isset($barcd)) {
 			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
-				. "where barcode_nmbr=%Q ", $copy['barcode_nmbr']);
-			if (isset($copy['copyid'])) {
-				$sql .= $this->db->mkSQL("and not copyid=%N ", $copy['copyid']);
+				. "where barcode_nmbr=%Q ", $barcd);
+			if (isset($cpyid)) {
+				$sql .= $this->db->mkSQL("and not copyid=%N ", $cpuid);
 			}
 			$duplicates = $this->db->select1($sql);
 			if ($duplicates['count'] > 0) {
-				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+//				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+				return true;
 			}
+			return false;
 		}
-		return $errors;
 	}
 	function normalizeBarcode($barcode) {
 		//return ereg_replace('^([A-Za-z]+)?0*(.*)', '\\1\\2', $barcode);

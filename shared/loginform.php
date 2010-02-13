@@ -21,6 +21,13 @@
 
 	$sites_table = new Sites;		
 	$sites = $sites_table->getSelect();	
+
+	// If the current_site is set, default to this site, otherwise default
+	if(isset($_REQUEST['selectSite'])){
+		$siteId = $_REQUEST['selectSite'];
+	} else {
+		$siteId = Settings::get('library_name');
+	}
 	
 	$tab = "circ";
 	$nav = "";
@@ -42,6 +49,11 @@
 <table class="primary">
 
 	<tbody>
+	<?php if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) { ?>
+		<tr>
+			<td colspan="2"><p><font color="red"><?php echo T("Browser not supported") ?></font></p></td>
+		</tr>
+	<?php } ?>
 	<tr>
 		<td valign="top" class="noborder">
 			<label for="username"><?php echo T("Username:"); ?></label>
@@ -64,7 +76,9 @@
 			<label for="selectSite"><?php echo T("Library Site"); ?>:</label>
 		</td>
 		<td>
-			<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>	
+			<?php 
+				echo inputfield('select', 'selectSite', $siteId, NULL, $sites); 	
+			?>	
 		</td>
 	</tr>
 	<?php } ?>

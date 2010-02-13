@@ -24,13 +24,11 @@
 	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 	if(empty($_SESSION['current_site'])) {
 		$libraryName  = Settings::get('library_name');
-		if($libraryName){
-			if(is_numeric($libraryName)){
-				$_SESSION['current_site'] = Settings::get('library_name');
-			} else {
-				$_SESSION['current_site'] = 1;
-			}
-		}	
+		if(is_numeric($libraryName)){
+			$_SESSION['current_site'] = Settings::get('library_name');
+		} else {
+			$_SESSION['current_site'] = 1;
+		}
 	}
 
 	## --------------------- ##
@@ -264,7 +262,8 @@ class SrchDb {
 		$sql = "INSERT `biblio_copy` SET "
 		      ."`bibid` = $bibid,"
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
-		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
+//		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
+		      ."`siteid` = '$_POST[copy_site]'," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
@@ -288,7 +287,19 @@ class SrchDb {
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		$this->db->unlock();
-		return T('Update completed');
+		
+		// Update custom fields if set
+		$copies = new Copies;
+		$custom = array();
+		$BCQ = new BiblioCopyFields;
+		$rows = $BCQ->getAll();
+		while ($row = $rows->next()) {
+			if (isset($_POST['custom_'.$row["code"]])) {
+				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
+			}
+		}
+		$copies->setCustomFields($copyid, $custom);
+		return T('Insert completed');
 	}
 	## ========================= ##
 	function updateCopy($bibid,$copyid) {
@@ -457,9 +468,11 @@ class SrchDb {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
 		echo "{'lookupAvail':'".in_array('lookup2',$_SESSION)."'"
-				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'}";
+		    .",'current_site':'$_SESSION[current_site]'"
+				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'"
+				.",'barcdWidth':'$_SESSION[item_barcode_width]'}";
 	  break;
-	  
+
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
@@ -478,7 +491,7 @@ class SrchDb {
 	  break;
 
 	case 'getSiteList':
-		require_once(REL(__FILE__, "../model/Sites.php"));
+//		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
 		$sites = $sites_table->getSelect();
 		foreach ($sites as $val => $desc) {
@@ -628,13 +641,26 @@ class SrchDb {
 	  break;
 
 	case 'getBarcdNmbr':
-		require_once(REL(__FILE__, "../model/Copies.php"));
+	  // deprecated - retained for legacy compatability only
+		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$CopyNmbr= $copies->getNextCopy();
 		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
 		echo "{'barcdNmbr':'" . sprintf("%07s",$CopyNmbr) . "'}";
 	  break;
 
+	case 'getBarcdNmbr2':
+		//require_once(REL(__FILE__, "../model/Copies.php"));
+		$copies = new Copies;
+		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
+	  break;
+
+	case 'chkBarcdForDupe':
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],NULL))
+			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+		break;
+		
 	case 'getBiblioFields':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$theDb = new SrchDB;
@@ -658,11 +684,15 @@ class SrchDb {
 
 	case 'updateCopy':
 	  $theDb = new SrchDB;
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
 	case 'newCopy':
 	  $theDb = new SrchDB;
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
