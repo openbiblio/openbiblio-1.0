@@ -89,7 +89,7 @@
 			<?php echo inputfield('hidden','lookup',$lookup); ?>
 		</td>
 		<td>
-			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBttn" />
+			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBtn" />
 		</td>
 	</tr>
 	<tr>

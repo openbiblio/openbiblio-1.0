@@ -48,6 +48,6 @@ if (isset($params['title']) && $params['title'] != '') {
 	# $params['title'] should be coming from the translation system, allow HTML
 	echo '<h3>'.$params['title'].'</h3>';
 }
-if (isset($_REQUEST['msg']) {
+if (isset($_REQUEST['msg'])) {
 	echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 }

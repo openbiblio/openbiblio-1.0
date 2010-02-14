@@ -154,35 +154,30 @@ bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-	checkSrchByPhraseBtn: function () {
-		var txtLen = this.value;
-		if (txtLen.length > 0) {
-			$('.srchByPhraseBttn').css('color', bs.srchBtnBgClr);
-			$('.srchByPhraseBttn').enable();
+	checkSrchByPhraseBtn: function (e) {
+		if (e.keyCode >= 48) { // first printable char
+			$('.srchByPhraseBtn').css('color', bs.srchBtnBgClr);
+			$('.srchByPhraseBtn').enable();
 		} else {
-			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-			$('.srchByPhraseBttn').css('color', '#888888');
-			$('.srchByPhraseBttn').disable();
+			$('.srchByPhraseBtn').css('color', '#888888');
+			$('.srchByPhraseBtn').disable();
 		}		
 	},
-	checkSrchByBarcdBtn: function () {
-		var txtLen = this.value;
-		if (txtLen.length > 0) {
+	checkSrchByBarcdBtn: function (e) {
+		if (e.keyCode >= 48) { // first printable char
 			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
 			$('.srchByBarcdBtn').enable();
 		} else {
-			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
 			$('.srchByBarcdBtn').css('color', '#888888');
 			$('.srchByBarcdBtn').disable();
 		}
 	},
 	disableSrchBtns: function () {
 		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-		//$('.srchByBarcdBtn').css('color', '#888888');
+		$('.srchByBarcdBtn').css('color', '#888888');
 		$('.srchByBarcdBtn').disable();
-		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-		//$('.srchByPhraseBttn').css('color', '#888888');
-		$('.srchByPhraseBttn').disable();		
+		$('.srchByPhraseBtn').css('color', '#888888');
+		$('.srchByPhraseBtn').disable();
 	},	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
