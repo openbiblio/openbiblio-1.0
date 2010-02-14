@@ -158,18 +158,12 @@ bs = {
 		if (e.keyCode >= 48) { // first printable char
 			$('.srchByPhraseBtn').css('color', bs.srchBtnBgClr);
 			$('.srchByPhraseBtn').enable();
-		} else {
-			$('.srchByPhraseBtn').css('color', '#888888');
-			$('.srchByPhraseBtn').disable();
-		}		
+		}
 	},
 	checkSrchByBarcdBtn: function (e) {
 		if (e.keyCode >= 48) { // first printable char
 			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
 			$('.srchByBarcdBtn').enable();
-		} else {
-			$('.srchByBarcdBtn').css('color', '#888888');
-			$('.srchByBarcdBtn').disable();
 		}
 	},
 	disableSrchBtns: function () {
