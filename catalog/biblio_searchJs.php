@@ -31,7 +31,6 @@ bs = {
 	init: function () {
 		// get header stuff going first
 		bs.initWidgets();
-		bs.resetForms();
 
 		bs.url = 'biblio_server.php';
 		bs.urlLookup = '../online/server.php'; //may not exist
@@ -47,6 +46,7 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
+		bs.srchBtnClr = $('#srchByBarcd').css('color');
 		$('#searchBarcd').bind('keyup',null,bs.checkSrchByBarcdBtn);
 		$('#searchText').bind('keyup',null,bs.checkSrchByPhraseBtn);
 
@@ -130,6 +130,7 @@ bs = {
 			bs.rtnToBiblio();
 		});
 
+		bs.resetForms();
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
@@ -154,25 +155,20 @@ bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-	checkSrchByPhraseBtn: function (e) {
-		if (e.keyCode >= 48) { // first printable char
-			$('.srchByPhraseBtn').css('color', bs.srchBtnBgClr);
-			$('.srchByPhraseBtn').enable();
+	checkSrchByPhraseBtn: function () {
+		if (($('#searchText').val()).length > 0) { // empty input
+			$('#srchByPhrase').enable().css('color', bs.srchBtnClr);
+		} else {
+			$('#srchByPhrase').disable().css('color', '#888888');
 		}
 	},
-	checkSrchByBarcdBtn: function (e) {
-		if (e.keyCode >= 48) { // first printable char
-			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
-			$('.srchByBarcdBtn').enable();
+	checkSrchByBarcdBtn: function () {
+		if (($('#searchBarcd').val()).length > 0) { // empty input
+			$('#srchByBarcd').enable().css('color', bs.srchBtnClr);
+		} else {
+			$('#srchByBarcd').disable().css('color', '#888888');
 		}
 	},
-	disableSrchBtns: function () {
-		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-		$('.srchByBarcdBtn').css('color', '#888888');
-		$('.srchByBarcdBtn').disable();
-		$('.srchByPhraseBtn').css('color', '#888888');
-		$('.srchByPhraseBtn').disable();
-	},	
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -183,8 +179,9 @@ bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
-	  bs.disableSrchBtns();
-	},	
+	  bs.checkSrchByPhraseBtn();
+	  bs.checkSrchByBarcdBtn();
+	},
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
   	$('tbody#copies').html('');
@@ -195,7 +192,8 @@ bs = {
 	  $('#searchDiv').show();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
-	  bs.disableSrchBtns();
+	  bs.checkSrchByPhraseBtn();
+	  bs.checkSrchByBarcdBtn();
 	},
 
 	rtnToList: function () {
