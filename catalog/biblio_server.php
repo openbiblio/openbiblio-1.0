@@ -685,7 +685,7 @@ class SrchDb {
 	case 'updateCopy':
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
+	  //if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 
