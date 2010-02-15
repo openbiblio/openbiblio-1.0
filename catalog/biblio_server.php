@@ -685,8 +685,14 @@ class SrchDb {
 	case 'updateCopy':
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
-	  //if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		break;
+
+	case 'yupdateCopy':
+	  $copies = new Copies;
+		$errors = $copies->update_el($_POST);
+		echo $errors;
 		break;
 
 	case 'newCopy':
@@ -694,6 +700,13 @@ class SrchDb {
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		break;
+
+	case 'ynewCopy':
+		$copies = new Copies;
+		$errors = $copies->insert_el($_POST);
+		# Do whatever needs to be done on error or success, e.g. returning status in a JSON structure
+		echo $errors;
 		break;
 
 	case 'deleteCopy':

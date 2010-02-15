@@ -80,11 +80,12 @@ class Copies extends CoreTable {
 	}
 	function isDuplicateBarcd($barcd,$cpyid) {
 		/* Check for duplicate barcodes */
+		/* broken out from validate_el() for access by client via AJAX - fl*/
 		if (isset($barcd)) {
 			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
 				. "where barcode_nmbr=%Q ", $barcd);
 			if (isset($cpyid)) {
-				$sql .= $this->db->mkSQL("and not copyid=%N ", $cpuid);
+				$sql .= $this->db->mkSQL("and not copyid=%N ", $cpyid);
 			}
 			$duplicates = $this->db->select1($sql);
 			if ($duplicates['count'] > 0) {
