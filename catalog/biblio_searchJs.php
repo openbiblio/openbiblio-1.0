@@ -112,6 +112,7 @@ bs = {
 		$('#autobarco').bind('change',null,function (){
 		  if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
+				bs.doGetBarcdNmbr();
 			}
 			else {
 				$('#barcode_nmbr').enable();
