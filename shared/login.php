@@ -61,6 +61,8 @@ unset($_SESSION["pageErrors"]);
 
 if(isset($_REQUEST['selectSite'])){
 	$_SESSION['current_site'] = $_REQUEST['selectSite'];
+	// Also set as cookie, this allows in libraries with multiple sites to automatic logon on the same library "(set for 1 year)
+	setcookie("OpenBiblioSiteID", $_SESSION['current_site'], time()+60*60*24*365);
 }
 
 $_SESSION["username"] = $user['username'];

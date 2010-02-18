@@ -22,11 +22,16 @@
 	$sites_table = new Sites;		
 	$sites = $sites_table->getSelect();	
 
-	// If the current_site is set, default to this site, otherwise default
+	// If the current_site is set, default to this site, otherwise use the cookie and finally the site default
 	if(isset($_REQUEST['selectSite'])){
 		$siteId = $_REQUEST['selectSite'];
+	} elseif(isset($_COOKIE['OpenBiblioSiteID'])) {
+		$siteId = $_COOKIE['OpenBiblioSiteID'];
 	} else {
 		$siteId = Settings::get('library_name');
+		if(!is_numeric($siteId)){
+			$siteId = 1;
+		}
 	}
 	
 	$tab = "circ";

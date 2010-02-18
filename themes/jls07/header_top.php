@@ -22,16 +22,27 @@ if (Settings::get('charset') != "") { ?>
 
 <title>
 <?php
+	// If the cookie contains a site id, we take this one, otherwise the default.
 	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 	$libName  = Settings::get('library_name');
-	if(is_numeric($libName)){
-		if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = $libName;
+	if(empty($_SESSION['current_site'])) {
+		if(isset($_COOKIE['OpenBiblioSiteID'])) {
+			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];
+		} elseif(is_numeric($libName)){
+			$_SESSION['current_site'] = $libName;
+		} else {
+			$_SESSION['current_site'] = 1;
+		}
+	}
+	if(empty($_SESSION['current_site'])) {
+		$_SESSION['current_site'] = 1;
+	}
+	
+	if(is_numeric($libName)){	
 		$sit = new Sites;
 		$lib = $sit->getOne($_SESSION['current_site']);
 		$libName = $lib[name];				
-	} else {
-		if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = 1;
-	}	
+	} 	
 		
 	echo $libName;
 	if($params['title']) {

@@ -26,6 +26,8 @@
 		$libraryName  = Settings::get('library_name');
 		if(is_numeric($libraryName)){
 			$_SESSION['current_site'] = Settings::get('library_name');
+		} elseif(isset($_COOKIE['OpenBiblioSiteID'])) {
+			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];
 		} else {
 			$_SESSION['current_site'] = 1;
 		}

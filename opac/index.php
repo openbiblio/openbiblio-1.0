@@ -12,12 +12,18 @@ $sites = $sites_table->getSelect();
 
 // Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 if(empty($_SESSION['current_site'])){ 
- 	$libraryName  = Settings::get('library_name');
- 	if(is_numeric($libraryName)){
- 		$_SESSION['current_site'] = $libraryName;
- 	} else {
- 		$_SESSION['current_site'] = 1;
- 	}	
+ 	// Check for cookie, otherwise take default
+	if(isset($_COOKIE['OpenBiblioSiteID'])) {
+		$siteId = $_COOKIE['OpenBiblioSiteID'];
+	} else {
+		$libraryName  = Settings::get('library_name');
+		if(is_numeric($libraryName)){
+			$_SESSION['current_site'] = $libraryName;
+		} else {
+			$_SESSION['current_site'] = 1;
+		}
+		setcookie("OpenBiblioSiteID", $_SESSION['current_site'], time()+60*60*24*365);
+	}			
 }
 	
 if(isset($_REQUEST['selectSite'])){
