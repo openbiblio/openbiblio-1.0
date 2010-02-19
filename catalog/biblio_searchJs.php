@@ -113,6 +113,7 @@ bs = {
 		  if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
 				bs.doGetBarcdNmbr();
+				$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
 			}
 			else {
 				$('#barcode_nmbr').enable();
@@ -124,7 +125,8 @@ bs = {
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
-			bs.rtnToBiblio();
+			// Moved to function
+			//bs.rtnToBiblio();			
 		});
 		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
 		$('#copyCancelBtn').bind('click',null,function () {
@@ -761,10 +763,14 @@ bs = {
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
-			bs.rtnToBiblio();
+			// Moved to function
+			//bs.rtnToBiblio();
 			return false;
 		});
 
+		// Set 'update' button to enabled in case it wasn't from a previous edit
+		$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
+		
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
 	  // prevent submit button from firing a 'submit' action
@@ -799,8 +805,14 @@ bs = {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#barcode_nmbr').val(barcd);
-	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
-	  	$('#editRsltMsg').html(response).show();
+	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':bs.crntCopy.copyid}, function (response) {
+	  	if(response.length > 0){
+			$('#copySubmitBtn').disable().css('color', '#888888');
+			$('#editRsltMsg').html(response).show();
+		} else {
+			$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
+			$('#editRsltMsg').html(response).show();
+		}
 		})
 	},
 	doCopyNew: function () {
@@ -817,11 +829,13 @@ bs = {
 	  return false;
 	},
 	doCopyUpdate: function () {
-		if ($('#copyTbl #barcode_nmbr').attr('disabled')) {
-	  	var barcdNmbr = bs.crntCopy.barcode_nmbr;
-		} else {
-	  	var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
-	  }
+	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
+	  // This is changed now as the text fields is updated - LJ
+	  //if ($('#autobarco:checked').length > 0) {
+	  //	var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
+	  //} else {
+	  //	var barcdNmbr = bs.crntCopy.barcode_nmbr;
+	  //}
 	  // serialize() ignores disabled fields, so cant reliably use in this case
 	  var copyDesc = $('#copyTbl #copy_desc').val();
 	  var statusCd = $('#copyTbl #status_cd').val();
@@ -838,9 +852,13 @@ bs = {
 		}					
 		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
-	  	$('#editRsltMsg').html(response);
-	  	bs.fetchCopyInfo(); // refresh copy display
-	    $('#editCancelBtn').val('Go Back');
+	  	if(response.length > 0){
+			$('#editRsltMsg').html(response);
+		} else {
+			bs.fetchCopyInfo(); // refresh copy display
+			$('#editCancelBtn').val('Go Back');
+			bs.rtnToBiblio();
+		}
 	  });
 	  // prevent submit button from firing a 'submit' action
 	  return false;

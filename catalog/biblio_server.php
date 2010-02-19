@@ -339,7 +339,8 @@ class SrchDb {
 		$copies->setCustomFields($copyid, $custom);		
 		
 		$this->db->unlock();
-		return T('Update completed');
+		// Changed this to nothing, so any message/output is taken as an error message - LJ
+		return;
 	}
 	## ========================= ##
 	function deleteCopy($bibid,$copyid) {
@@ -659,7 +660,7 @@ class SrchDb {
 
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],NULL))
+	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],$_REQUEST[copyid]))
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 		break;
 		
@@ -687,9 +688,12 @@ class SrchDb {
 	case 'updateCopy':
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
-		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-		break;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
+		echo T("Cannot save item: the barcode is already in use");
+		return;
+	  }	  
+	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+	  break;
 
 	case 'yupdateCopy':
 	  $copies = new Copies;
