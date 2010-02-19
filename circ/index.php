@@ -9,12 +9,14 @@
 
 	$tab = "circulation";
 	$nav = "searchform";
-	$focus_form_name = "barcodesearch";
-	if ($_SESSION[mbr_barcode] == 'Y')
+	if ($_SESSION['mbrBarcode_flg'] == 'Y') {
+		$focus_form_name = "barcodesearch";
 		$focus_form_field = "barcode_field";
-	else
+	}
+	else {
+		$focus_form_name = "phrasesearch";
 		$focus_form_field = "mbrName_field";
-
+	}
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));

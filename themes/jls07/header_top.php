@@ -68,7 +68,6 @@ obib = {
 
 	init: function() {
 		obib.reStripe();
-
 	  // set focus to specified field in all pages
 		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
 		  $('#'+obib.focusFormField).focus();
