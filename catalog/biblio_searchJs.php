@@ -292,6 +292,7 @@ bs = {
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
 				}
 				else {
+					bs.multiMode = false;
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
@@ -830,7 +831,7 @@ bs = {
 	},
 	doCopyUpdate: function () {
 	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
-	  // This is changed now as the text fields is updated - LJ
+	  //This is changed now as the text fields is updated - LJ
 	  //if ($('#autobarco:checked').length > 0) {
 	  //	var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
 	  //} else {
