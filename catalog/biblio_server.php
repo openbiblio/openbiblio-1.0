@@ -459,11 +459,6 @@ class SrchDb {
 	}
 }
 	#****************************************************************************
-//
-//if (in_array('lookup2',$_SESSION)) {
-//	echo "Lookup2 system code available.<br />";
-//}
-
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
@@ -491,12 +486,10 @@ class SrchDb {
 	  break;
 
 	case 'getSiteList':
-//		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
 		$sites = $sites_table->getSelect();
 		foreach ($sites as $val => $desc) {
-			$s .= '<option value="'.H($val).'" ';
-			$s .= ">".H($desc)."</option>\n";
+			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
 		}
 		echo $s;
 	  break;
@@ -640,7 +633,7 @@ class SrchDb {
 		}
 	  break;
 
-	case 'getBarcdNmbr':
+	case 'xgetBarcdNmbr':
 	  // deprecated - retained for legacy compatability only
 		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
