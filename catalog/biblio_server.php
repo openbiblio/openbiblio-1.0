@@ -536,7 +536,7 @@ class SrchDb {
 							$params = '{"tag":"245","suf":"a"},
 								{"tag":"245","suf":"b"}'; 
 							break;
-			case 'author': 		$type = 'phrase';
+			case 'author': 		$type = 'words';
 								$params ='{"tag":"100","suf":"a"},
 								{"tag":"245","suf":"c"}'; 
 							break;
