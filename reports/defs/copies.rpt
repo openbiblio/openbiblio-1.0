@@ -17,7 +17,7 @@
 .	order_by default=barcode_nmbr
 .		item barcode_nmbr title="Barcode"
 .		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
-.		item callno title="Call no." expr='ts3.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.		item callno title="Call no." expr='ts3.subfield_data' type=MARC skip_indicator="tf3.ind2_cd"
 .	end order_by
 .	string sitecode title="Site code"
 .	session_id
