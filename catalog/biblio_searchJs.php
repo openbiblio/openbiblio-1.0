@@ -275,7 +275,7 @@ bs = {
 	},
 	doBarcdSearch: function (e) {
 		var barcd = $.trim($('#searchBarcd').val());
-		barcd = flos.pad(barcd,13,'0');
+		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#searchBarcd').val(barcd);
 		
 	  bs.srchType = 'barCd';
