@@ -7,8 +7,8 @@
 
 	$tab = "circulation";
 	$nav = "mbr";
-	$focus_form_name = "bookingsearch";
-	$focus_form_field = "searchText";
+	$focus_form_name = "barcodesearch";
+	$focus_form_field = "barcodeNmbr";
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
