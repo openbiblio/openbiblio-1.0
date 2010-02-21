@@ -24,7 +24,7 @@
 	<thead></thead>
 	
 	<?php ## ----------------------- ## ?>
-	<tbody id="nonMarcBody unstriped">
+	<tbody id="nonMarcBody" class="unstriped">
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup>
