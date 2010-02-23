@@ -631,7 +631,8 @@ bs = {
 			  	bs.fldNo++;
 			  }
 			});
-
+			ie.init(); // ensure field bindings are current
+			
 	  	 var hidingRows = $('#itemEditorDiv td.filterable');
 
     	$('#itemEditorDiv').show();
@@ -707,6 +708,9 @@ bs = {
 		$(destId).val(text);
 	},
 	doItemUpdate: function () {
+	  // verify all required fields are present
+	  if (!ie.validate()) return;
+	  
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){

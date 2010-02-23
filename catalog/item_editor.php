@@ -2,6 +2,54 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+?>
+<script language="JavaScript" >
+//------------------------------------------------------------------------------
+// newItem Javascript
+ie = {
+	init: function () {
+		ie.itemSubmitBtn = $('#itemSubmitBtn');
+	  $('tbody#marcBody .reqd').bind('change',null,ie.validate);
+	},
+
+	disableItemSubmitBtn: function () {
+	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');
+	  ie.itemSubmitBtn.css('color', '#888888');
+		ie.itemSubmitBtn.disable();
+	},
+	enableItemSubmitBtn: function () {
+	  ie.itemSubmitBtn.css('color', ie.itemSubmitBtnClr);
+		ie.itemSubmitBtn.enable();
+	},
+
+	validate: function () {
+		// verify all 'required' fields are populated
+		var errs = 0;
+		$('tbody#marcBody .reqd').each(function () {
+		  var $fld = $(this);
+		  var reqdVal = $fld.val();
+		  if ((reqdVal == '') || (reqdVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
+				$fld.val('REQUIRED FIELD');
+				$fld.addClass('error')
+				errs++;
+			} else {
+				$fld.removeClass('error')
+			}
+		});
+		if (errs > 0) {
+		  ie.disableItemSubmitBtn()
+			return false;
+		} else {
+		  ie.enableItemSubmitBtn()
+		  return true;
+		}
+	}
+};
+$(document).ready(ie.init);
+
+</script>
+
+<?php
 
 	require_once("../shared/common.php");
 
