@@ -602,7 +602,7 @@ bs = {
 			$('#nonMarcBody #opacFlg').val([biblio.opacFlg]);
 			
 			// fill MARC fields with data on hand
-			// first non-repeating fields
+			// first non-repeating 'input' fields
 			$('#marcBody input.only1:text').each(function (){
 			  var tmp = bs.findMarcField(biblio, this.id);
 			  if (tmp){
@@ -610,6 +610,15 @@ bs = {
 			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
 			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
 			  }
+			});
+			// then any 'textarea' fields
+			$('#marcBody textarea.only1').each(function() {
+			  var tmp = bs.findMarcField(biblio, this.id);
+			  if (tmp){
+			  	$('#marcBody #'+tmp.marcTag).val(tmp.value);
+			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
+			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
+				}
 			});
 			// then repeaters
 			bs.lastFldTag = ''; 
@@ -632,8 +641,9 @@ bs = {
 			  }
 			});
 			ie.init(); // ensure field bindings are current
+//			ie.validate(); // in case there is missing data already
 			
-	  	 var hidingRows = $('#itemEditorDiv td.filterable');
+	  	//var hidingRows = $('#itemEditorDiv td.filterable');
 
     	$('#itemEditorDiv').show();
 		});
@@ -715,11 +725,11 @@ bs = {
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
 	  	$('#itemRsltMsg').html(response);
-			bs.rtnToBiblio()
-			if (bs.srchType == 'barCd')
-				bs.doBarCdSearch();
-			else if (bs.srchType = 'phrase')
-				bs.doPhraseSearch();
+//			bs.rtnToBiblio()
+//			if (bs.srchType == 'barCd')
+//				bs.doBarCdSearch();
+//			else if (bs.srchType = 'phrase')
+//				bs.doPhraseSearch();
 //			bs.rtnToBiblio()
 	  });
 	  return false;

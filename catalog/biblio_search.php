@@ -285,14 +285,14 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="itemEditorDiv">
-  <form id="biblioEditForm" name="biblioEditForm" method="POST" >
+  <form id="biblioEditForm" name="biblioEditForm" >
 		<p class="note"><?php echo T("Fields marked are required"); ?></p>
 		<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
-	<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
+		<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
 	
 		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
