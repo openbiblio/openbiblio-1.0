@@ -2,7 +2,54 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+?>
+<script language="JavaScript" >
+//------------------------------------------------------------------------------
+// newItem Javascript
+bf = {
+	init: function () {
+		bf.submitBtn = $('#submitBtn');
+	  $('tbody#marcBody .reqd').bind('change',null,bf.validate);
+	},
+	
+	disableSubmitBtn: function () {
+	  bf.submitBtnClr = bf.submitBtn.css('color');
+	  bf.submitBtn.css('color', '#888888');
+		bf.submitBtn.disable();
+	},
+	enableSubmitBtn: function () {
+	  bf.submitBtn.css('color', bf.submitBtnClr);
+		bf.submitBtn.enable();
+	},
 
+	validate: function () {
+		// verify all 'required' fields are populated
+		var errs = 0;
+		$('tbody#marcBody .reqd').each(function () {
+		  var $fld = $(this);
+		  var reqdVal = $fld.val();
+		  if ((reqdVal == '') || (reqdVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
+				$fld.val('REQUIRED FIELD');
+				$fld.addClass('error')
+				errs++;
+			} else {
+				$fld.removeClass('error')
+			}
+		});
+		if (errs > 0) {
+		  bf.disableSubmitBtn()
+			return false;
+		} else {
+		  bf.enableSubmitBtn()
+		  return true;
+		}
+	}
+};
+$(document).ready(bf.init);
+
+</script>
+
+<?php
 	require_once("../shared/common.php");
 
 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
@@ -215,3 +262,4 @@
 	</tfoot>
 </table>
 </fieldset>
+

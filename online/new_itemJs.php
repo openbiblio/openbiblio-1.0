@@ -187,16 +187,8 @@ ni = {
 	//------------------------------------------------------------------------------------------
 	// manual 'new biblio' related stuff
 	doInsertNew: function () {
-		// verify all 'required' fields are populated
-		var errs = 0;
-		$('#newbiblioform .reqd').each(function () {
-		  var $fld = $(this);
-		  if ($fld.val() == '') {
-				$fld.val('REQUIRED FIELD');
-				errs = errs+1;
-			}
-		});
-		if (errs > 0) return false;
+		// verify all 'required' fields are populated using biblio_flds JS code
+		if (!bf.validate()) return;
 
 	 	var parms=$('#newbiblioform').serialize();
 		parms += '&mode=doInsertBiblio';

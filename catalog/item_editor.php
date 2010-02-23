@@ -45,10 +45,10 @@
 		<td id="onlnColTitle" colspan="1" nowrap="true" class="primary filterable">
 			<b><?php echo T("Online Data"); ?></b>
 		</td>
+	</tr>
 	</tbody>
 
 	<tbody id="marcBody" class="striped">
-	</tr>
 	</tbody>
 </table>
 </fieldset>
