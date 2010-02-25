@@ -540,7 +540,7 @@ class SrchDb {
 									{"tag":"650","suf":"a"},
 									{"tag":"100","suf":"a"},
 									{"tag":"245","suf":"b"},
-									{"tag":"245","suf":"c"}',
+									{"tag":"245","suf":"c"},
 									{"tag":"505","suf":"a"}'; 
 								break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
