@@ -571,10 +571,12 @@ bs = {
 		return null;
 	},
 	findMarcFieldSet: function (biblio, tag) {
+console.log('looking for repeater with tag='+tag);
 	  var fldSet = []; var n = 0;
 	  for (var i=0; i< biblio.data.length; i++) {
 			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {
+console.log('found '+tag);
 				fldSet[n] = tmp;  n++;
 			}
 		}
@@ -623,6 +625,7 @@ bs = {
 			// then repeaters
 			bs.lastFldTag = ''; 
 			$('#marcBody input.rptd:text').not('.online').each(function (){
+console.log('working repeater: '+this.id);
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;
@@ -719,18 +722,23 @@ bs = {
 	},
 	doItemUpdate: function () {
 	  // verify all required fields are present
-	  if (!ie.validate()) return;
+	  if (!ie.validate()) return false;
 	  
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
-	  	$('#itemRsltMsg').html(response);
-//			bs.rtnToBiblio()
-//			if (bs.srchType == 'barCd')
-//				bs.doBarCdSearch();
-//			else if (bs.srchType = 'phrase')
-//				bs.doPhraseSearch();
-//			bs.rtnToBiblio()
+	    if ((response == '') || (response = 'undefined')){
+    		$('#itemEditorDiv').hide();
+	      // successful update, repeat search with existing criteria
+				if (bs.srchType == 'barCd')
+					bs.doBarCdSearch();
+				else if (bs.srchType = 'phrase')
+					bs.doPhraseSearch();
+			} else {
+			  // failure, leave form in place
+	  		$('#itemRsltMsg').html(response);
+				bs.rtnToBiblio()
+	 		}
 	  });
 	  return false;
 	},

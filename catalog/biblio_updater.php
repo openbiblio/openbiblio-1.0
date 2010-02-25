@@ -69,7 +69,7 @@ $fields = array();
  * sufficient for the easy-edit interface.
  */
 foreach ($_POST[fields] as $f) {
-	//print_r($f);echo"<br />";
+print_r($f);echo"<br />";
 
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		continue;
@@ -140,6 +140,7 @@ foreach ($fields as $fidx => $subfields) {
 /* Sort subfields and apply "smart" processing for particular fields */
 for ($i=0; $i < count($mrc->fields); $i++) {
 	usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
+echo "processing field: ".$mrc->fields[$i]->tag."<br />\n";
 	/* Special processing for 245$a -- FIXME, this should be generalized */
 	if ($mrc->fields[$i]->tag == 245) {
 		/* No title added entry. */
@@ -181,7 +182,8 @@ if ($nav == "newconfirm") {
 	$biblios->update($biblio);
 }
 
-echo T("Item successfully updated.");
+// system assumes any message implies failure
+//echo T("Item successfully updated."); // letters 'successful' MUST be included
 
 //#### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
 ////header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));

@@ -23,15 +23,12 @@ ie = {
 	},
 
 	validate: function () {
-console.log('validating');
 		// verify all 'required' fields are populated
 		var errs = 0;
 		$('tbody#marcBody .reqd').each(function () {
 		  var $fld = $('#'+this.id);
 		  var testVal = $fld.val();
-console.log("checking field: '"+this.id+"' with a value of '"+testVal+"'");
 		  if ((testVal == 'undefined') || (testVal == '') || (testVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
-console.log('bad content: <'+testVal+'>');
 				$fld.val('REQUIRED FIELD');
 				$fld.addClass('error')
 				errs++;
@@ -40,11 +37,9 @@ console.log('bad content: <'+testVal+'>');
 			}
 		});
 		if (errs > 0) {
-console.log(errs+' errors found');
 		  ie.disableItemSubmitBtn()
 			return false;
 		} else {
-console.log('no errors found');
 		  ie.enableItemSubmitBtn()
 		  return true;
 		}
