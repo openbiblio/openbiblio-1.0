@@ -263,7 +263,7 @@
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
 				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
 				<?php
-					if($_SESSION['show_copy_site'] == "Y"){
+					if($_SESSION['multi_site_func'] > 0){
 						echo "<th id=\"siteFld\" align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";
 					}
 				?>

@@ -16,9 +16,8 @@ if(empty($_SESSION['current_site'])){
 	if(isset($_COOKIE['OpenBiblioSiteID'])) {
 		$siteId = $_COOKIE['OpenBiblioSiteID'];
 	} else {
-		$libraryName  = Settings::get('library_name');
-		if(is_numeric($libraryName)){
-			$_SESSION['current_site'] = $libraryName;
+		if($_SESSION['multi_site_func'] > 0){
+			$_SESSION['current_site'] = $_SESSION['multi_site_func'];
 		} else {
 			$_SESSION['current_site'] = 1;
 		}

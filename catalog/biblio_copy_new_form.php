@@ -64,7 +64,7 @@ $(document).ready(bcnf.init);
 		T("Barcode Number") => inputfield("text","barcode_nmbr",NULL,$attr=array("size"=>20,"max"=>20)),
 		T("Auto Barcode") => inputfield("checkbox","autobarco",$_SESSION['item_autoBarcode_flg'],NULL,$_SESSION['item_autoBarcode_flg']),
 		T("Description") => inputfield("text", "copy_desc", NULL, $attr=array("size"=>40,"max"=>40)));
-	if($_SESSION['show_copy_site'] == "Y"){
+	if($_SESSION['multi_site_func'] > 0){
 		$sites_table = new Sites;
 		$sites = $sites_table->getSelect();
 		$fields[T("Site:")] = inputfield("select", "siteid", $_SESSION["postVars"]["siteid"], NULL, $sites);

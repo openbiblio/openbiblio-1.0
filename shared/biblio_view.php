@@ -283,8 +283,8 @@ if ($tab == "cataloging") {
 	#		(maybe not the most nice solution) - LJ
 	if(empty($_SESSION['show_detail_opac']))
 		$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
-	if(empty($_SESSION['show_copy_site']))
-		$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	if(empty($_SESSION['multi_site_func']))
+		$_SESSION['multi_site_func'] = Settings::get('multi_site_func');
 	
 	if (($tab != "cataloging") && ($_SESSION['show_detail_opac'] != 'Y')) {
 		Page::footer();

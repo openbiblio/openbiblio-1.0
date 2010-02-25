@@ -28,17 +28,14 @@ if (Settings::get('charset') != "") { ?>
 	if(empty($_SESSION['current_site'])) {
 		if(isset($_COOKIE['OpenBiblioSiteID'])) {
 			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];
-		} elseif(is_numeric($libName)){
-			$_SESSION['current_site'] = $libName;
+		} elseif($_SESSION['multi_site_func'] > 0){
+			$_SESSION['current_site'] = $_SESSION['multi_site_func'];
 		} else {
 			$_SESSION['current_site'] = 1;
 		}
 	}
-	if(empty($_SESSION['current_site'])) {
-		$_SESSION['current_site'] = 1;
-	}
 	
-	if(is_numeric($libName)){	
+	if($_SESSION['multi_site_func'] > 0){	
 		$sit = new Sites;
 		$lib = $sit->getOne($_SESSION['current_site']);
 		$libName = $lib[name];				
