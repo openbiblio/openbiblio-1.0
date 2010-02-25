@@ -39,6 +39,9 @@
 			<?php echo inputfield("text", "copy_desc", NULL, array("size"=>40,"max"=>40)); ?>
 		</td>
 	</tr>
+	<? // Not to be shown when in normal (non multisite mode)
+	if($_SESSION['multi_site_func'] > 0){
+	?>
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
 			<label for="copy_site"><?php echo T("Location"); ?></label>
@@ -47,6 +50,7 @@
     	<select id="copy_site" name="copy_site">to be filled in by server</span>
 		</td>
 	</tr>
+	<? } ?>
 	<tr>
 		<td nowrap="true" class="primary" valign="top">
 			<label for="status_cd"><?php echo T("Status:");?></label></td>
