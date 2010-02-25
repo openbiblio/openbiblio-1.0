@@ -418,7 +418,7 @@ class SrchDb {
 				// the font smaller for some people.
 				$attrs["style"] = "font-size:10pt; font-weight: normal;";
 				$attrs["rows"] = "7"; $attrs["cols"] = "38";
-				echo inputfield('textarea', $namePrefix."[data]", H($i['data']),$attrs)." \n";
+				echo inputfield('textarea', $namePrefix."[data]", H($i['data']),$attrs, H($i['data']))." \n";
 			}
 			echo "</td> \n";
 		}
@@ -635,18 +635,17 @@ class SrchDb {
 			}
 		}
 	  break;
-
-	case 'xgetBarcdNmbr':
+/*
+	case 'getBarcdNmbr':
 	  // deprecated - retained for legacy compatability only
-		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$CopyNmbr= $copies->getNextCopy();
 		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
-		echo "{'barcdNmbr':'" . sprintf("%07s",$CopyNmbr) . "'}";
+		$fmt = "%0".$_SESSION['item_barcode_width']."s";
+		echo "{'barcdNmbr':'" . sprintf($fmt,$CopyNmbr) . "'}";
 	  break;
-
+*/
 	case 'getBarcdNmbr2':
-		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
 	  break;
@@ -669,6 +668,7 @@ class SrchDb {
 	  break;
 
 	case 'updateBiblio':
+	  $nav = '';
 	  require_once(REL(__FILE__,"biblio_updater.php"));
 	  break;
 
@@ -687,27 +687,29 @@ class SrchDb {
 	  }	  
 	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 	  break;
-
-	case 'yupdateCopy':
+/*
+	//experimental
+	case 'updateCopy':
 	  $copies = new Copies;
 		$errors = $copies->update_el($_POST);
 		echo $errors;
 		break;
-
+*/
 	case 'newCopy':
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
-
-	case 'ynewCopy':
+/*
+	//experimental
+	case 'newCopy':
 		$copies = new Copies;
 		$errors = $copies->insert_el($_POST);
 		# Do whatever needs to be done on error or success, e.g. returning status in a JSON structure
 		echo $errors;
 		break;
-
+*/
 	case 'deleteCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->deleteCopy($_REQUEST[bibid],$_REQUEST[copyid]);

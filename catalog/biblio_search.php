@@ -294,7 +294,8 @@
 
 		<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
 	
-		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
+		<!--input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" /-->
+		<input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="<?php echo T("Go Back"); ?>" class="button itemGobkBtn" />
 	</form>

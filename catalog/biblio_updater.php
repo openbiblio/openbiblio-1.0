@@ -69,7 +69,7 @@ $fields = array();
  * sufficient for the easy-edit interface.
  */
 foreach ($_POST[fields] as $f) {
-print_r($f);echo"<br />";
+	//print_r($f);echo"<br />";
 
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		continue;

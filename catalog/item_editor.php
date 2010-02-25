@@ -23,12 +23,15 @@ ie = {
 	},
 
 	validate: function () {
+console.log('validating');
 		// verify all 'required' fields are populated
 		var errs = 0;
 		$('tbody#marcBody .reqd').each(function () {
-		  var $fld = $(this);
-		  var reqdVal = $fld.val();
-		  if ((reqdVal == '') || (reqdVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
+		  var $fld = $('#'+this.id);
+		  var testVal = $fld.val();
+console.log("checking field: '"+this.id+"' with a value of '"+testVal+"'");
+		  if ((testVal == 'undefined') || (testVal == '') || (testVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
+console.log('bad content: <'+testVal+'>');
 				$fld.val('REQUIRED FIELD');
 				$fld.addClass('error')
 				errs++;
@@ -37,9 +40,11 @@ ie = {
 			}
 		});
 		if (errs > 0) {
+console.log(errs+' errors found');
 		  ie.disableItemSubmitBtn()
 			return false;
 		} else {
+console.log('no errors found');
 		  ie.enableItemSubmitBtn()
 		  return true;
 		}
@@ -50,10 +55,9 @@ $(document).ready(ie.init);
 </script>
 
 <?php
-
 	require_once("../shared/common.php");
-
 ?>
+
 <fieldset>
 <legend><?php echo T("Item"); ?></legend>
 <table id="biblioFldTbl" class="primary">
