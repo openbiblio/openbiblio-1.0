@@ -571,10 +571,12 @@ bs = {
 		return null;
 	},
 	findMarcFieldSet: function (biblio, tag) {
+console.log('looking for repeater with tag='+tag);
 	  var fldSet = []; var n = 0;
 	  for (var i=0; i< biblio.data.length; i++) {
 			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {
+console.log('found '+tag);
 				fldSet[n] = tmp;  n++;
 			}
 		}
@@ -623,6 +625,7 @@ bs = {
 			// then repeaters
 			bs.lastFldTag = ''; 
 			$('#marcBody input.rptd:text').not('.online').each(function (){
+console.log('working repeater: '+this.id);
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;
