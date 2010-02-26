@@ -243,7 +243,7 @@ $(document).ready(bf.init);
 			// the font smaller for some people.
 			$attrs["style"] = "font-size:10pt; font-weight: normal;";
 			$attrs["rows"] = "7"; $attrs["cols"] = "38";
-			echo inputfield('textarea', "fields[".H($n)."][data]", H($i['data']),$attrs)." \n";
+			echo inputfield('textarea', "fields[".H($n)."][data]", H($i['data']), $attrs), H($i['data'])." \n";
 		}
 		echo "</td> \n";
 	echo "</tr> \n";

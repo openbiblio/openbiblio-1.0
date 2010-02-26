@@ -68,10 +68,12 @@ $fields = array();
  * identifier may be added at once.  This should be quite
  * sufficient for the easy-edit interface.
  */
+echo "POSTed fields:<br />\n";
 foreach ($_POST[fields] as $f) {
-	//print_r($f);echo"<br />";
+print_r($f);echo"<br />";
 
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
+echo "$f[tag] failed size test<br />\n";
 		continue;
 	}
 	$fidx = $f[tag].'-';
@@ -82,6 +84,7 @@ foreach ($_POST[fields] as $f) {
 	}
 	if (!is_array($fields[$fidx])) {
 		$fields[$fidx] = array();
+echo "creating field array for $fidx <br />\n";
 	}
 	$sfidx = $f['subfield_cd'].'-';
 	if ($f['subfieldid']) {
@@ -92,6 +95,8 @@ foreach ($_POST[fields] as $f) {
 
 	$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
 }
+echo "input field list:<br />\n";
+print_r($fields);echo"<br />";
 
 $mrc = new MarcRecord();
 $mrc->setLeader($biblio[marc]->getLeader());
@@ -123,6 +128,8 @@ foreach ($biblio[marc]->fields as $f) {
 		array_push($mrc->fields, $fld);
 	}
 }
+echo "marc field list:<br />\n";
+print_r($mrc->fields);
 
 /* Add new fields */
 foreach ($fields as $fidx => $subfields) {
@@ -140,6 +147,7 @@ foreach ($fields as $fidx => $subfields) {
 /* Sort subfields and apply "smart" processing for particular fields */
 for ($i=0; $i < count($mrc->fields); $i++) {
 	usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
+echo "processing field: ".$mrc->fields[$i]->tag."<br />\n";
 	/* Special processing for 245$a -- FIXME, this should be generalized */
 	if ($mrc->fields[$i]->tag == 245) {
 		/* No title added entry. */
@@ -181,7 +189,8 @@ if ($nav == "newconfirm") {
 	$biblios->update($biblio);
 }
 
-echo T("Item successfully updated.");
+// system assumes any message implies failure
+//echo T("Item successfully updated."); // letters 'successful' MUST be included
 
 //#### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
 ////header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));
