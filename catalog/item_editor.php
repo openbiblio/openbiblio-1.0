@@ -27,9 +27,9 @@ ie = {
 		var errs = 0;
 		$('tbody#marcBody .reqd').each(function () {
 		  var $fld = $('#'+this.id);
-		  var testVal = $fld.val();
+		  var testVal = $.trim($fld.val());  //assure no whitespace to mess things up
 		  if ((testVal == 'undefined') || (testVal == '') || (testVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
-				$fld.addClass('error').val('REQUIRED FIELD');
+				$fld.addClass('error').val("<?php echo T('REQUIRED FIELD'); ?>");
 				errs++;
 			} else {
 				$fld.removeClass('error')

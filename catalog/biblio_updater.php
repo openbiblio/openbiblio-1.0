@@ -70,12 +70,13 @@ $fields = array();
  */
 echo "POSTed fields:<br />\n";
 foreach ($_POST[fields] as $f) {
-print_r($f);echo"<br />";
+print_r($f);echo"<br />\n";
 
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
-echo "$f[tag] failed size test<br />\n";
+		//echo "$f[tag] failed size test<br />\n";
 		continue;
 	}
+	
 	$fidx = $f[tag].'-';
 	if ($f['fieldid']) {
 		$fidx .= $f['fieldid'];
@@ -83,20 +84,23 @@ echo "$f[tag] failed size test<br />\n";
 		$fidx .= 'new';
 	}
 	if (!is_array($fields[$fidx])) {
+echo "creating new field array for index $fidx <br />\n";
 		$fields[$fidx] = array();
-echo "creating field array for $fidx <br />\n";
 	}
+	
 	$sfidx = $f['subfield_cd'].'-';
 	if ($f['subfieldid']) {
 		$sfidx .= $f['subfieldid'];
 	} else {
 		$sfidx .= 'new';
 	}
-
-	$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+	if (!array_key_exists($sfidx,$fields[$fidx])) {
+echo "creating subfield index $sfidx <br />\n";
+		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+	}
 }
 echo "input field list:<br />\n";
-print_r($fields);echo"<br />";
+print_r($fields);echo"<br />\n";
 
 $mrc = new MarcRecord();
 $mrc->setLeader($biblio[marc]->getLeader());
