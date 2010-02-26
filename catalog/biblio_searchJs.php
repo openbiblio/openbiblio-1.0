@@ -133,27 +133,13 @@ bs = {
 			bs.rtnToBiblio();
 		});
 
+		// begin processing; last item MUST include a call to bs.doAltStart()
 		bs.resetForms();
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 		bs.fetchSiteList();
 		
-		// alternate startup in response to remote package
-		<?php
-		if ($_REQUEST[barcd]) {
-			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
-			echo "bs.doBarcdSearch();\n";
-		}
-		else if ($_REQUEST[bibid]) {
-			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
-		}
-		else if ($_REQUEST[searchText]) {
-			echo "$('#searchText').val('$_REQUEST[searchText]');\n";
-			echo "$('#searchType').val('$_REQUEST[searchType]');\n";
-			echo "bs.doPhraseSearch();\n";
-		}
-		?>
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -219,6 +205,23 @@ bs = {
 	  $('#copyEditorDiv').hide();
 	},
 
+	doAltStart: function () {
+		// alternate startup in response to remote package
+		<?php
+		if ($_REQUEST['barcd']) {
+			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
+			echo "bs.doBarcdSearch();\n";
+		}
+		else if ($_REQUEST['bibid']) {
+			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
+		}
+		else if ($_REQUEST['searchText']) {
+			echo "$('#searchText').val('$_REQUEST[searchText]');\n";
+			echo "$('#searchType').val('$_REQUEST[searchType]');\n";
+			echo "bs.doPhraseSearch();\n";
+		}
+		?>
+	},
 	//------------------------------
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
@@ -247,6 +250,9 @@ bs = {
 			// Add all for search sites
 			data = '<option value="all"  selected="selected">All</option>' + data;
 			$('#srchSites').html(data);
+			
+			// now ready to begin a search
+			bs.doAltStart();
 		});
 	},	
 	
@@ -571,12 +577,10 @@ bs = {
 		return null;
 	},
 	findMarcFieldSet: function (biblio, tag) {
-console.log('looking for repeater with tag='+tag);
 	  var fldSet = []; var n = 0;
 	  for (var i=0; i< biblio.data.length; i++) {
 			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {
-console.log('found '+tag);
 				fldSet[n] = tmp;  n++;
 			}
 		}
@@ -625,7 +629,6 @@ console.log('found '+tag);
 			// then repeaters
 			bs.lastFldTag = ''; 
 			$('#marcBody input.rptd:text').not('.online').each(function (){
-console.log('working repeater: '+this.id);
 				var fldNamePrefix = (this.name.split(']'))[0]+']';
 			  if (this.id != bs.lastFldTag) {
 					bs.lastFldTag = this.id;
