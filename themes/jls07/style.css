@@ -315,6 +315,9 @@ p.error {
 input.error {
 	color: red;
 	}
+label.error {
+	color: red;
+	}
 td.label {
 	text-align: left; /*vertical-align: center;*/
 	white-space: nowrap;

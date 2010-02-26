@@ -68,9 +68,9 @@ $fields = array();
  * identifier may be added at once.  This should be quite
  * sufficient for the easy-edit interface.
  */
-echo "POSTed fields:<br />\n";
+	//echo "POSTed fields:<br />\n";
 foreach ($_POST[fields] as $f) {
-print_r($f);echo"<br />\n";
+	//print_r($f);echo"<br />\n";
 
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		//echo "$f[tag] failed size test<br />\n";
@@ -84,7 +84,7 @@ print_r($f);echo"<br />\n";
 		$fidx .= 'new';
 	}
 	if (!is_array($fields[$fidx])) {
-echo "creating new field array for index $fidx <br />\n";
+		//echo "creating new field array for index $fidx <br />\n";
 		$fields[$fidx] = array();
 	}
 	
@@ -95,12 +95,12 @@ echo "creating new field array for index $fidx <br />\n";
 		$sfidx .= 'new';
 	}
 	if (!array_key_exists($sfidx,$fields[$fidx])) {
-echo "creating subfield index $sfidx <br />\n";
+		//echo "creating subfield index $sfidx <br />\n";
 		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
 	}
 }
-echo "input field list:<br />\n";
-print_r($fields);echo"<br />\n";
+//echo "input field list:<br />\n";
+//print_r($fields);echo"<br />\n";
 
 $mrc = new MarcRecord();
 $mrc->setLeader($biblio[marc]->getLeader());
@@ -133,7 +133,7 @@ foreach ($biblio[marc]->fields as $f) {
 	}
 }
 echo "marc field list:<br />\n";
-print_r($mrc->fields);
+//print_r($mrc->fields);
 
 /* Add new fields */
 foreach ($fields as $fidx => $subfields) {
@@ -151,14 +151,14 @@ foreach ($fields as $fidx => $subfields) {
 /* Sort subfields and apply "smart" processing for particular fields */
 for ($i=0; $i < count($mrc->fields); $i++) {
 	usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
-echo "processing field: ".$mrc->fields[$i]->tag."<br />\n";
+	//echo "processing field: ".$mrc->fields[$i]->tag."<br />\n";
+	
 	/* Special processing for 245$a -- FIXME, this should be generalized */
 	if ($mrc->fields[$i]->tag == 245) {
 		/* No title added entry. */
 		$mrc->fields[$i]->indicators{0} = 0;
 		$a = $mrc->fields[$i]->getValue(a);
 		/* Set non-filing characters */
-//		if (eregi("^((a |an |the )?[^a-z0-9]*)", $a, $regs) and strlen($regs[1]) <= 9) {
 		if (preg_match('/^((a |an |the )?[^a-z0-9]*)/i', $a, $regs) and strlen($regs[1]) <= 9) {
 			$mrc->fields[$i]->indicators{1} = strlen($regs[1]);
 		} else {

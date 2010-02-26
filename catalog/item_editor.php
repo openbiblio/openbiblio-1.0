@@ -29,9 +29,11 @@ ie = {
 		  var $fld = $('#'+this.id);
 		  var testVal = $.trim($fld.val());  //assure no whitespace to mess things up
 		  if ((testVal == 'undefined') || (testVal == '') || (testVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
+				$('label[for="'+this.id+'"]').addClass('error');
 				$fld.addClass('error').val("<?php echo T('REQUIRED FIELD'); ?>");
 				errs++;
 			} else {
+				$('label[for="'+this.id+'"]').removeClass('error');
 				$fld.removeClass('error')
 			}
 		});
