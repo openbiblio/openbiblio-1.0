@@ -131,7 +131,7 @@ foreach ($biblio[marc]->fields as $f) {
 		array_push($mrc->fields, $fld);
 	}
 }
-echo "marc field list:<br />\n";
+//echo "marc field list:<br />\n";
 //print_r($mrc->fields);
 
 /* Add new fields */
@@ -192,8 +192,8 @@ if ($nav == "newconfirm") {
 	$biblios->update($biblio);
 }
 
-// system assumes any message implies failure
-//echo T("Item successfully updated."); // letters 'successful' MUST be included
+// system assumes ANY OTHER message implies failure
+echo "!!success!!"; // dont change this string unless you are VERY sure
 
 //#### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
 ////header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));

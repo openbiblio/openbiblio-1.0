@@ -730,7 +730,9 @@ bs = {
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
-	    if ((response == '') || (response = 'undefined')){
+console.log('<'+response+'>');
+//	    if ((response == '') || (response = 'undefined')){
+	    if (response == '!!success!!'){
     		$('#itemEditorDiv').hide();
 				// successful update, repeat search with existing criteria
 				if (bs.srchType == 'barCd')
@@ -738,10 +740,8 @@ bs = {
 				else if (bs.srchType = 'phrase')
 					bs.doPhraseSearch();
 			} else {
-			  // failure, leave form in place
+			  // failure, show error msg, leave form in place
 				$('#itemRsltMsg').html(response);
-				// I think this should be commented out - LJ
-				//bs.rtnToBiblio()
 	 		}
 	  });
 	  return false;

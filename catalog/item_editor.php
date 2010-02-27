@@ -87,7 +87,7 @@ $(document).ready(ie.init);
 	</tr>
 	<tr>
 		<td colspan="1" nowrap="true" class="primary">
-			<b><?php echo T("MARC Fields:"); ?></b>
+			<b><?php echo T("MARC Fields"); ?></b>
 		<td colspan="1" nowrap="true" class="primary">
 			<b><?php echo T("Local Data"); ?></b>
 		<td id="onlnColTitle" colspan="1" nowrap="true" class="primary filterable">
