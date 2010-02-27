@@ -732,15 +732,16 @@ bs = {
 	  $.post(bs.url,params, function(response){
 	    if ((response == '') || (response = 'undefined')){
     		$('#itemEditorDiv').hide();
-	      // successful update, repeat search with existing criteria
+				// successful update, repeat search with existing criteria
 				if (bs.srchType == 'barCd')
 					bs.doBarCdSearch();
 				else if (bs.srchType = 'phrase')
 					bs.doPhraseSearch();
 			} else {
 			  // failure, leave form in place
-	  		$('#itemRsltMsg').html(response);
-				bs.rtnToBiblio()
+				$('#itemRsltMsg').html(response);
+				// I think this should be commented out - LJ
+				//bs.rtnToBiblio()
 	 		}
 	  });
 	  return false;

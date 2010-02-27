@@ -67,6 +67,11 @@ class SrchDb {
 		else
 			$keywords[] = $srchTxt;
 
+		// Add Slashes for search - LJ
+		for($i = 0; $i < count($keywords); $i++){
+			$keywords[i] = addslashes($keywords[i]);
+		}
+			
 		$sqlSelect= "SELECT DISTINCT b.bibid FROM `biblio` AS b";	
 		$sqlWhere = " WHERE (1=1)";
 		$keywordnr = 1;
@@ -533,7 +538,8 @@ class SrchDb {
 								{"tag":"245","suf":"c"}'; 
 							break;
 			case 'subject': 	$type = 'words';
-								$params = '{"tag":"650","suf":"a"}'; 
+								$params = '{"tag":"650","suf":"a"},
+								{"tag":"505","suf":"a"}'; 
 								break;
 			case 'keyword': 	$type = 'words';
 								$params ='{"tag":"245","suf":"a"},

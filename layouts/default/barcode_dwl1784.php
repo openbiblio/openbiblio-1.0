@@ -36,7 +36,7 @@ class Layout_barcode_dwl1784 {
 							'y-align'=>'center',
 						));
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 10);
+								$lay->pushFont('Times-Bold', 10);
 									if (strlen($row['library_name']) > 35) {
 										$row['library_name'] = substr($row['library_name'], 0, 35)."...";
 									}

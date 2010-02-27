@@ -70,12 +70,7 @@ $fields = array();
  */
 	//echo "POSTed fields:<br />\n";
 foreach ($_POST[fields] as $f) {
-<<<<<<< local
 	//print_r($f);echo"<br />\n";
-=======
-print_r($f);echo"<br />";
->>>>>>> other
-
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		//echo "$f[tag] failed size test<br />\n";
 		continue;
@@ -100,7 +95,7 @@ print_r($f);echo"<br />";
 	}
 	if (!array_key_exists($sfidx,$fields[$fidx])) {
 		//echo "creating subfield index $sfidx <br />\n";
-		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], stripslashes(trim($f[data])));
 	}
 }
 //echo "input field list:<br />\n";
@@ -155,12 +150,8 @@ foreach ($fields as $fidx => $subfields) {
 /* Sort subfields and apply "smart" processing for particular fields */
 for ($i=0; $i < count($mrc->fields); $i++) {
 	usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
-<<<<<<< local
 	//echo "processing field: ".$mrc->fields[$i]->tag."<br />\n";
-	
-=======
-echo "processing field: ".$mrc->fields[$i]->tag."<br />\n";
->>>>>>> other
+
 	/* Special processing for 245$a -- FIXME, this should be generalized */
 	if ($mrc->fields[$i]->tag == 245) {
 		/* No title added entry. */
