@@ -9,11 +9,11 @@
 ie = {
 	init: function () {
 		ie.itemSubmitBtn = $('#itemSubmitBtn');
+	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');
 	  $('tbody#marcBody .reqd').bind('change',null,ie.validate);
 	},
 
 	disableItemSubmitBtn: function () {
-	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');
 	  ie.itemSubmitBtn.css('color', '#888888');
 		ie.itemSubmitBtn.disable();
 	},

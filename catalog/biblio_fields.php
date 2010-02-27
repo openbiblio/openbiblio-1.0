@@ -9,11 +9,11 @@
 bf = {
 	init: function () {
 		bf.submitBtn = $('#submitBtn');
+	  bf.submitBtnClr = bf.submitBtn.css('color');
 	  $('tbody#marcBody .reqd').bind('change',null,bf.validate);
 	},
 	
 	disableSubmitBtn: function () {
-	  bf.submitBtnClr = bf.submitBtn.css('color');
 	  bf.submitBtn.css('color', '#888888');
 		bf.submitBtn.disable();
 	},
@@ -26,13 +26,14 @@ bf = {
 		// verify all 'required' fields are populated
 		var errs = 0;
 		$('tbody#marcBody .reqd').each(function () {
-		  var $fld = $(this);
-		  var reqdVal = $fld.val();
-		  if ((reqdVal == '') || (reqdVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
-				$fld.val('REQUIRED FIELD');
-				$fld.addClass('error')
+		  var $fld = $('#'+this.id);
+		  var testVal = $.trim($fld.val());  //assure no whitespace to mess things up
+		  if ((testVal == 'undefined') || (testVal == '') || (testVal == "<?php echo T('REQUIRED FIELD'); ?>")) {
+				$('label[for="'+this.id+'"]').addClass('error');
+				$fld.addClass('error').val("<?php echo T('REQUIRED FIELD'); ?>");
 				errs++;
 			} else {
+				$('label[for="'+this.id+'"]').removeClass('error');
 				$fld.removeClass('error')
 			}
 		});

@@ -730,7 +730,7 @@ bs = {
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
-console.log('<'+response+'>');
+//console.log('<'+response+'>');
 //	    if ((response == '') || (response = 'undefined')){
 	    if (response == '!!success!!'){
     		$('#itemEditorDiv').hide();
