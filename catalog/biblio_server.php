@@ -344,6 +344,8 @@ class SrchDb {
 		
 		$this->db->unlock();
 		// Changed this to nothing, so any message/output is taken as an error message - LJ
+		// Changed to specific success text to be looked for in JS - FL
+		echo "!!success!!";
 		return;
 	}
 	## ========================= ##
@@ -688,8 +690,8 @@ class SrchDb {
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
-		echo T("Cannot save item: the barcode is already in use");
-		return;
+			echo T("Cannot save item: the barcode is already in use");
+			return;
 	  }	  
 	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 	  break;

@@ -863,6 +863,7 @@ bs = {
 	  //} else {
 	  //	var barcdNmbr = bs.crntCopy.barcode_nmbr;
 	  //}
+	  
 	  // serialize() ignores disabled fields, so cant reliably use in this case
 	  var copyDesc = $('#copyTbl #copy_desc').val();
 	  var statusCd = $('#copyTbl #status_cd').val();
@@ -870,22 +871,24 @@ bs = {
 		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
 					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
+
 		// Custom fields
 		for(nField in bs.crntCopy.custFields){
-			// Only add if has a value, or changed from a value to noihing
+			// Only add if has a value, or changed from a value to nothing
 			if($('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != bs.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != ""){
 				params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
 			}
 		}					
+		
 		//console.log('params='+params);
 	  $.post(bs.url,params, function(response){
-	  	if(response.length > 0){
-			$('#editRsltMsg').html(response);
-		} else {
-			bs.fetchCopyInfo(); // refresh copy display
-			$('#editCancelBtn').val('Go Back');
-			bs.rtnToBiblio();
-		}
+	  	if(response == '!!success!!') {
+				bs.fetchCopyInfo(); // refresh copy display
+				$('#editCancelBtn').val('Go Back');
+				bs.rtnToBiblio();
+			} else {
+				$('#editRsltMsg').html(response);
+			}
 	  });
 	  // prevent submit button from firing a 'submit' action
 	  return false;
