@@ -853,27 +853,12 @@ bs = {
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
-	  $.post(bs.url,params, function(response){
-	  	if(response == '!!success!!') {
-			bs.fetchCopyInfo(); // refresh copy display
-			$('#editCancelBtn').val('Go Back');		
-			bs.rtnToBiblio();
-		} else {
-			$('#editRsltMsg').html(response);
-		}	  
-	  });
-	  
-	  // prevent submit button from firing a 'submit' action
-	  return false;
+		
+		// post to DB
+		bs.doPostCopy2DB(params);
 	},
 	doCopyUpdate: function () {
 	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
-	  //This is changed now as the text fields is updated - LJ
-	  //if ($('#autobarco:checked').length > 0) {
-	  //	var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
-	  //} else {
-	  //	var barcdNmbr = bs.crntCopy.barcode_nmbr;
-	  //}
 	  
 	  // serialize() ignores disabled fields, so cant reliably use in this case
 	  var copyDesc = $('#copyTbl #copy_desc').val();
@@ -890,9 +875,12 @@ bs = {
 				params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
 			}
 		}					
-		
-		//console.log('params='+params);
-	  $.post(bs.url,params, function(response){
+		// post to DB
+		bs.doPostCopy2DB(params);
+	},
+	doPostCopy2DB: function (parms) {
+		//console.log('parms='+parms);
+	  $.post(bs.url,parms, function(response){
 	  	if(response == '!!success!!') {
 				bs.fetchCopyInfo(); // refresh copy display
 				$('#editCancelBtn').val('Go Back');
