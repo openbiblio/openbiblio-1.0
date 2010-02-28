@@ -305,7 +305,7 @@ class SrchDb {
 			}
 		}
 		$copies->setCustomFields($copyid, $custom);
-		return T('Insert completed');
+		return "!!success!!";
 	}
 	## ========================= ##
 	function updateCopy($bibid,$copyid) {
@@ -706,8 +706,12 @@ class SrchDb {
 	case 'newCopy':
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
-		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
+			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+			return;
+		} else {
+			echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		}
 		break;
 /*
 	//experimental

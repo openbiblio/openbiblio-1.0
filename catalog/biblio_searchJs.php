@@ -817,7 +817,7 @@ bs = {
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyNew();
-			bs.rtnToBiblio();
+			//bs.rtnToBiblio();
 			return false;
 		});
 	  // prevent submit button from firing a 'submit' action
@@ -832,7 +832,13 @@ bs = {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#barcode_nmbr').val(barcd);
-	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':bs.crntCopy.copyid}, function (response) {
+		// Set copyId to null if not defined (in case of new item)
+		var currCopyId = null;
+		if(typeof(bs.crntCopy) != "undefined"){
+			currCopyId = bs.crntCopy.copyid;
+		}
+		
+	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
 	  	if(response.length > 0){
 			$('#copySubmitBtn').disable().css('color', '#888888');
 			$('#editRsltMsg').html(response).show();
@@ -848,10 +854,15 @@ bs = {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
 	  $.post(bs.url,params, function(response){
-	  	$('#editRsltMsg').html(response);
-	  	bs.fetchCopyInfo(); // refresh copy display
-	  	return false;
+	  	if(response == '!!success!!') {
+			bs.fetchCopyInfo(); // refresh copy display
+			$('#editCancelBtn').val('Go Back');		
+			bs.rtnToBiblio();
+		} else {
+			$('#editRsltMsg').html(response);
+		}	  
 	  });
+	  
 	  // prevent submit button from firing a 'submit' action
 	  return false;
 	},
