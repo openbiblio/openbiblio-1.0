@@ -10,7 +10,7 @@ ie = {
 	init: function () {
 		ie.itemSubmitBtn = $('#itemSubmitBtn');
 	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');
-	  $('tbody#marcBody .reqd').bind('change',null,ie.validate);
+	  $('tbody#marcBody input.reqd').bind('change',null,ie.validate);
 	},
 
 	disableItemSubmitBtn: function () {
@@ -82,7 +82,7 @@ $(document).ready(ie.init);
 			<label for="opacFlg"><?php echo T("Show in OPAC:"); ?></label>
 		</td>
 		<td valign="top" class="primary">
-			<?php echo inputfield('checkbox','opacFlg','Y',NULL,NULL); ?>
+			<?php echo inputfield('checkbox','opacFlg','Y',NULL,'Y'); ?>
 		</td>
 	</tr>
 	<tr>
@@ -97,6 +97,7 @@ $(document).ready(ie.init);
 	</tbody>
 
 	<tbody id="marcBody" class="striped">
+	  <!-- to be filled by server -->
 	</tbody>
 </table>
 </fieldset>

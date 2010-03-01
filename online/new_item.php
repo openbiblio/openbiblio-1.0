@@ -214,33 +214,29 @@
 		<input id="choiceBtn2" type="button" class="button btnFld" value="<?php echo T("Go Back");?>" />
 	</div>
 
-<div id="divTest">
-<form id="frmTest">
-</form>
-</div>
-
-	<div id="selectionDiv">
-   	<!--form id="newbiblioform" name="newbiblioform" method="POST" action="chng-wrap.php" -->
-  	<!-- submit action will now be handled by javascript code -->
-   	<form id="newbiblioform" name="newbiblioform" action="" >
-			<?php
-//  		## we use original biblio edit screen, but will replace existing 'Cancel' button
-//   		//<form name="newbiblioform" method="POST" action="../catalog/biblio_new.php" >
-//
-//			$cancelLocation = "../lookup2/lookup.php";
-//  		$focus_form_name = "newbiblioform";
-//  		$focus_form_field = "materialCd";
-//
-//			require_once(REL(__FILE__, "../shared/get_form_vars.php"));
-//
-			include(REL(__FILE__,"../catalog/biblio_fields.php"));
-			?>
+	<div id="divTest">
+		<form id="frmTest">
 		</form>
 	</div>
 
-<div id="copyEditorDiv">
-	<?php include_once(REL(__FILE__,"../catalog/biblio_copy_editor.php"));?>
-</div>
+	<div id="selectionDiv">
+  	<!-- submit action handled by javascript code -->
+   	<form id="newbiblioform" name="newbiblioform" action="" >
+			<p class="note"><?php echo T("Fields marked are required"); ?></p>
+			<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
+			<?php
+//			include(REL(__FILE__,"../catalog/biblio_fields.php"));
+				include(REL(__FILE__,"../catalog/item_editor.php"));
+			?>
+			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" value="<?php echo T("Go Back"); ?>" class="button itemGobkBtn" />
+		</form>
+	</div>
+
+	<div id="copyEditorDiv">
+		<?php include_once(REL(__FILE__,"../catalog/biblio_copy_editor.php"));?>
+	</div>
 
 <?php
 	## needed for all cases

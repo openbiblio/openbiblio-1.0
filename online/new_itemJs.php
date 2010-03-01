@@ -54,7 +54,11 @@ ni = {
 
 		// search form functions
     $('.criteria').bind('change',null,ni.enableSrchBtn);
-    $('#manualBtn').bind('click',null,ni.doShowEmptyOne);
+    $('#manualBtn').bind('click',null, function() {
+			ni.doClearItemForm();
+			$('#searchDiv').hide();
+			$('#selectionDiv').show();
+		});
     
 		$('#quitBtn').bind('click',null,ni.doAbandon);
 		$('#retryBtn').bind('click',null,ni.doBackToSrch);
@@ -66,16 +70,8 @@ ni = {
 		});
 
 		// modify original biblioFields form to better suit our needs
-		$('#reqdNote').css({display:'inline', width:'10em'});
-		$('<input type="button" id="biblioBtn2" class="button" value="<?php echo T('Go Back');?>" />')
-			.insertAfter('#reqdNote');
-		$('<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>')
-			.insertBefore('#biblioBtn2');
-		$('#selectionDiv input[value="Cancel"]').removeAttr('onClick');
-		$('#selectionDiv input[value="Cancel"]').attr('id','biblioBtn');
-		$('#selectionDiv input[value="Cancel"]').attr('value',ni.goBack);
-		$('#newbiblioform #submitBtn').val(ni.accept);
-		$('#newbiblioform #submitBtn').bind('click',null,function(){
+		$('#biblioDiv .itemGobkBtn').bind('click',null,ni.doBackToSrch);
+		$('#newbiblioform #itemSubmitBtn').bind('click',null,function(){
 			ni.doInsertNew();
 			return false;
 		});
@@ -84,11 +80,9 @@ ni = {
 		// to handle startup condition
 		$('#copySubmitBtn').bind('click',null,function () {
 			return ni.doCopyNew();
-			//return false;
 		});
 		$('#copyCancelBtn').bind('click',null,function () {
 			return ni.doBackToSrch();
-			//return false;
 		});
 		$('#barcode_nmbr').bind('change',null,ni.chkBarcdForDupe);
 		if ($('#autobarco:checked').length > 0) {
@@ -112,8 +106,11 @@ ni = {
 		$('#245a').bind('change',null,ni.fixTitle);
 
 		ni.fetchHosts();  //on completion, search form will appear
+		ni.fetchMaterialList(); // for new items
+		ni.fetchCollectionList(); // for new items
 		ni.fetchSiteList(); // for new copy use
 		ni.fetchOpts();  //for debug use
+		ni.doMakeItemForm();
 	},
 	
 	//------------------------------
@@ -147,10 +144,6 @@ ni = {
 
 	doBackToSrch: function () {
 		ni.resetForm();
-		//$('#retryDiv').hide();
-		//$('#searchDiv').show();
-		//$('#lookupVal').focus();
-		//ni.disableSrchBtn();
 	},
 	
 	doBackToChoice: function () {
@@ -172,6 +165,19 @@ ni = {
 		});
 	},
 
+	fetchMaterialList: function () {
+	  $.get(ni.url,{mode:'getMaterialList'}, function(data){
+			$('#srchMatTypes').html(data);
+			$('#itemMediaTypes').html(data);
+		});
+	},
+	
+	fetchCollectionList: function () {
+	  $.get(ni.url,{mode:'getCollectionList'}, function(data){
+			$('#itemEditColls').html(data);
+		});
+	},
+	
 	fetchSiteList: function () {
 	  $.get(ni.bs_url,{mode:'getSiteList'}, function(data){
 			$('#copy_site').html(data);
@@ -187,8 +193,8 @@ ni = {
 	//------------------------------------------------------------------------------------------
 	// manual 'new biblio' related stuff
 	doInsertNew: function () {
-		// verify all 'required' fields are populated using biblio_flds JS code
-		if (!bf.validate()) return;
+		// verify all 'required' fields are populated using biblio_fields JS code
+		if (!ie.validate()) return false;
 
 	 	var parms=$('#newbiblioform').serialize();
 		parms += '&mode=doInsertBiblio';
@@ -196,7 +202,9 @@ ni = {
 	    var rslt = eval('('+jsonInpt+')');
 	    ni.bibid = rslt.bibid;
 	  	ni.showCopyEditor();
+	  	return false;
 		});
+		return false;
 	},
 	
 	chkBarcdForDupe: function () {
@@ -231,11 +239,6 @@ ni = {
 	  return false;
 	},
 
-//	doGetBarcdNmbr: function () {
-//		$.getJSON(ni.bs_url,{'mode':'getBarcdNmbr','bibid':ni.bibid}, function(jsonInpt){
-//		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
-//		});
-//	},
 	doGetBarcdNmbr2: function () {
 		$.getJSON(ni.url,{'mode':'getNewBarcd'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
@@ -462,41 +465,39 @@ ni = {
 		});
 	},
 
-	doShowEmptyOne: function (e) {
-	  ni.doShowOne(null);
+	doMakeItemForm: function (e) {
+	  // fill out empty form with MARC fields
+	  $.get(ni.url,{'mode':'getBiblioFields'}, function (response) {
+			$('#marcBody').html(response);
+			$('#selectionDiv td.filterable').hide();
+			obib.reStripe2('biblioFldTbl','odd');
+			ni.doClearItemForm();
+			$('#opacFlg').val(['CHECKED','Y']);
+			ie.init();
+		});
+		$('.itemGobkBtn').bind('click',null,ni.doBackToSrch);
 	},
-	doShowOne: function (data){
-	  $('#searchDiv').hide();
+	doClearItemForm: function () {
 		// assure all marc fields are empty & visible at start
     $(".marcBiblioFld").each(function(){
 			$(this).parent().parent().val('').show();
 		});
-
+	},
+	doShowOne: function (data){
+	  // display biblio item data in form
+	  $('#searchDiv').hide();
+	  ni.doClearItemForm();
 		for (var tag in data) {
 			if (data[tag] != '') {
 				$('#'+tag).val(data[tag]);
 				$('#'+tag).css('color',ni.inputColor);
-			} else {
-				$('#'+tag).val('entry required here');
-				$('#'+tag).css('color','red');
 			}
 		}
-		$('#opacFlg').val(['CHECKED']);
-
-		// hide any unused MARC fields
-//    $(".marcBiblioFld").each(function(){
-//			if (($(this).val()).length == 0) {
-//				$(this).parent().parent().hide().addClass('hidden');
-//			}
-//		});
 		if (data != null){
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
 		}
-
-		$('#biblioBtn').bind('click',null,ni.doBackToSrch);
-		$('#biblioBtn2').bind('click',null,ni.doBackToSrch);
-		ni.doStriping();
+	  ie.validate(); // in case a reqd field's data is missing
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
 	},
@@ -508,12 +509,8 @@ ni = {
 			break;
 		case 'dew':
 		  var callNmbr = ni.makeCallNmbr(data['082a']);
-			//console.log('callNmbr='+callNmbr)
-//			if (ni.opts[autoCutter] == 'y') {
     		var cutter = ni.makeCutter(data['100a'], data['245a']);
-				//console.log('cutter='+cutter)
 				$('#099a').val(callNmbr+cutter);
-//			}
 			break;
 		case 'udc':
 		  var callNmbr = ni.makeCallNmbr(data['080a']);

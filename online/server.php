@@ -6,6 +6,7 @@
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 //  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
+	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 	require_once(REL(__FILE__, '../model/Online.php'));
 	require_once(REL(__FILE__, 'srvrFuncs.php'));	## general support functions
@@ -64,10 +65,27 @@
 ## main body of code
 switch ($_REQUEST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
+	case 'getBiblioFields':
+	  require_once(REL(__FILE__,"../catalog/biblio_fields.php"));
+	  break;
+
+	case 'getMaterialList':
+		require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+		$mattypes = new MaterialTypes;
+		echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
+	  break;
+
+	case 'getCollectionList':
+		require_once(REL(__FILE__, "../model/Collections.php"));
+		$collections = new Collections;
+		echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
+	  break;
+
+  #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'doInsertBiblio':
 	  postNewBiblio();
 	  break;
-	  
+
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getHosts':
 		echo json_encode($postVars[hosts]);
