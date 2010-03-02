@@ -14,18 +14,18 @@ class Localize {
 
 	function init($locale) {
 		if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $locale)) {
-			Fatal::internalError("Invalid Locale: >$locale<");
+			Fatal::internalError('Invalid Locale: >'.$locale.'<');
 		}
 		
 		$this->localePath = LOCALE_ROOT."/".$locale."/";
 		if (!is_readable($this->localePath.'metadata.php')) {
-			Fatal::internalError('Locale >$locale< has no metadata');
+			Fatal::internalError('Locale >'.$locale.'< has no metadata');
 		}
 		include($this->localePath.'metadata.php');
 		
 		$classname = $locale.'MetaData';
 		if (!class_exists($classname)) {
-			Fatal::internalError('Locale >$locale< has no metadata class');
+			Fatal::internalError('Locale >'.$locale.'< has no metadata class');
 		}
 		$this->meta = new $classname;
 		$this->trans = array();
@@ -58,11 +58,65 @@ class Localize {
 			}
 		}
 	}
+	function translateOne($str) {
+		if (isset($this->trans[$str])) {
+			return $this->trans[$str];
+		}
+		return $str;
+	}
+	function translateCallback($matches) {
+		return $this->translateOne($matches[1]);
+	}
+	// Find, translate, and replace occurrences of {#trans}...{#end}
+	// in $str. The text to be translated is between the delimiters
+	// and optionally surrounded by white space.  Alternative
+	// metacharacters may be specified if, say, [#trans] is more
+	// convenient than {#trans}.
+	function translate($str, $metachars='{}') {
+		$meta = JsonTemplateModule::SplitMeta($metachars);
+		$start = preg_quote($meta[0]+'#trans'+$meta[1]);
+		$end = preg_quote($meta[0]+'#end'+$meta[1]);
+		// Non-greedy matching is necessary so that
+		// {#trans}one{#end}{#trans}two{#end} is seen
+		// as two separate translations.
+		$trans_re = '/'.$start.'\s*(.*?)\s*'.$end.'/';
+		return preg_replace_callback($trans_re, array($this, 'translateCallback'), $str);
+	}
+	function moneyFormat($amount) {
+		return $this->meta->moneyFormat($amount);
+	}
+	function getLocales () {
+		$dir = opendir(LOCALE_ROOT);
+		$locales = array();
+		while (($file=readdir($dir)) !== false) {
+			if ($file == '.' or $file == '..') {
+				continue;
+			}
+			if (!is_dir(LOCALE_ROOT."/".$file)) {
+				continue;
+			}
+			if (!file_exists(LOCALE_ROOT.'/'.$file.'/metadata.php')) {
+				continue;
+			}
+			include_once(LOCALE_ROOT.'/'.$file.'/metadata.php');
+			$classname = $file.'MetaData';
+			if (!class_exists($classname)) {
+				Fatal::internalError(T("Bad locale metadata: %file%: No class", array('file'=>$file)));
+			}
+			$meta = new $classname;
+			$locales[$file] = $meta->locale_description;
+		}
+		closedir($dir);
+		return $locales;
+	}
 	/* This is a separate function to avoid scope contamination. */
 	function _loadFile($file) {
 		include($file);
 		return $trans;
 	}
+	
+	// Everything below is deprecated
+	
 	function _substituteVars($text, $vars=NULL) {
 		if ($vars == NULL) {
 			$vars = array();
@@ -110,33 +164,6 @@ class Localize {
 	function nGetText($n, $key, $vars=NULL) {
 		$suffix = '|'.$this->meta->pluralForm($n);
 		return $this->getText($key, $vars, $suffix);
-	}
-	function moneyFormat($amount) {
-		return $this->meta->moneyFormat($amount);
-	}
-	function getLocales () {
-		$dir = opendir(LOCALE_ROOT);
-		$locales = array();
-		while (($file=readdir($dir)) !== false) {
-			if ($file == '.' or $file == '..') {
-				continue;
-			}
-			if (!is_dir(LOCALE_ROOT."/".$file)) {
-				continue;
-			}
-			if (!file_exists(LOCALE_ROOT.'/'.$file.'/metadata.php')) {
-				continue;
-			}
-			include_once(LOCALE_ROOT.'/'.$file.'/metadata.php');
-			$classname = $file.'MetaData';
-			if (!class_exists($classname)) {
-				Fatal::internalError(T("Bad locale metadata: %file%: No class", array('file'=>$file)));
-			}
-			$meta = new $classname;
-			$locales[$file] = $meta->locale_description;
-		}
-		closedir($dir);
-		return $locales;
 	}
 }
 

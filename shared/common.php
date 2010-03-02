@@ -53,49 +53,6 @@ if (isset($cache)) {
 function REL($sf, $if) {
 	return dirname($sf)."/".$if;
 }
-/* Escaping */
-function H($s) {
-	return htmlspecialchars($s, ENT_QUOTES);
-}
-function U($s) {
-	return urlencode($s);
-}
-function HURL($s) {
-	return H(U($s));
-}
-function JS($s) {
-	$r=""; 
-	$l=strlen($s); 
-	$subs = array(
-		'<' => '\\u003c',
-		'>' => '\\u003e',
-		'&' => '\\u0026',
-		'\'' => '\\u0027',
-		'"' => '\\u0022',
-		'\\' => '\\\\',
-		"\n" => '\\n',
-		"\r" => '\\r',
-	);
-	for($i=0;$i<$l;$i++) {
-		if (isset($subs[$s[$i]])) {
-			$r .= $subs[$s[$i]];
-		} else if(ord($s[$i]) < 32) {
-			$r .= sprintf("\\u%04x", ord($s[$i]));
-		} else {
-			$r .= $s[$i];
-		}
-	} 
-	return $r; 
-}
-/* Translation */
-function T($s, $v=NULL) {
-	global $LOC;
-	return $LOC->getText($s, $v);
-}
-function nT($n, $s, $v=NULL) {
-	global $LOC;
-	return $LOC->nGetText($n, $s, $v);
-}
 
 /* This one should be used by all the form handlers that return errors. */
 function _mkPostVars($arr, $prefix) {
@@ -139,7 +96,9 @@ require_once(REL(__FILE__, '../shared/global_constants.php'));
 require_once(REL(__FILE__, '../classes/Error.php'));
 require_once(REL(__FILE__, '../classes/Iter.php'));
 require_once(REL(__FILE__, "../classes/Nav.php"));
+require_once(REL(__FILE__, 'jsontemplate.php'));
 require_once(REL(__FILE__, "../classes/Localize.php"));
+require_once(REL(__FILE__, 'templates.php'));
 
 if (!isset($doing_install) or !$doing_install) {
 	include_once(REL(__FILE__, "../model/Settings.php"));
@@ -216,3 +175,42 @@ if (!isset($doing_install) or !$doing_install) {
 		}
 		return $pluginSet;
 	}
+
+// Deprecated below, use the template-based functions
+
+function H($s) {
+	return htmlspecialchars($s, ENT_QUOTES);
+}
+function U($s) {
+	return urlencode($s);
+}
+function HURL($s) {
+	return H(U($s));
+}
+function JS($s) {
+	$r=""; 
+	$l=strlen($s); 
+	$subs = array(
+		'<' => '\\u003c',
+		'>' => '\\u003e',
+		'&' => '\\u0026',
+		'\'' => '\\u0027',
+		'"' => '\\u0022',
+		'\\' => '\\\\',
+		"\n" => '\\n',
+		"\r" => '\\r',
+	);
+	for($i=0;$i<$l;$i++) {
+		if (isset($subs[$s[$i]])) {
+			$r .= $subs[$s[$i]];
+		} else if(ord($s[$i]) < 32) {
+			$r .= sprintf("\\u%04x", ord($s[$i]));
+		} else {
+			$r .= $s[$i];
+		}
+	} 
+	return $r; 
+}
+function nT($n, $s, $v=NULL) {
+	return T($s, $v);
+}
