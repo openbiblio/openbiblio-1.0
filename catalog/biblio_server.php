@@ -540,16 +540,7 @@ class SrchDb {
 			}
 		}
 	  break;
-/*
-	case 'getBarcdNmbr':
-	  // deprecated - retained for legacy compatability only
-		$copies = new Copies;
-		$CopyNmbr= $copies->getNextCopy();
-		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
-		$fmt = "%0".$_SESSION['item_barcode_width']."s";
-		echo "{'barcdNmbr':'" . sprintf($fmt,$CopyNmbr) . "'}";
-	  break;
-*/
+
 	case 'getBarcdNmbr2':
 		$copies = new Copies;
 		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
@@ -583,15 +574,6 @@ class SrchDb {
 	  echo T("Delete completed");
 	  break;
 
-	case 'updateCopy':
-	  $theDb = new SrchDB;
-	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
-			echo T("Cannot save item: the barcode is already in use");
-			return;
-	  }	  
-	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-	  break;
 /*
 	//experimental
 	case 'updateCopy':
@@ -599,19 +581,6 @@ class SrchDb {
 		$errors = $copies->update_el($_POST);
 		echo $errors;
 		break;
-*/
-	case 'newCopy':
-	  $theDb = new SrchDB;
-	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
-			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
-			return;
-		} else {
-			echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-		}
-		break;
-/*
-	//experimental
 	case 'newCopy':
 		$copies = new Copies;
 		$errors = $copies->insert_el($_POST);
@@ -619,6 +588,26 @@ class SrchDb {
 		echo $errors;
 		break;
 */
+
+	case 'updateCopy':
+	case 'newCopy':
+	  $theDb = new SrchDB;
+	  $copies = new Copies;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
+			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+			return;
+		}
+		switch ($_REQUEST[mode]) {
+		  case 'updateCopy':
+	  		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+				break;
+			
+		  case 'newCopy':
+				echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+				break;
+		}
+		break;
+		
 	case 'deleteCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->deleteCopy($_REQUEST[bibid],$_REQUEST[copyid]);
