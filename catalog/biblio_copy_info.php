@@ -34,7 +34,7 @@
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
 				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
 				<?php 
-					if($_SESSION['show_copy_site'] == "Y"){ 
+					if($_SESSION['multi_site_func'] > 0){ 
 						echo "<th align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";							
 					} 
 				?>
@@ -81,7 +81,7 @@
 							<td valign="top" class="<?php echo H($row_class); ?>">
 								<?php echo H($copy['copy_desc']); ?>
 							</td>
-							<?php if($_SESSION['show_copy_site'] == "Y"){ ?>
+							<?php if($_SESSION['multi_site_func'] > 0){ ?>
 								<td valign="top" class="<?php echo H($row_class); ?>">
 									<?php 
 										$sites_table = new Sites;

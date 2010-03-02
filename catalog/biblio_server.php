@@ -17,18 +17,19 @@
 	// Load session data in case of OPAC (eg no user logged on)
 	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
 	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
-	if(empty($_SESSION['show_copy_site'])) $_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	if(empty($_SESSION['multi_site_func'])) $_SESSION['multi_site_func'] = Settings::get('multi_site_func');
 	if(empty($_SESSION['show_item_photos'])) $_SESSION['show_item_photos'] = Settings::get('show_item_photos');	
 	if(empty($_SESSION['items_per_page'])) $_SESSION['items_per_page'] = Settings::get('items_per_page');
 	
 	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 	if(empty($_SESSION['current_site'])) {
-		$libraryName  = Settings::get('library_name');
-		if(is_numeric($libraryName)){
-			$_SESSION['current_site'] = Settings::get('library_name');
+		if(isset($_COOKIE['OpenBiblioSiteID'])) {
+			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];				
+		} elseif($_SESSION['multi_site_func'] > 0){
+			$_SESSION['current_site'] = $_SESSION['multi_site_func']; 			
 		} else {
 			$_SESSION['current_site'] = 1;
-		}
+		}		
 	}
 
 	## --------------------- ##
@@ -66,6 +67,11 @@ class SrchDb {
 		else
 			$keywords[] = $srchTxt;
 
+		// Add Slashes for search - LJ
+		for($i = 0; $i < count($keywords); $i++){
+			$keywords[i] = addslashes($keywords[i]);
+		}
+			
 		$sqlSelect= "SELECT DISTINCT b.bibid FROM `biblio` AS b";	
 		$sqlWhere = " WHERE (1=1)";
 		$keywordnr = 1;
@@ -165,7 +171,7 @@ class SrchDb {
 					$copy = json_decode($copyEnc, true);
 					if($copy['statusCd'] == OBIB_STATUS_IN) {
 						// See on which site
-						if($_SESSION['current_site'] == $copy['siteid'] || $_SESSION['show_copy_site'] != 'Y'){
+						if($_SESSION['current_site'] == $copy['siteid'] || !($_SESSION['multi_site_func'] > 0)){
 							$this->avIcon = "circle_green.png"; // one or more available
 							break;						
 						} else {
@@ -223,7 +229,7 @@ class SrchDb {
 		while ($copy = $bcopies->next()) {
 			$status = $history->getOne($copy['histid']);
 			$booking = $bookings->getByHistid($copy['histid']);
-			if ($_SESSION['show_copy_site'] == 'Y') {
+			if ($_SESSION['multi_site_func'] > 0) {
 				$sites_table = new Sites;
 				$sites = $sites_table->getSelect();
 				$copy['site'] = $sites[$copy[siteid]];
@@ -299,7 +305,7 @@ class SrchDb {
 			}
 		}
 		$copies->setCustomFields($copyid, $custom);
-		return T('Insert completed');
+		return "!!success!!";
 	}
 	## ========================= ##
 	function updateCopy($bibid,$copyid) {
@@ -337,7 +343,10 @@ class SrchDb {
 		$copies->setCustomFields($copyid, $custom);		
 		
 		$this->db->unlock();
-		return T('Update completed');
+		// Changed this to nothing, so any message/output is taken as an error message - LJ
+		// Changed to specific success text to be looked for in JS - FL
+		echo "!!success!!";
+		return;
 	}
 	## ========================= ##
 	function deleteCopy($bibid,$copyid) {
@@ -351,119 +360,11 @@ class SrchDb {
 	}
 	## ========================= ##
 	function getBiblioFields() {
-		function getlabel($f) {
-			global $LOC;
-			$label = "";
-			if ($f['label'] != "") {
-				$label = $f['label'];
-			} elseif ($f['subfield'] != "") {
-				$idx = sprintf("%03d$%s", $f['tag'], $f['subfield']);
-				$label = $LOC->getMarc($idx);
-			} else {
-				$label = $LOC->getMarc($f['tag']);
-			}
-			return $label;
-		}
-		function mkinput($fid, $sfid, $data, $f) {
-			return array('fieldid' => $fid,
-				'subfieldid' => $sfid,
-				'data' => $data,
-				'tag' => $f['tag'],
-				'subfield' => $f['subfield_cd'],
-				'label' => getlabel($f),
-				'required' => $f['required'],
-				'form_type' => $f['form_type'],
-				'repeat' => $f['repeatable']);
-		}
-		function mkFldSet($n, $i, $marcInputFld, $mode) {
-		  if ($mode == 'onlnCol') {
-				echo "	<td valign=\"top\" class=\"primary filterable\"> \n";
-				$namePrefix = "onln_$n";
-		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
-			}
-			else if ($mode == 'editCol') {
-				echo "	<td valign=\"top\" class=\"primary\"> \n";
-				$namePrefix = 'fields['.H($n).']';
-				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
-				echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
-				echo inputfield('hidden', $namePrefix."[fieldid]",     H($i['fieldid']),
-												array('id'=>$marcInputFld.'_fieldid'))." \n";
-				echo inputfield('hidden', $namePrefix."[subfieldid]",  H($i['subfieldid']),
-												array('id'=>$marcInputFld.'_subfieldid'))." \n";
-			}
-			
-			$attrs = array("id"=>"$marcInputFld");
-			$attrStr = "marcBiblioFld";
-			if ($i['required'])
-			  $attrStr .= " reqd";
-			if ($i['repeat'])
-			  $attrStr .= " rptd";
-			else
-			  $attrStr .= " only1";
-		  if ($mode == 'onlnCol')
-		    $attrStr .= " online";
-			else
-			  $attrStr .= " offline";
-			$attrs["class"] = $attrStr;
-
-			if ($i['form_type'] == 'text') {
-			  $attrs["size"] = "50"; $attrs["maxLength"] = "75";
-				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
-			} else {
-				// IE seems to make the font-size of a textarea overly small under
-				// certain circumstances.  We force it to a sane value, even
-				// though I have some misgivings about it.  This will make
-				// the font smaller for some people.
-				$attrs["style"] = "font-size:10pt; font-weight: normal;";
-				$attrs["rows"] = "7"; $attrs["cols"] = "38";
-				echo inputfield('textarea', $namePrefix."[data]", H($i['data']),$attrs)." \n";
-			}
-			echo "</td> \n";
-		}
-		
-		$mf = new MaterialFields;
-
-		// get field specs in 'display postition' order
-		$fields = $mf->getMatches(array('material_cd'=>$_REQUEST[matlCd]), 'position');
-
-		## anything to process for current media type (material_cd) ?
-		if ($fields->count() == 0) {
-			echo "<tr><td colspan=\"2\" class=\"primary\">.T('No fields to fill in.').</td></tr>\n";
-		}
-
-		## build an array of fields to be displayed on user form
-		$inputs = array();
-		while (($f=$fields->next())) {
-		  #  make multiples of those so flagged
-			for ($n=0; $n<=$f['repeatable']; $n++) {
-				array_push($inputs, mkinput(NULL, NULL, NULL, $f));
-			}
-		}
-
-		## now build html for those input fields
-		foreach ($inputs as $n => $i) {
-			$marcInputFld = H($i['tag']).H($i['subfield']);
-			echo "<tr> \n";
-			echo "	<td class=\"primary\" valign=\"top\"> \n";
-			if ($i['required']) {
-				echo '	<sup>*</sup>';
-			}
-			echo "		<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
-			echo "	</td> \n";
-			
-			mkFldSet($n, $i, $marcInputFld, 'editCol');	// normal local edit column
-			mkFldSet($n, $i, $marcInputFld, 'onlnCol');  // update on-line column
-
-		echo "</tr> \n";
-		}
+	  require_once(REL(__FILE__,"../catalog/biblio_fields.php"));
 	}
-}
-	#****************************************************************************
-//
-//if (in_array('lookup2',$_SESSION)) {
-//	echo "Lookup2 system code available.<br />";
-//}
+} // class
 
+	#****************************************************************************
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
@@ -491,12 +392,10 @@ class SrchDb {
 	  break;
 
 	case 'getSiteList':
-//		require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites_table = new Sites;		
 		$sites = $sites_table->getSelect();
 		foreach ($sites as $val => $desc) {
-			$s .= '<option value="'.H($val).'" ';
-			$s .= ">".H($desc)."</option>\n";
+			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
 		}
 		echo $s;
 	  break;
@@ -533,19 +432,21 @@ class SrchDb {
 							$params = '{"tag":"245","suf":"a"},
 								{"tag":"245","suf":"b"}'; 
 							break;
-			case 'author': 		$type = 'phrase';
+			case 'author': 		$type = 'words';
 								$params ='{"tag":"100","suf":"a"},
 								{"tag":"245","suf":"c"}'; 
 							break;
 			case 'subject': 	$type = 'words';
-								$params = '{"tag":"650","suf":"a"}'; 
+								$params = '{"tag":"650","suf":"a"},
+								{"tag":"505","suf":"a"}'; 
 								break;
 			case 'keyword': 	$type = 'words';
 								$params ='{"tag":"245","suf":"a"},
 									{"tag":"650","suf":"a"},
 									{"tag":"100","suf":"a"},
 									{"tag":"245","suf":"b"},
-									{"tag":"245","suf":"c"}'; 
+									{"tag":"245","suf":"c"},
+									{"tag":"505","suf":"a"}'; 
 								break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
 			case 'publisher': 	$type = 'phrase';
@@ -640,24 +541,14 @@ class SrchDb {
 		}
 	  break;
 
-	case 'getBarcdNmbr':
-	  // deprecated - retained for legacy compatability only
-		//require_once(REL(__FILE__, "../model/Copies.php"));
-		$copies = new Copies;
-		$CopyNmbr= $copies->getNextCopy();
-		//echo "{'barcdNmbr':'".sprintf("%05s",$_REQUEST[bibid])."$CopyNmbr'}";
-		echo "{'barcdNmbr':'" . sprintf("%07s",$CopyNmbr) . "'}";
-	  break;
-
 	case 'getBarcdNmbr2':
-		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
 	  break;
 
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],NULL))
+	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],$_REQUEST[copyid]))
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 		break;
 		
@@ -673,6 +564,7 @@ class SrchDb {
 	  break;
 
 	case 'updateBiblio':
+	  $nav = '';
 	  require_once(REL(__FILE__,"biblio_updater.php"));
 	  break;
 
@@ -682,20 +574,40 @@ class SrchDb {
 	  echo T("Delete completed");
 	  break;
 
+/*
+	//experimental
 	case 'updateCopy':
-	  $theDb = new SrchDB;
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
-		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		$errors = $copies->update_el($_POST);
+		echo $errors;
 		break;
+	case 'newCopy':
+		$copies = new Copies;
+		$errors = $copies->insert_el($_POST);
+		# Do whatever needs to be done on error or success, e.g. returning status in a JSON structure
+		echo $errors;
+		break;
+*/
 
+	case 'updateCopy':
 	case 'newCopy':
 	  $theDb = new SrchDB;
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) return;
-		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
+			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+			return;
+		}
+		switch ($_REQUEST[mode]) {
+		  case 'updateCopy':
+	  		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+				break;
+			
+		  case 'newCopy':
+				echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+				break;
+		}
 		break;
-
+		
 	case 'deleteCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->deleteCopy($_REQUEST[bibid],$_REQUEST[copyid]);

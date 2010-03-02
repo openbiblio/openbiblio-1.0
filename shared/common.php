@@ -84,7 +84,7 @@ function setSessionFmSettings() {
 	$_SESSION['plugin_list'] = Settings::get('plugin_list');
 	$_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');
 	$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
-	$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
+	$_SESSION['multi_site_func'] = Settings::get('multi_site_func');
 	$_SESSION['show_item_photos'] = Settings::get('show_item_photos');
   $_SESSION['site_login'] = Settings::get('site_login');
   $_SESSION['checkout_interval'] = Settings::get('checkout_interval');

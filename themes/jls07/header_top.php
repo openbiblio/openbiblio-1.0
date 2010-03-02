@@ -9,7 +9,7 @@
 <!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html xlmns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
 <?php // code character set if specified
@@ -22,16 +22,24 @@ if (Settings::get('charset') != "") { ?>
 
 <title>
 <?php
+	// If the cookie contains a site id, we take this one, otherwise the default.
 	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 	$libName  = Settings::get('library_name');
-	if(is_numeric($libName)){
-		if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = $libName;
+	if(empty($_SESSION['current_site'])) {
+		if(isset($_COOKIE['OpenBiblioSiteID'])) {
+			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];
+		} elseif($_SESSION['multi_site_func'] > 0){
+			$_SESSION['current_site'] = $_SESSION['multi_site_func'];
+		} else {
+			$_SESSION['current_site'] = 1;
+		}
+	}
+	
+	if($_SESSION['multi_site_func'] > 0){	
 		$sit = new Sites;
 		$lib = $sit->getOne($_SESSION['current_site']);
 		$libName = $lib[name];				
-	} else {
-		if(empty($_SESSION['current_site'])) $_SESSION['current_site'] = 1;
-	}	
+	} 	
 		
 	echo $libName;
 	if($params['title']) {
@@ -57,7 +65,6 @@ obib = {
 
 	init: function() {
 		obib.reStripe();
-
 	  // set focus to specified field in all pages
 		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
 		  $('#'+obib.focusFormField).focus();

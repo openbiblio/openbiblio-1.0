@@ -66,7 +66,7 @@
 		$fields[T("Auto Barcode")] = inputfield("checkbox","autobarco",$_SESSION['item_autoBarcode_flg']);
 	}
 	$fields[T("Description")] = inputfield("text", "copy_desc", $_SESSION["postVars"]["copy_desc"], $attr=array("size"=>40,"max"=>40));
-	if($_SESSION['show_copy_site'] == "Y"){
+	if($_SESSION['multi_site_func'] > 0){
 		$sites_table = new Sites;
 		$sites = $sites_table->getSelect();
 		$fields[T("Site:")] = inputfield("select", "siteid", $_SESSION["postVars"]["siteid"], NULL, $sites);

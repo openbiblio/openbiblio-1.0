@@ -31,7 +31,6 @@ bs = {
 	init: function () {
 		// get header stuff going first
 		bs.initWidgets();
-		bs.resetForms();
 
 		bs.url = 'biblio_server.php';
 		bs.urlLookup = '../online/server.php'; //may not exist
@@ -47,6 +46,7 @@ bs = {
 		});
 		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
 		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
+		bs.srchBtnClr = $('#srchByBarcd').css('color');
 		$('#searchBarcd').bind('keyup',null,bs.checkSrchByBarcdBtn);
 		$('#searchText').bind('keyup',null,bs.checkSrchByPhraseBtn);
 
@@ -112,6 +112,8 @@ bs = {
 		$('#autobarco').bind('change',null,function (){
 		  if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
+				bs.doGetBarcdNmbr();
+				$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
 			}
 			else {
 				$('#barcode_nmbr').enable();
@@ -123,67 +125,39 @@ bs = {
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
-			bs.rtnToBiblio();
+			// Moved to function
+			//bs.rtnToBiblio();			
 		});
 		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
 		$('#copyCancelBtn').bind('click',null,function () {
 			bs.rtnToBiblio();
 		});
 
+		// begin processing; last item MUST include a call to bs.doAltStart()
+		bs.resetForms();
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 		bs.fetchSiteList();
 		
-		// alternate startup in response to remote package
-		<?php
-		if ($_REQUEST[barcd]) {
-			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
-			echo "bs.doBarcdSearch();\n";
-		}
-		else if ($_REQUEST[bibid]) {
-			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
-		}
-		else if ($_REQUEST[searchText]) {
-			echo "$('#searchText').val('$_REQUEST[searchText]');\n";
-			echo "$('#searchType').val('$_REQUEST[searchType]');\n";
-			echo "bs.doPhraseSearch();\n";
-		}
-		?>
 	},
 	//------------------------------
 	initWidgets: function () {
 	},
 	checkSrchByPhraseBtn: function () {
-		var txtLen = this.value;
-		if (txtLen.length > 0) {
-			$('.srchByPhraseBttn').css('color', bs.srchBtnBgClr);
-			$('.srchByPhraseBttn').enable();
+		if (($('#searchText').val()).length > 0) { // empty input
+			$('#srchByPhrase').enable().css('color', bs.srchBtnClr);
 		} else {
-			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-			$('.srchByPhraseBttn').css('color', '#888888');
-			$('.srchByPhraseBttn').disable();
-		}		
-	},
-	checkSrchByBarcdBtn: function () {
-		var txtLen = this.value;
-		if (txtLen.length > 0) {
-			$('.srchByBarcdBtn').css('color', bs.srchBtnBgClr);
-			$('.srchByBarcdBtn').enable();
-		} else {
-			bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-			$('.srchByBarcdBtn').css('color', '#888888');
-			$('.srchByBarcdBtn').disable();
+			$('#srchByPhrase').disable().css('color', '#888888');
 		}
 	},
-	disableSrchBtns: function () {
-		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-		//$('.srchByBarcdBtn').css('color', '#888888');
-		$('.srchByBarcdBtn').disable();
-		bs.srchBtnBgClr = $('#srchByBarcd').css('color');
-		//$('.srchByPhraseBttn').css('color', '#888888');
-		$('.srchByPhraseBttn').disable();		
-	},	
+	checkSrchByBarcdBtn: function () {
+		if (($('#searchBarcd').val()).length > 0) { // empty input
+			$('#srchByBarcd').enable().css('color', bs.srchBtnClr);
+		} else {
+			$('#srchByBarcd').disable().css('color', '#888888');
+		}
+	},
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -194,8 +168,9 @@ bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  bs.multiMode = false;
-	  bs.disableSrchBtns();
-	},	
+	  bs.checkSrchByPhraseBtn();
+	  bs.checkSrchByBarcdBtn();
+	},
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
   	$('tbody#copies').html('');
@@ -206,7 +181,8 @@ bs = {
 	  $('#searchDiv').show();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
-	  bs.disableSrchBtns();
+	  bs.checkSrchByPhraseBtn();
+	  bs.checkSrchByBarcdBtn();
 	},
 
 	rtnToList: function () {
@@ -229,6 +205,23 @@ bs = {
 	  $('#copyEditorDiv').hide();
 	},
 
+	doAltStart: function () {
+		// alternate startup in response to remote package
+		<?php
+		if ($_REQUEST['barcd']) {
+			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
+			echo "bs.doBarcdSearch();\n";
+		}
+		else if ($_REQUEST['bibid']) {
+			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
+		}
+		else if ($_REQUEST['searchText']) {
+			echo "$('#searchText').val('$_REQUEST[searchText]');\n";
+			echo "$('#searchType').val('$_REQUEST[searchType]');\n";
+			echo "bs.doPhraseSearch();\n";
+		}
+		?>
+	},
 	//------------------------------
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
@@ -257,6 +250,9 @@ bs = {
 			// Add all for search sites
 			data = '<option value="all"  selected="selected">All</option>' + data;
 			$('#srchSites').html(data);
+			
+			// now ready to begin a search
+			bs.doAltStart();
 		});
 	},	
 	
@@ -285,7 +281,7 @@ bs = {
 	},
 	doBarcdSearch: function (e) {
 		var barcd = $.trim($('#searchBarcd').val());
-		barcd = flos.pad(barcd,13,'0');
+		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#searchBarcd').val(barcd);
 		
 	  bs.srchType = 'barCd';
@@ -302,6 +298,7 @@ bs = {
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
 				}
 				else {
+					bs.multiMode = false;
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
@@ -611,7 +608,7 @@ bs = {
 			$('#nonMarcBody #opacFlg').val([biblio.opacFlg]);
 			
 			// fill MARC fields with data on hand
-			// first non-repeating fields
+			// first non-repeating 'input' fields
 			$('#marcBody input.only1:text').each(function (){
 			  var tmp = bs.findMarcField(biblio, this.id);
 			  if (tmp){
@@ -619,6 +616,15 @@ bs = {
 			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
 			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
 			  }
+			});
+			// then any 'textarea' fields
+			$('#marcBody textarea.only1').each(function() {
+			  var tmp = bs.findMarcField(biblio, this.id);
+			  if (tmp){
+			  	$('#marcBody #'+tmp.marcTag).val(tmp.value);
+			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
+			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
+				}
 			});
 			// then repeaters
 			bs.lastFldTag = ''; 
@@ -640,8 +646,7 @@ bs = {
 			  	bs.fldNo++;
 			  }
 			});
-
-	  	 var hidingRows = $('#itemEditorDiv td.filterable');
+			ie.init(); // ensure field bindings are current
 
     	$('#itemEditorDiv').show();
 		});
@@ -716,16 +721,23 @@ bs = {
 		$(destId).val(text);
 	},
 	doItemUpdate: function () {
+	  // verify all required fields are present
+	  if (!ie.validate()) return false;
+	  
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
-	  	$('#itemRsltMsg').html(response);
-			bs.rtnToBiblio()
-			if (bs.srchType == 'barCd')
-				bs.doBarCdSearch();
-			else if (bs.srchType = 'phrase')
-				bs.doPhraseSearch();
-//			bs.rtnToBiblio()
+	    if (response == '!!success!!'){
+    		$('#itemEditorDiv').hide();
+				// successful update, repeat search with existing criteria
+				if (bs.srchType == 'barCd')
+					bs.doBarCdSearch();
+				else if (bs.srchType = 'phrase')
+					bs.doPhraseSearch();
+			} else {
+			  // failure, show error msg, leave form in place
+				$('#itemRsltMsg').html(response);
+	 		}
 	  });
 	  return false;
 	},
@@ -773,10 +785,14 @@ bs = {
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyUpdate();
-			bs.rtnToBiblio();
+			// Moved to function
+			//bs.rtnToBiblio();
 			return false;
 		});
 
+		// Set 'update' button to enabled in case it wasn't from a previous edit
+		$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
+		
 		$('#biblioDiv').hide();
 		$('#copyEditorDiv').show();
 	  // prevent submit button from firing a 'submit' action
@@ -796,7 +812,7 @@ bs = {
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').bind('click',null,function () {
 			bs.doCopyNew();
-			bs.rtnToBiblio();
+			//bs.rtnToBiblio();
 			return false;
 		});
 	  // prevent submit button from firing a 'submit' action
@@ -811,8 +827,20 @@ bs = {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#barcode_nmbr').val(barcd);
-	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
-	  	$('#editRsltMsg').html(response).show();
+		// Set copyId to null if not defined (in case of new item)
+		var currCopyId = null;
+		if(typeof(bs.crntCopy) != "undefined"){
+			currCopyId = bs.crntCopy.copyid;
+		}
+		
+	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
+	  	if(response.length > 0){
+			$('#copySubmitBtn').disable().css('color', '#888888');
+			$('#editRsltMsg').html(response).show();
+		} else {
+			$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
+			$('#editRsltMsg').html(response).show();
+		}
 		})
 	},
 	doCopyNew: function () {
@@ -820,20 +848,13 @@ bs = {
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
-	  $.post(bs.url,params, function(response){
-	  	$('#editRsltMsg').html(response);
-	  	bs.fetchCopyInfo(); // refresh copy display
-	  	return false;
-	  });
-	  // prevent submit button from firing a 'submit' action
-	  return false;
+		
+		// post to DB
+		bs.doPostCopy2DB(params);
 	},
 	doCopyUpdate: function () {
-		if ($('#copyTbl #barcode_nmbr').attr('disabled')) {
-	  	var barcdNmbr = bs.crntCopy.barcode_nmbr;
-		} else {
-	  	var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
-	  }
+	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
+	  
 	  // serialize() ignores disabled fields, so cant reliably use in this case
 	  var copyDesc = $('#copyTbl #copy_desc').val();
 	  var statusCd = $('#copyTbl #status_cd').val();
@@ -841,18 +862,27 @@ bs = {
 		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
 					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 + "&status_cd="+statusCd+"&siteid="+siteid;
+
 		// Custom fields
 		for(nField in bs.crntCopy.custFields){
-			// Only add if has a value, or changed from a value to noihing
+			// Only add if has a value, or changed from a value to nothing
 			if($('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != bs.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != ""){
 				params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
 			}
 		}					
-		//console.log('params='+params);
-	  $.post(bs.url,params, function(response){
-	  	$('#editRsltMsg').html(response);
-	  	bs.fetchCopyInfo(); // refresh copy display
-	    $('#editCancelBtn').val('Go Back');
+		// post to DB
+		bs.doPostCopy2DB(params);
+	},
+	doPostCopy2DB: function (parms) {
+		//console.log('parms='+parms);
+	  $.post(bs.url,parms, function(response){
+	  	if(response == '!!success!!') {
+				bs.fetchCopyInfo(); // refresh copy display
+				$('#editCancelBtn').val('Go Back');
+				bs.rtnToBiblio();
+			} else {
+				$('#editRsltMsg').html(response);
+			}
 	  });
 	  // prevent submit button from firing a 'submit' action
 	  return false;

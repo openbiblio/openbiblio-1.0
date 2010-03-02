@@ -89,7 +89,7 @@
 			<?php echo inputfield('hidden','lookup',$lookup); ?>
 		</td>
 		<td>
-			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBttn" />
+			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBtn" />
 		</td>
 	</tr>
 	<tr>
@@ -263,7 +263,7 @@
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
 				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
 				<?php
-					if($_SESSION['show_copy_site'] == "Y"){
+					if($_SESSION['multi_site_func'] > 0){
 						echo "<th id=\"siteFld\" align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";
 					}
 				?>
@@ -285,16 +285,17 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="itemEditorDiv">
-  <form id="biblioEditForm" name="biblioEditForm" method="POST" >
+  <form id="biblioEditForm" name="biblioEditForm" >
 		<p class="note"><?php echo T("Fields marked are required"); ?></p>
 		<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
-	<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
+		<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
 	
 		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
+		<!--input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" /-->
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="<?php echo T("Go Back"); ?>" class="button itemGobkBtn" />
 	</form>

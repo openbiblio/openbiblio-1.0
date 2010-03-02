@@ -312,6 +312,12 @@ span.error {
 p.error {
 	color: red;
 	}
+input.error {
+	color: red;
+	}
+label.error {
+	color: red;
+	}
 td.label {
 	text-align: left; /*vertical-align: center;*/
 	white-space: nowrap;

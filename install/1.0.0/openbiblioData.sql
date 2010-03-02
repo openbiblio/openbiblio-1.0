@@ -12566,7 +12566,7 @@ INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data
 ('show_checkout_mbr', 20, 'Show member who has an item checked out', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
 ('show_item_photos', 21, 'Show Item Photos', 'bool', NULL, NULL, NULL, 'N', 'tools'),
 ('show_detail_opac', 22, 'Show copy details in OPAC', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('show_copy_site', 23, 'Show site of a copy', 'bool', NULL, NULL, NULL, 'N', 'tools'),
+('multi_site_func', 23, 'Default site for multiple site functionality (0=disabled)', 'int', NULL, NULL, NULL, '0', 'tools'),
 ('site_login', 25, 'Select a Site at Logon', 'bool', NULL, NULL, NULL, 'N', 'tools');
 
 --

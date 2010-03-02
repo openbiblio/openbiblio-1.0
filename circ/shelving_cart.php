@@ -39,6 +39,7 @@ function userError($msg) {
 	exit();
 }
 
+$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
 $barcode = $_POST["barcodeNmbr"];
 
 #****************************************************************************

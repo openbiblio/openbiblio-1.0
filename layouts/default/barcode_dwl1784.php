@@ -18,7 +18,7 @@ class Layout_barcode_dwl1784 {
 	function render($rpt) {
 		$lay = new Lay(array(0 => '21cm', 1 => '29.7cm'));
 			$lay->container('Lines', array(
-				'margin-top'=>'12.5mm', 'margin-bottom'=>'12.5mm',
+				'margin-top'=>'14.5mm', 'margin-bottom'=>'10.5mm',
 				'margin-left'=>'7.2mm', 'margin-right'=>'7.2mm',
 				'x-spacing'=>'2.5mm'
 			));
@@ -36,17 +36,25 @@ class Layout_barcode_dwl1784 {
 							'y-align'=>'center',
 						));
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 10);
-									if (strlen($row['title']) > 35) {
-										$row['title'] = substr($row['title'], 0, 35)."...";
+								$lay->pushFont('Times-Bold', 10);
+									if (strlen($row['library_name']) > 35) {
+										$row['library_name'] = substr($row['library_name'], 0, 35)."...";
+									}
+									$lay->text($row['library_name']);
+								$lay->popFont();
+							$lay->close();	
+							$lay->container('TextLine', array('x-align'=>'center'));
+								$lay->pushFont('Times-Roman', 9);
+									if (strlen($row['title']) > 38) {
+										$row['title'] = substr($row['title'], 0, 38)."...";
 									}
 									$lay->text($row['title']);
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 10);
-									if (strlen($row['author']) > 35) {
-										$row['author'] = substr($row['author'], 0, 35)."...";
+								$lay->pushFont('Times-Roman', 8);
+									if (strlen($row['author']) > 40) {
+										$row['author'] = substr($row['author'], 0, 40)."...";
 									}
 									$lay->text($row['author']);
 								$lay->popFont();
@@ -62,12 +70,12 @@ class Layout_barcode_dwl1784 {
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 10);
+								$lay->pushFont('Times-Roman', 8);
 									$site = "Lib.: " . $row['site_code'];
 									$class = "Class: " . $row['callno'];
-									$lay->text(str_pad($site , 35 - strlen($class), ".") . $class);
+									$lay->text(str_pad($site , 40 - strlen($class), ".") . $class);
 								$lay->popFont();
-							$lay->close();							
+							$lay->close();						
 						$lay->close();
 					}
 				$lay->close();

@@ -577,6 +577,7 @@ $trans["Reqd"] = "Reqd";
 $trans["Request cart is empty"] = "Request cart is empty";
 $trans["Request Cart"] = "Request Cart";
 $trans["Requested Delivery Date"] = "Requested Delivery Date";
+$trans["REQUIRED FIELD"] = "REQUIRED FIELD";
 $trans["Required field missing"] = "Required field missing";
 $trans["Required note"] = " - required fields.";
 $trans["Required?"] = "Required?";

@@ -61,6 +61,8 @@ unset($_SESSION["pageErrors"]);
 
 if(isset($_REQUEST['selectSite'])){
 	$_SESSION['current_site'] = $_REQUEST['selectSite'];
+	// Also set as cookie, this allows in libraries with multiple sites to automatic logon on the same library "(set for 1 year)
+	setcookie("OpenBiblioSiteID", $_SESSION['current_site'], time()+60*60*24*365);
 }
 
 $_SESSION["username"] = $user['username'];
@@ -73,17 +75,6 @@ $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
 $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 $_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
 
-/*
-$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
-$_SESSION['mbrBarcode_flg'] = Settings::get('mbr_barcode_flg');
-$_SESSION['allow_plugins_flg'] = Settings::get('allow_plugins_flg');
-$_SESSION['plugin_list'] = Settings::get('plugin_list');
-$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
-$_SESSION['mbr_autoBarcode_flg'] = Settings::get('mbr_autoBarcode_flg');
-$_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');
-$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
-$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
-*/
 setSessionFmSettings();
 
 header("Location: ".$_SESSION["returnPage"]);

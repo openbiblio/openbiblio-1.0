@@ -10,10 +10,6 @@
 	## assure all session values are current
 	setSessionFmSettings(); // part of ../shared/common.php
 	
-	// Need to be initialised to make the decission to show the site dropdown list - LJ
-//	if(!isset($_SESSION['show_copy_site']))
-//		$_SESSION['show_copy_site'] = Settings::get('show_copy_site');
-	
 	$temp_return_page = "";
 	if (isset($_GET["RET"])){
 		$_SESSION["returnPage"] = $_GET["RET"];
@@ -22,11 +18,16 @@
 	$sites_table = new Sites;		
 	$sites = $sites_table->getSelect();	
 
-	// If the current_site is set, default to this site, otherwise default
+	// If the current_site is set, default to this site, otherwise use the cookie and finally the site default
 	if(isset($_REQUEST['selectSite'])){
 		$siteId = $_REQUEST['selectSite'];
+	} elseif(isset($_COOKIE['OpenBiblioSiteID'])) {
+		$siteId = $_COOKIE['OpenBiblioSiteID'];
 	} else {
-		$siteId = Settings::get('library_name');
+		$siteId = Settings::get('multi_site_func');
+		if(!($siteId > 0)){
+			$siteId = 1;
+		}
 	}
 	
 	$tab = "circ";
@@ -70,7 +71,7 @@
 			<?php echo inputfield('password','pwd',$postVars["pwd"],$attrs); ?>
 		</td>
 	</tr>
-	<?php if(($_SESSION['show_copy_site'] == 'Y') || ($_SESSION['site_login'] == 'Y')){ ?>
+	<?php if(($_SESSION['multi_site_func'] > 0) || ($_SESSION['site_login'] == 'Y')){ ?>
 	<tr>
 		<td>
 			<label for="selectSite"><?php echo T("Library Site"); ?>:</label>

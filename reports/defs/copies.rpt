@@ -17,17 +17,18 @@
 .	order_by default=barcode_nmbr
 .		item barcode_nmbr title="Barcode"
 .		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
+.		item callno title="Call no." expr='ts3.subfield_data' type=MARC skip_indicator="tf3.ind2_cd"
 .	end order_by
 .	string sitecode title="Site code"
 .	session_id
 .end parameters
 
 .sql
-	select c.*, s.name as site_name, s.code as site_code, 
+	select c.*, s.name as site_name, s.code as site_code, st.value as library_name, 
 		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
 		concat(ts2.subfield_data, ' ', ifnull(sub2.subfield_data, '')) as author,
 		concat(ts3.subfield_data, ' ', ifnull(sub3.subfield_data, '')) as callno
-	from biblio_copy c join site s join biblio_field tf join biblio_subfield ts
+	from biblio_copy c join site s join settings st join biblio_field tf join biblio_subfield ts
 	join biblio_field tf2 join biblio_subfield ts2
 	join biblio_field tf3 join biblio_subfield ts3	
 .	if_not_equal cart none
@@ -44,6 +45,7 @@
 		and tf2.bibid=c.bibid and tf2.tag='100' and ts2.fieldid=tf2.fieldid and ts2.subfield_cd='a'
 		and tf3.bibid=c.bibid and tf3.tag='099' and ts3.fieldid=tf3.fieldid and ts3.subfield_cd='a'
 		and s.siteid = c.siteid
+		and st.name = 'library_name'
 .	if_set barcode
 		and c.barcode_nmbr like '%"barcode%%%'
 .	end if_set

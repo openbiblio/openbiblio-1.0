@@ -21,7 +21,9 @@ function staff_menu() {
 		Nav::node('circulation/mbr/hist', T("Checkout History"), '../circ/mbr_history.php?'.$params);
 	}
 
-	Nav::node('circulation/new', T("New Member"), '../circ/mbr_new_form.php?reset=Y');
+	if($_SESSION["hasCircMbrAuth"]){
+		Nav::node('circulation/new', T("New Member"), '../circ/mbr_new_form.php?reset=Y');
+	}
 	Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
 	Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
 	Nav::node('circulation/bookings/pending', T("Pending Bookings"));
