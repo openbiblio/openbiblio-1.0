@@ -41,10 +41,14 @@
 </td></tr>
 <tbody>
 {.repeated section fields}
-	<tr>
-		<td class="name">{name}:</td>
-		<td class="value">{value|str}</td>
-	</tr>
+	{# Only show a row if there's a value }
+	{.section value}
+		{# fields are already HTML, so we need to use |str to avoid escaping them}
+		<tr>
+			<td class="name">{name|str}:</td>
+			<td class="value">{value|str}</td>
+		</tr>
+	{.end}
 {.end}
 </tbody>
 </table>

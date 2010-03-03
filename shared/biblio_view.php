@@ -27,31 +27,24 @@ require_once(REL(__FILE__, '../model/Cart.php'));
 require_once(REL(__FILE__, '../classes/Report.php'));
 require_once(REL(__FILE__, '../functions/info_boxes.php'));
 
-$bibid = $_REQUEST['bibid'];
-$biblios = new Biblios();
-$biblio = $biblios->getOne($bibid);
-
-$page = array('bibid'=>$bibid, 'tab'=>$tab);
-
-if (isset($_REQUEST['rpt'])) {
+function getSequence() {
+	global $tab;
+	if (!isset($_REQUEST['rpt']) || !isset($_REQUEST['seqno'])) {
+		return NULL;
+	}
 	$rpt = Report::load($_REQUEST['rpt']);
-} else {
-	$rpt = NULL;
-}
-
-if ($rpt and isset($_REQUEST['seqno'])) {
 	$view_url = '../shared/biblio_view.php?bibid={bibid}'
 		. '&tab={tab}&rpt={rpt}&seqno={seqno}';
 	$p = $rpt->row($_REQUEST['seqno']-1);
 	$n = $rpt->row($_REQUEST['seqno']+1);
-	$page['sequence'] = array(
+	$sequence = array(
 		'number'=>$_REQUEST['seqno'],
 		'count'=>$rpt->count(),
 		'prev_url'=>NULL,
 		'next_url'=>NULL,
 	);
 	if ($p) {
-		$page['sequence']['prev_url'] = URL($view_url, array(
+		$sequence['prev_url'] = URL($view_url, array(
 			'tab'=>$tab,
 			'rpt'=>$rpt->name,
 			'bibid'=>$p['bibid'],
@@ -59,33 +52,34 @@ if ($rpt and isset($_REQUEST['seqno'])) {
 		));
 	}
 	if ($n) {
-		$page['sequence']['next_url'] = URL($view_url, array(
+		$sequence['next_url'] = URL($view_url, array(
 			'tab'=>$tab,
 			'rpt'=>$rpt->name,
 			'bibid'=>$n['bibid'],
 			'seqno'=>$n['.seqno'],
 		));
 	}
-} else {
-	$page['sequence'] = NULL;
+	return $sequence;
 }
 
-$cart = getCart('bibid');
-if ($cart->contains($bibid)) {
-	$page['in_cart'] = true;
-} else {
-	$page['in_cart'] = false;
+function isInCart($bibid) {
+	$cart = getCart('bibid');
+	return $cart->contains($bibid);
 }
 
-$bibimages = new BiblioImages;
-$images = $bibimages->getByBibid($biblio['bibid']);
-$page['images'] = array();
-while ($img = $images->next()) {
-	$page['images'][] = $img;
+function getImages($bibid) {
+	$bibimages = new BiblioImages;
+	$images = $bibimages->getByBibid($bibid);
+	$arr = array();
+	while ($img = $images->next()) {
+		$arr[] = $img;
+	}
+	return $arr;
 }
 
 function mkfield() {
 	$args = func_get_args();
+	$biblio = array_shift($args);
 	$name = array_shift($args);
 	$field = array_shift($args);
 	if (count($args)) {
@@ -94,39 +88,37 @@ function mkfield() {
 		$func = NULL;
 	}
 	$a = explode('$', $field);
-	$b = array();
+	$tag = $a[0];
+	$subfields = array();
 	if (isset($a[1])) {
-		$b = explode(',', $a[1]);
+		$subfields = explode(',', $a[1]);
 	}
 	if ($args == NULL)
 		$args = array();
-	return array(
-		'name' => $name,
-		'tag' => $a[0],
-		'subfields' => $b,
-		'func' => $func,
-		'args' => $args,
-	);
+	$bibfl = $biblio['marc']->getFields($tag);
+	$value = "";
+	$prefix = "";
+	foreach ($bibfl as $bf) {
+		$value .= $prefix;
+		foreach ($subfields as $subf) {
+			$subfl = $bf->getSubfields($subf);
+			foreach ($subfl as $s) {
+				if ($func) {
+					$fargs = $args;
+					$fargs[] = $s->data;
+					$value .= call_user_func_array($func, $fargs);
+				} else {
+					$value .= HTML('{@}', $s->data);
+				}
+			}
+		}
+		$prefix = "<br />";
+	}
+	$value = trim($value);
+	# Honor newlines in MARC fields
+	$value = str_replace("\n", "<br />", $value);
+	return array('name'=>$name, 'value'=>$value);
 }
-$fields = array(
-	mkfield(T("Title"), '245$a,b'),
-	mkfield(T("Author"), '100$a', 'catalog_search', 'author'),
-	mkfield(T("Item Number"), '099$a'),
-	mkfield(T("Grade Level"), '521$a'),
-	mkfield(T("Publication Date"), '260$c'),
-	mkfield(T("Publisher"), '260$b', 'catalog_search', 'publisher'),
-	mkfield(T("Edition"), '250$a'),
-	mkfield(T("Length"), '300$a'),
-	mkfield(T("Series"), '440$a', 'catalog_search', 'series'),
-	mkfield(T("Summary"), '520$a'),
-	mkfield(T("Contents"), '505$a'),
-	mkfield(T("Other Physical Details"), '300$b'),
-	mkfield(T("Dimensions"), '300$c'),
-	mkfield(T("Accompanying Material"), '300$e'),
-	mkfield(T("Subjects"), '650$a', 'catalog_search', 'subject'),
-	mkfield(T("Links"), '856$u', 'link856'),
-);
-
 function catalog_search($type, $value) {
 	global $tab;
 	$url = URL('../shared/biblio_search.php?'
@@ -143,34 +135,34 @@ function link856($value) {
 	return HTML('<a href="{@}">{@}</a>', $value);
 }
 
-foreach ($fields as $f) {
-	$bibfl = $biblio['marc']->getFields($f['tag']);
-	$value = "";
-	$prefix = "";
-	foreach ($bibfl as $bf) {
-		$value .= $prefix;
-		foreach ($f['subfields'] as $subf) {
-			$subfl = $bf->getSubfields($subf);
-			foreach ($subfl as $s) {
-				if ($f['func']) {
-					$args = $f['args'];
-					$args[] = $s->data;
-					$value .= call_user_func_array($f['func'], $args);
-				} else {
-					$value .= H($s->data);
-				}
-			}
-		}
-		$prefix = "<br />";
-	}
-	$value = trim($value);
-	if ($value == "") {
-		continue;
-	}
-	# Honor newlines in MARC fields
-	$value = str_replace("\n", "<br />", $value);
-	$page['fields'][] = array('name'=>$f['name'], 'value'=>$value);
-}
+$bibid = $_REQUEST['bibid'];
+$biblios = new Biblios();
+$biblio = $biblios->getOne($bibid);
+$page = array(
+	'bibid'=>$bibid,
+	'tab'=>$tab,
+	'sequence'=>getSequence(),
+	'images'=>getImages($bibid),
+	'in_cart'=>isInCart($bibid),
+	'fields'=>array(
+		mkfield($biblio, T('Title'), '245$a,b'),
+		mkfield($biblio, T('Author'), '100$a', 'catalog_search', 'author'),
+		mkfield($biblio, T('Item Number'), '099$a'),
+		mkfield($biblio, T('Grade Level'), '521$a'),
+		mkfield($biblio, T('Publication Date'), '260$c'),
+		mkfield($biblio, T('Publisher'), '260$b', 'catalog_search', 'publisher'),
+		mkfield($biblio, T('Edition'), '250$a'),
+		mkfield($biblio, T('Length'), '300$a'),
+		mkfield($biblio, T('Series'), '440$a', 'catalog_search', 'series'),
+		mkfield($biblio, T('Summary'), '520$a'),
+		mkfield($biblio, T('Contents'), '505$a'),
+		mkfield($biblio, T('Other Physical Details'), '300$b'),
+		mkfield($biblio, T('Dimensions'), '300$c'),
+		mkfield($biblio, T('Accompanying Material'), '300$e'),
+		mkfield($biblio, T('Subjects'), '650$a', 'catalog_search', 'subject'),
+		mkfield($biblio, T('Links'), '856$u', 'link856'),
+	),
+);
 if ($tab == "cataloging") {
 	$page['fields'][] = array(
 		'name'=>T('Date Added'),
