@@ -14,6 +14,9 @@ function HTML($s, $v=NULL) {
 	global $LOC;
 	return TEMPLATE($LOC->translate($s), $v);
 }
+function URL($s, $v=NULL) {
+	return TEMPLATE($s, $v, 'url-param-value');
+}
 function T($s, $v=NULL) {
 	global $LOC;
 	return TEMPLATE($LOC->translateOne($s), $v);
