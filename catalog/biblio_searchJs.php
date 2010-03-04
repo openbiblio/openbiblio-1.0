@@ -265,7 +265,7 @@ bs = {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
+				bs.biblio = $.parseJSON(jsonInpt);
 				if (!bs.biblio.data) {
 	  			$('#rsltMsg').html('<?php T('Nothing Found by bar cd search') ?>').show();
 				}
@@ -292,7 +292,7 @@ bs = {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				bs.biblio = eval('('+jsonInpt+')'); // JSON 'interpreter'
+				bs.biblio = $.parseJSON(jsonInpt);
 				if (bs.biblio.data == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
@@ -321,7 +321,7 @@ bs = {
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				var biblioList = eval('('+jsonInpt+')'); // JSON 'interpreter'
+				var biblioList = $.parseJSON(jsonInpt);
 				
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
@@ -338,7 +338,7 @@ bs = {
 				else if (biblioList.length == 2 && firstItem == 0) {
 				  bs.multiMode = false;
       		// Changed from 0 to 1 as the first row shows record info
-					bs.biblio = eval('('+biblioList[1]+')');
+					bs.biblio = $.parseJSON(biblioList[1]);
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
@@ -360,7 +360,7 @@ bs = {
 	  }
 	  
 		// Modified in order to limit results per page. First "record" contains this data - LJ
-		var queryInfo = eval('('+biblioList[0]+')');
+		var queryInfo = $.parseJSON(biblioList[0]);
 		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
 		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
