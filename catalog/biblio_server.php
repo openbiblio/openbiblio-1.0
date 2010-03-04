@@ -151,13 +151,15 @@ class SrchDb {
 					."	 AND (m.`code` = b.`material_cd`)"
 					."	 AND (cd.`code` = b.`collection_cd`)"
 					."	 AND (cc.`code` = b.`collection_cd`)";
+		//echo "sql=$sql<br />\n";
 		$rcd = $this->db->select01($sql);
-		$this->createDt = $rcd[create_dt];
-		$this->daysDueBack = $rcd[days_due_back];
-		$this->matlCd = $rcd[material_cd];
-		$this->collCd = $rcd[collection_cd];
-		$this->imageFile =$rcd[image_file];
-		$this->opacFlg = $rcd[opac_flg];
+//print_r($rcd);echo "<br />\n";
+		$this->createDt = $rcd['create_dt'];
+		$this->daysDueBack = $rcd['days_due_back'];
+		$this->matlCd = $rcd['material_cd'];
+		$this->collCd = $rcd['collection_cd'];
+		$this->imageFile =$rcd['image_file'];
+		$this->opacFlg = $rcd['opac_flg'];
 		
 		// If the show details OPAC  flag is set get info on the copies	
 		if ($_SESSION['show_detail_opac'] == 'Y'){
@@ -368,10 +370,11 @@ class SrchDb {
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
-		echo "{'lookupAvail':'".in_array('lookup2',$_SESSION)."'"
-		    .",'current_site':'$_SESSION[current_site]'"
-				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'"
-				.",'barcdWidth':'$_SESSION[item_barcode_width]'}";
+		$opts['lookupAvail'] = in_array('lookup2',$_SESSION);
+		$opts['current_site'] = $_SESSION[current_site];
+		$opts['showBiblioPhotos'] = $_SESSION[show_item_photos];
+		$opts['barcdWidth'] = $_SESSION[item_barcode_width];
+		echo json_encode($opts);
 	  break;
 
 	case 'getCrntMbrInfo':
@@ -401,20 +404,6 @@ class SrchDb {
 	  break;
 	  
 	case 'doBarcdSearch':
-/*  experimental - doesn't work at all for me - FL
-	  $cpy = new Copies;
-	  $rslt = $cpy->getByBarcode($_REQUEST['searchBarcd']);
-echo "copy info:<br />";print_r($rslt);echo "<br /><br /><br />\n\n";
-
-		$bib = new Biblios;
-		$rslt = $bib->getOne($rslt[bibid]);
-echo "biblio info:<br />";print_r($rslt);echo "<br /><br /><br />\n\n";
-			echo "{'barCd':'$_REQUEST[searchBarcd]','bibid':'$rslt[bibid]','imageFile':'$rslt[imageFile]',"
-					."'daysDueBack':'$rslt[daysDueBack]', 'createDt':'$rslt[createDt]',"
-					."'matlCd':'$rslt[matlCd]', 'collCd':'$rslt[collCd]', 'opacFlg':'$rslt[opacFlg]',"
-					."'data':null"
-					."}";echo "<br /><br /><br />\n\n";
-*/
 	  $theDb = new SrchDB;
 	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
 	  if ($rslt != NULL) {
@@ -529,10 +518,12 @@ echo "biblio info:<br />";print_r($rslt);echo "<br /><br /><br />\n\n";
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
 				$theDb->getBiblioInfo($bibid);
+
 				$copyData = "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
 										."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
 										."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',";
 				if($_SESSION['show_detail_opac'] == 'Y') $copyData .= "'avIcon':'$theDb->avIcon',";
+//echo "copydata=<br />\n$copyData<br /><br />\n";
 				$copyData .=			"'data':".json_encode($theDb->getBiblioDetail())
 										."}";
 				$biblio[] = $copyData;
@@ -587,21 +578,6 @@ echo "biblio info:<br />";print_r($rslt);echo "<br /><br /><br />\n\n";
 	  $theDb->deleteOne($_REQUEST[bibid]);
 	  echo T("Delete completed");
 	  break;
-
-/*
-	//experimental
-	case 'updateCopy':
-	  $copies = new Copies;
-		$errors = $copies->update_el($_POST);
-		echo $errors;
-		break;
-	case 'newCopy':
-		$copies = new Copies;
-		$errors = $copies->insert_el($_POST);
-		# Do whatever needs to be done on error or success, e.g. returning status in a JSON structure
-		echo $errors;
-		break;
-*/
 
 	case 'updateCopy':
 	case 'newCopy':
