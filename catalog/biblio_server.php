@@ -401,8 +401,22 @@ class SrchDb {
 	  break;
 	  
 	case 'doBarcdSearch':
+/*  experimental - doesn't work at all for me - FL
+	  $cpy = new Copies;
+	  $rslt = $cpy->getByBarcode($_REQUEST['searchBarcd']);
+echo "copy info:<br />";print_r($rslt);echo "<br /><br /><br />\n\n";
+
+		$bib = new Biblios;
+		$rslt = $bib->getOne($rslt[bibid]);
+echo "biblio info:<br />";print_r($rslt);echo "<br /><br /><br />\n\n";
+			echo "{'barCd':'$_REQUEST[searchBarcd]','bibid':'$rslt[bibid]','imageFile':'$rslt[imageFile]',"
+					."'daysDueBack':'$rslt[daysDueBack]', 'createDt':'$rslt[createDt]',"
+					."'matlCd':'$rslt[matlCd]', 'collCd':'$rslt[collCd]', 'opacFlg':'$rslt[opacFlg]',"
+					."'data':null"
+					."}";echo "<br /><br /><br />\n\n";
+*/
 	  $theDb = new SrchDB;
-	  $rslt = $theDb->getBiblioByBarcd($_REQUEST[searchBarcd]);
+	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
 	  if ($rslt != NULL) {
 	  	$theDb->getBiblioInfo($theDb->bibid);
 			echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
