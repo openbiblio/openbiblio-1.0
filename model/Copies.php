@@ -218,6 +218,9 @@ class Copies extends CoreTable {
 	function getCustomFields($copyid) {
 		return $this->custom->getMatches(array('copyid'=>$copyid));
 	}
+	function deleteCustomFields($copyid) {
+		return $this->custom->deleteMatches(array('copyid'=>$copyid));
+	}
 
 	function setCustomFields($copyid, $customFldsarr) {
 		$this->custom->deleteMatches(array('copyid'=>$copyid));
