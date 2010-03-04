@@ -30,24 +30,39 @@
 		//echo "ttl hits= $ttlHits<br />";
 		## TOO FEW
 		if ($ttlHits == 0) {
-		  $msg1 = T('Nothing Found');
-		  # JSON object follows
+		  /*
 		  $s =  "{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],".
 						"'msg':'$msg1',".
 						"'srch1':{'byName':'$srchByName','lookupVal':'$lookupVal'},".
 						"'srch2':{'byName':'$srchByName2','lookupVal':'$lookupVal2'}".
 					  "}";
 			echo $s;
+			*/
+		  $rcd['ttlHits'] = $ttlHits;
+		  $rcd['maxHits'] = $postVars['maxHits'];
+		  $rcd['msg'] = T('Nothing Found');
+		  $srch['byName'] = $srchByName;
+		  $srch['lookupVal'] = $lookupVal;
+		  $rcd['srch1'] = json_encode($srch);
+		  $srch['byName'] = $srchByName2;
+		  $srch['lookupVal'] = $lookupVal2;
+		  $rcd['srch2'] = json_encode($srch);
+		  echo json_encode($rcd);
 		}
 		## TOO MANY
-		else if ($ttlHits > $postVars[maxHits]) {
+		else if ($ttlHits > $postVars[maxHits]) {/*
 			$msg1 = T('lookup_tooManyHits');
 			$msg2 = T('lookup_refineSearch');
-			 # JSON object follows
 		  $s =  "{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',".
 						"'msg':'$msg1', 'msg2':'$msg2' ".
 						"}";
 			echo $s;
+			*/
+		  $rcd['ttlHits'] = $ttlHits;
+		  $rcd['maxHits'] = $postVars['maxHits'];
+		  $rcd['msg'] = T('lookup_tooManyHits');
+		  $rcd['msg2'] = T('lookup_refineSearch');
+		  echo json_encode($rcd);
 		}
 		## GOOD COUNT
 		else if ($ttlHits > 0) {
@@ -55,17 +70,15 @@
 				$postit = true;
 				$_POST['ttlHits'] = $ttlHits;
 				$_POST['numHosts'] = $numHosts;
-//				$_POST['postVars'] = $postVars; // for debugging
+				//$_POST['postVars'] = $postVars; // for debugging
 				$rslt = array();
 				for ($h=0; $h<$numHosts; $h++) {
-					if ($postVars[protocol] == 'YAZ') {
+					if ($postVars['protocol'] == 'YAZ') {
 						$rslt[$h] = doOneHost($h, $hits, $id); // build an array of host data
 					}
-					else if ($postVars[protocol] == 'SRU'){
+					else if ($postVars['protocol'] == 'SRU'){
 					  $rslt[$h] = $marc[$h];
 					}
-					//	$lookupVal = "";
-					//	$srchBy = "";
 				}
 				$_POST[data] = $rslt;
 			}

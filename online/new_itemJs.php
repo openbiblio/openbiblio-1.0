@@ -199,7 +199,7 @@ ni = {
 	 	var parms=$('#newbiblioform').serialize();
 		parms += '&mode=doInsertBiblio';
 	  $.post(ni.url,parms, function(jsonInpt){
-	    var rslt = eval('('+jsonInpt+')');
+	    var rslt = $.parseJSON(jsonInpt);
 	    ni.bibid = rslt.bibid;
 	  	ni.showCopyEditor();
 	  	return false;
@@ -368,7 +368,7 @@ ni = {
 				$('#retryDiv').show();
 			}
 			else {
-				var rslts = eval('('+response+')'); // JSON 'interpreter'
+				var rslts = $.parseJSON(response);
 				var numHits = parseInt(rslts.ttlHits);
 				var maxHits = parseInt(rslts.maxHits);
 				if (numHits < 1) {
@@ -479,9 +479,13 @@ ni = {
 	},
 	doClearItemForm: function () {
 		// assure all marc fields are empty & visible at start
-    $(".marcBiblioFld").each(function(){
-			$(this).parent().parent().val('').show();
+		$('#newbiblioform').each(function(){
+	        this.reset();
 		});
+		
+    //$(".marcBiblioFld").each(function(){
+		//	$(this).parent().parent().val('').show();
+		//});
 	},
 	doShowOne: function (data){
 	  // display biblio item data in form

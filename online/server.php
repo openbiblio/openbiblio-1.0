@@ -101,7 +101,9 @@ switch ($_REQUEST[mode]){
 	case 'getNewBarcd':
 		require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
-		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
+		//echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
+		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION[item_barcode_width]);
+		echo json_encode($temp);
 	  break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
@@ -117,7 +119,9 @@ switch ($_REQUEST[mode]){
 			exit;
 		}
 
-		echo "{'cutter':'".getCutter($_REQUEST[author])."'}";
+		//echo "{'cutter':'".getCutter($_REQUEST[author])."'}";
+		$temp['cutter'] = getCutter($_REQUEST['author']);
+		echo json_encode($temp);
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
