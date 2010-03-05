@@ -372,24 +372,10 @@ class JsonTemplateScopedContext implements Iterator
 
 	function PushSection($name)
 	{
-		$end = end($this->stack);
-		$new_context=null;
-		if(is_array($end)){
-			if(isset($end[$name])){
-				$new_context = $end[$name];
-			}
-		}elseif(is_object($end)){
-			// since json_decode returns StdClass
-			// check if scope is an object
-			if(property_exists($end,$name)){
-				$new_context = $end->$name;
-			} else if (method_exists($end,$getter="get$name")){
-				$new_context = $end->$getter();
-			} else if (method_exists($end,'__get')){
-				try {
-					$new_context = $end->$name;
-				} catch (exception $e){}
-			}
+		try {
+			$new_context = $this->Lookup($name);
+		} catch(JsonTemplateUndefinedVariable $e) {
+			$new_context = null;
 		}
 		$this->name_stack[] = $name;
 		$this->stack[] = $new_context;
@@ -549,7 +535,7 @@ class HtmlJsonTemplateFormatter extends JsonTemplateFormatter
 {
 	function format($str)
 	{
-		return htmlspecialchars($str,ENT_NOQUOTES);
+		return htmlspecialchars($str,ENT_QUOTES);
 	}
 }
 
@@ -557,7 +543,7 @@ class HtmlAttributeValueJsonTemplateFormatter extends JsonTemplateFormatter
 {
 	function format($str)
 	{
-		return htmlspecialchars($str);
+		return htmlspecialchars($str,ENT_QUOTES);
 	}
 
 }
@@ -653,7 +639,7 @@ function DebugJsonTemplatePredicate($data,$context,$arg)
 class JsonTemplateModule
 {
 
-	public $section_re = '/^(?:(repeated)\s+)?(section)\s+(@|[A-Za-z0-9_-]+)(?:\b(.*))?$/';
+	public $section_re = '/^(?:(repeated)\s+)?(section)\s+(@|[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*)(?:\b(.*))?$/';
 	public $if_re = '/^if\s+(@|[A-Za-z0-9_-]+)(\?)?(?:\b(.*?))?\s*$/';
 	public $option_re = '/^([a-zA-Z\-]+):\s*(.*)/';
 	public $option_names = array('meta','format-char','default-formatter');

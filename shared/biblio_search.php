@@ -95,9 +95,91 @@
 				$sortBy = $_REQUEST["sortBy"] = "title";
 			}
 		}
-		$rpt->init(array('terms'=>$terms,
-										 'order_by'=>$sortBy));
+		$rpt->init(array('terms'=>$terms, 'order_by'=>$sortBy));
 		return $rpt;
+	}
+	function pageLink($page) {
+		global $tab;
+		return URL('../shared/biblio_search.php?type=previous'
+			. '&tab={tab}&page={page}',
+			array('tab'=>$tab, 'page'=>$page));
+	}
+	function getPagination($count, $page) {
+		$perpage = Settings::get('items_per_page');
+		$r = array(
+			'num_results'=>$count,
+			'total_pages'=>ceil($count/$perpage),
+			'multiple_pages'=>ceil($count/$perpage)>1,
+			'starting_item'=>($page-1)*$perpage + 1,
+			'ending_item'=>min($count, $page*$perpage),
+			'start_at_one'=>false,
+			'near_last'=>false,
+			'pages'=>array(),
+		);
+		if ($page <= OBIB_SEARCH_MAXPAGES/2) {
+			$i = 1;
+			$r['stat_at_one'] = true;
+		} else {
+			$i = $page - OBIB_SEARCH_MAXPAGES/2;
+		}
+		$endpg = $i + OBIB_SEARCH_MAXPAGES-1;
+		if ($endpg > $r['total_pages']) {
+			$endpg = $r['total_pages'];
+			$r['near_last'] = true;
+		}
+		for(;$i<= $endpg; $i++) {
+			$r['pages'][] = array(
+				'number'=>$i,
+				'url'=>pageLink($i),
+				'current'=>($i==$page),
+			);
+		}
+		return $r;
+	}
+	function processResults($rpt) {
+		$biblios = new Biblios;
+		$bibimages = new BiblioImages;
+		$mats = new MaterialTypes;
+		$mf = new MaterialFields;
+		$results = array();
+		while($row = $rpt->next()) {
+			$bib = $biblios->getOne($row['bibid']);
+			$row['title'] = $row['title_a'].' '.$row['title_b'];
+			$row['biblio_url'] = URL('{bibid|biblio-link-url}', $row);
+			if (time() - strtotime($bib['create_dt']) < 365*86400) {
+				/* Item was added in the last year. */
+				$row['new'] = true;
+			} else {
+				$row['new'] = false;
+			}
+			$mat = $mats->getOne($row['material_cd']);
+			$imgs = $bibimages->getByBibid($row['bibid']);
+			if ($imgs->count() != 0) {
+				$img = $imgs->next();
+				$row['img_url'] = $img['imgurl'];
+			} else {
+				$row['img_url'] = false;
+			}
+			if ($mat['image_file']) {
+				$row['material_img'] = '../images/'.$mat['image_file'];
+			} else {
+				$row['material_img'] = false;
+			}
+			$row['fields'] = array();
+			$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
+			while ($f = $fields->next()) {
+				if ($f['search_results'] != 'Y') {
+					continue;
+				}
+				$m = new MarcDisplay($f, $bib);
+				$v = $m->htmlValues();
+				if (strlen($v)) {
+					$row['fields'][] = array('heading'=>$m->title(),'value'=>$v);
+				}
+			}
+			$results[] = $row;
+		}
+		return $results;
 	}
 
 	$rpt = getRpt();
@@ -108,28 +190,17 @@
 		$currentPageNmbr = $rpt->curPage();
 	}
 
-	if (isset($_REQUEST["msg"])) {
-		$msg = $_REQUEST["msg"];
-	} else {
-		$msg = '';
-	}
+	$page_data = array(
+		'pagination'=>getPagination($rpt->count(), $currentPageNmbr),
+		'results'=>processResults($rpt->pageIter($currentPageNmbr)),
+	);
 
-	#**************************************************************************
-	#*  Show biblio view screen if only one result from query
-	#**************************************************************************
-	if ($rpt->count() == 1) {
-		$row = $rpt->row(0);
-		$url = '../shared/biblio_view.php?bibid='.U($row['bibid']).'&tab='.U($tab);
-		if ($msg) {
-			$url .= '&msg='.U($msg);
-		}
-		header('Location: '.$url);
+	// Show biblio view screen if only one result from query
+	if (count($page_date['results']) == 1) {
+		header('Location: '.$page_data['results'][0]['biblio_url']);
 		exit();
 	}
 
-	#**************************************************************************
-	#*  Show search results
-	#**************************************************************************
 	if ($tab == "opac") {
 		Nav::node('search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=opac');
 		Page::header_opac(array('nav'=>$nav, 'title'=>''));
@@ -140,97 +211,7 @@
 	}
 
 	currentMbrBox();
-?>
-<div class="search_results">
-<div class="title"><?php echo T("Search Results"); ?></div>
-<?php
-	# Display no results message if no results returned from search.
-	if ($rpt->count() == 0) {
-		echo T("No results found.");
-		Page::footer();
-		exit();
-	}
-?>
-<div class="results_found"><?php echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?></div>
-<?php
-	$page_url = new LinkUrl("../shared/biblio_search.php", 'page',
-		array('type'=>'previous', 'tab'=>$tab));
-	$disp = new ReportDisplay($rpt);
-	echo $disp->pages($page_url, $currentPageNmbr);
-?>
-<div class="search_terms"><?php echo 'search terms: FIXME'; ?></div>
-<?php
-	$biblios = new Biblios;
-	$bibimages = new BiblioImages;
-	$mats = new MaterialTypes;
-	$mf = new MaterialFields;
-?>
-	<div class="results_list">
-<?php
-	$page = $rpt->pageIter($currentPageNmbr);
-	while($row = $page->next()) {
-		$bib = $biblios->getOne($row['bibid']);
-		$title = Links::mkLink('biblio', $row['bibid'], $row['title_a'].' '.$row['title_b']);
-		if (time() - strtotime($bib['create_dt']) < 365*86400) {
-			/* Item was added in the last year. */
-			# FIXME
-		}
-		$mat = $mats->getOne($row['material_cd']);
-		?>
-		<table class="search_result">
-		<tr>
-			<td class="cover_image">
-			<?php
-			$imgs = $bibimages->getByBibid($row['bibid']);
-			if ($imgs->count() != 0) {
-				$img = $imgs->next();
-				$html = '<img src="'.H($img['imgurl']).'" alt="'.T("Item Image")."\" />\n";
-				Links::mkLink('biblio', $row['bibid'], $img);
-			}
-			else {
-				echo "<img src=\"../images/shim.gif\" />\n";
-			}
-			?>
-			</td>
-			<td class="call_media">
-				<div class="call_number"><?php echo H($row['callno']);?></div>
-				<?php
-				if ($mat['image_file']) {
-					echo "<img class=\"material\" src=\"../images/".H($mat['image_file'])."\" />\n";
-				}
-				?>
-			</td>
-			<td class=\"material_fields\">
-				<?php
-				$fields = $mf->getMatches(array('material_cd'=>$row['material_cd']), 'position');
-				$d = new CompactInfoDisplay;
-				$d->title = $title;
-				$d->author = H($row['author']);
-				echo $d->begin();
-				while ($f = $fields->next()) {
-					if ($f['search_results'] != 'Y') {
-						//echo "</td></tr></table>\n";
-						continue;
-					}
-					$m = new MarcDisplay($f, $bib);
-					$v = $m->htmlValues();
-					if (strlen($v)) {
-						echo $d->row($m->title().':', $v);
-					}
-				}
-				echo $d->end();
-				?>
-			</td>
-			<td class=\"right_info\">
-				<a class="button" href="#"><?php echo T("Add To Cart"); ?></a>
-				<div class=\"available\">1 of 1 Available</div>
-			</td>
-		</tr>
-		</table>
-		<?php
-	}
-	?>
-	</div>
-	<?php
+
+	echo HTML(file_get_contents('biblio_search.jsont'), $page_data);
 
 	Page::footer();

@@ -13,11 +13,9 @@ function currentMbrBox() {
 			unset($_SESSION['currentMbrid']);
 			return;
 		}
-		echo '<div class="current_mbr">'.T("Current Patron:");
-		echo ' <a href="../circ/mbr_view.php?mbrid='.HURL($mbr['mbrid']).'">';
-		echo H($mbr['first_name']).' ';
-		echo H($mbr['last_name']).' ';
-		echo '('.H($mbr['barcode_nmbr']).')';
-		echo '</a></div>';
+		echo HTML('<div class="current_mbr">{#trans}Current Patron:{#end} '
+			. ' <a href="../circ/mbr_view.php?mbrid={mbrid|url-param-value}">'
+			. '{first_name} {last_name} ({barcode_nmbr})</a></div>',
+			$mbr);
 	}
 }
