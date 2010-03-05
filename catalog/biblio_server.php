@@ -151,13 +151,15 @@ class SrchDb {
 					."	 AND (m.`code` = b.`material_cd`)"
 					."	 AND (cd.`code` = b.`collection_cd`)"
 					."	 AND (cc.`code` = b.`collection_cd`)";
+		//echo "sql=$sql<br />\n";
 		$rcd = $this->db->select01($sql);
-		$this->createDt = $rcd[create_dt];
-		$this->daysDueBack = $rcd[days_due_back];
-		$this->matlCd = $rcd[material_cd];
-		$this->collCd = $rcd[collection_cd];
-		$this->imageFile =$rcd[image_file];
-		$this->opacFlg = $rcd[opac_flg];
+//print_r($rcd);echo "<br />\n";
+		$this->createDt = $rcd['create_dt'];
+		$this->daysDueBack = $rcd['days_due_back'];
+		$this->matlCd = $rcd['material_cd'];
+		$this->collCd = $rcd['collection_cd'];
+		$this->imageFile =$rcd['image_file'];
+		$this->opacFlg = $rcd['opac_flg'];
 		
 		// If the show details OPAC  flag is set get info on the copies	
 		if ($_SESSION['show_detail_opac'] == 'Y'){
@@ -364,14 +366,28 @@ class SrchDb {
 	}
 } // class
 
+function mkBiblioArray($dbObj) {
+ 	$rslt['barCd'] = $dbObj->barCd;
+ 	$rslt['bibid'] = $dbObj->bibid;
+ 	$rslt['imageFile'] = $dbObj->imageFile;
+ 	$rslt['daysDueBack'] = $dbObj->daysDueBack;
+ 	$rslt['createDt'] = $dbObj->createDt;
+ 	$rslt['matlCd'] = $dbObj->matlCd;
+ 	$rslt['collCd'] = $dbObj->collCd;
+ 	$rslt['opacFlg'] = $dbObj->opacFlg;
+ 	$rslt['data'] = $dbObj->getBiblioDetail();
+ 	return $rslt;
+}
+
 	#****************************************************************************
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
-		echo "{'lookupAvail':'".in_array('lookup2',$_SESSION)."'"
-		    .",'current_site':'$_SESSION[current_site]'"
-				.",'showBiblioPhotos':'$_SESSION[show_item_photos]'"
-				.",'barcdWidth':'$_SESSION[item_barcode_width]'}";
+		$opts['lookupAvail'] = in_array('lookup2',$_SESSION);
+		$opts['current_site'] = $_SESSION[current_site];
+		$opts['showBiblioPhotos'] = $_SESSION[show_item_photos];
+		$opts['barcdWidth'] = $_SESSION[item_barcode_width];
+		echo json_encode($opts);
 	  break;
 
 	case 'getCrntMbrInfo':
@@ -402,27 +418,19 @@ class SrchDb {
 	  
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
-	  $rslt = $theDb->getBiblioByBarcd($_REQUEST[searchBarcd]);
+	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
 	  if ($rslt != NULL) {
 	  	$theDb->getBiblioInfo($theDb->bibid);
-			echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
-					."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
-					."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',"
-					."'data':".json_encode($theDb->getBiblioDetail())
-					."}";
+	  	echo json_encode(mkBiblioArray($theDb));
 		} else {
-			echo "{'data':null}";
+			echo '{"data":null}';
 		}
 	  break;
 
 	case 'doBibidSearch':
 	  $theDb = new SrchDB;
   	$theDb->getBiblioInfo($_REQUEST[bibid]);
-		echo "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
-				."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
-				."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',"
-				."'data':".json_encode($theDb->getBiblioDetail())
-				."}";
+	  	echo json_encode(mkBiblioArray($theDb));
 	  break;
 
 	case 'doPhraseSearch':
@@ -506,7 +514,14 @@ class SrchDb {
 			} else {
 				$lastItem = sizeof($biblioLst);
 			}
-			$biblio[] = "{'totalNum':'" . sizeof($biblioLst) . "','firstItem':'" . $firstItem . "','lastItem':'". $lastItem . "','itemsPage':'". $_SESSION['items_per_page'] . "'}";
+			
+			## multi-page record header
+			$rcd['totalNum'] = sizeof($biblioLst);
+			$rcd['firstItem'] = $firstItem;
+			$rcd['lastItem'] = $lastItem;
+			$rcd['itemsPage'] = $_SESSION['items_per_page'];
+			$biblio[] = json_encode($rcd);
+
 			// Only show as many as in the settings (not the most efficient way to get the whole result query, this should be rewritten
 			$iterCounter = 0;		
 			foreach ($biblioLst as $bibid) {
@@ -515,13 +530,10 @@ class SrchDb {
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
 				$theDb->getBiblioInfo($bibid);
-				$copyData = "{'barCd':'$theDb->barCd','bibid':'$theDb->bibid','imageFile':'$theDb->imageFile',"
-										."'daysDueBack':'$theDb->daysDueBack', 'createDt':'$theDb->createDt',"
-										."'matlCd':'$theDb->matlCd', 'collCd':'$theDb->collCd', 'opacFlg':'$theDb->opacFlg',";
-				if($_SESSION['show_detail_opac'] == 'Y') $copyData .= "'avIcon':'$theDb->avIcon',";
-				$copyData .=			"'data':".json_encode($theDb->getBiblioDetail())
-										."}";
-				$biblio[] = $copyData;
+	  		$rslt = mkBiblioArray($theDb);
+				if($_SESSION['show_detail_opac'] == 'Y')
+					$rslt['avIcon'] = $theDb->avIcon;
+	  		$biblio[] = json_encode($rslt);
 			}
 			echo json_encode($biblio);
 		} else {
@@ -573,21 +585,6 @@ class SrchDb {
 	  $theDb->deleteOne($_REQUEST[bibid]);
 	  echo T("Delete completed");
 	  break;
-
-/*
-	//experimental
-	case 'updateCopy':
-	  $copies = new Copies;
-		$errors = $copies->update_el($_POST);
-		echo $errors;
-		break;
-	case 'newCopy':
-		$copies = new Copies;
-		$errors = $copies->insert_el($_POST);
-		# Do whatever needs to be done on error or success, e.g. returning status in a JSON structure
-		echo $errors;
-		break;
-*/
 
 	case 'updateCopy':
 	case 'newCopy':
