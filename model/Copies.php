@@ -95,8 +95,10 @@ class Copies extends CoreTable {
 			return false;
 		}
 	}
+	// Convert a barcode to the preferred form.
+	// Currently this strips leading zeros, possibly after an
+	// alphabetic prefix.
 	function normalizeBarcode($barcode) {
-		//return ereg_replace('^([A-Za-z]+)?0*(.*)', '\\1\\2', $barcode);
 		return preg_replace('/^([A-Za-z]+)?0*(.*)/', '\\1\\2', $barcode);
 	}
 	function getByBarcode($barcode) {
