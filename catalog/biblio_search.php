@@ -34,7 +34,7 @@
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));
 	}
 	
-	include_once(REL(__FILE__,'/biblio_searchJs.php'));
+	include_once(REL(__FILE__,'./biblio_searchJs.php'));
 	
 ?>
 
