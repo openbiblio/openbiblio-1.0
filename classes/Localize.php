@@ -74,8 +74,8 @@ class Localize {
 	// convenient than {#trans}.
 	function translate($str, $metachars='{}') {
 		$meta = JsonTemplateModule::SplitMeta($metachars);
-		$start = preg_quote($meta[0]+'#trans'+$meta[1]);
-		$end = preg_quote($meta[0]+'#end'+$meta[1]);
+		$start = preg_quote($meta[0].'#trans'.$meta[1]);
+		$end = preg_quote($meta[0].'#end'.$meta[1]);
 		// Non-greedy matching is necessary so that
 		// {#trans}one{#end}{#trans}two{#end} is seen
 		// as two separate translations.
