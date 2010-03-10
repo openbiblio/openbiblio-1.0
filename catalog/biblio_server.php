@@ -577,7 +577,8 @@ function mkBiblioArray($dbObj) {
 
 	case 'updateBiblio':
 	  $nav = '';
-	  require_once(REL(__FILE__,"biblio_updater.php"));
+	  //require_once(REL(__FILE__,"biblio_updater.php"));
+	  require_once(REL(__FILE__,"biblio_change.php"));
 	  break;
 
 	case 'deleteBiblio':
