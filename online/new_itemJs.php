@@ -2,6 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
    See the file COPYRIGHT.html for more details.
  */
+ 
+ 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/Collections.php"));
 ?>
 
 <style>
@@ -166,14 +169,22 @@ ni = {
 	},
 
 	fetchMaterialList: function () {
-	  $.get(ni.url,{mode:'getMaterialList'}, function(data){
+	  <?php // Set default material type
+		$matTypes = new MaterialTypes;
+		$material_cd_value = $matTypes->getDefault();
+	  ?>
+	  $.get(ni.bs_url,{mode:'getMaterialList', selectedMt:'<?php echo $material_cd_value ?>'}, function(data){
 			$('#srchMatTypes').html(data);
 			$('#itemMediaTypes').html(data);
 		});
 	},
 	
 	fetchCollectionList: function () {
-	  $.get(ni.url,{mode:'getCollectionList'}, function(data){
+	  <?php // Set default collection type
+		$colTypes = new Collections;
+		$col_cd_value = $colTypes->getDefault();
+	  ?>
+	  $.get(ni.bs_url,{mode:'getCollectionList', selectedCt:'<?php echo $col_cd_value ?>'}, function(data){
 			$('#itemEditColls').html(data);
 		});
 	},

@@ -69,18 +69,6 @@ switch ($_REQUEST[mode]){
 	  require_once(REL(__FILE__,"../catalog/biblio_fields.php"));
 	  break;
 
-	case 'getMaterialList':
-		require_once(REL(__FILE__, "../model/MaterialTypes.php"));
-		$mattypes = new MaterialTypes;
-		echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
-	  break;
-
-	case 'getCollectionList':
-		require_once(REL(__FILE__, "../model/Collections.php"));
-		$collections = new Collections;
-		echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
-	  break;
-
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'doInsertBiblio':
 	  postNewBiblio();

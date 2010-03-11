@@ -398,14 +398,24 @@ function mkBiblioArray($dbObj) {
 
 	case 'getMaterialList':
 		require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+		if(isset($_REQUEST['selectedMt'])){
+			$selectedMt = $_REQUEST['selectedMt'];
+		} else {
+			$selectedMt = 'all';
+		}
 		$mattypes = new MaterialTypes;
-		echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
+		echo inputfield('select', 'mediaType', $selectedMt, NULL, $mattypes->getSelect(true));
 	  break;
 
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
+		if(isset($_REQUEST['selectedCt'])){
+			$selectedCt = $_REQUEST['selectedCt'];
+		} else {
+			$selectedCt = null;
+		}		
 		$collections = new Collections;
-		echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
+		echo inputfield('select', "collectionCd", $selectedCt, NULL, $collections->getSelect());
 	  break;
 
 	case 'getSiteList':
