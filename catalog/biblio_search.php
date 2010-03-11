@@ -209,7 +209,7 @@
 				<tr>
 					<td width="125"><img src="../images/circle_green.png"/> <?php echo T('Available'); ?></td>
 					<td width="150"><img src="../images/circle_orange.png"/> <?php echo T('Available elsewhere'); ?></td>
-					<td width="105"><img src="../images/circle_blue.png"/> <?php echo T('On hold'); ?></td>
+					<td width="105"><img src="../images/circle_blue.png"/> <?php echo T('Not on loan/on hold'); ?></td>
 					<td width="175"><img src="../images/circle_red.png"/> <?php echo T('On loan/not available'); ?></td>
 				</tr>
 				</table>

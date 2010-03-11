@@ -180,7 +180,8 @@ class SrchDb {
 							$this->avIcon = "circle_orange.png"; // one or more available on another site
 						}
 					}
-					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD && $this->avIcon != "circle_orange.png")
+					// Removed && $this->avIcon != "circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
+					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD || $copy[statusCd] == OBIB_STATUS_NOT_ON_LOAN)
 						$this->avIcon = "circle_blue.png"; // only copy is on hold
 				}
 			} else {

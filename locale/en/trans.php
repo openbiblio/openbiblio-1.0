@@ -505,6 +505,7 @@ $trans["Online Protocol"] = "Online Protocol";
 $trans["ON_HOLD"] = "ON HOLD";
 $trans["ON_ORDER"] = "ON Order";
 $trans["On hold"] = "On hold";
+$trans["Not on loan/on hold"] = "Not on loan/on hold";
 $trans["On loan/not available"] = "On loan/not available";
 $trans["Online Hosts"] = "Online Hosts";
 $trans["Online Options"] = "Online Options";
