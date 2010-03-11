@@ -78,16 +78,31 @@ $fields = array();
  * identifier may be added at once.  This should be quite
  * sufficient for the easy-edit interface.
  */
+
 foreach ($_POST[fields] as $f) {
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		continue;
 	}
 	$fidx = $f[tag].'-';
-	if ($f['fieldid']) {
-		$fidx .= $f['fieldid'];
-	} else {
-		$fidx .= 'new';
-	}
+	
+	// Only do this when there is no field yet with this field value
+	$fidxSuffix = null;
+	foreach ($_POST[fields] as $s){
+		if (strlen($s[tag]) != 3 or strlen($s[subfield_cd]) != 1) {
+			continue;
+		}
+
+		if($s['tag'] == $f['tag']){
+			if ($s['fieldid']) {
+				$fidxSuffix = $s['fieldid'];
+			} elseif(!isset($fidxSuffix)) {
+				$fidxSuffix = 'new';
+			}			
+		}
+	}	
+
+	$fidx .= $fidxSuffix;
+	
 	if (!is_array($fields[$fidx])) {
 		$fields[$fidx] = array();
 	}

@@ -99,11 +99,22 @@ class SrchDb {
 		$selectNr = 1;
 		foreach ($spec as $item) {
 			if(isset($item['orderTag'])){
-				$sqlSelect .= " LEFT JOIN biblio_field AS sortf ON sortf.bibid = `b`.`bibid`"
-					." AND sortf.tag = '" . $item['orderTag'] . "'"
-					." LEFT JOIN biblio_subfield AS sorts ON sorts.fieldid = sortf.fieldid"
-					." AND sorts.subfield_cd = '" . $item['orderSuf'] . "'";
-				$sqlOrder = " ORDER BY sorts.`subfield_data`;";					
+				// If order is already specified, add a secondairy
+				if(!isset($sqlOrder)){
+					$orderNo = 1;
+					$sqlSelect .= " LEFT JOIN biblio_field AS sortf" . $orderNo . " ON sortf" . $orderNo . ".bibid = `b`.`bibid`"
+						." AND sortf" . $orderNo . ".tag = '" . $item['orderTag'] . "'"
+						." LEFT JOIN biblio_subfield AS sorts" . $orderNo . " ON sorts" . $orderNo . ".fieldid = sortf" . $orderNo . ".fieldid"
+						." AND sorts" . $orderNo . ".subfield_cd = '" . $item['orderSuf'] . "'";
+					$sqlOrder = " ORDER BY sorts" . $orderNo . ".`subfield_data`";							
+				} else {
+					$orderNo++;
+					$sqlSelect .= " LEFT JOIN biblio_field AS sortf" . $orderNo . " ON sortf" . $orderNo . ".bibid = `b`.`bibid`"
+						." AND sortf" . $orderNo . ".tag = '" . $item['orderTag'] . "'"
+						." LEFT JOIN biblio_subfield AS sorts" . $orderNo . " ON sorts" . $orderNo . ".fieldid = sortf" . $orderNo . ".fieldid"
+						." AND sorts" . $orderNo . ".subfield_cd = '" . $item['orderSuf'] . "'";
+					$sqlOrder .= ", sorts" . $orderNo . ".`subfield_data`";						
+				}
 			}
 			if(isset($item['siteTag'])){
 					$sqlSelect .= " JOIN `biblio_copy` bc";
@@ -486,8 +497,8 @@ function mkBiblioArray($dbObj) {
 				switch ($_REQUEST['sortBy']){
 				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
 				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
-				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
-				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
+				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
 			}
 		}		
 
