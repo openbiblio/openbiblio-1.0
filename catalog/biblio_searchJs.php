@@ -603,7 +603,7 @@ bs = {
 			obib.reStripe2('biblioFldTbl','odd');
 
 			// fill non-MARC fields with data on hand
-			$('#nonMarcBody #mediaType').val([biblio.matlCd]);
+			$('#nonMarcBody #materialCd').val([biblio.matlCd]);
 			$('#nonMarcBody #collectionCd').val([biblio.collCd]);
 			$('#nonMarcBody #opacFlg').val([biblio.opacFlg]);
 			

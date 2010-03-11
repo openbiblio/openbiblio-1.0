@@ -61,7 +61,7 @@ $(document).ready(ie.init);
 	<tr>
 		<td nowrap="true" class="primary">
 			<sup>*</sup>
-			<label for="mediaType"><?php echo T("Type of Material:"); ?></label>
+			<label for="materialCd"><?php echo T("Type of Material:"); ?></label>
 		</td>
 		<td valign="top" class="primary">
 				<span id="itemMediaTypes">to be filled by server</span>

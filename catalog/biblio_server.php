@@ -404,7 +404,7 @@ function mkBiblioArray($dbObj) {
 			$selectedMt = 'all';
 		}
 		$mattypes = new MaterialTypes;
-		echo inputfield('select', 'mediaType', $selectedMt, NULL, $mattypes->getSelect(true));
+		echo inputfield('select', 'materialCd', $selectedMt, NULL, $mattypes->getSelect(true));
 	  break;
 
 	case 'getCollectionList':
@@ -495,9 +495,9 @@ function mkBiblioArray($dbObj) {
 			if(isset($_REQUEST['srchSites']) && $_REQUEST['srchSites'] != 'all'){
 				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['srchSites'] . '"}';
 			}
-			if(isset($_REQUEST['mediaType']) && $_REQUEST['mediaType'] != 'all'){
+			if(isset($_REQUEST['materialCd']) && $_REQUEST['materialCd'] != 'all'){
 				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
-				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaType'] . '"}';
+				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['materialCd'] . '"}';
 			}			
 			if(isset($_REQUEST['audienceLevel'])){
 				//Not sure which field this, so leave this for now - LJ

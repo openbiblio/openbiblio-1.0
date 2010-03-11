@@ -5,6 +5,8 @@
  
  	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
+	
+	$defBarcodeDigits = $_SESSION[item_barcode_width];
 ?>
 
 <style>
@@ -220,7 +222,7 @@ ni = {
 	
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
-		barcd = flos.pad(barcd,13,'0');
+		barcd = flos.pad(barcd,<?php echo $defBarcodeDigits; ?>,'0');
 		$('#barcode_nmbr').val(barcd);
 	  $.get(ni.bs_url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
 	  	$('#editRsltMsg').html(response).show();
@@ -244,8 +246,11 @@ ni = {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
 	  $.post(ni.bs_url,params, function(response){
-			//console.log(response);
-	  	ni.doBackToSrch();
+			if(response == '!!success!!') {
+				ni.doBackToSrch();
+			} else {
+				$('#editRsltMsg').html(response).show();
+			}
 	  });
 	  return false;
 	},
