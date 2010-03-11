@@ -98,7 +98,11 @@ foreach ($_POST[fields] as $f) {
 		$sfidx .= 'new';
 	}
 
-	$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+	//$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+	if (!array_key_exists($sfidx,$fields[$fidx])) {
+		//echo "creating subfield index $sfidx <br />\n";
+		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], stripslashes(trim($f[data])));
+	}	
 }
 
 $mrc = new MarcRecord();
@@ -184,11 +188,13 @@ $biblio[marc] = $mrc;
 //echo "Posting insert/update now.<br />";
 if ($nav == "newconfirm") {
 	$bibid = $biblios->insert($biblio);
-	$msg = '{"bibid":"$bibid"}';
+	$msg = '{"bibid": "$bibid"}';
 } else {
 	$bibid = $_POST["bibid"];
 	$biblios->update($biblio);
-	$msg = T("Item successfully updated.");
+	// system assumes ANY OTHER message implies failure
+	// dont change this string unless you are VERY sure
+	$msg = "!!success!!";
 }
 
 
