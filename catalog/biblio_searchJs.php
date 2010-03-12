@@ -267,7 +267,7 @@ bs = {
 			} else {
 				bs.biblio = $.parseJSON(jsonInpt);
 				if (!bs.biblio.data) {
-	  			$('#rsltMsg').html('<?php T('Nothing Found by bar cd search') ?>').show();
+	  			$('#rsltMsg').html('<?php echo T('Nothing Found by bar cd search') ?>').show();
 				}
 				else {
 					bs.showOneBiblio(bs.biblio)
@@ -309,12 +309,15 @@ bs = {
 		return false;
 	},
 	doPhraseSearch: function (e,firstItem) {
-	  if(firstItem==null) firstItem=0;
-	  bs.srchType = 'phrase';
+      //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.
+	  $('#biblioListDiv').show()
+	  $('#searchDiv').hide();
+	  $('#resultsArea').html('');
 	  $('#errSpace').html('');
-		$('#srchRslts').html('');
-		$('.rsltQuan').html('');
-		$('#resultsArea').html('');
+	  $('#srchRslts').html('<p class="error"><img width="26" src="/images/please_wait.gif"/><?php echo T("Searching"); ?></p>');
+	  $('.rsltQuan').html('');
+	  if(firstItem==null) firstItem=0;
+	  bs.srchType = 'phrase';		
 	  var params = $('#phraseSearch').serialize();
 		params += '&mode=doPhraseSearch&firstItem='+firstItem;
 	  $.post(bs.url,params, function(jsonInpt){
@@ -326,11 +329,9 @@ bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			$('#resultsArea').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
-					$('#biblioListDiv .goNextBtn').disable();
-					$('#biblioListDiv .goPrevBtn').disable();
-        	$('#biblioListDiv').show()
-		  		$('#searchDiv').hide();
+	  			  $('#srchRslts').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
+				  $('#biblioListDiv .goNextBtn').disable();
+				  $('#biblioListDiv .goPrevBtn').disable();
 				}
 
 				// single hit
@@ -342,7 +343,6 @@ bs = {
 					bs.showOneBiblio(bs.biblio)
 					bs.fetchCopyInfo();
 				}
-
 				// multiple hits
 				else {
 				  bs.multiMode = true;
@@ -362,7 +362,7 @@ bs = {
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = $.parseJSON(biblioList[0]);
 		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
-		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
+		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php echo T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
 
 		$('#listTbl tbody#srchRslts').html('');
@@ -435,8 +435,8 @@ bs = {
 			$('#biblioListDiv .goNextBtn').disable();
 		}
 		
-    $('#biblioListDiv').show()
-    $('#biblioDiv').hide()
+		$('#biblioListDiv').show()
+		$('#biblioDiv').hide()
  		$('#searchDiv').hide();
 	},
 	goNextPage:function (firstItem) {
@@ -511,10 +511,11 @@ bs = {
 		return dateOut.toDateString();
 	},
 	fetchCopyInfo: function () {
+	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img width="26" src="/images/please_wait.gif"/><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
 				bs.copyJSON = jsonInpt;
 				if (!bs.copyJSON) {
-  				$('tbody#copies').html('<?php T("No Copies."); ?>');
+					$('tbody#copies').html('<tr><td colspan="9">(<?php echo T("No Copies."); ?>)</td></tr>');
 					return false; // no copies found
 				}
 				
@@ -674,7 +675,7 @@ bs = {
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 	  	var item = '"'+title+'", by '+author;
 		}
-	  msgText += '.<br />' + <?php T('this may take a moment.');?>
+	  msgText += '.<br />' + '<?php echo T('this may take a moment.');?>'
 		$('#onlineMsg').html(msgText);
 		
 	  $.post(bs.urlLookup,params,function(response){
@@ -686,7 +687,7 @@ bs = {
 				$('#onlineMsg').html(rslts.msg+' '+item);
 			}
 			else if (numHits >= maxHits) {
-			  msgText = <?php T('hits found, too many to process',numHits); ?>+'.';
+			  msgText = '<?php echo T('hits found, too many to process',numHits); ?>'+'.';
 				$('#onlineMsg').html();
 			}
 			else if (numHits > 1){
