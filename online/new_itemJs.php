@@ -655,7 +655,7 @@ ni = {
 	setCollection: function (data) {
 		//// -- attempt to determine proper collection from LOC call number
 		//				this is experimental and may not be to your taste
-		if (ni.opts['autoCollect']) {
+		if (ni.opts['autoCollect'] == true || ni.opts['autoCollect'] == 'y') {
 			var index = ni.opts['fictionCode'];
 			var collection = ni.opts['defaultCollect'];
 
@@ -671,7 +671,7 @@ ni = {
 					collection = $.trim(ni.opts['fictionName']);
 				}
 			}
-			$('#collectionCd').val(collection);
+			$('#collectionCd').val($("#collectionCd option:contains('" + collection + "')").val());
 		}
 	}
 };
