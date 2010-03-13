@@ -235,7 +235,7 @@ ni = {
 		//console.log('crnt site='+crntsite);
 		$('#copyTbl #copy_site').val(crntsite);
 		if ($('#autobarco:checked').length > 0) {
-			ni.doGetBarcdNmbr2(ni.bibid);
+			ni.getNewBarcd(ni.bibid);
 		}
 		$('#copyEditorDiv').show();
 	},
@@ -255,8 +255,8 @@ ni = {
 	  return false;
 	},
 
-	doGetBarcdNmbr2: function () {
-		$.getJSON(ni.url,{'mode':'getNewBarcd'}, function(jsonInpt){
+	getNewBarcd: function () {
+		$.getJSON(ni.bs_url,{'mode':'getNewBarcd'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},

@@ -575,11 +575,13 @@ function mkBiblioArray($dbObj) {
 		}
 	  break;
 
-	case 'getBarcdNmbr2':
+	case 'getNewBarcd':
+		require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
-		echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
-	  break;
-
+		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION[item_barcode_width]);
+		echo json_encode($temp);
+	  break;	  
+	  
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],$_REQUEST[copyid]))

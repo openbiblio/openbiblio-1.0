@@ -86,15 +86,6 @@ switch ($_REQUEST[mode]){
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'getNewBarcd':
-		require_once(REL(__FILE__, "../model/Copies.php"));
-		$copies = new Copies;
-		//echo "{'barcdNmbr':'". $copies->getNewBarCode($_SESSION[item_barcode_width]). "'}";
-		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION[item_barcode_width]);
-		echo json_encode($temp);
-	  break;
-
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getCutter':
 		if ($postVars[cutterType] == 'LoC') {
 			require_once('cutterLoc.php');
