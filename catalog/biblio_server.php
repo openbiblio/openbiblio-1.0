@@ -69,7 +69,7 @@ class SrchDb {
 
 		// Add Slashes for search - LJ
 		for($i = 0; $i < count($keywords); $i++){
-			$keywords[i] = addslashes($keywords[i]);
+			$keywords[$i] = addslashes(stripslashes($keywords[$i]));
 		}
 			
 		$sqlSelect= "SELECT DISTINCT b.bibid FROM `biblio` AS b";	
