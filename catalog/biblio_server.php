@@ -99,11 +99,22 @@ class SrchDb {
 		$selectNr = 1;
 		foreach ($spec as $item) {
 			if(isset($item['orderTag'])){
-				$sqlSelect .= " LEFT JOIN biblio_field AS sortf ON sortf.bibid = `b`.`bibid`"
-					." AND sortf.tag = '" . $item['orderTag'] . "'"
-					." LEFT JOIN biblio_subfield AS sorts ON sorts.fieldid = sortf.fieldid"
-					." AND sorts.subfield_cd = '" . $item['orderSuf'] . "'";
-				$sqlOrder = " ORDER BY sorts.`subfield_data`;";					
+				// If order is already specified, add a secondairy
+				if(!isset($sqlOrder)){
+					$orderNo = 1;
+					$sqlSelect .= " LEFT JOIN biblio_field AS sortf" . $orderNo . " ON sortf" . $orderNo . ".bibid = `b`.`bibid`"
+						." AND sortf" . $orderNo . ".tag = '" . $item['orderTag'] . "'"
+						." LEFT JOIN biblio_subfield AS sorts" . $orderNo . " ON sorts" . $orderNo . ".fieldid = sortf" . $orderNo . ".fieldid"
+						." AND sorts" . $orderNo . ".subfield_cd = '" . $item['orderSuf'] . "'";
+					$sqlOrder = " ORDER BY sorts" . $orderNo . ".`subfield_data`";							
+				} else {
+					$orderNo++;
+					$sqlSelect .= " LEFT JOIN biblio_field AS sortf" . $orderNo . " ON sortf" . $orderNo . ".bibid = `b`.`bibid`"
+						." AND sortf" . $orderNo . ".tag = '" . $item['orderTag'] . "'"
+						." LEFT JOIN biblio_subfield AS sorts" . $orderNo . " ON sorts" . $orderNo . ".fieldid = sortf" . $orderNo . ".fieldid"
+						." AND sorts" . $orderNo . ".subfield_cd = '" . $item['orderSuf'] . "'";
+					$sqlOrder .= ", sorts" . $orderNo . ".`subfield_data`";						
+				}
 			}
 			if(isset($item['siteTag'])){
 					$sqlSelect .= " JOIN `biblio_copy` bc";
@@ -180,7 +191,8 @@ class SrchDb {
 							$this->avIcon = "circle_orange.png"; // one or more available on another site
 						}
 					}
-					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD && $this->avIcon != "circle_orange.png")
+					// Removed && $this->avIcon != "circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
+					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD || $copy[statusCd] == OBIB_STATUS_NOT_ON_LOAN)
 						$this->avIcon = "circle_blue.png"; // only copy is on hold
 				}
 			} else {
@@ -397,14 +409,24 @@ function mkBiblioArray($dbObj) {
 
 	case 'getMaterialList':
 		require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+		if(isset($_REQUEST['selectedMt'])){
+			$selectedMt = $_REQUEST['selectedMt'];
+		} else {
+			$selectedMt = 'all';
+		}
 		$mattypes = new MaterialTypes;
-		echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
+		echo inputfield('select', 'materialCd', $selectedMt, NULL, $mattypes->getSelect(true));
 	  break;
 
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
+		if(isset($_REQUEST['selectedCt'])){
+			$selectedCt = $_REQUEST['selectedCt'];
+		} else {
+			$selectedCt = null;
+		}		
 		$collections = new Collections;
-		echo inputfield('select', "collectionCd", $value, NULL, $collections->getSelect());
+		echo inputfield('select', "collectionCd", $selectedCt, NULL, $collections->getSelect());
 	  break;
 
 	case 'getSiteList':
@@ -475,8 +497,8 @@ function mkBiblioArray($dbObj) {
 				switch ($_REQUEST['sortBy']){
 				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
 				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
-				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
-				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
+				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
 			}
 		}		
 
@@ -484,9 +506,9 @@ function mkBiblioArray($dbObj) {
 			if(isset($_REQUEST['srchSites']) && $_REQUEST['srchSites'] != 'all'){
 				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['srchSites'] . '"}';
 			}
-			if(isset($_REQUEST['mediaType']) && $_REQUEST['mediaType'] != 'all'){
+			if(isset($_REQUEST['materialCd']) && $_REQUEST['materialCd'] != 'all'){
 				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
-				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['mediaType'] . '"}';
+				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['materialCd'] . '"}';
 			}			
 			if(isset($_REQUEST['audienceLevel'])){
 				//Not sure which field this, so leave this for now - LJ
@@ -577,7 +599,8 @@ function mkBiblioArray($dbObj) {
 
 	case 'updateBiblio':
 	  $nav = '';
-	  require_once(REL(__FILE__,"biblio_updater.php"));
+	  require_once(REL(__FILE__,"biblio_change.php"));
+	  echo $msg;
 	  break;
 
 	case 'deleteBiblio':

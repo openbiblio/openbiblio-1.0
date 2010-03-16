@@ -2,6 +2,11 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
    See the file COPYRIGHT.html for more details.
  */
+ 
+ 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/Collections.php"));
+	
+	$defBarcodeDigits = $_SESSION[item_barcode_width];
 ?>
 
 <style>
@@ -166,14 +171,22 @@ ni = {
 	},
 
 	fetchMaterialList: function () {
-	  $.get(ni.url,{mode:'getMaterialList'}, function(data){
+	  <?php // Set default material type
+		$matTypes = new MaterialTypes;
+		$material_cd_value = $matTypes->getDefault();
+	  ?>
+	  $.get(ni.bs_url,{mode:'getMaterialList', selectedMt:'<?php echo $material_cd_value ?>'}, function(data){
 			$('#srchMatTypes').html(data);
 			$('#itemMediaTypes').html(data);
 		});
 	},
 	
 	fetchCollectionList: function () {
-	  $.get(ni.url,{mode:'getCollectionList'}, function(data){
+	  <?php // Set default collection type
+		$colTypes = new Collections;
+		$col_cd_value = $colTypes->getDefault();
+	  ?>
+	  $.get(ni.bs_url,{mode:'getCollectionList', selectedCt:'<?php echo $col_cd_value ?>'}, function(data){
 			$('#itemEditColls').html(data);
 		});
 	},
@@ -209,7 +222,7 @@ ni = {
 	
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
-		barcd = flos.pad(barcd,13,'0');
+		barcd = flos.pad(barcd,<?php echo $defBarcodeDigits; ?>,'0');
 		$('#barcode_nmbr').val(barcd);
 	  $.get(ni.bs_url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
 	  	$('#editRsltMsg').html(response).show();
@@ -233,8 +246,11 @@ ni = {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
 	  $.post(ni.bs_url,params, function(response){
-			//console.log(response);
-	  	ni.doBackToSrch();
+			if(response == '!!success!!') {
+				ni.doBackToSrch();
+			} else {
+				$('#editRsltMsg').html(response).show();
+			}
 	  });
 	  return false;
 	},

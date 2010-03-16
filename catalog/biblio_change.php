@@ -78,16 +78,31 @@ $fields = array();
  * identifier may be added at once.  This should be quite
  * sufficient for the easy-edit interface.
  */
+
 foreach ($_POST[fields] as $f) {
 	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
 		continue;
 	}
 	$fidx = $f[tag].'-';
-	if ($f['fieldid']) {
-		$fidx .= $f['fieldid'];
-	} else {
-		$fidx .= 'new';
-	}
+	
+	// Only do this when there is no field yet with this field value
+	$fidxSuffix = null;
+	foreach ($_POST[fields] as $s){
+		if (strlen($s[tag]) != 3 or strlen($s[subfield_cd]) != 1) {
+			continue;
+		}
+
+		if($s['tag'] == $f['tag']){
+			if ($s['fieldid']) {
+				$fidxSuffix = $s['fieldid'];
+			} elseif(!isset($fidxSuffix)) {
+				$fidxSuffix = 'new';
+			}			
+		}
+	}	
+
+	$fidx .= $fidxSuffix;
+	
 	if (!is_array($fields[$fidx])) {
 		$fields[$fidx] = array();
 	}
@@ -98,7 +113,11 @@ foreach ($_POST[fields] as $f) {
 		$sfidx .= 'new';
 	}
 
-	$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+	//$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
+	if (!array_key_exists($sfidx,$fields[$fidx])) {
+		//echo "creating subfield index $sfidx <br />\n";
+		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], stripslashes(trim($f[data])));
+	}	
 }
 
 $mrc = new MarcRecord();
@@ -184,11 +203,13 @@ $biblio[marc] = $mrc;
 //echo "Posting insert/update now.<br />";
 if ($nav == "newconfirm") {
 	$bibid = $biblios->insert($biblio);
-	$msg = '{"bibid":"$bibid"}';
+	$msg = '{"bibid": "' . $bibid . '"}';
 } else {
 	$bibid = $_POST["bibid"];
 	$biblios->update($biblio);
-	$msg = T("Item successfully updated.");
+	// system assumes ANY OTHER message implies failure
+	// dont change this string unless you are VERY sure
+	$msg = "!!success!!";
 }
 
 

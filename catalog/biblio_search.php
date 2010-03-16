@@ -209,7 +209,7 @@
 				<tr>
 					<td width="125"><img src="../images/circle_green.png"/> <?php echo T('Available'); ?></td>
 					<td width="150"><img src="../images/circle_orange.png"/> <?php echo T('Available elsewhere'); ?></td>
-					<td width="105"><img src="../images/circle_blue.png"/> <?php echo T('On hold'); ?></td>
+					<td width="150"><img src="../images/circle_blue.png"/> <?php echo T('Not on loan/on hold'); ?></td>
 					<td width="175"><img src="../images/circle_red.png"/> <?php echo T('On loan/not available'); ?></td>
 				</tr>
 				</table>
@@ -258,7 +258,7 @@
 		<thead>
 		<tr>
 				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
-					<th nowrap="yes"><?php echo T("Function"); ?></th>
+					<th nowrap="yes" align="left"><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
 				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
