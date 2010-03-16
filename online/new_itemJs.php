@@ -235,7 +235,7 @@ ni = {
 		//console.log('crnt site='+crntsite);
 		$('#copyTbl #copy_site').val(crntsite);
 		if ($('#autobarco:checked').length > 0) {
-			ni.doGetBarcdNmbr2(ni.bibid);
+			ni.getNewBarcd(ni.bibid);
 		}
 		$('#copyEditorDiv').show();
 	},
@@ -255,8 +255,8 @@ ni = {
 	  return false;
 	},
 
-	doGetBarcdNmbr2: function () {
-		$.getJSON(ni.url,{'mode':'getNewBarcd'}, function(jsonInpt){
+	getNewBarcd: function () {
+		$.getJSON(ni.bs_url,{'mode':'getNewBarcd'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},
@@ -655,7 +655,7 @@ ni = {
 	setCollection: function (data) {
 		//// -- attempt to determine proper collection from LOC call number
 		//				this is experimental and may not be to your taste
-		if (ni.opts['autoCollect']) {
+		if (ni.opts['autoCollect'] == true || ni.opts['autoCollect'] == 'y') {
 			var index = ni.opts['fictionCode'];
 			var collection = ni.opts['defaultCollect'];
 
@@ -671,7 +671,7 @@ ni = {
 					collection = $.trim(ni.opts['fictionName']);
 				}
 			}
-			$('#collectionCd').val(collection);
+			$('#collectionCd').val($("#collectionCd option:contains('" + collection + "')").val());
 		}
 	}
 };
