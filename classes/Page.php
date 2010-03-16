@@ -57,4 +57,35 @@ class Page {
 		}
 		return $params;
 	}
+	function getPagination($count, $page, $pageLink) {
+		$perpage = Settings::get('items_per_page');
+		$r = array(
+			'num_results'=>$count,
+			'total_pages'=>ceil($count/$perpage),
+			'multiple_pages'=>ceil($count/$perpage)>1,
+			'starting_item'=>($page-1)*$perpage + 1,
+			'ending_item'=>min($count, $page*$perpage),
+			'start_at_one'=>false,
+			'near_last'=>false,
+			'pages'=>array(),
+		);
+		$i = $page - floor(OBIB_SEARCH_MAXPAGES/2);
+		if ($i <= 1) {
+			$i = 1;
+			$r['start_at_one'] = true;
+		}
+		$endpg = $i + OBIB_SEARCH_MAXPAGES-1;
+		if ($endpg >= $r['total_pages']) {
+			$endpg = $r['total_pages'];
+			$r['near_last'] = true;
+		}
+		for(;$i<= $endpg; $i++) {
+			$r['pages'][] = array(
+				'number'=>$i,
+				'url'=>$pageLink($i),
+				'current'=>($i==$page),
+			);
+		}
+		return $r;
+	}
 }

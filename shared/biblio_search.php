@@ -104,38 +104,6 @@
 			. '&tab={tab}&page={page}',
 			array('tab'=>$tab, 'page'=>$page));
 	}
-	function getPagination($count, $page) {
-		$perpage = Settings::get('items_per_page');
-		$r = array(
-			'num_results'=>$count,
-			'total_pages'=>ceil($count/$perpage),
-			'multiple_pages'=>ceil($count/$perpage)>1,
-			'starting_item'=>($page-1)*$perpage + 1,
-			'ending_item'=>min($count, $page*$perpage),
-			'start_at_one'=>false,
-			'near_last'=>false,
-			'pages'=>array(),
-		);
-		if ($page <= OBIB_SEARCH_MAXPAGES/2) {
-			$i = 1;
-			$r['stat_at_one'] = true;
-		} else {
-			$i = $page - OBIB_SEARCH_MAXPAGES/2;
-		}
-		$endpg = $i + OBIB_SEARCH_MAXPAGES-1;
-		if ($endpg > $r['total_pages']) {
-			$endpg = $r['total_pages'];
-			$r['near_last'] = true;
-		}
-		for(;$i<= $endpg; $i++) {
-			$r['pages'][] = array(
-				'number'=>$i,
-				'url'=>pageLink($i),
-				'current'=>($i==$page),
-			);
-		}
-		return $r;
-	}
 	function processResults($rpt) {
 		$biblios = new Biblios;
 		$bibimages = new BiblioImages;
@@ -191,7 +159,7 @@
 	}
 
 	$page_data = array(
-		'pagination'=>getPagination($rpt->count(), $currentPageNmbr),
+		'pagination'=>Page::getPagination($rpt->count(), $currentPageNmbr, 'pageLink'),
 		'results'=>processResults($rpt->pageIter($currentPageNmbr)),
 	);
 

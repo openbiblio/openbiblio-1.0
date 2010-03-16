@@ -1,0 +1,66 @@
+<h3>{#trans}Search Results{#end}</h3>
+{.section results}
+	<div class="results_found">
+		{.section pagination}
+		{#trans}Showing results {starting_item} to {ending_item} of {num_results}{#end}
+		{.end}
+	</div>
+	<script type="text/javascript">{checkbox_script}</script>
+	<form name="selection" id="selection"
+		action="../shared/dispatch.php" method="post">
+	<fieldset>
+	<input type="hidden" name="tab" value="circ" />
+	<table>
+	{.section current_bookingid}
+		<tr><td class="resultshead buttons">
+		<input type="hidden" name="bookingid" value="{@}" />
+		<input type="submit" name="action_booking_mbr_add"
+			value="{#trans}Add To Booking{#end}" />
+		</td></tr>
+	{.end}
+	</table>
+	<table class="table_display">
+	<thead>
+	<tr class="headings">
+	<th>
+		<b>{#trans}All{#end}</b><br />
+		<input type="checkbox" name="all" value="all" onclick="setCheckboxes()" />
+	</th>
+	<th>
+		<a href="{sort_urls.barcode_nmbr}">{#trans}Number{#end}</a>
+		{sort_imgs.barcode_nmbr|str}
+	</th>
+	<th>
+		<a href="{sort_urls.name}">{#trans}Name{#end}</a>
+		{sort_imgs.name|str}
+	</th>
+	<th>
+		<a href="{sort_urls.site_name}">{#trans}Site{#end}</a>
+		{sort_imgs.site_name|str}
+	</th>
+	</thead>
+	<tbody>
+	{.repeated section results}
+		<tr>
+			<td><input type="checkbox" name="id[]" value="{mbrid}" /></td>
+			<td>{barcode_nmbr}</td>
+			<td><a href="{mbrid|member-link-url}">{name}</a></td>
+			<td>{site_name}</td>
+		</tr>
+	{.end}
+	</tbody>
+	</table>
+	</fieldset>
+	</form>
+	{.section pagination}{.section multiple_pages}
+	<div class="pagelist">{#trans}Pages:{#end}
+		{.section start_at_one}{.or}...{.end}
+		{.repeated section pages}
+			{.section current}{number}{.or}<a href="{url}">{number}</a>{.end}
+		{.end}
+		{.section near_last}{.or}...{.end}
+	</div>
+	{.end}{.end}
+{.or}
+	{#trans}No results found.{#end}
+{.end}

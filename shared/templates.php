@@ -36,6 +36,9 @@ function BiblioLinkUrlFormatter($val, $context, $args) {
 	return URL('../shared/biblio_view.php?bibid={bibid}&tab={tab}',
 		array('bibid'=>$val, 'tab'=>$tab));
 }
+function MemberLinkUrlFormatter($val, $context, $args) {
+	return URL('../circ/mbr_view.php?mbrid={@}', $val);
+}
  
 $_templateFormatters = array(
 	'json' => 'JsonFormatter',
@@ -44,6 +47,7 @@ $_templateFormatters = array(
 	'series-search-url' => 'SeriesSearchUrlFormatter',
 	'subject-search-url' => 'SubjectSearchUrlFormatter',
 	'biblio-link-url' => 'BiblioLinkUrlFormatter',
+	'member-link-url' => 'MemberLinkUrlFormatter',
 );
 
 // Generally not used directly, but everything else is built on it.

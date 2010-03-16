@@ -3,140 +3,82 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once("../shared/common.php");
+require_once("../shared/common.php");
 
-	$tab = "circulation";
-	$nav = "search";
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
+$tab = "circulation";
+$nav = "search";
+require_once(REL(__FILE__, "../shared/logincheck.php"));
+require_once(REL(__FILE__, "../classes/Report.php"));
 
-	require_once(REL(__FILE__, "../classes/Report.php"));
-	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
-	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
-	require_once(REL(__FILE__, "../classes/Links.php"));
+if (empty($_REQUEST)) {
+	header("Location: ../circ/index.php");
+	exit();
+}
 
-	#****************************************************************************
-	#*  Checking for post vars.  Go back to form if none found.
-	#****************************************************************************
-	if (empty($_REQUEST)) {
-		header("Location: ../circ/index.php");
-		exit();
+if ($_REQUEST['type'] == 'previous') {
+	$rpt = Report::load('MemberSearch');
+
+	if ($rpt && $_REQUEST['rpt_order_by']) {
+		$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
 	}
+} else {
+	$rpt = Report::create('member_search', 'MemberSearch');
+	$rpt->initCgi();
+}
 
-	function getRpt() {
-		if ($_REQUEST['type'] == 'previous') {
-			$rpt = Report::load('MemberSearch');
+if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
+	$currentPageNmbr = $_REQUEST["page"];
+} else {
+	$currentPageNmbr = $rpt->curPage();
+}
 
-			if ($rpt && $_REQUEST['rpt_order_by']) {
-				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
-			}
-			return $rpt;
-		}
+function pageLink($page) {
+	return URL('../circ/mbr_search.php?type=previous'
+		. '&page={page}', array('page'=>$page));
+}
 
-		$rpt = Report::create('member_search', 'MemberSearch');
-		if (!$rpt) {
-			return false;
-		}
-		$rpt->initCgi();
-		return $rpt;
-	}
+$page_data = array(
+	'pagination'=>Page::getPagination($rpt->count(), $currentPageNmbr, 'pageLink'),
+	'results'=>$rpt->pageIter($currentPageNmbr)->toArray(),
+	'current_bookingid'=>@$_SESSION['currentBookingid'],
+	'sort_urls'=>array(),   // filled in below
+	'sort_imgs'=>array(), // filled in below
+);
 
-	$rpt = getRpt();
-	assert($rpt);
-
-	if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
-		$currentPageNmbr = $_REQUEST["page"];
+foreach (array('name', 'barcode_nmbr', 'site_name') as $sort) {
+	if (@$_REQUEST['rpt_order_by'] == $sort) {
+		$page_data['sort_urls'][$sort] = URL('../circ/mbr_search.php?type=previous'
+			. '&rpt_order_by={@}', $sort.'!r');
+		$page_data['sort_imgs'][$sort] = '<img class="sort_arrow" src="../images/down.png" alt="&darr;" />';
+	} else if (@$_REQUEST['rpt_order_by'] == $sort.'!r') {
+		$page_data['sort_urls'][$sort] = URL('../circ/mbr_search.php?type=previous'
+			. '&rpt_order_by={@}', $sort);
+		$page_data['sort_imgs'][$sort] = '<img class="sort_arrow" src="../images/up.png" alt="&uarr;" />';
 	} else {
-		$currentPageNmbr = $rpt->curPage();
+		$page_data['sort_urls'][$sort] = URL('../circ/mbr_search.php?type=previous'
+			. '&rpt_order_by={@}', $sort);
+		$page_data['sort_imgs'][$sort] = '';
 	}
-
-	#**************************************************************************
-	#*  Show member view screen if only one result from query
-	#**************************************************************************
-	if ($rpt->count() == 1) {
-		$mbr = $rpt->row(0);
-		header("Location: ../circ/mbr_view.php?mbrid=".$mbr['mbrid']."&reset=Y");
-		exit();
-	}
-
-	Nav::node('circulation/search/member_list', T("Print List"), '../shared/layout.php?name=member_list&rpt=MemberSearch');
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
-?>
-
-	<h3><?php echo T("Search Results"); ?></h3>
-
-<?php
-
-	#**************************************************************************
-	#*  Show search results
-	#**************************************************************************
-	# Display no results message if no results returned from search.
-	## FIXME - needs a 'goBack' ability so search criteria can be modified and re-submitted
-	if ($rpt->count() == 0) {
-		echo T("No results found.");
-		Page::footer();
-		exit();
-	}
-
-	$page_url = new LinkUrl("../circ/mbr_search.php", 'page', array('type'=>'previous'));
-	$disp = new ReportDisplay($rpt);
-	echo '<div class="results_count">';
-	echo T("%count% results found.", array('count'=>$rpt->count()));
-	echo '</div>';
-	echo $disp->pages($page_url, $currentPageNmbr);
-
-?>
-<script type="text/javascript">
-// based on a function from PhpMyAdmin
-function setCheckboxes()
-{
-	var checked = document.forms['selection'].elements['all'].checked;
-	var elts = document.forms['selection'].elements['id[]'];
-	if (typeof(elts.length) != 'undefined') {
-		for (var i = 0; i < elts.length; i++) {
-			elts[i].checked = checked;
-		}
-	} else {
-		elts.checked = checked;
-	}
-	return true;
 }
-</script>
-<form name="selection" id="selection" action="../shared/dispatch.php" method="post">
-<fieldset>
-<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
-<table>
-<?php
-if ($_SESSION['currentBookingid']) {
-	echo '<tr>';
-	echo '	<td class="resultshead buttons">';
-	echo '		<input type="hidden" name="bookingid" value="'.H($_SESSION['currentBookingid']).'" />';
-	echo '		<input type="submit" name="action_booking_mbr_add" value="'.T("Add To Booking").'" />';
-	echo '	</td>';
-	echo '</tr>';
+
+if (@$_REQUEST["format"] == "json") {
+	# FIXME - application/json
+	header('Content-type: text/plain');
+	echo json_encode($page_data);
+	exit();
 }
-?>
-</table>
-<?php
 
-$sort_url = new LinkUrl("../circ/mbr_search.php", 'rpt_order_by', array('type'=>'previous'));
-$t = new TableDisplay;
-$t->columns = $disp->columns($sort_url);
-array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" name="all" value="all" onclick="setCheckboxes()" />'));
-echo $t->begin();
-$page = $rpt->pageIter($currentPageNmbr);
-while ($r = $page->next()) {
-	$dr = $disp->row($r);
-	array_unshift($dr, '<input type="checkbox" name="id[]" value="'.H($r['mbrid']).'" />');
-	echo $t->rowArray($dr);
+if ($rpt->count() == 1) {
+	$mbr = $rpt->row(0);
+	header("Location: ".URL("../circ/mbr_view.php?mbrid={mbrid}&reset=Y", $mbr));
+	exit();
 }
-echo $t->end();
 
-?>
+Nav::node('circulation/search/member_list', T("Print List"), '../shared/layout.php?name=member_list&rpt=MemberSearch');
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-</fieldset>
-</form>
+# FIXME - do something better with this
+$page_data['checkbox_script'] = file_get_contents('mbr_search.js');
+echo HTML(file_get_contents('mbr_search.jsont'), $page_data);
 
-<?php
-echo $disp->pages($page_url, $currentPageNmbr);
 Page::footer();

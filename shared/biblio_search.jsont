@@ -43,7 +43,8 @@
 		</table>
 	{.end}
 	</div>
-	{.section pagination.multiple_pages}
+	{.section pagination}
+	{.section multiple_pages}
 	<div class="pagelist">{#trans}Pages:{#end}
 		{.section start_at_one}{.or}...{.end}
 		{.repeated section pages}
@@ -51,6 +52,7 @@
 		{.end}
 		{.section near_last}{.or}...{.end}
 	</div>
+	{.end}
 	{.end}
 {.or}
 	{#trans}No results found.{#end}

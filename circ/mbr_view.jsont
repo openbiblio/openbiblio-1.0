@@ -1,0 +1,183 @@
+<h3>{#trans}Circulation{#end}</h3>
+<fieldset>
+<legend>{#trans}Member Information{#end}</legend>
+<form name="selection" id="selection" class="not_block"
+	action="../shared/dispatch.php" method="post">
+<input type="hidden" name="tab" value="circ" />
+<table class="resultshead">
+<tr><td class="resultshead buttons">
+{.section current_bookingid}
+	<input type="hidden" name="bookingid" value="{@}" />
+	<input type="hidden" name="id[]" value="{mbrid}" />
+	<input type="submit" name="action_booking_mbr_add"
+		value="{#trans}Add To Booking{#end}" />
+{.end}
+</td>
+</tr>
+</table>
+</form>
+
+<table class="biblio_view">
+	<tr>
+		<td class="name">{#trans}Name:{#end}</td>
+		<td class="value">{last_name}, {first_name}</td>
+	</tr>
+	<tr>
+		<td class="name">{#trans}Site:{#end}</td>
+		<td class="value">{site.name}</td>
+	</tr>
+	<tr>
+		<td class="name">{#trans}Card Number:{#end}</td>
+		<td class="value">{barcode_nmbr}</td>
+	</tr>
+{.section school_grade}
+	<tr>
+		<td class="name">{#trans}School Grade:{#end}</td>
+		<td class="value">{school_grade}</td>
+	</tr>
+{.end}
+</table>
+</fieldset>
+
+{.section checkouts_allowed}
+	<form name="barcodesearch" method="post" action="../circ/checkout.php">
+	<fieldset><legend>{#trans}Check Out{#end}</legend>
+	<table class="primary">
+		<tr><td nowrap="nowrap" class="primary">
+			{#trans}Barcode Number:{#end}
+			<input type="text" name="barcodeNmbr" id="barcodeNmbr" size="18" />
+			{.section errors.barcodeNmbr}<span class="error">{@}</span>{.end}
+			<input type="hidden" name="mbrid" value="{mbrid}" />
+			<input type="hidden" name="classification" value="{classification}" />
+			<input type="submit" value="{#trans}Check Out{#end}" class="button" />
+		</td></tr>
+	</table>
+	</form>
+	</fieldset>
+{.or}
+	<fieldset><legend>Service Denied</legend>
+	<p class="error">{#trans}This patron's checkout privileges have been canceled.{#end}</p>
+	<p>{#trans}Contact Library Administration for assistance.{#end}</p>
+	</fieldset>
+{.end}
+
+<fieldset>
+<legend>{#trans}Items Currently Checked Out{#end}</legend>
+{.section checkouts}
+	<table class="primary">
+	<thead>
+	<tr>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Checked Out{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Material{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Barcode{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Title{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Due Back{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Days Late{#end}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{.repeated section checkouts}
+	<tr>
+		<td class="primary" valign="top" nowrap="nowrap">{status.status_begin_dt}</td>
+		<td class="primary" valign="top">
+			<img src="{material_img_url}" alt="{material_type}" /> {material_type}
+		</td>
+		<td class="primary" valign="top">{barcode_nmbr}</td>
+		<td class="primary" valign="top">
+			<a href="{bibid|biblio-link-url}">{title}</a>
+		</td>
+		<td class="primary" valign="top" nowrap="nowrap">{booking.due_dt}</td>
+		<td class="primary" valign="top">{booking.days_late}</td>
+	</tr>
+	{.end}
+	</tbody>
+	</table>
+{.or}
+	{#trans}None.{#end}
+{.end}
+</fieldset>
+
+{.section checkouts_allowed}
+	{# FIXME - Do booking and hold lookup via AJAX}
+	<form name="bookingsearch" method="get" action="../shared/biblio_search.php">
+	<fieldset>
+	<legend>{#trans}Make Booking{#end}</legend>
+	<table class="primary">
+	<tr>
+		<td nowrap="nowrap" class="primary">
+			<select name="searchType">
+				<option value="keyword">{#trans}Keyword{#end}</option>
+				<option value="title">{#trans}Title{#end}</option>
+				<option value="subject">{#trans}Subject{#end}</option>
+				<option value="series">{#trans}Series{#end}</option>
+				<option value="publisher">{#trans}Publisher{#end}</option>
+				<option value="callno" selected>{#trans}Item Number{#end}</option>
+			</select>
+			<input type="text" name="searchText" size="30" maxlength="256" />
+			<input type="hidden" name="sortBy" value="default" />
+			<input type="hidden" name="tab" value="circ" />
+			<input type="hidden" name="lookup" value="Y" />
+			<input type="submit" value="{#trans}Search{#end}" class="button" />
+		</td>
+	</tr>
+	</table>
+	</fieldset>
+	</form>
+
+	<form name="holdForm" method="post" action="../circ/place_hold.php">
+	<fieldset>
+	<legend>{#trans}Place on Hold{#end}</legend>
+	<table class="primary">
+	<tr>
+		<td nowrap="nowrap" class="primary">
+			{#trans}Barcode Number{#end}
+			<input type="text" name="holdBarcodeNmbr" id="holdBarcodeNmbr"
+				size="18" />
+			{.section errors.holdBarcodeNmbr}<span class="error">{@}</span>{.end}
+			<a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')">search</a>
+			<input type="hidden" name="mbrid" value="{mbrid}" />
+			<input type="hidden" name="classification" value="{classification}" />
+			<input type="submit" value="{#trans}Hold{#end}" class="button" />
+		</td>
+	</tr>
+	</table>
+	</fieldset>
+	</form>
+{.end}
+
+<fieldset>
+<legend>{#trans}Copies Currently On Hold{#end}</legend>
+{.section holds}
+	<table class="primary">
+	<thead>
+	<tr>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Function{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Placed On Hold{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Barcode{#end}</th>
+		<th valign="top" nowrap="nowrap" align="left">{#trans}Title{#end}</th>
+		<th valign="top" align="left">{#trans}Status{#end}</th>
+		<th valign="top" align="left">{#trans}Due Back{#end}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{.repeated section holds}
+		<tr>
+		<td class="primary" valign="top" nowrap="nowrap">
+			<a href="../shared/hold_del_confirm.php?holdid={holdid|url-param-value|html}&amp;bibid={bibid|url-param-value|html}&amp;mbrid={mbrid|url-param-value|html}">{#trans}del{#end}</a>
+		</td>
+		<td class="primary" valign="top" nowrap="nowrap">{hold_begin}</td>
+		<td class="primary" valign="top">{barcode_nmbr}</td>
+		<td class="primary" valign="top">
+			<a href="{bibid|biblio-link-url}">{title}</a>
+		</td>
+		<td class="primary" valign="top">{status}</td>
+		<td class="primary" valign="top">{due}</td>
+		</tr>
+	{.end}
+	</tbody>
+	</table>
+{.or}
+	{#trans}None.{#end}
+{.end}
+</fieldset>
+
