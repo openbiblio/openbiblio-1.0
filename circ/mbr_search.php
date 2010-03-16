@@ -62,8 +62,7 @@ foreach (array('name', 'barcode_nmbr', 'site_name') as $sort) {
 }
 
 if (@$_REQUEST["format"] == "json") {
-	# FIXME - application/json
-	header('Content-type: text/plain');
+	header('Content-type: application/json');
 	echo json_encode($page_data);
 	exit();
 }
