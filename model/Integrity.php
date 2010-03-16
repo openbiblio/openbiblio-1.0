@@ -62,16 +62,16 @@ class Integrity {
 				// FIXME - Check in copies
 			),
 			array(
-				// Added as there was a bug in the code, and not sure how long it has been there so DB might be corrupt. 
-				// The problem is a duplicate 245 where there should only be one in biblio_field for a bibid. Fix to be designed of needed
-				'error' => T("%count% copies with duplicate subfield records"),
-				'countSql' => 'SELECT COUNT(biblio.bibid) as count '
-					. 'FROM biblio '
-					. 'WHERE biblio.bibid IN (SELECT DISTINCT biblio_field.bibid '
-					. 'FROM biblio_field left join biblio on biblio_field.bibid=biblio.bibid '
-					. 'GROUP BY biblio_field.bibid, biblio_field.tag '
-					. 'HAVING ( COUNT(biblio_field.tag) > 1 ))',
-				// FIXME - Check in copies
+				// Added as there was a bug in the code, and not sure how long
+				// it has been there so DB might be corrupt.  The problem is a
+				// duplicate 245 where there should only be one in biblio_field
+				// for a bibid. Fix to be designed if needed.
+				'error' => T("%count% items with multiple 245 fields"),
+				'countSql' => 'SELECT COUNT(*) as count '
+					. 'FROM biblio_field '
+					. 'WHERE tag=\'245\' '
+					. 'GROUP BY bibid '
+					. 'HAVING COUNT(fieldid) > 1',
 			),			
 			array(
 				'error' => T("%count% unattached copy status history records"),
