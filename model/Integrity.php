@@ -67,11 +67,12 @@ class Integrity {
 				// duplicate 245 where there should only be one in biblio_field
 				// for a bibid. Fix to be designed if needed.
 				'error' => T("%count% items with multiple 245 fields"),
-				'countSql' => 'SELECT COUNT(*) as count '
+				'countSql' => 'SELECT COUNT(*) AS count '
+					. 'FROM (SELECT bibid, COUNT(fieldid)'
 					. 'FROM biblio_field '
 					. 'WHERE tag=\'245\' '
 					. 'GROUP BY bibid '
-					. 'HAVING COUNT(fieldid) > 1',
+					. 'HAVING COUNT(fieldid) > 1) AS t',
 			),			
 			array(
 				'error' => T("%count% unattached copy status history records"),
