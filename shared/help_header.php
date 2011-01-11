@@ -40,7 +40,8 @@ div#content {
 <title><?php echo T("OpenBiblio Help"); ?></title>
 
 <!-- jQuery kernal, needed for all that follows -->
-<script src="../shared/jquery/jquery.js" type="text/javascript"></script>
+<script src="../shared/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>
+
 <!-- home-grown add-ons to the jQuery library, feel free to add your own -->
 <script src="../shared/jsLib.js" type="text/javascript"></script>
 

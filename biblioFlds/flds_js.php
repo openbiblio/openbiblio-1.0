@@ -1,4 +1,4 @@
-<script language="JavaScript1.1" >
+<script language="JavaScript" >
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
@@ -17,12 +17,13 @@ mtl = {
 	?>
 	
 	init: function () {
-	  //init(); // part of original openbiblio js code
-		mtl.initWidgets();
-
+		//console.log('initializing mtl');	
 		mtl.url = 'fldsSrvr.php';
 		mtl.editForm = $('#workForm');
 		
+		mtl.resetForms();
+		mtl.initWidgets();
+
 		$('#reqdNote').css('color','red');
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
@@ -47,20 +48,21 @@ mtl = {
 	
 	//------------------------------
 	initWidgets: function () {
+		//console.log('initializing mtl widgets');
 		var sortOpts1 = {
 		  axis:   'y',
-			cursor: 'move',
+			cursor: 'move'
 		};
 		var sortOpts2 = {
 			connectWith: '#existing',
-			cursor: 'move',
+			cursor: 'move'
 		};
+
 		$("#existing").sortable(sortOpts1).disableSelection();
 		$("#potential").sortable(sortOpts2).disableSelection();
 	},
 	resetForms: function () {
 		//console.log('resetting!');
-
 	  $('#pageHdr').html(mtl.pageHdr);
 		$('#workDiv').hide();
 		$('#configDiv').hide();

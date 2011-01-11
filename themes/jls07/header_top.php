@@ -6,16 +6,34 @@
 	### following needed since this is included from within a class method -- Fred
 	global $nav, $tab, $focus_form_name, $focus_form_field;
 ?>
+<!-- older xthml (removed by FL 11Jan2011)
 <!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xlmns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-
 <?php // code character set if specified
-if (Settings::get('charset') != "") { ?>
-<meta http-equiv="content-type" content="text/html; charset=<?php echo H(Settings::get('charset')); ?>" />
-<?php } ?>
+//if (Settings::get('charset') != "") { ?>
+<!-- meta http-equiv="content-type" content="text/html; charset=<?php //echo H(Settings::get('charset')); ?>" />
+<?php //} ?>
+-->
+
+<!-- to enable use of newer html5 facilities - FL -->
+<!DOCTYPE html>
+<?php // change default code character set if specified
+	if (Settings::get('charset') != "") { 
+		echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=".H(Settings::get('charset'))." \" />";
+	} else {
+		echo "<meta charset=\"UTF-8\" />";
+	}
+?>
+<html lang="en">
+<head>	
+
+<!-- this line MUST precede all .css files - FL -->
+<!-- it deals with html5 support issues for IE8 -->
+<script>//console.log('loading shiv');</script>
+<script src="../shared/html5shiv.js" type="text/javascript"></script>
 
 <link rel="stylesheet" type="text/css" href="../shared/base.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
@@ -48,7 +66,9 @@ if (Settings::get('charset') != "") { ?>
 ?>
 </title>
 
-<script src="../shared/jquery/jquery.js" type="text/javascript"></script>
+<script>//console.log('loading jQuery');</script>
+<script src="../shared/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script>//console.log('loading jsLib core');</script>
 <script src="../shared/jsLib.js" type="text/javascript"></script>
 
 <script language="JavaScript">
@@ -64,6 +84,8 @@ obib = {
 	?>
 
 	init: function() {
+//console.log('initializing obib');
+	
 		obib.reStripe();
 	  // set focus to specified field in all pages
 		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
@@ -129,7 +151,6 @@ var modified = false;
 
 -->
 </script>
-	
 	<?php
 	## ---------------------------------------------------------------------
 	## --- added plugin support -- Fred -----------------------

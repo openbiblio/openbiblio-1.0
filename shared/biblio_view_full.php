@@ -62,7 +62,7 @@
 	}
 ?>
 
-<script language="JavaScript1.4" >
+<script language="JavaScript" >
 bvf = {
 	init: function () {
 	}

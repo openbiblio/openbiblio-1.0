@@ -12,7 +12,8 @@
 ?>
 
 <!-- custom header material for biblioFlds plugin -->
-<script language="JavaScript1.4" >
+<script language="JavaScript" >
+//console.log('setting license data');
 
 //license data object
 biblioFlds = {
@@ -23,10 +24,11 @@ biblioFlds = {
 	copyright:	'2009 All Rights Reserved.',
 	email:			'flaplante at flos-inc dot com',
 	comment:    'Biblio Fields Maintenance add-on/plugin for OpenBiblio v1.0+'
-}
-</script
+};
+</script>
 
-<style>
+<!-- custom styling -->
+<style type="text/css">
 #content .title {
 	margin-top:5px; margin-bottom:5px;
 	}
@@ -73,11 +75,13 @@ div#configDiv{
 	width: 750px;
 	}
 #configDiv fieldset#existingSpace {
-	width: 255px;
-	float: left;
+	display: inline;
+	/*width: 255px;*/
+	/*float: left;*/
 	}
 #configDiv fieldset#potentialSpace {
-  float: right;
+	display: inline;
+  /*float: right;*/
 	/*width: 350px;*/
 	}
 #configDiv fieldset#potentialSpace select {
@@ -99,10 +103,6 @@ div#configDiv{
 	color: black; background: #CCFFFF;
 	}
 </style>
-
-<!-- load jQuery library(s) -->
-<script type="text/javascript" src="../shared/jquery/ui/ui.core.js"></script>
-<script type="text/javascript" src="../shared/jquery/ui/ui.sortable.js"></script>
 
 <?php
 $meName = $_SERVER[PHP_SELF];

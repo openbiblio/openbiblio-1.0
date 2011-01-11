@@ -16,30 +16,6 @@ if (ini_get('register_globals')) {
 	}
 }
 
-/****************************************************************************
- * Cover up for the magic_quotes disaster.
- * Modified from ryan@wonko.com.
- *
- * magic_quotes deprecated as of PHP v3.0, removed in 6.0 - Fred
- ****************************************************************************
- */
-/*
-if (get_magic_quotes_gpc()) {
-	function magicSlashes($element) {
-		if (is_array($element))
-			return array_map("magicSlashes", $element);
-		else
-			return stripslashes($element);
-	}
-
-	// Remove slashes from all incoming GET/POST/COOKIE data.
-	$_GET    = array_map("magicSlashes", $_GET);
-	$_POST   = array_map("magicSlashes", $_POST);
-	$_COOKIE = array_map("magicSlashes", $_COOKIE);
-	$_REQUEST = array_map("magicSlashes", $_REQUEST);
-}
-*/
-
 #apd_set_pprof_trace();
 error_reporting(E_ALL ^ E_NOTICE);
 if (isset($cache)) {

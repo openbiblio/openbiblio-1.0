@@ -1,4 +1,4 @@
-<script language="JavaScript1.1" >
+<script language="JavaScript" >
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */

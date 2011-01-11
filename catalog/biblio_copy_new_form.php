@@ -33,7 +33,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
-<script language="JavaScript1.4" >
+<script language="JavaScript" >
 bcnf = {
 	init: function () {
 	  // set 'required' marker on 'barcode_nmbr' field label; probably a simpler way!

@@ -28,10 +28,10 @@ div#listDiv h5{
 	}
 </style>
 
-<script src="../plugins/jQuery.js" type="text/javascript"></script>
+<script src="../shared/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>
 <script src="../shared/jsLib.js" type="text/javascript"></script>
 
-<script language="JavaScript1.4" >
+<script language="JavaScript" >
 plm = {
 	
 	init: function () {

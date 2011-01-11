@@ -160,4 +160,8 @@
 
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
+<!-- load jQuery library(s) -->
+<script>//console.log('loading ui ');</script>
+<script type="text/javascript" src="../shared/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+
 <?php include(REL(__FILE__,"../shared/footer.php")); ?>
