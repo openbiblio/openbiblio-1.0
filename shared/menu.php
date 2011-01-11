@@ -4,6 +4,7 @@
  */
 
 function staff_menu() {
+	//echo "@ staff_menu: <br />"; print_r($_SESSION);echo "<br />";
 	Nav::node('circulation', T("Circulation"), '../circ/index.php');
 	Nav::node('circulation/searchform', T("Member Search"), '../circ/index.php');
 	Nav::node('circulation/search', T("Search Results"));
@@ -139,6 +140,7 @@ function staff_menu() {
 		##-------------------------------------------------------------------------------------##
 		
 	if($_SESSION["hasReportsAuth"]){
+		//echo "building reports menu <br />";	
 		Nav::node('reports', T("Reports"), '../reports/index.php');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 
@@ -148,7 +150,9 @@ function staff_menu() {
 		}
 	}
 	##-------------------------------------------------------------------------------------##
+	//print_r($_SESSION);
 	if($_SESSION["hasToolsAuth"]){
+		//echo "building tools menu <br />";	
 		Nav::node('tools', T("Tools"), '../tools/index.php');
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');

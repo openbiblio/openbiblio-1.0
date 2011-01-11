@@ -32,8 +32,8 @@
 	for($i = 0; $i < $postVars[numHosts]; $i++) {
 		//echo "host: ".$postVars[hosts][$i][host]."<br />";
 		
-		$header = "POST ".$postVars[hosts][$i][db]." HTTP/1.1\r\n".
-					 		"HOST ".$postVars[hosts][$i][host]."\r\n".
+		$header = "POST ".$postVars['hosts'][$i][db]." HTTP/1.1\r\n".
+					 		"HOST ".$postVars['hosts'][$i][host]."\r\n".
   					 	"Content-Type: application/x-www-form-urlencoded; charset=iso-8859-1\r\n".
   					 	"Content-Length: ".strlen($qry)."\r\n\r\n";
 		//echo "header: $header <br />";

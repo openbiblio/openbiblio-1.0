@@ -75,6 +75,7 @@ function mkPostVars() {
 
 ### needs to be here so changes in settings are picked up when changes are entered
 function setSessionFmSettings() {
+	//echo "@ set SessionFmSettings: <br />"; print_r($_SESSION);echo "<br />";
 	$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 	$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
 	$_SESSION['item_barcode_width'] = Settings::get('item_barcode_width');
@@ -126,6 +127,7 @@ if (!isset($doing_install) or !$doing_install) {
 		}
 	}
   setSessionFmSettings();
+	//echo "@ after SessionFmSettings: <br />"; print_r($_SESSION);echo "<br />";
 
 	global $LOC;
 	$LOC = new Localize;

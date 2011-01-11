@@ -88,7 +88,7 @@ ul.nav_main > li.nav_selected:before { white-space: pre-wrap; content: "\bb  " }
 ul.nav_sub { margin-left: 0; padding-left: 2em; list-style-type: circle; list-style-image: url("../images/bulleto.png"); }
 ul.nav_sub ul.nav_sub { padding-left: 1em }
 ul.nav_sub li { margin-bottom: 0; font-weight: normal; }
-ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; list-style-image: url("../images/bulletc.png"); }
+ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; list-style-image: url("..//images/bulletc.png"); }
 
 li.report_category { margin-bottom: 1em }
 
