@@ -314,7 +314,7 @@ bs = {
 	  $('#searchDiv').hide();
 	  $('#resultsArea').html('');
 	  $('#errSpace').html('');
-	  $('#srchRslts').html('<p class="error"><img width="26" src="/images/please_wait.gif"/><?php echo T("Searching"); ?></p>');
+	  $('#srchRslts').html('<p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p>');
 	  $('.rsltQuan').html('');
 	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';		
@@ -511,7 +511,7 @@ bs = {
 		return dateOut.toDateString();
 	},
 	fetchCopyInfo: function () {
-	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img width="26" src="/images/please_wait.gif"/><?php echo T("Searching"); ?></p></td></tr>');
+	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
 				bs.copyJSON = jsonInpt;
 				if (!bs.copyJSON) {
