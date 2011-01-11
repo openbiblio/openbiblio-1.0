@@ -76,6 +76,6 @@ $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 $_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
 
 setSessionFmSettings();
-
+//print_r($_SESSION);echo "<br />";exit();
 header("Location: ".$_SESSION["returnPage"]);
 exit();
