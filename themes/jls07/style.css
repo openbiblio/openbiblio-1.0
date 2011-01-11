@@ -112,7 +112,7 @@ ul.nav_main > li.nav_selected {
 ul.nav_sub {
 	width: 120px; /*flos change  */
 	margin-left: 0; padding-left: 2em;
-	list-style-type: circle; list-style-image: url("../images/bulleto.png");
+	list-style-type: circle; list-style-image: url("../../images/bulleto.png");
 	}
 ul.nav_sub ul.nav_sub {
 	padding-left: 1em
@@ -123,7 +123,7 @@ ul.nav_sub li {
 	}
 ul.nav_sub li.nav_selected {
 	font-weight: bold;
-	list-style-type: disc; list-style-image: url("../images/bulletc.png");
+	list-style-type: disc; list-style-image: url("../../images/bulletc.png");
 	}
 
 /*************************************************/
