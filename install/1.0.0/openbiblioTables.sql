@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.2.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2009 at 02:56 PM
--- Server version: 5.1.37
--- PHP Version: 5.3.0
+-- Generation Time: Jan 12, 2011 at 11:05 AM
+-- Server version: 5.1.41
+-- PHP Version: 5.3.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `biblio` (
   `collection_cd` smallint(6) NOT NULL DEFAULT '0',
   `opac_flg` char(1) NOT NULL DEFAULT '',
   PRIMARY KEY (`bibid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1285 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1329 ;
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `biblio_copy` (
   UNIQUE KEY `histid_idx` (`histid`),
   KEY `bibid_idx` (`bibid`),
   KEY `barcode_index` (`barcode_nmbr`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9621 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `biblio_field` (
   PRIMARY KEY (`fieldid`),
   KEY `bibid_idx` (`bibid`),
   KEY `tag_idx` (`tag`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21019 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21663 ;
 
 -- --------------------------------------------------------
 
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `biblio_status_hist` (
   `status_begin_dt` datetime NOT NULL,
   PRIMARY KEY (`histid`),
   KEY `copy_index` (`bibid`,`copyid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=122 ;
 
 -- --------------------------------------------------------
 
@@ -189,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `biblio_subfield` (
   KEY `bibid_idx` (`bibid`),
   KEY `fieldid_idx` (`fieldid`),
   KEY `subfield_cd_idx` (`subfield_cd`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20861 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21655 ;
 
 -- --------------------------------------------------------
 
@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `booking` (
   KEY `out_dt_idx` (`out_dt`),
   KEY `ret_histid_idx` (`ret_histid`),
   KEY `ret_dt_idx` (`ret_dt`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `lookup_hosts` (
   `user` varchar(20) DEFAULT NULL,
   `pw` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -461,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `member` (
   `school_grade` tinyint(3) unsigned NOT NULL,
   `school_teacher` varchar(32) COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`mbrid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=15 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -613,7 +613,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `reports_flg` char(1) NOT NULL,
   `tools_flg` char(1) NOT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 

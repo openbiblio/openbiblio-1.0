@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.0.1
+-- version 3.2.4
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 23, 2009 at 10:30 AM
--- Server version: 5.1.37
--- PHP Version: 5.3.0
+-- Generation Time: Jan 12, 2011 at 11:04 AM
+-- Server version: 5.1.41
+-- PHP Version: 5.3.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -18,6 +18,15 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `openbibliowork`
 --
+
+--
+-- Dumping data for table `biblio_copy_fields_dm`
+--
+
+INSERT INTO `biblio_copy_fields_dm` (`code`, `description`, `default_flg`) VALUES
+('pr', 'Price', 'N'),
+('src', 'Source', 'N'),
+('cvr', 'Cover Type', 'N');
 
 --
 -- Dumping data for table `biblio_status_dm`
@@ -42,33 +51,6 @@ INSERT INTO `calendar_dm` (`code`, `description`, `default_flg`) VALUES
 (1, 'Fourth of July', ''),
 (2, 'Normal', ''),
 (3, 'Another one', '');
-
---
--- Dumping data for table `collection_circ`
---
-
-INSERT INTO `collection_circ` (`code`, `days_due_back`, `daily_late_fee`) VALUES
-(1, 30, '0.01'),
-(2, 14, '0.10'),
-(3, 7, '0.25'),
-(4, 7, '0.10'),
-(5, 7, '0.10'),
-(10, 7, '0.10'),
-(11, 7, '0.10'),
-(12, 7, '0.10'),
-(13, 7, '0.10'),
-(14, 7, '0.10'),
-(15, 7, '0.10'),
-(6, 7, '0.10');
-
---
--- Dumping data for table `collection_dist`
---
-
-INSERT INTO `collection_dist` (`code`, `restock_threshold`) VALUES
-(1, 1),
-(2, 1),
-(3, 1);
 
 --
 -- Dumping data for table `collection_dm`
@@ -12434,62 +12416,23 @@ INSERT INTO `lookup_hosts` (`id`, `seq`, `active`, `host`, `name`, `db`, `user`,
 (15, 11, 'n', 'aulib.abdn.ac.uk:9991', 'Aberdeen', 'ABN01', '', ''),
 (2, 2, 'n', 'z3950.copac.ac.uk:3000', 'COPAC', 'copac', '', ''),
 (3, 3, 'n', 'catalogue.nla.gov.au:7090', 'National Library of Australia', 'voyager', '', ''),
-(4, 4, 'n', 'z3950.gbv.de:20010', 'German Library Group', 'gvk', '999', 'abc'),
+(4, 4, 'n', 'gso.gbv.de/sru/:80', 'German Library Group', '2.1', '', ''),
 (5, 5, 'n', 'groar.bne.es:2210', 'Biblioteca Nacional', 'bimo', '', ''),
 (6, 6, 'n', 'z3950.bcl.jcyl.es:2109', 'Biblioteca de Castilla y Leon', 'AbsysBCL', '', ''),
 (7, 7, 'n', 'bcr1.larioja.org:210', 'Biblioteca de La Rioja (ESP)', 'AbsysE', '', ''),
 (8, 8, 'n', 'zed.natlib.govt.nz', 'National Library of New Zealand', 'pinz', '', ''),
 (9, 9, 'n', 'pino.csic.es:9909', 'Red de bibliotecas del CSIC', 'MAD01', NULL, NULL),
 (12, 10, 'n', 'opac.sbn.it:3950', 'SBN - Sistema Bibliotecario Nazi', 'nopac', '', ''),
-(14, 1, 'y', 'z3950.loc.gov:7090', 'U.S. Library of Congress', 'voyager', '', '');
+(14, 1, 'y', 'z3950.loc.gov:7090', 'U.S. Library of Congress', 'voyager', '', ''),
+(16, 1, 'n', 'www.flos-inc.com:80', 'Freds Test', 'ob', '', ''),
+(17, 2, 'n', 'z3950.gbv.de:210', 'German Group', '2.1', '999', 'abc');
 
 --
 -- Dumping data for table `lookup_settings`
 --
 
 INSERT INTO `lookup_settings` (`id`, `protocol`, `maxHits`, `timeout`, `keepDashes`, `callNmbrType`, `autoDewey`, `defaultDewey`, `autoCutter`, `cutterType`, `cutterWord`, `noiseWords`, `autoCollect`, `fictionName`, `fictionCode`, `fictionLoc`, `fictionDew`) VALUES
-(1, 'SRU', 25, 10, 'n', 'LoC', 'n', '813.52', 'y', 'LoC', 1, '''a an and for of the this those''', 'y', 'Fiction', 1, 'PQ PR PS PT PU PV PW PX PY PZ', '813 823');
-
---
--- Dumping data for table `material_fields`
---
-
-INSERT INTO `material_fields` (`material_field_id`, `material_cd`, `tag`, `subfield_cd`, `position`, `label`, `form_type`, `required`, `repeatable`, `search_results`) VALUES
-(1, 2, '245', 'a', 0, 'Title', 'text', 1, 0, NULL),
-(2, 2, '245', 'b', 1, 'Subtitle', 'text', 0, 0, NULL),
-(3, 2, '099', 'a', 2, 'Call Number', 'text', 1, 0, NULL),
-(4, 2, '245', 'c', 4, 'Statement of Responsibility', 'text', 0, 0, NULL),
-(5, 2, '521', 'a', 7, 'Audience Level', 'text', 0, 0, NULL),
-(7, 2, '650', 'a', 8, 'Subject', 'text', 0, 4, NULL),
-(8, 2, '250', 'a', 6, 'Edition', 'text', 0, 0, NULL),
-(9, 2, '020', 'a', 9, 'ISBN', 'text', 0, 0, NULL),
-(54, 7, '44', 'a', 4, '044a - Country of publishing/producing entity code', 'text', 0, NULL, NULL),
-(11, 2, '260', 'a', 17, 'Place of Publication', 'text', 0, 0, NULL),
-(12, 2, '260', 'b', 16, 'Publisher', 'text', 0, 0, NULL),
-(13, 2, '260', 'c', 18, 'Date of Publication', 'text', 0, 0, NULL),
-(39, 6, '100', 'a', 6, '100a - Personal name - Author', 'text', 0, NULL, NULL),
-(20, 2, '505', 'a', 19, 'Contents', 'textarea', 0, 0, NULL),
-(24, 2, '100', 'a', 3, 'Author', 'text', 1, 0, NULL),
-(58, 7, '342', 'g', 10, '342g - Longitude of central meridian or projection center', 'text', 0, NULL, NULL),
-(37, 6, '245', 'f', 2, '245f - Inclusive dates', 'text', 0, NULL, NULL),
-(38, 6, '245', 'h', 3, '245h - Medium', 'text', 0, NULL, NULL),
-(29, 2, '050', 'a', 10, 'US LoC Classification', 'text', 0, 0, NULL),
-(30, 2, '050', 'b', 11, 'US LoC Item Number', 'text', 0, 0, NULL),
-(31, 2, '082', 'a', 14, 'Dewey Classification', 'text', 0, 0, NULL),
-(32, 2, '082', '2', 15, 'Dewey edition', 'text', 0, 0, NULL),
-(33, 2, '700', 'a', 5, 'Additional contributors', 'text', 0, 0, NULL),
-(40, 6, '22', 'a', 9, '022a - International Standard Serial Number', 'text', 0, NULL, NULL),
-(41, 6, '50', 'a', 12, '050a - Classification number', 'text', 0, NULL, NULL),
-(55, 7, '110', 'a', 5, '110a - Corporate name or jurisdiction name as entry element', 'text', 0, NULL, NULL),
-(43, 6, '410', 'a', 0, '410a - Corporate name or jurisdiction name as entry element', 'text', 0, NULL, NULL),
-(44, 6, '245', 'a', 1, '245a - Title', 'text', 0, NULL, NULL),
-(57, 7, '342', 'd', 8, '342d - Longitude resolution', 'text', 0, NULL, NULL),
-(56, 7, '342', 'c', 7, '342c - Latitude resolution', 'text', 0, NULL, NULL),
-(50, 6, '50', 'b', 13, '050b - Item number', 'text', 0, NULL, NULL),
-(59, 7, '342', 'q', 11, '342q - Ellipsoid name', 'text', 0, NULL, NULL),
-(60, 7, '342', 'w', 14, '342w - Local planar or local georeference information', 'text', 0, NULL, NULL),
-(61, 7, '342', 'h', 15, '342h - Latitude of projection origin or projection center', 'text', 0, NULL, NULL),
-(62, 1, '20', 'a', 0, '020a - International Standard Book Number', 'text', 0, NULL, NULL);
+(1, 'SRU', 25, 10, 'n', 'LoC', 'n', '813.52', 'y', 'LoC', 1, 'a an and for of the this those', 'y', 'Fiction', 1, 'PQ PR PS PT PU PV PW PX PY PZ', '813 823');
 
 --
 -- Dumping data for table `material_type_dm`
@@ -12518,16 +12461,6 @@ INSERT INTO `mbr_classify_dm` (`code`, `description`, `default_flg`, `max_fines`
 (4, 'unknown', 'N', '15.00');
 
 --
--- Dumping data for table `member_fields`
---
-
-INSERT INTO `member_fields` (`mbrid`, `code`, `data`) VALUES
-(1, 'schoolGrade', '2'),
-(1, 'schoolTeacher', 'Mrs. Applebee'),
-(4, 'schoolTeacher', ''),
-(4, 'schoolGrade', '');
-
---
 -- Dumping data for table `member_fields_dm`
 --
 
@@ -12536,66 +12469,12 @@ INSERT INTO `member_fields_dm` (`code`, `description`, `default_flg`) VALUES
 ('schoolTeacher', 'School Teacher', 'N');
 
 --
--- Dumping data for table `settings`
---
-
-INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) VALUES
-('plugin_list', NULL, NULL, 'text', NULL, NULL, NULL, ',lookup2,biblioFlds', ''),
-('allow_plugins_flg', 0, 'Allow Plugins', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('library_name', 1, 'Library Title', 'select', NULL, NULL, NULL, '2', 'admin'),
-('item_barcode_flg', 1, 'Use item barcodes', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('library_hours', 2, 'Library Hours', 'text', 32, NULL, NULL, 'M-F: 8am - 5pm<br />Sat:  9am - noon', 'admin'),
-('item_autoBarcode_flg', 2, 'Item Auto Barcodes', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('library_phone', 3, 'Library Phone No.', 'text', NULL, NULL, NULL, '207-587-2623', 'admin'),
-('library_home', 4, 'Library Address', 'text', NULL, NULL, NULL, 'Mercer, Maine', 'admin'),
-('block_checkouts_when_fines_due', 5, 'Block Checkouts When Fines Due', 'bool', 1, NULL, NULL, 'Y', 'admin'),
-('locale', 6, 'Locale', 'select', NULL, NULL, NULL, 'en', 'admin'),
-('charset', 7, 'Character Set', 'text', NULL, NULL, NULL, '', 'admin'),
-('items_per_page', 8, 'Items per Page', 'int', NULL, NULL, NULL, '25', 'admin'),
-('request_from', 9, 'Request From', 'text', NULL, NULL, NULL, '', 'admin'),
-('request_to', 10, 'Request To', 'text', NULL, NULL, NULL, '', 'admin'),
-('mbr_barcode_flg', 10, 'Use Member barcodes', 'bool', NULL, NULL, NULL, 'N', 'tools'),
-('request_subject', 11, 'Request Subject', 'text', NULL, NULL, NULL, '', 'admin'),
-('mbr_autoBarcode_flg', 11, 'Member Auto Barcodes', 'bool', NULL, NULL, NULL, 'N', 'tools'),
-('library_url', 12, 'Library URL', 'text', 32, NULL, NULL, 'library.flos-inc.com', 'admin'),
-('opac_url', 13, 'OPAC URL', 'text', 32, NULL, NULL, 'opac.flos-inc.com', 'admin'),
-('library_image_url', 14, 'Library Image URL', 'text', 32, NULL, NULL, 'photo.flos-inc.com', 'admin'),
-('theme_name', 15, 'Theme Directory', 'text', 10, NULL, NULL, 'jls07', 'admin'),
-('theme_dir_url', 16, 'Theme Dir URL', 'text', 32, NULL, NULL, '', 'admin'),
-('use_image_flg', 17, 'Use Image', 'bool', NULL, NULL, NULL, 'N', 'admin'),
-('show_checkout_mbr', 20, 'Show member who has an item checked out', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('show_item_photos', 21, 'Show Item Photos', 'bool', NULL, NULL, NULL, 'N', 'tools'),
-('show_detail_opac', 22, 'Show copy details in OPAC', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('multi_site_func', 23, 'Default site for multiple site functionality (0=disabled)', 'int', NULL, NULL, NULL, '0', 'tools'),
-('site_login', 25, 'Select a Site at Logon', 'bool', NULL, NULL, NULL, 'N', 'tools');
-
---
--- Dumping data for table `site`
---
-
-INSERT INTO `site` (`siteid`, `calendar`, `name`, `code`, `address1`, `address2`, `city`, `state`, `zip`, `phone`, `fax`, `email`, `delivery_note`) VALUES
-(1, 0, 'Home', 'home', '344 Bacon Rd', '', 'Mercer', 'ME', '04957', '207-587-2623', '', 'flaplante@flos-inc.com', ''),
-(2, 3, 'LaPlante Library', 'lib', '344 Bacon Rd', '', 'Mercer', 'ME', '04957', '207-587-2623', '', 'library@flos-inc.com', '');
-
---
 -- Dumping data for table `state_dm`
 --
 
 INSERT INTO `state_dm` (`code`, `description`, `default_flg`) VALUES
 ('ME', 'Maine', 'Y'),
 ('CA', 'California', 'N');
-
---
--- Dumping data for table `theme`
---
-
-INSERT INTO `theme` (`themeid`, `theme_name`, `title_bg`, `title_font_face`, `title_font_size`, `title_font_bold`, `title_font_color`, `title_align`, `primary_bg`, `primary_font_face`, `primary_font_size`, `primary_font_color`, `primary_link_color`, `primary_error_color`, `alt1_bg`, `alt1_font_face`, `alt1_font_size`, `alt1_font_color`, `alt1_link_color`, `alt2_bg`, `alt2_font_face`, `alt2_font_size`, `alt2_font_color`, `alt2_link_color`, `alt2_font_bold`, `border_color`, `border_width`, `table_padding`) VALUES
-(1, 'Mossy Blue', '#7695C0', 'Arial,Helvetica,sans-serif', 26, 'N', '#ffffff', 'left', '#ffffff', 'verdana,arial,helvetica', 13, '#000000', '#0000aa', '#990000', '#CCCC99', 'verdana,arial,helvetica', 13, '#000000', '#0000aa', '#003366', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'Y', '#000000', 1, 2),
-(2, 'Arizona Dessert', '#dfa955', 'Arial,Helvetica,sans-serif', 26, 'N', '#ffffff', 'left', '#ffffff', 'verdana,arial,helvetica', 13, '#000000', '#af6622', '#990000', '#c0c0c0', 'verdana,arial,helvetica', 13, '#000000', '#bf7733', '#c05232', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'Y', '#000000', 1, 2),
-(3, 'Blue and Green', '#aaaaff', 'Arial,Helvetica,sans-serif', 26, 'N', '#000055', 'left', '#ffffff', 'verdana,arial,helvetica', 13, '#000055', '#000088', '#990000', '#aaffaa', 'verdana,arial,helvetica', 13, '#005500', '#000088', '#4444ff', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'Y', '#000055', 1, 2),
-(4, 'Dark Wood', '#551122', 'Arial,Helvetica,sans-serif', 26, 'N', '#ffffff', 'left', '#000000', 'arial', 13, '#ffffff', '#ffff99', '#990000', '#393333', 'arial', 13, '#ffffff', '#ffff99', '#999080', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'Y', '#a9a090', 1, 2),
-(5, 'Metalic Grey', '#ffffff', 'Arial,Helvetica,sans-serif', 26, 'N', '#000000', 'left', '#f0f0f0', 'verdana,arial,helvetica', 13, '#000000', '#0000aa', '#990000', '#e0e0e0', 'verdana,arial,helvetica', 13, '#000000', '#0000aa', '#c9cfde', 'verdana,arial,helvetica', 13, '#000000', '#000000', 'Y', '#000000', 1, 2),
-(6, 'Midnight', '#222255', 'Arial,Helvetica,sans-serif', 26, 'N', '#ffffff', 'left', '#000000', 'arial', 13, '#b5b5db', '#ffff99', '#990000', '#333366', 'arial', 13, '#ffffff', '#ffff99', '#8585ab', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'N', '#b5b5db', 1, 2);
 
 --
 -- Dumping data for table `transaction_type_dm`
