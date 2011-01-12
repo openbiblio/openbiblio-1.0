@@ -415,6 +415,7 @@ $trans["Login"] = "Login";
 $trans["Logout"] = "Logout";
 $trans["Searching"]     = 'Searching... Please wait...';
 $trans["lookup_patience"]        = 'Please be patient. this may take a while.';
+$trans["lookup_rqdNote"]	= 'required field';
 $trans["lookup_resetInstr"]      = 'After 30 secs. Press F5 to try again.';
 $trans["Lower"] = "Lower";
 $trans["Main Body"] = "Main Body";

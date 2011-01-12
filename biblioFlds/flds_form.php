@@ -19,10 +19,10 @@
 ?>
 <h1 id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></h1>
 
-<div id='typeChoice'>
-	<fieldset id='choiceTyp'>
+<div id="typeChoice">
+	<fieldset id="choiceTyp">
 		<label for="typeList"><?php echo T('MatlTypeListLabel');?></label>
-		<select id='typeList'></select>
+		<select id="typeList"></select>
 		<hr id="topSeperator" width="75%" />
 
 		<input type=button id="saveBtn" name="saveBtn"
@@ -34,7 +34,7 @@
 		<input type=button id="goBackBtn" name="goBackBtn"
 					 value="<?php echo T("goBack"); ?>" class="button" />
 	</fieldset>
-</div
+</div>
 
 <div id="configDiv">
 	<h3 id="configTitle"><?php echo T('BiblioFieldsConfig'); ?><span id="configName"></span></h3>

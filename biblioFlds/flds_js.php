@@ -82,7 +82,8 @@ mtl = {
 		$('#'+btnId).disable();
 	},
 	enableBtn: function (btnId) {
-	  $('#'+btnId).css('color', mtl.btnColor);
+	  //$('#'+btnId).css('color', mtl.btnColor);
+	  $('#'+btnId).css('color', '#000000');
 		$('#'+btnId).enable();
 	},
 	hideTopBtns: function() {
@@ -227,7 +228,6 @@ mtl = {
 	// this portion is for the original page layout
 	doShowForm: function () {
 		mtl.fetchMatlFlds();
-		mtl.enableBtn('configBtn');
 		$('#workDiv').show();
 	},
 
@@ -280,11 +280,12 @@ mtl = {
 							  +	 '>'
 							  +	 data[n]['tag']+data[n]['subfield_cd']+' - '+data[n]['label']
 							  +	 "</li>\n";
-
 				}
 				$('#existing').html(html2);
-				$('table.striped tbody tr:even').addClass('altBG');
+				
+				obib.reStripe();
 				$('.editBtn').bind('click',null,mtl.doEdit);
+				mtl.enableBtn('configBtn');
 			}
 			else {
  				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('addNewMtlMsg').'"'; ?>+"</h3>";
