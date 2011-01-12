@@ -50,7 +50,7 @@ class SrchDb {
 	function getBiblioByBarcd($barcd){
 		$sql = "SELECT b.bibid "
 					."	FROM `biblio_copy` bc,`biblio` b "
-					." WHERE (bc.`barcode_nmbr` = $barcd)"
+					." WHERE (bc.`barcode_nmbr` = '".$barcd."')"
 					."	 AND (b.`bibid` = bc.`bibid`)";
 		//echo "sql=$sql<br />";
 		$rcd = $this->db->select01($sql);
