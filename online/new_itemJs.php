@@ -152,8 +152,12 @@ ni = {
 	},
 	
 	doBackToChoice: function () {
-		$('#selectionDiv').hide();
-		$('#choiceDiv').show();
+		if (ni.singleHit) {
+			doBackToSrch();
+		} else {
+			$('#selectionDiv').hide();
+			$('#choiceDiv').show();
+		}
 	},
 	//------------------------------
 	fetchOpts: function () {
@@ -418,6 +422,7 @@ ni = {
 				else if (numHits > 1){
 					//console.log('more than one hit');
 					$('#choiceSpace').empty();
+					ni.singleHit = false;
 
 					var nHits = 0;
 					ni.hostData = rslts.data;
@@ -454,6 +459,7 @@ ni = {
 				
 				else if (rslts.ttlHits == 1){
 				  var data;
+				  ni.singleHit = true;
 					//console.log('single hit found');
 					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
@@ -491,7 +497,7 @@ ni = {
 			$('#opacFlg').val(['CHECKED','Y']);
 			ie.init();
 		});
-		$('.itemGobkBtn').bind('click',null,ni.doBackToSrch);
+		$('.itemGobkBtn').bind('click',null,ni.doBackToChoice);
 	},
 	doClearItemForm: function () {
 		// assure all marc fields are empty & visible at start
