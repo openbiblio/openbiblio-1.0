@@ -12,21 +12,59 @@
   $focus_form_name = "lookupForm";
   $focus_form_field = "lookupVal";
 
-		  $isbnTxt    = T("ISBN");
-		  $issnTxt    = T("ISSN");
-		  $lccnTxt    = T("LCCN");
-		  $titleTxt   = T("Title");
-		  $authorTxt  = T("Author");
-			$keywordTxt = T("Keyword");
-			$pubDateTxt = T("Publication Date");
-			$pubNameTxt = T("Publisher");
-			$pubLocTxt  = T("Publication Location");
+	$isbnTxt    = T("ISBN");
+	$issnTxt    = T("ISSN");
+	$lccnTxt    = T("LCCN");
+	$titleTxt   = T("Title");
+	$authorTxt  = T("Author");
+	$keywordTxt = T("Keyword");
+	$pubDateTxt = T("Publication Date");
+	$pubNameTxt = T("Publisher");
+	$pubLocTxt  = T("Publication Location");
 		
   require_once(REL(__FILE__, "../functions/inputFuncs.php"));
   require_once(REL(__FILE__, "../shared/logincheck.php"));
   
+ 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/Collections.php"));
+	
+	$defBarcodeDigits = $_SESSION[item_barcode_width];
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
+<style>
+h4 {
+	margin: 0; padding: 0; text-align: left; color: blue;
+	}
+h5 {
+	margin: 0; padding: 0; text-align: left; color: blue;
+	}
+h5#updateMsg {
+	color: red;
+	}
+p#errMsgTxt {
+	color: red; text-align: center;
+	}
+table#showList tr {
+	height: 1.3em;
+	}
+th.colHead {
+  white-space: nowrap;
+	}
+td.lblFld {
+  white-space: nowrap;
+	}
+td.inptFld {
+  vertical-align: top;
+	}
+td.btnFld {
+  text-align: center;
+	}
+.editBtn {
+	margin: 0; padding: 0; height: 1.5em; text-align:center;
+	}
+</style>
 
+<?php
 	include_once(REL(__FILE__,'/new_itemJs.php'));
 ?>
 

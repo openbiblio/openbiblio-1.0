@@ -1,0 +1,22 @@
+CACHE MANIFEST
+# Cache manifest version 13Jan2010-0
+
+CACHE:
+../images/admin.png
+../images/catalog.png
+../images/circ.png
+../images/reports.png
+../images/tools.png
+
+../images/bulletc.png
+../images/bulleto.png
+../images/circle_blue.png
+../images/circle_green.png
+../images/circle_orange.png
+../images/circle_red.png
+../images/powered_by_openbiblio.gif
+
+../shared/html5shiv.js
+../shared/jquery/jquery-1.4.4.min.js
+../shared/jquery/jquery-ui-1.8.7.custom.min.js
+../shared/jsLib.js

@@ -2,45 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
    See the file COPYRIGHT.html for more details.
  */
- 
- 	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
-	require_once(REL(__FILE__, "../model/Collections.php"));
-	
-	$defBarcodeDigits = $_SESSION[item_barcode_width];
 ?>
-
-<style>
-h4 {
-	margin: 0; padding: 0; text-align: left; color: blue;
-	}
-h5 {
-	margin: 0; padding: 0; text-align: left; color: blue;
-	}
-h5#updateMsg {
-	color: red;
-	}
-p#errMsgTxt {
-	color: red; text-align: center;
-	}
-table#showList tr {
-	height: 1.3em;
-	}
-th.colHead {
-  white-space: nowrap;
-	}
-td.lblFld {
-  white-space: nowrap;
-	}
-td.inptFld {
-  vertical-align: top;
-	}
-td.btnFld {
-  text-align: center;
-	}
-.editBtn {
-	margin: 0; padding: 0; height: 1.5em; text-align:center;
-	}
-</style>
 
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
