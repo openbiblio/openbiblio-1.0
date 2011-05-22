@@ -101,10 +101,10 @@ class Settings {
 			case 'default':
 				Fatal::internalError("Unknown select type in settings");
 			}
-			if ($s['name'] == 'library_name') {
-			  $sites = new Sites;
-				$options = $sites->getSelect();
-			}
+			//if ($s['name'] == 'library_name') {
+			//  $sites = new Sites;
+			//	$options = $sites->getSelect();
+			//}
 			if ($s['name'] == 'checkout_interval') {
 				$options = array('Hours','Days');
 			}
