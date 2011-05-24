@@ -12475,7 +12475,7 @@ INSERT INTO `member_fields_dm` (`code`, `description`, `default_flg`) VALUES
 INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) VALUES
 ('plugin_list', NULL, NULL, 'text', NULL, NULL, NULL, ',lookup2,biblioFlds', ''),
 ('allow_plugins_flg', 0, 'Allow Plugins', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('library_name', 1, 'Library Title', 'select', NULL, 'sites', NULL, '2', 'admin'),
+('library_name', 1, 'Library Title', 'select', NULL, 'sites', NULL, '1', 'admin'),
 ('item_barcode_flg', 1, 'Use item barcodes', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
 ('library_hours', 2, 'Library Hours', 'text', 32, NULL, NULL, 'M-F: 8am - 5pm<br />Sat:  9am - noon', 'admin'),
 ('item_autoBarcode_flg', 2, 'Item Auto Barcodes', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
@@ -12503,6 +12503,13 @@ INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data
 ('site_login', 25, 'Select a Site at Logon', 'bool', NULL, NULL, NULL, 'N', 'tools'),
 ('checkout_interval', 26, 'Checkout_Interval', 'select', NULL, NULL, NULL, '1', 'tools'),
 ('item_barcode_width', 27, 'Item Barcode Width', 'int', NULL, NULL, NULL, '13', 'tools');
+
+--
+-- Dumping data for table `site`
+--
+
+INSERT INTO `site` (`siteid`, `calendar`, `name`, `code`, `address1`, `address2`, `city`, `state`, `zip`, `phone`, `fax`, `email`, `delivery_note`) VALUES
+(1, 0, 'The Library', 'lib', '123 Main Street', '', 'Smallville', 'ME', '01234', '207-515-1212', '', 'library@smallville.us', '');
 
 --
 -- Dumping data for table `state_dm`
