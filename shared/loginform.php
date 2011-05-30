@@ -29,7 +29,6 @@
 			$siteId = 1;
 		}
 	}
-	
 	$tab = "circ";
 	$nav = "";
 	$focus_form_name = "loginform";

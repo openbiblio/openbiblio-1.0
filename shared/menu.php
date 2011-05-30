@@ -4,7 +4,6 @@
  */
 
 function staff_menu() {
-	//echo "@ staff_menu: <br />"; print_r($_SESSION);echo "<br />";
 	Nav::node('circulation', T("Circulation"), '../circ/index.php');
 	Nav::node('circulation/searchform', T("Member Search"), '../circ/index.php');
 	Nav::node('circulation/search', T("Search Results"));
@@ -140,7 +139,6 @@ function staff_menu() {
 		##-------------------------------------------------------------------------------------##
 		
 	if($_SESSION["hasReportsAuth"]){
-		//echo "building reports menu <br />";	
 		Nav::node('reports', T("Reports"), '../reports/index.php');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 
@@ -149,15 +147,16 @@ function staff_menu() {
 				'../reports/run_report.php?type=previous');
 		}
 	}
+
 	##-------------------------------------------------------------------------------------##
 	//print_r($_SESSION);
 	if($_SESSION["hasToolsAuth"]){
-		//echo "building tools menu <br />";	
 		Nav::node('tools', T("Tools"), '../tools/index.php');
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/biblioSrch', T("Biblio Search Opts."), '../tools/biblioSrch.php');
 	}
+	
 	##-------------------------------------------------------------------------------------##
 
 	$helpurl = "javascript:popSecondary('../shared/help.php";
@@ -167,13 +166,12 @@ function staff_menu() {
 	}
 	$helpurl .= "')";
 	Nav::node('help', T("Help"), $helpurl);
-
+	
 	## #######################################
 	## For plug-in support
 	## #######################################
 	$list = getPlugIns('nav.nav');
 	for ($x=0; $x<count($list); $x++) {
-		//echo "adding: $list[$x]<br />";
 		include_once ($list[$x]);
 	}
 	## #######################################

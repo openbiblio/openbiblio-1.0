@@ -53,6 +53,34 @@ INSERT INTO `calendar_dm` (`code`, `description`, `default_flg`) VALUES
 (3, 'Another one', '');
 
 --
+-- Dumping data for table `collection_dist`
+--
+
+INSERT INTO `collection_dist` (`code`, `restock_threshold`) VALUES
+(1, 1),
+(2, 1),
+(3, 1);
+
+--
+-- Dumping data for table `collection_circ`
+--
+
+INSERT INTO `collection_circ` (`code`, `days_due_back`, `daily_late_fee`) VALUES
+(1, 30, '0.01'),
+(2, 14, '0.10'),
+(3, 7, '0.25'),
+(4, 7, '0.10'),
+(5, 7, '0.10'),
+(10, 7, '0.10'),
+(11, 7, '0.10'),
+(12, 7, '0.10'),
+(13, 7, '0.10'),
+(14, 7, '0.10'),
+(15, 7, '0.10'),
+(6, 7, '0.10'),
+(18, 7, '0.00');
+
+--
 -- Dumping data for table `collection_dm`
 --
 
@@ -12510,6 +12538,14 @@ INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data
 
 INSERT INTO `site` (`siteid`, `calendar`, `name`, `code`, `address1`, `address2`, `city`, `state`, `zip`, `phone`, `fax`, `email`, `delivery_note`) VALUES
 (1, 0, 'The Library', 'lib', '123 Main Street', '', 'Smallville', 'ME', '01234', '207-515-1212', '', 'library@smallville.us', '');
+
+--
+-- Dumping data for table `staff`
+--
+
+INSERT INTO `staff` (`userid`, `create_dt`, `last_change_dt`, `last_change_userid`, `username`, `pwd`, `last_name`, `first_name`, `suspended_flg`, `admin_flg`, `circ_flg`, `circ_mbr_flg`, `catalog_flg`, `reports_flg`, `tools_flg`) VALUES
+(1, '0000-00-00 00:00:00', '2009-06-24 20:21:25', 1, 'flaplante', '9fb9ac4fa34039a8bd3ebc836b548475', 'LaPlante', 'Fred', 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y'),
+(2, '0000-00-00 00:00:00', '2010-12-18 16:42:03', 2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', '', 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
 
 --
 -- Dumping data for table `state_dm`

@@ -25,7 +25,7 @@
 <!-- it deals with html5 support issues for IE8 -->
 <script src="../shared/html5shiv.js" type="text/javascript"></script>
 
-<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+<link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
 
 <link rel="stylesheet" type="text/css" href="../shared/base.css" />
@@ -59,9 +59,7 @@
 ?>
 </title>
 
-<script>//console.log('loading jQuery');</script>
 <script src="../shared/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>
-<script>//console.log('loading jsLib core');</script>
 <script src="../shared/jsLib.js" type="text/javascript"></script>
 
 <script language="JavaScript">
