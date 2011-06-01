@@ -9,27 +9,17 @@
 ?>
 
 <!DOCTYPE html >
+<html lang="en" manifest="../cache.manifest">
 
+<head>	
+<!-- charset MUST be specified within first 512 char of page to be effective -->
 <?php // change default code character set if specified
 	if (Settings::get('charset') != "") { 
-		echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=".H(Settings::get('charset'))." \" />";
+		echo "<meta charset=\".H(Settings::get('charset'))." \" />";
 	} else {
 		echo "<meta charset=\"UTF-8\" />";
 	}
 ?>
-
-<html lang="en" manifest="../cache.manifest">
-<head>	
-
-<!-- this line MUST precede all .css files - FL -->
-<!-- it deals with html5 support issues for IE8 -->
-<script src="../shared/html5shiv.js" type="text/javascript"></script>
-
-<link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
-<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
-
-<link rel="stylesheet" type="text/css" href="../shared/base.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
 <title>
 <?php
@@ -58,12 +48,27 @@
 	}		
 ?>
 </title>
+<meta name="description" content="OpenBiblio ver 1.0 (wip)">
+<meta name="author" content="Luuk Jansen">
+<meta name="author" content="Fred LaPlante">
+<meta name="author" content="Micah Stetson">
 
-<script src="../shared/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>
-<script src="../shared/jsLib.js" type="text/javascript"></script>
+<link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
+
+<!-- this line MUST precede all .css files - FL -->
+<!-- it deals with html5 support issues for IE -->
+<!--[if lt IE 9]>
+	<script src="../shared/html5shiv.js"></script>
+<!--[endif]-->
+
+<link rel="stylesheet" href="../shared/base.css" />
+<link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
+
+<script src="../shared/jquery/jquery-1.4.4.min.js"></script>
+<script src="../shared/jsLib.js"></script>
 
 <script language="JavaScript">
-
 
 // main javascript functionality set in own namespace to avoid potential conflict
 obib = {
