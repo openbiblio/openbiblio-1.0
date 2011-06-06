@@ -68,4 +68,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

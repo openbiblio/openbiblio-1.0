@@ -74,4 +74,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

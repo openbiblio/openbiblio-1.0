@@ -18,4 +18,4 @@ echo T("catalogIndexDesc");
 echo "</fieldset>\n";
 
 ReportDisplaysUI::display('catalog');
-Page::footer();
+ ;

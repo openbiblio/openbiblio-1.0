@@ -127,4 +127,4 @@
 </form>
 <?php
 
-	Page::footer();
+	 ;

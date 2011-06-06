@@ -115,4 +115,4 @@
 </fieldset>
 <?php
 
-	Page::footer();
+	 ;

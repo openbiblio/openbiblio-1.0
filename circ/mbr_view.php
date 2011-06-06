@@ -108,4 +108,4 @@ if (@$_GET['format'] == 'json') {
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 echo HTML(file_get_contents('mbr_view.jsont'), $mbr);
-Page::footer();
+ ;

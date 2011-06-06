@@ -31,4 +31,4 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 echo T("Password has been reset.").'<br /><br />';
 echo '<a href="../admin/staff_list.php">'.T("Return to staff list").'</a>';
 
-Page::footer();
+ ;

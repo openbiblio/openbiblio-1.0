@@ -35,4 +35,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

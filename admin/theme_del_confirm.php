@@ -34,4 +34,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

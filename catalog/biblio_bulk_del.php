@@ -106,7 +106,7 @@ function showConfirm($del_copyids, $del_bibids) {
 	</fieldset>
 	</form>
 	<?php
-	Page::footer();
+	 ;
 }
 
 function showForm($vars, $errors=array()) {
@@ -146,5 +146,5 @@ function showForm($vars, $errors=array()) {
 	</form>
 	
 	<?php
-	Page::footer();
+	 ;
 }

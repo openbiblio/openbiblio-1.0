@@ -53,4 +53,4 @@ $(document).ready(bnf.init);
 ?>
 	</form>
 <?php>
-	Page::footer();
+	 ;

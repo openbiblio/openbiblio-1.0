@@ -46,4 +46,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

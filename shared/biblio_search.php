@@ -182,4 +182,4 @@
 
 	echo HTML(file_get_contents('biblio_search.jsont'), $page_data);
 
-	Page::footer();
+	 ;

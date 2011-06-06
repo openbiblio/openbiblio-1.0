@@ -109,4 +109,4 @@ function editTheme() {
 ?>
 </fieldset>
 <?php
-	Page::footer();
+	 ;

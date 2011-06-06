@@ -119,4 +119,4 @@ $(document).ready(bcnf.init);
 
 <?php
 
-	Page::footer();
+	 ;

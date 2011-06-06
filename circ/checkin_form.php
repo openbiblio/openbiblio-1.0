@@ -128,7 +128,7 @@ function checkin(massCheckinFlg)
 
 <?php
 
-	Page::footer();
+	 ;
 
 /*
 	$endTm = getmicrotime();

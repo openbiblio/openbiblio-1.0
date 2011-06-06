@@ -36,4 +36,4 @@ type="radio" name="type" value="Link" /><?php echo T("Link"); ?></label>
 
 <?php
 
-	Page::footer();
+	 ;

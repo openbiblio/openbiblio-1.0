@@ -46,4 +46,4 @@ $(document).ready(mnf.init);
 	$mbr[classification] = $mbrtypes->getDefault();
 
 include(REL(__FILE__, "../circ/mbr_fields.php"));
-Page::footer();
+ ;

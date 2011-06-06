@@ -55,4 +55,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

@@ -23,4 +23,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

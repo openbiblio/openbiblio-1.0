@@ -38,7 +38,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 	# for later use by inputfields()
-	$attrs = array(size=>"20", maxlength=>"20");
+	$attrs = array(size=>"20", maxlength=>"20", required=>"required", aria-required=>"true");
 
 ?>
 <h1><span id="searchHdr" class="title"><?php echo T("Staff Login"); ?></span></h1>
@@ -98,4 +98,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

@@ -99,4 +99,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

@@ -73,5 +73,5 @@ echo $d->row(T("Out Date:"), H($b['book_dt']));
 echo $d->row(T("Return Date:"), H($b['due_dt']));
 echo $d->end();
 
-Page::footer();
+ ;
 

@@ -12,4 +12,4 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 echo '<p class="error">'.T('reportsNoauth').'</p>';
 
-Page::footer();
+ ;

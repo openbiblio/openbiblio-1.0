@@ -114,4 +114,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

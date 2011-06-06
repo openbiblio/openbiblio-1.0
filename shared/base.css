@@ -3,37 +3,34 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-/*************************************************/
 body {
+  font-size: 62.5%; line-height: 1.5em
+  font-family: "Segoe UI", Arial, serif;
+  color: #000000; background: #a0c0c8;
+  font-size:1.0em;
 	padding: 0; margin: 0;
-	font: 16px serif;
 	}
+
+/* required for IE prior to IE9, else CSS will not apply */
+article, aside, figure, footer, header, hgroup, nav, section {
+  display: block;
+	} 
+	
 /*************************************************/
-div#master {
-	position: absolute; top: 0; left: 0; width: 100%
+aside {
+	position: fixed; top:0; left: .5em;
+	padding: 10px;
 	}
+	
 /*************************************************/
-div#header  {
-	position: absolute; top:0; left: 0;
-	width: 100%; height: 4em;
-	}
-/*************************************************/
-div#content {
-	/*position: absolute; top:4.5em; left: 12.5em;*/
-	position: absolute; top:0; left: 12.5em;
-	padding:0;
-	}
-/*************************************************/
-div#footer {
+footer {
 	margin-top: 1em;
 	padding-top:0.33em;
-	border-top: 1px solid gray;
 	width: 100%;
 	}
+
 /*************************************************/
-div#sidebar {
-	/*position: absolute; top:4.5em; left: .5em;*/
-	position: absolute; top:0; left: .5em;
-	width: 12em;
-	padding: 10px;
+div#content {
+	position: absolute; top:0; left: 12.5em;
+	padding:0;
 	}

@@ -48,4 +48,4 @@
 
 	include(REL(__FILE__, "../shared/searchbar.php"));
 	ReportDisplaysUI::display('catalog');
-	Page::footer();
+	 ;

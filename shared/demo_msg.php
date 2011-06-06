@@ -11,5 +11,5 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 echo '<p>'.T('demoMsg').'</p>';
 
-Page::footer();
+ ;
 exit();

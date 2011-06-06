@@ -45,4 +45,4 @@ $mf->update($rec);
 
 $msg = T("Field Updated successfully");
 header("Location: material_fields_view.php?material_cd=".U($rec['material_cd'])."&msg=".U($msg));
-Page::footer();
+ ;

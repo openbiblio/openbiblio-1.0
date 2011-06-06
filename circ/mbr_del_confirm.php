@@ -60,4 +60,4 @@
 </center>
 <?php
 	}
-	Page::footer();
+	 ;

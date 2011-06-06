@@ -58,4 +58,4 @@ if ($msg) {
 </form>
 
 <?php
-Page::footer();
+ ;

@@ -37,7 +37,6 @@
 
 	if ($rpt->count() == 0) {
 		echo T("No sites have been defined.");
-		require_once(REL(__FILE__, "../shared/footer.php"));
 		exit();
 	}
 
@@ -65,4 +64,4 @@
 	echo "</fieldset> \n";
 
 	echo $disp->pages($page_url, $currentPageNmbr);
-	Page::footer();
+	 ;

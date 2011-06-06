@@ -87,4 +87,4 @@
 <?php
 
 	include(REL(__FILE__, "../catalog/biblio_fields.php"));
-	Page::footer();
+	 ;

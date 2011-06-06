@@ -39,4 +39,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

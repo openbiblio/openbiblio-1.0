@@ -63,4 +63,4 @@ $form['values'] = $values;
 $form['errors'] = $errs;
 Form::display($form);
 
-Page::footer();
+ ;

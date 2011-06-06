@@ -148,5 +148,3 @@
 </div>
 
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
-
-<?php include("../shared/footer.php"); ?>

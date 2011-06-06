@@ -24,4 +24,4 @@ echo HTML(file_get_contents('index.jsont'), array(
 ));
 
 ReportDisplaysUI::display('circ');
-Page::footer();
+ ;

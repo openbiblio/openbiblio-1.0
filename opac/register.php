@@ -79,7 +79,7 @@ if (!$values['_posted']) {
 		echo '<p>'.T('registerNextTime', array('barcode'=>H($mbr['barcode_nmbr']))).'</p>';
 		echo '<p>'.T('registerEditInfo', array('link'=>'<a href="../opac/edit_account.php">', 'end'=>'</a>')).'</p>';
 		echo '<p><a href="../opac/index.php">'.T("Start using the catalog").'</a></p>';
-		Page::footer();
+		 ;
 		exit();
 	}
 }
@@ -92,4 +92,4 @@ $form['values'] = $values;
 $form['errors'] = $errs;
 Form::display($form);
 
-Page::footer();
+ ;

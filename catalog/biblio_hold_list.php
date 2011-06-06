@@ -88,4 +88,4 @@
 </fieldset>
 <?php
 
-	Page::footer();
+	 ;

@@ -52,8 +52,10 @@
 
 			$attrs = array("id"=>"$marcInputFld");
 			$attrStr = "marcBiblioFld";
-			if ($i['required'])
+			if ($i['required']) {
 			  $attrStr .= " reqd";
+				$attrs['required'] = 'required';
+			}
 			if ($i['repeat'])
 			  $attrStr .= " rptd";
 			else

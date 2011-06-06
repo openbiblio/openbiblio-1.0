@@ -29,5 +29,3 @@ Form::display(array(
 	'submit'=>T("Update"),
 	'fields'=>Settings::getFormFields('tools'),
 ));
-
-Page::footer();

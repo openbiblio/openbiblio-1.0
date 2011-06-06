@@ -171,5 +171,5 @@ echo '<div style="padding: 0 auto; border-top: solid #006500 2px; border-bottom:
 echo $cal->getHThreeMonthView($d['mon'], $d['year']);
 echo '</div>';
 
-Page::footer();
+ ;
 

@@ -136,4 +136,4 @@
 </fieldset>
 
 <?php
-	Page::footer();
+	 ;

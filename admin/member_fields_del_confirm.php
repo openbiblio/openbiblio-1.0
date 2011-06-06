@@ -28,4 +28,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

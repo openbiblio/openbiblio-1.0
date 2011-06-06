@@ -72,4 +72,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

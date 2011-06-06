@@ -102,4 +102,4 @@ if ($row["repeatable"]=='1') {
 		echo "</table>\n";
 		echo "</fieldset>\n";
 	}
-	Page::footer();
+	 ;

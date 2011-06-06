@@ -62,4 +62,4 @@ while ($r = $rpt->each()) {
 }
 echo $t->end();
 
-Page::footer();
+ ;

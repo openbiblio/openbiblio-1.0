@@ -95,4 +95,4 @@ function editTheme() {
 <?php
 
 	include(REL(__FILE__, "../admin/theme_fields.php"));
-	Page::footer();
+	 ;

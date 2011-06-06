@@ -119,4 +119,4 @@
 	
 <?php
 
-	Page::footer();
+	 ;

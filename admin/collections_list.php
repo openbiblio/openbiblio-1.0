@@ -109,4 +109,4 @@ $(document).ready(cl.init);
 
 <?php
 
-	Page::footer();
+	 ;

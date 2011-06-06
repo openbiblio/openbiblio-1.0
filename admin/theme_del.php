@@ -35,4 +35,4 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 echo T("Theme, %name%, has been deleted.", array('name'=>H($name))).'<br /><br />';
 echo '<a href="../admin/theme_list.php">'.T("Return to theme list").'</a>';
 
-Page::footer();
+ ;

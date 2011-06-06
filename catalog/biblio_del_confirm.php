@@ -61,4 +61,4 @@
 </fieldset>
 <?php
 	}
-	Page::footer();
+	 ;

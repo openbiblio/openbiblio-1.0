@@ -33,4 +33,4 @@
 </center>
 <?php
 
-	Page::footer();
+	 ;

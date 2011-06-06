@@ -34,7 +34,6 @@
 	# Display no results message if no results returned from search.
 	if ($total_items == 0) {
 		echo '<p>'.T("Booking cart is empty").'</p>';
-		require_once(REL(__FILE__, "../shared/footer.php"));
 		exit();
 	}
 
@@ -98,4 +97,4 @@ echo $t->end();
 echo '</form>';
 
 echo $disp->pages($page_url, $currentPageNmbr);
-Page::footer();
+ ;

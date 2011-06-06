@@ -40,4 +40,4 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 echo T("Staff member, %name%, has been updated.", array('name'=>H($user['first_name']).' '.H($user['last_name']))).'<br /><br />';
 echo '<a href="../admin/staff_list.php">'.T("Return to staff list").'</a>';
 
-Page::footer();
+ ;

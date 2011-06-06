@@ -20,8 +20,8 @@ if (Settings::get('charset') != "") { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo $ThemeDirUrl; ?>/style.css" />
 <style>
 /*************************************************/
-div#sidebar {
-	position: absolute; top:0; left: .5em;
+aside {
+	position: fixed; top:0; left: .5em;
 	width: 8em;
 	margin: 0; padding: 5px;
 	background: #a0c0c8; /*for development*/
@@ -40,7 +40,7 @@ div#content {
 <title><?php echo T("OpenBiblio Help"); ?></title>
 
 <!-- jQuery kernal, needed for all that follows -->
-<script src="../shared/jquery/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="../shared/jquery/jquery-1.6.1.min.js" type="text/javascript"></script>
 
 <!-- home-grown add-ons to the jQuery library, feel free to add your own -->
 <script src="../shared/jsLib.js" type="text/javascript"></script>
@@ -60,9 +60,9 @@ function popSecondaryLarge(url) {
 </head>
 <body onload="self.focus()">
 
-<div id="sidebar">
+<aside>
 	<?php include(REL(__FILE__, "../shared/help_nav.php")); ?>
-</div>
+</aside>
 
 <div id="content">
 

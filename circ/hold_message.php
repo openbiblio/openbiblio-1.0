@@ -19,4 +19,4 @@ $barcode = $_GET["barcode"];
 echo '<h1>'.T("Copy Has Been Placed On Hold!").'</h1>';
 echo T("holdMessageMsg1",array("barcode"=>$barcode)).'<br /><br />';
 echo '<a href="../circ/checkin_form.php">'.T("Return to copy check in").'</a>';
-Page::footer();
+ ;

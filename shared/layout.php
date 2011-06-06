@@ -97,4 +97,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

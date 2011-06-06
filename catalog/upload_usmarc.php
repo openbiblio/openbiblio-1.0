@@ -64,4 +64,4 @@ fclose($f);
 echo '<p>'.T("Records imported: %rec%", array('rec'=>$nrecs)).'</p>';
 echo '<p>'.T("Records added to %url%Cart", array('url'=>'<a href="../shared/req_cart.php?tab='.HURL($tab).'">')).'</a></p>';
 
-Page::footer();
+ ;

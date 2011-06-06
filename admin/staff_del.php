@@ -27,4 +27,4 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 echo T("Staff member, %name%, has been deleted.", array('name'=>$first_name.' '.$last_name)).'<br /><br />';
 echo '<a href="../admin/staff_list.php">'.T("Return to staff list").'</a>';
 
-Page::footer();
+ ;

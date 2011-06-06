@@ -212,7 +212,7 @@ if ($tab == "cataloging") {
 <?php
 	# Info below shouldn't be shown in the OPAC
 	if ($tab != "cataloging") {
-		Page::footer();
+		 ;
 		exit();
 	}
 	$collections = new Collections;
@@ -229,4 +229,4 @@ if ($tab == "cataloging") {
 		break;
 	}
 
-	Page::footer();
+	 ;

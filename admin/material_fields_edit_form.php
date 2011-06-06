@@ -66,4 +66,4 @@ echo $msg;
 
 <?php
 
-	Page::footer();
+	 ;

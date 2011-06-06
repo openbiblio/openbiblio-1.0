@@ -91,5 +91,3 @@
 	</fieldset>
 </form>
 	
-<?php
-	require_once(REL(__FILE__, "../shared/footer.php"));

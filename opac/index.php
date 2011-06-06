@@ -62,5 +62,5 @@ Page::header_opac(array('nav'=>$nav, 'title'=>''));
 				</fieldset>
 			</form>			
 <?
-Page::footer();
+ ;
 ?>

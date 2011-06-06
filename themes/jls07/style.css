@@ -8,14 +8,53 @@ body {
 	background: #90b0b8;
 	padding: 10px;
 	margin: 0;
-	font: 16px serif;
 	}
 	
 /*************************************************/
-div#header  {
+aside {
 	background: #a0c0c8; /*for development*/
-	color: white;
+	vertical-align: top;
+	width: 162px;
+	border: solid black 2px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: 3px 6px 8px -4px #000;
+	-webkit-box-shadow: 3px 6px 8px -4px #000;
+	box-shadow: 3px 6px 8px -4px #000;
 	}
+#logo {
+	width: 150px;
+	float: left;
+	}
+#sidebar_login {
+	text-align: center;
+	font: 12px sans-serif;
+	}
+#sidebar .login_id {
+	margin-bottom: 1em;
+	}
+#sidebar_login .login_id input {
+	width: 100px;
+	border: solid black 2px;
+	font: 12px serif;
+	}
+#sidebar .password {
+	margin-bottom: 1em;
+	}
+#sidebar_login .password input {
+	width: 100px;
+	border: solid black 2px;
+	font: 12px serif;
+	}
+	
+/*
+#sidebar fieldset {
+	width 100%; border: solid black 2px;
+	}
+*/
+
+/*************************************************/
 #header #headLogo {
 	position: absolute; top: 0; left: 0;
 	}
@@ -50,44 +89,8 @@ div#helpbar {
 	width: 125px;
 	border: solid black 2px;
 	}
+	
 /*************************************************/
-div#sidebar {
-	background: #a0c0c8; /*for development*/
-	vertical-align: top;
-	width: 162px;
-	border: solid black 2px;
-	}
-#sidebar #logo {
-	width: 150px;
-	float: left;
-	}
-#sidebar_login {
-	text-align: center;
-	font: 12px sans-serif;
-	}
-#sidebar .login_id {
-	margin-bottom: 1em;
-	}
-#sidebar_login .login_id input {
-	width: 100px;
-	border: solid black 2px;
-	font: 12px serif;
-	}
-#sidebar .password {
-	margin-bottom: 1em;
-	}
-#sidebar_login .password input {
-	width: 100px;
-	border: solid black 2px;
-	font: 12px serif;
-	}
-/*
-#sidebar fieldset {
-	width 100%; border: solid black 2px;
-	}
-*/
-
-/* Using list-style-image because IE has an odd circle list-style-type. */
 ul.nav_main {
 	width: 130px;
 	margin-top: 0; margin-left: 0; padding-left: 0;
@@ -108,6 +111,9 @@ ul.nav_main > li.nav_selected {
 	background: white;
 	padding: 2px;
 	position: relative;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
 	}
 ul.nav_sub {
 	width: 120px; /*flos change  */
@@ -127,11 +133,12 @@ ul.nav_sub li.nav_selected {
 	}
 
 /*************************************************/
-div#footer {
+footer {
 /*	margin-left: 160px;*/
 	margin-top: 10px;
 	text-align: center;
 	font: 12px serif;
+	border-top: 1px solid gray;
 	}
 
 /*************************************************/
@@ -140,7 +147,18 @@ div#content {
 	border: solid black 2px;
 	background: white;
 	padding-left: 5px; padding-right: 5px; padding-bottom: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: 3px 6px 8px -4px #000;
+	-webkit-box-shadow: 3px 6px 8px -4px #000;
+	box-shadow: 3px 6px 8px -4px #000;
 	}
+h3, fieldset, input.button {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
 #content .altBG {
 	background: #dddddd;
 	}
@@ -150,6 +168,12 @@ h3 {
 	color: white; background: #ccb470;
 	border: solid black 2px;
 	margin: 2px;
+	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
+																				 hsla(0,0%,100%,0) 
+																				 30px);
+	background-image: -webkit-gradient(linear, 0 0, 0 30, 
+																		 from (hsla(0,0%,100%,.6)), 
+																		 to(hsla(0,0%,100%,0)));
 	}
 h4 {
 	margin: 2px;
@@ -256,14 +280,21 @@ legend {
 label {
 	font-weight: bold;
 	}
+	
 input.button {
+	color: black;
 	background: #b2dae4;
-	border: solid black 2px;
+	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
+																				 hsla(0,0%,100%,0) 
+																				 30px);
+	background-image: -webkit-gradient(linear, 0 0, 0 30, 
+																		 from (hsla(0,0%,100%,.6)), 
+																		 to(hsla(0,0%,100%,0)));
+	border: solid black 2px outset;
 	padding: 2px;
 	width: auto;
 	text-decoration: none;
 	font: 12px serif;
-	color: black;
 }
 input.pgBtn {
 	border: solid black 2px;

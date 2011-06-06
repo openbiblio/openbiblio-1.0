@@ -66,6 +66,3 @@ if ($errors) {
 ?>
 </ul>
 </fieldset>
-
-<?php
-Page::footer();

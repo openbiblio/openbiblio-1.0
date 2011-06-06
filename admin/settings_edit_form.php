@@ -30,4 +30,4 @@ Form::display(array(
 	'fields'=>Settings::getFormFields('admin'),
 ));
 
-Page::footer();
+ ;

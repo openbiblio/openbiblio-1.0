@@ -67,7 +67,7 @@
 	if ($rpt->count() == 0) {
 	  echo "<h3>Browse Images</h3>";
 		echo "<p class=\"error\">".T("No images found")."</p>";
-		Page::footer();
+		 ;
 		exit();
 	}
 
@@ -98,4 +98,4 @@
 	echo '</tr></table>';
 
 	echo $disp->pages($page_url, $currentPageNmbr);
-	Page::footer();
+	 ;

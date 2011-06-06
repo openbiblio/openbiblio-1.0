@@ -118,4 +118,4 @@ $(document).ready(cef.init);
 
 <?php
 
-	Page::footer();
+	 ;

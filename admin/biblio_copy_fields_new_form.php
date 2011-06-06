@@ -59,4 +59,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

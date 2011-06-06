@@ -110,4 +110,4 @@
 
 <?php
 
-	Page::footer();
+	 ;

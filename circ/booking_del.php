@@ -19,4 +19,4 @@ $bookings->deleteOne($bookingid);
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 echo T('Booking deleted');
-Page::footer();
+ ;

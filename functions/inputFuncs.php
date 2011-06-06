@@ -77,7 +77,13 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
+		if (in_array('required', $attrs)) {
+			$s .= 'required ';
+		}
 		$s .= "/>";
+		if (in_array('required', $attrs)) {
+			$s .= '<span style="color:red">*</style>';
+		}
 		break;
 	}
 	#### place error messages to right of effected field -- Fred

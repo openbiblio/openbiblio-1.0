@@ -15,7 +15,7 @@
 <!-- charset MUST be specified within first 512 char of page to be effective -->
 <?php // change default code character set if specified
 	if (Settings::get('charset') != "") { 
-		echo "<meta charset=\".H(Settings::get('charset'))." \" />";
+		echo "<meta charset=".H(Settings::get('charset'))." \" />";
 	} else {
 		echo "<meta charset=\"UTF-8\" />";
 	}
@@ -58,18 +58,15 @@
 
 <!-- this line MUST precede all .css files - FL -->
 <!-- it deals with html5 support issues for IE -->
-<!--[if lt IE 9]>
-	<script src="../shared/html5shiv.js"></script>
-<!--[endif]-->
+<script src="../shared/modernizr-1.7.min.js"></script>
 
 <link rel="stylesheet" href="../shared/base.css" />
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
-<script src="../shared/jquery/jquery-1.4.4.min.js"></script>
+<script src="../shared/jquery/jquery-1.6.1.min.js"></script>
 <script src="../shared/jsLib.js"></script>
 
 <script language="JavaScript">
-
 // main javascript functionality set in own namespace to avoid potential conflict
 obib = {
 	<?php
@@ -122,7 +119,6 @@ obib = {
 		}
 	}
 }
-
 // hold off javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
 $(document).ready(obib.init);
 

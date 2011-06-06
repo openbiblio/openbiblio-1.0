@@ -276,7 +276,3 @@ td.btnFld {
 		<?php include_once(REL(__FILE__,"../catalog/biblio_copy_editor.php"));?>
 	</div>
 
-<?php
-	## needed for all cases
-	include("../shared/footer.php");
-?>

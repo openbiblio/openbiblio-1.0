@@ -191,4 +191,4 @@
 </form>
 <?php
 
-	Page::footer();
+	 ;

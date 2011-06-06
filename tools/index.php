@@ -20,4 +20,4 @@ echo "</fieldset> \n";
 
 ReportDisplaysUI::display('tools');
 
-Page::footer();
+ ;

@@ -36,4 +36,4 @@
 </center>
 <?php
 	}
-Page::footer();
+ ;

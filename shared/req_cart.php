@@ -48,7 +48,7 @@
 	if ($total_items == 0) {
 	  echo "<h3>Request Cart</h3>";
 		echo "<p class=\"error\">".T("Cart is empty")."</p>";
-		Page::footer();
+		 ;
 		exit();
 	}
 	currentMbrBox();
@@ -117,4 +117,4 @@ echo $t->end();
 echo '</form>';
 
 echo $disp->pages($page_url, $currentPageNmbr);
-Page::footer();
+ ;

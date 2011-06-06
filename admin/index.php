@@ -18,4 +18,4 @@ echo T("adminIndexDesc");
 echo "</fieldset>\n";
 
 ReportDisplaysUI::display('admin');
-Page::footer();
+ ;

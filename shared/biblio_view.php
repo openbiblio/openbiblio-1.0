@@ -188,7 +188,7 @@ if(empty($_SESSION['multi_site_func']))
 	$_SESSION['multi_site_func'] = Settings::get('multi_site_func');
 
 if (($tab != "cataloging") && ($_SESSION['show_detail_opac'] != 'Y')) {
-	Page::footer();
+	 ;
 	exit();
 }
 $collections = new Collections;
@@ -206,4 +206,4 @@ case 'Distributed':
 	break;
 }
 
-Page::footer();
+ ;

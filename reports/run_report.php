@@ -74,7 +74,7 @@
 
 	if ($rpt->count() == 0) {
 		echo T("No results found.");
-		Page::footer();
+		 ;
 		exit();
 	}
 
@@ -118,5 +118,3 @@
 	echo $disp->pages($page_url, $page);
 ?>
 </fieldset>
-<?php
-	Page::footer();

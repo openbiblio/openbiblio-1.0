@@ -33,5 +33,3 @@
 </div>
 
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
-
-<?php include(REL(__FILE__,"../shared/footer.php")); ?>

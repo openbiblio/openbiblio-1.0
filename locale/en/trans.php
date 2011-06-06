@@ -639,6 +639,7 @@ $trans["Sort by: "] = "Sort by:";
 $trans["Source"] = "Source:";
 $trans["SRU"] = "SRU";
 $trans["Staff Admin"] = "Staff Admin";
+$trans["Staff Interface"] = "Staff Interface";
 $trans["Staff Login"] = "Staff Login";
 $trans["Staff member, %name%, has been added."] = "Staff member, %name%, has been added.";
 $trans["Staff member, %name%, has been deleted."] = "Staff member, %name%, has been deleted.";

@@ -103,4 +103,4 @@ $(document).ready(cnf.init);
 
 <?php
 
-	Page::footer();
+	 ;

@@ -80,4 +80,4 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 $page_data['checkbox_script'] = file_get_contents('mbr_search.js');
 echo HTML(file_get_contents('mbr_search.jsont'), $page_data);
 
-Page::footer();
+ ;

@@ -198,4 +198,4 @@
 	}
 	echo $t->end();
 
-	Page::footer();
+	 ;

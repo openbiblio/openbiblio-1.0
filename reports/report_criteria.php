@@ -53,7 +53,3 @@
 <input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
 </fieldset>
 </form>
-
-<?php
-
-	Page::footer();

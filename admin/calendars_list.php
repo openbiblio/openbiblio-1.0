@@ -39,7 +39,7 @@ if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
 
 if ($rpt->count() == 0) {
 	echo T("No calendars have been defined.");
-	Page::footer();
+	 ;
 	exit();
 }
 
@@ -65,4 +65,4 @@ echo $t->end();
 echo "</fieldset>";
 
 echo $disp->pages($page_url, $currentPageNmbr);
-Page::footer();
+ ;

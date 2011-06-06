@@ -159,4 +159,4 @@
 
 <?php
 
-	Page::footer();
+	 ;
