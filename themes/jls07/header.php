@@ -26,11 +26,12 @@
 			<input type="submit" value="<?php echo T("Logout") ?>" class="button">
 		</form>
 	</header>
-	<br />
+	<hr />
 	
 	<nav>
 		<?php Nav::display($params['nav']); ?>
 	</nav>
+	<hr />
 	
 	<footer>
 		<a href="http://obiblio.sourceforge.net/">

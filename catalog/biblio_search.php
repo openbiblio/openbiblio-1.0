@@ -54,10 +54,14 @@
 	<tr>
 		<td nowrap="true" class="primary">
 			<label for="searchBarcd"><?php echo T("Barcode Number:");?></label>
+			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchByBarcdBtn" />
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<?php echo inputfield('text','searchBarcd','',array('size'=>'20','maxlength'=>'20')); ?>
 			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
 			<?php echo inputfield('hidden','sortBy','default'); ?>
-			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchByBarcdBtn" />
 		</td>
 	</tr>
 </table>
@@ -67,10 +71,11 @@
 <form id="phraseSearch" name="phraseSearch" method="post" >
 <fieldset>
 <legend><?php echo T("Search Catalog"); ?></legend>
-<table class="primary" width="100%">
+<table class="primary">
+	<tbody id="mainTxtSrch">
 	<tr>
-		<td nowrap="true" class="primary">
-			<?php echo inputfield('select','searchType','title',null,array(
+		<td nowrap="true" class="primary" colspan="3">
+			<?php echo inputfield('select','searchType','keyword',null,array(
 														 'title'=>T("Title")
 														,'author'=>T('Author')
 														,'subject'=>T("Subject")
@@ -80,16 +85,15 @@
 														,'callno'=>T("Item Number")
 														));
 			?>
+			<?php echo inputfield('text','searchText','', array('size'=>'20','maxlength'=>'256')); ?>
+			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBtn" />
 		</td>
-		<td class="primary">
-			<?php echo inputfield('text','searchText','',
-														array('size'=>'30','maxlength'=>'256','style'=>'width: 100%')); ?>
+	</tr>
+	<tr>
+		<td colspan="3">
 			<?php //echo inputfield('hidden','sortBy','title'); ?>
 			<?php echo inputfield('hidden','tab',$tab); ?>
 			<?php echo inputfield('hidden','lookup',$lookup); ?>
-		</td>
-		<td>
-			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBtn" />
 		</td>
 	</tr>
 	<tr>
@@ -98,7 +102,9 @@
 			<?php echo inputfield('checkbox','advanceQ','Y',null,null); ?>
 		</td>
 	</tr>
+	</tbody>
 	<!-- visiblity below here depends on above checkbox -->
+	<tbody id="advTxtSrch">
 	<tr>
 	  <td colspan="3">
 	  <fieldset id="advancedSrch">
@@ -163,6 +169,7 @@
 
 			</td>
 		</tr>
+		</tbody>
 		</table>
 		</fieldset>
 		</td>
@@ -247,7 +254,7 @@
 	
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
-		<table id="biblioTbl">
+		<table id="biblioTbl" border="1">
 		<tbody id="biblio" class="striped"></tbody>
 		</table>
 	</fieldset>
@@ -258,18 +265,18 @@
 		<thead>
 		<tr>
 				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
-					<th nowrap="yes" align="left"><?php echo T("Function"); ?></th>
+					<th nowrap="yes" align="center"><?php echo T("Function"); ?></th>
 				<?php } ?>
-				<th align="left" nowrap="yes"><?php echo T("Barcode"); ?></th>
-				<th align="left" nowrap="yes"><?php echo T("Description"); ?></th>
+				<th align="center" nowrap="yes"><?php echo T("Barcode"); ?></th>
+				<th align="center" nowrap="yes"><?php echo T("Description"); ?></th>
 				<?php
 					if($_SESSION['multi_site_func'] > 0){
-						echo "<th id=\"siteFld\" align=\"left\" nowrap=\"yes\">" . T("Site") . "</th>";
+						echo "<th id=\"siteFld\" align=\"center\" nowrap=\"yes\">" . T("Site") . "</th>";
 					}
 				?>
-				<th align="left" nowrap="yes"><?php echo T("Status"); ?></th>
-				<th align="left" nowrap="yes"><?php echo T("Status Dt"); ?></th>
-				<th align="left" nowrap="yes"><?php echo T("Due Back"); ?></th>
+				<th align="center" nowrap="yes"><?php echo T("Status"); ?></th>
+				<th align="center" nowrap="yes"><?php echo T("Status Dt"); ?></th>
+				<th align="center" nowrap="yes"><?php echo T("Due Back"); ?></th>
 		</tr>
 		</thead>
 		<tbody id="copies" class="striped"></tbody>

@@ -38,10 +38,11 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 	# for later use by inputfields()
-	$attrs = array(size=>"20", maxlength=>"20", required=>"required", aria-required=>"true");
+	$attrs = array(size=>"15", maxlength=>"15", required=>"required", aria-required=>"true");
 
 ?>
-<h1><span id="searchHdr" class="title"><?php echo T("Staff Login"); ?></span></h1>
+<!--h1><span id="searchHdr" class="title"><?php //echo T("Staff Login"); ?></span></h1-->
+<h3 class="title"><?php echo T("Staff Login"); ?></h3>
 <?php //print_r($_SESSION); //debugging only ?>
 
 <form name="loginform" method="post" action="../shared/login.php">
@@ -96,6 +97,3 @@
 </fieldset>
 </form>
 
-<?php
-
-	 ;

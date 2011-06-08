@@ -17,14 +17,15 @@
 				?>
 		</h3>
 		<div id="library_hours"><?php echo T(Settings::get('library_hours')) ?></div>
+		<hr style="width:25%">
 		<div id="library_phone"><?php echo H(Settings::get('library_phone')) ?></div>
-	 	<hr width="95%" />
 	</header>
-	<br />
+	<hr />
 	
 	<nav>
-<?php Nav::display($nav); ?>
+		<?php Nav::display($nav); ?>
 	</nav>
+	<hr />
 	
 	<footer id="footer">
 		<a href="http://obiblio.sourceforge.net/">

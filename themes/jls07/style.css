@@ -5,17 +5,88 @@
 /* This file builds upon the structures defined within ../shared/base.css */
 
 body {
-	background: #90b0b8;
-	padding: 10px;
-	margin: 0;
+  font-size: 45%; line-height: 1.25em
+  font-family: verdana,arial,helvetica, serif;
+  color: #000000; background: #90b0b8;
+  font-size:1.0em;
 	}
 	
 /*************************************************/
+/*  Basic components, may be used anywhere       */
+h1,h2,h3,h4,h5,h6, fieldset, input[type=button], input[type=submit] {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+h1,h2,h3,h4,h5,h6 {
+	font: 8px sans-serif; text-align: center;
+	color: white; background: #ccb470;
+	border: solid black 2px;
+	margin: 2px;
+	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
+																				 hsla(0,0%,100%,0) 
+																				 30px);
+	background-image: -webkit-gradient(linear, 0 0, 0 30, 
+																		 from (hsla(0,0%,100%,.6)), 
+																		 to(hsla(0,0%,100%,0)));
+	}
+h1 { font-size: 20px; }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+h4 { font-size: 12px; margin: 2px; }
+h5 { font-size: 10px; }
+h6 { font-size: 8px; }
+
+sup { color: red; }
+p { margin:2px; padding:0; }
+hr { display: block; position: relative; 
+		 padding: 0; margin: 8px auto;
+		 clear: both; width: 90%;
+		 border: none; border-top: 1px solid #AAA; border-bottom: 1px solid #000;
+		 font-size: 1px; line-height: 0;
+		 overflow: visible;
+	}
+legend { font-size: 14px; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
+fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 0 2px 2px 2px; padding-bottom: 2px; }
+table { margin: 2px; }
+label { font-size: 12px; font-weight: bold; margin-left: 2px;}
+input, select, textarea { margin: 2px; }
+button, input, select, textarea {
+	margin: 2px;
+	}
+input[type=button], input[type=submit] {
+	color: black;
+	background: #b2dae4;
+	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
+																				 hsla(0,0%,100%,0) 
+																				 30px);
+	background-image: -webkit-gradient(linear, 0 0, 0 30, 
+																		 from (hsla(0,0%,100%,.6)), 
+																		 to(hsla(0,0%,100%,0)));
+	border: solid black 2px outset;
+	width: auto;
+	text-decoration: none;
+	font: 12px serif;
+}
+input.PgBtn, input.moreBtn {
+	border: solid black 2px;
+	width: auto;
+	font: 12px serif; font-weight: bold;
+	background-color: gray;
+	color: black;
+	}
+input.button:hover {
+	text-decoration: underline;
+}
+	
+/*************************************************/
 aside {
+	position: fixed; top:0.25em; left: .25em;
 	background: #a0c0c8; /*for development*/
 	vertical-align: top;
 	width: 162px;
 	border: solid black 2px;
+	padding: 0px 2px 0px 2px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
@@ -23,6 +94,8 @@ aside {
 	-webkit-box-shadow: 3px 6px 8px -4px #000;
 	box-shadow: 3px 6px 8px -4px #000;
 	}
+/*  no reference to this found anywhere */
+/*
 #logo {
 	width: 150px;
 	float: left;
@@ -47,48 +120,44 @@ aside {
 	border: solid black 2px;
 	font: 12px serif;
 	}
-	
-/*
-#sidebar fieldset {
-	width 100%; border: solid black 2px;
-	}
 */
-
+	
 /*************************************************/
+/*
+/*  no reference to this found anywhere */
+/*
 #header #headLogo {
 	position: absolute; top: 0; left: 0;
 	}
-#header h1.staff_head {
+*/
+h1.staff_head {
 	display: block;
 	text-align: right;
 	font: bold 16px serif;
 	color: white;
 	margin: 0;
 	}
-#header #banner {
-	text-align: center; margin-bottom: 16px;
+div#library_name, 
+div#library_hours, 
+div#library_phone {
+	/*margin-left: 160px;*/
+	margin: 2px 5px 2px 5px;
+	font: 14px sans-serif;
 	}
-#header #library_name {
-	margin-left: 160px;
-	font: 28px sans-serif;
+div#library_name {
 	color: white;
-	}
-#header #library_hours {
-	margin-left: 160px;
-	font: 12px sans-serif;
-	}
-#header #library_phone {
-	margin-left: 160px;
-	font: 12px sans-serif;
 	}
 
 /*************************************************/
+/*  no reference to this found anywhere */
+/*
 div#helpbar {
-	background: #a0c0c8; /*for development*/
+	background: #a0c0c8;
 	vertical-align: top;
 	width: 125px;
 	border: solid black 2px;
 	}
+*/
 	
 /*************************************************/
 ul.nav_main {
@@ -134,19 +203,18 @@ ul.nav_sub li.nav_selected {
 
 /*************************************************/
 footer {
-/*	margin-left: 160px;*/
 	margin-top: 10px;
 	text-align: center;
 	font: 12px serif;
-	border-top: 1px solid gray;
 	}
 
 /*************************************************/
 div#content {
+	position: absolute; top:0.25em; left: 12em;
 	vertical-align: top;
 	border: solid black 2px;
 	background: white;
-	padding-left: 5px; padding-right: 5px; padding-bottom: 5px;
+	padding: 2px 2px 2px 2px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
@@ -154,29 +222,14 @@ div#content {
 	-webkit-box-shadow: 3px 6px 8px -4px #000;
 	box-shadow: 3px 6px 8px -4px #000;
 	}
-h3, fieldset, input.button {
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-}
 #content .altBG {
 	background: #dddddd;
 	}
-/*#catalog_search h3 {*/
-h3 {
-	font: 20px sans-serif; text-align: center;
-	color: white; background: #ccb470;
-	border: solid black 2px;
-	margin: 2px;
-	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
-																				 hsla(0,0%,100%,0) 
-																				 30px);
-	background-image: -webkit-gradient(linear, 0 0, 0 30, 
-																		 from (hsla(0,0%,100%,.6)), 
-																		 to(hsla(0,0%,100%,0)));
-	}
-h4 {
-	margin: 2px;
+table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
+	border-width: 1px;
+	padding: 2px;
+	border-style: solid;
+	border-color: black;
 	}
 .title {
 	font: 20px sans-serif;
@@ -184,12 +237,13 @@ h4 {
 	color: white;
 	background: #ccb470;
 	border: solid black 2px;
+	margin-bottom: 5px;
 	}
 .results_found {
 	font: 12px serif;
 	text-align: right;
 	margin: 0.5em 0;
-}
+	}
 .results_pages {
 	font: 12px serif;
 	text-align: right;
@@ -265,47 +319,7 @@ h4 {
 	margin-top: 12px;
 	font: 14px serif;
 }
-sup {
-	color: red;
-	}
-p {
-	margin:2px; padding:0;
-	}
-fieldset {
-	background-color: #ffffdd;
-	}
-legend {
-	font-weight: bold;
-	}
-label {
-	font-weight: bold;
-	}
 	
-input.button {
-	color: black;
-	background: #b2dae4;
-	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
-																				 hsla(0,0%,100%,0) 
-																				 30px);
-	background-image: -webkit-gradient(linear, 0 0, 0 30, 
-																		 from (hsla(0,0%,100%,.6)), 
-																		 to(hsla(0,0%,100%,0)));
-	border: solid black 2px outset;
-	padding: 2px;
-	width: auto;
-	text-decoration: none;
-	font: 12px serif;
-}
-input.pgBtn {
-	border: solid black 2px;
-	padding: 2px;
-	width: auto;
-	font: 12px serif; font-weight: bold;
-	color: black;
-	}
-input.button:hover {
-	text-decoration: underline;
-}
 a {
 	color: blue
 	}
