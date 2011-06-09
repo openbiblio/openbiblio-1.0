@@ -94,42 +94,8 @@ aside {
 	-webkit-box-shadow: 3px 6px 8px -4px #000;
 	box-shadow: 3px 6px 8px -4px #000;
 	}
-/*  no reference to this found anywhere */
-/*
-#logo {
-	width: 150px;
-	float: left;
-	}
-#sidebar_login {
-	text-align: center;
-	font: 12px sans-serif;
-	}
-#sidebar .login_id {
-	margin-bottom: 1em;
-	}
-#sidebar_login .login_id input {
-	width: 100px;
-	border: solid black 2px;
-	font: 12px serif;
-	}
-#sidebar .password {
-	margin-bottom: 1em;
-	}
-#sidebar_login .password input {
-	width: 100px;
-	border: solid black 2px;
-	font: 12px serif;
-	}
-*/
 	
 /*************************************************/
-/*
-/*  no reference to this found anywhere */
-/*
-#header #headLogo {
-	position: absolute; top: 0; left: 0;
-	}
-*/
 h1.staff_head {
 	display: block;
 	text-align: right;
@@ -149,17 +115,6 @@ div#library_name {
 	}
 
 /*************************************************/
-/*  no reference to this found anywhere */
-/*
-div#helpbar {
-	background: #a0c0c8;
-	vertical-align: top;
-	width: 125px;
-	border: solid black 2px;
-	}
-*/
-	
-/*************************************************/
 ul.nav_main {
 	width: 130px;
 	margin-top: 0; margin-left: 0; padding-left: 0;
@@ -168,6 +123,7 @@ ul.nav_main {
 ul.nav_main li {
 	margin-bottom: 1.1em;
 	white-space: nowrap;
+	margin-left: 2px;
 	}
 ul.nav_main > li.nav_selected {
 	border-left: solid black 1px;
@@ -176,7 +132,7 @@ ul.nav_main > li.nav_selected {
 	border-bottom: solid grey 1px;
 	/*border-right: none;*/
 	margin-right: -28px;
-	margin-left: -4px;
+	margin-left: -0px;
 	background: white;
 	padding: 2px;
 	position: relative;
@@ -185,8 +141,8 @@ ul.nav_main > li.nav_selected {
 	border-radius: 5px;
 	}
 ul.nav_sub {
-	width: 120px; /*flos change  */
-	margin-left: 0; padding-left: 2em;
+	width: 120px; /*FL change  */
+	margin-left: 0; padding-left: 1em;
 	list-style-type: circle; list-style-image: url("../../images/bulleto.png");
 	}
 ul.nav_sub ul.nav_sub {
