@@ -43,7 +43,6 @@ $trans["headerDateFormat"]	 = "m.d.Y";
 #****************************************************************************
 #*  Common translation text
 #****************************************************************************
-
 $trans[" THIS ITEM WAS NOT CHECKED OUT."] = " THIS ITEM WAS NOT CHECKED OUT.";
 $trans["\$t != \"string\""] = "\$t != \"string\"";
 $trans["\$type != \"order_by\""] = "\$type != \"order_by\"";
@@ -119,17 +118,18 @@ $trans["Bad MARC record, giving up: %err%"] = "Bad MARC record, giving up: %err%
 $trans["Bad mkSQL() format string."] = "Bad mkSQL() format string.";
 $trans["Bad month number: %month%"] = "Bad month number: %month% (please use yyyy-mm-dd)";
 $trans["Balance"] = "Balance";
+$trans["Barcode"] = "Barcode";
 $trans["Barcode number already in use."] = "Barcode number already in use.";
 $trans["Barcode number in use."] = "Barcode number in use.";
 $trans["Barcode Number"] = "Barcode Number";
 $trans["Barcode Number:"] = "Barcode Number:";
-$trans["Barcode"] = "Barcode";
-$trans["Biblio Copy Fields"]      = "Biblio Copy Fields";
-$trans["Biblio Fields"]      = "Biblio Fields";
+$trans["Barcodes to delete"] = "Enter barcodes to delete,<br />one entry per line.";
+$trans["Biblio Copy Fields"] = "Biblio Copy Fields";
+$trans["Biblio Fields"] = "Biblio Fields";
 $trans["Biblio Information"] = "Biblio Information";
 $trans["Biblio Search Opts."] = "Biblio Search Opts.";
 $trans["biblioMarcEditError"] = "An error occurred processing your request, see below for details.";
-$trans["bold"]                  = "bold";
+$trans["bold"] = "bold";
 $trans["Book Item"] = "Book Item";
 $trans["Booked"] = "Booked";
 $trans["Booking %item% out of %items% in sequence"] = "Booking %item% out of %items% in sequence";
@@ -147,6 +147,7 @@ $trans["Broken RPT code structure"] = "Broken RPT code structure";
 $trans["Browse Images"] = "Browse Images";
 $trans["Browser not supported"] = "<b>You are using Internet Explorer</b>.<br/><br/>Openbiblio <i>might</i> not work correctly with this version.<br/>Please use either Firefox, Google Chome or Safari.<br/><br/>.";
 $trans["Bulk Delete"] = "Bulk Delete";
+$trans["Bulk Delete Confirm"] = "Are you certain you want to delete %copy% copies and %item% items?";
 $trans["Calendar Deleted"] = "Calendar Deleted";
 $trans["Calendar"] = "Calendar";
 $trans["Calendar:"] = "Calendar:";
@@ -247,6 +248,7 @@ $trans["Delete Calendar"] = "Delete Calendar";
 $trans["Delete"] = "Delete";
 $trans["Delete completed"] = "Delete completed";
 $trans["Delete Image"] = "Delete Image";
+$trans["Delete items if all copies are deleted."] = "Delete items if all copies are deleted.";
 $trans["Delete Site"] = "Delete Site";
 $trans["Delete This Item"] = "Delete this Item";
 $trans["Deleted"] = "Deleted";
@@ -744,7 +746,6 @@ $trans["Zip Code"] = "Zip Code";
 
 $trans["%copy% copies and %item% items deleted."] = "%copy% copies and %item% items deleted.";
 $trans["Enter barcodes to delete below, one per line."] = "Enter barcodes to delete below, one per line.";
-$trans["Delete items if all copies are deleted."] = "Delete items if all copies are deleted.";
 $trans["%count% members without sites"] = "%count% members without sites";
 $trans["Transformer: scaling not implemented"] = "Transformer: scaling not implemented";
 $trans["Transformer: skew not implemented"] = "Transformer: skew not implemented";
@@ -960,7 +961,6 @@ $trans["themeDelConfirmMsg"]          = "Are you sure you want to delete theme, 
 #****************************************************************************
 #*  Translation text for biblio_bulk_del.php
 #****************************************************************************
-$trans["biblioBulkDelWantToDel"] = "Are you certain you want to delete %copy% copies and %item% items?";
 
 
 #****************************************************************************

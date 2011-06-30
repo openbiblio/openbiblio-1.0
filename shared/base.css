@@ -3,7 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-/**
 * HTML5 ? Boilerplate
 *
 * style.css contains a reset, font normalization and some base styles.
@@ -64,8 +63,8 @@ input, select { vertical-align: middle; }
 /**
  * Font normalization inspired by YUI Library's fonts.css: developer.yahoo.com/yui/
  */
-body { font:13px/1.231 sans-serif; *font-size:small; } /* Hack retained to preserve specificity */
-select, input, textarea, button { font:90% sans-serif; }
+body { font:13px/1.231 sans-serif; font-size:small; } /* Hack retained to preserve specificity */
+select, input, textarea, button { font:99% sans-serif; }
  
 /* Normalize monospace sizing:
    en.wikipedia.org/wiki/MediaWiki_talk:Common.css/Archive_11#Teletype_style_fix_for_Chrome */
@@ -131,13 +130,9 @@ input:invalid, textarea:invalid {
   
 /* These selection declarations have to be separate
    No text-shadow: twitter.com/miketaylr/status/12228805301
-   Also: hot pink! --- removed!! fl*/
-/*
+   Also: hot pink! */
 ::-moz-selection{ background: #FF5E99; color:#fff; text-shadow: none; }
 ::selection { background:#FF5E99; color:#fff; text-shadow: none; }
-*/
-::-moz-selection{ background: hsla(180, 100%, 75%, 0.5); color:#000; text-shadow: none; }
-::selection { background:hsla(180, 100%, 75%, 0.5); color:#000; text-shadow: none; }
  
 /* j.mp/webkit-tap-highlight-color */
 a:link { -webkit-tap-highlight-color: #FF5E99; }
@@ -150,3 +145,24 @@ button {  width: auto; overflow: visible; }
    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
 .ie7 img { -ms-interpolation-mode: bicubic; }
  
+ 
+ 
+/** ***********************************************************************
+ * You might tweak these..
+ */
+ 
+body, select, input, textarea {
+  /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
+  color: #444;
+  /* Set your base font here, to apply evenly */
+  /*font-family: "Times New Roman", Arial, sans-serif*/
+  /*font-size: 16px; line-height: 1.5em;*/
+	}
+ 
+/* Headers (h1, h2, etc) have no default font-size or margin; define those yourself */
+h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+ 
+a, a:active, a:visited { color: #607890; }
+a:hover { color: #036; }
+ 
+}

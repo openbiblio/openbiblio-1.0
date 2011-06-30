@@ -97,7 +97,7 @@ function staff_menu() {
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"),
 			"../catalog/upload_usmarc_form.php");
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
-			"../catalog/biblio_bulk_del.php");
+			"../catalog/biblio_bulkDel.php");
 	}
 	##-------------------------------------------------------------------------------------##
 
@@ -154,7 +154,7 @@ function staff_menu() {
 		Nav::node('tools', T("Tools"), '../tools/index.php');
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
-		Nav::node('tools/biblioSrch', T("Biblio Search Opts."), '../tools/biblioSrch.php');
+		//Nav::node('tools/biblioSrch', T("Biblio Search Opts."), '../tools/biblioSrch.php');
 	}
 	
 	##-------------------------------------------------------------------------------------##

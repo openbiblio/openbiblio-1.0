@@ -14,7 +14,7 @@
 	}
 </style>
 
-<script language="JavaScript" >
+<script language="JavaScript" defer>
 // JavaScript Document
 <?php
 	// If a circulation user and NOT a cataloging user the system should treat the user as opac

@@ -104,11 +104,11 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
  * @access public
  *********************************************************************************
  */
-//function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible"){
-//	$_SESSION['postVars'] = $postVars;
-//	$_SESSION['pageErrors'] = $pageErrors;
-//	$attrs = array('size'=>$size,
-//		'maxlength'=>$max,
-//		'style'=>"visibility: $visibility");
-//	echo inputfield('text', $fieldName, '', $attrs);
-//}
+function printInputText($fieldName,$size,$max,&$postVars,&$pageErrors,$visibility = "visible"){
+	$_SESSION['postVars'] = $postVars;
+	$_SESSION['pageErrors'] = $pageErrors;
+	$attrs = array('size'=>$size,
+		'maxlength'=>$max,
+		'style'=>"visibility: $visibility");
+	echo inputfield('text', $fieldName, '', $attrs);
+}

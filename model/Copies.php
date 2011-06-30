@@ -165,7 +165,7 @@ class Copies extends CoreTable {
 				}
 			}
 		}
-		return array($copyids, $bibids, $errors);
+		return array($copyids, $bibids, $errors, $barcodes);
 	}
 	function lookupNoCopies($bibids, $del_copyids) {
 		$no_copies = array();

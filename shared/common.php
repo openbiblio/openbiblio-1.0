@@ -77,6 +77,8 @@ require_once(REL(__FILE__, 'jsontemplate.php'));
 require_once(REL(__FILE__, "../classes/Localize.php"));
 require_once(REL(__FILE__, 'templates.php'));
 
+	global $LOC;
+	$LOC = new Localize;
 if (!isset($doing_install) or !$doing_install) {
 	include_once(REL(__FILE__, "../model/Settings.php"));
 	Settings::load();
@@ -105,8 +107,6 @@ if (!isset($doing_install) or !$doing_install) {
   setSessionFmSettings();
 	//echo "@ after SessionFmSettings: <br />"; print_r($_SESSION);echo "<br />";
 
-	global $LOC;
-	$LOC = new Localize;
 	$LOC->init(Settings::get('locale'));
 
 	include_once(REL(__FILE__, "../classes/Page.php"));
@@ -155,7 +155,6 @@ if (!isset($doing_install) or !$doing_install) {
 	}
 
 // Deprecated below, use the template-based functions
-
 function H($s) {
 	return htmlspecialchars($s, ENT_QUOTES);
 }

@@ -64,9 +64,9 @@
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
 <script src="../shared/jquery/jquery-1.6.1.min.js"></script>
-<script src="../shared/jsLib.js"></script>
+<script src="../shared/jsLib.js" defer></script>
 
-<script language="JavaScript">
+<script language="JavaScript" defer>
 // main javascript functionality set in own namespace to avoid potential conflict
 obib = {
 	<?php

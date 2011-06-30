@@ -32,6 +32,13 @@
 		}		
 	}
 
+	## fetch opts here for general use as needed
+	$opts['lookupAvail'] = in_array('lookup2',$_SESSION);
+	$opts['current_site'] = $_SESSION[current_site];
+	$opts['showBiblioPhotos'] = $_SESSION[show_item_photos];
+	$opts['barcdWidth'] = $_SESSION[item_barcode_width];
+	
+
 	## --------------------- ##
 class SrchDb {
 	public $bibid;
@@ -224,6 +231,22 @@ class SrchDb {
 		}
 		return $rslt;
 	}
+	
+	## ========================= ##
+	function getBibsForCpys ($barcode_list) {
+		global $opts;
+		$copies = new Copies;
+		# build an array of barcodes
+		$barcodes = array();
+		foreach (explode("\n", $barcode_list) as $b) {
+			if (trim($b) != "") {
+				$barcodes[] = str_pad(trim($b), $opts['barcdWidth'], '0', STR_PAD_LEFT);
+			}
+		}
+		$rslt = $copies->lookupBulk_el($barcodes);
+		return $rslt;
+	}
+	
 	## ========================= ##
 	function getCopyInfo ($bibid) {
 		$copies = new Copies; // needed later
@@ -395,10 +418,6 @@ function mkBiblioArray($dbObj) {
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
-		$opts['lookupAvail'] = in_array('lookup2',$_SESSION);
-		$opts['current_site'] = $_SESSION[current_site];
-		$opts['showBiblioPhotos'] = $_SESSION[show_item_photos];
-		$opts['barcdWidth'] = $_SESSION[item_barcode_width];
 		echo json_encode($opts);
 	  break;
 
@@ -576,7 +595,7 @@ function mkBiblioArray($dbObj) {
 	  break;
 
 	case 'getNewBarcd':
-		require_once(REL(__FILE__, "../model/Copies.php"));
+		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION[item_barcode_width]);
 		echo json_encode($temp);
@@ -606,10 +625,17 @@ function mkBiblioArray($dbObj) {
 	  break;
 
 	case 'deleteBiblio':
-	  $theDb = new Biblios;
-	  $theDb->deleteOne($_REQUEST[bibid]);
+	  $bibs = new Biblios;
+	  $bibs->deleteOne($_REQUEST['bibid']);
 	  echo T("Delete completed");
 	  break;
+	case 'deleteMultiBiblios':
+		$bibs = new Biblios;
+		foreach ($_POST['bibList'] as $bibid) {
+			$bibs->deleteOne($bibid);
+		}
+		echo T('Delete completed');
+		break;
 
 	case 'updateCopy':
 	case 'newCopy':
@@ -632,12 +658,25 @@ function mkBiblioArray($dbObj) {
 		
 	case 'deleteCopy':
 	  $theDb = new SrchDB;
-		echo $theDb->deleteCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+		break;
+	case 'deleteMultiCopies':
+		$copies = new Copies;
+		foreach ($_POST['cpyList'] as $copyid) {
+			$copies->deleteOne($copyid);
+		}
+		echo T('Delete completed');
 		break;
 
 	case 'getPhoto':
 	  ## place keeper for this release
 	  echo "<img src=\"../images/shim.gif\" />";
+	  break;
+	  
+	case 'getBibsFrmCopies':
+	  $theDb = new SrchDB;
+		$rslt = $theDb->getBibsForCpys($_GET['cpyList']);
+	  echo json_encode($rslt);
 	  break;
 	  
 	default:

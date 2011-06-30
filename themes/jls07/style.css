@@ -8,9 +8,9 @@ body {
   font-size: 45%; line-height: 1.25em
   font-family: verdana,arial,helvetica, serif;
   color: #000000; background: #90b0b8;
-  font-size:1.0em;
+  font-size:0.9em;
 	}
-	
+
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 h1,h2,h3,h4,h5,h6, fieldset, input[type=button], input[type=submit] {
@@ -80,19 +80,21 @@ input.button:hover {
 }
 	
 /*************************************************/
+aside, header {
+	-moz-border-radius:0.3em; -webkit-border-radius:0.3em;
+	border-radius:0.3em;
+}
 aside {
-	position: fixed; top:0.25em; left: .25em;
-	background: #a0c0c8; /*for development*/
-	vertical-align: top;
-	width: 162px;
-	border: solid black 2px;
-	padding: 0px 2px 0px 2px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	-moz-box-shadow: 3px 6px 8px -4px #000;
-	-webkit-box-shadow: 3px 6px 8px -4px #000;
-	box-shadow: 3px 6px 8px -4px #000;
+	position:fixed; top:1%; left:1%;
+	float:left; width:15%; 
+	margin:0; /*margin-top:0.3em;*/
+	padding-bottom:0.2em;
+	height:auto;
+	font-size:90%;
+	color:black; border:0.15em solid black;
+	-moz-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
+	-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
+	box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
 	}
 	
 /*************************************************/
@@ -166,7 +168,7 @@ footer {
 
 /*************************************************/
 div#content {
-	position: absolute; top:0.25em; left: 12em;
+	position: absolute; top:1%; left: 17.5%;
 	vertical-align: top;
 	border: solid black 2px;
 	background: white;

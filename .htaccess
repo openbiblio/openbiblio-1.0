@@ -3,6 +3,9 @@
 
 # ......
 ### what follows is a slimmed-down version of that available at the 'boilerplate.com' site - FL
+### non-developers should extend expire times of all but .php at end of this document considerably.
+### this will enhance user performance, while reducing bandwidth requirements.
+# ......
 
 # Apache configuration file
 # httpd.apache.org/docs/2.2/mod/quickreference.html
@@ -116,8 +119,7 @@ AddType application/octet-stream       safariextz
   ExpiresActive on
  
 # Perhaps better to whitelist expires rules? Perhaps.
-#  ExpiresDefault                          "access plus 1 month"
-  ExpiresDefault                          "access plus 0 seconds"
+  ExpiresDefault                          "access plus 1 month"
  
 # cache.appcache needs re-requests in FF 3.6 (thx Remy ~Introducing HTML5)
   ExpiresByType text/cache-manifest       "access plus 0 seconds"
