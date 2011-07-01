@@ -10,6 +10,7 @@
 	$focus_form_field = "name";
 
 	require_once(REL(__FILE__, "../model/Calendars.php"));
+	require_once(REL(__FILE__, "../model/States.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
@@ -62,17 +63,23 @@
 		'fax' => T("Fax"),
 		'email' => T("Email"),
 	);
-	foreach ($fields as $n => $title) {
-?>
-	<tr>
-		<td nowrap="true" class="primary">
-			<?php echo H($title) ?>:
-		</td>
-		<td valign="top" class="primary">
-			<?php echo inputfield('text', $n, $site[$n]); ?>
-		</td>
-	</tr>
-<?php
+	foreach ($fields as $key => $value) {
+		echo "<tr> \n";
+		echo '	<td nowrap="true" class="primary">';
+		echo 			H($value) ."\n";
+		echo "	</td> \n";
+		if ($key == 'state') {
+			echo '<td valign="top" class="primary">';
+			$states = new States;
+			echo 		inputfield('select', $key, $site['state'], NULL, $states->getSelect());
+			echo "</td> \n";
+		}
+		else {
+			echo '	<td valign="top" class="primary">';
+			echo 			inputfield('text', $key, $site[$key]);
+			echo "	</td> \n";
+		}
+		echo "</tr> \n";
 	}
 ?>
 	<tr>
