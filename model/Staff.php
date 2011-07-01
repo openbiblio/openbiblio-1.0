@@ -54,10 +54,10 @@ class Staff extends CoreTable {
 	}
 	function insert_el($rec, $confirmed=false) {
 		if(isset($rec['pwd'])) {
-			$rec['pwd'] == md5(strtolower($rec['pwd']));
+			$rec['pwd'] = md5(strtolower($rec['pwd']));
 		}
 		if(isset($rec['pwd2'])) {
-			$rec['pwd2'] == md5(strtolower($rec['pwd2']));
+			$rec['pwd2'] = md5(strtolower($rec['pwd2']));
 		}
 		return parent::insert_el($rec, $confirmed);
 	}
