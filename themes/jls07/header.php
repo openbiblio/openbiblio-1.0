@@ -16,10 +16,16 @@
 <aside id="sidebar">
 	<header>
 		<h3 class="staff_head">
-				<?php
+			<?php 
 				// Libname is defined in header_top.php	
 				echo $libName . ":<br />" . T("Staff Interface");
-				?>
+				if (Settings::get('show_lib_info') == 'Y') {
+					echo "<hr style=\"width:25%\" \n";
+					echo "<div id=\"library_hours\">". T(Settings::get('library_hours')) . "</div> \n";
+					echo "<hr style=\"width:25%\"> \n";
+					echo "<div id=\"library_phone\">". H(Settings::get('library_phone')) ."</div> \n";
+				}
+			?>
 		</h3>
 		<br />
 		<form method="get" action="../shared/logout.php">
@@ -56,3 +62,9 @@ if (isset($params['title']) && $params['title'] != '') {
 if (isset($_REQUEST['msg'])) {
 	echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 }
+
+/*
+INSERT INTO `openbibliowork`.`settings` (
+`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)
+VALUES ('show_lib_info', '28', 'Show Lib Info on Staff pages' , 'bool', NULL , NULL , NULL , 'N', 'admin')
+*/

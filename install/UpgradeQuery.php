@@ -459,7 +459,14 @@ class UpgradeQuery extends InstallQuery {
      			;
 	  $this->act($sql);
 		//-------------------------//
-
+		## additional Admin values
+		$sql = "INSERT INTO `openbibliowork`.`settings` "
+					."(`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)""
+					."VALUES "
+					."('show_lib_info', '28', NULL , 'bool', NULL , NULL , NULL , 'N', 'admin')
+					;
+		$this->act($sql);
+		
 		}  //function
 
 	} //class

@@ -10,11 +10,8 @@
 <aside id="sidebar">
 	<header>
 		<h3 class="staff_head">
-				<?php //echo T("%library%:<br />OPAC Interface", array('library'=>H(Settings::get('library_name')))) ?>
-				<?php
-//				echo T("%library%:<br />OPAC Interface", array('library'=>$lib[name]));
-					echo "$libName:<br />OPAC Interface";
-				?>
+				// Libname is defined in header_top.php	
+				<?php echo "$libName:<br />".T("OPAC Interface"); ?>
 		</h3>
 		<div id="library_hours"><?php echo T(Settings::get('library_hours')) ?></div>
 		<hr style="width:25%">
