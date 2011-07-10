@@ -9,7 +9,7 @@ hed = {
 	init: function () {
 		hed.initWidgets();
 
-		hed.url = 'onlineSrvr.php';
+		hed.url = 'adminSrvr.php';
 		hed.editForm = $('#editForm');
 
 		$('#reqdNote').css('color','red');

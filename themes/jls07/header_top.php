@@ -9,7 +9,7 @@
 ?>
 
 <!DOCTYPE html >
-<html lang="en" manifest="../cache.manifest">
+<html lang="en">
 
 <head>	
 <!-- charset MUST be specified within first 512 char of page to be effective -->
@@ -63,7 +63,7 @@
 <link rel="stylesheet" href="../shared/base.css" />
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
-<script src="../shared/jquery/jquery-1.6.1.min.js"></script>
+<script src="../shared/jquery/jquery-1.6.2.min.js"></script>
 <script src="../shared/jsLib.js" defer></script>
 
 <script language="JavaScript" defer>

@@ -7,8 +7,42 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	require_once(REL(__FILE__, "../model/Online.php"));
+	require_once(REL(__FILE__, "../model/States.php"));
 
 	switch ($_REQUEST[mode]){
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllStates':
+			## prepare list of states
+			$sptr = new States;
+		  $states = array();
+			$sSet = $sptr->getAll('description');
+			while ($row = $sSet->next()) {
+			  $states[] = $row;
+			}
+			echo json_encode($states);
+			break;
+		case 'addNewState':
+			## add new state database entry
+			$sptr = new states;
+			if (empty($_REQUEST[code])) $_REQUEST[code] = '???';
+			if (empty($_REQUEST[description])) $_REQUEST[description] = 'unknown';
+			if (empty($_REQUEST[default_flg])) $_REQUEST[default_flg] = 'N';
+			echo $sptr->insert($_REQUEST);
+			break;
+		case 'updateState':
+			## update state database entry
+			$sptr = new States;
+			if (empty($_REQUEST[code])) $_REQUEST[code] = '???';
+			if (empty($_REQUEST[description])) $_REQUEST[description] = 'unknown';
+			if (empty($_REQUEST[default_flg])) $_REQUEST[default_flg] = 'N';
+			echo $sptr->update($_REQUEST);
+			break;
+		case 'd-3-L-3-tState':
+			## delete state database entry
+			$sptr = new States;
+			$sptr->deleteOne($_REQUEST);
+			break;
+
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getOpts':
 			## prepare list of hosts
@@ -19,8 +53,6 @@
 			//print_r($hosts);
 			echo json_encode($row);
 			break;
-
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'updateOpts':
 			## update host database entry
 			$optr = new Opts;
@@ -46,24 +78,18 @@
 			//print_r($hosts);
 			echo json_encode($hosts);
 			break;
-
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'addNewHost':
 			## add new host database entry
 			$hptr = new Hosts;
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $hptr->insert($_POST);
 			break;
-
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'updateHost':
 			## update host database entry
 			$hptr = new Hosts;
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $hptr->update($_POST);
 			break;
-
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'd-3-L-3-tHost':
 			## delete host database entry
 			$hptr = new Hosts;

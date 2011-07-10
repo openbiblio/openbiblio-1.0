@@ -122,17 +122,16 @@ button, input, select, textarea { margin: 0; }
 input:valid, textarea:valid   {  }
 input:invalid, textarea:invalid {
    border-radius: 1px; 
-	 -moz-box-shadow: 0px 0px 5px red; 
-	 -webkit-box-shadow: 0px 0px 5px red; 
-	 box-shadow: 0px 0px 5px red;
+	 -moz-box-shadow: 0px 0px 5px hsla(346, 93%, 49%, 0.5); 
+	 -webkit-box-shadow: 0px 0px 5px hsla(346, 93%, 49%, 0.5); 
+	 box-shadow: 0px 0px 5px hsla(346, 93%, 49%, 0.5);
 }
 .no-boxshadow input:invalid, 
 .no-boxshadow textarea:invalid { background-color: #f0dddd; }
   
 /* These selection declarations have to be separate
    No text-shadow: twitter.com/miketaylr/status/12228805301
-   Also: hot pink! */
-
+*/
 ::-moz-selection{ background:hsl(241, 89%, 71.6%); color:#fff; text-shadow: none; }
 ::selection { background:hsl(241, 89%, 71.6%); color:#fff; text-shadow: none; }
  

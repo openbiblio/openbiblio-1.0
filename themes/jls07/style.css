@@ -53,24 +53,13 @@ fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 0 2px 2px 
 table { margin: 2px; }
 label { font-size: 12px; font-weight: bold; margin-left: 2px;}
 input, select, textarea { margin: 2px; }
-button, input, select, textarea { margin: 2px; }
-/*
+input:not([type=button]):focus, input:not([type=select]):focus, select:focus, textarea:focus {
+	/* place blue shadow on all input fields */
+	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
+	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
+	}
 input[type=button], input[type=submit] {
-	color: black;
-	background: #b2dae4;
-	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
-																				 hsla(0,0%,100%,0) 
-																				 30px);
-	background-image: -webkit-gradient(linear, 0 0, 0 30, 
-																		 from (hsla(0,0%,100%,.6)), 
-																		 to(hsla(0,0%,100%,0)));
-	border: solid black 2px outset;
-	width: auto;
-	text-decoration: none;
-	font: 12px serif;
-}
-*/
-input[type=button], input[type=submit] {
+	/* lozenge shape buttons */
 	padding: 2px 4px;
 	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
 	line-height: 1;
@@ -83,18 +72,6 @@ input[type=button], input[type=submit] {
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 	}
-/*
-input.PgBtn, input.moreBtn {
-	border: solid black 2px;
-	width: auto;
-	font: 12px serif; font-weight: bold;
-	background-color: gray;
-	color: black;
-	}
-input.button:hover {
-	text-decoration: underline;
-}
-*/
 	
 /*************************************************/
 aside, header {
@@ -161,7 +138,8 @@ ul.nav_main > li.nav_selected {
 ul.nav_sub {
 	width: 120px; /*FL change  */
 	margin-left: 0; padding-left: 1em;
-	list-style-type: circle; list-style-image: url("../../images/bulleto.png");
+	list-style-type: circle; 
+	/*list-style-image: url("../../images/bulleto.png");*/
 	}
 ul.nav_sub ul.nav_sub {
 	padding-left: 1em
@@ -172,7 +150,8 @@ ul.nav_sub li {
 	}
 ul.nav_sub li.nav_selected {
 	font-weight: bold;
-	list-style-type: disc; list-style-image: url("../../images/bulletc.png");
+	list-style-type: disc; 
+	/*list-style-image: url("../../images/bulletc.png");*/
 	}
 	
 a { color: blue; }

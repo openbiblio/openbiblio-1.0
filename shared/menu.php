@@ -106,10 +106,10 @@ function staff_menu() {
 		//Nav::node('admin/summary', T("Admin Summary"), '../admin/index.php');
 		Nav::node('admin/staff', T("Staff Admin"), '../admin/staff_list.php');
 		Nav::node('admin/settings', T("Library Settings"), '../admin/settings_edit_form.php?reset=Y');
+
 		Nav::node('admin/calendars', T("Calendars"), '../admin/calendars_list.php');
 		Nav::node('admin/calendars/new', T("New Calendar"), '../admin/calendar_edit_form.php');
 		Nav::node('admin/calendars/edit', T("Edit Calendar"));
-
 		if (isset($calendar) and $calendar != OBIB_MASTER_CALENDAR) {
 			Nav::node('admin/calendars/del', T("Delete Calendar"),
 				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
@@ -118,11 +118,12 @@ function staff_menu() {
 		Nav::node('admin/sites', T("Sites"), '../admin/sites_list.php');
 		Nav::node('admin/sites/new', T("New Site"), '../admin/sites_edit_form.php');
 		Nav::node('admin/sites/edit', T("Edit Site"));
-
 		if (isset($siteid)) {
 			Nav::node('admin/sites/del', T("Delete Site"),
 				'../admin/sites_del_confirm.php?siteid='.U($siteid));
 		}
+
+		Nav::node('admin/states', T("States"), '../admin/statesForm.php?reset=Y');
 
 		Nav::node('admin/memberfields', T("Member Fields"), '../admin/member_fields_list.php');
 		Nav::node('admin/biblio_copy_fields', T("Biblio Copy Fields"),
@@ -141,7 +142,6 @@ function staff_menu() {
 	if($_SESSION["hasReportsAuth"]){
 		Nav::node('reports', T("Reports"), '../reports/index.php');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
-
 		if (isset($_SESSION['rpt_Report'])) {
 			Nav::node('reports/results', T("Report Results"),
 				'../reports/run_report.php?type=previous');
