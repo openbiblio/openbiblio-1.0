@@ -407,7 +407,7 @@ bs = {
 			html += '	<input type="hidden" value="'+biblio.bibid+'" />'+"\n";
 			html += '	<input type="button" class="moreBtn" value="More info" />'+"\n";
 			html += '<td>\n';
-			html += '<td><img src="../images/'+biblio.avIcon+'" alt="Grn: available<br />Blu: on hold<br />Red: not available" /></td>\n';
+			html += '<td><img src="../images/'+biblio.avIcon+'" class="flgDot" alt="Grn: available<br />Blu: on hold<br />Red: not available" /></td>\n';
 			html += '<td><img src="../images/'+biblio.imageFile+'" /></td>'+"\n";
 			html += '<td>'+title+"</td>\n";
 			html += '<td>'+author+'</td><td>'+callNo+"</td>\n";

@@ -212,14 +212,12 @@
 				<?php
 					if($_SESSION['show_detail_opac'] == "Y"){
 				?>
-				<table>
-				<tr>
-					<td width="125"><img src="../images/circle_green.png"/> <?php echo T('Available'); ?></td>
-					<td width="150"><img src="../images/circle_orange.png"/> <?php echo T('Available elsewhere'); ?></td>
-					<td width="150"><img src="../images/circle_blue.png"/> <?php echo T('Not on loan/on hold'); ?></td>
-					<td width="175"><img src="../images/circle_red.png"/> <?php echo T('On loan/not available'); ?></td>
-				</tr>
-				</table>
+				<ul id="flagInfo">
+					<li><img src="../images/circle_green.png" class="flgDot"/> <?php echo T('Available'); ?></li>
+					<li><img src="../images/circle_orange.png" class="flgDot"/> <?php echo T('Available elsewhere'); ?></li>
+					<li><img src="../images/circle_blue.png" class="flgDot"/> <?php echo T('Not on loan/on hold'); ?></li>
+					<li><img src="../images/circle_red.png" class="flgDot"/> <?php echo T('On loan/not available'); ?></li>
+				</ul>
 				<?php } ?>
 			</fieldset>
 		</td>

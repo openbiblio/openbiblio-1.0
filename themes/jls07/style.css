@@ -23,12 +23,14 @@ h1,h2,h3,h4,h5,h6 {
 	color: white; background: #ccb470;
 	border: solid black 2px;
 	margin: 2px;
+/*
 	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
 																				 hsla(0,0%,100%,0) 
 																				 30px);
 	background-image: -webkit-gradient(linear, 0 0, 0 30, 
 																		 from (hsla(0,0%,100%,.6)), 
 																		 to(hsla(0,0%,100%,0)));
+*/
 	}
 h1 { font-size: 20px; }
 h2 { font-size: 16px; }
@@ -51,9 +53,8 @@ fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 0 2px 2px 
 table { margin: 2px; }
 label { font-size: 12px; font-weight: bold; margin-left: 2px;}
 input, select, textarea { margin: 2px; }
-button, input, select, textarea {
-	margin: 2px;
-	}
+button, input, select, textarea { margin: 2px; }
+/*
 input[type=button], input[type=submit] {
 	color: black;
 	background: #b2dae4;
@@ -68,6 +69,21 @@ input[type=button], input[type=submit] {
 	text-decoration: none;
 	font: 12px serif;
 }
+*/
+input[type=button], input[type=submit] {
+	padding: 2px 4px;
+	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
+	line-height: 1;
+	color: #444; border: none; 
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100% from(#fff), to(#bbb));
+	background-image: -moz-linear-gradient(0% 100% 90deg, #bbb, #fff);
+	background-color: #fff;
+	-webkit-border-radius: 23px; -moz-border-radius: 23px; -o-border-radius: 23px;
+	border-radius: 23px;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+	}
+/*
 input.PgBtn, input.moreBtn {
 	border: solid black 2px;
 	width: auto;
@@ -78,6 +94,7 @@ input.PgBtn, input.moreBtn {
 input.button:hover {
 	text-decoration: underline;
 }
+*/
 	
 /*************************************************/
 aside, header {
@@ -108,7 +125,6 @@ h1.staff_head {
 div#library_name, 
 div#library_hours, 
 div#library_phone {
-	/*margin-left: 160px;*/
 	margin: 2px 5px 2px 5px;
 	font: 14px sans-serif;
 	}
@@ -119,7 +135,7 @@ div#library_name {
 /*************************************************/
 ul.nav_main {
 	width: 130px;
-	margin-top: 0; margin-left: 0; padding-left: 0;
+	margin-top: 0; margin-left: 0; padding-left: 0.5em;
 	list-style-type: none;
 	}
 ul.nav_main li {
@@ -158,6 +174,19 @@ ul.nav_sub li.nav_selected {
 	font-weight: bold;
 	list-style-type: disc; list-style-image: url("../../images/bulletc.png");
 	}
+	
+a { color: blue; }
+a:visited { color: blue; }
+a.button {
+	background: #b2dae4;
+	border: solid black 2px;
+	padding: 3px;
+	text-decoration: none;
+	font: 12px serif;
+	color: black;
+}
+a.button:visited { color: black; }
+a.button:hover { text-decoration: underline; }
 
 /*************************************************/
 footer {
@@ -226,6 +255,13 @@ table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 .search_result td {
 	vertical-align: top
 	}
+#flagInfo ul { text-align: center; margin:0; padding:0; }
+#flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
+.flgDot {
+	-webkit-transform: scale(0.75);-moz-transform: scale(0.75);
+	transform: scale(0.60);
+	vertical-align: bottom;
+	}
 .cover_image {
 	width: 75px
 	}
@@ -278,26 +314,6 @@ table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	font: 14px serif;
 }
 	
-a {
-	color: blue
-	}
-a:visited {
-	color: blue
-	}
-a.button {
-	background: #b2dae4;
-	border: solid black 2px;
-	padding: 3px;
-	text-decoration: none;
-	font: 12px serif;
-	color: black;
-}
-a.button:visited {
-	color: black
-	}
-a.button:hover {
-	text-decoration: underline;
-}
 table.sigh {
 	width: 100%;
 	}
