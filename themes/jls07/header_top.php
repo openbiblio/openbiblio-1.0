@@ -56,92 +56,17 @@
 <link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
 
-<!-- this line MUST precede all .css files - FL -->
-<!-- it deals with html5 support issues for IE -->
+<!-- this line MUST precede all .css files - FL
+		 Based on the browser in use, it places many conditional classes 
+		 into the <body> tag for use by feature-specific CSS & JS statements.
+		 It also deals with html5 support issues for IE browsers. 	 -->
 <script src="../shared/modernizr-1.7.min.js"></script>
 
 <link rel="stylesheet" href="../shared/base.css" />
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
-<script src="../shared/jquery/jquery-1.6.2.min.js"></script>
-<script src="../shared/jsLib.js" defer></script>
-
-<script language="JavaScript" defer>
-// main javascript functionality set in own namespace to avoid potential conflict
-obib = {
-	<?php
-	echo "focusFormName:  '$focus_form_name',\n";
-	echo "focusFormField:	'$focus_form_field',\n";
-	if (isset($confirm_links) and $confirm_links) {
-		echo "confirmLinks:		$confirm_links,\n";
-	}
-	?>
-
-	init: function() {
-		obib.reStripe();
-	  // set focus to specified field in all pages
-		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
-		  $('#'+obib.focusFormField).focus();
-		}
-		
-		// suggest this should be in code local to desired function unless widely used -- Fred
-		// bind the confirmLink routine to all <a> tags on the current form
-		if (obib.confirmLinks) {
-			$('a').bind('click',null,obib.confirmLink);
-		}
-	},
-
-	//-------------------------
-	reStripe: function(which) {
-		// re-stripe all tables so classed on all pages
-	  	$('table tbody.striped tr:even').addClass('altBG');
-	  	$('table tbody.striped tr:odd').removeClass('altBG');
-	},
-	reStripe2: function(tblName, oddEven) {
-		// re-stripe specified table
-		if (oddEven == 'even') {
-			//console.log('striping even rows of table: '+tblName);
-	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
-	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
-		}
-		else if (oddEven == 'odd') {
-			//console.log('striping odd rows of table: '+tblName);
-	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
-	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
-	 }
-	},
-	//-------------------------
-	confirmLink: function(e) {
-		if (modified) {
-			return confirm("<?php echo addslashes(T("This will discard any changes you've made on this page.  Are you sure?")) ?>");
-		} else {
-			return true;
-		}
-	}
-}
-// hold off javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
-$(document).ready(obib.init);
-
-function popSecondary(url) {
-		var SecondaryWin;
-		SecondaryWin = window.open(url,"secondary","resizable=yes,scrollbars=yes,width=535,height=400");
-		self.name="main";
-}
-function popSecondaryLarge(url) {
-		var SecondaryWin;
-		SecondaryWin = window.open(url,"secondary","toolbar=yes,resizable=yes,scrollbars=yes,width=700,height=500");
-		self.name="main";
-}
-function backToMain(URL) {
-		var mainWin;
-		mainWin = window.open(URL,"main");
-		mainWin.focus();
-		this.close();
-}
-var modified = false;
-
--->
-</script>
+<!-- All other JavaScript is placed at the end of <body> (see footer.php) 
+		 to match industry best practices and to improve overall performance -->
 
 	<?php
 	## ---------------------------------------------------------------------

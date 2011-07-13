@@ -248,7 +248,7 @@ class Query {
 		return str_replace('`', '', $i);
 	}
 	function _numstr($n) {
-		if (preg_match("/^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)/", $n, $subs)) {
+		if (preg_match("/^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)/", (string)$n, $subs)) {
 			return $subs[1];
 		} else {
 			return "0";

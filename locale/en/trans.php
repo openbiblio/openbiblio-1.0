@@ -146,7 +146,7 @@ $trans["Bookings"] = "Bookings";
 $trans["Broken histid/booking reference"] = "Broken histid/booking reference";
 $trans["Broken RPT code structure"] = "Broken RPT code structure";
 $trans["Browse Images"] = "Browse Images";
-$trans["Browser not supported"] = "<b>You are using Internet Explorer</b>.<br/><br/>Openbiblio <i>might</i> not work correctly with this version.<br/>Please use either Firefox, Google Chome or Safari.<br/><br/>.";
+$trans["Browser not supported"] = "<b>You are using Internet Explorer</b>.<br/><br/>Openbiblio <i>might</i> not work correctly with this version.<br/>Please use either Firefox, Google Chome or Safari.<br/><br/>";
 $trans["Bulk Delete"] = "Bulk Delete";
 $trans["Bulk Delete Confirm"] = "Are you certain you want to delete %copy% copies and %item% items?";
 $trans["Calendar Deleted"] = "Calendar Deleted";
@@ -204,6 +204,7 @@ $trans["Collection, %desc%, has been deleted."] = "Collection, %desc%, has been 
 $trans["Collection, %desc%, has been updated."] = "Collection, %desc%, has been updated.";
 $trans["Collection:"] = "Collection:";
 $trans["Collections"] = "Collections";
+$trans["collectionsListNoteMsg"] = "The delete function is only available on collections that have an item count of zero.<br />If you wish to delete a collection with an item count greater than zero,<br/>you will first need to change the material type on those items to another material type.";
 $trans["Column count mismatch in TableDisplay"] = "Column count mismatch in TableDisplay";
 $trans["Connecting to database server..."] = "Connecting to database server...";
 $trans["Contents"] = "Contents";
@@ -254,6 +255,7 @@ $trans["Delete items if all copies are deleted."] = "Delete items if all copies 
 $trans["Delete Site"] = "Delete Site";
 $trans["Delete This Item"] = "Delete this Item";
 $trans["Deleted"] = "Deleted";
+$trans["DeliveryNote"] = "Delivery Note (displayed on booking screen)";
 $trans["Description is required."] = "Description is required.";
 $trans["Description"] = "Description";
 $trans["Description:"] = "Description:";
@@ -326,7 +328,7 @@ $trans["Field must be numeric"] = "Field must be numeric";
 $trans["Field Successfully Deleted"] = "Field Successfully Deleted";
 $trans["Field Updated successfully"] = "Field Updated successfully";
 $trans["Field"] = "Field";
-$trans["Fields marked are required"] = "Fields marked with <sup>*</sup> are required.";
+$trans["Fields marked are required"] = "Fields marked with <span class=\"reqd\">*</span> are required.";
 $trans["File name end not jpg or png"] = "File name does not end in '.jpg' or '.png'.";
 $trans["Find Item by Barcode Number"] = "Find Item by Barcode Number";
 $trans["First Name"] = "First Name";
@@ -494,6 +496,7 @@ $trans["No material code set"] = "No material code set";
 $trans["No name set for form field."] = "No name set for form field.";
 $trans["No results found."] = "No results found.";
 $trans["No sites have been defined."] = "No sites have been defined.";
+$trans["No states have been defined."] = "No states have been defined.";
 $trans["No such image."] = "No such image.";
 $trans["No such link type: "] = "No such link type: ";
 $trans["No transactions found."] = "No transactions found.";
@@ -505,6 +508,7 @@ $trans["Note: Mbr outstanding balance %bal%"] = "Note: Member has an outstanding
 $trans["Note:"] = "Note:";
 $trans["Nothing Found"] = "Nothing Found";
 $trans["Number of items is required."] = "Number of items is required.";
+$trans["NumberOnHand:"] = "Munber on hand:";
 $trans["old search"] = "Old Search";
 $trans["Online Data"] = "Online Data";
 $trans["Online Protocol"] = "Online Protocol";
@@ -866,14 +870,6 @@ $trans["collectionsDelConfirmMsg"] = "Are you sure you want to delete collection
 
 
 #****************************************************************************
-#*  Translation text for collections_list.php
-#****************************************************************************
-$trans["collectionsListNoteMsg"]          = "The delete function is only available on collections that have an item count of zero.<br />If you wish to delete a collection with an item count greater than zero<br/>you will first need to change the material type on those items to another material type.";
-
-
-
-
-#****************************************************************************
 #*  Translation text for catalog/index.php
 #****************************************************************************
 $trans["catalogIndexDesc"]                = "Use the functions located in the left hand navigation area to manage your library's collection efforts.";
@@ -937,13 +933,6 @@ $trans["adminNoauth"]          = "You are not authorized to use the Admin tab.";
 #****************************************************************************
 $trans["sitesDelConfirmMsg"]          = "Are you sure you want to delete site %name%?";
 
-
-
-
-#****************************************************************************
-#*  Translation text for sites_edit_form.php
-#****************************************************************************
-$trans["sitesEditFormDelNote"]          = "Delivery Note (displayed on booking screen):";
 
 
 

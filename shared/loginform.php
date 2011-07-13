@@ -37,38 +37,40 @@
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-	# for later use by inputfields()
-	$attrs = array(size=>"15", maxlength=>"15", required=>"required", aria-required=>"true");
+	//# for later use by inputfields()
+	//$attrs = array(size=>"15", maxlength=>"15", required=>"required", aria-required=>"true");
 
 ?>
-<!--h1><span id="searchHdr" class="title"><?php //echo T("Staff Login"); ?></span></h1-->
 <h3 class="title"><?php echo T("Staff Login"); ?></h3>
 <?php //print_r($_SESSION); //debugging only ?>
 
 <form name="loginform" method="post" action="../shared/login.php">
 <fieldset>
-<table class="primary">
-
-	<tbody>
+<table>
 	<?php if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) { ?>
+	<thead>
 		<tr>
-			<td colspan="2"><p><font color="red"><?php echo T("Browser not supported") ?></font></p></td>
+			<td colspan="2"><font color="red"><?php echo T("Browser not supported"); ?></font></td>
 		</tr>
+	</thead>
 	<?php } ?>
+	<tbody>
 	<tr>
 		<td valign="top" class="noborder">
 			<label for="username"><?php echo T("Username:"); ?></label>
 		</td>
-		<td valign="top" class="noborder">
-			<?php echo inputfield('text','username',$postVars["username"],$attrs); ?>
+		<td valign="top">
+			<?php //echo inputfield('text','username',$postVars["username"],$attrs); ?>
+			<input id="username" name="username" type="text" size="15" required aria-required="true" autofocus />
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" class="noborder">
+		<td valign="top">
 			<label for="password"><?php echo T("Password:"); ?></label>
 		</td>
 		<td valign="top" class="noborder">
-			<?php echo inputfield('password','pwd',$postVars["pwd"],$attrs); ?>
+			<?php //echo inputfield('password','pwd',$postVars["pwd"],$attrs); ?>
+			<input id="pwd" name="pwd" type="password" size="15" required aria-required="true" />
 		</td>
 	</tr>
 	<?php if(($_SESSION['multi_site_func'] > 0) || ($_SESSION['site_login'] == 'Y')){ ?>
@@ -77,9 +79,7 @@
 			<label for="selectSite"><?php echo T("Library Site"); ?>:</label>
 		</td>
 		<td>
-			<?php 
-				echo inputfield('select', 'selectSite', $siteId, NULL, $sites); 	
-			?>	
+			<?php echo inputfield('select', 'selectSite', $siteId, NULL, $sites) ?>	
 		</td>
 	</tr>
 	<?php } ?>
@@ -97,3 +97,6 @@
 </fieldset>
 </form>
 
+<?php
+	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+?>	

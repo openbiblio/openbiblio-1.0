@@ -6,13 +6,108 @@
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
+	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/Online.php"));
+	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/States.php"));
 
 	switch ($_REQUEST[mode]){
+		case 'getCircList':
+			$ptr = new CircCollections;
+		  $colls = array();
+			$set = $ptr->getAll('code');
+			while ($row = $set->next()) {
+			  $colls[] = $row;
+			}
+			echo json_encode($colls);
+			break;
+		case 'getDistList':
+			$ptr = new DistCollections;
+		  $colls = array();
+			$set = $ptr->getAll('code');
+			while ($row = $set->next()) {
+			  $colls[] = $row;
+			}
+			echo json_encode($colls);
+			break;
+		case 'getTypes':
+			$ptr = new Collections;
+			echo json_encode($ptr->getTypeSelect());
+			break;
+		case 'getAllCollections':
+			$ptr = new Collections;
+		  $colls = array();
+			$set = $ptr->getAllWithStats();
+			while ($row = $set->next()) {
+			  $colls[] = $row;
+			}
+			echo json_encode($colls);
+			break;
+		case 'addNewCollection':
+			$ptr = new Collections;
+			$col = array(
+				'description'=>$_POST["description"],
+				'default_flg'=>$_POST['default_flg'],
+				'type'=>$_POST["type"],
+				'days_due_back'=>$_POST["days_due_back"],
+				'daily_late_fee'=>$_POST["daily_late_fee"],
+				'restock_threshold'=>$_POST["restock_threshold"],
+			);
+			list($id, $errors) = $ptr->insert_el($col);
+			if (empty($errors)) {
+				$msg = T("Collection, %desc%, has been added.", array('desc'=>H($col['description'])));
+				echo $msg;
+			}
+			break;
+		case 'updateCollection':
+			$ptr = new Collections;
+			$coll = array(
+				'code'=>$_POST["code"],
+				'description'=>$_POST["description"],
+				'default_flg'=>$_POST['default_flg'],
+				'type'=>$_POST["type"],
+				'days_due_back'=>$_POST["days_due_back"],
+				'daily_late_fee'=>$_POST["daily_late_fee"],
+				'restock_threshold'=>$_POST["restock_threshold"],
+			);
+			$errors = $ptr->update_el($coll);
+			if (empty($errors)) {
+				$msg = T("Collection, %desc%, has been updated.", array('desc'=>H($coll['description'])));
+			}
+			echo $msg;
+			break;
+		case 'd-3-L-3-tCollections':
+			$ptr = new Collections;
+			$ptr->deleteOne($_POST['code']);
+			$msg = T("Collection, %desc%, has been deleted.", array('desc'=>$description));
+			echo $msg;
+			break;
+			
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllSites':
+			$sptr = new Sites;
+		  $sites = array();
+			$sSet = $sptr->getAll('name');
+			while ($row = $sSet->next()) {
+			  $sites[] = $row;
+			}
+			echo json_encode($sites);
+			break;
+		case 'addNewSite':
+			$sptr = new Sites;
+			echo $sptr->insert($_REQUEST);
+			break;
+		case 'updateSite':
+			$sptr = new Sites;
+			echo $sptr->update($_REQUEST);
+			break;
+		case 'd-3-L-3-tSite':
+			$sptr = new Sites;
+			$sptr->deleteOne($_REQUEST);
+			break;
+
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getAllStates':
-			## prepare list of states
 			$sptr = new States;
 		  $states = array();
 			$sSet = $sptr->getAll('description');
@@ -22,39 +117,27 @@
 			echo json_encode($states);
 			break;
 		case 'addNewState':
-			## add new state database entry
 			$sptr = new states;
-			if (empty($_REQUEST[code])) $_REQUEST[code] = '???';
-			if (empty($_REQUEST[description])) $_REQUEST[description] = 'unknown';
-			if (empty($_REQUEST[default_flg])) $_REQUEST[default_flg] = 'N';
 			echo $sptr->insert($_REQUEST);
 			break;
 		case 'updateState':
-			## update state database entry
 			$sptr = new States;
-			if (empty($_REQUEST[code])) $_REQUEST[code] = '???';
-			if (empty($_REQUEST[description])) $_REQUEST[description] = 'unknown';
-			if (empty($_REQUEST[default_flg])) $_REQUEST[default_flg] = 'N';
 			echo $sptr->update($_REQUEST);
 			break;
 		case 'd-3-L-3-tState':
-			## delete state database entry
 			$sptr = new States;
 			$sptr->deleteOne($_REQUEST);
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getOpts':
-			## prepare list of hosts
 			$optr = new Opts;
 	  	$opts = array();
 			$oSet = $optr->getAll();
 			$row = $oSet->next();
-			//print_r($hosts);
 			echo json_encode($row);
 			break;
 		case 'updateOpts':
-			## update host database entry
 			$optr = new Opts;
 		  $_POST[id] = 1;
 			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
@@ -68,30 +151,25 @@
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getHosts':
-			## prepare list of hosts
 			$hptr = new Hosts;
 		  $hosts = array();
 			$hSet = $hptr->getAll('seq');
 			while ($row = $hSet->next()) {
 			  $hosts[] = $row;
 			}
-			//print_r($hosts);
 			echo json_encode($hosts);
 			break;
 		case 'addNewHost':
-			## add new host database entry
 			$hptr = new Hosts;
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $hptr->insert($_POST);
 			break;
 		case 'updateHost':
-			## update host database entry
 			$hptr = new Hosts;
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $hptr->update($_POST);
 			break;
 		case 'd-3-L-3-tHost':
-			## delete host database entry
 			$hptr = new Hosts;
 			$key = $hptr->key;
 			$sql = "DELETE FROM $hptr->name WHERE `id`=$_GET[id]";
@@ -100,6 +178,6 @@
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>invalid mode: $_REQUEST[mode]</h4><br />";
+		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
 		break;
 	}

@@ -82,6 +82,7 @@ ni = {
 	
 	//------------------------------
 	initWidgets: function () {
+		if(ie) ie.init();
 	},
 	
 	resetForm: function () {

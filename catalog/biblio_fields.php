@@ -35,12 +35,12 @@
 		}
 		function mkFldSet($n, $i, $marcInputFld, $mode) {
 		  if ($mode == 'onlnCol') {
-				echo "	<td valign=\"top\" class=\"primary filterable\"> \n";
+				echo "	<td valign=\"top\" class=\"filterable\"> \n";
 				$namePrefix = "onln_$n";
 		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
 			}
 			else if ($mode == 'editCol') {
-				echo "	<td valign=\"top\" class=\"primary\"> \n";
+				echo "	<td valign=\"top\" > \n";
 				$namePrefix = 'fields['.H($n).']';
 				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
 				echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
@@ -115,10 +115,10 @@
 		foreach ($inputs as $n => $i) {
 			$marcInputFld = H($i['tag']).H($i['subfield']);
 			echo "<tr> \n";
-			echo "	<td class=\"primary\" valign=\"top\"> \n";
-			if ($i['required']) {
-				echo '	<sup>*</sup>';
-			}
+			echo "	<td valign=\"top\"> \n";
+			//if ($i['required']) {
+			//	echo '	<sup>*</sup>';
+			//}
 			echo "		<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
 			echo "	</td> \n";
 

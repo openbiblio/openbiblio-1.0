@@ -36,7 +36,7 @@
   </tr>
 	</thead>
 	<tbody class="striped">
-	  <tr><td colspan="4">to be generated and filled in by Javascript and Server</td></tr>
+	  <tr><td colspan="4"><?php echo T("No states have been defined."); ?> </td></tr>
 	</tbody>
 	<tfoot>
   <tr>
@@ -52,37 +52,38 @@
 
 
 <div id="editDiv">
-<form id="stateForm" name="editForm">
+<form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 <legend><?php echo T('State Editor'); ?></legend>
 <table id="editTbl">
-	<thead>
-  </thead>
   <tbody>
   <tr>
     <td>
-      <label for="description"><sup>*</sup><?php echo T("Description"); ?>:</label>
+      <label for="description"><?php echo T("Description"); ?>:</label>
     </td>
     <td>
       <input id="description" name="description" type="text" size="32" required aria-required="true" />
-    </td>
+			<span class="reqd">*</span>    
+		</td>
   </tr>
   <tr>
     <td>
-      <label for="code"><sup>*</sup><?php echo T("Code"); ?>:</label>
+      <label for="code"><?php echo T("Code"); ?>:</label>
     </td>
     <td>
       <input id="code" name="code" type="text" required size="20" maxlength="20" aria-required="true" />
+      <span class="reqd">*</span>
     </td>
   </tr>
   <tr>
     <td>
-      <label for="default_flg"><sup>*</sup><?php echo T("Default (Y/N)"); ?>:</label>
+      <label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
     </td>
     <td>
       <input id="default_flg" name="default_flg" type="text" size="1" value="N"
 				pattern="[Y,N]" required aria-required="true" />
+			<span class="reqd">*</span>
     </td>
   </tr>
   <tr>
@@ -110,7 +111,7 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
+	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+	
 	require_once(REL(__FILE__, "statesJs.php"));
 ?>	
-</body>
-</html>

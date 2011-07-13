@@ -63,8 +63,3 @@ if (isset($_REQUEST['msg'])) {
 	echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 }
 
-/*
-INSERT INTO `openbibliowork`.`settings` (
-`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)
-VALUES ('show_lib_info', '28', 'Show Lib Info on Staff pages' , 'bool', NULL , NULL , NULL , 'N', 'admin')
-*/

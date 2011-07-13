@@ -78,11 +78,11 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
 		if (in_array('required', $attrs)) {
-			$s .= 'required ';
+			$s .= 'required aria-required="true" ';
 		}
 		$s .= "/>";
 		if (in_array('required', $attrs)) {
-			$s .= '<span style="color:red">*</style>';
+			$s .= '<span class="reqd">*</span>';
 		}
 		break;
 	}

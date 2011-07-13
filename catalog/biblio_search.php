@@ -34,8 +34,6 @@
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));
 	}
 	
-	include_once(REL(__FILE__,'./biblio_searchJs.php'));
-	
 ?>
 
 <!--h3><?php echo T("Existing Items"); ?></h3-->
@@ -311,5 +309,8 @@
 	<?php include_once(REL(__FILE__,"biblio_copy_editor.php"));?>
 </div>
 
-</body>
-</html>
+<?php
+	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+	
+	include_once(REL(__FILE__,'./biblio_searchJs.php'));
+?>	

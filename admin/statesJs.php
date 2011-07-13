@@ -44,9 +44,9 @@ st = {
     $('#cnclBtn').val('Cancel');
 	},
 	doBackToList: function () {
-		st.fetchStates();
+		$('#msgDiv').hide(10000);
 		st.resetForms();
-		$('#msgDiv').hide(3000);
+		st.fetchStates();
 	},
 	
 	//------------------------------
@@ -91,6 +91,7 @@ st = {
 	  $('#stateHdr').html(st.editHdr);
 	  $('#addBtn').hide();
 	  $('#updtBtn').show();
+	  $('#deltBtn').show();
 	  $('#description').focus();
 
 		$('#description').val(State['description']);
@@ -115,11 +116,11 @@ st = {
 	
 	doAddState: function () {
 		$('#mode').val('addNewState');
-		var parms = $('#stateForm').serialize();
+		var parms = $('#editForm').serialize();
 		//console.log('adding: '+parms);
 		$.post(st.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
-				console.log('rcvd error msg from server :<br />'+response);
+				//console.log('rcvd error msg from server :<br />'+response);
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			}
@@ -135,11 +136,11 @@ st = {
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
 		$('#mode').val('updateState');
-		var parms = $('#stateForm').serialize();
+		var parms = $('#editForm').serialize();
 		//console.log('updating: '+parms);
 		$.post(st.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
-				console.log('rcvd error msg from server :<br />'+response);
+				//console.log('rcvd error msg from server :<br />'+response);
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			}
@@ -161,14 +162,13 @@ st = {
 	  	var parms = {	mode:'d-3-L-3-tState', code:$('#code').val() };
 	  	$.post(st.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
-					console.log('rcvd error msg from server :<br />'+response);
+					//console.log('rcvd error msg from server :<br />'+response);
 					$('#msgArea').html(response);
 					$('#msgDiv').show();
 				}
 				else {
 					$('#msgArea').html('Deleted!');
 					$('#msgDiv').show();
-//			  	st.doBackToList();
 				}
 			});
 		}

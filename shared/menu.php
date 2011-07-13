@@ -115,13 +115,7 @@ function staff_menu() {
 				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
 		}
 
-		Nav::node('admin/sites', T("Sites"), '../admin/sites_list.php');
-		Nav::node('admin/sites/new', T("New Site"), '../admin/sites_edit_form.php');
-		Nav::node('admin/sites/edit', T("Edit Site"));
-		if (isset($siteid)) {
-			Nav::node('admin/sites/del', T("Delete Site"),
-				'../admin/sites_del_confirm.php?siteid='.U($siteid));
-		}
+		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
 
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php?reset=Y');
 

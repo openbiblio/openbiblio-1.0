@@ -64,19 +64,15 @@ td.btnFld {
 	}
 </style>
 
-<?php
-	include_once(REL(__FILE__,'/new_itemJs.php'));
-?>
-
 	<h3><?php echo T('Add New Item'); ?></h3>
 
 	<div id="searchDiv">
-	  <input type="button" id="manualBtn" class="button" value="Manual Entry" />
+	  <input type="button" id="manualBtn" value="Manual Entry" />
 	  <br />
 		<form id="lookupForm" name="lookupForm" action="" >
 		<fieldset>
 		<legend>On-Line Search</legend>
-		<table class="primary">
+		<table>
 		<thead>
 		<tr>
 		  <th class="colLbl">What to search for:</th>
@@ -85,10 +81,10 @@ td.btnFld {
 		</thead>
 		<tbody>
 		<tr id="fldset1">
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php echo inputfield('text','lookupVal','',array('class'=>'criteria')); ?>
 			</td>
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php
 				echo inputfield('select','srchBy','7',array('class'=>'criteria'),
 						 array('7'=>"$isbnTxt"
@@ -102,13 +98,13 @@ td.btnFld {
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("And");?></td>
+			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset2">
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php echo inputfield('text','lookupVal2','',array('class'=>'criteria')); ?>
 			</td>
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php
 				echo inputfield('select','srchBy2','0',array('class'=>'criteria'),
 						 array('0'=>' '
@@ -120,13 +116,13 @@ td.btnFld {
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("And");?></td>
+			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset3">
-			<td class="primary inptFld">
+			<td class="inptFld">
 				<?php echo inputfield('text','lookupVal3','',array('class'=>'criteria')); ?>
 			</td>
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php
 				echo inputfield('select','srchBy3','0',array('class'=>'criteria'),
 						 array('0'=>' '
@@ -140,13 +136,13 @@ td.btnFld {
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("And");?></td>
+			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset4">
-			<td class="primary inptFld">
+			<td class="inptFld">
 				<?php echo inputfield('text','lookupVal4','',array('class'=>'criteria')); ?>
 			</td>
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php
 				echo inputfield('select','srchBy4','0',array('class'=>'criteria'),
 						 array('0'=>' '
@@ -160,13 +156,13 @@ td.btnFld {
 		</tr>
 		
 		<tr>
-			<td class="primary"><?php echo T("And");?></td>
+			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset5">
-			<td class="primary inptFld">
+			<td class="inptFld">
 				<?php echo inputfield('text','lookupVal5','',array('class'=>'criteria')); ?>
 			</td>
-		  <td class="primary inptFld">
+		  <td class="inptFld">
 				<?php
 				echo inputfield('select','srchBy5','0',array('class'=>'criteria'),
 						 array('0'=>' '
@@ -188,8 +184,8 @@ td.btnFld {
 
 		<tfoot>
 		<tr>
-		  <td colspan="2" class="primary btnFld" >
-				<input type="submit" id="srchBtn" name="srchBtn" class="button"
+		  <td colspan="2" class="btnFld" >
+				<input type="submit" id="srchBtn" name="srchBtn"
 							 value="<?php echo T("Search");?>" />
 			</td>
 		</tr>
@@ -201,15 +197,15 @@ td.btnFld {
 	</div>
 	
 	<div id="waitDiv">
-		<table class="primary">
+		<table>
 		<tr>
 	  	<th colspan="1"><?php echo T("lookup_patience");?></th>
 		</tr>
 		<tr>
-		  <td colspan="1" class="primary"><span id="waitText"></span></td>
+		  <td colspan="1"><span id="waitText"></span></td>
 		</tr>
 		<tr>
-	    <td align="center" colspan="1" class="primary">
+	    <td align="center" colspan="1">
 	      <fieldset>
 	        <?php echo T("lookup_resetInstr");?>
 	      </fieldset>
@@ -222,16 +218,16 @@ td.btnFld {
 	  <form action="">
 	  <fieldset>
 	  <legend id="retryHead"></legend>
-		<table class="primary">
+		<table>
 		<tr>
 			<th colspan="3" ></th>
 		</tr>
 		<tr>
-			<td colspan="3" id="retryMsg" class="primary"></td>
+			<td colspan="3" id="retryMsg"></td>
 		</tr>
 		<tr>
-	    <td colspan="3" class="primary btnFld">
-				<input id="retryBtn" type="submit" class="button" value="<?php echo T("Go Back");?>" />
+	    <td colspan="3" class="btnFld">
+				<input id="retryBtn" type="submit" value="<?php echo T("Go Back");?>" />
 			</td>
 		</tr>
 		</table>
@@ -240,7 +236,7 @@ td.btnFld {
 	</div>
 
 	<div id="choiceDiv">
-		<input id="choiceBtn1" type="button" class="button btnFld"value="<?php echo T("Go Back");?>" />
+		<input id="choiceBtn1" type="button" class="btnFld"value="<?php echo T("Go Back");?>" />
 		<span id="hitInfo">
 			<?php echo T("Success!")." "; ?>
 				<span id="ttlHits"></span>
@@ -263,12 +259,11 @@ td.btnFld {
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
 			<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			<?php
-//			include(REL(__FILE__,"../catalog/biblio_fields.php"));
 				include(REL(__FILE__,"../catalog/item_editor.php"));
 			?>
 			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" value="<?php echo T("Go Back"); ?>" class="button itemGobkBtn" />
+			<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
 		</form>
 	</div>
 
@@ -276,3 +271,8 @@ td.btnFld {
 		<?php include_once(REL(__FILE__,"../catalog/biblio_copy_editor.php"));?>
 	</div>
 
+<?php
+	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+	
+	require_once(REL(__FILE__, "new_ItemJs.php"));
+?>	
