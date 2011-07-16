@@ -81,100 +81,74 @@ td.btnFld {
 		</thead>
 		<tbody>
 		<tr id="fldset1">
+		  <td class="inptFld"><input id="lookupVal" name="lookupVal" type="text" class="criteria"></td>
 		  <td class="inptFld">
-				<?php echo inputfield('text','lookupVal','',array('class'=>'criteria')); ?>
-			</td>
-		  <td class="inptFld">
-				<?php
-				echo inputfield('select','srchBy','7',array('class'=>'criteria'),
-						 array('7'=>"$isbnTxt"
-						 			,'8'=>"$issnTxt"
-									,'9'=>"$lccnTxt"
-									,'4'=>"$titleTxt"
-//									,'1016'=>"$keywordTxt"
-									 ));
-				?>
+		  	<select id="srchBy" name="srchBy" class="criteria">
+		  		<option value="7" selected><?php echo $isbnTxt; ?></option>
+		  		<option value="8"><?php echo $issnTxt; ?></option>
+		  		<option value="9"><?php echo $lccnTxt; ?></option>
+		  		<option value="4"><?php echo $titleTxt; ?></option>
+		  		<!--option value="1016"\>$isbnTxt; ?></option-->
+				</select>
 			</td>
 		</tr>
-		
 		<tr>
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset2">
+		  <td class="inptFld"><input id="lookupVal2" name="lookupVal2" type="text" class="criteria"></td>
 		  <td class="inptFld">
-				<?php echo inputfield('text','lookupVal2','',array('class'=>'criteria')); ?>
-			</td>
-		  <td class="inptFld">
-				<?php
-				echo inputfield('select','srchBy2','0',array('class'=>'criteria'),
-						 array('0'=>' '
-						 			,'1004'=>"$authorTxt"
-//									,'1016'=>"$keywordTxt"
-									));
-				?>
+		  	<select id="srchBy2" name="srchBy2" class="criteria">
+		  		<option value="0"></option>
+		  		<option value="1004"><?php echo $authorTxt; ?></option>
+		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
+		  		<option value="59"><?php echo $pubLocTxt; ?></option>
+		  		<option value="31"><?php echo $pubDateTxt; ?></option>
+				</select>
 			</td>
 		</tr>
-		
 		<tr>
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset3">
-			<td class="inptFld">
-				<?php echo inputfield('text','lookupVal3','',array('class'=>'criteria')); ?>
-			</td>
+		  <td class="inptFld"><input id="lookupVal3" name="lookupVal3" type="text" class="criteria"></td>
 		  <td class="inptFld">
-				<?php
-				echo inputfield('select','srchBy3','0',array('class'=>'criteria'),
-						 array('0'=>' '
-						 			,'1018'=>"$pubNameTxt"
-									,'59'	=>"$pubLocTxt"
-									,'31'	=>"$pubDateTxt"
-//									,'1016'=>"$keywordTxt"
-									));
-				?>
+		  	<select id="srchBy3" name="srchBy3" class="criteria">
+		  		<option value="0"></option>
+		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
+		  		<option value="59"><?php echo $pubLocTxt; ?></option>
+		  		<option value="31"><?php echo $pubDateTxt; ?></option>
+				</select>
 			</td>
 		</tr>
-		
 		<tr>
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset4">
-			<td class="inptFld">
-				<?php echo inputfield('text','lookupVal4','',array('class'=>'criteria')); ?>
-			</td>
+		  <td class="inptFld"><input id="lookupVal4" name="lookupVal4" type="text" class="criteria"></td>
 		  <td class="inptFld">
-				<?php
-				echo inputfield('select','srchBy4','0',array('class'=>'criteria'),
-						 array('0'=>' '
-						 			,'59'	=>"$pubLocTxt"
-									,'1018'=>"$pubNameTxt"
-									,'31'	=>"$pubDateTxt"
-//									,'1016'=>"$keywordTxt"
-									));
-				?>
+		  	<select id="srchBy4" name="srchBy4" class="criteria">
+		  		<option value="0"></option>
+		  		<option value="59"><?php echo $pubLocTxt; ?></option>
+		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
+		  		<option value="31"><?php echo $pubDateTxt; ?></option>
+				</select>
 			</td>
 		</tr>
-		
 		<tr>
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset5">
-			<td class="inptFld">
-				<?php echo inputfield('text','lookupVal5','',array('class'=>'criteria')); ?>
-			</td>
+		  <td class="inptFld"><input id="lookupVal5" name="lookupVal5" type="text" class="criteria"></td>
 		  <td class="inptFld">
-				<?php
-				echo inputfield('select','srchBy5','0',array('class'=>'criteria'),
-						 array('0'=>' '
-						 			,'31'	=>"$pubDateTxt"
-									,'1018'=>"$pubNameTxt"
-									,'59'	=>"$pubLocTxt"
-//									,'1016'=>"$keywordTxt"
-									));
-				?>
+		  	<select id="srchBy5" name="srchBy5" class="criteria">
+		  		<option value="0"></option>
+		  		<option value="31"><?php echo $pubDateTxt; ?></option>
+		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
+		  		<option value="59"><?php echo $pubLocTxt; ?></option>
+				</select>
 			</td>
 		</tr>
-
 		<tr>
 			<td>
 				<input type="hidden" id="mode" name="mode" value="search" />
@@ -199,16 +173,14 @@ td.btnFld {
 	<div id="waitDiv">
 		<table>
 		<tr>
-	  	<th colspan="1"><?php echo T("lookup_patience");?></th>
+			<th colspan="1"><?php echo T("lookup_patience");?></th>
 		</tr>
 		<tr>
 		  <td colspan="1"><span id="waitText"></span></td>
 		</tr>
 		<tr>
 	    <td align="center" colspan="1">
-	      <fieldset>
-	        <?php echo T("lookup_resetInstr");?>
-	      </fieldset>
+	      <fieldset><?php echo T("lookup_resetInstr");?></fieldset>
 			</td>
 		</tr>
 		</table>
@@ -238,9 +210,7 @@ td.btnFld {
 	<div id="choiceDiv">
 		<input id="choiceBtn1" type="button" class="btnFld"value="<?php echo T("Go Back");?>" />
 		<span id="hitInfo">
-			<?php echo T("Success!")." "; ?>
-				<span id="ttlHits"></span>
-			<?php echo " ".T("hits found"); ?>
+			<?php echo T("Success!")." "; ?><span id="ttlHits"></span><?php echo " ".T("hits found"); ?>
 		</span>
 	  <div id="choiceSpace">
 			Search Results go here
@@ -261,7 +231,7 @@ td.btnFld {
 			<?php
 				include(REL(__FILE__,"../catalog/item_editor.php"));
 			?>
-			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
+			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
 		</form>
@@ -272,7 +242,7 @@ td.btnFld {
 	</div>
 
 <?php
-	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
 	require_once(REL(__FILE__, "new_ItemJs.php"));
 ?>	

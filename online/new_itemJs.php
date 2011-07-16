@@ -8,6 +8,8 @@
 //------------------------------------------------------------------------------
 // newItem Javascript
 ni = {
+	<?php
+	?>
 	init: function () {
 		// get header stuff going first
 		ni.initWidgets();
@@ -487,6 +489,7 @@ ni = {
 			ni.setCollection(data);
 		}
 	  ie.validate(); // in case a reqd field's data is missing
+	  $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
 	},
