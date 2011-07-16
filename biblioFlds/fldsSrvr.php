@@ -14,8 +14,8 @@
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMtlTypes':
 			## prepare list of Material Types
-			require_once(REL(__FILE__, "../model/MaterialTypes.php"));
-			$tptr = new MaterialTypes;
+			require_once(REL(__FILE__, "../model/MediaTypes.php"));
+			$tptr = new MediaTypes;
 		  $matls = array();
 			$tSet = $tptr->getAll('code');
 			while ($row = $tSet->next()) {

@@ -93,6 +93,10 @@ st = {
 	  $('#updtBtn').show();
 	  $('#deltBtn').show();
 	  $('#description').focus();
+	  if (State['count'] < 1) 
+			$('#deltBtn').show(); 
+		else 
+			$('#deltBtn').hide();
 
 		$('#description').val(State['description']);
 		$('#code').val(State['code']);

@@ -41,8 +41,8 @@ function staff_menu() {
 
 	Nav::node('circulation/bookings/book', T("Create Booking"));
 	Nav::node('circulation/checkin', T("Check In"), '../circ/checkin_form.php?reset=Y');
+
 	##-------------------------------------------------------------------------------------##
-	
 //	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
 	Nav::node('cataloging', T("Cataloging"), '../catalog/biblio_search.php');
 	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/biblio_search.php");
@@ -99,9 +99,9 @@ function staff_menu() {
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
 			"../catalog/biblio_bulkDel.php");
 	}
+	
 	##-------------------------------------------------------------------------------------##
-
-		if($_SESSION["hasAdminAuth"]){
+	if($_SESSION["hasAdminAuth"]){
 		Nav::node('admin', T("Admin"), '../admin/index.php');
 		//Nav::node('admin/summary', T("Admin Summary"), '../admin/index.php');
 		Nav::node('admin/staff', T("Staff Admin"), '../admin/staff_list.php');
@@ -114,25 +114,21 @@ function staff_menu() {
 			Nav::node('admin/calendars/del', T("Delete Calendar"),
 				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
 		}
-
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
-
-		Nav::node('admin/states', T("States"), '../admin/statesForm.php?reset=Y');
-
 		Nav::node('admin/memberfields', T("Member Fields"), '../admin/member_fields_list.php');
 		Nav::node('admin/biblio_copy_fields', T("Biblio Copy Fields"),
 			'../admin/biblio_copy_fields_list.php');
-		Nav::node('admin/materials', T("Material Types"), '../admin/materials_list.php');
+		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
 		Nav::node('admin/collections', T("Collections"), '../admin/collections_list.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/theme_list.php');
 		Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
-	//	Nav::node('admin/opac', T("View Opac"), '../opac/index.php');
+		Nav::node('admin/states', T("States"), '../admin/statesForm.php?reset=Y');
 		Nav::node('admin/opac', T("View Opac"), '../catalog/biblio_search.php?tab=OPAC');
 		Nav::node('admin/online', T("Online Options"), '../admin/online_opts_form.php');
 		Nav::node('admin/hosts', T("Online Hosts"), '../admin/online_hosts_form.php');
 	}	
-		##-------------------------------------------------------------------------------------##
-		
+	
+	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasReportsAuth"]){
 		Nav::node('reports', T("Reports"), '../reports/index.php');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');

@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 ?>
 <form id="catalog_search" name="catalog_search" method="get" action="../shared/biblio_search.php">
@@ -26,7 +26,7 @@
 		<h3><?php echo T("Limit Search Results") ?></h3>
 		<label for="mediaType"><?php echo T("Media Type:") ?></label>
 				<?php
-					$mattypes = new MaterialTypes;
+					$mattypes = new MediaTypes;
 					echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
 				?>
 		<br /><br />

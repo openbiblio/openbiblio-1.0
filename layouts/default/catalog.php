@@ -5,7 +5,7 @@
 
 require_once(REL(__FILE__, '../../classes/Lay.php'));
 require_once(REL(__FILE__, '../../model/Biblios.php'));
-require_once(REL(__FILE__, '../../model/MaterialTypes.php'));
+require_once(REL(__FILE__, '../../model/MediaTypes.php'));
 
 class Layout_catalog {
 	var $p;
@@ -18,7 +18,7 @@ class Layout_catalog {
 		$this->p = $params;
 	}
 	function render($rpt) {
-		$mattypes = new MaterialTypes;
+		$mattypes = new MediaTypes;
 		$materialTypeDm = $mattypes->getSelect();
 		$biblios = new Biblios();
 		$lay = new Lay;

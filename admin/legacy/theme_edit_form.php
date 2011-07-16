@@ -98,8 +98,8 @@ function editTheme() {
 <a href="javascript:previewTheme()"><?php echo T("Preview Theme Changes"); ?></a><br /><br />
 
 <form name="editthemeform" method="post" action="../admin/theme_edit.php">
-<fieldset>
-<legend><?php echo $headerWording;?> <?php echo T("Theme"); ?></legend>
+<!--fieldset>
+<legend><?php echo $headerWording;?> <?php echo T("Theme"); ?></legend-->
 <input type="hidden" name="themeid" value="<?php echo $postVars["themeid"];?>" />
 
 <?php

@@ -14,7 +14,7 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../classes/Report.php"));
 
@@ -75,7 +75,7 @@
 		</td>
 		<td valign="top" class="primary">
 			<?php
-				$mattypes = new MaterialTypes;
+				$mattypes = new MediaTypes;
 				echo inputfield('select', "materialCd", $biblio['material_cd'], NULL, $mattypes->getSelect());
 			?>
 		</td>

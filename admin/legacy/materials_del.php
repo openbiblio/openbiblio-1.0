@@ -7,7 +7,7 @@ require_once("../shared/common.php");
 
 $restrictInDemo = true;
 require_once(REL(__FILE__, "../shared/logincheck.php"));
-require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+require_once(REL(__FILE__, "../model/MediaTypes.php"));
 
 #****************************************************************************
 #*  Checking for query string.  Go back to material type list if none found.
@@ -19,7 +19,7 @@ if (!isset($_GET["code"])){
 $code = $_GET["code"];
 $description = $_GET["desc"];
 
-$mattypes = new MaterialTypes;
+$mattypes = new MediaTypes;
 $mattypes->deleteOne($code);
 
 $msg = T("Material type, %desc%, has been deleted.", array('desc'=>$description));

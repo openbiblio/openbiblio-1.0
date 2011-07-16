@@ -4,7 +4,7 @@
  *
  * JavaScript & CSS Material contained here is unigue to the content of
  * this directory folder. It is incorporated into loading programs via the
- * '../shared/header_top file'.
+ * '../shared/header_top file' and '../shared/header_top file'.
  *
  * Provisions to include material unique to a particular portion is
  * at the end of thie file.
@@ -105,6 +105,7 @@ div#configDiv{
 </style>
 
 <?php
+/*
 $meName = $_SERVER[PHP_SELF];
 $meParts = explode('/',$meName);
 $fn = $meParts[3];
@@ -117,4 +118,5 @@ switch ($fn) {
 	default:
 	  echo "custom_head.php is unable to load JS file for: $_SERVER[PHP_SELF] ?<br />";
 }
+*/
 ?>

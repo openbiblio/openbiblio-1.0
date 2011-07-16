@@ -8,7 +8,7 @@
 	$tab = "admin";
 	$nav = "materials";
 
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
@@ -16,7 +16,7 @@
 	if ($_GET["msg"]) {
 		echo '<p class="error">'.H($_GET["msg"]).'</p><br /><br />';
 	}
-	$mattypes = new MaterialTypes;
+	$mattypes = new MediaTypes;
 	$types = $mattypes->getAllWithStats();
 ?>
 <h3><?php echo T("Material Types"); ?></h3>

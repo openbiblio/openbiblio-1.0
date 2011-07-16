@@ -18,7 +18,7 @@ require_once(REL(__FILE__, "../model/Sites.php"));
 require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/History.php"));
-require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+require_once(REL(__FILE__, "../model/MediaTypes.php"));
 require_once(REL(__FILE__, "../model/Bookings.php"));
 require_once(REL(__FILE__, "../model/MemberAccounts.php"));
 require_once(REL(__FILE__, "../classes/Report.php"));
@@ -65,7 +65,7 @@ $mbr['site'] = $sites->getOne($mbr['siteid']);
 $acct = new MemberAccounts;
 $mbr['balance'] = $acct->getBalance($mbrid);
 
-$mattypes = new MaterialTypes;
+$mattypes = new MediaTypes;
 $types = $mattypes->getAll();
 $materialTypeDm = array();
 $materialImageFiles = array();

@@ -427,13 +427,13 @@ function mkBiblioArray($dbObj) {
 	  break;
 
 	case 'getMaterialList':
-		require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		if(isset($_REQUEST['selectedMt'])){
 			$selectedMt = $_REQUEST['selectedMt'];
 		} else {
 			$selectedMt = 'all';
 		}
-		$mattypes = new MaterialTypes;
+		$mattypes = new MediaTypes;
 		echo inputfield('select', 'materialCd', $selectedMt, NULL, $mattypes->getSelect(true));
 	  break;
 

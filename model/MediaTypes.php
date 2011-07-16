@@ -5,8 +5,8 @@
 
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
-class MaterialTypes extends DmTable {
-	function MaterialTypes() {
+class MediaTypes extends DmTable {
+	function MediaTypes() {
 		$this->DmTable();
 		$this->setName('material_type_dm');
 		$this->setFields(array(

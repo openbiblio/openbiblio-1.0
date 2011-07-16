@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 ?>
 <form name="phrasesearch" method="get" action="../shared/biblio_search.php">
@@ -53,7 +53,7 @@
 				<label for="mediaType">
 				<?php
 					echo T("Media Type:");
-					$mattypes = new MaterialTypes;
+					$mattypes = new MediaTypes;
 					echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
 				?>
 				</label>

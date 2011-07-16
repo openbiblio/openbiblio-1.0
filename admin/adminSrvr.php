@@ -7,9 +7,12 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	require_once(REL(__FILE__, "../model/Collections.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Online.php"));
+	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/States.php"));
+	require_once(REL(__FILE__, "../model/Themes.php"));
 
 	switch ($_REQUEST[mode]){
 		case 'getCircList':
@@ -83,72 +86,56 @@
 			echo $msg;
 			break;
 			
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getAllSites':
-			$sptr = new Sites;
-		  $sites = array();
-			$sSet = $sptr->getAll('name');
-			while ($row = $sSet->next()) {
-			  $sites[] = $row;
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllMedia':
+			$ptr = new MediaTypes;
+			$mtls = array();
+			$set = $ptr->getAllWithStats();
+			while ($row = $set->next()) {
+			  $mtls[] = $row;
 			}
-			echo json_encode($sites);
+			echo json_encode($mtls);
 			break;
-		case 'addNewSite':
-			$sptr = new Sites;
-			echo $sptr->insert($_REQUEST);
-			break;
-		case 'updateSite':
-			$sptr = new Sites;
-			echo $sptr->update($_REQUEST);
-			break;
-		case 'd-3-L-3-tSite':
-			$sptr = new Sites;
-			$sptr->deleteOne($_REQUEST);
-			break;
-
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getAllStates':
-			$sptr = new States;
-		  $states = array();
-			$sSet = $sptr->getAll('description');
-			while ($row = $sSet->next()) {
-			  $states[] = $row;
+		case 'addNewMedia':
+			$ptr = new MediaTypes;
+			$type = array(
+				'description'=>$_POST["description"],
+				'default_flg'=>$_POST['default_flg'],
+				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
+				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
+				'image_file'=>$_POST["image_file"],
+				);
+			list($id, $errors) = $ptr->insert_el($type);
+			if (empty($errors)) {
+				$msg = T("Material type, %desc%, has been added.", array('desc'=>H($type['description'])));
+				echo $msg;
 			}
-			echo json_encode($states);
 			break;
-		case 'addNewState':
-			$sptr = new states;
-			echo $sptr->insert($_REQUEST);
+		case 'updateMedia':
+			$ptr = new MediaTypes;
+			$type = array(
+				'code'=>$_POST["code"],
+				'description'=>$_POST["description"],
+				'default_flg'=>$_POST['default_flg'],
+				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
+				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
+				'image_file'=>$_POST["image_file"],
+			);
+			$errors = $ptr->update_el($type);
+			if (empty($errors)) {
+				$msg = T("Material type, %desc%, has been updated.", array('desc'=>H($type['description'])));
+				echo $msg;
+			}
 			break;
-		case 'updateState':
-			$sptr = new States;
-			echo $sptr->update($_REQUEST);
+		case 'd-3-L-3-tMedia':
+			$code = $_POST["code"];
+			$description = $_POST["desc"];
+			$ptr = new MediaTypes;
+			$ptr->deleteOne($code);
+			$msg = T("Material type, %desc%, has been deleted.", array('desc'=>$description));
+			echo $msg;
 			break;
-		case 'd-3-L-3-tState':
-			$sptr = new States;
-			$sptr->deleteOne($_REQUEST);
-			break;
-
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getOpts':
-			$optr = new Opts;
-	  	$opts = array();
-			$oSet = $optr->getAll();
-			$row = $oSet->next();
-			echo json_encode($row);
-			break;
-		case 'updateOpts':
-			$optr = new Opts;
-		  $_POST[id] = 1;
-			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
-			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
-			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
-			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
-			$rslt = $optr->update($_POST);
-			if(empty($rslt)) $rslt = '1';
-			echo $rslt;
-			break;
-
+				
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getHosts':
 			$hptr = new Hosts;
@@ -173,7 +160,100 @@
 			$hptr = new Hosts;
 			$key = $hptr->key;
 			$sql = "DELETE FROM $hptr->name WHERE `id`=$_GET[id]";
-			$hptr->db->act($sql);
+			echo $hptr->db->act($sql);
+			break;
+
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllSites':
+			$sptr = new Sites;
+		  $sites = array();
+			$sSet = $sptr->getAll('name');
+			while ($row = $sSet->next()) {
+			  $sites[] = $row;
+			}
+			echo json_encode($sites);
+			break;
+		case 'addNewSite':
+			$sptr = new Sites;
+			echo $sptr->insert($_REQUEST);
+			break;
+		case 'updateSite':
+			$sptr = new Sites;
+			echo $sptr->update($_REQUEST);
+			break;
+		case 'd-3-L-3-tSite':
+			$sptr = new Sites;
+			echo $sptr->deleteOne($_REQUEST);
+			break;
+
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getOpts':
+			$optr = new Opts;
+	  	$opts = array();
+			$oSet = $optr->getAll();
+			$row = $oSet->next();
+			echo json_encode($row);
+			break;
+		case 'updateOpts':
+			$optr = new Opts;
+		  $_POST[id] = 1;
+			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
+			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
+			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
+			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
+			$rslt = $optr->update($_POST);
+			if(empty($rslt)) $rslt = '1';
+			echo $rslt;
+			break;
+
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllStates':
+			$ptr = new States;
+		  $states = array();
+			$set = $ptr->getAll('description');
+			while ($row = $set->next()) {
+			  $states[] = $row;
+			}
+			echo json_encode($states);
+			break;
+		case 'addNewState':
+			$ptr = new States;
+			echo $ptr->insert($_REQUEST);
+			break;
+		case 'updateState':
+			$ptr = new States;
+			echo $ptr->update($_REQUEST);
+			break;
+		case 'd-3-L-3-tState':
+			$ptr = new States;
+			echo $ptr->deleteOne($_REQUEST);
+			break;
+
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllThemes':
+			$ptr = new Themes;
+		  $thms = array();
+			$set = $ptr->getAll('theme_name');
+			while ($row = $set->next()) {
+			  $thms[] = $row;
+			}
+			echo json_encode($thms);
+			break;
+		case 'setCrntTheme':
+			$ptr = new Settings;
+			echo $ptr->setOne_el('themeid', $_POST['themeid']);
+			break;
+		case 'addNewTheme':
+			$ptr = new Themes;
+			echo $ptr->insert_el($_POST);
+			break;
+		case 'updateTheme':
+			$ptr = new Themes;
+			echo $ptr->update_el($_POST);
+			break;
+		case 'd-3-L-3-tTheme':
+			$ptr = new Themes;
+			echo $ptr->deleteOne($_POST['themeid']);
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-

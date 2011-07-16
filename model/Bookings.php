@@ -10,7 +10,7 @@ require_once(REL(__FILE__, "../model/History.php"));
 require_once(REL(__FILE__, "../model/Collections.php"));
 require_once(REL(__FILE__, "../model/Calendars.php"));
 require_once(REL(__FILE__, "../model/MemberAccounts.php"));
-require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+require_once(REL(__FILE__, "../model/MediaTypes.php"));
 require_once(REL(__FILE__, "../model/Members.php"));
 
 class Bookings extends CoreTable {
@@ -359,8 +359,8 @@ class Bookings extends CoreTable {
 				break;
 			}
 			# Check wherether the user can take out more books (not sure if I understand this) - LJ
-			$materialTypes = new MaterialTypes();
-			$material = $materialTypes->getByBibid($copy['bibid']);
+			$MediaTypes = new MediaTypes();
+			$material = $MediaTypes->getByBibid($copy['bibid']);
 			$copies = new Copies;
 			$acct = new MemberAccounts;
 			$members = new Members();

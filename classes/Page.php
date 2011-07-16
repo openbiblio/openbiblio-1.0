@@ -34,7 +34,9 @@ class Page {
 				Fatal::internalError(T("Missing required page parameter: %param%", array('param'=>$r)));
 			}
 		}
-		$theme = Settings::get('theme_name');
+		$theme = Settings::get('theme_dir_url');
+		$themeid = Settings::get('themeid');
+		$params['themeid'] = $themeid;
 		$params['theme_dir'] = REL(__FILE__, "../themes/".$theme);
 		$params['theme_dir_url'] = "../themes/".$theme;
 		if (!isset($params['html_head'])) {

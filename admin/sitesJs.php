@@ -108,6 +108,10 @@ sit = {
 	  $('#updtBtn').show();
 	  $('#deltBtn').show();
 	  $('#description').focus();
+	  if (site['count'] < 1) 
+			$('#deltBtn').show(); 
+		else 
+			$('#deltBtn').hide();
 
 		$('#siteid').val(site['siteid']);
 		$('#name').val(site['name']);
@@ -150,7 +154,7 @@ sit = {
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html('Added!');
+				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			  sit.doBackToList();
 			}
@@ -171,11 +175,7 @@ sit = {
 				$('#msgDiv').show();
 			}
 			else {
-				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html('<?php echo T('Updated');?>');
-					$('#updateMsg').show();
-				}
-				$('#msgArea').html('Updated!');
+				$('#msgArea').html(respomse);
 				$('#msgDiv').show();
 			  sit.doBackToList();
 			}
@@ -194,7 +194,7 @@ sit = {
 					$('#msgDiv').show();
 				}
 				else {
-					$('#msgArea').html('Deleted!');
+					$('#msgArea').html(response);
 					$('#msgDiv').show();
 			  	sit.doBackToList();
 				}

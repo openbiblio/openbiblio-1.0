@@ -10,7 +10,7 @@
 
 	include(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
@@ -47,7 +47,7 @@
 		<td align="right" class="primary"><?php echo T("Type of Material:"); ?></td>
 		<td class="primary">
 			<?php
-			$mattypes = new MaterialTypes;
+			$mattypes = new MediaTypes;
 			echo inputfield('select', "materialCd", $mattypes->getDefault(), NULL, $mattypes->getSelect());
 			?>
 		</td>

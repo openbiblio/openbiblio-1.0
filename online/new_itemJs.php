@@ -139,7 +139,7 @@ ni = {
 
 	fetchMaterialList: function () {
 	  <?php // Set default material type
-		$matTypes = new MaterialTypes;
+		$matTypes = new MediaTypes;
 		$material_cd_value = $matTypes->getDefault();
 	  ?>
 	  $.get(ni.bs_url,{mode:'getMaterialList', selectedMt:'<?php echo $material_cd_value ?>'}, function(data){

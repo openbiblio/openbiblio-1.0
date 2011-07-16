@@ -7,7 +7,7 @@
 
 	session_cache_limiter(null);
 
-  $tab = "tools";
+  $tab = "admin";
   $nav = "biblioFlds";
   $focus_form_name = "workForm";
   $focus_form_field = "name";
@@ -161,5 +161,9 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <!-- load jQuery library(s) -->
-<!--script>//console.log('loading ui ');</script-->
-<script type="text/javascript" src="../shared/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+<?php
+	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+	
+	require_once(REL(__FILE__, "flds_js.php"));
+?>	
+	<script type="text/javascript" src="../shared/jquery/jquery-ui-1.8.7.custom.min.js"></script>

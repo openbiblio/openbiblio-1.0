@@ -28,7 +28,7 @@
 	}
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 	require_once(REL(__FILE__, "../classes/Report.php"));
 	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
@@ -107,7 +107,7 @@
 	function processResults($rpt) {
 		$biblios = new Biblios;
 		$bibimages = new BiblioImages;
-		$mats = new MaterialTypes;
+		$mats = new MediaTypes;
 		$mf = new MaterialFields;
 		$results = array();
 		while($row = $rpt->next()) {

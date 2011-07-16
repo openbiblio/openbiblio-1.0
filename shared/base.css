@@ -86,7 +86,7 @@ ol { list-style-type: decimal; }
 /* Remove margins for navigation lists */
 nav ul, nav li { margin: 0; list-style:none; list-style-image: none; }
  
-small { font-size: 85%; }
+small { font-size: 50%; }
 strong, th { font-weight: bold; }
  
 td { vertical-align: top; }

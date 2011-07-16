@@ -84,7 +84,8 @@ if (!isset($doing_install) or !$doing_install) {
 	Settings::load();
 
 	/* Global variables for use with themes */
-	global $ThemeDirUrl, $ThemeDir, $SharedDirUrl, $HTMLHead;
+	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl, $HTMLHead;
+	$ThemeId = Settings::get('theme_name');
 	$ThemeDirUrl = "../themes/".Settings::get('theme_name');
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";
@@ -105,7 +106,6 @@ if (!isset($doing_install) or !$doing_install) {
 		}
 	}
   setSessionFmSettings();
-	//echo "@ after SessionFmSettings: <br />"; print_r($_SESSION);echo "<br />";
 
 	$LOC->init(Settings::get('locale'));
 

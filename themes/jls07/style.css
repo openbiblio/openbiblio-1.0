@@ -23,14 +23,11 @@ h1,h2,h3,h4,h5,h6 {
 	color: white; background: #ccb470;
 	border: solid black 2px;
 	margin: 2px;
-/*
-	background-image: -moz-linear-gradient(hsla(0,0%,100%,.6), 
-																				 hsla(0,0%,100%,0) 
-																				 30px);
-	background-image: -webkit-gradient(linear, 0 0, 0 30, 
-																		 from (hsla(0,0%,100%,.6)), 
-																		 to(hsla(0,0%,100%,0)));
-*/
+	background-image: -webkit-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
+	background-image:    -moz-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
+	background-image:     -ms-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
+	background-image:      -o-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
+	background-image: 				linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	}
 h1 { font-size: 20px; }
 h2 { font-size: 16px; }
@@ -65,8 +62,11 @@ input[type=button], input[type=submit] {
 	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
 	line-height: 1;
 	color: #444; border: none; 
-	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
-	background-image: -moz-linear-gradient(0% 100% 90deg, #bbb, #fff);
+	background-image: -webkit-linear-gradient(top, #fff, #bbb);
+	background-image: -moz-linear-gradient(top, #fff, #bbb);
+	background-image: -ms-linear-gradient(top, #fff, #bbb);
+	background-image: -o-linear-gradient(top, #fff, #bbb);
+	background-image: linear-gradient(top, #fff, #bbb);
 	background-color: rgb(240,240,240);
 	-webkit-border-radius: 23px; -moz-border-radius: 23px; -o-border-radius: 23px;
 	border-radius: 23px;
@@ -198,23 +198,15 @@ table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-style: solid;
 	border-color: black;
 	}
-ul#editTbl {
-	margin-left: 0; padding-left: 0;
-	}
-ul#editTbl li {
-	list-style-type: none;
-	margin: 0; padding: 0;
-	}
-ul#btnRow {
-	margin-left: 0; padding-left: 0;
-	text-align: left;
-	}
-ul#btnRow li {
-	display: inline; margin-right: 1em;
-	}
-ul#btnRow li input[value="Delete"] {
-	float: right; margin-right: 0;
-	}
+ul#editTbl { margin-left:0; padding-left:0; }
+ul#editTbl li { list-style-type:none; 	margin:0; padding:0; }
+ul#btnRow { margin-left:0; padding-left:0; text-align: left; }
+ul#btnRow li { display: inline; margin-right: 1em; }
+ul#btnRow li input[value="Delete"] { float: right; margin-right: 0; }
+fieldset.inlineFldSet { float: left; width:auto; border:0; margin-right:0.5em; padding:0; }
+fieldset.inlineFldSet label { display:block; }
+fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border: 1px solid gray}
+.note { font-size: 70%; }
 .title {
 	font: 20px sans-serif;
 	text-align: center;

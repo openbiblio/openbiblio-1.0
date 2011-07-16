@@ -22,8 +22,8 @@
 	if (isset($_GET["code"])){
 		$code = $_GET["code"];
 		$postVars["code"] = $code;
-		include_once(REL(__FILE__, "../model/MaterialTypes.php"));
-		$mattypes = new MaterialTypes;
+		include_once(REL(__FILE__, "../model/MediaTypes.php"));
+		$mattypes = new MediaTypes;
 		$type = $mattypes->getOne($code);
 
 		$postVars["description"] = $type['description'];
@@ -55,10 +55,10 @@
 			<?php echo inputfield('text','description',$postVars["description"],$attrs); ?>
 		</td>
 	</tr>
+	<tr>
 	  <td>&nbsp;</td>
 	  <th align="left" class="primary"><?php echo T("Adult");?></th>
 	  <th align="left" class="primary"><?php echo T("Juvenile");?></th>
-	<tr>
 	</tr>
 	<tr>
 	  <?php $attrs[size]= 2; $attrs[maxlength] = 2; ?>

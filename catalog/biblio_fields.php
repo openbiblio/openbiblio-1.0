@@ -4,7 +4,7 @@
  */
 	require_once("../shared/common.php");
 
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
@@ -82,7 +82,7 @@
 		}
 
 		# fetch a complete set of all material types
-		$matTypes = new MaterialTypes;
+		$matTypes = new MediaTypes;
 		# determine which is to be 'selected'
 		if (isset($biblio['material_cd'])) {
 			$material_cd_value = $biblio['material_cd'];

@@ -17,7 +17,7 @@
 	}
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
-	require_once(REL(__FILE__, "../model/MaterialTypes.php"));
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
@@ -37,7 +37,7 @@
 	$fieldname="material_cd";
 	$domainTable="material_type_dm";
 
-	$mt = new MaterialTypes();
+	$mt = new MediaTypes();
 	$material_type= $mt->get_name($material_cd);
 
 	echo $msg;
