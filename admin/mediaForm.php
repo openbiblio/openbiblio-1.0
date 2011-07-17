@@ -111,7 +111,7 @@
 </p>
 
 <?php
-	require_once("../themes/".Settings::get('theme_name')."/footer.php");
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
 	require_once(REL(__FILE__, "mediaJs.php"));
 ?>	

@@ -48,7 +48,7 @@ hr { display: block; position: relative;
 legend { font-size: 14px; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
 fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
 table { margin: 2px; }
-td { padding: 0 5px 0 5px; }
+td,th { padding: 0 5px 0 5px; }
 label { font-size: 12px; font-weight: bold; margin-left: 2px;}
 input, select, textarea { margin: 2px; }
 input:not([type=button]):focus, input:not([type=select]):focus, select:focus, textarea:focus {
@@ -56,6 +56,8 @@ input:not([type=button]):focus, input:not([type=select]):focus, select:focus, te
 	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
 	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
 	}
+/*input[attr=required]:after { content:"*"; color: red; }*/
+input[type=checkbox] { padding-left: 5px; }
 input[type=button], input[type=submit] {
 	/* lozenge shape buttons */
 	padding: 2px 4px;
@@ -200,9 +202,11 @@ table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	}
 ul#editTbl { margin-left:0; padding-left:0; }
 ul#editTbl li { list-style-type:none; 	margin:0; padding:0; }
-ul#btnRow { margin-left:0; padding-left:0; text-align: left; }
-ul#btnRow li { display: inline; margin-right: 1em; }
-ul#btnRow li input[value="Delete"] { float: right; margin-right: 0; }
+ul#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
+ul#btnRow li, 
+ul.btnRow li { display: inline; margin-right: 1em; }
+ul#btnRow li input[value="Delete"], 
+ul.btnRow li input[value="Delete"] { float: right; margin-right: 0; }
 fieldset.inlineFldSet { float: left; width:auto; border:0; margin-right:0.5em; padding:0; }
 fieldset.inlineFldSet label { display:block; }
 fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border: 1px solid gray}

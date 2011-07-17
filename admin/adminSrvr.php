@@ -11,6 +11,7 @@
 	require_once(REL(__FILE__, "../model/Online.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
+	require_once(REL(__FILE__, "../model/Staff.php"));
 	require_once(REL(__FILE__, "../model/States.php"));
 	require_once(REL(__FILE__, "../model/Themes.php"));
 
@@ -164,6 +165,26 @@
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getOpts':
+			$optr = new Opts;
+	  	$opts = array();
+			$oSet = $optr->getAll();
+			$row = $oSet->next();
+			echo json_encode($row);
+			break;
+		case 'updateOpts':
+			$optr = new Opts;
+		  $_POST[id] = 1;
+			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
+			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
+			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
+			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
+			$rslt = $optr->update($_POST);
+			if(empty($rslt)) $rslt = '1';
+			echo $rslt;
+			break;
+
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getAllSites':
 			$sptr = new Sites;
 		  $sites = array();
@@ -187,23 +208,38 @@
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getOpts':
-			$optr = new Opts;
-	  	$opts = array();
-			$oSet = $optr->getAll();
-			$row = $oSet->next();
-			echo json_encode($row);
+		case 'getAllStaff':
+			$ptr = new Staff;
+		  $staff = array();
+			$set = $ptr->getAll('last_name');
+			while ($row = $set->next()) {
+			  $staff[] = $row;
+			}
+			echo json_encode($staff);
 			break;
-		case 'updateOpts':
-			$optr = new Opts;
-		  $_POST[id] = 1;
-			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
-			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
-			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
-			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
-			$rslt = $optr->update($_POST);
-			if(empty($rslt)) $rslt = '1';
-			echo $rslt;
+		case 'addNewStaff':
+			foreach (array('suspended','admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
+				if (isset($_POST[$flg.'_flg'])) {
+					$_POST[$flg.'_flg'] = 'Y';
+				} else {
+					$_POST[$flg.'_flg'] = 'N';
+				}
+			}
+			$ptr = new Staff;
+			echo $ptr->insert_el($_POST);
+			break;
+		case 'updateStaff':
+			$ptr = new Staff;
+			echo $ptr->update_el($_POST);
+			break;
+		case 'd-3-L-3-tStaff':
+			$ptr = new Staff;
+			echo $ptr->deleteOne($_POST['userid']);
+			break;
+		case 'setStaffPwd':
+			$ptr = new Staff;
+			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
+			echo $ptr->update_el($rec);
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-

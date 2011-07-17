@@ -54,20 +54,21 @@ class Staff extends CoreTable {
 	}
 	function insert_el($rec, $confirmed=false) {
 		if(isset($rec['pwd'])) {
-			$rec['pwd'] = md5(strtolower($rec['pwd']));
+			$rec['pwd'] = md5($rec['pwd']);
 		}
 		if(isset($rec['pwd2'])) {
-			$rec['pwd2'] = md5(strtolower($rec['pwd2']));
+			$rec['pwd2'] = md5($rec['pwd2']);
 		}
 		return parent::insert_el($rec, $confirmed);
 	}
 	function update_el($rec, $confirmed=false) {
-		if(isset($rec['pwd'])) {		
-			$rec['pwd'] = md5(strtolower($rec['pwd']));	
+print_r($rec);	
+		if (isset($rec['pwd']) && isset($rec['pwd2']) && ($rec['pwd'] == $rec['pwd']) ) {
+			$rec['pwd'] = md5($rec['pwd']);	
+			$rec['pwd2'] = md5($rec['pwd2']);
+			return parent::update_el($rec, $confirmed);
+		} else {
+			return "invalid password";
 		}
-		if(isset($rec['pwd2'])) {
-			$rec['pwd2'] = md5(strtolower($rec['pwd2']));
-		}
-		return parent::update_el($rec, $confirmed);
 	}
 }
