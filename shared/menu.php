@@ -117,12 +117,12 @@ function staff_menu() {
 		Nav::node('admin/memberfields', T("Member Fields"), '../admin/member_fields_list.php');
 		Nav::node('admin/biblio_copy_fields', T("Biblio Copy Fields"),'../admin/biblio_copy_fields_list.php');
 		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
-		Nav::node('admin/collections', T("Collections"), '../admin/collections_list.php');
+		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
 		Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php?reset=Y');
 		Nav::node('admin/opac', T("View Opac"), '../catalog/biblio_search.php?tab=OPAC');
-		Nav::node('admin/online', T("Online Options"), '../admin/online_opts_form.php');
+		Nav::node('admin/online', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/hosts', T("Online Hosts"), '../admin/online_hosts_form.php');
 	}	
 	

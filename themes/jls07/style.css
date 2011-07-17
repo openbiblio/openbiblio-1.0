@@ -48,8 +48,8 @@ hr { display: block; position: relative;
 legend { font-size: 14px; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
 fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
 table { margin: 2px; }
-td,th { padding: 0 5px 0 5px; }
-label { font-size: 12px; font-weight: bold; margin-left: 2px;}
+td,th { padding: 0 5px 0 5px; vertical-align: top;}
+label, .lblFld { font-size: 12px; font-weight: bold; margin-left: 2px;}
 input, select, textarea { margin: 2px; }
 input:not([type=button]):focus, input:not([type=select]):focus, select:focus, textarea:focus {
 	/* place blue shadow on all input fields */
