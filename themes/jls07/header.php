@@ -32,7 +32,7 @@
 		</h3>
 		<br />
 		<form method="get" action="../shared/logout.php">
-			<input type="submit" value="<?php echo T("Logout") ?>" class="button">
+			<input type="submit" value="<?php echo T("Logout") ?>" />
 		</form>
 	</header>
 	<hr />

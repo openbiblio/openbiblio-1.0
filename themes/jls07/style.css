@@ -94,6 +94,7 @@ aside {
 	box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
 	}
 img#logo { padding: 3px; border: 2px solid #ddd; width:90%; }
+aside input[type=submit] { position: relative; left:30%; }
 
 /*************************************************/
 h1.staff_head {
