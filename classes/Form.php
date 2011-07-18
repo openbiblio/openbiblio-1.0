@@ -77,7 +77,7 @@ class Form {
 				}
 				echo $html;
 			} else {
-				$rows[] = array('title'=>$f['title'], 'html'=>$html, 'error'=>$error);
+				$rows[] = array('title'=>$f['title'], 'id'=>$f['name'], 'html'=>$html, 'error'=>$error);
 			}
 		}
 		echo "<fieldset>\n";
@@ -85,10 +85,10 @@ class Form {
 		if ($msg) {
 			echo '<tr><td colspan="2" class="error">'.H($msg).'</td></tr></thead>';
 		}
-		echo "<tbody class=\"striped\">";
+		echo '<tbody class="striped">';
 		foreach ($rows as $r) {
 			echo "<tr>";
-			echo "<th>".H($r['title'])."</th>";
+			echo '<th><label for="'.$r["id"].'">'.H($r["title"]).':</label></th>';
 			if ($r['error']) {
 				$err = '<span class="error">'.H($r['error']).'</span><br />';
 			} else {
@@ -97,10 +97,11 @@ class Form {
 			echo '<td>'.$err.$r['html']."</td></tr>\n";
 		}
 		echo "</tbody>";
-		echo "<tfoot><tr><td class='buttons'>";
-		echo "<input class='button' type='submit' value='".H($params['submit'])."' />\n";
+		echo "<tfoot><tr><td>";
+		echo '<input type="submit" value="'.H($params['submit']).'" />';
 		if ($params['cancel']) {
-			echo '<a class="small_button" href="'.H($params['cancel']).'">'.T("Cancel").'</a> ';
+			echo '<a href="'.H($params['cancel']).'">'.T("Cancel").'</a> ';
+			//echo '<input type="button" value="'.H($params['Cancel']).'" />';
 		}
 		echo '</td></tr></tfoot></table>';
 		echo "</fieldset>\n";
@@ -120,7 +121,7 @@ class Form {
 			foreach ($field['options'] as $val => $desc) {
 				$s .= '<option value="'.H($val).'" ';
 				if ($field['value'] == $val) {
-					$s .= ' selected="selected"';
+					$s .= ' selected ';
 				}
 				$s .= ">".H($desc)."</option>\n";
 			}
@@ -137,7 +138,7 @@ class Form {
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="Y" ';
 			if ($field['value'] == 'Y') {
-				$s .= 'checked="checked" ';
+				$s .= ' checked ';
 			}
 			$s .= $attrs."/>";
 			break;
@@ -149,7 +150,10 @@ class Form {
 			$s .= 'id="'.H($field['name']).'" ';
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="'.H($field['value']).'" ';
-			$s .= $attrs."/>";
+			if ($field['required'] == true) {
+				$s .= ' required aria-required="true" ';
+			}
+			$s .= $attrs." />";
 			break;
 		}
 		if ($field['label']) {

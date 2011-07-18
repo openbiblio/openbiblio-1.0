@@ -17,6 +17,9 @@
 	<header>
 		<h3 class="staff_head">
 			<?php 
+		if (Settings::get('library_image_url') != "") {
+			echo '<img id="logo"'.' src="'.H(Settings::get("library_image_url")).'" border="0" /><br />';
+		}
 				// Libname is defined in header_top.php	
 				echo $libName . ":<br />" . T("Staff Interface");
 				if (Settings::get('show_lib_info') == 'Y') {

@@ -68,12 +68,12 @@
 				<span class="note"><?php echo T("(enter 0 for unlimited)"); ?></span>
 	  	</fieldset>
 	  	<fieldset class="inlineFldSet">
-	  		<label for="adult_checkout_limit"><?php echo T("Adult");?>:</th><br />
+	  		<label for="adult_checkout_limit"><?php echo T("Adult");?>:<br />
 				<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
 				<span class="reqd">*</span>    
 	  	</fieldset>
 	  	<fieldset class="inlineFldSet">
-	  		<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:</th><br />
+	  		<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:<br />
 				<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
 				<span class="reqd">*</span>    
 	  	</fieldset>

@@ -13,7 +13,7 @@ body {
 
 /*************************************************/
 /*  Basic components, may be used anywhere       */
-h1,h2,h3,h4,h5,h6, fieldset, input[type=button], input[type=submit] {
+h1,h2,h3,h4,h5,h6, fieldset, input[type=button], input[type=submit], img {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
@@ -93,7 +93,8 @@ aside {
 	-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 	box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
 	}
-	
+img#logo { padding: 3px; border: 2px solid #ddd; width:90%; }
+
 /*************************************************/
 h1.staff_head {
 	display: block;

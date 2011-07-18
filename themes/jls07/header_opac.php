@@ -10,7 +10,12 @@
 <aside id="sidebar">
 	<header>
 		<h3 class="staff_head">
-				// Libname is defined in header_top.php	
+				<?php
+				if (Settings::get('library_image_url') != "") {
+					echo '<img id="logo"'.' src="'.H(Settings::get("library_image_url")).'" border="0" /><br />';
+				}
+				?>
+				<!-- Libname is defined in header_top.php -->	
 				<?php echo "$libName:<br />".T("OPAC Interface"); ?>
 		</h3>
 		<div id="library_hours"><?php echo T(Settings::get('library_hours')) ?></div>
