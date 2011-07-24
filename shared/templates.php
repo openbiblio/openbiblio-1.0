@@ -76,6 +76,7 @@ function URL($s, $v=NULL) {
 }
 function T($s, $v=NULL) {
 	global $LOC;
-	return TEMPLATE($LOC->translateOne($s), $v);
+	//return TEMPLATE($LOC->translateOne($s), $v);
+	return $LOC->getText($s);
 }
 
