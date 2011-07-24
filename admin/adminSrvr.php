@@ -8,6 +8,7 @@
 
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
+	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 	require_once(REL(__FILE__, "../model/Online.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
@@ -88,14 +89,41 @@
 			break;
 			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getHosts':
+			$hptr = new Hosts;
+		  $hosts = array();
+			$hSet = $hptr->getAll('seq');
+			while ($row = $hSet->next()) {
+			  $hosts[] = $row;
+			}
+			echo json_encode($hosts);
+			break;
+		case 'addNewHost':
+			$hptr = new Hosts;
+			if (empty($_POST[active])) $_POST[active] = 'n';
+			echo $hptr->insert($_POST);
+			break;
+		case 'updateHost':
+			$hptr = new Hosts;
+			if (empty($_POST[active])) $_POST[active] = 'n';
+			echo $hptr->update($_POST);
+			break;
+		case 'd-3-L-3-tHost':
+			$hptr = new Hosts;
+			$key = $hptr->key;
+			$sql = "DELETE FROM $hptr->name WHERE `id`=$_GET[id]";
+			echo $hptr->db->act($sql);
+			break;
+
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getAllMedia':
 			$ptr = new MediaTypes;
-			$mtls = array();
+			$med = array();
 			$set = $ptr->getAllWithStats();
 			while ($row = $set->next()) {
-			  $mtls[] = $row;
+			  $med[] = $row;
 			}
-			echo json_encode($mtls);
+			echo json_encode($med);
 			break;
 		case 'addNewMedia':
 			$ptr = new MediaTypes;
@@ -137,74 +165,58 @@
 			echo $msg;
 			break;
 				
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getHosts':
-			$hptr = new Hosts;
-		  $hosts = array();
-			$hSet = $hptr->getAll('seq');
-			while ($row = $hSet->next()) {
-			  $hosts[] = $row;
+	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+		case 'getAllMbrFlds':
+			$ptr = new MemberCustomFields;
+			$flds = array();
+			$set = $ptr->getAll();
+			while ($row = $set->next()) {
+			  $flds[] = $row;
 			}
-			echo json_encode($hosts);
-			break;
-		case 'addNewHost':
-			$hptr = new Hosts;
-			if (empty($_POST[active])) $_POST[active] = 'n';
-			echo $hptr->insert($_POST);
-			break;
-		case 'updateHost':
-			$hptr = new Hosts;
-			if (empty($_POST[active])) $_POST[active] = 'n';
-			echo $hptr->update($_POST);
-			break;
-		case 'd-3-L-3-tHost':
-			$hptr = new Hosts;
-			$key = $hptr->key;
-			$sql = "DELETE FROM $hptr->name WHERE `id`=$_GET[id]";
-			echo $hptr->db->act($sql);
+			echo json_encode($flds);
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getOpts':
-			$optr = new Opts;
+			$ptr = new Opts;
 	  	$opts = array();
-			$oSet = $optr->getAll();
-			$row = $oSet->next();
+			$set = $ptr->getAll();
+			$row = $set->next();
 			echo json_encode($row);
 			break;
 		case 'updateOpts':
-			$optr = new Opts;
+			$ptr = new Opts;
 		  $_POST[id] = 1;
 			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
 			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
 			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
 			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
-			$rslt = $optr->update($_POST);
+			$rslt = $ptr->update($_POST);
 			if(empty($rslt)) $rslt = '1';
 			echo $rslt;
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getAllSites':
-			$sptr = new Sites;
+			$ptr = new Sites;
 		  $sites = array();
-			$sSet = $sptr->getAll('name');
-			while ($row = $sSet->next()) {
+			$set = $ptr->getAll('name');
+			while ($row = $set->next()) {
 			  $sites[] = $row;
 			}
 			echo json_encode($sites);
 			break;
 		case 'addNewSite':
-			$sptr = new Sites;
-			echo $sptr->insert($_REQUEST);
+			$ptr = new Sites;
+			echo $ptr->insert($_REQUEST);
 			break;
 		case 'updateSite':
-			$sptr = new Sites;
-			echo $sptr->update($_REQUEST);
+			$ptr = new Sites;
+			echo $ptr->update($_REQUEST);
 			break;
 		case 'd-3-L-3-tSite':
-			$sptr = new Sites;
-			echo $sptr->deleteOne($_REQUEST);
+			$ptr = new Sites;
+			echo $ptr->deleteOne($_REQUEST);
 			break;
 
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-

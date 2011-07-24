@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-* HTML5 ? Boilerplate
+/* HTML5 ? Boilerplate
 *
 * style.css contains a reset, font normalization and some base styles.
 *
@@ -119,7 +119,7 @@ label, input[type="button"], input[type="submit"], input[type="image"], button {
 button, input, select, textarea { margin: 0; }
  
 /* Colors for form validity */
-input:valid, textarea:valid   {  }
+input:valid, textarea:valid   {  border-radius: 1px; }
 input:invalid, textarea:invalid {
    border-radius: 1px; 
 	 -moz-box-shadow: 0px 0px 5px hsla(346, 93%, 49%, 0.5); 
@@ -131,9 +131,10 @@ input:invalid, textarea:invalid {
   
 /* These selection declarations have to be separate
    No text-shadow: twitter.com/miketaylr/status/12228805301
+   HOT PINK???
 */
-::-moz-selection{ background:hsl(241, 89%, 71.6%); color:#fff; text-shadow: none; }
-::selection { background:hsl(241, 89%, 71.6%); color:#fff; text-shadow: none; }
+/*::-moz-selection{ background:hsl(241, 89%, 71.6%); color:#fff; text-shadow: none; }
+::selection { background:hsl(241, 89%, 71.6%); color:#fff; text-shadow: none; }*/
  
 /* j.mp/webkit-tap-highlight-color */
 a:link { -webkit-tap-highlight-color: #FF5E99; }
@@ -166,4 +167,4 @@ h1, h2, h3, h4, h5, h6 { font-weight: bold; }
 a, a:active, a:visited { color: #607890; }
 a:hover { color: #036; }
  
-}
+

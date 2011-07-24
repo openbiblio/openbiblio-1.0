@@ -15,6 +15,7 @@ require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 require_once(REL(__FILE__, "../classes/Links.php"));
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+
 echo '<h3>'.T("Calendars").'</h3>';
 
 if (isset($_REQUEST['msg'])) {
@@ -65,4 +66,5 @@ echo $t->end();
 echo "</fieldset>";
 
 echo $disp->pages($page_url, $currentPageNmbr);
- ;
+
+require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");

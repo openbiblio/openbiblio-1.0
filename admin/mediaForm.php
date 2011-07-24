@@ -16,28 +16,29 @@
 
 <div id="listDiv">
 <h5 id="updateMsg"></h5>
-<br />
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
 <table id="showList" name="showList"">
 	<thead>
   	<tr>
-			<th rowspan="2" valign="top"><?php echo T("Function"); ?></th>
-			<th rowspan="2" valign="top" nowrap="yes"><?php echo T("Description"); ?></th>
-			<th colspan="2" valign="top"><?php echo T("Checkout Limit"); ?></th>
-			<th rowspan="2" valign="top"><?php echo T("Image File"); ?></th>
-			<th rowspan="2" valign="top"><?php echo T("Default"); ?></th>
-			<th rowspan="2" valign="top"><?php echo T("Item Count"); ?></th>
+			<th rowspan="2"><?php echo T("Function"); ?></th>
+			<th rowspan="2" nowrap="yes"><?php echo T("Description"); ?></th>
+			<th colspan="2"><?php echo T("Checkout Limit"); ?></th>
+			<th rowspan="2"><?php echo T("Image File"); ?></th>
+			<th rowspan="2"><?php echo T("Default"); ?></th>
+			<th rowspan="2"><?php echo T("Item Count"); ?></th>
 		</tr>
 		<tr>
 			<th valign="top"><?php echo T("Adult"); ?></th>
 			<th><?php echo T("Juvenile"); ?></th>
 		</tr>
 	</thead>
+	
 	<tbody class="striped">
 	  <tr><td colspan="4"><?php echo T("No sites have been defined."); ?> </td></tr>
 	</tbody>
+	
 	<tfoot>
   	<tr>
   		<!-- spacer used to slightly seperate button from form body -->

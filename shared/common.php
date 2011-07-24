@@ -77,8 +77,8 @@ require_once(REL(__FILE__, 'jsontemplate.php'));
 require_once(REL(__FILE__, "../classes/Localize.php"));
 require_once(REL(__FILE__, 'templates.php'));
 
-	global $LOC;
-	$LOC = new Localize;
+global $LOC;
+$LOC = new Localize;
 if (!isset($doing_install) or !$doing_install) {
 	include_once(REL(__FILE__, "../model/Settings.php"));
 	Settings::load();
@@ -86,7 +86,7 @@ if (!isset($doing_install) or !$doing_install) {
 	/* Global variables for use with themes */
 	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl, $HTMLHead;
 	$ThemeId = Settings::get('theme_name');
-	$ThemeDirUrl = "../themes/".Settings::get('theme_name');
+	$ThemeDirUrl = "../themes/".Settings::get('theme_dir_url');
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";
 	$HTMLHead = "";
