@@ -5,7 +5,7 @@
 /* This file builds upon the structures defined within ../shared/base.css */
 
 body {
-  font-size: 45%; line-height: 1.25em
+  font-size: 45%; line-height: 1.25em;
   font-family: verdana,arial,helvetica, serif;
   color: #000000; background: #90b0b8;
   font-size:0.9em;
@@ -51,12 +51,15 @@ table { margin: 2px; }
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
 label, .lblFld { font-size: 12px; font-weight: bold; margin-left: 2px;}
 input, select, textarea { margin: 2px; }
-input:not([type=button]):focus, input:not([type=select]):focus, select:focus, textarea:focus {
+input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
+select:focus, 
+textarea:focus {
 	/* place blue shadow on all input fields */
 	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
 	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
 	}
-/*input[attr=required]:after { content:"*"; color: red; }*/
+input[readonly] { border: 0; background-color: #ffffdd; }
+input[required]::after { content:"*"; color: red; }
 input[type=checkbox] { padding-left: 5px; }
 input[type=button], input[type=submit] {
 	/* lozenge shape buttons */
