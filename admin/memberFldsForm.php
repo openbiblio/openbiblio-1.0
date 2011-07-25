@@ -5,7 +5,7 @@
 
 	require_once("../shared/common.php");
 	$tab = "admin";
-	$nav = "member_fields";
+	$nav = "memberFields";
 
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 

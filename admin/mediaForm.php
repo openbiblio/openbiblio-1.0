@@ -6,13 +6,13 @@
 	require_once("../shared/common.php");
 
 	$tab = "admin";
-	$nav = "materials";
+	$nav = "media";
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
-<h3 id="listHdr"><?php echo T('Media Types'); ?></h3>
+<h3 id="listHdr"><?php echo T('List of Media Types'); ?></h3>
 
 <div id="listDiv">
 <h5 id="updateMsg"></h5>

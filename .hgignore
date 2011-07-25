@@ -1,3 +1,4 @@
 syntax: glob
 
 database_constants.php
+glob:images/Thumbs.db

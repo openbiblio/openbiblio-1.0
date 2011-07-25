@@ -9,7 +9,7 @@ med = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Media Types")."',\n";
-		echo "editHdr: '".T("Editing Media")."',\n";
+		echo "editHdr: '".T("Edit Media Properties")."',\n";
 	?>
 	
 	init: function () {

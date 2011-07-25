@@ -122,7 +122,7 @@ thm = {
 	},
 	doCopy: function (e) {
 	  var themeid = $(e.target).prev().val();
-console.log('you wish to copy theme: '+themeid);
+		//console.log('you wish to copy theme: '+themeid);
 		for (n in thm.json) {
 		  if (thm.json[n]['themeid'] == themeid) {
 				thm.showTheme(thm.json[n]);

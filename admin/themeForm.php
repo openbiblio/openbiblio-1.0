@@ -28,7 +28,7 @@
 </fieldset>
 </form>
 
-<br />
+<p class="error">Sorry, Not Working, Under Construction<p>
 
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
