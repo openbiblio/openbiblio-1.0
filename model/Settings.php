@@ -76,6 +76,28 @@ class Settings {
 		$db->unlock();
 		return $errors;
 	}
+	function _getSubdirs($root) {
+		$aray = array();
+	  if (is_dir('../'.$root)) {
+			//echo $root." Dir found: <br />";
+  	  ## find all sub-directories
+			if ($dirHndl = opendir('../'.$root)) {
+		    # look at all sub-dirs
+		    while (false !== ($subdir = readdir($dirHndl))) {
+		      if (($subdir == '.') || ($subdir == '..')) continue;
+					//echo "subdir => $subdir<br />";
+  	      $path = "../".$root."/".$subdir;
+  	      if (is_dir($path)) {
+  	        if (!in_array($path, $aray)) {
+  	        	$aray[$path] = $path;
+						}
+					}
+  		  }
+  		  closedir($dirHndl);
+			}
+		}
+		return $aray;
+	}
 	function _mkField($s) {
 		global $_settings_validators;
 		$attrs = array();
@@ -97,6 +119,12 @@ class Settings {
 			case 'sites':
 				$sites = new Sites;
 				$options = $sites->getSelect();
+				break;
+			case 'themes':
+				$crntTheme = Settings::get('theme_dir_url');
+				//echo "crnt theme= ".$crntTheme;			
+				$options = Settings::_getSubdirs('themes');
+				$s['value'] = $crntTheme;
 				break;
 			case 'default':
 				Fatal::internalError("Unknown select type in settings");
