@@ -16,7 +16,6 @@
   require_once(REL(__FILE__, "../shared/logincheck.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-	require_once(REL(__FILE__, "plugMgr_js.php"));
 ?>
 <h3 id="pageHdr" class="title"><?php echo T('Plugin Manager'); ?></h3>
 
@@ -33,3 +32,9 @@
 </div>
 
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+
+<?php
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+	
+	require_once(REL(__FILE__, "plugMgr_js.php"));
+?>	
