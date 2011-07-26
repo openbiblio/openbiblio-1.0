@@ -5,7 +5,7 @@
 /* This file builds upon the structures defined within ../shared/base.css */
 
 body {
-  font-size: 45%; line-height: 1.25em;
+  /*font-size: 45%; line-height: 1.25em;*/
   font-family: verdana,arial,helvetica, serif;
   color: #000000; background: #90b0b8;
   font-size:0.9em;
@@ -49,6 +49,9 @@ legend { font-size: 14px; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5
 fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
 table { margin: 2px; }
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
+td.number { text-align: right; }
+td.center { text-align: center; }
+td.label { text-align: left; white-space: nowrap; }
 label, .lblFld { font-size: 12px; font-weight: bold; margin-left: 2px;}
 input, select, textarea { margin: 2px; }
 input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
@@ -189,6 +192,7 @@ div#content {
 	border: solid black 2px;
 	background: white;
 	padding: 2px 2px 2px 2px;
+	/*width: auto;*/
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
@@ -338,16 +342,49 @@ input.error {
 label.error {
 	color: red;
 	}
-td.label {
-	text-align: left; /*vertical-align: center;*/
-	white-space: nowrap;
-	}
-td.number {
-	text-align: right;
-	}
-td.center {
-	text-align: center;
-	}
 tr.searchRow {
 	height: 35px;
+	}
+/*************************************************/
+/* for draggable configuration screens */
+/*
+#configDiv fieldset.configArea {
+	width: 200px; float: left;
+	}
+*/
+div#configDiv{
+	width: auto;
+	}
+#configDiv fieldset#existingSpace {
+	display: inline;
+	/*width: auto;*/
+	float: left;
+	}
+#configDiv fieldset#potentialSpace {
+	display: inline;
+	/*width: auto;*/
+  float: right;
+	}
+#configDiv fieldset#potentialSpace select {
+	margin-bottom: 10px;
+	}
+#configDiv ul#existing,ul#potential {
+	list-style-type: none;
+	margin: 0; padding: 0; margin-right: 5px;
+	}
+#configDiv ul#existing li,ul#potential li {
+	margin-bottom: 2px;
+	/*width: 270px;*/
+	font-size: 1.2em;
+	}
+#configDiv ul#existing li {
+	color: black; background: #FFFF99;
+	}
+#configDiv ul#potential li {
+	color: black; background: #CCFFFF;
+	}
+#typeChoice fieldset {
+	margin: 0; padding: 5px;
+	/*width: 500px;*/
+	text-align: center;
 	}
