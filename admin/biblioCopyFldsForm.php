@@ -5,7 +5,7 @@
 
 	require_once("../shared/common.php");
 	$tab = "admin";
-	$nav = "biblio_copy_fields";
+	$nav = "biblioCopyFields";
 	$helpPage = "customCopyFields";
 
 	require_once(REL(__FILE__, "../shared/logincheck.php"));

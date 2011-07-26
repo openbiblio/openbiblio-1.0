@@ -117,7 +117,8 @@ function staff_menu() {
 		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
-		Nav::node('admin/biblio_copy_fields', T("Biblio Copy Fields"),'../admin/biblio_copy_fields_list.php');
+		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
+		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');

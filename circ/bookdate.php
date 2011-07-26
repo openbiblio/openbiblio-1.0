@@ -155,11 +155,11 @@
 </tr>
 <tr>
 <td class="name"><?php echo T("Date:"); ?></td>
-<td class="value"><?php echo inputfield('text', 'date','' , array('size'=>10)); ?></td>
+<td class="value"><?php echo inputfield('date', 'date','' , array('size'=>10)); ?></td>
 </tr>
 <tr>
 <td class="name"><?php echo T("Days Out:"); ?></td>
-<td class="value"><?php echo inputfield('text', 'days', $cdat['days_due_back'], array('size'=>4)); ?></td>
+<td class="value"><?php echo inputfield('number', 'days', $cdat['days_due_back'], array('size'=>4)); ?></td>
 </tr>
 <tr>
 <td></td><td class="value"><input type="submit" value="<?php echo T("Submit"); ?>" class="button" /></td>
