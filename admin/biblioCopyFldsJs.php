@@ -4,33 +4,33 @@
  */
 // JavaScript Document
 
-mbf = {
+bcf = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
-		echo "listHdr: '".T("Custom Member Fields")."',\n";
+		echo "listHdr: '".T("Custom Copy Fields")."',\n";
 		echo "editHdr: '".T("Editing Custom Fields")."',\n";
 		echo "newHdr: '".T("Add new custom field")."',\n";
 	?>
 	
 	init: function () {
-		mbf.initWidgets();
+		bcf.initWidgets();
 
-		mbf.url = 'adminSrvr.php';
-		mbf.editForm = $('#editForm');
+		bcf.url = 'adminSrvr.php';
+		bcf.editForm = $('#editForm');
 
 		$('#reqdNote').css('color','red');
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,mbf.doNewFields);
-		$('#addBtn').bind('click',null,mbf.doAddFields);
-		$('#updtBtn').bind('click',null,mbf.doUpdateFields);
-		$('#cnclBtn').bind('click',null,mbf.resetForms);
-		$('#deltBtn').bind('click',null,mbf.doDeleteFields);
+		$('#showForm .newBtn').bind('click',null,bcf.doNewFields);
+		$('#addBtn').bind('click',null,bcf.doAddFields);
+		$('#updtBtn').bind('click',null,bcf.doUpdateFields);
+		$('#cnclBtn').bind('click',null,bcf.resetForms);
+		$('#deltBtn').bind('click',null,bcf.doDeleteFields);
 
-		mbf.resetForms()
+		bcf.resetForms()
 	  $('#msgDiv').hide();
-		mbf.fetchFields();
+		bcf.fetchFields();
 	},
 	
 	//------------------------------
@@ -38,22 +38,22 @@ mbf = {
 	},
 	resetForms: function () {
 		//console.log('resetting!');
-	  $('#listHdr').html(mbf.listHdr);
-	  $('#editHdr').html(mbf.editHdr);
+	  $('#listHdr').html(bcf.listHdr);
+	  $('#editHdr').html(bcf.editHdr);
 		$('#editDiv').hide();
 		$('#listDiv').show();
     $('#cnclBtn').val('Cancel');
 	},
 	doBackToList: function () {
-		$('#msgDiv').hide(10000);
-		mbf.resetForms();
-		mbf.fetchFields();
+		//$('#msgDiv').hide(10000);
+		bcf.resetForms();
+		bcf.fetchFields();
 	},
 	
 	//------------------------------
 	fetchFields: function () {
-	  $.getJSON(mbf.url,{cat:'mbrFlds', mode:'getAllMbrFlds'}, function(dataAray){
-	    mbf.json = dataAray;
+	  $.getJSON(bcf.url,{cat: 'copyFlds', mode:'getAllCopyFlds'}, function(dataAray){
+	    bcf.json = dataAray;
 			var html = '';
 			for (obj in dataAray) {
 				var item = dataAray[obj];
@@ -68,7 +68,7 @@ mbf = {
 			}
 			$('#showList tBody').html(html);
 
-			$('.editBtn').bind('click',null,mbf.doEdit);
+			$('.editBtn').bind('click',null,bcf.doEdit);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
 		});
@@ -77,9 +77,9 @@ mbf = {
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
 		//console.log('you wish to edit code: '+code);
-		for (n in mbf.json) {
-		  if (mbf.json[n]['code'] == code) {
-				mbf.showFields(mbf.json[n]);
+		for (n in bcf.json) {
+		  if (bcf.json[n]['code'] == code) {
+				bcf.showFields(bcf.json[n]);
 			}
 		}
 		return false;
@@ -87,7 +87,7 @@ mbf = {
 	
 	showFields: function (fields) {
 		//console.log('showing : '+fields['description']);
-	  $('#fieldsHdr').html(mbf.editHdr);
+	  $('#fieldsHdr').html(bcf.editHdr);
 	  $('#addBtn').hide();
 	  $('#updtBtn').show();
 	  $('#deltBtn').show();
@@ -104,7 +104,7 @@ mbf = {
 	
 	doNewFields: function (e) {
 	  document.forms['editForm'].reset();
-	  $('#fieldsHdr').html(mbf.newHdr);
+	  $('#fieldsHdr').html(bcf.newHdr);
 		$('#code').attr('readonly',false)
 							.attr('required',true);
 		$('#codeReqd').show();
@@ -118,10 +118,10 @@ mbf = {
 	},
 	
 	doAddFields: function () {
-		$('#mode').val('addNewFields');
+		$('#mode').val('addNewCopyFld');
 		var parms = $('#editForm').serialize();
 		//console.log('adding: '+parms);
-		$.post(mbf.url, parms, function(response) {
+		$.post(bcf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
 				$('#msgArea').html(response);
@@ -130,7 +130,7 @@ mbf = {
 			else {
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
-			  mbf.doBackToList();
+			  bcf.doBackToList();
 			}
 		});
 		return false;
@@ -139,10 +139,10 @@ mbf = {
 	doUpdateFields: function () {
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
-		$('#mode').val('updateFields');
+		$('#mode').val('updateCopyFld');
 		var parms = $('#editForm').serialize();
 		//console.log('updating: '+parms);
-		$.post(mbf.url, parms, function(response) {
+		$.post(bcf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
 				$('#msgArea').html(response);
@@ -151,17 +151,17 @@ mbf = {
 			else {
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
-			  mbf.doBackToList();
+			  bcf.doBackToList();
 			}
 		});
 		return false;
 	},
 	
 	doDeleteFields: function (e) {
-		var msg = mbf.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
+		var msg = bcf.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	'cat':'mbrFlds', 'mode':'d-3-L-3-tFields', 'code':$('#code').val(), 'description':$('#description').val() };
-	  	$.post(mbf.url, parms, function(response){
+	  	var parms = {	'cat':'copyFlds', 'mode':'d-3-L-3-tCopyFld', 'code':$('#code').val(), 'description':$('#description').val() };
+	  	$.post(bcf.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);
 					$('#msgArea').html(response);
@@ -170,7 +170,7 @@ mbf = {
 				else {
 					$('#msgArea').html(response);
 					$('#msgDiv').show();
-			  	mbf.doBackToList();
+			  	bcf.doBackToList();
 				}
 			});
 		}
@@ -178,5 +178,5 @@ mbf = {
 	},
 };
 
-$(document).ready(mbf.init);
+$(document).ready(bcf.init);
 </script>

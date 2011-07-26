@@ -4,19 +4,35 @@
  */
 
   require_once("../shared/common.php");
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
 
+	### TODO - legacy feature, replace with following switch ###
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
-	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 	require_once(REL(__FILE__, "../model/Online.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Staff.php"));
 	require_once(REL(__FILE__, "../model/States.php"));
 	require_once(REL(__FILE__, "../model/Themes.php"));
+	
+	switch ($_REQUEST['cat']) {
+		case 'copyFlds':
+			require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+			$ptr = new BiblioCopyFields;
+			break;
+		case 'mbrFlds':
+			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+			$ptr = new MemberCustomFields;
+			break;
+		default:
+		  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
+		  exit;
+		break;
+	}
 
-	switch ($_REQUEST[mode]){
+	switch ($_REQUEST['mode']){
+
+	  #-.-.-.-.-.- Collections -.-.-.-.-.-.-
 		case 'getCircList':
 			$ptr = new CircCollections;
 		  $colls = array();
@@ -88,34 +104,63 @@
 			echo $msg;
 			break;
 			
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getHosts':
-			$hptr = new Hosts;
-		  $hosts = array();
-			$hSet = $hptr->getAll('seq');
-			while ($row = $hSet->next()) {
-			  $hosts[] = $row;
+	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
+		case 'getAllCopyFlds':
+			$flds = array();
+			$set = $ptr->getAll();
+			while ($row = $set->next()) {
+			  $flds[] = $row;
 			}
-			echo json_encode($hosts);
+			echo json_encode($flds);
 			break;
-		case 'addNewHost':
-			$hptr = new Hosts;
-			if (empty($_POST[active])) $_POST[active] = 'n';
-			echo $hptr->insert($_POST);
+		case 'addNewCopyFld':
+			list($id, $errs) = $ptr->insert_el(array(
+				'code'=>@$_POST['code'],
+				'description'=>@$_POST['description'],
+			));
+			if ($errs) {echo $errs;} else {echo T("Add New successful");}
 			break;
-		case 'updateHost':
-			$hptr = new Hosts;
-			if (empty($_POST[active])) $_POST[active] = 'n';
-			echo $hptr->update($_POST);
+		case 'updateCopyFld':
+			$errs = $ptr->update_el(array(
+				'code'=>@$_POST["code"],
+				'description'=>@$_POST["description"],
+			));
+			if ($errs) {echo $errs;} else {echo T("Update successful");}
 			break;
-		case 'd-3-L-3-tHost':
-			$hptr = new Hosts;
-			$key = $hptr->key;
-			$sql = "DELETE FROM $hptr->name WHERE `id`=$_GET[id]";
-			echo $hptr->db->act($sql);
+		case 'd-3-L-3-tCopyFld':
+			$ptr->deleteOne($_POST[code]);
+			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;
 
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+	  #-.-.-.-.-.- Custom Member Fields -.-.-.-.-.-.-
+		case 'getAllMbrFlds':
+			$flds = array();
+			$set = $ptr->getAll();
+			while ($row = $set->next()) {
+			  $flds[] = $row;
+			}
+			echo json_encode($flds);
+			break;
+		case 'addNewMbrFld':
+			list($id, $errs) = $ptr->insert_el(array(
+				'code'=>@$_POST['code'],
+				'description'=>@$_POST['description'],
+			));
+			if ($errs) {echo $errs;} else {echo T("Add New successful");}
+			break;
+		case 'updateMbrFld':
+			$errs = $ptr->update_el(array(
+				'code'=>@$_POST["code"],
+				'description'=>@$_POST["description"],
+			));
+			if ($errs) {echo $errs;} else {echo T("Update successful");}
+			break;
+		case 'd-3-L-3-tMbrFld':
+			$ptr->deleteOne($_POST[code]);
+			if ($errs) {echo $errs;} else {echo T("Delete completed");}
+			break;
+
+  	#-.-.-.-.-.- Media Types -.-.-.-.-.-.-
 		case 'getAllMedia':
 			$ptr = new MediaTypes;
 			$med = array();
@@ -165,18 +210,33 @@
 			echo $msg;
 			break;
 				
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'getAllMbrFlds':
-			$ptr = new MemberCustomFields;
-			$flds = array();
-			$set = $ptr->getAll();
+  	#-.-.-.-.-.- Online Hosts -.-.-.-.-.-.-
+		case 'getHosts':
+			$ptr = new Hosts;
+		  $hosts = array();
+			$et = $ptr->getAll('seq');
 			while ($row = $set->next()) {
-			  $flds[] = $row;
+			  $hosts[] = $row;
 			}
-			echo json_encode($flds);
+			echo json_encode($hosts);
+			break;
+		case 'addNewHost':
+			$ptr = new Hosts;
+			if (empty($_POST[active])) $_POST[active] = 'n';
+			echo $ptr->insert($_POST);
+			break;
+		case 'updateHost':
+			$ptr = new Hosts;
+			if (empty($_POST[active])) $_POST[active] = 'n';
+			echo $ptr->update($_POST);
+			break;
+		case 'd-3-L-3-tHost':
+			$ptr = new Hosts;
+			$sql = "DELETE FROM $ptr->name WHERE `id`=$_GET[id]";
+			echo $ptr->db->act($sql);
 			break;
 
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	  #-.-.-.-.-.- Online Options -.-.-.-.-.-.-
 		case 'getOpts':
 			$ptr = new Opts;
 	  	$opts = array();
@@ -196,7 +256,7 @@
 			echo $rslt;
 			break;
 
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAllSites':
 			$ptr = new Sites;
 		  $sites = array();
@@ -219,7 +279,7 @@
 			echo $ptr->deleteOne($_REQUEST);
 			break;
 
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
 		case 'getAllStaff':
 			$ptr = new Staff;
 		  $staff = array();
@@ -254,7 +314,7 @@
 			echo $ptr->update_el($rec);
 			break;
 
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-
 		case 'getAllStates':
 			$ptr = new States;
 		  $states = array();
@@ -277,7 +337,7 @@
 			echo $ptr->deleteOne($_REQUEST);
 			break;
 
-	  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	  #-.-.-.-.-.- Themes -.-.-.-.-.-.-
 		case 'getAllThemes':
 			$ptr = new Themes;
 		  $thms = array();

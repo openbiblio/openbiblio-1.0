@@ -5,7 +5,8 @@
 
 	require_once("../shared/common.php");
 	$tab = "admin";
-	$nav = "memberFields";
+	$nav = "biblio_copy_fields";
+	$helpPage = "customCopyFields";
 
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
@@ -28,7 +29,7 @@
 	</thead>
 	
 	<tbody class="striped">
-	  <tr><td colspan="4"><?php echo T("No sites have been defined."); ?> </td></tr>
+	  <tr><td colspan="4"><?php echo T("No fields have been defined!"); ?> </td></tr>
 	</tbody>
 
 	<tfoot>
@@ -59,9 +60,10 @@
       <input id="description" name="description" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
 		</li>
+
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
-			<input type="hidden" id="cat" name="cat" value="mbrFlds">
+			<input type="hidden" id="cat" name="cat" value="copyFlds">
 		</li>
 	</ul>
 	<ul id="btnRow">
@@ -79,5 +81,5 @@
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
-	require_once(REL(__FILE__, "memberFldsJs.php"));
+	require_once(REL(__FILE__, "biblioCopyFldsJs.php"));
 ?>	
