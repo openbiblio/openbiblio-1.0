@@ -906,6 +906,39 @@ $trans["adminIndexDesc"]                = "Use the functions located in the left
 #*  Translation text for integrity.php
 #****************************************************************************
 $trans["integrityMsg"]          = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
+$trans["%count% unattached MARC fields"]="%count% unattached MARC fields";
+$trans["%count% unattached MARC subfields"]="%count% unattached MARC subfields";
+$trans["%count% unattached images"]="%count% unattached images";
+$trans["%count% unattached copies"]="%count% unattached copies";
+$trans["%count% copies with broken status references"]="%count% copies with broken status references";
+$trans["%count% items with multiple 245 fields"]="%count% items with multiple 245 fields";
+$trans["%count% unattached copy status history records"]="%count% unattached copy status history records";
+$trans['IntegrityQueryInvalidStatusCodes']='IntegrityQueryInvalidStatusCodes';
+$trans['IntegrityQueryBrokenBibidRef']='IntegrityQueryBrokenBibidRef';
+$trans['IntegrityQueryBrokenOutRef']='IntegrityQueryBrokenOutRef';
+$trans['IntegrityQueryBrokenReturnRef']='IntegrityQueryBrokenReturnRef';
+$trans['IntegrityQueryNoAssBooking']='IntegrityQueryNoAssBooking';
+$trans['IntegrityQueryNoAssMember']='IntegrityQueryNoAssMember';
+$trans["%count% copies without site"]="%count% copies without site";
+$trans["%count% members without sites"]="%count% members without sites";
+$trans['IntegrityQueryUnattachedAccTrans']='IntegrityQueryUnattachedAccTrans';
+$trans['IntegrityQueryChangedCopyStatus']='IntegrityQueryChangedCopyStatus';
+$trans['IntegrityQueryOutRecNoBooking']='IntegrityQueryOutRecNoBooking';
+$trans["%count% double check outs"]="%count% double check outs";
+
+
+#****************************************************************************
+#*  Translation text for class IntegrityQuery.php
+#****************************************************************************
+$trans["IntegrityQueryInvalidStatusCodes"] = "%count% copy status history records with invalid status codes";
+$trans["IntegrityQueryBrokenBibidRef"]     = "%count% bookings with broken bibid references";
+$trans["IntegrityQueryBrokenOutRef"]       = "%count% bookings with broken \"out\" status references";
+$trans["IntegrityQueryBrokenReturnRef"] = "%count% bookings with broken \"return\" status references";
+$trans["IntegrityQueryNoAssBooking"] = "%count% booking member references with no associated booking";
+$trans["IntegrityQueryNoAssMember"] = "%count% booking member references with no associated member";
+$trans["IntegrityQueryUnattachedAccTrans"] = "%count% unattached member account transactions";
+$trans["IntegrityQueryChangedCopyStatus"]  = "%count% \"out\" bookings where copy status has changed";
+$trans["IntegrityQueryOutRecNoBooking"] = "%count% copy check out records with no associated booking";
 
 
 #****************************************************************************

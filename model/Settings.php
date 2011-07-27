@@ -107,7 +107,7 @@ class Settings {
 		}
 		
 		if ($s['type'] == 'int') {
-			$s['type'] = 'text';
+			$s['type'] = 'number';
 		}
 		
 		$options = array();

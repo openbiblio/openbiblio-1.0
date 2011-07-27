@@ -17,10 +17,10 @@
 <form method="post" action="../admin/integrity_check.php">
 <fieldset>
 	<p><?php echo T('integrityMsg');?></p>
-	<input type="submit" class="button" value="<?php echo T("Check Now"); ?>" />
+	<input type="submit" value="<?php echo T("Check Now"); ?>" />
 </fieldset>
 </form>
 
 <?php
-
-	 ;
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+?>	
