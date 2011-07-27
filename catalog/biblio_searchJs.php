@@ -362,7 +362,7 @@ bs = {
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = $.parseJSON(biblioList[0]);
 		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
-		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php echo T("items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
+		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php echo T("Items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
 		bs.biblio = Array();
 
 		$('#listTbl tbody#srchRslts').html('');

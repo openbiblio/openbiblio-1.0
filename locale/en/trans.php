@@ -392,6 +392,7 @@ $trans["Item Number:"] = "Item Number:";
 $trans["Item Search"] = "Item Search";
 $trans["Item successfully updated."] = "Item successfully updated.";
 $trans["Item"] = "Item";
+$trans["Items"] = "Items";
 $trans["Item#"] = "Item#";
 $trans["Item(s) Requested"] = "Item(s) Requested";
 $trans["Item, %title%, has been deleted."] = "Item, %title%, has been deleted.";

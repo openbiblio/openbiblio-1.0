@@ -8,7 +8,7 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 // I beleive this is now taken care of for all $_session stuff in common.php
-	// In case of OPAC
+// In case of OPAC
 //	if(empty($_SESSION['show_detail_opac']))
 //		$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
 	
@@ -48,18 +48,18 @@
 <form id="barcodeSearch" name="barcodeSearch" method="post">
 <fieldset>
 <legend><?php echo T("Find Item by Barcode Number"); ?></legend>
-<table class="primary">
+<table>
 	<tr>
-		<td nowrap="true" class="primary">
+		<td nowrap="true">
 			<label for="searchBarcd"><?php echo T("Barcode Number:");?></label>
-			<input id="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="button srchByBarcdBtn" />
+			<input id="searchBarcd" name="searchBarcd" type="text" size="20" />
+			<input id="srchByBarcd" name="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="srchByBarcdBtn" />
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<?php echo inputfield('text','searchBarcd','',array('size'=>'20','maxlength'=>'20')); ?>
-			<?php echo inputfield('hidden','searchType','barcodeNmbr'); ?>
-			<?php echo inputfield('hidden','sortBy','default'); ?>
+			<input id="searchType" name="searchType" type="hidden" value="barcodeNmbr" />
+			<input id="sortBy" name="sortBy" type="hidden" value="default" />
 		</td>
 	</tr>
 </table>
@@ -69,35 +69,34 @@
 <form id="phraseSearch" name="phraseSearch" method="post" >
 <fieldset>
 <legend><?php echo T("Search Catalog"); ?></legend>
-<table class="primary">
+<table>
 	<tbody id="mainTxtSrch">
 	<tr>
-		<td nowrap="true" class="primary" colspan="3">
-			<?php echo inputfield('select','searchType','keyword',null,array(
-														 'title'=>T("Title")
-														,'author'=>T('Author')
-														,'subject'=>T("Subject")
-														,'keyword'=>T("Keyword")
-														,'series'=>T("Series")
-														,'publisher'=>T("Publisher")
-														,'callno'=>T("Item Number")
-														));
-			?>
-			<?php echo inputfield('text','searchText','', array('size'=>'20','maxlength'=>'256')); ?>
-			<input id="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="button srchByPhraseBtn" />
+		<td nowrap="true" colspan="3">
+			<select id="searchType" name="searchType" >
+				<option value="title"><?php echo T("Title"); ?></option>	
+				<option value="author"><?php echo T("Author"); ?></option>
+				<option value="subject"><?php echo T("Subject"); ?></option>	
+				<option value="keyword" selected><?php echo T("Keyword"); ?></option>
+				<option value="series"><?php echo T("Series"); ?></option>	
+				<option value="publisher"><?php echo T("Publisher"); ?></option>
+				<option value="callno"><?php echo T("Item Number"); ?></option>
+			</select>
+			<input id="searchText" name="searchText" type="text" size="20" maxlength="256" />
+			<input id="srchByPhrase" name="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="srchByPhraseBtn" />
 		</td>
 	</tr>
 	<tr>
 		<td colspan="3">
-			<?php //echo inputfield('hidden','sortBy','title'); ?>
-			<?php echo inputfield('hidden','tab',$tab); ?>
-			<?php echo inputfield('hidden','lookup',$lookup); ?>
+			<!--input id="sortBy" name="sortBy" type="hidden" value="title" /-->
+			<input id="tab" name="tab" type="hidden" value="<?php echo $tab; ?>" />
+			<input id="lookup" name="lookup" type="hidden" value="<?php echo $lookup; ?>" />
 		</td>
 	</tr>
 	<tr>
 	  <td colspan="3">
 	    <label for="advanceQ"><?php echo T('Advanced Search?'); ?></label>
-			<?php echo inputfield('checkbox','advanceQ','Y',null,null); ?>
+			<input id="advanceQ" name="advanceQ" type="checkbox" value="Y" />
 		</td>
 	</tr>
 	</tbody>
@@ -109,45 +108,37 @@
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
 		<tr class="searchRow">
-			<td class="label">
-				<label for="mediaType"><?php echo T("Media Type:"); ?> </label>
-			</td>
+			<td><label for="mediaType"><?php echo T("Media Type:"); ?> </label></td>
 			<td>
 					<span id="srchMatTypes">to be filled by server</span>				
 			</td>
 			<td rowspan="3" valign="top" nowrap="yes" align="center">
 			  <fieldset style="margin:0; margin-bottom:5px;">
 				<legend><?php echo T("Sort by: "); ?></legend>
-					<?php echo inputfield('select','sortBy','title',null,array(
-											'author'=>'Author',
-											'callno'=>'Call Number',
-											'title' =>'Title'
-										));
-					?>
+					<select id="sortBy" name="sortBy">
+						<option value="author">Author</option>
+						<option value="callno">Call Number</option>
+						<option value="title" selected>Title</option>
+					</select>
 			  </fieldset>
 			</td>
 		</tr>
 		<tr class="searchRow">
-			<td class="label">
-				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
-			</td>
+			<td><label for="audienceLevel"><?php echo T("Audience Level:"); ?></label></td>
 			<td>
-					<?php echo inputfield('select','audienceLevel','all',null,array(
-											'K' 	=>T("Kindergarten"),
-											'P' 	=>T("Primary"),
-											'I' 	=>T("Intermediate"),
-											'J' 	=>T("Junior High"),
-											'S' 	=>T("Senior High"),
-											'A' 	=>T("Adult"),
-											'all'	=>T("All"),
-										));
-				?>
+				<select id="audienceLevel" name="audienceLevel">
+					<option value="K"><?php echo T("Kindergarten"); ?></option>
+					<option value="P"><?php echo T("Primary"); ?></option>
+					<option value="I"><?php echo T("Intermediate"); ?></option>
+					<option value="J"><?php echo T("Junior High"); ?></option>
+					<option value="S"><?php echo T("SeniorHigh"); ?></option>
+					<option value="A"><?php echo T("Adult"); ?></option>
+					<option value="all" selected><?php echo T("All"); ?></option>
+				</select>
 			</td>
 		</tr>
 		<tr class="searchRow">
-			<td class="label">
-				<label for="srchSites"><?php echo T("Search Site"); ?>:</label>
-			</td>
+			<td><label for="srchSites"><?php echo T("Search Site"); ?>:</label></td>
 			<td>
 				<select name="srchSites" id="srchSites">
 				  <option id= value="all" selected="selected">All<option>
@@ -156,15 +147,12 @@
 			</td>
 		</tr>
 		<tr class="searchRow">
-			<td class="label primary">
-				<label><?php echo T("Production Date:"); ?></label>
-			</td>
+			<td><label><?php echo T("Production Date:"); ?></label></td>
 			<td colspan="2" >
 				<label for="from"><?php echo T("From Year:");?></label>
-					<?php echo inputfield('text','from',null,array('size'=>'4'))?>
+					<input id="from" name="from" type="number" size="4" min="1900" max="2099" />
 				<label for="to"><?php echo T("To Year:"); ?></label>
-					<?php echo inputfield('text','to',null,array('size'=>'4'))?>
-
+					<input id="to" name="to" type="number" size="4" min="1900" max="2099" />
 			</td>
 		</tr>
 		</tbody>
@@ -236,16 +224,16 @@
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
-	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="marcBtn" class="button" value="<?php echo T('View Marc Tags'); ?>">
+	<input type="button" id="marcBtn" value="<?php echo T('View Marc Tags'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="addItem2CartBtn" class="button" value="<?php echo T('Add To Cart'); ?>" />
+	<input type="button" id="addItem2CartBtn" value="<?php echo T('Add To Cart'); ?>" />
 	<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="biblioEditBtn" class="button" value="<?php echo T('Edit This Item'); ?>">
+		<input type="button" id="biblioEditBtn" value="<?php echo T('Edit This Item'); ?>">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="biblioDeleteBtn" class="button" value="<?php echo T('Delete This Item'); ?>">
+		<input type="button" id="biblioDeleteBtn" value="<?php echo T('Delete This Item'); ?>">
 	<?php }?>
 	
 	<fieldset>
@@ -279,7 +267,7 @@
 		</table>
 	</fieldset>
 	
-	<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>">
+	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
@@ -290,17 +278,17 @@
 <div id="itemEditorDiv">
   <form id="biblioEditForm" name="biblioEditForm" >
 		<p class="note"><?php echo T("Fields marked are required"); ?></p>
-		<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
+		<input type="button" class="itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
 		<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
 	
-		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
-		<!--input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" class="button" /-->
+		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
+		<!--input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" value="<?php echo T("Go Back"); ?>" class="button itemGobkBtn" />
+		<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
 	</form>
 </div>
 
