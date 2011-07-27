@@ -8,7 +8,7 @@
 	session_cache_limiter(null);
 
   $tab = "admin";
-  $nav = "biblioFlds";
+  $nav = "biblioFields";
   $focus_form_name = "workForm";
   $focus_form_field = "name";
 

@@ -11,7 +11,6 @@
 	require_once(REL(__FILE__, "../model/Online.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
-	require_once(REL(__FILE__, "../model/Staff.php"));
 	require_once(REL(__FILE__, "../model/States.php"));
 	require_once(REL(__FILE__, "../model/Themes.php"));
 	
@@ -24,10 +23,14 @@
 			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 			$ptr = new MemberCustomFields;
 			break;
-		default:
-		  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
-		  exit;
-		break;
+		case 'staff':
+			require_once(REL(__FILE__, "../model/Staff.php"));
+			$ptr = new Staff;
+			break;
+		//default:
+		//  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
+		//  exit;
+		//break;
 	}
 
 	switch ($_REQUEST['mode']){
@@ -214,7 +217,7 @@
 		case 'getHosts':
 			$ptr = new Hosts;
 		  $hosts = array();
-			$et = $ptr->getAll('seq');
+			$set = $ptr->getAll('seq');
 			while ($row = $set->next()) {
 			  $hosts[] = $row;
 			}
@@ -281,7 +284,6 @@
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
 		case 'getAllStaff':
-			$ptr = new Staff;
 		  $staff = array();
 			$set = $ptr->getAll('last_name');
 			while ($row = $set->next()) {
@@ -297,19 +299,15 @@
 					$_POST[$flg.'_flg'] = 'N';
 				}
 			}
-			$ptr = new Staff;
 			echo $ptr->insert_el($_POST);
 			break;
 		case 'updateStaff':
-			$ptr = new Staff;
 			echo $ptr->update_el($_POST);
 			break;
 		case 'd-3-L-3-tStaff':
-			$ptr = new Staff;
 			echo $ptr->deleteOne($_POST['userid']);
 			break;
 		case 'setStaffPwd':
-			$ptr = new Staff;
 			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
 			echo $ptr->update_el($rec);
 			break;

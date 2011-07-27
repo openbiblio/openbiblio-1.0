@@ -56,7 +56,7 @@ stf = {
 	
 	//------------------------------
 	fetchStaff: function () {
-	  $.getJSON(stf.url,{mode:'getAllStaff'}, function(dataAray){
+	  $.getJSON(stf.url,{'cat':'staff', 'mode':'getAllStaff'}, function(dataAray){
 	    stf.json = dataAray;
 			var html = '';
 			for (obj in dataAray) {
@@ -146,7 +146,7 @@ stf = {
 		var pw1 = $('#'+pwd1).val(),
 				pw2 = $('#'+pwd2).val(),
 				errMsg = '';
-console.log('pw1='+pw1+'; pw2='+pw2);				
+		//console.log('pw1='+pw1+'; pw2='+pw2);				
 		if ( pw1 != pw2 ) {
 			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
 		} else if (!pw1 || !pw2) {
@@ -217,7 +217,11 @@ console.log('pw1='+pw1+'; pw2='+pw2);
 	doDeleteStaff: function (e) {
 		var msg = stf.delConfirmMsg+'\n>>> '+$('#username').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	'mode':'d-3-L-3-tStaff', 'userid':$('#userid').val(), 'description':$('#username').val() };
+	  	var parms = {	'cat':'staff', 
+										'mode':'d-3-L-3-tStaff', 
+										'userid':$('#userid').val(), 
+										'description':$('#username').val() 
+									};
 	  	$.post(stf.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);
@@ -237,7 +241,11 @@ console.log('pw1='+pw1+'; pw2='+pw2);
 	doSetStaffPwd: function () {
 		if (!stf.chkPwds('pwdA','pwdB')) return false;
 		$('#mode').val('updateStaff');
-	  var parms = {	'mode':'setStaffPwd', 'pwd':$('#pwdA').val(), 'pwd2':$('#pwdB').val(), 'userid':stf.crntUser };
+	  var parms = {	'cat':'staff',
+									'mode':'setStaffPwd', 
+									'pwd':$('#pwdA').val(), 
+									'pwd2':$('#pwdB').val(), 
+									'userid':stf.crntUser };
 	  $.post(stf.url, parms, function(response){
 			if (($.trim(response)).substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);

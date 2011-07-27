@@ -118,6 +118,7 @@
 			</fieldset>
 		</li>
     <li>
+			<input type="hidden" id="cat" name="staff" value="">
 			<input type="hidden" id="mode" name="mode" value="">
 			<input type="hidden" id="userid" name="userid" value="">
 		</li>

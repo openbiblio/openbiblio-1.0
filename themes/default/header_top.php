@@ -56,17 +56,16 @@
 <link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
 
-<!-- this line MUST precede all .css files - FL
+<!-- this line MUST precede all .css & JS files - FL
 		 Based on the browser in use, it places many conditional classes 
 		 into the <body> tag for use by feature-specific CSS & JS statements.
 		 It also deals with html5 support issues for IE browsers. 	 -->
 <script src="../shared/modernizr-1.7.min.js"></script>
+<!-- All other JavaScript is placed at the end of <body> (see footer.php) 
+		 to match industry best practices and to improve overall performance -->
 
 <link rel="stylesheet" href="../shared/base.css" />
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
-
-<!-- All other JavaScript is placed at the end of <body> (see footer.php) 
-		 to match industry best practices and to improve overall performance -->
 
 	<?php
 	## ---------------------------------------------------------------------
