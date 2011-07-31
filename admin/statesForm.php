@@ -55,7 +55,7 @@
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-<legend><?php echo T('State Editor'); ?></legend>
+<legend id="stateHdr"><?php echo T('State Editor'); ?></legend>
 <table id="editTbl">
   <tbody>
   <tr>
@@ -87,6 +87,7 @@
     </td>
   </tr>
   <tr>
+    <td><input type="hidden" id="cat" name="cat" value="states"></td>
     <td><input type="hidden" id="mode" name="mode" value=""></td>
   </tr>
   <tfoot>

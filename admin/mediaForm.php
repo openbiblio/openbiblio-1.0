@@ -55,7 +55,7 @@
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-	<legend><?php echo T('Edit Media Properties'); ?></legend>
+	<legend id="editHdr"></legend>
 	<ul id="editTbl">
     <li>
       <label for="description"><?php echo T("Description"); ?>:</label>
@@ -80,7 +80,7 @@
 	  	</fieldset>
 	  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
 	  	<fieldset class="inlineFldSet">
-      	<label for="default_flg"><?php echo T("DefaultY/N"); ?>:</label>
+      	<label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
       	<input id="default_flg" name="default_flg" type="text" size="1" value="N"
 					pattern="[Y,N]" required aria-required="true" />
 				<span class="reqd">*</span>
@@ -93,6 +93,7 @@
 		</li>
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
+			<input type="hidden" id="cat" name="mode" value="media">
 			<input type="hidden" id="code" name="code" value="">
 		</li>
 	</ul>

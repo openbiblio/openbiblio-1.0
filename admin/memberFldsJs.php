@@ -52,7 +52,7 @@ mbf = {
 	
 	//------------------------------
 	fetchFields: function () {
-	  $.getJSON(mbf.url,{cat:'mbrFlds', mode:'getAllMbrFlds'}, function(dataAray){
+	  $.getJSON(mbf.url,{ 'cat':'mbrFlds', 'mode':'getAllMbrFlds' }, function(dataAray){
 	    mbf.json = dataAray;
 			var html = '';
 			for (obj in dataAray) {

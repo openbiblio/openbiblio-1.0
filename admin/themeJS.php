@@ -55,7 +55,7 @@ thm = {
 	
 	//------------------------------
 	fetchThemes: function () {
-	  $.getJSON(thm.url,{'mode':'getAllThemes'}, function(dataAray){
+	  $.getJSON(thm.url,{ 'cat':'themes', 'mode':'getAllThemes' }, function(dataAray){
 	    thm.json = dataAray;
 			var html = '', opts = '';
 			// first construct theme dropdown list
@@ -94,7 +94,7 @@ thm = {
 
 	doChngTheme: function () {
 		var newTheme = $('#themeList').val();
-		$.post(thm.url, {'mode':'setCrntTheme', 'themeid':newTheme}, function (response) {		
+		$.post(thm.url, { 'cat':'themes', 'mode':'setCrntTheme', 'themeid':newTheme }, function (response) {		
 			$('.inuseFld').html('&nbsp;');
 			$('#showForm #code[value='+newTheme+']').parent().parent().find('td:eq(2)')
 					.html(<?php echo "'".T("in use")."'"; ?>);
@@ -242,7 +242,11 @@ thm = {
 	doDeleteTheme: function (e) {
 		var msg = thm.delConfirmMsg+'\n>>> '+$('#theme_name').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	'mode':'d-3-L-3-tTheme', 'themeid':$('#themeid').val(), 'theme_name':$('#theme_name').val() };
+	  	var parms = {	'cat':'themes',
+										'mode':'d-3-L-3-tTheme', 
+										'themeid':$('#themeid').val(), 
+										'theme_name':$('#theme_name').val(), 
+									};
 	  	$.post(thm.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);

@@ -192,6 +192,7 @@
 	<tfoot>
 	<tr>
 		<td colspan="5">
+			<input type="hidden" id="cat" name="cat" value="themes">
 			<input type="hidden" id="mode" name="mode" value="">
 			<input type="hidden" id="themeid" name="themeid" value="">
 			<ul id="btnRow">

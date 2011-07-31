@@ -8,7 +8,8 @@ col = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Collections")."',\n";
-		echo "editHdr: '".T("Editing Collections")."',\n";
+		echo "editHdr: '".T("Edit Collection")."',\n";
+		echo "newHdr: '".T("Add New Collection")."',\n";
 	?>
 	
 	init: function () {
@@ -55,7 +56,7 @@ col = {
 	
 	//------------------------------
 	fetchTypes: function () {
-	  $.getJSON(col.url,{mode:'getTypes'}, function(data){
+	  $.getJSON(col.url,{ 'cat':'collect', 'mode':'getTypes' }, function(data){
 			var html = '';
 			for (item in data) {
 				//console.log(data[item]);
@@ -67,7 +68,7 @@ col = {
 		});
 	},
 	fetchCircList: function () {
-	  $.getJSON(col.url,{mode:'getCircList'}, function(data){
+	  $.getJSON(col.url,{ 'cat':'collect', 'mode':'getCircList' }, function(data){
 	  	col.circList = data;
 	  	col.fetchDistList();
 		});
@@ -80,7 +81,7 @@ col = {
 		}
 	},
 	fetchDistList: function () {
-	  $.getJSON(col.url,{mode:'getDistList'}, function(data){
+	  $.getJSON(col.url,{ 'cat':'collect', 'mode':'getDistList' }, function(data){
 	  	col.distList = data;
 	  	col.fetchCollections();
 		});
@@ -111,7 +112,7 @@ col = {
 		return str;
 	},
 	fetchCollections: function () {
-	  $.getJSON(col.url,{mode:'getAllCollections'}, function(data){
+	  $.getJSON(col.url,{ 'cat':'collect', 'mode':'getAllCollections' }, function(data){
 	    col.json = data;
 			$('#showList').html('');
 			for (var item=0; item<data.length; item++) {
@@ -160,7 +161,7 @@ col = {
 		}
 	},
 	showCollection: function () {
-	  $('#CollectionHdr').html(col.editHdr);
+	  $('#editHdr').html(col.editHdr);
 	  $('#addBtn').hide();
 	  $('#updtBtn').show();
 	  $('#description').focus();
@@ -192,7 +193,7 @@ col = {
 	
 	doNewCollection: function (e) {
 	  document.forms['editForm'].reset();
-	  $('#CollectionHdr').html(col.newHdr);
+	  $('#editHdr').html(col.newHdr);
 		$('#deltBtn').hide();
 		$('#updtBtn').hide();
 	  $('#addBtn').show();
@@ -251,7 +252,7 @@ col = {
 	doDeleteCollection: function (e) {
 		var msg = col.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	mode:'d-3-L-3-tCollections', code:$('#code').val() };
+	  	var parms = {	'cat':'collect', 'mode':'d-3-L-3-tCollections', 'code':$('#code').val() };
 	  	$.post(col.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);

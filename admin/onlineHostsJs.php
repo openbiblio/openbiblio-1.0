@@ -48,26 +48,26 @@ hed = {
 	
 	//------------------------------
 	fetchHosts: function () {
-	  $.getJSON(hed.url,{mode:'getHosts'}, function(data){
+	  $.getJSON(hed.url,{ 'cat':'hosts', 'mode':'getHosts' }, function(data){
 	    hed.hostJSON = data;
 			var html = '';
 			for (nHost in hed.hostJSON) {
 				//console.log(data[nHost]);
 	    	html += '<tr>\n';
-    		html += '<td valign="top" class="primary">\n';
-				html += '	<input type="button" value="edit" align="center" class="button editBtn" />\n';
+    		html += '<td>\n';
+				html += '	<input type="button" value="edit" align="center" class="editBtn" />\n';
 				html += '	<input type="hidden" value="'+hed.hostJSON[nHost]['id']+'" />\n';
 				html += '</td>\n';
-    		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['seq']+'</td>\n';
+    		html += '<td>'+hed.hostJSON[nHost]['seq']+'</td>\n';
     		var str = ((hed.hostJSON[nHost]['active']=='y')?'yes':'no');
-    		html += '<td valign="top" class="primary">'+str+'</td>\n';
-    		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['host']+'</td>\n';
-    		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['name']+'</td>\n';
-    		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['db']+'</td>\n';
+    		html += '<td valign="top" >'+str+'</td>\n';
+    		html += '<td valign="top" >'+hed.hostJSON[nHost]['host']+'</td>\n';
+    		html += '<td valign="top" >'+hed.hostJSON[nHost]['name']+'</td>\n';
+    		html += '<td valign="top" >'+hed.hostJSON[nHost]['db']+'</td>\n';
     		if (hed.hostJSON[nHost]['user'] == null) hed.hostJSON[nHost]['user'] = '';
-    		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['user']+'</td>\n';
+    		html += '<td valign="top" >'+hed.hostJSON[nHost]['user']+'</td>\n';
     		if (hed.hostJSON[nHost]['pw'] == null) hed.hostJSON[nHost]['pw'] = '';
-    		html += '<td valign="top" class="primary">'+hed.hostJSON[nHost]['pw']+'</td>\n';
+    		html += '<td valign="top" >'+hed.hostJSON[nHost]['pw']+'</td>\n';
 				html += '</tr>\n';
 			}
 			$('#showList tBody').html(html);
@@ -78,7 +78,7 @@ hed = {
 	},
 	
 	doNewHost: function (e) {
-console.log('newHost');
+		//console.log('newHost');
 	  $('#hostHdr').html(hed.newHdr);
 	  $('#hostForm tfoot #updtBtn').hide();
 	  $('#hostForm tfoot #addBtn').show();
@@ -151,8 +151,9 @@ console.log('newHost');
 		var msg = hed.delConfirmMsg+'\n>>> '+$('#hostForm tbody #name').val()+' <<<';
 	  if (confirm(msg)) {
 	  	$.get(hed.url,
-								{	mode:'d-3-L-3-tHost',
-									id:$('#hostForm tbody #id').val()
+								{	'cat':'hosts',
+									'mode':'d-3-L-3-tHost',
+									'id':$('#hostForm tbody #id').val()
 								},
 								function(response){
 				if (($.trim(response)).substr(0,1)=='<') {

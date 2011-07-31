@@ -9,7 +9,7 @@ stf = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Staff Members")."',\n";
-		echo "editHdr: '".T("Editing Staff")."',\n";
+		echo "editHdr: '".T("Edit Staff Member")."',\n";
 		echo "newHdr: '".T("New Staff Member")."',\n";
 	?>
 	

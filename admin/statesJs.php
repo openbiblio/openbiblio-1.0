@@ -8,7 +8,8 @@ st = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of States & Abreviations")."',\n";
-		echo "editHdr: '".T("Editing States & Abreviations")."',\n";
+		echo "editHdr: '".T("Edit State & Abreviation")."',\n";
+		echo "newHdr: '".T("Add New State & Abreviation")."',\n";
 	?>
 	
 	init: function () {
@@ -51,7 +52,7 @@ st = {
 	
 	//------------------------------
 	fetchStates: function () {
-	  $.getJSON(st.url,{mode:'getAllStates'}, function(data){
+	  $.getJSON(st.url,{ 'cat':'states', mode:'getAllStates' }, function(data){
 	    st.stateJSON = data;
 			var html = '';
 			for (nState in st.stateJSON) {
@@ -94,9 +95,9 @@ st = {
 	  $('#deltBtn').show();
 	  $('#description').focus();
 	  if (State['count'] < 1) 
-			$('#deltBtn').show(); 
+			$('#deltBtn').hide(); 
 		else 
-			$('#deltBtn').hide();
+			$('#deltBtn').show();
 
 		$('#description').val(State['description']);
 		$('#code').val(State['code']);
@@ -163,7 +164,7 @@ st = {
 	doDeleteState: function (e) {
 		var msg = st.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	mode:'d-3-L-3-tState', code:$('#code').val() };
+	  	var parms = {	'cat':'states', 'mode':'d-3-L-3-tState', 'code':$('#code').val() };
 	  	$.post(st.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);

@@ -126,9 +126,7 @@
     </td>
   </tr>
   <tr>
-    <th>
-      <label for="fictionDew"><?php echo T("Fiction Codes - Dewey"); ?></label>
-    </th>
+    <th><label for="fictionDew"><?php echo T("Fiction Codes - Dewey"); ?></label></th>
     <td>
       <input id="fictionDew" name="fictionDew" type="text" size="30" maxsize="50" />
     </td>
@@ -136,6 +134,7 @@
   </tbody>
   <tfoot>
   <tr>
+    <td><input type="hidden" id="cat" name="cat" value="opts"></td>
     <td><input type="hidden" id="mode" name="mode" value=""></td>
   </tr>
   <tr>

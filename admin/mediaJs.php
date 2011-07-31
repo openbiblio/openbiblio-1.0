@@ -9,7 +9,8 @@ med = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Media Types")."',\n";
-		echo "editHdr: '".T("Edit Media Properties")."',\n";
+		echo "editHdr: '".T("Edit Media")."',\n";
+		echo "newHdr: '".T("Add New Media")."',\n";
 	?>
 	
 	init: function () {
@@ -52,7 +53,7 @@ med = {
 	
 	//------------------------------
 	fetchMedia: function () {
-	  $.getJSON(med.url,{mode:'getAllMedia'}, function(dataAray){
+	  $.getJSON(med.url,{ 'cat':'media', 'mode':'getAllMedia'}, function(dataAray){
 	    med.json = dataAray;
 			var html = '';
 			for (obj in dataAray) {
@@ -107,7 +108,7 @@ med = {
 	
 	showMedia: function (media) {
 		//console.log('showing : '+media['description']);
-	  $('#mediaHdr').html(med.editHdr);
+	  $('#editHdr').html(med.editHdr);
 	  $('#addBtn').hide();
 	  $('#updtBtn').show();
 	  $('#deltBtn').show();
@@ -130,7 +131,7 @@ med = {
 	
 	doNewMedia: function (e) {
 	  document.forms['editForm'].reset();
-	  $('#mediaHdr').html(med.newHdr);
+	  $('#editHdr').html(med.newHdr);
 		$('#deltBtn').hide();
 		$('#updtBtn').hide();
 	  $('#addBtn').show();
@@ -183,7 +184,7 @@ med = {
 	doDeleteMedia: function (e) {
 		var msg = med.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	'mode':'d-3-L-3-tMedia', 'code':$('#code').val(), 'description':$('#description').val() };
+	  	var parms = { 'cat':'media', 'mode':'d-3-L-3-tMedia', 'code':$('#code').val(), 'description':$('#description').val() };
 	  	$.post(med.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);

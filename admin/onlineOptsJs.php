@@ -46,7 +46,7 @@ oed = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(oed.url,{mode:'getOpts'}, function(data){
+	  $.getJSON(oed.url,{ 'cat':'opts', 'mode':'getOpts'}, function(data){
 	  	$('#protocol').val(data.protocol);
 			$('#maxHits').val(data.maxHits);
 			$('#timeout').val(data.timeout);

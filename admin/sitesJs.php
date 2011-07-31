@@ -7,8 +7,9 @@
 sit = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
-		echo "listHdr: '".T("List of Sites & Abreviations")."',\n";
-		echo "editHdr: '".T("Editing Sites & Abreviations")."',\n";
+		echo "listHdr: '".T("List of Sites")."',\n";
+		echo "editHdr: '".T("Edit Site")."',\n";
+		echo "newHdr: '".T("Add New Site")."',\n";
 	?>
 	
 	init: function () {
@@ -52,7 +53,7 @@ sit = {
 	
 	//------------------------------
 	fetchSites: function () {
-	  $.getJSON(sit.url,{mode:'getAllSites'}, function(data){
+	  $.getJSON(sit.url,{ 'cat':'sites', 'mode':'getAllSites' }, function(data){
 	    sit.siteJSON = data;
 			var html = '';
 			for (nsite in sit.siteJSON) {
@@ -76,7 +77,7 @@ sit = {
 		});
 	},
 	fetchStates: function () {
-	  $.getJSON(sit.url,{mode:'getAllStates'}, function(data){
+	  $.getJSON(sit.url,{ 'cat':'sites', 'mode':'getAllStates' }, function(data){
 			var html = '';
 			for (nstate in data) {
 				//console.log(data[nstate]);
@@ -103,15 +104,15 @@ sit = {
 	
 	showSite: function (site) {
 		//console.log('showing : '+site['name']);
-	  $('#siteHdr').html(sit.editHdr);
+	  $('#editHdr').html(sit.editHdr);
 	  $('#addBtn').hide();
 	  $('#updtBtn').show();
 	  $('#deltBtn').show();
 	  $('#description').focus();
 	  if (site['count'] < 1) 
-			$('#deltBtn').show(); 
+			$('#deltBtn').hide(); 
 		else 
-			$('#deltBtn').hide();
+			$('#deltBtn').show();
 
 		$('#siteid').val(site['siteid']);
 		$('#name').val(site['name']);
@@ -133,7 +134,7 @@ sit = {
 	
 	doNewSite: function (e) {
 	  document.forms['editForm'].reset();
-	  $('#siteHdr').html(sit.newHdr);
+	  $('#editHdr').html(sit.newHdr);
 		$('#deltBtn').hide();
 		$('#updtBtn').hide();
 	  $('#addBtn').show();
@@ -186,7 +187,7 @@ sit = {
 	doDeleteSite: function (e) {
 		var msg = sit.delConfirmMsg+'\n>>> '+$('#name').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	mode:'d-3-L-3-tSite', siteid:$('#siteid').val() };
+	  	var parms = {	'cat':'sites', 'mode':'d-3-L-3-tSite', siteid:$('#siteid').val() };
 	  	$.post(sit.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);

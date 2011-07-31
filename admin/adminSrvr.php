@@ -4,36 +4,60 @@
  */
 
   require_once("../shared/common.php");
-
-	### TODO - legacy feature, replace with following switch ###
-	require_once(REL(__FILE__, "../model/Collections.php"));
-	require_once(REL(__FILE__, "../model/MediaTypes.php"));
-	require_once(REL(__FILE__, "../model/Online.php"));
-	require_once(REL(__FILE__, "../model/Settings.php"));
-	require_once(REL(__FILE__, "../model/Sites.php"));
-	require_once(REL(__FILE__, "../model/States.php"));
-	require_once(REL(__FILE__, "../model/Themes.php"));
 	
 	switch ($_REQUEST['cat']) {
+		case 'collect':
+			require_once(REL(__FILE__, "../model/Collections.php"));
+			# can't set $ptr here as there are two classes in this model.
+			break;
 		case 'copyFlds':
 			require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 			$ptr = new BiblioCopyFields;
+			break;
+		case 'hosts':
+			require_once(REL(__FILE__, "../model/Online.php"));
+			$ptr = new Hosts;
+			break;
+		case 'media':
+			require_once(REL(__FILE__, "../model/MediaTypes.php"));
+			$ptr = new MediaTypes;
 			break;
 		case 'mbrFlds':
 			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 			$ptr = new MemberCustomFields;
 			break;
+		case 'opts':
+			require_once(REL(__FILE__, "../model/Online.php"));
+			$ptr = new Opts;
+			break;
 		case 'staff':
 			require_once(REL(__FILE__, "../model/Staff.php"));
 			$ptr = new Staff;
 			break;
-		//default:
-		//  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
-		//  exit;
-		//break;
+		case 'sites':
+			require_once(REL(__FILE__, "../model/Sites.php"));
+			$ptr1 = new Sites;
+			## deliberate fall-through, do not remove
+		case 'states':
+			require_once(REL(__FILE__, "../model/States.php"));
+			$ptr2 = new States;
+			break;
+		case 'themes':
+			require_once(REL(__FILE__, "../model/Themes.php"));
+			$ptr = new Themes;
+			require_once(REL(__FILE__, "../model/Settings.php"));
+			$ptr2 = new Settings;
+			break;
+		default:
+		  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
+		  exit;
+			break;
 	}
 
 	switch ($_REQUEST['mode']){
+		## don't combine this switch with that above.
+		## doing so would require multiple 'switch' statements,
+		## as well as multiple 'default' blocks 
 
 	  #-.-.-.-.-.- Collections -.-.-.-.-.-.-
 		case 'getCircList':
@@ -165,7 +189,6 @@
 
   	#-.-.-.-.-.- Media Types -.-.-.-.-.-.-
 		case 'getAllMedia':
-			$ptr = new MediaTypes;
 			$med = array();
 			$set = $ptr->getAllWithStats();
 			while ($row = $set->next()) {
@@ -174,7 +197,6 @@
 			echo json_encode($med);
 			break;
 		case 'addNewMedia':
-			$ptr = new MediaTypes;
 			$type = array(
 				'description'=>$_POST["description"],
 				'default_flg'=>$_POST['default_flg'],
@@ -189,7 +211,6 @@
 			}
 			break;
 		case 'updateMedia':
-			$ptr = new MediaTypes;
 			$type = array(
 				'code'=>$_POST["code"],
 				'description'=>$_POST["description"],
@@ -207,7 +228,6 @@
 		case 'd-3-L-3-tMedia':
 			$code = $_POST["code"];
 			$description = $_POST["desc"];
-			$ptr = new MediaTypes;
 			$ptr->deleteOne($code);
 			$msg = T("Material type, %desc%, has been deleted.", array('desc'=>$description));
 			echo $msg;
@@ -215,7 +235,6 @@
 				
   	#-.-.-.-.-.- Online Hosts -.-.-.-.-.-.-
 		case 'getHosts':
-			$ptr = new Hosts;
 		  $hosts = array();
 			$set = $ptr->getAll('seq');
 			while ($row = $set->next()) {
@@ -224,31 +243,26 @@
 			echo json_encode($hosts);
 			break;
 		case 'addNewHost':
-			$ptr = new Hosts;
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $ptr->insert($_POST);
 			break;
 		case 'updateHost':
-			$ptr = new Hosts;
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $ptr->update($_POST);
 			break;
 		case 'd-3-L-3-tHost':
-			$ptr = new Hosts;
 			$sql = "DELETE FROM $ptr->name WHERE `id`=$_GET[id]";
 			echo $ptr->db->act($sql);
 			break;
 
 	  #-.-.-.-.-.- Online Options -.-.-.-.-.-.-
 		case 'getOpts':
-			$ptr = new Opts;
 	  	$opts = array();
 			$set = $ptr->getAll();
 			$row = $set->next();
 			echo json_encode($row);
 			break;
 		case 'updateOpts':
-			$ptr = new Opts;
 		  $_POST[id] = 1;
 			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
 			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
@@ -261,25 +275,21 @@
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAllSites':
-			$ptr = new Sites;
 		  $sites = array();
-			$set = $ptr->getAll('name');
+			$set = $ptr1->getAll('name');
 			while ($row = $set->next()) {
 			  $sites[] = $row;
 			}
 			echo json_encode($sites);
 			break;
 		case 'addNewSite':
-			$ptr = new Sites;
-			echo $ptr->insert($_REQUEST);
+			echo $ptr1->insert($_REQUEST);
 			break;
 		case 'updateSite':
-			$ptr = new Sites;
-			echo $ptr->update($_REQUEST);
+			echo $ptr1->update($_REQUEST);
 			break;
 		case 'd-3-L-3-tSite':
-			$ptr = new Sites;
-			echo $ptr->deleteOne($_REQUEST);
+			echo $ptr1->deleteOne($_REQUEST);
 			break;
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
@@ -314,30 +324,25 @@
 
 	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-
 		case 'getAllStates':
-			$ptr = new States;
 		  $states = array();
-			$set = $ptr->getAll('description');
+			$set = $ptr2->getAll('description');
 			while ($row = $set->next()) {
 			  $states[] = $row;
 			}
 			echo json_encode($states);
 			break;
 		case 'addNewState':
-			$ptr = new States;
-			echo $ptr->insert($_REQUEST);
+			echo $ptr2->insert($_REQUEST);
 			break;
 		case 'updateState':
-			$ptr = new States;
-			echo $ptr->update($_REQUEST);
+			echo $ptr2->update($_REQUEST);
 			break;
 		case 'd-3-L-3-tState':
-			$ptr = new States;
-			echo $ptr->deleteOne($_REQUEST);
+			echo $ptr2->deleteOne($_REQUEST);
 			break;
 
 	  #-.-.-.-.-.- Themes -.-.-.-.-.-.-
 		case 'getAllThemes':
-			$ptr = new Themes;
 		  $thms = array();
 			$set = $ptr->getAll('theme_name');
 			while ($row = $set->next()) {
@@ -347,7 +352,7 @@
 			break;
 		case 'setCrntTheme':
 			$ptr = new Settings;
-			echo $ptr->setOne_el('themeid', $_POST['themeid']);
+			echo $ptr2->setOne_el('themeid', $_POST['themeid']);
 			break;
 		case 'addNewTheme':
 			$ptr = new Themes;

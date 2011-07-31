@@ -108,6 +108,7 @@
     </td>
   </tr>
   <tr>
+    <td><input type="hidden" id="cat" name="mode" value="hosts"></td>
     <td><input type="hidden" id="mode" name="mode" value=""></td>
     <td><input type="hidden" id="id" name="id" value=""></td>
   </tr>

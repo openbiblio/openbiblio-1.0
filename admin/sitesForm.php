@@ -52,7 +52,7 @@
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-	<legend><?php echo T('Site Editor'); ?></legend>
+	<legend id="editHdr"></legend>
 	<ul id="editTbl">
     <li>
       <label for="name"><?php echo T("Name"); ?>:</label>
@@ -106,6 +106,7 @@
       <textarea id="delivery_note" name="delivery_note" required aria-required="true" /></textarea>
     </li>
     <li>
+			<input type="hidden" id="cat" name="cat" value="sites">
 			<input type="hidden" id="mode" name="mode" value="">
 			<input type="hidden" id="siteid" name="siteid" value="">
 		</li>
