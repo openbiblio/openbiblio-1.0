@@ -26,6 +26,10 @@
 //------------------------------------------------------------------------------
 // biblio_search Javascript
 bs = {
+	<?php
+		echo "showMarc: '".T("Show Marc Tags")."',\n";
+		echo "hideMarc: '".T("Hide Marc Tags")."',\n";
+	?>
 	multiMode: false,
 	
 	init: function () {
@@ -69,7 +73,15 @@ bs = {
 		});
 		$('#marcBtn').bind('click',null,function () {
 		  //console.log('swapping state to MARC column');
-			$('#biblioDiv td.filterable').toggle()
+		  var marcFld$ = $('#biblioDiv td.filterable');
+		  if (marcFld$.is(':hidden')) {
+				$('#biblioDiv td.filterable').show();
+				$('#marcBtn').val(bs.hideMarc);
+			}
+			else {
+				$('#biblioDiv td.filterable').hide();
+				$('#marcBtn').val(bs.showMarc);
+			}
 		});
 		$('#biblioDiv .gobkBtn').bind('click',null,function () {
 		  if (bs.multiMode) {
@@ -170,6 +182,7 @@ bs = {
 	  bs.multiMode = false;
 	  bs.checkSrchByPhraseBtn();
 	  bs.checkSrchByBarcdBtn();
+		$('#marcBtn').val(bs.showMarc);
 	},
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
@@ -479,19 +492,20 @@ bs = {
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
 		  var tmp = eval('('+fldData+')');
 		  txt += "<tr>\n";
-			txt += "	<td class=\"filterable\">"+tmp.marcTag+"</td>\n";
+			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
 			txt += "	<td>"+tmp.label+"</td>\n";
 			txt += "	<td>"+tmp.value+"</td>\n";
 			txt += "</tr>\n";
 		});
 		txt += "<tr>\n";
-		txt += "	<td class=\"filterable\">&nbsp</td>\n";
+		txt += "	<td class=\"filterable hilite\">&nbsp</td>\n";
 		txt += "	<td>Date Added</td>\n";
 		txt += "	<td>"+bs.theBiblio.createDt+"</td>\n";
 		txt += "</tr>\n";
   	$('tbody#biblio').html(txt);
 		obib.reStripe2('biblioTbl','odd');
 		$('#biblioDiv td.filterable').hide();
+		$('#marcBtn').val(bs.showMarc);
 
 		if (!bs.lookupAvailable)$('#onlnUpdtBtn').hide();
 	  $('#searchDiv').hide();
@@ -515,7 +529,8 @@ bs = {
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
 				bs.copyJSON = jsonInpt;
 				if (!bs.copyJSON) {
-					$('tbody#copies').html('<tr><td colspan="9">(<?php echo T("No Copies."); ?>)</td></tr>');
+					var msg = '(<?php echo T("No copies"); ?>)';
+					$('tbody#copies').html('<tr><td colspan="9" class="hilite">'+msg+'</td></tr>');
 					return false; // no copies found
 				}
 				

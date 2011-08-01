@@ -44,8 +44,8 @@ function staff_menu() {
 
 	##-------------------------------------------------------------------------------------##
 //	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
-	Nav::node('cataloging', T("Cataloging"), '../catalog/biblio_search.php');
-	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/biblio_search.php");
+	Nav::node('cataloging', T("Cataloging"), '../catalog/biblio_srchForms.php');
+	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/biblio_srchForms.php");
 	if($_SESSION["hasCatalogAuth"]){
 		Nav::node('cataloging/newItem', T("New Item"), "../online/new_item.php");
 

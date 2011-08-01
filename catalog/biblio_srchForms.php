@@ -226,7 +226,7 @@
 	<p id="rsltMsg" class="error"></p>
 	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="marcBtn" value="<?php echo T('View Marc Tags'); ?>">
+	<input type="button" id="marcBtn" value="">
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="button" id="addItem2CartBtn" value="<?php echo T('Add To Cart'); ?>" />
 	<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
@@ -300,5 +300,5 @@
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
-	include_once(REL(__FILE__,'./biblio_searchJs.php'));
+	include_once(REL(__FILE__,'./biblio_srchJs.php'));
 ?>	
