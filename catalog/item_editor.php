@@ -12,7 +12,7 @@
 	<tbody id="nonMarcBody">
 	<tr>
 		<td nowrap="true">
-			<label for="materialCd"><?php echo T("Type of Material:"); ?></label>
+			<label for="materialCd"><?php echo T("Media Type:"); ?></label>
 		</td>
 		<td valign="top">
 				<span id="itemMediaTypes">to be filled by server</span>
