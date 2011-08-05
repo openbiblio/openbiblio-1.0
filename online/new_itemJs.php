@@ -16,7 +16,7 @@ ni = {
 
 		ni.url = 'server.php';
 		ni.form = $('#lookupForm');
-		ni.bs_url = '../catalog/biblio_server.php';
+		ni.bs_url = '../catalog/catalogServer.php';
 		
 		ni.srchBtn = $('#srchBtn');
 		ni.resetForm();

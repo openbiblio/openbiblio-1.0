@@ -721,6 +721,7 @@ $trans["This field must be filled in."] = "This field must be filled in.";
 $trans["This is a preview of the %name% theme."] = "This is a preview of the %name% theme.";
 $trans["This is a required field."] = "This is a required field.";
 $trans["This item cannot be booked."] = "This item cannot be booked.";
+$trans["this may take a moment."] = "This may take a moment.";
 $trans["Thumbnailed"] = "Thumbnailed";
 $trans["Title"] = "Title";
 $trans["Title:"] = "Title:";

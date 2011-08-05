@@ -16,26 +16,20 @@
 <table id="copyTbl" class="primary">
 	<tbody class="unstriped">
 	<tr>
-		<td nowrap="true" class="primary" valign="top">
-			<label for="barcode_nmbr"><sup>*</sup><?php echo T('Barcode Number'); ?></label>
-		</td>
-		<td valign="top" class="primary">
+		<td><label for="barcode_nmbr"><sup>*</sup><?php echo T('Barcode Number'); ?></label></td>
+		<td>
 			<?php echo inputfield('text','barcode_nmbr',NULL,array('size'=>'20',maxLength=>'20','class'=>'required')); ?>
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true" class="primary" valign="top">
-			<label for="autobarco"><?php echo T('Auto Barcode'); ?></label>
-		</td>
-		<td valign="top" class="primary">
+		<td><label for="autobarco"><?php echo T('Auto Barcode'); ?></label></td>
+		<td>
 			<?php echo inputfield("checkbox","autobarco",'Y',NULL,$_SESSION['item_autoBarcode_flg']); ?>
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true" class="primary" valign="top">
-			<label for="copy_desc"><?php echo T("Description"); ?></label>
-		</td>
-		<td valign="top" class="primary">
+		<td><label for="copy_desc"><?php echo T("Description"); ?></label></td>
+		<td>
 			<?php echo inputfield("text", "copy_desc", NULL, array("size"=>40,"max"=>40)); ?>
 		</td>
 	</tr>
@@ -43,18 +37,15 @@
 	if($_SESSION['multi_site_func'] > 0){
 	?>
 	<tr>
-		<td nowrap="true" class="primary" valign="top">
-			<label for="copy_site"><?php echo T("Location"); ?></label>
-		</td>
-		<td valign="top" class="primary">
+		<td><label for="copy_site"><?php echo T("Location"); ?></label></td>
+		<td>
     	<select id="copy_site" name="copy_site">to be filled in by server</span>
 		</td>
 	</tr>
 	<?php } ?>
 	<tr>
-		<td nowrap="true" class="primary" valign="top">
-			<label for="status_cd"><?php echo T("Status:");?></label></td>
-		<td valign="top" class="primary">
+		<td><label for="status_cd"><?php echo T("Status:");?></label></td>
+		<td>
 			</select>
 			<?php 	
 				$states = new CopyStates;

@@ -32,36 +32,12 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <style>
-h4 {
-	margin: 0; padding: 0; text-align: left; color: blue;
-	}
-h5 {
-	margin: 0; padding: 0; text-align: left; color: blue;
-	}
-h5#updateMsg {
-	color: red;
-	}
-p#errMsgTxt {
-	color: red; text-align: center;
-	}
-table#showList tr {
-	height: 1.3em;
-	}
-th.colHead {
-  white-space: nowrap;
-	}
-td.lblFld {
-  white-space: nowrap;
-	}
-td.inptFld {
-  vertical-align: top;
-	}
-td.btnFld {
-  text-align: center;
-	}
-.editBtn {
-	margin: 0; padding: 0; height: 1.5em; text-align:center;
-	}
+h4, h5 { margin: 0; padding: 0; text-align: left; color: blue; }
+h5#updateMsg { color: red; }
+p#errMsgTxt { color: red; text-align: center; }
+table#showList tr { height: 1.3em; }
+th.colHead { white-space: nowrap; }
+.editBtn { margin: 0; padding: 0; height: 1.5em; text-align:center; }
 </style>
 
 	<h3><?php echo T('Add New Item'); ?></h3>
@@ -81,8 +57,8 @@ td.btnFld {
 		</thead>
 		<tbody>
 		<tr id="fldset1">
-		  <td class="inptFld"><input id="lookupVal" name="lookupVal" type="text" class="criteria"></td>
-		  <td class="inptFld">
+		  <td><input id="lookupVal" name="lookupVal" type="text" class="criteria"></td>
+		  <td>
 		  	<select id="srchBy" name="srchBy" class="criteria">
 		  		<option value="7" selected><?php echo $isbnTxt; ?></option>
 		  		<option value="8"><?php echo $issnTxt; ?></option>
@@ -96,8 +72,8 @@ td.btnFld {
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset2">
-		  <td class="inptFld"><input id="lookupVal2" name="lookupVal2" type="text" class="criteria"></td>
-		  <td class="inptFld">
+		  <td><input id="lookupVal2" name="lookupVal2" type="text" class="criteria"></td>
+		  <td>
 		  	<select id="srchBy2" name="srchBy2" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="1004"><?php echo $authorTxt; ?></option>
@@ -111,8 +87,8 @@ td.btnFld {
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset3">
-		  <td class="inptFld"><input id="lookupVal3" name="lookupVal3" type="text" class="criteria"></td>
-		  <td class="inptFld">
+		  <td><input id="lookupVal3" name="lookupVal3" type="text" class="criteria"></td>
+		  <td>
 		  	<select id="srchBy3" name="srchBy3" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
@@ -125,8 +101,8 @@ td.btnFld {
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset4">
-		  <td class="inptFld"><input id="lookupVal4" name="lookupVal4" type="text" class="criteria"></td>
-		  <td class="inptFld">
+		  <td><input id="lookupVal4" name="lookupVal4" type="text" class="criteria"></td>
+		  <td>
 		  	<select id="srchBy4" name="srchBy4" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="59"><?php echo $pubLocTxt; ?></option>
@@ -139,8 +115,8 @@ td.btnFld {
 			<td><?php echo T("And");?></td>
 		</tr>
 		<tr id="fldset5">
-		  <td class="inptFld"><input id="lookupVal5" name="lookupVal5" type="text" class="criteria"></td>
-		  <td class="inptFld">
+		  <td><input id="lookupVal5" name="lookupVal5" type="text" class="criteria"></td>
+		  <td>
 		  	<select id="srchBy5" name="srchBy5" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="31"><?php echo $pubDateTxt; ?></option>
@@ -158,9 +134,8 @@ td.btnFld {
 
 		<tfoot>
 		<tr>
-		  <td colspan="2" class="btnFld" >
-				<input type="submit" id="srchBtn" name="srchBtn"
-							 value="<?php echo T("Search");?>" />
+		  <td colspan="2">
+				<input type="submit" id="srchBtn" name="srchBtn" value="<?php echo T("Search");?>" />
 			</td>
 		</tr>
 		</tfoot>
@@ -198,7 +173,7 @@ td.btnFld {
 			<td colspan="3" id="retryMsg"></td>
 		</tr>
 		<tr>
-	    <td colspan="3" class="btnFld">
+	    <td colspan="3">
 				<input id="retryBtn" type="submit" value="<?php echo T("Go Back");?>" />
 			</td>
 		</tr>
@@ -229,7 +204,7 @@ td.btnFld {
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
 			<input type="button" class="button itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			<?php
-				include(REL(__FILE__,"../catalog/item_editor.php"));
+				include(REL(__FILE__,"../catalog/itemEditorForm.php"));
 			?>
 			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -244,5 +219,6 @@ td.btnFld {
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
+	require_once(REL(__FILE__, "../catalog/itemEditorJs.php"));
 	require_once(REL(__FILE__, "new_ItemJs.php"));
 ?>	

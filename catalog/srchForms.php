@@ -294,11 +294,11 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="copyEditorDiv">
-	<?php include_once(REL(__FILE__,"biblio_copy_editor.php"));?>
+	<?php include_once(REL(__FILE__,"copyEditorForm.php"));?>
 </div>
 
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
-	include_once(REL(__FILE__,'./biblio_srchJs.php'));
+	include_once(REL(__FILE__,'./srchJs.php'));
 ?>	

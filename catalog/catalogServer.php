@@ -397,7 +397,7 @@ class SrchDb {
 	}
 	## ========================= ##
 	function getBiblioFields() {
-	  require_once(REL(__FILE__,"../catalog/biblio_fields.php"));
+	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
 	}
 } // class
 

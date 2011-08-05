@@ -44,8 +44,8 @@ function staff_menu() {
 
 	##-------------------------------------------------------------------------------------##
 //	Nav::node('cataloging', T("Cataloging"), '../catalog/index.php');
-	Nav::node('cataloging', T("Cataloging"), '../catalog/biblio_srchForms.php');
-	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/biblio_srchForms.php");
+	Nav::node('cataloging', T("Cataloging"), '../catalog/srchForms.php');
+	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 	if($_SESSION["hasCatalogAuth"]){
 		Nav::node('cataloging/newItem', T("New Item"), "../online/new_item.php");
 
@@ -97,7 +97,7 @@ function staff_menu() {
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"),
 			"../catalog/upload_usmarc_form.php");
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
-			"../catalog/biblio_bulkDel.php");
+			"../catalog/bulkDelForm.php");
 	}
 	
 	##-------------------------------------------------------------------------------------##

@@ -36,7 +36,7 @@ bs = {
 		// get header stuff going first
 		bs.initWidgets();
 
-		bs.url = 'biblio_server.php';
+		bs.url = 'catalogServer.php';
 		bs.urlLookup = '../online/server.php'; //may not exist
 
 		// search form

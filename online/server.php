@@ -66,7 +66,7 @@
 switch ($_REQUEST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getBiblioFields':
-	  require_once(REL(__FILE__,"../catalog/biblio_fields.php"));
+	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
 	  break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-

@@ -1,3 +1,4 @@
+<script language="JavaScript" >
 // JavaScript Document
 //------------------------------------------------------------------------------
 // biblio_bulkDel Javascript
@@ -86,3 +87,4 @@ console.log('jsonData:'+jsonData);
 	
 }
 $(document).ready(bbd.init);
+</script>
