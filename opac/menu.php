@@ -5,7 +5,7 @@
 
 function opac_menu() {
 //	Nav::node('home', T("New Search"), '../opac/index.php');
-	Nav::node('home', T("Local Search"), '../catalog/biblio_search.php?tab=OPAC');
+	Nav::node('home', T("Local Search"), '../catalog/srchForms.php?tab=OPAC');
 //	if (isset($_SESSION['rpt_BiblioSearch'])) {
 //		Nav::node('search', T("Search Results"),
 //			'../shared/biblio_search.php?searchType=previous&tab='.U($tab));

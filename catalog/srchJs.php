@@ -400,13 +400,12 @@ bs = {
 			
 			if (bs.opts.showBiblioPhotos == 'Y') {
 				html += '<td id="photo_'+biblio.bibid+'">'+
-								'		<img src="../images/shim.gif" class="biblioImage" />'+
+								'		<img src="../images/shim.gif" class="biblioImage noHover" />'+
 								'</td>'+"\n";
 	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
-//	  		  $('#srchRsltsDiv #photo_'+biblio.bibid+'>img').html(data.);
-						var theId = data[0].bibid, theUrl = data[0].imgurl;
-console.log(theId+'==>>'+theUrl);
-					$('#photo_'+theId).html($('<img src="'+theUrl+'" class="biblioImage">'));
+					var theId = data[0].bibid, theUrl = data[0].imgurl;
+					//console.log(theId+'==>>'+theUrl);
+					$('#photo_'+theId).html($('<img src="'+theUrl+'" class="biblioImage hover">'));
 	  		});
 			}
 			html += '<td>\n';
@@ -475,11 +474,28 @@ console.log(theId+'==>>'+theUrl);
 	    $('#results_found').html(response);
 	  });
 	},
+	
 	showOneBiblio: function (biblio) {
 	  if(!biblio)
 			bs.theBiblio = $(this).prev().val();
 		else
 	  	bs.theBiblio = biblio;
+
+		if (bs.opts.showBiblioPhotos == 'Y') {
+			// first a default
+			//$('#biblioFoto').html($('<img src="../images/shim.gif" class="biblioImage">'));
+			// then get whatever is available
+  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bs.theBiblio.bibid  }, function(data){
+  			if (data === null) {
+					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
+  			} else {
+					var theId = data[0]['bibid'], 
+							theUrl = data[0]['imgurl'];
+					//console.log(theId+'==>>'+theUrl);
+					$('#bibBlkB').html($('<img src="'+theUrl+'" id="biblioFoto" class="hover" >'));
+				}
+  		});
+		}
 
 	  var txt = '';
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
@@ -505,6 +521,7 @@ console.log(theId+'==>>'+theUrl);
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
 	},
+	
 	makeDueDateStr: function (dtOut, daysDueBack) {
 		if(daysDueBack==null) daysDueBack=0;
 		var dt = dtOut.split(' ');

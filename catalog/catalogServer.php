@@ -670,8 +670,6 @@ function mkBiblioArray($dbObj) {
 		break;
 
 	case 'getPhoto':
-	  ## place keeper for this release
-	  //echo "<img src=\"../images/shim.gif\" />";
 	  $ptr = new BiblioImages;
 	  $set = $ptr->getByBibid($_REQUEST['bibid']);
 		while ($row = $set->next()) {

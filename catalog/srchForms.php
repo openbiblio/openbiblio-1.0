@@ -224,23 +224,27 @@
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
-	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="marcBtn" value="">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="button" id="addItem2CartBtn" value="<?php echo T('Add To Cart'); ?>" />
-	<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="biblioEditBtn" value="<?php echo T('Edit This Item'); ?>">
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="biblioDeleteBtn" value="<?php echo T('Delete This Item'); ?>">
-	<?php }?>
-	
+
+	<ul class="btnRow">
+		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" /></li>
+		<li><input type="button" id="marcBtn" value=""></li>
+		<li><input type="button" id="addItem2CartBtn" value="<?php echo T('Add To Cart'); ?>" /></li>
+		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
+		<li><input type="button" id="biblioEditBtn" value="<?php echo T('Edit This Item'); ?>"></li>
+		<li><input type="button" id="biblioDeleteBtn" value="<?php echo T('Delete This Item'); ?>"></li>
+		<?php }?>
+	</ul>
+		
 	<fieldset>
 		<legend><?php echo T("Biblio Information"); ?></legend>
-		<table id="biblioTbl" border="1">
-		<tbody id="biblio" class="striped"></tbody>
-		</table>
+		<div id="bibBlks">
+			<div id="bibBlkA">
+				<table id="biblioTbl" border="1">
+					<tbody id="biblio" class="striped"></tbody>
+				</table>
+			</div>
+			<div id="bibBlkB"></div>
+		</div>
 	</fieldset>
 
 	<fieldset>
@@ -267,11 +271,12 @@
 		</table>
 	</fieldset>
 	
-	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>">
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
-	<input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>">
-<?php } ?>
+	<ul class="btnRow">
+		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>"></li>
+		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
+			<li><input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>"></li>
+		<?php } ?>
+	</ul>
 </div>
 
 <!-- ------------------------------------------------------------------------ -->

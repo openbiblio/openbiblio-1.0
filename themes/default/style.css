@@ -45,6 +45,7 @@ hr { display: block; position: relative;
 		 font-size: 1px; line-height: 0;
 		 overflow: visible;
 	}
+figure { border: 1px solid gray; }
 legend { font-size: 14px; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
 fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
 table { margin: 2px; }
@@ -215,6 +216,7 @@ ul#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
 ul#btnRow li, 
 ul.btnRow li { display: inline; margin-right: 1em; }
 ul#btnRow li input[value="Delete"], 
+ul.btnRow li input[value="Delete This Item"],
 ul.btnRow li input[value="Delete"] { float: right; margin-right: 0; }
 fieldset.inlineFldSet { float: left; width:auto; border:0; margin-right:0.5em; padding:0; }
 fieldset.inlineFldSet label { display:block; }
@@ -255,12 +257,25 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	width: 100%;
 	}
 .search_result td { vertical-align: top; }
-.biblioImage { float: left; border: 1px solid green; height: 50px; width: 50px; }
-.biblioImage:hover { top:30px; left:200px;
+.biblioImage { float: left; border: 1px solid green; height: 50px; width: 40px; }
+.biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform: 	scale(5.0);
 	-moz-transform: 		scale(5.0);
 	-o-transform: 			scale(5.0);
+	transform: 					scale(5.0);
 	}
+#bibBlks { position: relative; }
+#bibBlkA { display: inline; float: left; }
+#bibBlkB { display: inline; float: right; }
+/*#biblioFotoFig { margin:1em; float: right; }*/
+#biblioFoto { width:100px; height:125px; padding:10px; margin-right:10px; border:1px solid green }
+#biblioFoto.hover:hover { 
+	top: 20px;
+	-webkit-transform: 	scale(3.0);
+	-moz-transform: 		scale(3.0); -moz-transform-origin: top right;
+	-o-transform: 			scale(3.0);
+	transform: 					scale(3.0);
+}
 #onlineMsg { color: blue; }
 #flagInfo ul { text-align: center; margin:0; padding:0; }
 #flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
