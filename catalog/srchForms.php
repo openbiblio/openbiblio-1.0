@@ -231,6 +231,7 @@
 		<li><input type="button" id="addItem2CartBtn" value="<?php echo T('Add To Cart'); ?>" /></li>
 		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
 		<li><input type="button" id="biblioEditBtn" value="<?php echo T('Edit This Item'); ?>"></li>
+		<li><input type="button" id="photoEditBtn" value=""></li>
 		<li><input type="button" id="biblioDeleteBtn" value="<?php echo T('Delete This Item'); ?>"></li>
 		<?php }?>
 	</ul>

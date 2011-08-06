@@ -488,9 +488,11 @@ bs = {
   		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bs.theBiblio.bibid  }, function(data){
   			if (data === null) {
 					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
+					$('#photoEditBtn').val('<?php echo T("Add New Photo"); ?>');
   			} else {
 					var theId = data[0]['bibid'], 
 							theUrl = data[0]['imgurl'];
+					$('#photoEditBtn').val('<?php echo T("Edit This Photo"); ?>');
 					//console.log(theId+'==>>'+theUrl);
 					$('#bibBlkB').html($('<img src="'+theUrl+'" id="biblioFoto" class="hover" >'));
 				}
