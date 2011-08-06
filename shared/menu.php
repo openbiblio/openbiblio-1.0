@@ -57,28 +57,32 @@ function staff_menu() {
 
 		Nav::node('cataloging/cart', T("Request Cart"), '../shared/req_cart.php?tab='.U($tab));
 
-		if (isset($_REQUEST['bibid'])) {
+//		if (isset($_REQUEST['bibid'])) {
 			$params = 'bibid='.U($_REQUEST['bibid']);
 			if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
 				$params .= '&rpt='.U($_REQUEST['rpt']);
 				$params .= '&seqno='.U($_REQUEST['seqno']);
 			}
 
-			Nav::node('cataloging/biblio', T("Item Info"),
-				"../shared/biblio_view.php?".$params);
-				Nav::node('cataloging/biblio/edit', T("Edit"),
-				"../catalog/biblio_edit_form.php?".$params);
+//			Nav::node('cataloging/biblio', T("Item Info"),
+//				"../shared/biblio_view.php?".$params);
+//			Nav::node('cataloging/biblio/edit', T("Edit"),
+//				"../catalog/biblio_edit_form.php?".$params);
+				
 			Nav::node('cataloging/biblio/editmarc', T("Edit MARC"),
 				"../catalog/biblio_marc_edit_form.php?".$params);
-			Nav::node('cataloging/biblio/images', T("Manage Images"),
+/*				
+			Nav::node('cataloging/images', T("Manage Images"),
 				"../catalog/image_manage.php?".$params);
-			Nav::node('cataloging/biblio/images/new', T("Add New Image..."),
+			Nav::node('cataloging/new_images', T("Add New Image..."),
 				"../catalog/image_upload_form.php?".$params);
-			Nav::node('cataloging/biblio/images/del', T("Delete Image"));
+			Nav::node('cataloging/del_images', T("Delete Image"));
+*/			
 			Nav::node('cataloging/biblio/editstock', T("Edit Stock Info"));
 			//Nav::node('cataloging/biblio/newcopy', T("New Copy"));
 			Nav::node('cataloging/biblio/newlike', T("New Like"), "../catalog/biblio_new_like.php?".$menu_params);
 			//Nav::node('cataloging/biblio/editcopy', T("Edit Copy"));
+			
 			Nav::node('cataloging/biblio/bookings', T("Item Bookings"),
 				"../reports/run_report.php?type=bookings"
 				. "&rpt_order_by=outd!r"
@@ -89,13 +93,14 @@ function staff_menu() {
 				"../catalog/biblio_hold_list.php?".$params);
 			//Nav::node('cataloging/biblio/delete', T("Delete"),
 			//	"../catalog/biblio_del_confirm.php?".$params);
-		}
-
-		Nav::node('cataloging/images', T("Browse Images"), '../shared/image_browse.php');
+//		}
+/*
+		Nav::node('cataloging/browse_images', T("Browse Images"), '../shared/image_browse.php');
+*/
 		//Nav::node('cataloging/new', T("New Item"),
 		//	"../catalog/biblio_new_form.php?reset=Y");
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"),
-			"../catalog/upload_usmarc_form.php");
+			"../catalog/upload_usmarc_form.php");			
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
 			"../catalog/bulkDelForm.php");
 	}

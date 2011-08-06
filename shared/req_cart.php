@@ -41,12 +41,15 @@
 		Nav::node('cataloging/cart/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioCart');
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
+
+	  echo "<h3>Request Cart</h3>";
+	  
+
 	if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
 		echo '<p class="error">'.H($_REQUEST["msg"]).'</p><br /><br />';
 	}
 	# Display no results message if no results returned from search.
 	if ($total_items == 0) {
-	  echo "<h3>Request Cart</h3>";
 		echo "<p class=\"error\">".T("Cart is empty")."</p>";
 		 ;
 		exit();
@@ -59,11 +62,54 @@
 	$page_url = new LinkUrl("../shared/req_cart.php", 'page', $p);
 	$sort_url = new LinkUrl("../shared/req_cart.php", 'rpt_order_by', $p);
 	$disp = new ReportDisplay($rpt);
-	echo '<div class="results_count">';
-	echo T("%count% items in cart.", array('count'=>$rpt->count()));
-	echo '</div>';
+	echo "<h5>".T("%count% items in cart.", array('count'=>$rpt->count()))."</h5>";
 	echo $disp->pages($page_url, $currentPageNmbr);
 ?>
+
+<form name="selection" id="selection" action="../shared/cart_del.php" method="post">
+	<fieldset>
+	<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
+	<input type="hidden" name="name" value="bibid" />
+	<table class="resultshead">
+		<tr>
+			<td class="resultshead">
+				<table>
+					<tr>
+					<?php
+						if ($tab == "opac") {
+					?>
+						<td><a href="../shared/request.php"><?php echo T("Submit Request"); ?></a></td>
+					<?php } ?>
+						<td><input type="submit" value="<?php echo T("Remove from Cart"); ?>" /></a></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+<?php
+
+$t = new TableDisplay;
+$t->columns = $disp->columns($sort_url);
+array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" name="all" value="all" onclick="setCheckboxes();" />'));
+echo $t->begin();
+$page = $rpt->pageIter($currentPageNmbr);
+while ($r = $page->next()) {
+	$dr = $disp->row($r);
+	array_unshift($dr, '<input type="checkbox" name="id[]" value="'.H($r['bibid']).'" />');
+	echo $t->rowArray($dr);
+}
+echo $t->end();
+
+echo '	</fieldset>';
+echo '</form>';
+
+echo $disp->pages($page_url, $currentPageNmbr);
+?>
+ 
+ 
+<?php
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+?>	
 <script type="text/javascript">
 // based on a function from PhpMyAdmin
 function setCheckboxes()
@@ -80,41 +126,3 @@ function setCheckboxes()
 	return true;
 }
 </script>
-<form name="selection" id="selection" action="../shared/cart_del.php" method="post">
-<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
-<input type="hidden" name="name" value="bibid" />
-<table class="resultshead">
-	<tr>
-			<th><?php echo T("Request Cart"); ?></th>
-		<td class="resultshead">
-<table class="buttons">
-<tr>
-<?php
-	if ($tab == "opac") {
-?>
-<td><a href="../shared/request.php"><?php echo T("Submit Request"); ?></a></td>
-<?php } ?>
-<td><input type="submit" value="<?php echo T("Remove from Cart"); ?>" /></a></td>
-</tr>
-</table>
-</td>
-	</tr>
-</table>
-<?php
-
-$t = new TableDisplay;
-$t->columns = $disp->columns($sort_url);
-array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" name="all" value="all" onclick="setCheckboxes();" />'));
-echo $t->begin();
-$page = $rpt->pageIter($currentPageNmbr);
-while ($r = $page->next()) {
-	$dr = $disp->row($r);
-	array_unshift($dr, '<input type="checkbox" name="id[]" value="'.H($r['bibid']).'" />');
-	echo $t->rowArray($dr);
-}
-echo $t->end();
-
-echo '</form>';
-
-echo $disp->pages($page_url, $currentPageNmbr);
- ;

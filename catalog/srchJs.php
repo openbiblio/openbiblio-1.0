@@ -3,16 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 ?>
-<style>
-.biblioImage {
-	float: left;
-	border: 3px solid green;
-	height: 50px; width: 50px;
-	}
-#onlineMsg {
-	color: blue;
-	}
-</style>
 
 <script language="JavaScript" defer>
 // JavaScript Document
@@ -409,11 +399,14 @@ bs = {
 			if(title.length>50) title = title.substring(0,50)+'...';
 			
 			if (bs.opts.showBiblioPhotos == 'Y') {
-				html += '<td id="photo_'+biblio.bibid+'" class="biblioImage">'+
-								'		<img src=\"../images/shim.gif\" />'+
+				html += '<td id="photo_'+biblio.bibid+'">'+
+								'		<img src="../images/shim.gif" class="biblioImage" />'+
 								'</td>'+"\n";
-	  		$.get(bs.url,{mode:'getPhoto'}, function(data){
-	  		  $('#srchRsltsDiv #photo_'+biblio.bibid).html(data);
+	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
+//	  		  $('#srchRsltsDiv #photo_'+biblio.bibid+'>img').html(data.);
+						var theId = data[0].bibid, theUrl = data[0].imgurl;
+console.log(theId+'==>>'+theUrl);
+					$('#photo_'+theId).html($('<img src="'+theUrl+'" class="biblioImage">'));
 	  		});
 			}
 			html += '<td>\n';

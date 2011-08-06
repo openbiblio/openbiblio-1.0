@@ -122,7 +122,7 @@ class ReportDisplayFuncs {
 	function biblio_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row['bibid'],
 //			new LinkUrl('../shared/biblio_view.php', 'bibid', array())
-			new LinkUrl('../catalog/biblio_search.php', 'bibid', array())
+			new LinkUrl('../catalog/srchForms.php', 'bibid', array())
 		);
 	}
 	function booking_link($col, $row, $rpt) {
@@ -137,7 +137,7 @@ class ReportDisplayFuncs {
 	}
 	function site_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row['siteid'],
-			new LinkUrl('../admin/sites_edit_form.php', 'siteid', array())
+			new LinkUrl('../admin/sitesForm.php', 'siteid', array())
 		);
 	}
 	function calendar_link($col, $row, $rpt) {
@@ -147,7 +147,7 @@ class ReportDisplayFuncs {
 	}
 	function subject_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row[$col['name']],
-			new LinkUrl('../shared/biblio_search.php', 'searchText', array(
+			new LinkUrl('../catalog/srchForms.php', 'searchText', array(
 				'searchType'=>'subject',
 				'exact'=>1,
 			))
@@ -155,7 +155,7 @@ class ReportDisplayFuncs {
 	}
 	function series_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row[$col['name']],
-			new LinkUrl('../shared/biblio_search.php', 'searchText', array(
+			new LinkUrl('../catalog/srchForms.php', 'searchText', array(
 				'searchType'=>'series',
 				'exact'=>1,
 			))

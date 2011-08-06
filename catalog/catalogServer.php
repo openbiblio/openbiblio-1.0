@@ -7,6 +7,7 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
+	require_once(REL(__FILE__, "../model/BiblioImages.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
@@ -670,7 +671,13 @@ function mkBiblioArray($dbObj) {
 
 	case 'getPhoto':
 	  ## place keeper for this release
-	  echo "<img src=\"../images/shim.gif\" />";
+	  //echo "<img src=\"../images/shim.gif\" />";
+	  $ptr = new BiblioImages;
+	  $set = $ptr->getByBibid($_REQUEST['bibid']);
+		while ($row = $set->next()) {
+		  $imgs[] = $row;
+		}
+		echo json_encode($imgs);
 	  break;
 	  
 	case 'getBibsFrmCopies':
