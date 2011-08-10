@@ -463,7 +463,9 @@ class UpgradeQuery extends InstallQuery {
 		$sql = "INSERT INTO `openbibliowork`.`settings` "
 					."(`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)""
 					."VALUES "
-					."('show_lib_info', '28', NULL , 'bool', NULL , NULL , NULL , 'N', 'admin')
+					."('show_lib_info', '28', NULL , 'bool', NULL , NULL , NULL , 'N', 'admin'),"
+					."('thumbnail_max_width', '29', NULL , 'int', NULL, NULL, NULL, '100', 'admin')," 
+					."('thumbnail_max_height', '30', NULL , 'int', NULL, NULL, NULL, '150', 'admin')"
 					;
 		$this->act($sql);
 		

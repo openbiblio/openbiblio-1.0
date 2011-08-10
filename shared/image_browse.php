@@ -11,7 +11,7 @@
 	}
 	$_REQUEST['tab'] = $tab;
 
-	$nav = "images";
+	$nav = "browse_images";
 	if ($tab != "opac") {
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
 	}
@@ -21,7 +21,7 @@
 
 	function getRpt() {
 		global $tab;
-
+echo "'getRpt()' called <br />";
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('Images');
 
@@ -32,14 +32,18 @@
 		}
 
 		$rpt = Report::create('images', 'Images');
+echo "back from rpt generator <br />";
 		if (!$rpt) {
+echo "nothing found <br />";
 			return false;
 		}
 		$rpt->initCgi();
+echo "'initCgi()' called <br />";
 		return $rpt;
 	}
 
 	$rpt = getRpt();
+echo "got a rpt <br />";
 
 	if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
 		$currentPageNmbr = $_REQUEST["page"];

@@ -6,7 +6,7 @@
 	require_once("../shared/common.php");
 
 	$tab = "cataloging";
-	$nav = "biblio/images";
+	$nav = "images";
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
 

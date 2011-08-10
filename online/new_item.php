@@ -149,6 +149,7 @@ th.colHead { white-space: nowrap; }
 		<table>
 		<tr>
 			<th colspan="1"><?php echo T("lookup_patience");?></th>
+			<td rowspan="3"><img src="<?php echo REL(__FILES__,"../images/please_wait.gif"); ?>" /></td>
 		</tr>
 		<tr>
 		  <td colspan="1"><span id="waitText"></span></td>
@@ -220,5 +221,6 @@ th.colHead { white-space: nowrap; }
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
 	require_once(REL(__FILE__, "../catalog/itemEditorJs.php"));
-	require_once(REL(__FILE__, "new_ItemJs.php"));
+
+	require_once(REL(__FILE__, "new_itemJs.php"));
 ?>	

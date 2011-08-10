@@ -55,6 +55,12 @@ bs = {
 		$('#biblioListDiv .goPrevBtn').disable();
 
 		// for the single biblio display screen
+		$('#photoAddBtn').bind('click',null,function () {
+			bs.doPhotoAdd(bs.theBiblio);
+		});
+		$('#photoEditBtn').bind('click',null,function () {
+			bs.doPhotoEdit(bs.theBiblio);
+		});
 		$('#biblioEditBtn').bind('click',null,function () {
 			bs.doItemEdit(bs.theBiblio);
 		});
@@ -125,15 +131,15 @@ bs = {
 		// for the copy editor screen
 		$('#barcode_nmbr').bind('change',null,bs.chkBarcdForDupe);
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
-		$('#copySubmitBtn').bind('click',null,function () {
-			bs.doCopyUpdate();
-			// Moved to function
-			//bs.rtnToBiblio();			
-		});
+		$('#copySubmitBtn').bind('click',null,bs.doCopyUpdate);
 		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
-		$('#copyCancelBtn').bind('click',null,function () {
-			bs.rtnToBiblio();
-		});
+		$('#copyCancelBtn').bind('click',null,bs.rtnToBiblio);
+		
+		// for the photo editor screen.availHeight
+		$('.gobkFotoBtn').bind('click',null,bs.rtnToBiblio);
+		$('#updtFotoBtn').bind('click',null,bs.doUpdatePhoto);
+		$('#deltFotoBtn').bind('click',null,bs.doDeletePhoto);
+		$('#addFotoBtn').bind('click',null,bs.doAddNewPhoto);
 
 		// begin processing; last item MUST include a call to bs.doAltStart()
 		bs.resetForms();
@@ -169,6 +175,7 @@ bs = {
 	  $('#biblioListDiv').hide();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
+	  $('#photoEditorDiv').hide();
 	  bs.multiMode = false;
 	  bs.checkSrchByPhraseBtn();
 	  bs.checkSrchByBarcdBtn();
@@ -184,6 +191,7 @@ bs = {
 	  $('#searchDiv').show();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
+	  $('#photoEditorDiv').hide();
 	  bs.checkSrchByPhraseBtn();
 	  bs.checkSrchByBarcdBtn();
 	},
@@ -196,6 +204,7 @@ bs = {
 	  $('#searchDiv').hide();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
+	  $('#photoEditorDiv').hide();
 	},
 
 	rtnToBiblio: function () {
@@ -206,6 +215,7 @@ bs = {
 	  $('#searchDiv').hide();
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
+	  $('#photoEditorDiv').hide();
 	},
 
 	doAltStart: function () {
@@ -259,7 +269,7 @@ bs = {
 		});
 	},	
 	
-	//------------------------------
+	/* ====================================== */
 	doBibidSearch: function (bibid) {
 	  bs.srchType = 'bibid';
 	  $('p.error').html('').hide();
@@ -357,6 +367,8 @@ bs = {
 		});
 		return false;
 	},
+
+	/* ====================================== */
 	showList: function (firstItem, biblioList) {
 	  if(firstItem==null){
 	    firstItem=0;
@@ -403,9 +415,10 @@ bs = {
 								'		<img src="../images/shim.gif" class="biblioImage noHover" />'+
 								'</td>'+"\n";
 	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
-					var theId = data[0].bibid, theUrl = data[0].imgurl;
-					//console.log(theId+'==>>'+theUrl);
-					$('#photo_'+theId).html($('<img src="'+theUrl+'" class="biblioImage hover">'));
+					var theId = data[0].bibid, 
+							fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
+					//console.log(theId+'==>>'+fotoFile);
+					$('#photo_'+theId).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
 	  		});
 			}
 			html += '<td>\n';
@@ -475,26 +488,30 @@ bs = {
 	  });
 	},
 	
+	/* ====================================== */
 	showOneBiblio: function (biblio) {
 	  if(!biblio)
 			bs.theBiblio = $(this).prev().val();
 		else
 	  	bs.theBiblio = biblio;
 
+  	bs.crntFoto = null;
+  	bs.crntBibid = bs.theBiblio.bibid;
+		$('#photoEditBtn').hide();		
+		$('#photoAddBtn').hide();		
+		$('#bibBlkB').html('');
 		if (bs.opts.showBiblioPhotos == 'Y') {
-			// first a default
-			//$('#biblioFoto').html($('<img src="../images/shim.gif" class="biblioImage">'));
-			// then get whatever is available
   		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bs.theBiblio.bibid  }, function(data){
-  			if (data === null) {
+  			if (data == null) {
+  				bs.crntFoto = data;
+					$('#photoAddBtn').show();
 					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
-					$('#photoEditBtn').val('<?php echo T("Add New Photo"); ?>');
   			} else {
-					var theId = data[0]['bibid'], 
-							theUrl = data[0]['imgurl'];
-					$('#photoEditBtn').val('<?php echo T("Edit This Photo"); ?>');
-					//console.log(theId+'==>>'+theUrl);
-					$('#bibBlkB').html($('<img src="'+theUrl+'" id="biblioFoto" class="hover" >'));
+  				bs.crntFoto = data[0];
+					$('#photoEditBtn').show();
+					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url;
+					//console.log(bs.theBiblio.bibid+'==>>'+fotoFile);
+					$('#bibBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
 				}
   		});
 		}
@@ -507,6 +524,10 @@ bs = {
 			txt += "	<td>"+tmp.label+"</td>\n";
 			txt += "	<td>"+tmp.value+"</td>\n";
 			txt += "</tr>\n";
+			if (tmp.marcTag == '245a') {
+				bs.crntTitle = tmp.value;
+				//console.log('title==>>'+bs.crntTitle);				
+			}
 		});
 		txt += "<tr>\n";
 		txt += "	<td class=\"filterable hilite\">&nbsp</td>\n";
@@ -536,6 +557,7 @@ bs = {
 		dateOut.setDate(dateOut.getDate() + daysDueBack);
 		return dateOut.toDateString();
 	},
+	
 	fetchCopyInfo: function () {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
@@ -614,6 +636,77 @@ bs = {
 		}
 		return fldSet;
 	},
+
+	/* ====================================== */
+	doPhotoEdit: function () {
+		$('#updtFotoBtn').show();
+		$('#deltFotoBtn').show();
+		$('#addFotoBtn').hide();
+		$('#fotoMode').val('updatePhoto')
+		$('#fotoSrce').attr({'required':false, 'aria-required':false});
+		bs.showPhotoForm();
+	},
+	doPhotoAdd: function () {
+		$('#updtFotoBtn').hide();
+		$('#deltFotoBtn').hide();
+		$('#addFotoBtn').show();
+		$('#fotoMode').val('addNewPhoto')
+		$('#fotoSrce').attr({'required':true, 'aria-required':true});
+		bs.showPhotoForm();
+	},
+	showPhotoForm: function () {
+	  $('#biblioDiv').hide();
+	  $('#fotoSrce').val('')
+		$('#fotoEdLegend').html('Cover Photo for: '+bs.crntTitle);
+	  $('#fotoBibid').val(bs.biblio.bibid);
+	  
+	  if (bs.crntFoto != null) {
+	  	$('#fotoFile').val(bs.crntFoto.url);
+	  	$('#fotoBlkB').html('<img src="<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url+'" id="foto" class="hover" >');
+	  	$('#fotoCapt').val(bs.crntFoto.caption);
+	  } else {
+	  	$('#fotoBlkB').html('');
+	  	$('#fotoFile').val('');
+	  	$('#fotoCapt').val('');
+		}
+		$('#photoEditorDiv').show();
+	},
+	doUpdatePhoto: function () {
+	},
+	doAddNewPhoto: function (e) {
+//alert('adding photo');	
+		$.ajaxFileUpload({
+				url:							bs.url,
+				secureuri:				false,
+				fileElementId:		'fotoSrce',
+				dataType: 				'json',
+				data:							{'mode':'addNewPhoto',
+													 'bibid':$('#fotoBibid').val(), 
+													 'url':$('#fotoFile').val(), 
+													 'caption':$('#fotoCapt').val(),
+													 'type':$('#fotoType').val(),
+													 'position':$('#fotoPos').val(),
+													},
+				success: 					function (data, status) {
+alert('back with success');				
+														if(typeof(data.error) != 'undefined') {
+															if(data.error != '') {
+																alert(data.error);
+															} else {
+																alert(data.msg);
+															}
+														}
+													},
+				error: 						function (data, status, e) { alert(e); }
+			});
+		//e.stopPropagation();
+//alert('work sent to server');		
+		return false;
+	},
+	doDeletePhoto: function () {
+	},
+	
+	/* ====================================== */
 	doItemEdit: function (biblio) {
 		bs.fetchCollectionList();
 		$('#onlnUpdtBtn').show();
@@ -679,6 +772,8 @@ bs = {
     	$('#itemEditorDiv').show();
 		});
 	},
+
+	/* ====================================== */
 	fetchOnlnData: function () {
 	  var title =  $('#marcBody input.offline:text').filter('#245a').val();
 	  var author= ($('#marcBody input.offline:text').filter('#100a').val()).split(',')[0];
@@ -740,6 +835,8 @@ bs = {
 			} // else
 		}); // .post
 	},
+
+	/* ====================================== */
 	doFldUpdt: function (e) {
 		var rowNmbr = ((e.target.id).split('_'))[1];
 		var srcId = '#marcBody input[name="onln_'+rowNmbr+'[data]"]';
@@ -790,7 +887,7 @@ bs = {
 		return false;
 	},
 
-	//------------------------------
+	/* ====================================== */
 	doCopyEdit: function (e) {
 		$('#editRsltMsg').html('');
 		var copyid = $(this).next().next().val();

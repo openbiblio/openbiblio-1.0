@@ -36,7 +36,7 @@ h4 { font-size: 12px; margin: 2px; }
 h5 { font-size: 10px; color: black; }
 h6 { font-size: 8px; }
 
-sup, span.reqd { color: red; text-align:center; }
+sup, span.reqd, #reqdNote { color: red; text-align:center; }
 p { margin:2px; padding:0; }
 hr { display: block; position: relative; 
 		 padding: 0; margin: 8px auto;
@@ -113,13 +113,9 @@ h1.staff_head {
 	}
 div#library_name, 
 div#library_hours, 
-div#library_phone {
-	margin: 2px 5px 2px 5px;
-	font: 14px sans-serif;
+div#library_phone { margin: 2px 5px 2px 5px; font: 14px sans-serif;
 	}
-div#library_name {
-	color: white;
-	}
+div#library_name { color: white; }
 
 /*************************************************/
 ul.nav_main {
@@ -153,18 +149,9 @@ ul.nav_sub {
 	list-style-type: circle; 
 	/*list-style-image: url("../../images/bulleto.png");*/
 	}
-ul.nav_sub ul.nav_sub {
-	padding-left: 1em
-	}
-ul.nav_sub li {
-	margin-bottom: 0;
-	font-weight: normal;
-	}
-ul.nav_sub li.nav_selected {
-	font-weight: bold;
-	list-style-type: disc; 
-	/*list-style-image: url("../../images/bulletc.png");*/
-	}
+ul.nav_sub ul.nav_sub { padding-left: 1em }
+ul.nav_sub li { margin-bottom: 0; font-weight: normal; }
+ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; }
 	
 a { color: blue; }
 a:visited { color: blue; }
@@ -201,9 +188,7 @@ div#content {
 	-webkit-box-shadow: 3px 6px 8px -4px #000;
 	box-shadow: 3px 6px 8px -4px #000;
 	}
-#content .altBG {
-	background: #dddddd;
-	}
+#content .altBG { background: #dddddd; }
 table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width: 1px;
 	padding: 2px;
@@ -213,8 +198,7 @@ table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 ul#editTbl { margin-left:0; padding-left:0; }
 ul#editTbl li { list-style-type:none; 	margin:0; padding:0; }
 ul#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
-ul#btnRow li, 
-ul.btnRow li { display: inline; margin-right: 1em; }
+ul#btnRow li, ul.btnRow li { display: inline; margin-right: 1em; }
 ul#btnRow li input[value="Delete"], 
 ul.btnRow li input[value="Delete This Item"],
 ul.btnRow li input[value="Delete"] { float: right; margin-right: 0; }
@@ -257,6 +241,9 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	width: 100%;
 	}
 .search_result td { vertical-align: top; }
+
+.cover_image { width: 75px; }
+.cover_image img { border: solid black 2px; width: 75px; }
 .biblioImage { float: left; border: 1px solid green; height: 50px; width: 40px; }
 .biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform: 	scale(5.0);
@@ -264,11 +251,10 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	-o-transform: 			scale(5.0);
 	transform: 					scale(5.0);
 	}
-#bibBlks { position: relative; }
-#bibBlkA { display: inline; float: left; }
-#bibBlkB { display: inline; float: right; }
-/*#biblioFotoFig { margin:1em; float: right; }*/
-#biblioFoto { width:100px; height:125px; padding:10px; margin-right:10px; border:1px solid green }
+#bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
+#bibBlkA, fotoBlkA { display:inline-block; float:left; }
+#bibBlkB, fotoBlkB { display: inline-block; float: right; }
+#biblioFoto, #foto { width:100px; height:125px; padding:10px; margin-right:10px; border:1px solid green }
 #biblioFoto.hover:hover { 
 	top: 20px;
 	-webkit-transform: 	scale(3.0);
@@ -276,6 +262,7 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	-o-transform: 			scale(3.0);
 	transform: 					scale(3.0);
 }
+
 #onlineMsg { color: blue; }
 #flagInfo ul { text-align: center; margin:0; padding:0; }
 #flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
@@ -284,12 +271,6 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	-moz-transform: 	 scale(0.75);
 	transform: 				 scale(0.60);
 	vertical-align: bottom;
-	}
-.cover_image {
-	width: 75px
-	}
-.cover_image img {
-	border: solid black 2px; width: 75px;
 	}
 .call_media {
 	font: 16px sans-serif;

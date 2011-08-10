@@ -63,13 +63,15 @@ class BiblioImages {
 		}
 		$n = $position;
 		while (1) {
-			$full = OBIB_UPLOAD_DIR.'img-'.$bibid.'-'.$n.$ext;
+			//$full = OBIB_UPLOAD_DIR.'img-'.$bibid.'-'.$n.$ext;
+			$full = OBIB_UPLOAD_DIR.$url;
 			$thumb = OBIB_UPLOAD_DIR.'img-'.$bibid.'-'.$n.'-t'.'.jpg';
 			if (!$this->maybeGetOne($bibid, $thumb)) {
 				break;
 			}
 			$n++;
 		}
+echo "full name= $full; thumb name= $thumb";		
 		if (!move_uploaded_file($file['tmp_name'], $full)) {
 			return new Error(T("Unable to move uploaded file."));
 		}
@@ -77,15 +79,15 @@ class BiblioImages {
 			@unlink($full);
 			return new Error(T("Unable to create thumbnail."));
 		}
-		if ($type == 'Thumb') {
-			$url = $full;
-		} else {
-			@unlink($full);
-		}
+//		if ($type == 'Thumb') {
+//			$url = $full;
+//		} else {
+//			@unlink($full);
+//		}
 		$this->_renumber($position);
 		$sql = $this->db->mkSQL("insert into images values (%N, %Q, %Q, %N, %Q, %Q) ",
 												$bibid, $thumb, $url, $position, $caption, $type);
-		$this->act($sql);
+		$this->db->act($sql);
 		return NULL;
 	}
 	function _mkThumbnail($full, $thumb) {
@@ -114,8 +116,8 @@ class BiblioImages {
 		if (!$fimg) {
 			return false;
 		}
-		$maxw = $settings->get('thumbnail_max_width');
-		$maxh = $settings->get('thumbnail_max_height');
+		$maxw = Settings::get('thumbnail_max_width');
+		$maxh = Settings::get('thumbnail_max_height');
 		if ($width == 0 or $height == 0) {
 			return false;
 		}
