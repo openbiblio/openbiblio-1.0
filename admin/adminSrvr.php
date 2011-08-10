@@ -318,6 +318,7 @@
 			echo $ptr->deleteOne($_POST['userid']);
 			break;
 		case 'setStaffPwd':
+print_r($_POST);echo "<br />";	
 			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
 			echo $ptr->update_el($rec);
 			break;

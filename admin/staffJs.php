@@ -175,6 +175,8 @@ stf = {
 	
 	doAddStaff: function () {
 		if (!stf.chkPwds('pwd', 'pwd2')) return false;
+		$('#updateMsg').hide();
+		$('#msgDiv').hide();
 		$('#mode').val('addNewStaff');
 		var parms = $('#editForm').serialize();
 		//console.log('adding: '+parms);
