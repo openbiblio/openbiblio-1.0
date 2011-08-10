@@ -17,7 +17,7 @@
 
 	  $nav = "newconfirm";
 	  
-	  include(REL(__FILE__,'../catalog/biblio_change.php'));
+	  include(REL(__FILE__,'../online/biblioChange.php'));
 	  
 	  echo $msg;
 	}

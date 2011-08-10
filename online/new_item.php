@@ -214,7 +214,7 @@ th.colHead { white-space: nowrap; }
 	</div>
 
 	<div id="copyEditorDiv">
-		<?php include_once(REL(__FILE__,"../catalog/biblio_copy_editor.php"));?>
+		<?php include_once(REL(__FILE__,"../catalog/copyEditorForm.php"));?>
 	</div>
 
 <?php
