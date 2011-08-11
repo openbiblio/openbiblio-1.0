@@ -28,7 +28,7 @@ if (count($_POST) == 0) {
 	$tab = "cataloging";
 	$nav = "newconfirm";
 	
-	require_once(REL(__FILE__,'../catalog/biblio_change.php'));
+	require_once(REL(__FILE__,'../catalog/biblioChange.php'));
 	
 #### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
 //header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));

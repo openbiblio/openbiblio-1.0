@@ -27,7 +27,7 @@ bs = {
 		bs.initWidgets();
 
 		bs.url = 'catalogServer.php';
-		bs.urlLookup = '../online/server.php'; //may not exist
+		bs.urlLookup = '../catalog/server.php'; //may not exist
 
 		// search form
 		$('#advancedSrch').hide();
