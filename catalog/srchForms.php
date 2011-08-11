@@ -300,6 +300,11 @@
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
+<div id="copyEditorDiv">
+	<?php include_once(REL(__FILE__,"copyEditorForm.php"));?>
+</div>
+
+<!-- ------------------------------------------------------------------------ -->
 <div id="photoEditorDiv">
 	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 	<p id="fotoMsg" class="error"></p>
@@ -354,12 +359,6 @@
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
-<div id="copyEditorDiv">
-	<?php include_once(REL(__FILE__,"copyEditorForm.php"));?>
-</div>
-
-<!-- ------------------------------------------------------------------------ -->
-
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	

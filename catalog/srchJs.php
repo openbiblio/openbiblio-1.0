@@ -696,6 +696,7 @@ bs = {
 																alert(data.msg);
 															}
 														}
+														bs.returnToBiblio();
 													},
 				error: 						function (data, status, e) { alert(e); }
 			});

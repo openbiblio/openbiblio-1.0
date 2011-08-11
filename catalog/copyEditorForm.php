@@ -13,7 +13,7 @@
 <form id="copyForm" name="copyForm" >
 <fieldset>
 <legend><?php echo T("Add New Copy"); ?></legend>
-<table id="copyTbl" class="primary">
+<table id="copyTbl" >
 	<tbody class="unstriped">
 	<tr>
 		<td><label for="barcode_nmbr"><sup>*</sup><?php echo T('Barcode Number'); ?></label></td>
@@ -86,10 +86,10 @@
 	
 	<tfoot>
 	<tr>
-		<td align="center" colspan="2" class="primary">
-			<!--input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" class="button" /-->
-			<input type="button" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" class="button" />
-			<input type="button" id="copyCancelBtn" value="<?php echo T("Cancel"); ?>" class="button" />
+		<td align="center" colspan="2">
+			<!--input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" -->
+			<input type="button" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" />
+			<input type="button" id="copyCancelBtn" value="<?php echo T("Cancel"); ?>" />
 		</td>
 	</tr>
 	</tfoot>
