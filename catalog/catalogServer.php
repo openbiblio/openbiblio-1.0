@@ -638,6 +638,7 @@ function mkBiblioArray($dbObj) {
 		echo T('Delete completed');
 		break;
 
+	//// ====================================////
 	case 'updateCopy':
 	case 'newCopy':
 	  $theDb = new SrchDB;
@@ -667,7 +668,14 @@ function mkBiblioArray($dbObj) {
 		}
 		echo T('Delete completed');
 		break;
-
+	case 'getBibsFrmCopies':
+	  $theDb = new SrchDB;
+		$rslt = $theDb->getBibsForCpys($_GET['cpyList']);
+	  echo json_encode($rslt);
+	  break;
+	  
+		
+	//// ====================================////
 	case 'getPhoto':
 	  $ptr = new BiblioImages;
 	  $set = $ptr->getByBibid($_REQUEST['bibid']);
@@ -678,17 +686,14 @@ function mkBiblioArray($dbObj) {
 	  break;
 	case 'updatePhoto':
 	  $ptr = new BiblioImages;
+	  ### left as an exercise for the motivated - FL (I'm burned out on this project)
 		break;
 	case 'addNewPhoto':
-//echo "FILES:<br />";print_r($_FILES); echo "<br />";	  
-//echo "POST:<br />";print_r($_POST); echo "<br />";	  
 	  $ptr = new BiblioImages;
 		if ($_POST['type'] == 'Link') {
-echo "appending Link";		
 			$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'],
 				$_FILES['image'], $_POST['url']);
 		} else {
-echo "appending Thumb";		
 			$err = $ptr->appendThumb_e($_POST['bibid'], $_POST['caption'],
 				$_FILES['image']);
 		}
@@ -696,15 +701,11 @@ echo "appending Thumb";
 		break;
 	case 'deletePhoto':
 	  $ptr = new BiblioImages;
-print_r($_REQUEST); echo "<br />";	  
+		$ptr->deleteByBibid($_POST['bibid']);
+		echo $err;	  
 		break;
 			  
-	case 'getBibsFrmCopies':
-	  $theDb = new SrchDB;
-		$rslt = $theDb->getBibsForCpys($_GET['cpyList']);
-	  echo json_encode($rslt);
-	  break;
-	  
+	//// ====================================////
 	default:
 	  echo "<h5>Invalid mode: $_REQUEST[mode]</h5>";
 	}

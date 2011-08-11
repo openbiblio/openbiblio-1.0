@@ -44,9 +44,9 @@ jQuery.extend({
   },
   
   handleError: function (s,xml,status,e) {
-		console.log(status + ':\n Line #' + e.lineNumber + ' of ' + e.fileName + '\n\n' +	'details:');
-		console.log( s );
-		console.log( xml );
+		//console.log(status + ':\n Line #' + e.lineNumber + ' of ' + e.fileName + '\n\n' +	'details:');
+		//console.log( s );
+		//console.log( xml );
 	},
 
   ajaxFileUpload: function(s) {

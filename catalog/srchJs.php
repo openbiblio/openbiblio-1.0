@@ -510,7 +510,6 @@ bs = {
   				bs.crntFoto = data[0];
 					$('#photoEditBtn').show();
 					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url;
-					//console.log(bs.theBiblio.bibid+'==>>'+fotoFile);
 					$('#bibBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
 				}
   		});
@@ -639,7 +638,7 @@ bs = {
 
 	/* ====================================== */
 	doPhotoEdit: function () {
-		$('#updtFotoBtn').show();
+		$('#updtFotoBtn').hide();  //see doUpdatePhoto() below
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
 		$('#fotoMode').val('updatePhoto')
@@ -647,7 +646,7 @@ bs = {
 		bs.showPhotoForm();
 	},
 	doPhotoAdd: function () {
-		$('#updtFotoBtn').hide();
+		$('#updtFotoBtn').hide(); //see doUpdatePhoto() below
 		$('#deltFotoBtn').hide();
 		$('#addFotoBtn').show();
 		$('#fotoMode').val('addNewPhoto')
@@ -658,23 +657,25 @@ bs = {
 	  $('#biblioDiv').hide();
 	  $('#fotoSrce').val('')
 		$('#fotoEdLegend').html('Cover Photo for: '+bs.crntTitle);
-	  $('#fotoBibid').val(bs.biblio.bibid);
+	  $('#fotoBibid').val(bs.crntBibid);
 	  
 	  if (bs.crntFoto != null) {
 	  	$('#fotoFile').val(bs.crntFoto.url);
 	  	$('#fotoBlkB').html('<img src="<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url+'" id="foto" class="hover" >');
 	  	$('#fotoCapt').val(bs.crntFoto.caption);
+	  	$('#fotoImgUrl').val(bs.crntFoto.imgurl);
 	  } else {
 	  	$('#fotoBlkB').html('');
 	  	$('#fotoFile').val('');
 	  	$('#fotoCapt').val('');
+	  	$('#fotoImgUrl').val('');
 		}
 		$('#photoEditorDiv').show();
 	},
 	doUpdatePhoto: function () {
+	  /// left as an exercise for the motivated - FL (I'm burned out on this project)
 	},
 	doAddNewPhoto: function (e) {
-//alert('adding photo');	
 		$.ajaxFileUpload({
 				url:							bs.url,
 				secureuri:				false,
@@ -688,7 +689,6 @@ bs = {
 													 'position':$('#fotoPos').val(),
 													},
 				success: 					function (data, status) {
-alert('back with success');				
 														if(typeof(data.error) != 'undefined') {
 															if(data.error != '') {
 																alert(data.error);
@@ -699,11 +699,24 @@ alert('back with success');
 													},
 				error: 						function (data, status, e) { alert(e); }
 			});
-		//e.stopPropagation();
-//alert('work sent to server');		
+		e.stopPropagation();
 		return false;
 	},
 	doDeletePhoto: function () {
+		if ("<?php echo T("Are you sure you want to delete this cover photo"); ?>") {
+	  	$.post(bs.url,{'mode':'deletePhoto',
+										 'bibid':$('#fotoBibid').val(),
+										 'url':$('#fotoFile').val(),
+										 'url':$('#fotoFile').val(),
+										 }
+										 ,function(response){
+				if(response) {
+					$('#fotoMsg').html(response);
+				}
+			});
+		}
+		e.stopPropagation();
+		return false;
 	},
 	
 	/* ====================================== */

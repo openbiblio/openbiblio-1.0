@@ -107,6 +107,7 @@ $trans["Are you sure you want to delete "] = "Are you sure you want to delete ";
 $trans["Are you sure you want to delete this copy?"] = "Are you sure you want to delete this copy?";
 $trans["Are you sure you want to delete this item?"] = "Are you sure you want to delete this item?";
 $trans["Are you sure you want to delete this material field"] = "Are you sure you want to delete this material field?";
+$trans["Are you sure you want to delete this cover photo"] = "Are you sure you want to delete this cover photo?";
 $trans["Audience Level:"] = "Audience Level:";
 $trans["Author"] = "Author";
 $trans["Authorization"] = "Authorization";

@@ -341,13 +341,14 @@
 	<input type="hidden" id="fotoBibid" name="bibid" value="" />
 	<input type="hidden" id="fotoMode" name="mode" value="" />
 	<input type="hidden" id="fotoType" name="type" value="Link" />
+	<input type="hidden" id="fotoImgUrl" name="imgurl" value="Link" />
 	<input type="hidden" id="fotoPos" name="position" value="0" />
 	
 	<ul class="btnRow">
 		<li><input type="button" class="gobkFotoBtn" value="<?php echo T('Go Back'); ?>" /></li>
 		<li><input type="button" id="addFotoBtn" value="<?php echo T('Add New'); ?>" /></li>
-		<li><input type="submit" id="updtFotoBtn" value="<?php echo T('Update'); ?>" /></li>
-		<li><input type="submit" id="deltFotoBtn" value="<?php echo T('Delete'); ?>" /></li>
+		<li><input type="button" id="updtFotoBtn" value="<?php echo T('Update'); ?>" /></li>
+		<li><input type="button" id="deltFotoBtn" value="<?php echo T('Delete'); ?>" /></li>
 	</ul>
 	</form>
 </div>

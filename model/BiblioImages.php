@@ -71,7 +71,6 @@ class BiblioImages {
 			}
 			$n++;
 		}
-echo "full name= $full; thumb name= $thumb";		
 		if (!move_uploaded_file($file['tmp_name'], $full)) {
 			return new Error(T("Unable to move uploaded file."));
 		}
@@ -79,8 +78,8 @@ echo "full name= $full; thumb name= $thumb";
 			@unlink($full);
 			return new Error(T("Unable to create thumbnail."));
 		}
-//		if ($type == 'Thumb') {
-//			$url = $full;
+//		if ($type == 'Thumb') {	//this block does not play well with 
+//			$url = $full;					// existing_item's photo editor function
 //		} else {
 //			@unlink($full);
 //		}
@@ -160,15 +159,15 @@ echo "full name= $full; thumb name= $thumb";
 		$this->db->lock();
 		$imgs = $this->getByBibid($bibid);
 		while ($img = $imgs->next()) {
-			if ($img['type'] == 'Thumb'
-					and preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $img['url'])) {
-				@unlink($img['url']);
-			}
-			if (preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $imgurl)) {
-				@unlink($imgurl);
-			}
+//			if ($img['type'] == 'Thumb'
+//					and preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $img['url'])) {
+				@unlink("../photos/".$img['url']);
+//			}
+//			if (preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $imgurl)) {
+				@unlink("../photos/".$img['imgurl']);
+//			}
 			$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
-				$bibid, $imgurl);
+				$bibid, $img['imgurl']);
 			$this->db->act($sql);
 		}
 		$this->db->unlock();
