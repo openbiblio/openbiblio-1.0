@@ -37,9 +37,9 @@ $headerWording = T("Add New");
 	$mbrtypes = new MemberTypes;
 	$mbr[classification] = $mbrtypes->getDefault();
 
-include(REL(__FILE__, "../circ/mbr_fields.php"));
+include(REL(__FILE__, "../circ/mbrFields.php"));
 ?>
-</form>>
+</form>
 
 
 <?php
@@ -51,5 +51,5 @@ mnf = {
 		$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
 	}
 };
-$(document).ready(mnf.init);
+//$(document).ready(mnf.init);
 </script>

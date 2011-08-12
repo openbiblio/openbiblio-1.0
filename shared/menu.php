@@ -22,7 +22,7 @@ function staff_menu() {
 	}
 
 	if($_SESSION["hasCircMbrAuth"]){
-		Nav::node('circulation/new', T("New Member"), '../circ/mbr_new_form.php?reset=Y');
+		Nav::node('circulation/new', T("New Member"), '../circ/mbrNewForm.php?reset=Y');
 	}
 	Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
 	Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
