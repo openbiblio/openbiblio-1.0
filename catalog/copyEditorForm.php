@@ -16,33 +16,31 @@
 <table id="copyTbl" >
 	<tbody class="unstriped">
 	<tr>
-		<td><label for="barcode_nmbr"><sup>*</sup><?php echo T('Barcode Number'); ?></label></td>
+		<td><label for="barcode_nmbr"><?php echo T('Barcode Number'); ?></label></td>
 		<td>
-			<?php echo inputfield('text','barcode_nmbr',NULL,array('size'=>'20',maxLength=>'20','class'=>'required')); ?>
+			<input id="barcode_nmbr" name="barcode_nmbr" type="number" size="20" required aria-required="true" />
+			<span class="reqd">*</span>
 		</td>
 	</tr>
 	<tr>
 		<td><label for="autobarco"><?php echo T('Auto Barcode'); ?></label></td>
 		<td>
-			<?php echo inputfield("checkbox","autobarco",'Y',NULL,$_SESSION['item_autoBarcode_flg']); ?>
+			<input id="autobarco" name="autobarco" type="checkbox" value="Y" 
+				<?php echo ($_SESSION['item_autoBarcode_flg']=='Y'?checked:''); ?> />
 		</td>
 	</tr>
 	<tr>
 		<td><label for="copy_desc"><?php echo T("Description"); ?></label></td>
-		<td>
-			<?php echo inputfield("text", "copy_desc", NULL, array("size"=>40,"max"=>40)); ?>
-		</td>
+		<td><input id="copy_desc" name="copy_desc" type="text" size="40" /></td>
 	</tr>
-	<?php // Not to be shown when in normal (non multisite mode)
-	if($_SESSION['multi_site_func'] > 0){
-	?>
+<?php // Not to be shown when in normal (non multisite mode)
+if($_SESSION['multi_site_func'] > 0){
+?>
 	<tr>
 		<td><label for="copy_site"><?php echo T("Location"); ?></label></td>
-		<td>
-    	<select id="copy_site" name="copy_site">to be filled in by server</span>
-		</td>
+		<td><select id="copy_site" name="copy_site">to be filled in by server</span></td>
 	</tr>
-	<?php } ?>
+<?php } ?>
 	<tr>
 		<td><label for="status_cd"><?php echo T("Status:");?></label></td>
 		<td>
@@ -54,18 +52,7 @@
 				unset($state_select[OBIB_STATUS_OUT]);
 				unset($state_select[OBIB_STATUS_ON_HOLD]);
 				unset($state_select[OBIB_STATUS_SHELVING_CART]);
-				
 				echo inputfield(select, status_cd, "in", null, $state_select);
-			
-				//echo inputfield("select", "status_cd", "in", NULL,array(
-			    //                  "na" =>"",
-                //            "in" =>T("IN"),
-				//										"out"=>T("OUT"),
-				//										"ln" =>T("LOAN"),
-				//										"ord"=>T("ON_ORDER"),
-				//										"crt"=>T("SHELVING_CART"),
-				//										"hld"=>T("ON_HOLD"),
-				//										));
 			?>
 		</td>
 	</tr>
@@ -76,8 +63,8 @@
 			
 		while ($row = $rows->next()) {
 			echo "<tr>";
-			echo "<td nowrap=\"true\" class=\"primary\" valign=\"top\"><label for=\"custom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
-			echo "<td valign=\"top\" class=\"primary\">" . inputfield('text', 'custom_'.$row["code"], "",NULL) . "</td>";
+			echo "<td nowrap=\"true\" valign=\"top\"><label for=\"custom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
+			echo "<td valign=\"top\" \">" . inputfield('text', 'custom_'.$row["code"], "",NULL) . "</td>";
 			echo "</tr>";
 		}					
 	?>
@@ -94,6 +81,7 @@
 	</tr>
 	</tfoot>
 </table>
-<input type="hidden" name="bibid" value="<?php echo $bibid;?>" />
+	<input type="hidden" name="bibid" value="" />
+	<input type="hidden" name="mode" value="" />
 </fieldset>
 </form>

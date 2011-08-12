@@ -983,7 +983,9 @@ bs = {
 		})
 	},
 	doCopyNew: function () {
-		var params= $('#copyForm').serialize() + "&mode=newCopy&bibid="+bs.biblio.bibid;
+		$('#copyForm #bibid').val(bs.biblio.bibid);
+		$('#copyForm #mode').val('newCopy');
+		var params= $('#copyForm').serialize()+"&bibid="+bs.biblio.bibid+"&mode=newCopy";
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}

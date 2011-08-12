@@ -46,7 +46,7 @@ function staff_menu() {
 	Nav::node('cataloging', T("Cataloging"), '../catalog/srchForms.php');
 	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 	if($_SESSION["hasCatalogAuth"]){
-		Nav::node('cataloging/newItem', T("New Item"), "../catalog/new_item.php");
+		Nav::node('cataloging/newItem', T("New Item"), "../catalog/newItemForms.php");
 
 		if (isset($_SESSION['rpt_BiblioSearch'])) {
 			Nav::node('cataloging/search', T("old search results"),
