@@ -14,29 +14,28 @@
 	require_once(REL(__FILE__, "../model/Collections.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
 ?>
-<h1><span id="searchHdr" class="title"><?php echo T('MARC Import'); ?></span></h1>
+<h3 id="searchHdr"><?php echo T('MARC Import'); ?></h3>
 
 <form enctype="multipart/form-data" action="../catalog/upload_usmarc.php" method="post">
 <fieldset>
-<table class="primary">
+<table>
 <tbody>
 	<tr>
-		<td align="right" class="primary"><?php echo T("Test Load:"); ?></td>
-		<td class="primary"><input type="checkbox" value="true" name="test" checked="checked" /></td>
+		<td><label for="test"><?php echo T("Test Load:"); ?></label></td>
+		<td><input id="test" name="test" type="checkbox" value="true" checked /></td>
 	</tr>
 	<tr>
-		<td align="right" class="primary"><?php echo T("MARC File:"); ?></td>
-		<td class="primary"><input type="file" name="usmarc_data"></td>
+		<td><label for="usmarc_data"><?php echo T("MARC File:"); ?></label></td>
+		<td><input id="usmarc_data" name="usmarc_data" type="file"></td>
 	</tr>
 	<tr>
-		<td align="right" class="primary"><?php echo T("Show in OPAC:"); ?></td>
-		<td class="primary"><input type="checkbox" name="opac" id="opac" value="Y" /></td>
+		<td><label for="opac"><?php echo T("Show in OPAC:"); ?></label></td>
+		<td><input  name="opac" id="opac" type="checkbox" value="Y" /></td>
 	</tr>
 	<tr>
-		<td align="right" class="primary"><?php echo T("Collection:"); ?></td>
-		<td class="primary">
+		<td><label for="collectionCd"><?php echo T("Collection:"); ?></label></td>
+		<td>
 			<?php
 			$collections = new Collections;
 			echo inputfield('select', "collectionCd", $collections->getDefault(), NULL, $collections->getSelect());
@@ -44,8 +43,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td align="right" class="primary"><?php echo T("Type of Material:"); ?></td>
-		<td class="primary">
+		<td><label for="materialCd"><?php echo T("Media Type:"); ?></label></td>
+		<td>
 			<?php
 			$mattypes = new MediaTypes;
 			echo inputfield('select', "materialCd", $mattypes->getDefault(), NULL, $mattypes->getSelect());
@@ -54,13 +53,12 @@
 	</tr>
 </tbody>
 	<tr>
-		<td class="primary" colspan="2" align="right"><input type="submit" value="<?php echo T("Upload File"); ?>" class="button" />
-		</td>
+		<td colspan="2"><input type="submit" value="<?php echo T("Upload File"); ?>" class="button" /></td>
 	</tr>
 </table>
 </fieldset>
 </form>
 
 <?php
-
-	 ;
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+?>	
