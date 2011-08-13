@@ -24,4 +24,7 @@ echo HTML(file_get_contents('index.jsont'), array(
 ));
 
 ReportDisplaysUI::display('circ');
- ;
+?>
+<?php
+	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+?>	

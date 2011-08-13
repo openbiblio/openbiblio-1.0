@@ -4,9 +4,9 @@
 <form name="barcodesearch" method="post" action="../circ/mbr_search.php">
 <fieldset>
 <legend>{#trans}Get Member by Card Number{#end}</legend>
-<table class="primary">
+<table>
 	<tr>
-		<td nowrap="true" class="primary">
+		<td>
 			{#trans}Card Number:{#end}
 			<input type="text" id="barcode_field" name="rpt_terms[0][text]" size="20" maxlength="20" />
 			<input type="hidden" name="rpt_terms[0][type]" value="barcode" />
@@ -22,9 +22,9 @@
 <form name="phrasesearch" method="GET" action="../circ/mbr_search.php">
 <fieldset>
 <legend>{#trans}Search Member by Name{#end}</legend>
-<table class="primary">
+<table>
 	<tr>
-		<td nowrap="true" class="primary">
+		<td>
 			{#trans}Name Contains:{#end}
 			<input type="text" id="mbrName_field" name="rpt_terms[0][text]" size="30" maxlength="80" />
 			<input type="hidden" name="rpt_terms[0][type]" value="name" />
