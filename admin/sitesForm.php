@@ -66,7 +66,10 @@
     </li>
     <li>
       <label for="calendar"><?php echo T("Calendar"); ?>:</label>
-      <input id="calendar" name="calendar" type="text" size="32" required aria-required="true" />
+      <!--input id="calendar" name="calendar" type="number" pattern="[1-9]{2}" min="1" max="99" 
+					title="number 0-99" size="32" required aria-required="true" />
+      <span class="reqd">*</span-->
+      <select id="calendar" name="calendar" > </select>
 		</li>
     <li>
       <label for="address1"><?php echo T("Address Line 1"); ?>:</label>

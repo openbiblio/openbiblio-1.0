@@ -36,7 +36,9 @@
 			break;
 		case 'sites':
 			require_once(REL(__FILE__, "../model/Sites.php"));
-			$ptr1 = new Sites;
+			$ptr = new Sites;
+			require_once(REL(__FILE__, "../model/Calendars.php"));
+			$ptr1 = new Calendars;
 			## deliberate fall-through, do not remove
 		case 'states':
 			require_once(REL(__FILE__, "../model/States.php"));
@@ -276,20 +278,30 @@
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAllSites':
 		  $sites = array();
-			$set = $ptr1->getAll('name');
+			$set = $ptr->getAll('name');
 			while ($row = $set->next()) {
 			  $sites[] = $row;
 			}
 			echo json_encode($sites);
 			break;
 		case 'addNewSite':
-			echo $ptr1->insert($_REQUEST);
+			echo $ptr->insert($_REQUEST);
 			break;
 		case 'updateSite':
-			echo $ptr1->update($_REQUEST);
+			echo $ptr->update($_REQUEST);
 			break;
 		case 'd-3-L-3-tSite':
-			echo $ptr1->deleteOne($_REQUEST);
+			echo $ptr->deleteOne($_POST['siteid']);
+			break;
+
+	  #-.-.-.-.-.- Calendars -.-.-.-.-.-.-
+		case 'getAllCalendars':
+		  $cals = array();
+			$set = $ptr1->getAll('description');
+			while ($row = $set->next()) {
+			  $cals[] = $row;
+			}
+			echo json_encode($cals);
 			break;
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
@@ -318,7 +330,7 @@
 			echo $ptr->deleteOne($_POST['userid']);
 			break;
 		case 'setStaffPwd':
-print_r($_POST);echo "<br />";	
+//print_r($_POST);echo "<br />";	
 			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
 			echo $ptr->update_el($rec);
 			break;

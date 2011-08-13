@@ -32,6 +32,7 @@ sit = {
 	  $('#msgDiv').hide();
 		sit.fetchSites();
 		sit.fetchStates();
+		sit.fetchCalendars();
 	},
 	
 	//------------------------------
@@ -88,6 +89,20 @@ sit = {
     		html += '">'+data[nstate]['description']+'</option>\n';
 			}
 			$('#state').html(html);
+		});
+	},
+	fetchCalendars: function () {
+	  $.getJSON(sit.url,{ 'cat':'sites', 'mode':'getAllCalendars' }, function(data){
+			var html = '';
+			for (ncal in data) {
+				//console.log(data[ncal]);
+	    	html += '<option value="'+data[ncal]['code']+'"';
+	    	if (data[ncal]['default_flg'] == 'Y') {
+	    		html += ' selected';
+				}
+    		html += '">'+data[ncal]['description']+'</option>\n';
+			}
+			$('#calendar').html(html);
 		});
 	},
 
@@ -176,7 +191,7 @@ sit = {
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html(respomse);
+				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			  sit.doBackToList();
 			}
