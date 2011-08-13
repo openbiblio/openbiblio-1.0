@@ -81,7 +81,7 @@ if($_SESSION['multi_site_func'] > 0){
 	</tr>
 	</tfoot>
 </table>
-	<input type="hidden" name="bibid" value="" />
-	<input type="hidden" name="mode" value="" />
+	<input type="hidden"  name="bibid" value="" />
+	<input type="hidden"  name="mode" value="" />
 </fieldset>
 </form>

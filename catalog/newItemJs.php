@@ -211,10 +211,9 @@ ni = {
 	},
 
 	doCopyNew: function () {
-		$('#copyForm #bibid').val(ni.bibid);
-		$('#copyForm #mode').val('newCopy');
-		var params= $('#copyForm').serialize();
-		// + "&mode=newCopy&bibid="+ni.bibid;
+		//$('#copyForm input[name=bibid]').val(ni.bibid);
+		//$('#copyForm input[name=mode]').val('newCopy');
+		var params= $('#copyForm').serialize()+ "&mode=newCopy&bibid="+ni.bibid;
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
 		}
