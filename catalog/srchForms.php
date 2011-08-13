@@ -167,7 +167,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioListDiv">
-	<h4><?php echo T("Search Results"); ?></h4>
+	<h5><?php echo T("Search Results"); ?></h5>
 	<div id="results_found">
 		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
@@ -284,13 +284,13 @@
 <!-- ------------------------------------------------------------------------ -->
 <div id="itemEditorDiv">
   <form id="biblioEditForm" name="biblioEditForm" >
-		<p class="note"><?php echo T("Fields marked are required"); ?></p>
+		<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 		<input type="button" class="itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
-		<?php include(REL(__FILE__,"../catalog/item_editor.php")); ?>
+		<?php include(REL(__FILE__,"../catalog/itemEditorForm.php")); ?>
 	
 		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 		<!--input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
@@ -363,6 +363,7 @@
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
 	include_once('../shared/ajaxFileUpload/ajaxfileupload.js');
+	include_once(REL(__FILE__,'./itemEditorJs.php'));
 	include_once(REL(__FILE__,'./srchJs.php'));
 ?>	
 
