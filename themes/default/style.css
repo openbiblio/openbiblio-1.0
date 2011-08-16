@@ -8,18 +8,22 @@ body {
   /*font-size: 45%; line-height: 1.25em;*/
   font-family: verdana,arial,helvetica, serif;
   color: #000000; background: #90b0b8;
-  font-size:0.9em;
+  font-size:100%; /*0.9em;*/
 	}
 
 /*************************************************/
 /*  Basic components, may be used anywhere       */
-h1,h2,h3,h4,h5,h6, fieldset, input[type=button], input[type=submit], img {
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
+
+/* rounded corners for various elements */
+h1,h2,h3,h4,h5,h6, fieldset, img, aside, header {
+	-webkit-border-radius: 0.3em;
+	-moz-border-radius: 	 0.3em;
+	border-radius:				 0.3em;
 }
+
+/* headers */
 h1,h2,h3,h4,h5,h6 {
-	font: 8px sans-serif; text-align: center;
+	font: 0.5em sans-serif; text-align: center;
 	color: white; background: #ccb470;
 	border: solid black 2px;
 	margin: 2px;
@@ -29,31 +33,36 @@ h1,h2,h3,h4,h5,h6 {
 	background-image:      -o-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	background-image: 				linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	}
-h1 { font-size: 20px; }
-h2 { font-size: 16px; }
-h3 { font-size: 14px; color: white;}
-h4 { font-size: 12px; margin: 2px; }
-h5 { font-size: 10px; color: black; }
-h6 { font-size: 8px; }
+h1 { font-size: 1.5em; }	/* 24/16 */
+h2 { font-size: 1.0em; }	/* 16/16 */
+h3 { font-size: 0.87em; color: white;}	/* 14/16 */
+h4 { font-size: 0.75em; margin: 2px; }	/* 12/16 */
+h5 { font-size: 0.63em; color: black; }	/* 10/16 */
+h6 { font-size: 0.5em; }	/* 8/16 */
 
 sup, span.reqd, #reqdNote { color: red; text-align:center; }
 p { margin:2px; padding:0; }
-hr { display: block; position: relative; 
-		 padding: 0; margin: 8px auto;
-		 clear: both; width: 90%;
-		 border: none; border-top: 1px solid #AAA; border-bottom: 1px solid #000;
-		 font-size: 1px; line-height: 0;
-		 overflow: visible;
+hr {
+	display: block; position: relative; 
+	padding: 0; margin: 8px auto;
+	clear: both; width: 90%;
+	border: none; border-top: 1px solid #AAA; border-bottom: 1px solid #000;
+	font-size: 1px; line-height: 0;
+	overflow: visible;
 	}
 figure { border: 1px solid gray; }
-legend { font-size: 14px; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
+legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
 fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
+
+/* tables & parts of */
 table { margin: 2px; }
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
 td.number { text-align: right; }
 td.center { text-align: center; }
 td.label { text-align: left; white-space: nowrap; }
-label, .lblFld { font-size: 12px; font-weight: bold; margin-left: 2px;}
+label, .lblFld { font-size: 0.75em; font-weight: bold; margin-left: 2px;}
+
+/* form input fields */
 input, select, textarea { margin: 2px; }
 input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
 select:focus, 
@@ -65,8 +74,9 @@ textarea:focus {
 input[readonly] { border: 0; background-color: #ffffdd; }
 input[required]::after { content:"*"; color: red; }
 input[type=checkbox] { padding-left: 5px; }
+
+/* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 input[type=button], input[type=submit] {
-	/* lozenge shape buttons */
 	padding: 2px 4px;
 	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
 	line-height: 1;
@@ -84,17 +94,13 @@ input[type=button], input[type=submit] {
 	}
 	
 /*************************************************/
-aside, header {
-	-moz-border-radius:0.3em; -webkit-border-radius:0.3em;
-	border-radius:0.3em;
-}
 aside {
 	position:fixed; top:1%; left:1%;
 	float:left; width:15%; 
 	margin:0; /*margin-top:0.3em;*/
 	padding-bottom:0.2em;
 	height:auto;
-	font-size:90%;
+	font-size:0.87em; /* 14/16 */
 	color:black; border:0.15em solid black;
 	-moz-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 	-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
@@ -107,7 +113,7 @@ aside input[type=submit] { position: relative; left:30%; }
 h1.staff_head {
 	display: block;
 	text-align: right;
-	font: bold 16px serif;
+	font: bold 1.0em serif; /* 16/16 */
 	color: white;
 	margin: 0;
 	}
@@ -119,7 +125,7 @@ div#library_name { color: white; }
 
 /*************************************************/
 ul.nav_main {
-	width: 130px;
+	max-width: 100%;
 	margin-top: 0; margin-left: 0; padding-left: 0.5em;
 	list-style-type: none;
 	}
@@ -129,11 +135,11 @@ ul.nav_main li {
 	margin-left: 2px;
 	}
 ul.nav_main > li.nav_selected {
+	max-width: 93%;
 	border-left: solid black 1px;
 	border-top: solid black 1px;
 	border-right: solid grey 1px;
 	border-bottom: solid grey 1px;
-	/*border-right: none;*/
 	margin-right: -28px;
 	margin-left: -0px;
 	background: white;
@@ -147,31 +153,26 @@ ul.nav_sub {
 	width: 120px; /*FL change  */
 	margin-left: 0; padding-left: 1em;
 	list-style-type: circle; 
-	/*list-style-image: url("../../images/bulleto.png");*/
 	}
 ul.nav_sub ul.nav_sub { padding-left: 1em }
 ul.nav_sub li { margin-bottom: 0; font-weight: normal; }
 ul.nav_sub li.nav_selected { font-weight: bold; list-style-type: disc; }
 	
-a { color: blue; }
-a:visited { color: blue; }
-a.button {
+nav a { color: blue; }
+nav a:visited { color: blue; }
+nav a.button {
 	background: #b2dae4;
 	border: solid black 2px;
 	padding: 3px;
 	text-decoration: none;
-	font: 12px serif;
+	font: 0.75em serif; /* 12/16 */
 	color: black;
 }
-a.button:visited { color: black; }
-a.button:hover { text-decoration: underline; }
+nav a.button:visited { color: black; }
+nav a.button:hover { text-decoration: underline; }
 
 /*************************************************/
-footer {
-	margin-top: 10px;
-	text-align: center;
-	font: 12px serif;
-	}
+footer { margin-top:10px; text-align:center; font: 0.75em serif;/* 12/16 */ }
 
 /*************************************************/
 div#content {
@@ -190,24 +191,24 @@ div#content {
 	}
 #content .altBG { background: #dddddd; }
 table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
-	border-width: 1px;
-	padding: 2px;
-	border-style: solid;
-	border-color: black;
-	}
+	border-width: 1px; padding: 2px; border-style: solid; border-color: black; }
 ul#editTbl { margin-left:0; padding-left:0; }
 ul#editTbl li { list-style-type:none; 	margin:0; padding:0; }
+
 ul#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
 ul#btnRow li, ul.btnRow li { display: inline; margin-right: 1em; }
 ul#btnRow li input[value="Delete"], 
 ul.btnRow li input[value="Delete This Item"],
 ul.btnRow li input[value="Delete"] { float: right; margin-right: 0; }
+
 fieldset.inlineFldSet { float: left; width:auto; border:0; margin-right:0.5em; padding:0; }
 fieldset.inlineFldSet label { display:block; }
 fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border: 1px solid gray}
-.note { font-size: 70%; }
+
+/* search results displays */
+.note { font-size: 0.7em; }
 .title {
-	font: 20px sans-serif;
+	font: 1.25em sans-serif; /* 20/16 */
 	text-align: center;
 	color: white;
 	background: #ccb470;
@@ -215,17 +216,17 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	margin-bottom: 5px;
 	}
 .results_found {
-	font: 12px serif;
+	font: 0.75em serif; /* 12/16 */
 	text-align: right;
 	margin: 0.5em 0;
 	}
 .results_pages {
-	font: 12px serif;
+	font: 0.75em serif; /* 12/16 */
 	text-align: right;
 	float: right;
 	}
 .search_terms {
-	font-size: 12px;
+	font-size: 0.75em; /* 12/16 */
 	font-weight: bold;
 	margin: 0.5em 0;
 	}
@@ -262,8 +263,6 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	-o-transform: 			scale(3.0);
 	transform: 					scale(3.0);
 }
-
-#onlineMsg { color: blue; }
 #flagInfo ul { text-align: center; margin:0; padding:0; }
 #flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
 .flgDot {
@@ -272,8 +271,11 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	transform: 				 scale(0.60);
 	vertical-align: bottom;
 	}
+/* end of search results display */
+
+#onlineMsg { color: blue; }
 .call_media {
-	font: 16px sans-serif;
+	font: 1.0em sans-serif; /* 16/16 */
 	width: 40px;
 	padding: 0 16px;
 	}
@@ -285,13 +287,13 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 .compact_info_display th.title {
 	background: none;
 	border: none;
-	font: 16px serif regular;
+	font: 1.0em serif regular;	/* 16/16 */
 	text-align: left;
 	}
 .compact_info_display th.author {
 	background: none;
 	border: none;
-	font: 16px serif regular;
+	font: 1.0em serif regular;	/* 16/16 */
 	text-align: left;
 	}
 .compact_info_display ul {
@@ -299,7 +301,7 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	list-style-type: none;
 	}
 .compact_info_display li {
-	font: 14px serif;
+	font: 0.87em serif;	/* 14/16 */
 	margin-left: 2em;
 	text-indent: -2em;
 	}
@@ -315,8 +317,9 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 	}
 .search_result .available {
 	margin-top: 12px;
-	font: 14px serif;
+	font: 0.87em serif;	/* 14/16 */
 }
+
 /*************************************************/
 div#msgDiv {
 	color: red;
@@ -347,24 +350,18 @@ label.error {
 tr.searchRow {
 	height: 35px;
 	}
+	
 /*************************************************/
 /* for draggable configuration screens */
-/*
-#configDiv fieldset.configArea {
-	width: 200px; float: left;
-	}
-*/
 div#configDiv{
 	width: auto;
 	}
 #configDiv fieldset#existingSpace {
 	display: inline;
-	/*width: auto;*/
 	float: left;
 	}
 #configDiv fieldset#potentialSpace {
 	display: inline;
-	/*width: auto;*/
   float: right;
 	}
 #configDiv fieldset#potentialSpace select {
@@ -376,8 +373,7 @@ div#configDiv{
 	}
 #configDiv ul#existing li,ul#potential li {
 	margin-bottom: 2px;
-	/*width: 270px;*/
-	font-size: 1.2em;
+	font-size: 1.2em;	/* 20/16 */
 	}
 #configDiv ul#existing li {
 	color: black; background: #FFFF99;
@@ -387,6 +383,5 @@ div#configDiv{
 	}
 #typeChoice fieldset {
 	margin: 0; padding: 5px;
-	/*width: 500px;*/
 	text-align: center;
 	}

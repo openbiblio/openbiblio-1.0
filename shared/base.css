@@ -143,6 +143,11 @@ a:link { -webkit-tap-highlight-color: #FF5E99; }
    www.viget.com/inspire/styling-the-button-element-in-internet-explorer/ */
 button {  width: auto; overflow: visible; }
  
+/* flexible re-sizing for images, etc - "Responsive Web Design", Jeremy Keith */
+img, embed, object, video, canvas {
+	max-width:100%;
+	}
+	
 /* Bicubic resizing for non-native sized IMG:
    code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
 .ie7 img { -ms-interpolation-mode: bicubic; }
