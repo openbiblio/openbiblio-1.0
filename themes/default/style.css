@@ -117,11 +117,10 @@ h1.staff_head {
 	color: white;
 	margin: 0;
 	}
-div#library_name, 
-div#library_hours, 
-div#library_phone { margin: 2px 5px 2px 5px; font: 14px sans-serif;
-	}
-div#library_name { color: white; }
+#library_name, 
+#library_hours, 
+#library_phone { margin: 2px 5px 2px 5px; font: 0.82em sans-serif; }
+#library_name { color: white; }
 
 /*************************************************/
 ul.nav_main {

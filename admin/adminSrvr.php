@@ -314,6 +314,7 @@
 			echo json_encode($staff);
 			break;
 		case 'addNewStaff':
+		case 'updateStaff':
 			foreach (array('suspended','admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
 				if (isset($_POST[$flg.'_flg'])) {
 					$_POST[$flg.'_flg'] = 'Y';
@@ -321,10 +322,10 @@
 					$_POST[$flg.'_flg'] = 'N';
 				}
 			}
-			echo $ptr->insert_el($_POST);
-			break;
-		case 'updateStaff':
-			echo $ptr->update_el($_POST);
+			if ($_POST['mode'] == 'addNewStaff')
+				echo $ptr->insert_el($_POST);
+			else
+				echo $ptr->update_el($_POST);
 			break;
 		case 'd-3-L-3-tStaff':
 			echo $ptr->deleteOne($_POST['userid']);
