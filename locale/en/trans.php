@@ -765,6 +765,7 @@ $trans["Unexpected hidden field error: %error%"] = "Unexpected hidden field erro
 $trans["Unexpected token \"%token%\""] = "Unexpected token \"%token%\"";
 $trans["Update Member"] = "Update Member";
 $trans["Update"] = "Update";
+$trans["Updated"] = "Updated";
 $trans["Update completed"] = "Update completed";
 $trans["Update successful"] = "Update successful";
 $trans["Upload File"] = "Upload File";

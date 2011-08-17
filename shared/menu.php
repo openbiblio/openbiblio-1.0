@@ -124,8 +124,8 @@ function staff_menu() {
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
-		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php');
+		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
 		Nav::node('admin/opac', T("View Opac"), '../catalog/srchForms.php?tab=OPAC');
 		Nav::node('admin/integrity', T("Check Database"), '../admin/integrity.php');
 	}	

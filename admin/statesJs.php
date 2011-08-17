@@ -130,11 +130,12 @@ st = {
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html('Added!');
-				$('#msgDiv').show();
+				$('#updateMsg').html('Added!');
+				$('#updateMsg').show();
 			  st.doBackToList();
 			}
 		});
+		return false;
 	},
 
 	doUpdateState: function () {
@@ -142,7 +143,7 @@ st = {
 		$('#msgDiv').hide();
 		$('#mode').val('updateState');
 		var parms = $('#editForm').serialize();
-		//console.log('updating: '+parms);
+console.log('updating: '+parms);
 		$.post(st.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
@@ -150,15 +151,16 @@ st = {
 				$('#msgDiv').show();
 			}
 			else {
-				if (response.substr(0,1)=='1'){
+//				if (response.substr(0,1)=='1'){
 					$('#updateMsg').html('<?php echo T('Updated');?>');
 					$('#updateMsg').show();
-				}
-				$('#msgArea').html('Updated!');
-				$('#msgDiv').show();
+//				}
+//				$('#msgArea').html('Updated!');
+//				$('#msgDiv').show();
 			  st.doBackToList();
 			}
 		});
+		return false;
 	},
 	
 	doDeleteState: function (e) {
@@ -172,11 +174,13 @@ st = {
 					$('#msgDiv').show();
 				}
 				else {
-					$('#msgArea').html('Deleted!');
-					$('#msgDiv').show();
+					$('#updateMsg').html('<?php echo T('Deleted');?>');
+					$('#updateMsg').show();
+			  	st.doBackToList();
 				}
 			});
 		}
+		return false;
 	},
 };
 

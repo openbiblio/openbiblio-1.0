@@ -331,7 +331,6 @@
 			echo $ptr->deleteOne($_POST['userid']);
 			break;
 		case 'setStaffPwd':
-//print_r($_POST);echo "<br />";	
 			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
 			echo $ptr->update_el($rec);
 			break;
@@ -352,7 +351,7 @@
 			echo $ptr2->update($_REQUEST);
 			break;
 		case 'd-3-L-3-tState':
-			echo $ptr2->deleteOne($_REQUEST);
+			echo $ptr2->deleteOne($_POST['code']);
 			break;
 
 	  #-.-.-.-.-.- Themes -.-.-.-.-.-.-
