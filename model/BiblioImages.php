@@ -115,8 +115,8 @@ class BiblioImages {
 		if (!$fimg) {
 			return false;
 		}
-		$maxw = Settings::get('thumbnail_max_width');
-		$maxh = Settings::get('thumbnail_max_height');
+		$maxw = Settings::get('thumbnail_width');
+		$maxh = Settings::get('thumbnail_height');
 		if ($width == 0 or $height == 0) {
 			return false;
 		}
