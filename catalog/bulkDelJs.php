@@ -7,7 +7,7 @@ bbd = {
 		// get header stuff going first
 		bbd.initWidgets();
 
-		bbd.url = 'biblio_server.php';
+		bbd.url = 'catalogServer.php';
 		bbd.fetchCrntMbrInfo();
 
 		$('#bulkDel_btn').bind('click',null,bbd.doBulkDelete);
