@@ -2,7 +2,11 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-
+/*
+ * Alowable column parameters for display table:
+ * title="........", align=[left|right|center], width=??
+ */
+ 
 class TableDisplay {
 	var $title;
 	var $columns;
@@ -21,11 +25,11 @@ class TableDisplay {
 	function begin() {
 		$this->rown=1;
 		$s = "<table class='table_display'>\n";
+		$s .= '<thead>';
 		if ($this->title) {
 			$s .= '<tr><th colspan="'.H(count($this->columns)+1).'" ><div class="title">'
 						. $this->title."</div></th></tr>\n";
 		}
-		$s .= '<thead>';
 		$s .= '<tr class="headings">';
 		foreach ($this->columns as $col) {
 			$s .= '<th>'.$col['title']."</th>\n";

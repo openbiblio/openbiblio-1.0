@@ -56,6 +56,8 @@ fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; paddi
 
 /* tables & parts of */
 table { margin: 2px; }
+tr.odd { background-color: #EEE; }
+/*tr.even { background-color: #CCC; }*/
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
 td.number { text-align: right; }
 td.center { text-align: center; }
@@ -106,7 +108,7 @@ aside {
 	-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 	box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
 	}
-img#logo { padding: 3px; border: 2px solid #ddd; width:90%; }
+#logo { padding: 3px; border: 2px solid #ddd; width:90%; }
 aside input[type=submit] { position: relative; left:30%; }
 
 /*************************************************/
@@ -189,20 +191,20 @@ div#content {
 	box-shadow: 3px 6px 8px -4px #000;
 	}
 #content .altBG { background: #dddddd; }
-table#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
+#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width: 1px; padding: 2px; border-style: solid; border-color: black; }
-ul#editTbl { margin-left:0; padding-left:0; }
-ul#editTbl li { list-style-type:none; 	margin:0; padding:0; }
+#editTbl { margin-left:0; padding-left:0; }
+#editTbl li { list-style-type:none; 	margin:0; padding:0; }
 
-ul#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
-ul#btnRow li, ul.btnRow li { display: inline; margin-right: 1em; }
-ul#btnRow li input[value="Delete"], 
-ul.btnRow li input[value="Delete This Item"],
-ul.btnRow li input[value="Delete"] { float: right; margin-right: 0; }
+#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
+#btnRow li, ul.btnRow li { display: inline; margin-right: 1em; }
+#btnRow li input[value="Delete"], 
+.btnRow li input[value="Delete This Item"],
+.btnRow li input[value="Delete"] { float: right; margin-right: 0; }
 
-fieldset.inlineFldSet { float: left; width:auto; border:0; margin-right:0.5em; padding:0; }
-fieldset.inlineFldSet label { display:block; }
-fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border: 1px solid gray}
+.inlineFldSet { float: left; width:auto; border:0; margin-right:0.5em; padding:0; }
+.inlineFldSet label { display:block; }
+#vertSep { width:0; height:3em; margin-right:0.5em; padding:0; border: 1px solid gray}
 
 /* search results displays */
 .note { font-size: 0.7em; }
@@ -246,8 +248,9 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 .cover_image img { border: solid black 2px; width: 75px; }
 .biblioImage { float: left; border: 1px solid green; height: 50px; width: 40px; padding:0; }
 .biblioImage.hover:hover { top:30px; left:200px;
-	-webkit-transform: 	scale(5.0);
-	-moz-transform: 		scale(5.0); -moz-transform-origin: top right;
+	-webkit-transform: 	scale(5.0); -webkit-transform-origin: top right;
+	-moz-transform: 		scale(5.0); -moz-transform-origin: 		top right;
+	-ms-transform: 			scale(5.0); -ms-transform-origin: 		top right;
 	-o-transform: 			scale(5.0);
 	transform: 					scale(5.0);
 	}
@@ -257,17 +260,20 @@ fieldset#vertSep { width:0px; height:3em; margin-right:0.5em; padding:0; border:
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:10px; border:1px solid green }
 #biblioFoto.hover:hover { 
 	top: 20px;
-	-webkit-transform: 	scale(3.0);
-	-moz-transform: 		scale(3.0); -moz-transform-origin: top right;
+	-webkit-transform: 	scale(3.0); -webkit-transform-origin: top right;
+	-moz-transform: 		scale(3.0); -moz-transform-origin: 		top right;
+	-ms-transform: 			scale(3.0); -ms-transform-origin: 		top right;
 	-o-transform: 			scale(3.0);
 	transform: 					scale(3.0);
 }
 #flagInfo ul { text-align: center; margin:0; padding:0; }
 #flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
 .flgDot {
-	-webkit-transform: scale(0.75);
-	-moz-transform: 	 scale(0.75);
-	transform: 				 scale(0.60);
+	-webkit-transform: 	scale(0.75);
+	-moz-transform: 		scale(0.75);
+	-ms-transform: 			scale(0.75);
+	-0-transform: 			scale(0.75);
+	transform: 				 	scale(0.75);
 	vertical-align: bottom;
 	}
 /* end of search results display */

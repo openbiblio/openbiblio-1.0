@@ -782,6 +782,7 @@ $trans["Username must not contain any spaces."] = "Username must not contain any
 $trans["Username:"] = "Username:";
 $trans["USMarc Fields:"] = "USMarc Fields:";
 $trans["Value"] = "Value";
+$trans["Value by Media Type"] = "Value by Media Type";
 $trans["Vendor"] = "Vendor";
 $trans["Vendor:"] = "Vendor:";
 $trans["View"] = "View";

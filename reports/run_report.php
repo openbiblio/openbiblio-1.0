@@ -66,7 +66,8 @@
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<h3><?php echo T("Report Results"); ?></h3>
+<!--h3><?php echo T($title); ?></h3-->
+<h5><?php echo T("Report Results"); ?></h5>
 <?php
 	if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
 		echo '<p class="error">'.H($_REQUEST["msg"]).'</p><br /><br />';

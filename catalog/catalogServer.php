@@ -393,6 +393,10 @@ class SrchDb {
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
+		$sql = "DELETE FROM `biblio_copy_fields` "
+					." WHERE (`copyid` = $copyid) ";
+		//echo "sql=$sql<br />";
+		$rows = $this->db->act($sql);
 		$this->db->unlock();
 		return T('Delete completed');
 	}
@@ -641,26 +645,34 @@ function mkBiblioArray($dbObj) {
 	//// ====================================////
 	case 'updateCopy':
 	case 'newCopy':
-	  $theDb = new SrchDB;
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 			return;
 		}
-		switch ($_REQUEST[mode]) {
-		  case 'updateCopy':
-	  		echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-				break;
-			
-		  case 'newCopy':
-				echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-				break;
+	  $theDb = new SrchDB;
+		if ($_POST[mode] == 'updateCopy') {
+	  	echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		} else {	
+			echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		}
 		break;
+	case 'getBibsFrmCopies':
+	  $theDb = new SrchDB;
+		$rslt = $theDb->getBibsForCpys($_GET['cpyList']);
+	  echo json_encode($rslt);
+	  break;
 	case 'deleteCopy':
 	  $theDb = new SrchDB;
 		echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
 		break;
+	case 'deleteMultiCopies':
+	  $theDb = new SrchDB;
+		foreach ($_POST['cpyList'] as $copyid) {
+			echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+		}
+		break;
+/*
 	case 'deleteMultiCopies':
 		$copies = new Copies;
 		foreach ($_POST['cpyList'] as $copyid) {
@@ -668,12 +680,7 @@ function mkBiblioArray($dbObj) {
 		}
 		echo T('Delete completed');
 		break;
-	case 'getBibsFrmCopies':
-	  $theDb = new SrchDB;
-		$rslt = $theDb->getBibsForCpys($_GET['cpyList']);
-	  echo json_encode($rslt);
-	  break;
-	  
+*/	  
 		
 	//// ====================================////
 	case 'getPhoto':
