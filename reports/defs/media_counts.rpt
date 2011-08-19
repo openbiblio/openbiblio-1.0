@@ -1,6 +1,6 @@
-.title "Biblio Counts by Material Type"
+.title "Item Counts by Media Type"
 .category "Statistical Reports"
-.column description title="Material Type" sort=description
+.column description title="Media Type" sort=description
 .column count title=Count width=5
 .parameters
 .

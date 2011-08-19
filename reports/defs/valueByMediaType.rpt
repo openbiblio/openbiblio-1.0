@@ -1,0 +1,25 @@
+.title "Value by Media Type"
+.category "Statistical Reports"
+.column collDesc title="Collection" width=5 sort=collDesc
+.column medType title="Media Type" sort=medType
+.column count title="Count" width=5 align="right"
+.column value title=Value width=5 align="right"
+.parameters
+.
+.end parameters
+
+.sql
+SELECT mtd.code, cd.description as collDesc, mtd.description as medType
+    	,count(b.bibid) as count
+    	,FORMAT(sum(bcf.data),2) as value
+FROM biblio b
+		,biblio_copy bc
+		,biblio_copy_fields bcf
+		,material_type_dm mtd
+		,collection_dm cd
+WHERE (bc.bibid = b.bibid) 
+	AND (bcf.copyid = bc.copyId) AND (bcf.code = 'pr') and IFNULL(bcf.data,0) 
+	AND (cd.code = b.collection_cd)
+	AND (mtd.code = b.material_cd)
+GROUP BY b.collection_cd, mtd.code;
+.end sql
