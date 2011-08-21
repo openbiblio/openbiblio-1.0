@@ -6,16 +6,18 @@
 	$doing_install = true;
   require_once("../shared/common.php");
   
-	require_once(REL(__FILE__, "../install/InstallQuery.php"));
+	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
+	require_once(REL(__FILE__, "../classes/UpdateQuery.php"));
 
-	$ptr = new InstallQuery();
+	$installQ = new InstallQuery();
+	$upgradeQ = new UpdateQuery();
 
 //print_r($_REQUEST);
 	switch ($_REQUEST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'connectDB':
 			//echo "connecting to db\n";
-			$error = $ptr->connect_e();
+			$error = $installQ->connect_e();
 			if ($error) 
 				echo $error->toStr(); 
 			else 
@@ -24,7 +26,7 @@
 			
 		case 'getDbVersion':
 			//echo "fetching version\n";
-			$version = $ptr->getCurrentDatabaseVersion();
+			$version = $installQ->getCurrentDatabaseVersion();
 			if (!$version || empty($version)) {
 				echo "noDB";
 			} else {	
@@ -42,7 +44,19 @@
 			
 		case 'doFullInstall':
 			//echo "full install underway\n";
-			echo 	$ptr->freshInstall($Locale, $_POST['installTestData']);
+			echo 	$installQ->freshInstall($Locale, $_POST['installTestData']);
+			break;
+			
+		case 'doUpdate':
+echo "db update underway\n";
+			$resp = $upgradeQ->performUpgrade_e();
+			echo json_encode($resp);
+			
+			//list($notices, $error) = $resp;
+			//if ($error) {
+			//	echo "<h1>Upgrade Failed</h1>";
+			//	echo H($error->toStr());
+			//}
 			break;
 			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
