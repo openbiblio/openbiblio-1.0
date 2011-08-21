@@ -7,9 +7,15 @@ require_once(REL(__FILE__, "../classes/Query.php"));
 
 class InstallQuery extends Query {
 	/* Override constructor so the installer can test the database connection */
-	function InstallQuery() {
-		;
+	//function InstallQuery() {
+	//	;
+	//}
+/*
+	function createDB($dbName) {
+		$sql = $this->mkSQL("CREATE DATABASE ".$dbName)
+		$this->act($sql);
 	}
+*/	
 	function dropTable($tableName) {
 		$sql = $this->mkSQL("DROP TABLE IF EXISTS %I ", $tableName);
 		$this->act($sql);
@@ -46,7 +52,9 @@ class InstallQuery extends Query {
 	}
 
 	function _getSettings($tablePrfx) {
-		$sql = $this->mkSQL('SHOW TABLES LIKE %Q ', $tablePrfx.'settings');
+		## determine if a database exists and has tables in it
+		//$sql = $this->mkSQL('SHOW TABLES LIKE %Q ', $tablePrfx.'settings');
+		$sql = "SHOW TABLES LIKE 'settings'";
 		$row = $this->select01($sql);
 		if (!$row) {
 			return false;
@@ -86,15 +94,13 @@ class InstallQuery extends Query {
 		}
 	}
 
-	function freshInstall($locale, $sampleDataRequired = false, $version=OBIB_LATEST_DB_VERSION, $tablePrfx = DB_TABLENAME_PREFIX) {
+	function freshInstall($locale, $sampleDataRequired='yes', $version=OBIB_LATEST_DB_VERSION, $tablePrfx = DB_TABLENAME_PREFIX) {
 		$rootDir = '../install/' . $version . '/sql';
-		$localeDir = '../locale/' . $locale . '/sql/' . $version;
-
 		$this->executeSqlFilesInDir($rootDir, $tablePrfx);
-		$this->executeSqlFilesInDir($localeDir . '/domain/', $tablePrfx);
-		if($sampleDataRequired) {
-			$this->executeSqlFilesInDir($localeDir . '/sample/', $tablePrfx);
-		}
+//		$this->executeSqlFilesInDir($localeDir . '/domain/', $tablePrfx);
+//		if($sampleDataRequired == 'yes') {
+//			$this->executeSqlFilesInDir($localeDir . '/sample/', $tablePrfx);
+//		}
 	}
 
 	function executeSqlFilesInDir($dir, $tablePrfx = "") {

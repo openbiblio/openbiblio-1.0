@@ -27,18 +27,25 @@ class Page {
 		$_Page_params = $params;
 		require_once($params['theme_dir']."/header_help.php");
 	}
+	function header_install($params=array()) {
+		global $_Page_params;
+		$params = Page::clean_params($params);
+		$_Page_params = $params;
+		require_once($params['theme_dir']."/header.php");
+	}
 	function clean_params($params) {
+		global $ThemeDirUrl, $ThemeId;
 		$req = array('nav', 'title');
 		foreach ($req as $r) {
 			if (!isset($params[$r])) {
 				Fatal::internalError(T("Missing required page parameter: %param%", array('param'=>$r)));
 			}
 		}
-		$theme = Settings::get('theme_dir_url');
-		$themeid = Settings::get('themeid');
-		$params['themeid'] = $themeid;
-		$params['theme_dir'] = REL(__FILE__, "../themes/".$theme);
-		$params['theme_dir_url'] = "../themes/".$theme;
+		//$theme = Settings::get('theme_dir_url');
+		//$themeid = Settings::get('themeid');
+		$params['themeid'] = $ThemeId;
+		$params['theme_dir'] = REL(__FILE__, "../themes/".$ThemeDirUrl);
+		$params['theme_dir_url'] = "../themes/".$ThemeDirUrl;
 		if (!isset($params['html_head'])) {
 			$params['html_head'] = '';
 		}

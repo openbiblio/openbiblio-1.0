@@ -35,7 +35,8 @@ define("OBIB_SEARCH_SERIES","8");
  ****************************************************************************
  */
 define("OBIB_CODE_VERSION","CVS");
-define("OBIB_LATEST_DB_VERSION","0.4.0-mps3");
+//define("OBIB_LATEST_DB_VERSION","0.4.0-mps3");
+define("OBIB_LATEST_DB_VERSION","1.0b");
 
 define("OBIB_DEFAULT_STATUS","in");
 define("OBIB_STATUS_PROCESSING", "prc");

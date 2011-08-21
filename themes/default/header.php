@@ -14,9 +14,10 @@
 // support for CSS2's border-spacing property.
 ?>
 <aside id="sidebar">
-	<header>
+	<header class="notForInstall">
 		<h3 class="staff_head">
 			<?php 
+if (!isset($doing_install) or !$doing_install) {
 		if (Settings::get('library_image_url') != "") {
 			echo '<img id="logo"'.' src="'.H(Settings::get("library_image_url")).'" border="0" /><br />';
 		}
@@ -28,19 +29,20 @@
 					echo "<hr style=\"width:25%\"> \n";
 					echo "<div id=\"library_phone\">". H(Settings::get('library_phone')) ."</div> \n";
 				}
+}
 			?>
 		</h3>
 		<br />
-		<form method="get" action="../shared/logout.php">
+		<form class="notForInstall" method="get" action="../shared/logout.php">
 			<input type="submit" value="<?php echo T("Logout") ?>" />
 		</form>
 	</header>
-	<hr />
+	<hr class="notForInstall" />
 	
-	<nav>
+	<nav class="notForInstall">
 		<?php Nav::display($params['nav']); ?>
 	</nav>
-	<hr />
+	<hr class="notForInstall" />
 	
 	<footer>
 		<a href="http://obiblio.sourceforge.net/">

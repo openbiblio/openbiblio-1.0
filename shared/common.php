@@ -77,23 +77,30 @@ require_once(REL(__FILE__, 'jsontemplate.php'));
 require_once(REL(__FILE__, "../classes/Localize.php"));
 require_once(REL(__FILE__, 'templates.php'));
 
-global $LOC;
+global $LOC, $CharSet, $Locale;
+global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl;
+global $LocaleDirUrl, $LocaleDir, $SharedDirUrl, $HTMLHead;
+
 $LOC = new Localize;
 if (!isset($doing_install) or !$doing_install) {
 	include_once(REL(__FILE__, "../model/Settings.php"));
 	Settings::load();
-
-	/* Global variables for use with themes */
-	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl, $HTMLHead;
+	$CharSet = Settings::get('charset');
 	$ThemeId = Settings::get('theme_name');
 	$ThemeDirUrl = "../themes/".Settings::get('theme_dir_url');
+	$Locale = Settings::get('locale');
+}
+else {
+	$CharSet = "UTF-8";
+	$ThemeId = '1';
+	$ThemeDirUrl = "../themes/default";
+	$Locale = "en";
+}
+
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";
 	$HTMLHead = "";
-
-	/* Global variables for use with locales */
-	global $LocaleDirUrl, $LocaleDir, $SharedDirUrl, $HTMLHead;
-	$LocaleDirUrl = "../locale/".Settings::get('locale');
+	$LocaleDirUrl = "../locale/".$Locale;
 	$LocaleDir = REL(__FILE__, $LocaleDirUrl);
 
 	/* Make session user info available on all pages. */
@@ -105,12 +112,15 @@ if (!isset($doing_install) or !$doing_install) {
 			unset(${$k});
 		}
 	}
-  setSessionFmSettings();
 
-	$LOC->init(Settings::get('locale'));
+if (!isset($doing_install) or !$doing_install) {
+  setSessionFmSettings();
+}
+
+	//$LOC->init(Settings::get($locale));
+	$LOC->init($Locale);
 
 	include_once(REL(__FILE__, "../classes/Page.php"));
-}
 
   ###################################################################
   ## plugin Support

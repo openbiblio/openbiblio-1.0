@@ -4,25 +4,25 @@
  */
 
 	### following needed since this is included from within a class method -- Fred
-	global $nav, $tab, $focus_form_name, $focus_form_field;
-
+	global $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
 ?>
 
 <!DOCTYPE html >
-<html lang="en">
+<html lang="en" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
 
 <head>	
 <!-- charset MUST be specified within first 512 char of page to be effective -->
 <?php // change default code character set if specified
-	if (Settings::get('charset') != "") { 
-		echo "<meta charset=".H(Settings::get('charset'))." \" />";
-	} else {
-		echo "<meta charset=\"UTF-8\" />";
-	}
+//	if (Settings::get('charset') && (Settings::get('charset') != "")) { 
+//		echo "<meta charset=".H(Settings::get('charset'))." \" />";
+//	} else {
+		echo '<meta charset="'.$CharSet.'" />';
+//	}
 ?>
 
 <title>
 <?php
+if (!isset($doing_install) or !$doing_install) {
 	// If the cookie contains a site id, we take this one, otherwise the default.
 	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 	$libName  = Settings::get('library_name');
@@ -35,7 +35,7 @@
 			$_SESSION['current_site'] = 1;
 		}
 	}
-	
+
 	if($_SESSION['multi_site_func'] > 0){	
 		$sit = new Sites;
 		$lib = $sit->getOne($_SESSION['current_site']);
@@ -46,6 +46,7 @@
 	if($params['title']) {
 		echo ': '.H($params['title']);
 	}		
+}
 ?>
 </title>
 <meta name="description" content="OpenBiblio ver 1.0 (wip)">

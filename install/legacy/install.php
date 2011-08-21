@@ -29,7 +29,7 @@
 	include(REL(__FILE__, "../install/header.php"));
 ?>
 <br />
-<h1>OpenBiblio Installation:</h1>
+<h3>OpenBiblio Installation:</h3>
 
 <?php
 

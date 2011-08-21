@@ -4,15 +4,18 @@
  */
  
 ?>
-<html>
+<!DOCTYPE html >
+<html lang="en">
 <head>
+<meta charset=\"UTF-8\" />
 <style type="text/css">
-	<?php include(REL(__FILE__, "../css/style.css")); ?>
+	<?php include(REL(__FILE__, "../shared/base.css")); ?>
+	<?php include(REL(__FILE__, "../themes/default/style.css")); ?>
 </style>
 <meta name="description" content="OpenBiblio Library Automation System">
-<title>OpenBiblio Install</title>
+<title><?php echo T("OpenBiblio Install"); ?></title>
 </head>
-<body bgcolor="#ffffff" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0" <?php
+<body<?php
 	if (isset($focus_form_name) && ($focus_form_name != "")) {
 		if (preg_match('/^[a-zA-Z0-9_]+$/', $focus_form_name)
 				&& preg_match('/^[a-zA-Z0-9_]+$/', $focus_form_field)) {
@@ -33,4 +36,4 @@
 <!-- **************************************************************************************
 		 * beginning of main body
 		 **************************************************************************************-->
-<font class="primary">
+<font>

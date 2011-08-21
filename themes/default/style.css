@@ -52,6 +52,7 @@ hr {
 	}
 figure { border: 1px solid gray; }
 legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
+
 fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
 
 /* tables & parts of */
@@ -78,7 +79,7 @@ input[required]::after { content:"*"; color: red; }
 input[type=checkbox] { padding-left: 5px; }
 
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
-input[type=button], input[type=submit] {
+input[type=button], input[type=submit], button {
 	padding: 2px 4px;
 	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
 	line-height: 1;
@@ -110,6 +111,7 @@ aside {
 	}
 #logo { padding: 3px; border: 2px solid #ddd; width:90%; }
 aside input[type=submit] { position: relative; left:30%; }
+.obInstall .notForInstall { display: none; }
 
 /*************************************************/
 h1.staff_head {

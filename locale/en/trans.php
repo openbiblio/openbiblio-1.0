@@ -553,6 +553,7 @@ $trans["Online Hosts"] = "Online Hosts";
 $trans["Online Options"] = "Online Options";
 $trans["OPAC"] = "OPAC";
 $trans["OpenBiblio Help"] = "OpenBiblio Help";
+$trans["OpenBiblio Install"] = "OpenBiblio Install";
 $trans["Opening Balance"] = "Opening Balance";
 $trans["Other Physical Details"] = "Other Physical Details";
 $trans["Out Date:"] = "Out Date:";
@@ -695,6 +696,7 @@ $trans["Staff member, %name%, has been deleted."] = "Staff member, %name%, has b
 $trans["Staff member, %name%, has been updated."] = "Staff member, %name%, has been updated.";
 $trans["Staff Members"] = "Staff Members";
 $trans["Start using the catalog"] = "Start using the catalog";
+$trans["Start Using OpenBiblio"] = "Start Using OpenBiblio";
 $trans["State"] = "State";
 $trans["States"] = "States/Provinces";
 $trans["Statistical Reports"] = "Statistical Reports";
@@ -1259,12 +1261,10 @@ $trans["requestSendMustEnterDate"]          = "You must enter a request date and
 #****************************************************************************
 #*  Translation text for tools/index.php
 #****************************************************************************
-$trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area "
+$trans["toolsIndexDesc"]  = "Use the functions located in the left hand navigation area<br />"
 													.	"to manage the internal workings of your copy of OpenBiblio.<br />"
 													.	" - System Settings: maintain options not appropriate to day-to-day managers.<br />"
-													.	" - Biblio Fields: determine what data to display and where it is to appear.<br />"
-													.	" - Plugin Manager: determine which, if any, plugin to allow.<br />"
-													.	" - Search Options could include which type of search is to be at top of screen or have focus.<br />";
+													.	" - Plugin Manager: determine which, if any, plugin to allow.<br />";
 
 #****************************************************************************
 #*  Translation text for tools/noauth.php
