@@ -96,7 +96,7 @@
 	<section id="startOB">
 		<fieldset>
 			<p>OpenBiblio appears ready for use.</p>
-				<form name="startForm" method="POST" action="/index.php">
+				<form name="startForm" method="POST" action="../index.php">
 					<input id="startBtn" type="submit" value="Start OpenBiblio now">
 				</form>
 		</fieldset>

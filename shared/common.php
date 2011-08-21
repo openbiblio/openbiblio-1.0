@@ -103,6 +103,7 @@ else {
 	$LocaleDirUrl = "../locale/".$Locale;
 	$LocaleDir = REL(__FILE__, $LocaleDirUrl);
 
+if (!isset($doing_install) or !$doing_install) {
 	/* Make session user info available on all pages. */
 	include_once(REL(__FILE__, "../classes/SessionHandler.php"));
 	session_start();
@@ -113,7 +114,6 @@ else {
 		}
 	}
 
-if (!isset($doing_install) or !$doing_install) {
   setSessionFmSettings();
 }
 

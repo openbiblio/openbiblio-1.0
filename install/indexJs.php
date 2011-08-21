@@ -57,7 +57,7 @@ ins = {
 	
 	//------------------------------
 	connectDb: function () {
-		console.log('connecting to db');	
+		//console.log('connecting to db');	
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
 	  	if (response.indexOf('OK') == -1) {
 				console.log('no connection')
@@ -71,7 +71,7 @@ ins = {
 	  });
 	},
 	getDbVersion: function () {
-		console.log('getting db version');	
+		//console.log('getting db version');	
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
 			//console.log('vers='+response);	  
 			if (response == 'noDB') {
