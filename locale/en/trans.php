@@ -539,6 +539,7 @@ $trans["Not enough arguments given to mkSQL()."] = "Not enough arguments given t
 $trans["Note: Mbr outstanding balance %bal%"] = "Note: Member has an outstanding account balance of %bal%.";
 $trans["Note:"] = "Note:";
 $trans["Nothing Found"] = "Nothing Found";
+$trans["Nothing Found error"] = "Nothing Found error";
 $trans["Number of items is required."] = "Number of items is required.";
 $trans["NumberOnHand:"] = "Munber on hand:";
 $trans["old search"] = "Old Search";
