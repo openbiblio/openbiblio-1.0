@@ -7,10 +7,10 @@
   require_once("../shared/common.php");
   
 	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
-	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
+	//require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
 	$installQ = new InstallQuery();
-	$upgradeQ = new UpgradeQuery();
+	//$upgradeQ = new UpgradeQuery();
 
 //print_r($_REQUEST);
 	switch ($_REQUEST['mode']){

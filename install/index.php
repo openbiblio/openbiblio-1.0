@@ -9,6 +9,7 @@
 	Page::header_install(array('nav'=>'', 'title'=>'OpenBiblio Installation'));
 	
 ?>
+<fieldset>
 	<section id="dbPblms">
 		<fieldset>
 		<p>The connection to the database failed with the following error.
@@ -101,6 +102,7 @@
 				</form>
 		</fieldset>
 	</section>
+</fieldset>
 
 <?php
 	require_once($ThemeDirUrl."/footer.php");

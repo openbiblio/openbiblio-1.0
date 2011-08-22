@@ -5,8 +5,10 @@
  
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
+//require_once("../classes/DmTable.php");
 
 class InstallQuery extends Query {
+//class InstallQuery extends DmTable {
   /* Override constructor so the installer can test the database connection */
   //function InstallQuery() {
   //  ;
@@ -52,9 +54,10 @@ class InstallQuery extends Query {
     if (!$row) {
       return false;
     }
+echo "found db, collecting setting data \n";    
     //$sql = $this->mkSQL('SELECT * FROM %I ', $tablePrfx.'settings');
-    $sql = "SELECT * FROM 'settings'";
-    return $this->select1($sql);
+    $sql = "SELECT * FROM `settings`";
+    return $this->select($sql);
   }
   
   function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
@@ -69,12 +72,19 @@ class InstallQuery extends Query {
   }
 
   function getCurrentDatabaseVersion($tablePrfx = DB_TABLENAME_PREFIX) {
-    $array = $this->_getSettings($tablePrfx);
-    if($array == false) {
+    $recs = $this->_getSettings($tablePrfx);
+    if($recs == false) {
       return false;
     }
     else {
-      return $array["version"];
+var_dump($recs['results']);    
+			while ($rec = $recs->next()) {
+echo "row named: '".$rec['name']."' \n";    	
+				if ($rec['name'] == 'version')
+echo "got version:'".$rec['value']."' \n";    	
+					return $rec['value'];
+			}
+      return false;
     }
   }
   
