@@ -22,14 +22,10 @@ ins = {
 		//$('.reqd sup').css('color','red');
 		//$('#updateMsg').hide();
 
-		$('#newForm #newBtn').bind('click',null,ins.doNewInstall);
-		//$('#addBtn').bind('click',null,ins.doAddMedia);
-		//$('#updtBtn').bind('click',null,ins.doUpdateMedia);
-		//$('#cnclBtn').bind('click',null,ins.resetForms);
-		//$('#deltBtn').bind('click',null,ins.doDeleteMedia);
+		$('#newBtn').bind('click',null,ins.doNewInstall);
+		$('#updtBtn').bind('click',null,ins.doDbUpdate);
 
 		ins.resetForms()
-	  $('#msgDiv').hide();
 		ins.connectDb();
 	},
 	
@@ -44,77 +40,104 @@ ins = {
 		$('#newInstall').hide();
 		$('#updateDB').hide();
 		$('#startOB').hide();
-	  //$('#listHdr').html(ins.listHdr);
-	  //$('#mediaHdr').html(ins.editHdr);
-		//$('#listDiv').show();
-    //$('#cnclBtn').val('Cancel');
 	},
-//	doBackToList: function () {
-		//$('#msgDiv').hide(10000);
-		//ins.resetForms();
-		//ins.fetchMedia();
-//	},
+	
+	informUser: function (msg) {
+		var html = '<li>'+msg+'</li>';
+		$('#progressList').append(html)
+	},
+	showWait: function (msg) {
+		$('#waitMsg').html(msg);
+		$('#plsWait').show();
+	},
 	
 	//------------------------------
 	connectDb: function () {
-		//console.log('connecting to db');	
+		ins.informUser('<?php echo T("Testing Connection to DB server"); ?>');
+		ins.showWait('Testing Database connection');
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
 	  	if (response.indexOf('OK') == -1) {
 				console.log('no connection')
+				ins.informUser('<?php echo T("Connection to DB server failed"); ?>');
 				$('#connectErr').html(response);
 				$('#dbPblms').show();
 			}
 			else {
 				//console.log('good connection')
+				ins.informUser('<?php echo T("Connection to DB server OK"); ?>');
 				ins.getDbVersion();
 			}
+			$('#plsWait').hide();
 	  });
 	},
 	getDbVersion: function () {
-		//console.log('getting db version');	
+		ins.informUser('<?php echo T("Looking for Database"); ?>');
+		ins.showWait('Checking Database');
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
 			//console.log('vers='+response);	  
 			if (response == 'noDB') {
+				ins.informUser('<?php echo T("Database not found"); ?>');
 				ins.getLocales();
 			}
 	  	else if (response == '<?php echo H(OBIB_LATEST_DB_VERSION); ?>') {
-				//console.log("Database tables are current version.");			
+				ins.informUser('<?php echo T("Database uptodate"); ?>');
 				$('#versionOK').show();
 			}
 			else {
+				ins.informUser('<?php echo T("Database needs upgrading"); ?>');
+				$('#verTxt').html(response);
 				$('#updateDB').show();
 			}
-
+			$('#plsWait').hide();
 	  });
 	},
 	getLocales: function () {
-		//console.log('getting locales');	
+		ins.showWait('Fetching Locales');
+		ins.informUser('<?php echo T("Fetching list of available languages"); ?>');
 	  $.get(ins.url,{ 'mode':'getLocales'}, function(response){
 			$('#locale').html(response);  
 			$('#newInstall').show();
+			$('#plsWait').hide();
 		});
 	},
 	
 	//------------------------------
 	doNewInstall: function () {
+		ins.showWait('Installing Tables');
 		var useTestData = $('#installTestData').prop('checked');
 		if (useTestData) {
-			console.log("installing with test data");
+			ins.informUser('<?php echo T("Installing DB tables with test data"); ?>');
 			var test = $('#installTestData').val();
 		} else {
-			console.log("installing without test data");
+			ins.informUser('<?php echo T("Installing DB tables without test data"); ?>');
 			var test = 'NO';
 		}
 			
 		$.post(ins.url, {'mode':'doFullInstall', 'installTestData':test}, function (response) {
-			console.log('OpenBiblio tables have been created successfully!');
+			ins.informUser('<?php echo T("Table installation complete"); ?>');
 			$('#newInstall').hide();
 			$('#startOB').show();		
+			$('#plsWait').hide();
 			return false;
 		});
 		return false;
 	},
 	
+	//------------------------------
+	doDbUpdate: function () {
+		ins.showWait('Updating Tables');
+		ins.informUser('<?php echo T("Updating Database Tables"); ?>');
+		$.post(ins.url, {'mode':'doDbUpgrade'}, function (response) {
+			ins.informUser('<?php echo T("Table update complete"); ?>');
+			
+			$('#updateDB').hide();
+			$('#startOB').show();		
+			$('#plsWait').hide();
+			return false;
+		});
+		return false;
+	},
+			
 };
 
 $(document).ready(ins.init);

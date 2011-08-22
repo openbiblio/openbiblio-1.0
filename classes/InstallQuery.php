@@ -5,7 +5,6 @@
  
 require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
-//require_once("../classes/DmTable.php");
 
 class InstallQuery extends Query {
 //class InstallQuery extends DmTable {
@@ -54,7 +53,6 @@ class InstallQuery extends Query {
     if (!$row) {
       return false;
     }
-echo "found db, collecting setting data \n";    
     //$sql = $this->mkSQL('SELECT * FROM %I ', $tablePrfx.'settings');
     $sql = "SELECT * FROM `settings`";
     return $this->select($sql);
@@ -77,12 +75,10 @@ echo "found db, collecting setting data \n";
       return false;
     }
     else {
-var_dump($recs['results']);    
 			while ($rec = $recs->next()) {
-echo "row named: '".$rec['name']."' \n";    	
-				if ($rec['name'] == 'version')
-echo "got version:'".$rec['value']."' \n";    	
+				if ($rec['name'] == 'version') {
 					return $rec['value'];
+				}
 			}
       return false;
     }

@@ -7,12 +7,11 @@
   require_once("../shared/common.php");
   
 	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
-	//require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
+	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
 	$installQ = new InstallQuery();
-	//$upgradeQ = new UpgradeQuery();
+	$upgradeQ = new UpgradeQuery();
 
-//print_r($_REQUEST);
 	switch ($_REQUEST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'connectDB':
@@ -45,6 +44,11 @@
 		case 'doFullInstall':
 			//echo "full install underway\n";
 			echo 	$installQ->freshInstall($Locale, $_POST['installTestData']);
+			break;
+			
+		case 'doDbUpgrade':
+			$results = $upgradeQ->performUpgrade_e();
+			echo json_encode($results);
 			break;
 			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
