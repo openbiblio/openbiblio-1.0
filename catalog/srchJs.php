@@ -338,7 +338,6 @@ bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				var biblioList = $.parseJSON(jsonInpt);
-				
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
@@ -382,24 +381,28 @@ bs = {
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
-			var html = "<tr> \n";
-			var biblio = eval('('+biblioList[nBiblio]+')');
-			bs.biblio[biblio.bibid] = biblio;
 			var callNo = ''; var title = ''; var author=''; var subtitle='';
+			var html = "<tr> \n";
+			//var biblio = eval('('+biblioList[nBiblio]+')');
+			var biblio = JSON.parse(biblioList[nBiblio]);
+			bs.biblio[biblio.bibid] = biblio;
 			if (biblio.data) {
 				$.each(biblio.data, function (fldIndex, fldData) {
-					var tmp = eval('('+fldData+')');
-					if (tmp.label == 'Title'){
-						title = tmp.value;
+					//var tmp = eval('('+fldData+')');
+					var tmp = JSON.parse(fldData);
+					if (!tmp.value) tmp.value = 'n/a';
+					switch (tmp.label){
+						case 'Title': title = tmp.value; 
+							break;
+						case 'Subtitle': subtitle = tmp.value; 
+							break;
+						case 'Author':
+							author = tmp.value;
+							if (author && (author.length>30)) author = author.substring(0,30)+'...';
+							break;
+						case 'Call Number': callNo = tmp.value; 
+							break;
 					}
-					if (tmp.label == 'Subtitle'){
-						subtitle = tmp.value;
-					}					
-					if (tmp.label == 'Author') {
-						author = tmp.value;
-						if (author && (author.length>30)) author = author.substring(0,30)+'...';
-					}
-					if (tmp.label == 'Call Number') callNo = tmp.value;
 				});
 			} else {
 				// skip these
@@ -415,10 +418,12 @@ bs = {
 								'		<img src="../images/shim.gif" class="biblioImage noHover" />'+
 								'</td>'+"\n";
 	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
-					var theId = data[0].bibid, 
-							fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
-					//console.log(theId+'==>>'+fotoFile);
-					$('#photo_'+theId).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
+	  			if (data != null) {
+						var theId = data[0].bibid, 
+								fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
+						//console.log(theId+'==>>'+fotoFile);
+						$('#photo_'+theId).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
+					}
 	  		});
 			}
 			html += '<td>\n';
@@ -517,7 +522,8 @@ bs = {
 
 	  var txt = '';
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
-		  var tmp = eval('('+fldData+')');
+		  //var tmp = eval('('+fldData+')');
+		  var tmp = JSON.parse(fldData);
 		  txt += "<tr>\n";
 			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
 			txt += "	<td>"+tmp.label+"</td>\n";

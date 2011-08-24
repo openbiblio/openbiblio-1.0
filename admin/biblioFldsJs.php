@@ -201,7 +201,11 @@ mtl = {
 			  var id = (arayd[n]).substr(5,99);
 				var tag = entry.attr('tag');
 				var subFld = entry.attr('subFld');
-				var label = entry.text();
+				var temp = entry.text();
+				var label = temp;
+				// remove extraneous tag from label
+				if (temp.indexOf('-') >= 0) label = $.trim(entry.text().split('-')[1]);
+				if (temp.indexOf(',') >= 0) label = $.trim(entry.text().split(',')[1]);
 				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'","material_cd":"'+$('#typeList').val()+'"'+
 									 ',"tag":"'+tag+'","subfield_cd":"'+subFld+'","label":"'+label+'"},';
 			} else {
@@ -239,10 +243,16 @@ mtl = {
 		$('#msgArea').hide();
 		$('#msgArea').empty();
 	  $.getJSON(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
+			mtl.data = data;	// for later use
 			var html = '';
 			var html2 = '';
-			if (data.length > 0) {
-			mtl.data = data;
+			if ((!data.length) || (data.length == 0)){
+ 				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('addNewMtlMsg').'"'; ?>+"</h3>";
+				$('#msgArea').html(html);
+				$('#msgDiv').show();
+				$('<li id="waitClass"><?php echo T("waitForServer");?></li>').appendTo('#existing');
+			}
+			else if (data.length > 0) {
 				for (n in data) {
 				  var recId = 'mtl'+data[n]['material_field_id'];
 				  var btnId = 'btn'+data[n]['material_field_id'];
@@ -286,14 +296,8 @@ mtl = {
 				
 				obib.reStripe();
 				$('.editBtn').bind('click',null,mtl.doEdit);
-				mtl.enableBtn('configBtn');
 			}
-			else {
- 				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('addNewMtlMsg').'"'; ?>+"</h3>";
-				$('#msgArea').html(html);
-				$('#msgDiv').show();
-				$('<li id="waitClass"><?php echo T("waitForServer");?></li>').appendTo('#existing');
-			}
+			mtl.enableBtn('configBtn');
 		});
 	},
 	
@@ -361,7 +365,7 @@ mtl = {
 				$('#updateMsg').show();
 				$('#msgArea').html(mtl.successMsg);
 				$('#msgDiv').show();
-				$('#editCnclBtn').val(mtl.gobackLbl)
+				$('#editCnclBtn').val(mtl.goBackLbl)
 			}
 		});
 	},
