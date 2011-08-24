@@ -50,14 +50,14 @@
 			<span class="reqd">*</span>    
 		</li>
 		<li>
-			<label for "onHand"><?php echo T("NumberOnHand:"); ?></label><span id="onHand">0</span>
+			<label for "onHand"><?php echo T("NumberOnHand"); ?>:</label><span id="onHand">0</span>
 		</li>
     <li>
-      <label for="type"><?php echo T("Collection Type:"); ?></label>
+      <label for="type"><?php echo T("Collection Type"); ?>:</label>
       <select id="type" name="type" > </select>
     </li>
     <li>
-      <label for="default_flg"><?php echo T("Default (Y/N):"); ?></label>
+      <label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
       <input id="default_flg" name="default_flg" type="text" size="1" value="N"
 				pattern="[Y,N]" required aria-required="true" />
 			<span class="reqd">*</span>
@@ -79,7 +79,7 @@
 		</li>
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
-			<input type="hidden" id="cat" name="mode" value="collect">
+			<input type="hidden" id="cat" name="cat" value="collect">
 			<input type="hidden" id="code" name="code" value="">
 		</li>
 	</ul>

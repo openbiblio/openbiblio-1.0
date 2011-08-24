@@ -37,6 +37,7 @@ st = {
 	},
 	resetForms: function () {
 		//console.log('resetting!');
+	  $('#code').attr('readonly',true);
 	  $('#listHdr').html(st.listHdr);
 	  $('#stateHdr').html(st.editHdr);
 		$('#editDiv').hide();
@@ -89,6 +90,7 @@ st = {
 	
 	showState: function (State) {
 		//console.log('showing : '+State['name']);
+	  $('#code').attr('readonly',true);
 	  $('#stateHdr').html(st.editHdr);
 	  $('#addBtn').hide();
 	  $('#updtBtn').show();
@@ -109,6 +111,7 @@ st = {
 	
 	doNewState: function (e) {
 	  document.forms['editForm'].reset();
+	  $('#code').attr('readonly',false);
 	  $('#stateHdr').html(st.newHdr);
 		$('#deltBtn').hide();
 		$('#updtBtn').hide();
