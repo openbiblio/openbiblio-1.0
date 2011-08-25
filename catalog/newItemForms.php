@@ -208,7 +208,7 @@ th.colHead { white-space: nowrap; }
 	<!-- =================================================== -->
 	<div id="selectionDiv">
   	<!-- submit action handled by javascript code -->
-   	<form id="newbiblioform" name="newbiblioform" action="" >
+   	<form id="newbiblioform" name="newbiblioform" >
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
 			<input type="button" class="itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			<?php

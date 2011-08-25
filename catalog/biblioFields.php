@@ -53,7 +53,7 @@
 			$attrs = array("id"=>"$marcInputFld");
 			$attrStr = "marcBiblioFld";
 			if ($i['required']) {
-			  $attrStr .= " reqd";
+			  //$attrStr .= " reqd"; // redundant, no longer used - FL Aug 2011
 				$attrs['required'] = 'required';
 			}
 			if ($i['repeat'])

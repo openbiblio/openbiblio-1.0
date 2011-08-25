@@ -8,7 +8,7 @@
 
 <fieldset>
 <legend><?php echo T("Item"); ?></legend>
-<table id="biblioFldTbl" class="primary">
+<table id="biblioFldTbl" >
 	<tbody id="nonMarcBody">
 	<tr>
 		<td><label for="materialCd"><?php echo T("Media Type:"); ?></label></td>

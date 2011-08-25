@@ -76,12 +76,17 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 			$s .= 'value="'.H($value).'" ';
 		}
 		foreach ($attrs as $k => $v) {
-			$s .= H($k).'="'.H($v).'" ';
+			if ($k == 'required') {
+				$s .= 'required="required" aria-required="true" ';
+			} else {
+				$s .= H($k).'="'.H($v).'" ';
+			}
 		}
-		if (in_array('required', $attrs)) {
-			$s .= 'required aria-required="true" ';
-		}
+//		if (in_array('required', $attrs)) {
+//			$s .= 'required aria-required="true" ';
+//		}
 		$s .= "/>";
+		
 		if (in_array('required', $attrs)) {
 			$s .= '<span class="reqd">*</span>';
 		}
