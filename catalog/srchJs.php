@@ -437,7 +437,7 @@ bs = {
 			html += '<td><div class="biblioBtn">'+"\n";
 			html += "</div></td> \n";
 			html += "</tr>\n";
-			$('#listTbl tbody#srchRslts').append(html);
+			$('#srchRslts').append(html);
 		}
 		obib.reStripe2('listTbl','odd');
 

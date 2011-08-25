@@ -53,10 +53,10 @@ hr {
 figure { border: 1px solid gray; }
 legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
 
-fieldset { background-color: #ffffdd; border: 1px solid gray; margin: 2px; padding-bottom: 2px; }
+fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
 
 /* tables & parts of */
-table { margin: 2px; }
+table { margin:2px; max-width:100%; }
 tr.odd { background-color: #EEE; }
 /*tr.even { background-color: #CCC; }*/
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
