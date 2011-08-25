@@ -86,12 +86,12 @@
 		# determine which is to be 'selected'
 		if (isset($biblio['material_cd'])) {
 			$material_cd_value = $biblio['material_cd'];
-		} elseif (isset($_GET['material_cd'])) {
+		} elseif (!empty($_GET['material_cd'])) {
 		  $material_cd_value = $_GET['material_cd'];
 		} else {
 			$material_cd_value = $matTypes->getDefault();
 		}
-				
+ 				
 		// get field specs for this material type in 'display postition' order
 		$mf = new MaterialFields;
 //		$fields = $mf->getMatches(array('material_cd'=>$_REQUEST[matlCd]), 'position');
@@ -99,7 +99,7 @@
 
 		## anything to process for current media type (material_cd) ?
 		if ($fields->count() == 0) {
-			echo "<tr><td colspan=\"2\" class=\"primary\">.T('No fields to fill in.').</td></tr>\n";
+			echo "<tr><td colspan=\"2\" >.T('No fields to fill in.').</td></tr>\n";
 		}
 
 		## build an array of fields to be displayed on user form

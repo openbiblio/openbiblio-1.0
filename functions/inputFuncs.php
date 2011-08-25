@@ -25,9 +25,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	if (!$attrs) {
 		$attrs = array();
 	}
-	if (!isset($attrs['onChange'])) {
-		$attrs['onChange'] = 'modified=true';
-	}
+// beleive this is now handled by HTML & Javascript most everywhere. FL Aug 2011	
+//	if (!isset($attrs['onChange'])) {
+//		$attrs['onChange'] = 'modified=true';
+//	}
 	if (!isset($attrs['id'])) {
 		$attrs['id'] = $name;
 	}

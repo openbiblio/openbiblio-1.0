@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2011 at 05:46 PM
+-- Generation Time: Aug 25, 2011 at 08:43 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -47,5 +47,4 @@ INSERT INTO `material_type_dm` (`code`, `description`, `default_flg`, `adult_che
 (2, 'book', 'Y', 10, 5, 'book.gif'),
 (1, 'audio tapes', 'N', 10, 5, 'tape.gif'),
 (7, 'maps', 'N', 10, 5, 'map.gif'),
-(8, 'video/dvd', 'N', 10, 5, 'camera.gif'),
-(9, '!state books', 'N', 10, 5, 'book.gif');
+(8, 'video/dvd', 'N', 10, 5, 'camera.gif');

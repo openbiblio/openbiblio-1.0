@@ -116,11 +116,11 @@ function staff_menu() {
 			Nav::node('admin/calendars/del', T("Delete Calendar"),
 				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
 		}
-		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
 		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
 		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
+		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
