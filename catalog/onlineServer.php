@@ -67,6 +67,7 @@ switch ($_REQUEST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getBiblioFields':
 	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
+	  // above begins execution immediately after loading
 	  break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-

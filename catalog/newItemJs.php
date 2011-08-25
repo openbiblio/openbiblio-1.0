@@ -25,6 +25,7 @@ ni = {
     $('.criteria').bind('change',null,ni.enableSrchBtn);
     $('#manualBtn').bind('click',null, function() {
 			ni.doClearItemForm();
+			ni.doMakeItemForm('');
 			$('#searchDiv').hide();
 			$('#selectionDiv').show();
 		});
@@ -79,7 +80,7 @@ ni = {
 		ni.fetchCollectionList(); // for new items
 		ni.fetchSiteList(); // for new copy use
 		ni.fetchOpts();  //for debug use
-		ni.doMakeItemForm();
+		//ni.doMakeItemForm('');
 	},
 	
 	//------------------------------
@@ -142,19 +143,22 @@ ni = {
 
 	fetchMaterialList: function () {
 	  <?php // Set default material type
-		$matTypes = new MediaTypes;
-		$material_cd_value = $matTypes->getDefault();
+			$matTypes = new MediaTypes;
+			$material_cd_value = $matTypes->getDefault();
 	  ?>
 	  $.get(ni.bs_url,{mode:'getMaterialList', selectedMt:'<?php echo $material_cd_value ?>'}, function(data){
 			$('#srchMatTypes').html(data);
 			$('#itemMediaTypes').html(data);
+			$('#materialCd').bind('change',null,function () {
+				ni.doMakeItemForm($('#materialCd').val());
+			});
 		});
 	},
 	
 	fetchCollectionList: function () {
 	  <?php // Set default collection type
-		$colTypes = new Collections;
-		$col_cd_value = $colTypes->getDefault();
+			$colTypes = new Collections;
+			$col_cd_value = $colTypes->getDefault();
 	  ?>
 	  $.get(ni.bs_url,{mode:'getCollectionList', selectedCt:'<?php echo $col_cd_value ?>'}, function(data){
 			$('#itemEditColls').html(data);
@@ -435,7 +439,10 @@ ni = {
 					  	data = hitData;
 					  });
 					});
-					ni.doShowOne(data);
+					ni.crntData = data;
+					ni.doClearItemForm();
+					ni.doMakeItemForm();
+					//ni.doShowOne(ni.crntData);
 				}
 			} // else
 		}); // .post
@@ -445,7 +452,10 @@ ni = {
 	  var host = e.data.host;
 	  var hit = e.data.hit;
 	  var data = e.data.data;
-		ni.doShowOne(data);
+		ni.crntData = data;
+		ni.doClearItemForm();
+		ni.doMakeItemForm();
+		//ni.doShowOne(ni.crntData);
 	},
 
 	doStriping: function () {
@@ -455,18 +465,21 @@ ni = {
 		});
 	},
 
-	doMakeItemForm: function (e) {
+	doMakeItemForm: function (mediaType) {
 	  // fill out empty form with MARC fields
-	  $.get(ni.url,{'mode':'getBiblioFields'}, function (response) {
+	  $.get(ni.url,{'mode':'getBiblioFields', 'material_cd':mediaType}, function (response) {
 			$('#marcBody').html(response);
 			$('#selectionDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
-			ni.doClearItemForm();
+			//ni.doClearItemForm();
 			$('#opacFlg').val(['CHECKED','Y']);
 			ie.init();
+			ni.doShowOne(ni.crntData);
 		});
 		$('.itemGobkBtn').bind('click',null,ni.doBackToChoice);
+//		ni.doShowOne(ni.crntData);
 	},
+	
 	doClearItemForm: function () {
 		// assure all marc fields are empty & visible at start
 		$('#newbiblioform').each(function(){
@@ -477,10 +490,11 @@ ni = {
 		//	$(this).parent().parent().val('').show();
 		//});
 	},
+	
 	doShowOne: function (data){
 	  // display biblio item data in form
 	  $('#searchDiv').hide();
-	  ni.doClearItemForm();
+	  //ni.doClearItemForm();
 		for (var tag in data) {
 			if (data[tag] != '') {
 				$('#'+tag).val(data[tag]);
@@ -491,7 +505,7 @@ ni = {
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
 		}
-	  ie.validate(); // in case a reqd field's data is missing
+	  //ie.validate(); // in case a reqd field's data is missing - replaced by html5
 	  $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
