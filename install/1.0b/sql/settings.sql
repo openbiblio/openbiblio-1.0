@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2011 at 07:44 PM
+-- Generation Time: Aug 26, 2011 at 12:23 AM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -16,7 +16,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `openbibliodbtrial`
+-- Database: `openbibliowork`
 --
 
 -- --------------------------------------------------------
