@@ -1,7 +1,5 @@
-.title "Value by Media Type"
+.title "Total Holdings Value"
 .category "Statistical Reports"
-.column collDesc title="Collection" width=5 sort=collDesc
-.column medType title="Media Type" sort=medType
 .column count title="Count" width=5 align="right"
 .column value title=Value width=5 align="right"
 .parameters
@@ -9,8 +7,7 @@
 .end parameters
 
 .sql
-SELECT mtd.code, cd.description as collDesc, mtd.description as medType
-    	,count(b.bibid) as count
+SELECT count(b.bibid) as count
     	,FORMAT(sum(bcf.data),2) as value
 FROM biblio b
 		,biblio_copy bc
@@ -21,6 +18,5 @@ WHERE (bc.bibid = b.bibid)
 	AND (bcf.copyid = bc.copyId) AND (bcf.code = 'pr') and IFNULL(bcf.data,0) 
 	AND (cd.code = b.collection_cd)
 	AND (mtd.code = b.material_cd)
-	GROUP BY cd.description, mtd.description
 ;
 .end sql
