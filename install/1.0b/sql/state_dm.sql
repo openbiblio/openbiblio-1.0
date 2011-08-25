@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2011 at 05:50 PM
+-- Generation Time: Aug 25, 2011 at 04:43 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -27,7 +27,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 CREATE TABLE IF NOT EXISTS `state_dm` (
   `code` varchar(20) NOT NULL,
-  `description` varchar(20) NOT NULL,
+  `description` varchar(32) NOT NULL,
   `default_flg` char(1) NOT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
