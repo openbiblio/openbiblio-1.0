@@ -169,9 +169,9 @@ mtl = {
 						 +   data[n]['tag']+' - '+data[n]['description']
 						 +  '</option>\n';
 			}
-			if (mtl.blockNmbr == '0') {
-				html += '<option value="99">99 - Special locals</option>\n';
-			}
+			//if (mtl.blockNmbr == '0') {
+			//	html += '<option value="99">99 - Special locals</option>\n';
+			//}
 			$('#marcTags').html(html).show();
 		});
 	},
@@ -179,9 +179,9 @@ mtl = {
 	  mtl.tagNmbr = $('#marcTags').val();
 	  $.getJSON(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
 			var html = '';
-			if (data.length == 0) {
-				html = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
-			} else {
+//			if (data.length == 0) {
+				//html = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
+//			} else {
 				for (n in data) {
 				  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
 					html += '<li id="'+'zqzqz'+id+'" '
@@ -191,7 +191,7 @@ mtl = {
 							 +	id+' - '+data[n]['description']
 							 +	"</li>\n";
 				}
-			}
+//			}
 			$('#potential').html(html);
 		});
 	},
@@ -260,8 +260,8 @@ mtl = {
 				$('#msgArea').html(html);
 				$('#msgDiv').show();
 				//$('<li id="waitClass"><?php echo T("waitForServer");?></li>').appendTo('#existing');
-				html2 = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
-				$('#existing').html(html2);
+				//html2 = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
+				//$('#existing').html(html2);
 			}
 			else if (data.length > 0) {
 				for (n in data) {

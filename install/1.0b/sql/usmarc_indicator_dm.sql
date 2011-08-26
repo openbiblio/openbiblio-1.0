@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2011 at 05:52 PM
+-- Generation Time: Aug 26, 2011 at 08:28 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -186,6 +186,7 @@ INSERT INTO `usmarc_indicator_dm` (`tag`, `indicator_nmbr`, `indicator_cd`, `des
 (86, 2, '#', 'Undefined'),
 (88, 1, '#', 'Undefined'),
 (88, 2, '#', 'Undefined'),
+(99, 0, '#', 'Local Call Number'),
 (100, 1, '0', 'Forename'),
 (100, 1, '1', 'Surname'),
 (100, 1, '3', 'Family name'),

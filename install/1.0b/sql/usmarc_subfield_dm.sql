@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2011 at 05:53 PM
+-- Generation Time: Aug 26, 2011 at 08:28 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -255,6 +255,7 @@ INSERT INTO `usmarc_subfield_dm` (`tag`, `subfield_cd`, `description`, `repeatab
 (88, 'z', 'Canceled/invalid report number', 'Y'),
 (88, '6', 'Linkage', 'N'),
 (88, '8', 'Field link and sequence number', 'Y'),
+(99, 'a', 'Call Number', 'N'),
 (100, 'a', 'Personal name - Author', 'N'),
 (100, 'b', 'Numeration', 'N'),
 (100, 'c', 'Titles and other words associated with a name', 'Y'),
@@ -1286,9 +1287,9 @@ INSERT INTO `usmarc_subfield_dm` (`tag`, `subfield_cd`, `description`, `repeatab
 (765, 'a', 'Main entry heading', 'N'),
 (765, 'b', 'Edition', 'N'),
 (765, 'c', 'Qualifying information', 'N'),
-(765, 'd', 'Place, publisher, and date of publication', 'N'),
-(765, 'g', 'Relationship information', 'Y');
+(765, 'd', 'Place, publisher, and date of publication', 'N');
 INSERT INTO `usmarc_subfield_dm` (`tag`, `subfield_cd`, `description`, `repeatable_flg`) VALUES
+(765, 'g', 'Relationship information', 'Y'),
 (765, 'h', 'Physical description', 'N'),
 (765, 'i', 'Display text', 'N'),
 (765, 'k', 'Series data for related item', 'Y'),

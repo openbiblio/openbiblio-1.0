@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 21, 2011 at 05:53 PM
+-- Generation Time: Aug 26, 2011 at 08:29 PM
 -- Server version: 5.5.8
 -- PHP Version: 5.3.5
 
@@ -84,6 +84,7 @@ INSERT INTO `usmarc_tag_dm` (`block_nmbr`, `tag`, `description`, `ind1_descripti
 (0, 84, 'Other classification number', 'Undefined', 'Undefined', 'Y'),
 (0, 86, 'Government document classification number', 'Number source', 'Undefined', 'Y'),
 (0, 88, 'Report number', 'Undefined', 'Undefined', 'Y'),
+(0, 99, 'Call Number', 'undefined', 'undefined', 'N'),
 (1, 100, 'Main entry--personal name', 'Type of personal name entry element', 'Undefined', 'N'),
 (1, 110, 'Main entry--corporate name', 'Type of corporate name entry element', 'Undefined', 'N'),
 (1, 111, 'Main entry--meeting name', 'Type of meeting name entry element', 'Undefined', 'N'),
