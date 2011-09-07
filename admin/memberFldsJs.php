@@ -118,7 +118,7 @@ mbf = {
 	},
 	
 	doAddFields: function () {
-		$('#mode').val('addNewFields');
+		$('#mode').val('addNewMbrFld');
 		var parms = $('#editForm').serialize();
 		//console.log('adding: '+parms);
 		$.post(mbf.url, parms, function(response) {
@@ -139,7 +139,7 @@ mbf = {
 	doUpdateFields: function () {
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
-		$('#mode').val('updateFields');
+		$('#mode').val('updateMbrFld');
 		var parms = $('#editForm').serialize();
 		//console.log('updating: '+parms);
 		$.post(mbf.url, parms, function(response) {
@@ -160,7 +160,7 @@ mbf = {
 	doDeleteFields: function (e) {
 		var msg = mbf.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
 	  if (confirm(msg)) {
-	  	var parms = {	'cat':'mbrFlds', 'mode':'d-3-L-3-tFields', 'code':$('#code').val(), 'description':$('#description').val() };
+	  	var parms = {	'cat':'mbrFlds', 'mode':'d-3-L-3-tMbrFld', 'code':$('#code').val(), 'description':$('#description').val() };
 	  	$.post(mbf.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);
