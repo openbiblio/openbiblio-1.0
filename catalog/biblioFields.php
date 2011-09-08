@@ -80,7 +80,8 @@
 			}
 			echo "</td> \n";
 		}
-
+		
+		### ============== main code body starts here ==============
 		# fetch a complete set of all material types
 		$matTypes = new MediaTypes;
 		# determine which is to be 'selected'
@@ -94,7 +95,6 @@
  				
 		// get field specs for this material type in 'display postition' order
 		$mf = new MaterialFields;
-//		$fields = $mf->getMatches(array('material_cd'=>$_REQUEST[matlCd]), 'position');
 		$fields = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
 
 		## anything to process for current media type (material_cd) ?
