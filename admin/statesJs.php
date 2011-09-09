@@ -23,10 +23,8 @@ st = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,st.doNewState);
-		$('#addBtn').bind('click',null,st.doAddState);
-		$('#updtBtn').bind('click',null,st.doUpdateState);
+		$('#editForm').bind('submit',null,st.doSubmits);
 		$('#cnclBtn').bind('click',null,st.resetForms);
-		$('#deltBtn').bind('click',null,st.doDeleteState);
 
 		st.fetchStates();
 		st.resetForms()
@@ -123,6 +121,17 @@ st = {
 		return false;
 	},
 	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	st.doAddState();	break;
+			case 'updtBtn':	st.doUpdateState();	break;
+			case 'deltBtn':	st.doDeleteState();	break;
+		}
+	},
+	
 	doAddState: function () {
 		$('#mode').val('addNewState');
 		var parms = $('#editForm').serialize();
@@ -147,7 +156,7 @@ st = {
 		$('#msgDiv').hide();
 		$('#mode').val('updateState');
 		var parms = $('#editForm').serialize();
-console.log('updating: '+parms);
+		//console.log('updating: '+parms);
 		$.post(st.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);

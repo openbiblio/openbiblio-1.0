@@ -23,10 +23,10 @@ mbf = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,mbf.doNewFields);
-		$('#addBtn').bind('click',null,mbf.doAddFields);
-		$('#updtBtn').bind('click',null,mbf.doUpdateFields);
+		$('#editForm').bind('submit',null,mbf.doSubmits);
+		//$('#updtBtn').bind('click',null,mbf.doUpdateFields);
 		$('#cnclBtn').bind('click',null,mbf.resetForms);
-		$('#deltBtn').bind('click',null,mbf.doDeleteFields);
+		//$('#deltBtn').bind('click',null,mbf.doDeleteFields);
 
 		mbf.resetForms()
 	  $('#msgDiv').hide();
@@ -102,7 +102,7 @@ mbf = {
 		$('#editDiv').show();
 	},
 	
-	doNewFields: function (e) {
+	doNewFields: function () {
 	  document.forms['editForm'].reset();
 	  $('#fieldsHdr').html(mbf.newHdr);
 		$('#code').attr('readonly',false)
@@ -115,6 +115,17 @@ mbf = {
 		$('#editDiv').show();
 	  document.getElementById('code').focus();
 		return false;
+	},
+	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	mbf.doAddFields();	break;
+			case 'updtBtn':	mbf.doUpdateFields();	break;
+			case 'deltBtn':	mbf.doDeleteFields();	break;
+		}
 	},
 	
 	doAddFields: function () {

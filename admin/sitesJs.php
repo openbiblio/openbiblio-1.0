@@ -23,10 +23,8 @@ sit = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,sit.doNewSite);
-		$('#addBtn').bind('click',null,sit.doAddSite);
-		$('#updtBtn').bind('click',null,sit.doUpdateSite);
+		$('#editForm').bind('submit',null,sit.doSubmits);
 		$('#cnclBtn').bind('click',null,sit.resetForms);
-		$('#deltBtn').bind('click',null,sit.doDeleteSite);
 
 		sit.resetForms()
 	  $('#msgDiv').hide();
@@ -157,6 +155,17 @@ sit = {
 		$('#editDiv').show();
 	  document.getElementById('name').focus();
 		return false;
+	},
+	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	sit.doAddSite();	break;
+			case 'updtBtn':	sit.doUpdateSite();	break;
+			case 'deltBtn':	sit.doDeleteSite();	break;
+		}
 	},
 	
 	doAddSite: function () {

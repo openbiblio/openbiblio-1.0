@@ -117,12 +117,12 @@
   <tfoot>
   <tr>
     <td colspan="1" align="left">
-			<input type="button" id="addBtn" value="Add" />
-			<input type="button" id="updtBtn" value="Update" />
+			<input type="submit" id="addBtn" value="Add" />
+			<input type="submit" id="updtBtn" value="Update" />
 			<input type="button" id="cnclBtn" value="Cancel" />
     </td>
     <td colspan="1" class="primary" align="right">
-			<input type="button" id="deltBtn" value="Delete" />
+			<input type="submit" id="deltBtn" value="Delete" />
     </td>
   </tr>
   </tfoot>

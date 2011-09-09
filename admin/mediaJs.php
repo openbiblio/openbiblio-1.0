@@ -24,10 +24,8 @@ med = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,med.doNewMedia);
-		$('#addBtn').bind('click',null,med.doAddMedia);
-		$('#updtBtn').bind('click',null,med.doUpdateMedia);
+		$('#editForm').bind('submit',null,med.doSubmits);
 		$('#cnclBtn').bind('click',null,med.resetForms);
-		$('#deltBtn').bind('click',null,med.doDeleteMedia);
 
 		med.resetForms()
 	  $('#msgDiv').hide();
@@ -139,6 +137,17 @@ med = {
 		$('#editDiv').show();
 	  document.getElementById('description').focus();
 		return false;
+	},
+	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	med.doAddMedia();	break;
+			case 'updtBtn':	med.doUpdateMedia();	break;
+			case 'deltBtn':	med.doDeleteMedia();	break;
+		}
 	},
 	
 	doAddMedia: function () {

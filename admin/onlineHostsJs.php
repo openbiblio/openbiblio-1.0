@@ -17,10 +17,8 @@ hed = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,hed.doNewHost);
-		$('#hostForm tFoot #addBtn').bind('click',null,hed.doAddHost);
-		$('#hostForm tFoot #updtBtn').bind('click',null,hed.doUpdateHost);
+		$('#hostForm').bind('submit',null,hed.doSubmits);
 		$('#hostForm tFoot #cnclBtn').bind('click',null,hed.resetForms);
-		$('#hostForm tFoot #deltBtn').bind('click',null,hed.doDeleteHost);
 
 		hed.fetchHosts();
 		hed.resetForms()
@@ -103,6 +101,17 @@ hed = {
 	doValidate: function () {
 		//console.log('user input validation not available!!!!, see admin/settings_edit');
 		return true;
+	},
+	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	mbf.doAddHost();	break;
+			case 'updtBtn':	mbf.doUpdateHost();	break;
+			case 'deltBtn':	mbf.doDeleteHost();	break;
+		}
 	},
 	
 	doAddHost: function () {

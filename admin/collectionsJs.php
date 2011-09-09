@@ -23,10 +23,8 @@ col = {
 		$('#updateMsg').hide();
 
 		$('.newBtn').bind('click',null,col.doNewCollection);
-		$('#addBtn').bind('click',null,col.doAddCollection);
-		$('#updtBtn').bind('click',null,col.doUpdateCollection);
+		$('#editForm').bind('submit',null,col.doSubmits);
 		$('#cnclBtn').bind('click',null,col.resetForms);
-		$('#deltBtn').bind('click',null,col.doDeleteCollection);
 	  $('#type').bind('change',null,function () {
 	  	//Collection['type'] = $('#type').val();
 			col.setTypeDisplay();
@@ -203,6 +201,17 @@ col = {
 		$('#editDiv').show();
 	  document.getElementById('description').focus();
 	  return false; // prevent normal 'submit' action'
+	},
+	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	col.doAddCollection();	break;
+			case 'updtBtn':	col.doUpdateCollection();	break;
+			case 'deltBtn':	col.doDeleteCollection();	break;
+		}
 	},
 	
 	doAddCollection: function () {

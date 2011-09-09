@@ -24,11 +24,9 @@ stf = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,stf.doNewStaff);
-		$('#addBtn').bind('click',null,stf.doAddStaff);
-		$('#updtBtn').bind('click',null,stf.doUpdateStaff);
+		$('#editForm').bind('submit',null,stf.doSubmits);
 		$('#cnclBtn').bind('click',null,stf.resetForms);
-		$('#deltBtn').bind('click',null,stf.doDeleteStaff);
-		$('#chgBtn').bind('click',null,stf.doSetStaffPwd);
+		$('#pwdChgForm').bind('submit',null,stf.doSetStaffPwd);
 
 		stf.resetForms()
 	  $('#msgDiv').hide();
@@ -173,6 +171,17 @@ stf = {
 		return false;
 	},
 	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	stf.doAddStaff();	break;
+			case 'updtBtn':	stf.doUpdateStaff();	break;
+			case 'deltBtn':	stf.doDeleteStaff();	break;
+		}
+	},
+	
 	doAddStaff: function () {
 		if (!stf.chkPwds('pwd', 'pwd2')) return false;
 		$('#updateMsg').hide();
@@ -241,6 +250,8 @@ stf = {
 	},
 	
 	doSetStaffPwd: function () {
+		e.preventDefault();
+		e.stopPropagation();
 		if (!stf.chkPwds('pwdA','pwdB')) return false;
 		$('#mode').val('updateStaff');
 	  var parms = {	'cat':'staff',

@@ -23,10 +23,8 @@ bcf = {
 		$('#updateMsg').hide();
 
 		$('#showForm .newBtn').bind('click',null,bcf.doNewFields);
-		$('#addBtn').bind('click',null,bcf.doAddFields);
-		$('#updtBtn').bind('click',null,bcf.doUpdateFields);
+		$('#editForm').bind('submit',null,bcf.doSubmits);
 		$('#cnclBtn').bind('click',null,bcf.resetForms);
-		$('#deltBtn').bind('click',null,bcf.doDeleteFields);
 
 		bcf.resetForms()
 	  $('#msgDiv').hide();
@@ -115,6 +113,17 @@ bcf = {
 		$('#editDiv').show();
 	  document.getElementById('code').focus();
 		return false;
+	},
+	
+	doSubmits: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		switch (theId) {
+			case 'addBtn':	bcf.doAddFields();	break;
+			case 'updtBtn':	bcf.doUpdateFields();	break;
+			case 'deltBtn':	bcf.doDeleteFields();	break;
+		}
 	},
 	
 	doAddFields: function () {
