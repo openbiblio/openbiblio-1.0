@@ -78,12 +78,12 @@ hed = {
 	doNewHost: function (e) {
 		//console.log('newHost');
 	  $('#hostHdr').html(hed.newHdr);
+	  document.forms['editForm'].reset();
+	  $('#hostForm tfoot #deltBtn').hide();
 	  $('#hostForm tfoot #updtBtn').hide();
 	  $('#hostForm tfoot #addBtn').show();
 	  $('#hostForm tbody #name').focus();
-	  $('#hostForm #id').val('');
-	  document.forms['editForm'].reset();
-	  
+		$('#hostForm #id').val('');
 		$('#listDiv').hide();
 		$('#editDiv').show();
 	},
@@ -98,28 +98,22 @@ hed = {
 		}
 	},
 	
-	doValidate: function () {
-		//console.log('user input validation not available!!!!, see admin/settings_edit');
-		return true;
-	},
-	
 	doSubmits: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
-		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+		var theId = $("#hostForm").find('input[type="submit"]:focus').attr('id');
 		switch (theId) {
-			case 'addBtn':	mbf.doAddHost();	break;
-			case 'updtBtn':	mbf.doUpdateHost();	break;
-			case 'deltBtn':	mbf.doDeleteHost();	break;
+			case 'addBtn':	hed.doAddHost();	break;
+			case 'updtBtn':	hed.doUpdateHost();	break;
+			case 'deltBtn':	hed.doDeleteHost();	break;
 		}
+console.log('you clicked the '+theId);		
 	},
 	
 	doAddHost: function () {
-	  if (!hed.doValidate()) return;
-
 		$('#mode').val('addNewHost');
 		var parms = $('#hostForm').serialize();
-		//console.log(parms);
+console.log(parms);
 		$.post(hed.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				console.log('rcvd error msg from server :<br />'+response);
@@ -133,8 +127,6 @@ hed = {
 	},
 
 	doUpdateHost: function () {
-	  if (!hed.doValidate()) return;
-
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
 		$('#mode').val('updateHost');
