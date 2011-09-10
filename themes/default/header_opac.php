@@ -12,15 +12,15 @@
 		<h3 class="staff_head">
 				<?php
 				if (Settings::get('library_image_url') != "") {
-					echo '<img id="logo"'.' src="'.H(Settings::get("library_image_url")).'" border="0" /><br />';
+					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" border="0" /><br />';
 				}
 				?>
 				<!-- Libname is defined in header_top.php -->	
 				<?php echo "$libName:<br />".T("OPAC Interface"); ?>
 		</h3>
-		<div id="library_hours"><?php echo T(Settings::get('library_hours')) ?></div>
+		<div id="library_hours"><?php echo Settings::get('library_hours') ?></div>
 		<hr style="width:25%">
-		<div id="library_phone"><?php echo H(Settings::get('library_phone')) ?></div>
+		<div id="library_phone"><?php echo Settings::get('library_phone') ?></div>
 	</header>
 	<hr />
 	

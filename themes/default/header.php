@@ -17,19 +17,19 @@
 	<header class="notForInstall">
 		<h3 class="staff_head">
 			<?php 
-if (!isset($doing_install) or !$doing_install) {
-		if (Settings::get('library_image_url') != "") {
-			echo '<img id="logo"'.' src="'.H(Settings::get("library_image_url")).'" border="0" /><br />';
-		}
+			if (!isset($doing_install) or !$doing_install) {
+				if (Settings::get('library_image_url') != "") {
+					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" border="0" /><br />';
+				}
 				// Libname is defined in header_top.php	
 				echo $libName . ":<br />" . T("Staff Interface");
 				if (Settings::get('show_lib_info') == 'Y') {
 					echo "<hr style=\"width:25%\" \n";
-					echo "<div id=\"library_hours\">". T(Settings::get('library_hours')) . "</div> \n";
+					echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
 					echo "<hr style=\"width:25%\"> \n";
-					echo "<div id=\"library_phone\">". H(Settings::get('library_phone')) ."</div> \n";
+					echo "<div id=\"library_phone\">". Settings::get('library_phone') ."</div> \n";
 				}
-}
+			}
 			?>
 		</h3>
 		<br />
