@@ -5,7 +5,7 @@ ie = {
 	init: function () {
 		ie.itemSubmitBtn = $('#itemSubmitBtn');
 	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');
-	  $('tbody#marcBody input.reqd').bind('change',null,ie.validate);
+	  //$('tbody#marcBody input.reqd').bind('change',null,ie.validate);
 	},
 
 	disableItemSubmitBtn: function () {
@@ -16,7 +16,7 @@ ie = {
 	  ie.itemSubmitBtn.css('color', ie.itemSubmitBtnClr);
 		ie.itemSubmitBtn.enable();
 	},
-
+/*
 	validate: function () {
 		// verify all 'required' fields are populated
 		var errs = 0;
@@ -40,6 +40,7 @@ ie = {
 		  return true;
 		}
 	}
+*/
 };
 // this package normally initialized by parent such as .../catalog/new_itemJs.php
 // only initialize here if used in standalone fasion

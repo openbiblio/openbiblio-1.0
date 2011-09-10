@@ -21,7 +21,7 @@ ni = {
 		ni.srchBtn = $('#srchBtn');
 		ni.resetForm();
 
-		// search form functions
+		// New On-Line Entry Item - search form functions
     $('.criteria').bind('change',null,ni.enableSrchBtn);
     $('#manualBtn').bind('click',null, function() {
 			ni.doClearItemForm();
@@ -34,22 +34,30 @@ ni = {
 		$('#retryBtn').bind('click',null,ni.doBackToSrch);
 		$('#choiceBtn1').bind('click',null,ni.doBackToSrch);
 		$('#choiceBtn2').bind('click',null,ni.doBackToSrch);
-		$('#lookupForm').bind('submit',null,function(){
-			ni.doValidate();
-			return false;
+		$('#lookupForm').bind('submit',null,function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			ni.doValidate_n_Srch();
+			return;
 		});
 
+		// New Manual Entry Item
 		// modify original biblioFields form to better suit our needs
 		$('#biblioDiv .itemGobkBtn').bind('click',null,ni.doBackToSrch);
-		$('#newbiblioform #itemSubmitBtn').bind('click',null,function(){
+		$('#newBiblioForm').bind('submit',null,function(e){
+			e.preventDefault();
+			e.stopPropagation();
 			ni.doInsertNew();
 			return false;
 		});
 
 		// for the copy editor functions
 		// to handle startup condition
-		$('#copySubmitBtn').bind('click',null,function () {
-			return ni.doCopyNew();
+		$('#copyForm').bind('submit',null,function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			ni.doCopyNew();
+			return false;
 		});
 		$('#copyCancelBtn').bind('click',null,function () {
 			return ni.doBackToSrch();
@@ -69,9 +77,9 @@ ni = {
 		});
 
 		// FIXME - fl only '*' should be colored
-		$('#selectionDiv font').css('color','red');
-		$('#selectionDiv sup').css('color','red');
-		ni.inputColor = $('#99').css('color');
+		//$('#selectionDiv font').css('color','red');
+		//$('#selectionDiv sup').css('color','red');
+		//ni.inputColor = $('#99').css('color');
 		$('#100a').bind('change',null,ni.fixAuthor);
 		$('#245a').bind('change',null,ni.fixTitle);
 
@@ -85,7 +93,7 @@ ni = {
 	
 	//------------------------------
 	initWidgets: function () {
-		if(ie) ie.init();
+//		if(ie) ie.init();
 	},
 	
 	resetForm: function () {
@@ -95,6 +103,7 @@ ni = {
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
+		$('#msgDiv').hide();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
@@ -180,16 +189,17 @@ ni = {
 	//------------------------------------------------------------------------------------------
 	// manual 'new biblio' related stuff
 	doInsertNew: function () {
-		// verify all 'required' fields are populated using biblio_fields JS code
-		if (!ie.validate()) return false;
-
-	 	var parms=$('#newbiblioform').serialize();
+	 	var parms=$('#newBiblioForm').serialize();
 		parms += '&mode=doInsertBiblio';
-	  $.post(ni.url,parms, function(jsonInpt){
-	    var rslt = $.parseJSON(jsonInpt);
-	    ni.bibid = rslt.bibid;
-	  	ni.showCopyEditor();
-	  	return false;
+	  $.post(ni.url,parms, function(response){
+	  	if (response.substr(1) == '<') {
+				$('#msgDiv').html(response).show();
+			}
+			else {
+	    	var rslt = $.parseJSON(response);
+	    	ni.bibid = rslt.bibid;
+	  		ni.showCopyEditor();
+	  	}
 		});
 		return false;
 	},
@@ -215,8 +225,6 @@ ni = {
 	},
 
 	doCopyNew: function () {
-		//$('#copyForm input[name=bibid]').val(ni.bibid);
-		//$('#copyForm input[name=mode]').val('newCopy');
 		var params= $('#copyForm').serialize()+ "&mode=newCopy&bibid="+ni.bibid;
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
@@ -283,7 +291,7 @@ ni = {
 		return rslt;
 	},
 	
-	doValidate: function () {
+	doValidate_n_Srch: function () {
 		var nType = $('#srchBy').val();
 	  var val = $('#lookupVal').val();
 	  var rslt = true;
@@ -399,7 +407,6 @@ ni = {
 					var nHits = 0;
 					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
-					  //$('#choiceSpace').append('<hr width="50%">');
 					  if (typeof(hostData) != undefined) {
 					  $('#choiceSpace').append('<h4>Repository: '+ni.hostJSON[hostIndex].name+'</h4>');
 					  $.each(hostData, function(hitIndex,hitData) {
@@ -442,7 +449,6 @@ ni = {
 					ni.crntData = data;
 					ni.doClearItemForm();
 					ni.doMakeItemForm();
-					//ni.doShowOne(ni.crntData);
 				}
 			} // else
 		}); // .post
@@ -455,7 +461,6 @@ ni = {
 		ni.crntData = data;
 		ni.doClearItemForm();
 		ni.doMakeItemForm();
-		//ni.doShowOne(ni.crntData);
 	},
 
 	doStriping: function () {
@@ -471,30 +476,23 @@ ni = {
 			$('#marcBody').html(response);
 			$('#selectionDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
-			//ni.doClearItemForm();
 			$('#opacFlg').val(['CHECKED','Y']);
-			ie.init();
+			//ie.init();
 			ni.doShowOne(ni.crntData);
 		});
 		$('.itemGobkBtn').bind('click',null,ni.doBackToChoice);
-//		ni.doShowOne(ni.crntData);
 	},
 	
 	doClearItemForm: function () {
 		// assure all marc fields are empty & visible at start
-		$('#newbiblioform').each(function(){
+		$('#newBiblioForm').each(function(){
 	        this.reset();
 		});
-		
-    //$(".marcBiblioFld").each(function(){
-		//	$(this).parent().parent().val('').show();
-		//});
 	},
 	
 	doShowOne: function (data){
 	  // display biblio item data in form
 	  $('#searchDiv').hide();
-	  //ni.doClearItemForm();
 		for (var tag in data) {
 			if (data[tag] != '') {
 				$('#'+tag).val(data[tag]);
@@ -505,7 +503,7 @@ ni = {
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
 		}
-	  //ie.validate(); // in case a reqd field's data is missing - replaced by html5
+	  $('#selectionDiv input.online').disable();
 	  $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();

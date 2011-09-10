@@ -33,7 +33,7 @@
 				'form_type' => $f['form_type'],
 				'repeat' => $f['repeatable']);
 		}
-		function mkFldSet($n, $i, $marcInputFld, $mode) {
+		function mkFldSet($n, $i, $marcInputFld, $mode, $label) {
 		  if ($mode == 'onlnCol') {
 				echo "	<td valign=\"top\" class=\"filterable\"> \n";
 				$namePrefix = "onln_$n";
@@ -67,7 +67,8 @@
 			$attrs["class"] = $attrStr;
 
 			if ($i['form_type'] == 'text') {
-			  $attrs["size"] = "50"; $attrs["maxLength"] = "75";
+			  $attrs["size"] = "50"; $attrs["maxLength"] = "75"; 
+				if (!empty($label)) $attrs["title"] = $label;
 				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
 			} else {
 				// IE seems to make the font-size of a textarea overly small under

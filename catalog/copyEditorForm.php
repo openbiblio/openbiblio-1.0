@@ -18,7 +18,7 @@
 	<tr>
 		<td><label for="barcode_nmbr"><?php echo T('Barcode Number'); ?></label></td>
 		<td>
-			<input id="barcode_nmbr" name="barcode_nmbr" type="number" size="20" required aria-required="true" />
+			<input id="barcode_nmbr" name="barcode_nmbr" type="number" size="20" pattern="[0]{10}" title="zero-filled barcode" required aria-required="true" />
 			<span class="reqd">*</span>
 		</td>
 	</tr>
@@ -69,19 +69,22 @@ if($_SESSION['multi_site_func'] > 0){
 		}					
 	?>
 	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="hidden"  name="bibid" value="" />
+			<input type="hidden"  name="mode" value="" />
+		</td>
+	</tr>
 	</tbody>
 	
 	<tfoot>
 	<tr>
 		<td align="center" colspan="2">
-			<!--input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" -->
-			<input type="button" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" />
+			<input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" />
 			<input type="button" id="copyCancelBtn" value="<?php echo T("Cancel"); ?>" />
 		</td>
 	</tr>
 	</tfoot>
 </table>
-	<input type="hidden"  name="bibid" value="" />
-	<input type="hidden"  name="mode" value="" />
 </fieldset>
 </form>

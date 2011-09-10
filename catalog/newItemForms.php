@@ -200,15 +200,12 @@ th.colHead { white-space: nowrap; }
 	</div>
 
 	<!-- =================================================== -->
-	<div id="divTest">
-		<form id="frmTest">
-		</form>
+	<div id="divMsg">
 	</div>
 
 	<!-- =================================================== -->
 	<div id="selectionDiv">
-  	<!-- submit action handled by javascript code -->
-   	<form id="newbiblioform" name="newbiblioform" >
+   	<form id="newBiblioForm" name="newbiblioform" >
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
 			<input type="button" class="itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
 			<?php
@@ -229,7 +226,7 @@ th.colHead { white-space: nowrap; }
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
-	require_once(REL(__FILE__, "../catalog/itemEditorJs.php"));
+	//require_once(REL(__FILE__, "../catalog/itemEditorJs.php"));
 
 	require_once(REL(__FILE__, "newItemJs.php"));
 ?>	
