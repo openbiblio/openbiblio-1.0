@@ -85,7 +85,7 @@
   <tr>
     <td><label for="seq"><?php echo T("Sequence"); ?>:</label></td>
     <td>
-      <input id="seq" name="seq" type="number" size="3" pattern="[0..9]{2}" required aria-required="true" />
+      <input id="seq" name="seq" type="number" size="3" pattern="[0-9]{1,2}" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>
