@@ -9,7 +9,9 @@
 // newItem Javascript
 ni = {
 	<?php
+	echo "empty: '".T("Nothing Found")."',\n";
 	?>
+	
 	init: function () {
 		// get header stuff going first
 		ni.initWidgets();
@@ -409,23 +411,28 @@ ni = {
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  if (typeof(hostData) != undefined) {
 					  $('#choiceSpace').append('<h4>Repository: '+ni.hostJSON[hostIndex].name+'</h4>');
-					  $.each(hostData, function(hitIndex,hitData) {
-					    nHits++;
-					    html  = '<fieldset>';
-					    html += '<form class="hitForm"><table border="0">';
-					    html += '<tr><td>LCCN</th><td>'+hitData['010a']+'</td></tr>';
-					    html += '<tr><td>ISBN</th><td>'+hitData['020a']+'</td></tr>';
-					    html += '<tr><td>Title</th><td>'+hitData['245a']+'</td></tr>';
-					    html += '<tr><td>Author</th><td>'+hitData['100a']+'</td></tr>';
-					    html += '<tr><td>Publisher</th><td>'+hitData['260b']+'</td></tr>';
-					    html += '<tr><td>Location</th><td>'+hitData['260a']+'</td></tr>';
-					    html += '<tr><td>Date</th><td>'+hitData['260c']+'</td>';
-							var id = 'host'+hostIndex+'-hit'+hitIndex;
-					    html += '<td id="'+id+'"><input type="button" value="This One" /></td></tr>';
-							html += '</table></form></fieldset>';
-							$('#choiceSpace').append(html);
-							$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
-						}); // $.each(hostData...
+					  if (hostData.length == 0) {
+						  $('#choiceSpace').append('<fieldset>' + ni.empty + '</fieldset>');
+						}
+						else {
+						  $.each(hostData, function(hitIndex,hitData) {
+						    nHits++;
+						    html  = '<fieldset>';
+						    html += '<form class="hitForm"><table border="0">';
+						    html += '<tr><td>LCCN</th><td>'+hitData['010a']+'</td></tr>';
+						    html += '<tr><td>ISBN</th><td>'+hitData['020a']+'</td></tr>';
+						    html += '<tr><td>Title</th><td>'+hitData['245a']+'</td></tr>';
+						    html += '<tr><td>Author</th><td>'+hitData['100a']+'</td></tr>';
+						    html += '<tr><td>Publisher</th><td>'+hitData['260b']+'</td></tr>';
+						    html += '<tr><td>Location</th><td>'+hitData['260a']+'</td></tr>';
+						    html += '<tr><td>Date</th><td>'+hitData['260c']+'</td>';
+								var id = 'host'+hostIndex+'-hit'+hitIndex;
+						    html += '<td id="'+id+'"><input type="button" value="This One" /></td></tr>';
+								html += '</table></form></fieldset>';
+								$('#choiceSpace').append(html);
+								$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
+							}); // $.each(hostData...
+						}
 						} // if (ni.hostJason[hostIndex])
 					}); // $.each(rslts.data...
 
