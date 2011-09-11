@@ -106,7 +106,10 @@
 			list($num_records, $marc[$i]) = get_marc_fields($hostRecords[$i]);
 			$msg = $marc[$i][0]['diagMsg'];
 			if (($num_Records == 0) && (!empty($msg))) {
-				echo "Host Diagnostic Response: $msg";
+				echo "Host Diagnostic Response: $msg<br />\n";
+				echo "----<br />Details...<br />\n";
+				echo $qry."<br />\n";
+				print_r($resp);echo "<br />\n";
 				exit;
 			}
 			//echo "host #$i marc:<br />";print_r($marc[$i]);echo "<br />---------<br />";
