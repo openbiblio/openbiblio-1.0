@@ -93,7 +93,7 @@
 		</li>
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
-			<input type="hidden" id="cat" name="mode" value="media">
+			<input type="hidden" id="cat" name="cat" value="media">
 			<input type="hidden" id="code" name="code" value="">
 		</li>
 	</ul>
