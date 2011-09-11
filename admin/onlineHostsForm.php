@@ -64,21 +64,21 @@
   <tr>
     <td><label for="name"><?php echo T("Name"); ?>:</label></td>
     <td>
-      <input id="name" name="name" type="text" size="32" required aria-required="true" />
+      <input id="name" name="name" type="text" size="50" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>
   <tr>
     <td><label for="host"><?php echo T("Host URL"); ?>:</label></td>
     <td>
-      <input id="host" name="host" type="text" size="32" required aria-required="true" />
+      <input id="host" name="host" type="text" size="50" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>
   <tr>
     <td><label for="db"><?php echo T("Database"); ?>:</label></td>
     <td>
-      <input id="db" name="db" type="text" size="16" required aria-required="true" />
+      <input id="db" name="db" type="text" size="20" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>
@@ -98,13 +98,13 @@
   <tr>
     <td><label for="user"><?php echo T("Userid"); ?>:</label></td>
     <td>
-      <input id="user" name="user" type="text" size="10" />
+      <input id="user" name="user" type="text" size="20" />
     </td>
   </tr>
   <tr>
     <td><label for="pw"><?php echo T("Password"); ?>:</label></td>
     <td class="primary inptFld">
-      <input id="pw" name="pw" type="text" size="10" />
+      <input id="pw" name="pw" type="text" size="20" />
     </td>
   </tr>
   <tr>
