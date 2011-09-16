@@ -147,7 +147,6 @@ function staff_menu() {
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
-		Nav::node('tools/system', T("Test Required"), '../tools/reqTest.php');
 	}
 	
 	##-------------------------------------------------------------------------------------##

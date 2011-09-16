@@ -65,7 +65,7 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- All other JavaScript is placed at the end of <body> (see footer.php) 
 		 to match industry best practices and to improve overall performance -->
 
-<link rel="stylesheet" href="../shared/base.css" />
+<link rel="stylesheet" href="../shared/base2.css" />
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
 	<?php

@@ -33,7 +33,7 @@
 				'form_type' => $f['form_type'],
 				'repeat' => $f['repeatable']);
 		}
-		function mkFldSet($n, $i, $marcInputFld, $mode, $label) {
+		function mkFldSet($n, $i, $marcInputFld, $mode) {
 		  if ($mode == 'onlnCol') {
 				echo "	<td valign=\"top\" class=\"filterable\"> \n";
 				$namePrefix = "onln_$n";
@@ -52,8 +52,8 @@
 
 			$attrs = array("id"=>"$marcInputFld");
 			$attrStr = "marcBiblioFld";
-			if ($i['required']) {
-			  //$attrStr .= " reqd"; // redundant, no longer used - FL Aug 2011
+			if ( $i['required'] && ($mode != 'onlncol') ) {
+				// 'required' does not apply to online data fields
 				$attrs['required'] = 'required';
 			}
 			if ($i['repeat'])
@@ -68,7 +68,6 @@
 
 			if ($i['form_type'] == 'text') {
 			  $attrs["size"] = "50"; $attrs["maxLength"] = "75"; 
-				if (!empty($label)) $attrs["title"] = $label;
 				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
 			} else {
 				// IE seems to make the font-size of a textarea overly small under

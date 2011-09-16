@@ -522,7 +522,6 @@ bs = {
 
 	  var txt = '';
 		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
-		  //var tmp = eval('('+fldData+')');
 		  var tmp = JSON.parse(fldData);
 		  txt += "<tr>\n";
 			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
@@ -867,7 +866,7 @@ bs = {
 	},
 	doItemUpdate: function () {
 	  // verify all required fields are present
-	  if (!ie.validate()) return false;
+	  //if (!ie.validate()) return false;
 	  
 		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
