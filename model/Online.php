@@ -41,8 +41,11 @@ class Hosts extends DBTable {
 			'seq'=>'number',
 			'active'=>'string',
 			'host'=>'string',
+			'port'=>'number',
 			'name'=>'string',
 			'db'=>'string',
+			'service'=>'string',
+			'syntax'=>'string',
 			'user'=>'string',
 			'pw'=>'string'
 		));

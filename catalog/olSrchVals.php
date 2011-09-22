@@ -15,8 +15,8 @@
 	$srchBy5 =		$_REQUEST[srchBy5];
 	$lookupVal5 =	$_REQUEST[lookupVal5];
 
-//	$sruSchema = 'dc'; // ContextSet = Dublin Core
-	$sruSchema = 'bath'; // ContextSet = Bath
+	$sruIndexTerm = 'dc'; // ContextSet = Dublin Core
+//	$sruIndexTerm = 'bath'; // ContextSet = Bath
 
 		//echo 'original Query specification is: ' . htmlspecialchars("#$srchBy => $lookupVal") . '<br />';
 		//echo 'srchBy: ' . $srchBy . ', srchBy2: ' . $srchBy2 . '<br />';
@@ -24,13 +24,13 @@
 		switch($srchBy) {
 		case "4":
 			$srchByName = 'Title';
-			$sruQry = "$sruSchema.title=";
+			$sruQry = "$sruIndexTerm.title=";
 			$lookupVal = '"' . $lookupVal . '"';
 			break;
 
 		case "7":
 			$srchByName = 'ISBN';
-			$sruQry = "$sruSchema.isbn=";
+			$sruQry = "$sruIndexTerm.isbn%3d";
 			//echo "input ISBN=$lookupVal <br />";
 			$lookupVal = verifyISBN($lookupVal,$keepIsbnDashes);
 			//echo 'final isbn: ' . $lookupVal . '<br />';
@@ -38,13 +38,13 @@
 
 		case "8":
 			$srchByName = 'ISSN';
-			$sruQry = "$sruSchema.issn=";
+			$sruQry = "$sruIndexTerm.issn=";
 			//protocol requires that '-' be included in ISSN searches
 			break;
 
 		case "9":
 			$srchByName = 'LCCN';
-			$sruQry = "$sruSchema.lccn=";
+			$sruQry = "$sruIndexTerm.lccn=";
 			//echo "input lccn=$lookupVal <br />";
 			$lookupVal = verifyLCCN($lookupVal);
 			//echo 'final lccn: ' . $lookupVal . '<br />';
@@ -52,7 +52,7 @@
 
 		case "1016":
 			$srchByName = 'Keyword';
-			$sruQry = "$sruSchema.subject=";
+			$sruQry = "$sruIndexTerm.subject=";
 			$lookupVal = '"' . $lookupVal . '"';
   		break;
   		
@@ -68,10 +68,10 @@
 		if (!empty($lookupVal2)) {
 			if ($srchBy2 == "1004") {
 				$srchByName2 = 'Author';
-				$sruQry2 = "$sruSchema.author=";
+				$sruQry2 = "$sruIndexTerm.author=";
 			}	else if ($srchBy2 == "1016") {
 				$srchByName2 = 'Keyword';
-				$sruQry2 = "$sruSchema.subject=";
+				$sruQry2 = "$sruIndexTerm.subject=";
   		}
 			$lookupVal2 = '"' . $lookupVal2 . '"';
 		}
@@ -80,16 +80,16 @@
 		if (!empty($lookupVal3)) {
 			if ($srchBy3 == "1018") {
 				$srchByName3 = 'Publisher';
-				$sruQry3 = "$sruSchema.publisher=";
+				$sruQry3 = "$sruIndexTerm.publisher=";
 			}	else if ($srchBy3 == "59") {
 				$srchByName3 = 'Pub Loc';
-				$sruQry3 = "$sruSchema.geographicName=";
+				$sruQry3 = "$sruIndexTerm.geographicName=";
 			}	else if ($srchBy3 == "31") {
 				$srchByName3 = 'Pub Date';
 				$sruQry3 = "dc.date=";
 			}	else if ($srchBy3 == "1016") {
 				$srchByName3 = 'Keyword';
-				$sruQry3 = "$sruSchema.subject=";
+				$sruQry3 = "$sruIndexTerm.subject=";
 			}
 			$lookupVal3 = '"' . $lookupVal3 . '"';
 		}
@@ -98,16 +98,16 @@
 		if (!empty($lookupVal4)) {
 			if ($srchBy4 == "1018") {
 				$srchByName4 = 'Publisher';
-				$sruQry4 = "$sruSchema.publisher=";
+				$sruQry4 = "$sruIndexTerm.publisher=";
 			}	else if ($srchBy4 == "59") {
 				$srchByName4 = 'Pub Loc';
-				$sruQry4 = "$sruSchema.geographicName=";
+				$sruQry4 = "$sruIndexTerm.geographicName=";
 			}	else if ($srchBy4 == "31") {
 				$srchByName4 = 'Pub Date';
 				$sruQry4 = "dc.date=";
 			}	else if ($srchBy4 == "1016") {
 				$srchByName4 = 'Keyword';
-				$sruQry4 = "$sruSchema.subject=";
+				$sruQry4 = "$sruIndexTerm.subject=";
 			}
 			$lookupVal4 = '"' . $lookupVal4 . '"';
 		}
@@ -116,16 +116,16 @@
 		if (!empty($lookupVal5)) {
 			if ($srchBy5 == "1018") {
 				$srchByName5 = 'Publisher';
-				$sruQry5 = "$sruSchema.publisher=";
+				$sruQry5 = "$sruIndexTerm.publisher=";
 			}	else if ($srchBy5 == "59") {
 				$srchByName5 = 'Pub Loc';
-				$sruQry5 = "$sruSchema.geographicName=";
+				$sruQry5 = "$sruIndexTerm.geographicName=";
 			}	else if ($srchBy5 == "31") {
 				$srchByName5 = 'Pub Date';
 				$sruQry5 = "dc.date=";
 			}	else if ($srchBy5 == "1016") {
 				$srchByName5 = 'Keyword';
-				$sruQry5 = "$sruSchema.subject=";
+				$sruQry5 = "$sruIndexTerm.subject=";
 			}
 			$lookupVal5 = '"' . $lookupVal5 . '"';
 		}

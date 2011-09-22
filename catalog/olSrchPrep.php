@@ -6,25 +6,20 @@
 		# prepare user search criteria
 		require_once(REL(__FILE__, 'olSrchVals.php'));
 		
+		# perform the search
 		$numHosts = $postVars[numHosts];
 		//print("will be trying $numHosts host(s)<br />");
 
-	  if ($postVars[protocol] == 'YAZ') {
-			//print("using YAZ protocol<br />");
+//	  if ($postVars[protocol] == 'YAZ') {
+//			//print("using YAZ protocol<br />");
 			require_once (REL(__FILE__, 'olYazSrch.php'));
-		} else if ($postVars[protocol] == 'SRU') {
-			//print("using SRU protocol<br />");
-			require_once (REL(__FILE__, 'olSruSrch.php'));
-		} else {
-			echo "Invalid protocol specified.<br />";
-		}
-/*
-		##=========================
-		## following patch from Christoph Lange of Germany
-		##=========================
-		//	if ($srchBy == "7") $ttlHits = 1;	// searched by ISBN
-		##=========================
-*/
+//		} else if ($postVars[protocol] == 'SRU') {
+//			//print("using SRU protocol<br />");
+//			require_once (REL(__FILE__, 'olSruSrch.php'));
+//		} else {
+//			echo "Invalid protocol specified.<br />";
+//		}
+
 		$initialCond = false;
 
 		//echo "ttl hits= $ttlHits<br />";
@@ -73,12 +68,13 @@
 				//$_POST['postVars'] = $postVars; // for debugging
 				$rslt = array();
 				for ($h=0; $h<$numHosts; $h++) {
-					if ($postVars['protocol'] == 'YAZ') {
+//					if ($postVars['protocol'] == 'YAZ') {
+//						$rslt[$h] = doOneHost($h, $hits, $id); // build an array of host data
 						$rslt[$h] = doOneHost($h, $hits, $id); // build an array of host data
-					}
-					else if ($postVars['protocol'] == 'SRU'){
-					  $rslt[$h] = $marc[$h];
-					}
+//					}
+//					else if ($postVars['protocol'] == 'SRU'){
+//					  $rslt[$h] = $marc[$h];
+//					}
 				}
 				$_POST[data] = $rslt;
 			}

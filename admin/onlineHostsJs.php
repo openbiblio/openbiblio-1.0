@@ -21,6 +21,7 @@ hed = {
 		$('#hostForm tFoot #cnclBtn').bind('click',null,hed.resetForms);
 
 		hed.fetchHosts();
+		hed.fetchServiceList();
 		hed.resetForms()
 	},
 	
@@ -74,6 +75,15 @@ hed = {
 			$('.editBtn').bind('click',null,hed.doEdit);
 		});
 	},
+	fetchServiceList: function () {
+		$.getJSON(hed.url, {'cat':'hosts', 'mode':'getHostSvcs'}, function (data) {
+			var html = '';
+			for (n in data) {
+				html += '<option value="'+data[n]+'">'+data[n]+'</option>\n';
+			}
+			$('#service').html(html);
+		});
+	},
 	
 	doNewHost: function (e) {
 		//console.log('newHost');
@@ -98,6 +108,31 @@ hed = {
 		}
 	},
 	
+	showHost: function (host) {
+		//console.log('showing : '+host['name']);
+	  $('#hostHdr').html(hed.editHdr);
+	  $('#hostForm tfoot #addBtn').hide();
+	  $('#hostForm tfoot #updtBtn').show();
+	  $('#hostForm tbody #name').focus();
+
+		$('#editTbl td #id').val(host['id']);
+		$('#editTbl td #name').val(host['name']);
+		$('#editTbl td #host').val(host['host']);
+		$('#editTbl td #port').val(host['port']);
+		$('#editTbl td #db').val(host['db']);
+console.log("setting 'service' to "+	host['service']);	
+		var svc = host['service'];
+		$('#editTbl td #service').val([svc]);
+		$('#editTbl td #syntax').val(host['syntax']);
+		$('#editTbl td #seq').val(host['seq']);
+    $('#editTbl td #active').val([host['active']]);
+		$('#editTbl td #user').val(host['user']);
+		$('#editTbl td #pw').val(host['pw']);
+
+		$('#listDiv').hide();
+		$('#editDiv').show();
+	},
+	
 	doSubmits: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -107,13 +142,13 @@ hed = {
 			case 'updtBtn':	hed.doUpdateHost();	break;
 			case 'deltBtn':	hed.doDeleteHost();	break;
 		}
-console.log('you clicked the '+theId);		
+		//console.log('you clicked the '+theId);		
 	},
 	
 	doAddHost: function () {
 		$('#mode').val('addNewHost');
 		var parms = $('#hostForm').serialize();
-console.log(parms);
+		//console.log(parms);
 		$.post(hed.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				console.log('rcvd error msg from server :<br />'+response);
@@ -170,26 +205,6 @@ console.log(parms);
 			});
 		}
 	},
-
-	showHost: function (host) {
-		//console.log('showing : '+host['name']);
-	  $('#hostHdr').html(hed.editHdr);
-	  $('#hostForm tfoot #addBtn').hide();
-	  $('#hostForm tfoot #updtBtn').show();
-	  $('#hostForm tbody #name').focus();
-
-		$('#editTbl td #id').val(host['id']);
-		$('#editTbl td #host').val(host['host']);
-		$('#editTbl td #name').val(host['name']);
-		$('#editTbl td #db').val(host['db']);
-		$('#editTbl td #seq').val(host['seq']);
-    $('#editTbl td #active').val([host['active']]);
-		$('#editTbl td #user').val(host['user']);
-		$('#editTbl td #pw').val(host['pw']);
-
-		$('#listDiv').hide();
-		$('#editDiv').show();
-	}
 };
 
 $(document).ready(hed.init);

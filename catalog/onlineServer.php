@@ -34,19 +34,15 @@
  	$postVars['defaultCollect'] = $coll['description'];
 
 	## prepare list of hosts
-	# results are in $postVars[hosts] & $postVars[numHosts]
 	$hptr = new Hosts;
 	$hosts = array();
-	$hSet = $hptr->getAll('seq');
-	$n=0;
+	//$hSet = $hptr->getAll('seq');
+	$hSet = $hptr->getMatches(array('active'=>'y'), 'seq');
 	while ($row = $hSet->next()) {
-		if ($row['active'] == 'y') {
-	  	$hosts[] = $row;
-	  	$n++;
-		}
+  	$hosts[] = $row;
 	}
 	$postVars['hosts'] = $hosts;
-	$postVars['numHosts'] = $n;
+	$postVars['numHosts'] = count($hosts);
 
 	## set protocol flag for local use
 	if ($postVars[protocol] == 'YAZ') {

@@ -2,21 +2,6 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-/*
-	##-----------
-	function showMeSimple ($prefix,$stuff) {
-		echo "<fieldset>$prefix:<br />";
-		print($stuff);
-		echo "</fieldset>";
-	}
-
-	##-----------
-	function showMeComplex ($prefix,$stuff) {
-		echo "<fieldset>$prefix:<br />";
-		print_r($stuff);
-		echo "</fieldset>";
-	}
-*/
 	##-----------
 	function verifyLCCN ($lookupVal) {
 			## remove "-" and fill with "0" to make 8 char long
@@ -79,16 +64,15 @@
 
 	##-----------
 	function doOneHost($host, $hits, $id) {
-/*
-		global $gotISBN;
-		global $gotLCCN;
-		global $gotLoc;
-		global $gotPub;
-		global $gotDate;
-		global $lookLoc;
-		global $postVars;
+		global $errMsg;
 		$rslt = array();
-*/
+		
+//		if (($hits[$host] == 0) && (!empty($errMsg[$host]))) {
+		if ($hits[$host] == 0) {
+			$rslt['1'] = array('err'=>$errMsg[$host]);
+			return $rslt;
+		}
+		
 		for ($hit = 1; $hit<=$hits[$host]; $hit++) {
 			//print "handling record #$hit of $hits[$host] for host #$host <br />";
 			//print_r($postVars[hosts][$host]);echo "<br />";
@@ -106,14 +90,7 @@
 				//## deal with local opts like call numbers, etc.
 				//$rslt[$hit] = postProcess($rslt[$hit]);
 			}
-/*
-			## clear flags for a repeated use
-			unset ($gotISBN[$hit]);
-			unset ($gotLCCN[$hit]);
-			unset ($gotPub[$hit]);
-			unset ($gotLoc[$hit]);
-			unset ($gotDate[$hit]);
-*/		}
+		}
 		return $rslt;
 	}
 	##-----------

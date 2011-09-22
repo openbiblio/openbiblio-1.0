@@ -130,7 +130,7 @@ ni = {
 	
 	doBackToChoice: function () {
 		if (ni.singleHit) {
-			doBackToSrch();
+			ni.doBackToSrch();
 		} else {
 			$('#selectionDiv').hide();
 			$('#choiceDiv').show();
@@ -404,39 +404,45 @@ ni = {
 				else if (numHits > 1){
 					//console.log('more than one hit');
 					$('#choiceSpace').empty();
+					$('#ttlHits').html(numHits);
 					ni.singleHit = false;
 
 					var nHits = 0;
 					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  if (typeof(hostData) != undefined) {
-					  $('#choiceSpace').append('<h4>Repository: '+ni.hostJSON[hostIndex].name+'</h4>');
-					  if (hostData.length == 0) {
-						  $('#choiceSpace').append('<fieldset>' + ni.empty + '</fieldset>');
+						  $('#choiceSpace').append('<h4>Repository: '+ni.hostJSON[hostIndex].name+'</h4>');
+						  if (!hostData) {
+							  $('#choiceSpace').append('<fieldset>' + ni.empty + '</fieldset>');
+							}
+							else {
+							  $.each(hostData, function(hitIndex,hitData) {
+							    nHits++;
+							    html  = '<fieldset>';
+						if (hitData['err']) {
+							html += hitData['err'];
+						} else {
+							    
+							    html += '<form class="hitForm"><table border="0">';
+							    html += '<tr><td>LCCN</th><td>'+hitData['010a']+'</td></tr>';
+							    html += '<tr><td>ISBN</th><td>'+hitData['020a']+'</td></tr>';
+							    html += '<tr><td>Title</th><td>'+hitData['245a']+'</td></tr>';
+							    html += '<tr><td>Author</th><td>'+hitData['100a']+'</td></tr>';
+							    html += '<tr><td>Publisher</th><td>'+hitData['260b']+'</td></tr>';
+							    html += '<tr><td>Location</th><td>'+hitData['260a']+'</td></tr>';
+							    html += '<tr><td>Date</th><td>'+hitData['260c']+'</td>';
+									var id = 'host'+hostIndex+'-hit'+hitIndex;
+							    html += '<td id="'+id+'"><input type="button" value="This One" /></td></tr>';
+									html += '</table></form>';
 						}
-						else {
-						  $.each(hostData, function(hitIndex,hitData) {
-						    nHits++;
-						    html  = '<fieldset>';
-						    html += '<form class="hitForm"><table border="0">';
-						    html += '<tr><td>LCCN</th><td>'+hitData['010a']+'</td></tr>';
-						    html += '<tr><td>ISBN</th><td>'+hitData['020a']+'</td></tr>';
-						    html += '<tr><td>Title</th><td>'+hitData['245a']+'</td></tr>';
-						    html += '<tr><td>Author</th><td>'+hitData['100a']+'</td></tr>';
-						    html += '<tr><td>Publisher</th><td>'+hitData['260b']+'</td></tr>';
-						    html += '<tr><td>Location</th><td>'+hitData['260a']+'</td></tr>';
-						    html += '<tr><td>Date</th><td>'+hitData['260c']+'</td>';
-								var id = 'host'+hostIndex+'-hit'+hitIndex;
-						    html += '<td id="'+id+'"><input type="button" value="This One" /></td></tr>';
-								html += '</table></form></fieldset>';
-								$('#choiceSpace').append(html);
-								$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
-							}); // $.each(hostData...
-						}
+									html += '</fieldset>';
+									$('#choiceSpace').append(html);
+									$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
+								}); // $.each(hostData...
+							}
 						} // if (ni.hostJason[hostIndex])
 					}); // $.each(rslts.data...
 
-					$('#ttlHits').html(numHits);
 					//console.log('all choices drawn')
 					$('#biblioBtn').bind('click',null,ni.doBackToChoice);
 					$('#biblioBtn2').bind('click',null,ni.doBackToChoice);
@@ -510,7 +516,7 @@ ni = {
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
 		}
-	  $('#selectionDiv input.online').disable();
+/**/	  $('#selectionDiv input.online').disable();	/**/
 	  $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();

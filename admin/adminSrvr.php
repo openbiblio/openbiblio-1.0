@@ -244,6 +244,10 @@
 			}
 			echo json_encode($hosts);
 			break;
+		case 'getHostSvcs':
+			$svcs = array('Z3950','SRU','SRW');
+			echo json_encode($svcs);
+			break;
 		case 'addNewHost':
 			if (empty($_POST[active])) $_POST[active] = 'n';
 			echo $ptr->insert($_POST);

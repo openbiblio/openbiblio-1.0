@@ -76,10 +76,30 @@
     </td>
   </tr>
   <tr>
+    <td><label for="db"><?php echo T("Port"); ?>:</label></td>
+    <td>
+      <input id="port" name="port" type="number" size="5" pattern="[0-9]{3,4}" required aria-required="true" />
+			<span class="reqd">*</span>    
+    </td>
+  </tr>
+  <tr>
     <td><label for="db"><?php echo T("Database"); ?>:</label></td>
     <td>
       <input id="db" name="db" type="text" size="20" required aria-required="true" />
 			<span class="reqd">*</span>    
+    </td>
+  </tr>
+  <tr>
+    <td><label for="db"><?php echo T("Syntax"); ?>:</label></td>
+    <td>
+      <input id="syntax" name="syntax" type="text" size="20" required aria-required="true" />
+			<span class="reqd">*</span>    
+    </td>
+  </tr>
+  <tr>
+    <td><label for="db"><?php echo T("Service"); ?>:</label></td>
+    <td>
+			<select  id="service" name="service" >to be filled by server</select>
     </td>
   </tr>
   <tr>
@@ -92,7 +112,7 @@
   <tr>
     <td><label for="active"><?php echo T("Active"); ?>:</label></td>
     <td>
-      <input type="checkbox" id="active" name="active" value="y"
+      <input type="checkbox" id="active" name="active" value="y" />
     </td>
   </tr>
   <tr>
