@@ -12,7 +12,7 @@ define('MARC_PUBLISHER', '260b');
 define('MARC_PUBLICATION_DATE', '260c');
 define('MARC_PAGES', '300a');
 define('MARC_SUBJECT', '650a');
-
+/*
 function get_param($param) {
   if(isset($_GET[$param]))   {
     return $_GET[$param];
@@ -22,7 +22,8 @@ function get_param($param) {
   }
   return NULL;
 }
-
+*/
+/*
 function print_array($array) {
   echo "<pre>";
   if(is_array($array))   {
@@ -33,7 +34,8 @@ function print_array($array) {
   }
   echo "</pre><br />\n";
 }
-
+*/
+/*
 function startElement($parser, $name, $attribs) {
 //  global $process, $subfields, $subfieldcount;
 
@@ -50,17 +52,20 @@ function endElement($parser, $name)
 {
    echo "&lt;/<font color=\"#0000cc\">$name</font>&gt;\r";
 }
-
+*/
 /**
  * Data between tags
  */
+/*
 function characterData($parser, $data) {
    global $process, $subfields, $subfieldcount;
 
    echo "<b>$data</b>";
    $process['data'] = $data;
 }
+*/
 
+/*
 function defaultHandler($parser, $data) {
    if (substr($data, 0, 1) == "&" && substr($data, -1, 1) == ";") {
        printf('<font color="#aa00aa">%s</font>',
@@ -70,7 +75,7 @@ function defaultHandler($parser, $data) {
                htmlspecialchars($data));
    }
 }
-
+/*
 function showXML($data,$display) {
 	if($display) {
 		for($i = 0; $i < $postVars[numHosts]; $i++) {
@@ -92,7 +97,7 @@ function showXML($data,$display) {
 	}
 	}
 }
-
+*/
 function get_marc_fields($xml) {
   $marc = array();
   $respVersion = '';
@@ -192,7 +197,7 @@ function get_marc_fields($xml) {
 
   return array($recordposition, $marc);
 }
-
+/*
 function display_records($marc) {
   global $lookLoc;
 
@@ -233,4 +238,5 @@ function display_records($marc) {
   }
   echo "</table>";
 }
+*/
 ?>

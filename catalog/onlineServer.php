@@ -5,7 +5,6 @@
 
   require_once("../shared/common.php");
   require_once(REL(__FILE__, "../shared/logincheck.php"));
-//  require_once(REL(__FILE__, "../functions/errorFuncs.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 	require_once(REL(__FILE__, '../model/Online.php'));

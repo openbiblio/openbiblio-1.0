@@ -2,8 +2,6 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-		require_once (REL(__FILE__, 'olYazFunc.php'));	## support functions
-		
 		$hitNmbr = -1;
 		$marcFlds = array();
 		$subFlds = array();
@@ -46,7 +44,7 @@
 			$yazOpts['password'] = $postVars[hosts][$ptr][pw];
 			$aSvc	 = $postVars[hosts][$ptr][service];
 			if ($aSvc != 'Z3950') {
-				$yazOpts['sru'] = 'post'; // legal values are get,post,soap
+				$yazOpts['sru'] = 'get'; // legal values are get,post,soap
 				$srchType = 'cql';
 				$query = $sQuery;
 			}
@@ -63,11 +61,11 @@
 			} else {
 				//echo 'yaz setup successful! <br />';
 				$id[$ptr] = $connOK;
-				yaz_database($id[$ptr], $postVars[hosts][$ptr][db]);
-				yaz_syntax($id[$ptr], $postVars[hosts][$ptr][syntax]);
+				yaz_database($id[$ptr], $postVars['hosts'][$ptr]['db']);
+				yaz_syntax($id[$ptr], $postVars['hosts'][$ptr]['syntax']);
 				yaz_element($id[$ptr], "F");
 
-				//echo "sending: $zQuery <br />";
+				//echo "sending: $query <br />";
 				if (! yaz_search($id[$ptr], $srchType, $query)) 
 					trigger_error(T("lookup_badQuery")."<br />", E_USER_NOTICE);
 			}
@@ -84,13 +82,13 @@
 			## did we make it?
 			$error = yaz_error($id[$i]);
 			if (!empty($error)) {
-			  ## NO
+				//echo "error response from host.<br />";
 				$hits[$i] = 0;
-				$errMsg[$i]  = $error." on ".$postVars[hosts][$i][name]."<br />";
+				$errMsg[$i]  = $error." on ".$postVars['hosts'][$i]['name']."<br />";
 				$errMsg[$i] .= "(yaz err no. " . yaz_errno($id[$i]) . ') ' . yaz_addinfo($id[$i]) . "<br />";
 				$errMsg[$i] .= "Query ==>> ".$query."<br /><br />";
 			} else {
-			  ## YES, we got a response!!
+				//echo "host responded without error.<br />";
 				$hits[$i] = yaz_hits($id[$i]);
 				$ttlHits += $hits[$i];
 				$errMsg[$i] = '';

@@ -45,7 +45,8 @@
 		  echo json_encode($rcd);
 		}
 		## TOO MANY
-		else if ($ttlHits > $postVars[maxHits]) {/*
+		else if ($ttlHits > $postVars[maxHits]) {
+			/*
 			$msg1 = T('lookup_tooManyHits');
 			$msg2 = T('lookup_refineSearch');
 		  $s =  "{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',".
@@ -67,20 +68,16 @@
 				$_POST['numHosts'] = $numHosts;
 				//$_POST['postVars'] = $postVars; // for debugging
 				$rslt = array();
+				$xml_parser = xml_parser_create();
 				for ($h=0; $h<$numHosts; $h++) {
-//					if ($postVars['protocol'] == 'YAZ') {
-//						$rslt[$h] = doOneHost($h, $hits, $id); // build an array of host data
-						$rslt[$h] = doOneHost($h, $hits, $id); // build an array of host data
-//					}
-//					else if ($postVars['protocol'] == 'SRU'){
-//					  $rslt[$h] = $marc[$h];
-//					}
+						$rslt[$h] = doOneHost($h, $hits, $id);
 				}
+				xml_parser_free($xml_parser);
 				$_POST[data] = $rslt;
 			}
       echo json_encode($_POST);
 	}
 	
-	error_reporting($err_level);		## restore original value
-	set_error_handler($err_fnctn);	## restore original handler
+	//error_reporting($err_level);		## restore original value
+	//set_error_handler($err_fnctn);	## restore original handler
 ?>
