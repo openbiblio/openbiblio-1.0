@@ -22,6 +22,10 @@
 			require_once(REL(__FILE__, "../model/MediaTypes.php"));
 			$ptr = new MediaTypes;
 			break;
+		case 'mbrTypes':
+			require_once(REL(__FILE__, "../model/MemberTypes.php"));
+			$ptr = new MemberTypes;
+			break;
 		case 'mbrFlds':
 			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 			$ptr = new MemberCustomFields;
@@ -185,6 +189,38 @@
 			if ($errs) {echo $errs;} else {echo T("Update successful");}
 			break;
 		case 'd-3-L-3-tMbrFld':
+			$ptr->deleteOne($_POST[code]);
+			if ($errs) {echo $errs;} else {echo T("Delete completed");}
+			break;
+
+	  #-.-.-.-.-.- Member Type Classification -.-.-.-.-.-.-
+		case 'getAllMbrTypes':
+			$flds = array();
+			$set = $ptr->getAll();
+			while ($row = $set->next()) {
+			  $flds[] = $row;
+			}
+			echo json_encode($flds);
+			break;
+		case 'addNewMbrType':
+			list($id, $errs) = $ptr->insert_el(array(
+				'code'=>@$_POST['code'],
+				'max_fines'=>@$_POST['max_fines'],
+				'default_flg'=>@$_POST['default_flg'],
+				'description'=>@$_POST['description'],
+			));
+			if ($errs) {echo $errs;} else {echo T("Add New successful");}
+			break;
+		case 'updateMbrType':
+			$errs = $ptr->update_el(array(
+				'code'=>@$_POST["code"],
+				'max_fines'=>@$_POST['max_fines'],
+				'default_flg'=>@$_POST['default_flg'],
+				'description'=>@$_POST["description"],
+			));
+			if ($errs) {echo $errs;} else {echo T("Update successful");}
+			break;
+		case 'd-3-L-3-tMbrType':
 			$ptr->deleteOne($_POST[code]);
 			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;

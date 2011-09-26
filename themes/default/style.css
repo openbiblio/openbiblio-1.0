@@ -74,7 +74,7 @@ textarea:focus {
 	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
 	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
 	}
-input:readonly { border: 0; background-color: #ffffdd; }
+input::readonly { border: none; background-color: #ffffdd; }
 input[required]::after { content:"*"; color: red; }
 input[type=checkbox] { padding-left: 5px; }
 input:disabled { cursor:not-allowed; }

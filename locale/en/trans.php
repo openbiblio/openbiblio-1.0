@@ -32,7 +32,8 @@
  *
  **********************************************************************************
  */
-
+$myTrnas = "./customTrans.php";
+if (file_exists($myTrans)) include ($myTrans);
 
 #****************************************************************************
 #*  Formats
@@ -82,6 +83,7 @@ $trans["Add New Media"] = "Add New Media";
 $trans["Add New Site"] = "Add New Site";
 $trans["Add New Staff Member"] = "Add New Staff Member";
 $trans["Add New State & Abreviation"] = "Add New State & Abreviation";
+$trans["Add new successful"] = "Add new successful";
 $trans["Add New Theme"] = "Add New Theme";
 $trans["Add New"] = "Add New";
 $trans["AddNewMtlMsg"] = "Click 'Add to / Modify...' to create new entries";
@@ -344,6 +346,7 @@ $trans["Edit This Item"] = "Edit this Item";
 $trans["Edit This Photo"] = "Edit this Photo";
 $trans["Edit"] = "Edit";
 $trans["Editing Custom Fields"] = "Editing Custom Fields";
+$trans["Editing Member Type"] = "Editing Member Type";
 $trans["edit"] = "edit";
 $trans["Edition"] = "Edition";
 $trans["Email (optional)"] = "Email (optional)";
@@ -520,6 +523,7 @@ $trans["MARC sort without skip indicator"] = "MARC sort without skip indicator";
 $trans["MARC Subfield"] = "MARC Subfield";
 $trans["MARC Tag"] = "MARC Tag";
 $trans["MARC View"] = "MARC View";
+$trans["Max Fine"] = "Max Fine";
 $trans["mbrid"] = "mbrid";
 $trans["Media"] = "Media";
 $trans["Media Type:"] = "Media Type:";
@@ -532,6 +536,7 @@ $trans["Media Types"] = "Media Types";
 $trans["material_field_id not set"] = "material_field_id not set";
 $trans["Maximum Hits"] = "Maximum Hits";
 $trans["Member Account Transactions"] = "Member Account Transactions";
+$trans["Member Types"] = "Member Types";
 $trans["Member field, %desc%, has been added."] = "Member field '%desc%' has been added.";
 $trans["Member field, %desc%, has been updated."] = "Member field '%desc%' has been updated.";
 $trans["Member Fields"] = "Member Fields";
@@ -846,6 +851,7 @@ $trans["Too many arguments to mkSQL()."] = "Too many arguments to mkSQL().";
 $trans["Tools"] = "Tools";
 $trans["Total Holdings Value"] = "Total Holdings Value";
 $trans["Trans Type"] = "Trans Type";
+$trans["Transaction Activity"] = "Transaction Activity";
 $trans["Transaction successfully completed."] = "Transaction successfully completed.";
 $trans["Transaction successfully deleted."] = "Transaction successfully deleted.";
 $trans["Transaction Type:"] = "Transaction Type:";

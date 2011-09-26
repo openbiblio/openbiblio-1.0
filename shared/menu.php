@@ -117,6 +117,7 @@ function staff_menu() {
 				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
 		}
 		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
+		Nav::node('admin/memberTypes', T("Member Types"), '../admin/memberTypeForm.php');
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
 		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
@@ -147,6 +148,7 @@ function staff_menu() {
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
+		Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 	}
 	
 	##-------------------------------------------------------------------------------------##

@@ -13,6 +13,7 @@ class MemberTypes extends DmTable {
 			'code'=>'string',
 			'description'=>'string',
 			'default_flg'=>'string',
+			'max_fines'=>'number',
 		));
 		$this->setKey('code');
 	}
