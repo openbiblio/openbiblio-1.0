@@ -31,8 +31,9 @@
 		//echo 'SRU rpn-style query specification is: ' . htmlspecialchars($sQuery) . '<br />';
 
 		#### pagination search limits - may be user sperified in future;
-		$startAt = 0;
-		$nmbr = $postVar['maxHits'];
+		$startAt = 1;
+		$nmbr = $postVars['maxHits'];
+		//echo "return results from #$startAt to #". ($startAt+$nmbr-1) ."<br />";
 		
 		//echo "using $postVars[numHosts] host(s)<br />";
 		for ($ptr=0; $ptr<$postVars[numHosts]; $ptr++) {
@@ -64,7 +65,9 @@
 				yaz_database($id[$ptr], $postVars['hosts'][$ptr]['db']);
 				yaz_syntax($id[$ptr], $postVars['hosts'][$ptr]['syntax']);
 				yaz_element($id[$ptr], "F");
-				yaz_range($id[$ptr], $startAt, $nmbr);
+//				if (! yaz_range($id[$ptr], (int)$startAt, (int)$nmbr) ) {
+//					echo "Host $aUrl does not appear to accept limits on number of hits.<br />";
+//				}
 
 				//echo "sending: $query <br />";
 				if (! yaz_search($id[$ptr], $srchType, $query)) 

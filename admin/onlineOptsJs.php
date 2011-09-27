@@ -22,7 +22,7 @@ oed = {
 		oed.editForm = $('#editForm');
 
 	  $('#editHdr').html(<?php echo "'".T('Online Options')."'"; ?>);
-		$('#updtBtn').bind('click',null,oed.doUpdate);
+		$('#editForm').bind('submit',null,oed.doUpdate);
 
 		oed.fetchOpts();
 		oed.resetForms()
@@ -71,11 +71,13 @@ oed = {
 		return true;
 	},
 
-	doUpdate: function () {
+	doUpdate: function (e) {
 	  if (!oed.doValidate()) return;
 
 		$('#msgDiv').hide();
 		$('#mode').val('updateOpts');
+		e.preventDefault();
+		e.stopPropagation();
 		var parms = $('#editForm').serialize();
 		//console.log(parms);
 		$.post(oed.url, parms, function(response) {
@@ -94,6 +96,7 @@ oed = {
 			  oed.doBackToList();
 			}
 		});
+		return false;
 	}
 };
 

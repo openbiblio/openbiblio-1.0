@@ -26,7 +26,6 @@
 	$optr = new Opts;
 	$opts = $optr->getAll();
 	$postVars = $opts->next();
-	$postVars['session'] = $_SESSION;
 	
 	## get default collection name
 	$cptr = new myColl;
@@ -42,6 +41,7 @@
 	}
 	$postVars['hosts'] = $hosts;
 	$postVars['numHosts'] = count($hosts);
+	$postVars['session'] = $_SESSION;
 	//print_r($postVars);
 
 ## main body of code
