@@ -30,12 +30,12 @@
 		if (!empty($lookupVal5)) $sQuery .= " and $sruQry5$lookupVal5";
 		//echo 'SRU rpn-style query specification is: ' . htmlspecialchars($sQuery) . '<br />';
 
-		//showMeComplex('host array',$postVars[hosts]);
+		#### pagination search limits - may be user sperified in future;
+		$startAt = 0;
+		$nmbr = $postVar['maxHits'];
+		
 		//echo "using $postVars[numHosts] host(s)<br />";
 		for ($ptr=0; $ptr<$postVars[numHosts]; $ptr++) {
-			//showMeComplex("using host #$ptr",$postVars[hosts][$ptr][name]);
-			//showMeComplex("using host #$ptr",$postVars[hosts][$ptr]);
-			//showMeComplex("using host #$ptr",$postVars[hosts]);
 			$aHost = $postVars[hosts][$ptr][host];
 			$aPort = $postVars[hosts][$ptr][port];
 			$aUrl  = $aHost.':'.$aPort;
@@ -64,6 +64,7 @@
 				yaz_database($id[$ptr], $postVars['hosts'][$ptr]['db']);
 				yaz_syntax($id[$ptr], $postVars['hosts'][$ptr]['syntax']);
 				yaz_element($id[$ptr], "F");
+				yaz_range($id[$ptr], $startAt, $nmbr);
 
 				//echo "sending: $query <br />";
 				if (! yaz_search($id[$ptr], $srchType, $query)) 
@@ -71,10 +72,10 @@
 			}
 		}
 
+		#### now wait for ALL hosts to return ALL results
 		$waitOpts = array("timeout"=>$postVars[timeout]);
 		//echo "<br /> waiting $waitOpts[timeout] seconds for responses. <br />";
 		yaz_wait($waitOpts);
-		//yaz_wait();
 
 		$ttlHits = 0;
 		//echo "processing rslts for $numHosts host(s)<br />";
@@ -98,9 +99,4 @@
 		//echo "Total Hits=$ttlHits <br />";
 ?>
 <?php
-/*
-ALTER TABLE `lookup_hosts` ADD `port` INT UNSIGNED NOT NULL DEFAULT '210' AFTER `host`, 
-ADD `service` ENUM( 'Z3950', 'SRU', 'SRW' ) NOT NULL DEFAULT 'Z3950' AFTER `db` ,
-ADD `syntax` VARCHAR( 20 ) NOT NULL DEFAULT 'marcxml' AFTER `element` ;
-*/
 ?>

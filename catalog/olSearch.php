@@ -3,29 +3,23 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-		# prepare user search criteria
+		#### prepare user search criteria ####
 		require_once(REL(__FILE__, 'olSrchVals.php'));
 		
-		# perform the search
+		#### perform the search ####
 		$numHosts = $postVars[numHosts];
 		//print("will be trying $numHosts host(s)<br />");
+		require_once (REL(__FILE__, 'olYazSrch.php'));
 
-//	  if ($postVars[protocol] == 'YAZ') {
-//			//print("using YAZ protocol<br />");
-			require_once (REL(__FILE__, 'olYazSrch.php'));
-//		} else if ($postVars[protocol] == 'SRU') {
-//			//print("using SRU protocol<br />");
-//			require_once (REL(__FILE__, 'olSruSrch.php'));
-//		} else {
-//			echo "Invalid protocol specified.<br />";
-//		}
-
+		#### process the results ####
 		$initialCond = false;
-
+		$rcd['ttlHits'] = $ttlHits;
+		$rcd['maxHits'] = $postVars['maxHits'];
 		//echo "ttl hits= $ttlHits<br />";
-		## TOO FEW
+		
 		if ($ttlHits == 0) {
-		  /*
+			## TOO FEW 
+			/* Response format:
 		  $s =  "{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],".
 						"'msg':'$msg1',".
 						"'srch1':{'byName':'$srchByName','lookupVal':'$lookupVal'},".
@@ -33,8 +27,6 @@
 					  "}";
 			echo $s;
 			*/
-		  $rcd['ttlHits'] = $ttlHits;
-		  $rcd['maxHits'] = $postVars['maxHits'];
 		  $rcd['msg'] = T('Nothing Found');
 		  $srch['byName'] = $srchByName;
 		  $srch['lookupVal'] = $lookupVal;
@@ -44,9 +36,10 @@
 		  $rcd['srch2'] = json_encode($srch);
 		  echo json_encode($rcd);
 		}
-		## TOO MANY
+
 		else if ($ttlHits > $postVars[maxHits]) {
-			/*
+			## TOO MANY
+			/* Response format:
 			$msg1 = T('lookup_tooManyHits');
 			$msg2 = T('lookup_refineSearch');
 		  $s =  "{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',".
@@ -54,14 +47,13 @@
 						"}";
 			echo $s;
 			*/
-		  $rcd['ttlHits'] = $ttlHits;
-		  $rcd['maxHits'] = $postVars['maxHits'];
 		  $rcd['msg'] = T('lookup_tooManyHits');
 		  $rcd['msg2'] = T('lookup_refineSearch');
 		  echo json_encode($rcd);
 		}
-		## GOOD COUNT
+
 		else if ($ttlHits > 0) {
+			## GOOD COUNT
 			if ($numHosts > 0) {
 				$postit = true;
 				$_POST['ttlHits'] = $ttlHits;

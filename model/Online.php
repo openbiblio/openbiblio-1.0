@@ -12,7 +12,7 @@ class Opts extends DBTable {
 		$this->setName('lookup_settings');
 		$this->setFields(array(
 			'id'=>'number',
-			'protocol'=>'string',
+			//'protocol'=>'string',
 			'maxHits'=>'number',
 			'timeout'=>'number',
 			'callNmbrType'=>'string',

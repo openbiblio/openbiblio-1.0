@@ -22,11 +22,12 @@
 	}
 
 	## fetch user options and post to $postVars
-	# MUST BE FIRST !!!!!
+	## --- MUST BE FIRST !!!!! ---
 	$optr = new Opts;
 	$opts = $optr->getAll();
 	$postVars = $opts->next();
-
+	$postVars['session'] = $_SESSION;
+	
 	## get default collection name
 	$cptr = new myColl;
 	$coll = $cptr->getDefault();
@@ -35,27 +36,13 @@
 	## prepare list of hosts
 	$hptr = new Hosts;
 	$hosts = array();
-	//$hSet = $hptr->getAll('seq');
 	$hSet = $hptr->getMatches(array('active'=>'y'), 'seq');
 	while ($row = $hSet->next()) {
   	$hosts[] = $row;
 	}
 	$postVars['hosts'] = $hosts;
 	$postVars['numHosts'] = count($hosts);
-
-	## set protocol flag for local use
-	if ($postVars[protocol] == 'YAZ') {
-		//echo " want to use YAZ protocol <br />";
-	  $useYAZ = true;
-	  $useSRU = false;
-	}
-	else if ($postVars[protocol] == 'SRU'){
-		//echo " want to use SRU protocol <br />";
-	  $useSRU = true;
-	  $useYAZ = false;
-	} else {
-		echo "invalid protocol '$postVars[protocol]' specified.";
-	}
+	//print_r($postVars);
 
 ## main body of code
 switch ($_REQUEST[mode]){
@@ -77,7 +64,6 @@ switch ($_REQUEST[mode]){
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getOpts':
-	  $postVars['session'] = $_SESSION;
 		echo json_encode($postVars);
 		break;
 
@@ -94,14 +80,13 @@ switch ($_REQUEST[mode]){
 			exit;
 		}
 
-		//echo "{'cutter':'".getCutter($_REQUEST[author])."'}";
 		$temp['cutter'] = getCutter($_REQUEST['author']);
 		echo json_encode($temp);
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'search':
-		include('olSrchPrep.php'); ## will respond directly, depending on what is received
+		include('olSearch.php'); ## will respond directly, depending on what is received
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
