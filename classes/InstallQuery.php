@@ -7,7 +7,6 @@ require_once("../shared/global_constants.php");
 require_once("../classes/Query.php");
 
 class InstallQuery extends Query {
-//class InstallQuery extends DmTable {
   /* Override constructor so the installer can test the database connection */
   //function InstallQuery() {
   //  ;
@@ -59,29 +58,17 @@ class InstallQuery extends Query {
   }
   
   function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
-    $array = $this->_getSettings($tablePrfx);
-    if($array == false ||
-      !isset($array["locale"])) {
-      return 'en'; //Earlier versions of Openbiblio only supported English
-    }
-    else {
-      return $array["locale"];  
-    }
+    $sql = "SELECT * FROM `settings` WHERE `name` = 'locale'";
+    $row = $this->select01($sql);
+		return $row['value'];
   }
 
   function getCurrentDatabaseVersion($tablePrfx = DB_TABLENAME_PREFIX) {
-    $recs = $this->_getSettings($tablePrfx);
-    if($recs == false) {
-      return false;
-    }
-    else {
-			while ($rec = $recs->next()) {
-				if ($rec['name'] == 'version') {
-					return $rec['value'];
-				}
-			}
-      return false;
-    }
+    $sql = $this->mkSQL('SELECT * FROM %I WHERE `name`=%Q', $tablePrfx.'settings','version');
+    //$sql = "SELECT `value` FROM `settings` WHERE `name` = 'version' ";
+    $row = $this->select01($sql);
+print_r($row);    
+		return $row['value'];
   }
   
   function freshInstall($locale, $sampleDataRequired = false,

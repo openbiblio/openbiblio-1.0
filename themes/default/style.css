@@ -57,13 +57,13 @@ fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; marg
 
 /* tables & parts of */
 table { margin:2px; max-width:100%; border-spacing:0; }
-tr.odd { background-color: #EEE; }
-/*tr.even { background-color: #CCC; }*/
+tbody.striped tr::odd td { background-color: #EEE; }
+/*tbody.striped tr:even td { background-color: #CCC; }*/
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
 td.number { text-align: right; }
-td.center { text-align: center; }
+td.center, th.center { text-align: center; }
 td.label { text-align: left; white-space: nowrap; }
-label, .lblFld { font-size: 0.75em; font-weight: bold; margin-left: 2px;}
+th, label, .lblFld { font-size: 0.75em; font-weight: bold; margin-left: 2px;}
 
 /* form input fields */
 input, select, textarea { margin: 2px; }
@@ -74,7 +74,7 @@ textarea:focus {
 	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
 	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
 	}
-input::readonly { border: none; background-color: #ffffdd; }
+input[readonly] { border: none; background-color: #ffffdd; }
 input[required]::after { content:"*"; color: red; }
 input[type=checkbox] { padding-left: 5px; }
 input:disabled { cursor:not-allowed; }

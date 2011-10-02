@@ -21,8 +21,8 @@ class Members extends CoreTable {
 			'address2'=>'string',
 			'city'=>'string',
 			'state'=>'string',
-			'zip'=>'number',
-			'zip_ext'=>'number',
+			'zip'=>'string',
+			'zip_ext'=>'string',
 			'home_phone'=>'string',
 			'work_phone'=>'string',
 			'email'=>'string',
@@ -59,6 +59,11 @@ class Members extends CoreTable {
 		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastMbr from member");
 		$lastMbr = $this->db->select1($sql);
 		return $lastMbr["lastMbr"]+1;
+	}
+	
+	function getMbrByBarcode($barcd) {
+		$sql = $this->db->mkSQL("SELECT * FROM member WHERE barcode_nmbr = %Q ", $barcd);
+		return $this->db->select1($sql);
 	}
 	
 	function validate_el($mbr, $insert) {
@@ -151,7 +156,7 @@ class Members extends CoreTable {
 		return $this->custom->getMatches(array('mbrid'=>$mbrid));
 	}
 	function setCustomFields($mbrid, $customFldsarr) {
-		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
+		deleteCustomFields($mbrid);
 		foreach ($customFldsarr as $code => $data) {
 			$fields= array(
 				mbrid=>$mbrid ,
@@ -160,6 +165,9 @@ class Members extends CoreTable {
 			);
 			$this->custom->insert($fields);
 		}
+	}
+	function deleteCustomFields($mbrid) {
+		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
 	}
 }
 class MembersIter extends Iter {

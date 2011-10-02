@@ -295,7 +295,7 @@ bs = {
 	doBarcdSearch: function (e) {
 		var barcd = $.trim($('#searchBarcd').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
-		$('#searchBarcd').val(barcd);
+		$('#searchBarcd').val(barcd); // redisplay expanded value
 		
 	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
@@ -383,7 +383,6 @@ bs = {
 		for (var nBiblio in biblioList) {
 			var callNo = ''; var title = ''; var author=''; var subtitle='';
 			var html = "<tr> \n";
-			//var biblio = eval('('+biblioList[nBiblio]+')');
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			bs.biblio[biblio.bibid] = biblio;
 			if (biblio.data) {

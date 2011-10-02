@@ -171,7 +171,7 @@
 	<div id="results_found">
 		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
-	<table width="100%">
+	<table>
 	<tr>
 		<td>
 			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
@@ -224,7 +224,6 @@
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
-
 	<ul class="btnRow">
 		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" /></li>
 		<li><input type="button" id="marcBtn" value=""></li>
@@ -237,42 +236,8 @@
 		<?php }?>
 	</ul>
 		
-	<fieldset>
-		<legend><?php echo T("Biblio Information"); ?></legend>
-		<div id="bibBlks">
-			<div id="bibBlkA">
-				<table id="biblioTbl" border="1">
-					<tbody id="biblio" class="striped"></tbody>
-				</table>
-			</div>
-			<div id="bibBlkB"></div>
-		</div>
-	</fieldset>
+		<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
-	<fieldset>
-		<legend><?php echo T("Copy Information"); ?></legend>
-		<table id="copyList">
-		<thead>
-		<tr>
-				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
-					<th nowrap="yes" align="center"><?php echo T("Function"); ?></th>
-				<?php } ?>
-				<th align="center" nowrap="yes"><?php echo T("Barcode"); ?></th>
-				<th align="center" nowrap="yes"><?php echo T("Description"); ?></th>
-				<?php
-					if($_SESSION['multi_site_func'] > 0){
-						echo "<th id=\"siteFld\" align=\"center\" nowrap=\"yes\">" . T("Site") . "</th>";
-					}
-				?>
-				<th align="center" nowrap="yes"><?php echo T("Status"); ?></th>
-				<th align="center" nowrap="yes"><?php echo T("Status Dt"); ?></th>
-				<th align="center" nowrap="yes"><?php echo T("Due Back"); ?></th>
-		</tr>
-		</thead>
-		<tbody id="copies" class="striped"></tbody>
-		</table>
-	</fieldset>
-	
 	<ul class="btnRow">
 		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>"></li>
 		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
@@ -363,6 +328,7 @@
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
 	include_once('../shared/ajaxFileUpload/ajaxfileupload.js');
+	include_once(REL(__FILE__,'./itemEditorJs.php'));
 	include_once(REL(__FILE__,'./itemEditorJs.php'));
 	include_once(REL(__FILE__,'./srchJs.php'));
 ?>	

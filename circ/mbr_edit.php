@@ -52,7 +52,7 @@
 		if (isset($_REQUEST['custom_'.$name])) {
 			$custom[$name] = $_POST['custom_'.$name];
 		}
-		}
+	}
 	$members->setCustomFields($mbr['mbrid'], $custom);
 
 	$msg = T("Member has been successfully updated.");

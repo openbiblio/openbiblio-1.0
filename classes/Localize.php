@@ -30,7 +30,8 @@ class Localize {
 		$this->meta = new $classname;
 		$this->trans = array();
 		$this->marc = NULL;
-		$files = array('trans.php', 'custom_trans.php');
+		//$files = array('trans.php', 'custom_trans.php');
+		$files = array('trans.php', 'customTrans.php');
 		foreach ($files as $f) {
 			if (is_readable($this->localePath.$f)) {
 				$trans = $this->_loadFile($this->localePath.$f);
