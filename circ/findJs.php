@@ -36,6 +36,7 @@ mf = {
 		$('.gobkBtn').bind('click',null,mf.rtnToSrch)
 		$('.gobkBiblioBtn').bind('click',null,mf.rtnToMbr)
 		$('#mbrDetlBtn').bind('click',null,mf.doShowMbrDetails);
+		$('#chkOutBtn').bind('click',null,mf.doCheckout);
 		$('#deltMbrBtn').bind('click',null,mf.doDeleteMember);
 		$('#cnclMbrBtn').bind('click',null,function(){
 			mf.doFetchMember(); 
@@ -275,6 +276,32 @@ console.log('you clicked nameSrch');
 			
 		$('#mbrDiv').hide();
 		$('#editDiv').show();
+	},
+	doCheckout: function () {
+		var barcd = $.trim($('#ckOutBarcd').val());
+		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
+		$('#ckOutBarcd').val(barcd); // redisplay expanded value
+
+		var parms = {'mode':'doCheckout', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
+console.log(parms);
+		$.post(mf.url, parms, function(response) {
+			if (response.substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				if (response) {
+					$('#msgArea').html(response);
+					$('#msgDiv').show();
+				} else {
+					$('#msgArea').html('Checkout Completed!');
+					$('#msgDiv').show().hide(10000);
+					mf.showOneMbr(mf.mbr)
+				}
+			}
+		});
+		return false;
 	},
 	doMbrUpdate: function () {
 		$('#editHdr').html(mf.editHdr);

@@ -149,6 +149,25 @@
 		}
 	  echo $members->setCustomFields($_POST['mbrid'], $cstmArray);
 		break;
+	case 'doCheckout':
+		$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
+		$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
+		if ($err) {
+			if(is_array($err)){
+				$errors = ""; $nErr = 0;
+				foreach($err as $error)	{
+					if ($nErr > 0) $errors .= '<br />';
+					$errors .= $error->toStr();
+					$nErr++;
+				}
+			} elseif (is_object($err)) {
+				$errors = $err->toStr();
+			} else {
+				$errors = $err;
+			}
+		}
+		echo $errors;
+		break;
 	case 'd-3-L-3-tMember':
 		$members->deleteOne($_POST['mbrid']);
 		$members->deleteCustomFields($_POST['mbrid']);

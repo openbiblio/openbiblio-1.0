@@ -328,7 +328,7 @@
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
 	
 	include_once('../shared/ajaxFileUpload/ajaxfileupload.js');
-	include_once(REL(__FILE__,'./itemEditorJs.php'));
+	include_once(REL(__FILE__,'./itemDisplayJs.php'));
 	include_once(REL(__FILE__,'./itemEditorJs.php'));
 	include_once(REL(__FILE__,'./srchJs.php'));
 ?>	
