@@ -41,6 +41,7 @@ h5 { font-size: 0.63em; color: black; }	/* 10/16 */
 h6 { font-size: 0.5em; }	/* 8/16 */
 
 sup, span.reqd, #reqdNote { color: red; text-align:center; }
+.smallType { font-size: 75%; }
 p { margin:2px; padding:0; }
 hr {
 	display: block; position: relative; 
@@ -326,7 +327,7 @@ div#content {
 .search_result .available {
 	margin-top: 12px;
 	font: 0.87em serif;	/* 14/16 */
-}
+	}
 
 /*************************************************/
 div#msgDiv {

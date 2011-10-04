@@ -31,12 +31,18 @@ mf = {
 		mf.resetForms();
 		mf.fetchOpts();
 		mf.fetchCustomFlds();
-		
+		mf.fetchAcnttranTypes();
+				
 		$('form').bind('submit',null,mf.doSubmits);
-		$('.gobkBtn').bind('click',null,mf.rtnToSrch)
-		$('.gobkBiblioBtn').bind('click',null,mf.rtnToMbr)
+		$('.gobkBtn').bind('click',null,mf.rtnToSrch);
+		$('.gobkBiblioBtn').bind('click',null,mf.rtnToMbr);
+		$('.gobkAcntBtn').bind('click',null,mf.rtnToMbr);
+		$('.gobkHistBtn').bind('click',null,mf.rtnToMbr);
 		$('#mbrDetlBtn').bind('click',null,mf.doShowMbrDetails);
+		$('#mbrAcntBtn').bind('click',null,mf.doShowMbrAcnt);
+		$('#mbrHistBtn').bind('click',null,mf.doShowMbrHist);
 		$('#chkOutBtn').bind('click',null,mf.doCheckout);
+		$('#holdBtn').bind('click',null,mf.doHold);
 		$('#deltMbrBtn').bind('click',null,mf.doDeleteMember);
 		$('#cnclMbrBtn').bind('click',null,function(){
 			mf.doFetchMember(); 
@@ -58,11 +64,14 @@ mf = {
 	  $('#mbrDiv').hide();
 	  $('#biblioDiv').hide();
 	  $('#editDiv').hide();
+	  $('#acntDiv').hide();
+	  $('#histDiv').hide();
 		$('#msgDiv').hide();
 	},
 	rtnToSrch: function () {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
+		$('#ckOutBarcd').val('')
 	  mf.resetForms();
 	},
 	rtnToMbr: function () {
@@ -73,6 +82,8 @@ mf = {
 	  $('#mbrDiv').show();
 	  $('#biblioDiv').hide();
 	  $('#editDiv').hide();
+	  $('#acntDiv').hide();
+	  $('#histDiv').hide();
 	},
 
 	doSubmits: function (e) {
@@ -85,6 +96,7 @@ mf = {
 			case 'nameSrchBtn':		mf.doNameSearch();	break;
 			case 'addMbrBtn':			mf.doMbrAdd();			break;
 			case 'updtMbrBtn':		mf.doMbrUpdate();		break;
+			case 'addTransBtn':		mf.doTransAdd();		break;
 		}
 	},
 	
@@ -106,6 +118,16 @@ mf = {
 	    	html += '</tr> \n';
 			});
 			$('#customEntries').html(html);
+		});
+	},
+	fetchAcnttranTypes: function () {
+	  $.getJSON(mf.url,{mode:'getAcntTranTypes'}, function(jsonData){
+	  	mf.tranType = jsonData;
+	    var html = '';
+	    $.each(jsonData, function (name, value) {
+	    	html += '<option value="'+name+'">'+value+'</option> \n';
+			});
+			$('#transaction_type_cd').html(html);
 		});
 	},
 	
@@ -137,8 +159,7 @@ console.log('you clicked nameSrch');
 			} else {
 				mf.mbr = $.parseJSON(jsonInpt);
 				if (mf.mbr == null) {
-				  var msgTxt =
-	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
+	  			$('#msgArea').html('<?php echo T('Nothing Found') ?>');
 				}
 				else {
 					mf.multiMode = false;
@@ -165,8 +186,8 @@ console.log('you clicked nameSrch');
 			} else {
 				mf.cpys = $.parseJSON(jsonInpt);
 				if (! mf.cpys) {
-				  var msgTxt =
-	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
+	  			$('#msgArea').html('<?php echo T('Nothing Found') ?>');
+					$('#msgDiv').show();
 				}
 				else {
 					var html = '';
@@ -210,8 +231,8 @@ console.log('you clicked nameSrch');
 			} else {
 				mf.holds = $.parseJSON(jsonInpt);
 				if (! mf.holds) {
-				  var msgTxt =
-	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
+	  			$('#msgArea').html('<?php echo T('Nothing Found') ?>');
+					$('#msgDiv').show();
 				}
 				else {
 					var html = '';
@@ -223,18 +244,22 @@ console.log('you clicked nameSrch');
 						else
 							var dueDate = 'n/a';
 						html += '<tr>'
-						html += '<td>&nbsp;</td>';
-						html += '<td>'+holdDate+'</td>';
-						html += '<td>'+hold.barcode_nmbr+'</td>';
-						html += '<td><a href="#" id="'+hold.bibid+'">"'+hold.title+'"</a></td>';
-						html += '<td>'+hold.status+'</td>';
-						html += '<td>'+dueDate+'</td>';
-						html += '</td>\n';
+						html += '	<td> \n';
+						html += '		<input type="button" class="holdDelBtn" value="<?php echo T("del");?>" /> \n';
+						html += '		<input type="hidden" value="'+hold.holdid+'" /></td> \n';
+						html += '	</td> \n';
+						html += '	<td>'+holdDate+'</td>';
+						html += '	<td>'+hold.barcode_nmbr+'</td>';
+						html += '	<td><a href="#" id="'+hold.bibid+'">"'+hold.title+'"</a></td>';
+						html += '	<td>'+hold.status+'</td>';
+						html += '	<td>'+dueDate+'</td>';
+						html += '</tr>\n';
 
 					}
 					$('#holdList tBody').html(html);
 					$('table tbody.striped tr:odd td').addClass('altBG');
 					$('table tbody.striped tr:even td').addClass('altBG2');
+					$('.holdDelBtn').bind('click',null,mf.doDelHold);
 					$('#holdList a').bind('click',null,function (e) {
 						e.preventDefault(); e.stopPropagation();
 						idis.init(mf.opts); // be sure all is ready	
@@ -245,6 +270,142 @@ console.log('you clicked nameSrch');
 				}
 	    }
 		});
+	},
+	
+	//------------------------------
+	doShowMbrAcnt: function () {
+	  var params = 'mode=getAcntActivity&mbrid='+mf.mbrid;
+	  $.get(mf.url,params, function(jsonInpt){
+			if ($.trim(jsonInpt).substr(0,2) != '[{') {
+				//$('#msgArea').html(jsonInpt);
+				$('#msgDiv').show();
+			} else {
+				mf.trans = $.parseJSON(jsonInpt);
+				var html = '';
+				if (!mf.trans) {
+					html += '<tr>'
+					html += '<td colspan="6"><?php echo T("No transactions found."); ?></td> \n';
+					html += '</tr>\n';
+				} else {
+					var bal = parseFloat(0.0);
+					html += '<tr> \n';
+					html += '	<td colspan="3">&nbsp</td> \n';
+					html += '	<td colspan="2" class="smallType center"><?php echo T("Opening Balance"); ?></td> \n';
+					html += '	<td class="number">'+bal.toFixed(2)+'</td> \n';
+					html += '</tr> \n';
+					for (var nTran in mf.trans) {
+						var tran = mf.trans[nTran];
+						bal += parseFloat(tran.amount);
+						html += '<tr> \n';
+						html += '	<td> \n';
+						html += '		<input type="button" class="acntTranDelBtn" value="<?php echo T("del");?>" /> \n';
+						html += '		<input type="hidden" value="'+tran.transid+'" /></td> \n';
+						html += '	</td> \n';
+						html += '	<td class="date">'+tran.create_dt.split(' ')[0]+'</td> \n';
+						html += '	<td>'+mf.tranType[tran.transaction_type_cd]+'</td> \n';
+						html += '	<td>'+tran.description+'</td> \n';
+						html += '	<td class="number">'+(parseFloat(tran.amount)).toFixed(2)+'</td> \n';
+						html += '	<td class="number">'+bal.toFixed(2)+'</td> \n';
+						html += '</tr> \n';
+					}
+					$('#tranList tBody').html(html);
+					$('#tranList tbody.striped tr:odd td').addClass('altBG');
+					$('#tranList tbody.striped tr:even td').addClass('altBG2');
+					$('.acntTranDelBtn').bind('click',null,mf.doDelAcntTrans);
+				};			
+			}
+		});
+		$('#mbrDiv').hide();
+		$('#acntDiv').show();
+	},
+	doTransAdd: function () {
+		$('#acntMbrid').val(mf.mbrid);
+		var parms = $('#acntForm').serialize();
+		//console.log('adding: '+parms);
+		$.post(mf.url, parms, function(response) {
+			if (response.substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				$('#msgArea').html('Added!');
+				$('#msgDiv').show().hide(10000);
+				mf.doShowMbrAcnt();
+			}
+		});
+	},
+	doDelAcntTrans: function () {
+		if (!confirm(mf.delConfirmMsg+' this transaction?')) return false;
+
+  	var parms = {	'mode':'d-3-L-3-tAcntTrans', 'mbrid':mf.mbrid, 'transid':mf.transid };
+  	$.post(mf.url, parms, function(response){
+			if (($.trim(response)).substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				$('#msgArea').html('transaction deleted!');
+				$('#msgDiv').show().hide(10000);
+		  	mf.rtnToMbr();
+			}
+		});
+	},
+	
+	//------------------------------
+	doHold: function () {
+		var barcd = $.trim($('#holdBarcd').val());
+		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
+		$('#holdBarcd').val(barcd); // redisplay expanded value
+
+		var parms = {'mode':'doHold', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
+		$.post(mf.url, parms, function(response) {
+			if (response.substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				if (response) {
+					$('#msgArea').html(response);
+					$('#msgDiv').show();
+				} else {
+					$('#msgArea').html('Hold Completed!');
+					$('#msgDiv').show().hide(10000);
+					$('#holdBarcd').val('')
+					mf.showOneMbr(mf.mbr)
+				}
+			}
+		});
+		return false;
+	},
+	doDelHold: function (event) {
+		var $delBtn = $(event.target);
+		$delBtn.parent().parent().addClass('hilite');
+		if (!confirm(mf.delConfirmMsg+' this hold?')) return false;
+		
+		var holdid = $delBtn.next().val();
+console.log('hold Id='+holdid);		
+  	var parms = {	'mode':'d-3-L-3-tHold', 'mbrid':mf.mbrid, 'holdid':holdid };
+  	$.post(mf.url, parms, function(response){
+			if (($.trim(response)).substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				$('#msgArea').html('hold deleted!');
+				$('#msgDiv').show().hide(10000);
+				mf.showOneMbr(mf.mbr)
+			}
+		});
+	},
+	
+	//------------------------------
+	doShowMbrHist: function () {
+		$('#mbrDiv').hide();
+		$('#histDiv').show();
 	},
 	
 	//------------------------------
@@ -278,12 +439,11 @@ console.log('you clicked nameSrch');
 		$('#editDiv').show();
 	},
 	doCheckout: function () {
-		var barcd = $.trim($('#ckOutBarcd').val());
+		var barcd = $.trim($('#ckoutBarcd').val());
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
-		$('#ckOutBarcd').val(barcd); // redisplay expanded value
+		$('#ckoutBarcd').val(barcd); // redisplay expanded value
 
 		var parms = {'mode':'doCheckout', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
-console.log(parms);
 		$.post(mf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
@@ -297,6 +457,7 @@ console.log(parms);
 				} else {
 					$('#msgArea').html('Checkout Completed!');
 					$('#msgDiv').show().hide(10000);
+					$('#ckoutBarcd').val('')
 					mf.showOneMbr(mf.mbr)
 				}
 			}
@@ -334,7 +495,7 @@ console.log(parms);
 			alert('<?php echo T('You must settle all outstanding loans before deleting a member.'); ?>');
 			return false;
 		}
-		if (!confirm(' '+mf.delConfirmMsg+ mf.mbr.first_name+' '+mf.mbr.last_name+'?')) return false;
+		if (!confirm(mf.delConfirmMsg+ mf.mbr.first_name+' '+mf.mbr.last_name+'?')) return false;
 
   	var parms = {	'mode':'d-3-L-3-tMember', 'mbrid':mf.mbrid };
   	$.post(mf.url, parms, function(response){
@@ -344,7 +505,7 @@ console.log(parms);
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html('deleted!');
+				$('#msgArea').html('member deleted!');
 				$('#msgDiv').show().hide(10000);
 		  	mf.rtnToSrch();
 			}

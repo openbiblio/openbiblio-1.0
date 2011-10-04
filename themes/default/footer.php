@@ -10,7 +10,7 @@ unset($_SESSION['postVars']);
 /* All JavaScript is placed at the end of <body> to improve overall performance */
 ?>
 
-<script src="../shared/jquery/jquery-1.6.2.min.js"></script>
+<script src="../shared/jquery/jquery-1.6.4.min.js"></script>
 <script src="../shared/jsLib.js" defer></script>
 
 <script language="JavaScript" defer>

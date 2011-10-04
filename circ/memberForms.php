@@ -74,9 +74,9 @@
 	</fieldset>
 	
 	<fieldset id="newLoans">
-		<legend for="newBarcd"><?php echo T("Check Out");?></legend>
+		<legend for="ckoutBarcd"><?php echo T("Check Out");?></legend>
 		<label><?php echo T("Barcode Number");?>:</label>
-		<input type="text" id="ckOutBarcd" size="20" />
+		<input type="text" id="ckoutBarcd" size="20" />
 		<input type="button" value="<?php echo T("Check Out");?>" id="chkOutBtn" />
 		<input type="text" readonly class="error" id="chkOutMsg" /> 
 	</fieldset>
@@ -117,9 +117,9 @@
 	
 	<fieldset id="newHolds">
 		<legend><?php echo T("Place on Hold");?></legend>
-			<label for="hldBarcdNmbr"><?php echo T("Barcode Number");?></label>
-			<input type="text" id="holdBarcodeNmbr" size="20" />
-			<!--a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"-->search<!--/a-->
+			<label for="holdBarcd"><?php echo T("Barcode Number");?></label>
+			<input type="text" id="holdBarcd" size="20" />
+			<!--a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"Search</a-->
 			<input type="hidden" name="mbrid" value="" />
 			<input type="hidden" name="classification" value="" />
 			<input type="button" value="Hold" id="holdBtn" />
@@ -306,7 +306,6 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
-	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
 		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T('Go Back'); ?>" /></li>
 	</ul>
@@ -319,6 +318,59 @@
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
+<div id="acntDiv">
+	<input type="button" class="gobkAcntBtn" value="<?php echo T('Go Back'); ?>" />
+	<fieldset>
+		<legend><?php echo T("Add a Transaction"); ?></legend>
+		<form id="acntForm">
+			<label for="transaction_type_cd"><?php echo T("Transaction Type:"); ?></label>
+			<select id="transaction_type_cd" name="transaction_type_cd"></select>
+			<br />
+			<label for="description"><?php echo T("Description:"); ?></label>
+			<input type="text" required size="40" maxlength="128" id="description" name="description" />
+			<br />
+			<label for="amount"><?php echo T("Amount:"); ?></label>
+			<input type="number" required size="12" id="amount" name="amount" 
+						 pattern="^\d+\.\d{2}$" 
+						 title="<?php echo T("A valid money amount");?>" />
+			<br />
+			<input type="hidden" name="mode" value="addAcntTrans" />
+			<input type="hidden" id="acntMbrid" name="mbrid" value="" />
+			<input type="submit" id="addTransBtn" value="<?php echo T("Add New"); ?>" />
+		</form>
+	</fieldset>
+	
+	<fieldset>
+		<legend><?php echo T("Transaction Activity"); ?></legend>
+		<table id="tranList">
+			<thead>
+			<tr>
+				<th>&nbsp</th>
+				<th><?php echo T("Date"); ?></th>
+				<th><?php echo T("Trans Type"); ?></th>
+				<th><?php echo T("Description"); ?></th>
+				<th><?php echo T("Amount"); ?></th>
+				<th><?php echo T("Balance"); ?></th>
+			</tr>
+			</thead>
+			
+			<tbody class="striped"></tbody>
+		</table>
+	</fieldset>
+	<input type="button" class="gobkAcntBtn" value="<?php echo T('Go Back'); ?>" />
+</div>
+
+<!-- ------------------------------------------------------------------------ -->
+<div id="histDiv">
+	<input type="button" class="gobkHistBtn" value="<?php echo T('Go Back'); ?>" />
+	<fieldset>
+		<legend><?php echo T("Checkout History"); ?></legend>
+		<p>Not yet Available</p>
+	</fieldset>
+	<input type="button" class="gobkHistBtn" value="<?php echo T('Go Back'); ?>" />
+</div>
+
+<!-- ------------------------------------------------------------------------ -->
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <!-- ------------------------------------------------------------------------ -->
@@ -327,7 +379,7 @@
 	
 	//include_once(REL(__FILE__,'./mbrEditorJs.php'));
 	include_once(REL(__FILE__,'../catalog/itemDisplayJs.php'));
-	include_once(REL(__FILE__,'./findJs.php'));
+	include_once(REL(__FILE__,'./memberJs.php'));
 ?>	
 
 <?php/*

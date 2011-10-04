@@ -20,7 +20,7 @@ class MemberAccounts extends DBTable {
 		));
 		$this->setKey('transid');
 		$this->setSequenceField('transid');
-		$this->setForeignKey('mbrid', 'members', 'mbrid');
+		$this->setForeignKey('mbrid', 'member', 'mbrid');
 	}
 	function getByMbrid($mbrid) {
 		return $this->getMatches(array('mbrid'=>$mbrid), 'create_dt');
@@ -55,8 +55,8 @@ class MemberAccounts extends DBTable {
 		if (!isset($trans['description']) || trim($trans['description']) == '') {
 			$errors[] = new FieldError('description', T("Required field missing"));
 		}
-		if (!isset($trans['amount']) || is_numeric($trans['amount'])) {
-			$errors[] = new FieldError('description', T("Must be numeric"));
+		if (!isset($trans['amount']) || !is_numeric($trans['amount'])) {
+			$errors[] = new FieldError('amount', T("Must be numeric"));
 		}
 		return $errors;
 	}

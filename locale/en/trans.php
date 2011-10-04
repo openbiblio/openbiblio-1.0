@@ -63,6 +63,7 @@ $trans["%count% unattached MARC fields"] = "%count% unattached MARC fields";
 $trans["%count% unattached MARC subfields"] = "%count% unattached MARC subfields";
 $trans["%units% Late"] = "%units% Late";
 $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
+$trans["A valid money amount"] = "A valid money amount";
 $trans["Accompanying Material"] = "Accompanying Material";
 $trans["Account"] = "Account";
 $trans["Active"] = "Active";
