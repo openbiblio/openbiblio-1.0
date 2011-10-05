@@ -2,20 +2,18 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-	
 	$doing_install = true;
   require_once("../shared/common.php");
   
 	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
-	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
-
 	$installQ = new InstallQuery();
+
+	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 	$upgradeQ = new UpgradeQuery();
 
 	switch ($_REQUEST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'connectDB':
-			//echo "connecting to db\n";
 			$error = $installQ->connect_e();
 			if ($error) 
 				echo $error->toStr(); 

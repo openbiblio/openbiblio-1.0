@@ -29,32 +29,32 @@
 	#
 	require_once(REL(__FILE__, "../classes/Query.php"));
 	$db = new Query;
-	$oldDb = 'OpenBiblio';
-	$newDb = 'obiblio-10';
+	$prfx = 'OpenBiblio';
+	$tmpPrfx = 'obiblio-10';
 	
 	$OK = set_time_limit(120);
 	
-	$sql = "TRUNCATE TABLE `$newDb`.`biblio`";
+	$sql = "TRUNCATE TABLE `$tmpPrfx`.`biblio`";
 	$rslt = $db->Act($sql); echo "$sql<br />";
 
-	$sql = "TRUNCATE TABLE `$newDb`.`biblio_field`";
+	$sql = "TRUNCATE TABLE `$tmpPrfx`.`biblio_field`";
 	$rslt = $db->Act($sql);	echo "$sql<br />";
 
-	$sql = "TRUNCATE TABLE `$newDb`.`biblio_subfield`";
+	$sql = "TRUNCATE TABLE `$tmpPrfx`.`biblio_subfield`";
 	$rslt = $db->Act($sql); echo "$sql<br />";
 
-		$bibSql = "INSERT INTO `$newDb`.`biblio` "
+		$bibSql = "INSERT INTO `$tmpPrfx`.`biblio` "
 						. "(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`) "
 						. "VALUES ";
-		$fldSql = "INSERT INTO `$newDb`.`biblio_field` "
+		$fldSql = "INSERT INTO `$tmpPrfx`.`biblio_field` "
 						. "(`bibid`,`fieldid`,`seq`,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,`display`) "
 						. "VALUES ";
-		$subSql = "INSERT INTO `$newDb`.`biblio_subfield` "
+		$subSql = "INSERT INTO `$tmpPrfx`.`biblio_subfield` "
 						. "(`bibid`,`fieldid`,`subfieldid`,`seq`,`subfield_cd`,`subfield_data`) "
 						. "VALUES ";
 
 	#### scan all existing biblio entries in biblio_id order
-	$sql = "SELECT * FROM `$oldDb`.`biblio` ORDER BY `bibid` ";
+	$sql = "SELECT * FROM `$prfx`.`biblio` ORDER BY `bibid` ";
 	$bibs = $db->select($sql);
 	$n = 0; $fldid = 1; $subid = 1;
 	
@@ -99,7 +99,7 @@
     $fldid++;
     
 		### get each biblio_field entry for this biblio in MARC tag order
-		$sql = "SELECT * FROM `$oldDb`.`biblio_field` WHERE (bibid=$bib[bibid]) ORDER BY `tag` ";
+		$sql = "SELECT * FROM `$prfx`.`biblio_field` WHERE (bibid=$bib[bibid]) ORDER BY `tag` ";
 		$flds = $db->select($sql);
 		while ($fld = $flds->next()) {
 		  $tag = sprintf("%03d",$fld[tag]);
@@ -127,13 +127,13 @@
 			echo "$fldid field records written.<br />";
 			echo "$subid sub-field records written.<br />";
 			
-		$bibSql = "INSERT INTO `$newDb`.`biblio` "
+		$bibSql = "INSERT INTO `$tmpPrfx`.`biblio` "
 						. "(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`) "
 						. "VALUES ";
-		$fldSql = "INSERT INTO `$newDb`.`biblio_field` "
+		$fldSql = "INSERT INTO `$tmpPrfx`.`biblio_field` "
 						. "(`bibid`,`fieldid`,`seq`,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,`display`) "
 						. "VALUES ";
-		$subSql = "INSERT INTO `$newDb`.`biblio_subfield` "
+		$subSql = "INSERT INTO `$tmpPrfx`.`biblio_subfield` "
 						. "(`bibid`,`fieldid`,`subfieldid`,`seq`,`subfield_cd`,`subfield_data`) "
 						. "VALUES ";
 		}

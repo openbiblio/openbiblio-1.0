@@ -80,7 +80,7 @@ ins = {
 				ins.getLocales();
 			}
 	  	else if (response == '<?php echo H(OBIB_LATEST_DB_VERSION); ?>') {
-				ins.informUser('<?php echo T("Database uptodate"); ?>');
+				ins.informUser('<?php echo T("Database is uptodate"); ?>');
 				$('#versionOK').show();
 			}
 			else {
