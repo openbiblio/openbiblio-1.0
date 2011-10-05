@@ -11,9 +11,8 @@ session_cache_limiter(null);
 $tab = "circulation";
 $restrictToMbrAuth = TRUE;
 $nav = "new";
-$cancelLocation = "../circ/index.php";
-$focus_form_name = "newmbrform";
-$focus_form_field = "barcodeNmbr";
+$focus_form_name = "newmbrForm";
+$focus_form_field = "last_name";
 
 require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 require_once(REL(__FILE__, "../shared/logincheck.php"));
@@ -22,34 +21,36 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 $headerWording = T("Add New");
 ?>
 
-<h3 id="searchHdr"><?php echo$headerWording;?> <?php echo T("Member"); ?></h3>
-<form id="newmbrform" name="newmbrform" method="post" action="../circ/mbr_new.php">
+<!-- ------------------------------------------------------------------------ -->
+<div id="newDiv">
+	<h3 id="searchHdr"><?php echo $headerWording;?> <?php echo T("Member"); ?></h3>
+	<form id="newmbrForm" name="newmbrForm" >
 
-<?php
-	## default entries for operator convenience
-	$sit = new Sites;
-	$lib = $sit->getOne($_SESSION['current_site']);
-	$mbr[siteid] = $lib[siteid];
-	$mbr[city] = $lib[city];
-	$mbr[state] = $lib[state];
-	$mbr[zip] = $lib[zip];
+	<?php
+		## default entries for operator convenience
+		$sit = new Sites;
+		$lib = $sit->getOne($_SESSION['current_site']);
+		$mbr[siteid] = $lib[siteid];
+		$mbr[city] = $lib[city];
+		$mbr[state] = $lib[state];
+		$mbr[zip] = $lib[zip];
+	
+		$mbrtypes = new MemberTypes;
+		$mbr[classification] = $mbrtypes->getDefault();
+	
+		include(REL(__FILE__, "../circ/mbrFields.php"));
+	?>
+	
+	</form>
+</div>
 
-	$mbrtypes = new MemberTypes;
-	$mbr[classification] = $mbrtypes->getDefault();
+<!-- ------------------------------------------------------------------------ -->
+<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
-include(REL(__FILE__, "../circ/mbrFields.php"));
-?>
-</form>
-
+<!-- ------------------------------------------------------------------------ -->
 
 <?php
 	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+
+	include_once(REL(__FILE__,'./mbrNewJs.php'));
 ?>	
-<script>
-mnf = {
-	init: function () {
-		$('<sup>*</sup>').prependTo('#newmbrform table tr:has(input.required) td:first-child');
-	}
-};
-//$(document).ready(mnf.init);
-</script>

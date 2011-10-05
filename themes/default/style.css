@@ -27,11 +27,13 @@ h1,h2,h3,h4,h5,h6 {
 	color: white; background: #ccb470;
 	border: solid black 2px;
 	margin: 2px;
+	/*
 	background-image: -webkit-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	background-image:    -moz-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	background-image:     -ms-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	background-image:      -o-linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
 	background-image: 				linear-gradient(top, hsla(0,0%,100%,.6),hsla(0,0%,100%,0));
+	*/
 	}
 h1 { font-size: 1.5em; }	/* 24/16 */
 h2 { font-size: 1.0em; }	/* 16/16 */

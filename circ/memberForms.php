@@ -53,6 +53,10 @@
 	</table>
 	</fieldset>
 	</form>
+	
+	<fieldset>
+		<input type="button" id="addNewMbrBtn" value="<?php echo T("Add New Member"); ?>" />
+	</fieldset>
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
@@ -194,99 +198,19 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="editDiv">
-<form id="editForm" name="editForm" >
+	<form id="editForm" name="editForm" >
 	<h5 class="note"> Fields marked with <span class="reqd">*</span> are required.</h5>
 	<fieldset>
 		<legend id="editHdr"></legend>
 		<table>
 		<tbody>
-			<tr>
-				<td><label for="siteid">Site</label></td>
-				<td>
-					<select name="siteid" id="siteid" >
-						<option value="1" >Home</option>
-						<option value="2"  selected="selected">LaPlante Library</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><label for="barcd_nmbr">Card Number</label></td>
-				<td><input type="text" name="barcd_nmbr" required size="20" max="20" id="barcd_nmbr" />
-						<span class="reqd">*</span></td>
-			</tr>
-			<tr>
-				<td><label for="last_name">Last Name</label></td>
-				<td><input type="text" name="last_name" required size="20" max="20" id="last_name" />
-						<span class="reqd">*</span></td>
-			</tr>
-			<tr>
-				<td><label for="first_name">First Name</label></td>
-				<td><input type="text" name="first_name" required size="20" max="20" id="first_name" />
-						<span class="reqd">*</span></td>
-			</tr>
-			<tr>
-				<td><label for="address1">Address Line 1</label></td>
-				<td><input type="text" name="address1" size="40" max="128" id="address1" /></td>
-			</tr>
-			<tr>
-				<td><label for="address2">Address Line 2</label></td>
-				<td><input type="text" name="address2" size="40" max="128" id="address2" /></td>
-			</tr>
-			<tr>
-				<td><label for="city">City</label></td>
-				<td><input type="text" name="city" size="30" max="50" id="city" /></td>
-			</tr>
-			<tr>
-				<td><label for="state">State</label></td>
-				<td>
-					<select name="state" id="state" >
-						<option value="CA" >California</option>
-						<option value="lin" >Lincoln</option>
-						<option value="ME" >Maine</option>
-						<option value="som" >Somerset</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><label for="zip">Zip Code</label></td>
-				<td><input type="text" name="zip" size="10" max="10" id="zip" /></td>
-			</tr>
-			<tr>
-				<td><label for="zip_ext">Zip Code ext</label></td>
-				<td><input type="text" name="zip_ext" size="10" max="10" id="zip_ext" /></td>
-			</tr>
-			<tr>
-				<td><label for="home_phone">Home Phone</label></td>
-				<td><input type="text" name="home_phone" required size="15" max="15" id="home_phone" />
-						<span class="reqd">*</span></td>
-			</tr>
-			<tr>
-				<td><label for="work_phone">Work Phone</label></td>
-				<td><input type="text" name="work_phone" size="15" max="15" id="work_phone" /></td>
-			</tr>
-			<tr>
-				<td><label for="email">Email Address</label></td>
-				<td><input type="email" name="email" size="40" max="128" id="email" /></td>
-			</tr>
-			<tr>
-				<td><label for="classification">Classification</label></td>
-				<td>
-					<select name="classification" id="classification" >
-						<option value="4" >business</option>
-						<option value="3" >Denied</option>
-						<option value="1" >family</option>
-						<option value="2" >friends</option>
-					</select>
-				</td>
-			</tr>
-		</tbody>
-		<tbody id="customEntries">
-		</tbody>
-	
+			<!-- all input fields are constructed empty by server -->
+			<?php include(REL(__FILE__, "../circ/mbrFields.php")); ?>	
+		</tbody>	
 		<tfoot>
 			<tr>
 				<td colspan="2">
-					<input type="hidden" id="mode" name="mode" value="updateMember">
+					<input type="hidden" id="editMode" name="mode" value="">
 					<input type="hidden" id="mbrid" name="mbrid" value="">
 				</td>
 			</tr>
@@ -294,14 +218,15 @@
 				<td colspan="2" cl>
 					<input type="submit" id="addMbrBtn" value="Add" />
 					<input type="submit" id="updtMbrBtn" value="Update" />
-					<input type="button" id="cnclMbrBtn" value="Cancel" />
+					<input type="button" class="gobkUpdtBtn" value="Go Back" />
+					<input type="button" class="gobkNewBtn" value="Go Back" />
 					<input type="button" id="deltMbrBtn" value="Delete" />
 				</td>
 			</tr>
 		</tfoot>
-		</table>
+	</table>
 	</fieldset>
-</form>
+	</form>
 </div>
 
 <!-- ------------------------------------------------------------------------ -->

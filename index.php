@@ -1,5 +1,5 @@
 <?php
-	header("Location: circ/index.php");
+	header("Location: circ/memberForms.php");
 ?>
 
 

@@ -32,6 +32,30 @@
 		$mediaTypes = new MediaTypes;
 	require_once(REL(__FILE__, "../model/Bookings.php"));
 		$bookings = new Bookings;
+		
+	#****************************************************************************
+	function mbrArray() {
+		$mbr = array(
+			'mbrid'=>$_POST["mbrid"],
+			'siteid'=>$_POST["siteid"],
+			'barcode_nmbr'=>$_POST["barcode_nmbr"],
+			'last_name'=>$_POST["last_name"],
+			'first_name'=>$_POST["first_name"],
+			'address1'=>$_POST["address1"],
+			'address2'=>$_POST["address2"],
+			'city'=>$_POST["city"],
+			'state'=>$_POST["state"],
+			'zip'=>$_POST["zip"],
+			'zip_ext'=>$_POST["zip_ext"],
+			'home_phone'=>$_POST["home_phone"],
+			'work_phone'=>$_POST["work_phone"],
+			'email'=>$_POST["email"],
+			'password'=>$_POST["password"],
+			'confirm-pw'=>$_POST["confirm-pw"],
+			'classification'=>$_POST["classification"],
+	  );
+	  return $mbr;
+	}
 
 	#****************************************************************************
 	switch ($_REQUEST[mode]) {
@@ -192,28 +216,12 @@
 		
 	//// ====================================////
 	case 'updateMember':
-		$mbr = array(
-			'mbrid'=>$_POST["mbrid"],
-			'siteid'=>$_POST["siteid"],
-			'barcode_nmbr'=>$_POST["barcode_nmbr"],
-			'last_name'=>$_POST["last_name"],
-			'first_name'=>$_POST["first_name"],
-			'address1'=>$_POST["address1"],
-			'address2'=>$_POST["address2"],
-			'city'=>$_POST["city"],
-			'state'=>$_POST["state"],
-			'zip'=>$_POST["zip"],
-			'zip_ext'=>$_POST["zip_ext"],
-			'home_phone'=>$_POST["home_phone"],
-			'work_phone'=>$_POST["work_phone"],
-			'email'=>$_POST["email"],
-			'password'=>$_POST["password"],
-			'confirm-pw'=>$_POST["confirm-pw"],
-			'classification'=>$_POST["classification"],
-	  );
+		$mbr = mbrArray();
 	  $errors = $members->update_el($mbr);
-		if (!empty($errors)) return $errors;
-		
+		if (!empty($errors)) {
+			echo json_encode($errors);
+			exit;
+		}
 		$cstmArray = array();
 		foreach ($_POST as $key => $value) {
 			if (substr($key,0,7) == 'custom_') {
@@ -222,6 +230,23 @@
 			}
 		}
 	  echo $members->setCustomFields($_POST['mbrid'], $cstmArray);
+		break;
+	case 'addNewMember':
+		$_POST["barcode_nmbr"] = $members->getNextMbr();
+		$mbr = mbrArray();
+		list($mbrid, $errors) = $members->insert_el($mbr);
+		if (!empty($errors)) {
+			echo json_encode($errors);
+			exit;
+		}
+		$cstmArray = array();
+		foreach ($_POST as $key => $value) {
+			if (substr($key,0,7) == 'custom_') {
+				$theKey = substr($key,7);
+				$cstmArray[$theKey] = $value;	 
+			}
+		}
+	  echo $members->setCustomFields($mbrid, $cstmArray);
 		break;
 	case 'd-3-L-3-tMember':
 		$members->deleteOne($_POST['mbrid']);

@@ -156,7 +156,7 @@ class Members extends CoreTable {
 		return $this->custom->getMatches(array('mbrid'=>$mbrid));
 	}
 	function setCustomFields($mbrid, $customFldsarr) {
-		deleteCustomFields($mbrid);
+		$this->deleteCustomFields($mbrid);
 		foreach ($customFldsarr as $code => $data) {
 			$fields= array(
 				mbrid=>$mbrid ,

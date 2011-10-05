@@ -7,8 +7,20 @@
 	require_once(REL(__FILE__, "../model/MemberTypes.php"));
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
+echo "fetching inputFuncs.php";	
+	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+
 	$sites_table = new Sites;
 	$sites = $sites_table->getSelect();
+
+	$lib = $sites_table->getOne($_SESSION['current_site']);
+	$mbr[siteid] = $lib[siteid];
+	$mbr[city] = $lib[city];
+	$mbr[state] = $lib[state];
+	$mbr[zip] = $lib[zip];
+	
+	$mbrtypes = new MemberTypes;
+	$mbr[classification] = $mbrtypes->getDefault();
 
 	$_SESSION[postVars] = $postVars;
 	$_SESSION[pageErrors] = $pageErrors;
@@ -46,11 +58,6 @@
 	}
 ?>
 
-<p class="note"> <?php echo T("Fields marked are required"); ?></p>
-
-<fieldset>
-<table>
-	<tbody>
 <?php
 	foreach ($fields as $title => $html) {
 	  if (($title == 'Card Number') && (($_SESSION[mbrBarcode_flg]=='N') || ($_SESSION[mbr_autoBarcode_flg]=='Y'))){
@@ -66,15 +73,3 @@
 		}
 	}
 ?>
-	</tbody>
-	
-	<tfoot>
-	<tr>
-		<td align="center" colspan="2" class="primary">
-			<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
-			<input type="button" onclick="parent.location='<?php echo $cancelLocation;?>'" value="<?php echo T("Cancel"); ?>" class="button" />
-		</td>
-	</tr>
-	</tfoot>
-</table>
-</fieldset>

@@ -16,10 +16,6 @@ mf = {
 		echo "showBarCd: true, \n";
 	else
 		echo "showBarCd: false, \n ";
-
-	echo "delConfirmMsg: '".T("Are you sure you want to delete ")."', \n";
-	echo "editHdr: '".T("Edit Member Info")."', \n";
-	echo "newHdr: '".T("Add New Member")."', \n";
 	?>
 	multiMode: false,
 	
@@ -35,9 +31,12 @@ mf = {
 				
 		$('form').bind('submit',null,mf.doSubmits);
 		$('.gobkBtn').bind('click',null,mf.rtnToSrch);
+		$('.gobkNewBtn').bind('click',null,mf.rtnToSrch);
+		$('.gobkUpdtBtn').bind('click',null,mf.rtnToMbr);
 		$('.gobkBiblioBtn').bind('click',null,mf.rtnToMbr);
 		$('.gobkAcntBtn').bind('click',null,mf.rtnToMbr);
 		$('.gobkHistBtn').bind('click',null,mf.rtnToMbr);
+		$('#addNewMbrBtn').bind('click',null,mf.doShowMbrAdd);
 		$('#mbrDetlBtn').bind('click',null,mf.doShowMbrDetails);
 		$('#mbrAcntBtn').bind('click',null,mf.doShowMbrAcnt);
 		$('#mbrHistBtn').bind('click',null,mf.doShowMbrHist);
@@ -59,10 +58,13 @@ mf = {
 	  //console.log('resetting Search Form');
 		if (!mf.showBarCd) $('#barCdSrchForm').hide();
 		$('p.error, input.error').html('').hide();
+		$('.gobkNewBtn').hide();
+		$('.gobkUpdtBtn').hide();
 	  $('#searchDiv').show();
 	  $('#listDiv').hide();
 	  $('#mbrDiv').hide();
 	  $('#biblioDiv').hide();
+	  $('#newDiv').hide();
 	  $('#editDiv').hide();
 	  $('#acntDiv').hide();
 	  $('#histDiv').hide();
@@ -73,17 +75,15 @@ mf = {
 	  $('#editRsltMsg').html('');
 		$('#ckOutBarcd').val('')
 	  mf.resetForms();
+	  $('#searchDiv').show();
 	},
 	rtnToMbr: function () {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
+	  mf.resetForms();
+	  mf.doFetchMbr();
 	  $('#searchDiv').hide();
-	  $('#listDiv').hide();
 	  $('#mbrDiv').show();
-	  $('#biblioDiv').hide();
-	  $('#editDiv').hide();
-	  $('#acntDiv').hide();
-	  $('#histDiv').hide();
 	},
 
 	doSubmits: function (e) {
@@ -109,6 +109,7 @@ mf = {
 	fetchCustomFlds: function () {
 	  $.getJSON(mf.url,{mode:'getCustomFlds'}, function(jsonData){
 	  	mf.cstmFlds = jsonData;
+/*
 			var html = '';
 			$.each(mf.cstmFlds, function (name, value) {
 				//console.log(data[item]);
@@ -118,6 +119,7 @@ mf = {
 	    	html += '</tr> \n';
 			});
 			$('#customEntries').html(html);
+*/
 		});
 	},
 	fetchAcnttranTypes: function () {
@@ -354,6 +356,34 @@ console.log('you clicked nameSrch');
 	},
 	
 	//------------------------------
+	doCheckout: function () {
+		var barcd = $.trim($('#ckoutBarcd').val());
+		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
+		$('#ckoutBarcd').val(barcd); // redisplay expanded value
+
+		var parms = {'mode':'doCheckout', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
+		$.post(mf.url, parms, function(response) {
+			if (response.substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				if (response) {
+					$('#msgArea').html(response);
+					$('#msgDiv').show();
+				} else {
+					$('#msgArea').html('Checkout Completed!');
+					$('#msgDiv').show().hide(10000);
+					$('#ckoutBarcd').val('')
+					mf.showOneMbr(mf.mbr)
+				}
+			}
+		});
+		return false;
+	},
+
+	//------------------------------
 	doHold: function () {
 		var barcd = $.trim($('#holdBarcd').val());
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
@@ -386,7 +416,6 @@ console.log('you clicked nameSrch');
 		if (!confirm(mf.delConfirmMsg+' this hold?')) return false;
 		
 		var holdid = $delBtn.next().val();
-console.log('hold Id='+holdid);		
   	var parms = {	'mode':'d-3-L-3-tHold', 'mbrid':mf.mbrid, 'holdid':holdid };
   	$.post(mf.url, parms, function(response){
 			if (($.trim(response)).substr(0,1)=='<') {
@@ -412,8 +441,11 @@ console.log('hold Id='+holdid);
 	doShowMbrDetails: function () {
 		var mbr = mf.mbr;
 		$('#addMbrBtn').hide();
-		$('#updtMbrBtn').enable();
-		$('#deltMbrBtn').enable();
+		$('#updtMbrBtn').show().enable();
+		$('#deltMbrBtn').show().enable();
+		$('.gobkUpdtBtn').show();
+		$('#editHdr').html('<?php echo T("Edit Member Info"); ?>');
+		$('#editMode').val('updateMember');
 
 		$('#mbrid').val(mbr.mbrid);
 		$('#siteid').val(mbr.siteid);
@@ -432,18 +464,30 @@ console.log('hold Id='+holdid);
 		$('#classification').val(mbr.classification);
 
 		$.each(mf.cstmFlds, function (name, value) {
+console.log(name+'==>'+value);		
 			$('#custom_'+name).val(mbr[name]);
 		});
 			
+		$('#msgArea').html('Updated!');
 		$('#mbrDiv').hide();
 		$('#editDiv').show();
 	},
-	doCheckout: function () {
-		var barcd = $.trim($('#ckoutBarcd').val());
-		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
-		$('#ckoutBarcd').val(barcd); // redisplay expanded value
-
-		var parms = {'mode':'doCheckout', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
+	doShowMbrAdd: function () {
+		$('#addMbrBtn').show();
+		$('#updtMbrBtn').hide();
+		$('#deltMbrBtn').hide();
+		$('.gobkNewBtn').show();
+		
+		$('#searchDiv').hide();
+		$('#editHdr').html('<?php T("Add New Member"); ?>');
+		$('#editMode').val('addNewMember');
+		$('#msgArea').html('Added!');
+		$('#editDiv').show();
+	},
+	
+	doMbrAdd: function () {
+		$('#msgDiv').hide();
+		var parms = $('#editForm').serialize();
 		$.post(mf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
@@ -451,24 +495,19 @@ console.log('hold Id='+holdid);
 				$('#msgDiv').show();
 			}
 			else {
-				if (response) {
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				} else {
-					$('#msgArea').html('Checkout Completed!');
-					$('#msgDiv').show().hide(10000);
-					$('#ckoutBarcd').val('')
-					mf.showOneMbr(mf.mbr)
+				if (response.substr(0,1)=='1'){
+					$('#updateMsg').html('<?php echo T('Added');?>');
+					$('#updateMsg').show();
 				}
+				$('#msgArea').html('Added!');
+				$('#msgDiv').show().hide(10000);
 			}
 		});
 		return false;
 	},
 	doMbrUpdate: function () {
-		$('#editHdr').html(mf.editHdr);
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
-		$('#mode').val('updateMember');
 		var parms = $('#editForm').serialize();
 		//console.log('updating: '+parms);
 		$.post(mf.url, parms, function(response) {
@@ -482,8 +521,10 @@ console.log('hold Id='+holdid);
 					$('#updateMsg').html('<?php echo T('Updated');?>');
 					$('#updateMsg').show();
 				}
-				$('#msgArea').html('Updated!');
+				//$('#msgArea').html('Updated!');
 				$('#msgDiv').show().hide(10000);
+				mf.doFetchMember();
+				$('#editDiv').hide();
 			}
 		});
 		$('#updtMbrBtn').disable();
@@ -495,6 +536,7 @@ console.log('hold Id='+holdid);
 			alert('<?php echo T('You must settle all outstanding loans before deleting a member.'); ?>');
 			return false;
 		}
+		var delConfirmMsg = '<?php echo T("Are you sure you want to delete "); ?>';
 		if (!confirm(mf.delConfirmMsg+ mf.mbr.first_name+' '+mf.mbr.last_name+'?')) return false;
 
   	var parms = {	'mode':'d-3-L-3-tMember', 'mbrid':mf.mbrid };

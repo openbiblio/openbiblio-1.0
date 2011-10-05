@@ -5,7 +5,7 @@
 
 function staff_menu() {
 	Nav::node('circulation', T("Circulation"), '../circ/memberForms.php');
-	Nav::node('circulation/searchform', T("Member Search"), '../circ/memberForms.php');
+	Nav::node('circulation/searchform', T("Members"), '../circ/memberForms.php');
 	Nav::node('circulation/search', T("Search Results"));
 /*
 	if (isset($_REQUEST[mbrid])) {
@@ -20,10 +20,11 @@ function staff_menu() {
 		Nav::node('circulation/mbr/account', T("Account"), '../circ/mbr_account.php?'.$params.'&reset=Y');
 		Nav::node('circulation/mbr/hist', T("Checkout History"), '../circ/mbr_history.php?'.$params);
 	}
-*/
+
 	if($_SESSION["hasCircMbrAuth"]){
 		Nav::node('circulation/new', T("New Member"), '../circ/mbrNewForm.php?reset=Y');
 	}
+*/
 	Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
 	Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
 	Nav::node('circulation/bookings/pending', T("Pending Bookings"));
