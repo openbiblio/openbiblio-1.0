@@ -5,6 +5,8 @@
 
 	require_once("../shared/common.php");
 
+	require_once(REL(__FILE__, "../model/Biblios.php"));
+		$biblios = new Biblios;
 	require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 	require_once(REL(__FILE__, "../model/History.php"));
@@ -24,15 +26,25 @@
 		$opts = Settings::getAll();
 		echo json_encode($opts);
 	  break;
-	  
-	case "doShelfItem":
+	 
+	case "getBarcdTitle":
+		$copy = $copies->getByBarcode($_GET['barcodeNmbr']);
+		if (!$copy) {
+			echo T("No copy with that barcode");
+			exit;
+		}
+		$biblio = $biblios->getOne($copy['bibid']);
+		echo json_encode(array('title'=>$biblio['marc']->getValue('245$a')));
+		break;
+		
+	case "doItemCheckin":
 		$copy = $copies->getByBarcode($_POST['barcodeNmbr']);
 		if (!$copy) {
 			echo T("No copy with that barcode");
 			exit;
 		}
 		$status = $history->getOne($copy['histid']);
-		## FIXME? book may not have been checked out, wrong valid barcode, etc.
+		## FIXME? item may not have been checked out, wrong valid barcode, etc.
 		# 		
 		$booking = $bookings->getByHistid($copy['histid']);	# May be null
 		
@@ -74,8 +86,25 @@
 		}
 		echo $msg;
 		break;
+	
+	case 'fetchShelvingCart':
+		$scart = $copies->getShelvingCart();
+		$rec = array();
+		while ($copy = $scart->next()) {
+			$biblio = $biblios->getOne($copy['bibid']);
+			$status = $history->getOne($copy['histid']);
+			$rec[] = array(
+				'bibid'=>$copy['bibid'],
+				'copyid'=>$copy['copyid'],
+				'barcd'=>$copy['barcode_nmbr'],
+				'beginDt'=>$status['status_begin_dt'],
+				'title'=>$biblio['marc']->getValue('245$a'),
+			);
+		}
+		echo json_encode($rec);
+		break;
 		
-	case 'doItemCheckin':
+	case 'doShelveItem':
 		$bibids = array();
 		$copyids = array();
 		foreach($_POST as $key => $value) {
@@ -86,14 +115,14 @@
 			}
 		}
 		if (empty($bibids)) {
-			$msg = T("No items have been selected.");
-			header("Location: ../circ/checkin_form.php?msg=".U($msg));
+			echo "<h3>".T("No items have been selected.")."</h3>";
+			//header("Location: ../circ/checkin_form.php?msg=".U($msg));
 			exit();
 		}
 		$copies->checkin($bibids, $copyids);
 		break;
 		
-	case 'doMassCheckin':
+	case 'doShelveAll':
 		$copies->massCheckin();
 		break;
 		

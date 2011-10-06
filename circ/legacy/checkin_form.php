@@ -99,6 +99,7 @@ function checkin(massCheckinFlg)
 			$biblio = $biblios->getOne($copy['bibid']);
 			$status = $history->getOne($copy['histid']);
 ?>
+{}
 	<tr>
 		<td class="primary" valign="top" align="center">
 			<input type="checkbox" name="bibid=<?php echo HURL($copy['bibid']);?>&amp;copyid=<?php echo HURL($copy['copyid']);?>" value="copyid">

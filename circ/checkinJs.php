@@ -18,6 +18,7 @@ chk = {
 		chk.initWidgets();
 		chk.resetForms();
 		chk.fetchOpts();
+		chk.fetchShelvingCart();
 		
 		$('form').bind('submit',null,function (e) {
 			e.preventDefault();
@@ -28,6 +29,8 @@ chk = {
 				case 'addToCrtBtn':		chk.doCheckin();		break;
 			}
 		});
+		$('.shelvItemBtn').bind('click',null,chk.doShelfSelected);
+		$('#barcodeNmbr').bind('change',null,chk.getCopyTitle);
 
 	},
 	//------------------------------
@@ -43,16 +46,40 @@ chk = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(chk.url,{mode:'getOpts'}, function(jsonData){
-	    chk.opts = jsonData
+	  $.getJSON(chk.url,{'mode':'getOpts'}, function(jsonData){
+	    chk.opts = jsonData;
 		});
 	},
-	//------------------------------
-	doCheckin: function () {
+	getCopyTitle: function () {
 		var barcd = $.trim($('#barcodeNmbr').val());
 		barcd = flos.pad(barcd,chk.opts.item_barcode_width,'0');
 		$('#barcodeNmbr').val(barcd); // redisplay expanded value
 
+	  $.getJSON(chk.url,{'mode':'getBarcdTitle', 'barcodeNmbr':barcd}, function(jsonData){
+	    $('#ckinTitle').val(jsonData.title);
+		});
+	},
+	
+	//------------------------------
+	doShelfSelected: function () {
+		$('#shelveMode').val('doShelveItem');
+		var parms = $('#shelvingForm').serialize();
+		$.post(chk.url, parms, function(response) {
+			if (response.substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				$('#msgArea').html('Shelved!');
+				$('#msgDiv').show().hide(10000);
+				chk.fetchShelvingCart();
+			}
+		});
+	}	,
+	
+	//------------------------------
+	doCheckin: function () {
 		var parms = $('#chekinForm').serialize();
 		$.post(chk.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
@@ -61,16 +88,36 @@ chk = {
 				$('#msgDiv').show();
 			}
 			else {
-				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html('<?php echo T('Added');?>');
-					$('#updateMsg').show();
-				}
 				$('#msgArea').html('Added!');
 				$('#msgDiv').show().hide(10000);
+				chk.fetchShelvingCart();
 			}
 		});
 		return false;
 	},
+	
+	//------------------------------
+	fetchShelvingCart: function () {
+	  $.getJSON(chk.url,{'mode':'fetchShelvingCart'}, function(jsonData){
+	    chk.cart = jsonData;
+			var txt = '';
+
+			for (var nCpy in chk.cart) {
+				var cpy = chk.cart[nCpy];
+				var beginDate = cpy.beginDt.split(' ')[0];
+				txt += '<tr>\n';
+				txt += '	<td><input type="checkbox" name="bibid='+cpy.bibid+'&amp;copyid='+cpy.copyid+'" value="copyid" /></td>\n';
+				txt += '	<td>'+beginDate+'</td>\n';
+				txt += '	<td>'+cpy.barcd+'</td>\n';
+				txt += '	<td>'+cpy.title+'</td>';
+				txt += '</tr>\n';
+			}
+			$('#shelvingList tbody').html(txt);
+			$('#shelvingList tbody.striped tr:odd td').addClass('altBG');
+			$('#shelvingList tbody.striped tr:even td').addClass('altBG2');	
+		});
+	},
+	
 };
 $(document).ready(chk.init);
 

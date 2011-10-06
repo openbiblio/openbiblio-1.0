@@ -195,16 +195,13 @@ console.log('you clicked nameSrch');
 						var outDate = cpy.booking.out_dt.split(' ')[0];
 						var dueDate = cpy.booking.due_dt.split(' ')[0];
 						html += '<tr>'
-						html += '<td>'+outDate+'</td>';
-						html += '<td>'
-								 +		'<img src="'+cpy.material_img_url+'" />'
-								 +		cpy.material_type
-								 +'	</td>';
-						html += '<td>'+cpy.barcode_nmbr+'</td>';
-						html += '<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
-						html += '<td>'+dueDate+'</td>';
-						html += '<td class="number">'+cpy.booking.days_late+'</td>';
-						html += '</td>\n';
+						html += '	<td>'+outDate+'</td>';
+						html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
+						html += '	<td>'+cpy.barcode_nmbr+'</td>';
+						html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
+						html += '	<td>'+dueDate+'</td>';
+						html += '	<td class="number">'+cpy.booking.days_late+'</td>';
+						html += '</tr>\n';
 					}
 					mf.nmbrOnloan = nCpy+1;
 					$('#chkOutList tBody').html(html);

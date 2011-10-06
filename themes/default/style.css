@@ -73,7 +73,7 @@ input, select, textarea { margin: 2px; }
 input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
 select:focus, 
 textarea:focus {
-	/* place blue shadow on all input fields */
+	/* place blue shadow on all read/write input fields in focus*/
 	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
 	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
 	}

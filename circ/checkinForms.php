@@ -21,16 +21,38 @@
 	<form id="chekinForm" name="chekinForm" >
 	<fieldset>
 		<legend><?php echo T("Check In"); ?></legend>
-		<table class="primary">
-		<tr>
-			<td nowrap="true" class="primary">
-				<label for="barcodeNmbr"><?php echo T("Barcode Number:"); ?></label>
-				<input type="text" id="barcodeNmbr" name="barcodeNmbr" size="18" />
-				<input type="hidden" id="ckinMode" name="mode" value="doShelfItem">
-				<input type="submit" id="addToCrtBtn" value="<?php echo T("Add to Shelving Cart"); ?>" />
-			</td>
-		</tr>
+		<label for="barcodeNmbr"><?php echo T("Barcode Number:"); ?></label>
+		<input type="text" id="barcodeNmbr" name="barcodeNmbr" size="18" />
+		<input type="hidden" id="ckinMode" name="mode" value="doItemCheckin">
+		<input type="submit" id="addToCrtBtn" value="<?php echo T("Add to Shelving Cart"); ?>" />
+		<br />
+		<input type="text" readonly id="ckinTitle" size="100" />
+	</fieldset>
+	</form>
+	
+	<form id="shelvingForm" name="shelvingForm" >
+	<fieldset>
+	<legend><?php echo T("Shelving Cart Contents"); ?></legend>
+		<input type="button" value="<?php echo T("Shelve selected items"); ?>" class="shelvItemBtn" />
+		<input type="button" value="<?php echo T("Shelve all items"); ?>" class="shelvAllBtn" />
+		<fieldset>
+
+		<table id="shelvingList">
+			<thead>
+				<tr>
+					<th>&nbsp;</th>
+					<th><?php echo T("Checked In"); ?></th>
+					<th><?php echo T("Barcode"); ?></th>
+					<th><?php echo T("Title"); ?></th>
+				</tr>
+			</thead>
+			<tbody class="striped" ><!-- filled in by server --></tbody>
 		</table>
+
+		<input type="hidden" name="mode" value="doShelveItem">
+		</fieldset>
+		<input type="button" value="<?php echo T("Shelve selected items"); ?>" class="shelvItemBtn" />
+		<input type="button" value="<?php echo T("Shelve all items"); ?>" class="shelvAllBtn" />
 	</fieldset>
 	</form>
 </div>
