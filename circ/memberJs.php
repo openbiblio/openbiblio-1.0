@@ -8,8 +8,6 @@
 // JavaScript Document
 //------------------------------------------------------------------------------
 
-var opacMode = true;
-
 mf = {
 	<?php
 	if ($_SESSION['mbrBarcode_flg'] == 'Y') 
@@ -29,7 +27,20 @@ mf = {
 		mf.fetchCustomFlds();
 		mf.fetchAcnttranTypes();
 				
-		$('form').bind('submit',null,mf.doSubmits);
+		$('form').bind('submit',null,function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var theId = $('input[type="submit"]:focus').attr('id');
+			//console.log('the btn id is: '+theId);
+			switch (theId) {
+				case 'barCdSrchBtn':	mf.doBarCdSearch();	break;
+				case 'nameSrchBtn':		mf.doNameSearch();	break;
+				case 'addMbrBtn':			mf.doMbrAdd();			break;
+				case 'updtMbrBtn':		mf.doMbrUpdate();		break;
+				case 'addTransBtn':		mf.doTransAdd();		break;
+			}
+		});
+		
 		$('.gobkBtn').bind('click',null,mf.rtnToSrch);
 		$('.gobkNewBtn').bind('click',null,mf.rtnToSrch);
 		$('.gobkUpdtBtn').bind('click',null,mf.rtnToMbr);
@@ -86,20 +97,6 @@ mf = {
 	  $('#mbrDiv').show();
 	},
 
-	doSubmits: function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-		var theId = $('input[type="submit"]:focus').attr('id');
-		//console.log('the btn id is: '+theId);
-		switch (theId) {
-			case 'barCdSrchBtn':	mf.doBarCdSearch();	break;
-			case 'nameSrchBtn':		mf.doNameSearch();	break;
-			case 'addMbrBtn':			mf.doMbrAdd();			break;
-			case 'updtMbrBtn':		mf.doMbrUpdate();		break;
-			case 'addTransBtn':		mf.doTransAdd();		break;
-		}
-	},
-	
 	//------------------------------
 	fetchOpts: function () {
 	  $.getJSON(mf.url,{mode:'getOpts'}, function(jsonData){

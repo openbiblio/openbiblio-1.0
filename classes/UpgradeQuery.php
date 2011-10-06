@@ -3,8 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-require_once("../classes/InstallQuery.php");
-
 class UpgradeQuery extends InstallQuery {
   function UpgradeQuery() {
     # Call query constructor so database connection gets made
@@ -46,6 +44,7 @@ class UpgradeQuery extends InstallQuery {
       '0.4.0' => '_upgrade040_e',
       '0.5.2' => '_upgrade052_e',
       '0.6.0' => '_upgrade060_e',
+      '0.7.0' => '_upgrade070_e',
     );
     $tmpPrfx = "obiblio_upgrade_";
     # FIXME - translate upgrade messages
@@ -83,7 +82,8 @@ class UpgradeQuery extends InstallQuery {
   # $tmpPrfx is a prefix which may be used for temporary tables.
   # Return value is the same as performUpgrade_e()
   
-  /* Upgrade 0.3.0 to 0.4.0 */
+  /* ======================================================================== */
+	/* Upgrade 0.3.0 to 0.4.0 */
   function _upgrade030_e($prfx, $tmpPrfx) {
     # 0.3.0 was English only
     $this->freshInstall('en', false, '0.4.0', $tmpPrfx);
@@ -138,8 +138,9 @@ class UpgradeQuery extends InstallQuery {
    
     # biblio_status -> biblio_copy conversion
     $sql = "insert into ".$tmpPrfx."biblio_copy "
-."(bibid,  copyid,copy_desc,barcode_nmbr,  status_cd,                status_begin_dt,                       due_back_dt,   mbrid) select"
-." b.bibid,null,  null,     b.barcode_nmbr,ifnull(bs.status_cd,'in'),ifnull(bs.status_begin_dt,b.create_dt),bs.due_back_dt,bs.mbrid from "
+			."(bibid,copyid,copy_desc,barcode_nmbr,status_cd,status_begin_dt,due_back_dt,mbrid) select"
+			." b.bibid,null,null,b.barcode_nmbr,ifnull(bs.status_cd,'in'),ifnull(bs.status_begin_dt,"
+			." b.create_dt),bs.due_back_dt,bs.mbrid from "
           .$prfx."biblio as b "
           ."left join ".$prfx."biblio_status as bs on b.bibid=bs.bibid";
     $this->exec($sql);
@@ -242,6 +243,8 @@ class UpgradeQuery extends InstallQuery {
     $notices = array('Any existing hold requests have been forgotten.');
     return array($notices, NULL); # no error
   }
+  
+  /* ======================================================================== */
   /* Upgrade 0.4.0 to 0.5.2 */
   function _upgrade040_e($prfx, $tmpPrfx) {
     $settings = $this->exec('select * from '.$prfx.'settings ');
@@ -314,6 +317,8 @@ class UpgradeQuery extends InstallQuery {
     $notices = array('All staff passwords have been reset to be equal to the corresponding usernames.');
     return array($notices, NULL); # no error
   }
+  
+  /* ======================================================================== */
   /* Upgrade 0.5.2 to 0.6.0 */
   function _upgrade052_e($prfx, $tmpPrfx) {
     $this->exec('alter table '.$prfx.'biblio_copy '
@@ -326,6 +331,8 @@ class UpgradeQuery extends InstallQuery {
     $notices = array();
     return array($notices, NULL);
   }
+  
+  /* ======================================================================== */
   /* Upgrade 0.6.0 to 0.7.0 */
   function _upgrade060_e($prfx, $tmpPrfx) {
     $this->executeSqlFile('../install/0.7.0/sql/biblio_copy_fields.sql', $prfx);
@@ -334,6 +341,185 @@ class UpgradeQuery extends InstallQuery {
     $notices = array();
     return array($notices, NULL);
   }
-}
+  
+  /* ======================================================================== */
+  /* Upgrade 0.7.0 to 1.0b */
+  function _upgrade070_e($prfx, $tmpPrfx) {
+  
+  	#### this function is here solely for clarity - intended for internal use only 
+  	function __reset_strings() {
+    	#### the existing biblio & biblio_fields tables will be re-organized
+    	#		 so here we simply prepare the skeletons
+			$bibSql = "INSERT INTO `$tmpPrfx`.`biblio` "
+							. "(`bibid`,`create_dt`,`last_change_dt`,`last_change_userid`,`material_cd`,`collection_cd`,`opac_flg`) "
+							. "VALUES ";
+			$fldSql = "INSERT INTO `$tmpPrfx`.`biblio_field` "
+							. "(`bibid`,`fieldid`,`seq`,`tag`,`ind1_cd`,`ind2_cd`,`field_data`,`display`) "
+							. "VALUES ";
+			$subSql = "INSERT INTO `$tmpPrfx`.`biblio_subfield` "
+							. "(`bibid`,`fieldid`,`subfieldid`,`seq`,`subfield_cd`,`subfield_data`) "
+							. "VALUES ";
+		} 
+		
+    $this->__freshInstall('en', false, '1.0b', $tmpPrfx);
+    reset_strings();	// local function
+						
+		#### scan all existing biblio entries in biblio_id order
+		$sql = "SELECT * FROM `$prfx`.`biblio` ORDER BY `bibid` ";
+		$bibs = $this->select($sql);
+		$n = 0; $fldid = 1; $subid = 1;
 
+		while (($bib = $bibs->next()) != NULL) {
+			# we will be posting to the db in blocks of 100 records to avoid server overload
+			$n++;
+			$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'
+										.$bib[last_change_userid].'", "'.$bib[material_cd].'", "'
+										.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
+
+			### get those fields & sub-fields previosly kept in biblio table
+			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", "0", "245", NULL, NULL, NULL, NULL),';
+			$bib[title] = preg_replace("/'/","\\'",$bib[title]);
+			$bib[title] = preg_replace('/"/','\\"',$bib[title]);
+ 			$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[title].'"),'; $subid++;
+			$bib[title_remainder] = preg_replace("/'/","\\'",$bib[title_remainder]);
+			$bib[title_remainder] = preg_replace('/"/','\\"',$bib[title_remainder]);
+			if ($bib[title_remainder]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "b", "'.$bib[title_remainder].'"),'; $subid++;}
+			$bib[responsibility_stmt] = preg_replace("/'/","\\'",$bib[responsibility_stmt]);
+			$bib[responsibility_stmt] = preg_replace('/"/','\\"',$bib[responsibility_stmt]);
+			if ($bib[responsibility_stmt]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "c", "'.$bib[responsibility_stmt].'"),'; $subid++;}
+  	  $fldid++;
+  	  
+			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "100", NULL, NULL, NULL, NULL),';  
+			$bib[author] = preg_replace("/'/","''",$bib[author]);
+			$bib[author] = preg_replace("/\\\\/"," ",$bib[author]);
+			if ($bib[author]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[author].'"),'; $subid++;}
+	    $fldid++;
+    
+			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';
+			if ($bib[call_nmbr1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[call_nmbr1].'"),'; $subid++;}
+	    $fldid++;
+
+			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "650", NULL, NULL, NULL, NULL),';  
+			$bib[topic1] = preg_replace("/'/","''",$bib[topic1]);
+			if ($bib[topic1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[topic1].'"),'; $subid++;}
+			$bib[topic2] = preg_replace("/'/","''",$bib[topic2]);
+			if ($bib[topic2]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 1, "a", "'.$bib[topic2].'"),'; $subid++;}
+			$bib[topic3] = preg_replace("/'/","''",$bib[topic3]);
+			if ($bib[topic3]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 2, "a", "'.$bib[topic3].'"),'; $subid++;}
+			$bib[topic4] = preg_replace("/'/","''",$bib[topic4]);
+			if ($bib[topic4]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 3, "a", "'.$bib[topic4].'"),'; $subid++;}
+			$bib[topic5] = preg_replace("/'/","''",$bib[topic5]);
+			if ($bib[topic5]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 4, "a", "'.$bib[topic5].'"),'; $subid++;}
+			$fldid++;
+    
+			### get each biblio_field entry for this biblio in MARC tag order
+			$sql = "SELECT * FROM `$prfx`.`biblio_field` WHERE (`bibid`=$bib[bibid]) ORDER BY `tag` ";
+			$flds = $this->select($sql);
+			while ($fld = $flds->next()) {
+			  $tag = sprintf("%03d",$fld[tag]);
+				$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
+				$fld[field_data] = preg_replace("/'/","''",$fld[field_data]);
+				$fld[field_data] = preg_replace('/"/','',$fld[field_data]);
+				$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld[subfield_cd].'", "'.$fld[field_data].'"),'; $subid++;
+	      $fldid++;
+			}
+
+			if ($n % 100 == 99) {
+				# remove trailing ','
+				$bibSql = substr($bibSql,0,-1);
+				$fldSql = substr($fldSql,0,-1);
+				$subSql = substr($subSql,0,-1);
+
+				# process this batch
+				$rslt = $db->Act($bibSql);	
+				$rslt = $db->Act($fldSql);	
+				$rslt = $db->Act($subSql);
+			
+				# interim progress report
+				echo "$n biblio records written.<br />";
+				echo "$fldid field records written.<br />";
+				echo "$subid sub-field records written.<br />";
+								
+				__reset_strings();	// reset skeleton strings for next batch
+			}
+			//if ($n=1)break; ## for bebug only
+		}
+		
+		### final results for main biblio tables
+		echo "$n biblio records written.<br />";
+		echo "$fldid field records written.<br />";
+		echo "$subid sub-field records written.<br />";  
+		#### =========== end of the biblio, biblio_field, biblio_subfield processing =========== ####
+		
+    $this->exec('insert into '.$tmpPrfx.'biblio_copy'
+    						.'(`bibid`,`copyid`,`create_dt`,`barcode_nmbr`,`copy_desc`)'
+								.' select  `bibid`,`copyid`,`create_dt`,`barcode_nmbr`,`copy_desc`'
+								.' from biblio_copy');        
+		$this->exec('insert into '.$tmpPrfx.'biblio_copy_fields'
+								.' select * from biblio_copy_fields' );      
+    // no change - biblio_copy_fields_dm
+    // no change - biblio_hold
+    // no change - biblio_status_dm
+    $this->exec('insert into '.$tmpPrfx.'biblio_status_hist'
+    						.' (`histid`,`bibid`,`copyid`,`status_cd`,`status_begin_dt`)'
+                .' select NULL,`bibid`,`copyid`,`status_cd`,`status_begin_dt`'
+								.' from biblio_status_hist' );
+		// new table from full install - biblio_stock		
+		// new table from full install - booking		
+		// new table from full install - booking_member		
+		// new table from full install - calendar		
+		// new table from full install - calendar_dm		
+		// new table from full install - collection_circ
+		// new table from full install - collection_dist
+		// new table from full install - collection_dm
+    // no change - cutter
+		// new table from full install - images
+		$this->exec('replace into '.$tmpPrfx.'lookup_hosts'
+								.' select * from lookup_hosts' );
+		$this->exec('replace into '.$tmpPrfx.'lookup_settings'
+								.' select * from lookup_settings' );
+		// new table from full install - material_fields
+		$this->exec('replace into '.$tmpPrfx.'material_type_dm'
+								.' select * from material_type_dm' );
+		$this->exec('replace into '.$tmpPrfx.'mbr_classify_dm'
+								.' select * from mbr_classify_dm' );
+		$this->exec('insert into '.$tmpPrfx.'member'
+								.' select * from member' );
+		$this->exec('insert into '.$tmpPrfx.'member_account'
+								.' select * from member_account' );
+		$this->exec('replace into '.$tmpPrfx.'member_fields'
+								.' select * from member_fields' );
+		$this->exec('replace into '.$tmpPrfx.'member_fields_dm'
+								.' select * from member_fields_dm' );
+		$this->exec('insert into '.$tmpPrfx.'member_fields_dm'
+								.' select * from member_fields_dm' );
+		// === start block
+		$row = $this->select1('select * from settings');
+		$sql = 'replace into '.$tmpPrfx.'settings'.'(`name`,`value`)';	
+		foreach ($row as $key => $val) {
+			$sql .= "(`$key`, '$val'),";
+		}
+		$this->exec($sql);
+		// === end block
+		// new table from full install - site
+		$this->exec('insert into '.$tmpPrfx.'staff'
+								.' select * from staff' );
+		// new table from full install - state_dm
+		$this->exec('replace into '.$tmpPrfx.'theme'
+								.' select * from theme' );
+		$this->exec('replace into '.$tmpPrfx.'transaction_type_dm'
+								.' select * from transaction_type_dm' );
+		// new table from full install - transentries
+		// new table from full install - transkeys
+		// new table from full install - translinksectionlocale
+		// new table from full install - translocales
+		// new table from full install - transsections
+    // no change - usmarc_block_dm
+    // no change - usmarc_indicator_dm
+    // no change - usmarc_subfield_dm
+    // no change - usmarc_tag_dm
+					 
+		#### ========= 1.0 table conversion complete ====================== ####
+ 	}
+}
 ?>

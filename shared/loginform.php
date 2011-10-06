@@ -47,14 +47,6 @@
 <form name="loginform" method="post" action="../shared/login.php">
 <fieldset>
 <table>
-	<?php //if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) { ?>
-	<!--thead>
-		<tr>
-			<td colspan="2"><font color="red"><?php echo T("Browser not supported"); ?></font></td>
-		</tr>
-	</thead-->
-	<?php //} ?>
-	
 	<tbody>
 	<tr>
 		<td><label for="username"><?php echo T("Username:"); ?></label></td>

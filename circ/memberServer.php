@@ -58,7 +58,7 @@
 	}
 
 	#****************************************************************************
-	switch ($_REQUEST[mode]) {
+	switch ($_REQUEST['mode']) {
 	case 'getOpts':
 		$opts = Settings::getAll();
 		echo json_encode($opts);
