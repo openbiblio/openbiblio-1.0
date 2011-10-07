@@ -30,7 +30,7 @@
 	<table>
 		<tr>
 			<td nowrap="true">
-				<label for="searchByBarcd"><?php echo T("Barcode Number:");?></label>
+				<label for="searchByBarcd"><?php echo T("Library Card Number");?>:</label>
 				<input type="text" id="searchByBarcd" name="searchByBarcd" size="20" />
 				<input type="submit" id="barCdSrchBtn" value="<?php echo T("Search"); ?>" />
 			</td>
@@ -45,8 +45,8 @@
 	<table>
 		<tr>
 			<td nowrap="true">
-				<label for="searchByName"><?php echo T("Name Contains:");?></label>
-				<input type="text" id="searchByName" name="searchByName" size="20" />
+				<label for="nameFrag"><?php echo T("Last Name Contains");?>:</label>
+				<input type="text" id="nameFrag" name="nameFrag" size="20" />
 				<input type="submit" id="nameSrchBtn" value="<?php echo T("Search"); ?>" />
 			</td>
 		</tr>
@@ -169,23 +169,16 @@
 	<tr>
 	  <td colspan="3">
 			<fieldset>
-				<span id="resultsArea"></span>
-				<fieldset>
-					<table id="listTbl">
-						<tbody id="srchRslts" class="striped">
-						</tbody>
-					</table>
-				</fieldset>
+				<table id="listTbl">
+					<tbody id="srchRslts" class="striped">filled by server</tbody>
+				</table>
 			</fieldset>
 		</td>
 	</tr>
 	</tbody>
 	<tfoot>
 	<tr>
-		<td>
-			<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" />
-		</td>
-		<td>&nbsp;</td>
+		<td><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" /></td>
 		<td width="80%" align="right">
 			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
 			<span class="rsltQuan"></span>

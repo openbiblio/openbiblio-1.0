@@ -547,8 +547,10 @@ class PDF {
 			$this->_out('<</Type /Encoding /BaseEncoding /WinAnsiEncoding /Differences ['.$diff.']>>');
 			$this->_out('endobj');
 		}
-		$mqr=get_magic_quotes_runtime();
-		set_magic_quotes_runtime(0);
+		if (version_compare(phpversion(),'5.3') < 0) {
+			$mqr=get_magic_quotes_runtime();
+			set_magic_quotes_runtime(0);
+		}
 		foreach ($this->FontFiles as $file=>$info) {
 			//Font file embedding
 			$this->_newobj();
@@ -585,7 +587,9 @@ class PDF {
 			$this->_putstream($font);
 			$this->_out('endobj');
 		}
-		set_magic_quotes_runtime($mqr);
+		if (version_compare(phpversion(),'5.3') < 0) {
+			set_magic_quotes_runtime($mqr);
+		}
 		foreach($this->fonts as $name=>$font)
 		{
 			//Font objects

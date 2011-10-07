@@ -86,6 +86,7 @@
 		$trans = $transtypes->getSelect();
 		echo json_encode($trans);
 		break;
+/*
 	case 'getMediaType':
 		break;
 	case 'getHistory':
@@ -94,6 +95,7 @@
 		break;
 	case 'getBookings':
 		break;
+*/
 		
 	//// ====================================////
 	case 'doGetMbr':
@@ -116,7 +118,15 @@
 		$mbr = array_merge($mbrDflt, $mbrCstm);
 		echo json_encode($mbr);
 	  break;
-
+	case 'doNameFragSearch':
+		$rows = $members->getMbrByName($_GET['nameFrag']);
+		$mbrs = array();
+		while ($row = $rows->next()) {
+			$mbrs[] = $row;
+		}
+		echo json_encode($mbrs);
+		break;
+		
 	//// ====================================////
 	case 'getAcntActivity':
 		$transactions = $acct->getByMbrid($_GET['mbrid']);

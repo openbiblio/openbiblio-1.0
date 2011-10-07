@@ -137,14 +137,36 @@ mf = {
 		$('#searchByBarcd').val(barcd); // redisplay expanded value
 		
 	  mf.srchType = 'barCd';
-	  $('p.error').html('').hide();
 	  var params = 'mode=doBarcdSearch&barcdNmbr='+barcd;
 	  $.get(mf.url,params, mf.handleMbrResponse);
 		return false;
 	},
 	
 	doNameSearch: function () {
-console.log('you clicked nameSrch');
+	  var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val()};
+	  $.get(mf.url,params, function (jsonInpt) {
+			mf.mbrs = $.parseJSON(jsonInpt);
+			var html = '';
+			for (var nMbr in mf.mbrs) {
+				var mbr = mf.mbrs[nMbr];
+				html += '<tr>\n';
+				html += '	<td>'+mbr.barcode_nmbr+'</td>\n';
+				html += '	<td><a href="#" id="'+mbr.mbrid+'">'+mbr.last_name+', '+mbr.first_name+'</a></td>\n';
+				html += '	<td>'+mbr.home_phone+'</td>\n';
+				html += '</tr>\n';
+			}
+			$('#srchRslts').html(html);
+	    $('#searchDiv').hide();
+		  $('#listDiv').show();
+			$('#srchRslts tr:odd td').addClass('altBG');
+			$('#srchRslts tr:even td').addClass('altBG2');	
+			$('#srchRslts a').bind('click',null,function (e) {
+				e.preventDefault(); e.stopPropagation();
+				mf.mbrid = e.target.id;
+				mf.doFetchMember();
+		  	$('#listDiv').hide();
+			});			
+		});
 	},
 	
 	doFetchMember: function () {

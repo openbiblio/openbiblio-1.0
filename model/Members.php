@@ -66,6 +66,13 @@ class Members extends CoreTable {
 		return $this->db->select1($sql);
 	}
 	
+	function getMbrByName($nameFrag) {
+		$frag = '%'.$nameFrag.'%';
+		$sql = $this->db->mkSQL("SELECT * FROM member WHERE last_name LIKE %Q "
+													 ."ORDER BY last_name", $frag);
+		return $this->db->select($sql);
+	}
+	
 	function validate_el($mbr, $insert) {
 		$errors = array();
 		foreach ($this->reqdFlds as $req) {
@@ -89,6 +96,7 @@ class Members extends CoreTable {
 		}
 		return $errors;
 	}
+	
 	function loginMbrid($id, $password) {
 		if (!$id or !$password) {
 			return NULL;
