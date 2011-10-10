@@ -3,6 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+#### --- For those unable to set their time zone in PHP.ini --- ####
+#### for valid entries see: http://www.php.net/manual/en/timezones.php
+//date_default_timezone_set ( "America/New_York" );
+
 # Forcibly disable register_globals
 if (ini_get('register_globals')) {
 	foreach ($_REQUEST as $k=>$v) {
