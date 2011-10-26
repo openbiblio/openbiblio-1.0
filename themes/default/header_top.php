@@ -12,12 +12,8 @@
 
 <head>	
 <!-- charset MUST be specified within first 512 char of page to be effective -->
-<?php // change default code character set if specified
-//	if (Settings::get('charset') && (Settings::get('charset') != "")) { 
-//		echo "<meta charset=".H(Settings::get('charset'))." \" />";
-//	} else {
+<?php 
 		echo '<meta charset="'.$CharSet.'" />';
-//	}
 ?>
 
 <title>
@@ -49,7 +45,7 @@ if (!isset($doing_install) or !$doing_install) {
 }
 ?>
 </title>
-<meta name="description" content="OpenBiblio ver 1.0 (wip)">
+<meta name="description" content="OpenBiblio ver 1.0a">
 <meta name="author" content="Luuk Jansen">
 <meta name="author" content="Fred LaPlante">
 <meta name="author" content="Micah Stetson">
@@ -65,7 +61,10 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- All other JavaScript is placed at the end of <body> (see footer.php) 
 		 to match industry best practices and to improve overall performance -->
 
+<!-- This style sheet reduces all browsers to a common default base -->
 <link rel="stylesheet" href="../shared/base2.css" />
+
+<!-- OpenBiblio style is set here -->
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
 	<?php

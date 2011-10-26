@@ -82,6 +82,9 @@ input[required]::after { content:"*"; color: red; }
 input[type=checkbox] { padding-left: 5px; }
 input:disabled { cursor:not-allowed; }
 
+/* styling for javascript stop-gap placeholder for browsers without native support */
+.placeholder { color: #aaa; }
+
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 input[type=button], input[type=submit], button {
 	padding: 2px 4px;
