@@ -22,9 +22,9 @@ bcf = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,bcf.doNewFields);
-		$('#editForm').bind('submit',null,bcf.doSubmits);
-		$('#cnclBtn').bind('click',null,bcf.resetForms);
+		$('#showForm .newBtn').on('click',null,bcf.doNewFields);
+		$('#editForm').on('submit',null,bcf.doSubmits);
+		$('#cnclBtn').on('click',null,bcf.resetForms);
 
 		bcf.resetForms()
 	  $('#msgDiv').hide();
@@ -66,7 +66,7 @@ bcf = {
 			}
 			$('#showList tBody').html(html);
 
-			$('.editBtn').bind('click',null,bcf.doEdit);
+			$('.editBtn').on('click',null,bcf.doEdit);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
 		});

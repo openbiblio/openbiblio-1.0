@@ -6,7 +6,7 @@
  * SRU 1.1 and CQL 1.1 specifications . As written it uses the
  * 'Dublin Core' (dc) query schema and the 'marcxml' record schema for response.
  */
-	require_once (REL(__FILE__, 'olSruFunc.php'));	## support functions
+
 	$displayXML = FALSE;
 
 	$process = array();
@@ -15,15 +15,9 @@
 	$sruRcrdSchema = 'marcxml';
 //	$sruRcrdSchema = 'mods';
 	
-	#### SRU Create query using data from $_POST[] and .../srchVals.php
-	$queryStr = "$sruQry$lookupVal";
-	if (!empty($lookupVal2)) $queryStr .= " and $sruQry2$lookupVal2";
-	if (!empty($lookupVal3)) $queryStr .= " and $sruQry3lookupVal3";
-	if (!empty($lookupVal4)) $queryStr .= " and $sruQry4$lookupVal4";
-	if (!empty($lookupVal5)) $queryStr .= " and $sruQry5$lookupVal5";
  	$qry ="operation=searchRetrieve"
  			 ."&version=1.1"
-			 ."&query=$queryStr"
+			 ."&query=$sQuery"
 		 	 ."&recordPacking=xml"
 			 ."&maximumRecords=$postVars[maxHits]"
 			 ."&recordSchema=$sruRcrdSchema"
@@ -32,35 +26,33 @@
 
 	#### send query to each host in turn and get response
 	$resp = array();
-	for($i = 0; $i < $postVars[numHosts]; $i++) {
+	for($i = 0; $i < $postVars['numHosts']; $i++) {
 		//echo "host: ".$postVars[hosts][$i][host]."<br />";
+		if ($postVars['hosts'][$i]['service'] == 'Z3950') {
+			echo "<h3>Sorry! You have selected a Z3950 service HOST, but<br />"
+					."YAZ is not installed in your server's PHP interpreter.</h3>";
+			exit;
+		}
 		
-		$header = "POST /".$postVars['hosts'][$i][db]." HTTP/1.1\r\n".
-					 		"HOST ".$postVars['hosts'][$i][host]."\r\n".
+		$header = "GET /".$postVars['hosts'][$i]['db']." HTTP/1.1\r\n".
+					 		"HOST ".$postVars['hosts'][$i]['host']."\r\n".
   					 	"Content-Type: application/x-www-form-urlencoded; charset=iso-8859-1\r\n".
   					 	"Content-Length: ".strlen($qry)."\r\n\r\n";
 		//echo "header: $header <br />";
 
-		/* For SOAP POST requests
-			http.request("POST", "/path/to/my/webservice", body=xml, headers = {
-	    	"Host": "myservername",
-	    	"Content-Type": "text/xml; charset=UTF-8",
-	    	"Content-Length": len(xml)
-			})
-		*/
-
 		### establish a socket for this host
-		@list($theURL, $port) = explode(':', $postVars[hosts][$i][host]);
-		@list($theHost, $subDir) = explode('/', $theURL);
+		$theHost = $postVars['hosts'][$ptr]['host'];
+		$port = $postVars['hosts'][$ptr]['port'];
 		if(!isset($port) || empty($port)) $port = 7090;  // default port
 		//echo "url: '$theHost:$port'<br />timeout=$postVars[timeout]seconds<br />";
-		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars[timeout]);
+		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars['timeout']);
+		$text = $header . $qry;
 		if(!$fp) {
 			echo "<p class=\"error\">you requested:</p>";
 			echo "<fieldset>".nl2br($text)."</fieldset>";
 			echo "<p class=\"error\">via socket on port $port. </p>";
 			echo "<h4>Please verify the correctness of your host URL and "
-					."that your server's firewall allows access to the web via the port specified.<br />
+					."that your server's firewall allows access to the web via the port specified.<br /><br />
 					If you have been sucessful recently, it is possible your internet connection 
 					is temporarily broken or slower than usual.<h4>";
 			//trigger_error("Socket error: $errMsg ($errNmbr)");
@@ -68,10 +60,8 @@
 		}
 
 		### send the query
-		$text = $header . $qry;
-//$text = 'copac?operation=searchRetrieve&version=1.1&query=dc.title%3d%22railway%22&maximumRecords=1&recordSchema=mods';		
 		fputs($fp, $text);
-		//echo 	nl2br($text)."<br />";
+echo "to host=>".nl2br($text)."<br />";
 		
 		### Added timeout on the stream itself (also in loop)- LJ
 		stream_set_timeout($fp, $postVars[timeout]);
@@ -83,7 +73,9 @@
     $headerdone = false;
     while(!feof($fp) && (!$info['timed_out'])) {
       $line = fgets($fp, 2048);
+//echo "line: <br />";print_r($line);echo "<br />";  	
 	  	$info = stream_get_meta_data($fp);
+//echo "info: <br />";print_r($info);echo "<br />";  	
       if (!line) {
       	echo "Failure while reading response from $theHost <br />";
       	break;
@@ -96,39 +88,36 @@
       }
       else {
         // http header lines
-        //echo "$line <br />";
+				//echo "$line <br />";
 			}
   	}
-  	if (!empty($hitList)) $resp[$i] = $hitList;
+  	if (!empty($hitList)) $hits[$i] = $hitList;
   	fclose($fp);
-//echo "from $theHost:<br />";print_r($resp[$i]);echo "<br />---------<br />";
+echo "summary:<br />";print_r($hits[$i]);echo "<br />";  	
 	}
-//echo "complete SRU raw reply:<br />";print_r($resp);echo "<br />---------<br />";
-//$displayXML=true;
-//showXML($resp,$displayXML); //for debugging purposes
-
-	### parse downloaded XML and create
-	$xml_parser = xml_parser_create();
 	$ttlHits = 0;
+
+/*
+	### create and parse downloaded XML
+	$xml_parser = xml_parser_create();
 	for($i = 0; $i < $postVars[numHosts]; $i++) {
-	  if (!empty($resp[$i])) {
-			xml_parse_into_struct($xml_parser, $resp[$i], $hostRecords[$i]);
+	  if (!empty($hits[$i])) {
+			xml_parse_into_struct($xml_parser, $hits[$i], $hostRecords[$i]);
 
-			//echo "host #$i strucured:<br />";print_r($hostRecords[$i]);echo "<br />---------<br />";
-
-			list($num_records, $marc[$i]) = get_marc_fields($hostRecords[$i]);
-			$msg = $marc[$i][0]['diagMsg'];
+			list($num_records, $marc[$i]) = get_marc_fields_from_xml($hostRecords[$i]);
+			$msg = $rslt[$i][0]['diagMsg'];
 			if (($num_Records == 0) && (!empty($msg))) {
 				echo "Host Diagnostic Response: $msg<br />\n";
 				echo "----<br />Details...<br />\n";
 				echo $qry."<br />\n";
-				print_r($resp);echo "<br />\n";
+				print_r($rslt);echo "<br />\n";
 				exit;
 			}
-			//echo "host #$i marc:<br />";print_r($marc[$i]);echo "<br />---------<br />";
+			//echo "host #$i rslt:<br />";print_r($rslt[$i]);echo "<br />---------<br />";
 			$ttlHits += $num_records;
 		}
 	}
 	xml_parser_free($xml_parser);
+*/
 
 ?>

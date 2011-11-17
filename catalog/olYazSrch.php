@@ -6,53 +6,30 @@
 		$marcFlds = array();
 		$subFlds = array();
 
-		#### create z39.50 RPN-style query string
-		$zQuery = '@attr 1=' . $srchBy . ' ' . $lookupVal;
-		if (!empty($lookupVal2))  {
-			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy2 . ' ' . $lookupVal2;
-		}
-		if (!empty($lookupVal3))  {
-			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy3 . ' ' . $lookupVal3;
-		}
-		if (!empty($lookupVal4))  {
-			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy4 . ' ' . $lookupVal4;
-		}
-		if (!empty($lookupVal5))  {
-			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy5 . ' ' . $lookupVal5;
-		}
-		//echo 'z39.50 rpn-style query specification is: ' . htmlspecialchars($zQuery) . '<br />';
-		
-		#### create SRU CQL-style query string
-		$sQuery = "$sruQry$lookupVal";
-		if (!empty($lookupVal2)) $sQuery .= " and $sruQry2$lookupVal2";
-		if (!empty($lookupVal3)) $sQuery .= " and $sruQry3lookupVal3";
-		if (!empty($lookupVal4)) $sQuery .= " and $sruQry4$lookupVal4";
-		if (!empty($lookupVal5)) $sQuery .= " and $sruQry5$lookupVal5";
-		//echo 'SRU rpn-style query specification is: ' . htmlspecialchars($sQuery) . '<br />';
-
 		#### pagination search limits - may be user sperified in future;
 		$startAt = 1;
 		$nmbr = $postVars['maxHits'];
 		//echo "return results from #$startAt to #". ($startAt+$nmbr-1) ."<br />";
 		
 		//echo "using $postVars[numHosts] host(s)<br />";
-		for ($ptr=0; $ptr<$postVars[numHosts]; $ptr++) {
-			$aHost = $postVars[hosts][$ptr][host];
-			$aPort = $postVars[hosts][$ptr][port];
+		for ($ptr=0; $ptr<$postVars['numHosts']; $ptr++) {
+			$aHost = $postVars['hosts'][$ptr]['host'];
+			$aPort = $postVars['hosts'][$ptr]['port'];
 			$aUrl  = $aHost.':'.$aPort;
 			
-			$yazOpts['user'] = $postVars[hosts][$ptr][user];
-			$yazOpts['password'] = $postVars[hosts][$ptr][pw];
-			$aSvc	 = $postVars[hosts][$ptr][service];
-			if ($aSvc != 'Z3950') {
-				$yazOpts['sru'] = 'get'; // legal values are get,post,soap
-				$srchType = 'cql';
-				$query = $sQuery;
-			}
-			else {
+			$yazOpts['user'] = $postVars['hosts'][$ptr]['user'];
+			$yazOpts['password'] = $postVars['hosts'][$ptr]['pw'];
+			$aSvc	 = $postVars[hosts][$ptr]['service'];
+
+			if ($aSvc == 'Z3950') {
 				$yazOpts['sru'] = ''; // not used for z39.50
 				$srchType = 'rpn';
 				$query = $zQuery;
+			}
+			else {	//SRU/SRW
+				$yazOpts['sru'] = 'get'; // legal values are get,post,soap
+				$srchType = 'cql';
+				$query = $sQuery;
 			}
 			
 			$connOK = yaz_connect($aUrl, $yazOpts );
@@ -65,10 +42,10 @@
 				yaz_database($id[$ptr], $postVars['hosts'][$ptr]['db']);
 				yaz_syntax($id[$ptr], $postVars['hosts'][$ptr]['syntax']);
 				yaz_element($id[$ptr], "F");
-//				if (! yaz_range($id[$ptr], (int)$startAt, (int)$nmbr) ) {
-//					echo "Host $aUrl does not appear to accept limits on number of hits.<br />";
-//				}
-
+				//if (! yaz_range($id[$ptr], (int)$startAt, (int)$nmbr) ) {
+				//	echo "Host $aUrl does not appear to accept limits on number of hits.<br />";
+				//}
+				yaz_range($id[$ptr], (int)$startAt, (int)$nmbr);
 				//echo "sending: $query <br />";
 				if (! yaz_search($id[$ptr], $srchType, $query)) 
 					trigger_error(T("lookup_badQuery")."<br />", E_USER_NOTICE);

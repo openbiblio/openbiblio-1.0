@@ -23,10 +23,10 @@ stf = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,stf.doNewStaff);
-		$('#editForm').bind('submit',null,stf.doSubmits);
-		$('#cnclBtn').bind('click',null,stf.resetForms);
-		$('#pwdChgForm').bind('submit',null,stf.doSetStaffPwd);
+		$('#showForm .newBtn').on('click',null,stf.doNewStaff);
+		$('#editForm').on('submit',null,stf.doSubmits);
+		$('#cnclBtn').on('click',null,stf.resetForms);
+		$('#pwdChgForm').on('submit',null,stf.doSetStaffPwd);
 
 		stf.resetForms()
 	  $('#msgDiv').hide();
@@ -79,8 +79,8 @@ stf = {
 			}
 			$('#showList tBody').html(html);
 
-			$('.editBtn').bind('click',null,stf.doEdit);
-			$('.pwdBtn').bind('click',null,stf.doPwd);
+			$('.editBtn').on('click',null,stf.doEdit);
+			$('.pwdBtn').on('click',null,stf.doPwd);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
 		});

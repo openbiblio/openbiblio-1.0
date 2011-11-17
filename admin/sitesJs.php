@@ -22,9 +22,9 @@ sit = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,sit.doNewSite);
-		$('#editForm').bind('submit',null,sit.doSubmits);
-		$('#cnclBtn').bind('click',null,sit.resetForms);
+		$('#showForm .newBtn').on('click',null,sit.doNewSite);
+		$('#editForm').on('submit',null,sit.doSubmits);
+		$('#cnclBtn').on('click',null,sit.resetForms);
 
 		sit.resetForms()
 	  $('#msgDiv').hide();
@@ -72,7 +72,7 @@ sit = {
 			$('#showList tBody').html(html);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
-			$('.editBtn').bind('click',null,sit.doEdit);
+			$('.editBtn').on('click',null,sit.doEdit);
 		});
 	},
 	fetchStates: function () {

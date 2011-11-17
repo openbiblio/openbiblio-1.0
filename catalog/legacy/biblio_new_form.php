@@ -33,7 +33,7 @@
 		<!--
 bnf = {
 	init: function () {
-	  $('#materialCd').bind('change',null,bnf.matCdReload);
+	  $('#materialCd').on('change',null,bnf.matCdReload);
 //		$('#biblioFldTbl tbody#marcBody tr:not(.hidden):even').addClass('altBG');
 	},
 	matCdReload: function (){

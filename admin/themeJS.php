@@ -24,12 +24,12 @@ thm = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#chngBtn').bind('click',null,thm.doChngTheme);
-		$('#showForm .newBtn').bind('click',null,thm.doNewTheme);
-		$('#addBtn').bind('click',null,thm.doAddTheme);
-		$('#updtBtn').bind('click',null,thm.doUpdateTheme);
-		$('#cnclBtn').bind('click',null,thm.resetForms);
-		$('#deltBtn').bind('click',null,thm.doDeleteTheme);
+		$('#chngBtn').on('click',null,thm.doChngTheme);
+		$('#showForm .newBtn').on('click',null,thm.doNewTheme);
+		$('#addBtn').on('click',null,thm.doAddTheme);
+		$('#updtBtn').on('click',null,thm.doUpdateTheme);
+		$('#cnclBtn').on('click',null,thm.resetForms);
+		$('#deltBtn').on('click',null,thm.doDeleteTheme);
 
 		thm.resetForms()
 	  $('#msgDiv').hide();
@@ -85,8 +85,8 @@ thm = {
 			}
 			$('#showList tBody').html(html);
 
-			$('.editBtn').bind('click',null,thm.doEdit);
-			$('.copyBtn').bind('click',null,thm.doCopy);
+			$('.editBtn').on('click',null,thm.doEdit);
+			$('.copyBtn').on('click',null,thm.doCopy);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
 		});

@@ -41,7 +41,7 @@ plm = {
 		plm.url = 'plugMgrSrvr.php';
 		plm.editForm = $('#workForm');
 
-		$('#pluginOK').bind('change',null,plm.doToggleList)
+		$('#pluginOK').on('change',null,plm.doToggleList)
 
 		plm.fetchPluginInfo();
 		plm.resetForms();
@@ -109,7 +109,7 @@ plm = {
 				html = "<h5>No Plugins found</h5>"
 			}
 				$('#pluginList').html(html)
-				$('#pluginList input').bind('click',null,plm.doUpdateList);
+				$('#pluginList input').on('click',null,plm.doUpdateList);
 			plm.checkPluginOK();
 		});
 	},

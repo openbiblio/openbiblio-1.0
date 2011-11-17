@@ -22,8 +22,8 @@ ins = {
 		//$('.reqd sup').css('color','red');
 		//$('#updateMsg').hide();
 
-		$('#newBtn').bind('click',null,ins.doNewInstall);
-		$('#updtBtn').bind('click',null,ins.doDbUpdate);
+		$('#newBtn').on('click',null,ins.doNewInstall);
+		$('#updtBtn').on('click',null,ins.doDbUpdate);
 
 		ins.resetForms()
 		ins.connectDb();

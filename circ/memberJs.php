@@ -27,7 +27,7 @@ mf = {
 		mf.fetchCustomFlds();
 		mf.fetchAcnttranTypes();
 				
-		$('form').bind('submit',null,function (e) {
+		$('form').on('submit',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 			var theId = $('input[type="submit"]:focus').attr('id');
@@ -41,20 +41,20 @@ mf = {
 			}
 		});
 		
-		$('.gobkBtn').bind('click',null,mf.rtnToSrch);
-		$('.gobkNewBtn').bind('click',null,mf.rtnToSrch);
-		$('.gobkUpdtBtn').bind('click',null,mf.rtnToMbr);
-		$('.gobkBiblioBtn').bind('click',null,mf.rtnToMbr);
-		$('.gobkAcntBtn').bind('click',null,mf.rtnToMbr);
-		$('.gobkHistBtn').bind('click',null,mf.rtnToMbr);
-		$('#addNewMbrBtn').bind('click',null,mf.doShowMbrAdd);
-		$('#mbrDetlBtn').bind('click',null,mf.doShowMbrDetails);
-		$('#mbrAcntBtn').bind('click',null,mf.doShowMbrAcnt);
-		$('#mbrHistBtn').bind('click',null,mf.doShowMbrHist);
-		$('#chkOutBtn').bind('click',null,mf.doCheckout);
-		$('#holdBtn').bind('click',null,mf.doHold);
-		$('#deltMbrBtn').bind('click',null,mf.doDeleteMember);
-		$('#cnclMbrBtn').bind('click',null,function(){
+		$('.gobkBtn').on('click',null,mf.rtnToSrch);
+		$('.gobkNewBtn').on('click',null,mf.rtnToSrch);
+		$('.gobkUpdtBtn').on('click',null,mf.rtnToMbr);
+		$('.gobkBiblioBtn').on('click',null,mf.rtnToMbr);
+		$('.gobkAcntBtn').on('click',null,mf.rtnToMbr);
+		$('.gobkHistBtn').on('click',null,mf.rtnToMbr);
+		$('#addNewMbrBtn').on('click',null,mf.doShowMbrAdd);
+		$('#mbrDetlBtn').on('click',null,mf.doShowMbrDetails);
+		$('#mbrAcntBtn').on('click',null,mf.doShowMbrAcnt);
+		$('#mbrHistBtn').on('click',null,mf.doShowMbrHist);
+		$('#chkOutBtn').on('click',null,mf.doCheckout);
+		$('#holdBtn').on('click',null,mf.doHold);
+		$('#deltMbrBtn').on('click',null,mf.doDeleteMember);
+		$('#cnclMbrBtn').on('click',null,function(){
 			mf.doFetchMember(); 
 			mf.rtnToMbr();
 		});
@@ -160,7 +160,7 @@ mf = {
 		  $('#listDiv').show();
 			$('#srchRslts tr:odd td').addClass('altBG');
 			$('#srchRslts tr:even td').addClass('altBG2');	
-			$('#srchRslts a').bind('click',null,function (e) {
+			$('#srchRslts a').on('click',null,function (e) {
 				e.preventDefault(); e.stopPropagation();
 				mf.mbrid = e.target.id;
 				mf.doFetchMember();
@@ -229,7 +229,7 @@ mf = {
 					$('#chkOutList tBody').html(html);
 					$('table tbody.striped tr:odd td').addClass('altBG');
 					$('table tbody.striped tr:even td').addClass('altBG2');	
-					$('#chkOutList a').bind('click',null,function (e) {
+					$('#chkOutList a').on('click',null,function (e) {
 						e.preventDefault(); e.stopPropagation();
 						idis.init(mf.opts); // be sure all is ready	
 						idis.doBibidSearch(e.target.id);
@@ -277,8 +277,8 @@ mf = {
 					$('#holdList tBody').html(html);
 					$('table tbody.striped tr:odd td').addClass('altBG');
 					$('table tbody.striped tr:even td').addClass('altBG2');
-					$('.holdDelBtn').bind('click',null,mf.doDelHold);
-					$('#holdList a').bind('click',null,function (e) {
+					$('.holdDelBtn').on('click',null,mf.doDelHold);
+					$('#holdList a').on('click',null,function (e) {
 						e.preventDefault(); e.stopPropagation();
 						idis.init(mf.opts); // be sure all is ready	
 						idis.doBibidSearch(e.target.id);
@@ -329,7 +329,7 @@ mf = {
 					$('#tranList tBody').html(html);
 					$('#tranList tbody.striped tr:odd td').addClass('altBG');
 					$('#tranList tbody.striped tr:even td').addClass('altBG2');
-					$('.acntTranDelBtn').bind('click',null,mf.doDelAcntTrans);
+					$('.acntTranDelBtn').on('click',null,mf.doDelAcntTrans);
 				};			
 			}
 		});

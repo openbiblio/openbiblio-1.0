@@ -24,7 +24,7 @@ sn = {
 			}
 		});
 
-		$('#nav ul').parent().bind('click',null,sn.changeSection)
+		$('#nav ul').parent().on('click',null,sn.changeSection)
 								.addClass('parent');
 								
 		$('ul#nav li:has(a.strong) ul').addClass('show open');

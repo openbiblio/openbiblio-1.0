@@ -22,10 +22,10 @@ col = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('.newBtn').bind('click',null,col.doNewCollection);
-		$('#editForm').bind('submit',null,col.doSubmits);
-		$('#cnclBtn').bind('click',null,col.resetForms);
-	  $('#type').bind('change',null,function () {
+		$('.newBtn').on('click',null,col.doNewCollection);
+		$('#editForm').on('submit',null,col.doSubmits);
+		$('#cnclBtn').on('click',null,col.resetForms);
+	  $('#type').on('change',null,function () {
 	  	//Collection['type'] = $('#type').val();
 			col.setTypeDisplay();
 		});
@@ -129,7 +129,7 @@ col = {
 			}
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
-			$('.editBtn').bind('click',null,col.doEdit);
+			$('.editBtn').on('click',null,col.doEdit);
 		});
 	},
 

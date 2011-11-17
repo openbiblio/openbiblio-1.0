@@ -38,7 +38,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#all').bind('click',null,function () {
+		$('#all').on('click',null,function () {
 		  if ($('#all:checked').val() == 'all') {
 				$('checkbox.rowCkBox').attr('checked','CHECKED');
 			}

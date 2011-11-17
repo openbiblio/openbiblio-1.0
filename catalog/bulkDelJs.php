@@ -10,7 +10,7 @@ bbd = {
 		bbd.url = 'catalogServer.php';
 		bbd.fetchCrntMbrInfo();
 
-		$('#bulkDel_btn').bind('click',null,bbd.doBulkDelete);
+		$('#bulkDel_btn').on('click',null,bbd.doBulkDelete);
 
 		// begin processing;
 		bbd.resetForms();

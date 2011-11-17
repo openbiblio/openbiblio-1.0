@@ -23,9 +23,9 @@ med = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,med.doNewMedia);
-		$('#editForm').bind('submit',null,med.doSubmits);
-		$('#cnclBtn').bind('click',null,med.resetForms);
+		$('#showForm .newBtn').on('click',null,med.doNewMedia);
+		$('#editForm').on('submit',null,med.doSubmits);
+		$('#cnclBtn').on('click',null,med.resetForms);
 
 		med.resetForms()
 	  $('#msgDiv').hide();
@@ -74,8 +74,8 @@ med = {
 			}
 			$('#showList tBody').html(html);
 
-			$('.editBtn').bind('click',null,med.doEdit);
-			/*$('#marcBtn').bind('click',null,med.doMarcFlds);*/
+			$('.editBtn').on('click',null,med.doEdit);
+			/*$('#marcBtn').on('click',null,med.doMarcFlds);*/
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
 		});

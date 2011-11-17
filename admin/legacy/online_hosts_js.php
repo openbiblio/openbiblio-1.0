@@ -16,11 +16,11 @@ hed = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,hed.doNewHost);
-		$('#hostForm tFoot #addBtn').bind('click',null,hed.doAddHost);
-		$('#hostForm tFoot #updtBtn').bind('click',null,hed.doUpdateHost);
-		$('#hostForm tFoot #cnclBtn').bind('click',null,hed.resetForms);
-		$('#hostForm tFoot #deltBtn').bind('click',null,hed.doDeleteHost);
+		$('#showForm .newBtn').on('click',null,hed.doNewHost);
+		$('#hostForm tFoot #addBtn').on('click',null,hed.doAddHost);
+		$('#hostForm tFoot #updtBtn').on('click',null,hed.doUpdateHost);
+		$('#hostForm tFoot #cnclBtn').on('click',null,hed.resetForms);
+		$('#hostForm tFoot #deltBtn').on('click',null,hed.doDeleteHost);
 
 		hed.fetchHosts();
 		hed.resetForms()
@@ -73,7 +73,7 @@ hed = {
 			$('#showList tBody').html(html);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
-			$('.editBtn').bind('click',null,hed.doEdit);
+			$('.editBtn').on('click',null,hed.doEdit);
 		});
 	},
 	

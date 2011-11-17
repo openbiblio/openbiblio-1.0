@@ -16,9 +16,9 @@ hed = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,hed.doNewHost);
-		$('#hostForm').bind('submit',null,hed.doSubmits);
-		$('#hostForm tFoot #cnclBtn').bind('click',null,hed.resetForms);
+		$('#showForm .newBtn').on('click',null,hed.doNewHost);
+		$('#hostForm').on('submit',null,hed.doSubmits);
+		$('#hostForm tFoot #cnclBtn').on('click',null,hed.resetForms);
 
 		hed.fetchHosts();
 		hed.fetchServiceList();
@@ -72,7 +72,7 @@ hed = {
 			$('#showList tBody').html(html);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
-			$('.editBtn').bind('click',null,hed.doEdit);
+			$('.editBtn').on('click',null,hed.doEdit);
 		});
 	},
 	fetchServiceList: function () {

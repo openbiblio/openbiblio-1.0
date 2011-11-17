@@ -102,7 +102,7 @@
 <script>
 	$(document).ready(function () {
 		$('#advancedSrch').hide();
-		$('#advanceQ').bind('click',null,function(){
+		$('#advanceQ').on('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
 				$('#advancedSrch').show();
 			else

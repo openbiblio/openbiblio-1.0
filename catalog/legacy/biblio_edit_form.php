@@ -67,7 +67,7 @@
 		<!--
 		bef = {
 			init: function () {
-			  $('#materialCd').bind('change',null,bef.matCdReload);
+			  $('#materialCd').on('change',null,bef.matCdReload);
 				$('#biblioFldTbl tbody#marcBody tr:not(.hidden):even').addClass('altBG');
 			},
 			matCdReload: function (){

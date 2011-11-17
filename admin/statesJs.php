@@ -22,9 +22,9 @@ st = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,st.doNewState);
-		$('#editForm').bind('submit',null,st.doSubmits);
-		$('#cnclBtn').bind('click',null,st.resetForms);
+		$('#showForm .newBtn').on('click',null,st.doNewState);
+		$('#editForm').on('submit',null,st.doSubmits);
+		$('#cnclBtn').on('click',null,st.resetForms);
 
 		st.fetchStates();
 		st.resetForms()
@@ -72,7 +72,7 @@ st = {
 			$('#showList tBody').html(html);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
-			$('.editBtn').bind('click',null,st.doEdit);
+			$('.editBtn').on('click',null,st.doEdit);
 		});
 	},
 

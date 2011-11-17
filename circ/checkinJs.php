@@ -20,7 +20,7 @@ chk = {
 		chk.fetchOpts();
 		chk.fetchShelvingCart();
 		
-		$('form').bind('submit',null,function (e) {
+		$('form').on('submit',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 			var theId = $('input[type="submit"]:focus').attr('id');
@@ -29,8 +29,8 @@ chk = {
 				case 'addToCrtBtn':		chk.doCheckin();		break;
 			}
 		});
-		$('.shelvItemBtn').bind('click',null,chk.doShelfSelected);
-		$('#barcodeNmbr').bind('change',null,chk.getCopyTitle);
+		$('.shelvItemBtn').on('click',null,chk.doShelfSelected);
+		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);
 
 	},
 	//------------------------------

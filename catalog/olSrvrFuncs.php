@@ -61,7 +61,11 @@
 		}
 		
 		for ($hit = 1; $hit<=$hits[$host]; $hit++) {
-			$rcdFmt = yaz_record($id[$host],$hit,"syntax");
+			if (function_exists(yaz_connect))
+				$rcdFmt = yaz_record($id[$host],$hit,"syntax");	// z3950 in use
+			else 
+				$rcdFmt = 'XML';	// simple sru used
+				
 			if ($rcdFmt != 'XML') {
 				$ar = yaz_record($id[$host],$hit,"array");
 				if (! empty($ar)) {

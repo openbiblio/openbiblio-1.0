@@ -32,42 +32,42 @@ bs = {
 		// search form
 		$('#advancedSrch').hide();
 		$('#advanceQ:checked').val(['N'])
-		$('#advanceQ').bind('click',null,function(){
+		$('#advanceQ').on('click',null,function(){
 			if ($('#advanceQ:checked').val() == 'Y')
 				$('#advancedSrch').show();
 			else
 				$('#advancedSrch').hide();
 		});
-		$('#srchByBarcd').bind('click',null,bs.doBarcdSearch);
-		$('#srchByPhrase').bind('click',null,bs.doPhraseSearch);
+		$('#srchByBarcd').on('click',null,bs.doBarcdSearch);
+		$('#srchByPhrase').on('click',null,bs.doPhraseSearch);
 		bs.srchBtnClr = $('#srchByBarcd').css('color');
-		$('#searchBarcd').bind('keyup',null,bs.checkSrchByBarcdBtn);
-		$('#searchText').bind('keyup',null,bs.checkSrchByPhraseBtn);
+		$('#searchBarcd').on('keyup',null,bs.checkSrchByBarcdBtn);
+		$('#searchText').on('keyup',null,bs.checkSrchByPhraseBtn);
 
 		// for the search results section
-		$('#addNewBtn').bind('click',null,bs.makeNewCopy);
-		$('#addList2CartBtn').bind('click',null,bs.doAddListToCart);
-		$('#addItem2CartBtn').bind('click',null,bs.doAddItemToCart);
-		$('#biblioListDiv .gobkBtn').bind('click',null,bs.rtnToSrch);
-		$('#biblioListDiv .goPrevBtn').bind('click',null,function () {bs.goPrevPage(bs.previousPageItem);});
-		$('#biblioListDiv .goNextBtn').bind('click',null,function () {bs.goNextPage(bs.nextPageItem);});
+		$('#addNewBtn').on('click',null,bs.makeNewCopy);
+		$('#addList2CartBtn').on('click',null,bs.doAddListToCart);
+		$('#addItem2CartBtn').on('click',null,bs.doAddItemToCart);
+		$('#biblioListDiv .gobkBtn').on('click',null,bs.rtnToSrch);
+		$('#biblioListDiv .goPrevBtn').on('click',null,function () {bs.goPrevPage(bs.previousPageItem);});
+		$('#biblioListDiv .goNextBtn').on('click',null,function () {bs.goNextPage(bs.nextPageItem);});
 		$('#biblioListDiv .goNextBtn').disable();
 		$('#biblioListDiv .goPrevBtn').disable();
 
 		// for the single biblio display screen
-		$('#photoAddBtn').bind('click',null,function () {
+		$('#photoAddBtn').on('click',null,function () {
 			bs.doPhotoAdd(bs.theBiblio);
 		});
-		$('#photoEditBtn').bind('click',null,function () {
+		$('#photoEditBtn').on('click',null,function () {
 			bs.doPhotoEdit(bs.theBiblio);
 		});
-		$('#biblioEditBtn').bind('click',null,function () {
+		$('#biblioEditBtn').on('click',null,function () {
 			bs.doItemEdit(bs.theBiblio);
 		});
-		$('#biblioDeleteBtn').bind('click',null,function () {
+		$('#biblioDeleteBtn').on('click',null,function () {
 			bs.doItemDelete(bs.theBiblio);
 		});
-		$('#marcBtn').bind('click',null,function () {
+		$('#marcBtn').on('click',null,function () {
 		  //console.log('swapping state to MARC column');
 		  var marcFld$ = $('#biblioDiv td.filterable');
 		  if (marcFld$.is(':hidden')) {
@@ -79,7 +79,7 @@ bs = {
 				$('#marcBtn').val(bs.showMarc);
 			}
 		});
-		$('#biblioDiv .gobkBtn').bind('click',null,function () {
+		$('#biblioDiv .gobkBtn').on('click',null,function () {
 		  if (bs.multiMode) {
 				if (bs.srchType = 'phrase')
 					bs.doPhraseSearch();
@@ -93,20 +93,20 @@ bs = {
 		});
 
 		// for the item edit and online update functions
-	  $('#onlnUpdtBtn').bind('click',null,function (){
+	  $('#onlnUpdtBtn').on('click',null,function (){
 			$('#onlnDoneBtn').show();
 			$('#onlnUpdtBtn').hide();
 			$('#itemEditorDiv td.filterable').show();
 			bs.fetchOnlnData();
 		});
-	  $('#onlnDoneBtn').bind('click',null,function (){
+	  $('#onlnDoneBtn').on('click',null,function (){
 			$('#itemEditorDiv td.filterable').hide();
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
 		});
 		$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
-											 .bind('click',null,bs.doItemUpdate);
-		$('.itemGobkBtn').bind('click',null,function () {
+											 .on('click',null,bs.doItemUpdate);
+		$('.itemGobkBtn').on('click',null,function () {
    		$('#itemEditorDiv').hide();
 		 	$('#biblioDiv').show();
 		});
@@ -117,7 +117,7 @@ bs = {
 			$('#barcode_nmbr').disable();
 		}
 		// if user changes his/her mind
-		$('#autobarco').bind('change',null,function (){
+		$('#autobarco').on('change',null,function (){
 		  if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
 				bs.doGetBarcdNmbr();
@@ -129,17 +129,17 @@ bs = {
 		});
 
 		// for the copy editor screen
-		$('#barcode_nmbr').bind('change',null,bs.chkBarcdForDupe);
+		$('#barcode_nmbr').on('change',null,bs.chkBarcdForDupe);
 		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
-		$('#copySubmitBtn').bind('click',null,bs.doCopyUpdate);
+		$('#copySubmitBtn').on('click',null,bs.doCopyUpdate);
 		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
-		$('#copyCancelBtn').bind('click',null,bs.rtnToBiblio);
+		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
 		
 		// for the photo editor screen.availHeight
-		$('.gobkFotoBtn').bind('click',null,bs.rtnToBiblio);
-		$('#updtFotoBtn').bind('click',null,bs.doUpdatePhoto);
-		$('#deltFotoBtn').bind('click',null,bs.doDeletePhoto);
-		$('#addFotoBtn').bind('click',null,bs.doAddNewPhoto);
+		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);
+		$('#updtFotoBtn').on('click',null,bs.doUpdatePhoto);
+		$('#deltFotoBtn').on('click',null,bs.doDeletePhoto);
+		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
 
 		// begin processing; last item MUST include a call to bs.doAltStart()
 		bs.resetForms();
@@ -441,7 +441,7 @@ bs = {
 		obib.reStripe2('listTbl','odd');
 
 	  // this button is created dynamically, so duplicate binding is not possible
-		$('.moreBtn').bind('click',null,bs.getPhraseSrchDetails);
+		$('.moreBtn').on('click',null,bs.getPhraseSrchDetails);
 		
 		// handle next / prev buttons
 		if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
@@ -614,8 +614,8 @@ bs = {
 				obib.reStripe2('copyList','odd');
 
 				// dynamically created buttons
-				$('.editBtn').bind('click',null,bs.doCopyEdit);
-				$('.deltBtn').bind('click',{'copyid':crntCopy.copyid},bs.doCopyDelete);
+				$('.editBtn').on('click',null,bs.doCopyEdit);
+				$('.deltBtn').on('click',{'copyid':crntCopy.copyid},bs.doCopyDelete);
 	  });
 	},
 
@@ -849,7 +849,7 @@ bs = {
 				}
 
 				// this button created dynamicly by server
-				$('#marcBody input.accptBtn').bind('click',null,bs.doFldUpdt);
+				$('#marcBody input.accptBtn').on('click',null,bs.doFldUpdt);
 			} // else
 		}); // .post
 	},
@@ -926,7 +926,7 @@ bs = {
 		
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').bind('click',null,function () {
+		$('#copySubmitBtn').on('click',null,function () {
 			bs.doCopyUpdate();
 			// Moved to function
 			//bs.rtnToBiblio();
@@ -953,7 +953,7 @@ bs = {
 
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').bind('click',null,function () {
+		$('#copySubmitBtn').on('click',null,function () {
 			bs.doCopyNew();
 			//bs.rtnToBiblio();
 			return false;

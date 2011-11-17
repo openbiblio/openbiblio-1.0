@@ -36,7 +36,7 @@
 <script>
 cef = {
 	init: function () {
-	  $("#type").bind('change',null,cef.switchType);
+	  $("#type").on('change',null,cef.switchType);
 	  cef.switchType();
 	},
 	switchType: function () {

@@ -32,15 +32,15 @@ mtl = {
 		mtl.configBtn = $('#configBtn');
 		mtl.saveBtn = $('#saveBtn');
 		
-		$('#typeList').bind('change',null,mtl.doShowForm)
-		$('#configBtn').bind('click',null,mtl.doConfigLayout);
-		$('#saveBtn').bind('click',null,mtl.doSaveLayout);
-		$('#goBackBtn').bind('click',null,mtl.doReloadList);
-		$('#editCnclBtn').bind('click',null,mtl.doBackToList);
-		$('#editDeltBtn').bind('click',null,mtl.doDeleteFldset);
-		$('#editUpdtBtn').bind('click',null,mtl.doUpdateFldset);
-		$('#marcBlocks').bind('change',null,mtl.fetchMarcTags);
-		$('#marcTags').bind('change',null,mtl.fetchMarcFields);
+		$('#typeList').on('change',null,mtl.doShowForm)
+		$('#configBtn').on('click',null,mtl.doConfigLayout);
+		$('#saveBtn').on('click',null,mtl.doSaveLayout);
+		$('#goBackBtn').on('click',null,mtl.doReloadList);
+		$('#editCnclBtn').on('click',null,mtl.doBackToList);
+		$('#editDeltBtn').on('click',null,mtl.doDeleteFldset);
+		$('#editUpdtBtn').on('click',null,mtl.doUpdateFldset);
+		$('#marcBlocks').on('change',null,mtl.fetchMarcTags);
+		$('#marcTags').on('change',null,mtl.fetchMarcFields);
 
 		mtl.fetchMatlTypes();
 		mtl.resetForms();
@@ -306,7 +306,7 @@ mtl = {
 				$('#existing').html(html2);
 				
 				obib.reStripe();
-				$('.editBtn').bind('click',null,mtl.doEdit);
+				$('.editBtn').on('click',null,mtl.doEdit);
 			}
 			mtl.enableBtn('configBtn');
 		});

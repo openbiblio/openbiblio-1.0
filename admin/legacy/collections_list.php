@@ -100,7 +100,7 @@
 <script>
 cl = {
 	init: function () {
-		//$('form').bind('submit',null,function(){
+		//$('form').on('submit',null,function(){
 		//	alert('you hit a submit button');
 		//	return false;
 		//});

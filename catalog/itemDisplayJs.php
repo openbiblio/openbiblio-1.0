@@ -152,8 +152,8 @@ idis = {
 				obib.reStripe2('copyList','odd');
 
 				// dynamically created buttons
-				$('.editBtn').bind('click',null,idis.doCopyEdit);
-				$('.deltBtn').bind('click',{'copyid':crntCopy.copyid},idis.doCopyDelete);
+				$('.editBtn').on('click',null,idis.doCopyEdit);
+				$('.deltBtn').on('click',{'copyid':crntCopy.copyid},idis.doCopyDelete);
 	  });
 	},
 

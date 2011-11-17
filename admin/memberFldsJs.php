@@ -22,11 +22,11 @@ mbf = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		$('#showForm .newBtn').bind('click',null,mbf.doNewFields);
-		$('#editForm').bind('submit',null,mbf.doSubmits);
-		//$('#updtBtn').bind('click',null,mbf.doUpdateFields);
-		$('#cnclBtn').bind('click',null,mbf.resetForms);
-		//$('#deltBtn').bind('click',null,mbf.doDeleteFields);
+		$('#showForm .newBtn').on('click',null,mbf.doNewFields);
+		$('#editForm').on('submit',null,mbf.doSubmits);
+		//$('#updtBtn').on('click',null,mbf.doUpdateFields);
+		$('#cnclBtn').on('click',null,mbf.resetForms);
+		//$('#deltBtn').on('click',null,mbf.doDeleteFields);
 
 		mbf.resetForms()
 	  $('#msgDiv').hide();
@@ -68,7 +68,7 @@ mbf = {
 			}
 			$('#showList tBody').html(html);
 
-			$('.editBtn').bind('click',null,mbf.doEdit);
+			$('.editBtn').on('click',null,mbf.doEdit);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
 		});

@@ -24,7 +24,7 @@
 <script>
 cnf = {
 	init: function () {
-	  $("#type").bind('change',null,cnf.switchType);
+	  $("#type").on('change',null,cnf.switchType);
 	  cnf.switchType();
 	},
 	switchType: function () {

@@ -104,7 +104,7 @@
 				$sruQry4 = "$sruIndexTerm.geographicName=";
 			}	else if ($srchBy4 == "31") {
 				$srchByName4 = 'Pub Date';
-				$sruQry4 = "dc.date=";
+				$sruQry4 = "$sruIndexTerm.date=";
 			}	else if ($srchBy4 == "1016") {
 				$srchByName4 = 'Keyword';
 				$sruQry4 = "$sruIndexTerm.subject=";
@@ -122,12 +122,36 @@
 				$sruQry5 = "$sruIndexTerm.geographicName=";
 			}	else if ($srchBy5 == "31") {
 				$srchByName5 = 'Pub Date';
-				$sruQry5 = "dc.date=";
+				$sruQry5 = "$sruIndexTerm.date=";
 			}	else if ($srchBy5 == "1016") {
 				$srchByName5 = 'Keyword';
 				$sruQry5 = "$sruIndexTerm.subject=";
 			}
 			$lookupVal5 = '"' . $lookupVal5 . '"';
 		}
+
+		#### create z39.50 RPN-style query string
+		$zQuery = '@attr 1=' . $srchBy . ' ' . $lookupVal;
+		if (!empty($lookupVal2))  {
+			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy2 . ' ' . $lookupVal2;
+		}
+		if (!empty($lookupVal3))  {
+			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy3 . ' ' . $lookupVal3;
+		}
+		if (!empty($lookupVal4))  {
+			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy4 . ' ' . $lookupVal4;
+		}
+		if (!empty($lookupVal5))  {
+			$zQuery = '@and ' . $zQuery . ' @attr 1=' . $srchBy5 . ' ' . $lookupVal5;
+		}
+		//echo 'z39.50 rpn-style query specification is: ' . htmlspecialchars($zQuery) . '<br />';
+		
+		#### create SRU CQL-style query string
+		$sQuery = "$sruQry$lookupVal";
+		if (!empty($lookupVal2)) $sQuery .= " and $sruQry2$lookupVal2";
+		if (!empty($lookupVal3)) $sQuery .= " and $sruQry3lookupVal3";
+		if (!empty($lookupVal4)) $sQuery .= " and $sruQry4$lookupVal4";
+		if (!empty($lookupVal5)) $sQuery .= " and $sruQry5$lookupVal5";
+		//echo 'SRU cql-style query specification is: ' . htmlspecialchars($sQuery) . '<br />';
 
 ?>

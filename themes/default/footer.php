@@ -35,7 +35,7 @@ obib = {
 		// suggest this should be in code local to desired function unless widely used -- Fred
 		// bind the confirmLink routine to all <a> tags on the current form
 		if (obib.confirmLinks) {
-			$('a').bind('click',null,obib.confirmLink);
+			$('a').on('click',null,obib.confirmLink);
 		}
 
 		// stop-gap placeholder for browsers without native support 

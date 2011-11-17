@@ -45,7 +45,7 @@ ie = {
 	init: function () {
 		ie.itemSubmitBtn = $('#itemSubmitBtn');
 	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');
-	  $('tbody#marcBody input.reqd').bind('change',null,ie.validate);
+	  $('tbody#marcBody input.reqd').on('change',null,ie.validate);
 	},
 
 	disableItemSubmitBtn: function () {

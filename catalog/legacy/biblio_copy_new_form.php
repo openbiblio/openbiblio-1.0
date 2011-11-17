@@ -44,7 +44,7 @@ bcnf = {
 			$('#barcode_nmbr').disable();
 		}
 		// if user changes his/her mind
-		$('#autobarco').bind('change',null,function (){
+		$('#autobarco').on('change',null,function (){
 		  if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
 			}

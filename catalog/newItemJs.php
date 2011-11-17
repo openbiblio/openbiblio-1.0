@@ -24,19 +24,19 @@ ni = {
 		ni.resetForm();
 
 		// New On-Line Entry Item - search form functions
-    $('.criteria').bind('change',null,ni.enableSrchBtn);
-    $('#manualBtn').bind('click',null, function() {
+    $('.criteria').on('change',null,ni.enableSrchBtn);
+    $('#manualBtn').on('click',null, function() {
 			ni.doClearItemForm();
 			ni.doMakeItemForm('');
 			$('#searchDiv').hide();
 			$('#selectionDiv').show();
 		});
     
-		$('#quitBtn').bind('click',null,ni.doAbandon);
-		$('#retryBtn').bind('click',null,ni.doBackToSrch);
-		$('#choiceBtn1').bind('click',null,ni.doBackToSrch);
-		$('#choiceBtn2').bind('click',null,ni.doBackToSrch);
-		$('#lookupForm').bind('submit',null,function(e){
+		$('#quitBtn').on('click',null,ni.doAbandon);
+		$('#retryBtn').on('click',null,ni.doBackToSrch);
+		$('#choiceBtn1').on('click',null,ni.doBackToSrch);
+		$('#choiceBtn2').on('click',null,ni.doBackToSrch);
+		$('#lookupForm').on('submit',null,function(e){
 			e.preventDefault();
 			e.stopPropagation();
 			ni.doValidate_n_Srch();
@@ -45,8 +45,8 @@ ni = {
 
 		// New Manual Entry Item
 		// modify original biblioFields form to better suit our needs
-		$('#biblioDiv .itemGobkBtn').bind('click',null,ni.doBackToSrch);
-		$('#newBiblioForm').bind('submit',null,function(e){
+		$('#biblioDiv .itemGobkBtn').on('click',null,ni.doBackToSrch);
+		$('#newBiblioForm').on('submit',null,function(e){
 			e.preventDefault();
 			e.stopPropagation();
 			ni.doInsertNew();
@@ -55,21 +55,21 @@ ni = {
 
 		// for the copy editor functions
 		// to handle startup condition
-		$('#copyForm').bind('submit',null,function (e) {
+		$('#copyForm').on('submit',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
 			ni.doCopyNew();
 			return false;
 		});
-		$('#copyCancelBtn').bind('click',null,function () {
+		$('#copyCancelBtn').on('click',null,function () {
 			return ni.doBackToSrch();
 		});
-		$('#barcode_nmbr').bind('change',null,ni.chkBarcdForDupe);
+		$('#barcode_nmbr').on('change',null,ni.chkBarcdForDupe);
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
 		}
 		// if user changes his/her mind
-		$('#autobarco').bind('change',null,function (){
+		$('#autobarco').on('change',null,function (){
 		  if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
 			}
@@ -82,8 +82,8 @@ ni = {
 		//$('#selectionDiv font').css('color','red');
 		//$('#selectionDiv sup').css('color','red');
 		//ni.inputColor = $('#99').css('color');
-		$('#100a').bind('change',null,ni.fixAuthor);
-		$('#245a').bind('change',null,ni.fixTitle);
+		$('#100a').on('change',null,ni.fixAuthor);
+		$('#245a').on('change',null,ni.fixTitle);
 
 		ni.fetchHosts();  //on completion, search form will appear
 		ni.fetchMaterialList(); // for new items
@@ -160,7 +160,7 @@ ni = {
 	  $.get(ni.bs_url,{mode:'getMaterialList', selectedMt:'<?php echo $material_cd_value ?>'}, function(data){
 			$('#srchMatTypes').html(data);
 			$('#itemMediaTypes').html(data);
-			$('#materialCd').bind('change',null,function () {
+			$('#materialCd').on('change',null,function () {
 				ni.doMakeItemForm($('#materialCd').val());
 			});
 		});
@@ -437,15 +437,15 @@ ni = {
 						}
 									html += '</fieldset>';
 									$('#choiceSpace').append(html);
-									$('#'+id).bind('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
+									$('#'+id).on('click',{host:hostIndex,hit:hitIndex,data:hitData},ni.doSelectOne);
 								}); // $.each(hostData...
 							}
 						} // if (ni.hostJason[hostIndex])
 					}); // $.each(rslts.data...
 
 					//console.log('all choices drawn')
-					$('#biblioBtn').bind('click',null,ni.doBackToChoice);
-					$('#biblioBtn2').bind('click',null,ni.doBackToChoice);
+					$('#biblioBtn').on('click',null,ni.doBackToChoice);
+					$('#biblioBtn2').on('click',null,ni.doBackToChoice);
 					$('#choiceDiv').show();
 				} // else if (rslts.ttlHits > 1)
 				
@@ -493,7 +493,7 @@ ni = {
 			//ie.init();
 			ni.doShowOne(ni.crntData);
 		});
-		$('.itemGobkBtn').bind('click',null,ni.doBackToChoice);
+		$('.itemGobkBtn').on('click',null,ni.doBackToChoice);
 	},
 	
 	doClearItemForm: function () {

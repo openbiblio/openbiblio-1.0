@@ -22,7 +22,7 @@ oed = {
 		oed.editForm = $('#editForm');
 
 	  $('#editHdr').html(<?php echo "'".T('Online Options')."'"; ?>);
-		$('#editForm').bind('submit',null,oed.doUpdate);
+		$('#editForm').on('submit',null,oed.doUpdate);
 
 		oed.fetchOpts();
 		oed.resetForms()
