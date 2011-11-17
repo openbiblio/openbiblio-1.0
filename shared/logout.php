@@ -5,9 +5,10 @@
 
 require_once("../shared/common.php");
 
-
 $_SESSION = array();
 session_destroy();
+echo "got to logout.php<br />";
 
-header("Location: ../circ/index.php");
+//header("Location: ../circ/memberForms.php");
+header("Location: ../catalog/srchForms.php");
 exit();
