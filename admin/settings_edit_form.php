@@ -30,6 +30,6 @@ Form::display(array(
 	'fields'=>Settings::getFormFields('admin'),
 ));
 
-	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+  require_once(REL(__FILE__,'../shared/footer.php'));
 
 	;

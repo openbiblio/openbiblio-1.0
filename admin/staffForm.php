@@ -160,7 +160,7 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+  require_once(REL(__FILE__,'../shared/footer.php'));
 	
 	require_once(REL(__FILE__, "staffJs.php"));
 ?>	

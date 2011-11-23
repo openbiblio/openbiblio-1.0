@@ -49,6 +49,7 @@ if (!isset($doing_install) or !$doing_install) {
 <meta name="author" content="Luuk Jansen">
 <meta name="author" content="Fred LaPlante">
 <meta name="author" content="Micah Stetson">
+<meta name="tester" content="Neil Redgate">
 
 <link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
@@ -61,7 +62,7 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- All other JavaScript is placed at the end of <body> (see footer.php) 
 		 to match industry best practices and to improve overall performance -->
 
-<!-- This style sheet reduces all browsers to a common default base -->
+<!-- This style sheet resets all browsers to a common default style -->
 <link rel="stylesheet" href="../shared/base2.css" />
 
 <!-- OpenBiblio style is set here -->

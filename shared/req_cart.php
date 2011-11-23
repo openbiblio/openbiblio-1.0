@@ -108,7 +108,7 @@ echo $disp->pages($page_url, $currentPageNmbr);
  
  
 <?php
-	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+  require_once(REL(__FILE__,'../shared/footer.php'));
 ?>	
 <script type="text/javascript">
 // based on a function from PhpMyAdmin

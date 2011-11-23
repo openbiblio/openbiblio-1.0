@@ -43,7 +43,7 @@ include(REL(__FILE__, "../circ/mbr_fields.php"));
 
 
 <?php
-	require_once("../themes/".Settings::get('theme_dir_url')."/footer.php");
+  require_once(REL(__FILE__,'../shared/footer.php'));
 ?>	
 <script>
 mnf = {
