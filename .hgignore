@@ -2,3 +2,5 @@ syntax: glob
 
 database_constants.php
 glob:images/Thumbs.db
+glob:photos/dns&bind.jpg
+glob:photos/img-79-0-t.jpg
