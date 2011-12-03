@@ -61,6 +61,8 @@
 	}
 	Nav::node('reports/results/list', T("Print List"),
 		'../shared/layout.php?rpt=Report&name=list');
+Nav::node('reports/results/list', T("Print CSV"),
+	'../shared/layout.php?rpt=Report&name=csv');
 	Nav::node('reports/reportcriteria', T("Report Criteria"),
 		'../reports/report_criteria.php?type='.U($rpt->type()));
 

@@ -39,7 +39,7 @@ class biblio_search_rpt extends BiblioRows {
 			array('order_by', 'order_by', array(), array(
 				array('callno', array('title'=>'Call No.')),
 				array('title', array('title'=>'Title')),
-array('author', array('title'=>'Author')),
+				array('author', array('title'=>'Author')),
 				array('date', array('title'=>'Date')),
 				array('length', array('title'=>'Length')),
 			)),
