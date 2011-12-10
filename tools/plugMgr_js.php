@@ -32,7 +32,9 @@ div#listDiv h5{
 <!--script src="../shared/jsLib.js" type="text/javascript"></script-->
 
 <script language="JavaScript">
-plm = {
+"use strict";
+
+var plm = {
 	
 	init: function () {
 	  //init(); // part of original openbiblio js code
@@ -96,7 +98,7 @@ plm = {
 			$('#pluginList').empty();
 	    var html='';
 	    if (data.length > 0) {
-				for (n in data) {
+				for (var n in data) {
 					html += '<li>';
 					html += '<input type="checkbox" class="plugins" id="'+data[n]['name']+'"  '
 								+ ' name="'+data[n]['name']+'" value="Y" '

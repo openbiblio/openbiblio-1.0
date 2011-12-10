@@ -4,7 +4,9 @@
  */
 
 // JavaScript Document
-col = {
+"use strict";
+
+var col = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Collections")."',\n";
@@ -56,7 +58,7 @@ col = {
 	fetchTypes: function () {
 	  $.getJSON(col.url,{ 'cat':'collect', 'mode':'getTypes' }, function(data){
 			var html = '';
-			for (item in data) {
+			for (var item in data) {
 				//console.log(data[item]);
 	    	html += '<option value="'+item+'"';
     		html += '">'+item+'</option>\n';
@@ -72,7 +74,7 @@ col = {
 		});
 	},
 	getCirc: function (code) {
-		for (item in col.circList) {
+		for (var item in col.circList) {
 			if (col.circList[item]['code'] == code) {
 				return col.circList[item];
 			}
@@ -85,7 +87,7 @@ col = {
 		});
 	},
 	getDist: function (code) {
-		for (item in col.distList) {
+		for (var item in col.distList) {
 			if (col.distList[item]['code'] == code) {
 				return col.distList[item];
 			}
@@ -115,7 +117,7 @@ col = {
 			$('#showList').html('');
 			for (var item=0; item<data.length; item++) {
     		var typeStr = col.formatType(data[item]);
-	    	html = '<tr>\n'
+	    	var html = '<tr>\n'
     					+'<td valign="top">\n'
 							+'	<input type="button" class="editBtn" value="edit" />\n'
 							+'	<input type="hidden" value="'+data[item]['code']+'"  />\n'
@@ -135,7 +137,7 @@ col = {
 
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
-		for (item in col.json) {
+		for (var item in col.json) {
 		  if (col.json[item]['code'] == code) {
 		  	col.choice = col.json[item];
 				col.showCollection();

@@ -1,7 +1,9 @@
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
 // newItem Javascript
-ie = {
+"use strict";
+
+var ie = {
 	init: function () {
 		ie.itemSubmitBtn = $('#itemSubmitBtn');
 	  ie.itemSubmitBtnClr = ie.itemSubmitBtn.css('color');

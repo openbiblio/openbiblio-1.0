@@ -4,7 +4,9 @@
  */
 
 // JavaScript Document
-st = {
+"use strict";
+
+var st = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of States & Abreviations")."',\n";
@@ -55,7 +57,7 @@ st = {
 	  $.getJSON(st.url,{ 'cat':'states', mode:'getAllStates' }, function(data){
 	    st.stateJSON = data;
 			var html = '';
-			for (nState in st.stateJSON) {
+			for (var nState in st.stateJSON) {
 				//console.log(data[nState]);
 	    	html += '<tr>\n';
     		html += '<td valign="top">\n';
@@ -79,7 +81,7 @@ st = {
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
 		//console.log('you wish to edit code: '+code);
-		for (nState in st.stateJSON) {
+		for (var nState in st.stateJSON) {
 		  if (st.stateJSON[nState]['code'] == code) {
 				st.showState(st.stateJSON[nState]);
 			}

@@ -4,7 +4,9 @@
  */
 
 // JavaScript Document
-sit = {
+"use strict";
+
+var sit = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Sites")."',\n";
@@ -55,7 +57,7 @@ sit = {
 	  $.getJSON(sit.url,{ 'cat':'sites', 'mode':'getAllSites' }, function(data){
 	    sit.siteJSON = data;
 			var html = '';
-			for (nsite in sit.siteJSON) {
+			for (var nsite in sit.siteJSON) {
 				//console.log(data[nsite]);
 	    	html += '<tr>\n';
     		html += '<td valign="top">\n';
@@ -78,7 +80,7 @@ sit = {
 	fetchStates: function () {
 	  $.getJSON(sit.url,{ 'cat':'sites', 'mode':'getAllStates' }, function(data){
 			var html = '';
-			for (nstate in data) {
+			for (var nstate in data) {
 				//console.log(data[nstate]);
 	    	html += '<option value="'+data[nstate]['code']+'"';
 	    	if (data[nstate]['default_flg'] == 'Y') {
@@ -92,7 +94,7 @@ sit = {
 	fetchCalendars: function () {
 	  $.getJSON(sit.url,{ 'cat':'sites', 'mode':'getAllCalendars' }, function(data){
 			var html = '';
-			for (ncal in data) {
+			for (var ncal in data) {
 				//console.log(data[ncal]);
 	    	html += '<option value="'+data[ncal]['code']+'"';
 	    	if (data[ncal]['default_flg'] == 'Y') {
@@ -107,7 +109,7 @@ sit = {
 	doEdit: function (e) {
 	  var siteid = $(e.target).next().val();
 		//console.log('you wish to edit code: '+siteid);
-		for (nsite in sit.siteJSON) {
+		for (var nsite in sit.siteJSON) {
 		  if (sit.siteJSON[nsite]['siteid'] == siteid) {
 				sit.showSite(sit.siteJSON[nsite]);
 			}

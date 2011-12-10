@@ -3,8 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 // JavaScript Document
+"use strict";
 
-mbf = {
+var mbf = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("Custom Member Fields")."',\n";
@@ -55,7 +56,7 @@ mbf = {
 	  $.getJSON(mbf.url,{ 'cat':'mbrFlds', 'mode':'getAllMbrFlds' }, function(dataAray){
 	    mbf.json = dataAray;
 			var html = '';
-			for (obj in dataAray) {
+			for (var obj in dataAray) {
 				var item = dataAray[obj];
 	    	html += '<tr>\n';
     		html += '	<td valign="top">\n';
@@ -77,7 +78,7 @@ mbf = {
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
 		//console.log('you wish to edit code: '+code);
-		for (n in mbf.json) {
+		for (var n in mbf.json) {
 		  if (mbf.json[n]['code'] == code) {
 				mbf.showFields(mbf.json[n]);
 			}

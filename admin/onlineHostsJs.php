@@ -4,7 +4,9 @@
  */
 
 // JavaScript Document
-hed = {
+"use strict";
+
+var hed = {
 	
 	init: function () {
 		hed.initWidgets();
@@ -50,7 +52,7 @@ hed = {
 	  $.getJSON(hed.url,{ 'cat':'hosts', 'mode':'getHosts' }, function(data){
 	    hed.hostJSON = data;
 			var html = '';
-			for (nHost in hed.hostJSON) {
+			for (var nHost in hed.hostJSON) {
 				//console.log(data[nHost]);
 	    	html += '<tr>\n';
     		html += '<td>\n';
@@ -78,7 +80,7 @@ hed = {
 	fetchServiceList: function () {
 		$.getJSON(hed.url, {'cat':'hosts', 'mode':'getHostSvcs'}, function (data) {
 			var html = '';
-			for (n in data) {
+			for (var n in data) {
 				html += '<option value="'+data[n]+'">'+data[n]+'</option>\n';
 			}
 			$('#service').html(html);
@@ -101,7 +103,7 @@ hed = {
 	doEdit: function (e) {
 	  var theHostId = $(this).next().val();
 		//console.log('you wish to edit host #'+theHostId);
-		for (nHost in hed.hostJSON) {
+		for (var nHost in hed.hostJSON) {
 		  if (hed.hostJSON[nHost]['id'] == theHostId) {
 				hed.showHost(hed.hostJSON[nHost]);
 			}
@@ -120,7 +122,7 @@ hed = {
 		$('#editTbl td #host').val(host['host']);
 		$('#editTbl td #port').val(host['port']);
 		$('#editTbl td #db').val(host['db']);
-console.log("setting 'service' to "+	host['service']);	
+		//console.log("setting 'service' to "+	host['service']);	
 		var svc = host['service'];
 		$('#editTbl td #service').val([svc]);
 		$('#editTbl td #syntax').val(host['syntax']);

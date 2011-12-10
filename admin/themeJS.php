@@ -4,8 +4,9 @@
  */
 // JavaScript Document
 //	$types = $mattypes->getAllWithStats();
+"use strict";
 
-thm = {
+var thm = {
 	<?php
 		echo "crntTheme: '".Settings::get('themeid')."',\n";
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
@@ -59,7 +60,7 @@ thm = {
 	    thm.json = dataAray;
 			var html = '', opts = '';
 			// first construct theme dropdown list
-			for (obj in dataAray) {
+			for (var obj in dataAray) {
 				var item = dataAray[obj];
 				opts += '<option value="'+item['themeid']+'">';
 				opts += item["theme_name"];
@@ -67,7 +68,7 @@ thm = {
 			}
 			$('#themeList').html(opts).val(thm.crntTheme);
 			
-			for (obj in dataAray) {
+			for (var obj in dataAray) {
 				var item = dataAray[obj];
 	    	html += '<tr>\n';
     		html += '	<td valign="top">\n';
@@ -110,7 +111,7 @@ thm = {
 	doEdit: function (e) {
 	  var themeid = $(e.target).next().val();
 		//console.log('you wish to edit code: '+themeid);
-		for (n in thm.json) {
+		for (var n in thm.json) {
 		  if (thm.json[n]['themeid'] == themeid) {
 				thm.showTheme(thm.json[n]);
 	  		$('#addBtn').hide();
@@ -123,7 +124,7 @@ thm = {
 	doCopy: function (e) {
 	  var themeid = $(e.target).prev().val();
 		//console.log('you wish to copy theme: '+themeid);
-		for (n in thm.json) {
+		for (var n in thm.json) {
 		  if (thm.json[n]['themeid'] == themeid) {
 				thm.showTheme(thm.json[n]);
 				$('#theme_name').val('');

@@ -3,8 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 // JavaScript Document
+"use strict";
 
-bcf = {
+var bcf = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("Custom Copy Fields")."',\n";
@@ -53,7 +54,7 @@ bcf = {
 	  $.getJSON(bcf.url,{cat: 'copyFlds', mode:'getAllCopyFlds'}, function(dataAray){
 	    bcf.json = dataAray;
 			var html = '';
-			for (obj in dataAray) {
+			for (var obj in dataAray) {
 				var item = dataAray[obj];
 	    	html += '<tr>\n';
     		html += '	<td valign="top">\n';
@@ -75,7 +76,7 @@ bcf = {
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
 		//console.log('you wish to edit code: '+code);
-		for (n in bcf.json) {
+		for (var n in bcf.json) {
 		  if (bcf.json[n]['code'] == code) {
 				bcf.showFields(bcf.json[n]);
 			}

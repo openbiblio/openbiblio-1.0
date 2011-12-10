@@ -4,8 +4,9 @@
  */
 // JavaScript Document
 //	$types = $mattypes->getAllWithStats();
+"use strict";
 
-stf = {
+var stf = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Staff Members")."',\n";
@@ -57,7 +58,7 @@ stf = {
 	  $.getJSON(stf.url,{'cat':'staff', 'mode':'getAllStaff'}, function(dataAray){
 	    stf.json = dataAray;
 			var html = '';
-			for (obj in dataAray) {
+			for (var obj in dataAray) {
 				var item = dataAray[obj];
 	    	html += '<tr>\n';
     		html += '	<td valign="top">\n';
@@ -89,7 +90,7 @@ stf = {
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
 		//console.log('you wish to edit code: '+code);
-		for (n in stf.json) {
+		for (var n in stf.json) {
 		  if (stf.json[n]['userid'] == code) {
 				stf.showStaff(stf.json[n]);
 				break;
@@ -100,7 +101,7 @@ stf = {
 	doPwd: function (e) {
 	  var code = $(e.target).prev().val();
 		//console.log('you wish to change password of user: '+code);
-		for (n in stf.json) {
+		for (var n in stf.json) {
 		  if (stf.json[n]['userid'] == code) {
 				stf.crntUser = code;
 				$('#pwdDiv fieldset legend span').html(stf.json[n].username);

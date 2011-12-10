@@ -7,10 +7,11 @@
 <script language="JavaScript" defer>
 // JavaScript Document
 //------------------------------------------------------------------------------
+"use strict";
 
 var opacMode = true;
 
-chk = {
+var chk = {
 	init: function () {
 		chk.url = 'circulationServer.php';
 

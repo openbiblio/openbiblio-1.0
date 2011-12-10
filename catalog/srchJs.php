@@ -15,11 +15,13 @@
 ?>
 //------------------------------------------------------------------------------
 // biblio_search Javascript
-bs = {
+"use strict";
+
+var bs = {
 	<?php
 		echo "showMarc: '".T("Show Marc Tags")."',\n";
 		echo "hideMarc: '".T("Hide Marc Tags")."',\n";
-	?>
+	?> 
 	multiMode: false,
 	
 	init: function () {

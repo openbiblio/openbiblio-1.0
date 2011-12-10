@@ -3,8 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 // JavaScript Document
+"use strict";
 
-oed = {
+var oed = {
 	<?php
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	$jsLoc = new Localize(OBIB_LOCALE,$tab);

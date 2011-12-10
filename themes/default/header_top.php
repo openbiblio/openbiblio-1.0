@@ -58,7 +58,7 @@ if (!isset($doing_install) or !$doing_install) {
 		 Based on the browser in use, it places many conditional classes 
 		 into the <body> tag for use by feature-specific CSS & JS statements.
 		 It also deals with html5 support issues for IE browsers. 	 -->
-<script src="../shared/modernizr-1.7.min.js"></script>
+<script src="../shared/modernizr-2.0.6.min.js"></script>
 <!-- All other JavaScript is placed at the end of <body> (see footer.php) 
 		 to match industry best practices and to improve overall performance -->
 

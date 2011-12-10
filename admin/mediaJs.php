@@ -4,8 +4,9 @@
  */
 // JavaScript Document
 //	$types = $mattypes->getAllWithStats();
+"use strict";
 
-med = {
+var med = {
 	<?php
 		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
 		echo "listHdr: '".T("List of Media Types")."',\n";
@@ -54,7 +55,7 @@ med = {
 	  $.getJSON(med.url,{ 'cat':'media', 'mode':'getAllMedia'}, function(dataAray){
 	    med.json = dataAray;
 			var html = '';
-			for (obj in dataAray) {
+			for (var obj in dataAray) {
 				var item = dataAray[obj];
 	    	html += '<tr>\n';
     		html += '	<td valign="top">\n';
@@ -84,7 +85,7 @@ med = {
 	doEdit: function (e) {
 	  var code = $(e.target).next().val();
 		//console.log('you wish to edit code: '+code);
-		for (n in med.json) {
+		for (var n in med.json) {
 		  if (med.json[n]['code'] == code) {
 				med.showMedia(med.json[n]);
 			}

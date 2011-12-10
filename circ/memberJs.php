@@ -7,8 +7,9 @@
 <script language="JavaScript" defer>
 // JavaScript Document
 //------------------------------------------------------------------------------
+"use strict";
 
-mf = {
+var mf = {
 	<?php
 	if ($_SESSION['mbrBarcode_flg'] == 'Y') 
 		echo "showBarCd: true, \n";

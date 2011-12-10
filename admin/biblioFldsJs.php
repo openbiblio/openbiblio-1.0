@@ -4,7 +4,9 @@
  */
 
 // JavaScript Document
-mtl = {
+"use strict";
+
+var mtl = {
 	<?php
 	echo 'successMsg 		: "'.T('updateSuccess').'",'."\n";
 	echo 'delConfirmMsg : "'.T('confirmDelete').'",'."\n";
@@ -121,7 +123,7 @@ mtl = {
 	fetchMatlTypes: function () {
 	  $.getJSON(mtl.url,{mode:'getMtlTypes'}, function(data){
 			var html = "<option value=\"0\">Choose One</option>\n";
-			for (n in data) {
+			for (var n in data) {
 				html += '<option value="'+data[n]['code']+'">'+data[n]['description']+'</option>\n';
 			}
 			$('#typeList').html(html);
@@ -151,7 +153,7 @@ mtl = {
 	fetchMarcBlocks: function () {
 	  $.getJSON(mtl.url,{mode:'getMarcBlocks'}, function(data){
 			var html = "<option value=\"0\">Choose a Block</option>\n";
-			for (n in data) {
+			for (var n in data) {
 				html += '<option value="'+data[n]['block_nmbr']+'">'
 						 +   data[n]['block_nmbr']+' - '+data[n]['description']
 						 +  '</option>\n';
@@ -164,7 +166,7 @@ mtl = {
 	  mtl.blockNmbr = $('#marcBlocks').val();
 	  $.getJSON(mtl.url,{mode:'getMarcTags',block_nmbr:mtl.blockNmbr}, function(data){
 			var html = "<option value=\"0\">Choose a Tag</option>\n";
-			for (n in data) {
+			for (var n in data) {
 				html += '<option value="'+data[n]['tag']+'">'
 						 +   data[n]['tag']+' - '+data[n]['description']
 						 +  '</option>\n';
@@ -182,7 +184,7 @@ mtl = {
 //			if (data.length == 0) {
 				//html = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
 //			} else {
-				for (n in data) {
+				for (var n in data) {
 				  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
 					html += '<li id="'+'zqzqz'+id+'" '
 							 +  'tag="'+data[n]['tag']+'" '
@@ -203,7 +205,7 @@ mtl = {
 		var arayd = $('#existing').sortable( 'toArray');
 		// now build a JSON structure for server
 		var jsonStr = '';
-		for (n in arayd) {
+		for (var n in arayd) {
 			if (($.trim(arayd[n])).substr(0,5) == "zqzqz"){
 				// deal with additions
 			  var entry = $('#'+arayd[n]);
@@ -264,7 +266,7 @@ mtl = {
 				//$('#existing').html(html2);
 			}
 			else if (data.length > 0) {
-				for (n in data) {
+				for (var n in data) {
 				  var recId = 'mtl'+data[n]['material_field_id'];
 				  var btnId = 'btn'+data[n]['material_field_id'];
 	    		html  = '<tr id="'+recId+'">\n';
@@ -340,7 +342,7 @@ mtl = {
 		var mtlId ='mtl'+theTagId;
 		var inpt = mtl.collectSpanData(mtlId);
 		var parms = eval('('+inpt+')');
-		for(n in parms) {
+		for(var n in parms) {
 			var fldName = parms[n]['name'],
 					fldVal = parms[n]['value'];
 			if (fldName == 'required')  {

@@ -1,8 +1,9 @@
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
 // itemDisplay Javascript
+"use strict";
 
-idis = {
+var idis = {
 	init: function (opts) {
 		idis.opts = opts;
 		idis.url = '../catalog/catalogServer.php';

@@ -217,5 +217,5 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	require_once(REL(__FILE__, "themeJs.php"));
+	require_once(REL(__FILE__, "themeJS.php"));
 ?>	

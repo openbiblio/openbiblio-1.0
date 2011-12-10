@@ -11,12 +11,14 @@ unset($_SESSION['postVars']);
 ?>
 </div>
 
-<script src="../shared/jquery/jquery-1.7.min.js"></script>
+<script src="../shared/jquery/jquery-1.7.1.min.js"></script>
 <script src="../shared/jsLib.js" defer></script>
 
 <script language="JavaScript" defer>
 // main javascript functionality set in own namespace to avoid potential conflict
-obib = {
+"use strict";
+
+var obib = {
 	<?php
 	echo "focusFormName:  '$focus_form_name',\n";
 	echo "focusFormField:	'$focus_form_field',\n";

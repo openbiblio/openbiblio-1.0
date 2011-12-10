@@ -7,7 +7,9 @@
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
 // newItem Javascript
-ni = {
+"use strict";
+
+var ni = {
 	<?php
 	echo "empty: '".T("Nothing Found")."',\n";
 	?>
@@ -346,7 +348,7 @@ ni = {
 			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
 		theTxt += 'at :<br />';
 		var n=1;
-		for (nHost in ni.hostJSON) {
+		for (var nHost in ni.hostJSON) {
 			theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+ni.hostJSON[nHost].name+'<br />';
 			n++;
 		}
@@ -407,7 +409,7 @@ ni = {
 					$('#ttlHits').html(numHits);
 					ni.singleHit = false;
 
-					var nHits = 0;
+					var nHits = 0, html;
 					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  if (typeof(hostData) != undefined) {

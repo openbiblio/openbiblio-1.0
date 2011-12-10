@@ -11,7 +11,9 @@
 
 <script type="text/javascript">
 // JavaScript Document
-sn = {
+"use strict";
+
+var sn = {
 	init: function () {
 		$('#nav').addClass('dyn');
 		
