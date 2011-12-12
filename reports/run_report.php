@@ -50,6 +50,7 @@
 		$page = $rpt->curPage();
 	}
 
+	## menu modifications  go here
 	foreach ($rpt->layouts() as $l) {
 		if ($l['title']) {
 			$title = $l['title'];
@@ -61,11 +62,12 @@
 	}
 	Nav::node('reports/results/list', T("Print List"),
 		'../shared/layout.php?rpt=Report&name=list');
-Nav::node('reports/results/list', T("Print CSV"),
-	'../shared/layout.php?rpt=Report&name=csv');
+	Nav::node('reports/results/list', T("Prepare CSV file"),
+		'../shared/layout.php?rpt=Report&name=csv');
 	Nav::node('reports/reportcriteria', T("Report Criteria"),
 		'../reports/report_criteria.php?type='.U($rpt->type()));
-
+	## end of menu modifications
+	 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <!--h3><?php echo T($title); ?></h3-->
