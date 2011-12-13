@@ -98,8 +98,9 @@ $trans["Added Before Date"] = "Added Before Date";
 $trans["Added in the last N days"] = "Added in the last N days";
 $trans["Address Line 1"] = "Address Line 1";
 $trans["Address Line 2"] = "Address Line 2";
-$trans["Admin Summary"] = "Admin Summary";
 $trans["Admin"] = "Admin";
+$trans["Admin Summary"] = "Admin Summary";
+$trans["adminNoauth"] = "You are not authorized to use the Admin tab.";
 $trans["adminIndexDesc"] = "Use the functions located in the left hand navigation area to manage your library's staff and administrative records.";
 $trans["Adult Checkout Limit:"] = "Adult Checkout Limit:";
 $trans["Adult"] = "Adult";
@@ -152,10 +153,15 @@ $trans["Biblio Search Opts."] = "Biblio Search Opts.";
 $trans["BiblioFieldsConfig"] = 'Biblio Fields Configuration for ';
 $trans["BiblioFieldsEditor"] = 'Biblio Fields Maintenance';
 $trans["biblioMarcEditError"] = "An error occurred processing your request, see below for details.";
+$trans["biblioCopyDelConfirmErr1"] = "Could not delete copy.<br />A copy must be checked in before it can be deleted.";
+$trans["biblioCopyDelConfirmMsg"]  = "Are you sure you want to delete the copy with barcode %barcodeNmbr%?<br />This will also delete all status change history for this copy.";
+$trans["biblioCopyDelSuccess"] = "Copy with barcode %barcode% was successfully deleted.";
 $trans["biblioCopyFieldsDelConfirmSure"] = "Are you sure you want to delete biblio copy field, %desc%?";
 $trans["biblioCopyFieldsDelMsg"] = "Biblio copy field, %desc%, has been deleted.";
 $trans["biblioCopyFieldsEditMsg"] = "Biblio Copy Field, %desc%, has been updated.";
 $trans["biblioCopyFieldsNewMsg"] = "Biblio copy field, %desc%, has been added.";
+$trans["biblioDelConfirmMsg"]      = "Are you sure you want to delete the item with title %title%?";
+$trans["biblioDelConfirmWarn"]     = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).<br />Please delete these copies and/or hold requests before deleting this bibliography.";
 $trans["bold"] = "bold";
 $trans["Book Item"] = "Book Item";
 $trans["Booked"] = "Booked";
@@ -231,8 +237,8 @@ $trans["Citation"] = "Citation";
 $trans["City"] = "City";
 $trans["Classification"]="Classification";
 $trans["Close Window"] = "Close Window";
-$trans["Code"] = "Code";
 $trans["Clone"] = "Clone";
+$trans["Code"] = "Code";
 $trans["Code:"] = "Code:";
 $trans["Collection, %desc%, has been added."] = "Collection, %desc%, has been added.";
 $trans["Collection, %desc%, has been deleted."] = "Collection, %desc%, has been deleted.";
@@ -248,6 +254,8 @@ $trans["Connecting to database server..."] = "Connecting to database server...";
 $trans["Connection to database server failed"] = "Connection to database server failed";
 $trans["Connection to DB server OK"] = "Connection to DB server OK";
 $trans["Contents"] = "Contents";
+$trans["%count% copies with broken status references"]="%count% copies with broken status references";
+$trans["%count% copies without site"]="%count% copies without site";
 $trans["%copy% copies and %item% items deleted."] = "%copy% copies and %item% items deleted.";
 $trans["copy"] = "copy";
 $trans["Copy"] = "Copy";
@@ -320,6 +328,7 @@ $trans["Description"] = "Description";
 $trans["Description:"] = "Description:";
 $trans["Detailed View"] = "Detailed View";
 $trans["Dimensions"] = "Dimensions";
+$trans["%count% double check outs"]="%count% double check outs";
 $trans["Due Back"] = "Due Back";
 $trans["Due Date"] = "Due Date";
 $trans["Due Date:"] = "Due Date:";
@@ -431,6 +440,7 @@ $trans["hits found"] = "hits found";
 $trans["Hold"] = "Hold";
 $trans["Hold Requests"] = "Hold Requests";
 $trans["Hold request was successfully deleted."] = "Hold request was successfully deleted.";
+$trans["holdMessageMsg1"]         = "The copy with barcode number %barcode% that you are attempting to check<br />in has one or more hold requests placed on it. <b>Please file this copy with your held items instead of placing it on your shelving cart.</b> The status code for this copy has been set to hold.";
 $trans["Home Phone"] = "Home Phone";
 $trans["Host Editor"] = "Host Editor";
 $trans["Host URL"] = "Host URL";
@@ -444,6 +454,16 @@ $trans["in use"] = "in use";
 $trans["Installing DB tables with test data"] = "Installing DB tables with test data";
 $trans["Installing DB tables without test data"] = "Installing DB tables without test data";
 $trans["Insufficient stock"] = "Insufficient stock";
+$trans["integrityMsg"] = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
+$trans["IntegrityQueryInvalidStatusCodes"] = "%count% copy status history records with invalid status codes";
+$trans["IntegrityQueryBrokenBibidRef"] = "%count% bookings with broken bibid references";
+$trans["IntegrityQueryBrokenOutRef"] = "%count% bookings with broken \"out\" status references";
+$trans["IntegrityQueryBrokenReturnRef"] = "%count% bookings with broken \"return\" status references";
+$trans["IntegrityQueryNoAssBooking"] = "%count% booking member references with no associated booking";
+$trans["IntegrityQueryNoAssMember"] = "%count% booking member references with no associated member";
+$trans["IntegrityQueryUnattachedAccTrans"] = "%count% unattached member account transactions";
+$trans["IntegrityQueryChangedCopyStatus"]  = "%count% \"out\" bookings where copy status has changed";
+$trans["IntegrityQueryOutRecNoBooking"] = "%count% copy check out records with no associated booking";
 $trans["Intermediate"] = "Intermediate";
 $trans["Internal Error: %msg%"] = "Internal Error: %msg%";
 $trans["Invalid bibid or position."] = "Invalid bibid or position.";
@@ -468,6 +488,7 @@ $trans["Item Search"] = "Item Search";
 $trans["Item successfully updated."] = "Item successfully updated.";
 $trans["Item"] = "Item";
 $trans["Items"] = "Items";
+$trans["%count% items with multiple 245 fields"]="%count% items with multiple 245 fields";
 $trans["Item#"] = "Item#";
 $trans["Item(s) Requested"] = "Item(s) Requested";
 $trans["Item, %title%, has been deleted."] = "Item, %title%, has been deleted.";
@@ -546,7 +567,18 @@ $trans["Media type, %desc%, has been deleted."] = "Media type, %desc%, has been 
 $trans["Media type, %desc%, has been updated."] = "Media type, %desc%, has been updated.";
 $trans["Media Types"] = "Media Types";
 $trans["material_field_id not set"] = "material_field_id not set";
+$trans["materialFieldsViewAddField"] = "Add a custom MARC Field to this material type";
+$trans["materialsDelConfirmMsg"] = "Are you sure you want to delete material type, '%desc%'?";
+$trans["materialsListNoteMsg"] = "The delete function is only available on material types that have an item count of zero. <br />"
+																."If you wish to delete a material type with an item count greater than zero, <br />"
+																."you will first need to change the material type on those items to another material type.";
 $trans["Maximum Hits"] = "Maximum Hits";
+$trans["mbrDelConfirmMsg"] = "Are you sure you want to delete the member, %name%?<br />This will also delete all checkout history for this member.";
+$trans["mbrDelConfirmWarn"] = "Member, %name%, has %checkoutCount% checkout(s) and %holdCount% hold request(s). All checked out materials must be checked in and<br />all hold requests deleted before deleting this member.";
+$trans["mbrFldsMustAddSite"]      = "You must %link%add a site%end% before you can edit members.";
+$trans["Member"] = "Member";
+$trans["Member:"] = "Member:";
+$trans["Members"] = "Members";
 $trans["Member Account Transactions"] = "Member Account Transactions";
 $trans["Member Types"] = "Member Types";
 $trans["Member field, %desc%, has been added."] = "Member field '%desc%' has been added.";
@@ -559,10 +591,9 @@ $trans["Member Info"] = "Member Info";
 $trans["Member Information"] = "Member Information";
 $trans["Member Name"] = "Member Name";
 $trans["Member Search"] = "Member Search";
-$trans["Member"] = "Member";
+$trans["memberFieldsDelConfirmMsg"] = "Are you sure you want to delete field '%desc%'?";
+$trans["memberFieldsDelMsg"] = "Member field, %desc%, has been deleted.";
 $trans["Member, %name%, has been deleted."] = "Member, %name%, has been deleted.";
-$trans["Member:"] = "Member:";
-$trans["Members"] = "Members";
 $trans["%count% members without sites"] = "%count% members without sites";
 $trans["Missing required page parameter: %param%"] = "Missing required page parameter: %param%";
 $trans["My Account"] = "My Account";
@@ -788,6 +819,7 @@ $trans["Site, %name%, updated."] = "Site, %name%, updated.";
 $trans["Site, Member"] = "Site, Member";
 $trans["Site, Out Date, Title"] = "Site, Out Date, Title";
 $trans["Sites"] = "Sites";
+$trans["sitesDelConfirmMsg"] = "Are you sure you want to delete site %name%?";
 $trans["Skip Labels"] = "Skip Labels";
 $trans["Sort by: "] = "Sort by:";
 $trans["Source"] = "Source";
@@ -801,6 +833,7 @@ $trans["Staff member, %name%, has been added."] = "Staff member, %name%, has bee
 $trans["Staff member, %name%, has been deleted."] = "Staff member, %name%, has been deleted.";
 $trans["Staff member, %name%, has been updated."] = "Staff member, %name%, has been updated.";
 $trans["Staff Members"] = "Staff Members";
+$trans["staffDelConfirmMsg"]          = "Are you sure you want to delete staff member, %name%?";
 $trans["Start Date"] = "Start Date";
 $trans["Start using the catalog"] = "Start using the catalog";
 $trans["Start Using OpenBiblio"] = "Start Using OpenBiblio";
@@ -847,6 +880,7 @@ $trans["Theme"] = "Theme";
 $trans["Theme, %name%, has been added."] = "Theme, %name%, has been added.";
 $trans["Theme, %name%, has been deleted."] = "Theme, %name%, has been deleted.";
 $trans["Theme, %name%, has been updated."] = "Theme, %name%, has been updated.";
+$trans["themeDelConfirmMsg"] = "Are you sure you want to delete theme, %name%?";
 $trans["Themes"] = "Themes";
 $trans["This field must be filled in."] = "This field must be filled in.";
 $trans["This is a preview of the %name% theme."] = "This is a preview of the %name% theme.";
@@ -879,6 +913,10 @@ $trans["Unable to connect to database."] = "Unable to connect to database.";
 $trans["Unable to create thumbnail."] = "Unable to create thumbnail.";
 $trans["Unable to move uploaded file."] = "Unable to move uploaded file.";
 $trans["%count% unattached copy status history records"] = "%count% unattached copy status history records";
+$trans["%count% unattached copies"]="%count% unattached copies";
+$trans["%count% unattached images"]="%count% unattached images";
+$trans["%count% unattached MARC fields"]="%count% unattached MARC fields";
+$trans["%count% unattached MARC subfields"]="%count% unattached MARC subfields";
 $trans["Unexpected date error: "] = "Unexpected date error: ";
 $trans["Unexpected end of file"] = "Unexpected end of file";
 $trans["Unexpected error creating report"] = "Unexpected error creating report";
@@ -919,156 +957,6 @@ $trans["You must enter exactly 1 record"] = "You must enter exactly 1 record";
 $trans["Your userid has been suspended."] = "Your userid has been suspended.";
 $trans["Zip Code"] = "Zip Code";
 $trans["Zip Code ext"] = "Zip Code ext";
-
-
-
-
-
-
-#****************************************************************************
-#*  Translation text for integrity.php
-#****************************************************************************
-$trans["integrityMsg"] = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
-$trans["%count% unattached MARC fields"]="%count% unattached MARC fields";
-$trans["%count% unattached MARC subfields"]="%count% unattached MARC subfields";
-$trans["%count% unattached images"]="%count% unattached images";
-$trans["%count% unattached copies"]="%count% unattached copies";
-$trans["%count% copies with broken status references"]="%count% copies with broken status references";
-$trans["%count% items with multiple 245 fields"]="%count% items with multiple 245 fields";
-$trans["%count% unattached copy status history records"]="%count% unattached copy status history records";
-$trans['IntegrityQueryInvalidStatusCodes']='IntegrityQueryInvalidStatusCodes';
-$trans['IntegrityQueryBrokenBibidRef']='IntegrityQueryBrokenBibidRef';
-$trans['IntegrityQueryBrokenOutRef']='IntegrityQueryBrokenOutRef';
-$trans['IntegrityQueryBrokenReturnRef']='IntegrityQueryBrokenReturnRef';
-$trans['IntegrityQueryNoAssBooking']='IntegrityQueryNoAssBooking';
-$trans['IntegrityQueryNoAssMember']='IntegrityQueryNoAssMember';
-$trans["%count% copies without site"]="%count% copies without site";
-$trans["%count% members without sites"]="%count% members without sites";
-$trans['IntegrityQueryUnattachedAccTrans']='IntegrityQueryUnattachedAccTrans';
-$trans['IntegrityQueryChangedCopyStatus']='IntegrityQueryChangedCopyStatus';
-$trans['IntegrityQueryOutRecNoBooking']='IntegrityQueryOutRecNoBooking';
-$trans["%count% double check outs"]="%count% double check outs";
-
-
-#****************************************************************************
-#*  Translation text for class IntegrityQuery.php
-#****************************************************************************
-$trans["IntegrityQueryInvalidStatusCodes"] = "%count% copy status history records with invalid status codes";
-$trans["IntegrityQueryBrokenBibidRef"] = "%count% bookings with broken bibid references";
-$trans["IntegrityQueryBrokenOutRef"] = "%count% bookings with broken \"out\" status references";
-$trans["IntegrityQueryBrokenReturnRef"] = "%count% bookings with broken \"return\" status references";
-$trans["IntegrityQueryNoAssBooking"] = "%count% booking member references with no associated booking";
-$trans["IntegrityQueryNoAssMember"] = "%count% booking member references with no associated member";
-$trans["IntegrityQueryUnattachedAccTrans"] = "%count% unattached member account transactions";
-$trans["IntegrityQueryChangedCopyStatus"]  = "%count% \"out\" bookings where copy status has changed";
-$trans["IntegrityQueryOutRecNoBooking"] = "%count% copy check out records with no associated booking";
-
-
-#****************************************************************************
-#*  Translation text for materials_del_confirm.php
-#****************************************************************************
-$trans["materialsDelConfirmMsg"]          = "Are you sure you want to delete material type, '%desc%'?";
-
-
-#****************************************************************************
-#*  Translation text for materials_list.php
-#****************************************************************************
-$trans["materialsListNoteMsg"]          = "The delete function is only available on material types that have an item count of zero. <br />"
-																					."If you wish to delete a material type with an item count greater than zero, <br />"
-																					."you will first need to change the material type on those items to another material type.";
-
-
-
-#****************************************************************************
-#*  Translation text for material_fields_view.php
-#****************************************************************************
-$trans["materialFieldsViewAddField"]          = "Add a custom MARC Field to this material type";
-
-
-#****************************************************************************
-#*  Translation text for member_fields_del.php
-#****************************************************************************
-$trans["memberFieldsDelMsg"]          = "Member field, %desc%, has been deleted.";
-
-
-#****************************************************************************
-#*  Translation text for member_fields_del_confirm.php
-#****************************************************************************
-$trans["memberFieldsDelConfirmMsg"]          = "Are you sure you want to delete field '%desc%'?";
-
-
-#****************************************************************************
-#*  Translation text for admin/noauth.php
-#****************************************************************************
-$trans["adminNoauth"]          = "You are not authorized to use the Admin tab.";
-
-
-
-
-#****************************************************************************
-#*  Translation text for sites_del_confirm.php
-#****************************************************************************
-$trans["sitesDelConfirmMsg"]          = "Are you sure you want to delete site %name%?";
-
-
-
-
-#****************************************************************************
-#*  Translation text for staff_del_confirm.php
-#****************************************************************************
-$trans["staffDelConfirmMsg"]          = "Are you sure you want to delete staff member, %name%?";
-
-
-
-
-#****************************************************************************
-#*  Translation text for theme_del_confirm.php
-#****************************************************************************
-$trans["themeDelConfirmMsg"]          = "Are you sure you want to delete theme, %name%?";
-
-
-#****************************************************************************
-#*  Translation text for biblio_bulk_del.php
-#****************************************************************************
-
-
-#****************************************************************************
-#*  Translation text for biblio_copy_del.php
-#****************************************************************************
-$trans["biblioCopyDelSuccess"]     = "Copy with barcode %barcode% was successfully deleted.";
-
-
-#****************************************************************************
-#*  Translation text for biblio_copy_del_confirm.php
-#****************************************************************************
-$trans["biblioCopyDelConfirmErr1"] = "Could not delete copy.<br />A copy must be checked in before it can be deleted.";
-$trans["biblioCopyDelConfirmMsg"]  = "Are you sure you want to delete the copy with barcode %barcodeNmbr%?<br />This will also delete all status change history for this copy.";
-
-
-#****************************************************************************
-#*  Translation text for biblio_del_confirm.php
-#****************************************************************************
-$trans["biblioDelConfirmWarn"]     = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).<br />Please delete these copies and/or hold requests before deleting this bibliography.";
-$trans["biblioDelConfirmMsg"]      = "Are you sure you want to delete the item with title %title%?";
-
-
-#****************************************************************************
-#*  Translation text for page hold_message.php
-#****************************************************************************
-$trans["holdMessageMsg1"]         = "The copy with barcode number %barcode% that you are attempting to check<br />in has one or more hold requests placed on it. <b>Please file this copy with your held items instead of placing it on your shelving cart.</b> The status code for this copy has been set to hold.";
-
-
-#****************************************************************************
-#*  Translation text for mbr_del_confirm.php
-#****************************************************************************
-$trans["mbrDelConfirmWarn"]       = "Member, %name%, has %checkoutCount% checkout(s) and %holdCount% hold request(s). All checked out materials must be checked in and<br />all hold requests deleted before deleting this member.";
-$trans["mbrDelConfirmMsg"]        = "Are you sure you want to delete the member, %name%?<br />This will also delete all checkout history for this member.";
-
-
-#****************************************************************************
-#*  Translation text for mbr_fields.php
-#****************************************************************************
-$trans["mbrFldsMustAddSite"]      = "You must %link%add a site%end% before you can edit members.";
 
 
 #****************************************************************************
