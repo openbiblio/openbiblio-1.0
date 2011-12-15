@@ -12,6 +12,7 @@ var col = {
 		echo "listHdr: '".T("List of Collections")."',\n";
 		echo "editHdr: '".T("Edit Collection")."',\n";
 		echo "newHdr: '".T("Add New Collection")."',\n";
+		echo "cancelStr: '".T("Cancel")."',\n";
 	?>
 	
 	init: function () {
@@ -46,7 +47,7 @@ var col = {
 	  $('#CollectionHdr').html(col.editHdr);
 		$('#editDiv').hide();
 		$('#listDiv').show();
-    $('#cnclBtn').val('Cancel');
+    $('#cnclBtn').val(col.cancelStr);
 	},
 	doBackToList: function () {
 		$('#msgDiv').hide(10000);
@@ -129,8 +130,9 @@ var col = {
 							+'</tr>\n';	
 				$('#showList').append(html);
 			}
-			$('table tbody.striped tr:odd td').addClass('altBG');
-			$('table tbody.striped tr:even td').addClass('altBG2');
+			var $theBody = $('tbody.striped');
+			$theBody.find('tr:odd td').addClass('altBG');
+			$theBody.find('tr:even td').addClass('altBG2');
 			$('.editBtn').on('click',null,col.doEdit);
 		});
 	},

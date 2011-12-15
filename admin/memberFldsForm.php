@@ -47,7 +47,7 @@
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-	<legend id="fieldsHdr"></legend>
+	<legend id="fieldsHdr"> </legend>
 	<ul id="editTbl">
     <li>
       <label for="code"><?php echo T("Code"); ?>:</label>
@@ -79,5 +79,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "ListJs.php"));
 	require_once(REL(__FILE__, "memberFldsJs.php"));
 ?>	

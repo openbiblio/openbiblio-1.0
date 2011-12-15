@@ -166,7 +166,7 @@
 			break;
 
 	  #-.-.-.-.-.- Custom Member Fields -.-.-.-.-.-.-
-		case 'getAllMbrFlds':
+		case 'getAll_mbrFlds':
 			$flds = array();
 			$set = $ptr->getAll();
 			while ($row = $set->next()) {
@@ -174,21 +174,21 @@
 			}
 			echo json_encode($flds);
 			break;
-		case 'addNewMbrFld':
+		case 'addNew_mbrFlds':
 			list($id, $errs) = $ptr->insert_el(array(
 				'code'=>@$_POST['code'],
 				'description'=>@$_POST['description'],
 			));
 			if ($errs) {echo $errs;} else {echo T("Add New successful");}
 			break;
-		case 'updateMbrFld':
+		case 'update_mbrFlds':
 			$errs = $ptr->update_el(array(
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
 			if ($errs) {echo $errs;} else {echo T("Update successful");}
 			break;
-		case 'd-3-L-3-tMbrFld':
+		case 'd-3-L-3-t_mbrFlds':
 			$ptr->deleteOne($_POST[code]);
 			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;
