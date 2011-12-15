@@ -23,11 +23,12 @@
 	<thead>
   	<tr>
 			<th rowspan="2"><?php echo T("Function"); ?></th>
+			<th rowspan="2" nowrap="yes"><?php echo T("Code"); ?></th>
 			<th rowspan="2" nowrap="yes"><?php echo T("Description"); ?></th>
 			<th colspan="2"><?php echo T("Checkout Limit"); ?></th>
 			<th rowspan="2"><?php echo T("Image File"); ?></th>
-			<th rowspan="2"><?php echo T("Default"); ?></th>
 			<th rowspan="2"><?php echo T("Item Count"); ?></th>
+			<th rowspan="2"><?php echo T("Default"); ?></th>
 		</tr>
 		<tr>
 			<th valign="top"><?php echo T("Adult"); ?></th>
@@ -115,5 +116,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "mediaJs.php"));
 ?>	

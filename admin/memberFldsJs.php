@@ -5,8 +5,8 @@
 // JavaScript Document
 "use strict";
 
-function Mbf ( url, form, dbAlias, opts ) {
-	List.call( this, url, form, dbAlias, opts );
+function Mbf ( url, form, dbAlias, hdrs, listFlds, opts ) {
+	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
 Mbf.prototype = inherit(List.prototype);
 Mbf.prototype.constructor = Mbf;
@@ -15,12 +15,17 @@ $(document).ready(function () {
 	var url = 'adminSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'mbrFlds';
-	var opts = {'listHdr':<?php echo '"'.T("Custom Member Fields").'"'; ?>, 
+	var hdrs = {'listHdr':<?php echo '"'.T("Custom Member Fields").'"'; ?>, 
 							'editHdr':<?php echo '"'.T("Editing Custom Fields").'"'; ?>, 
 							'newHdr':<?php echo '"'.T("Add new custom field").'"'; ?>,
 						 };
+	var listFlds = {'code':'text',
+									'description':'text',
+//									'default_flg':'center',
+								 };
+	var opts = {};
 						 
-	var mbrFlds = new Mbf( url, form, dbAlias, opts );
-	mbrFlds.init();
+	var xxxx = new Mbf( url, form, dbAlias, hdrs, listFlds, opts );
+	xxxx.init();
 });
 </script>

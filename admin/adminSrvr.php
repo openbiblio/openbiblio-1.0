@@ -8,7 +8,7 @@
 	switch ($_REQUEST['cat']) {
 		case 'collect':
 			require_once(REL(__FILE__, "../model/Collections.php"));
-			# can't set $ptr here as there are two classes in this model.
+			# can't set $ptr here as there are three classes used in this model.
 			break;
 		case 'copyFlds':
 			require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
@@ -66,7 +66,7 @@
 		## as well as multiple 'default' blocks 
 
 	  #-.-.-.-.-.- Collections -.-.-.-.-.-.-
-		case 'getCircList':
+		case 'getCirc_collect':
 			$ptr = new CircCollections;
 		  $colls = array();
 			$set = $ptr->getAll('code');
@@ -75,7 +75,7 @@
 			}
 			echo json_encode($colls);
 			break;
-		case 'getDistList':
+		case 'getDist_collect':
 			$ptr = new DistCollections;
 		  $colls = array();
 			$set = $ptr->getAll('code');
@@ -84,11 +84,11 @@
 			}
 			echo json_encode($colls);
 			break;
-		case 'getTypes':
+		case 'getType_collect':
 			$ptr = new Collections;
 			echo json_encode($ptr->getTypeSelect());
 			break;
-		case 'getAllCollections':
+		case 'getAll_collect':
 			$ptr = new Collections;
 		  $colls = array();
 			$set = $ptr->getAllWithStats();
@@ -97,7 +97,7 @@
 			}
 			echo json_encode($colls);
 			break;
-		case 'addNewCollection':
+		case 'addNew_collect':
 			$ptr = new Collections;
 			$col = array(
 				'description'=>$_POST["description"],
@@ -113,7 +113,7 @@
 				echo $msg;
 			}
 			break;
-		case 'updateCollection':
+		case 'update_collect':
 			$ptr = new Collections;
 			$coll = array(
 				'code'=>$_POST["code"],
@@ -130,7 +130,7 @@
 			}
 			echo $msg;
 			break;
-		case 'd-3-L-3-tCollections':
+		case 'd-3-L-3-t_collect':
 			$ptr = new Collections;
 			$ptr->deleteOne($_POST['code']);
 			$msg = T("Collection, %desc%, has been deleted.", array('desc'=>$description));
@@ -194,7 +194,7 @@
 			break;
 
 	  #-.-.-.-.-.- Member Type Classification -.-.-.-.-.-.-
-		case 'getAllMbrTypes':
+		case 'getAll_mbrTypes':
 			$flds = array();
 			$set = $ptr->getAll();
 			while ($row = $set->next()) {
@@ -202,7 +202,7 @@
 			}
 			echo json_encode($flds);
 			break;
-		case 'addNewMbrType':
+		case 'addNew_mbrTypes':
 			list($id, $errs) = $ptr->insert_el(array(
 				'code'=>@$_POST['code'],
 				'max_fines'=>@$_POST['max_fines'],
@@ -211,7 +211,7 @@
 			));
 			if ($errs) {echo $errs;} else {echo T("Add New successful");}
 			break;
-		case 'updateMbrType':
+		case 'update_mbrTypes':
 			$errs = $ptr->update_el(array(
 				'code'=>@$_POST["code"],
 				'max_fines'=>@$_POST['max_fines'],
@@ -220,13 +220,13 @@
 			));
 			if ($errs) {echo $errs;} else {echo T("Update successful");}
 			break;
-		case 'd-3-L-3-tMbrType':
+		case 'd-3-L-3-t_mbrTypes':
 			$ptr->deleteOne($_POST[code]);
 			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;
 
   	#-.-.-.-.-.- Media Types -.-.-.-.-.-.-
-		case 'getAllMedia':
+		case 'getAll_media':
 			$med = array();
 			$set = $ptr->getAllWithStats();
 			while ($row = $set->next()) {
@@ -234,7 +234,7 @@
 			}
 			echo json_encode($med);
 			break;
-		case 'addNewMedia':
+		case 'addNew_media':
 			$type = array(
 				'description'=>$_POST["description"],
 				'default_flg'=>$_POST['default_flg'],
@@ -248,7 +248,7 @@
 				echo $msg;
 			}
 			break;
-		case 'updateMedia':
+		case 'update_media':
 			$type = array(
 				'code'=>$_POST["code"],
 				'description'=>$_POST["description"],
@@ -263,7 +263,7 @@
 				echo $msg;
 			}
 			break;
-		case 'd-3-L-3-tMedia':
+		case 'd-3-L-3-t_media':
 			$code = $_POST["code"];
 			$description = $_POST["desc"];
 			$ptr->deleteOne($code);
@@ -316,7 +316,7 @@
 			break;
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
-		case 'getAllSites':
+		case 'getAll_sites':
 		  $sites = array();
 			$set = $ptr->getAll('name');
 			while ($row = $set->next()) {
@@ -324,13 +324,13 @@
 			}
 			echo json_encode($sites);
 			break;
-		case 'addNewSite':
+		case 'addNew_sites':
 			echo $ptr->insert($_REQUEST);
 			break;
-		case 'updateSite':
+		case 'update_sites':
 			echo $ptr->update($_REQUEST);
 			break;
-		case 'd-3-L-3-tSite':
+		case 'd-3-L-3-t_sites':
 			echo $ptr->deleteOne($_POST['siteid']);
 			break;
 
@@ -376,7 +376,7 @@
 			break;
 
 	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-
-		case 'getAllStates':
+		case 'getAll_states':
 		  $states = array();
 			$set = $ptr2->getAll('description');
 			while ($row = $set->next()) {
@@ -384,13 +384,13 @@
 			}
 			echo json_encode($states);
 			break;
-		case 'addNewState':
+		case 'addNew_states':
 			echo $ptr2->insert($_REQUEST);
 			break;
-		case 'updateState':
+		case 'update_states':
 			echo $ptr2->update($_REQUEST);
 			break;
-		case 'd-3-L-3-tState':
+		case 'd-3-L-3-t_states':
 			echo $ptr2->deleteOne($_POST['code']);
 			break;
 

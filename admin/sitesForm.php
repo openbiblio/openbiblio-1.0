@@ -62,7 +62,6 @@
     <li>
       <label for="code"><?php echo T("Code"); ?>:</label>
       <input id="code" name="code" type="text" size="32" maxlength="20" />
-      <span class="reqd">*</span>
     </li>
     <li>
       <label for="calendar"><?php echo T("Calendar"); ?>:</label>
@@ -106,7 +105,7 @@
     <li>
       <label for="delivery_note"><?php echo T("DeliveryNote"); ?>:</label>
       <br />
-      <textarea id="delivery_note" name="delivery_note" required aria-required="true" /></textarea>
+      <textarea id="delivery_note" name="delivery_note" cols="45" required aria-required="true" /></textarea>
     </li>
     <li>
 			<input type="hidden" id="cat" name="cat" value="sites">
@@ -129,5 +128,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "sitesJs.php"));
 ?>	

@@ -93,5 +93,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "memberTypeJs.php"));
 ?>	

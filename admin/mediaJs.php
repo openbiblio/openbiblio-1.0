@@ -3,214 +3,33 @@
  * See the file COPYRIGHT.html for more details.
  */
 // JavaScript Document
-//	$types = $mattypes->getAllWithStats();
 "use strict";
 
-var med = {
-	<?php
-		echo "delConfirmMsg: '".T("Are you sure you want to delete ")."',\n";
-		echo "listHdr: '".T("List of Media Types")."',\n";
-		echo "editHdr: '".T("Edit Media")."',\n";
-		echo "newHdr: '".T("Add New Media")."',\n";
-	?>
-	
-	init: function () {
-		med.initWidgets();
-
-		med.url = 'adminSrvr.php';
-		med.editForm = $('#editForm');
-
-		$('#reqdNote').css('color','red');
-		$('.reqd sup').css('color','red');
-		$('#updateMsg').hide();
-
-		$('#showForm .newBtn').on('click',null,med.doNewMedia);
-		$('#editForm').on('submit',null,med.doSubmits);
-		$('#cnclBtn').on('click',null,med.resetForms);
-
-		med.resetForms()
-	  $('#msgDiv').hide();
-		med.fetchMedia();
-	},
-	
-	//------------------------------
-	initWidgets: function () {
-	},
-	resetForms: function () {
-		//console.log('resetting!');
-	  $('#listHdr').html(med.listHdr);
-	  $('#mediaHdr').html(med.editHdr);
-		$('#editDiv').hide();
-		$('#listDiv').show();
-    $('#cnclBtn').val('Cancel');
-	},
-	doBackToList: function () {
-		$('#msgDiv').hide(10000);
-		med.resetForms();
-		med.fetchMedia();
-	},
-	
-	//------------------------------
-	fetchMedia: function () {
-	  $.getJSON(med.url,{ 'cat':'media', 'mode':'getAllMedia'}, function(dataAray){
-	    med.json = dataAray;
-			var html = '';
-			for (var obj in dataAray) {
-				var item = dataAray[obj];
-	    	html += '<tr>\n';
-    		html += '	<td valign="top">\n';
-				html += '		<input type="button" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
-				html += '		<input type="hidden" value="'+item['code']+'"  />\n';
-    		//html += '	 <input type="button" id="marcBtn" value="MARC Fields" />\n';//
-	    	html += '	</td>\n';
-    		html += '	<td valign="top">'+item['description']+'</td>\n';
-    		html += '	<td valign="top" class="number">'+item['adult_checkout_limit']+'</td>\n';
-    		html += '	<td valign="top" class="number">'+item['juvenile_checkout_limit']+'</td>\n';
-				html += '	<td valign="top">'
-							 +'		<img src="../images/'+item['image_file']+'" width="20" height="20" align="middle">'
-							 + 		item['image_file'] + '</td>\n';							 
-				html += ' <td valign="top" class="center">'+item['default_flg']+'</td>\n';
-				html += '	<td valign="top"  class="number" >' + item['count'] + '</td>\n';
-	    	html += '</tr>\n';
-			}
-			$('#showList tBody').html(html);
-
-			$('.editBtn').on('click',null,med.doEdit);
-			/*$('#marcBtn').on('click',null,med.doMarcFlds);*/
-			$('table tbody.striped tr:odd td').addClass('altBG');
-			$('table tbody.striped tr:even td').addClass('altBG2');
-		});
-	},
-
-	doEdit: function (e) {
-	  var code = $(e.target).next().val();
-		//console.log('you wish to edit code: '+code);
-		for (var n in med.json) {
-		  if (med.json[n]['code'] == code) {
-				med.showMedia(med.json[n]);
-			}
-		}
-		return false;
-	},
-	/*
-	doMarcFlds: function (e) {
-	  var code = $(e.target).prior().val();
-		//console.log('you wish to edit code: '+code);
-		for (n in med.json) {
-		  if (med.json[n]['code'] == code) {
-				med.showMedia(med.json[n]);
-			}
-		}
-		return false;
-	},
-	*/
-	
-	showMedia: function (media) {
-		//console.log('showing : '+media['description']);
-	  $('#editHdr').html(med.editHdr);
-	  $('#addBtn').hide();
-	  $('#updtBtn').show();
-	  $('#deltBtn').show();
-	  $('#description').focus();
-	  if (media['count'] < 1) 
-			$('#deltBtn').show(); 
-		else 
-			$('#deltBtn').hide();
-
-		$('#description').val(media['description']);
-		$('#code').val(media['code']);
-		$('#default_flg').val(media['default_flg']);
-		$('#adult_checkout_limit').val(media['adult_checkout_limit']);
-		$('#juvenile_checkout_limit').val(media['juvenile_checkout_limit']);
-		$('#image_file').val(media['image_file']);
-
-		$('#listDiv').hide();
-		$('#editDiv').show();
-	},
-	
-	doNewMedia: function (e) {
-	  document.forms['editForm'].reset();
-	  $('#editHdr').html(med.newHdr);
-		$('#deltBtn').hide();
-		$('#updtBtn').hide();
-	  $('#addBtn').show();
-		$('#listDiv').hide();
-		$('#editDiv').show();
-	  document.getElementById('description').focus();
-		return false;
-	},
-	
-	doSubmits: function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-		var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
-		switch (theId) {
-			case 'addBtn':	med.doAddMedia();	break;
-			case 'updtBtn':	med.doUpdateMedia();	break;
-			case 'deltBtn':	med.doDeleteMedia();	break;
-		}
-	},
-	
-	doAddMedia: function () {
-		$('#mode').val('addNewMedia');
-		var parms = $('#editForm').serialize();
-		//console.log('adding: '+parms);
-		$.post(med.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else {
-				$('#msgArea').html('Added!');
-				$('#msgDiv').show();
-			  med.doBackToList();
-			}
-		});
-		return false;
-	},
-
-	doUpdateMedia: function () {
-		$('#updateMsg').hide();
-		$('#msgDiv').hide();
-		$('#mode').val('updateMedia');
-		var parms = $('#editForm').serialize();
-		//console.log('updating: '+parms);
-		$.post(med.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else {
-				$('#msgArea').html('response');
-				$('#msgDiv').show();
-			  med.doBackToList();
-			}
-		});
-		return false;
-	},
-	
-	doDeleteMedia: function (e) {
-		var msg = med.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
-	  if (confirm(msg)) {
-	  	var parms = { 'cat':'media', 'mode':'d-3-L-3-tMedia', 'code':$('#code').val(), 'description':$('#description').val() };
-	  	$.post(med.url, parms, function(response){
-				if (($.trim(response)).substr(0,1)=='<') {
-					//console.log('rcvd error msg from server :<br />'+response);
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				}
-				else {
-					$('#msgArea').html('response');
-					$('#msgDiv').show();
-			  	med.doBackToList();
-				}
-			});
-		}
-		return false;
-	},
+function Med ( url, form, dbAlias, hdrs, listFlds, opts ) {
+	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
+Med.prototype = inherit(List.prototype);
+Med.prototype.constructor = Med;
 
-$(document).ready(med.init);
+$(document).ready(function () {
+	var url = 'adminSrvr.php',
+			form = $('#editForm'),
+			dbAlias = 'media';
+	var hdrs = {'listHdr':<?php echo '"'.T("List of Media Types").'"'; ?>, 
+							'editHdr':<?php echo '"'.T("Edit Media").'"'; ?>, 
+							'newHdr':<?php echo '"'.T("Add New Media").'"'; ?>,
+						 };
+	var listFlds = {'code': 'number',
+									'description': 'text',
+									'adult_checkout_limit': 'number',
+									'juvenile_checkout_limit': 'number',
+									'image_file': 'image',
+									'count': 'number',
+									'default_flg': 'center'
+									};
+	var opts = {};
+						 
+	var xxxx = new Med( url, form, dbAlias, hdrs, listFlds, opts );
+	xxxx.init();
+});
 </script>

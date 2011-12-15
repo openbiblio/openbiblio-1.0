@@ -30,8 +30,8 @@
 	<thead>
   <tr>
     <th colspan="1">&nbsp;</th>
-    <th><?php echo T("Description"); ?></th>
     <th><?php echo T("Code"); ?></th>
+    <th><?php echo T("Description"); ?></th>
     <th><?php echo T("Default"); ?></th>
   </tr>
 	</thead>
@@ -55,18 +55,9 @@
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-<legend id="stateHdr"><?php echo T('State Editor'); ?></legend>
+<legend id="fieldsHdr"> </legend>
 <table id="editTbl">
   <tbody>
-  <tr>
-    <td>
-      <label for="description"><?php echo T("Description"); ?>:</label>
-    </td>
-    <td>
-      <input id="description" name="description" type="text" size="32" required aria-required="true" />
-			<span class="reqd">*</span>    
-		</td>
-  </tr>
   <tr>
     <td>
       <label for="code"><?php echo T("Code"); ?>:</label>
@@ -75,6 +66,15 @@
       <input id="code" name="code" type="text" size="20" maxlength="20" required readonly />
 			<span class="addOnly reqd">*</span>    
     </td>
+  </tr>
+  <tr>
+    <td>
+      <label for="description"><?php echo T("Description"); ?>:</label>
+    </td>
+    <td>
+      <input id="description" name="description" type="text" size="32" required aria-required="true" />
+			<span class="reqd">*</span>    
+		</td>
   </tr>
   <tr>
     <td>
@@ -114,5 +114,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "statesJs.php"));
 ?>	
