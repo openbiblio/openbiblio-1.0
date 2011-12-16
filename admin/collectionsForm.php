@@ -13,24 +13,23 @@
 ?>
 <h3><?php echo T("Collections"); ?></h3>
 
-<div id="listDiv">
+<div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
-<br />
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
-<table>
+<table id="showList">
 	<thead>
 	  <tr>
 	    <th colspan="1">&nbsp;</th>
 			<th valign="top"><?php echo T("Description"); ?></th>
 			<th valign="top"><?php echo T("Type"); ?></th>
-			<th valign="top"><?php echo T("Default"); ?></th>
 			<th valign="top"><?php echo T("Item<br />Count"); ?></th>
+			<th valign="top"><?php echo T("Default"); ?></th>
 		</tr>
 	</thead>
-	<tbody id="showList" class="striped">
-	  <tr><td colspan="4"><?php echo T("No sites have been defined."); ?> </td></tr>
+	<tbody class="striped">
+	  <tr><td colspan="4"><?php echo T("No collections have been defined."); ?> </td></tr>
 	</tbody>
 </table>
 </fieldset>
@@ -38,7 +37,7 @@
 </form>
 </div>
 
-<div id="editDiv">
+<div id="editDiv" style="display: none;">
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
@@ -70,6 +69,7 @@
     <li>
       <label for="daily_late_fee" class="circOnly"><?php echo T("Daily Late Fee:"); ?></label>
       <input id="daily_late_fee" name="daily_late_fee" class="circOnly" type="number" size="5" min="0" max="99.99" required aria-required="true" />
+      <!--select id="daily_late_fee" name="daily_late_fee" class="circOnly" > </select-->
 			<span class="reqd circOnly">*</span>    
 		</li>
     <li>
@@ -92,7 +92,7 @@
 </fieldset>
 </form>
 
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <p class="note">
 	<?php echo T("Note:");?><br /><?php echo T('collectionsListNoteMsg'); ?>
@@ -105,5 +105,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "collectionsJs.php"));
 ?>	

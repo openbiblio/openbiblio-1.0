@@ -20,9 +20,9 @@
 ?>
 <h3 id="listHdr"><?php echo T('States'); ?></h3>
 
-<div id="listDiv">
+<div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
-<br />
+
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
@@ -51,7 +51,7 @@
 </div>
 
 
-<div id="editDiv">
+<div id="editDiv"> style="display: none;"
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
@@ -109,7 +109,7 @@
 </form>
 </div>
 
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

@@ -41,6 +41,7 @@ List.prototype.cancelStr = <?php echo '"'.T("Cancel").'"'?>;
 List.prototype.init = function () {
 	this.initWidgets();
 
+	$('#msgDiv').hide();
 	$('#reqdNote').css('color','red');
 	$('.reqd sup').css('color','red');
 	$('#updateMsg').hide();
@@ -81,14 +82,19 @@ List.prototype.fetchList = function () {
 List.prototype.fetchHandler = function(dataAray){
     this.json = dataAray;	// will be re-used later for editing
 		var html, test;
+		
+		var $theTbl = $('#showList');
+		var $theList = $theTbl.find('tbody');
+		$theList.html('');
 		for (var obj in dataAray) {
 			var item = dataAray[obj]; 
 			// these are common and fixed
-    	html += '<tr>\n';
+    	html  = '<tr>\n';
    		html += '	<td valign="top">\n';
-			html += '		<input type="button" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
+			html += '		<input type="button" id="col'+item['code']+'" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
 			html += '		<input type="hidden" value="'+item['code']+'"  />\n';
     	html += '	</td>\n';
+
 			// these vary by form in use
 			for (var fld in this.listFlds) {
 				var theClass = this.listFlds[fld];
@@ -101,15 +107,14 @@ List.prototype.fetchHandler = function(dataAray){
 					html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
 				}
 			}
+			html += '</tr>\n';
+			$theList.append(html);
+			$('#col'+item['code']).bind('click',null,$.proxy(this.doEditFields,this));
 		}
-		var $theTbl = $('#showList');
-		$theTbl.find('tbody').html(html);
 		
 		var $stripes = $theTbl.find('tbody.striped');
 		$stripes.find('tr:odd td').addClass('altBG');
 		$stripes.find('tr:even td').addClass('altBG2');
-		
-		$('.editBtn').on('click',null,$.proxy(this.doEditFields,this));
 	};
 
 List.prototype.doEditFields = function (e) {
@@ -118,7 +123,8 @@ List.prototype.doEditFields = function (e) {
 		var item = this.json[n];
 	  if (item['code'] == code) {
 			this.showFields(item);
-			return;
+			this.crnt = code;
+			return false;
 		}
 	}
 	return false;
@@ -133,7 +139,6 @@ List.prototype.showFields = function (item) {
 
 	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
 		var tagname = $(this).get(0).tagName;
-//console.log(tagname+' with id='+this.id);		
 		if (tagname == 'select') {
 			$(this).val([item[this.id]]);
 		}
@@ -176,6 +181,7 @@ List.prototype.doSubmitFields = function (e) {
 	
 List.prototype.doAddFields = function () {
 	$('#mode').val('addNew_'+this.dbAlias);
+	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
 	$.post(this.url, parms, $.proxy(this.addHandler,this));
 	return false;
@@ -197,6 +203,7 @@ List.prototype.doUpdateFields = function () {
 	$('#updateMsg').hide();
 	$('#msgDiv').hide();
 	$('#mode').val('update_'+this.dbAlias);
+	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
 	$.post(this.url, parms, $.proxy(this.updateHandler, this));
 	return false;
