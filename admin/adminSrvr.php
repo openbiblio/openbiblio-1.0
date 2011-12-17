@@ -138,7 +138,7 @@
 			break;
 			
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
-		case 'getAllCopyFlds':
+		case 'getAll_copyFlds':
 			$flds = array();
 			$set = $ptr->getAll();
 			while ($row = $set->next()) {
@@ -146,21 +146,21 @@
 			}
 			echo json_encode($flds);
 			break;
-		case 'addNewCopyFld':
+		case 'addNew_copyFlds':
 			list($id, $errs) = $ptr->insert_el(array(
 				'code'=>@$_POST['code'],
 				'description'=>@$_POST['description'],
 			));
 			if ($errs) {echo $errs;} else {echo T("Add New successful");}
 			break;
-		case 'updateCopyFld':
+		case 'update_copyFlds':
 			$errs = $ptr->update_el(array(
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
 			if ($errs) {echo $errs;} else {echo T("Update successful");}
 			break;
-		case 'd-3-L-3-tCopyFld':
+		case 'd-3-L-3-t_copyFlds':
 			$ptr->deleteOne($_POST[code]);
 			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;
