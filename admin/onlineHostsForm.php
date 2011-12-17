@@ -19,12 +19,13 @@
 ?>
 <h3 id="listHdr"><?php echo T('Online Hosts'); ?></h3>
 
-<div id="listDiv">
+<div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
-<br />
+
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
+<legend id="listHdr"> </legend>
 <table id="showList" name="showList">
 	<thead>
   <tr>
@@ -54,11 +55,11 @@
 </div>
 
 
-<div id="editDiv">
-<form id="hostForm" name="editForm">
+<div id="editDiv" style="display: none;">
+<form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-<legend><?php echo T('Host Editor'); ?></legend>
+<legend id="fieldsHdr"><?php echo T('Host Editor'); ?></legend>
 <table id="editTbl">
   <tbody>
   <tr>
@@ -110,9 +111,11 @@
     </td>
   </tr>
   <tr>
-    <td><label for="active"><?php echo T("Active"); ?>:</label></td>
+    <td><label for="active"><?php echo T("Active"); ?> (Y/N):</label></td>
     <td>
-      <input type="checkbox" id="active" name="active" value="y" />
+      <!--input type="checkbox" id="active" name="active" value="Y" /-->
+      <input id="active" name="active" type="text" size="1" pattern="[Y,y,N,n]" required aria-required="true" />
+			<span class="reqd">*</span>    
     </td>
   </tr>
   <tr>
@@ -151,10 +154,11 @@
 </form>
 </div>
 
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "onlineHostsJs.php"));
 ?>	

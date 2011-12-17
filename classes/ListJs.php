@@ -32,6 +32,7 @@ function List ( url, form, dbAlias, hdrs, listFlds, opts ) {
 	this.editHdr = hdrs.editHdr;
 	this.newHdr = hdrs.newHdr;
 	this.listFlds = listFlds;
+	this.keyFld = opts.keyFld || 'code';
 	this.focusFld = opts.focusFld || 'description';
 };
 
@@ -83,16 +84,17 @@ List.prototype.fetchHandler = function(dataAray){
     this.json = dataAray;	// will be re-used later for editing
 		var html, test;
 		
-		var $theTbl = $('#showList');
-		var $theList = $theTbl.find('tbody');
+		var $theTbl = $('#showList'),
+				$theList = $theTbl.find('tbody'),
+				ident;
 		$theList.html('');
 		for (var obj in dataAray) {
-			var item = dataAray[obj]; 
-			// these are common and fixed
+			var item = dataAray[obj], 
+					ident = item[this.keyFld];
     	html  = '<tr>\n';
    		html += '	<td valign="top">\n';
-			html += '		<input type="button" id="col'+item['code']+'" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
-			html += '		<input type="hidden" value="'+item['code']+'"  />\n';
+			html += '		<input type="button" id="row'+ident+'" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
+			html += '		<input type="hidden" value="'+ident+'"  />\n';
     	html += '	</td>\n';
 
 			// these vary by form in use
@@ -109,7 +111,7 @@ List.prototype.fetchHandler = function(dataAray){
 			}
 			html += '</tr>\n';
 			$theList.append(html);
-			$('#col'+item['code']).bind('click',null,$.proxy(this.doEditFields,this));
+			$('#row'+ident).bind('click',null,$.proxy(this.doEditFields,this));
 		}
 		
 		var $stripes = $theTbl.find('tbody.striped');
@@ -118,10 +120,12 @@ List.prototype.fetchHandler = function(dataAray){
 	};
 
 List.prototype.doEditFields = function (e) {
-  var code = $(e.target).next().val();
-	for (var n in this.json) {
-		var item = this.json[n];
-	  if (item['code'] == code) {
+  var code = $(e.target).next().val(),
+			ident = this.keyFld, 
+			n;
+	for (n in this.json) {
+		item = this.json[n];
+	  if (item[ident] == code) {
 			this.showFields(item);
 			this.crnt = code;
 			return false;
@@ -140,6 +144,9 @@ List.prototype.showFields = function (item) {
 	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
 		var tagname = $(this).get(0).tagName;
 		if (tagname == 'select') {
+			$(this).val([item[this.id]]);
+		}
+		else if ($(this).is('[type=checkbox]')) {
 			$(this).val([item[this.id]]);
 		}
 		else {
@@ -164,7 +171,7 @@ List.prototype.doNewFields = function () {
   $('#addBtn').show();
 	$('#listDiv').hide();
 	$('#editDiv').show();
-  document.getElementById('code').focus();
+  $('#editForm input:visible:first').focus(); 
 	return false;
 };
 	
@@ -176,6 +183,8 @@ List.prototype.doSubmitFields = function (e) {
 		case 'addBtn':	this.doAddFields();	break;
 		case 'updtBtn':	this.doUpdateFields();	break;
 		case 'deltBtn':	this.doDeleteFields();	break;
+		default: $('#msgArea').html("'"+theId+"' is not a valid action button id");
+						 $('#msgDiv').show();
 	}
 };
 	
@@ -187,16 +196,7 @@ List.prototype.doAddFields = function () {
 	return false;
 };
 List.prototype.addHandler = function(response) {
-	if (response.substr(0,1)=='<') {
-		//console.log('rcvd error msg from server :<br />'+response);
-		$('#msgArea').html(response);
-		$('#msgDiv').show();
-	}
-	else {
-		$('#msgArea').html(response);
-		$('#msgDiv').show();
-	  this.doBackToList();
-	}
+	this.showResponse(response);
 };
 
 List.prototype.doUpdateFields = function () {
@@ -209,31 +209,27 @@ List.prototype.doUpdateFields = function () {
 	return false;
 };
 List.prototype.updateHandler = function(response) {
-	if (response.substr(0,1)=='<') {
-		//console.log('rcvd error msg from server :<br />'+response);
-		$('#msgArea').html(response);
-		$('#msgDiv').show();
-	}
-	else {
-		$('#msgArea').html(response);
-		$('#msgDiv').show();
-	  this.doBackToList();
-	}
+	this.showResponse(response);
 };
 	
 List.prototype.doDeleteFields = function (e) {
-	var msg = this.delConfirmMsg+'\n>>> '+$('#description').val()+' <<<';
+	var msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
   if (confirm(msg)) {
   	var parms = {	'cat':this.dbAlias, 
 									'mode':'d-3-L-3-t_'+this.dbAlias, 
 									'code':$('#code').val(), 
-									'description':$('#description').val() 
+									'description':$('#description').val(), 
 								};
+		parms[this.keyFld] = $('#'+this.keyFld).val();
   	$.post(this.url, parms, $.proxy(this.deleteHandler,this));
 	}
 	return false;
 };
 List.prototype.deleteHandler = function(response){
+	this.showResponse(response);
+};
+
+List.prototype.showResponse = function (response) {
 	if (($.trim(response)).substr(0,1)=='<') {
 		//console.log('rcvd error msg from server :<br />'+response);
 		$('#msgArea').html(response);

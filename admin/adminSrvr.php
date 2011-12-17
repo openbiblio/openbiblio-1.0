@@ -272,7 +272,7 @@
 			break;
 				
   	#-.-.-.-.-.- Online Hosts -.-.-.-.-.-.-
-		case 'getHosts':
+		case 'getAll_hosts':
 		  $hosts = array();
 			$set = $ptr->getAll('seq');
 			while ($row = $set->next()) {
@@ -280,20 +280,20 @@
 			}
 			echo json_encode($hosts);
 			break;
-		case 'getHostSvcs':
+		case 'getSvcs_hosts':
 			$svcs = array('Z3950','SRU','SRW');
 			echo json_encode($svcs);
 			break;
-		case 'addNewHost':
-			if (empty($_POST[active])) $_POST[active] = 'n';
+		case 'addNew_hosts':
+			if (empty($_POST[active])) $_POST[active] = 'N';
 			echo $ptr->insert($_POST);
 			break;
-		case 'updateHost':
-			if (empty($_POST[active])) $_POST[active] = 'n';
+		case 'update_hosts':
+			if (empty($_POST[active])) $_POST[active] = 'N';
 			echo $ptr->update($_POST);
 			break;
-		case 'd-3-L-3-tHost':
-			$sql = "DELETE FROM $ptr->name WHERE `id`=$_GET[id]";
+		case 'd-3-L-3-t_hosts':
+			$sql = "DELETE FROM $ptr->name WHERE `id`=$_POST[id]";
 			echo $ptr->db->act($sql);
 			break;
 

@@ -26,6 +26,7 @@
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
+<legend id="listHdr"> </legend>
 <table id="showList" name="showList"">
 	<thead>
   <tr>
