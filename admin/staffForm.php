@@ -13,9 +13,9 @@
 ?>
 <h3><?php echo T("Staff Members"); ?></h3>
 
-<div id="listDiv">
+<div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
-<br />
+
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
@@ -50,15 +50,15 @@
 	</tfoot>
 </table>
 </fieldset>
-<input type="submit" class="newBtn" value="<?php echo T("Add New"); ?>" />
+<input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 </form>
 </div>
 
-<div id="editDiv">
+<div id="editDiv" style="display: none;">
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-	<legend id="staffHdr"></legend>
+	<legend id="fieldsHdr"></legend>
 	<ul id="editTbl">
     <li>
       <label for="last_name"><?php echo T("Last Name"); ?>:</label>
@@ -74,17 +74,17 @@
       <input id="username" name="username" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
 		</li>
-		<li id="pwdFlds">
+		<li id="pwdFldSet">
 			<fieldset>
-				<ul class="btnRow">
+				<ul>
     			<li>
    			   <label for="pwd"><?php echo T("Password"); ?>:</label>
-   			   <input type="password" id="pwd" name="pwd" size="20" required aria-required="true" />
+   			   <input type="password" id="pwd" name="pwd" class="pwdFlds" size="20" required aria-required="true" />
 						<span class="reqd">*</span>    
 					</li>
   			  <li>
   			    <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
-  			    <input type="password" id="pwd2" name="pwd2" size="20" required aria-required="true" />
+  			    <input type="password" id="pwd2" name="pwd2" class="pwdFlds" size="20" required aria-required="true" />
 						<span class="reqd">*</span>    
 					</li>
 				</ul>
@@ -133,7 +133,7 @@
 </form>
 </div>
 
-<div id="pwdDiv">
+<div id="pwdDiv" style="display: none;">
 <form id="pwdChgForm" name="pwdChgForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
@@ -151,16 +151,17 @@
 		</li>
 	</ul>
 	<ul id="btnRow">
-    <li><input type="submit" id="chgBtn" value="Set" /></li>
-    <li><input type="button" id="cnclBtn" value="Cancel" /></li>
+    <li><input type="submit" id="pwdChgBtn" value="Set" /></li>
+    <li><input type="button" id="pwdCnclBtn" value="Cancel" /></li>
 	</ul>
 </fieldset>
 </form>
 
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
+	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "staffJs.php"));
 ?>	

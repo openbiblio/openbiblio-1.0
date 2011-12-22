@@ -34,16 +34,16 @@
 			require_once(REL(__FILE__, "../model/Online.php"));
 			$ptr = new Opts;
 			break;
-		case 'staff':
-			require_once(REL(__FILE__, "../model/Staff.php"));
-			$ptr = new Staff;
-			break;
 		case 'sites':
 			require_once(REL(__FILE__, "../model/Sites.php"));
 			$ptr = new Sites;
 			require_once(REL(__FILE__, "../model/Calendars.php"));
 			$ptr1 = new Calendars;
 			## deliberate fall-through, do not remove
+		case 'staff':
+			require_once(REL(__FILE__, "../model/Staff.php"));
+			$ptr = new Staff;
+			break;
 		case 'states':
 			require_once(REL(__FILE__, "../model/States.php"));
 			$ptr2 = new States;
@@ -345,7 +345,7 @@
 			break;
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
-		case 'getAllStaff':
+		case 'getAll_staff':
 		  $staff = array();
 			$set = $ptr->getAll('last_name');
 			while ($row = $set->next()) {
@@ -353,8 +353,8 @@
 			}
 			echo json_encode($staff);
 			break;
-		case 'addNewStaff':
-		case 'updateStaff':
+		case 'addNew_staff':
+		case 'update_staff':
 			foreach (array('suspended','admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
 				if (isset($_POST[$flg.'_flg'])) {
 					$_POST[$flg.'_flg'] = 'Y';
@@ -362,17 +362,23 @@
 					$_POST[$flg.'_flg'] = 'N';
 				}
 			}
-			if ($_POST['mode'] == 'addNewStaff')
+			if ($_POST['mode'] == 'addNew_staff')
 				echo $ptr->insert_el($_POST);
-			else
-				echo $ptr->update_el($_POST);
+			else {
+				$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen
+				echo $ptr->update($_POST);
+			}
 			break;
-		case 'd-3-L-3-tStaff':
+		case 'd-3-L-3-t_staff':
 			echo $ptr->deleteOne($_POST['userid']);
 			break;
-		case 'setStaffPwd':
+		case 'setPwd_staff':
 			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
-			echo $ptr->update_el($rec);
+			$errs = $ptr->update_el($rec);
+			if ($errs) 
+				echo $errs;
+			else
+				echo T('Password has been reset.');
 			break;
 
 	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-

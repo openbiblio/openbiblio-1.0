@@ -34,6 +34,8 @@ function List ( url, form, dbAlias, hdrs, listFlds, opts ) {
 	this.listFlds = listFlds;
 	this.keyFld = opts.keyFld || 'code';
 	this.focusFld = opts.focusFld || 'description';
+	this.noshows = opts.noshows || [];
+	this.noshows.push(this.keyFld);
 };
 
 List.prototype.delConfirmMsg = <?php echo '"'.T("Are you sure you want to delete ").'"'; ?>;
@@ -81,50 +83,58 @@ List.prototype.fetchList = function () {
   $.getJSON( this.url, params, $.proxy(this.fetchHandler,this));
 };
 List.prototype.fetchHandler = function(dataAray){
-    this.json = dataAray;	// will be re-used later for editing
-		var html, test;
+  this.json = dataAray;	// will be re-used later for editing
 		
-		var $theTbl = $('#showList'),
-				$theList = $theTbl.find('tbody'),
-				ident;
-		$theList.html('');
-		for (var obj in dataAray) {
-			var item = dataAray[obj], 
-					ident = item[this.keyFld];
-    	html  = '<tr>\n';
-   		html += '	<td valign="top">\n';
-			html += '		<input type="button" id="row'+ident+'" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
-			html += '		<input type="hidden" value="'+ident+'"  />\n';
-    	html += '	</td>\n';
+	var $theTbl = $('#showList'),
+			$theList = $theTbl.find('tbody'),
+			html = '',
+			item, ident,
+			test = '';
+				
+	$theList.html('');		
+	for (var obj in dataAray) {
+		item = dataAray[obj], 
+		ident = item[this.keyFld];
+		// these are static in all rows
+   	html  = '<tr>\n';
+ 		html += '	<td valign="top">\n';
+   	html += this.addFuncBtns( ident );
+   	html += '	</td>\n';
 
-			// these vary by form in use
-			for (var fld in this.listFlds) {
-				var theClass = this.listFlds[fld];
-				if (theClass == 'image') {
-					html += '	<td valign="top">'
-							 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
-							 + 		item[fld] + '</td>\n';	
-				}
-				else {
-					html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
-				}
+		// these vary by form in use
+		for (var fld in this.listFlds) {
+			var theClass = this.listFlds[fld];
+			if (theClass == 'image') {
+				html += '	<td valign="top">'
+						 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
+						 + 		item[fld] + '</td>\n';	
 			}
-			html += '</tr>\n';
-			$theList.append(html);
-			$('#row'+ident).bind('click',null,$.proxy(this.doEditFields,this));
+			else {
+				html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
+			}
 		}
+		html += '</tr>\n';
+		$theList.append(html);
+		$('#row'+ident).bind('click',null,$.proxy(this.doEditFields,this));
+	}
 		
-		var $stripes = $theTbl.find('tbody.striped');
-		$stripes.find('tr:odd td').addClass('altBG');
-		$stripes.find('tr:even td').addClass('altBG2');
-	};
+	var $stripes = $theTbl.find('tbody.striped');
+	$stripes.find('tr:odd td').addClass('altBG');
+	$stripes.find('tr:even td').addClass('altBG2');
+};
+List.prototype.addFuncBtns = function (ident) {
+	var html = '';
+	html  = '		<input type="button" id="row'+ident+'" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
+	html += '		<input type="hidden" value="'+ident+'"  />\n';
+	return html;
+};
 
 List.prototype.doEditFields = function (e) {
   var code = $(e.target).next().val(),
 			ident = this.keyFld, 
 			n;
 	for (n in this.json) {
-		item = this.json[n];
+		var item = this.json[n];
 	  if (item[ident] == code) {
 			this.showFields(item);
 			this.crnt = code;
@@ -139,7 +149,6 @@ List.prototype.showFields = function (item) {
   $('#addBtn').hide();
   $('#updtBtn').show();
   $('#deltBtn').show();
-  if ($('#description')) document.getElementById(this.focusFld).focus();
 
 	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
 		var tagname = $(this).get(0).tagName;
@@ -153,18 +162,21 @@ List.prototype.showFields = function (item) {
 			$(this).val(item[this.id]);
 		}
 	});
-	$('#code').attr('readonly',true).attr('required',false);
-		
+	for (var n in this.noshows){
+		$('#'+this.noshows[n]).attr('required',false).hide();
+	};
+  $('#editForm input:visible:first').focus(); 
 	$('#codeReqd').hide();
 	$('#listDiv').hide();
 	$('#editDiv').show();
 };
 	
-List.prototype.doNewFields = function () {
+List.prototype.doNewFields = function (e) {
   document.forms['editForm'].reset();
   $('#fieldsHdr').html(this.newHdr);
-	$('#code').attr('readonly',false)
-						.attr('required',true);
+	for (var n in this.noshows){
+		$('#'+this.noshows[n]).attr('readonly',true).attr('required',false).hide();
+	};
 	$('#codeReqd').show();
 	$('#deltBtn').hide();
 	$('#updtBtn').hide();
