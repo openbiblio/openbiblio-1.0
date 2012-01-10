@@ -24,7 +24,7 @@ class Layout_csv {
 				$tag = $fld->tag;
 				$sub = $fld->subfields[0]->identifier;
 				## construct a list of all tags used
-				if if (($tag == 20) || (($tag >= 99) && ($tag <= 300)) || ($tag==505)) {
+				if (($tag == 20) || (($tag >= 99) && ($tag <= 300)) || ($tag==505)) {
 					## create MARC Id as concatenation of tag & subfield id
 					$marcId = $tag.$sub;
 					## add this MarcId to list, if not already present
