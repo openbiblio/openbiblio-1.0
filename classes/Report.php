@@ -6,14 +6,14 @@
 require_once(REL(__FILE__, "../classes/Params.php"));
 
 /* A report should always be created with Report::load(), Report::create(),
- * or Report::create_e(), never with new Report().  Create_e() makes a new
- * report of the given type.  If the report is given a name, it will be
- * saved in the session in a way that does not depend on storing objects
- * in the session.  Load() loads a named report from data stored in the
- * session.  Create() calls create_e(), but treats any error as fatal.
- *
+ * or Report::create_e(), never with new Report().  
+ * Create_e() makes a new report of the given type.  If the report is given a 
+ *   name, it will be saved in the session in a way that does not depend on 
+ *   storing objects in the session.  
+ * Load() loads a named report from data stored in the session.  
+ * Create() calls create_e(), but treats any error as fatal.
  * Link() returns an URL for linking to the results of a named report.  An
- * optional message may be supplied for display on the results page.
+ *   optional message may be supplied for display on the results page.
  *
  * Public instance methods:
  *   title(), layouts(), paramDefs(), init(), init_el(), initCgi(),
@@ -74,8 +74,11 @@ class Report {
 		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
 		$fname = '../reports/defs/'.$cache['type'];
 		if (is_readable($fname.'.php')) {
+			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
+			
 		} elseif (is_readable($fname.'.rpt')) {
+		  ## for scripted reports
 			$err = $this->_load_rpt_e($cache['type'], $fname.'.rpt');
 		}
 		if ($err) {

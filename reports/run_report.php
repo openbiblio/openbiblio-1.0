@@ -19,6 +19,7 @@
 	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Links.php"));
+//echo "<br />";print_r($_REQUEST);echo "<br />";
 
 	if (!$_REQUEST['type']) {
 		header('Location: ../reports/index.php');

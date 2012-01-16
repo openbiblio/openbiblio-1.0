@@ -57,6 +57,7 @@ var mtl = {
 		};
 		var sortOpts2 = {
 			connectWith: '#existing',
+			dropOnEmpty: true,
 			cursor: 'move'
 		};
 
@@ -171,9 +172,9 @@ var mtl = {
 						 +   data[n]['tag']+' - '+data[n]['description']
 						 +  '</option>\n';
 			}
-			//if (mtl.blockNmbr == '0') {
-			//	html += '<option value="99">99 - Special locals</option>\n';
-			//}
+//if (mtl.blockNmbr == '0') {
+//	html += '<option value="99">99 - Special locals</option>\n';
+//}
 			$('#marcTags').html(html).show();
 		});
 	},
@@ -181,9 +182,9 @@ var mtl = {
 	  mtl.tagNmbr = $('#marcTags').val();
 	  $.getJSON(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
 			var html = '';
-//			if (data.length == 0) {
-				//html = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
-//			} else {
+//if (data.length == 0) {
+//	html = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
+//} else {
 				for (var n in data) {
 				  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
 					html += '<li id="'+'zqzqz'+id+'" '
@@ -193,13 +194,13 @@ var mtl = {
 							 +	id+' - '+data[n]['description']
 							 +	"</li>\n";
 				}
-//			}
+// 			}
 			$('#potential').html(html);
 		});
 	},
-  //receiveMarcFld: function (e,ui){
-		//console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
-	//},
+receiveMarcFld: function (e,ui){
+	console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);
+},
 	doSaveLayout: function () {
 		// collect current line data in an array
 		var arayd = $('#existing').sortable( 'toArray');
@@ -261,9 +262,9 @@ var mtl = {
  				html = '<h3>'+<?php echo '"'.T('nothingFoundMsg').'"';?>+", <br />"+<?php echo '"'.T('addNewMtlMsg').'"'; ?>+"</h3>";
 				$('#msgArea').html(html);
 				$('#msgDiv').show();
-				//$('<li id="waitClass"><?php echo T("waitForServer");?></li>').appendTo('#existing');
-				//html2 = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
-				//$('#existing').html(html2);
+//$('<li id="waitClass"><?php echo T("waitForServer");?></li>').appendTo('#existing');
+html2 = '<li id="zqzqz099a" subfld="a" tag="099">099a - Call Number</li>\n';
+$('#existing').html(html2);
 			}
 			else if (data.length > 0) {
 				for (var n in data) {
