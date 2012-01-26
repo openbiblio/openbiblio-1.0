@@ -22,9 +22,9 @@
 					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" />';
 				}
 				// Libname is defined in header_top.php	
-				echo "<div id=\"library_name\" > $libName </div>";
-				if ($tab != "opac") 
-					echo ":<br />" . T("Staff Interface");
+				echo "<span id=\"library_name\" > $libName </span>";
+				//if ($tab != "opac") 
+				//	echo "<br />" . T("Staff Interface");
 				if (Settings::get('show_lib_info') == 'Y') {
 					echo "<hr class=\"hdrSpacer\"> \n";
 					echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";

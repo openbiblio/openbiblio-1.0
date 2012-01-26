@@ -2,8 +2,10 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/* This file builds upon the structures defined within ../shared/base2.css */
-/* we start assuming a small screen mobile less than 720px wide */
+/* This file builds upon the structures defined within ../shared/base2.css
+ * we start here assuming a small mobile screen less than 720px wide
+ * larger screens will be progressively enhanced at the end of this document 
+ */
 
 body {
   /*font-size: 45%; line-height: 1.25em;*/
@@ -69,7 +71,8 @@ input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
 select:focus, 
 textarea:focus {
 	/* place blue shadow on all read/write input fields in focus*/
-	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
+	-webkit-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
+	-moz-box-shadow: 0 0 12px rgba(51,204,255, 0.5);
 	box-shadow: 0 0 12px rgba(51,204,255, 0.5);	
 	}
 input[readonly] { border: none; background-color: #ffffdd; }
@@ -94,9 +97,12 @@ input[type=button], input[type=submit], button {
 	background-image: -o-linear-gradient(top, #fff, #bbb);
 	background-image: linear-gradient(top, #fff, #bbb);
 	background-color: rgb(240,240,240);
-	-webkit-border-radius: 23px; -moz-border-radius: 23px; -o-border-radius: 23px;
+	-webkit-border-radius: 23px; 
+	-moz-border-radius: 23px; 
+	-o-border-radius: 23px;
 	border-radius: 23px;
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 	}
 	
@@ -189,6 +195,12 @@ div#content {
 #editTbl { margin-left:0; padding-left:0; }
 #editTbl li { list-style-type:none; 	margin:0; padding:0; }
 
+ul.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }
+ul.listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }
+#itemVisual { width:40%; }
+#photo, #dashBd { display:inline; }
+#itemInfo>div { display:block; }
+
 #btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
 #btnRow li, ul.btnRow li { display: inline; margin-right: 1em; }
 #btnRow li input[value="Delete"], 
@@ -247,7 +259,7 @@ div#content {
 .biblioImage { float: left; border: 1px solid green; height: 50px; width: 40px; padding:0; }
 .photos {margin:0; padding:0; }
 /*
-.biblioImage.hover:hover { top:30px; left:200px;
+.no-touch .biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform: 	scale(5.0); -webkit-transform-origin: top right;
 	-moz-transform: 		scale(5.0); -moz-transform-origin: 		top right;
 	-ms-transform: 			scale(5.0); -ms-transform-origin: 		top right;
@@ -260,7 +272,7 @@ div#content {
 #bibBlkB, fotoBlkB { display: inline-block; float: right; }
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:10px; border:1px solid green }
 /*
-#biblioFoto.hover:hover { 
+.no-touch #biblioFoto.hover:hover { 
 	top: 20px;
 	-webkit-transform: 	scale(3.0); -webkit-transform-origin: top right;
 	-moz-transform: 		scale(3.0); -moz-transform-origin: 		top right;
@@ -269,8 +281,7 @@ div#content {
 	transform: 					scale(3.0);
 }
 */
-#flagInfo ul { text-align: center; margin:0; padding:0; }
-#flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
+#flagInfo li { list-style:none; }
 .flgDot {
 	-webkit-transform: 	scale(0.75);
 	-moz-transform: 		scale(0.75);
@@ -401,30 +412,36 @@ div#configDiv{
 		-webkit-border-radius: 0.3em;
 		-moz-border-radius: 	 0.3em;
 		border-radius:				 0.3em;
-	
+		}
+	h1,h2,h3,h4,h5,h6, aside, #content {
 		-moz-box-shadow: 3px 6px 8px -4px #000;
 		-webkit-box-shadow: 3px 6px 8px -4px #000;
 		box-shadow: 3px 6px 8px -4px #000;
-	}
+		}
 	/*************************************************/
-	aside { position:fixed; top:1%; left:1%; float:left; width:15%; 
+	aside { 
+		position:fixed; top:1%; left:1%; float:left; width:15%; 
 		padding-bottom:0.2em; height:auto;
 		font-size:0.87em; /* 14/16 */
 		-moz-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 		-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 		box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
-	}
+		}
 	#obLogo { display:block; }
-	#logo { padding: 3px; border: 2px solid #ddd; width:90%; display:block; }
+	#logo { 
+		padding:3px; margin-bottom:5px; 
+		border: 2px solid #ddd; width:90%; 
+		display:block; 
+		}
 
 	/*************************************************/
-	h1.theHead {
+	h3.theHead {
 		display: block;
-		text-align: right;
+		text-align: center;
 		font: bold 1.0em serif; /* 16/16 */
 		color: white;
 		margin: 0;
-	}
+		}
 	.hdrSpacer { display:block; width:25%; }
 	#library_name, 
 	#library_hours, 
@@ -443,4 +460,19 @@ div#configDiv{
 	#phraseSearch #searchType  { display:inline; }
 	#phraseSearch legend { display:inline; }
 
+	ul.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }
+	ul.listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }
+	#itemVisual { width:110px; }
+	#photo, #dashBd { display:inline; }
+
+	#flagInfo ul { text-align: center; margin:0; padding:0; }
+	#flagInfo li { display: inline; list-style:none; margin: 0; padding: 0; }
+	.flgDot {
+		-webkit-transform: 	scale(0.75);
+		-moz-transform: 		scale(0.75);
+		-ms-transform: 			scale(0.75);
+		-0-transform: 			scale(0.75);
+		transform: 				 	scale(0.75);
+		vertical-align: bottom;
+		}
 }
