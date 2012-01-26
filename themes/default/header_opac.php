@@ -9,14 +9,17 @@
 
 <aside id="sidebar">
 	<header>
-		<h3 class="staff_head">
+		<h3 class="theHead">
 				<?php
 				if (Settings::get('library_image_url') != "") {
 					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" border="0" /><br />';
 				}
 				?>
 				<!-- Libname is defined in header_top.php -->	
-				<?php echo "$libName:<br />".T("OPAC Interface"); ?>
+				<?php 
+					//echo "$libName:<br />".T("OPAC Interface"); 
+					echo "$libName:<br />"; 
+				?>
 		</h3>
 		<div id="library_hours"><?php echo Settings::get('library_hours') ?></div>
 		<hr style="width:25%">
@@ -30,7 +33,7 @@
 	<hr />
 	
 	<footer id="footer">
-		<a href="http://obiblio.sourceforge.net/">
+		<a id="obLogo" href="http://obiblio.sourceforge.net/">
 			<img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0" />
 		</a>
 		<br />

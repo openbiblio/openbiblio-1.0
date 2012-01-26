@@ -8,6 +8,7 @@
 ?>
 
 <!DOCTYPE html >
+<!-- there are many lines here with obscure comments. For more info see http://html5boilerplate.com/ -->
 <html lang="en" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
 
 <head>	
@@ -15,6 +16,10 @@
 <?php 
 		echo '<meta charset="'.$CharSet.'" />';
 ?>
+
+<!-- Use the .htaccess and remove these lines to avoid edge case issues.
+     More info: h5bp.com/b/378 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
 <title>
 <?php
@@ -51,6 +56,9 @@ if (!isset($doing_install) or !$doing_install) {
 <meta name="author" content="Micah Stetson">
 <meta name="tester" content="Neil Redgate">
 
+<!-- Mobile viewport optimized: j.mp/bplateviewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="icon" href="../favicon.ico" type="image/x-icon" /-->
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /> 
 
@@ -65,7 +73,7 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- This style sheet resets all browsers to a common default style -->
 <link rel="stylesheet" href="../shared/base2.css" />
 
-<!-- OpenBiblio style is set here -->
+<!-- OpenBiblio style is set here using appropriate Theme folder -->
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
 
 	<?php

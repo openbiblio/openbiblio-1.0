@@ -7,24 +7,21 @@
 	require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
-// I beleive this is now taken care of for all $_session stuff in common.php
-// In case of OPAC
-//	if(empty($_SESSION['show_detail_opac']))
-//		$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
-	
 	session_cache_limiter(null);
 
 	if(empty($_REQUEST[tab]))
 		$tab = "cataloging";
 	else
-	  $tab = $_REQUEST[tab];
+	  $tab = strtolower($_REQUEST[tab]);
 
 	$nav = "localSearch";
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "searchBarcd";
 
-	if (strtolower($tab) == 'opac') {
-		Page::header_opac(array('nav'=>$nav, 'title'=>''));
+	//if (strtolower($tab) == 'opac') {
+	if ($tab == 'opac') {
+		//Page::header_opac(array('nav'=>$nav, 'title'=>''));
+		Page::header(array('nav'=>$nav, 'title'=>'Library Catalog'));
 	}
 	else {
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
@@ -47,22 +44,12 @@
 <div id="searchDiv">
 <form id="barcodeSearch" name="barcodeSearch" method="post">
 <fieldset>
-<legend><?php echo T("Find Item by Barcode Number"); ?></legend>
-<table>
-	<tr>
-		<td nowrap="true">
-			<label for="searchBarcd"><?php echo T("Barcode Number:");?></label>
-			<input id="searchBarcd" name="searchBarcd" type="text" size="20" />
-			<input id="srchByBarcd" name="srchByBarcd" type="submit" value="<?php echo T("Search"); ?>" class="srchByBarcdBtn" />
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<input id="searchType" name="searchType" type="hidden" value="barcodeNmbr" />
-			<input id="sortBy" name="sortBy" type="hidden" value="default" />
-		</td>
-	</tr>
-</table>
+	<legend><?php echo T("Find Item by Barcode"); ?></legend>
+	<label for="searchBarcd"><?php echo T("Barcode");?>:</label>
+	<input type="text" id="searchBarcd" name="searchBarcd" size="20" />
+	<input type="submit" id="srchByBarcd" name="srchByBarcd" value="<?php echo T("Search"); ?>" class="srchByBarcdBtn" />
+	<input type="hidden" id="searchType" name="searchType" value="barcodeNmbr" />
+	<input type="hidden" id="sortBy" name="sortBy" value="default" />
 </fieldset>
 </form>
 
@@ -82,8 +69,8 @@
 				<option value="publisher"><?php echo T("Publisher"); ?></option>
 				<option value="callno"><?php echo T("Item Number"); ?></option>
 			</select>
-			<input id="searchText" name="searchText" type="text" size="20" maxlength="256" />
-			<input id="srchByPhrase" name="srchByPhrase" type="submit" value="<?php echo T("Search"); ?>" class="srchByPhraseBtn" />
+			<input type="text" id="searchText" name="searchText" size="20" maxlength="256" />
+			<input type="submit" id="srchByPhrase" name="srchByPhrase" value="<?php echo T("Search"); ?>" class="srchByPhraseBtn" />
 		</td>
 	</tr>
 	<tr>
@@ -101,26 +88,25 @@
 	</tr>
 	</tbody>
 	<!-- visiblity below here depends on above checkbox -->
-	<tbody id="advTxtSrch">
+	<tbody id="advancedSrch">
+	<tr>
+		<td nowrap="true" colspan="3"><label for="sortBy"><?php echo T("Sort by: "); ?></label>
+			<select id="sortBy" name="sortBy">
+				<option value="author">Author</option>
+				<option value="callno">Call Number</option>
+				<option value="title" selected>Title</option>
+			</select>
+		</td>
+	</tr>
 	<tr>
 	  <td colspan="3">
-	  <fieldset id="advancedSrch">
+	  <fieldset>
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
 		<tr class="searchRow">
 			<td><label for="mediaType"><?php echo T("Media Type:"); ?> </label></td>
 			<td>
 					<span id="srchMatTypes">to be filled by server</span>				
-			</td>
-			<td rowspan="3" valign="top" nowrap="yes" align="center">
-			  <fieldset style="margin:0; margin-bottom:5px;">
-				<legend><?php echo T("Sort by: "); ?></legend>
-					<select id="sortBy" name="sortBy">
-						<option value="author">Author</option>
-						<option value="callno">Call Number</option>
-						<option value="title" selected>Title</option>
-					</select>
-			  </fieldset>
 			</td>
 		</tr>
 		<tr class="searchRow">
@@ -147,9 +133,8 @@
 			</td>
 		</tr>
 		<tr class="searchRow">
-			<td><label><?php echo T("Production Date:"); ?></label></td>
-			<td colspan="2" >
-				<label for="from"><?php echo T("From Year:");?></label>
+			<td><label><?php echo T("Production Date:"); ?></label><br /></td>
+			<td><label for="from"><?php echo T("From Year:");?></label>
 					<input id="from" name="from" type="number" size="4" min="1900" max="2099" />
 				<label for="to"><?php echo T("To Year:"); ?></label>
 					<input id="to" name="to" type="number" size="4" min="1900" max="2099" />

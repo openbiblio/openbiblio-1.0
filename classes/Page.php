@@ -9,10 +9,16 @@ class Page {
 		global $nav, $tab, $focus_form_name, $focus_form_field;
 		$params = Page::clean_params($params);
 		$_Page_params = $params;
-		require_once(REL(__FILE__, '../shared/menu.php'));
-		staff_menu();
+		if ($tab == 'opac') {
+			require_once(REL(__FILE__, '../opac/menu.php'));
+			opac_menu();
+		} else {
+			require_once(REL(__FILE__, '../shared/menu.php'));
+			staff_menu();
+		}
 		require_once($params['theme_dir']."/header.php");
 	}
+/*
 	function header_opac($params=array()) {
 		global $_Page_params;
 		$params = Page::clean_params($params);
@@ -21,6 +27,7 @@ class Page {
 		opac_menu();
 		require_once($params['theme_dir']."/header_opac.php");
 	}
+*/
 	function header_help($params=array()) {
 		global $_Page_params;
 		$params = Page::clean_params($params);

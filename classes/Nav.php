@@ -20,6 +20,7 @@ class Nav {
 		Nav::_display($activePath, $_Nav_menu);
 	}
 	function _display($activePath, $menu, $class='nav_main') {
+		global $tab;
 		if (empty($menu)) {
 			return;
 		}
@@ -31,11 +32,17 @@ class Nav {
 				$link = H($m['title']);
 			}
 			if (Nav::_pathWithin($activePath, $m['path'])) {
-				echo '<li class="nav_selected">'.$link;
+				$temp = '<li class="nav_selected';
+				if ($tab == 'opac') $temp .= ' opacNav';
+				$temp .= '">'.$link;
+				echo $temp;
 				Nav::_display($activePath, $m['children'], 'nav_sub');
 				echo '</li>';
 			} elseif ($m['url']) {
-				echo '<li>'.$link.'</li>';
+				if ($tab == 'opac')
+					echo '<li class="opacNav">'.$link.'</li>';
+				else
+					echo '<li>'.$link.'</li>';
 			}
 		}
 		echo '</ul>';

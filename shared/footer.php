@@ -76,15 +76,16 @@ var obib = {
 		// re-stripe specified table
 		if (oddEven == 'even') {
 			//console.log('striping even rows of table: '+tblName);
-	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
-	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
+	  	$('#'+tblName+'>tbody.striped tr:even').addClass('altBG');
+	  	$('#'+tblName+'>tbody.striped tr:odd').removeClass('altBG');
 		}
 		else if (oddEven == 'odd') {
 			//console.log('striping odd rows of table: '+tblName);
-	  	$('#'+tblName+' tbody.striped tr:even').addClass('altBG');
-	  	$('#'+tblName+' tbody.striped tr:odd').removeClass('altBG');
+	  	$('#'+tblName+'>tbody.striped tr:even').addClass('altBG');
+	  	$('#'+tblName+'>tbody.striped tr:odd').removeClass('altBG');
 	 }
 	},
+	
 	//-------------------------
 	confirmLink: function(e) {
 		if (modified) {

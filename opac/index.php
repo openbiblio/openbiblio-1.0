@@ -1,6 +1,14 @@
 <?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
+ * 
+ * This module looks to see if a library preference is saved in a COOKIE. 
+ * If so, then the user is taken directlly to a search screen for that library.
+ * If, not the user is asked to select a library and a new cookie is saved. 
+ * 
+ *FIXME:
+ * There needs to be a way for a user to switch libraries.
+ *         
  */
 
 require_once("../shared/common.php");
@@ -30,7 +38,7 @@ if(isset($_REQUEST['selectSite'])){
 	header("Location: opac/index.php");
 }
 
-if(!empty($_SESSION['current_site'])) header("Location: ../catalog/biblio_search.php?tab=OPAC");
+if(!empty($_SESSION['current_site'])) header("Location: ../catalog/srchForms.php?tab=OPAC");
 	
 
 session_cache_limiter(null);
@@ -43,7 +51,6 @@ $focus_form_field = "searchText";
 Page::header_opac(array('nav'=>$nav, 'title'=>''));
 
 ?>
-
 			<h1><? echo T('Welcome to the libary');?></h1>
 				<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="phrasesearch">
 					<fieldset>
@@ -52,7 +59,7 @@ Page::header_opac(array('nav'=>$nav, 'title'=>''));
 						<tbody>
 							<tr>
 							<td class="primary" nowrap="true">
-								<?php echo T('Please select the library:'); ?>
+								<?php echo T('Please select the library'); ?>
 							</td><td>
 								<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>								
 								<input class="button" name="action" type="submit" value="<?echo T('Select site')?>"/>

@@ -58,7 +58,8 @@ echo "got a rpt <br />";
 	}
 
 	if ($tab == "opac") {
-		Page::header_opac(array('nav'=>$nav, 'title'=>''));
+		//Page::header_opac(array('nav'=>$nav, 'title'=>''));
+		Page::header(array('nav'=>$nav, 'title'=>''));
 	} else {
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
@@ -81,7 +82,7 @@ echo "got a rpt <br />";
 		*  Printing result stats and page nav
 		************************************************************************** -->
 <?php
-	echo T("%count% results found.", array("count"=>$rpt->count()));
+	echo $rpt->count().T("%count% results found.", array("count"=>$rpt->count()));
 	$page_url = new LinkUrl("../shared/image_browse.php", 'page',
 		array('type'=>'previous', 'tab'=>$tab));
 	$disp = new ReportDisplay($rpt);
@@ -95,8 +96,9 @@ echo "got a rpt <br />";
 			echo '</tr><tr>';
 			$col = 0;
 		}
-		echo '<td valign="bottom" align="center" style="padding-bottom: 15px"><a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
-			. '<img src="'.H($row['imgurl']).'" /><br />'.H($row['callnum']).'</a></td>';
+		echo '<td valign="bottom" align="center" style="padding-bottom: 15px">'
+				.'<a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
+				.'<img src="'.H($row['imgurl']).'" /><br />'.H($row['callnum']).'</a></td>';
 		$col++;
 	}
 	echo '</tr></table>';

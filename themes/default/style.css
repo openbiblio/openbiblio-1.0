@@ -2,7 +2,8 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/* This file builds upon the structures defined within ../shared/base.css */
+/* This file builds upon the structures defined within ../shared/base2.css */
+/* we start assuming a small screen mobile less than 720px wide */
 
 body {
   /*font-size: 45%; line-height: 1.25em;*/
@@ -14,12 +15,6 @@ body {
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
-/* rounded corners for various elements */
-h1,h2,h3,h4,h5,h6, fieldset, img, aside, header {
-	-webkit-border-radius: 0.3em;
-	-moz-border-radius: 	 0.3em;
-	border-radius:				 0.3em;
-	}
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
@@ -59,7 +54,7 @@ legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0
 fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
 
 /* tables & parts of */
-table { margin:2px; max-width:100%; border-spacing:0; }
+table { margin:2px; width:99%; border-spacing:0; }
 tbody.striped tr::odd td { background-color: #EEE; }
 /*tbody.striped tr:even td { background-color: #CCC; }*/
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
@@ -106,46 +101,44 @@ input[type=button], input[type=submit], button {
 	}
 	
 /*************************************************/
-aside {
-	position:fixed; top:1%; left:1%;
-	float:left; width:15%; 
-	margin:0; /*margin-top:0.3em;*/
-	padding-bottom:0.2em;
-	height:auto;
-	font-size:0.87em; /* 14/16 */
-	color:black; border:0.15em solid black;
-	-moz-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
-	-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
-	box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
+aside { 
+	width:auto%; margin:0; padding:0; margin-bottom:2px;
+	color:black; background: #90b0b8; border:0.15em solid black;
 	}
-#logo { padding: 3px; border: 2px solid #ddd; width:90%; }
-aside input[type=submit] { position: relative; left:30%; }
 .obInstall .notForInstall { display: none; }
+#obLogo { display:none; }
 
 /*************************************************/
-h1.staff_head {
-	display: block;
+h1.theHead {
+	display: block; width:100%
 	text-align: right;
-	font: bold 1.0em serif; /* 16/16 */
+	font: bold 2.0em serif;
 	color: white;
-	margin: 0;
+	margin: 0; padding:0;
 	}
+#logo { display:none; }
+aside input[type=submit] { position: relative; left:30%; }
+.hdrSpacer { display:none; }
 #library_name, 
 #library_hours, 
-#library_phone { margin: 2px 5px 2px 5px; font: 0.82em sans-serif; }
-#library_name { color: white; }
+#library_phone { margin:0; font:1.0em sans-serif; }
+#library_name { color: black; font-size: 2.0em; }
 
 /*************************************************/
 ul.nav_main {
 	max-width: 100%;
-	margin-top: 0; margin-left: 0; padding-left: 0.5em;
+	margin-top: 0; margin-left: 0; 
 	list-style-type: none;
+	text-align:center;
 	}
 ul.nav_main li {
 	margin-bottom: 1.1em;
 	white-space: nowrap;
 	margin-left: 2px;
+	display:inline; padding-right:1.0em;
 	}
+ul.nav_main li:last-child { padding:0; margin-bottom: 0;
+ }
 ul.nav_main > li.nav_selected {
 	max-width: 93%;
 	border-left: solid black 1px;
@@ -188,18 +181,7 @@ footer { margin-top:10px; text-align:center; font: 0.75em serif;/* 12/16 */ }
 
 /*************************************************/
 div#content {
-	position: absolute; top:1%; left: 17.5%;
-	vertical-align: top;
-	border: solid black 2px;
-	background: white;
-	padding: 2px 2px 2px 2px;
-	/*width: auto;*/
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	-moz-box-shadow: 3px 6px 8px -4px #000;
-	-webkit-box-shadow: 3px 6px 8px -4px #000;
-	box-shadow: 3px 6px 8px -4px #000;
+  left:0; width:100%; vertical-align:top; border:solid black 2px; background:white; padding:0; 
 	}
 #content .altBG { background: #dddddd; }
 #copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
@@ -217,7 +199,12 @@ div#content {
 .inlineFldSet label { display:block; }
 #vertSep { width:0; height:3em; margin-right:0.5em; padding:0; border: 1px solid gray}
 
+#barcodeSearch { display:none; } /* reserved for desktop users */
+#phraseSearch #searchType  { display:block; }
+#phraseSearch legend { display:none; }
+
 /* search results displays */
+.listTbl { width:100%; text-align:left; }
 .note { font-size: 0.7em; }
 .title {
 	font: 1.25em sans-serif; /* 20/16 */
@@ -258,6 +245,8 @@ div#content {
 .cover_image { width: 75px; }
 .cover_image img { border: solid black 2px; width: 75px; }
 .biblioImage { float: left; border: 1px solid green; height: 50px; width: 40px; padding:0; }
+.photos {margin:0; padding:0; }
+/*
 .biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform: 	scale(5.0); -webkit-transform-origin: top right;
 	-moz-transform: 		scale(5.0); -moz-transform-origin: 		top right;
@@ -265,10 +254,12 @@ div#content {
 	-o-transform: 			scale(5.0);
 	transform: 					scale(5.0);
 	}
+*/
 #bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
 #bibBlkA, fotoBlkA { display:inline-block; float:left; }
 #bibBlkB, fotoBlkB { display: inline-block; float: right; }
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:10px; border:1px solid green }
+/*
 #biblioFoto.hover:hover { 
 	top: 20px;
 	-webkit-transform: 	scale(3.0); -webkit-transform-origin: top right;
@@ -277,6 +268,7 @@ div#content {
 	-o-transform: 			scale(3.0);
 	transform: 					scale(3.0);
 }
+*/
 #flagInfo ul { text-align: center; margin:0; padding:0; }
 #flagInfo li { display: inline; margin: 0; padding: 0 5px 0 5px; }
 .flgDot {
@@ -401,3 +393,54 @@ div#configDiv{
 	margin: 0; padding: 5px;
 	text-align: center;
 	}
+
+/* For Tablets and Desktops */
+@media screen and (min-width:720px) {
+	/* rounded corners and shadows for major layout elements */
+	h1,h2,h3,h4,h5,h6, fieldset, img, aside, header, #content {
+		-webkit-border-radius: 0.3em;
+		-moz-border-radius: 	 0.3em;
+		border-radius:				 0.3em;
+	
+		-moz-box-shadow: 3px 6px 8px -4px #000;
+		-webkit-box-shadow: 3px 6px 8px -4px #000;
+		box-shadow: 3px 6px 8px -4px #000;
+	}
+	/*************************************************/
+	aside { position:fixed; top:1%; left:1%; float:left; width:15%; 
+		padding-bottom:0.2em; height:auto;
+		font-size:0.87em; /* 14/16 */
+		-moz-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
+		-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
+		box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
+	}
+	#obLogo { display:block; }
+	#logo { padding: 3px; border: 2px solid #ddd; width:90%; display:block; }
+
+	/*************************************************/
+	h1.theHead {
+		display: block;
+		text-align: right;
+		font: bold 1.0em serif; /* 16/16 */
+		color: white;
+		margin: 0;
+	}
+	.hdrSpacer { display:block; width:25%; }
+	#library_name, 
+	#library_hours, 
+	#library_phone { margin: 2px 5px 2px 5px; font: 0.82em sans-serif; }
+	
+	/*************************************************/
+	ul.nav_main { padding-left: 0.5em; text-align:left; }
+	ul.nav_main li { display:block; padding:0; }
+	
+	/*************************************************/
+	div#content { 
+		position: absolute; top:1%; left:17.5%; width:auto;
+		padding: 2px 2px 2px 2px;
+	}
+	#barcodeSearch { display:block; }
+	#phraseSearch #searchType  { display:inline; }
+	#phraseSearch legend { display:inline; }
+
+}

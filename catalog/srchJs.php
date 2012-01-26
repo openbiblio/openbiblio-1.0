@@ -384,7 +384,7 @@ var bs = {
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
 			var callNo = ''; var title = ''; var author=''; var subtitle='';
-			var html = "<tr> \n";
+			var html = '<tr> \n';
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			bs.biblio[biblio.bibid] = biblio;
 			if (biblio.data) {
@@ -393,15 +393,15 @@ var bs = {
 					var tmp = JSON.parse(fldData);
 					if (!tmp.value) tmp.value = 'n/a';
 					switch (tmp.label){
-						case 'Title': title = tmp.value; 
+						case 'Title': title = tmp.value.trim(); 
 							break;
-						case 'Subtitle': subtitle = tmp.value; 
+						case 'Subtitle': subtitle = tmp.value.trim(); 
 							break;
 						case 'Author':
-							author = tmp.value;
+							author = tmp.value.trim();
 							if (author && (author.length>30)) author = author.substring(0,30)+'...';
 							break;
-						case 'Call Number': callNo = tmp.value; 
+						case 'Call Number': callNo = tmp.value.trim(); 
 							break;
 					}
 				});
@@ -412,13 +412,14 @@ var bs = {
 			}
 			// Add subtitle to title and chop on 50 charaters if needed
 			title = title + ' ' + subtitle;
-			if(title.length>50) title = title.substring(0,50)+'...';
+			//if(title.length>50) title = title.substring(0,75)+'...';
 			
 			if (bs.opts.showBiblioPhotos == 'Y') {
-				html += '<td id="photo_'+biblio.bibid+'">'+
+				html += '<td id="photo_'+biblio.bibid+'" class="photos" >'+
 								'		<img src="../images/shim.gif" class="biblioImage noHover" />'+
 								'</td>'+"\n";
 	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
+	  			/* when this returns, it will over-write the above shim, if there is anything found */
 	  			if (data != null) {
 						var theId = data[0].bibid, 
 								fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
@@ -428,15 +429,18 @@ var bs = {
 	  		});
 			}
 			html += '<td>\n';
-			html += '	<input type="hidden" value="'+biblio.bibid+'" />'+"\n";
-			html += '	<input type="button" class="moreBtn" value="More info" />'+"\n";
+			html += '	<img src="../images/'+biblio.avIcon+'" class="flgDot" alt="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
+			html += '	<img src="../images/'+biblio.imageFile+'" />'+'\n';
+			html += '	<br />\n';
+			html += '	<input type="button" class="moreBtn" value="More info" />'+'\n';
+			html += '	<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
+			html += '</td>\n';
 			html += '<td>\n';
-			html += '<td><img src="../images/'+biblio.avIcon+'" class="flgDot" alt="Grn: available<br />Blu: on hold<br />Red: not available" /></td>\n';
-			html += '<td><img src="../images/'+biblio.imageFile+'" /></td>'+"\n";
-			html += '<td>'+title+"</td>\n";
-			html += '<td>'+author+'</td><td>'+callNo+"</td>\n";
-			html += '<td><div class="biblioBtn">'+"\n";
-			html += "</div></td> \n";
+			html +=  	title +'\n';
+			html += '	<br />\n';
+			html +=   author +'&nbsp;'+'&nbsp;'+'&nbsp;'+'&nbsp;'+callNo+'\n';
+			html += "</td>\n";
+			//html += '<td><div class="biblioBtn"></div></td> \n';
 			html += "</tr>\n";
 			$('#srchRslts').append(html);
 		}

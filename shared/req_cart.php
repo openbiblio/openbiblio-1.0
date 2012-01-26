@@ -36,7 +36,8 @@
 
 	if ($tab == "opac") {
 		Nav::node('cart/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioCart&tab=opac');
-		Page::header_opac(array('nav'=>$nav, 'title'=>''));
+		//Page::header_opac(array('nav'=>$nav, 'title'=>''));
+		Page::header(array('nav'=>$nav, 'title'=>''));
 	} else {
 		Nav::node('cataloging/cart/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioCart');
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
