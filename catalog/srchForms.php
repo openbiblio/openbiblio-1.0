@@ -224,7 +224,7 @@
 		<?php }?>
 	</ul>
 		
-		<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
+	<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
 		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>"></li>

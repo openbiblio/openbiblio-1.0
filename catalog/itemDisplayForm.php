@@ -21,18 +21,18 @@
 		<thead>
 		<tr>
 				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
-					<th nowrap="yes" align="center"><?php echo T("Function"); ?></th>
+					<th><?php echo T("Function"); ?></th>
 				<?php } ?>
-				<th align="center" nowrap="yes"><?php echo T("Barcode"); ?></th>
-				<th align="center" nowrap="yes"><?php echo T("Description"); ?></th>
 				<?php
 					if($_SESSION['multi_site_func'] > 0){
 						echo "<th id=\"siteFld\" align=\"center\" nowrap=\"yes\">" . T("Site") . "</th>";
 					}
 				?>
-				<th align="center" nowrap="yes"><?php echo T("Status"); ?></th>
-				<th align="center" nowrap="yes"><?php echo T("Status Dt"); ?></th>
-				<th align="center" nowrap="yes"><?php echo T("Due Back"); ?></th>
+				<th><?php echo T("Status"); ?></th>
+				<th><?php echo T("Status Dt"); ?></th>
+				<th><?php echo T("Due Back"); ?></th>
+				<th><?php echo T("Barcode"); ?></th>
+				<th><?php echo T("Description"); ?></th>
 		</tr>
 		</thead>
 		<tbody id="copies" class="striped"></tbody>
