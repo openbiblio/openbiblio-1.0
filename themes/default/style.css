@@ -90,13 +90,13 @@ input[type=button], input[type=submit], button {
 	padding: 2px 4px;
 	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
 	line-height: 1;
-	color: #444; border: none; 
+	color: #222; background-color: rgb(240,240,240); border: none; 
+	text-shadow:0 1px 1px rgba(255, 255, 255, 0.85);
 	background-image: -webkit-linear-gradient(top, #fff, #bbb);
 	background-image: -moz-linear-gradient(top, #fff, #bbb);
 	background-image: -ms-linear-gradient(top, #fff, #bbb);
 	background-image: -o-linear-gradient(top, #fff, #bbb);
 	background-image: linear-gradient(top, #fff, #bbb);
-	background-color: rgb(240,240,240);
 	-webkit-border-radius: 23px; 
 	-moz-border-radius: 23px; 
 	-o-border-radius: 23px;
@@ -195,6 +195,7 @@ div#content {
 #editTbl { margin-left:0; padding-left:0; }
 #editTbl li { list-style-type:none; 	margin:0; padding:0; }
 
+#biblioListDiv { width:100%; }
 ul.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }
 ul.listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }
 #itemVisual { width:40%; }
@@ -215,6 +216,11 @@ ul.listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }
 #phraseSearch #searchType  { display:block; }
 #phraseSearch legend { display:none; }
 
+ul.pagBtns { float:left; margin:0; padding:0; width:100%; }
+ul.pagBtns li { display:block; list-style:none; margin:0; padding:0; }
+xul.pagBtns li:first-child { float:left; color: red; }
+xul.pagBtns li:last-child { float:right; color: green; }
+ 
 /* search results displays */
 .listTbl { width:100%; text-align:left; }
 .note { font-size: 0.7em; }
@@ -414,9 +420,9 @@ div#configDiv{
 		border-radius:				 0.3em;
 		}
 	h1,h2,h3,h4,h5,h6, aside, #content {
-		-moz-box-shadow: 3px 6px 8px -4px #000;
-		-webkit-box-shadow: 3px 6px 8px -4px #000;
-		box-shadow: 3px 6px 8px -4px #000;
+		-moz-box-shadow:3px 6px 8px -4px #000;
+		-webkit-box-shadow:3px 6px 8px -4px #000;
+		box-shadow:3px 6px 8px -4px #000;
 		}
 	/*************************************************/
 	aside { 
@@ -425,22 +431,22 @@ div#configDiv{
 		font-size:0.87em; /* 14/16 */
 		-moz-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 		-webkit-box-shadow:0.2em 0.4em 0.6em -0.2em #000;
-		box-shadow: 0.2em 0.4em 0.6em -0.2em #000;
+		box-shadow:0.2em 0.4em 0.6em -0.2em #000;
 		}
 	#obLogo { display:block; }
 	#logo { 
 		padding:3px; margin-bottom:5px; 
-		border: 2px solid #ddd; width:90%; 
+		border:2px solid #ddd; width:90%; 
 		display:block; 
 		}
 
 	/*************************************************/
 	h3.theHead {
-		display: block;
-		text-align: center;
-		font: bold 1.0em serif; /* 16/16 */
-		color: white;
-		margin: 0;
+		display:block;
+		text-align:center;
+		font:bold 1.0em serif; /* 16/16 */
+		color:white;
+		margin:0;
 		}
 	.hdrSpacer { display:block; width:25%; }
 	#library_name, 
@@ -453,9 +459,9 @@ div#configDiv{
 	
 	/*************************************************/
 	div#content { 
-		position: absolute; top:1%; left:17.5%; width:auto;
+		position:absolute; top:1%; left:17.5%; width:auto;
 		padding: 2px 2px 2px 2px;
-	}
+		}
 	#barcodeSearch { display:block; }
 	#phraseSearch #searchType  { display:inline; }
 	#phraseSearch legend { display:inline; }
@@ -465,8 +471,8 @@ div#configDiv{
 	#itemVisual { width:110px; }
 	#photo, #dashBd { display:inline; }
 
-	#flagInfo ul { text-align: center; margin:0; padding:0; }
-	#flagInfo li { display: inline; list-style:none; margin: 0; padding: 0; }
+	#flagInfo {text-align:center; margin:0; padding:0; }
+	#flagInfo li { float:left; display:inline; list-style:none; margin:0; padding:0; margin-right:15px; }
 	.flgDot {
 		-webkit-transform: 	scale(0.75);
 		-moz-transform: 		scale(0.75);
@@ -475,4 +481,10 @@ div#configDiv{
 		transform: 				 	scale(0.75);
 		vertical-align: bottom;
 		}
+
+	ul.pagBtns { float:left; margin:0; padding:0; width:100%; }
+	ul.pagBtns li { display:inline; list-style:none; margin:0; padding:0; }
+	ul.pagBtns li:first-child { float:left; }
+	ul.pagBtns li:last-child { float:right; }
+ 
 }

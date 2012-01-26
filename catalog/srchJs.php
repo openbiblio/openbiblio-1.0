@@ -377,8 +377,12 @@ var bs = {
 	  
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = $.parseJSON(biblioList[0]);
-		var modFirstItem = parseInt(queryInfo.firstItem) + 1;
-		$('.rsltQuan').html(' '+queryInfo.totalNum+' <?php echo T("Items"); ?>('+modFirstItem+'-'+queryInfo.lastItem+ ') ');
+		var firstItem = parseInt(queryInfo.firstItem),
+				lastItem = parseInt(queryInfo.lastItem),
+				perPage = parseInt(queryInfo.itemsPage),
+				ttlNum = parseInt(queryInfo.totalNum),
+				modFirstItem = parseInt(queryInfo.firstItem) + 1;
+		$('.rsltQuan').html(' '+ttlNum+' <?php echo T("Items"); ?>('+modFirstItem+'-'+lastItem+ ') ');
 		bs.biblio = Array();
 
 		$('#listTbl tbody#srchRslts').html('');
@@ -453,15 +457,15 @@ var bs = {
 	  // this button is created dynamically, so duplicate binding is not possible
 		$('.moreBtn').on('click',null,bs.getPhraseSrchDetails);
 		
-		// handle next / prev buttons
-		if(parseInt(firstItem)>=parseInt(queryInfo.itemsPage)){
-			bs.previousPageItem = parseInt(firstItem) - parseInt(queryInfo.itemsPage);
+		// enable or disable next / prev buttons
+		if(firstItem>=perPage){
+			bs.previousPageItem = firstItem - perPage;
 			$('#biblioListDiv .goPrevBtn').enable();
 		} else {
 			$('#biblioListDiv .goPrevBtn').disable();
 		}
-		if((parseInt(queryInfo.itemsPage) + parseInt(firstItem) <= parseInt(queryInfo.lastItem))&&(parseInt(queryInfo.totalNum)!=parseInt(queryInfo.lastItem))){
-			bs.nextPageItem = parseInt(queryInfo.itemsPage) + parseInt(firstItem);
+		if((perPage+firstItem <= lastItem)&&(ttlNum!=lastItem)){
+			bs.nextPageItem = perPage + firstItem;
 			$('#biblioListDiv .goNextBtn').enable();
 		} else {
 			$('#biblioListDiv .goNextBtn').disable();

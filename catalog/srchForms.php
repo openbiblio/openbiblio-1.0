@@ -158,16 +158,18 @@
 	</div>
 	<table>
 	<tr>
-		<td>
-			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
-		</td>
-		<td>
-			<input type="button" id="addList2CartBtn" class="button" value="<?php echo T('Add List To Cart'); ?>" />
-		</td>
-		<td width="80%" align="right">
-			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
-			<span class="rsltQuan"></span>
-			<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+		<td colspan="3">
+			<ul class="pagBtns">
+				<li>
+					<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
+					<input type="button" id="addList2CartBtn" class="button" value="<?php echo T('Add List To Cart'); ?>" />
+				</li>
+				<li>
+					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
+					<span class="rsltQuan"></span>
+					<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+				</li>
+			</ul>
 		</td>
 	</tr>
 	<tr>
@@ -193,14 +195,15 @@
 			</fieldset>
 		</td>
 	<tr>
-		<td>
-			<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
-		</td>
-		<td>&nbsp;</td>
-		<td width="80%" align="right">
-			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
-			<span class="rsltQuan"></span>
-			<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+		<td colspan="3">
+			<ul class="pagBtns">
+				<li><input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" /></li>
+				<li>
+					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
+					<span class="rsltQuan"></span>
+					<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+				</li>
+			</ul>
 		</td>
 	</tr>
 	</table>
