@@ -387,7 +387,9 @@ var bs = {
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
-			var callNo = ''; var title = ''; var author=''; var subtitle='';
+			var title = '', subtitle='',
+					author='',
+					callNo = '', edition = '', pubDate = ''; 
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			bs.biblio[biblio.bibid] = biblio;
 			if (biblio.data) {
@@ -405,6 +407,10 @@ var bs = {
 							if (author && (author.length>30)) author = author.substring(0,30)+'...';
 							break;
 						case 'Call Number': callNo = tmp.value.trim(); 
+							break;
+						case 'Date of Publication': pubDate = tmp.value.trim();
+							break;
+						case 'Edition': edition = tmp.value.trim();
 							break;
 					}
 				});
@@ -446,7 +452,14 @@ var bs = {
 			html += '<li id="itemInfo">\n';
 			html += '	<div id="itemTitle">'+title+'</div>\n';
 			html += '	<div id="itemAuthor">'+author+'</div>\n';
-			html += '	<div id="itemCallNo">'+callNo+'</div>\n';
+			//html += '	<div id="itemCallNo">'+callNo+'</div>\n';
+			//html += '	<div id="itemEdition">'+edition+'</div>\n';
+			//html += '	<div id="itemPubdate">'+pubDate+'</div>\n';
+			html += '	<div id="itemCallNo">';
+			html += 		callNo+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
+			html += 		pubDate+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
+			html += 		edition;
+			html += '	</div>\n';
 			html += "</li>\n";
 			//html += '<div class="biblioBtn"></div> \n';
 			html += "</ul></td></tr>\n";
