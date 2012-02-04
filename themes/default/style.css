@@ -12,7 +12,9 @@ body {
   font-family: verdana,arial,helvetica, serif;
   color: #000000; background: #90b0b8;
   font-size:100%; /*0.9em;*/
+  width: auto;
 	}
+	.ie body {width: 540px;}
 
 /*************************************************/
 /*  Basic components, may be used anywhere       */
@@ -88,7 +90,7 @@ input:disabled { cursor:not-allowed; }
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 input[type=button], input[type=submit], button {
 	padding: 2px 4px;
-	font-family: Helvitca, Arial, sans-serif; font-weight: bold; font-size: 12px;
+	font-family: Helvitca, Arial, sans-serif; font-weight: bold;
 	line-height: 1;
 	color: #222; background-color: rgb(240,240,240); border: none; 
 	text-shadow:0 1px 1px rgba(255, 255, 255, 0.85);
@@ -105,7 +107,9 @@ input[type=button], input[type=submit], button {
 	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 	box-shadow: 0 1px 2px rgba(0,0,0,0.5);
 	}
-	
+.touch input[type=button], input[type=submit], button { font-size:20px; }
+.no-touch input[type=button], input[type=submit], button { font-size:12px; }
+
 /*************************************************/
 aside { 
 	width:auto%; margin:0; padding:0; margin-bottom:2px;
@@ -187,8 +191,10 @@ footer { margin-top:10px; text-align:center; font: 0.75em serif;/* 12/16 */ }
 
 /*************************************************/
 div#content {
-  left:0; width:100%; vertical-align:top; border:solid black 2px; background:white; padding:0; 
+  left:0; vertical-align:top; border:solid black 2px; background:white; padding:0;
+	width: 720px; max-width: 100%; 
 	}
+	.ie #content figure {width: 480px;}
 #content .altBG { background: #dddddd; }
 #copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width: 1px; padding: 2px; border-style: solid; border-color: black; }

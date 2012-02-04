@@ -182,6 +182,7 @@ var bs = {
 	  bs.checkSrchByPhraseBtn();
 	  bs.checkSrchByBarcdBtn();
 		$('#marcBtn').val(bs.showMarc);
+		if (opacMode) $('#barcodeSearch').hide();
 	},
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
@@ -394,23 +395,22 @@ var bs = {
 			bs.biblio[biblio.bibid] = biblio;
 			if (biblio.data) {
 				$.each(biblio.data, function (fldIndex, fldData) {
-					//var tmp = eval('('+fldData+')');
 					var tmp = JSON.parse(fldData);
 					if (!tmp.value) tmp.value = 'n/a';
-					switch (tmp.label){
-						case 'Title': title = tmp.value.trim(); 
+					switch (tmp.marcTag){
+						case '245a': title = tmp.value.trim(); 
 							break;
-						case 'Subtitle': subtitle = tmp.value.trim(); 
+						case '245b': subtitle = tmp.value.trim(); 
 							break;
-						case 'Author':
+						case '100a':
 							author = tmp.value.trim();
 							if (author && (author.length>30)) author = author.substring(0,30)+'...';
 							break;
-						case 'Call Number': callNo = tmp.value.trim(); 
+						case '099a': callNo = tmp.value.trim(); 
 							break;
-						case 'Date of Publication': pubDate = tmp.value.trim();
+						case '260c': pubDate = tmp.value.trim();
 							break;
-						case 'Edition': edition = tmp.value.trim();
+						case '250a': edition = tmp.value.trim();
 							break;
 					}
 				});
