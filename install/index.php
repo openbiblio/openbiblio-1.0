@@ -53,14 +53,15 @@
 			<p>New Install</p>
 			<form id="newForm">
 				<table cellpadding=0 cellspacing=0 border=0>
-				<tr>
+				<!--tr>
 					<td><label for="locale">Language:</label></td>
 					<td><select id="locale"></select></td>
-				</tr>
+				</tr-->
 				<tr>
 					<td><label for="installTestData">Install Test Data:</label></td>
 					<td><input id="installTestData" type="checkbox" value="yes" /></td>
 				</tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
 				<tr>
 					<td><input id="newBtn" type="submit" value="Install" /></td>
 				</tr>
@@ -89,7 +90,8 @@
 	</fieldset>
 
 <?php
-	require_once($ThemeDirUrl."/footer.php");
+	//require_once($ThemeDirUrl."/footer.php");
+	require_once("../shared/footer.php");
 	
 	require_once(REL(__FILE__, "indexJs.php"));
 ?>	

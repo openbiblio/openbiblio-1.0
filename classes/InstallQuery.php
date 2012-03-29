@@ -45,7 +45,7 @@ class InstallQuery extends Query {
     return $tablenames;
   }
   
-  function _getSettings($tablePrfx) {
+  function getSettings($tablePrfx = DB_TABLENAME_PREFIX) {
     //$sql = $this->mkSQL('SHOW TABLES LIKE %Q ', $tablePrfx.'settings');
     $sql = "SHOW TABLES LIKE 'settings'";
     $row = $this->select01($sql);
@@ -64,10 +64,10 @@ class InstallQuery extends Query {
   }
 
   function getCurrentDatabaseVersion($tablePrfx = DB_TABLENAME_PREFIX) {
-    $sql = $this->mkSQL('SELECT * FROM %I WHERE `name`=%Q', $tablePrfx.'settings','version');
+    $sql = $this->mkSQL('SELECT `value` FROM %I WHERE `name`=%Q', $tablePrfx.'settings','version');
     //$sql = "SELECT `value` FROM `settings` WHERE `name` = 'version' ";
     $row = $this->select01($sql);
-print_r($row);    
+//print_r($row);    
 		return $row['value'];
   }
   
@@ -88,6 +88,7 @@ print_r($row);
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($filename = readdir($dh)) !== false) {
+					//echo "processing sql file: $filename <br />\n";        
           if(preg_match('/\\.sql$/', $filename)) {
             $this->executeSqlFile($dir.'/'.$filename, $tablePrfx);
           }

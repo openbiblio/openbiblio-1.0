@@ -65,14 +65,26 @@ ins = {
 			else {
 				//console.log('good connection')
 				ins.informUser('<?php echo T("Connection to DB server OK"); ?>');
-				ins.getDbVersion();
+				ins.dbTest();
 			}
 			$('#plsWait').hide();
 	  });
 	},
+	dbTest: function () {
+		ins.informUser('<?php echo T("Looking for Database tables"); ?>');
+		ins.showWait('Checking for Database Content');
+	  $.get(ins.url,{ 'mode':'getSettings'}, function(response){
+	  	if (response == 'noTbl') {
+				$('#newInstall').show();
+			} else {
+				$('#plsWait').hide();
+				ins.getDbVersion();
+			}
+	  });
+	},
 	getDbVersion: function () {
-		ins.informUser('<?php echo T("Looking for Database"); ?>');
-		ins.showWait('Checking Database');
+		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
+		ins.showWait('Checking Database Version');
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
 			//console.log('vers='+response);	  
 			if (response == 'noDB') {
@@ -80,7 +92,7 @@ ins = {
 				ins.getLocales();
 			}
 	  	else if (response == '<?php echo H(OBIB_LATEST_DB_VERSION); ?>') {
-				ins.informUser('<?php echo T("Database is uptodate"); ?>');
+				ins.informUser('<?php echo T("DatabaseUpToDate"); ?>');
 				$('#versionOK').show();
 			}
 			else {
@@ -114,11 +126,16 @@ ins = {
 		}
 			
 		$.post(ins.url, {'mode':'doFullInstall', 'installTestData':test}, function (response) {
-			ins.informUser('<?php echo T("Table installation complete"); ?>');
-			$('#newInstall').hide();
-			$('#startOB').show();		
-			$('#plsWait').hide();
-			return false;
+			if(response) {
+				$('#connectErr').html(response);
+				$('#dbPblms').show();
+			} else {
+				ins.informUser('<?php echo T("Table installation complete"); ?>');
+				$('#newInstall').hide();
+				$('#startOB').show();		
+				$('#plsWait').hide();
+				return false;
+			}
 		});
 		return false;
 	},

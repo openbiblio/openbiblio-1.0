@@ -21,6 +21,16 @@
 				echo "OK";
 			break;
 			
+		case 'getSettings':
+			//echo "fetching version\n";
+			$resp = $installQ->getSettings();
+			if (!resp || empty($resp)) {
+				echo "noTbl";
+			} else {	
+				echo $resp;
+			}
+			break;
+			
 		case 'getDbVersion':
 			//echo "fetching version\n";
 			$version = $installQ->getCurrentDatabaseVersion();

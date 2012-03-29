@@ -3,11 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
-<<<<<<< local
--- Generation Time: Sep 21, 2011 at 10:29 PM
-=======
 -- Generation Time: Sep 26, 2011 at 08:29 AM
->>>>>>> other
 -- Server version: 5.1.54
 -- PHP Version: 5.3.5-1ubuntu7.2
 
@@ -49,19 +45,10 @@ CREATE TABLE IF NOT EXISTS `lookup_hosts` (
 --
 
 INSERT INTO `lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`, `db`, `service`, `syntax`, `user`, `pw`) VALUES
-<<<<<<< local
-(14, 1, 'n', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - z39.50', 'voyager', 'Z3950', 'marcxml', '', ''),
-=======
 (14, 1, 'y', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - z39.50', 'voyager', 'Z3950', 'marcxml', '', ''),
->>>>>>> other
 (23, 1, 'n', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - SRU', 'voyager', 'SRU', 'dc', '', ''),
-<<<<<<< local
-(2, 2, 'y', 'copac.ac.uk', 3000, 'UK COPAC - SRU', 'copac', 'SRU', 'dc', '', ''),
-(21, 2, 'y', 'z3950.copac.ac.uk', 210, 'UK COPAC - Z3950', 'copac', 'Z3950', 'marcxml', '', ''),
-=======
 (2, 2, 'n', 'copac.ac.uk', 3000, 'UK COPAC - SRU', 'COPAC', 'SRU', 'dc', '', ''),
 (21, 2, 'n', 'z3950.copac.ac.uk', 210, 'UK COPAC - Z3950', 'COPAC', 'Z3950', 'mods', '', ''),
->>>>>>> other
 (20, 2, 'n', 'z3950cat.bl.uk', 9909, 'British Lending Library', 'ZBLACU', 'Z3950', 'marcxml', 'NEIRED2005', '5V7W_pb-'),
 (3, 3, 'n', 'catalogue.nla.gov.au', 7090, 'Australia National Library', 'voyager', 'Z3950', 'marcxml', '', ''),
 (4, 4, 'n', 'gso.gbv.de/sru/', 80, 'German Library Group', '2.1', 'SRU', 'dc', '', ''),
