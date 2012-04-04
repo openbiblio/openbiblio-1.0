@@ -100,12 +100,12 @@ $(document).ready(obib.init);
 
 function popSecondary(url) {
 		var SecondaryWin;
-		SecondaryWin = window.open(url,"secondary","resizable=yes,scrollbars=yes,width=535,height=400");
+		SecondaryWin = window.open(url,"secondary","resizable=yes,scrollbars=yes,width=620,height=400");
 		self.name="main";
 }
 function popSecondaryLarge(url) {
 		var SecondaryWin;
-		SecondaryWin = window.open(url,"secondary","toolbar=yes,resizable=yes,scrollbars=yes,width=700,height=500");
+		SecondaryWin = window.open(url,"secondary","toolbar=yes,resizable=yes,scrollbars=yes,width=800,height=500");
 		self.name="main";
 }
 function backToMain(URL) {

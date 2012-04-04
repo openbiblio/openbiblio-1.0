@@ -12,7 +12,10 @@
 <?php
 // cellspacing="0" cellpadding="0" works around IE's lack of
 // support for CSS2's border-spacing property.
+
+if ($tab != 'help') {
 ?>
+
 <aside id="sidebar">
 	<header class="notForInstall">
 		<h3 class="theHead">
@@ -40,7 +43,6 @@
 			<input type="submit" value="<?php echo T("Logout") ?>" />
 		</form>
 		<?php } ?>
-		
 	</header>
 	<hr class="notForInstall hdrSpacer" />
 	
@@ -62,6 +64,7 @@
 		For <a href="../COPYRIGHT.html">Legal Info</a>.
 	</footer>
 </aside>
+<?php } ?>
 
 <!-- **************************************************************************************
 		 * beginning of main body

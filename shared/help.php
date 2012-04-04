@@ -5,7 +5,12 @@
 
 require_once("../shared/common.php");
 
-include(REL(__FILE__, "../shared/help_header.php"));
+//include(REL(__FILE__, "../shared/help_header.php"));
+	$tab = "help";
+	$nav = "help";
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
+
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ## load content page specified when called
 //print_r($_GET);
@@ -18,4 +23,4 @@ if (isset($_GET["page"])) {
 //assert('preg_match("/^[A-Za-z0-9_]+\\$/", $page)');
 include("../locale/".Settings::get('locale')."/help/".$page.".php");
 
-include(REL(__FILE__, "../shared/help_footer.php"));
+//include(REL(__FILE__, "../shared/help_footer.php"));
