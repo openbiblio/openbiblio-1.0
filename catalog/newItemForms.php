@@ -48,19 +48,14 @@ th.colHead { white-space: nowrap; }
 	  <input type="button" id="manualBtn" value="Manual Entry" />
 	  <br />
 		<form id="lookupForm" name="lookupForm" action="" >
-		<fieldset>
+		<fieldset id="srchSpecs">
 		<legend>On-Line Search</legend>
-		<table>
-		<thead>
-		<tr>
-		  <th class="colLbl">What to search for:</th>
-		  <th class="colLbl">Which is a:</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr id="fldset1">
-		  <td><input id="lookupVal" name="lookupVal" type="text" class="criteria" required aria-required="true" \></td>
-		  <td>
+			<fieldset id="srchDetl" class="inlineFS">
+		  <label class="colLbl">What to search for:</label>
+		  <label class="colLbl">Which is a:</label>
+		  <br />
+		  <div id="fldset1">
+		  	<input id="lookupVal" name="lookupVal" type="text" class="criteria" required aria-required="true" />
 		  	<select id="srchBy" name="srchBy" class="criteria">
 		  		<option value="7" selected><?php echo $isbnTxt; ?></option>
 		  		<option value="8"><?php echo $issnTxt; ?></option>
@@ -68,14 +63,10 @@ th.colHead { white-space: nowrap; }
 		  		<option value="4"><?php echo $titleTxt; ?></option>
 		  		<!--option value="1016"\>$isbnTxt; ?></option-->
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td><?php echo T("And");?></td>
-		</tr>
-		<tr id="fldset2">
-		  <td><input id="lookupVal2" name="lookupVal2" type="text" class="criteria"></td>
-		  <td>
+			</div>
+			<label><?php echo T("And");?></label>
+		  <div id="fldset2">
+		  	<input id="lookupVal2" name="lookupVal2" type="text" class="criteria" />
 		  	<select id="srchBy2" name="srchBy2" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="1004"><?php echo $authorTxt; ?></option>
@@ -83,65 +74,47 @@ th.colHead { white-space: nowrap; }
 		  		<option value="59"><?php echo $pubLocTxt; ?></option>
 		  		<option value="31"><?php echo $pubDateTxt; ?></option>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td><?php echo T("And");?></td>
-		</tr>
-		<tr id="fldset3">
-		  <td><input id="lookupVal3" name="lookupVal3" type="text" class="criteria"></td>
-		  <td>
+			</div>
+			<label><?php echo T("And");?></label>
+			<div id="fldset3">
+		  	<input id="lookupVal3" name="lookupVal3" type="text" class="criteria" />
 		  	<select id="srchBy3" name="srchBy3" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
 		  		<option value="59"><?php echo $pubLocTxt; ?></option>
 		  		<option value="31"><?php echo $pubDateTxt; ?></option>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td><?php echo T("And");?></td>
-		</tr>
-		<tr id="fldset4">
-		  <td><input id="lookupVal4" name="lookupVal4" type="text" class="criteria"></td>
-		  <td>
+			</div>
+			<label><?php echo T("And");?></label>
+			<div id="fldset4">
+		  	<input id="lookupVal4" name="lookupVal4" type="text" class="criteria" />
 		  	<select id="srchBy4" name="srchBy4" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="59"><?php echo $pubLocTxt; ?></option>
 		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
 		  		<option value="31"><?php echo $pubDateTxt; ?></option>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td><?php echo T("And");?></td>
-		</tr>
-		<tr id="fldset5">
-		  <td><input id="lookupVal5" name="lookupVal5" type="text" class="criteria"></td>
-		  <td>
+			</div>
+			<label><?php echo T("And");?></label>
+			<div id="fldset5">
+		  	<input id="lookupVal5" name="lookupVal5" type="text" class="criteria" />
 		  	<select id="srchBy5" name="srchBy5" class="criteria">
 		  		<option value="0"></option>
 		  		<option value="31"><?php echo $pubDateTxt; ?></option>
 		  		<option value="1018"><?php echo $pubNameTxt; ?></option>
 		  		<option value="59"><?php echo $pubLocTxt; ?></option>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="hidden" id="mode" name="mode" value="search" />
-			</td>
-		</tr>
-		</tbody>
-
-		<tfoot>
-		<tr>
-		  <td colspan="2">
-				<input type="submit" id="srchBtn" name="srchBtn" value="<?php echo T("Search");?>" />
-			</td>
-		</tr>
-		</tfoot>
-		</table>
+			</div>
+			<input type="hidden" id="mode" name="mode" value="search" />
+			<br />
+			<input type="submit" id="srchBtn" name="srchBtn" value="<?php echo T("Search");?>" />
+			</fieldset>
+			
+			<fieldset id="srchHosts" class="inlineFS">
+				<legend>Hosts to search</legend>
+				<span>Filled by server</span>
+			</fieldset>
+			
 		</fieldset>
 		<p id="errMsgTxt"></p>
 		</form>

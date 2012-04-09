@@ -184,6 +184,9 @@ div#content {
 	border-width: 1px; padding: 2px; border-style: solid; border-color: black; }
 #editTbl { margin-left:0; padding-left:0; }
 #editTbl li { list-style-type:none; 	margin:0; padding:0; }
+	
+#srchSpecs { display:box; box-orient:vertical; }
+.inlineFS { box-flex:1; }
 
 #biblioListDiv { width:100%; }
 ul.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }
@@ -398,7 +401,12 @@ div#configDiv{
 	}
 
 /* For Tablets and Desktops */
-@media screen and (min-width:720px) {
+@media screen and (min-width:700px) {
+/* For Tablets and Desktops */
+	}
+	
+@media screen and (min-width:1024px) {
+	body { font-size: 90%; }
 	/* rounded corners and shadows for major layout elements */
 	h1,h2,h3,h4,h5,h6, fieldset, img, aside, header, #content {
 		border-radius:				 0.3em;
@@ -442,6 +450,10 @@ div#configDiv{
 		position:absolute; top:1%; left:17.5%; width:auto;
 		padding: 2px 2px 2px 2px;
 		}
+	#srchSpecs { /*display:box; box-orient:horizontal;*/ }
+	.inlineFS { display:inline-block; /*box-flex:1; box-align:start;*/ }
+	#srchHosts { /*position:absolute; max-width:25%; top: 0; left:68%;*/ }
+	
 	#barcodeSearch { display:block; }
 	#phraseSearch #searchType  { display:inline; }
 	#phraseSearch legend { display:inline; }

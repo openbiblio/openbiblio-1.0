@@ -79,7 +79,7 @@
   <tr>
     <td><label for="db"><?php echo T("Port"); ?>:</label></td>
     <td>
-      <input id="port" name="port" type="number" size="5" pattern="[0-9]{3,4}" required aria-required="true" />
+      <input id="port" name="port" type="number" size="5" pattern="[0-9]{2,3,4}" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>

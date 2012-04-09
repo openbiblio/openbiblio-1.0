@@ -69,7 +69,7 @@ if (!isset($doing_install) or !$doing_install) {
 <script src="../shared/modernizr-2.5.3.min.js"></script>
 
 <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
-<script src="../jsLib/prefixfree.min.js"></script>
+<script src="../shared/prefixfree.min.js"></script>
   
 <!-- All other JavaScript is placed at the end of <body> (see footer.php) 
 		 to match industry best practices and to improve overall performance -->

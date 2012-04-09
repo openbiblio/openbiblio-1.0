@@ -148,6 +148,12 @@ var ni = {
 	fetchHosts: function () {
 		//console.log('svr:'+ni.url);	
 	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
+			var theTxt = '<label><input type="checkbox" name="srchHost" checked value="0" \>ALL</label><br />\n';;
+			for (var nHost in data) {
+				theTxt += '<label><input type="checkbox" name="srchHost" value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
+			}
+			$('#srchHosts span').html(theTxt);
+			
 			ni.hostJSON = data;
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
