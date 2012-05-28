@@ -40,13 +40,13 @@
 			require_once(REL(__FILE__, "../model/Calendars.php"));
 			$ptr1 = new Calendars;
 			## deliberate fall-through, do not remove
-		case 'staff':
-			require_once(REL(__FILE__, "../model/Staff.php"));
-			$ptr = new Staff;
-			break;
 		case 'states':
 			require_once(REL(__FILE__, "../model/States.php"));
 			$ptr2 = new States;
+			break;
+		case 'staff':
+			require_once(REL(__FILE__, "../model/Staff.php"));
+			$ptr = new Staff;
 			break;
 		case 'themes':
 			require_once(REL(__FILE__, "../model/Themes.php"));

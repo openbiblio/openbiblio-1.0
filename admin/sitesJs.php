@@ -10,8 +10,22 @@ function Sit ( url, form, dbAlias, hdrs, listFlds, opts ) {
 };
 Sit.prototype = inherit(List.prototype);
 Sit.prototype.constructor = Sit;
+
+Sit.prototype.fetchSites = function () {
+  $.getJSON(this.url,{ 'cat':'sites', 'mode':'getAll_sites' }, function(data){
+		var html = '';
+		for (var nsite in data) {
+    	html += '<option value="'+data[nsite]['code']+'"';
+    	if (data[nsite]['default_flg'] == 'Y') {
+    		html += ' selected';
+			}
+   		html += '">'+data[nsite]['description']+'</option>\n';
+		}
+		$('#site').html(html);
+	});
+};
 Sit.prototype.fetchStates = function () {
-  $.getJSON(this.url,{ 'cat':'sites', 'mode':'getAll_states' }, function(data){
+  $.getJSON(this.url,{ 'cat':'states', 'mode':'getAll_states' }, function(data){
 		var html = '';
 		for (var nstate in data) {
     	html += '<option value="'+data[nstate]['code']+'"';
@@ -53,6 +67,7 @@ $(document).ready(function () {
 						 
 	var xxxx = new Sit( url, form, dbAlias, hdrs, listFlds, opts );
 	xxxx.init();
+	xxxx.fetchSites();
 	xxxx.fetchStates();
 	xxxx.fetchCalendars();
 });
