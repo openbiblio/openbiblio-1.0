@@ -33,11 +33,28 @@
  	$postVars['defaultCollect'] = $coll['description'];
 
 	## prepare list of hosts
+	if (!empty($_POST['srchHost'])) {	
+		# but first we extract those hosts acceptable to user for THIS search
+		$useHosts = array();
+		foreach ($_POST as $key => $val ) {
+			if (strpos($key,'srchHost') > -1) {
+		  	$useHosts[] = $val;
+			}
+		}
+	}	
+	
+	# now build acceptable list
 	$hptr = new Hosts;
 	$hosts = array();
 	$hSet = $hptr->getMatches(array('active'=>'y'), 'seq');
 	while ($row = $hSet->next()) {
-  	$hosts[] = $row;
+		if (!empty($useHosts)) {	
+	  	if (in_array($row['id'], $useHosts)) {
+				$hosts[] = $row;
+			}
+		} else {
+				$hosts[] = $row;
+		}
 	}
 	$postVars['hosts'] = $hosts;
 	$postVars['numHosts'] = count($hosts);

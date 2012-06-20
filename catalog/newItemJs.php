@@ -148,13 +148,23 @@ var ni = {
 	fetchHosts: function () {
 		//console.log('svr:'+ni.url);	
 	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
-			var theTxt = '<label><input type="checkbox" name="srchHost" checked value="0" \>ALL</label><br />\n';;
+			ni.hostJSON = data;
+
+			//var theTxt = '<label><input type="checkbox" name="srchHost0" checked value="0" \>ALL</label><br />\n';;
+			var theTxt = '';
 			for (var nHost in data) {
-				theTxt += '<label><input type="checkbox" name="srchHost" value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
+				theTxt += '<label><input type="checkbox" name="srchHost" id="hst'+nHost+'" checked value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
 			}
 			$('#srchHosts span').html(theTxt);
 			
-			ni.hostJSON = data;
+			//$('#srchHosts input').bind('change',null,function (e){
+			//	console.log('you clicked '+e.target.id);
+			//
+			//	$('#srchHosts :checkbox:checked').each(function () {
+			//		console.log('now using host '+data[this.id.substr(3,10)].id);			
+			//	});
+			//});			
+
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
 		});
@@ -350,14 +360,17 @@ var ni = {
 	  var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
 	  var theTxt = '<h5>';
 		theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
-	  if ($('#lookupVal2').val() != '')
+	  if ($('#lookupVal2').val() != '') {
 			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
+		}
 		theTxt += 'at :<br />';
 		var n=1;
-		for (var nHost in ni.hostJSON) {
-			theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+ni.hostJSON[nHost].name+'<br />';
+		$('#srchHosts :checkbox:checked').each(function () {
+			theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+ni.hostJSON[this.id.substr(3,10)].name+'<br />';
+			//console.log('using host '+this.id.substr(3,10));			
 			n++;
-		}
+		});
+		
 		theTxt += '</h5>';
 	  $('#waitText').html(theTxt);
 	  
