@@ -312,6 +312,8 @@ var ni = {
 	},
 	
 	doValidate_n_Srch: function () {
+		$('#errMsgTxt').html('');
+		var msg = '';
 		var nType = $('#srchBy').val();
 	  var val = $('#lookupVal').val();
 	  var rslt = true;
@@ -320,25 +322,25 @@ var ni = {
 	  case 4: // Text input
 	  	if (!isNaN(parseInt(test))) {
 				rslt = false;
-				msg = "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.";
+				msg += "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.<br />";
 			}
 			break;
 		case 7: //ISBN
 	   	if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
-				msg = "This is not a valid ISBN.";
+				msg += "This is not a valid ISBN.<br />";
 			}
 			break;
 		 case 8: // ISSN
 	   	if (isNaN(parseInt(test))) {
 				rslt = false;
-				msg = "This is not a valid ISSN.";
+				msg += "This is not a valid ISSN.<br />";
 			}
 			break;
 		case 9: // LCCN
 	   	if (isNaN(parseInt(test))) {
 				rslt = false;
-				msg = "This is not a valid LCCN.";
+				msg += "This is not a valid LCCN.<br />";
 			}
 			break;
 		}
@@ -348,7 +350,7 @@ var ni = {
 		}
 		else {
 			$('#srchBy').focus();
-			$('#errMsgTxt').prepend(msg);
+			$('#errMsgTxt').html(msg);
 			return rslt;
 		}
 	},
