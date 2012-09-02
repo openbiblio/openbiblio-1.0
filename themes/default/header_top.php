@@ -4,7 +4,7 @@
  */
 
 	### following needed since this is included from within a class method -- Fred
-	global $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
+	global $CharSet, $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
 ?>
 
 <!DOCTYPE html >
@@ -75,7 +75,7 @@ if (!isset($doing_install) or !$doing_install) {
 		 to match industry best practices and to improve overall performance -->
 
 <!-- This style sheet resets all browsers to a common default style -->
-<link rel="stylesheet" href="../shared/base2.css" />
+<link rel="stylesheet" href="../shared/base3.css" />
 
 <!-- OpenBiblio style is set here using appropriate Theme folder -->
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
