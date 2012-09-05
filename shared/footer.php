@@ -15,9 +15,9 @@ unset($_SESSION['postVars']);
 <script src="../shared/jsLib.js" defer></script>
 
 <script language="JavaScript" defer>
-// main javascript functionality set in own namespace to avoid potential conflict
 "use strict";
 
+// main javascript functionality set in own namespace to avoid potential conflict
 var obib = {
 	<?php
 	echo "focusFormName:  '$focus_form_name',\n";

@@ -66,7 +66,7 @@ if (!isset($doing_install) or !$doing_install) {
 		 Based on the browser in use, it places many conditional classes 
 		 into the <body> tag for use by feature-specific CSS & JS statements.
 		 It also deals with html5 support issues for IE browsers. 	 -->
-<script src="../shared/modernizr-2.5.3.min.js"></script>
+<script src="../shared/modernizr-2.6.2.min.js"></script>
 
 <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
 <script src="../shared/prefixfree.min.js"></script>
