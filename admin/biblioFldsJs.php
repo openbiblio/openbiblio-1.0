@@ -67,6 +67,7 @@ var mtl = {
 	resetForms: function () {
 		//console.log('resetting!');
 	  $('#pageHdr').html(mtl.pageHdr);
+		$('#typeChoice').show();
 		$('#workDiv').hide();
 		$('#configDiv').hide();
 		$('#editDiv').hide();

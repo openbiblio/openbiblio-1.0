@@ -104,6 +104,7 @@ var ni = {
 	  //console.log('resetting Search Form');
 		$('#help').hide();
 		$('#searchDiv').show();
+		$('#srchHosts').hide();
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
@@ -150,12 +151,14 @@ var ni = {
 	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
 			ni.hostJSON = data;
 
+if (data.length > 1) {
 			//var theTxt = '<label><input type="checkbox" name="srchHost0" checked value="0" \>ALL</label><br />\n';;
 			var theTxt = '';
 			for (var nHost in data) {
 				theTxt += '<label><input type="checkbox" name="srchHost" id="hst'+nHost+'" checked value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
 			}
 			$('#srchHosts span').html(theTxt);
+			$('#srchHosts').show();
 			
 			//$('#srchHosts input').bind('change',null,function (e){
 			//	console.log('you clicked '+e.target.id);
@@ -164,7 +167,9 @@ var ni = {
 			//		console.log('now using host '+data[this.id.substr(3,10)].id);			
 			//	});
 			//});			
-
+} else {
+	$('#srchHosts').hide();
+}
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
 		});
