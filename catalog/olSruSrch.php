@@ -14,6 +14,7 @@
 	$subfieldcount = 0;
 	$sruRcrdSchema = 'marcxml';
 //	$sruRcrdSchema = 'mods';
+echo "using SRU module<br />";
 	
  	$qry ="operation=searchRetrieve"
  			 ."&version=1.1"
@@ -23,6 +24,7 @@
 			 ."&recordSchema=$sruRcrdSchema"
 				;
 	//echo "query: $qry <br />";
+	//print_r($postVars);
 
 	#### send query to each host in turn and get response
 	$resp = array();
@@ -41,16 +43,16 @@
 		//echo "header: $header <br />";
 
 		### establish a socket for this host
-		$theHost = $postVars['hosts'][$ptr]['host'];
-		$port = $postVars['hosts'][$ptr]['port'];
-		if(!isset($port) || empty($port)) $port = 7090;  // default port
-		//echo "url: '$theHost:$port'<br />timeout=$postVars[timeout]seconds<br />";
-		$fp = fsockopen($theHost, $port, $errNmbr, $errMsg, $postVars['timeout']);
+		$theHost = $postVars['hosts'][$i]['host'];
+		$thePort = $postVars['hosts'][$i]['port'];
+		if(!isset($thePort) || empty($thePort)) $thePort = 7090;  // default port
+		//echo "url: '$theHost:$thePort'<br />timeout=$postVars[timeout]seconds<br />";
+		$fp = fsockopen($theHost, $thePort, $errNmbr, $errMsg, $postVars['timeout']);
 		$text = $header . $qry;
 		if(!$fp) {
 			echo "<p class=\"error\">you requested:</p>";
 			echo "<fieldset>".nl2br($text)."</fieldset>";
-			echo "<p class=\"error\">via socket on port $port. </p>";
+			echo "<p class=\"error\">via socket on port $thePort. </p>";
 			echo "<h4>Please verify the correctness of your host URL and "
 					."that your server's firewall allows access to the web via the port specified.<br /><br />
 					If you have been sucessful recently, it is possible your internet connection 
@@ -61,21 +63,21 @@
 
 		### send the query
 		fputs($fp, $text);
-echo "to host=>".nl2br($text)."<br />";
+echo "to host=>".nl2br($text)." at port "."$thePort<br />";
 		
 		### Added timeout on the stream itself (also in loop)- LJ
 		stream_set_timeout($fp, $postVars[timeout]);
 		$info = stream_get_meta_data($fp); 
 		
 		### fetch the response, if any
-		//echo "preparing to read any responses <br />";
+echo "preparing to read any responses <br />";
 		$hitList = '';
     $headerdone = false;
     while(!feof($fp) && (!$info['timed_out'])) {
       $line = fgets($fp, 2048);
-//echo "line: <br />";print_r($line);echo "<br />";  	
+echo "line: <br />";print_r($line);echo "<br />";  	
 	  	$info = stream_get_meta_data($fp);
-//echo "info: <br />";print_r($info);echo "<br />";  	
+echo "info: <br />";print_r($info);echo "<br />";  	
       if (!line) {
       	echo "Failure while reading response from $theHost <br />";
       	break;

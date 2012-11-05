@@ -84,7 +84,7 @@
 								print_r($rslt);echo "<br />\n";
 								exit;
 							}
-echo "host #$h rslt:<br />";print_r($rslt[$h]);echo "<br />---------<br />";
+							//echo "host #$h rslt:<br />";print_r($rslt[$h]);echo "<br />---------<br />";
 							$ttlHits += $num_records;
 						}
 					}

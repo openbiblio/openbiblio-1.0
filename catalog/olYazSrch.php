@@ -5,6 +5,7 @@
 		$hitNmbr = -1;
 		$marcFlds = array();
 		$subFlds = array();
+		//echo "using YAZ module<br />";
 
 		#### pagination search limits - may be user sperified in future;
 		$startAt = 1;

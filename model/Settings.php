@@ -12,7 +12,7 @@ $_settings_validators = array();
 
 /* To be used statically. */
 class Settings {
-	function load() {
+	static function load() {
 		global $_settings_cache, $_settings_validators;
 		$db = new Query;
 		$r = $db->select('SELECT * FROM settings');
@@ -21,7 +21,7 @@ class Settings {
 			$_settings_validators[$s['name']] = explode(',', $s['validators']);
 		}
 	}
-	function get($name) {
+	static function get($name) {
 		global $_settings_cache;
 		return $_settings_cache[$name];
 	}

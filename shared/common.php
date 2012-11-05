@@ -21,7 +21,7 @@
 	}
 	
 	#apd_set_pprof_trace();
-	error_reporting(E_ALL ^ E_NOTICE);
+	error_reporting((E_ALL ^ E_NOTICE) & ~E_STRICT);
 	if (isset($cache)) {
 		session_cache_limiter($cache);
 	} else {
@@ -109,7 +109,7 @@
 	
 	if (!isset($doing_install) or !$doing_install) {
 		/* Make session user info available on all pages. */
-		include_once(REL(__FILE__, "../classes/SessionHandler.php"));
+		include_once(REL(__FILE__, "../classes/OBsession.php"));
 		session_start();
 		# Forcibly disable register_globals
 		if (ini_get('register_globals')) {

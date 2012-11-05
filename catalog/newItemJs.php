@@ -149,27 +149,28 @@ var ni = {
 	fetchHosts: function () {
 		//console.log('svr:'+ni.url);	
 	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
+	  	// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;
-
-if (data.length > 1) {
-			//var theTxt = '<label><input type="checkbox" name="srchHost0" checked value="0" \>ALL</label><br />\n';;
-			var theTxt = '';
-			for (var nHost in data) {
-				theTxt += '<label><input type="checkbox" name="srchHost" id="hst'+nHost+'" checked value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
+			ni.nHosts = data.length;
+			if (ni.nHosts > 1) {
+				//var theTxt = '<label><input type="checkbox" name="srchHost0" checked value="0" \>ALL</label><br />\n';;
+				var theTxt = '';
+				for (var nHost in data) {
+					theTxt += '<label><input type="checkbox" name="srchHost" id="hst'+nHost+'" checked value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
+				}
+				$('#srchHosts span').html(theTxt);
+				$('#srchHosts').show();
+				
+				//$('#srchHosts input').bind('change',null,function (e){
+				//	console.log('you clicked '+e.target.id);
+				//
+				//	$('#srchHosts :checkbox:checked').each(function () {
+				//		console.log('now using host '+data[this.id.substr(3,10)].id);			
+				//	});
+				//});			
+			} else {
+				$('#srchHosts').hide();
 			}
-			$('#srchHosts span').html(theTxt);
-			$('#srchHosts').show();
-			
-			//$('#srchHosts input').bind('change',null,function (e){
-			//	console.log('you clicked '+e.target.id);
-			//
-			//	$('#srchHosts :checkbox:checked').each(function () {
-			//		console.log('now using host '+data[this.id.substr(3,10)].id);			
-			//	});
-			//});			
-} else {
-	$('#srchHosts').hide();
-}
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
 		});
@@ -363,21 +364,27 @@ if (data.length > 1) {
 	  var srchBy = flos.getSelectBox($('#srchBy'),'getText');
 	  var lookupVal = $('#lookupVal').val();
 
-	  // advise user that this takes time to complete
+	  // advise user that this will take some time to complete
 	  var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
 	  var theTxt = '<h5>';
 		theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
 	  if ($('#lookupVal2').val() != '') {
 			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
 		}
+
+		// show host(s) to be searched
 		theTxt += 'at :<br />';
-		var n=1;
-		$('#srchHosts :checkbox:checked').each(function () {
-			theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+ni.hostJSON[this.id.substr(3,10)].name+'<br />';
-			//console.log('using host '+this.id.substr(3,10));			
-			n++;
-		});
-		
+		if (ni.nHosts > 1){
+			var n=1;
+			$('#srchHosts :checkbox:checked').each(function () {
+				//console.log('using host '+this.id.substr(3,10));			
+				theTxt += '&nbsp;&nbsp;&nbsp;'+n+'. '+ni.hostJSON[this.id.substr(3,10)].name+'<br />';
+				n++;
+			});
+		} else {
+				theTxt += '&nbsp;&nbsp;&nbsp;'+ni.hostJSON[0].name+'<br />';
+		}
+
 		theTxt += '</h5>';
 	  $('#waitText').html(theTxt);
 	  
@@ -387,7 +394,9 @@ if (data.length > 1) {
 		// note for this to work, all form fields MUST have a 'name' attribute
 		$('lookupForm #mode').val('search');
 		var srchParms = $('#lookupForm').serialize();
-		$.post(ni.url, srchParms, function(response) {
+		$.post(ni.url, srchParms, ni.handleSrchRslts);
+	},
+	handleSrchRslts: function (response) {
 			$('#waitDiv').hide();
 			
 			if ($.trim(response).substr(0,1) != '{') {
@@ -492,7 +501,6 @@ if (data.length > 1) {
 					ni.doMakeItemForm();
 				}
 			} // else
-		}); // .post
 	},
 	
 	doSelectOne: function (e) {

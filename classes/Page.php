@@ -4,7 +4,7 @@
  */
 
 class Page {
-	function header($params=array()) {
+	static function header($params=array()) {
 		global $_Page_params;
 		global $nav, $tab, $focus_form_name, $focus_form_field;
 		$params = Page::clean_params($params);
@@ -40,7 +40,7 @@ class Page {
 		$_Page_params = $params;
 		require_once($params['theme_dir']."/header.php");
 	}
-	function clean_params($params) {
+	static function clean_params($params) {
 		global $ThemeDirUrl, $ThemeId;
 		$req = array('nav', 'title');
 		foreach ($req as $r) {

@@ -7,19 +7,19 @@ $_Nav_menu = array();
 $_Nav_unparented = array();
 class Nav {
 	# The given $url is an URL do not HTML-escape it!
-	function node($path, $title, $url=NULL) {
+	static function node($path, $title, $url=NULL) {
 		Nav::_node($path, $title, $url);
 		Nav::_reparent();
 	}
-	function _node($path, $title, $url) {
+	static function _node($path, $title, $url) {
 		$parent =& Nav::_getParent($path);
 		$parent[] = array('path'=>$path, 'title'=>$title, 'url'=>$url, 'children'=>array());
 	}
-	function display($activePath) {
+	static function display($activePath) {
 		global $_Nav_menu;
 		Nav::_display($activePath, $_Nav_menu);
 	}
-	function _display($activePath, $menu, $class='nav_main') {
+	static function _display($activePath, $menu, $class='nav_main') {
 		global $tab;
 		if (empty($menu)) {
 			return;
@@ -47,10 +47,10 @@ class Nav {
 		}
 		echo '</ul>';
 	}
-	function _pathWithin($sub, $path) {
+	static function _pathWithin($sub, $path) {
 		return ($sub == $path) or ($path.'/' == substr($sub, 0, strlen($path)+1));
 	}
-	function &_getParent($path) {
+	static function &_getParent($path) {
 		global $_Nav_menu, $_Nav_unparented;
 		if (preg_match('{^(.*)/([^/]*)?$}', $path, $m)) {
 			$path = $m[1];
@@ -64,7 +64,7 @@ class Nav {
 			return $a;
 		}
 	}
-	function &_getParent_real($path, &$menu, $curpath="") {
+	static function &_getParent_real($path, &$menu, $curpath="") {
 		if ($path == $curpath) {
 			return $menu;
 		}
@@ -76,7 +76,7 @@ class Nav {
 		}
 		return false;
 	}
-	function _reparent() {
+	static function _reparent() {
 		global $_Nav_unparented;
 		$nodes = $_Nav_unparented;
 		$_Nav_unparented = array();
