@@ -5,10 +5,14 @@
 
 require_once(REL(__FILE__, "../classes/Query.php"));
 
-class SessionHandler {
-	function SessionHandler() {
+// previously known as 'SessionHandler'
+// renamed due to conflict with PHP 5.4+ class of same name - FL()
+
+class OBsession {
+	function OBsession() {
 		$this->db = new Query;
 	}
+
 	function open($save_path, $session_name) {
 		return true;
 	}
