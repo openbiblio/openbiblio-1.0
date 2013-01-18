@@ -11,7 +11,8 @@ unset($_SESSION['postVars']);
 ?>
 </div>
 
-<script src="../shared/jquery/jquery-1.8.1.min.js"></script>
+<script src="../shared/jquery/jquery-1.9.0.min.js"></script>
+		<!--script src="http://code.jquery.com/jquery-migrate-1.0.0.js"></script-->
 <script src="../shared/jsLib.js" defer></script>
 
 <script language="JavaScript" defer>

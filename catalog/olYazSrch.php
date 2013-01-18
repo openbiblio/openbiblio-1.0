@@ -32,6 +32,7 @@
 				$srchType = 'cql';
 				$query = $sQuery;
 			}
+//echo "query=$query <br />\n";
 			
 			$connOK = yaz_connect($aUrl, $yazOpts );
 			if (! $connOK) {

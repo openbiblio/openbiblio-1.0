@@ -19,6 +19,9 @@ body {
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
+.error {
+	color: red; !important;
+	}
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
@@ -347,18 +350,7 @@ table.sigh .spacer {
 span.highLite {
   color: #FF8A00;
 	}
-span.error {
-	color: red;
-	}
-p.error {
-	color: red;
-	}
-input.error {
-	color: red;
-	}
-label.error {
-	color: red;
-	}
+
 tr.searchRow {
 	height: 35px;
 	}

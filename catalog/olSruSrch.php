@@ -14,7 +14,7 @@
 	$subfieldcount = 0;
 	$sruRcrdSchema = 'marcxml';
 //	$sruRcrdSchema = 'mods';
-echo "using SRU module<br />";
+//echo "using SRU module<br />";
 	
  	$qry ="operation=searchRetrieve"
  			 ."&version=1.1"

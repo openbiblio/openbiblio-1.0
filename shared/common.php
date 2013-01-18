@@ -21,6 +21,8 @@
 	}
 	
 	#apd_set_pprof_trace();
+	// TODO - will not work with db models and classes as currently written - FL
+	//error_reporting(E_ALL ^ E_NOTICE); 
 	error_reporting((E_ALL ^ E_NOTICE) & ~E_STRICT);
 	if (isset($cache)) {
 		session_cache_limiter($cache);
