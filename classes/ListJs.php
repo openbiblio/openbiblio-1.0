@@ -18,10 +18,11 @@ function inherit(p) {
 	f.prototype = p;														// set its prototype to p
 	return new f();															// use f() to create an 'heir' of p
 }
+
 /* ************************************************************************** */
 // Base class for DB lookup table maintenance
 //   url: data server URL
-//   form: in of html form to use
+//   form: id of html form to use
 //   dbAlias: nickname of server database
 //   opts: js object containing as a minimum: listHdr, editHdr, newHdr
 function List ( url, form, dbAlias, hdrs, listFlds, opts ) {

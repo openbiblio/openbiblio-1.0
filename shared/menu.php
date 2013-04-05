@@ -46,11 +46,7 @@ function staff_menu() {
 				$params .= '&seqno='.U($_REQUEST['seqno']);
 			}
 
-//			Nav::node('cataloging/biblio', T("Item Info"),
-//				"../shared/biblio_view.php?".$params);
-//			Nav::node('cataloging/biblio/edit', T("Edit"),
-//				"../catalog/biblio_edit_form.php?".$params);
-				
+			
 			Nav::node('cataloging/biblio/editmarc', T("Edit MARC"),
 				"../catalog/biblio_marc_edit_form.php?".$params);
 /*				
@@ -83,6 +79,10 @@ function staff_menu() {
 		//	"../catalog/biblio_new_form.php?reset=Y");
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"),
 			"../catalog/upload_usmarc_form.php");			
+			
+		Nav::node('cataloging/upload_csv', T("CSVImport"),
+			"../catalog/upload_csv_form.php");			
+			
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
 			"../catalog/bulkDelForm.php");
 	}

@@ -45,7 +45,7 @@ class MarcSubfields extends DBTable {
 			'description'=>'string',
 			'repeatable_flg'=>'string',
 		));
-		$this->setKey('tag',subfield_cd);
+		$this->setKey('tag','subfield_cd');
 		$this->setSequenceField('subfield_cd');
 	}
 }
