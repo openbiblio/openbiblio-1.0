@@ -165,6 +165,7 @@ $trans["biblioCopyFieldsDelMsg"] = "Biblio copy field, %desc%, has been deleted.
 $trans["biblioCopyFieldsEditMsg"] = "Biblio Copy Field, %desc%, has been updated.";
 $trans["biblioCopyFieldsNewMsg"] = "Biblio copy field, %desc%, has been added.";
 $trans["biblioCopyQueryErr1"] = "Duplicate Barcode found";
+$trans["biblioCopyNewBarcode"] = "Barcode Number";
 $trans["biblioDelConfirmMsg"] = "Are you sure you want to delete the item with title %title%?";
 $trans["biblioDelConfirmWarn"] = "This item has %copyCount% copy(ies) and %holdCount% hold request(s).<br />Please delete these copies and/or hold requests before deleting this bibliography.";
 $trans["BiblioFieldsConfig"] = 'Biblio Fields Configuration for ';
