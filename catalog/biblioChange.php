@@ -4,27 +4,8 @@
  */
  
 /*
-//moved to change-wrap.php
-require_once("../shared/common.php");
 
-$restrictInDemo = true;
-require_once(REL(__FILE__, "../shared/logincheck.php"));
-
-require_once(REL(__FILE__, "../model/Biblios.php"));
-require_once(REL(__FILE__, "../classes/Marc.php"));
-
-#****************************************************************************
-#*  Checking for post vars.  Go back to search if none found.
-#****************************************************************************
-if (count($_POST) == 0) {
-	if ($nav == "newconfirm") {
-		header("Location: ../catalog/biblio_new_form.php");
-	} else {
-		header("Location: ../catalog/index.php");
-	}
-	exit();
-}
-*/
+/* Not for stand-alone use. Normally 'included' in some other php block */
 
 /* Closure class for sorting subfields */
 class SubfieldOrder {
@@ -50,25 +31,39 @@ class SubfieldOrder {
 		}
 	}
 }
+
 function mkSubfieldCmp($order=NULL) {
 	$c = new SubfieldOrder($order);
-	return array($c, cmp);
+	//return array($c, cmp);
+	return $c->cmp;
 }
+function fieldCmp($a, $b) {
+	$tagcmp = strcasecmp($a->tag, $b->tag);
+	if ($tagcmp != 0) {
+		return $tagcmp;
+	}
+	/* Use actual display values after we add them -- TODO */
+	$dispa = implode(" ", $a->getValues());
+	$dispb = implode(" ", $b->getValues());
+	return strcasecmp($dispa, $dispb);
+}
+
+function PostBiblioChange($nav) {
+	//echo "running biblioChange code now<br />";
+	//echo "biblioChange @start POST==> ";print_r($_POST); echo "<br /><br />";
 
 #****************************************************************************
 #*  Validate data
 #****************************************************************************
-$biblios = new Biblios();
+if (!isset ($biblios)) $biblios = new Biblios();
 if ($_POST["bibid"]) {
+	//echo "in bibChg ==> re-using bibid #$bibid<br />";
 	$biblio = $biblios->getOne($_POST["bibid"]);
 } else {
+	//echo "in bibChg ==> creating new MARC record<br />";
 	$biblio = array(marc=>new MarcRecord);
 }
 assert($biblio != NULL);
-$biblio[material_cd] = $_POST["materialCd"];
-$biblio[collection_cd] = $_POST["collectionCd"];
-$biblio[last_change_userid] = $_POST["userid"];
-$biblio[opac_flg] = isset($_POST["opacFlg"]) ? Y : N;
 
 /* Construct a list of changed fields. */
 $fields = array();
@@ -79,11 +74,11 @@ $fields = array();
  * sufficient for the easy-edit interface.
  */
 
-foreach ($_POST[fields] as $f) {
-	if (strlen($f[tag]) != 3 or strlen($f[subfield_cd]) != 1) {
+foreach ($_POST['fields'] as $f) {
+	if (strlen($f['tag']) != 3 or strlen($f['subfield_cd']) != 1) {
 		continue;
 	}
-	$fidx = $f[tag].'-';
+	$fidx = $f['tag'].'-';
 	
 	// Only do this when there is no field yet with this field value
 	$fidxSuffix = null;
@@ -115,8 +110,7 @@ foreach ($_POST[fields] as $f) {
 
 	//$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
 	if (!array_key_exists($sfidx,$fields[$fidx])) {
-		//echo "creating subfield index $sfidx <br />\n";
-		$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], stripslashes(trim($f[data])));
+		$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 	}	
 }
 
@@ -163,17 +157,19 @@ foreach ($fields as $fidx => $subfields) {
 		array_push($mrc->fields, $fld);
 	}
 }
+//echo "mrc==> ";var_dump($mrc); echo "<br /><br />";
 
 /* Sort subfields and apply "smart" processing for particular fields */
 for ($i=0; $i < count($mrc->fields); $i++) {
-	usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
+
+	//usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
+	
 	/* Special processing for 245$a -- FIXME, this should be generalized */
 	if ($mrc->fields[$i]->tag == 245) {
 		/* No title added entry. */
 		$mrc->fields[$i]->indicators{0} = 0;
 		$a = $mrc->fields[$i]->getValue(a);
 		/* Set non-filing characters */
-		//		if (eregi("^((a |an |the )?[^a-z0-9]*)", $a, $regs) and strlen($regs[1]) <= 9) {
 		if (preg_match("/^((a |an |the )?[^a-z0-9]*)/i", $a, $regs) and strlen($regs[1]) <= 9) {
 			$mrc->fields[$i]->indicators{1} = strlen($regs[1]);
 		} else {
@@ -182,17 +178,8 @@ for ($i=0; $i < count($mrc->fields); $i++) {
 	}
 }
 /* Set field display values -- TODO */
+
 /* Sort fields by tag and display value */
-function fieldCmp($a, $b) {
-	$tagcmp = strcasecmp($a->tag, $b->tag);
-	if ($tagcmp != 0) {
-		return $tagcmp;
-	}
-	/* Use actual display values after we add them -- TODO */
-	$dispa = implode(" ", $a->getValues());
-	$dispb = implode(" ", $b->getValues());
-	return strcasecmp($dispa, $dispb);
-}
 usort($mrc->fields, fieldCmp);
 
 $biblio[marc] = $mrc;
@@ -200,10 +187,17 @@ $biblio[marc] = $mrc;
 #**************************************************************************
 #*  Insert/Update bibliography
 #**************************************************************************
-//echo "Posting insert/update now.<br />";
+//echo "Posting insert/update now.<br /><br />";
+//echo "biblioChange @end POST==> ";print_r($_POST); echo "<br /><br />";
+$biblio['material_cd'] = $_POST["material_cd"];
+$biblio['collection_cd'] = $_POST["collection_cd"];
+$biblio['last_change_userid'] = $_POST["userid"];
+$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
+
 if ($nav == "newconfirm") {
+	//echo "biblio==> ";print_r($biblio);echo "<br /><br />";
 	$bibid = $biblios->insert($biblio);
-	$msg = '{"bibid": "' . $bibid . '"}';
+	$msg = '{"bibid":"' . $bibid .'"}';
 } else {
 	$bibid = $_POST["bibid"];
 	$biblios->update($biblio);
@@ -211,10 +205,6 @@ if ($nav == "newconfirm") {
 	// dont change this string unless you are VERY sure
 	$msg = "!!success!!";
 }
+return $msg;
+}
 
-
-#### ########  all below moved to chng-wrap.php so thi module can be used more freely
-#### changed to eliminate an editing loop. Now goes directly to the new copy entry form - Fred
-//header("Location: ../catalog/biblio_edit_form.php?bibid=".$bibid."&msg=".U($msg));
-//header("Location: ../catalog/biblio_copy_new_form.php?resey=Y&bibid=".$bibid."&msg=".U($msg));
-//exit();

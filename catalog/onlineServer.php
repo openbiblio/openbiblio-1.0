@@ -17,7 +17,11 @@
 	  $nav = "newconfirm";
 	  
 	  include(REL(__FILE__,'../catalog/biblioChange.php'));
-	  
+  	$msg = PostBiblioChange($nav);
+  	if (is_object($msg)) {
+  		$rslt = json_decode($msg);
+  		$bibid = $rslt->bibid;
+		}
 	  echo $msg;
 	}
 
