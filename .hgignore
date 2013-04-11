@@ -6,3 +6,8 @@ glob:photos/dns&bind.jpg
 glob:photos/img-79-0-t.jpg
 glob:admin/xbiblioCopyFldsJs.php
 glob:photos/jQueryInAction.jpg
+glob:catalog/temp/cataloging_loc.php
+glob:catalog/temp/cataloging_nav.php
+glob:catalog/temp/exampleUpload.csv
+glob:catalog/temp/upload_csv.php
+glob:catalog/temp/upload_csv_form.php

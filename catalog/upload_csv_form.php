@@ -124,12 +124,12 @@
     <td><?php echo T("Mandatory"); ?></td>
   </tr>
   <tr>
-    <td><pre>Coll.</pre></td>
+    <td><pre>coll</pre></td>
     <td><?php echo T("Collection") ?></td>
     <td><?php echo T("CSVoptionalDefault") ?></td>
   </tr>
   <tr>
-    <td><pre>mType</pre></td>
+    <td><pre>media</pre></td>
     <td><?php echo T("Media Type") ?></td>
     <td><?php echo T("CSVoptionalDefault") ?></td>
   </tr>

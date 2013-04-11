@@ -98,6 +98,7 @@ $trans["Add to Shelving Cart"] = "Add to Shelving Cart";
 $trans["Add"] = "Add";
 $trans["Added Before Date"] = "Added Before Date";
 $trans["Added in the last N days"] = "Added in the last N days";
+$trans["Address"] = "Address";
 $trans["Address Line 1"] = "Address Line 1";
 $trans["Address Line 2"] = "Address Line 2";
 $trans["Admin"] = "Admin";

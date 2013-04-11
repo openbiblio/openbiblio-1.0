@@ -84,7 +84,7 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	  case "barCo":
 	    echo "  <td>".T("Barcode Number")."</td>\n";
 	    break;
-	  case "Coll.":
+	  case "coll":
 	    echo "  <td>".T("Collection")."</td>\n";
 	    break;
 	  case "media":
@@ -152,9 +152,11 @@ foreach($records as $record) {
   $localWarnings = array();
     
   $mandatoryCols = array(
-  	'099$a' => false,		// local call number
-    '100$a' => false,		// author
-    '245$a' => false,		// title
+  	'coll'  => false,		// collection name
+  	'media' => false,		// media type name
+  	//'099$a' => false,		// local call number
+    //'100$a' => false,		// author
+    //'245$a' => false,		// title
 	);
 	
 	$rec = array(
