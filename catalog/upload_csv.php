@@ -4,8 +4,6 @@
  */
 
 require_once("../shared/common.php");
-$tab = "cataloging";
-$nav = "upload_csv";
 
 # Big uploads take a while
 set_time_limit(120);
@@ -22,7 +20,7 @@ require_once(REL(__FILE__, "../classes/SrchDb.php"));
 require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 function doPostNewBiblio($rec) {
-echo "in doPostNewBiblio()<br />";
+	//echo "in doPostNewBiblio()<br />";
 	$_POST = $rec;
 	//$biblios = null;
   require_once(REL(__FILE__,'../catalog/biblioChange.php'));
@@ -36,6 +34,15 @@ if (count($_FILES) == 0) {
 	header("Location: ../catalog/upload_csv_form.php");
 	exit();
 }
+
+/* local copies so they do not get overwritten */
+$TEST = $_POST['test'];
+$OPAC = $_POST['opacFlg'];
+$SHOW = $_POST['showAll'];
+$USER = $_POST['userid'];
+$FILE = $_POST['copyText'];
+$COLL = $_POST['collectionCd'];
+$MEDIA= $_POST['materialCd'];
 
 /* input file delimiters */
 $recordterminator="\n";
@@ -56,6 +63,8 @@ $record = array_shift($records);
 
 /* -------------------------------------------------------- */
 /* begin web page html */
+$tab = "cataloging";
+$nav = "upload_csv";
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
@@ -124,12 +133,12 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 $cols = new Collections;
 $collections = $cols->getSelect();
-$dfltColl = $collections[$cols->getDefault()];
+$dfltColl = $collections[$COLL];
 //print_r($collections); echo " dflt: $dfltColl<br />";
 
 $meds = new MediaTypes;
 $medTypes = $meds->getSelect();
-$dfltMed = $medTypes[$meds->getDefault()];
+$dfltMed = $medTypes[$MEDIA];
 //print_r($medTypes); echo " dflt: $dfltMed<br />";
 
 $theDb = new SrchDB;
@@ -170,6 +179,7 @@ foreach($records as $record) {
     $target = trim($targets[$colCount]);
 		//echo "working column $target with entry: $entry <br />";    
 
+		// if current column is a 'mandatory' is present in headings mark as 'seen'
     if (isset($mandatoryCols[$target])) $mandatoryCols[$target] = true;
     
     switch ($target) {
@@ -184,23 +194,29 @@ foreach($records as $record) {
       } else {
         array_push($localWarnings,T("CSVCollUnknown").": ".$entry."; using '".$dfltMed."'.");
         $thisOne = $dfltMed;
+				echo "line ".($recCount+1)." using default media: $thisOne<br />";        
       }
       $rec["material_cd"] = array_search($thisOne, $medTypes);
+			//echo "media code= ".$rec["material_cd"]."<br />";      
       break;
-    case "Coll.":
+    case "coll":
       if (in_array($entry, $collections)) {
         $thisOne = $entry;
       } else {
         array_push($localWarnings,T("CSVCollUnknown").": ".$entry."; using '".$dfltColl."'.");
         $thisOne = $dfltColl;
+				echo "line ".($recCount+1)." using default collection: $thisOne<br />";        
       }
       $rec["collection_cd"] = array_search($thisOne, $collections);
+			//echo "coll code= ".$rec["collection_cd"]."<br />";      
       break;
     case "opac?":
       if (preg_match('/^[yYtT]/', $entry)) {
         $rec["opac_flg"] = true;
-      } else {
+      } else if (preg_match('/^[nYNfF]/', $entry)) {
         $rec["opac_flg"] = false;
+      } else {
+        $rec["opac_flg"] = $OPAC;
       }
       break;
     default:
@@ -220,18 +236,22 @@ foreach($records as $record) {
     if (in_array($barcode, $newBarcodes)) {
       array_push($localErrors, T("biblioCopyQueryErr1"));
       $validate = false;
-    }
+    } else {
+			echo "Barcode not present<br />";
+		}
     // push new barcode into validation array 
     array_push($newBarcodes, $barcode);
   }
 
   // Check for mandatory entries
-  foreach($mandatoryCols as $col => $seen) {
-    if (! $seen) {
-      array_push($localErrors, "Missing column entry: '".$col."'");
-      $validate = false;
-    }
-  }
+//  foreach($mandatoryCols as $col => $seen) {
+//    if (! $seen) {
+//      array_push($localErrors, "Missing column entry: '".$col."'");
+//      $validate = false;
+//    } else {
+//			echo "$col not present<br />";    
+//    }
+//  }
   
   // validate imported data
   if (count($localErrors)) {
@@ -240,8 +260,9 @@ foreach($records as $record) {
   if ($validate != true) {
     array_push($errorList, $recCount);
   }
-
-  if (($validate != true) || (($_POST["test"]=="true") && ($_POST["showAll"]=="Y"))) {
+  
+	//echo "after record scan ==> validate = $validate; test= $TEST; show=$SHOW<br />";
+  if (($validate != true) || (($TEST=="true") && ($SHOW=="Y"))) {
   	// Just display the record. Don't keep it in a array due to memory reasons.
     //echo "<a name=\"".$recCount."\">\n";
     echo "<fieldset>\n";
@@ -313,15 +334,16 @@ foreach($records as $record) {
     echo "</table>";
     echo "</fieldset>\n";
     
-  } else {
+  } else if ($TEST != "true"){
     // THE actual import happens here!!
   	echo "<fieldset>\n";
   	
 		//echo "rec==> ";print_r($rec); echo "<br /><br />";
 		$bibid = doPostNewBiblio($rec);
-echo "Biblio #$bibid posted successfully.<br />";
+		if ($SHOW == 'Y') echo "Biblio #$bibid posted successfully.<br />";
   	
   	if (isset($rec['barcode_nmbr'])) {
+			if ($SHOW == 'Y') echo "copy with barcode ".$rec['barcode_nmbr']." ";  	
 			echo $theDb->insertCopy($bibid,NULL);
 		}
 		echo "</fieldset>\n";
@@ -329,16 +351,16 @@ echo "Biblio #$bibid posted successfully.<br />";
 
   // At the end, update the counter display.
   if ($recCount % 10 == 0) {
-    echo "<script type=\"text/javascript\">\n";
-    echo "  window.document.Display.Records.value = ".$recCount.";\n";
-    echo "</script>\n";
+    //echo "<script type=\"text/javascript\">\n";
+    echo "  Records processed = ".$recCount.";\n";
+    //echo "</script>\n";
   }
 
 }
 
-echo "<script type=\"text/javascript\">\n";
-echo "  window.document.Display.Records.value = ".$recCount.";\n";
-echo "</script>\n";
+//echo "<script type=\"text/javascript\">\n";
+echo "  Records processed = ".$recCount.";\n";
+//echo "</script>\n";
 
 if (count($errorList)){
   echo "<ul>\n";

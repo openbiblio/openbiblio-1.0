@@ -176,10 +176,11 @@ footer { margin-top:10px; text-align:center; font: 0.75em serif;/* 12/16 */ }
 /*************************************************/
 div#content {
   left:0; vertical-align:top; border:solid black 2px; background:white; padding:0;
-	width: 720px; max-width: 100%; 
+	width: 720px; max-width: 100%;
 	}
 	.ie #content figure {width: 480px;}
 #content .altBG { background: #dddddd; }
+
 #copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width: 1px; padding: 2px; border-style: solid; border-color: black; }
 #editTbl { margin-left:0; padding-left:0; }
