@@ -53,11 +53,11 @@
 			  </tr>
 			  
 				<tr>
-					<td colspan="3"><label for="materialCd"><?php echo T("Media Type:"); ?></label></td>
+					<td colspan="3"><label for="mediaCd"><?php echo T("Media Type:"); ?></label></td>
 					<td colspan="2">
 						<?php
 						$medTypes = new MediaTypes;
-						echo inputfield('select', "materialCd", $medTypes->getDefault(), NULL, $medTypes->getSelect());
+						echo inputfield('select', "mediaCd", $medTypes->getDefault(), NULL, $medTypes->getSelect());
 						?>
 					</td>
 				</tr>
@@ -158,7 +158,7 @@
 	</fieldset>
 
   <fieldset>
-  	<legend>Line # <span id="LineNo">$lineNmbr</span></legend>
+  	<legend>Import File Records</legend>
 	  <table>
 	  	<thead>
 	  	<tr>
@@ -167,9 +167,9 @@
 				<th><?php echo T("Data") ?></th>
 			</tr>
 			</thead>
-			<tbody id="errs">
+			<tbody id="csvErrs">
 			</tbody>
-			<tbody id="rcrds">
+			<tbody id="csvRcrds">
 			</tbody>
 		  <tfoot>
 		  <tr>
