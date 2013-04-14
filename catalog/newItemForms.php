@@ -7,11 +7,6 @@
 
   session_cache_limiter(null);
 
-	$tab = "cataloging";
-	$nav = "newItem";
-  $focus_form_name = "lookupForm";
-  $focus_form_field = "lookupVal";
-
 	$isbnTxt    = T("ISBN");
 	$issnTxt    = T("ISSN");
 	$lccnTxt    = T("LCCN");
@@ -29,6 +24,11 @@
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	
 	$defBarcodeDigits = $_SESSION[item_barcode_width];
+
+	$tab = "cataloging";
+	$nav = "newItem";
+  $focus_form_name = "lookupForm";
+  $focus_form_field = "lookupVal";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <style>

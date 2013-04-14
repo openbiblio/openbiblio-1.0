@@ -26,7 +26,7 @@ $.fn.emptySelect = function () {
 	return this.each(function () {
 		if (this.tagName=='SELECT') this.options.length=0;
 	});
-}
+};
 $.fn.loadSelect = function (optionsDataArray) {
 	return this.emptySelect().each(function() {
 		if (this.tagName=='SELECT') {
