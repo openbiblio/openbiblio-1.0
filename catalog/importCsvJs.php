@@ -10,10 +10,16 @@
 "use strict";
 
 var csvi = {
-	
 	init: function () {
+		$('section').hide();
+		$('.help').hide();
 		csvi.initWidgets();
+		csvi.autoBarcodeFlg = (<?php echo "'".$_SESSION['item_autoBarcode_flg']."'"; ?> == 'Y'?true:false);
 
+		csvi.BCD_NEVER = 0;
+		csvi.BCD_IF = 1;
+		csvi.BCD_ALWAYS = 2;
+	
 		csvi.url = '../catalog/importServer.php';
 		csvi.form = $('#specForm');
 		
@@ -26,19 +32,22 @@ var csvi = {
 		
 		$('#imptSrce').bind('change',null,function () {$('#imptBtn').enable();});
 		$("#imptBtn").bind('click',null,csvi.processImportFile);
+		$("#helpBtn").bind('click',null,function () {$('.help').toggle();});
 		$("#revuBkupBtn").bind('click',null,csvi.rtnToIntro);
 		$("#rsltBkupBtn").bind('click',null,csvi.rtnToIntro);
+		$("#bcdDeflt").bind('change',null,function () {csvi.bcdOpt = $('bcdDflt').val();});
 		
 		csvi.resetForm();
 	},
 	
 	//------------------------------
 	initWidgets: function () {
-		$('section').hide();
 	},
 	//----//
 	resetForm: function () {
 		//console.log('resetting Search Form');
+		$('.help').hide();
+		csvi.setCopyDefault()
 		$('#review').hide();
 		$('#rslts').hide();
 		$('#imptBtn').disable();
@@ -48,6 +57,19 @@ var csvi = {
 	rtnToIntro: function () {
 		csvi.resetForm();
 		$('#imptBtn').enable();
+	},
+	showHelp: function () {
+		$('#help').show('norm');
+	},
+	closeHelp: function () {
+		$('#help').hide('norm');
+	},
+	setCopyDefault: function () {
+		if (csvi.autoBarcodeFlg) {
+			$('#bcdDeflt').val(2);
+		} else {
+			$('#bcdDeflt').val(1);
+		}
 	},
 		
 	//------------------------------
@@ -79,7 +101,7 @@ var csvi = {
 		return $('#opacFlg').val();
 	},
 	getShowAllFlg: function () {
-		return $('#showAll').val();
+		return ($('#showAll').val() == 'Y'?true:false);
 	},
 	getTestTF: function () {
 		return $('[name="test"]:checked').val();
@@ -192,15 +214,22 @@ return false;
 		var rec = {};	// output record
 		var csvRcrds = $('#csvRcrds'); csvRcrds.html(' ');
 		var csvErrs = $('#csvErrs'); csvErrs.html(' ');
-		
+		var showAll = csvi.getShowAllFlg();
+console.log('showAll='+showAll);
+console.log('bcdDflt='+$('#bcdDeflt').val());	
+	
+		// for use with barcodes
+		var width = <?php echo $_SESSION[item_barcode_width]; ?>;
+	 	if( width <= 1 ) var w = 13; else var w = width;
+	  	
 		for (var i=1; i<csvi.File.length; i++) {
 			//console.log('working row #'+i+' of '+csvi.File.length+' : '+csvi.File[i]);
 					
 			// break an input line into an array of its parts
 			var data = csvi.File[i].split(csvi.fldTerminator);	
 
-			csvRcrds.append(' <tr><td colspan="3">&nbsp</td></tr>\n');
-    	csvRcrds.append(' <tr><td colspan="3"> - - - - - - - Line #'+i+' - - - - - - - - </td></tr>\n');
+			if (showAll) csvRcrds.append(' <tr><td colspan="3">&nbsp</td></tr>\n');
+    	if (showAll) csvRcrds.append(' <tr><td colspan="3"> - - - - - - - Line #'+i+' - - - - - - - - </td></tr>\n');
 
   		var mandatoryCols = {
   			'coll'  : false,		// collection name
@@ -210,7 +239,9 @@ return false;
     		//'245$a' : false,		// title
 			};
 			
-			var fields = {};	// for use with MARC tags
+	  	// for use with MARC tags
+			var fields = {};	
+			
 			for (var n=0; n<csvi.headings.length; n++) {
     		if ( (data[n] === undefined) || (data[n] == '') ) {
 					var entry = '';
@@ -226,15 +257,16 @@ return false;
     		switch (target) {
     			case 'barCo':
     				// pad bar code to proper size
-						var width = <?php echo $_SESSION[item_barcode_width]; ?>;
-	  				if( width <= 1 ) var w = 13; else var w = width;
       			rec['barcode_nmbr'] = flos.pad(entry, w, "0");
 						if (csvi.isDupBarCd()) {
 							csvErrs.append(' <tr><td colspan="3">Line #'+i+' Bar Code '+rec['barcode_nmbr']+' is a duplicate</td></tr>\n');
 							//continue;
 						} else {
-    	  			csvRcrds.append(" <tr><td>Bar Code</td><td>&nbsp;</td><td>"+rec['barcode_nmbr']+"</td></tr>\n");
+    	  			if (showAll) csvRcrds.append(" <tr><td>Bar Code</td><td>&nbsp;</td><td>"+rec['barcode_nmbr']+"</td></tr>\n");
     	  		}
+      			if ( ( parseInt(rec['barcode_nmbr']) == 0 ) && ( csvi.bcdDflt >= csvi.BCD_IF ) ){
+							rec['barcode_nmbr'] = 'autogen';
+						}
     				break;
 			    case "coll":
 			    	var thisOne = csvi.collections.indexOf(entry);
@@ -244,7 +276,7 @@ return false;
 							csvErrs.append(' <tr><td colspan="3">Line #'+i+" Collection '"+entry+"' invalid, using default</td></tr>\n");
 			      }		      
 			      rec['collection_cd'] = thisOne;
-      			csvRcrds.append("  <tr><td>Collection</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
+      			if (showAll) csvRcrds.append("  <tr><td>Collection</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
 			      break;
     			case 'media':
 			    	var thisOne = csvi.mediaTypes.indexOf(entry);
@@ -254,7 +286,7 @@ return false;
 							csvErrs.append(' <tr><td colspan="3">Line #'+i+" Media '"+entry+"' invalid, using default</td></tr>\n");
 			      }
 			      rec['material_cd'] = thisOne;
-      			csvRcrds.append("  <tr><td>Media Type</td><td>&nbsp;</td><td>"+csvi.mediaTypes[thisOne]+"</td></tr>\n");
+      			if (showAll) csvRcrds.append("  <tr><td>Media Type</td><td>&nbsp;</td><td>"+csvi.mediaTypes[thisOne]+"</td></tr>\n");
       			break;
 			    case "opac?":
 						var patternYes = /^[yYtT]/;
@@ -267,7 +299,7 @@ return false;
 			      } else {
 			        rec["opac_flg"] = csvi.getOpacFlg();
 			      }
-      			csvRcrds.append("  <tr><td>Show OPAC</td><td>&nbsp;</td>" +
+      			if (showAll) csvRcrds.append("  <tr><td>Show OPAC</td><td>&nbsp;</td>" +
       											"<td>"+(rec["opac_flg"] == true?"true":"false")+"</td><tr>\n");
 			      break;
 			    default:
@@ -277,16 +309,26 @@ return false;
 							var tgt = { 'tag':tag[0], 'subfield_cd':tag[1], 'data':entry };		        
 							fields[target] = tgt;
 											
-	      			csvRcrds.append("  <tr><td>"+tag[0]+"</td>" +
+	      			if (showAll) csvRcrds.append("  <tr><td>"+tag[0]+"</td>" +
 	      											"<td>"+tag[1]+"</td>" +
 	      											"<td>"+entry+"</td></tr>\n");
 			      }
 			      break;
 			  }
 			}
+			
+			// check for barcode present, and add if user wishes
+console.log('bcd='+rec['barcode_nmbr']);		
+console.log('dflt='+$('#bcdDeflt').val());	
+			if ((! rec['barcode_nmbr'] ) && ( $('#bcdDeflt').val() == csvi.BCD_ALWAYS )){
+console.log('barcode is needed');
+				csvErrs.append(' <tr><td colspan="3">Line #'+i+" barcode missing, auto-generating</td></tr>\n");
+      	rec['barcode_nmbr'] = 'autogen';
+			}
+			
 			// now add 'fields array' to rec
 			rec['fields'] = fields
-			//console.log(rec);			
+			console.log(rec);			
 		}	
 	},
 };

@@ -181,6 +181,9 @@ div#content {
 	.ie #content figure {width: 480px;}
 #content .altBG { background: #dddddd; }
 
+.note { font-size: 0.7em; }
+.help { font-size: 0.7em; display:none; }
+
 #copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width: 1px; padding: 2px; border-style: solid; border-color: black; }
 #editTbl { margin-left:0; padding-left:0; }
@@ -217,7 +220,6 @@ xul.pagBtns li:last-child { float:right; color: green; }
  
 /* search results displays */
 .listTbl { width:100%; text-align:left; }
-.note { font-size: 0.7em; }
 .title {
 	font: 1.25em sans-serif; /* 20/16 */
 	text-align: center;

@@ -39,7 +39,7 @@
 		</fieldset>
 	
 		<fieldset>
-			<legend><?php echo T("Defaults"); ?></legend>
+			<legend><?php echo T("Options"); ?></legend>
 			<table border=0>
 			<tbody>
 			  <tr>
@@ -65,20 +65,25 @@
 			  <tr>
 					<td colspan="3"><label for="opacFlg"><?php echo T("biblioFieldsOpacFlg"); ?></label></td>
 			    <td colspan="2">
-			      <SELECT name="opacFlg" id="opacFlg">
-			        <option value=Y SELECTED><?php echo T("AnswerYes"); ?></option>
-			        <option value=N><?php echo T("AnswerNo"); ?></option>
+			      <select name="opacFlg" id="opacFlg">
+			        <option value="Y" SELECTED><?php echo T("AnswerYes"); ?></option>
+			        <option value="N"><?php echo T("AnswerNo"); ?></option>
 			      </select>
 			    </td>
 			  </tr>
 			  
 			  <tr>
-					<td colspan="3"><label for="showAll"><?php echo T("CSVshowAllFiles"); ?></label></td>
+					<td colspan="3">
+						<label for="autoFlg"><?php echo T("Auto Barcode"); ?>
+							is <?php echo ($_SESSION['item_autoBarcode_flg'] == 'Y'?T('ON'):T('OFF')); ?>.
+							&nbsp;Make Item Copies?
+						</label></td>
 			    <td colspan="2">
-			      <SELECT name="showAll" id="showAll">
-			        <option value=Y><?php echo T("AnswerYes"); ?></option>
-			        <option value=N SELECTED><?php echo T("AnswerNo"); ?></option>
-			      </select>
+			    	<select id="bcdDeflt">
+			    		<option value="0">Never</option>
+			    		<option value="1">Only if Barcode present</option>
+			    		<option value="2">Always</option>
+			    	</select>
 			    </td>
 			  </tr>
 			  
@@ -89,10 +94,20 @@
 			      <input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
 			    </td>
 			  </tr>
+			  
+			  <tr>
+					<td colspan="3" nowrap><label for="showAll"><?php echo T("CSVshowAllFiles"); ?></label></td>
+			    <td colspan="2">
+			      <select name="showAll" id="showAll">
+			        <option value="Y"><?php echo T("AnswerYes"); ?></option>
+			        <option value="N" SELECTED><?php echo T("AnswerNo"); ?></option>
+			      </select>
+			    </td>
+			  </tr>
 			  </tbody>
 			  <tfoot>
 			  <tr>
-			  	<td colspan="3">&nbsp;</td>
+			  	<td colspan="3"><input type="button" id="helpBtn" value="<?php echo T("Help"); ?>" class="button" /></td>
 	  			<td colspan="1"><input type="submit" id="imptBtn" value="<?php echo T("Upload File"); ?>" class="button" /></td>
 	  			<td colspan="1">&nbsp;</td>
 			  </tr>
@@ -101,45 +116,44 @@
 		</fieldset>
 	</form>
 	
-	<div class="note">
+	<div class="help">
 		<ul>
 			<li><?php echo T("CSVinputDescr"); ?></li>
 			<li><?php echo T("CSVimportAdvise"); ?></li>
 		</ul>
-	<table border=1>
-	  <tr>
-	    <th><?php echo T("CSVcolumnHeading"); ?></th>
-	    <th><?php echo T("CSVcolumnDescription"); ?></th>
-	    <th><?php echo T("CSVcolumnComment"); ?></th>
-	  </tr>
-	  <tr>
-	    <td><pre>Call1</pre></td>
-	    <td><?php echo T("CSVCallNumber"); ?></td>
-	    <td><?php echo T("CSVCallNrDescription"); ?></td>
-	  </tr>
-	  <tr>
-	    <td><pre>barCo</pre></td>
-	    <td><?php echo T("biblioCopyNewBarcode"); ?></td>
-	    <td><?php echo T("CSVbarCoDescription"); ?></td>
-	  </tr>
-	  <tr>
-	    <td><pre>coll</pre></td>
-	    <td><?php echo T("Collection") ?></td>
-	    <td><?php echo T("CSVoptionalDefault") ?></td>
-	  </tr>
-	  <tr>
-	    <td><pre>media</pre></td>
-	    <td><?php echo T("Media Type") ?></td>
-	    <td><?php echo T("CSVoptionalDefault") ?></td>
-	  </tr>
-	  <tr>
-	    <td><pre>showO</pre></td>
-	    <td>Show in OPAC</td>
-	    <td><?php echo T("CSVoptionalDefault") ?></td>
-	  </tr>
-	</table>
-	
-	<p><?php echo T("CSVimportMoreMARC"); ?></p>
+		<table border=1>
+		  <tr>
+		    <th><?php echo T("CSVcolumnHeading"); ?></th>
+		    <th><?php echo T("CSVcolumnDescription"); ?></th>
+		    <th><?php echo T("CSVcolumnComment"); ?></th>
+		  </tr>
+		  <tr>
+		    <td><pre>Call1</pre></td>
+		    <td><?php echo T("CSVCallNumber"); ?></td>
+		    <td><?php echo T("CSVCallNrDescription"); ?></td>
+		  </tr>
+		  <tr>
+		    <td><pre>barCo</pre></td>
+		    <td><?php echo T("biblioCopyNewBarcode"); ?></td>
+		    <td><?php echo T("CSVbarCoDescription"); ?></td>
+		  </tr>
+		  <tr>
+		    <td><pre>coll</pre></td>
+		    <td><?php echo T("Collection") ?></td>
+		    <td><?php echo T("CSVoptionalDefault") ?></td>
+		  </tr>
+		  <tr>
+		    <td><pre>media</pre></td>
+		    <td><?php echo T("Media Type") ?></td>
+		    <td><?php echo T("CSVoptionalDefault") ?></td>
+		  </tr>
+		  <tr>
+		    <td><pre>showO</pre></td>
+		    <td>Show in OPAC</td>
+		    <td><?php echo T("CSVoptionalDefault") ?></td>
+		  </tr>
+		</table>
+		<p><?php echo T("CSVimportMoreMARC"); ?></p>
 	</div>
 </section>	<!-- intro -->
 
