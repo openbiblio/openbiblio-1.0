@@ -80,9 +80,9 @@
 						</label></td>
 			    <td colspan="2">
 			    	<select id="bcdDeflt">
-			    		<option value="0">Never</option>
-			    		<option value="1">Only if Barcode present</option>
-			    		<option value="2">Always</option>
+			    		<option value="0"><?php echo T('Never'); ?></option>
+			    		<option value="1"><?php echo T('Only if Barcode present'); ?></option>
+			    		<option value="2"><?php echo T('Always'); ?></option>
 			    	</select>
 			    </td>
 			  </tr>
@@ -105,13 +105,15 @@
 			    </td>
 			  </tr>
 			  </tbody>
+			  
 			  <tfoot>
 			  <tr>
 			  	<td colspan="3"><input type="button" id="helpBtn" value="<?php echo T("Help"); ?>" class="button" /></td>
-	  			<td colspan="1"><input type="submit" id="imptBtn" value="<?php echo T("Upload File"); ?>" class="button" /></td>
+	  			<td colspan="1"><input type="submit" id="imptBtn" value="<?php echo T("Scan CSV File"); ?>" class="button" /></td>
 	  			<td colspan="1">&nbsp;</td>
 			  </tr>
 			  </tfoot>
+			  
 			</table>
 		</fieldset>
 	</form>
@@ -153,7 +155,7 @@
 		    <td><?php echo T("CSVoptionalDefault") ?></td>
 		  </tr>
 		</table>
-		<p><?php echo T("CSVimportMoreMARC"); ?></p>
+		<p wordwrap><?php echo T("CSVimportMoreMARC"); ?></p>
 	</div>
 </section>	<!-- intro -->
 
@@ -173,6 +175,9 @@
 
   <fieldset>
   	<legend>Import File Records</legend>
+  	<div id="csvErrs">
+  	</div>
+  	<br />
 	  <table>
 	  	<thead>
 	  	<tr>
@@ -181,14 +186,15 @@
 				<th><?php echo T("Data") ?></th>
 			</tr>
 			</thead>
-			<tbody id="csvErrs">
-			</tbody>
 			<tbody id="csvRcrds">
 			</tbody>
 		  <tfoot>
 		  <tr>
 		  	<td colspan="1">&nbsp;</td>
-  			<td colspan="1"><button id="revuBkupBtn" type="button" class="button bkupBtn"><?php echo T("Backup"); ?></button></td>
+  			<td colspan="1">
+					<button id="revuBkupBtn" type="button" class="button bkupBtn"><?php echo T("Go Back"); ?></button>
+					<button id="Post2DbBtn" type="button" class="button bkupBtn"><?php echo T("Import Data"); ?></button>
+				</td>
   			<td colspan="1">&nbsp;</td>
 		  </tr>
 		  </tfoot>		</table>
@@ -197,8 +203,10 @@
 
 <section id="rslts" style="display:none;">
 	<fieldset>
-		<legend>Record # <span id="LineNo"></span></legend>
-  	<button id="rsltBkupBtn" class="button bkupBtn" type="button"><?php echo T("Backup"); ?></button></td>
+		<legend>Import Results</legend>
+		<div id="csvImportRslts">
+		</div>
+  	<button id="rsltBkupBtn" class="button bkupBtn" type="button"><?php echo T("Go Back"); ?></button>
 	</fieldset>
 </section>	
 

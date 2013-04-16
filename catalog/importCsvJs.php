@@ -33,8 +33,8 @@ var csvi = {
 		$('#imptSrce').bind('change',null,function () {$('#imptBtn').enable();});
 		$("#imptBtn").bind('click',null,csvi.processImportFile);
 		$("#helpBtn").bind('click',null,function () {$('.help').toggle();});
-		$("#revuBkupBtn").bind('click',null,csvi.rtnToIntro);
-		$("#rsltBkupBtn").bind('click',null,csvi.rtnToIntro);
+		$(".bkupBtn").bind('click',null,csvi.rtnToIntro);
+		$("#Post2DbBtn").bind('click',null,csvi.post2Db);
 		$("#bcdDeflt").bind('change',null,function () {csvi.bcdOpt = $('bcdDflt').val();});
 		
 		csvi.resetForm();
@@ -143,14 +143,8 @@ return false;
 				success: 					function (response, status) {
 														csvi.File = response;			
 														$('#intro').hide();
-														if ( csvi.getTestTF() == 'true' ) {
-															$('#rslts').hide();
-															$('#review').show();
-															csvi.displayColHeads();	
-														} else {
-															$('#review').hide();
-															$('#rslts').show();
-														}
+														$('#review').show();
+														csvi.displayColHeads();	
 														csvi.processRows();
 													},
 				error: 						function (data, status, e) { 
@@ -209,23 +203,24 @@ return false;
 			$('#tag'+parts[0]+parts[1]).html(response);
 		});
 	},
-	//----//
+	/* ---- */
 	processRows: function () {
 		var rec = {};	// output record
 		var csvRcrds = $('#csvRcrds'); csvRcrds.html(' ');
 		var csvErrs = $('#csvErrs'); csvErrs.html(' ');
 		var showAll = csvi.getShowAllFlg();
-console.log('showAll='+showAll);
-console.log('bcdDflt='+$('#bcdDeflt').val());	
+		csvi.csvRecords = [];
+		//console.log('showAll='+showAll);
+		//console.log('bcdDflt='+$('#bcdDeflt').val());	
 	
-		// for use with barcodes
+		/* for use with barcodes */
 		var width = <?php echo $_SESSION[item_barcode_width]; ?>;
 	 	if( width <= 1 ) var w = 13; else var w = width;
 	  	
 		for (var i=1; i<csvi.File.length; i++) {
 			//console.log('working row #'+i+' of '+csvi.File.length+' : '+csvi.File[i]);
 					
-			// break an input line into an array of its parts
+			/* break an input line into an array of its parts */
 			var data = csvi.File[i].split(csvi.fldTerminator);	
 
 			if (showAll) csvRcrds.append(' <tr><td colspan="3">&nbsp</td></tr>\n');
@@ -239,8 +234,9 @@ console.log('bcdDflt='+$('#bcdDeflt').val());
     		//'245$a' : false,		// title
 			};
 			
-	  	// for use with MARC tags
-			var fields = {};	
+	  	/* for use with MARC tags */
+			var fields = {}, 
+					rec = {};	
 			
 			for (var n=0; n<csvi.headings.length; n++) {
     		if ( (data[n] === undefined) || (data[n] == '') ) {
@@ -251,12 +247,12 @@ console.log('bcdDflt='+$('#bcdDeflt').val());
     		var target = csvi.headings[n].trim();
 				//console.log("working "+(n)+" of "+csvi.headings.length+" with entry '"+entry+"' in column '"+target+"'");    
 
-				// if current column is a 'mandatory' is present in headings mark as 'seen'
+				/* if current column is a 'mandatory' is present in headings mark as 'seen' */
     		if ( mandatoryCols[target] ) mandatoryCols[target] = true;
     		
     		switch (target) {
     			case 'barCo':
-    				// pad bar code to proper size
+    				/* pad bar code to proper size */
       			rec['barcode_nmbr'] = flos.pad(entry, w, "0");
 						if (csvi.isDupBarCd()) {
 							csvErrs.append(' <tr><td colspan="3">Line #'+i+' Bar Code '+rec['barcode_nmbr']+' is a duplicate</td></tr>\n');
@@ -271,7 +267,6 @@ console.log('bcdDflt='+$('#bcdDeflt').val());
 			    case "coll":
 			    	var thisOne = csvi.collections.indexOf(entry);
 			      if (thisOne < 0) {
-			        //array_push($localWarnings,T("CSVCollUnknown").": ".$entry."; using '".$dfltColl."'.");
 			        thisOne = csvi.getDfltColl();
 							csvErrs.append(' <tr><td colspan="3">Line #'+i+" Collection '"+entry+"' invalid, using default</td></tr>\n");
 			      }		      
@@ -281,7 +276,6 @@ console.log('bcdDflt='+$('#bcdDeflt').val());
     			case 'media':
 			    	var thisOne = csvi.mediaTypes.indexOf(entry);
 			      if (thisOne < 0) {
-			        //array_push($localWarnings,T("CSVCollUnknown").": ".$entry."; using '".$dfltMed."'.");
 			        thisOne = csvi.getDfltMedia();
 							csvErrs.append(' <tr><td colspan="3">Line #'+i+" Media '"+entry+"' invalid, using default</td></tr>\n");
 			      }
@@ -317,19 +311,36 @@ console.log('bcdDflt='+$('#bcdDeflt').val());
 			  }
 			}
 			
-			// check for barcode present, and add if user wishes
-console.log('bcd='+rec['barcode_nmbr']);		
-console.log('dflt='+$('#bcdDeflt').val());	
+			/* check for barcode present, and add if user wishes */
 			if ((! rec['barcode_nmbr'] ) && ( $('#bcdDeflt').val() == csvi.BCD_ALWAYS )){
-console.log('barcode is needed');
 				csvErrs.append(' <tr><td colspan="3">Line #'+i+" barcode missing, auto-generating</td></tr>\n");
       	rec['barcode_nmbr'] = 'autogen';
 			}
+			rec['copy_desc'] = $('copyText').val();
 			
-			// now add 'fields array' to rec
+			/* now add 'fields array' to rec */
 			rec['fields'] = fields
-			console.log(rec);			
+			//console.log(rec);	
+			csvi.csvRecords[i-1] = rec; 		
 		}	
+		
+		/* parsing complete, ready to send to server for posting to database */
+		//console.log(csvi.csvRecords);
+	},
+	
+	post2Db: function () {
+		//console.log('sending records to OB database now');
+		$.post(csvi.url,{'mode':'postCsvData', 'records':csvi.csvRecords},function (response) {
+			$('#review').show();
+			$('#rslts').show();
+			var posts = JSON.parse(response);
+			var txt = '<ul>';
+			for (var i=0; i<posts.length; i++) {
+				txt = txt + '<li>'+posts[i]+'</li>';
+			}
+			txt = txt + '</ul>';
+			$('#csvImportRslts').html(txt);
+		});
 	},
 };
 
