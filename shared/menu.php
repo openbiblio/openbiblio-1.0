@@ -81,7 +81,7 @@ function staff_menu() {
 			"../catalog/upload_usmarc_form.php");			
 			
 		Nav::node('cataloging/upload_csv', T("CSVImport"),
-			"../catalog/upload_csv_form.php");			
+			"../catalog/importCsvForms.php");			
 			
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
 			"../catalog/bulkDelForm.php");

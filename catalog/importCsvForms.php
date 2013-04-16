@@ -26,12 +26,12 @@
 <section id="intro">
 	<form id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
 		<fieldset>
-			<label><?php echo T("CSVloadTest"); ?>: 
-				<?php echo T("CSVloadTestTrue"); ?>
+			<!--label><?php echo T("CSVloadTest"); ?>: 
+				<?php //echo T("CSVloadTestTrue"); ?>
 					<input type="radio" id="testTrue" name="test" value="true" checked \>  
-				<?php echo T("CSVloadTestFalse"); ?>
+				<?php //echo T("CSVloadTestFalse"); ?>
 					<input type="radio" id="testFalse" name="test" value="false" \>
-			</label> <br />
+			</label> <br /-->
 			<input type="hidden" id="mode" name="mode" value="csvPreview" \>
 			<label><?php echo T("CSVloadTestFileUpload"); ?>: 
 				<input type="file" id="imptSrce" name="imptSrce" required aria-required="true" autofocus \>
