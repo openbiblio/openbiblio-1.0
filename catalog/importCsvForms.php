@@ -182,7 +182,7 @@
 	  	<thead>
 	  	<tr>
 				<th><?php echo T("Data Tag") ?></th>
-				<th><?php echo T("Date Subfield") ?></th>
+				<th><?php echo T("Data Subfield") ?></th>
 				<th><?php echo T("Data") ?></th>
 			</tr>
 			</thead>
