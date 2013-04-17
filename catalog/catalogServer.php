@@ -182,7 +182,9 @@ function mkBiblioArray($dbObj) {
 				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $_REQUEST['from'] . '"}';		
 			}
 		}			
-				
+		
+		/* - - - - - - - - - - - - - */
+		/* Actual Search begins here */		
 		$paramStr = "[" . $params . "," . $searchTags . "]";
 		$biblioLst = $theDb->getBiblioByPhrase($type, $paramStr);
 		if (sizeof($biblioLst) > 0) {

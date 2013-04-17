@@ -4,6 +4,8 @@
  */
 
 	require_once("../shared/common.php");
+	require_once(REL(__FILE__, "../model/MediaTypes.php"));
+	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
@@ -141,10 +143,22 @@ class SrchDb {
 //print_r($rcd);echo "<br />\n";
 		$this->createDt = $rcd['create_dt'];
 		$this->daysDueBack = $rcd['days_due_back'];
-		$this->matlCd = $rcd['material_cd'];
-		$this->collCd = $rcd['collection_cd'];
 		$this->imageFile =$rcd['image_file'];
 		$this->opacFlg = $rcd['opac_flg'];
+		#### following intended to deal with a bad database, these conditions should never happen ####
+		if ( empty($rcd['material_cd'])) {
+			$ptr = new MediaTypes;
+			$this->matlCd = $ptr->getDefault();
+		} else {
+			$this->matlCd = $rcd['material_cd'];
+		}
+		if (empty($rcd['collection_cd'])) {
+			$ptr = new Collections;
+			$this->collCd = $ptr->getDefault();
+		} else {
+			$this->collCd = $rcd['collection_cd'];
+		}
+		#### end of bad data fix ####
 		
 		// If the show details OPAC  flag is set get info on the copies	
 		if ($_SESSION['show_detail_opac'] == 'Y'){

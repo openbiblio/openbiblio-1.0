@@ -95,7 +95,7 @@ var csvi = {
 		return $('#collectionCd').val();
 	},
 	getDfltMedia: function () {
-		return $('#mediaCd').val();
+		return $('#materialCd').val();
 	},
 	getOpacFlg: function () {
 		return $('#opacFlg').val();
