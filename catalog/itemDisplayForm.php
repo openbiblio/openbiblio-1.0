@@ -4,7 +4,7 @@
  */
 ?>
 	<fieldset>
-		<legend><?php echo T("Biblio Information"); ?></legend>
+		<legend><?php echo T("Biblio Information"); ?> ( #<span id="theBibId"></span> )</legend>
 		<div id="bibBlks">
 			<div id="bibBlkA">
 				<table id="biblioTbl" border="1">

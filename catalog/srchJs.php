@@ -143,13 +143,11 @@ var bs = {
 		$('#deltFotoBtn').on('click',null,bs.doDeletePhoto);
 		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
 
-		// begin processing; last item MUST include a call to bs.doAltStart()
 		bs.resetForms();
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 		bs.fetchSiteList();
-		
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -223,6 +221,7 @@ var bs = {
 
 	doAltStart: function () {
 		// alternate startup in response to remote package
+		console.log('checking for alternative starts using: '+<?php echo "'".$_REQUEST[barcd]."'"; ?>);
 		<?php
 		if ($_REQUEST['barcd']) {
 			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
@@ -525,7 +524,8 @@ var bs = {
 			bs.theBiblio = $(this).prev().val();
 		else
 	  	bs.theBiblio = biblio;
-
+		$('#theBibId').html(bs.theBiblio.bibid);
+		
   	bs.crntFoto = null;
   	bs.crntBibid = bs.theBiblio.bibid;
 		$('#photoEditBtn').hide();		

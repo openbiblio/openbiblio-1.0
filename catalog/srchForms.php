@@ -68,6 +68,7 @@
 				<option value="series"><?php echo T("Series"); ?></option>	
 				<option value="publisher"><?php echo T("Publisher"); ?></option>
 				<option value="callno"><?php echo T("CallNmbr"); ?></option>
+				<option value="id"><?php echo T("Id"); ?></option>
 			</select>
 			<input type="text" id="searchText" name="searchText" size="20" maxlength="256" />
 			<input type="submit" id="srchByPhrase" name="srchByPhrase" value="<?php echo T("Search"); ?>" class="srchByPhraseBtn" />
@@ -90,7 +91,8 @@
 	<!-- visiblity below here depends on above checkbox -->
 	<tbody id="advancedSrch">
 	<tr>
-		<td nowrap="true" colspan="3"><label for="sortBy"><?php echo T("Sort by: "); ?></label>
+		<td nowrap="true" colspan="3">
+			<label for="sortBy"><?php echo T("Sort by: "); ?></label>
 			<select id="sortBy" name="sortBy">
 				<option value="author">Author</option>
 				<option value="callno">Call Number</option>

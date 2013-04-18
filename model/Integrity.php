@@ -64,15 +64,44 @@ class Integrity {
 			array(
 				// Added as there was a bug in the code, and not sure how long
 				// it has been there so DB might be corrupt.  The problem is a
-				// duplicate 245 where there should only be one in biblio_field
+				// duplicate 245$a where there should only be one in biblio_field
 				// for a bibid. Fix to be designed if needed.
 				'error' => T("%count% items with multiple 245 fields"),
 				'countSql' => 'SELECT COUNT(*) AS count '
-					. 'FROM (SELECT bibid, COUNT(fieldid)'
-					. 'FROM biblio_field '
-					. 'WHERE tag=\'245\' '
-					. 'GROUP BY bibid '
-					. 'HAVING COUNT(fieldid) > 1) AS t',
+					. 'FROM (SELECT f.bibid, COUNT(f.fieldid)'
+					. 'FROM biblio_field f, biblio_subfield s '
+					. 'WHERE s.subfield_cd=\'a\' AND f.tag=\'245\' '
+					. 'AND f.bibid=s.bibid AND f.fieldid=s.fieldid '
+					. 'GROUP BY f.bibid '
+					. 'HAVING COUNT(f.fieldid) > 1) AS t',
+				'listSql' => 'SELECT bibid, COUNT(*) AS count '
+					. 'FROM (SELECT f.bibid, COUNT(f.fieldid)'
+					. 'FROM biblio_field f, biblio_subfield s '
+					. 'WHERE s.subfield_cd=\'a\' AND f.tag=\'245\' '
+					. 'AND f.bibid=s.bibid AND f.fieldid=s.fieldid '
+					. 'GROUP BY f.bibid '
+					. 'HAVING COUNT(f.fieldid) > 1) AS t',
+				// NO AUTOMATIC FIX
+			),			
+			array(
+				'error' => T("%count% items with empty collections"),
+				'countSql' => 'SELECT COUNT(*) AS count '
+					. 'FROM biblio '
+					. 'WHERE collection_cd = 0 ',
+				'fixSql' => 'update biblio set collection_cd = '
+					. '(SELECT code FROM collection_dm '
+					. ' WHERE default_flg = \'Y\' )'
+					.	'WHERE collection_cd = 0 ',
+			),			
+			array(
+				'error' => T("%count% items with empty media-type"),
+				'countSql' => 'SELECT COUNT(*) AS count '
+					. 'FROM biblio '
+					. 'WHERE material_cd = 0 ',
+				'fixSql' => 'update biblio set material_cd = '
+					. '(SELECT code FROM material_type_dm '
+					. ' WHERE default_flg = \'Y\' )'
+					.	'WHERE material_cd = 0 ',
 			),			
 			array(
 				'error' => T("%count% unattached copy status history records"),
@@ -86,12 +115,26 @@ class Integrity {
 					. 'where biblio_copy.copyid is null ',
 			),
 			array(
+				'error' => T("%count% invalid biblio in copy status history records"),
+				'countSql' => 'select count(*) as count '
+					. 'from biblio_status_hist left join biblio '
+					. 'on biblio.bibid=biblio_status_hist.bibid '
+					. 'where biblio.bibid is null ',
+				'fixSql' => 'delete from biblio_status_hist '
+					. 'using biblio_status_hist left join biblio '
+					. 'on biblio.bibid=biblio_status_hist.bibid '
+					. 'where biblio.bibid is null ',
+			),
+			array(
 				'error' => T('IntegrityQueryInvalidStatusCodes'),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio_status_dm '
 					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
 					. 'where biblio_status_dm.code is null ',
-				// NO AUTOMATIC FIX
+				'fixSql' => 'update biblio_status_hist set status_cd = \'lst\''
+					. 'using biblio_status_hist left join biblio_status_dm '
+					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
+					. 'where biblio_status_dm.code is null ',
 			),
 			array(
 				'error' => T('IntegrityQueryBrokenBibidRef'),
@@ -99,7 +142,10 @@ class Integrity {
 					. 'from booking left join biblio '
 					. 'on biblio.bibid=booking.bibid '
 					. 'where biblio.bibid is null ',
-				// NO AUTOMATIC FIX
+				'fixSql' => 'delete from booking '
+					. 'using booking left join biblio '
+					. 'on booking.bibid=biblio.bibid '
+					. 'where biblio.bibid is null ',
 			),
 			array(
 				'error' => T('IntegrityQueryBrokenOutRef'),
@@ -213,6 +259,12 @@ class Integrity {
 					if (isset($chk['fixSql'])) {
 						$this->db->act($chk['fixSql']);
 						$msg .= ' <b>'.T("FIXED").'</b> ';
+					} elseif (isset($chk['listSql'])) {
+						$msg .= '<br />list: ';
+						$rows = $this->db->select($chk['listSql']);
+						while ($row = $rows->next()) {
+							$msg .= '<a href="../catalog/srchForms.php?bibid='.$row['bibid'].'">'.$row['bibid'].'</a>, ';
+						}
 					} elseif (isset($chk['fixFn'])) {
 						$fn = $chk['fixFn'];
 						assert('method_exists($this, $fn)');
