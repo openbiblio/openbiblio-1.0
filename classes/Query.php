@@ -171,6 +171,8 @@ class Query {
 	 ****************************************************************************
 	 */
 	function mkSQL() {
+		$badSqlFmt = T("Bad mkSQL() format string.");
+		
 		$n = func_num_args();
 		if ($n < 1) {
 			Fatal::internalError(T("Not enough arguments given to mkSQL()."));
@@ -186,7 +188,7 @@ class Query {
 			}
 			$SQL .= substr($fmt, 0, $p);
 			if (strlen($fmt) < $p+2) {
-				Fatal::internalError(T("Bad mkSQL() format string."));
+				Fatal::internalError($badSqlFmt);
 			}
 			if ($fmt{$p+1} == '%') {
 				$SQL .= "%";
@@ -230,7 +232,7 @@ class Query {
 					$SQL .= mysql_real_escape_string($arg, $this->_link);
 					break;
 				default:
-					Fatal::internalError(T("Bad mkSQL() format string."));
+					Fatal::internalError($badSqlFmt);
 				}
 			}
 			$fmt = substr($fmt, $p+2);

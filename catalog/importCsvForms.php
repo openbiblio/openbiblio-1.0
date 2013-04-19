@@ -151,7 +151,7 @@
 		  </tr>
 		  <tr>
 		    <td><pre>showO</pre></td>
-		    <td>Show in OPAC</td>
+		    <td><?php echo T("Show in OPAC"); ?></td>
 		    <td><?php echo T("CSVoptionalDefault") ?></td>
 		  </tr>
 		</table>

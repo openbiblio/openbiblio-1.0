@@ -21,6 +21,8 @@
 		$acct = new MemberAccounts;
 
 	#****************************************************************************
+	$badBarcodeText = T("No copy with that barcode");
+	
 	switch ($_REQUEST['mode']) {
 	case 'getOpts':
 		$opts = Settings::getAll();
@@ -30,7 +32,7 @@
 	case "getBarcdTitle":
 		$copy = $copies->getByBarcode($_GET['barcodeNmbr']);
 		if (!$copy) {
-			echo T("No copy with that barcode");
+			echo $badBarcodeText;
 			exit;
 		}
 		$biblio = $biblios->getOne($copy['bibid']);
@@ -40,7 +42,7 @@
 	case "doItemCheckin":
 		$copy = $copies->getByBarcode($_POST['barcodeNmbr']);
 		if (!$copy) {
-			echo T("No copy with that barcode");
+			echo $badBarcodeText;
 			exit;
 		}
 		$status = $history->getOne($copy['histid']);

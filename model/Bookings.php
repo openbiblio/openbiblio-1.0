@@ -100,6 +100,8 @@ class Bookings extends CoreTable {
 			. 'group by date order by date ');
 	}
 	function validate_el($new, $insert) {
+		$modelBookingsNotEnoughCopiesText = T("modelBookingsNotEnoughCopiesText");
+		
 		if ($insert) {
 			$old = array();
 		} else {
@@ -144,7 +146,7 @@ class Bookings extends CoreTable {
 
 			# Check that copies exist
 			if ($ncopies == 0) {
-				$errors[] = new Error(T('modelBookingsNotEnoughCopies'));
+				$errors[] = new Error($modelBookingsNotEnoughCopiesText);
 			}
 
 			if ($errors) {
@@ -179,7 +181,7 @@ class Bookings extends CoreTable {
 				. 'having ncopies >= %N ', $ncopies);
 			$rows = $this->db->select($sql);
 			if ($rows->count() != 0) {
-				$errors[] = new Error(T('modelBookingsNotEnoughCopies'));
+				$errors[] = new Error($modelBookingsNotEnoughCopiesText);
 				return $errors;
 			}
 		}

@@ -60,6 +60,8 @@
 			break;
 	}
 
+	$updtSuccess = T("Update successful");
+	
 	switch ($_REQUEST['mode']){
 		## don't combine this switch with that above.
 		## doing so would require multiple 'switch' statements,
@@ -158,7 +160,7 @@
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo T("Update successful");}
+			if ($errs) {echo $errs;} else {echo $updtSuccess;}
 			break;
 		case 'd-3-L-3-t_copyFlds':
 			$ptr->deleteOne($_POST[code]);
@@ -186,7 +188,7 @@
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo T("Update successful");}
+			if ($errs) {echo $errs;} else {echo $updtSuccess;}
 			break;
 		case 'd-3-L-3-t_mbrFlds':
 			$ptr->deleteOne($_POST[code]);
@@ -218,7 +220,7 @@
 				'default_flg'=>@$_POST['default_flg'],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo T("Update successful");}
+			if ($errs) {echo $errs;} else {echo $updtSuccess;}
 			break;
 		case 'd-3-L-3-t_mbrTypes':
 			$ptr->deleteOne($_POST[code]);

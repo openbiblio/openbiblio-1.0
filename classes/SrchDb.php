@@ -283,15 +283,19 @@ class SrchDb {
 	## ========================= ##
 	function insertCopy($bibid,$copyid) {
 		$this->db->lock();
+		if (empty($_POST['copy_site'])) {
+			$theSite = $_SESSION['current_site'];
+		} else {
+			$theSite = $_POST['copy_site'];
+		}
 		$sql = "INSERT `biblio_copy` SET "
 		      ."`bibid` = $bibid,"
-		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]',"
-//		      ."`siteid` = ".$_SESSION['current_site']."," // set to current site
-		      ."`siteid` = '$_POST[copy_site]'," // set to current site
+		      ."`barcode_nmbr` = '".$_POST['barcode_nmbr']."',"
+		      ."`siteid` = '$theSite'," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
-		      ."`copy_desc` = '$_POST[copy_desc]' ";
+		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		

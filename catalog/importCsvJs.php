@@ -255,10 +255,11 @@ return false;
     				/* pad bar code to proper size */
       			rec['barcode_nmbr'] = flos.pad(entry, w, "0");
 						if (csvi.isDupBarCd()) {
-							csvErrs.append(' <tr><td colspan="3">Line #'+i+' Bar Code '+rec['barcode_nmbr']+' is a duplicate</td></tr>\n');
+							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+i+<?php echo "'".T("Bar Code")."'"; ?>
+															+' '+rec['barcode_nmbr']+<?php echo " '".T("isaDup")."'"; ?>+"</td></tr>\n");
 							//continue;
 						} else {
-    	  			if (showAll) csvRcrds.append(" <tr><td>Bar Code</td><td>&nbsp;</td><td>"+rec['barcode_nmbr']+"</td></tr>\n");
+    	  			if (showAll) csvRcrds.append(" <tr><td>"+<?php echo "'".T("Barcode")."'"; ?>+"</td><td>&nbsp;</td><td>"+rec['barcode_nmbr']+"</td></tr>\n");
     	  		}
       			if ( ( parseInt(rec['barcode_nmbr']) == 0 ) && ( csvi.bcdDflt >= csvi.BCD_IF ) ){
 							rec['barcode_nmbr'] = 'autogen';
@@ -268,19 +269,21 @@ return false;
 			    	var thisOne = csvi.collections.indexOf(entry);
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltColl();
-							csvErrs.append(' <tr><td colspan="3">Line #'+i+" Collection '"+entry+"' invalid, using default</td></tr>\n");
+							csvErrs.append(" <tr><td colspan=\"3\">"+<?php echo "'".T("LineNmbr")."'"; ?>+i+" "+<?php echo "'".T("Collection")."'"; ?>
+															+" '"+entry+"' invalid, using default</td></tr>\n");
 			      }		      
 			      rec['collection_cd'] = thisOne;
-      			if (showAll) csvRcrds.append("  <tr><td>Collection</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
+      			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Collection")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
 			      break;
     			case 'media':
 			    	var thisOne = csvi.mediaTypes.indexOf(entry);
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltMedia();
-							csvErrs.append(' <tr><td colspan="3">Line #'+i+" Media '"+entry+"' invalid, using default</td></tr>\n");
+							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+i+" "+<?php echo "'".T("Media")."'"; ?>
+															+" '"+entry+"' invalid, using default</td></tr>\n");
 			      }
 			      rec['material_cd'] = thisOne;
-      			if (showAll) csvRcrds.append("  <tr><td>Media Type</td><td>&nbsp;</td><td>"+csvi.mediaTypes[thisOne]+"</td></tr>\n");
+      			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Media Type")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.mediaTypes[thisOne]+"</td></tr>\n");
       			break;
 			    case "opac?":
 						var patternYes = /^[yYtT]/;
@@ -293,7 +296,7 @@ return false;
 			      } else {
 			        rec["opac_flg"] = csvi.getOpacFlg();
 			      }
-      			if (showAll) csvRcrds.append("  <tr><td>Show OPAC</td><td>&nbsp;</td>" +
+      			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Show in OPAC")."'"; ?>+"</td><td>&nbsp;</td>" +
       											"<td>"+(rec["opac_flg"] == true?"true":"false")+"</td><tr>\n");
 			      break;
 			    default:
@@ -313,7 +316,7 @@ return false;
 			
 			/* check for barcode present, and add if user wishes */
 			if ((! rec['barcode_nmbr'] ) && ( $('#bcdDeflt').val() == csvi.BCD_ALWAYS )){
-				csvErrs.append(' <tr><td colspan="3">Line #'+i+" barcode missing, auto-generating</td></tr>\n");
+				csvErrs.append(' <tr><td colspan="3">Line #'+i+" "+<?php echo "'".T("barcode missing, auto-generating")."'"; ?>+"</td></tr>\n");
       	rec['barcode_nmbr'] = 'autogen';
 			}
 			rec['copy_desc'] = $('#copyText').val();

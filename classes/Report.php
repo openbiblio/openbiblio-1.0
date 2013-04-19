@@ -27,6 +27,7 @@ class Report {
 	var $iter;
 	var $cache;
 	var $pointer = 0;
+	
 	function link($name, $msg='', $tab='') {
 		$urls = array(
 			'Report'=>'../reports/run_report.php?type=previous&msg=',
