@@ -316,7 +316,8 @@ return false;
 				csvErrs.append(' <tr><td colspan="3">Line #'+i+" barcode missing, auto-generating</td></tr>\n");
       	rec['barcode_nmbr'] = 'autogen';
 			}
-			rec['copy_desc'] = $('copyText').val();
+			rec['copy_desc'] = $('#copyText').val();
+			//console.log(rec);
 			
 			/* now add 'fields array' to rec */
 			rec['fields'] = fields
@@ -330,7 +331,8 @@ return false;
 	
 	post2Db: function () {
 		//console.log('sending records to OB database now');
-		$.post(csvi.url,{'mode':'postCsvData', 'records':csvi.csvRecords},function (response) {
+		$.post(csvi.url, {'mode':'postCsvData', 'records':csvi.csvRecords}, function (response) {
+			$('#intro').hide();
 			$('#review').show();
 			$('#rslts').show();
 			var posts = JSON.parse(response);

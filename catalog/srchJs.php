@@ -311,6 +311,7 @@ var bs = {
 				if (bs.biblio.data == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
+	  			bs.rtnToSrch();
 				}
 				else {
 					bs.multiMode = false;
