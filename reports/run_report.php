@@ -71,8 +71,10 @@
 	 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<!--h3><?php echo T($title); ?></h3-->
-<h5><?php echo T("Report Results"); ?></h5>
+
+	<!--h3><?php echo T($title); ?></h3-->
+	<h5><?php echo T("Report Results"); ?></h5>
+
 <?php
 	if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
 		echo '<p class="error">'.H($_REQUEST["msg"]).'</p><br /><br />';
@@ -80,37 +82,45 @@
 
 	if ($rpt->count() == 0) {
 		echo T("No results found.");
-		 ;
+		// ;
 		exit();
 	}
 
 	$p = array('type'=>'previous', 'tab'=>$tab, 'nav'=>$nav);
-	$page_url = new LinkUrl("../reports/run_report.php",
-		'page', $p);
-	$sort_url = new LinkUrl("../reports/run_report.php",
-		'rpt_order_by', $p);
+	$page_url = new LinkUrl("../reports/run_report.php", 'page', $p);
+	$sort_url = new LinkUrl("../reports/run_report.php", 'rpt_order_by', $p);
+	
 	$disp = new ReportDisplay($rpt);
-	echo '<div class="results_count">';
-	echo T("%count% results found.", array('count'=>$rpt->count()));
-	echo '</div>';
+?>
+	
+	<p class="results_count">
+		<?php //echo T("%count% results found.", array('count'=>$rpt->count())); ?>
+		<?php echo $rpt->count()." ".T("items found")."."; ?>
+	</p>
+	
+<?php	
 	echo $disp->pages($page_url, $page);
 	//echo '<p>'.$rpt->count().' results found.</p>';
 ?>
-<!--table class="resultshead">
-	<tr>
-			<th><?php echo T("Report Results"); ?></th>
-		<td class="resultshead">
-<table class="buttons">
-<tr-->
+
+	<!--table class="resultshead">
+		<tr>
+				<th><?php echo T("Report Results"); ?></th>
+			<td class="resultshead">
+	<table class="buttons">
+	<tr-->
+	
 <?php
-# Fill in report actions here
+	# Fill in report actions here
 ?>
-<!--/tr>
-</table>
-</td>
-	</tr>
-</table-->
-<fieldset>
+
+	<!--/tr>
+	</table>
+	</td>
+		</tr>
+	</table-->
+	
+	<fieldset>
 <?php
 	$t = new TableDisplay;
 	$t->columns = $disp->columns($sort_url);
@@ -123,4 +133,4 @@
 
 	echo $disp->pages($page_url, $page);
 ?>
-</fieldset>
+	</fieldset>
