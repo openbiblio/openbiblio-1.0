@@ -45,6 +45,11 @@ $trans["headerDateFormat"]	 = "m.d.Y";
 #****************************************************************************
 #* Common translation text
 #****************************************************************************
+$trans[" copy status history records with invalid status codes"] = "Copy status history records with invalid status codes";
+$trans["T! items with empty collectionsT!"] = "Items with empty collections";
+$trans["T! items with empty media-typeT!"] = "Items with empty media-type";
+
+$trans["%barcode% added to shelving cart."] = "%barcode% added to shelving cart.";
 $trans["%count% bookings in cart."] = "%count% bookings in cart.";
 $trans["%count% calendars."] = "%count% calendars.";
 $trans["%count% copies with broken status references"] = "%count% copies with broken status references";
@@ -63,7 +68,6 @@ $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
 $trans[" THIS ITEM WAS NOT CHECKED OUT."] = " THIS ITEM WAS NOT CHECKED OUT.";
 $trans["\$t != \"string\""] = "\$t != \"string\"";
 $trans["\$type != \"order_by\""] = "\$type != \"order_by\"";$trans["Account"] = "Account";
-
 
 $trans["Action query returned results."] = "Action query returned results.";
 $trans["Active"] = "Active";
@@ -138,9 +142,8 @@ $trans["Bad MARC record, giving up: %err%"] = "Bad MARC record, giving up: %err%
 $trans["Bad mkSQL() format string."] = "Bad mkSQL() format string.";
 $trans["Bad month number: %month%"] = "Bad month number: %month% (please use yyyy-mm-dd)";
 $trans["Balance"] = "Balance";
-$trans["%barcode% added to shelving cart."] = "%barcode% added to shelving cart.";
 $trans["Barcode"] = "Barcode";
-$trans["Barcode missing, auto-generating"] = "Barcode missing, auto-generating";
+$trans["barcode missing, auto-generating"] = "Barcode missing, auto-generating";
 $trans["Barcode number already in use."] = "Barcode number already in use.";
 $trans["Barcode Number"] = "Barcode Number";
 $trans["Barcode number in use."] = "Barcode number in use.";
@@ -185,6 +188,7 @@ $trans["CalendarsLaterDate"] = "\"To\" date must be later than \"From\" date";
 $trans["CallNmbr"] = "Call no.";
 $trans["Call Nmbr Type"] = "Call Number Type";
 $trans["Call no."] = "Call no.";
+$trans["Call No."] = "Call no.";
 $trans["Cancel"] = "Cancel";
 $trans["CANNOT BE FIXED AUTOMATICALLY"] = "CANNOT BE FIXED AUTOMATICALLY";
 $trans["Cannot connect to database server."] = "Cannot connect to database server.";
@@ -255,6 +259,7 @@ $trans["Copyright Date"] = "Copyright Date";
 $trans["Copy Search"] = "Copy Search";
 $trans["Copy Status"] = "Copy Status";
 $trans["Copy successfully created."] = "Copy successfully created.";
+$trans["Cover Type"] = "Cover Type";
 $trans["Create Booking"] = "Create Booking";
 $trans["Created Since"] = "Created Since";
 $trans["Crude YAZ Test"] = "Crude YAZ Test";
@@ -348,6 +353,7 @@ $trans["Edit Calendar"] = "Edit Calendar";
 $trans["Edit Collection"] = "Edit Collection";
 $trans["Edit Copy"] = "Edit Copy";
 $trans["Edit Copy Properties"] = "Edit Copy Properties";
+$trans["Edit Custom Copy Fields"] = "Edit Custom Copy Fields";
 $trans["Edit"] = "Edit";
 $trans["edit"] = "edit";
 $trans["Edit Hosts"] = "Edit Hosts";
@@ -510,6 +516,7 @@ $trans["Link Color:"] = "Link Color:";
 $trans["Link"] = "Link";
 $trans["Links"] = "Links";
 $trans["List of Collections"] = "List of Collections";
+$trans["List of Custom Copy Fields"] = "List of Custom Copy Fields";
 $trans["List of Hosts"] = "List of Hosts";
 $trans["List of Media Types"] = "List of Media Types";
 $trans["List of Member Types"] = "List of Member Types";

@@ -30,7 +30,7 @@
 		<td><input id="usmarc_data" name="usmarc_data" type="file"></td>
 	</tr>
 	<tr>
-		<td><label for="opac"><?php echo T("Show in OPAC:"); ?></label></td>
+		<td><label for="opac"><?php echo T("Show in OPAC"); ?>:</label></td>
 		<td><input  name="opac" id="opac" type="checkbox" value="Y" /></td>
 	</tr>
 	<tr>

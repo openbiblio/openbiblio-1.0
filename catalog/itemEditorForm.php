@@ -11,16 +11,16 @@
 <table id="biblioFldTbl" >
 	<tbody id="nonMarcBody">
 	<tr>
-		<td><label for="materialCd"><?php echo T("Media Type:"); ?></label></td>
+		<td><label for="materialCd"><?php echo T("Media Type"); ?>:</label></td>
 		<td><span id="itemMediaTypes">to be filled by server</span></td>
 		<td rowspan="3" class="online filterable"><div id="onlineMsg"></div></td>
 	</tr>
 	<tr>
-		<td><label for="collectionCd"><?php echo T("Collection:"); ?></label></td>
+		<td><label for="collectionCd"><?php echo T("Collection"); ?>:</label></td>
 		<td><span id="itemEditColls">to be filled by server</span></td>
 	</tr>
 	<tr>
-		<td><label for="opacFlg"><?php echo T("Show in OPAC:"); ?></label></td>
+		<td><label for="opacFlg"><?php echo T("Show in OPAC"); ?>:</label></td>
 		<td><?php echo inputfield('checkbox','opacFlg','Y',NULL,'Y'); ?></td>
 	</tr>
 	<tr>

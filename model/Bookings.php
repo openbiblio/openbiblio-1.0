@@ -100,7 +100,7 @@ class Bookings extends CoreTable {
 			. 'group by date order by date ');
 	}
 	function validate_el($new, $insert) {
-		$modelBookingsNotEnoughCopiesText = T("modelBookingsNotEnoughCopiesText");
+		$modelBookingsNotEnoughCopiesText = T("modelBookingsNotEnoughCopies");
 		
 		if ($insert) {
 			$old = array();
