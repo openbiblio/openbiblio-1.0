@@ -94,26 +94,26 @@ class Integrity {
 			array(
 				//'error' => T("%count% items with multiple un-repeatable fields"),
 				'error' => T("items with multiple un-repeatable fields"),
-				'countSql' => 'SELECT COUNT(*) AS count '
-					. 'FROM (SELECT f.bibid, COUNT(f.fieldid)'
+				'countSql' => 'SELECT COUNT(DISTINCT t.bibid)AS count FROM ('
+					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
 					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
-					.	'WHERE m.repeatable<2 AND f.tag=m.tag AND s.subfield_cd=m.subfield_cd '
-					.	'AND b.bibid=f.bibid AND b.material_cd=m.material_cd '
-					. 'AND f.bibid=s.bibid AND f.fieldid=s.fieldid '
-					. 'GROUP BY f.bibid '
-					. 'HAVING COUNT(f.fieldid) > 1) AS t',
-				'listSql' => 'SELECT bibid, COUNT(*) AS count '
-					. 'FROM (SELECT f.bibid, COUNT(f.fieldid)'
+					. 'WHERE f.bibid=b.bibid AND s.fieldid=f.fieldid '
+					.	'AND m.material_cd=b.material_cd AND m.repeatable<2 '
+					.	'AND m.tag=f.tag AND m.subfield_cd=s.subfield_cd '
+					. 'GROUP BY f.bibid, marc '
+					. 'HAVING count > 1 '
+					.	') AS t',
+				'listSql' => 'SELECT DISTINCT t.bibid FROM ('
+					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
 					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
-					.	'WHERE m.repeatable<2 AND f.tag=m.tag AND s.subfield_cd=m.subfield_cd '
-					.	'AND b.bibid=f.bibid AND b.material_cd=m.material_cd '
-					. 'AND f.bibid=s.bibid AND f.fieldid=s.fieldid '
-					. 'GROUP BY f.bibid '
-					. 'HAVING COUNT(f.fieldid) > 1) AS t',
+					. 'WHERE f.bibid=b.bibid AND s.fieldid=f.fieldid '
+					.	'AND m.material_cd=b.material_cd AND m.repeatable<2 '
+					.	'AND m.tag=f.tag AND m.subfield_cd=s.subfield_cd '
+					. 'GROUP BY f.bibid, marc '
+					. 'HAVING count > 1 '
+					.	') AS t',
 				// NO AUTOMATIC FIX
 			),			
-
-
 			array(
 				//'error' => T("items with empty collections"),
 				'error' => T("%count% items with empty collections"),
@@ -281,6 +281,7 @@ class Integrity {
 		$errors = array();
 		foreach ($this->checks as $chk) {
 			assert('isset($chk["error"])');
+			//echo $chk["error"]."<br />";			
 			if (isset($chk['countSql'])) {
 				$row = $this->db->select1($chk['countSql']);
 				$count = $row["count"];
@@ -293,7 +294,7 @@ class Integrity {
 			}
 			if ($count) {
 				//$msg = $count . T($chk["error"], array('count'=>$count));
-				$msg = $count." ".T($chk["error"]);
+				$msg = $count." ".$chk["error"];
 				if ($fix) {
 					if (isset($chk['fixSql'])) {
 						$this->db->act($chk['fixSql']);
@@ -339,3 +340,19 @@ class Integrity {
 		return $errors;
 	}
 }
+/*
+SELECT *
+FROM (
+
+SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count
+FROM biblio_field f, biblio_subfield s, material_fields m, biblio b
+WHERE f.bibid = b.bibid
+AND s.fieldid = f.fieldid
+AND m.material_cd = b.material_cd
+AND m.repeatable <2
+AND m.tag = f.tag
+AND m.subfield_cd = s.subfield_cd
+GROUP BY f.bibid, marc
+HAVING count >1
+) AS t
+*/
