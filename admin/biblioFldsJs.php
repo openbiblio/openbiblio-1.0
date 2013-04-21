@@ -139,10 +139,7 @@ var mtl = {
 	  $('#workDiv').hide();
 	  $('#msgDiv').hide();
 	  $('#marcTags').hide()
-	  var matlSet = $('#typeList').text();
-	  var matlCd = $('#typeList').val();
-	  var matlArray = matlSet.split('\n');
-	  var matl = matlArray[matlCd];
+		var matl = $('#typeList option:selected').text();
 	  $('#configName').html("'"+matl+"'");
 	  
 	  mtl.fetchMarcBlocks();
