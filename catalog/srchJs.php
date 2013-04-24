@@ -769,7 +769,7 @@ var bs = {
 			$('#itemEditorDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
 
-			// fill non-MARC fields with data on hand
+			// set non-MARC fields using data on hand
 			$('#nonMarcBody #materialCd').val([biblio.matlCd]);
 			$('#nonMarcBody #collectionCd').val([biblio.collCd]);
 			$('#nonMarcBody #opacFlg').val([biblio.opacFlg]);

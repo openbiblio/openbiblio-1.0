@@ -65,8 +65,8 @@
 		</li>
 		<li>
 	  <fieldset>
+			<legend><?php echo T("Checkout Limit");?>:</legend>
 	  	<fieldset class="inlineFldSet">
-			<label><?php echo T("Checkout Limit");?>:</label>
 				<span class="note"><?php echo T("(enter 0 for unlimited)"); ?></span>
 	  	</fieldset>
 	  	<fieldset class="inlineFldSet">
@@ -88,9 +88,16 @@
 			</fieldset>
 	  </fieldset>
 		</li>
-		<li><label for="image_file"><?php echo T("Image File");?>:</label>
-			<input id="image_file" name="image_file" type="text" size="40" maxlength="128" required aria-required="true" />
-			<span class="reqd">*</span>    
+		<li>
+			<fieldset>
+			<legend><?php echo T("Image File");?></legend>
+			<label for="crntImageFile"><?php echo T("CrntImageFile");?>:</label>
+			<input id="image_file" name="crntImageFile" type="text" size="32" maxlength="128" readonly />
+			<br />
+			<label for="newImageFile"><?php echo T("NewImageFile");?>:</label>
+			<input id="newImageFile" name="image_file" type="file" size="32" maxlength="128" required aria-required="true" />
+			<span class="reqd">*</span>  
+			</fieldset>  
 		</li>
     <li>
 			<input type="hidden" id="mode" name="mode" value="">

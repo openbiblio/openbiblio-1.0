@@ -36,7 +36,7 @@ Tools, need ability to set colation/charset of ALL tables
 - Fred
 trans.php function T() no longer alows variable insertion (%xxx%)
 
-7April2013 = Neil Redgate
+7April2013 - Neil Redgate
 >  As a result of the above, I reworked my biblio fields for my book type.
 > I noticed that some of the tags are not "draggable" to the layout column, 
 even though they are listed in the field/tag column.
@@ -45,20 +45,6 @@ even though they are listed in the field/tag column.
 > This is not a problem for me at the moment 
 (all fields required have been dragged to the layout column)
 
-20April2013 - Neil Redgate
->  One more observation to add to the to do list -
-> If I access a book item and select edit item, I get the full display of 
-all the MARC fields that I have selected in the Biblio Fields Layout box 
-(see image: Edit Existing Item - book)
-> However, if I select a non-book item (this example being a map), 
-I get the full display for the book media type (see image: Edit Existing Item - non-book)
-> If I attempt to change the media type using the drop down menu, 
-there is no change in the fields displayed (unlike Add New Item, see below)
->
-> When the Add New Item box is on the page, when the media type is selected 
-using the drop down menu, the range of fields displayed change to reflect the 
-selection for the chosen media type (arranged in the Biblio Fields Layout box), 
-see attached images : Add New Item - book/non-book.
-> It looks like the Edit properties box is not responding to the media type 
-selected nor to the drop down menu.
-
+24April2013 - Fred
+When adding a new Media Type, the edit screen needs to have a 'browse' button
+at right end of icon input field to allow reviewing available images.
