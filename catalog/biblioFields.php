@@ -85,10 +85,12 @@
 		# fetch a complete set of all material types
 		$matTypes = new MediaTypes;
 		# determine which is to be 'selected'
-		if (isset($biblio['material_cd'])) {
-			$material_cd_value = $biblio['material_cd'];
+		if (!empty($_GET['matlCd'])) {
+		  $material_cd_value = $_GET['matlCd'];
 		} elseif (!empty($_GET['material_cd'])) {
 		  $material_cd_value = $_GET['material_cd'];
+		} elseif (isset($biblio['material_cd'])) {
+			$material_cd_value = $biblio['material_cd'];
 		} else {
 			$material_cd_value = $matTypes->getDefault();
 		}

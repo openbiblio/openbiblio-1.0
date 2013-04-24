@@ -221,7 +221,7 @@ var bs = {
 
 	doAltStart: function () {
 		// alternate startup in response to remote package
-		console.log('checking for alternative starts using: '+<?php echo "'".$_REQUEST[barcd]."'"; ?>);
+		//console.log('checking for alternative starts using: '+<?php echo "'".$_REQUEST[barcd]."'"; ?>);
 		<?php
 		if ($_REQUEST['barcd']) {
 			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
