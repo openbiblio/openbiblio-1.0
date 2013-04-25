@@ -53,6 +53,7 @@
 		<select id="marcTags"></select>
 		<br />
 		<ul id="potential" class="connectedSortable">
+			<!--li><?php echo T("waitForServer"); ?></li-->
 		</ul>
 	</fieldset>
 </div>
@@ -160,4 +161,4 @@
 	
 	require_once(REL(__FILE__, "biblioFldsJs.php"));
 ?>	
-	<script type="text/javascript" src="../shared/jquery/jquery-ui-1.10.0.custom.min.js"></script>
+	<script type="text/javascript" src="../shared/jquery/jquery-ui-1.10.2.custom.min.js"></script>

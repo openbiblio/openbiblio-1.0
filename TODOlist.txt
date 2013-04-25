@@ -44,7 +44,3 @@ even though they are listed in the field/tag column.
 (I was looking at this option as a reprint date, when I was investigating the above)
 > This is not a problem for me at the moment 
 (all fields required have been dragged to the layout column)
-
-24April2013 - Fred
-When adding a new Media Type, the edit screen needs to have a 'browse' button
-at right end of icon input field to allow reviewing available images.
