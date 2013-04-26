@@ -19,7 +19,7 @@
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
-<table id="showList" name="showList"">
+<table id="showList" >
 	<thead>
   	<tr>
 			<th rowspan="2"><?php echo T("Function"); ?></th>
@@ -64,29 +64,29 @@
 			<span class="reqd">*</span>    
 		</li>
 		<li>
-	  <fieldset>
-			<legend><?php echo T("Checkout Limit");?>:</legend>
-	  	<fieldset class="inlineFldSet">
-				<span class="note"><?php echo T("(enter 0 for unlimited)"); ?></span>
-	  	</fieldset>
-	  	<fieldset class="inlineFldSet">
-	  		<label for="adult_checkout_limit"><?php echo T("Adult");?>:<br />
-				<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
-				<span class="reqd">*</span>    
-	  	</fieldset>
-	  	<fieldset class="inlineFldSet">
-	  		<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:<br />
-				<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
-				<span class="reqd">*</span>    
-	  	</fieldset>
-	  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
-	  	<fieldset class="inlineFldSet">
-      	<label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
-      	<input id="default_flg" name="default_flg" type="text" size="1" value="N"
-					pattern="[Y,N]" required aria-required="true" />
-				<span class="reqd">*</span>
-			</fieldset>
-	  </fieldset>
+		  <fieldset>
+				<legend><?php echo T("Checkout Limit");?>:</legend>
+		  	<fieldset class="inlineFldSet">
+					<span class="note"><?php echo T("(enter 0 for unlimited)"); ?></span>
+		  	</fieldset>
+		  	<fieldset class="inlineFldSet">
+		  		<label for="adult_checkout_limit"><?php echo T("Adult");?>:</label><br />
+					<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
+					<span class="reqd">*</span>
+		  	</fieldset>
+		  	<fieldset class="inlineFldSet">
+		  		<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:</label><br />
+					<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
+					<span class="reqd">*</span>  
+		  	</fieldset>
+		  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
+		  	<fieldset class="inlineFldSet">
+	      	<label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
+	      	<input id="default_flg" name="default_flg" type="text" size="1" value="N"
+						pattern="[Y,N]" required aria-required="true" />
+					<span class="reqd">*</span>
+				</fieldset>
+		  </fieldset>
 		</li>
 		<li>
 			<fieldset>
@@ -113,6 +113,7 @@
 	</ul>
 </fieldset>
 </form>
+</div>
 
 <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
@@ -126,3 +127,5 @@
 	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "mediaJs.php"));
 ?>	
+</body>
+</html>

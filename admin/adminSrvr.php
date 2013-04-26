@@ -251,13 +251,20 @@
 			}
 			break;
 		case 'update_media':
+			if (strpos($_POST["image_file"],'\\')) {
+				$imgInfo = pathinfo($_POST["image_file"]);
+				$imgStuff = explode('\\',$imgInfo['filename']);
+				$imgFile = $imgStuff[2].'.'.$imgInfo['extension'];
+			} else {
+				$imgFile = $_POST["image_file"];
+			}
 			$type = array(
 				'code'=>$_POST["code"],
 				'description'=>$_POST["description"],
 				'default_flg'=>$_POST['default_flg'],
 				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
 				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
-				'image_file'=>$_POST["image_file"],
+				'image_file'=>$imgFile,
 			);
 			$errors = $ptr->update_el($type);
 			if (empty($errors)) {
