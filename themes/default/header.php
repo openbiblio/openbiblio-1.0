@@ -3,17 +3,26 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	include(REL(__FILE__,"header_top.php"));
+	//include(REL(__FILE__,"header_top.php"));
+	include(REL(__FILE__,"../../shared/header_top.php"));
+
+	## ---------------------------------------------------------------------
+	## --- added plugin support -- Fred -----------------------
+	if (file_exists('custom_head.php')) {
+		include ('custom_head.php');
+	}
+	## ---------------------------------------------------------------------
 ?>
 
-<!-- **************************************************************************************
-		 * Left nav
-		 **************************************************************************************-->
+	</head>
+	<body>
+	
 <?php
-// cellspacing="0" cellpadding="0" works around IE's lack of
-// support for CSS2's border-spacing property.
+	/**************************************************************************************
+	 * Left navigation area
+	 **************************************************************************************/
 
-if ($tab != 'help') {
+	if ($tab != 'help') {
 ?>
 
 <aside id="sidebar">
@@ -70,6 +79,12 @@ if ($tab != 'help') {
 		 * beginning of main body
 		 **************************************************************************************-->
 <div id="content">
+    <!--[if lt IE 7]>
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser.<br /> 
+			Please <a href="http://browsehappy.com/">upgrade your browser</a> 
+			or <a href="http://www.google.com/chromeframe/?redirect=true">
+			activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
 <?php
 if (isset($params['title']) && $params['title'] != '') {
 	# $params['title'] should be coming from the translation system, allow HTML

@@ -123,7 +123,6 @@
 	  setSessionFmSettings();
 	}
 
-	//$LOC->init(Settings::get($locale));
 	$LOC->init($Locale);
 
 	include_once(REL(__FILE__, "../classes/Page.php"));

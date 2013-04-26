@@ -11,7 +11,12 @@ unset($_SESSION['postVars']);
 ?>
 </div>
 
-<script src="../shared/jquery/jquery-1.9.0.min.js"></script>
+<!--[if lt IE 9]><script src="../shared/jquery/jquery-1.9.0.min.js"></script><!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<script src="../shared/jquery/jquery-2.0.0.min.js"></script>
+<!--<![endif]-->
+
+
 <script src="../shared/jsLib.js" defer></script>
 
 <script language="JavaScript" defer>
