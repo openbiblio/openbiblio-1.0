@@ -218,6 +218,7 @@ List.prototype.doUpdateFields = function () {
 	$('#mode').val('update_'+this.dbAlias);
 	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
+	parms += '&image_file='+$('#newImageFile').val();
 	$.post(this.url, parms, $.proxy(this.updateHandler, this));
 	return false;
 };

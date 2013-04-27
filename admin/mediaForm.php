@@ -90,13 +90,13 @@
 		</li>
 		<li>
 			<fieldset>
-			<legend><?php echo T("Image File");?></legend>
-			<label for="crntImageFile"><?php echo T("CrntImageFile");?>:</label>
-			<input id="image_file" name="crntImageFile" type="text" size="32" maxlength="128" readonly />
-			<br />
-			<label for="newImageFile"><?php echo T("NewImageFile");?>:</label>
-			<input id="newImageFile" name="image_file" type="file" size="32" maxlength="128" required aria-required="true" />
-			<span class="reqd">*</span>  
+				<legend><?php echo T("Image File");?></legend>
+				<label for="image_file"><?php echo T("CrntImageFile");?>:</label>
+				<input id="image_file" name="crntImage_file" type="text" size="32" maxlength="128" readonly />
+					<br />
+				<label for="newImageFile"><?php echo T("NewImageFile");?>:</label>
+				<input id="newImageFile" name="image_file" type="file" size="32" maxlength="128" required aria-required="true" />
+				<span class="reqd">*</span>  
 			</fieldset>  
 		</li>
     <li>
@@ -115,7 +115,9 @@
 </form>
 </div>
 
-<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv" style="display: none;">
+	<fieldSet id="msgArea"></fieldset>
+</div>
 
 <p class="note">
 	<?php echo T("Note:"); ?><br /><?php echo T('materialsListNoteMsg'); ?>
