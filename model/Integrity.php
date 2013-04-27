@@ -103,6 +103,7 @@ class Integrity {
 					. 'GROUP BY f.bibid, marc '
 					. 'HAVING count > 1 '
 					.	') AS t',
+/*
 				'listSql' => 'SELECT DISTINCT t.bibid FROM ('
 					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
 					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
@@ -112,6 +113,8 @@ class Integrity {
 					. 'GROUP BY f.bibid, marc '
 					. 'HAVING count > 1 '
 					.	') AS t',
+*/
+				'fixFn' => 'removeRepeaters',
 				// NO AUTOMATIC FIX
 			),			
 			array(
@@ -323,6 +326,45 @@ class Integrity {
 		}
 		return $errors;
 	}
+	
+	/* Remove repeating MARC fields that should not repeat */
+	function removeRepeaters () {
+		$bibList = [];
+		## collect a set of offending cases
+		$sql =  'SELECT f.bibid, f.tag, s.subfield_cd, s.subfieldid, COUNT( f.fieldid ) AS count '
+					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
+					. 'WHERE f.bibid=b.bibid AND s.fieldid=f.fieldid '
+					.	'AND m.material_cd=b.material_cd AND m.repeatable<2 '
+					.	'AND m.tag=f.tag AND m.subfield_cd=s.subfield_cd '
+					. 'GROUP BY f.bibid, f.tag, s.subfield_cd '
+					. 'HAVING count > 1 ';
+		$status = array();
+		$errors = 0;
+		$ptr = $this->db->select($sql);
+		while ($bib = $ptr->next()) {
+			$case = $bib['bibid'].'-'.$bib['tag'].$bib['subfield_cd'];
+			$dups[$case] = ['nmbr'=>$bib['count'], 
+											'bibid'=>$bib['bibid'], 
+											'tag'=>$bib['tag'], 
+											'subcd'=>$bib['subfield_cd'],
+											'subId'=>$bib['subfieldid']
+											];
+		}
+//print_r($dups);
+		## loop through all cases found above
+		foreach ($dups as $case) {
+			## attempt to delete all but one entry in this case
+			for ($i=0; $i<$case['nmbr']-1; $i++) {
+//print_r($case);			
+				$sql = "Delete FROM biblio_subfield ".
+							 "WHERE (subfieldid = ".$case['subId'].") ";
+//echo "$sql <br />";
+				$this->db->act($sql);			 
+			}
+		}
+		return $errors;
+	}
+	
 	/* Count and fix functions below */
 	function countDoubleCheckouts() {
 		$sql = 'select histid, copyid, status_cd from biblio_status_hist order by histid ';

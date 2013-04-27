@@ -24,3 +24,6 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 ?>	
+
+</body>
+</html>

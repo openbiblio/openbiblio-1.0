@@ -36,7 +36,7 @@ Tools, need ability to set colation/charset of ALL tables
 - Fred
 trans.php function T() no longer alows variable insertion (%xxx%)
 
-7April2013 - Neil Redgate
+7 Apr 2013 - Neil Redgate
 >  As a result of the above, I reworked my biblio fields for my book type.
 > I noticed that some of the tags are not "draggable" to the layout column, 
 even though they are listed in the field/tag column.
@@ -44,3 +44,9 @@ even though they are listed in the field/tag column.
 (I was looking at this option as a reprint date, when I was investigating the above)
 > This is not a problem for me at the moment 
 (all fields required have been dragged to the layout column)
+
+27 Apr 2013 - Fred
+Due to poor code in the past, it was possible to have multiple instances 
+of a MARC field that is not marked as non-repeating.  The Admin Integrity 
+tool will flag those Biblios with such a problem. But no automatic mechanism
+is available to remove the offending entries.
