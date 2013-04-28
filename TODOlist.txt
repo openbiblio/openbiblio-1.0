@@ -36,7 +36,7 @@ Tools, need ability to set colation/charset of ALL tables
 - Fred
 trans.php function T() no longer alows variable insertion (%xxx%)
 
-7 Apr 2013 - Neil Redgate
+7 Apr 2013 - Neil Redgate - done 27 Apr 2013
 >  As a result of the above, I reworked my biblio fields for my book type.
 > I noticed that some of the tags are not "draggable" to the layout column, 
 even though they are listed in the field/tag column.
@@ -45,8 +45,13 @@ even though they are listed in the field/tag column.
 > This is not a problem for me at the moment 
 (all fields required have been dragged to the layout column)
 
-27 Apr 2013 - Fred
-Due to poor code in the past, it was possible to have multiple instances 
-of a MARC field that is not marked as non-repeating.  The Admin Integrity 
-tool will flag those Biblios with such a problem. But no automatic mechanism
-is available to remove the offending entries.
+28 Apr 2013 - Neil Redgate - done 28 Apr 2013
+The title & subtitle fields only allow 75 characters.
+Can I change its size (from within OB or myPHP admin) or is this something that 
+you have to amend within the programme to ensure full synchronicity?
+Would this be a useful edit option to have for each filed listed in the 
+biblio fields Maintenance page -so users can adjust their dbase according to their needs?
+(Something in the back of my mind is saying that I may have asked about this very early on and,
+I apologise, I cannot remember what your comment was - 
+as to whether there is a physical limit from mysql/OB 
+or it was something to be looked at a later date?)

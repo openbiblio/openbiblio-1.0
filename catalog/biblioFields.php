@@ -67,7 +67,8 @@
 			$attrs["class"] = $attrStr;
 
 			if ($i['form_type'] == 'text') {
-			  $attrs["size"] = "50"; $attrs["maxLength"] = "75"; 
+			  //$attrs["size"] = "50"; $attrs["maxLength"] = "75"; 
+			  $attrs["size"] = "50"; $attrs["maxLength"] = "256"; 
 				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
 			} else {
 				// IE seems to make the font-size of a textarea overly small under
@@ -114,18 +115,18 @@
 		}
 
 		## now build html for those input fields
-		foreach ($inputs as $n => $i) {
-			$marcInputFld = H($i['tag']).H($i['subfield']);
+		foreach ($inputs as $key => $val) {
+			$marcInputFld = H($val['tag']).H($val['subfield']);
 			echo "<tr> \n";
 			echo "	<td valign=\"top\"> \n";
-			//if ($i['required']) {
+			//if ($val['required']) {
 			//	echo '	<sup>*</sup>';
 			//}
-			echo "		<label for=\"$marcInputFld\">".H($i['label'].":")."</label>";
+			echo "		<label for=\"$marcInputFld\">".H($val['label'].":")."</label>";
 			echo "	</td> \n";
 
-			mkFldSet($n, $i, $marcInputFld, 'editCol');	// normal local edit column
-			mkFldSet($n, $i, $marcInputFld, 'onlnCol');  // update on-line column
+			mkFldSet($key, $val, $marcInputFld, 'editCol');	// normal local edit column
+			mkFldSet($key, $val, $marcInputFld, 'onlnCol');  // update on-line column
 
 		echo "</tr> \n";
 		}
