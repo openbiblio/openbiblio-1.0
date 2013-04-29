@@ -5,8 +5,10 @@
 
 	### following needed since this is included from within a class method -- Fred
 	global $CharSet, $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
-?>
 
+?>
+?>
+	
 <!DOCTYPE html >
 <!-- there are many lines here with obscure comments. For more info see http://html5boilerplate.com/ -->
 
@@ -18,9 +20,8 @@
 <!--<![endif]-->
 
 <head>	
-<!-- charset MUST be specified within first 512 char of page to be effective -->
+<!-- charset MUST be specified within first 1024 char of file start to be effective -->
 <meta charset="<?php echo $CharSet; ?>" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
 <title>
 <?php

@@ -181,6 +181,7 @@ var bs = {
 	  bs.checkSrchByBarcdBtn();
 		$('#marcBtn').val(bs.showMarc);
 		if (opacMode) $('#barcodeSearch').hide();
+		$('#searchText').focus();
 	},
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');
@@ -391,6 +392,7 @@ var bs = {
 			var title = '', subtitle='',
 					author='',
 					callNo = '', edition = '', pubDate = ''; 
+			var html = '';
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			bs.biblio[biblio.bibid] = biblio;
 			if (biblio.data) {
@@ -419,19 +421,19 @@ var bs = {
 				title = 'unknown'; callNo = 'not assigned';
 				continue;
 			}
-			// Add subtitle to title and chop on 50 charaters if needed
+			// Add subtitle to title
 			title = title + ' ' + subtitle;
-			//if(title.length>50) title = title.substring(0,75)+'...';
 			
-			var html = '<tr><td><ul class="listItem">\n';
-			html += '<li id="itemVisual"> \n';
+			html += '<tr class="listItem">\n';
+			html += '	<td id="itemVisual">\n';
+			html += '		<div> \n';
 			if (bs.opts.showBiblioPhotos == 'Y') {
-				/* first we create space for a possible photo */
-				html += '	<div id="photo_'+biblio.bibid+'" class="photos" >'+
-								'		<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" />'+
-								'	</div>'+"\n";
+				// first we create space for a possible photo //
+				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n'+
+								'			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" />\n'+
+								'		</div>'+"\n";
 	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
-	  			/* when this returns, it will over-write the above shim, if there is anything found */
+	  			// when this returns, it will over-write the above shim, if there is anything found //
 	  			if (data != null) {
 						var theId = data[0].bibid, 
 								fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
@@ -447,22 +449,18 @@ var bs = {
 			html += '		<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
 			html += '		<input type="button" class="moreBtn" value="More info" />'+'\n';
 			html += '	</div>\n';
-			html += '</li> \n';
-			
-			html += '<li id="itemInfo">\n';
-			html += '	<div id="itemTitle">'+title+'</div>\n';
-			html += '	<div id="itemAuthor">'+author+'</div>\n';
-			//html += '	<div id="itemCallNo">'+callNo+'</div>\n';
-			//html += '	<div id="itemEdition">'+edition+'</div>\n';
-			//html += '	<div id="itemPubdate">'+pubDate+'</div>\n';
-			html += '	<div id="itemCallNo">';
+			html += '</div></td>';
+
+			html += '<td id="itemInfo">\n';
+			html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
+			html += '	<p id="itemAuthor" >'+author+'</p>\n';
+			html += '	<p id="itemCallNo" >';
 			html += 		callNo+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
 			html += 		pubDate+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
 			html += 		edition;
-			html += '	</div>\n';
-			html += "</li>\n";
-			//html += '<div class="biblioBtn"></div> \n';
-			html += "</ul></td></tr>\n";
+			html += '	</p>\n';
+			html += "</td></tr>\n";
+
 			$('#srchRslts').append(html);
 		}
 		obib.reStripe2('listTbl','odd');

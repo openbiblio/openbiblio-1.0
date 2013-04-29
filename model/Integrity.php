@@ -226,8 +226,8 @@ class Integrity {
 					. 'where member.mbrid is null ',
 			),
 			array(
-				//'error' => T("%count% copies without site"),
-				'error' => T("copies without site"),
+				'error' => T("%count% copies without site"),
+				//'error' => T("copies without site"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_copy left join site '
 					. 'on site.siteid=biblio_copy.siteid '
@@ -235,8 +235,8 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),			
 			array(
-				//'error' => T("%count% members without sites"),
-				'error' => T("members without sites"),
+				'error' => T("%count% members without sites"),
+				//'error' => T("members without sites"),
 				'countSql' => 'select count(*) as count '
 					. 'from member left join site '
 					. 'on site.siteid=member.siteid '
@@ -273,8 +273,8 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),
 			array(
-				//'error' => T("%count% double check outs"),
-				'error' => T("double check outs"),
+				'error' => T("%count% double check outs"),
+				//'error' => T("double check outs"),
 				'countFn' => 'countDoubleCheckouts',
 				// NO AUTOMATIC FIX
 			),
@@ -382,19 +382,3 @@ class Integrity {
 		return $errors;
 	}
 }
-/*
-SELECT *
-FROM (
-
-SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count
-FROM biblio_field f, biblio_subfield s, material_fields m, biblio b
-WHERE f.bibid = b.bibid
-AND s.fieldid = f.fieldid
-AND m.material_cd = b.material_cd
-AND m.repeatable <2
-AND m.tag = f.tag
-AND m.subfield_cd = s.subfield_cd
-GROUP BY f.bibid, marc
-HAVING count >1
-) AS t
-*/

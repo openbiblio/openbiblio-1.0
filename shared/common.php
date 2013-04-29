@@ -2,7 +2,7 @@
 	/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
 	 * See the file COPYRIGHT.html for more details.
 	 */
-	
+
 	#### --- For those unable to set their time zone in PHP.ini --- ####
 	#### for valid entries see: http://www.php.net/manual/en/timezones.php
 	//date_default_timezone_set ( "America/New_York" );

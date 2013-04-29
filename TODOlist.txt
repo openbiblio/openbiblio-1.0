@@ -36,7 +36,7 @@ Tools, need ability to set colation/charset of ALL tables
 - Fred
 trans.php function T() no longer alows variable insertion (%xxx%)
 
-7 Apr 2013 - Neil Redgate - done 27 Apr 2013
+7 Apr 2013 - Neil Redgate - fixed, 27 Apr 2013
 >  As a result of the above, I reworked my biblio fields for my book type.
 > I noticed that some of the tags are not "draggable" to the layout column, 
 even though they are listed in the field/tag column.
@@ -45,7 +45,7 @@ even though they are listed in the field/tag column.
 > This is not a problem for me at the moment 
 (all fields required have been dragged to the layout column)
 
-28 Apr 2013 - Neil Redgate - done 28 Apr 2013
+28 Apr 2013 - Neil Redgate - increased limit to 256, 28 Apr 2013
 The title & subtitle fields only allow 75 characters.
 Can I change its size (from within OB or myPHP admin) or is this something that 
 you have to amend within the programme to ensure full synchronicity?
@@ -55,3 +55,10 @@ biblio fields Maintenance page -so users can adjust their dbase according to the
 I apologise, I cannot remember what your comment was - 
 as to whether there is a physical limit from mysql/OB 
 or it was something to be looked at a later date?)
+
+29 Apr 2013 - Neil Redgate - now text will be displayed on multiple lines as needed.
+Following on from the increased field size for long titles, 
+I have a problem with the display of these items. (see attached image)
+An item with <125 characters in the title is displayed correctly.
+An item with 146 characters in the title is not - 
+all the MARC field info is displaced below the 'more info' button.

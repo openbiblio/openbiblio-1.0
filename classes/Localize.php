@@ -122,26 +122,38 @@ class Localize {
 		if ($vars == NULL) {
 			$vars = array();
 		}
-		$trans = "";
+		$trans = '';
 		while(!empty($text)) {
-			$p = strpos($text, "%");
-			if ($p === false) {
-				$trans .= $text;
-				break;
+			$p1 = strpos($text, '%');
+			if ($p1 == true) {
+//echo "have a variable substitution ==> $text <br />";		
+				$trans .= substr($text, 0, $p1);	// save all up to first '%'
+//echo "part 1 => $trans<br />";				
+				$text = substr($text, $p1+1);			// get all after first %'
+//echo "part 2 => $text<br />";
+				$p2 = strpos($text, '%');					// find end of substutution 
+//echo "ending '%' found at char $p2<br />";				
+				if ($p2 == false) {
+					Fatal::internalError("Unmatched '%' in translation key.");
+					return "";
+				}
+	
+				$varkey = substr($text, 0, $p2);
+//echo "varKey => $varkey<br />";				
+				if ($varkey == '') {    // %%
+					$trans .= '%';
+				//} else if (isset($vars[$varkey])) {
+				} else if (isset($vars)) {
+					//$trans .= $vars[$varkey];
+					$trans .= $vars;
+//echo "new value => $vars[$varkey]<br />";					
+				}
+				$text = substr($text, $p2+1);    // collect all after ending '%'
+			} else {
+				$trans .= $text;	// no substitution needed
+				$text = '';
 			}
-			$trans .= substr($text, 0, $p);
-			$text = substr($text, $p+1);    // Skip '%'
-			$p = strpos($text, "%");
-			if ($p === false) {
-				Fatal::internalError("Unmatched % in translation key.");
-			}
-			$varkey = substr($text, 0, $p);
-			$text = substr($text, $p+1);    // Skip '%'
-			if ($varkey == '') {    // %%
-				$trans .= '%';
-			} else if (isset($vars[$varkey])) {
-				$trans .= $vars[$varkey];
-			}
+//echo "final trans => $trans<br />";			
 		}
 		return $trans;
 	}
@@ -153,6 +165,7 @@ class Localize {
 			$text = $this->trans[$key];
 		}
 		else{
+			// flag text without an entry in trans.php file
 			$text = 'T!'.$text."T!";
 		}
 		$text = $this->_substituteVars($text, $vars);
@@ -166,5 +179,6 @@ class Localize {
 		$suffix = '|'.$this->meta->pluralForm($n);
 		return $this->getText($key, $vars, $suffix);
 	}
+
 }
 

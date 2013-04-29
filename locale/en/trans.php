@@ -41,13 +41,9 @@
 #****************************************************************************
 $trans["headerDateFormat"]	 = "m.d.Y";
 
-
 #****************************************************************************
 #* Common translation text
 #****************************************************************************
-$trans[" copy status history records with invalid status codes"] = "Copy status history records with invalid status codes";
-$trans["T! items with empty collectionsT!"] = "Items with empty collections";
-$trans["T! items with empty media-typeT!"] = "Items with empty media-type";
 
 $trans["%barcode% added to shelving cart."] = "%barcode% added to shelving cart.";
 $trans["%count% bookings in cart."] = "%count% bookings in cart.";
@@ -260,6 +256,7 @@ $trans["Copyright"] = "Copyright";
 $trans["Copyright Date"] = "Copyright Date";
 $trans["Copy Search"] = "Copy Search";
 $trans["Copy Status"] = "Copy Status";
+$trans["copy status history records with invalid status codes"] = "Copy status history records with invalid status codes";
 $trans["Copy successfully created."] = "Copy successfully created.";
 $trans["Cover Type"] = "Cover Type";
 $trans["Create Booking"] = "Create Booking";
@@ -451,15 +448,15 @@ $trans["Installing DB tables without test data"] = "Installing DB tables without
 $trans["Installing DB tables with test data"] = "Installing DB tables with test data";
 $trans["In Stock"] = "In Stock";
 $trans["integrityMsg"] = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
-$trans["IntegrityQueryBrokenBibidRef"] = "%count% bookings with broken bibid references";
-$trans["IntegrityQueryBrokenOutRef"] = "%count% bookings with broken \"out\" status references";
-$trans["IntegrityQueryBrokenReturnRef"] = "%count% bookings with broken \"return\" status references";
-$trans["IntegrityQueryChangedCopyStatus"] = "%count% \"out\" bookings where copy status has changed";
-$trans["IntegrityQueryInvalidStatusCodes"] = "%count% copy status history records with invalid status codes";
-$trans["IntegrityQueryNoAssBooking"] = "%count% booking member references with no associated booking";
-$trans["IntegrityQueryNoAssMember"] = "%count% booking member references with no associated member";
-$trans["IntegrityQueryOutRecNoBooking"] = "%count% copy check out records with no associated booking";
-$trans["IntegrityQueryUnattachedAccTrans"] = "%count% unattached member account transactions";
+$trans["IntegrityQueryBrokenBibidRef"] = "bookings with broken bibid references";
+$trans["IntegrityQueryBrokenOutRef"] = "bookings with broken \"out\" status references";
+$trans["IntegrityQueryBrokenReturnRef"] = "bookings with broken \"return\" status references";
+$trans["IntegrityQueryChangedCopyStatus"] = "\"out\" bookings where copy status has changed";
+$trans["IntegrityQueryInvalidStatusCodes"] = "copy status history records with invalid status codes";
+$trans["IntegrityQueryNoAssBooking"] = "booking member references with no associated booking";
+$trans["IntegrityQueryNoAssMember"] = "booking member references with no associated member";
+$trans["IntegrityQueryOutRecNoBooking"] = "copy check out records with no associated booking";
+$trans["IntegrityQueryUnattachedAccTrans"] = "unattached member account transactions";
 $trans["Intermediate"] = "Intermediate";
 $trans["Internal Error: %msg%"] = "Internal Error: %msg%";
 $trans["in use"] = "in use";
@@ -488,6 +485,8 @@ $trans["Item Number Starts With"] = "Item Number Starts With";
 $trans["Items Currently Checked Out"] = "Items Currently Checked Out";
 $trans["Items Currently On Hold"] = "Items Currently On Hold";
 $trans["items found"] = "items found";
+$trans["items with empty collections"] = "Items with empty collections";
+$trans["items with empty media-type"] = "Items with empty media-type";
 $trans["items with multiple un-repeatable fields"] = "items with multiple un-repeatable fields";
 $trans["Item Search"] = "Item Search";
 $trans["Items"] = "Items";

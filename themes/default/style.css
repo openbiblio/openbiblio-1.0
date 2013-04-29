@@ -181,6 +181,8 @@ div#content {
 	.ie #content figure {width: 480px;}
 #content .altBG { background: #dddddd; }
 
+input:focus { background:rgb(204,255,255); }
+input:blur { background:rgb(255,255,255); }
 .note { font-size: 0.7em; }
 .help { font-size: 0.7em; display:none; }
 
@@ -193,11 +195,9 @@ div#content {
 .inlineFS { box-flex:1; }
 
 #biblioListDiv { width:100%; }
-ul.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }
-ul.listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }
 #itemVisual { width:40%; }
 #photo, #dashBd { display:inline; }
-#itemInfo>div { display:block; }
+#itemInfo { float:left; width:95%; }
 
 #btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align: left; }
 #btnRow li, ul.btnRow li { display: inline; margin-right: 1em; }
@@ -392,12 +392,15 @@ div#configDiv{
 	text-align: center;
 	}
 
+/* ####################################################### */
 /* For Tablets and Desktops */
+/* ####################################################### */
 @media screen and (min-width:700px) {
-/* For Tablets and Desktops */
+	/* For Tablets */
 	}
 	
-@media screen and (min-width:1024px) {
+@media screen and (min-width:800px) {
+	/* For Desktops */
 	body { font-size: 90%; }
 	/* rounded corners and shadows for major layout elements */
 	h1,h2,h3,h4,h5,h6, fieldset, img, aside, header, #content {
@@ -448,8 +451,8 @@ div#configDiv{
 	#phraseSearch #searchType  { display:inline; }
 	#phraseSearch legend { display:inline; }
 
-	ul.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }
-	ul.listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }
+	/*.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }*/
+	/*listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }*/
 	#itemVisual { width:110px; }
 	#photo, #dashBd { display:inline; }
 

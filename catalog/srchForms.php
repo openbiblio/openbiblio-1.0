@@ -16,7 +16,7 @@
 
 	$nav = "localSearch";
 	$focus_form_name = "barcodesearch";
-	$focus_form_field = "searchBarcd";
+	$focus_form_field = "searchText";
 
 	//if (strtolower($tab) == 'opac') {
 	if ($tab == 'opac') {
