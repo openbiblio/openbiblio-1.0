@@ -475,6 +475,7 @@ $trans["Item<br />Count"] = "Item<br />Count";
 $trans["Item Cart"] = "Item Cart";
 $trans["Item Check-In"] = "Item Check-In";
 $trans["Item Count"] = "Item<br />Count";
+$trans["Item Counts by Collection"] = "Item Counts by Collection";
 $trans["Item Counts by Media Type"] = "Item Counts by Media Type";
 $trans["Item:"] = "Item:";
 $trans["Item"] = "Item";
