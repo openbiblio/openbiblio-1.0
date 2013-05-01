@@ -323,3 +323,5 @@
 	include_once(REL(__FILE__,'./srchJs.php'));
 ?>	
 
+</body>
+</html>

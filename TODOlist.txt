@@ -56,9 +56,18 @@ I apologise, I cannot remember what your comment was -
 as to whether there is a physical limit from mysql/OB 
 or it was something to be looked at a later date?)
 
-29 Apr 2013 - Neil Redgate - now text will be displayed on multiple lines as needed.
+29 Apr 2013 - Neil Redgate - now text will be displayed on multiple lines as needed, 29 Apr 2013
 Following on from the increased field size for long titles, 
 I have a problem with the display of these items. (see attached image)
 An item with <125 characters in the title is displayed correctly.
 An item with 146 characters in the title is not - 
 all the MARC field info is displaced below the 'more info' button.
+
+01 May 2013 - Neil Redgate - cannot duplicate, 1 May 2013
+When I open the edit existing item box for the most recently added item, 
+the correct collection option (in the drop down menu) is not displayed 
+- it is the very first collection item in the drop down list that is displayed 
+(see image, edit existing item - should read ecology not archaeology), 
+even though the correct collection name was entered originally.
+However, with the remaining items the collection displayed is correct.
+
