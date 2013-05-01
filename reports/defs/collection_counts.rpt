@@ -1,0 +1,20 @@
+.title "Item Counts by Collection"
+.category "Statistical Reports"
+.column description title="Collection" sort=description
+.column count title=Count width=5
+.parameters
+.
+.end parameters
+
+.sql
+SELECT
+    collection_dm.code
+    , collection_dm.description
+    , count(biblio.bibid) as count
+    , biblio.collection_cd
+FROM
+    biblio
+    INNER JOIN collection_dm
+        ON (biblio.collection_cd = collection_dm.code)
+GROUP BY collection_dm.code;
+.end sql

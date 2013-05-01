@@ -21,6 +21,7 @@ body {
 
 .error { color: red; font-weight:bold; !important; }
 .warning { color:orange; font-weight:bold; !important; }
+.bold { font-size:larger; font-weight:bold; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {

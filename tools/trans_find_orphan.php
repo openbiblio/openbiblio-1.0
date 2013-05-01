@@ -16,11 +16,11 @@ if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 
 ?>
 
-	Usage: ./trans_dupe_check %locale% %module%
+	Usage: ./trans_find_orphan %locale% %module%
 
 	Where:
 				%locale% = the two letter abbreviation for the locale (en)
-	%module% = the name of the module directory to scan for orphans.
+				%module% = the name of the module directory to scan for orphans.
 
 <?php
 } else {
@@ -43,9 +43,9 @@ if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 			echo "Checking ".$file."\n";
 		};
 
-	        $lines = file("../$argv[2]/$file");
+	  $lines = file("../$argv[2]/$file");
 		
-	        foreach ($lines as $line_num => $line) {
+	  foreach ($lines as $line_num => $line) {
 			preg_match_all("|T\((.*)\)|U",$line,$out, PREG_PATTERN_ORDER);
 			#print_r($out[1]);
 			foreach ($out[1] as $key) {

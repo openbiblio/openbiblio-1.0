@@ -5,13 +5,13 @@ $num_hosts = count($host);
 if (empty($query) || count($host) == 0) {
     echo '<form method="get">
     <input type="checkbox"
-    name="host[]" value="bagel.indexdata.dk/gils" />
+    		name="host[]" value="bagel.indexdata.dk/gils" />
         GILS test
     <input type="checkbox"
-    name="host[]" value="localhost:9999/Default" />
+    		name="host[]" value="localhost:9999/Default" />
         local test
     <input type="checkbox" checked="checked"
-    name="host[]" value="z3950.loc.gov:7090/voyager" />
+    		name="host[]" value="z3950.loc.gov:7090/voyager" />
         Library of Congress
     <br />
     RPN Query:

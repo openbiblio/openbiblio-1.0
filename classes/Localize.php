@@ -142,10 +142,10 @@ class Localize {
 //echo "varKey => $varkey<br />";				
 				if ($varkey == '') {    // %%
 					$trans .= '%';
-				//} else if (isset($vars[$varkey])) {
-				} else if (isset($vars)) {
-					//$trans .= $vars[$varkey];
-					$trans .= $vars;
+				} else if (isset($vars[$varkey])) {
+				//} else if (isset($vars)) {
+					$trans .= $vars[$varkey];
+					//$trans .= $vars;
 //echo "new value => $vars[$varkey]<br />";					
 				}
 				$text = substr($text, $p2+1);    // collect all after ending '%'

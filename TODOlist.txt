@@ -30,10 +30,10 @@ Help system needs lots of work
 - Neil Redgate
 field 260g not 'dragable' in Biblio Field editor
 
-- Fred
+- Fred - done 30 Apr 2013
 Tools, need ability to set colation/charset of ALL tables
 
-- Fred
+- Fred - fixed 28 Apr 2013
 trans.php function T() no longer alows variable insertion (%xxx%)
 
 7 Apr 2013 - Neil Redgate - fixed, 27 Apr 2013

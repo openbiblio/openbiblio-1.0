@@ -7,7 +7,6 @@
 	global $CharSet, $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
 
 ?>
-?>
 	
 <!DOCTYPE html >
 <!-- there are many lines here with obscure comments. For more info see http://html5boilerplate.com/ -->

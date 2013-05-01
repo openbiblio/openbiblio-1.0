@@ -97,5 +97,3 @@ function backToMain(URL) {
 var modified = false;
 
 </script>
-<!--/body>
-</html-->
