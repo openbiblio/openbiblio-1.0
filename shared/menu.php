@@ -133,6 +133,7 @@ function staff_menu() {
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
 		Nav::node('tools/system', T("ChangeDBCollation"), '../tools/chgDBCollForms.php');
+		Nav::node('tools/system', T("transUtilities"), '../tools/transUtilForms.php');
 		Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 	}
 	

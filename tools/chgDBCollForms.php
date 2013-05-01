@@ -15,7 +15,7 @@
 
 ?>
 
-	<h3 id="pageHdr" class="title"><?php echo T('ChangeDBCollation'); ?></h3>
+	<h3 id="pageHdr" class="title"><?php echo T("ChangeDBCollation"); ?></h3>
 
 	<section id="entry">
 		<fieldset>

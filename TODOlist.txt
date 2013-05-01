@@ -71,3 +71,6 @@ the correct collection option (in the drop down menu) is not displayed
 even though the correct collection name was entered originally.
 However, with the remaining items the collection displayed is correct.
 
+01 May 2013 - Fred
+standalone tools for translation maintenance need to be added to Tools menu.
+
