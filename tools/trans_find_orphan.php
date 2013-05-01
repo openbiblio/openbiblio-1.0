@@ -29,13 +29,11 @@ if ($argc != 3 || in_array($argv[1], array('--help', '-help', '-h', '-?'))) {
 	echo "Loading $argv[1] files";
 	require(REL(__FILE__, "../locale/$argv[1]/trans.php"));
 
-
 	$handler = opendir("../$argv[2]");
 	while ($file = readdir($handler)) {
-
-	        if ($file != '.' && $file != '..')
-			$files[] = $file;
-			}
+	  if ($file != '.' && $file != '..')
+		$files[] = $file;
+	}
 	closedir($handler);
 	
 	foreach ($files as $file) {
