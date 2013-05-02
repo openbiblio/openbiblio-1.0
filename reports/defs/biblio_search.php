@@ -29,8 +29,8 @@ class biblio_search_rpt extends BiblioRows {
 			//'pub_date_from' => Search::type('Published After', 'MARC', array('260$c'), 'numeric', '>='),
 			//'pub_date_to' => Search::type('Published Before', 'MARC', array('260$c'), 'numeric', '<='),
 			'audience_level' => Search::type('Grade Level', 'MARC', array('521$a'), 'phrase'),
-			'media_type' => Search::type('Media Type', 'biblio', array('material_cd'), 'numeric', '='),
-			'collection' => Search::type('Collection', 'biblio', array('collection_cd'), 'numeric', '='),
+			'media_type' => Search::type('Media Type', 'material_type_dm', array('description'), 'string', '='),
+			'collection' => Search::type('Collection', 'collection_dm', array('description'), 'string', '='),
 			'barcode' => Search::type('Barcode', 'biblio_copy', array('barcode_nmbr'), 'phrase', 'like', 'start'),
 		);
 	}
@@ -117,6 +117,16 @@ class biblio_search_rpt extends BiblioRows {
 					$q['where'] .= ") ";
 				}
 				$column = 'term'.$i.'s.subfield_data';
+				break;
+			case 'collection_dm':
+				array_push($q['from'], 'collection_dm as term'.$i.'coll');
+				$q['where'] .= 'and b.collection_cd=term'.$i.'coll.code ';
+				$column = 'term'.$i.'coll.'.$type['fields'][0];
+				break;
+			case 'material_type_dm':
+				array_push($q['from'], 'material_type_dm as term'.$i.'matl');
+				$q['where'] .= 'and b.material_cd=term'.$i.'matl.code ';
+				$column = 'term'.$i.'matl.'.$type['fields'][0];
 				break;
 			case 'biblio':
 				// XXX only supports one field
