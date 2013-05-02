@@ -10,7 +10,7 @@ var tru = {
 		tru.resetForms();
 		
 		$('#dupChkBtn').bind('click',null,tru.findDupes);
-		//$('#orfnChkBtn').bind('click',null,tru.findOrfans);
+		$('#orfnChkBtn').bind('click',null,tru.findOrfans);
 		$('#absntChkBtn').bind('click',null,tru.findAbsnts);
 		
 		tru.fetchLocaleList();
@@ -56,6 +56,18 @@ var tru = {
 		var choice = $('#locSet option:selected');
 		$.post(tru.url, {'cat':'locale', 
 										 'mode':'ck4TransDupes',
+										 'locale':choice.val(),
+									  },
+						function (response) {
+			$('#rslts').html(response);
+		});
+	},
+	findOrfans: function () {
+		$('#rslts').html('');
+		$('#rsltsArea').show();
+		var choice = $('#locSet option:selected');
+		$.post(tru.url, {'cat':'locale', 
+										 'mode':'ck4TransOrfan',
 										 'locale':choice.val(),
 									  },
 						function (response) {

@@ -6,6 +6,24 @@
   require_once("../shared/common.php");
 	//print_r($_REQUEST);echo "<br />";
 	
+	function moduleList () {
+			$handl = opendir("..");
+			while ($file = readdir($handl)) {
+			  if ($file != '.' && $file != '..') {
+					if ((is_dir('../'.$file)) && 
+							(substr($file,0,1) != '.') && 
+							($file != 'images') && ($file != 'font') && ($file != 'photos')   
+						 ) {
+						$mods[] = $file;
+					}
+				}
+			}
+			closedir($handl);
+			sort($mods,SORT_LOCALE_STRING);
+			return $mods;
+	};
+	
+	
 	switch ($_REQUEST['cat']) {
 		case 'locale':
 			require_once(REL(__FILE__, "../classes/Queryi.php"));
@@ -55,19 +73,7 @@
 	  	break;
 	  	
 	  case 'fetchModuleList':
-			$handl = opendir("..");
-			while ($file = readdir($handl)) {
-			  if ($file != '.' && $file != '..') {
-					if ((is_dir('../'.$file)) && 
-							(substr($file,0,1) != '.') && 
-							($file != 'images') && ($file != 'font') && ($file != 'photos')   
-						 ) {
-						$mods[] = $file;
-					}
-				}
-			}
-			closedir($handl);
-			sort($mods,SORT_LOCALE_STRING);
+	  	$mods = moduleList();
 	  	echo json_encode($mods);
 	  	break;
 	  	
@@ -101,6 +107,50 @@
 			};
 	  	break;
 	  	
+	  case 'ck4TransOrfan':
+	  	$modules = moduleList();
+	  	$found = [];
+			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
+			foreach ($modules as $module) {	
+				$files = [];	
+				$handler = opendir("../$module");
+				while ($file = readdir($handler)) {
+				  if ($file != '.' && $file != '..')
+					$files[] = $file;
+				}
+				closedir($handler);
+				foreach ($files as $file) {
+				  $lines = file("../$module/$file");
+				  foreach ($lines as $line_num => $line) {
+						preg_match_all("|T\((.*)\)|U",$line,$out, PREG_PATTERN_ORDER);
+						foreach ($out[1] as $key) {
+							$key = str_replace("\"","",$key);
+							$key = str_replace("\'","",$key);
+							if ($found[$key] == 'OK') {
+								continue;
+							} elseif (isset($trans[$key])) {
+								$found[$key] = 'OK';
+							}
+						}	
+				  }
+				}
+			}
+//echo "trans: ".count($trans)."; found: ".count($found)."<br />"; 	
+//print_r($found);echo "<br /><br />";	 
+			if (count($trans) == count($found)) {
+				echo "All trans entries are in use.";
+			} elseif (count($trans) > count($found)) {
+			echo "<p>The following ".(count($trans) - count($found))." are not being used and may be removed.</p>";
+				foreach ($trans as $k=>$v) {
+					if ($found[$k] == 'OK') {
+						continue;
+					} else {
+						echo $k."<br />";
+					}
+				}
+			}
+			break;
+			
 	  case 'ck4TransAbsnt':
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			$module = $_POST['module'];		
@@ -112,20 +162,12 @@
 			}
 			closedir($handler);
 			foreach ($files as $file) {
-				if ($verbosity == 1) {
-					echo "Checking ".$file."<br />";
-				};
-		
 			  $lines = file("../$module/$file");
 			  foreach ($lines as $line_num => $line) {
 					preg_match_all("|T\((.*)\)|U",$line,$out, PREG_PATTERN_ORDER);
-					#print_r($out[1]);
 					foreach ($out[1] as $key) {
 						$key = str_replace("\"","",$key);
 						$key = str_replace("\'","",$key);
-						if ($verbosity==1) {
-							echo ".... Checking key: ".$key."<br />";
-						};
 						if (!array_key_exists($key, $trans)) {
 							$linenum[$errCount]['key']=$key;		
 							$linenum[$errCount]['filename']=$file;
@@ -134,6 +176,7 @@
 						}
 					}	
 			  }
+			
 			}
 			if ($errCount > 0){
 				echo "The following errors were found:<br />";

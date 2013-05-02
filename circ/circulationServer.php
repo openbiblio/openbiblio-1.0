@@ -84,7 +84,7 @@
 		
 		$msg = T("%barcode% added to shelving cart.", array('barcode'=>$barcode));
 		if (!$booking) {
-			$msg .= T(" THIS ITEM WAS NOT CHECKED OUT.");
+			$msg .= T("THIS ITEM WAS NOT CHECKED OUT.");
 		}
 		echo $msg;
 		break;
