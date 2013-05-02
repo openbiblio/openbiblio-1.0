@@ -86,3 +86,7 @@ If it is not possible to have a link created to one of two possible fields,
 would it be better to add a row number of the barcode that would be a fixed field 
 to which the link can be created?
 
+02 May 2013 - Neil Redgate
+Looking at both lists through the admin menu - media-type has the numeric code listed (so, easy to refer to).
+Collections list does not have such a list
+

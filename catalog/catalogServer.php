@@ -70,24 +70,22 @@ function mkBiblioArray($dbObj) {
 
 	case 'getMaterialList':
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
-		if(isset($_REQUEST['selectedMt'])){
-			$selectedMt = $_REQUEST['selectedMt'];
-		} else {
-			$selectedMt = 'all';
+		$db = new MediaTypes;
+		$media = $db->getSelect();
+		foreach ($media as $val => $desc) {
+			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
 		}
-		$mattypes = new MediaTypes;
-		echo inputfield('select', 'materialCd', $selectedMt, NULL, $mattypes->getSelect(true));
+		echo $s;
 	  break;
 
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
-		if(isset($_REQUEST['selectedCt'])){
-			$selectedCt = $_REQUEST['selectedCt'];
-		} else {
-			$selectedCt = null;
-		}		
-		$collections = new Collections;
-		echo inputfield('select', "collectionCd", $selectedCt, NULL, $collections->getSelect());
+		$db = new Collections;
+		$colls = $db->getSelect();
+		foreach ($colls as $val => $desc) {
+			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
+		}
+		echo $s;
 	  break;
 
 	case 'getSiteList':

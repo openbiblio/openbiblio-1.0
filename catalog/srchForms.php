@@ -106,10 +106,8 @@
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
 		<tr class="searchRow">
-			<td><label for="mediaType"><?php echo T("Media Type:"); ?> </label></td>
-			<td>
-					<span id="srchMatTypes">to be filled by server</span>				
-			</td>
+			<td><label for="srchMediaTypes"><?php echo T("Media Type:"); ?> </label></td>
+			<td><select id="srchMediaTypes" name="materialCd"></select></td>
 		</tr>
 		<tr class="searchRow">
 			<td><label for="audienceLevel"><?php echo T("Audience Level:"); ?></label></td>

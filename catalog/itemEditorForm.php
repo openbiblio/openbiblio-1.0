@@ -11,13 +11,13 @@
 <table id="biblioFldTbl" >
 	<tbody id="nonMarcBody">
 	<tr>
-		<td><label for="materialCd"><?php echo T("Media Type"); ?>:</label></td>
-		<td><span id="itemMediaTypes">to be filled by server</span></td>
+		<td><label for="itemMediaTypes"><?php echo T("Media Type"); ?>:</label></td>
+		<td><select id="itemMediaTypes" name="materialCd">to be filled by server</select></td>
 		<td rowspan="3" class="online filterable"><div id="onlineMsg"></div></td>
 	</tr>
 	<tr>
-		<td><label for="collectionCd"><?php echo T("Collection"); ?>:</label></td>
-		<td><span id="itemEditColls">to be filled by server</span></td>
+		<td><label for="itemEditColls"><?php echo T("Collection"); ?>:</label></td>
+		<td><select id="itemEditColls" name="collectionCd">to be filled by server</select></td>
 	</tr>
 	<tr>
 		<td><label for="opacFlg"><?php echo T("Show in OPAC"); ?>:</label></td>

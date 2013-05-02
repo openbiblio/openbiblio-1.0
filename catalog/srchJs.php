@@ -249,17 +249,6 @@ var bs = {
 			$('#crntMbrDiv').empty().html(data).show();
 		});
 	},
-	fetchMaterialList: function () {
-	  $.get(bs.url,{mode:'getMaterialList'}, function(data){
-			$('#srchMatTypes').html(data);
-			$('#itemMediaTypes').html(data);
-		});
-	},
-	fetchCollectionList: function () {
-	  $.get(bs.url,{mode:'getCollectionList'}, function(data){
-			$('#itemEditColls').html(data);
-		});
-	},
 	fetchSiteList: function () {
 	  $.get(bs.url,{mode:'getSiteList'}, function(data){
 			$('#copy_site').html(data);
@@ -271,6 +260,19 @@ var bs = {
 			bs.doAltStart();
 		});
 	},	
+	fetchMaterialList: function () {
+	  $.get(bs.url,{mode:'getMaterialList'}, function(data){
+			$('#itemMediaTypes').html(data);
+			// Add all for search media
+			data = '<option value="all"  selected="selected">All</option>' + data;
+			$('#srchMediaTypes').html(data);
+		});
+	},
+	fetchCollectionList: function () {
+	  $.get(bs.url,{mode:'getCollectionList'}, function(data){
+			$('#itemEditColls').html(data);
+		});
+	},
 	
 	/* ====================================== */
 	doBibidSearch: function (bibid) {
@@ -469,12 +471,12 @@ var bs = {
 
 			html += '<td id="itemInfo">\n';
 			html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
-			//html += '	<p id="itemAuthor" >'+author+'</p>\n';
 			html += ' <p id="itemAuthor" >';
 			html += 		corporate;
 			html += 		author+';&nbsp;&nbsp;';
 			html += 		coauthor;
 			html += '	</p>\n';
+			
 			if ((journal+year+jrnlDate) != '') {
 				html += ' <p id="itemJournal" >';
 				html += 		journal+'&nbsp;&nbsp;';
@@ -783,12 +785,16 @@ var bs = {
 		bs.fetchCollectionList();
 		$('#onlnUpdtBtn').show();
 		$('#onlnDoneBtn').hide();
-
 	  $('#biblioDiv').hide();
+	  
+	  bs.bibid = biblio.bibid;
+	  bs.matlCd = biblio.matlCd;
+	  bs.collCd = biblio.collCd;
+	  bs.opacFlg = biblio.opacFlg;
 	  $.get(bs.url,{'mode':'getBiblioFields',
-									'bibid':biblio.bibid,
-									'matlCd':biblio.matlCd,
-									'collCd':biblio.collCd},
+									'bibid':bs.bibid,
+									'matlCd':bs.matlCd,
+									'collCd':bs.collCd},
 									function (response) {
 			$('#marcBody').html(response);
 			$('#itemEditorDiv fieldset legend').html('<?php echo T('Edit Item Properties'); ?>');
@@ -796,9 +802,9 @@ var bs = {
 			obib.reStripe2('biblioFldTbl','odd');
 
 			// set non-MARC fields using data on hand
-			$('#nonMarcBody #materialCd').val([biblio.matlCd]);
-			$('#nonMarcBody #collectionCd').val([biblio.collCd]);
-			$('#nonMarcBody #opacFlg').val([biblio.opacFlg]);
+			$('#opacFlg').val(bs.opacFlg);
+			$('#itemMediaTypes').val(bs.matlCd);
+			$('#itemEditColls').val(bs.collCd);
 			
 			// fill MARC fields with data on hand
 			// first non-repeating 'input' fields

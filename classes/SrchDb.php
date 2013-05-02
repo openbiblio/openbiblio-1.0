@@ -140,7 +140,7 @@ class SrchDb {
 					."	 AND (cc.`code` = b.`collection_cd`)";
 		//echo "sql=$sql<br />\n";
 		$rcd = $this->db->select01($sql);
-//print_r($rcd);echo "<br />\n";
+
 		$this->createDt = $rcd['create_dt'];
 		$this->daysDueBack = $rcd['days_due_back'];
 		$this->imageFile =$rcd['image_file'];
