@@ -55,7 +55,7 @@ fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; marg
 
 /* tables & parts of */
 table { margin:2px; width:99%; border-spacing:0; }
-tbody.striped tr::odd td { background-color: #EEE; }
+tbody.striped tr.odd td { background-color: #EEE; }
 /*tbody.striped tr:even td { background-color: #CCC; }*/
 td,th { padding: 0 5px 0 5px; vertical-align: top;}
 td.number { text-align: right; }
