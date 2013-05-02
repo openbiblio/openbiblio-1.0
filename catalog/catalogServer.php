@@ -121,10 +121,13 @@ function mkBiblioArray($dbObj) {
 	  switch ($_REQUEST[searchType]) {
 	    case 'title': 		$type = 'phrase';
 							$params = '{"tag":"245","suf":"a"},
-								{"tag":"245","suf":"b"}'; 
+								{"tag":"245","suf":"b"},
+								{"tag":"240","suf":"a"}'; 
 							break;
 			case 'author': 		$type = 'words';
 								$params ='{"tag":"100","suf":"a"},
+								{"tag":"700","suf":"a"},
+								{"tag":"110","suf":"a"},
 								{"tag":"245","suf":"c"}'; 
 							break;
 			case 'subject': 	$type = 'words';
@@ -133,6 +136,7 @@ function mkBiblioArray($dbObj) {
 								break;
 			case 'keyword': 	$type = 'words';
 								$params ='{"tag":"245","suf":"a"},
+									{"tag":"240","suf":"a"},
 									{"tag":"650","suf":"a"},
 									{"tag":"100","suf":"a"},
 									{"tag":"245","suf":"b"},
@@ -158,7 +162,9 @@ function mkBiblioArray($dbObj) {
 				switch ($_REQUEST['sortBy']){
 				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
 				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
-				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																			 {"orderTag":"245","orderSuf":"b"},
+																			 {"orderTag":"240","orderSuf":"a"}'; break;
 				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
 			}
 		}		

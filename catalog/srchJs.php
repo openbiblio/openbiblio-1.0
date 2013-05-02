@@ -390,7 +390,8 @@ var bs = {
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
 			var title = '', subtitle='',
-					author='',
+					author='', coauthor='',
+					corporate='', year='', journal='', jrnlDate='',
 					callNo = '', edition = '', pubDate = ''; 
 			var html = '';
 			var biblio = JSON.parse(biblioList[nBiblio]);
@@ -400,6 +401,7 @@ var bs = {
 					var tmp = JSON.parse(fldData);
 					if (!tmp.value) tmp.value = 'n/a';
 					switch (tmp.marcTag){
+						case '240a': 
 						case '245a': title = tmp.value.trim(); 
 							break;
 						case '245b': subtitle = tmp.value.trim(); 
@@ -408,7 +410,21 @@ var bs = {
 							author = tmp.value.trim();
 							if (author && (author.length>30)) author = author.substring(0,30)+'...';
 							break;
+						case '700a':
+							coauthor = tmp.value.trim();
+							if (coauthor && (coauthor.length>100)) coauthor = coauthor.substring(0,100)+'...';
+							break;
+						case '110a':
+							corporate = tmp.value.trim();
+							if (corporate && (corporate.length>100)) corporate = corporate.substring(0,100)+'...';
+							break;
 						case '099a': callNo = tmp.value.trim(); 
+							break;
+						case '773p': journal = tmp.value.trim();
+							break;
+						case '240f': year = tmp.value.trim();
+							break;
+						case '130f': jrnlDate = tmp.value.trim();
 							break;
 						case '260c': pubDate = tmp.value.trim();
 							break;
@@ -453,7 +469,19 @@ var bs = {
 
 			html += '<td id="itemInfo">\n';
 			html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
-			html += '	<p id="itemAuthor" >'+author+'</p>\n';
+			//html += '	<p id="itemAuthor" >'+author+'</p>\n';
+			html += ' <p id="itemAuthor" >';
+			html += 		corporate;
+			html += 		author+';&nbsp;&nbsp;';
+			html += 		coauthor;
+			html += '	</p>\n';
+			if ((journal+year+jrnlDate) != '') {
+				html += ' <p id="itemJournal" >';
+				html += 		journal+'&nbsp;&nbsp;';
+				html += 		year;
+				html += 		jrnlDate;
+				html += '	</p>\n';
+			}
 			html += '	<p id="itemCallNo" >';
 			html += 		callNo+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
 			html += 		pubDate+'&nbsp;&nbsp; --- &nbsp;&nbsp;';

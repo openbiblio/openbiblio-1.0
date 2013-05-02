@@ -30,6 +30,7 @@ class biblio_search_rpt extends BiblioRows {
 			//'pub_date_to' => Search::type('Published Before', 'MARC', array('260$c'), 'numeric', '<='),
 			'audience_level' => Search::type('Grade Level', 'MARC', array('521$a'), 'phrase'),
 			'media_type' => Search::type('Media Type', 'biblio', array('material_cd'), 'numeric', '='),
+			'collection' => Search::type('Collection', 'biblio', array('collection_cd'), 'numeric', '='),
 			'barcode' => Search::type('Barcode', 'biblio_copy', array('barcode_nmbr'), 'phrase', 'like', 'start'),
 		);
 	}
