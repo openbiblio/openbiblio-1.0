@@ -471,15 +471,15 @@ var bs = {
 			html += '		<input type="button" class="moreBtn" value="More info" />'+'\n';
 			html += '	</div>\n';
 			html += '</div></td>';
-
 			html += '<td id="itemInfo">\n';
 			html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
-			html += ' <p id="itemAuthor" >';
-			html += 		corporate;
-			html += 		author+';&nbsp;&nbsp;';
-			html += 		coauthor;
-			html += '	</p>\n';
-			
+			if ((corporate+author+coauthor) != '') {
+				html += ' <p id="itemAuthor" >';
+				html += 		corporate;
+				html += 		author+';&nbsp;&nbsp;';
+				html += 		coauthor;
+				html += '	</p>\n';
+			}
 			if ((journal+year+jrnlDate) != '') {
 				html += ' <p id="itemJournal" >';
 				html += 		journal+'&nbsp;&nbsp;';
@@ -488,9 +488,16 @@ var bs = {
 				html += '	</p>\n';
 			}
 			html += '	<p id="itemCallNo" >';
-			html += 		callNo+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
-			html += 		pubDate+'&nbsp;&nbsp; --- &nbsp;&nbsp;';
-			html += 		edition;
+			if (callNo != '')
+				html += callNo;
+			if ((callNo != '') && (pubDate != ''))
+				html += '&nbsp;&nbsp; --- &nbsp;&nbsp;';
+			if (pubDate != '')
+				html += pubDate
+			if ((pubDate != '') && (edition != '')) 
+				'&nbsp;&nbsp; --- &nbsp;&nbsp;';
+			if (edition != '')
+				html += 		edition;
 			html += '	</p>\n';
 			html += "</td></tr>\n";
 
