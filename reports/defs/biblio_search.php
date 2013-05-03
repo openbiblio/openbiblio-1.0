@@ -29,8 +29,8 @@ class biblio_search_rpt extends BiblioRows {
 			//'pub_date_from' => Search::type('Published After', 'MARC', array('260$c'), 'numeric', '>='),
 			//'pub_date_to' => Search::type('Published Before', 'MARC', array('260$c'), 'numeric', '<='),
 			'audience_level' => Search::type('Grade Level', 'MARC', array('521$a'), 'phrase'),
-			'media_type' => Search::type('Media Type', 'material_type_dm', array('description'), 'string', '='),
-			'collection' => Search::type('Collection', 'collection_dm', array('description'), 'string', '='),
+			'media_type' => Search::type('Media Type', 'material_type_dm', array('description'), 'string', 'like'),
+			'collection' => Search::type('Collection', 'collection_dm', array('description'), 'string', 'like'),
 			'barcode' => Search::type('Barcode', 'biblio_copy', array('barcode_nmbr'), 'phrase', 'like', 'start'),
 		);
 	}
@@ -146,6 +146,8 @@ class biblio_search_rpt extends BiblioRows {
 			} else {
 				$verb='%Q';
 			}
+			## if user specifies exact=Yes,  do that, 
+			## else use what is specified in the searchTypes array at top of this page
 			if ($exact) {
 				$operator = '=';
 			} else {

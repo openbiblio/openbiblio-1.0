@@ -46,7 +46,10 @@ If it is not possible to have a link created to one of two possible fields,
 would it be better to add a row number of the barcode that would be a fixed field 
 to which the link can be created?
 
-03 May 2013 - Neil Redgate
+
+###################### Completed, most recent at top #########################
+
+03 May 2013 - Neil Redgate - fixed 3 May 2013
 I have noticed that the 'Exact Match' option works for - 
 Call No., keyword; author, title, subject, date, Publisher
 It does not work for either collection or media-type, Barcode.
@@ -54,9 +57,6 @@ For example, if I type 'taxon' (instead of taxonomy) for collection,
 I get no results regardless of whether Exact Match 'No' or 'Yes' is selected. 
 If the full name is entered, I get results with either 'No' or 'Yes' (as you would expect)
 I have not tested it with Address, Grade Level
-
-
-###################### Completed, most recent at top #########################
 
 02 May 2013 - Neil Redgate - fixed 3 May 2013
 Looking at both lists through the admin menu - media-type has the numeric code listed 

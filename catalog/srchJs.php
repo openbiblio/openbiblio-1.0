@@ -329,12 +329,14 @@ var bs = {
 		return false;
 	},
 	doPhraseSearch: function (e,firstItem) {
-      //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.
 	  $('#biblioListDiv').show()
 	  $('#searchDiv').hide();
 	  $('#resultsArea').html('');
 	  $('#errSpace').html('');
+
+    //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.
 	  $('#srchRslts').html('<p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p>');
+
 	  $('.rsltQuan').html('');
 	  if(firstItem==null) firstItem=0;
 	  bs.srchType = 'phrase';		
