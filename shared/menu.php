@@ -39,7 +39,6 @@ function staff_menu() {
 
 		Nav::node('cataloging/cart', T("Request Cart"), '../shared/req_cart.php?tab='.U($tab));
 
-//		if (isset($_REQUEST['bibid'])) {
 			$params = 'bibid='.U($_REQUEST['bibid']);
 			if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
 				$params .= '&rpt='.U($_REQUEST['rpt']);
@@ -49,17 +48,8 @@ function staff_menu() {
 			
 			Nav::node('cataloging/biblio/editmarc', T("Edit MARC"),
 				"../catalog/biblio_marc_edit_form.php?".$params);
-/*				
-			Nav::node('cataloging/images', T("Manage Images"),
-				"../catalog/image_manage.php?".$params);
-			Nav::node('cataloging/new_images', T("Add New Image..."),
-				"../catalog/image_upload_form.php?".$params);
-			Nav::node('cataloging/del_images', T("Delete Image"));
-*/			
 			Nav::node('cataloging/biblio/editstock', T("Edit Stock Info"));
-			//Nav::node('cataloging/biblio/newcopy', T("New Copy"));
 			Nav::node('cataloging/biblio/newlike', T("New Like"), "../catalog/biblio_new_like.php?".$menu_params);
-			//Nav::node('cataloging/biblio/editcopy', T("Edit Copy"));
 			
 			Nav::node('cataloging/biblio/bookings', T("Item Bookings"),
 				"../reports/run_report.php?type=bookings"
@@ -69,14 +59,6 @@ function staff_menu() {
 				. "&".$params);
 			Nav::node('cataloging/biblio/holds', T("Hold Requests"),
 				"../catalog/biblio_hold_list.php?".$params);
-			//Nav::node('cataloging/biblio/delete', T("Delete"),
-			//	"../catalog/biblio_del_confirm.php?".$params);
-//		}
-/*
-		Nav::node('cataloging/browse_images', T("Browse Images"), '../shared/image_browse.php');
-*/
-		//Nav::node('cataloging/new', T("New Item"),
-		//	"../catalog/biblio_new_form.php?reset=Y");
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"),
 			"../catalog/upload_usmarc_form.php");			
 			
@@ -93,6 +75,8 @@ function staff_menu() {
 		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');
 		Nav::node('admin/settings', T("Library Settings"), '../admin/settings_edit_form.php?reset=Y');
 
+		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
+		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
 		Nav::node('admin/calendars', T("Calendars"), '../admin/calendars_list.php');
 		Nav::node('admin/calendars/new', T("New Calendar"), '../admin/calendar_edit_form.php');
 		Nav::node('admin/calendars/edit', T("Edit Calendar"));
@@ -101,11 +85,9 @@ function staff_menu() {
 				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
 		}
 		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
+		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
 		Nav::node('admin/memberTypes', T("Member Types"), '../admin/memberTypeForm.php');
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
-		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
-		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
-		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');

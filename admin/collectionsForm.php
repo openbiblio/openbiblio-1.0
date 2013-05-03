@@ -22,6 +22,7 @@
 	<thead>
 	  <tr>
 	    <th colspan="1">&nbsp;</th>
+			<th valign="top"><?php echo T("Code"); ?></th>
 			<th valign="top"><?php echo T("Description"); ?></th>
 			<th valign="top"><?php echo T("Type"); ?></th>
 			<th valign="top"><?php echo T("Item<br />Count"); ?></th>

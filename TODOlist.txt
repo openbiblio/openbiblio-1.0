@@ -1,3 +1,5 @@
+############### Open issues, oldest at top #########################
+
 - Fred
 MARC import needs facelift
 update to look/work like CSV import
@@ -30,20 +32,60 @@ Help system needs lots of work
 - Neil Redgate
 field 260g not 'dragable' in Biblio Field editor
 
+02 May 2013 - Neil Redgate
+Whilst I was searching through files, I noticed that in classes/report.php  -  
+line34: refers to /shared/biblio_search.php file
+Is  this correct - I can not find this file at that location but it is in 
+the /reports/defs/ subdirectory
+
+02 May 2013 - Neil Redgate
+The displayed results of Item Serach only shows the entry in fields 245a & 245b,
+Would it be possible to show the entry in either field 245a,b or 240a 
+(as with the existing items search results) and make which ever is displayed linked to the item?
+If it is not possible to have a link created to one of two possible fields, 
+would it be better to add a row number of the barcode that would be a fixed field 
+to which the link can be created?
+
+03 May 2013 - Neil Redgate
+I have noticed that the 'Exact Match' option works for - 
+Call No., keyword; author, title, subject, date, Publisher
+It does not work for either collection or media-type, Barcode.
+For example, if I type 'taxon' (instead of taxonomy) for collection, 
+I get no results regardless of whether Exact Match 'No' or 'Yes' is selected. 
+If the full name is entered, I get results with either 'No' or 'Yes' (as you would expect)
+I have not tested it with Address, Grade Level
+
+
+###################### Completed, most recent at top #########################
+
+02 May 2013 - Neil Redgate - fixed 3 May 2013
+Looking at both lists through the admin menu - media-type has the numeric code listed 
+(so, easy to refer to).
+Collections list does not have such a list
+
+29 Apr 2013 - Neil Redgate - fixed 3 May 2013
+When I open the edit existing item box for the most recently added item, 
+the correct collection option (in the drop down menu) is not displayed 
+- it is the very first collection item in the drop down list that is displayed 
+(see image, edit existing item - should read ecology not archaeology), 
+even though the correct collection name was entered originally.
+However, with the remaining items the collection displayed is correct.
+
+01 May 2013 - Fred - done 2 May 2013
+standalone tools for translation maintenance need to be added to Tools menu.
+
 - Fred - done 30 Apr 2013
 Tools, need ability to set colation/charset of ALL tables
 
+29 Apr 2013 - Neil Redgate - now text will be displayed on multiple lines as needed, 29 Apr 2013
+Following on from the increased field size for long titles, 
+I have a problem with the display of these items. (see attached image)
+An item with <125 characters in the title is displayed correctly.
+An item with 146 characters in the title is not - 
+all the MARC field info is displaced below the 'more info' button.
+
 - Fred - fixed 28 Apr 2013
 trans.php function T() no longer alows variable insertion (%xxx%)
-
-7 Apr 2013 - Neil Redgate - fixed, 27 Apr 2013
->  As a result of the above, I reworked my biblio fields for my book type.
-> I noticed that some of the tags are not "draggable" to the layout column, 
-even though they are listed in the field/tag column.
-> For example, 260g (Date of Manufacture) 
-(I was looking at this option as a reprint date, when I was investigating the above)
-> This is not a problem for me at the moment 
-(all fields required have been dragged to the layout column)
 
 28 Apr 2013 - Neil Redgate - increased limit to 256, 28 Apr 2013
 The title & subtitle fields only allow 75 characters.
@@ -56,37 +98,13 @@ I apologise, I cannot remember what your comment was -
 as to whether there is a physical limit from mysql/OB 
 or it was something to be looked at a later date?)
 
-29 Apr 2013 - Neil Redgate - now text will be displayed on multiple lines as needed, 29 Apr 2013
-Following on from the increased field size for long titles, 
-I have a problem with the display of these items. (see attached image)
-An item with <125 characters in the title is displayed correctly.
-An item with 146 characters in the title is not - 
-all the MARC field info is displaced below the 'more info' button.
+7 Apr 2013 - Neil Redgate - fixed, 27 Apr 2013
+>  As a result of the above, I reworked my biblio fields for my book type.
+> I noticed that some of the tags are not "draggable" to the layout column, 
+even though they are listed in the field/tag column.
+> For example, 260g (Date of Manufacture) 
+(I was looking at this option as a reprint date, when I was investigating the above)
+> This is not a problem for me at the moment 
+(all fields required have been dragged to the layout column)
 
-29 Apr 2013 - Neil Redgate - cannot duplicate, 1 May 2013
-When I open the edit existing item box for the most recently added item, 
-the correct collection option (in the drop down menu) is not displayed 
-- it is the very first collection item in the drop down list that is displayed 
-(see image, edit existing item - should read ecology not archaeology), 
-even though the correct collection name was entered originally.
-However, with the remaining items the collection displayed is correct.
-
-01 May 2013 - Fred
-standalone tools for translation maintenance need to be added to Tools menu.
-
-02 May 2013 - Neil Redgate
-Whilst I was searching through files, I noticed that in classes/report.php  -  line34: refers to /shared/biblio_search.php file
-Is  this correct - I can not find this file at that location but it is in the /reports/defs/ subdirectory
-
-02 May 2013 - Neil Redgate
-The displayed results of Item Serach only shows the entry in fields 245a & 245b,
-Would it be possible to show the entry in either field 245a,b or 240a 
-(as with the existing items search results) and make which ever is displayed linked to the item?
-If it is not possible to have a link created to one of two possible fields, 
-would it be better to add a row number of the barcode that would be a fixed field 
-to which the link can be created?
-
-02 May 2013 - Neil Redgate
-Looking at both lists through the admin menu - media-type has the numeric code listed (so, easy to refer to).
-Collections list does not have such a list
 

@@ -22,7 +22,7 @@
 <table id="showList" >
 	<thead>
   	<tr>
-			<th rowspan="2"><?php echo T("Function"); ?></th>
+			<th rowspan="2">&nbsp;</th>
 			<th rowspan="2" nowrap="yes"><?php echo T("Code"); ?></th>
 			<th rowspan="2" nowrap="yes"><?php echo T("Description"); ?></th>
 			<th colspan="2"><?php echo T("Checkout Limit"); ?></th>
