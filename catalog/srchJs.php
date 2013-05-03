@@ -147,6 +147,7 @@ var bs = {
 		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
+		bs.fetchCollectionList();
 		bs.fetchSiteList();
 	},
 	//------------------------------
@@ -782,7 +783,6 @@ var bs = {
 	
 	/* ====================================== */
 	doItemEdit: function (biblio) {
-		bs.fetchCollectionList();
 		$('#onlnUpdtBtn').show();
 		$('#onlnDoneBtn').hide();
 	  $('#biblioDiv').hide();
