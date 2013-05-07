@@ -129,7 +129,7 @@ List.prototype.addFuncBtns = function (ident) {
 	html += '		<input type="hidden" value="'+ident+'"  />\n';
 	return html;
 };
-
+       
 List.prototype.doEditFields = function (e) {
   var code = $(e.target).next().val(),
 			ident = this.keyFld, 
@@ -157,6 +157,9 @@ List.prototype.showFields = function (item) {
 			$(this).val([item[this.id]]);
 		}
 		else if ($(this).is('[type=checkbox]')) {
+			$(this).val([item[this.id]]);
+		}
+		else if ($(this).is('[type=radio]')) {
 			$(this).val([item[this.id]]);
 		}
 		else {

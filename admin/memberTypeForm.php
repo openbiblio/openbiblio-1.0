@@ -67,8 +67,6 @@
 		</li>
      <li>
       <label for="default_flg"><?php echo T("Default"); ?>:</label>
-      <!--input id="default_flg" name="default_flg" type="text" size="32" required aria-required="true" />
-			<span class="reqd">*</span-->    
 			<input type="radio" name="default_flg" value="Y" />Yes
 			<input type="radio" name="default_flg" value="N" checked />No
 		</li>
