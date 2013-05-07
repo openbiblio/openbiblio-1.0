@@ -47,9 +47,6 @@ would it be better to add a row number of the barcode that would be a fixed fiel
 to which the link can be created?
 
 07 May 2013 - Neil Redgate
-Add/Edit state: the code box is missing
-
-07 May 2013 - Neil Redgate
 Site:    cannot delete a site
 
 07 May 2013 - Neil Redgate
@@ -67,6 +64,9 @@ I have the same results when I use your OB data as well as using a fresh install
 On a couple of occasions OB would not launch - blank loginform.php page: firebug came up with 'no-js no-obinstall' as the reason for not being able to open OB (this was even with a fresh OB install)
 
 ###################### Completed, most recent at top #########################
+
+07 May 2013 - Neil Redgate - fixed
+Add/Edit state: the code box is missing
 
 07 May 2013 - Neil Redgate - only present if not auto-barcode, no changes
 Edit/Add Member Field box: the code box is missing

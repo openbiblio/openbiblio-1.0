@@ -10,6 +10,11 @@ function St ( url, form, dbAlias, hdrs, listFlds, opts ) {
 };
 St.prototype = inherit(List.prototype);
 St.prototype.constructor = St;
+St.prototype.init = function () {
+	this.noshows = [];
+	List.prototype.init.apply( this );
+	//this.noshows.push(this.keyFld);
+};
 
 $(document).ready(function () {
 	var url = 'adminSrvr.php',
@@ -26,6 +31,7 @@ $(document).ready(function () {
 	var opts = {};
 						 
 	var xxxx = new St( url, form, dbAlias, hdrs, listFlds, opts );
+
 	xxxx.init();
 });
 </script>

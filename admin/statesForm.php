@@ -27,7 +27,7 @@
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
 <legend id="listHdr"> </legend>
-<table id="showList" name="showList"">
+<table id="showList" name="showList">
 	<thead>
   <tr>
     <th colspan="1">&nbsp;</th>
@@ -52,7 +52,7 @@
 </div>
 
 
-<div id="editDiv"> style="display: none;"
+<div id="editDiv">
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
@@ -64,7 +64,7 @@
       <label for="code"><?php echo T("Code"); ?>:</label>
     </td>
     <td>
-      <input id="code" name="code" type="text" size="20" maxlength="20" required readonly />
+      <input id="code" name="code" type="text" size="20" maxlength="20" required />
 			<span class="addOnly reqd">*</span>    
     </td>
   </tr>
