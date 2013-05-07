@@ -131,3 +131,5 @@
 	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "sitesJs.php"));
 ?>	
+</body>
+</html>

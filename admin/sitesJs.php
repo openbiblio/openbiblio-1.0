@@ -10,7 +10,13 @@ function Sit ( url, form, dbAlias, hdrs, listFlds, opts ) {
 };
 Sit.prototype = inherit(List.prototype);
 Sit.prototype.constructor = Sit;
+Sit.prototype.init = function () {
+	this.noshows = [];
+	List.prototype.init.apply( this );
+	//this.noshows.push(this.keyFld);
+};
 
+/* not used?
 Sit.prototype.fetchSites = function () {
   $.getJSON(this.url,{ 'cat':'sites', 'mode':'getAll_sites' }, function(data){
 		var html = '';
@@ -24,6 +30,7 @@ Sit.prototype.fetchSites = function () {
 		$('#site').html(html);
 	});
 };
+*/
 Sit.prototype.fetchStates = function () {
   $.getJSON(this.url,{ 'cat':'states', 'mode':'getAll_states' }, function(data){
 		var html = '';
@@ -32,7 +39,7 @@ Sit.prototype.fetchStates = function () {
     	if (data[nstate]['default_flg'] == 'Y') {
     		html += ' selected';
 			}
-   		html += '">'+data[nstate]['description']+'</option>\n';
+   		html += '>'+data[nstate]['description']+'</option>\n';
 		}
 		$('#state').html(html);
 	});
@@ -63,11 +70,11 @@ $(document).ready(function () {
 									'code': 'text',
 									'city':'text',
 								 };
-	var opts = { 'focusFld':'name' };
+	var opts = { 'focusFld':'name', 'keyFld':'siteid' };
 						 
 	var xxxx = new Sit( url, form, dbAlias, hdrs, listFlds, opts );
 	xxxx.init();
-	xxxx.fetchSites();
+	//xxxx.fetchSites();
 	xxxx.fetchStates();
 	xxxx.fetchCalendars();
 });

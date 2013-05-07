@@ -67,6 +67,16 @@
 		## doing so would require multiple 'switch' statements,
 		## as well as multiple 'default' blocks 
 
+	  #-.-.-.-.-.- Calendars -.-.-.-.-.-.-
+		case 'getAllCalendars':
+		  $cals = array();
+			$set = $ptr1->getAll('description');
+			while ($row = $set->next()) {
+			  $cals[] = $row;
+			}
+			echo json_encode($cals);
+			break;
+
 	  #-.-.-.-.-.- Collections -.-.-.-.-.-.-
 		case 'getCirc_collect':
 			$ptr = new CircCollections;
@@ -341,16 +351,6 @@
 			break;
 		case 'd-3-L-3-t_sites':
 			echo $ptr->deleteOne($_POST['siteid']);
-			break;
-
-	  #-.-.-.-.-.- Calendars -.-.-.-.-.-.-
-		case 'getAllCalendars':
-		  $cals = array();
-			$set = $ptr1->getAll('description');
-			while ($row = $set->next()) {
-			  $cals[] = $row;
-			}
-			echo json_encode($cals);
 			break;
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
