@@ -1,0 +1,7 @@
+<?php
+#****************************************************************************
+#*  Translation text for page lookup_form.php
+#****************************************************************************
+$trans["CheckForOrphanFiles"] = "Check for Orphan Files";
+$trans["OrphanFiles"] = "Orphan Files";
+$trans["OrphanFileFinder"] = "Orphan File Finder";
