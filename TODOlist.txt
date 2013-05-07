@@ -66,6 +66,9 @@ On a couple of occasions OB would not launch - blank loginform.php page: firebug
 ###################### Completed, most recent at top #########################
 
 07 May 2013 - Neil Redgate - fixed
+Site: cannot delete a site
+
+07 May 2013 - Neil Redgate - fixed
 Add/Edit state: the code box is missing
 
 07 May 2013 - Neil Redgate - only present if not auto-barcode, no changes
