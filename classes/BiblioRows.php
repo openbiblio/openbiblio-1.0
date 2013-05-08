@@ -8,6 +8,7 @@ class BiblioRows {
 	function columns() {
 		return array(
 			array('name'=>'bibid', 'hidden'=>true, 'checkbox'=>true),
+			array('name'=>'title_0', 'hidden'=>true),
 			array('name'=>'title_a', 'hidden'=>true),
 			array('name'=>'title_b', 'hidden'=>true),
 			array('name'=>'material_cd', 'hidden'=>true),
@@ -86,6 +87,7 @@ class BiblioRowsIter extends Iter {
 		}
 		$marcCols = array(
 			'callno' => '099$a',
+			'title_0' => '240$a',
 			'title_a' => '245$a',
 			'title_b' => '245$b',
 			'date' => '260$c',
@@ -116,13 +118,16 @@ class BiblioRowsIter extends Iter {
 				}
 			}
 		}
+		if (!isset($r['title_0'])) {
+			$r['title_0'] = '';
+		}
 		if (!isset($r['title_a'])) {
 			$r['title_a'] = '';
 		}
 		if (!isset($r['title_b'])) {
 			$r['title_b'] = '';
 		}
-		$r['title'] = $r['title_a'].' '.$r['title_b'];
+		$r['title'] = $r['title_0'].' '.$r['title_a'].' '.$r['title_b'];
 		return $r;
 	}
 }

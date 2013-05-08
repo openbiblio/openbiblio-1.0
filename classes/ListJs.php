@@ -234,7 +234,7 @@ List.prototype.doDeleteFields = function (e) {
   if (confirm(msg)) {
   	var parms = {	'cat':this.dbAlias, 
 									'mode':'d-3-L-3-t_'+this.dbAlias, 
-									'code':$('#code').val(), 
+									'code':$('#'+this.keyFld).val(), 
 									'description':$('#description').val(), 
 								};
 		parms[this.keyFld] = $('#'+this.keyFld).val();

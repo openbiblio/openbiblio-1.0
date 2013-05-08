@@ -34,7 +34,6 @@
 		header('Location: ../reports/index.php');
 		exit(0);
 	}
-
 	if ($_REQUEST['type'] == 'previous') {
 		if ($_REQUEST['rpt_order_by']) {
 			$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
@@ -72,7 +71,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
-	<!--h3><?php echo T($title); ?></h3-->
+	<!--h3><?php //echo T($title); ?></h3-->
 	<h5><?php echo T("Report Results"); ?></h5>
 
 <?php
@@ -94,36 +93,23 @@
 ?>
 	
 	<p class="results_count">
-		<?php //echo T("%count% results found.", array('count'=>$rpt->count())); ?>
 		<?php echo $rpt->count()." ".T("items found")."."; ?>
 	</p>
 	
 <?php	
 	echo $disp->pages($page_url, $page);
-	//echo '<p>'.$rpt->count().' results found.</p>';
 ?>
 
-	<!--table class="resultshead">
-		<tr>
-				<th><?php echo T("Report Results"); ?></th>
-			<td class="resultshead">
-	<table class="buttons">
-	<tr-->
-	
-<?php
-	# Fill in report actions here
-?>
-
-	<!--/tr>
-	</table>
-	</td>
-		</tr>
-	</table-->
-	
 	<fieldset>
+	<legend><?php echo T("Report Results"); ?></legend>
+	
 <?php
 	$t = new TableDisplay;
+	
+	// get column headings
 	$t->columns = $disp->columns($sort_url);
+
+	// create and display actual data rows
 	echo $t->begin();
 	$pg = $rpt->pageIter($page);
 	while ($r = $pg->next()) {

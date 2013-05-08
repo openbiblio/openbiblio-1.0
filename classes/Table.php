@@ -219,7 +219,8 @@ class TableFuncs {
 	function member_list($col, $row, $params) {
 		$s = '';
 		foreach ($row[$col['name']] as $m) {
-			$s .= '<a href="../circ/mbr_view.php?mbrid='.HURL($m['mbrid']).'">'
+			$t = 'href="../circ/mbr_view.php?mbrid';
+			$s .= '<a '.$t.'='.HURL($m['mbrid']).'">'
 						. H($m['first_name']).' '.H($m['last_name']).' ('.H($m['site_code']).')'
 						. '</a>, ';
 		}

@@ -38,20 +38,20 @@ line34: refers to /shared/biblio_search.php file
 Is  this correct - I can not find this file at that location but it is in 
 the /reports/defs/ subdirectory
 
-02 May 2013 - Neil Redgate
-The displayed results of Item Serach only shows the entry in fields 245a & 245b,
-Would it be possible to show the entry in either field 245a,b or 240a 
-(as with the existing items search results) and make which ever is displayed linked to the item?
-If it is not possible to have a link created to one of two possible fields, 
-would it be better to add a row number of the barcode that would be a fixed field 
-to which the link can be created?
-
 07 May 2013 - Neil Redgate
 Whilst in Circulation | Member | Current member, I cannot logout.
 When Log out button is clicked - nothing happens.
 However, in any other Circulation page, I can log out immediately
 
 ###################### Completed, most recent at top #########################
+
+02 May 2013 - Neil Redgate - fixed 8 May 2013 (see end of BiblioRows.php)
+The displayed results of Item Serach only shows the entry in fields 245a & 245b,
+Would it be possible to show the entry in either field 245a,b or 240a 
+(as with the existing items search results) and make which ever is displayed linked to the item?
+If it is not possible to have a link created to one of two possible fields, 
+would it be better to add a row number of the barcode that would be a fixed field 
+to which the link can be created?
 
 07 May 2013 - Neil Redgate - fixd 8 May 2013
 I just started adding new items tomy newly created OB dbase but I have got a major problem.

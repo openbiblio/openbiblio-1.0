@@ -31,7 +31,7 @@ class Report {
 	function link($name, $msg='', $tab='') {
 		$urls = array(
 			'Report'=>'../reports/run_report.php?type=previous&msg=',
-			'BiblioSearch'=>'../shared/biblio_search.php?searchType=previous&msg=',
+			//'BiblioSearch'=>'../shared/biblio_search.php?searchType=previous&msg=',
 			'BiblioCart'=>'../shared/req_cart.php?msg=',
 		);
 		if (isset($urls[$name])) {
@@ -77,7 +77,6 @@ class Report {
 		if (is_readable($fname.'.php')) {
 			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
-			
 		} elseif (is_readable($fname.'.rpt')) {
 		  ## for scripted reports
 			$err = $this->_load_rpt_e($cache['type'], $fname.'.rpt');

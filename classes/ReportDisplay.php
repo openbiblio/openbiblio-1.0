@@ -121,7 +121,6 @@ class ReportDisplayFuncs {
 	}
 	function biblio_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row['bibid'],
-//			new LinkUrl('../shared/biblio_view.php', 'bibid', array())
 			new LinkUrl('../catalog/srchForms.php', 'bibid', array())
 		);
 	}
@@ -197,7 +196,8 @@ class ReportDisplayFuncs {
 	function member_list($col, $row, $rpt) {
 		$s = '';
 		foreach ($row[$col['name']] as $m) {
-			$s .= '<a href="../circ/mbr_view.php?mbrid='.HURL($m['mbrid']).'">'
+			$t = 'href="../circ/mbr_view.php?mbrid';
+			$s .= '<a '.$t.'='.HURL($m['mbrid']).'">'
 						. H($m['first_name']).' '.H($m['last_name']).' ('.H($m['site_code']).')'
 						. '</a>, ';
 		}
