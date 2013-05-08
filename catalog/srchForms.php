@@ -243,7 +243,7 @@
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
 
-		<?php include(REL(__FILE__,"../catalog/itemEditorForm.php")); ?>
+		<?php require(REL(__FILE__,"../catalog/itemEditorForm.php")); ?>
 	
 		<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 		<!--input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
@@ -254,7 +254,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="copyEditorDiv">
-	<?php include_once(REL(__FILE__,"copyEditorForm.php"));?>
+	<?php require_once(REL(__FILE__,"../catalog/copyEditorForm.php"));?>
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
@@ -316,9 +316,9 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
 	include_once('../shared/ajaxFileUpload/ajaxfileupload.js');
-	include_once(REL(__FILE__,'./itemDisplayJs.php'));
-	include_once(REL(__FILE__,'./itemEditorJs.php'));
-	include_once(REL(__FILE__,'./srchJs.php'));
+	include_once(REL(__FILE__,'itemDisplayJs.php'));
+	include_once(REL(__FILE__,'itemEditorJs.php'));
+	include_once(REL(__FILE__,'srchJs.php'));
 ?>	
 
 </body>

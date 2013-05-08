@@ -335,7 +335,7 @@ var bs = {
 	  $('#errSpace').html('');
 
     //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.
-	  $('#srchRslts').html('<p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p>');
+	  $('#srchRslts').html('<p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p>');
 
 	  $('.rsltQuan').html('');
 	  if(firstItem==null) firstItem=0;
@@ -628,7 +628,7 @@ var bs = {
 	},
 	
 	fetchCopyInfo: function () {
-	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p></td></tr>');
+	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
 				bs.copyJSON = jsonInpt;
 				if (!bs.copyJSON) {
@@ -656,8 +656,8 @@ var bs = {
 					}
 					html += "	<td>"+crntCopy.status
 					if (crntCopy.mbrId) {
-					  html += ' to<br /><a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
-								 + crntCopy.mbrName+'</a>';
+						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
+					  html += ' to<br /><a '+text+'>'+crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
