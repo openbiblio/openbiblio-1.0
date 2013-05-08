@@ -18,9 +18,7 @@
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "searchText";
 
-	//if (strtolower($tab) == 'opac') {
 	if ($tab == 'opac') {
-		//Page::header_opac(array('nav'=>$nav, 'title'=>''));
 		Page::header(array('nav'=>$nav, 'title'=>'Library Catalog'));
 	}
 	else {
