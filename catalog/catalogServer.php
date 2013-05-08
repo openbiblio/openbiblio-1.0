@@ -296,7 +296,7 @@ function mkBiblioArray($dbObj) {
 		foreach ($_POST['bibList'] as $bibid) {
 			$bibs->deleteOne($bibid);
 		}
-		echo T('Delete completed');
+		echo T("Delete completed");
 		break;
 
 	//// ====================================////
@@ -335,7 +335,7 @@ function mkBiblioArray($dbObj) {
 		foreach ($_POST['cpyList'] as $copyid) {
 			$copies->deleteOne($copyid);
 		}
-		echo T('Delete completed');
+		echo T("Delete completed");
 		break;
 */	  
 		

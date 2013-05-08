@@ -17,11 +17,11 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-<h1 id="pageHdr" class="title"><?php echo T('BiblioFieldsEditor'); ?></h1>
+<h1 id="pageHdr" class="title"><?php echo T("BiblioFieldsEditor"); ?></h1>
 
 <div id="typeChoice">
 	<fieldset id="choiceTyp">
-		<label for="typeList"><?php echo T('MediaTypeListLabel');?></label>
+		<label for="typeList"><?php echo T("MediaTypeListLabel");?></label>
 		<select id="typeList"></select>
 		<hr id="topSeperator" width="75%" />
 
@@ -37,7 +37,7 @@
 </div>
 
 <div id="configDiv">
-	<h3 id="configTitle"><?php echo T('BiblioFieldsConfig'); ?><span id="configName"></span></h3>
+	<h3 id="configTitle"><?php echo T("BiblioFieldsConfig"); ?><span id="configName"></span></h3>
 
 	<fieldset id="existingSpace">
 	  <legend>Existing (drag to re-arange)</legend>
@@ -162,3 +162,5 @@
 	require_once(REL(__FILE__, "biblioFldsJs.php"));
 ?>	
 	<script src="../shared/jquery/jquery-ui-1.10.2.custom.min.js"></script>
+</body>
+</html>

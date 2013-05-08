@@ -286,7 +286,7 @@
 			$code = $_POST["code"];
 			$description = $_POST["desc"];
 			$ptr->deleteOne($code);
-			$msg = T("Media  type")." '".H($type['description'])."' ".T("has been deleted");
+			$msg = T("Media type")." '".H($type['description'])."' ".T("has been deleted");
 			echo $msg;
 			break;
 				
@@ -387,7 +387,7 @@
 			if ($errs) 
 				echo $errs;
 			else
-				echo T('Password has been reset.');
+				echo T("Password has been reset.");
 			break;
 
 	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-

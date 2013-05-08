@@ -26,7 +26,7 @@
 
 	if (empty($sites)) {
 		$text = 'href="../admin/sites_list.php"';
-		echo '<strong>'.T('mbrFldsMustAddSite', array('link'=>'<a '.$text.' >', 'end'=>'</a>')).'</strong>';
+		echo '<strong>'.T("mbrFldsMustAddSite", array('link'=>'<a '.$text.' >', 'end'=>'</a>')).'</strong>';
 		return;
 	}
 	$states = new States;

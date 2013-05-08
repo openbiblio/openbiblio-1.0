@@ -16,14 +16,14 @@
 <table id="copyTbl" >
 	<tbody class="unstriped">
 	<tr>
-		<td><label for="barcode_nmbr"><?php echo T('Barcode Number'); ?></label></td>
+		<td><label for="barcode_nmbr"><?php echo T("Barcode Number"); ?></label></td>
 		<td>
 			<input id="barcode_nmbr" name="barcode_nmbr" type="number" size="20" pattern="[0]{10}" title="zero-filled barcode" required aria-required="true" />
 			<span class="reqd">*</span>
 		</td>
 	</tr>
 	<tr>
-		<td><label for="autobarco"><?php echo T('Auto Barcode'); ?></label></td>
+		<td><label for="autobarco"><?php echo T("Auto Barcode"); ?></label></td>
 		<td>
 			<input id="autobarco" name="autobarco" type="checkbox" value="Y" 
 				<?php echo ($_SESSION['item_autoBarcode_flg']=='Y'?checked:''); ?> />

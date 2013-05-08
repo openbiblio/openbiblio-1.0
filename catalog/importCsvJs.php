@@ -255,7 +255,7 @@ return false;
     				/* pad bar code to proper size */
       			rec['barcode_nmbr'] = flos.pad(entry, w, "0");
 						if (csvi.isDupBarCd()) {
-							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+i+<?php echo "'".T("Bar Code")."'"; ?>
+							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+i+<?php echo "'".T("Barcode")."'"; ?>
 															+' '+rec['barcode_nmbr']+<?php echo " '".T("isaDup")."'"; ?>+"</td></tr>\n");
 							//continue;
 						} else {

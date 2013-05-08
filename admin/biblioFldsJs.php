@@ -8,14 +8,14 @@
 
 var mtl = {
 	<?php
-	echo 'successMsg 		: "'.T('updateSuccess').'",'."\n";
-	echo 'delConfirmMsg : "'.T('confirmDelete').'",'."\n";
-	echo 'goBackLbl			: "'.T('Go Back').'",'."\n";
-	echo 'cancelLbl			: "'.T('Cancel').'",'."\n";
-	echo 'updateLbL			: "'.T('Update').'",'."\n";
-	echo 'addNewLbl			: "'.T('Add New').'",'."\n";
-	echo 'deleteLbl			: "'.T('Delete').'",'."\n";
-	echo 'editLbl				: "'.T('Edit').'",'."\n";
+	echo 'successMsg 		: "'.T("Update successful").'",'."\n";
+	echo 'delConfirmMsg : "'.T("confirmDelete").'",'."\n";
+	echo 'goBackLbl			: "'.T("Go Back").'",'."\n";
+	echo 'cancelLbl			: "'.T("Cancel").'",'."\n";
+	echo 'updateLbL			: "'.T("Update").'",'."\n";
+	echo 'addNewLbl			: "'.T("Add New").'",'."\n";
+	echo 'deleteLbl			: "'.T("Delete").'",'."\n";
+	echo 'editLbl				: "'.T("Edit").'",'."\n";
 	?>
 	
 	init: function () {

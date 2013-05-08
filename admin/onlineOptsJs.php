@@ -10,8 +10,8 @@ var oed = {
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	$jsLoc = new Localize(OBIB_LOCALE,$tab);
 
-	echo 'editHdr 	 : "'.T('Online Options').'",'."\n";
-	echo 'successMsg : "'.T('Update successful').'",'."\n";
+	echo 'editHdr 	 : "'.T("Online Options").'",'."\n";
+	echo 'successMsg : "'.T("Update successful").'",'."\n";
 	?>
 	init: function () {
 		//console.log('in oed init');
@@ -22,7 +22,7 @@ var oed = {
 		oed.url = 'adminSrvr.php';
 		oed.editForm = $('#editForm');
 
-	  $('#editHdr').html(<?php echo "'".T('Online Options')."'"; ?>);
+	  $('#editHdr').html(<?php echo "'".T("Online Options")."'"; ?>);
 		$('#editForm').on('submit',null,oed.doUpdate);
 
 		oed.fetchOpts();

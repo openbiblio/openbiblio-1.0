@@ -21,7 +21,7 @@
 
 ?>
 
-<h3 id="searchHdr"><?php echo T('CSVImport'); ?></h3>
+<h3 id="searchHdr"><?php echo T("CSVImport"); ?></h3>
 
 <section id="intro">
 	<form id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
@@ -75,14 +75,14 @@
 			  <tr>
 					<td colspan="3">
 						<label for="autoFlg"><?php echo T("Auto Barcode"); ?>
-							is <?php echo ($_SESSION['item_autoBarcode_flg'] == 'Y'?T('ON'):T('OFF')); ?>.
+							is <?php echo ($_SESSION['item_autoBarcode_flg'] == 'Y'?T("ON"):T("OFF")); ?>.
 							&nbsp;Make Item Copies?
 						</label></td>
 			    <td colspan="2">
 			    	<select id="bcdDeflt">
-			    		<option value="0"><?php echo T('Never'); ?></option>
-			    		<option value="1"><?php echo T('Only if Barcode present'); ?></option>
-			    		<option value="2"><?php echo T('Always'); ?></option>
+			    		<option value="0"><?php echo T("Never"); ?></option>
+			    		<option value="1"><?php echo T("Only if Barcode present"); ?></option>
+			    		<option value="2"><?php echo T("Always"); ?></option>
 			    	</select>
 			    </td>
 			  </tr>
@@ -215,3 +215,5 @@
 	include_once(REL(__FILE__,'../shared/ajaxFileUpload/ajaxfileupload.js'));
 	require_once(REL(__FILE__, "importCsvJs.php"));
 ?>	
+</body>
+</html>

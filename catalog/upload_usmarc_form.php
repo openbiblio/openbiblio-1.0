@@ -15,7 +15,7 @@
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<h3 id="searchHdr"><?php echo T('MARC Import'); ?></h3>
+<h3 id="searchHdr"><?php echo T("MARC Import"); ?></h3>
 
 <form enctype="multipart/form-data" action="../catalog/upload_usmarc.php" method="post">
 <fieldset>

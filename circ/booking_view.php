@@ -114,7 +114,7 @@
 		</a></td>
 	</tr>
 	<tr>
-		<td class="name"><?php echo T("Members:"); ?></td>
+		<td class="name"><?php echo T("Members"); ?>:</td>
 		<td class="value">
 			<table>
 <?php

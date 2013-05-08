@@ -106,7 +106,7 @@ var bs = {
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
 		});
-		$('#itemSubmitBtn').val('<?php echo T('Update'); ?>')
+		$('#itemSubmitBtn').val('<?php echo T("Update"); ?>')
 											 .on('click',null,bs.doItemUpdate);
 		$('.itemGobkBtn').on('click',null,function () {
    		$('#itemEditorDiv').hide();
@@ -132,9 +132,9 @@ var bs = {
 
 		// for the copy editor screen
 		$('#barcode_nmbr').on('change',null,bs.chkBarcdForDupe);
-		$('#copySubmitBtn').val('<?php echo T('Update'); ?>');
+		$('#copySubmitBtn').val('<?php echo T("Update"); ?>');
 		$('#copySubmitBtn').on('click',null,bs.doCopyUpdate);
-		$('#copyCancelBtn').val('<?php echo T('Go Back'); ?>');
+		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
 		
 		// for the photo editor screen.availHeight
@@ -286,7 +286,7 @@ var bs = {
 			} else {
 				bs.biblio = $.parseJSON(jsonInpt);
 				if (!bs.biblio.data) {
-	  			$('#rsltMsg').html('<?php echo T('Nothing Found by bar cd search') ?>').show();
+	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
 				}
 				else {
 					bs.showOneBiblio(bs.biblio)
@@ -314,7 +314,7 @@ var bs = {
 				bs.biblio = $.parseJSON(jsonInpt);
 				if (bs.biblio.data == null) {
 				  var msgTxt =
-	  			$('#rsltMsg').html('<?php echo T('Nothing Found') ?>').show();
+	  			$('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
 	  			bs.rtnToSrch();
 				}
 				else {
@@ -350,7 +350,7 @@ var bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			  $('#srchRslts').html('<p class="error"><?php echo T('Nothing Found') ?></p>');
+	  			  $('#srchRslts').html('<p class="error"><?php echo T("Nothing Found") ?></p>');
 				  $('#biblioListDiv .goNextBtn').disable();
 				  $('#biblioListDiv .goPrevBtn').disable();
 				}
@@ -806,7 +806,7 @@ var bs = {
 									'collCd':bs.collCd},
 									function (response) {
 			$('#marcBody').html(response);
-			$('#itemEditorDiv fieldset legend').html('<?php echo T('Edit Item Properties'); ?>');
+			$('#itemEditorDiv fieldset legend').html('<?php echo T("Edit Item Properties"); ?>');
 			$('#itemEditorDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
 
@@ -884,7 +884,7 @@ var bs = {
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 	  	var item = '"'+title+'", by '+author;
 		}
-	  msgText += '.<br />' + '<?php echo T('this may take a moment.');?>'
+	  msgText += '.<br />' + '<?php echo T("this may take a moment.");?>'
 		$('#onlineMsg').html(msgText);
 		
 	  $.post(bs.urlLookup,params,function(response){
@@ -896,7 +896,7 @@ var bs = {
 				$('#onlineMsg').html(rslts.msg+' '+item);
 			}
 			else if (numHits >= maxHits) {
-			  msgText = '<?php echo T('hits found, too many to process',numHits); ?>'+'.';
+			  msgText = '<?php echo T("hits found, too many to process",numHits); ?>'+'.';
 				$('#onlineMsg').html();
 			}
 			else if (numHits > 1){
@@ -959,7 +959,7 @@ var bs = {
 			alert('You must delete all copies before you can delete an item!');
 		}
 		else {
-	  	if (confirm('<?php echo T('Are you sure you want to delete this item?'); ?>')) {
+	  	if (confirm('<?php echo T("Are you sure you want to delete this item?"); ?>')) {
 	    	var params = "&mode=deleteBiblio&bibid="+bs.biblio.bibid;
 	  		$.post(bs.url,params, function(response){
 	  		  $('#rsltMsg').html(response);
@@ -986,7 +986,7 @@ var bs = {
 		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
 		$('#copyTbl #copy_site').val([bs.crntCopy.site]);
 		$('#copyTbl #status_cd').val(bs.crntCopy.statusCd);
-		$('#copyEditorDiv fieldset legend').html("<?php echo T('Edit Copy Properties'); ?>");
+		$('#copyEditorDiv fieldset legend').html("<?php echo T("Edit Copy Properties"); ?>");
 
 		// custom fields
 		for(nField in bs.crntCopy.custFields){
@@ -1092,7 +1092,7 @@ var bs = {
 	  $.post(bs.url,parms, function(response){
 	  	if(response == '!!success!!') {
 				bs.fetchCopyInfo(); // refresh copy display
-				$('#editCancelBtn').val('Go Back');
+				$('#editCancelBtn').val("Go Back");
 				bs.rtnToBiblio();
 			} else {
 				$('#editRsltMsg').html(response);
@@ -1103,7 +1103,7 @@ var bs = {
 	},
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
-	  if (confirm('<?php echo T('Are you sure you want to delete this copy?'); ?>')) {
+	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
 	  	//var copyid = e.data.copyid;
 		var copyid = $(this).next().val();
 	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;

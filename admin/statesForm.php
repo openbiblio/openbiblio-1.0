@@ -18,7 +18,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-<h3 id="listHdr"><?php echo T('States'); ?></h3>
+<h3 id="listHdr"><?php echo T("States"); ?></h3>
 
 <div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>

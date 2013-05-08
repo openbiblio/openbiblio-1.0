@@ -42,7 +42,7 @@ th.colHead { white-space: nowrap; }
 
 </style>
 
-<h3><?php echo T('Add New Item'); ?></h3>
+<h3><?php echo T("Add New Item"); ?></h3>
 	<!-- =================================================== -->
 	<div id="searchDiv">
 	  <input type="button" id="manualBtn" value="Manual Entry" />
@@ -180,7 +180,7 @@ th.colHead { white-space: nowrap; }
 	<div id="selectionDiv">
    	<form id="newBiblioForm" name="newbiblioform" >
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
-			<input type="button" class="itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
+			<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
 			<?php
 				include(REL(__FILE__,"../catalog/itemEditorForm.php"));
 			?>

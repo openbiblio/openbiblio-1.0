@@ -61,7 +61,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="mbrDiv">
-	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset id="identity">
 		<legend><?php echo T("Member Information");?></legend>
 		<label for="mbrName"><?php echo T("Name");?>:</label>
@@ -145,23 +145,23 @@
 		<tbody class="striped"></tbody>
 		</table>
 	</fieldset>
-	<input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" />
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="listDiv">
 	<h5><?php echo T("Search Results"); ?></h5>
 	<div id="results_found">
-		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
+		<?php //echo T("biblioSearchMsg", array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
 	<table>
 	<thead>
 	<tr>
-		<td><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" /></td>
+		<td><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" /></td>
 		<td width="80%" align="right">
-			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
+			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T("Previous Page"); ?>">
 			<span class="rsltQuan"></span>
-			<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+			<input type="button" class="goNextBtn PgBtn" value="<?php echo T("Next Page"); ?>">
 		</td>
 	</tr>
 	</thead>
@@ -178,11 +178,11 @@
 	</tbody>
 	<tfoot>
 	<tr>
-		<td><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" /></td>
+		<td><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" /></td>
 		<td width="80%" align="right">
-			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
+			<input type="button" class="goPrevBtn PgBtn" value="<?php echo T("Previous Page"); ?>">
 			<span class="rsltQuan"></span>
-			<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+			<input type="button" class="goNextBtn PgBtn" value="<?php echo T("Next Page"); ?>">
 		</td>
 	</tr>
 	</tfoot>
@@ -225,19 +225,19 @@
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
 	<ul class="btnRow">
-		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T('Go Back'); ?>" /></li>
+		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T("Go Back"); ?>" /></li>
 	</ul>
 	
 		<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
-		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T('Go Back'); ?>"></li>
+		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T("Go Back"); ?>"></li>
 	</ul>
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="acntDiv">
-	<input type="button" class="gobkAcntBtn" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkAcntBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset>
 		<legend><?php echo T("Add a Transaction"); ?></legend>
 		<form id="acntForm">
@@ -275,17 +275,17 @@
 			<tbody class="striped"></tbody>
 		</table>
 	</fieldset>
-	<input type="button" class="gobkAcntBtn" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkAcntBtn" value="<?php echo T("Go Back"); ?>" />
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="histDiv">
-	<input type="button" class="gobkHistBtn" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkHistBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset>
 		<legend><?php echo T("Checkout History"); ?></legend>
 		<p>Not yet Available</p>
 	</fieldset>
-	<input type="button" class="gobkHistBtn" value="<?php echo T('Go Back'); ?>" />
+	<input type="button" class="gobkHistBtn" value="<?php echo T("Go Back"); ?>" />
 </div>
 
 <!-- ------------------------------------------------------------------------ -->

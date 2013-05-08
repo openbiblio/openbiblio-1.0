@@ -19,7 +19,7 @@ var idis = {
 			} else {
 				idis.biblio = $.parseJSON(jsonInpt);
 				if (!idis.biblio.data) {
-	  			$('#rsltMsg').html('<?php echo T('Nothing Found by bar cd search') ?>').show();
+	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
 				}
 				else {
 					idis.showOneBiblio(idis.biblio)

@@ -56,7 +56,7 @@
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 <table>
-	<legend><?php echo T('Edit Media Properties'); ?></legend>
+	<legend><?php echo T("Edit Media Properties"); ?></legend>
 	<tbody id="part1" class="unstriped">
 	<tr>
 		<td><label for="theme_name"><?php echo T("Theme Name"); ?>:</label></td>
@@ -211,7 +211,7 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <p class="note">
-	<?php echo T("Note:"); ?><br /><?php echo T('No delete on active theme'); ?>
+	<?php echo T("Note:"); ?><br /><?php echo T("No delete on active theme"); ?>
 </p>
 
 <?php
@@ -219,3 +219,6 @@
 	
 	require_once(REL(__FILE__, "themeJS.php"));
 ?>	
+</body>
+</html>
+

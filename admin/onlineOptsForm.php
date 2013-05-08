@@ -26,8 +26,8 @@
     <th><label for="protocol"><?php echo T("Online Protocol"); ?></label></th>
     <td>
       <select id="protocol" name="protocol">
-        <option value="SRU" selected><?php echo T('SRU');?></option>
-        <option value="YAZ"><?php echo T('YAZ');?></option>
+        <option value="SRU" selected><?php echo T("SRU");?></option>
+        <option value="YAZ"><?php echo T("YAZ");?></option>
       </select>
     </td>
   </tr>

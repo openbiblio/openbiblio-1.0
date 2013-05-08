@@ -180,7 +180,7 @@ var mf = {
 			} else {
 				mf.mbr = $.parseJSON(jsonInpt);
 				if (mf.mbr == null) {
-	  			$('#msgArea').html('<?php echo T('Nothing Found') ?>');
+	  			$('#msgArea').html('<?php echo T("Nothing Found") ?>');
 				}
 				else {
 					mf.multiMode = false;
@@ -207,7 +207,7 @@ var mf = {
 			} else {
 				mf.cpys = $.parseJSON(jsonInpt);
 				if (! mf.cpys) {
-	  			$('#msgArea').html('<?php echo T('Nothing Found') ?>');
+	  			$('#msgArea').html('<?php echo T("Nothing Found") ?>');
 					$('#msgDiv').show();
 				}
 				else {
@@ -249,7 +249,7 @@ var mf = {
 			} else {
 				mf.holds = $.parseJSON(jsonInpt);
 				if (! mf.holds) {
-	  			$('#msgArea').html('<?php echo T('Nothing Found') ?>');
+	  			$('#msgArea').html('<?php echo T("Nothing Found") ?>');
 					$('#msgDiv').show();
 				}
 				else {
@@ -512,7 +512,7 @@ var mf = {
 			}
 			else {
 				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html('<?php echo T('Added');?>');
+					$('#updateMsg').html('<?php echo T("Added");?>');
 					$('#updateMsg').show();
 				}
 				$('#msgArea').html('Added!');
@@ -534,7 +534,7 @@ var mf = {
 			}
 			else {
 				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html('<?php echo T('Updated');?>');
+					$('#updateMsg').html('<?php echo T("Updated");?>');
 					$('#updateMsg').show();
 				}
 				//$('#msgArea').html('Updated!');
@@ -549,7 +549,7 @@ var mf = {
 	},
 	doDeleteMember: function () {
 		if (mf.nmbrOnloan > 0) {
-			alert('<?php echo T('You must settle all outstanding loans before deleting a member.'); ?>');
+			alert('<?php echo T("You must settle all outstanding loans before deleting a member."); ?>');
 			return false;
 		}
 		var delConfirmMsg = '<?php echo T("Are you sure you want to delete "); ?>';

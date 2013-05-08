@@ -137,7 +137,7 @@
 <form id="pwdChgForm" name="pwdChgForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-	<legend><?php echo T('Reset Password'); ?> for <span></span></legend>
+	<legend><?php echo T("Reset Password"); ?> for <span></span></legend>
 	<ul id="editTbl">
     <li>
       <label for="pwdA"><?php echo T("Password"); ?>:</label>

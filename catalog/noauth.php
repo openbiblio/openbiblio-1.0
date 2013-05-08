@@ -10,6 +10,6 @@ $nav = "";
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-echo '<p class="error">'.T('Not authorized for cataloging').'</p>';
+echo '<p class="error">'.T("Not authorized for cataloging").'</p>';
 
  ;

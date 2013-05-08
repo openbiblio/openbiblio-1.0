@@ -17,7 +17,7 @@
   
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<h3 id="listHdr"><?php echo T('Online Hosts'); ?></h3>
+<h3 id="listHdr"><?php echo T("Online Hosts"); ?></h3>
 
 <div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
@@ -59,7 +59,7 @@
 <form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
-<legend id="fieldsHdr"><?php echo T('Host Editor'); ?></legend>
+<legend id="fieldsHdr"><?php echo T("Host Editor"); ?></legend>
 <table id="editTbl">
   <tbody>
   <tr>

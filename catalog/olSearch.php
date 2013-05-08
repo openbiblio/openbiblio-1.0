@@ -31,7 +31,7 @@
 					  "}";
 			echo $s;
 			*/
-		  $rcd['msg'] = T('Nothing Found');
+		  $rcd['msg'] = T("Nothing Found");
 		  $srch['byName'] = $srchByName;
 		  $srch['lookupVal'] = $lookupVal;
 		  $rcd['srch1'] = json_encode($srch);
@@ -44,15 +44,15 @@
 		else if ($ttlHits > $postVars[maxHits]) {
 			## TOO MANY
 			/* Response format:
-			$msg1 = T('lookup_tooManyHits');
-			$msg2 = T('lookup_refineSearch');
+			$msg1 = T("lookup_tooManyHits");
+			$msg2 = T("lookup_refineSearch");
 		  $s =  "{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',".
 						"'msg':'$msg1', 'msg2':'$msg2' ".
 						"}";
 			echo $s;
 			*/
-		  $rcd['msg'] = T('lookup_tooManyHits');
-		  $rcd['msg2'] = T('lookup_refineSearch');
+		  $rcd['msg'] = T("lookup_tooManyHits");
+		  $rcd['msg2'] = T("lookup_refineSearch");
 		  echo json_encode($rcd);
 		}
 

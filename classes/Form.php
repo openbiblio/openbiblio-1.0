@@ -40,7 +40,7 @@ class Form {
 			'name'=>NULL,
 			'method'=>'post',
 			'action'=>NULL,
-			'submit'=>T('Submit'),
+			'submit'=>T("Submit"),
 			'cancel'=>NULL,
 			'fields'=>array(),
 			'values'=>array(),

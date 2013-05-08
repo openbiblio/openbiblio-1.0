@@ -45,7 +45,7 @@ var tru = {
 	fetchModuleList: function () {
 	  $.getJSON(tru.url,{'cat':'locale', 
 											 'mode':'fetchModuleList'}, function(data){
-			tru.obMods = data;
+			tru.obMods = data.sort();
 		});
 	},
 	
@@ -67,7 +67,7 @@ var tru = {
 		$('#rsltsArea').show();
 		var choice = $('#locSet option:selected');
 		$.post(tru.url, {'cat':'locale', 
-										 'mode':'ck4TransOrfan',
+										 'mode':'ck4TransUnused',
 										 'locale':choice.val(),
 									  },
 						function (response) {
@@ -80,7 +80,7 @@ var tru = {
 		$.each(tru.obMods, function (n,module) {
 			var choice = $('#locSet option:selected');
 			$.post(tru.url, {'cat':'locale', 
-											 'mode':'ck4TransAbsnt',
+											 'mode':'ck4TransNeeded',
 											 'locale':choice.val(),
 											 'module':module,
 										  },

@@ -7,21 +7,55 @@
 	//print_r($_REQUEST);echo "<br />";
 	
 	function moduleList () {
-			$handl = opendir("..");
-			while (false !== ($file = readdir($handl))) {
-			  if ($file != '.' && $file != '..') {
-					if ((is_dir('../'.$file)) && 
-							(substr($file,0,1) != '.') && 
-							($file != 'images') && ($file != 'font') && ($file != 'photos')   
-						 ) {
-						$mods[] = $file;
-					}
+		$handl = opendir("..");
+		while (false !== ($file = readdir($handl))) {
+		  if ($file != '.' && $file != '..') {
+				if ((is_dir('../'.$file)) && 
+						(substr($file,0,1) != '.') && 
+						($file != 'images') && 
+						($file != 'font') && 
+						($file != 'photos')   
+					 ) {
+					$mods[] = $file;
 				}
 			}
-			closedir($handl);
-			sort($mods,SORT_LOCALE_STRING);
-			return $mods;
+		}
+		closedir($handl);
+		sort($mods,SORT_LOCALE_STRING);
+		return $mods;
 	};
+	function array_flat($array) {
+		$tmp = [];
+	  foreach($array as $a) {
+	    if(is_array($a)) {
+	      $tmp = array_merge($tmp, array_flat($a));
+	    } else {
+      	$tmp[] = $a;
+    	}
+  	}
+  	return $tmp;
+	}
+	function getFileList($dir) {
+  	$files = array();
+  	if ($handle = opendir($dir)) {
+    	while (false !== ($file = readdir($handle))) {
+      	if ($file != "." && $file != ".." && 
+						$file != 'sql' && 
+						$file != 'legacy' && 
+						$file != 'themes') {
+          if(is_dir($dir.'/'.$file)) {
+          	$dir2 = $dir.'/'.$file;
+          	$files[] = getFileList($dir2);
+          } else {
+          	$aFile = $dir.'/'.$file;
+            $files[] = $aFile;
+          }
+        }
+    	}
+    	closedir($handle);
+  	}
+  	return array_flat($files);
+	}
 	
 	
 	switch ($_REQUEST['cat']) {
@@ -107,18 +141,12 @@
 			};
 	  	break;
 	  	
-	  case 'ck4TransOrfan':
+	  case 'ck4TransUnused':
 	  	$modules = moduleList();
 	  	$found = [];
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			foreach ($modules as $module) {	
-				$files = [];	
-				$handler = opendir("../$module");
-				while (false !== ($file = readdir($handler))) {
-				  if ($file != '.' && $file != '..')
-					$files[] = $file;
-				}
-				closedir($handler);
+				$files = getFileList('../'.$module);
 				foreach ($files as $file) {
 				  $lines = file("../$module/$file");
 				  foreach ($lines as $line_num => $line) {
@@ -135,8 +163,6 @@
 				  }
 				}
 			}
-//echo "trans: ".count($trans)."; found: ".count($found)."<br />"; 	
-//print_r($found);echo "<br /><br />";	 
 			if (count($trans) == count($found)) {
 				echo "All trans entries are in use.";
 			} elseif (count($trans) > count($found)) {
@@ -151,16 +177,11 @@
 			}
 			break;
 			
-	  case 'ck4TransAbsnt':
+	  case 'ck4TransNeeded':
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			$module = $_POST['module'];		
 			echo '<p class="bold">module: '.$module.'</p>';
-			$handler = opendir("../$module");
-			while (false !== ($file = readdir($handler))) {
-			  if ($file != '.' && $file != '..')
-				$files[] = $file;
-			}
-			closedir($handler);
+				$files = getFileList('../'.$module);
 			foreach ($files as $file) {
 			  $lines = file("../$module/$file");
 			  foreach ($lines as $line_num => $line) {
@@ -168,7 +189,7 @@
 					foreach ($out[1] as $key) {
 						$key = str_replace("\"","",$key);
 						$key = str_replace("\'","",$key);
-						if (!array_key_exists($key, $trans)) {
+						if (!isset($trans[$key])) {
 							$linenum[$errCount]['key']=$key;		
 							$linenum[$errCount]['filename']=$file;
 							$linenum[$errCount]['linenum']=$line_num+1;
@@ -179,7 +200,7 @@
 			
 			}
 			if ($errCount > 0){
-				echo "The following errors were found:<br />";
+				echo "The following ".$errCount." entries are neeeded:<br />";
 				while ($i < $errCount) {
 					echo $linenum[$i]['filename']." - ";
 					echo ($linenum[$i]['linenum'])." - ";
@@ -187,7 +208,7 @@
 					$i++;
 				}
 			} else {
-				echo "All trans call in $module are translated in ".$_POST['locale']."<br />";
+				echo "All trans requests in $module are translated for locale ".$_POST['locale']."<br />";
 			}
 			echo ' - - - - - - - - - <br />';
 			break;

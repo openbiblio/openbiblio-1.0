@@ -16,7 +16,7 @@
 
 <form method="post" action="../admin/integrity_check.php">
 <fieldset>
-	<p><?php echo T('integrityMsg');?></p>
+	<p><?php echo T("integrityMsg");?></p>
 	<input type="submit" value="<?php echo T("Check Now"); ?>" />
 </fieldset>
 </form>

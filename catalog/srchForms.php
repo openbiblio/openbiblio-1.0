@@ -81,7 +81,7 @@
 	</tr>
 	<tr>
 	  <td colspan="3">
-	    <label for="advanceQ"><?php echo T('Advanced Search?'); ?></label>
+	    <label for="advanceQ"><?php echo T("Advanced Search?"); ?></label>
 			<input id="advanceQ" name="advanceQ" type="checkbox" value="Y" />
 		</td>
 	</tr>
@@ -152,20 +152,20 @@
 <div id="biblioListDiv">
 	<h5><?php echo T("Search Results"); ?></h5>
 	<div id="results_found">
-		<?php //echo T('biblioSearchMsg', array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
+		<?php //echo T("biblioSearchMsg", array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>
 	<table>
 	<tr>
 		<td colspan="3">
 			<ul class="pagBtns">
 				<li>
-					<input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" />
-					<input type="button" id="addList2CartBtn" class="button" value="<?php echo T('Add List To Cart'); ?>" />
+					<input type="button" class="gobkBtn button" value="<?php echo T("Go Back"); ?>" />
+					<input type="button" id="addList2CartBtn" class="button" value="<?php echo T("Add List To Cart"); ?>" />
 				</li>
 				<li>
-					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
+					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T("Previous Page"); ?>">
 					<span class="rsltQuan"></span>
-					<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+					<input type="button" class="goNextBtn PgBtn" value="<?php echo T("Next Page"); ?>">
 				</li>
 			</ul>
 		</td>
@@ -184,10 +184,10 @@
 					if($_SESSION['show_detail_opac'] == "Y"){
 				?>
 				<ul id="flagInfo">
-					<li><img src="../images/circle_green.png" class="flgDot"/> <?php echo T('Available'); ?></li>
-					<li><img src="../images/circle_orange.png" class="flgDot"/> <?php echo T('Available elsewhere'); ?></li>
-					<li><img src="../images/circle_blue.png" class="flgDot"/> <?php echo T('Not on loan/on hold'); ?></li>
-					<li><img src="../images/circle_red.png" class="flgDot"/> <?php echo T('On loan/not available'); ?></li>
+					<li><img src="../images/circle_green.png" class="flgDot"/> <?php echo T("Available"); ?></li>
+					<li><img src="../images/circle_orange.png" class="flgDot"/> <?php echo T("Available elsewhere"); ?></li>
+					<li><img src="../images/circle_blue.png" class="flgDot"/> <?php echo T("Not on loan/on hold"); ?></li>
+					<li><img src="../images/circle_red.png" class="flgDot"/> <?php echo T("On loan/not available"); ?></li>
 				</ul>
 				<?php } ?>
 			</fieldset>
@@ -195,11 +195,11 @@
 	<tr>
 		<td colspan="3">
 			<ul class="pagBtns">
-				<li><input type="button" class="gobkBtn button" value="<?php echo T('Go Back'); ?>" /></li>
+				<li><input type="button" class="gobkBtn button" value="<?php echo T("Go Back"); ?>" /></li>
 				<li>
-					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T('Previous Page'); ?>">
+					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T("Previous Page"); ?>">
 					<span class="rsltQuan"></span>
-					<input type="button" class="goNextBtn PgBtn" value="<?php echo T('Next Page'); ?>">
+					<input type="button" class="goNextBtn PgBtn" value="<?php echo T("Next Page"); ?>">
 				</li>
 			</ul>
 		</td>
@@ -211,23 +211,23 @@
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
-		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>" /></li>
+		<li><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		<li><input type="button" id="marcBtn" value=""></li>
-		<li><input type="button" id="addItem2CartBtn" value="<?php echo T('Add To Cart'); ?>" /></li>
+		<li><input type="button" id="addItem2CartBtn" value="<?php echo T("Add To Cart"); ?>" /></li>
 		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
-		<li><input type="button" id="biblioEditBtn" value="<?php echo T('Edit This Item'); ?>"></li>
+		<li><input type="button" id="biblioEditBtn" value="<?php echo T("Edit This Item"); ?>"></li>
 		<li><input type="button" id="photoEditBtn" value="<?php echo T("Edit This Photo"); ?>"></li>
 		<li><input type="button" id="photoAddBtn" value="<?php echo T("Add New Photo"); ?>"></li>
-		<li><input type="button" id="biblioDeleteBtn" value="<?php echo T('Delete This Item'); ?>"></li>
+		<li><input type="button" id="biblioDeleteBtn" value="<?php echo T("Delete This Item"); ?>"></li>
 		<?php }?>
 	</ul>
 		
 	<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
-		<li><input type="button" class="gobkBtn" value="<?php echo T('Go Back'); ?>"></li>
+		<li><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>"></li>
 		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
-			<li><input type="button" id="addNewBtn" class="button" value="<?php echo T('Add New Copy'); ?>"></li>
+			<li><input type="button" id="addNewBtn" class="button" value="<?php echo T("Add New Copy"); ?>"></li>
 		<?php } ?>
 	</ul>
 </div>
@@ -236,10 +236,10 @@
 <div id="itemEditorDiv">
   <form id="biblioEditForm" name="biblioEditForm" >
 		<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-		<input type="button" class="itemGobkBtn" value="<?php echo T('Go Back'); ?>" />
+		<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T('Fetch On-line Data'); ?>" />
-		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T('Search Complete'); ?>" />
+		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T("Fetch On-line Data"); ?>" />
+		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T("Search Complete"); ?>" />
 
 		<?php require(REL(__FILE__,"../catalog/itemEditorForm.php")); ?>
 	
@@ -262,7 +262,7 @@
 
 	<form id="fotoForm" name="fotoForm" enctype="multipart/form-data" method="POST" >
 	<ul class="btnRow">
-		<li><input type="button" class="gobkFotoBtn" value="<?php echo T('Go Back'); ?>" /></li>
+		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
 	</ul>
 	
 	<fieldset>
@@ -301,10 +301,10 @@
 	<input type="hidden" id="fotoPos" name="position" value="0" />
 	
 	<ul class="btnRow">
-		<li><input type="button" class="gobkFotoBtn" value="<?php echo T('Go Back'); ?>" /></li>
-		<li><input type="button" id="addFotoBtn" value="<?php echo T('Add New'); ?>" /></li>
-		<li><input type="button" id="updtFotoBtn" value="<?php echo T('Update'); ?>" /></li>
-		<li><input type="button" id="deltFotoBtn" value="<?php echo T('Delete'); ?>" /></li>
+		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
+		<li><input type="button" id="addFotoBtn" value="<?php echo T("Add New"); ?>" /></li>
+		<li><input type="button" id="updtFotoBtn" value="<?php echo T("Update"); ?>" /></li>
+		<li><input type="button" id="deltFotoBtn" value="<?php echo T("Delete"); ?>" /></li>
 	</ul>
 	</form>
 </div>

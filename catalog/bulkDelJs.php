@@ -64,7 +64,7 @@ bbd = {
 			// now see if user wants to continue with deletion
 			var txt1 = bbd.cpyAray.length,
 					txt2 = bbd.bibAray.length,
-					//msg = <?php echo T('Bulk Delete Confirm',array('copy'=>"$txt1",'item'=>"$txt2")); ?>;
+					//msg = <?php echo T("Bulk Delete Confirm",array('copy'=>"$txt1",'item'=>"$txt2")); ?>;
 					msg = 'OK to delete '+txt1+' copies from '+txt2+' titles?';
 			if (!confirm('"'+msg+'"')) {
 				// delete rejected

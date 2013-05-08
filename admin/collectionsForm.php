@@ -96,7 +96,7 @@
 <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <p class="note">
-	<?php echo T("Note:");?><br /><?php echo T('collectionsListNoteMsg'); ?>
+	<?php echo T("Note:");?><br /><?php echo T("collectionsListNoteMsg"); ?>
 </p>
 <br />
 <p class="note circOnly">
@@ -109,3 +109,5 @@
 	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "collectionsJs.php"));
 ?>	
+</body>
+</html>
