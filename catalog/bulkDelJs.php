@@ -23,6 +23,7 @@ bbd = {
 	  //console.log('resetting Entry Form');
 	  $('#crntMbrDiv').hide();
 		$('p.error').hide();
+		$('#bulkDel_formDiv').show();
 		
 		$('#barcodes').html('');
 		$('input#del_items').prop("checked", false);
@@ -53,7 +54,7 @@ bbd = {
 	 		bbd.errAray = jsonData[2];
 	 		bbd.barcdStr= jsonData[3].join('\n');
 	  	$('#barcodes').val(bbd.barcdStr);
-console.log('jsonData:'+jsonData);	  	
+			//console.log('jsonData:'+jsonData);	  	
 	 		if (bbd.errAray[0]) {
 				//console.log('we have an error');	 	
 				$('#errSpace').html(bbd.errAray[0].msg).show();

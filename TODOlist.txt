@@ -47,12 +47,6 @@ would it be better to add a row number of the barcode that would be a fixed fiel
 to which the link can be created?
 
 07 May 2013 - Neil Redgate
-Site:    cannot delete a site
-
-07 May 2013 - Neil Redgate
-Bulk Delete: on clicking on the menu item, I just get the title "Bulk Delete Items" and no box.
-
-07 May 2013 - Neil Redgate
 Whilst in Circulation | Member | Current member, I cannot logout.
 When Log out button is clicked - nothing happens.
 However, in any other Circulation page, I can log out immediately
@@ -65,16 +59,19 @@ On a couple of occasions OB would not launch - blank loginform.php page: firebug
 
 ###################### Completed, most recent at top #########################
 
-07 May 2013 - Neil Redgate - fixed
+07 May 2013 - Neil Redgate - fixed 7 May 2013
+Bulk Delete: on clicking on the menu item, I just get the title "Bulk Delete Items" and no box.
+
+07 May 2013 - Neil Redgate - fixed 7 May 2013
 Site: cannot delete a site
 
-07 May 2013 - Neil Redgate - fixed
+07 May 2013 - Neil Redgate - fixed 7 May 2013
 Add/Edit state: the code box is missing
 
-07 May 2013 - Neil Redgate - only present if not auto-barcode, no changes
+07 May 2013 - Neil Redgate - only present if not auto-barcode, no changes 7 May 2013
 Edit/Add Member Field box: the code box is missing
 
-07 May 2013 - Neil Redgate - missing support for default type radio button, fixed 
+07 May 2013 - Neil Redgate - missing support for default type radio button, fixed 7 May 2013
 Edit/Add Member Type: cannot add new type; cannot set default (Y/N)
 
 03 May 2013 - Neil Redgate - fixed 3 May 2013
