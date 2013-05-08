@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once("../shared/common.php");
+	require_once(REL(__FILE__, "../shared/common.php"));
 	$tab = "admin";
 	$nav = "memberFields";
 
@@ -82,3 +82,5 @@
 	require_once(REL(__FILE__, "../classes/ListJs.php"));
 	require_once(REL(__FILE__, "memberFldsJs.php"));
 ?>	
+</body>
+</html>

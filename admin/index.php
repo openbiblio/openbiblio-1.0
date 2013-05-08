@@ -9,7 +9,7 @@ require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));
 $tab = "admin";
 $nav = "summary";
 
-include(REL(__FILE__, "../shared/logincheck.php"));
+require_once(REL(__FILE__, "../shared/logincheck.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 echo '<h1><img src="../images/admin.png" border="0" width="30" height="30" align="top"> '.T("Admin").'</h1>';

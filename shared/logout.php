@@ -9,6 +9,5 @@ $_SESSION = array();
 session_destroy();
 echo "got to logout.php<br />";
 
-//header("Location: ../circ/memberForms.php");
-header("Location: ../catalog/srchForms.php");
+header("Location: ../index.php");
 exit();
