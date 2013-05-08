@@ -72,8 +72,11 @@ function mkBiblioArray($dbObj) {
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;
 		$media = $db->getSelect();
+		$dflt = $_REQUEST['selectedMt'];
 		foreach ($media as $val => $desc) {
-			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
+			$s .= '<option value="'.H($val).'" ';
+			if ($val == $dflt) $s .= 'selected ';
+			$s .= ">".H($desc)."</option>\n";
 		}
 		echo $s;
 	  break;
@@ -82,8 +85,11 @@ function mkBiblioArray($dbObj) {
 		require_once(REL(__FILE__, "../model/Collections.php"));
 		$db = new Collections;
 		$colls = $db->getSelect();
+		$dflt = $_REQUEST['selectedCt'];
 		foreach ($colls as $val => $desc) {
-			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
+			$s .= '<option value="'.H($val).'" ';
+			if ($val == $dflt) $s .= 'selected ';
+			$s .= ">".H($desc)."</option>\n";
 		}
 		echo $s;
 	  break;

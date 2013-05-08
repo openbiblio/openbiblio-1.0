@@ -51,13 +51,16 @@ Whilst in Circulation | Member | Current member, I cannot logout.
 When Log out button is clicked - nothing happens.
 However, in any other Circulation page, I can log out immediately
 
-07 May 2013 - Neil Redgate
-I just started adding new items tomy newly created OB dbase but I have got a major problem.
-When I select manual entry the fields shown are those for the default media type. If I select another from the drop down menu - there is no change.
-I have the same results when I use your OB data as well as using a fresh install of  OB (changeset 630)
-On a couple of occasions OB would not launch - blank loginform.php page: firebug came up with 'no-js no-obinstall' as the reason for not being able to open OB (this was even with a fresh OB install)
-
 ###################### Completed, most recent at top #########################
+
+07 May 2013 - Neil Redgate - fixd 8 May 2013
+I just started adding new items tomy newly created OB dbase but I have got a major problem.
+When I select manual entry the fields shown are those for the default media type. 
+If I select another from the drop down menu - there is no change.
+I have the same results when I use your OB data as well as using a fresh install of  OB (changeset 630)
+On a couple of occasions OB would not launch - blank loginform.php page: firebug 
+came up with 'no-js no-obinstall' as the reason for not being able to open OB 
+(this was even with a fresh OB install)
 
 07 May 2013 - Neil Redgate - fixed 7 May 2013
 Bulk Delete: on clicking on the menu item, I just get the title "Bulk Delete Items" and no box.

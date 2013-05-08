@@ -203,3 +203,5 @@ th.colHead { white-space: nowrap; }
 
 	require_once(REL(__FILE__, "newItemJs.php"));
 ?>	
+</body>
+</html>

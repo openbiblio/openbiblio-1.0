@@ -33,6 +33,11 @@ var ni = {
 			$('#searchDiv').hide();
 			$('#selectionDiv').show();
 		});
+		$('#itemMediaTypes').bind('change',null,function () {
+	  	var mediaType = $('#itemMediaTypes option:selected').val();
+			ni.doClearItemForm();
+			ni.doMakeItemForm(mediaType);
+    });
     
 		$('#quitBtn').on('click',null,ni.doAbandon);
 		$('#retryBtn').on('click',null,ni.doBackToSrch);
@@ -518,8 +523,16 @@ var ni = {
 		});
 	},
 
+	doClearItemForm: function () {
+		// assure all marc fields are empty & visible at start
+		$('#newBiblioForm').each(function(){
+	        this.reset();
+		});
+	},
+	
 	doMakeItemForm: function (mediaType) {
 	  // fill out empty form with MARC fields
+	  if (mediaType == '') mediaType = $('#itemMediaTypes option:selected').val();
 	  $.get(ni.url,{'mode':'getBiblioFields', 'material_cd':mediaType}, function (response) {
 			$('#marcBody').html(response);
 			$('#selectionDiv td.filterable').hide();
@@ -527,15 +540,9 @@ var ni = {
 			$('#opacFlg').val(['CHECKED','Y']);
 			//ie.init();
 			ni.doShowOne(ni.crntData);
+			$('#itemMediaTypes').val(mediaType)
 		});
 		$('.itemGobkBtn').on('click',null,ni.doBackToChoice);
-	},
-	
-	doClearItemForm: function () {
-		// assure all marc fields are empty & visible at start
-		$('#newBiblioForm').each(function(){
-	        this.reset();
-		});
 	},
 	
 	doShowOne: function (data){
@@ -551,7 +558,8 @@ var ni = {
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
 		}
-/**/	  $('#selectionDiv input.online').disable();	/**/
+/**/
+	  $('#selectionDiv input.online').disable();	/**/
 	  $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
