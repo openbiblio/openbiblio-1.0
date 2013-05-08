@@ -465,7 +465,7 @@ var bs = {
 			}
 			html += '	<div id="dashBd">\n';
 			html += '		<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
-			html += '		<img src="../images/'+biblio.imageFile+'" />'+'\n';
+			html += '		<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
 			html += '		<br />\n';
 			html += '		<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
 			html += '		<input type="button" class="moreBtn" value="More info" />'+'\n';

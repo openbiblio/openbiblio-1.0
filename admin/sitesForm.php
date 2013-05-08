@@ -61,7 +61,8 @@
 		</li>
     <li>
       <label for="code"><?php echo T("Code"); ?>:</label>
-      <input id="code" name="code" type="text" size="32" maxlength="20" />
+      <input id="code" name="code" type="text" size="32" maxlength="20" required aria-required="true" />
+			<span class="reqd">*</span>    
     </li>
     <li>
       <label for="calendar"><?php echo T("Calendar"); ?>:</label>

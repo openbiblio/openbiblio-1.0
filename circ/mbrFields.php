@@ -25,8 +25,9 @@
 	$_SESSION[pageErrors] = $pageErrors;
 
 	if (empty($sites)) {
-			echo '<strong>'.T('mbrFldsMustAddSite', array('link'=>'<a href="../admin/sites_list.php">', 'end'=>'</a>')).'</strong>';
-			return;
+		$text = 'href="../admin/sites_list.php"';
+		echo '<strong>'.T('mbrFldsMustAddSite', array('link'=>'<a '.$text.' >', 'end'=>'</a>')).'</strong>';
+		return;
 	}
 	$states = new States;
 	$mbrtypes = new MemberTypes;

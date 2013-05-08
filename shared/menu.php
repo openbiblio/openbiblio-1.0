@@ -18,8 +18,7 @@ function staff_menu() {
 			$params .= '&rpt='.U($_REQUEST['rpt']);
 			$params .= '&seqno='.U($_REQUEST['seqno']);
 		}
-		Nav::node('circulation/bookings/view', T("Booking Info"),
-			'../circ/booking_view.php?'.$params);
+		Nav::node('circulation/bookings/view', T("Booking Info"), '../circ/booking_view.php?'.$params);
 		Nav::node('circulation/bookings/deleted', T("Deleted"));
 	}
 
@@ -33,8 +32,7 @@ function staff_menu() {
 		Nav::node('cataloging/newItem', T("New Item"), "../catalog/newItemForms.php");
 
 		if (isset($_SESSION['rpt_BiblioSearch'])) {
-			Nav::node('cataloging/search', T("old search results"),
-				'../shared/biblio_search.php?searchType=previous&tab='.U($tab));
+			Nav::node('cataloging/search', T("old search results"), '../shared/biblio_search.php?searchType=previous&tab='.U($tab));
 		}
 
 		Nav::node('cataloging/cart', T("Request Cart"), '../shared/req_cart.php?tab='.U($tab));
@@ -46,27 +44,21 @@ function staff_menu() {
 			}
 
 			
-			Nav::node('cataloging/biblio/editmarc', T("Edit MARC"),
-				"../catalog/biblio_marc_edit_form.php?".$params);
+			Nav::node('cataloging/biblio/editmarc', T("Edit MARC"), "../catalog/biblio_marc_edit_form.php?".$params);
 			Nav::node('cataloging/biblio/editstock', T("Edit Stock Info"));
 			Nav::node('cataloging/biblio/newlike', T("New Like"), "../catalog/biblio_new_like.php?".$menu_params);
 			
-			Nav::node('cataloging/biblio/bookings', T("Item Bookings"),
-				"../reports/run_report.php?type=bookings"
+			Nav::node('cataloging/biblio/bookings', T("Item Bookings"), "../reports/run_report.php?type=bookings"
 				. "&rpt_order_by=outd!r"
 				. "&tab=cataloging&nav=biblio/bookings"
 				. "&rpt_bibid=".U($_REQUEST['bibid'])
 				. "&".$params);
-			Nav::node('cataloging/biblio/holds', T("Hold Requests"),
-				"../catalog/biblio_hold_list.php?".$params);
-		Nav::node('cataloging/upload_usmarc', T("MARC Import"),
-			"../catalog/upload_usmarc_form.php");			
+			Nav::node('cataloging/biblio/holds', T("Hold Requests"), "../catalog/biblio_hold_list.php?".$params);
+		Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/upload_usmarc_form.php");			
 			
-		Nav::node('cataloging/upload_csv', T("CSVImport"),
-			"../catalog/importCsvForms.php");			
+		Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");			
 			
-		Nav::node('cataloging/bulk_delete', T("Bulk Delete"),
-			"../catalog/bulkDelForm.php");
+		Nav::node('cataloging/bulk_delete', T("Bulk Delete"), "../catalog/bulkDelForm.php");
 	}
 	
 	##-------------------------------------------------------------------------------------##
@@ -81,8 +73,7 @@ function staff_menu() {
 		Nav::node('admin/calendars/new', T("New Calendar"), '../admin/calendar_edit_form.php');
 		Nav::node('admin/calendars/edit', T("Edit Calendar"));
 		if (isset($calendar) and $calendar != OBIB_MASTER_CALENDAR) {
-			Nav::node('admin/calendars/del', T("Delete Calendar"),
-				'../admin/calendar_del_confirm.php?calendar='.U($calendar));
+			Nav::node('admin/calendars/del', T("Delete Calendar"), '../admin/calendar_del_confirm.php?calendar='.U($calendar));
 		}
 		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
 		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
@@ -102,8 +93,7 @@ function staff_menu() {
 		Nav::node('reports', T("Reports"), '../reports/index.php');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 		if (isset($_SESSION['rpt_Report'])) {
-			Nav::node('reports/results', T("Report Results"),
-				'../reports/run_report.php?type=previous');
+			Nav::node('reports/results', T("Report Results"), '../reports/run_report.php?type=previous');
 		}
 	}
 
@@ -117,11 +107,13 @@ function staff_menu() {
 		Nav::node('tools/system', T("ChangeDBCollation"), '../tools/chgDBCollForms.php');
 		Nav::node('tools/system', T("transUtilities"), '../tools/transUtilForms.php');
 		Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
+		Nav::node('install/system', T("Install"), '../install/index.php');
 	}
 	
 	##-------------------------------------------------------------------------------------##
 
-	$helpurl = "javascript:popSecondary('../shared/help.php";
+	$text = "../shared/help.php";
+	$helpurl = "javascript:popSecondary(".$text.")";
 
 	if (isset($helpPage)) {
 		$helpurl .= "?page=".$helpPage;

@@ -91,10 +91,10 @@ switch ($_REQUEST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getCutter':
 		if ($postVars[cutterType] == 'LoC') {
-			require_once('olCutterLoc.php');
+			require_once('../catalog/olCutterLoc.php');
 		}
 		elseif ($postVars[cutterType] == 'CS3') {
-			require_once('olCutterCs3.php');
+			require_once('../catalog/olCutterCs3.php');
 		}
 		else {
 			echo "Invalid cutter type selection - '$postVars[cutterType]'. <br />";
@@ -107,7 +107,7 @@ switch ($_REQUEST[mode]){
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'search':
-		include('olSearch.php'); ## will respond directly, depending on what is received
+		require_once('../catalog/olSearch.php'); ## will respond directly, depending on what is received
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-

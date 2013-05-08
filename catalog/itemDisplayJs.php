@@ -101,7 +101,7 @@ var idis = {
 	},
 	
 	fetchCopyInfo: function () {
-	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img width="26" src="../images/please_wait.gif"/><?php echo T("Searching"); ?></p></td></tr>');
+	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.biblio.bibid}, function(jsonInpt){
 				idis.copyJSON = jsonInpt;
 				if (!idis.copyJSON) {
@@ -115,11 +115,11 @@ var idis = {
 				  var crntCopy = eval('('+idis.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
 					if (!opacMode) {
-						html += "	<td>\n";
-						html += "		<a href='' class=\"editBtn\" >edit</a>\n";
-						html += "		<a href='' class=\"deltBtn\" >del</a>\n";
-						html += "		<input type=\"hidden\" value=\""+crntCopy.copyid+"\">\n";
-						html += "	</td>\n";
+						html += '	<td>\n';
+						html += '		<button class="editBtn" value="edit" />\n';
+						html += '		<button class="deltBtn" value="del" />\n';
+						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
+						html += '	</td>\n';
 					}
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
@@ -131,8 +131,8 @@ var idis = {
 					}
 					html += "	<td>"+crntCopy.status
 					if (crntCopy.mbrId) {
-					  html += ' to <a href=\"../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'\">'
-								 + crntCopy.mbrName+'</a>';
+						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
+					  html += ' to <a '+text+'>'+crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
 					html += "	<td>"+idis.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";

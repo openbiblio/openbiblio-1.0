@@ -297,15 +297,8 @@
 	
 	//include_once(REL(__FILE__,'./mbrEditorJs.php'));
 	include_once(REL(__FILE__,'../catalog/itemDisplayJs.php'));
-	include_once(REL(__FILE__,'./memberJs.php'));
+	include_once(REL(__FILE__,'../circ/memberJs.php'));
 ?>	
 
-<?php/*
-INSERT INTO `openbibliowork`.`settings` (
-`name` ,`position` ,`title` ,`type` ,`width` ,`type_data` ,`validator` ,`value` ,`menu`)
-VALUES (
-'mbr_barcode_width', '11', 'Member Card No Width', 'int', NULL , NULL , NULL , '13', 'admin'
-);
-*/
-?>
-
+</body>
+</html>

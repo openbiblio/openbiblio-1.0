@@ -161,4 +161,4 @@
 	
 	require_once(REL(__FILE__, "biblioFldsJs.php"));
 ?>	
-	<script type="text/javascript" src="../shared/jquery/jquery-ui-1.10.2.custom.min.js"></script>
+	<script src="../shared/jquery/jquery-ui-1.10.2.custom.min.js"></script>

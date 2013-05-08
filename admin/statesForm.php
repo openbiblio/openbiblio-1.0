@@ -64,7 +64,7 @@
       <label for="code"><?php echo T("Code"); ?>:</label>
     </td>
     <td>
-      <input id="code" name="code" type="text" size="20" maxlength="20" required />
+      <input id="code" name="code" type="text" size="20" maxlength="20" required aria-required="true" />
 			<span class="addOnly reqd">*</span>    
     </td>
   </tr>

@@ -65,5 +65,8 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
 	//include_once(REL(__FILE__,'./mbrEditorJs.php'));
-	include_once(REL(__FILE__,'./checkinJs.php'));
+	include_once(REL(__FILE__,'../circ/checkinJs.php'));
 ?>	
+
+</body>
+</html>

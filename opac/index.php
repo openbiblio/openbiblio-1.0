@@ -35,11 +35,12 @@ if(empty($_SESSION['current_site'])){
 	
 if(isset($_REQUEST['selectSite'])){
 	$_SESSION['current_site'] =  $_REQUEST['selectSite'];
-	header("Location: opac/index.php");
+	header("Location: ../opac/index.php");
 }
 
-if(!empty($_SESSION['current_site'])) header("Location: ../catalog/srchForms.php?tab=OPAC");
-	
+if(!empty($_SESSION['current_site'])) {
+	header("Location: ../catalog/srchForms.php?tab=OPAC");
+}	
 
 session_cache_limiter(null);
 

@@ -1,13 +1,6 @@
 ############### Open issues, oldest at top #########################
 
 - Fred
-MARC import needs facelift
-update to look/work like CSV import
-
-- Fred 
-Install needs to work for new installations
-
-- Fred
 unable to return to non-circulating list after clicking on an item.
 
 - Fred
@@ -24,26 +17,36 @@ Report Generator does not handle all fields correctly (item search and csv outpu
 Add a backup mechanism to Tool or Admin menu
 
 - Fred
-online search screen needs a mechanism to select which host to use
-
-- Fred
 Help system needs lots of work
 
-- Neil Redgate
-field 260g not 'dragable' in Biblio Field editor
+- Fred
+MARC import needs facelift
+update to look/work like CSV import
 
-02 May 2013 - Neil Redgate
-Whilst I was searching through files, I noticed that in classes/report.php  -  
-line34: refers to /shared/biblio_search.php file
-Is  this correct - I can not find this file at that location but it is in 
-the /reports/defs/ subdirectory
+- Fred 
+Install needs to work for new installations
 
 07 May 2013 - Neil Redgate
 Whilst in Circulation | Member | Current member, I cannot logout.
 When Log out button is clicked - nothing happens.
 However, in any other Circulation page, I can log out immediately
 
+08 May 2013 - Fred
+Admin Calendars does not appear to be working
+
 ###################### Completed, most recent at top #########################
+
+- Neil Redgate - verified as draggable and droppable into existing 8 May 2013
+field 260g not 'dragable' in Biblio Field editor
+
+- Fred - verified as present 8 May 2013
+online search screen needs a mechanism to select which host to use
+
+02 May 2013 - Neil Redgate - fixed 8 May 2013, line disabled
+Whilst I was searching through files, I noticed that in classes/report.php  -  
+line34: refers to /shared/biblio_search.php file
+Is  this correct - I can not find this file at that location but it is in 
+the /reports/defs/ subdirectory
 
 02 May 2013 - Neil Redgate - fixed 8 May 2013 (see end of BiblioRows.php)
 The displayed results of Item Serach only shows the entry in fields 245a & 245b,

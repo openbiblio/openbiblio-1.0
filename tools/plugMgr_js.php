@@ -78,16 +78,16 @@ var plm = {
 		}
 	},
 	enableList: function () {
-		$('#listDiv fieldset')
+		$('#listArea fieldset')
 				.css('color','#000000')
 				.css('background-color','#ffffff');
-		$('#listDiv input.plugins').enable()
+		$('#listArea input.plugins').enable()
 	},
 	disableList: function () {
-			$('#listDiv fieldset')
+			$('#listArea fieldset')
 					.css('color','#888888')
 					.css('background-color','#cccccc');
-			$('#listDiv input.plugins').disable()
+			$('#listArea input.plugins').disable()
 	},
 
 	//------------------------------

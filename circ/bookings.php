@@ -20,14 +20,14 @@
 	}
 ?>
 <!-- ------------------------------------------------------------------- -->
-<!-- This segment is solely for jQuery UI date-picker support                      -->
-<!-- It could be placed into its own file and included as needed    -->
+<!-- This segment is solely for jQuery UI date-picker support            -->
+<!-- It could be placed into its own file and included as needed    		 -->
 <!-- ------------------------------------------------------------------- -->
 <!--  code needed for datepicker -->
-<link rel="stylesheet" type="text/css" media="screen" href="../shared/jquery/themes/base/ui.all.css">
-<link rel="stylesheet" type="text/css" media="screen" href="../shared/jquery/themes/base/ui.datepicker.css">
-<script type="text/javascript" src="../shared/jquery/ui/ui.core.js"></script>
-<script type="text/javascript" src="../shared/jquery/ui/ui.datepicker.js"></script>
+<link href="../shared/jquery/themes/base/ui.all.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../shared/jquery/themes/base/ui.datepicker.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="../shared/jquery/ui/ui.core.js"></script>
+<script src="../shared/jquery/ui/ui.datepicker.js"></script>
 <script language="JavaScript" >
 	$(function(){
 	  // create date picker

@@ -8,7 +8,7 @@
 	
 	function moduleList () {
 			$handl = opendir("..");
-			while ($file = readdir($handl)) {
+			while (false !== ($file = readdir($handl))) {
 			  if ($file != '.' && $file != '..') {
 					if ((is_dir('../'.$file)) && 
 							(substr($file,0,1) != '.') && 
@@ -114,7 +114,7 @@
 			foreach ($modules as $module) {	
 				$files = [];	
 				$handler = opendir("../$module");
-				while ($file = readdir($handler)) {
+				while (false !== ($file = readdir($handler))) {
 				  if ($file != '.' && $file != '..')
 					$files[] = $file;
 				}
@@ -156,7 +156,7 @@
 			$module = $_POST['module'];		
 			echo '<p class="bold">module: '.$module.'</p>';
 			$handler = opendir("../$module");
-			while ($file = readdir($handler)) {
+			while (false !== ($file = readdir($handler))) {
 			  if ($file != '.' && $file != '..')
 				$files[] = $file;
 			}

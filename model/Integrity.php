@@ -67,7 +67,7 @@ class Integrity {
 				// FIXME - Check in copies
 			),
 			
-			
+/*			
 			array(
 				// Added as there was a bug in the code, and not sure how long
 				// it has been there so DB might be corrupt.  The problem is a
@@ -91,6 +91,7 @@ class Integrity {
 					. 'HAVING COUNT(f.fieldid) > 1) AS t',
 				// NO AUTOMATIC FIX
 			),			
+*/
 			array(
 				//'error' => T("%count% items with multiple un-repeatable fields"),
 				'error' => T("items with multiple un-repeatable fields"),

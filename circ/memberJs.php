@@ -59,7 +59,6 @@ var mf = {
 			mf.doFetchMember(); 
 			mf.rtnToMbr();
 		});
-			
 	},
 	
 	//------------------------------
@@ -481,7 +480,7 @@ var mf = {
 		$('#classification').val(mbr.classification);
 
 		$.each(mf.cstmFlds, function (name, value) {
-console.log(name+'==>'+value);		
+			//console.log(name+'==>'+value);		
 			$('#custom_'+name).val(mbr[name]);
 		});
 			

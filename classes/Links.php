@@ -34,10 +34,7 @@ class LinkUrl {
 $_Links_urls = array(
 	'biblio'=>new LinkUrl('../shared/biblio_view.php', 'bibid', array()),
 	'booking_opac'=>new LinkUrl('../opac/booking.php', 'bookingid', array()),
-	'subject'=>new LinkUrl('../shared/biblio_search.php', 'searchText', array(
-		'searchType'=>'subject',
-		'exact'=>'1'
-	)),
+	//'subject'=>new LinkUrl('../shared/biblio_search.php', 'searchText', array('searchType'=>'subject','exact'=>'1')),
 );
 class Links {
 	function mkLink($type, $id, $text, $params=NULL) {
