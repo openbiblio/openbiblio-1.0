@@ -97,7 +97,7 @@ class Queryi extends mysqli{
 			$row = $this->select1($this->mkSQL('select release_lock(%Q) as unlocked',
 				OBIB_LOCK_NAME));
 			if (!isset($row['unlocked']) or $row['unlocked'] != 1) {
-				Fatal::internalError(T("Can't release lock"));
+				Fatal::internalError(T("Cannot release lock"));
 			}
 		}
 		*/

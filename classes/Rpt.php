@@ -165,10 +165,10 @@ class RptParser {
 		if ($this->lat[0] == 'EOF') {
 			$str = T("Unexpected end of file");
 		} else {
-			$str = T("Unexpected token \"%token%\"", array('token'=>$this->lat[0]));
+			$str = T("Unexpected token '%token%'", array('token'=>$this->lat[0]));
 		}
 		if ($expected) {
-			$str .= ' '.T("expecting \"%exp%\"", array('exp'=>$expected));
+			$str .= ' '.T("expecting '%exp%'", array('exp'=>$expected));
 		}
 		return $this->error($str);
 	}
@@ -237,7 +237,7 @@ class RptParser {
 	}
 	function getQuoted($str) {
 		if (empty($str)) {
-			Fatal::internalError(T("getQuoted() called with empty \$str"));
+			Fatal::internalError(T("getQuoted() called with empty %str%",array('str'=>$str)));
 		}
 		$q = $str{0};
 		$w = '';
@@ -777,7 +777,7 @@ class RptIter extends Iter {
 						include_once(REL(__FILE__, "../classes/Search.php"));
 						list($t, $v) = $scope->getFirst($name);
 						if ($t != "string") {
-							Fatal::internalError(T("\$t != \"string\""));
+							Fatal::internalError(T("'%t%' is not a string",array('t'=>$t)));
 						}
 						$vlist = array();
 						foreach (Search::explodeQuoted($v) as $w) {
@@ -795,7 +795,7 @@ class RptIter extends Iter {
 					if ($v = $scope->getFirst('order_by')) {
 						list($type, $value, $raw) = $v;
 						if ($type != "order_by") {
-							Fatal::internalError(T("\$type != \"order_by\""));
+							Fatal::internalError(T("'%type%' must be 'order_by'"),array('type'=>$type));
 						}
 						$query .= 'order by '.$value.' ';
 					}

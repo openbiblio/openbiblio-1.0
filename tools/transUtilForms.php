@@ -26,17 +26,17 @@
 		</fieldset> 
 		
 		<fieldset id="dupArea">
-		<legend><?php echo T('Check4Dups'); ?></legend>
+		<legend><?php echo T("Check4Dups"); ?></legend>
 		  <input type="button" id="dupChkBtn" value="<?php echo T("Scan"); ?>" />
 		</fieldset> 
 		
 		<fieldset id="orfnArea">
-		<legend><?php echo T('Check4Unused'); ?></legend>
+		<legend><?php echo T("Check4Unused"); ?></legend>
 		  <input type="button" id="orfnChkBtn" value="<?php echo T("Scan"); ?>" />
 		</fieldset> 
 		
 		<fieldset id="absntArea">
-		<legend><?php echo T('Check4Needed'); ?></legend>
+		<legend><?php echo T("Check4Needed"); ?></legend>
 		  <input type="button" id="absntChkBtn" value="<?php echo T("Scan"); ?>" />
 		</fieldset> 
 	</section>

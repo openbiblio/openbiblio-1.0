@@ -185,8 +185,9 @@
 			foreach ($files as $file) {
 			  $lines = file("../$module/$file");
 			  foreach ($lines as $line_num => $line) {
-					preg_match_all("|T\((.*)\)|U",$line,$out, PREG_PATTERN_ORDER);
-					foreach ($out[1] as $key) {
+					//preg_match_all("|(T\(\")(.*)(\"\))|U",$line,$out, PREG_PATTERN_ORDER);
+					preg_match_all("/(T\(\")(.*)(\"(,|\)))/U",$line,$out, PREG_PATTERN_ORDER);
+					foreach ($out[2] as $key) {
 						$key = str_replace("\"","",$key);
 						$key = str_replace("\'","",$key);
 						if (!isset($trans[$key])) {

@@ -93,8 +93,7 @@ class Integrity {
 			),			
 */
 			array(
-				//'error' => T("%count% items with multiple un-repeatable fields"),
-				'error' => T("items with multiple un-repeatable fields"),
+				'error' => T("%count% items with multiple un-repeatable fields"),
 				'countSql' => 'SELECT COUNT(DISTINCT t.bibid)AS count FROM ('
 					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
 					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
@@ -119,7 +118,6 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),			
 			array(
-				//'error' => T("items with empty collections"),
 				'error' => T("%count% items with empty collections"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
@@ -130,8 +128,7 @@ class Integrity {
 					.	'WHERE collection_cd = 0 ',
 			),			
 			array(
-				//'error' => T("%count% items with empty media-type"),
-				'error' => T("items with empty media-type"),
+				'error' => T("%count% items with empty media-type"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
 					. 'WHERE material_cd = 0 ',
@@ -141,8 +138,7 @@ class Integrity {
 					.	'WHERE material_cd = 0 ',
 			),			
 			array(
-				//'error' => T("%count% unattached copy status history records"),
-				'error' => T("unattached copy status history records"),
+				'error' => T("%count% unattached copy status history records"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio_copy '
 					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
@@ -153,8 +149,7 @@ class Integrity {
 					. 'where biblio_copy.copyid is null ',
 			),
 			array(
-				//'error' => T("%count% invalid biblio in copy status history records"),
-				'error' => T("invalid biblio in copy status history records"),
+				'error' => T("%count% invalid biblio in copy status history records"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio '
 					. 'on biblio.bibid=biblio_status_hist.bibid '
