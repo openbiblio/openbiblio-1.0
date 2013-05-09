@@ -102,7 +102,7 @@
 
 		## anything to process for current media type (material_cd) ?
 		if ($fields->count() == 0) {
-			echo "<tr><td colspan=\"2\" >.T("No fields to fill in.").</td></tr>\n";
+			echo '<tr><td colspan="2" >'.T("No fields to fill in.").'</td></tr>\n';
 		}
 
 		## build an array of fields to be displayed on user form

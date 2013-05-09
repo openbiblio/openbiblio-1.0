@@ -896,7 +896,7 @@ var bs = {
 				$('#onlineMsg').html(rslts.msg+' '+item);
 			}
 			else if (numHits >= maxHits) {
-			  msgText = '<?php echo T("hits found, too many to process"); ?>;
+			  msgText = '<?php echo T("hits found, too many to process"); ?>';
 				$('#onlineMsg').html(numHits+' '+msgText);
 			}
 			else if (numHits > 1){
