@@ -165,7 +165,7 @@ class Integrity {
 					. 'where biblio.bibid is null ',
 			),
 			array(
-				'error' => T('IntegrityQueryInvalidStatusCodes'),
+				'error' => T("IntegrityQueryInvalidStatusCodes"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio_status_dm '
 					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
@@ -176,7 +176,7 @@ class Integrity {
 					. 'where biblio_status_dm.code is null ',
 			),
 			array(
-				'error' => T('IntegrityQueryBrokenBibidRef'),
+				'error' => T("IntegrityQueryBrokenBibidRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio '
 					. 'on biblio.bibid=booking.bibid '
@@ -187,7 +187,7 @@ class Integrity {
 					. 'where biblio.bibid is null ',
 			),
 			array(
-				'error' => T('IntegrityQueryBrokenOutRef'),
+				'error' => T("IntegrityQueryBrokenOutRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio_status_hist '
 					. 'on biblio_status_hist.histid=booking.out_histid '
@@ -196,7 +196,7 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),
 			array(
-				'error' => T('IntegrityQueryBrokenReturnRef'),
+				'error' => T("IntegrityQueryBrokenReturnRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio_status_hist '
 					. 'on biblio_status_hist.histid=booking.ret_histid '
@@ -205,7 +205,7 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),
 			array(
-				'error' => T('IntegrityQueryNoAssBooking'),
+				'error' => T("IntegrityQueryNoAssBooking"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking_member left join booking '
 					. 'on booking.bookingid=booking_member.bookingid '
@@ -216,7 +216,7 @@ class Integrity {
 					. 'where booking.bookingid is null ',
 			),
 			array(
-				'error' => T('IntegrityQueryNoAssMember'),
+				'error' => T("IntegrityQueryNoAssMember"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking_member left join member '
 					. 'on member.mbrid=booking_member.mbrid '
@@ -228,7 +228,6 @@ class Integrity {
 			),
 			array(
 				'error' => T("%count% copies without site"),
-				//'error' => T("copies without site"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_copy left join site '
 					. 'on site.siteid=biblio_copy.siteid '
@@ -237,7 +236,6 @@ class Integrity {
 			),			
 			array(
 				'error' => T("%count% members without sites"),
-				//'error' => T("members without sites"),
 				'countSql' => 'select count(*) as count '
 					. 'from member left join site '
 					. 'on site.siteid=member.siteid '
@@ -245,7 +243,7 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),
 			array(
-				'error' => T('IntegrityQueryUnattachedAccTrans'),
+				'error' => T("IntegrityQueryUnattachedAccTrans"),
 				'countSql' => 'select count(*) as count '
 					. 'from member_account left join member '
 					. 'on member.mbrid=member_account.mbrid '
@@ -256,7 +254,7 @@ class Integrity {
 					. 'where member.mbrid is null ',
 			),
 			array(
-				'error' => T('IntegrityQueryChangedCopyStatus'),
+				'error' => T("IntegrityQueryChangedCopyStatus"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking b, biblio_status_hist h, biblio_copy c '
 					. 'where b.out_histid is not null and b.ret_histid is null '
@@ -265,7 +263,7 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),
 			array(
-				'error' => T('IntegrityQueryOutRecNoBooking'),
+				'error' => T("IntegrityQueryOutRecNoBooking"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join booking '
 					. 'on booking.out_histid=biblio_status_hist.histid '
@@ -274,9 +272,7 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),
 			array(
-				'error' => T("%count% double check outs"),
-				//'error' => T("double check outs"),
-				'countFn' => 'countDoubleCheckouts',
+				'error' => T("%count% double check outs"), 'countFn' => 'countDoubleCheckouts',
 				// NO AUTOMATIC FIX
 			),
 		);

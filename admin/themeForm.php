@@ -56,7 +56,7 @@
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 <table>
-	<legend><?php echo T("Edit Media Properties"); ?></legend>
+	<legend><?php echo T("Edit Media"); ?></legend>
 	<tbody id="part1" class="unstriped">
 	<tr>
 		<td><label for="theme_name"><?php echo T("Theme Name"); ?>:</label></td>

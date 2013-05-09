@@ -77,11 +77,11 @@
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 	}
 ?>
-<h3><?php echo T('Circulation'); ?></h3>
+<h3><?php echo T("Circulation"); ?></h3>
 
 <form name="layoutparamform" method="get" action="../shared/layout.php">
 <fieldset>
-<legend><?php echo T('Packing List'); ?></legend>
+<legend><?php echo T("Packing List"); ?></legend>
 <input type="hidden" name="name" value="<?php echo H($_REQUEST["name"]) ?>" />
 <input type="hidden" name="rpt" value="<?php echo H($_REQUEST["rpt"]) ?>" />
 <input type="hidden" name="tab" value="<?php echo H($tab) ?>" />

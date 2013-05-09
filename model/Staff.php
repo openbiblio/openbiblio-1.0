@@ -47,7 +47,7 @@ class Staff extends CoreTable {
 			}
 			$rows = $this->db->select($sql);
 			if ($rows->count() != 0) {
-				$errors[] = new FieldError('username', T("Username already taken by another user."));
+				$errors[] = new FieldError('username', T("Username already taken by another user"));
 			}
 		}
 		return $errors;

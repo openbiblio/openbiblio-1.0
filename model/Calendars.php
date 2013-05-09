@@ -53,7 +53,7 @@ class Calendars extends DmTable {
 	}
 	function _createDays($calendar, $from, $to) {
 		if (Date::daysLater($to, $from) < 0) {
-			Fatal::internalError(T('CalendarsLaterDate'));
+			Fatal::internalError(T("CalendarsLaterDate"));
 		}
 		foreach (Date::getDays($from, $to) as $d) {
 			$sql = $this->db->mkSQL("INSERT INTO calendar SET "

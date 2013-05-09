@@ -48,7 +48,7 @@ class Report {
 	function create($type, $name=NULL) {
 		list($rpt, $err) = Report::create_e($type, $name);
 		if($err) {
-			Fatal::internalError(T('ReportCreatingReport', array('error'=>$err->toStr())));
+			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
 		}
 		return $rpt;
 	}
@@ -66,7 +66,7 @@ class Report {
 		$err = $rpt->_load_e($name, $_SESSION['rpt_'.$name]);
 		if ($err) {
 			unset($_SESSION['rpt_'.$name]);
-			Fatal::internalError(T('ReportNoLoadReport', array('name'=>$name)));
+			Fatal::internalError(T("ReportNoLoadReport", array('name'=>$name)));
 		}
 		return $rpt;
 	}
@@ -131,7 +131,7 @@ class Report {
 	function init($params) {
 		$errs = $this->init_el($params);
 		if(!empty($errs)) {
-			Fatal::internalError(T('ReportInitReport', array('error'=>Error::listToStr($errs))));
+			Fatal::internalError(T("ReportInitReport", array('error'=>Error::listToStr($errs))));
 		}
 	}
 	function init_el($params) {
@@ -146,7 +146,7 @@ class Report {
 	function initCgi($prefix='rpt_') {
 		$errs = $this->initCgi_el($prefix);
 		if(!empty($errs)) {
-			Fatal::internalError(T('ReportInitReport', array('error'=>Error::listToStr($errs))));
+			Fatal::internalError(T("ReportInitReport", array('error'=>Error::listToStr($errs))));
 		}
 	}
 	function initCgi_el($prefix='rpt_') {
@@ -167,20 +167,20 @@ class Report {
 	function variant($newParams, $newName=NULL) {
 		list($rpt, $errs) = $this->variant_el($newParams, $newName);
 		if(!empty($errs)) {
-			Fatal::internalError(T('ReportMakingVariant', array('error'=>Error::listToStr($errs))));
+			Fatal::internalError(T("ReportMakingVariant", array('error'=>Error::listToStr($errs))));
 		}
 		return $rpt;
 	}
 	function variant_el($newParams, $newName=NULL) {
 		if(!is_array($this->cache["params"])) {
-			Fatal::internalError(T('ReportNoParams'));
+			Fatal::internalError(T("ReportNoParams"));
 		}
 		if ($newName === NULL) {
 			$newName = $this->name;
 		}
 		$rpt = Report::create($this->cache['type'], $newName);
 		if(!$rpt) {
-			Fatal::internalError(T('ReportCreationFailed'));
+			Fatal::internalError(T("ReportCreationFailed"));
 		}
 		$params = new Params;
 		$params->loadDict($this->cache['params']);

@@ -61,14 +61,14 @@ class Query {
 	function select($sql) {
 		$results = $this->_act($sql);
 		if (is_bool($results)) {
-			Fatal::dbError($sql, T("Select did not return results."), T("Nothing Found error."));
+			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
 		}
 		return new DbIter($results);
 	}
 	function select1($sql) {
 		$r = $this->select($sql);
 		if ($r->count() != 1) {
-			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("Nothing Found error."));
+			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("NothingFoundError"));
 		} else {
 			return $r->next();
 		}
@@ -78,14 +78,14 @@ class Query {
 		if ($r->count() == 0) {
 			return NULL;
 		} else if ($r->count() != 1) {
-			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("Wrong Number Found error."));
+			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
 		} else {
 			return $r->next();
 		}
 	}
 	function _act($sql) {
 		if (!$this->_link) {
-			Fatal::internalError(T('QueryBeforeConnect'));
+			Fatal::internalError(T("QueryBeforeConnect"));
 		}
 		$r =  mysql_query($sql, $this->_link);
 		if ($r === false) {
@@ -135,7 +135,7 @@ class Query {
 			$row = $this->select1($this->mkSQL('select release_lock(%Q) as unlocked',
 				OBIB_LOCK_NAME));
 			if (!isset($row['unlocked']) or $row['unlocked'] != 1) {
-				Fatal::internalError(T("Can't release lock"));
+				Fatal::internalError(T("Cannot release lock"));
 			}
 		}
 	}

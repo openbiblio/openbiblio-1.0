@@ -38,7 +38,7 @@ class DBTable {
 	function setSequenceField($sequence) {
 		$this->sequence = $sequence;
 		if (!isset($this->fields[$sequence])) {
-			Fatal::internalError(T('DBTableSequenceField', array('sequence'=>$sequence)));
+			Fatal::internalError(T("DBTableSequenceField", array('sequence'=>$sequence)));
 		}
 	}
 	function setForeignKey($key, $table, $field) {
@@ -103,7 +103,7 @@ class DBTable {
 				$k['table'], $k['field'], $rec[$k['key']]);
 			$r = $this->db->select01($sql);
 			if (!$r) {
-				$errors[] = new FieldError($k['key'], T('DBTableBadForeignKey', array('key'=>$rec[$k['key']], 'field'=>$k['key'])));
+				$errors[] = new FieldError($k['key'], T("DBTableBadForeignKey", array('key'=>$rec[$k['key']], 'field'=>$k['key'])));
 			}
 		}
 		return $errors;
@@ -120,7 +120,7 @@ class DBTable {
 	function insert($rec, $confirmed=false) {
 		list($seq_val, $errors) = $this->insert_el($rec, $confirmed);
 		if ($errors) {
-			Fatal::internalError(T('DBTableErrorInserting', array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
+			Fatal::internalError(T("DBTableErrorInserting", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
 		}
 		return $seq_val;
 	}
@@ -157,14 +157,14 @@ class DBTable {
 	function update($rec, $confirmed=false) {
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
-			Fatal::internalError(T('DBTableErrorUpdating', array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
+			Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
 		}
 	}
 	function update_el($rec, $confirmed=false) {
 		$key = array();
 		foreach ($this->key as $k) {
 			if (!isset($rec[$k]))
-				Fatal::internalError(T('DBTableIncompleteKey', array('key'=>$k)));
+				Fatal::internalError(T("DBTableIncompleteKey", array('key'=>$k)));
 			$key[] = $rec[$k];
 		}
 		$this->db->lock();

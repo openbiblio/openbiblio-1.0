@@ -22,14 +22,14 @@ class Queryi extends mysqli{
 	function select($sql) {
 		$results = $this->_act($sql);
 		if (is_bool($results)) {
-			Fatal::dbError($sql, T("Select did not return results."), T("Nothing Found error."));
+			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
 		}
 		return $results;
 	}
 	function select1($sql) {
 		$r = $this->select($sql);
 		if ($r->count() != 1) {
-			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("Nothing Found error."));
+			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("NothingFoundError"));
 		} else {
 			return $r->next();
 		}
@@ -39,7 +39,7 @@ class Queryi extends mysqli{
 		if ($r->count() == 0) {
 			return NULL;
 		} else if ($r->count() != 1) {
-			Fatal::dbError($sql, T('QueryWrongNrRows', array('count'=>$r->count())), T("Wrong Number Found error."));
+			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
 		} else {
 			return $r->next();
 		}

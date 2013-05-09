@@ -118,7 +118,7 @@ class Members extends CoreTable {
 				return array(NULL, array(new FieldError('password', T("Password at least 4 chars"))));
 			}
 			if (!isset($mbr['confirm-pw']) or $mbr['confirm-pw'] != $mbr['password']) {
-				return array(NULL, array(new FieldError('password', T("Supplied passwords do not match."))));
+				return array(NULL, array(new FieldError('password', T("Supplied passwords do not match"))));
 			}
 			$mbr['password'] = md5($mbr['password']);
 		}
@@ -131,7 +131,7 @@ class Members extends CoreTable {
 			} else if (strlen($mbr['password']) < 4 && !$_SESSION["hasCircAuth"]) {
 				return array(NULL, array(new FieldError('password', T("Password at least 4 chars"))));
 			} else if (!isset($mbr['confirm-pw']) or $mbr['confirm-pw'] != $mbr['password']) {
-				return array(new FieldError('password', T("Supplied passwords do not match.")));
+				return array(new FieldError('password', T("Supplied passwords do not match")));
 			} else {
 				$mbr['password'] = md5($mbr['password']);
 			}

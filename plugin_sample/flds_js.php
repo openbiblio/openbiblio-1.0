@@ -8,7 +8,7 @@ mtl = {
 	<?php
 	echo 'successMsg 		: "'.T('updateSuccess').'",'."\n";
 	echo 'delConfirmMsg : "'.T('confirmDelete').'",'."\n";
-	echo 'goBackLbl			: "'.T('Go Back').'",'."\n";
+	echo 'goBackLbl			: "'.T("Go Back").'",'."\n";
 	echo 'cancelLbl			: "'.T('Cancel').'",'."\n";
 	echo 'updateLbL			: "'.T('Update').'",'."\n";
 	echo 'addNewLbl			: "'.T('Add New').'",'."\n";

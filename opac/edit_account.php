@@ -33,7 +33,7 @@ $form = array(
 			'default'=>$mbr['last_name'].', '.$mbr['first_name']),
 		array('name'=>'site', 'type'=>'fixed', 'title'=>T("Site:"),
 			'default'=>$site['name']),
-		array('name'=>'barcode_nmbr', 'type=>fixed', 'title'=>T("Card Number:"),
+		array('name'=>'barcode_nmbr', 'type=>fixed', 'title'=>T("Card Number").':',
 			'default'=>$mbr['barcode_nmbr']),
 		array('name'=>'email', 'title'=>T("Email Address:"),
 			'default'=>$mbr['email']),

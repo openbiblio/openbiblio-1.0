@@ -123,7 +123,7 @@ class Bookings extends CoreTable {
 				$sql = $this->db->mkSQL('select mbrid from member '
 					. 'where mbrid=%N', $mbrid);
 				if (!$this->db->select01($sql)) {
-					$errors[] = new Error(T('modelBookingsMemberNoExist'));
+					$errors[] = new Error(T("modelBookingsMemberNoExist"));
 				}
 			}
 		}
@@ -131,7 +131,7 @@ class Bookings extends CoreTable {
 		if (isset($new['book_dt']) or isset($new['due_dt']) or isset($new['bibid'])) {
 			# Check that due date is after out date
 			if ($booking['due_dt'] <= $booking['book_dt']) {
-				$errors[] = new Error(T('modelBookingsDueNotEarlier'));
+				$errors[] = new Error(T("modelBookingsDueNotEarlier"));
 			}
 			if (empty($old) && $booking['book_dt'] < date('Y-m-d')) {
 				$errors[] = new IgnorableFieldError('date', T("Date is in the past"));
@@ -206,7 +206,7 @@ class Bookings extends CoreTable {
 			$sql .= '('.implode(",", $mbrids).') ';
 			$rows = $this->db->select($sql);
 			if ($rows->count() != 0) {
-				$errors[] = new IgnorableError(T('modelBookingsClosedOnBookDate'));
+				$errors[] = new IgnorableError(T("modelBookingsClosedOnBookDate"));
 			}
 			$sql = $this->db->mkSQL('select c.date, c.open '
 				. 'from calendar c, member m, site s '
@@ -218,7 +218,7 @@ class Bookings extends CoreTable {
 			$sql .= '('.implode(",", $mbrids).') ';
 			$rows = $this->db->select($sql);
 			if ($rows->count() != 0) {
-				$errors[] = new IgnorableError(T('modelBookingsClosedOnDueDate'));
+				$errors[] = new IgnorableError(T("modelBookingsClosedOnDueDate"));
 			}
 		}
 
@@ -322,21 +322,21 @@ class Bookings extends CoreTable {
 			}
 			$booking = $this->getOne($bookingid);
 			if ($copy['bibid'] != $booking['bibid']) {
-				$err = new Error(T('modelBookingsBarcodeNoMatch'));
+				$err = new Error(T("modelBookingsBarcodeNoMatch"));
 				break;
 			}
 			if ($booking['out_histid']) {
-				$err = new Error(T('modelBookingsAlreadyCheckedOut'));
+				$err = new Error(T("modelBookingsAlreadyCheckedOut"));
 				break;
 			}
 			$history = new History;
 			$status = $history->getOne($copy['histid']);
 			if ($status['status_cd'] == OBIB_STATUS_OUT) {
-				$err = new Error(T('modelBookingsCopyUnavailable', array('barcode'=>$barcode)));
+				$err = new Error(T("modelBookingsCopyUnavailable", array('barcode'=>$barcode)));
 				break;
 			}
 			if (in_array($copy['copyid'], $out_copyids)) {
-				$err = new Error(T('modelBookingsSetForOtherBooking', array('barcode'=>$barcode)));
+				$err = new Error(T("modelBookingsSetForOtherBooking", array('barcode'=>$barcode)));
 				break;
 			}
 			if (Settings::get('block_checkouts_when_fines_due')) {
@@ -349,7 +349,7 @@ class Bookings extends CoreTable {
 					}
 				}
 				if ($all_fined) {
-					$err = new Error(T('modelBookingsPayFinesFirst'));
+					$err = new Error(T("modelBookingsPayFinesFirst"));
 					break;
 				}
 			}
@@ -357,7 +357,7 @@ class Bookings extends CoreTable {
 			$collections = new Collections;
 			$coll = $collections->getByBibid($copy['bibid']);
 			if ($coll['days_due_back'] <= 0) {
-				$err = new Error(T('modelBookingsNotAvailable'));
+				$err = new Error(T("modelBookingsNotAvailable"));
 				break;
 			}
 			# Check wherether the user can take out more books (not sure if I understand this) - LJ
@@ -380,7 +380,7 @@ class Bookings extends CoreTable {
 				$limit = $material['juvenile_checkout_limit'];
 			}
 			if($limit <= $checkouts){
-				$err = new Error(T('Member has exceeded %number% items', array('number'=>$limit)));
+				$err = new Error(T("Member has exceeded %number% items", array('number'=>$limit)));
 				break;
 			}
 		} while (0);
@@ -455,7 +455,7 @@ class Bookings extends CoreTable {
 		$history = new History;
 		$status = $history->getOne($copy['histid']);
 		if($status['status_cd'] == OBIB_STATUS_NOT_ON_LOAN){
-			return new Error(T('modelBookingsNotOnLoan', array("barcode"=>$barcode)));
+			return new Error(T("modelBookingsNotOnLoan", array("barcode"=>$barcode)));
 		}
 		if ($status['status_cd'] == OBIB_STATUS_ON_HOLD) {
 			include_once(REL(__FILE__, "../model/Holds.php"));
@@ -463,7 +463,7 @@ class Bookings extends CoreTable {
 			if ($hold = $holds->getFirstHold($copy['copyid'])) {
 				if (!in_array($hold['mbrid'], $mbrids)) {
 					$this->db->unlock();
-					return new Error(T('modelBookingsHeldForOtherMember', array("barcode"=>$barcode)));
+					return new Error(T("modelBookingsHeldForOtherMember", array("barcode"=>$barcode)));
 				} else {
 					$holds->deleteOne($hold['holdid']);
 				}
@@ -474,7 +474,7 @@ class Bookings extends CoreTable {
 		$daysDueBack = $coll['days_due_back'];
 		if ($daysDueBack <= 0) {
 			$this->db->unlock();
-			return new Error(T('modelBookingsNotAvailable', array("barcode"=>$barcode)));
+			return new Error(T("modelBookingsNotAvailable", array("barcode"=>$barcode)));
 		}
 		list($book_dt, $err) = Date::read_e('now');
 		if ($err) {

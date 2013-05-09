@@ -24,7 +24,7 @@
 	Page::header_opac(array('nav'=>$nav, 'title'=>''));
 ?>
 <form method="post" action="../shared/request_send.php">
-	<p style="color: #ff0000;"><?php echo T('requestFieldsReqd'); ?></p>
+	<p style="color: #ff0000;"><?php echo T("requestFieldsReqd"); ?></p>
 	<p>
 	<table>
 		<tr>
@@ -88,22 +88,22 @@
 				<td class="noborder" valign="top">
 					<?php echo inputfield('checkbox', 'call', '', NULL, 'Y'); ?>
 				</td>
-				<td class="noborder" valign="top"><?php echo T('requestCallMe'); ?><br /><?php echo T("Phone:"); ?> <?php echo inputfield('text', "phone"); ?></td>
+				<td class="noborder" valign="top"><?php echo T("requestCallMe"); ?><br /><?php echo T("Phone:"); ?> <?php echo inputfield('text', "phone"); ?></td>
 			</tr>
 			<tr>
 				<td class="noborder" valign="top">
 					<?php echo inputfield('checkbox', 'confirm', '', NULL, 'Y'); ?>
 				</td>
-				<td class="noborder" valign="top"><?php echo T('requestMailMe'); ?><br /><?php echo T("Email"); ?>: <?php echo inputfield('text', "email"); ?></td>
+				<td class="noborder" valign="top"><?php echo T("requestMailMe"); ?><br /><?php echo T("Email"); ?>: <?php echo inputfield('text', "email"); ?></td>
 			</tr>
 			<tr>
 				<td class="noborder" valign="top">
 					<?php echo inputfield('checkbox', 'alternate', '', NULL, 'Y'); ?>
 				</td>
-				<td class="noborder" valign="top"><?php echo T('requestAltTitles'); ?></td>
+				<td class="noborder" valign="top"><?php echo T("requestAltTitles"); ?></td>
 			</tr>
 		</table>
-	<h3><?php echo T('requestOtherNotes'); ?></h3>
+	<h3><?php echo T("requestOtherNotes"); ?></h3>
 	<?php echo inputfield('textarea', 'notes', '', array('cols'=>'40', 'rows'=>'5')); ?>
 	<p><input type="submit" value="<?php echo T("Submit Request"); ?>" class="button" /></p>
 </form>

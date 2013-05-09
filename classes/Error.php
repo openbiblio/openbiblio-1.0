@@ -159,7 +159,7 @@ class Fatal {
 		if (method_exists($_Error_FatalHandler, 'dbError')) {
 			$_Error_FatalHandler->dbError($sql, $msg, $dberror);
 		} else {
-			Fatal::error(T('ErrorDatabase', array('msg'=>$msg, 'sql'=>$sql, 'dberror'=>$dberror)));
+			Fatal::error(T("ErrorDatabase", array('msg'=>$msg, 'sql'=>$sql, 'dberror'=>$dberror)));
 		}
 	}
 	/* Need a lock and can't get it */
@@ -186,17 +186,17 @@ class Fatal {
 class FatalHandler {
 	/* FIXME - Internationalize this stuff */
 	function internalError($msg) {
-		echo "<h1>".T('ErrorInternalFoundBug')."</h1>\n";
-		echo "<p>".T('ErrorInfoToSupport')."</p>\n";
+		echo "<h1>".T("ErrorInternalFoundBug")."</h1>\n";
+		echo "<p>".T("ErrorInfoToSupport")."</p>\n";
 		echo "<p>".H($msg)."</p>\n";
 		$this->printBackTrace();
 		exit(1);
 	}
 	function dbError($sql, $msg, $dberror) {
-		echo "<h1>".T('ErrorDbQuery')."</h1>\n";
+		echo "<h1>".T("ErrorDbQuery")."</h1>\n";
 		echo "<h2>".H($msg)."</h2>\n";
-		echo "<p>".T('ErrorInfoToSupport')."</p>\n";
-		echo "<p>".T('ErrorQueryFailed', array('query'=>H($sql)))."</p>\n";
+		echo "<p>".T("ErrorInfoToSupport")."</p>\n";
+		echo "<p>".T("ErrorQueryFailed", array('query'=>H($sql)))."</p>\n";
 		echo "<pre>".H($dberror)."</pre>";
 		$this->printBackTrace();
 		exit(1);
@@ -214,7 +214,7 @@ class FatalHandler {
 	}
 	function printBackTrace() {
 		if (function_exists('debug_backtrace')) {
-			echo "<h2>".T('ErrorDebugBacktrace')."</h2>\n";
+			echo "<h2>".T("ErrorDebugBacktrace")."</h2>\n";
 			echo '<pre>';
 			foreach(debug_backtrace() as $frame) {
 				# As usual, PHP makes things more complicated.  This time by

@@ -1,6 +1,8 @@
 <?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
+ * 
+ * THIS IS AN OpenBiblio PLUG-IN  
  */
  
   require_once("../shared/common.php");
@@ -163,7 +165,9 @@
 <!-- load jQuery library(s) -->
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
-	
 	require_once(REL(__FILE__, "flds_js.php"));
 ?>	
-	<script type="text/javascript" src="../shared/jquery/jquery-ui-1.8.7.custom.min.js"></script>
+	<script src="../shared/jquery/jquery-ui-1.8.7.custom.min.js" type="text/javascript" ></script>
+	
+</body>
+</html>	

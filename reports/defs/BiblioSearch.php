@@ -8,14 +8,14 @@ require_once(REL(__FILE__, "../../classes/Query.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 require_once(REL(__FILE__, "../../classes/BiblioRows.php"));
 
-class biblio_search_rpt extends BiblioRows {
+class BiblioSearch_rpt extends BiblioRows {
 	var $params = NULL;
 	var $searchTypes;
 	var $q;
 	var $countSQL = NULL;
 	var $sliceSQL = NULL;
 
-	function biblio_search_rpt() {
+	function BiblioSearch_rpt() {
 		$this->searchTypes = array(
 			'keyword' => Search::type('Keyword', 'MARC', array()),
 			'callno' => Search::type('Call No.', 'MARC', array('099$a')),
@@ -60,6 +60,7 @@ class biblio_search_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
+		//echo "sql===>$sql<br /><br />";					 
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {

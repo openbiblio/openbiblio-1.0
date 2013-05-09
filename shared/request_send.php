@@ -37,18 +37,18 @@ if ($_REQUEST['call'] == 'Y') {
 	if (!$_REQUEST['phone']) {
 		$pageErrors['phone'] = T("Please enter your phone number.");
 	}
-	$msg .= T('requestSendPleaseCall')."\r\n";
+	$msg .= T("requestSendPleaseCall")."\r\n";
 	$msg .= T("Phone:")." ".$_REQUEST['phone']."\r\n\r\n";
 }
 if ($_REQUEST['confirm'] == 'Y') {
 	if (!$_REQUEST['email']) {
 		$pageErrors['email'] = T("Please enter your e-mail address.");
 	}
-	$msg .= T('requestSendPleaseSend')."\r\n";
+	$msg .= T("requestSendPleaseSend")."\r\n";
 	$msg .= T("Email Address:").$_REQUEST['email']."\r\n\r\n";
 }
 if ($_REQUEST['alternate'] == 'Y') {
-	$msg .= T('requestSendPleaseSelect')."\r\n\r\n";
+	$msg .= T("requestSendPleaseSelect")."\r\n\r\n";
 }
 if ($_REQUEST['notes']) {
 	$msg .= T("Other notes:")."\r\n\r\n";
@@ -62,7 +62,7 @@ $biblios = new Biblios();
 foreach ($_REQUEST['keys'] as $bibid) {
 	if (!$_REQUEST['date'][$bibid]
 			&& !($_REQUEST['soonest'][$bibid] == 'Y')) {
-		$pageErrors["date[$bibid]"] = T('requestSendMustEnterDate');
+		$pageErrors["date[$bibid]"] = T("requestSendMustEnterDate");
 		continue;
 	}
 	$biblio = $biblios->getOne($bibid);

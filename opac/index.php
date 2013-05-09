@@ -53,18 +53,18 @@ $focus_form_field = "searchText";
 Page::header(array('nav'=>$nav, 'title'=>''));
 
 ?>
-			<h1><?php echo T('Welcome to the Library');?></h1>
+			<h1><?php echo T("Welcome to the Library");?></h1>
 				<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="phrasesearch">
 					<fieldset>
-					<legend><?php T('Please select the library') ?></legend>
+					<legend><?php T("Please select the library") ?></legend>
 					<table class="primary">
 						<tbody>
 							<tr>
 							<td class="primary" nowrap="true">
-								<?php echo T('Please select the library'); ?>
+								<?php echo T("Please select the library"); ?>
 							</td><td>
 								<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>								
-								<input class="button" name="action" type="submit" value="<?php echo T('Select site')?>"/>
+								<input class="button" name="action" type="submit" value="<?php echo T("Select site")?>"/>
 							</td></tr>							
 						</tbody>
 					</table>

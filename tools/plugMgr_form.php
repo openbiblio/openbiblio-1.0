@@ -17,15 +17,15 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
-<h3 id="pageHdr" class="title"><?php echo T('Plugin Manager'); ?></h3>
+<h3 id="pageHdr" class="title"><?php echo T("Plugin Manager"); ?></h3>
 
 <section id="listArea">
 	<form id="listForm" name="listForm" class="form">
-		<label for="pluginOK"><?php echo T('Plugins Allowed?'); ?></label>
+		<label for="pluginOK"><?php echo T("Plugins Allowed?"); ?></label>
   	<?php echo inputfield('checkbox', 'pluginOK', 'Y', NULL, $_SESSION['allow_plugins_flg']); ?>
 
 		<fieldset id="pluginArea">
-		  <legend><?php echo T('Select Plugins'); ?></legend>
+		  <legend><?php echo T("Select Plugins"); ?></legend>
    		<ul id="pluginList" ></ul>
 		</fieldset>
 	</form>

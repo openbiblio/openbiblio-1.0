@@ -382,7 +382,7 @@ class SrchDb {
 		//echo "sql=$sql<br />";
 		$rows = $this->db->act($sql);
 		$this->db->unlock();
-		return T('Delete completed');
+		return T("Delete completed");
 	}
 	## ========================= ##
 	function getBiblioFields() {

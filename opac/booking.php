@@ -32,9 +32,9 @@ $biblios = new Biblios;
 $bib = $biblios->getOne($b['bibid']);
 
 $states = array(
-	'booked' => T('Booked'),
-	'out' => T('Out'),
-	'returned' => T('Returned'),
+	'booked' => T("Booked"),
+	'out' => T("Out"),
+	'returned' => T("Returned"),
 );
 if ($b['out_histid']) {
 	if ($b['ret_histid']) {
@@ -50,7 +50,7 @@ if ($status == 'booked'
 		and isset($_REQUEST['action'])
 		and $_REQUEST['action'] == 'delete') {
 	$bookings->removeMember($b['bookingid'], $_SESSION['authMbrid']);
-	header('Location: ../opac/bookings.php?msg='.U(T('Booking deleted')));
+	header('Location: ../opac/bookings.php?msg='.U(T("Booking deleted")));
 	exit();
 }
 

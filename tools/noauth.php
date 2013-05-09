@@ -10,6 +10,6 @@ $nav = "";
 
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-echo '<p class="error">'.T('toolsNoauth').'</p>';
+echo '<p class="error">'.T("toolsNoauth").'</p>';
 
  ;

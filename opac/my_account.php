@@ -34,7 +34,7 @@ $d->buttons = array(array(T("Edit Info"), '../opac/edit_account.php'));
 echo $d->begin();
 echo $d->row(T("Name:"), H($mbr['last_name'].', '.$mbr['first_name']));
 echo $d->row(T("Site:"), H($site['name']));
-echo $d->row(T("Card Number:"), H($mbr['barcode_nmbr']));
+echo $d->row(T("Card Number").':', H($mbr['barcode_nmbr']));
 echo $d->row(T("Email Address:"), H($mbr['email']));
 echo $d->row(T("School Grade:"), H($mbr['school_grade']));
 echo $d->end();

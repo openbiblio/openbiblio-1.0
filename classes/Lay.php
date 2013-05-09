@@ -197,7 +197,7 @@ class Lay_Transformer extends Lay_Container {
 		if ($params['x-skew'] != 0 or $params['y-skew'] != 0)
 			Fatal::internalError(T("Transformer: skew not implemented"));
 		if (abs(fmod($params['rotation'] * 2 / M_PI, 1)) > 0.01)
-			Fatal::internalError(T('LaySupportedRotation'));
+			Fatal::internalError(T("LaySupportedRotation"));
 		$this->setDims();
 	}
 	function setDims() {
@@ -763,7 +763,7 @@ class Lay {
 		} elseif (is_string($len)) {
 			if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)%$/', $len, $m)) {
 				if (!$this->current) {
-					return array(0, T('LayPercentLengths'));
+					return array(0, T("LayPercentLengths"));
 				}
 				$dim = $this->current->max_dim;
 				$length = ($m[1]/100) * $dim[$dir];
