@@ -39,7 +39,12 @@
 		<legend><?php echo T("Check4Needed"); ?></legend>
 		  <input type="button" id="absntChkBtn" value="<?php echo T("Scan"); ?>" />
 		</fieldset> 
-	</section>
+		
+		<!--fieldset id="maybeArea">
+		<legend><?php //echo T("Check4Maybe"); ?></legend>
+		  <input type="button" id="maybeChkBtn" value="<?php echo T("Scan"); ?>" />
+		</fieldset> 
+	</section-->
 	
 	<section id="rsltsArea">
 		<fieldset id="rslts">
@@ -50,7 +55,7 @@
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
-  require_once(REL(__FILE__,'../tools/transUtilJs.php'));
+  require_once(REL(__FILE__,'../plugin_transUtils/transUtilJs.php'));
 ?>	
 </body>
 </html>

@@ -57,6 +57,10 @@
   	return array_flat($files);
 	}
 
+	/* define T() string to match to a trans[] entry */
+	/* - used to check for missing or needed entries */
+	$regExp = "/(T\(\")(.*?)(\"(,|\)))/";
+	
 	switch ($_REQUEST['mode']){
 	  case 'fetchLocaleList':
 	  	echo json_encode(Localize::getLocales());
@@ -100,22 +104,24 @@
 	  case 'ck4TransUnused':
 	  	$modules = moduleList();
 	  	$found = [];
+//	  	$n = 0;
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			foreach ($modules as $module) {	
 				$files = getFileList('../'.$module);
 				foreach ($files as $file) {
 				  $lines = file("../$module/$file");
 				  foreach ($lines as $line_num => $line) {
-						preg_match_all("|T\((.*)\)|U",$line,$out, PREG_PATTERN_ORDER);
-						foreach ($out[1] as $key) {
-							$key = str_replace("\"","",$key);
-							$key = str_replace("\'","",$key);
+						preg_match_all($regExp,$line,$out, PREG_PATTERN_ORDER);
+						foreach ($out[2] as $key) {
+//echo "key=$key<br />";						
 							if ($found[$key] == 'OK') {
 								continue;
 							} elseif (isset($trans[$key])) {
 								$found[$key] = 'OK';
 							}
 						}	
+//						$n++;
+//						if ($n > 99) exit;
 				  }
 				}
 			}
@@ -124,11 +130,11 @@
 			} elseif (count($trans) > count($found)) {
 				$nmbr = count($trans) - count($found);
 				echo "<p>".T("The following %nmbr% are not being used and may be removed.",array('nmbr'=>$nmbr))."</p>";
-				foreach ($trans as $k=>$v) {
-					if ($found[$k] == 'OK') {
+				foreach ($trans as $key=>$v) {
+					if ($found[$key] == 'OK') {
 						continue;
 					} else {
-						echo $k."<br />";
+						echo $key."<br />";
 					}
 				}
 			}
@@ -138,11 +144,11 @@
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			$module = $_POST['module'];		
 			echo '<p class="bold">module: '.$module.'</p>';
-				$files = getFileList('../'.$module);
+			$files = getFileList('../'.$module);
 			foreach ($files as $file) {
 			  $lines = file("../$module/$file");
 			  foreach ($lines as $line_num => $line) {
-					preg_match_all("/(T\(\")(.*?)(\"(,|\)))/",$line,$out, PREG_PATTERN_ORDER);
+					preg_match_all($regExp,$line,$out, PREG_PATTERN_ORDER);
 					foreach ($out[2] as $key) {
 						if (!isset($trans[$key])) {
 							$linenum[$errCount]['key']=$key;		
@@ -155,7 +161,7 @@
 			
 			}
 			if ($errCount > 0){
-				echo T("The following %errs% entries are neeeded:", array('errs'=>$errCount));
+				echo T("The following %errs% entries are neeeded:", array('errs'=>$errCount))."<br />";
 				while ($i < $errCount) {
 					echo $linenum[$i]['filename']." - ";
 					echo ($linenum[$i]['linenum'])." - ";
@@ -166,7 +172,23 @@
 				echo T("All trans requests are translated for locale %loc%", array('loc'=>$_POST['locale']))."<br />";
 			}
 			break;
-			
+/*
+		case 'ck4TransMaybe':
+			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
+			$module = $_POST['module'];		
+			echo '<p class="bold">module: '.$module.'</p>';
+			$files = getFileList('../'.$module);
+			foreach ($files as $file) {
+			  $lines = file("../$module/$file");
+			  foreach ($lines as $line_num => $line) {
+			  	preg_match_all("/^(?<=T\()(\"[^\"\r\n]*(:\"\"[^\"\r\n]*)*\")/",$line,$grps, PREG_PATTERN_ORDER);
+					foreach ($grps[1] as $key) {
+							echo "$file - ".($line_num+1)." - $key<br />";
+					}
+			  }
+			}
+			break;
+*/
 		default:
 		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
 		break;

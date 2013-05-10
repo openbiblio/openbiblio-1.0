@@ -4,7 +4,7 @@
 
 var tru = {
 	init: function () {
-		tru.url = 'toolSrvr.php';
+		tru.url = 'transSrvr.php';
 
 		tru.initWidgets();
 		tru.resetForms();
@@ -12,7 +12,8 @@ var tru = {
 		$('#dupChkBtn').bind('click',null,tru.findDupes);
 		$('#orfnChkBtn').bind('click',null,tru.findOrfans);
 		$('#absntChkBtn').bind('click',null,tru.findAbsnts);
-		
+		$('#maybeChkBtn').bind('click',null,tru.findMaybes);
+
 		tru.fetchLocaleList();
 		tru.fetchModuleList();
 	},
@@ -79,7 +80,7 @@ var tru = {
 		$('#rsltsArea').show();
 		$.each(tru.obMods, function (n,module) {
 			var choice = $('#locSet option:selected');
-			$.post(tru.url, {'cat':'locale', 
+			$.post(tru.url, {'cat':'locale',
 											 'mode':'ck4TransNeeded',
 											 'locale':choice.val(),
 											 'module':module,
@@ -89,7 +90,23 @@ var tru = {
 			});
 		});
 	},
-	
+/*
+	findMaybes: function () {
+		$('#rslts').html('');
+		$('#rsltsArea').show();
+		$.each(tru.obMods, function (n,module) {
+			var choice = $('#locSet option:selected');
+			$.post(tru.url, {'cat':'locale',
+											 'mode':'ck4TransMaybe',
+											 'locale':choice.val(),
+											 'module':module,
+										  },
+							function (response) {
+				$('#rslts').append(response);
+			});
+		});
+	},
+*/
 }
 
 $(document).ready(tru.init);

@@ -9,6 +9,7 @@ $trans["All trans entries are in use."] = "All trans entries are in use.";
 $trans["All trans requests are translated for locale %loc%"] = "All trans requests are translated for locale %loc%";
 $trans["Check4Dups"] = "Check for Duplicate Entries";
 $trans["Check4Needed"] = "Check for Needed Entries";
+$trans["Check4Maybe"] = "Check for Potential Entries";
 $trans["Check4Unused"] = "Check for Unused Entries";
 $trans["Current Locale"] = "Current Locale";
 $trans["Found %errCount% duplicate(s)"] = "Found %errCount% duplicate(s)";
