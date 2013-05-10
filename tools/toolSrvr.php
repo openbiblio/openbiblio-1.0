@@ -186,10 +186,8 @@
 			  $lines = file("../$module/$file");
 			  foreach ($lines as $line_num => $line) {
 					//preg_match_all("|(T\(\")(.*)(\"\))|U",$line,$out, PREG_PATTERN_ORDER);
-					preg_match_all("/(T\(\")(.*)(\"(,|\)))/U",$line,$out, PREG_PATTERN_ORDER);
+					preg_match_all("/(T\(\")(.*?)(\"(,|\)))/",$line,$out, PREG_PATTERN_ORDER);
 					foreach ($out[2] as $key) {
-						$key = str_replace("\"","",$key);
-						$key = str_replace("\'","",$key);
 						if (!isset($trans[$key])) {
 							$linenum[$errCount]['key']=$key;		
 							$linenum[$errCount]['filename']=$file;

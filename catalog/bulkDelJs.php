@@ -2,6 +2,8 @@
 // JavaScript Document
 //------------------------------------------------------------------------------
 // biblio_bulkDel Javascript
+"use strict";
+
 bbd = {
 	init: function () {
 		// get header stuff going first

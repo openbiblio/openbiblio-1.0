@@ -30,6 +30,16 @@
 		session_cache_limiter('nocache');
 	}
 	
+	function getOBroot() {
+		/* obtain OpenBiblio path ref to wep pages root */
+		/* may be useful later in system (thinking plug-ins, etc.) */
+		$thisApp = $_SERVER[PHP_SELF];
+		$thisPath = pathinfo($thisApp, PATHINFO_DIRNAME);
+		$pathParts = explode('/',$thisPath);
+		$OBroot = '/'.$pathParts[1].'/';
+		return $OBroot;
+	}
+	
 	/* Convenience functions for everywhere */
 	/* Work around PHP's braindead include_path stuff. */
 	function REL($sf, $if) {
@@ -83,7 +93,7 @@
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, 'templates.php'));
 	
-	global $LOC, $CharSet, $Locale;
+	global $LOC, $CharSet, $Locale, $OBroot;
 	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl;
 	global $LocaleDirUrl, $LocaleDir, $SharedDirUrl, $HTMLHead;
 	

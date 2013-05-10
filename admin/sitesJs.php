@@ -16,21 +16,6 @@ Sit.prototype.init = function () {
 	//this.noshows.push(this.keyFld);
 };
 
-/* not used?
-Sit.prototype.fetchSites = function () {
-  $.getJSON(this.url,{ 'cat':'sites', 'mode':'getAll_sites' }, function(data){
-		var html = '';
-		for (var nsite in data) {
-    	html += '<option value="'+data[nsite]['code']+'"';
-    	if (data[nsite]['default_flg'] == 'Y') {
-    		html += ' selected';
-			}
-   		html += '">'+data[nsite]['description']+'</option>\n';
-		}
-		$('#site').html(html);
-	});
-};
-*/
 Sit.prototype.fetchStates = function () {
   $.getJSON(this.url,{ 'cat':'states', 'mode':'getAll_states' }, function(data){
 		var html = '';

@@ -1,5 +1,5 @@
-// JavaScript Document
 <script language="JavaScript">
+// JavaScript Document
 "use strict";
 
 var tru = {

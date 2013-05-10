@@ -34,6 +34,10 @@ However, in any other Circulation page, I can log out immediately
 08 May 2013 - Fred
 Admin Calendars does not appear to be working
 
+09 May 2013 - UWE
+Unable to add new site using Chrome Browser. Works fine with FF.
+Problem appears to be inability to acess 'clicked' button via form.submit
+
 ###################### Completed, most recent at top #########################
 
 - Neil Redgate - verified as draggable and droppable into existing 8 May 2013
