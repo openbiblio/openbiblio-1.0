@@ -4,7 +4,7 @@
 
 var tru = {
 	init: function () {
-		tru.url = 'transSrvr.php';
+		tru.url = 'toolSrvr.php';
 
 		tru.initWidgets();
 		tru.resetForms();

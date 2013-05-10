@@ -50,7 +50,7 @@
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
-  require_once(REL(__FILE__,'../plugin_transUtils/transUtilJs.php'));
+  require_once(REL(__FILE__,'../tools/transUtilJs.php'));
 ?>	
 </body>
 </html>
