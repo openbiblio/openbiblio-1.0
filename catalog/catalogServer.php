@@ -371,5 +371,5 @@ function mkBiblioArray($dbObj) {
 			  
 	//// ====================================////
 	default:
-	  echo "<h5>Invalid mode: $_REQUEST[mode]</h5>";
+	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";
 	}

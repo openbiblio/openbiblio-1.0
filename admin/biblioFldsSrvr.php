@@ -119,6 +119,6 @@
 			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>invalid mode: $_REQUEST[mode]</h4><br />";
+		  echo "<h4>".T("invalid mode").": $_REQUEST[mode]</h4><br />";
 		break;
 	}

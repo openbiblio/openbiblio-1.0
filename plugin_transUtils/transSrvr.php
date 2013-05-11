@@ -172,7 +172,7 @@
 				echo T("All trans requests are translated for locale %loc%", array('loc'=>$_POST['locale']))."<br />";
 			}
 			break;
-/*
+
 		case 'ck4TransMaybe':
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			$module = $_POST['module'];		
@@ -181,16 +181,16 @@
 			foreach ($files as $file) {
 			  $lines = file("../$module/$file");
 			  foreach ($lines as $line_num => $line) {
-			  	preg_match_all("/^(?<=T\()(\"[^\"\r\n]*(:\"\"[^\"\r\n]*)*\")/",$line,$grps, PREG_PATTERN_ORDER);
-					foreach ($grps[1] as $key) {
+			  	preg_match_all("/(?<!T\()(\")(.*?)(\")/",$line,$grps, PREG_PATTERN_ORDER);
+					foreach ($grps[2] as $key) {
 							echo "$file - ".($line_num+1)." - $key<br />";
 					}
 			  }
 			}
 			break;
-*/
+
 		default:
-		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
 		break;
 	}
 

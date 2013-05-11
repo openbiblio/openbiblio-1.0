@@ -120,7 +120,7 @@ switch ($_REQUEST[mode]){
 				
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	default:
-	  echo "invalid mode: $_POST[mode] <br />";
+	  echo T("invalid mode").": $_POST[mode] <br />";
 		break;
 }
 

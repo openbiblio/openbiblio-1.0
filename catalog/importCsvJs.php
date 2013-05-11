@@ -115,7 +115,7 @@ var csvi = {
 				    	  array_push($localErrors, T("biblioCopyQueryErr1"));
 				    	  $validate = false;
 				   	 } else {
-								echo "Barcode not present<br />";
+								echo T("Barcode not present")."<br />";
 							}
 				  	  // push new barcode into validation array 
 				  	  array_push($newBarcodes, $barcode);

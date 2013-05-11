@@ -40,11 +40,12 @@
 		  <input type="button" id="absntChkBtn" value="<?php echo T("Scan"); ?>" />
 		</fieldset> 
 		
-		<!--fieldset id="maybeArea">
-		<legend><?php //echo T("Check4Maybe"); ?></legend>
+		<fieldset id="maybeArea">
+		<legend><?php echo T("Check4Maybe"); ?></legend>
+			<!--p class="error">Under Construction</p-->
 		  <input type="button" id="maybeChkBtn" value="<?php echo T("Scan"); ?>" />
 		</fieldset> 
-	</section-->
+	</section>
 	
 	<section id="rsltsArea">
 		<fieldset id="rslts">

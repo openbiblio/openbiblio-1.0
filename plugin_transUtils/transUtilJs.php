@@ -90,7 +90,7 @@ var tru = {
 			});
 		});
 	},
-/*
+
 	findMaybes: function () {
 		$('#rslts').html('');
 		$('#rsltsArea').show();
@@ -106,7 +106,7 @@ var tru = {
 			});
 		});
 	},
-*/
+
 }
 
 $(document).ready(tru.init);

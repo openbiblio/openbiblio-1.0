@@ -90,7 +90,7 @@
 		$in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/((\.\.)?\/|_,\")(.*)(\?|\"|\.js|\.css)/', $in, $out);
+		preg_match('/((\.\.)?\/|_,\")(.*?)(\?|\"|\.js|\.css)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[3];
 		$rslt = str_replace("(","",$rslt);
@@ -105,7 +105,7 @@
 		$in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(href=\")(.*)(.php)/', $in, $out);
+		preg_match('/(href=\")(.*?)(.php)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -114,7 +114,7 @@
 	function getFnFmPhpActn($text, $dir) {
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(action=\")(.*)(.php)/', $in, $out);
+		preg_match('/(action=\")(.*?)(.php)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -123,7 +123,7 @@
 	function getFnFmPhpLinkUrl($text, $dir) {
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(\.\.)?\/(.*)(.php)/', $in, $out);
+		preg_match('/(\.\.)?\/(.*?)(.php)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[1].$out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -133,7 +133,7 @@
 		if (stripos($text, 'age::header') >= 1) return '';
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/((\.\.)?\/)(.*)(.php)/', $in, $out);
+		preg_match('/((\.\.)?\/)(.*?)(.php)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[1].$out[3].$out[4];
 		$rslt = str_replace('"',"",$rslt);
@@ -144,7 +144,7 @@
 		$in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(src=\")(.*)(\.js)/', $in, $out);
+		preg_match('/(src=\")(.*?)(\.js)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -153,7 +153,7 @@
 	function getFilenameFmJS($text, $dir) {
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(\")(.*)(\.php|\.js)/', $in, $out);
+		preg_match('/(\")(.*?)(\.php|\.js)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2];
 		if (substr($rslt, 0,3) != '../') $rslt = '../'.$dir.'/'.$rslt;
@@ -163,7 +163,7 @@
 	function getFilenameFmMenu($text, $dir) {
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(\"\.\.\/)(.*)(\.php)/', $in, $out);
+		preg_match('/(\"\.\.\/)(.*?)(\.php)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[0];
 		if ($rslt == '') return '';
@@ -277,7 +277,7 @@
 			break;
 			
 		default:
-		  echo "<h4>invalid mode: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;".$_REQUEST['mode']."&lt;</h4><br />";
 		break;
 	}
 
