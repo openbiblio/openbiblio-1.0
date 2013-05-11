@@ -1,6 +1,5 @@
 <?php
 $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
-$trans["Add"] = "Add";
 $trans["Added Before Date"] = "Added Before Date";
 $trans["Added in the last N days"] = "Added in the last N days";
 $trans["Address"] = "Address";
