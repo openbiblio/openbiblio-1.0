@@ -38,6 +38,25 @@ Admin Calendars does not appear to be working
 Unable to add new site using Chrome Browser. Works fine with FF.
 Problem appears to be inability to acess 'clicked' button via form.submit
 
+11 May 2013 - Fred
+Add New Copy screen should show suggested CallNmbr
+with suggested cpy no. (c.x) if not first copy.
+
+11 MAy 2013 - Fred
+When online search fails, GOBack should leave search screen contents intact
+so search can be refined.
+
+12 May 2013 - Neil Redgate
+>  Advanced search options:-
+> Whilst investigating the above and the importance/relevance of the level column
+> in the report page, I examined the advanced search options for existing items.
+> The 'audience level' drop down menu has a predetermined list
+> (in -/catalog/SrchForms.php line 113). I assume 'audience level' refers to member type?
+> If so, this drop down menu does not reflect the current member type list
+
+12 May 2013 - Fred
+Report results page does not indicate what report is being viewed. Needs Title.
+
 ###################### Completed, most recent at top #########################
 
 - Neil Redgate - verified as draggable and droppable into existing 8 May 2013

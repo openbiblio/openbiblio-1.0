@@ -270,7 +270,7 @@ return false;
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltColl();
 							csvErrs.append(" <tr><td colspan=\"3\">"+<?php echo "'".T("LineNmbr")."'"; ?>+i+" "+<?php echo "'".T("Collection")."'"; ?>
-															+" '"+entry+"' invalid, using default</td></tr>\n");
+															+" '"+entry+"' <?php echo T("invalid, using default"); ?></td></tr>\n");
 			      }		      
 			      rec['collection_cd'] = thisOne;
       			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Collection")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
@@ -280,7 +280,7 @@ return false;
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltMedia();
 							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+i+" "+<?php echo "'".T("Media")."'"; ?>
-															+" '"+entry+"' invalid, using default</td></tr>\n");
+															+" '"+entry+"' <?php echo T("invalid, using default"); ?></td></tr>\n");
 			      }
 			      rec['material_cd'] = thisOne;
       			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Media Type")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.mediaTypes[thisOne]+"</td></tr>\n");

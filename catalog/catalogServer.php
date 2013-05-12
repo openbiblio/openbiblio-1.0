@@ -126,26 +126,31 @@ function mkBiblioArray($dbObj) {
 	    case 'title': 		$type = 'phrase';
 							$params = '{"tag":"245","suf":"a"},
 								{"tag":"245","suf":"b"},
-								{"tag":"240","suf":"a"}'; 
+								{"tag":"240","suf":"a"},
+								{"tag":"246","suf":"a"},
+								{"tag":"246","suf":"b"}'; 
 							break;
 			case 'author': 		$type = 'words';
-								$params ='{"tag":"100","suf":"a"},
+							$params ='{"tag":"100","suf":"a"},
 								{"tag":"700","suf":"a"},
-								{"tag":"110","suf":"a"},
-								{"tag":"245","suf":"c"}'; 
+								{"tag":"245","suf":"c"},
+								{"tag":"110","suf":"a"}'; 
 							break;
 			case 'subject': 	$type = 'words';
 								$params = '{"tag":"650","suf":"a"},
 								{"tag":"505","suf":"a"}'; 
 								break;
 			case 'keyword': 	$type = 'words';
-								$params ='{"tag":"245","suf":"a"},
-									{"tag":"240","suf":"a"},
-									{"tag":"650","suf":"a"},
-									{"tag":"100","suf":"a"},
+								$params ='{"tag":"240","suf":"a"},
+									{"tag":"245","suf":"a"},
 									{"tag":"245","suf":"b"},
 									{"tag":"245","suf":"c"},
-									{"tag":"505","suf":"a"}'; 
+									{"tag":"246","suf":"a"},
+									{"tag":"246","suf":"b"},
+									{"tag":"502","suf":"a"},
+									{"tag":"505","suf":"a"},
+									{"tag":"650","suf":"a"},
+									{"tag":"773","suf":"t"}'; 
 								break;
 //		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
 			case 'publisher': 	$type = 'phrase';
@@ -166,9 +171,7 @@ function mkBiblioArray($dbObj) {
 				switch ($_REQUEST['sortBy']){
 				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
 				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
-				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},
-																			 {"orderTag":"245","orderSuf":"b"},
-																			 {"orderTag":"240","orderSuf":"a"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"}, {"orderTag":"245","orderSuf":"b"}, {"orderTag":"240","orderSuf":"a"}'; break;
 				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
 			}
 		}		
@@ -371,5 +374,5 @@ function mkBiblioArray($dbObj) {
 			  
 	//// ====================================////
 	default:
-	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";
+	  echo "<h5>Invalid mode: $_REQUEST[mode]</h5>";
 	}

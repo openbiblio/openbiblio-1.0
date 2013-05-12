@@ -394,9 +394,9 @@ var bs = {
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
-			var title = '', subtitle='',
-					author='', coauthor='',
-					corporate='', year='', journal='', jrnlDate='',
+			var title = '', booktitle='', booksubtitle='', reporttitle='', reportsubtitle='',
+					author='', coauthor='', editors='', corporate='',
+					year='', journal='', jrnlDate='',
 					callNo = '', edition = '', pubDate = ''; 
 			var html = '';
 			var biblio = JSON.parse(biblioList[nBiblio]);
@@ -406,11 +406,16 @@ var bs = {
 					var tmp = JSON.parse(fldData);
 					if (!tmp.value) tmp.value = 'n/a';
 					switch (tmp.marcTag){
-						case '240a': 
-						case '245a': title = tmp.value.trim(); 
-							break;
-						case '245b': subtitle = tmp.value.trim(); 
-							break;
+						case '240a': title = tmp.value.trim();
+        			break;
+        		case '245a': booktitle = tmp.value.trim();
+        			break;
+        		case '245b': booksubtitle = tmp.value.trim();
+        			break;
+        		case '246a': reporttitle = tmp.value.trim();
+        			break;
+        		case '246b': reportsubtitle = tmp.value.trim();
+        			break;
 						case '100a':
 							author = tmp.value.trim();
 							if (author && (author.length>30)) author = author.substring(0,30)+'...';
@@ -419,6 +424,10 @@ var bs = {
 							coauthor = tmp.value.trim();
 							if (coauthor && (coauthor.length>100)) coauthor = coauthor.substring(0,100)+'...';
 							break;
+        		case '245c':
+        			editors = tmp.value.trim();
+        			if (editors && (editors.length>100)) editors = editors.substring(0,100)+'...';
+        			break;
 						case '110a':
 							corporate = tmp.value.trim();
 							if (corporate && (corporate.length>100)) corporate = corporate.substring(0,100)+'...';
@@ -427,9 +436,8 @@ var bs = {
 							break;
 						case '773p': journal = tmp.value.trim();
 							break;
+						case '130f':
 						case '240f': year = tmp.value.trim();
-							break;
-						case '130f': jrnlDate = tmp.value.trim();
 							break;
 						case '260c': pubDate = tmp.value.trim();
 							break;
@@ -442,9 +450,11 @@ var bs = {
 				title = 'unknown'; callNo = 'not assigned';
 				continue;
 			}
-			// Add subtitle to title
-			title = title + ' ' + subtitle;
-			
+			// Add booksubtitle to booktitle
+      booktitle = booktitle + ' ' + booksubtitle;
+      // Add reportsubtitle to reporttitle
+      reporttitle = reporttitle + ' ' + reportsubtitle;
+
 			html += '<tr class="listItem">\n';
 			html += '	<td id="itemVisual">\n';
 			html += '		<div> \n';
@@ -471,20 +481,29 @@ var bs = {
 			html += '		<input type="button" class="moreBtn" value="More info" />'+'\n';
 			html += '	</div>\n';
 			html += '</div></td>';
+
 			html += '<td id="itemInfo">\n';
-			html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
+			if (title != '')
+				html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
+      if ((booktitle) != '') {
+      	html += ' <p id="itemBookTitle" wrap >'+booktitle+'</p>\n';
+        html += ' <p id="itemBookAuthor" >';
+        html += editors;
+        html += ' </p>\n';
+      }
+			if (reporttitle != '')
+        html += ' <p id="itemReportTitle" wrap >'+reporttitle+'</p>\n';
 			if ((corporate+author+coauthor) != '') {
-				html += ' <p id="itemAuthor" >';
+				html += ' <p id="itemTitleAuthor" >';
 				html += 		corporate;
 				html += 		author+';&nbsp;&nbsp;';
 				html += 		coauthor;
 				html += '	</p>\n';
 			}
-			if ((journal+year+jrnlDate) != '') {
+			if ((journal+year) != '') {
 				html += ' <p id="itemJournal" >';
 				html += 		journal+'&nbsp;&nbsp;';
 				html += 		year;
-				html += 		jrnlDate;
 				html += '	</p>\n';
 			}
 			html += '	<p id="itemCallNo" >';

@@ -82,7 +82,7 @@
 		  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
 		  	<fieldset class="inlineFldSet">
 	      	<label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
-	      	<input id="default_flg" name="default_flg" type="text" size="1" value="N"
+	      	<input id="default_flg" name="default_flg" type="text" size="1" value="<?php echo T("N"); ?>"
 						pattern="[Y,N]" required aria-required="true" />
 					<span class="reqd">*</span>
 				</fieldset>

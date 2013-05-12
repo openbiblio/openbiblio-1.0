@@ -50,11 +50,14 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 <?php
 foreach (array_keys($reports) as $category) {
-	echo '<li class="report_category"><strong>'.T($category).'</strong><ul>';
+	//echo '<li class="report_category"><strong>'.T($category).'</strong><ul>';
+	echo '<li class="report_category">'.T($category);
+	echo '	<ul>';
 	foreach ($reports[$category] as $type => $title) {
-		echo '<li><a href="../reports/report_criteria.php?type='.HURL($type).'">'.H($title).'</a></li>';
+		echo '		<li class="report_name"><a href="../reports/report_criteria.php?type='.HURL($type).'">'.H($title).'</a></li>';
 	}
-	echo '</ul></li>';
+	echo '	</ul>';
+	echo '</li>';
 }
 if ($errors) {
 	echo '<li class="report_category"><strong>'.T("Report Errors").'</strong><ul>';

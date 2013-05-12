@@ -18,14 +18,14 @@
 			if ($error) 
 				echo $error->toStr(); 
 			else 
-				echo "OK";
+				echo T("OK");
 			break;
 			
 		case 'getSettings':
 			//echo "fetching version\n";
 			$resp = $installQ->getSettings();
 			if (!resp || empty($resp)) {
-				echo "noTbl";
+				echo T("noTbl");
 			} else {	
 				echo $resp;
 			}
@@ -35,7 +35,7 @@
 			//echo "fetching version\n";
 			$version = $installQ->getCurrentDatabaseVersion();
 			if (!$version || empty($version)) {
-				echo "noDB";
+				echo T("noDB");
 			} else {	
 				echo $version;
 			}

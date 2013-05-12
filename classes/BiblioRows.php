@@ -11,6 +11,13 @@ class BiblioRows {
 			array('name'=>'title_0', 'hidden'=>true),
 			array('name'=>'title_a', 'hidden'=>true),
 			array('name'=>'title_b', 'hidden'=>true),
+			array('name'=>'title_c', 'hidden'=>true),
+			array('name'=>'title_d', 'hidden'=>true),
+			array('name'=>'author_0', 'hidden'=>true),
+			array('name'=>'author_a', 'hidden'=>true),
+			array('name'=>'author_b', 'hidden'=>true),
+			array('name'=>'date_0', 'hidden'=>true),
+			array('name'=>'date_a', 'hidden'=>true),
 			array('name'=>'material_cd', 'hidden'=>true),
 			array('name'=>'create_dt', 'hidden'=>true),
 			array('name'=>'callno', 'title'=>'Call No.', 'sort'=>'callno'),
@@ -18,7 +25,7 @@ class BiblioRows {
 			array('name'=>'author', 'title'=>'Author', 'sort'=>'author'),
 			array('name'=>'date', 'title'=>'Date', 'sort'=>'date'),
 			array('name'=>'level', 'title'=>'Grade Level'),
-			array('name'=>'length', 'title'=>'Length', 'sort'=>'length'),
+			array('name'=>'pubdate', 'title'=>'Publication Date'),
 			array('name'=>'material_type', 'title'=>'Type'),
 		);
 	}
@@ -28,12 +35,11 @@ class BiblioRows {
 		 */
 		$sortFields = array(
 			'callno'=>array('field'=>'099$a'),
-			'title'=>array('field'=>'245$a',
+			'title'=>array('field'=>'240$a',
 				'expr'=>'ifnull(substring(sorts.subfield_data, sortf.ind2_cd+1), '
 					. 'sorts.subfield_data)'),
 			'author'=>array('field'=>'100$a'),
-			'date'=>array('field'=>'260$c'),
-			'length'=>array('field'=>'300$a'),
+			'date'=>array('field'=>'240$f'),
 		);
 		$query = array();
 		$sort_r = 0;
@@ -90,10 +96,15 @@ class BiblioRowsIter extends Iter {
 			'title_0' => '240$a',
 			'title_a' => '245$a',
 			'title_b' => '245$b',
-			'date' => '260$c',
-			'author' => '100$a',
-			'level' => '521$a',
-			'length' => '300$a');
+			'title_c' => '246$a',
+			'title_d' => '246$b',
+			'author_0' => '100$a',
+			'author_a' => '700$a',
+			'author_b' => '110$a',
+			'date_0' => '130$f',
+			'date_a' => '240$f',
+			'pubdate' => '260$c',
+			'level' => '521$a');
 		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, bf.tag, bs.subfield_cd, bs.subfield_data "
 					 . "from biblio b, material_type_dm m, biblio_field bf, biblio_subfield bs "
 					 . $this->q->mkSQL("where b.bibid=%N ", $r['bibid'])
@@ -127,7 +138,31 @@ class BiblioRowsIter extends Iter {
 		if (!isset($r['title_b'])) {
 			$r['title_b'] = '';
 		}
-		$r['title'] = $r['title_0'].' '.$r['title_a'].' '.$r['title_b'];
+		if (!isset($r['title_c'])) {
+			$r['title_c'] = '';
+		}
+		if (!isset($r['title_d'])) {
+			$r['title_d'] = '';
+		}
+		$r['title'] = $r['title_0'].' '.$r['title_a'].' '.$r['title_b'].' '.$r['title_c'].' '.$r['title_d'];
+		if (!isset($r['author_0'])) {
+			$r['author_0'] = '';
+		}
+		if (!isset($r['author_a'])) {
+			$r['author_a'] = '';
+		}
+		if (!isset($r['author_b'])) {
+			$r['author_b'] = '';
+		}
+		$r['author'] = $r['author_0'].' '.$r['author_a'].' '.$r['author_b'];
+		if (!isset($r['date_0'])) {
+			$r['date_0'] = '';
+		}
+		if (!isset($r['date_a'])) {
+			$r['date_a'] = '';
+		}
+		$r['date'] = $r['date_0'].' '.$r['date_a'];
 		return $r;
+
 	}
 }

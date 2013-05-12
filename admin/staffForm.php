@@ -124,10 +124,10 @@
 		</li>
 	</ul>
 	<ul class="btnRow">
-    <li><input type="submit" id="addBtn" value="Add" /></li>
-    <li><input type="submit" id="updtBtn" value="Update" /></li>
-    <li><input type="button" id="cnclBtn" value="Cancel" /></li>
-    <li><input type="submit" id="deltBtn" value="Delete" /></li>
+    <li><input type="submit" id="addBtn" value="<?php echo T("Add");?>" /></li>
+    <li><input type="submit" id="updtBtn" value="<?php echo T("Update");?>" /></li>
+    <li><input type="button" id="cnclBtn" value="<?php echo T("Cancel");?>" /></li>
+    <li><input type="submit" id="deltBtn" value="<?php echo T("Delete");?>" /></li>
 	</ul>
 </fieldset>
 </form>
@@ -151,8 +151,8 @@
 		</li>
 	</ul>
 	<ul id="btnRow">
-    <li><input type="submit" id="pwdChgBtn" value="Set" /></li>
-    <li><input type="button" id="pwdCnclBtn" value="Cancel" /></li>
+    <li><input type="submit" id="pwdChgBtn" value="<?php echo T("Set"); ?>" /></li>
+    <li><input type="button" id="pwdCnclBtn" value="<?php echo T("Cancel"); ?>" /></li>
 	</ul>
 </fieldset>
 </form>

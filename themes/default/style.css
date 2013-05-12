@@ -76,7 +76,8 @@ input[type=checkbox] { padding-left: 5px; }
 input:disabled { cursor:not-allowed; }
 
 /* required fields */
-[required]::after { content:"*"; color: red; }
+input:required::after { content:"**"; color: red; !important; }
+/*input:required { border-color: #800000; border-width: 3px; }*/
 
 /* styling for javascript stop-gap placeholder for browsers without native support */
 .placeholder { color: #aaa; }
@@ -392,6 +393,9 @@ div#configDiv{
 	margin: 0; padding: 5px;
 	text-align: center;
 	}
+
+.report_category { font-weight:bold; }
+.report_name { font-weight:normal; }
 
 /* ####################################################### */
 /* For Tablets and Desktops */
