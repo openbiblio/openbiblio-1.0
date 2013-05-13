@@ -61,12 +61,14 @@ class Form {
 		list($msg, $errors) = FieldError::listExtract($params['errors']);
 		$rows = array();
 		foreach ($fields as $f) {
+			## make up each user input line
 			if (!isset($params['values'][$f['name']])) {
 				$f['value'] = $f['default'];
 			} else {
 				$f['value'] = $params['values'][$f['name']];
 			}
 			$html = Form::_inputField($f);
+			## cache input rows for displayinginto $rows[]
 			if (isset($errors[$f['name']]))
 				$error = $errors[$f['name']];
 			else
@@ -80,30 +82,26 @@ class Form {
 				$rows[] = array('title'=>$f['title'], 'id'=>$f['name'], 'html'=>$html, 'error'=>$error);
 			}
 		}
+		## construct the display exterior
 		echo "<fieldset>\n";
-		echo '<table class="form"><thead>';
 		if ($msg) {
-			echo '<tr><td colspan="2" class="error">'.H($msg).'</td></tr></thead>';
+			echo '<p class="error">'.H($msg).'</p>';
 		}
-		echo '<tbody class="striped">';
+    ## fill using $rows[] cache
 		foreach ($rows as $r) {
-			echo "<tr>";
-			echo '<th><label for="'.$r["id"].'">'.H($r["title"]).':</label></th>';
 			if ($r['error']) {
-				$err = '<span class="error">'.H($r['error']).'</span><br />';
+				$err = '<span class="error">'.H($r['error']).'</span>';
 			} else {
 				$err = '';
 			}
-			echo '<td>'.$err.$r['html']."</td></tr>\n";
+			echo $r['html'].$err;
+			echo '<label for="'.$r["id"].'">'.H($r["title"]).':</label>';
+			echo '<br />';
 		}
-		echo "</tbody>";
-		echo "<tfoot><tr><td>";
 		echo '<input type="submit" value="'.H($params['submit']).'" />';
 		if ($params['cancel']) {
 			echo '<a href="'.H($params['cancel']).'">'.T("Cancel").'</a> ';
-			//echo '<input type="button" value="'.H($params['Cancel']).'" />';
 		}
-		echo '</td></tr></tfoot></table>';
 		echo "</fieldset>\n";
 		echo "</form>\n";
 	}
@@ -150,6 +148,8 @@ class Form {
 			$s .= 'id="'.H($field['name']).'" ';
 			$s .= 'name="'.H($field['name']).'" ';
 			$s .= 'value="'.H($field['value']).'" ';
+			$s .= 'size="'.(strlen($field['value'])).'" ';
+			$s .= 'maxlength="'.(strlen($field['value'])+16).'" ';
 			if ($field['required'] == true) {
 				$s .= ' required aria-required="true" ';
 			}

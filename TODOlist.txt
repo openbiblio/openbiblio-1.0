@@ -57,6 +57,14 @@ so search can be refined.
 12 May 2013 - Fred
 Report results page does not indicate what report is being viewed. Needs Title.
 
+12 May 2013 - Fred
+investigate making school grade, teacher, optional.  If not used then 'Audience Level'
+should not appear on advanced search screen.
+
+13 May 2013 Neil Redgate
+> The option series in the 'search existing items drop down menu' does not work.
+> Should it be removed from the drop down menu (line 155)?
+
 ###################### Completed, most recent at top #########################
 
 - Neil Redgate - verified as draggable and droppable into existing 8 May 2013
