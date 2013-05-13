@@ -92,9 +92,9 @@
 		<td nowrap="true" colspan="3">
 			<label for="sortBy"><?php echo T("Sort by: "); ?></label>
 			<select id="sortBy" name="sortBy">
-				<option value="author">Author</option>
-				<option value="callno">Call Number</option>
-				<option value="title" selected>Title</option>
+				<option value="author"><?php echo T("Author"); ?></option>
+				<option value="callno"><?php echo T("Call Number"); ?></option>
+				<option value="title" selected><?php echo T("Title"); ?></option>
 			</select>
 		</td>
 	</tr>

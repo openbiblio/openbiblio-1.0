@@ -140,12 +140,12 @@
   <tfoot>
   <tr>
     <td colspan="1" align="left">
-			<input type="submit" id="addBtn" value="Add" />
-			<input type="submit" id="updtBtn" value="Update" />
-			<input type="button" id="cnclBtn" value="Cancel" />
+			<input type="submit" id="addBtn" value="<?php echo T("Add"); ?>" />
+			<input type="submit" id="updtBtn" value="<?php echo T("Update"); ?>" />
+			<input type="button" id="cnclBtn" value="<?php echo T("Cancel"); ?>" />
     </td>
     <td colspan="1" class="primary" align="right">
-			<input type="submit" id="deltBtn" value="Delete" />
+			<input type="submit" id="deltBtn" value="<?php echo T("Delete"); ?>" />
     </td>
   </tr>
   </tfoot>

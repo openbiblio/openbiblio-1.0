@@ -45,7 +45,7 @@
 			<p>Your OpenBiblio Installation is up to date.</p>
 			<p>Nothing further is required.</p><br />
 			<form method="get" action="../circ/index.php">
-				<input id="useBtn" type="submit" value="Start Using OpenBiblio" />
+				<input id="useBtn" type="submit" value="<?php echo T("Start Using OpenBiblio"); ?>" />
 			</form>
 		</section>
 
@@ -59,32 +59,32 @@
 				</tr-->
 				<tr>
 					<td><label for="installTestData">Install Test Data:</label></td>
-					<td><input id="installTestData" type="checkbox" value="yes" /></td>
+					<td><input id="installTestData" type="checkbox" value="<?php echo T("Yes"); ?>" /></td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
 				<tr>
-					<td><input id="newBtn" type="submit" value="Install" /></td>
+					<td><input id="newBtn" type="submit" value="<?php echo T("Install"); ?>" /></td>
 				</tr>
 				</table>
 			</form>
 		</section>
 	
 		<section id="updateDB">
-			<h1>Not Available yet, Under Construction</h1>
-			<p>The existing database is for version <span id="verTxt"></span>.<br />
-				 It needs to be upgraded to version <?php echo H(OBIB_LATEST_DB_VERSION); ?>.
+			<h1><?php echo T("Not Available yet, Under Construction"); ?></h1>
+			<p><?php echo T("The existing database is for version "); ?><span id="verTxt"></span>.<br />
+				 <?php echo T("It needs to be upgraded to version "); ?> <?php echo H(OBIB_LATEST_DB_VERSION); ?>.
 			</p>
 			<br />
 			<p class="error">WARNING - Please back up your database before updating.</p>
 			<form name="updateForm">
-				<input id="updtBtn" type="submit" value="Update Now">
+				<input id="updtBtn" type="submit" value="<?php echo T("Update Now"); ?>">
 			</form>
 		</section>
 
 		<section id="startOB">
 			<p>OpenBiblio appears ready for use.</p>
 			<form name="startForm" method="POST" action="../index.php">
-				<input id="startBtn" type="submit" value="Start OpenBiblio now">
+				<input id="startBtn" type="submit" value="<?php echo T("Start OpenBiblio now"); ?>">
 			</form>
 		</section>
 	</fieldset>

@@ -105,18 +105,18 @@
 	<fieldset id="newBooking">
 		<legend><?php echo T("Make Booking");?></legend>
 			<select name="searchType">
-				<option value="keyword">Keyword</option>
-				<option value="title">Title</option>
-				<option value="subject">Subject</option>
-				<option value="series">Series</option>
-				<option value="publisher">Publisher</option>
-				<option value="callno" selected>Item Number</option>
+				<option value="keyword"><?php echo T("Keyword");?></option>
+				<option value="title"><?php echo T("Title");?></option>
+				<option value="subject"><?php echo T("Subject");?></option>
+				<option value="series"><?php echo T("Series");?></option>
+				<option value="publisher"><?php echo T("Publisher");?></option>
+				<option value="callno" selected><?php echo T("Item Number");?></option>
 			</select>
 			<input type="text" name="bkSrchTxt" size="30" maxlength="256" />
 			<input type="hidden" name="sortBy" value="default" />
 			<!--input type="hidden" name="tab" value="circ" />
 			<input type="hidden" name="lookup" value="Y" /-->
-			<input type="button" value="Search" id="bkgBtn" />
+			<input type="button" value="<?php echo T("Search");?>" id="bkgBtn" />
 	</fieldset>
 	
 	<fieldset id="newHolds">
@@ -126,7 +126,7 @@
 			<!--a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"Search</a-->
 			<input type="hidden" name="mbrid" value="" />
 			<input type="hidden" name="classification" value="" />
-			<input type="button" value="Hold" id="holdBtn" />
+			<input type="button" value="<?php echo T("Hold");?>" id="holdBtn" />
 	</fieldset>
 	
 	<fieldset id="onHold">
@@ -209,11 +209,11 @@
 			</tr>
 			<tr>
 				<td colspan="2" cl>
-					<input type="submit" id="addMbrBtn" value="Add" />
-					<input type="submit" id="updtMbrBtn" value="Update" />
-					<input type="button" class="gobkUpdtBtn" value="Go Back" />
-					<input type="button" class="gobkNewBtn" value="Go Back" />
-					<input type="button" id="deltMbrBtn" value="Delete" />
+					<input type="submit" id="addMbrBtn" value="<?php echo T("Add"); ?>" />
+					<input type="submit" id="updtMbrBtn" value="<?php echo T("Update"); ?>" />
+					<input type="button" class="gobkUpdtBtn" value="<?php echo T("Go Back"); ?>" />
+					<input type="button" class="gobkNewBtn" value="<?php echo T("Go Back"); ?>" />
+					<input type="button" id="deltMbrBtn" value="<?php echo T("Delete"); ?>" />
 				</td>
 			</tr>
 		</tfoot>

@@ -116,8 +116,8 @@ var idis = {
 				  html += "<tr>\n";
 					if (!opacMode) {
 						html += '	<td>\n';
-						html += '		<button class="editBtn" value="edit" />\n';
-						html += '		<button class="deltBtn" value="del" />\n';
+						html += '		<button class="editBtn" value="<?php echo T("edit"); ?>" />\n';
+						html += '		<button class="deltBtn" value="<?php echo T("del"); ?>" />\n';
 						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
 						html += '	</td>\n';
 					}

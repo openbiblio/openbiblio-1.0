@@ -115,10 +115,10 @@
 		</li>
 	</ul>
 	<ul id="btnRow">
-    <li><input type="submit" id="addBtn"  name="addBtn" value="Add" /></li>
-    <li><input type="submit" id="updtBtn" name="updtBtn" value="Update" /></li>
-    <li><input type="button" id="cnclBtn" name="cnclBtn" value="Cancel" /></li>
-    <li><input type="submit" id="deltBtn" name="deltBtn" value="Delete" /></li>
+    <li><input type="submit" id="addBtn"  name="addBtn" value="<?php echo T("Add"); ?>" /></li>
+    <li><input type="submit" id="updtBtn" name="updtBtn" value="<?php echo T("Update"); ?>" /></li>
+    <li><input type="button" id="cnclBtn" name="cnclBtn" value="<?php echo T("Cancel"); ?>" /></li>
+    <li><input type="submit" id="deltBtn" name="deltBtn" value="<?php echo T("Delete"); ?>" /></li>
 	</ul>
 </fieldset>
 </form>

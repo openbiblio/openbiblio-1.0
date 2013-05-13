@@ -478,7 +478,7 @@ var bs = {
 			html += '		<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
 			html += '		<br />\n';
 			html += '		<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
-			html += '		<input type="button" class="moreBtn" value="More info" />'+'\n';
+			html += '		<input type="button" class="moreBtn" value="<?php T("More info"); ?>" />'+'\n';
 			html += '	</div>\n';
 			html += '</div></td>';
 
@@ -662,8 +662,8 @@ var bs = {
 				  html += "<tr>\n";
 					if (!opacMode) {
 						html += "	<td>\n";
-						html += '		<input type="button" value="edit" class="editBtn" /> \n';
-						html += '		<input type="button" value="delete" class="deltBtn" /> \n';
+						html += '		<input type="button" value="<?php echo T("edit"); ?>" class="editBtn" /> \n';
+						html += '		<input type="button" value="<?php echo T("delete"); ?>" class="deltBtn" /> \n';
 						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
 						html += "	</td>\n";
 					}

@@ -473,7 +473,7 @@ var ni = {
 							    html += '<tr><td>Location</th><td>'+hitData['260a']+'</td></tr>';
 							    html += '<tr><td>Date</th><td>'+hitData['260c']+'</td>';
 									var id = 'host'+hostIndex+'-hit'+hitIndex;
-							    html += '<td id="'+id+'"><input type="button" value="This One" /></td></tr>';
+							    html += '<td id="'+id+'"><input type="button" value="<?php echo T("This One"); ?>" /></td></tr>';
 									html += '</table></form>';
 						}
 									html += '</fieldset>';
