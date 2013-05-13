@@ -538,7 +538,7 @@ var ni = {
 			$('#selectionDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
 			$('#opacFlg').val(['CHECKED','Y']);
-			//ie.init();
+
 			ni.doShowOne(ni.crntData);
 			$('#itemMediaTypes').val(mediaType)
 		});
@@ -558,7 +558,7 @@ var ni = {
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
 		}
-/**/
+
 	  $('#selectionDiv input.online').disable();	/**/
 	  $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();

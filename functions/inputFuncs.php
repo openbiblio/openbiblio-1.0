@@ -13,10 +13,6 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	} else {
 		$postVars = array();
 	}
-//	if (isset($postVars[$name])) {  // FIXME - is this right, or useful, messes up <select> - Fred
-		//$value = $postVars[$name];
-//		$data = $postVars[$name];
-//	}
 	if (isset($_SESSION['pageErrors'])) {
 		$pageErrors = $_SESSION['pageErrors'];
 	} else {
@@ -25,10 +21,6 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	if (!$attrs) {
 		$attrs = array();
 	}
-// beleive this is now handled by HTML & Javascript most everywhere. FL Aug 2011	
-//	if (!isset($attrs['onChange'])) {
-//		$attrs['onChange'] = 'modified=true';
-//	}
 	if (!isset($attrs['id'])) {
 		$attrs['id'] = $name;
 	}
@@ -55,12 +47,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		foreach ($attrs as $k => $v) {
 			$s .= H($k).'="'.H($v).'" ';
 		}
-		//$s .= ">".H($value)."</textarea>";
 		$s .= ">".H($data)."</textarea>";
 		break;
 	case 'checkbox':
 		$s .= '<input type="checkbox" name="'.H($name).'" ';
-		//$s .= 'value="'.H($data).'" ';
 		$s .= 'value="'.H($value).'" ';
 		if ($value == $data) {
 			$s .= 'checked="checked" ';
@@ -77,14 +67,12 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		}
 		foreach ($attrs as $k => $v) {
 			if ($k == 'required') {
-				$s .= 'required="required" aria-required="true" ';
+				//$s .= 'required="required" aria-required="true" ';
+				$s .= 'required aria-required="true" ';
 			} else {
 				$s .= H($k).'="'.H($v).'" ';
 			}
 		}
-//		if (in_array('required', $attrs)) {
-//			$s .= 'required aria-required="true" ';
-//		}
 		$s .= "/>";
 		
 		if (in_array('required', $attrs)) {

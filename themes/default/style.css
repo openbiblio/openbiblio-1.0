@@ -63,7 +63,11 @@ td.center, th.center { text-align: center; }
 td.label { text-align: left; white-space: nowrap; }
 th, label, .lblFld { font-size: 0.75em; font-weight: bold; margin-left: 2px;}
 
-/* form input fields */
+/*.colLbl { display: block; float:left; }*/
+
+/* form user input fields */
+input:focus { background:rgb(204,255,255); }
+input:blur { background:rgb(255,255,255); }
 input, select, textarea { margin: 2px; }
 input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
 select:focus, 
@@ -76,8 +80,8 @@ input[type=checkbox] { padding-left: 5px; }
 input:disabled { cursor:not-allowed; }
 
 /* required fields */
-input:required::after { content:"**"; color: red; !important; }
-/*input:required { border-color: #800000; border-width: 3px; }*/
+:required::after { content:"*"; color: red; !important; }
+/*:required { border-color: red; }*/
 
 /* styling for javascript stop-gap placeholder for browsers without native support */
 .placeholder { color: #aaa; }
@@ -183,8 +187,6 @@ div#content {
 	.ie #content figure {width: 480px;}
 #content .altBG { background: #dddddd; }
 
-input:focus { background:rgb(204,255,255); }
-input:blur { background:rgb(255,255,255); }
 .note { font-size: 0.7em; }
 .help { font-size: 0.7em; display:none; }
 
