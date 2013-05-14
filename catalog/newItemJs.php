@@ -85,10 +85,6 @@ var ni = {
 			}
 		});
 
-		// FIXME - fl only '*' should be colored
-		//$('#selectionDiv font').css('color','red');
-		//$('#selectionDiv sup').css('color','red');
-		//ni.inputColor = $('#99').css('color');
 		$('#100a').on('change',null,ni.fixAuthor);
 		$('#245a').on('change',null,ni.fixTitle);
 
@@ -97,7 +93,6 @@ var ni = {
 		ni.fetchCollectionList(); // for new items
 		ni.fetchSiteList(); // for new copy use
 		ni.fetchOpts();  //for debug use
-		//ni.doMakeItemForm('');
 	},
 	
 	//------------------------------
@@ -108,7 +103,7 @@ var ni = {
 	  //console.log('resetting Search Form');
 		$('#help').hide();
 		$('#searchDiv').show();
-		$('#srchHosts').hide();
+		//$('#srchHosts').hide();// depends if multiple hots available
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
@@ -157,7 +152,6 @@ var ni = {
 			ni.hostJSON = data;
 			ni.nHosts = data.length;
 			if (ni.nHosts > 1) {
-				//var theTxt = '<label><input type="checkbox" name="srchHost0" checked value="0" \>ALL</label><br />\n';;
 				var theTxt = '';
 				for (var nHost in data) {
 					theTxt += '<label><input type="checkbox" name="srchHost" id="hst'+nHost+'" checked value="'+data[nHost].id+'"\>'+data[nHost].name+'</label><br />\n';
@@ -165,13 +159,6 @@ var ni = {
 				$('#srchHosts span').html(theTxt);
 				$('#srchHosts').show();
 				
-				//$('#srchHosts input').bind('change',null,function (e){
-				//	console.log('you clicked '+e.target.id);
-				//
-				//	$('#srchHosts :checkbox:checked').each(function () {
-				//		console.log('now using host '+data[this.id.substr(3,10)].id);			
-				//	});
-				//});			
 			} else {
 				$('#srchHosts').hide();
 			}
@@ -376,7 +363,7 @@ var ni = {
 			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
 		}
 
-		// show host(s) to be searched
+		// show host(s) being searched
 		theTxt += 'at :<br />';
 		if (ni.nHosts > 1){
 			var n=1;

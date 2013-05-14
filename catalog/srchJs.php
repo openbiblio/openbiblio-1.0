@@ -485,12 +485,6 @@ var bs = {
 			html += '<td id="itemInfo">\n';
 			if (title != '')
 				html += '	<p id="itemTitle" wrap >'+title+'</p>\n';
-      if ((booktitle) != '') {
-      	html += ' <p id="itemBookTitle" wrap >'+booktitle+'</p>\n';
-        html += ' <p id="itemBookAuthor" >';
-        html += editors;
-        html += ' </p>\n';
-      }
 			if (reporttitle != '')
         html += ' <p id="itemReportTitle" wrap >'+reporttitle+'</p>\n';
 			if ((corporate+author+coauthor) != '') {
@@ -500,6 +494,12 @@ var bs = {
 				html += 		coauthor;
 				html += '	</p>\n';
 			}
+      if ((booktitle) != '') {
+      	html += ' <p id="itemBookTitle" wrap >'+booktitle+'</p>\n';
+        html += ' <p id="itemBookAuthor" >';
+        html += editors;
+        html += ' </p>\n';
+      }
 			if ((journal+year) != '') {
 				html += ' <p id="itemJournal" >';
 				html += 		journal+'&nbsp;&nbsp;';

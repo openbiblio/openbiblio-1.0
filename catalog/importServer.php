@@ -93,29 +93,24 @@ switch ($_REQUEST[mode]){
 		$theDb = new SrchDB;
 		$cpys = new Copies;
 		$rslt = [];
-		//echo "data received";		
 
-		foreach ($_POST['records'] as $rec) {
-			//echo "rec==> ";print_r($rec); echo '<br />';
-			$barCd = $rec['barcode_nmbr'];
-  		if ($barCd == 'autogen') {
-  			$barCd = $cpys->getNewBarCode($_SESSION[item_barcode_width]);
-  			$rec['barcode_nmbr'] = $barCd;
-			}
-			
-			$bibid = doPostNewBiblio($rec);
-			$text = "Biblio #$bibid posted successfully.";
+		$rec = $_POST['record'];
+		$barCd = $rec['barcode_nmbr'];
+		if ($barCd == 'autogen') {
+			$barCd = $cpys->getNewBarCode($_SESSION[item_barcode_width]);
+			$rec['barcode_nmbr'] = $barCd;
+		}
 
-  		if (isset($rec['barcode_nmbr'])) {
-  			if ($theDb->insertCopy($bibid,NULL) == '!!success!!') {
-					$text .= "<br />\n".T("Copy successfully created.")." ".T("Barcode")." = ".$barCd.". ";  	
-				} else {
-					$text .= "<br />\n".T("Error creating New Copy")." ".T("Barcode")." = ".$barCd.". ";
-				}
+		$bibid = doPostNewBiblio($rec);
+		$text = "Biblio #$bibid posted successfully.";
+		if (isset($rec['barcode_nmbr'])) {
+			if ($theDb->insertCopy($bibid,NULL) == '!!success!!') {
+				$text .= "<br />\n".T("Copy successfully created.")." ".T("Barcode")." = ".$barCd.". ";
+			} else {
+				$text .= "<br />\n".T("Error creating New Copy")." ".T("Barcode")." = ".$barCd.". ";
 			}
-			$rslt[] = $text;
-		};
-		echo json_encode($rslt);
+		}
+		echo $text;
 		break;
 				
   #-.-.-.-.-.-.-.-.-.-.-.-.-

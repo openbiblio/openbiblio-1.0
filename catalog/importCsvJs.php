@@ -334,17 +334,18 @@ return false;
 	
 	post2Db: function () {
 		//console.log('sending records to OB database now');
-		$.post(csvi.url, {'mode':'postCsvData', 'records':csvi.csvRecords}, function (response) {
 			$('#intro').hide();
 			$('#review').show();
 			$('#rslts').show();
-			var posts = JSON.parse(response);
-			var txt = '<ul>';
-			for (var i=0; i<posts.length; i++) {
-				txt = txt + '<li>'+posts[i]+'</li>';
+
+			$('#csvImportRslts').html('<ul id="postRslt"></ul>');
+			for (var i=0; i<csvi.csvRecords.length; i++) {
+				csvi.postOneRecd(csvi.csvRecords[i]);
 			}
-			txt = txt + '</ul>';
-			$('#csvImportRslts').html(txt);
+	},
+	postOneRecd: function (aRcd) {
+		$.post(csvi.url, {'mode':'postCsvData', 'record':aRcd}, function (response) {
+			$('#postRslt').append('<li>'+response+'</li>');
 		});
 	},
 };
