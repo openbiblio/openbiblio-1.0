@@ -97,8 +97,11 @@ class SrchDb {
 					$sqlWhere .= " AND bc.bibid = b.bibid "
 									." AND bc.siteid = '" . $item['siteValue'] . "' ";					
 			}
-			if(isset($item['mediaTag'])){				
-				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";				
+			if(isset($item['mediaTag'])){
+				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";
+			}
+			if(isset($item['collTag'])){
+				$sqlWhere .= " AND b.collection_cd = '" . $item['collValue'] ."'";
 			}
 			if(isset($item['audienceTag'])){
 //				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';

@@ -152,7 +152,11 @@ function mkBiblioArray($dbObj) {
 									{"tag":"650","suf":"a"},
 									{"tag":"773","suf":"t"}'; 
 								break;
-//		case 'series': 		$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]'); break;
+			case 'series':
+								//$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]');
+	  						echo '<h1 class="warning">'.T("Under Construction").'</h1>';
+								exit;
+                break;
 			case 'publisher': 	$type = 'phrase';
 								$params = '{"tag":"260","suf":"b"}'; 
 								break;
@@ -183,7 +187,11 @@ function mkBiblioArray($dbObj) {
 			if(isset($_REQUEST['materialCd']) && $_REQUEST['materialCd'] != 'all'){
 				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
 				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['materialCd'] . '"}';
-			}			
+			}
+			if(isset($_REQUEST['collectionCd']) && $_REQUEST['collectionCd'] != 'all'){
+				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
+				$searchTags .= ',{"collTag":"099","collSuf":"a","collValue":"'. $_REQUEST['collectionCd'] . '"}';
+			}
 			if(isset($_REQUEST['audienceLevel'])){
 				//Not sure which field this, so leave this for now - LJ
 				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';

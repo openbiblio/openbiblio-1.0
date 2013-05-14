@@ -20,12 +20,12 @@ Col.prototype.init = function () {
 Col.prototype.setTypeDisplay = function () {
 	var type = $('#type').val();
 	if (type == 'Circulated') {
-		$('.distOnly').hide();
-		$('.circOnly').show();
+		$('.distOnly').hide().removeAttr('required');
+		$('.circOnly').show().attr('required','true');
 	}
 	else if (type == 'Distributed') {
-		$('.circOnly').hide();
-		$('.distOnly').show();
+		$('.circOnly').hide().removeAttr('required');
+		$('.distOnly').show().attr('required','true');
 	}
 	else {
 		$('#msgArea').html('Invalid Collection Type');

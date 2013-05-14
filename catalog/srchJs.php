@@ -272,6 +272,9 @@ var bs = {
 	fetchCollectionList: function () {
 	  $.get(bs.url,{mode:'getCollectionList'}, function(data){
 			$('#itemEditColls').html(data);
+			// Add all for search collections
+			data = '<option value="all"  selected="selected">All</option>' + data;
+			$('#srchCollections').html(data);
 		});
 	},
 	
@@ -350,7 +353,7 @@ var bs = {
 				// no hits
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 				  bs.multiMode = false;
-	  			  $('#srchRslts').html('<p class="error"><?php echo T("Nothing Found") ?></p>');
+	  			$('#srchRslts').html('<p class="error"><?php echo T("Nothing Found") ?></p>');
 				  $('#biblioListDiv .goNextBtn').disable();
 				  $('#biblioListDiv .goPrevBtn').disable();
 				}
@@ -478,7 +481,7 @@ var bs = {
 			html += '		<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
 			html += '		<br />\n';
 			html += '		<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
-			html += '		<input type="button" class="moreBtn" value="<?php T("More info"); ?>" />'+'\n';
+			html += '		<input type="button" class="moreBtn" value="<?php echo T("More info"); ?>" />'+'\n';
 			html += '	</div>\n';
 			html += '</div></td>';
 

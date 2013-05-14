@@ -90,7 +90,7 @@
 	<tbody id="advancedSrch">
 	<tr>
 		<td nowrap="true" colspan="3">
-			<label for="sortBy"><?php echo T("Sort by: "); ?></label>
+			<label for="sortBy"><?php echo T("Sort by"); ?>: </label>
 			<select id="sortBy" name="sortBy">
 				<option value="author"><?php echo T("Author"); ?></option>
 				<option value="callno"><?php echo T("Call Number"); ?></option>
@@ -104,11 +104,15 @@
 	  <legend><?php echo T("Limit Search Results"); ?></legend>
 	  <table border="0">
 		<tr class="searchRow">
-			<td><label for="srchMediaTypes"><?php echo T("Media Type:"); ?> </label></td>
+			<td><label for="srchMediaTypes"><?php echo T("Media Type"); ?>: </label></td>
 			<td><select id="srchMediaTypes" name="materialCd"></select></td>
 		</tr>
 		<tr class="searchRow">
-			<td><label for="audienceLevel"><?php echo T("Audience Level:"); ?></label></td>
+			<td><label for="srchCollections"><?php echo T("Collection"); ?>: </label></td>
+			<td><select id="srchCollections" name="collectionCd"></select></td>
+		</tr>
+		<tr class="searchRow">
+			<td><label for="audienceLevel"><?php echo T("Audience Level"); ?>: </label></td>
 			<td>
 				<select id="audienceLevel" name="audienceLevel">
 					<option value="K"><?php echo T("Kindergarten"); ?></option>
@@ -133,9 +137,10 @@
 		<tr class="searchRow">
 			<td><label><?php echo T("Production Date:"); ?></label><br /></td>
 			<td><label for="from"><?php echo T("From Year:");?></label>
-					<input id="from" name="from" type="number" size="4" min="1900" max="2099" />
-				<label for="to"><?php echo T("To Year:"); ?></label>
-					<input id="to" name="to" type="number" size="4" min="1900" max="2099" />
+						<input id="from" name="from" type="number" size="4" min="1850" max="2099" />
+					<br />
+					<label for="to"><?php echo T("To Year:"); ?></label>
+						<input id="to" name="to" type="number" size="4" min="1850" max="2099" />
 			</td>
 		</tr>
 		</tbody>

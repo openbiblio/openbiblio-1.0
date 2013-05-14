@@ -65,16 +65,16 @@ should not appear on advanced search screen.
 > The option series in the 'search existing items drop down menu' does not work.
 > Should it be removed from the drop down menu (line 155)?
 
-14 May 2013 - Fred
-Unable to edit a collection - 'Must fill in' flag for invisable field
+###################### Completed, most recent at top #########################
 
-14 May 2013 - Fred
+14 May 2013 - Fred - feature added to advanced search 14 May 2013
 Unable to search by collection
 
-14 May 2013 - Neil Redgate - fixed, One record at a time is now sent to Server. 1
-Unable to load more than 16 CSV records in a batch.
+14 May 2013 - Fred - fixed 14 May 2013
+Unable to edit a collection - 'Must fill in' flag for invisable field
 
-###################### Completed, most recent at top #########################
+14 May 2013 - Neil Redgate - fixed, One record at a time is now sent to Server. 14 May 2013
+Unable to load more than 16 CSV records in a batch.
 
 - Neil Redgate - verified as draggable and droppable into existing 8 May 2013
 field 260g not 'dragable' in Biblio Field editor
