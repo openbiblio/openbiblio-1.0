@@ -65,6 +65,9 @@ should not appear on advanced search screen.
 > The option series in the 'search existing items drop down menu' does not work.
 > Should it be removed from the drop down menu (line 155)?
 
+14 May 2013 Fred
+Unable to enter, edit or serch for ISSN for a magazine (i.e. 'Make:')
+
 ###################### Completed, most recent at top #########################
 
 14 May 2013 - Fred - feature added to advanced search 14 May 2013

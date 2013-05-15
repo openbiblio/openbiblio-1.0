@@ -153,9 +153,7 @@ function mkBiblioArray($dbObj) {
 									{"tag":"773","suf":"t"}'; 
 								break;
 			case 'series':
-								//$rslts = $theDb->getBiblioByPhrase('[{"tag":"000","suf":"a"}]');
-	  						echo '<h1 class="warning">'.T("Under Construction").'</h1>';
-								exit;
+								$params = '{"tag":"022","suf":"a"}';
                 break;
 			case 'publisher': 	$type = 'phrase';
 								$params = '{"tag":"260","suf":"b"}'; 

@@ -113,7 +113,7 @@ function PostBiblioChange($nav) {
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}	
 	}
-	
+	//echo "flds===>";print_r($fields);echo"<br />";
 	$mrc = new MarcRecord();
 	$mrc->setLeader($biblio[marc]->getLeader());
 	
@@ -182,7 +182,8 @@ function PostBiblioChange($nav) {
 	/* Sort fields by tag and display value */
 	usort($mrc->fields, fieldCmp);
 	
-	$biblio[marc] = $mrc;
+	//echo "mrc==> ";var_dump($mrc); echo "<br /><br />";
+	$biblio['marc'] = $mrc;
 	
 	#**************************************************************************
 	#*  Insert/Update bibliography
