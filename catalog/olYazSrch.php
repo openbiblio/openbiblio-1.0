@@ -11,7 +11,7 @@
 		$startAt = 1;
 		$nmbr = $postVars['maxHits'];
 		//echo "return results from #$startAt to #". ($startAt+$nmbr-1) ."<br />";
-		
+
 		//echo "using $postVars[numHosts] host(s)<br />";
 		for ($ptr=0; $ptr<$postVars['numHosts']; $ptr++) {
 			$aHost = $postVars['hosts'][$ptr]['host'];
@@ -32,8 +32,8 @@
 				$srchType = 'cql';
 				$query = $sQuery;
 			}
-//echo "query=$query <br />\n";
-			
+			//echo "query=$query <br />\n";
+
 			$connOK = yaz_connect($aUrl, $yazOpts );
 			if (! $connOK) {
 				echo 'yaz setup not successful! <br />';
@@ -67,9 +67,10 @@
 			if (!empty($error)) {
 				//echo "error response from host.<br />";
 				$hits[$i] = 0;
-				$errMsg[$i]  = $error." on ".$postVars['hosts'][$i]['name']."<br />";
-				$errMsg[$i] .= "(yaz err no. " . yaz_errno($id[$i]) . ') ' . yaz_addinfo($id[$i]) . "<br />";
-				$errMsg[$i] .= "Query ==>> ".$query."<br /><br />";
+				$errMsg[$i]  = "Error encountered at ".$postVars['hosts'][$i]['name']."<br />";
+				$errMsg[$i] .= "Query ==>> ".$query."<br />";
+				$errMsg[$i] .= '<p class="error">YAZ reports: '.$error.':<br />';
+				$errMsg[$i] .= "(yaz err no. " . yaz_errno($id[$i]) . ') ' . yaz_addinfo($id[$i]) . "</p>";
 			} else {
 				//echo "host responded without error.<br />";
 				$hits[$i] = yaz_hits($id[$i]);

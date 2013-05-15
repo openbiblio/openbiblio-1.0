@@ -23,21 +23,29 @@
 		
 		if ($ttlHits == 0) {
 			## TOO FEW 
-			/* Response format:
-		  $s =  "{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],".
-						"'msg':'$msg1',".
-						"'srch1':{'byName':'$srchByName','lookupVal':'$lookupVal'},".
-						"'srch2':{'byName':'$srchByName2','lookupVal':'$lookupVal2'}".
-					  "}";
-			echo $s;
+			/* error encountered */
+			for ($i=0; $i<$numHosts; $i++) {
+				if ($errMsg[$i] != '') {
+					echo $errMsg[$i];
+				}
+			}
+
+			/* no errors Response format:
+  			"{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],".
+				"'msg':'$msg1',".
+				"'srch1':{'byName':'$srchByName','lookupVal':'$lookupVal'},".
+				"'srch2':{'byName':'$srchByName2','lookupVal':'$lookupVal2'}".
+			  "}";
 			*/
 		  $rcd['msg'] = T("Nothing Found");
 		  $srch['byName'] = $srchByName;
 		  $srch['lookupVal'] = $lookupVal;
 		  $rcd['srch1'] = json_encode($srch);
-		  $srch['byName'] = $srchByName2;
-		  $srch['lookupVal'] = $lookupVal2;
-		  $rcd['srch2'] = json_encode($srch);
+			if (isset($srchByName2)) {
+			  $srch['byName'] = $srchByName2;
+			  $srch['lookupVal'] = $lookupVal2;
+			  $rcd['srch2'] = json_encode($srch);
+			}
 		  echo json_encode($rcd);
 		}
 

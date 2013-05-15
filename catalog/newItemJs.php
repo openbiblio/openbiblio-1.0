@@ -103,7 +103,7 @@ var ni = {
 	  //console.log('resetting Search Form');
 		$('#help').hide();
 		$('#searchDiv').show();
-		//$('#srchHosts').hide();// depends if multiple hots available
+		$('#srchHosts').hide();// depends if multiple hosts available
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
@@ -111,6 +111,7 @@ var ni = {
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
+		ni.fetchHosts();
 
 		$('#lookupVal').focus();
 		ni.disableSrchBtn();

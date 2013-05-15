@@ -61,14 +61,14 @@ Report results page does not indicate what report is being viewed. Needs Title.
 investigate making school grade, teacher, optional.  If not used then 'Audience Level'
 should not appear on advanced search screen.
 
-13 May 2013 Neil Redgate
-> The option series in the 'search existing items drop down menu' does not work.
-> Should it be removed from the drop down menu (line 155)?
-
 14 May 2013 Fred
 Unable to enter, edit or serch for ISSN for a magazine (i.e. 'Make:')
 
 ###################### Completed, most recent at top #########################
+
+13 May 2013 Neil Redgate - now works, 14 May 2013
+> The option series in the 'search existing items drop down menu' does not work.
+> Should it be removed from the drop down menu (line 155)?
 
 14 May 2013 - Fred - feature added to advanced search 14 May 2013
 Unable to search by collection
