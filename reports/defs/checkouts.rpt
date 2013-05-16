@@ -15,7 +15,7 @@
 .column due_dt sort=due_dt func=booking_link title="Date Due"
 .column days_late sort="days_late" title="Days Late"
 .parameters
-.	string mbrid
+.	string barcd title="Barcode"
 .	date as_of title="As Of" default="today"
 .	order_by
 .		item site_member type=multi expr="site_name, member" title="Site, Member" 
@@ -32,8 +32,7 @@
 	select b.*, bc.barcode_nmbr, bc.price,
 		m.mbrid, m.barcode_nmbr as mbr_bcode,
 		m.first_name, m.last_name, s.siteid,
-		concat(m.first_name, ' ', m.last_name, ' (',
-			m.barcode_nmbr, ')') as mbr_name,
+		concat(m.first_name, ' ', m.last_name, ' (', m.barcode_nmbr, ')') as mbr_name,
 		s.name as site_name,
 		concat(titles.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
 		greatest(0, to_days(%as_of%)-to_days(b.due_dt)) as days_late
@@ -48,8 +47,8 @@
 		and b.out_histid is not NULL and b.ret_histid is NULL
 		and bkm.bookingid=b.bookingid and m.mbrid=bkm.mbrid
 		and s.siteid=m.siteid
-.	if_set mbrid
-		and bkm.mbrid=%#mbrid%
+.	if_set barcd
+		and m.barcode_nmbr=%#barcd%
 .	end if_set
 .	order_by_expr
 .end sql
