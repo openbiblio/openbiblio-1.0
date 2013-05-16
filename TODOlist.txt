@@ -64,6 +64,21 @@ should not appear on advanced search screen.
 14 May 2013 Fred
 Unable to enter, edit or serch for ISSN for a magazine (i.e. 'Make:')
 
+15 May 2013 - Fred
+When editing an existing item, Fetch On-line data is not working.
+Also it should use LCCN, ISSN, Title (in that order) if ISBN is not available
+
+16 May 2013 - Neil
+Checkout list does not include items not havng a 245a tag. It needs to allow use
+of ANY title tag.
+
+16 May 2013 - Neil
+Checkout Report requirs Member's ID but should use either Name, or card No (Barcode)
+
+16 May 2013 - Neil/Fred
+Copy search
+As with Checkout, the search and results are limited to items that use field 245.
+
 ###################### Completed, most recent at top #########################
 
 13 May 2013 Neil Redgate - now works, 14 May 2013

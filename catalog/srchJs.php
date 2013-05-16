@@ -884,24 +884,32 @@ var bs = {
 
 	/* ====================================== */
 	fetchOnlnData: function () {
-	  var title =  $('#marcBody input.offline:text').filter('#245a').val();
-	  var author= ($('#marcBody input.offline:text').filter('#100a').val()).split(',')[0];
-
-	  var isbn  = ($('#marcBody input.offline:text').filter('#020a').val()).split(',');
-	  for (var i=0; i<isbn.length; i++) {
-	    if (!((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10))) {
-	    	var ISBN = isbn[i];
-	    	break;
+		if ($('#245a').length > 0) var title =  $('#245a').val();
+		//console.log('title==>'+title);
+		if ($('#100a').length > 0) var author= $('#100a').val().split(',')[0];
+		//console.log('author==>'+author);
+		if ($('#020a').length > 0) {
+		  var isbn  = $('#020a').val().split(',');
+		  for (var i=0; i<isbn.length; i++) {
+		    if (!((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10))) {
+		    	var ISBN = isbn[i];
+		    	break;
+				}
 			}
+			//console.log('isbn==>'+isbn);
 		}
+		if ($('#022a').length > 0) var issn  = ($('#022a').val()).split(',');
+		//console.log('issn==>'+issn);
 
-	  if (ISBN) {
-	  	//var msgText = <?php T("Searching for ISBN %isbn%", ISBN); ?>;
-	  	var msgText = "Searching for ISBN "+ISBN;
-	  	params = "&mode=search&srchBy=7&lookupVal="+ISBN;
-	  	var item = ISBN
-		}
-  	else if (title && author) {
+	  if (isbn) {
+	  	var msgText = '<?php T("Searching for ISBN"); ?>'+' '+isbn;
+	  	params = "&mode=search&srchBy=7&lookupVal="+isbn;
+	  	var item = isbn;
+		} else if (issn) {
+	  	var msgText = '<?php T("Searching for ISSN"); ?>'+' '+issn;
+	  	params = "&mode=search&srchBy=7&lookupVal="+issn;
+	  	var item = issn;
+		} else if (title && author) {
 	  	var msgText = "Searching for<br />Title: '"+title+"',<br />by "+author;
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 	  	var item = '"'+title+'", by '+author;
@@ -910,12 +918,12 @@ var bs = {
 		$('#onlineMsg').html(msgText);
 		
 	  $.post(bs.urlLookup,params,function(response){
-			//console.log('params='+params)
-			var rslts = eval('('+response+')'); // JSON 'interpreter'
+			//console.log('params==>'+params)
+			var rslts = JSON.parse(response);
 			var numHits = parseInt(rslts.ttlHits);
 			var maxHits = parseInt(rslts.maxHits);
 			if (numHits < 1) {
-				$('#onlineMsg').html(rslts.msg+' '+item);
+				$('#onlineMsg').html(rslts.msg+' for '+item);
 			}
 			else if (numHits >= maxHits) {
 			  msgText = '<?php echo T("hits found, too many to process"); ?>';

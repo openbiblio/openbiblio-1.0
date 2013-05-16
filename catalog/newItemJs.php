@@ -409,7 +409,7 @@ var ni = {
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
 					// 'srch2':['byName':$srchByName2,'val':$lookupVal2]}
 					var str = rslts.msg+':<br />&nbsp;&nbsp;&nbsp;'+rslts.srch1.byName+' = '+rslts.srch1.lookupVal;
-					if (rslts.srch2.lookupVal != '')
+					if ((rslts.srch2.lookupVal) && (rslts.srch2.lookupVal != ''))
 						str += '<br />&nbsp;&nbsp;&nbsp;'+rslts.srch2.byName+' = '+rslts.srch2.lookupVal;
 					$('#retryHead').empty();
 					$('#retryHead').html('<?php echo T("Nothing Found"); ?>');
