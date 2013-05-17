@@ -20,7 +20,7 @@ class BiblioSearch_rpt extends BiblioRows {
 			'keyword' => Search::type('Keyword', 'MARC', array()),
 			'callno' => Search::type('Call No.', 'MARC', array('099$a')),
 			'author' => Search::type('Author', 'MARC', array('100$a', '245$c', '700$a', '110$a')),
-			'title' => Search::type('Title', 'MARC', array('240$a', '245$a', '245$b')),
+			'title' => Search::type('Title', 'MARC', array('240$a', '245$a', '245$b, 246a, 773a')),
 			'subject' => Search::type('Subject', 'MARC', array('650$a', '651$a', '505$a', '502$a')),
 			'publisher' => Search::type('Publisher', 'MARC', array('260$b')),
 			'address' => Search::type('Address', 'MARC', array('260$a')),
