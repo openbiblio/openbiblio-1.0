@@ -37,13 +37,20 @@
 		concat(titles.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title,
 		greatest(0, to_days(%as_of%)-to_days(b.due_dt)) as days_late
 	from booking b join booking_member bkm
-		join member m join site s join biblio_copy bc join biblio_field titlef
+		join member m
+		join site s
+		join biblio_copy bc
+		join biblio_field titlef
 		join biblio_subfield titles
-		left join biblio_subfield sub on sub.fieldid=titlef.fieldid
-			and sub.subfield_cd='b'
+		left join biblio_subfield sub on sub.fieldid=titlef.fieldid and sub.subfield_cd='b'
 	where bc.histid=b.out_histid
-		and titlef.bibid=b.bibid and titlef.tag='245'
-		and titles.fieldid=titlef.fieldid and titles.subfield_cd='a'
+		and titlef.bibid=b.bibid and
+			(
+				(titlef.tag='240' and titles.fieldid=titlef.fieldid and titles.subfield_cd='a') OR
+				(titlef.tag='245' and titles.fieldid=titlef.fieldid and titles.subfield_cd='a') OR
+				(titlef.tag='246' and titles.fieldid=titlef.fieldid and titles.subfield_cd='a') OR
+				(titlef.tag='773' and titles.fieldid=titlef.fieldid and titles.subfield_cd='a')
+			)
 		and b.out_histid is not NULL and b.ret_histid is NULL
 		and bkm.bookingid=b.bookingid and m.mbrid=bkm.mbrid
 		and s.siteid=m.siteid
