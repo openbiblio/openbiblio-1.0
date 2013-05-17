@@ -63,7 +63,7 @@ should not appear on advanced search screen.
 
 ###################### Completed, most recent at top #########################
 
-16 May 2013 - Neil/Fred,
+16 May 2013 - Neil/Fred, now allows 240,245,246,773 - 16 May 2013
 Copy search
 As with Checkout, the search and results are limited to items that use field 245.
 
