@@ -25,3 +25,8 @@ function printUsmarcText($tag,$subfieldCd,&$marcTags,&$marcSubflds,$showTagDesc)
 	}
 }
 
+function getTagGroups() {
+	$json = file_get_contents('../shared/tagGroup.json');
+	return json_decode($json, true);
+}
+
