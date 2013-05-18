@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+require_once(REL(__FILE__, "../../functions/marcFuncs.php"));
 require_once(REL(__FILE__, "../../classes/Report.php"));
 require_once(REL(__FILE__, "../../classes/Query.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
@@ -17,19 +18,17 @@ class BiblioSearch_rpt extends BiblioRows {
 
 	function BiblioSearch_rpt() {
 		$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
-		$tags = json_decode($json,true);
+		$tags = json_decode_nice($json,true);
 
 		$this->searchTypes = array(
 			'keyword' => Search::type('Keyword', 'MARC', array()),
 			'callno' => Search::type('Call No.', 'MARC', array('099$a')),
-//			'author' => Search::type('Author', 'MARC', array('100$a', '245$c', '700$a', '110$a')),
 			'author' => Search::type('Author', 'MARC', $tags['author']),
-//			'title' => Search::type('Title', 'MARC', array('240$a', '245$a', '245$b, 246a, 773a, 773t')),
 			'title' => Search::type('Title', 'MARC', $tags['title']),
-			'subject' => Search::type('Subject', 'MARC', array('650$a', '651$a', '505$a', '502$a')),
+			'subject' => Search::type('Subject', 'MARC', $tags['subject']),
 			'publisher' => Search::type('Publisher', 'MARC', array('260$b')),
 			'address' => Search::type('Address', 'MARC', array('260$a')),
-			'date' => Search::type('Date', 'MARC', array('240$f', '130$f', '260$c')),
+			'date' => Search::type('Date', 'MARC', $tags['date']),
 			//'series' => Search::type('Series', 'MARC', array('440$a', '490$a')),
 			//'pub_date_from' => Search::type('Published After', 'MARC', array('260$c'), 'numeric', '>='),
 			//'pub_date_to' => Search::type('Published Before', 'MARC', array('260$c'), 'numeric', '<='),
@@ -65,7 +64,7 @@ class BiblioSearch_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
-		//echo "sql===>$sql<br /><br />";					 
+echo "sql===>$sql<br /><br />";					 
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {
@@ -107,11 +106,17 @@ class BiblioSearch_rpt extends BiblioRows {
 			case 'MARC':
 				array_push($q['from'], 'biblio_field as term'.$i.'f', 'biblio_subfield as term'.$i.'s');
 				$q['where'] .= 'and term'.$i.'f.bibid=b.bibid and term'.$i.'s.fieldid=term'.$i.'f.fieldid ';
-				if (!empty($type['fields'])) {
+				$flds = $type['fields'];
+				if (!empty($flds)) {
 					$q['where'] .= "and (";
 					$op = "";
-					foreach ($type['fields'] as $f) {
-						$l = explode('$', $f);
+					foreach ($flds as $f) {
+						if (is_array($flds)) {
+							$l[0] = $flds['tag'];
+							$l[1] = $flds['sub'];
+						} else {
+							$l = explode('$', $f);
+						}
 						if (isset($l[0])) {
 							$q['where'] .= $this->q->mkSQL($op."term".$i."f.tag=%N ", $l[0]);
 							if (isset($l[1])) {

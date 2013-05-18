@@ -5,6 +5,7 @@
 
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 	require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
@@ -13,7 +14,7 @@
 	require_once(REL(__FILE__, "../model/CopyStates.php"));
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-	
+
 	
 	// Load session data in case of OPAC (eg no user logged on)
 	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
@@ -121,26 +122,42 @@ function mkBiblioArray($dbObj) {
 	  break;
 
 	case 'doPhraseSearch':
+//$title = getSrchTags('title');
+//echo"title===>";print_r($title);echo"<br />";
+//$tagGrp = makeTagObj($title);
+//echo"titleTags===>";print_r($tagGrp);echo"<br />";
+
 	  $theDb = new SrchDB;
 	  switch ($_REQUEST[searchType]) {
 	    case 'title': 		$type = 'phrase';
+							$params = makeTagObj(getSrchTags('title'));
+/*
 							$params = '{"tag":"245","suf":"a"},
 								{"tag":"245","suf":"b"},
 								{"tag":"240","suf":"a"},
 								{"tag":"246","suf":"a"},
 								{"tag":"246","suf":"b"}'; 
+*/
 							break;
 			case 'author': 		$type = 'words';
+							$params = makeTagObj(getSrchTags('author'));
+/*
 							$params ='{"tag":"100","suf":"a"},
 								{"tag":"700","suf":"a"},
 								{"tag":"245","suf":"c"},
 								{"tag":"110","suf":"a"}'; 
+*/
 							break;
 			case 'subject': 	$type = 'words';
+							$params = makeTagObj(getSrchTags('subject'));
+/*
 								$params = '{"tag":"650","suf":"a"},
 								{"tag":"505","suf":"a"}'; 
+*/
 								break;
 			case 'keyword': 	$type = 'words';
+							$params = makeTagObj(getSrchTags('keyword'));
+/*
 								$params ='{"tag":"240","suf":"a"},
 									{"tag":"245","suf":"a"},
 									{"tag":"245","suf":"b"},
@@ -151,21 +168,33 @@ function mkBiblioArray($dbObj) {
 									{"tag":"505","suf":"a"},
 									{"tag":"650","suf":"a"},
 									{"tag":"773","suf":"t"}'; 
+*/
 								break;
 			case 'series':
+							$params = makeTagObj(getSrchTags('series'));
+/*
 								$params = '{"tag":"022","suf":"a"}';
+*/
                 break;
 			case 'publisher': 	$type = 'phrase';
-								$params = '{"tag":"260","suf":"b"}'; 
+							$params = makeTagObj(getSrchTags('phrase'));
+/*
+								$params = '{"tag":"260","suf":"b"}';
+*/
 								break;
 			case 'callno': 		$type = 'phrase';
-								$params = '{"tag":"099","suf":"a"}'; 
+							$params = makeTagObj(getSrchTags('callno'));
+/*
+								$params = '{"tag":"099","suf":"a"}';
+*/
 								break;
 	    
 	  	default:
 	  		echo "<h5>Invalid Search Type: $_REQUEST[srchBy]</h5>";
 	  		exit;
 		}
+//echo"params===>";print_r($params);echo"<br />";
+
 		// Add search params
 		$searchTags = "";
 		
