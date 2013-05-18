@@ -31,7 +31,7 @@ var bs = {
 		bs.url = 'catalogServer.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
 
-		// search form
+		// for search criteria form
 		$('#advancedSrch').hide();
 		$('#advanceQ:checked').val(['N'])
 		$('#advanceQ').on('click',null,function(){
@@ -40,11 +40,11 @@ var bs = {
 			else
 				$('#advancedSrch').hide();
 		});
-		$('#srchByBarcd').on('click',null,bs.doBarcdSearch);
-		$('#srchByPhrase').on('click',null,bs.doPhraseSearch);
-		bs.srchBtnClr = $('#srchByBarcd').css('color');
-		$('#searchBarcd').on('keyup',null,bs.checkSrchByBarcdBtn);
-		$('#searchText').on('keyup',null,bs.checkSrchByPhraseBtn);
+		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);
+		$('#phraseSrchBtn').on('click',null,bs.doPhraseSearch);
+		bs.srchBtnClr = $('#phraseSrchBtn').css('color');
+		$('#bc_searchBarcd').on('keyup',null,bs.checkBarcdSrchBtn);
+		$('#ph_searchText').on('keyup',null,bs.checkPhraseSrchBtn);
 
 		// for the search results section
 		$('#addNewBtn').on('click',null,bs.makeNewCopy);
@@ -153,18 +153,18 @@ var bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-	checkSrchByPhraseBtn: function () {
-		if (($('#searchText').val()).length > 0) { // empty input
-			$('#srchByPhrase').enable().css('color', bs.srchBtnClr);
+	checkPhraseSrchBtn: function () {
+		if (($('#ph_searchText').val()).length > 0) { // empty input
+			$('#phraseSrchBtn').enable().css('color', bs.srchBtnClr);
 		} else {
-			$('#srchByPhrase').disable().css('color', '#888888');
+			$('#phraseSrchBtn').disable().css('color', '#888888');
 		}
 	},
-	checkSrchByBarcdBtn: function () {
-		if (($('#searchBarcd').val()).length > 0) { // empty input
-			$('#srchByBarcd').enable().css('color', bs.srchBtnClr);
+	checkBarcdSrchBtn: function () {
+		if (($('#bc_searchBarcd').val()).length > 0) { // empty input
+			$('#barcdSrchBtn').enable().css('color', bs.srchBtnClr);
 		} else {
-			$('#srchByBarcd').disable().css('color', '#888888');
+			$('#barcdSrchBtn').disable().css('color', '#888888');
 		}
 	},
 	resetForms: function () {
@@ -178,8 +178,8 @@ var bs = {
 	  $('#copyEditorDiv').hide();
 	  $('#photoEditorDiv').hide();
 	  bs.multiMode = false;
-	  bs.checkSrchByPhraseBtn();
-	  bs.checkSrchByBarcdBtn();
+	  bs.checkPhraseSrchBtn();
+	  bs.checkBarcdSrchBtn();
 		$('#marcBtn').val(bs.showMarc);
 		if (opacMode) $('#barcodeSearch').hide();
 		$('#searchText').focus();
@@ -195,8 +195,8 @@ var bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  $('#photoEditorDiv').hide();
-	  bs.checkSrchByPhraseBtn();
-	  bs.checkSrchByBarcdBtn();
+	  bs.checkPhraseSrchBtn();
+	  bs.checkBarcdSrchBtn();
 	},
 
 	rtnToList: function () {
@@ -226,15 +226,15 @@ var bs = {
 		//console.log('checking for alternative starts using: '+<?php echo "'".$_REQUEST[barcd]."'"; ?>);
 		<?php
 		if ($_REQUEST['barcd']) {
-			echo "$('#searchBarcd').val('$_REQUEST[barcd]');\n";
+			echo "$('#bc_searchBarcd').val('$_REQUEST[barcd]');\n";
 			echo "bs.doBarcdSearch();\n";
 		}
 		else if ($_REQUEST['bibid']) {
 			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
 		}
 		else if ($_REQUEST['searchText']) {
-			echo "$('#searchText').val('$_REQUEST[searchText]');\n";
-			echo "$('#searchType').val('$_REQUEST[searchType]');\n";
+			echo "$('#ph_searchText').val('$_REQUEST[searchText]');\n";
+			echo "$('#ph_searchType').val('$_REQUEST[searchType]');\n";
 			echo "bs.doPhraseSearch();\n";
 		}
 		?>
@@ -336,6 +336,15 @@ var bs = {
 	  $('#searchDiv').hide();
 	  $('#resultsArea').html('');
 	  $('#errSpace').html('');
+
+		// searchType 'ID' gets special handling
+		var searchType = $('#ph_searchType option:selected').val();
+		var searchText = $('#phraseSrchBtn').val();
+		//console.log('searchType==>'+searchType+'; searchText==>'+searchText);
+		if (searchType == 'id') {
+      bs.doBibidSearch(searchText);
+			return;
+		}
 
     //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.
 	  $('#srchRslts').html('<p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p>');

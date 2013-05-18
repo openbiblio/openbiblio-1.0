@@ -27,7 +27,7 @@ class BiblioSearch_rpt extends BiblioRows {
 			'author' => Search::type('Author', 'MARC', $tags['author']),
 			'title' => Search::type('Title', 'MARC', $tags['title']),
 			'subject' => Search::type('Subject', 'MARC', $tags['subject']),
-			'publisher' => Search::type('Publisher', 'MARC', array('260$b')),
+			'publisher' => Search::type('Publisher', 'MARC', $tags['publisher']),
 			'address' => Search::type('Address', 'MARC', array('260$a')),
 			'date' => Search::type('Date', 'MARC', $tags['date']),
 			//'series' => Search::type('Series', 'MARC', array('440$a', '490$a')),

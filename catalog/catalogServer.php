@@ -224,10 +224,12 @@ function mkBiblioArray($dbObj) {
 				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
 			}
 			if(isset($_REQUEST['to']) && strlen($_REQUEST['to']) == 4){
-				$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $_REQUEST['to'] . '"}';
+				//$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $_REQUEST['to'] . '"}';
+				$searchTags .= ',{"toTag":"260","toSuf":"c","toTag":"773","toSuf":"d","toValue":"'. $_REQUEST['to'] . '"}';
 			}
 			if(isset($_REQUEST['from']) && strlen($_REQUEST['from']) == 4){
-				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $_REQUEST['from'] . '"}';		
+				//$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $_REQUEST['from'] . '"}';
+				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromTag":"773","fromSuf":"d","fromValue":"'. $_REQUEST['from'] . '"}';
 			}
 		}			
 		

@@ -60,14 +60,19 @@ class SrchDb {
 			$termnr = 1;
 			$sqlWhere .= " AND (";
 			$firstWhere = true;
+			//$temp = '';
 			foreach ($spec as $item) {
 				// Continue when the item has to do with selecting and ordering
 				if(!isset($item['tag'])) continue;
 				if(!$firstWhere) $sqlWhere .= " OR";
 				$firstWhere = false;
-				$sqlWhere .= " bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "'";
-				$termnr++;					
+				$sqlWhere .= " (bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "')";
+				//$temp .= " bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "'";
+				$termnr++;
 			}
+			//if(!empty($temp)) {
+      //  $sqlWhere .= " AND (".$temp. ")";
+			//}
 			$sqlWhere .= ")";
 			$keywordnr++;
 		}		

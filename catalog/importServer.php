@@ -11,9 +11,6 @@
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../classes/SrchDb.php"));
-	//require_once(REL(__FILE__, "../functions/marcFuncs.php"));
-	//require_once(REL(__FILE__, "../model/Cart.php"));
-	//require_once(REL(__FILE__, "../classes/Marc.php"));
 
 	# Big uploads take a while
 	set_time_limit(120);

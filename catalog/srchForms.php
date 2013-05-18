@@ -43,11 +43,11 @@
 <form id="barcodeSearch" name="barcodeSearch" method="post">
 <fieldset>
 	<legend><?php echo T("Find Item by Barcode"); ?></legend>
-	<label for="searchBarcd"><?php echo T("Barcode");?>:</label>
-	<input type="text" id="searchBarcd" name="searchBarcd" size="20" />
-	<input type="submit" id="srchByBarcd" name="srchByBarcd" value="<?php echo T("Search"); ?>" class="srchByBarcdBtn" />
-	<input type="hidden" id="searchType" name="searchType" value="barcodeNmbr" />
-	<input type="hidden" id="sortBy" name="sortBy" value="default" />
+	<label for="bc_searchBarcd"><?php echo T("Barcode");?>:</label>
+	<input type="text" id="bc_searchBarcd" name="searchBarcd" size="20" />
+	<input type="submit" id="barcdSrchBtn" name="barcdSrchBtn" value="<?php echo T("Search"); ?>" class="srchByBarcdBtn" />
+	<input type="hidden" id="bc_searchType" name="searchType" value="barcodeNmbr" />
+	<input type="hidden" id="bc_sortBy" name="sortBy" value="default" />
 </fieldset>
 </form>
 
@@ -58,7 +58,7 @@
 	<tbody id="mainTxtSrch">
 	<tr>
 		<td nowrap="true" colspan="3">
-			<select id="searchType" name="searchType" >
+			<select id="ph_searchType" name="searchType" >
 				<option value="title"><?php echo T("Title"); ?></option>	
 				<option value="author"><?php echo T("Author"); ?></option>
 				<option value="subject"><?php echo T("Subject"); ?></option>	
@@ -68,8 +68,8 @@
 				<option value="callno"><?php echo T("CallNmbr"); ?></option>
 				<option value="id"><?php echo T("Id"); ?></option>
 			</select>
-			<input type="text" id="searchText" name="searchText" size="20" maxlength="256" />
-			<input type="submit" id="srchByPhrase" name="srchByPhrase" value="<?php echo T("Search"); ?>" class="srchByPhraseBtn" />
+			<input type="text" id="ph_searchText" name="searchText" size="20" maxlength="256" />
+			<input type="submit" id="phraseSrchBtn" name="phraseSrchBtn" value="<?php echo T("Search"); ?>" class="phraseSrchBtnBtn" />
 		</td>
 	</tr>
 	<tr>

@@ -67,6 +67,20 @@ Existing Item search by Publisher is not working following new tagGroup.json use
 17 May 2013
 Item Search Report only working for keywod searchs following new tagGroup.json use.
 
+18 MAy 2013 - Neil
+Copy edit dialog does not show current location of copy.  Code should set current
+site 'selected' when editor dialo is displayed.
+
+18 May 2013 - Neil
+> copy edit dialog for new copy via csvImport- status: blank. Change to 'Checked In'.
+(Would it be wise to make this the default setting for CSV import
+or would it complicate matters if copy status had a default setting?)
+Certainly makes sense to me that they be be checked in!
+
+18 May 2013 - Neil
+a publisher search in existing items produces a lot of error text (see attached image, publisher error)
+a publisher search in Report | Item search - works reasonably well.
+
 ###################### Completed, most recent at top #########################
 
 16 May 2013 - Neil/Fred, now allows 240,245,246,773 - 16 May 2013
