@@ -87,6 +87,7 @@ class BiblioRowsIter extends Iter {
 		$this->iter->skip();
 	}
 	function next() {
+		## this builds the sql to get search item details for later display
 		$r = $this->iter->next();
 		if ($r === NULL) {
 			return $r;
@@ -110,12 +111,13 @@ class BiblioRowsIter extends Iter {
 					 . $this->q->mkSQL("where b.bibid=%N ", $r['bibid'])
 					 . "and m.code=b.material_cd "
 					 . "and bf.bibid=b.bibid and bs.fieldid=bf.fieldid "
-					 . "and (1=0 ";
+					 . "and ( (1=0) "; // <=== this is NOT a typo, do not FIX it!!!
 		foreach ($marcCols as $f) {
 			list($t, $s) = explode('$', $f);
-			$sql .= $this->q->mkSQL('or bf.tag=%Q and bs.subfield_cd=%Q ', $t, $s);
+			$sql .= $this->q->mkSQL('or (bf.tag=%Q and bs.subfield_cd=%Q) ', $t, $s);
 		}
 		$sql .= ") ";
+		//echo "sql===>$sql<br />";
 
 		$iter = $this->q->select($sql);
 		while (($row = $iter->next()) !== NULL) {

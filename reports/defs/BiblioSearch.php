@@ -19,6 +19,7 @@ class BiblioSearch_rpt extends BiblioRows {
 	function BiblioSearch_rpt() {
 		$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
 		$tags = json_decode_nice($json,true);
+		//echo"titleTags===>";var_dump($tags['title']);echo"<br />";
 
 		$this->searchTypes = array(
 			'keyword' => Search::type('Keyword', 'MARC', array()),
@@ -54,6 +55,7 @@ class BiblioSearch_rpt extends BiblioRows {
 		return array_merge(Search::getParamDefs($this->searchTypes), $p);
 	}
 	function select($params) {
+		## build the sql to find bibds that match search criteria
 		$this->params = $params;
 		$this->q = new Query();
 
@@ -64,7 +66,7 @@ class BiblioSearch_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
-echo "sql===>$sql<br /><br />";					 
+		//echo "sql===>$sql<br /><br />";
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {
@@ -94,7 +96,7 @@ echo "sql===>$sql<br /><br />";
 			$i++;
 			if (count($q['from']) >= 6) {	// arbitrary
 				array_push($queries, $q);
-				$q = array('from' => array(), 'where' => 'where 1=1 ');
+				$q = array('from' => array(), 'where' => 'where (1=1) ');
 			}
 
 			list($typename, $text, $exact) = $t;
@@ -103,54 +105,54 @@ echo "sql===>$sql<br /><br />";
 			}
 			$type = $this->searchTypes[$typename];
 			switch ($type['within']) {
-			case 'MARC':
-				array_push($q['from'], 'biblio_field as term'.$i.'f', 'biblio_subfield as term'.$i.'s');
-				$q['where'] .= 'and term'.$i.'f.bibid=b.bibid and term'.$i.'s.fieldid=term'.$i.'f.fieldid ';
-				$flds = $type['fields'];
-				if (!empty($flds)) {
-					$q['where'] .= "and (";
-					$op = "";
-					foreach ($flds as $f) {
-						if (is_array($flds)) {
-							$l[0] = $flds['tag'];
-							$l[1] = $flds['sub'];
-						} else {
-							$l = explode('$', $f);
-						}
-						if (isset($l[0])) {
-							$q['where'] .= $this->q->mkSQL($op."term".$i."f.tag=%N ", $l[0]);
-							if (isset($l[1])) {
-								$q['where'] .= $this->q->mkSQL("and term".$i."s.subfield_cd=%Q ", $l[1]);
+				case 'MARC':
+					array_push($q['from'], 'biblio_field as term'.$i.'f', 'biblio_subfield as term'.$i.'s');
+					$q['where'] .= 'and term'.$i.'f.bibid=b.bibid and term'.$i.'s.fieldid=term'.$i.'f.fieldid ';
+					$flds = $type['fields'];
+					if (!empty($flds)) {
+						$q['where'] .= "and (";
+						$op = "";
+						foreach ($flds as $f) {
+							if (is_array($f)) {
+								$l[0] = $f['tag'];
+								$l[1] = $f['sub'];
+							} else {
+								$l = explode('$', $f);
 							}
+							if (isset($l[0])) {
+								$q['where'] .= $this->q->mkSQL($op."term".$i."f.tag=%N ", $l[0]);
+								if (isset($l[1])) {
+									$q['where'] .= $this->q->mkSQL("and term".$i."s.subfield_cd=%Q ", $l[1]);
+								}
+							}
+							$op = "or ";
 						}
-						$op = "or ";
+						$q['where'] .= ") ";
 					}
-					$q['where'] .= ") ";
-				}
-				$column = 'term'.$i.'s.subfield_data';
-				break;
-			case 'collection_dm':
-				array_push($q['from'], 'collection_dm as term'.$i.'coll');
-				$q['where'] .= 'and b.collection_cd=term'.$i.'coll.code ';
-				$column = 'term'.$i.'coll.'.$type['fields'][0];
-				break;
-			case 'material_type_dm':
-				array_push($q['from'], 'material_type_dm as term'.$i.'matl');
-				$q['where'] .= 'and b.material_cd=term'.$i.'matl.code ';
-				$column = 'term'.$i.'matl.'.$type['fields'][0];
-				break;
-			case 'biblio':
-				// XXX only supports one field
-				array_push($q['from'], 'biblio as term'.$i.'b');
-				$q['where'] .= 'and b.bibid=term'.$i.'b.bibid ';
-				$column = 'term'.$i.'b.'.$type['fields'][0];
-				break;
-			case 'biblio_copy':
-				// XXX only supports one field
-				array_push($q['from'], 'biblio_copy as term'.$i.'copy');
-				$q['where'] .= 'and b.bibid=term'.$i.'copy.bibid ';
-				$column = 'term'.$i.'copy.'.$type['fields'][0];
-				break;
+					$column = 'term'.$i.'s.subfield_data';
+					break;
+				case 'collection_dm':
+					array_push($q['from'], 'collection_dm as term'.$i.'coll');
+					$q['where'] .= 'and b.collection_cd=term'.$i.'coll.code ';
+					$column = 'term'.$i.'coll.'.$type['fields'][0];
+					break;
+				case 'material_type_dm':
+					array_push($q['from'], 'material_type_dm as term'.$i.'matl');
+					$q['where'] .= 'and b.material_cd=term'.$i.'matl.code ';
+					$column = 'term'.$i.'matl.'.$type['fields'][0];
+					break;
+				case 'biblio':
+					// XXX only supports one field
+					array_push($q['from'], 'biblio as term'.$i.'b');
+					$q['where'] .= 'and b.bibid=term'.$i.'b.bibid ';
+					$column = 'term'.$i.'b.'.$type['fields'][0];
+					break;
+				case 'biblio_copy':
+					// XXX only supports one field
+					array_push($q['from'], 'biblio_copy as term'.$i.'copy');
+					$q['where'] .= 'and b.bibid=term'.$i.'copy.bibid ';
+					$column = 'term'.$i.'copy.'.$type['fields'][0];
+					break;
 			}
 			if ($type['method'] == numeric) {
 				$verb='%N';

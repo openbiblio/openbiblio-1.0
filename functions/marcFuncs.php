@@ -78,7 +78,7 @@ function makeTagObj($grp) {
 		$parts = explode('$',$tag);
 		$rslt .= '{"tag":"'.$parts[0].'","suf":"'.$parts[1].'"},';
 	}
-	return substr($rslt,0,-1);
+	return substr($rslt,0,-1);  ## remove trailing comma
 }
 
 
