@@ -4,6 +4,27 @@
  */
 
 /*********************************************************************************
+ * Determine the first 'n' rows to be displayed for a particulra media type'
+ * choice is to be based on information collected in the media_display table.
+ *
+ * @param input int whichMedia for media type wanted
+ * @param input int howMany for number of fields to be provided
+ * @return array of fields in display position order
+ * @access public
+ *
+ *********************************************************************************
+ */
+function displayFields($whichMedia, $howMany) {
+	assert ("($whichMedia>=0) && ($whichMedia<=99)", "media type must be an integer 1-99");
+	assert ("($howMany>=0) && ($howMany=9)", "howMany must be an integer 1-9");
+
+ 	require_once(REL(__FILE__, "../model/MaterialFields.php"));
+	$db = newMaterialFields;
+	$info = $db->getMatches(array("material_cd=>$whichMedia"), 'position');
+	return json_encode($info);
+}
+
+/*********************************************************************************
  * cleans up a potential json string to meet JSON spec
  * then call the decoder.
  *********************************************************************************

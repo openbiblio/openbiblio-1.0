@@ -74,7 +74,7 @@ class DBTable {
 	function getAll($orderby=NULL) {
 		$sql = $this->db->mkSQL('SELECT * FROM %I ', $this->name);
 		if ($orderby)
-			$sql .= $this->db->mkSQL('ORDER BY %I ', $orderby);
+			$sql .= $this->db->mkSQL('ORDER BY %q ', $orderby);
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->db->select($sql));
