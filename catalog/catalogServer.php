@@ -122,78 +122,8 @@ function mkBiblioArray($dbObj) {
 	  break;
 
 	case 'doPhraseSearch':
-//$title = getSrchTags('title');
-//echo"title===>";print_r($title);echo"<br />";
-//$tagGrp = makeTagObj($title);
-//echo"titleTags===>";print_r($tagGrp);echo"<br />";
-
 	  $theDb = new SrchDB;
-	  switch ($_REQUEST[searchType]) {
-	    case 'title': 		$type = 'phrase';
-							$params = makeTagObj(getSrchTags('title'));
-/*
-							$params = '{"tag":"245","suf":"a"},
-								{"tag":"245","suf":"b"},
-								{"tag":"240","suf":"a"},
-								{"tag":"246","suf":"a"},
-								{"tag":"246","suf":"b"}'; 
-*/
-							break;
-			case 'author': 		$type = 'words';
-							$params = makeTagObj(getSrchTags('author'));
-/*
-							$params ='{"tag":"100","suf":"a"},
-								{"tag":"700","suf":"a"},
-								{"tag":"245","suf":"c"},
-								{"tag":"110","suf":"a"}'; 
-*/
-							break;
-			case 'subject': 	$type = 'words';
-							$params = makeTagObj(getSrchTags('subject'));
-/*
-								$params = '{"tag":"650","suf":"a"},
-								{"tag":"505","suf":"a"}'; 
-*/
-								break;
-			case 'keyword': 	$type = 'words';
-							$params = makeTagObj(getSrchTags('keyword'));
-/*
-								$params ='{"tag":"240","suf":"a"},
-									{"tag":"245","suf":"a"},
-									{"tag":"245","suf":"b"},
-									{"tag":"245","suf":"c"},
-									{"tag":"246","suf":"a"},
-									{"tag":"246","suf":"b"},
-									{"tag":"502","suf":"a"},
-									{"tag":"505","suf":"a"},
-									{"tag":"650","suf":"a"},
-									{"tag":"773","suf":"t"}'; 
-*/
-								break;
-			case 'series':
-							$params = makeTagObj(getSrchTags('series'));
-/*
-								$params = '{"tag":"022","suf":"a"}';
-*/
-                break;
-			case 'publisher': 	$type = 'phrase';
-							$params = makeTagObj(getSrchTags('phrase'));
-/*
-								$params = '{"tag":"260","suf":"b"}';
-*/
-								break;
-			case 'callno': 		$type = 'phrase';
-							$params = makeTagObj(getSrchTags('callno'));
-/*
-								$params = '{"tag":"099","suf":"a"}';
-*/
-								break;
-	    
-	  	default:
-	  		echo "<h5>Invalid Search Type: $_REQUEST[srchBy]</h5>";
-	  		exit;
-		}
-//echo"params===>";print_r($params);echo"<br />";
+		$params = makeTagObj(getSrchTags($_REQUEST[searchType]));
 
 		// Add search params
 		$searchTags = "";
@@ -202,8 +132,11 @@ function mkBiblioArray($dbObj) {
 				switch ($_REQUEST['sortBy']){
 				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
 				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
-				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"}, {"orderTag":"245","orderSuf":"b"}, {"orderTag":"240","orderSuf":"a"}'; break;
-				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},{"orderTag":"245","orderSuf":"b"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																			 {"orderTag":"245","orderSuf":"b"},
+																			 {"orderTag":"240","orderSuf":"a"}'; break;
+				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																 {"orderTag":"245","orderSuf":"b"}'; break;
 			}
 		}		
 
