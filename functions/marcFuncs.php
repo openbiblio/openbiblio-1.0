@@ -25,54 +25,11 @@ function printUsmarcText($tag,$subfieldCd,&$marcTags,&$marcSubflds,$showTagDesc)
 	}
 }
 
-// http://www.php.net/manual/en/function.json-decode.php#95782
-function json_decode_nice($json, $assoc = FALSE){
-  $json = str_replace(array("\n","\r"),"",$json);
-  $json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/','$1"$3":',$json);
-  $json = preg_replace('/(,)\s*}$/','}',$json);
-  return json_decode($json,$assoc);
-}
-function getTagGroups($decode=true) {
-	$json = file_get_contents('../shared/tagGroup.json');
-	//echo"json===>";var_dump($json);echo"<br />";
-	if ($decode) {
-		//echo "decoding!!<br />";
-		$data = json_decode_nice($json,true);
-		if ($data === null) {
-			echo "json_decode failed";
-	    switch (json_last_error()) {
-	      case JSON_ERROR_DEPTH:
-	        echo ' - Maximum stack depth exceeded';
-	      	break;
-	      case JSON_ERROR_STATE_MISMATCH:
-	        echo ' - Underflow or the modes mismatch';
-	      	break;
-	      case JSON_ERROR_CTRL_CHAR:
-	        echo ' - Unexpected control character found';
-	      	break;
-	      case JSON_ERROR_SYNTAX:
-	        echo ' - Syntax error, malformed JSON';
-	      	break;
-	      case JSON_ERROR_UTF8:
-	        echo ' - Malformed UTF-8 characters, possibly incorrectly encoded';
-	      	break;
-	      default:
-	        echo ' - Unidentified error';
-	      	break;
-	    }
-			echo ".<br />";
-		}
-	} else {
-		echo "raw<br />";
-		$data = $json;
-	}
-	//echo"data===>";var_dump($data);echo"<br />";
-	return $data;
-}
-function getSrchTags($which) {
-	$grps = getTagGroups(true);
-	return $grps[$which];
-}
+/*********************************************************************************
+ * accepts a NNN$A formatted MARC tag and returns its components as an object.
+ * ex. '245$a' ==> '{"tag":"245","suf":"a"}'
+ *********************************************************************************
+ */
 function makeTagObj($grp) {
 	foreach ($grp as $tag) {
 		$parts = explode('$',$tag);
@@ -80,5 +37,6 @@ function makeTagObj($grp) {
 	}
 	return substr($rslt,0,-1);  ## remove trailing comma
 }
+
 
 

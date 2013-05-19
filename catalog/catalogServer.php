@@ -6,6 +6,7 @@
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
+	require_once(REL(__FILE__, "../functions/utilFuncs.php"));
 	require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));

@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../../functions/marcFuncs.php"));
+require_once(REL(__FILE__, "../../functions/utilFuncs.php"));
 require_once(REL(__FILE__, "../../classes/Report.php"));
 require_once(REL(__FILE__, "../../classes/Query.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
