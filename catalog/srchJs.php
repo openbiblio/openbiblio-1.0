@@ -345,7 +345,7 @@ var bs = {
 
 		// searchType 'ID' gets special handling
 		var searchType = $('#ph_searchType option:selected').val();
-		var searchText = $('#phraseSrchBtn').val();
+		var searchText = $('#ph_searchText').val();
 		//console.log('searchType==>'+searchType+'; searchText==>'+searchText);
 		if (searchType == 'id') {
       bs.doBibidSearch(searchText);
