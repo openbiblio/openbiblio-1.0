@@ -101,8 +101,8 @@ var mf = {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
 	  //mf.resetForms();
-	  //mf.doFetchMember();
-	  $('#searchDiv').hide();
+	  mf.doFetchMember();
+	  $('#biblioDiv').hide();
 	},
 
 	//------------------------------
