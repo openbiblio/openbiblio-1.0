@@ -43,6 +43,7 @@ var mf = {
 		});
 		
 		$('.gobkBtn').on('click',null,mf.rtnToSrch);
+		$('.gobkMbrBtn').on('click',null,mf.rtnToList);
 		$('.gobkNewBtn').on('click',null,mf.rtnToSrch);
 		$('.gobkUpdtBtn').on('click',null,mf.rtnToMbr);
 		$('.gobkBiblioBtn').on('click',null,mf.rtnToMbr);
@@ -88,13 +89,20 @@ var mf = {
 	  mf.resetForms();
 	  $('#searchDiv').show();
 	},
+	rtnToList: function () {
+	  $('#rsltMsg').html('');
+	  $('#editRsltMsg').html('');
+		$('#ckOutBarcd').val('')
+	  //mf.resetForms();
+	  $('#mbrDiv').hide();
+	  $('#listDiv').show();
+	},
 	rtnToMbr: function () {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
-	  mf.resetForms();
-	  mf.doFetchMbr();
+	  //mf.resetForms();
+	  //mf.doFetchMember();
 	  $('#searchDiv').hide();
-	  $('#mbrDiv').show();
 	},
 
 	//------------------------------

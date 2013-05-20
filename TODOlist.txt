@@ -77,11 +77,23 @@ site 'selected' when editor dialo is displayed.
 or would it complicate matters if copy status had a default setting?)
 Certainly makes sense to me that they be be checked in!
 
-18 May 2013 - Neil
-a publisher search in existing items produces a lot of error text (see attached image, publisher error)
-a publisher search in Report | Item search - works reasonably well.
+19 May 2013 - Fred
+why can't I store that entire document right in OB, along with all the usual
+biblio information. Then when I search for a topic, that paper will spring up
+just like any other, and the call number will imediately me its in local storage,
+and perhaps via circ/checkout allow me to retrieve a copy.
+
+19 May 2013 - Fred
+we need an admin function to import / export a media layout.
+
+19 May 2013 - Fred
+Modify Item_search Report to use material_fields to control display.
 
 ###################### Completed, most recent at top #########################
+
+18 May 2013 - Neil, working now! - 19 May 2013
+a publisher search in existing items produces a lot of error text (see attached image, publisher error)
+a publisher search in Report | Item search - works reasonably well.
 
 16 May 2013 - Neil/Fred, now allows 240,245,246,773 - 16 May 2013
 Copy search

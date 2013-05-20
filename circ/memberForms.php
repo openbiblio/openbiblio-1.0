@@ -61,7 +61,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="mbrDiv">
-	<input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" />
+	<input type="button" class="gobkMbrBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset id="identity">
 		<legend><?php echo T("Member Information");?></legend>
 		<label for="mbrName"><?php echo T("Name");?>:</label>
@@ -145,7 +145,7 @@
 		<tbody class="striped"></tbody>
 		</table>
 	</fieldset>
-	<input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" />
+	<input type="button" class="gobkMbrBtn" value="<?php echo T("Go Back"); ?>" />
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
