@@ -77,10 +77,10 @@ and perhaps via circ/checkout allow me to retrieve a copy.
 19 May 2013 - Fred
 we need an admin function to import / export a media layout.
 
-19 May 2013 - Fred
-Modify Item_search Report to use material_fields to control display.
-
 ###################### Completed, most recent at top #########################
+
+19 May 2013 - Fred, done 20 May 2013
+Modify Item_search Report to use material_fields to control display.
 
 12 May 2013 - Fred, fixed 20 May 2013
 Report results page does not indicate what report is being viewed. Needs Title.

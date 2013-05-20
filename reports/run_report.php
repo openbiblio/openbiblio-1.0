@@ -110,6 +110,7 @@
 	$t->columns = $disp->columns($sort_url);
 
 	// create and display actual data rows
+	//actual display content controlled by ../classes/BiblioRows.php (see function next())
 	echo $t->begin();
 	$pg = $rpt->pageIter($page);
 	while ($r = $pg->next()) {

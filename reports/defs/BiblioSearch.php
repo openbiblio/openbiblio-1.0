@@ -63,7 +63,7 @@ class BiblioSearch_rpt extends BiblioRows {
 
 		list( , $order_by, $raw) = $this->params->getFirst('order_by');
 		$sortq = $this->getOrderSql('b.bibid', $raw);
-		$sql = "select distinct b.bibid "
+		$sql = "select distinct b.bibid, b.material_cd "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
 		//echo "sql===>$sql<br /><br />";

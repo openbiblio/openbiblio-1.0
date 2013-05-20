@@ -28,6 +28,7 @@ class MaterialFields extends DBTable {
 
 	function getDisplayInfo ($nmbr) {
 		$media = [];
+//echo "using materialCd=$nmbr<br />";
 		$set = $this->getAll('material_cd,position');
 		while ($row = $set->next()) {
       if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {

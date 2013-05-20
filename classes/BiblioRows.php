@@ -3,6 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+require_once(REL(__FILE__, "../model/MaterialFields.php"));
+
 class BiblioRows {
 	var $q;
 	function columns() {
@@ -89,9 +91,10 @@ class BiblioRowsIter extends Iter {
 	function next() {
 		## this builds the sql to get search item details for later display
 		$r = $this->iter->next();
-		if ($r === NULL) {
-			return $r;
-		}
+		if ($r === NULL) return $r;
+//print_r($r);
+
+/*
 		$marcCols = array(
 			'callno' => '099$a',
 			'title_0' => '240$a',
@@ -106,13 +109,33 @@ class BiblioRowsIter extends Iter {
 			'date_a' => '240$f',
 			'pubdate' => '260$c',
 			'level' => '521$a');
+*/
+		$media = new MaterialFields;
+		$data = $media->getDisplayInfo($r['material_cd']);
+		$fldset = $data[$r['material_cd']];
+//print_r($fldset);echo"<br /><br />";
+		for ($i=0; $i<count($fldset); $i++) {
+			$t = $fldset[$i]['tag'];
+			$s = $fldset[$i]['suf'];
+			$l =$fldset[$i]['lbl'];
+			$mc[$l] = $t.'$'.$s;
+		}
+//print_r($mc);echo"<br />.................<br />";
+
 		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, bf.tag, bs.subfield_cd, bs.subfield_data "
 					 . "from biblio b, material_type_dm m, biblio_field bf, biblio_subfield bs "
 					 . $this->q->mkSQL("where b.bibid=%N ", $r['bibid'])
 					 . "and m.code=b.material_cd "
 					 . "and bf.bibid=b.bibid and bs.fieldid=bf.fieldid "
 					 . "and ( (1=0) "; // <=== this is NOT a typo, do not FIX it!!!
+
+/*
 		foreach ($marcCols as $f) {
+			list($t, $s) = explode('$', $f);
+			$sql .= $this->q->mkSQL('or (bf.tag=%Q and bs.subfield_cd=%Q) ', $t, $s);
+		}
+*/
+		foreach ($mc as $f) {
 			list($t, $s) = explode('$', $f);
 			$sql .= $this->q->mkSQL('or (bf.tag=%Q and bs.subfield_cd=%Q) ', $t, $s);
 		}
@@ -124,13 +147,27 @@ class BiblioRowsIter extends Iter {
 			$r['material_cd'] = $row['material_cd'];
 			$r['material_type'] = $row['description'];
 			$r['create_dt'] = $row['create_dt'];
+/*
 			foreach ($marcCols as $name=>$f) {
 				list($t, $s) = explode('$', $f);
 				if ($row['tag'] == $t and $row['subfield_cd'] == $s) {
 					$r[$name] = $row['subfield_data'];
 				}
 			}
+*/
+			foreach ($mc as $name=>$f) {
+//echo "mc tag=".$f."; row tag=".$row['tag']."; row suff=".$row['subfield_cd'];
+				list($t, $s) = explode('$', $f);
+				if ($row['tag'] == $t and $row['subfield_cd'] == $s) {
+//echo " <== matched<br /><br />";
+if (strtolower($name) == 'call number') $name = 'callno';
+					$r[strtolower($name)] = $row['subfield_data'];
+					break;
+				}
+			}
 		}
+//print_r($r);echo"<br />............<br />";
+/*
 		if (!isset($r['title_0'])) {
 			$r['title_0'] = '';
 		}
@@ -164,6 +201,7 @@ class BiblioRowsIter extends Iter {
 			$r['date_a'] = '';
 		}
 		$r['date'] = $r['date_0'].' '.$r['date_a'];
+*/
 		return $r;
 
 	}
