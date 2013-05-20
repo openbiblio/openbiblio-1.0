@@ -30,7 +30,7 @@ class BiblioSearch_rpt extends BiblioRows {
 			'publisher' => Search::type('Publisher', 'MARC', $tags['publisher']),
 			'address' => Search::type('Address', 'MARC', array('260$a')),
 			'date' => Search::type('Date', 'MARC', $tags['date']),
-			//'series' => Search::type('Series', 'MARC', array('440$a', '490$a')),
+			'series' => Search::type('Series', 'MARC', $tags['series']),
 			//'pub_date_from' => Search::type('Published After', 'MARC', array('260$c'), 'numeric', '>='),
 			//'pub_date_to' => Search::type('Published Before', 'MARC', array('260$c'), 'numeric', '<='),
 			'audience_level' => Search::type('Grade Level', 'MARC', array('521$a'), 'phrase'),

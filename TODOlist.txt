@@ -61,12 +61,6 @@ Report results page does not indicate what report is being viewed. Needs Title.
 investigate making school grade, teacher, optional.  If not used then 'Audience Level'
 should not appear on advanced search screen.
 
-17 May 2013 - Fred
-Existing Item search by Publisher is not working following new tagGroup.json use.
-
-17 May 2013
-Item Search Report only working for keywod searchs following new tagGroup.json use.
-
 18 MAy 2013 - Neil
 Copy edit dialog does not show current location of copy.  Code should set current
 site 'selected' when editor dialo is displayed.
@@ -90,6 +84,12 @@ we need an admin function to import / export a media layout.
 Modify Item_search Report to use material_fields to control display.
 
 ###################### Completed, most recent at top #########################
+
+17 May 2013 - Fred, working as of 20 May 2013
+Existing Item search by Publisher is not working following new tagGroup.json use.
+
+17 May 2013, working as of 20 May 2013
+Item Search Report only working for keywod searchs following new tagGroup.json use.
 
 18 May 2013 - Neil, working now! - 19 May 2013
 a publisher search in existing items produces a lot of error text (see attached image, publisher error)

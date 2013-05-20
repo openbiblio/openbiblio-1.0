@@ -21,35 +21,35 @@
 		exit(0);
 	}
 
+	### Create a new Report Object ###
 	$rpt = Report::create($type);
 	if (!$rpt) {
 		header('Location: ../reports/index.php');
 		exit(0);
 	}
 
-	Nav::node('reports/reportcriteria',T("Report Criteria"));
+	### construct web page with criteria form ###
+	Nav::node('reports/reportcriteria',T($rpt->title()));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
-	#****************************************************************************
-	#*  getting form vars
-	#****************************************************************************
-	require(REL(__FILE__, "../shared/get_form_vars.php"));
-
 	echo '<h3>'.T($rpt->title()).'</h3>';
 
 	if ($_REQUEST['msg']) {
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 	}
+
+	require(REL(__FILE__, "../shared/get_form_vars.php"));
 ?>
 
-<form name="reportcriteriaform" method="get" action="../reports/run_report.php">
 <fieldset>
-<input type="hidden" name="type" value="<?php echo H($rpt->type()) ?>" />
+	<legend>Report Criteria</legend>
+	<form name="reportcriteriaform" method="get" action="../reports/run_report.php">
+		<input type="hidden" name="type" value="<?php echo H($rpt->type()) ?>" />
 
 <?php
 	Params::printForm($rpt->paramDefs());
 ?>
 
-<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+		<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+	</form>
 </fieldset>
-</form>
+
