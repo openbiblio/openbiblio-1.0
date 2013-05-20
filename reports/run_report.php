@@ -19,7 +19,6 @@
 	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Links.php"));
-	//echo "<br />";print_r($_REQUEST);echo "<br />";
 
 	if (!$_REQUEST['type']) {
 		header('Location: ../reports/index.php');
@@ -68,10 +67,11 @@
 		'../reports/report_criteria.php?type='.U($rpt->type()));
 	## end of menu modifications
 	 
+	## create web page ###
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	//echo "<br />";print_r($_REQUEST);echo "<br />";
 ?>
-
-	<!--h3><?php //echo T($title); ?></h3-->
+	<h3><?php echo T($_GET['title']); ?></h3>
 	<h5><?php echo T("Report Results"); ?></h5>
 
 <?php

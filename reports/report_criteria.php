@@ -43,6 +43,7 @@
 <fieldset>
 	<legend>Report Criteria</legend>
 	<form name="reportcriteriaform" method="get" action="../reports/run_report.php">
+		<input type="hidden" name="title" value="<?php echo H($rpt->title());?>" />
 		<input type="hidden" name="type" value="<?php echo H($rpt->type()) ?>" />
 
 <?php
