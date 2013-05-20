@@ -25,4 +25,16 @@ class MaterialFields extends DBTable {
 		$this->setSequenceField('material_field_id');
 		$this->setForeignKey('material_cd', 'material_type_dm', 'code');
 	}
+
+	function getDisplayInfo ($nmbr) {
+		$media = [];
+		$set = $this->getAll('material_cd,position');
+		while ($row = $set->next()) {
+      if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {
+				$media[$row['material_cd']][$row['position']] =
+					array('tag'=>$row['tag'],'suf'=>$row['subfield_cd'],'lbl'=>$row['label'],'row'=>$row['position']);
+			}
+		}
+		return $media;
+	}
 }

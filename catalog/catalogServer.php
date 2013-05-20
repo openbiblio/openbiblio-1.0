@@ -98,16 +98,8 @@ function mkBiblioArray($dbObj) {
 
 	case 'getMediaDisplayInfo':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
-		$db = new MaterialFields;
-		$nmbr = $_GET['howMany'];
-		$media = []; 
-		$set = $db->getAll('material_cd,position');
-		while ($row = $set->next()) {
-      if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {
-				$media[$row['material_cd']][$row['position']] =
-					array('tag'=>$row['tag'],'suf'=>$row['subfield_cd'],'lbl'=>$row['label'],'row'=>$row['position']);
-			}
-		}
+		$theDb = new MaterialFields;
+		$media = $theDb->getDisplayInfo($_GET['howMany']);
 		echo json_encode($media);
 		break;
 
