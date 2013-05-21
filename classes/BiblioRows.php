@@ -92,117 +92,64 @@ class BiblioRowsIter extends Iter {
 		## this builds the sql to get search item details for later display
 		$r = $this->iter->next();
 		if ($r === NULL) return $r;
-//print_r($r);
+		//print_r($r);
 
-/*
-		$marcCols = array(
-			'callno' => '099$a',
-			'title_0' => '240$a',
-			'title_a' => '245$a',
-			'title_b' => '245$b',
-			'title_c' => '246$a',
-			'title_d' => '246$b',
-			'author_0' => '100$a',
-			'author_a' => '700$a',
-			'author_b' => '110$a',
-			'date_0' => '130$f',
-			'date_a' => '240$f',
-			'pubdate' => '260$c',
-			'level' => '521$a');
-*/
+		## Construct an array of displayable fields for the material_cd of this biblio
 		$media = new MaterialFields;
 		$data = $media->getDisplayInfo($r['material_cd']);
 		$fldset = $data[$r['material_cd']];
-//print_r($fldset);echo"<br /><br />";
+		//print_r($fldset);echo"<br /><br />";
 		for ($i=0; $i<count($fldset); $i++) {
 			$t = $fldset[$i]['tag'];
 			$s = $fldset[$i]['suf'];
 			$l =$fldset[$i]['lbl'];
 			$mc[$l] = $t.'$'.$s;
 		}
-//print_r($mc);echo"<br />.................<br />";
+		//print_r($mc);echo"<br />.................<br />";
 
-		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, bf.tag, bs.subfield_cd, bs.subfield_data "
+		## get data for this biblio, one tag$suf per row
+		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, "
+					 . "bf.tag, bs.subfield_cd, bs.subfield_data "
 					 . "from biblio b, material_type_dm m, biblio_field bf, biblio_subfield bs "
 					 . $this->q->mkSQL("where b.bibid=%N ", $r['bibid'])
 					 . "and m.code=b.material_cd "
 					 . "and bf.bibid=b.bibid and bs.fieldid=bf.fieldid "
 					 . "and ( (1=0) "; // <=== this is NOT a typo, do not FIX it!!!
 
-/*
-		foreach ($marcCols as $f) {
-			list($t, $s) = explode('$', $f);
-			$sql .= $this->q->mkSQL('or (bf.tag=%Q and bs.subfield_cd=%Q) ', $t, $s);
-		}
-*/
 		foreach ($mc as $f) {
 			list($t, $s) = explode('$', $f);
 			$sql .= $this->q->mkSQL('or (bf.tag=%Q and bs.subfield_cd=%Q) ', $t, $s);
 		}
 		$sql .= ") ";
+		$sql .= " order by bf.tag,bs.subfield_cd"; ## be sure tags are in proper order
 		//echo "sql===>$sql<br />";
-
 		$iter = $this->q->select($sql);
+
+		## process each biblio tag, one at a time
 		while (($row = $iter->next()) !== NULL) {
 			$r['material_cd'] = $row['material_cd'];
 			$r['material_type'] = $row['description'];
 			$r['create_dt'] = $row['create_dt'];
-/*
-			foreach ($marcCols as $name=>$f) {
-				list($t, $s) = explode('$', $f);
-				if ($row['tag'] == $t and $row['subfield_cd'] == $s) {
-					$r[$name] = $row['subfield_data'];
-				}
-			}
-*/
+
+			## if a tag matches a displayable fieldadd it to the display array $r
 			foreach ($mc as $name=>$f) {
-//echo "mc tag=".$f."; row tag=".$row['tag']."; row suff=".$row['subfield_cd'];
+				//echo "mc tag=".$f."; row tag=".$row['tag']."; row suff=".$row['subfield_cd'];
 				list($t, $s) = explode('$', $f);
 				if ($row['tag'] == $t and $row['subfield_cd'] == $s) {
-//echo " <== matched<br /><br />";
-if (strtolower($name) == 'call number') $name = 'callno';
-					$r[strtolower($name)] = $row['subfield_data'];
+					//echo " <== matched<br /><br />";
+					if (strtolower($name) == 'call number') $name = 'callno';
+					if (strtolower($name) == 'subtitle') $name = 'title';
+					if (empty($r[strtolower($name)])) {
+							$r[strtolower($name)] = $row['subfield_data'];
+					} else {
+							$r[strtolower($name)] .= $row['subfield_data'];
+					}
 					break;
 				}
 			}
 		}
-//print_r($r);echo"<br />............<br />";
-/*
-		if (!isset($r['title_0'])) {
-			$r['title_0'] = '';
-		}
-		if (!isset($r['title_a'])) {
-			$r['title_a'] = '';
-		}
-		if (!isset($r['title_b'])) {
-			$r['title_b'] = '';
-		}
-		if (!isset($r['title_c'])) {
-			$r['title_c'] = '';
-		}
-		if (!isset($r['title_d'])) {
-			$r['title_d'] = '';
-		}
-		$r['title'] = $r['title_0'].' '.$r['title_a'].' '.$r['title_b'].' '.$r['title_c'].' '.$r['title_d'];
-		if (!isset($r['author_0'])) {
-			$r['author_0'] = '';
-		}
-		if (!isset($r['author_a'])) {
-			$r['author_a'] = '';
-		}
-		if (!isset($r['author_b'])) {
-			$r['author_b'] = '';
-		}
-		$r['author'] = $r['author_0'].' '.$r['author_a'].' '.$r['author_b'];
-		if (!isset($r['date_0'])) {
-			$r['date_0'] = '';
-		}
-		if (!isset($r['date_a'])) {
-			$r['date_a'] = '';
-		}
-		$r['date'] = $r['date_0'].' '.$r['date_a'];
-*/
-		return $r;
+		//print_r($r);echo"<br />............<br />";
 
+		return $r;
 	}
 }

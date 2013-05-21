@@ -77,6 +77,12 @@ and perhaps via circ/checkout allow me to retrieve a copy.
 19 May 2013 - Fred
 we need an admin function to import / export a media layout.
 
+20 May 2013 - Neil
+Member checked-out books: book detail screen copy areahas trouble with edit & delete buttons.
+
+20 May 2013 - Neil
+Member checked-out books: book detail screen bibid number is missing.
+
 ###################### Completed, most recent at top #########################
 
 19 May 2013 - Fred, done 20 May 2013
