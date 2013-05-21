@@ -8,7 +8,8 @@
 	require_once(REL(__FILE__, "../model/Sites.php"));	
 
 	## assure all session values are current
-	setSessionFmSettings(); // part of ../shared/common.php
+	## session is started in ../shared/common.php
+	setSessionFmSettings();  ## found in ../shared/common.php
 	
 	$temp_return_page = "";
 	if (isset($_GET["RET"])){

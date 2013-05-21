@@ -23,7 +23,8 @@ if (!OBIB_DEMO_FLG) {
 	#*  Checking to see if session variables exist
 	#****************************************************************************
 	if (!isset($_SESSION["userid"]) or ($_SESSION["userid"] == "")) {
-		// If siteId is given, pass it on. This allows for an easy link to be setup on the desktop of a certai site
+		// If siteId is given, pass it on. This allows for an easy link to be setup
+		// on the desktop of a certain site
 		if(isset($_REQUEST['selectSite'])){
 			header("Location: ../shared/loginform.php?selectSite=" . $_REQUEST['selectSite']);
 		} else {
@@ -45,7 +46,8 @@ if (!OBIB_DEMO_FLG) {
 			exit();
 		}
 	} elseif ($tab == "cataloging") {
-		// I would like to make a distinction, as Circulation users should be able to view the catalogue as OPAC users.
+		// I would like to make a distinction, as Circulation users should be able to
+		// view the catalogue as OPAC users.
 		// If hasCircAuth allow biblio_search.php
 		if (!$_SESSION["hasCatalogAuth"]) {
 			if(!((basename($_SERVER[PHP_SELF]) == "srchForms.php") && $_SESSION["hasCircAuth"])){

@@ -422,16 +422,16 @@ var bs = {
 			bs.biblio[biblio.bibid] = biblio;
 			html += '<tr class="listItem">\n';
 
-			//// the leftside pretty stuff
+			//--// the leftside pretty stuff
 			html += '	<td id="itemVisual">\n';
 			html += '		<div> \n';
+				//// if wanted, we create space for a possible photo, and fill it if one is found //
 			if (bs.opts.showBiblioPhotos == 'Y') {
-				// first we create space for a possible photo //
 				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n'+
 								'			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" />\n'+
 								'		</div>'+"\n";
 	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
-	  			// when this returns, it will over-write the above shim, if there is anything found //
+	  			//--// when this returns, it will over-write the above shim, if there is anything found //
 	  			if (data != null) {
 						var theId = data[0].bibid, 
 								fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
@@ -440,6 +440,7 @@ var bs = {
 					}
 	  		});
 			}
+			//--// some administrative info and a 'more detail' button
 			html += '	<div id="dashBd">\n';
 			html += '		<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
 			html += '		<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
@@ -449,11 +450,11 @@ var bs = {
 			html += '	</div>\n';
 			html += '</div></td>';
 
-			//// the more useful stuff
+			//--// the more useful stuff, biblio data
 			if (biblio.data) {
-				// Construct a set of tags to define content of displayable lines.
-				// Order of lines is determined by 'position' column of material_fields table.
-				// Actual number of lines displayed will be seperately determined later
+				//// Construct a set of tags to define content of displayable lines.
+				//// Order of lines is determined by 'position' column of material_fields table.
+				//// Actual number of lines displayed will be seperately determined later
 				var lineTag = [];
 				var lineSpec = bs.displayInfo[biblio.matlCd];
 				for (var i=0; i<lineSpec.length; i++) {
@@ -462,7 +463,7 @@ var bs = {
 					lineTag[n] = lineSpec[i]['tag']+lineSpec[i]['suf'];
 				}
 
-				// Construct all potential lines for later use.
+				//// Construct all potential lines for later use.
 				var lines = [], lineNo;
 				$.each(biblio.data, function (fldIndex, fldData) {
 					var tmp = JSON.parse(fldData);
@@ -476,10 +477,10 @@ var bs = {
 				title = 'unknown'; callNo = 'not assigned';
 				continue;
 			}
-			// TODO find a way to make the number be based on Media type.
+			// TODO find a way to make the number be based on Media type, or some user interface.
 			var N = 5;
 
-			// Display first 'N' lines of biblio information
+			//--// Display first 'N' lines of biblio information
 			html += '<td id="itemInfo">\n';
 			for (var i=1; i<=N; i++) {
 				if (!lines[i]) continue; // skip null, undefined or non-existent elements

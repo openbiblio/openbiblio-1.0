@@ -24,6 +24,7 @@
 	// TODO - will not work with db models and classes as currently written - FL
 	//error_reporting(E_ALL ^ E_NOTICE); 
 	error_reporting((E_ALL ^ E_NOTICE) & ~E_STRICT);
+
 	if (isset($cache)) {
 		session_cache_limiter($cache);
 	} else {
@@ -120,8 +121,15 @@
 	$LocaleDir = REL(__FILE__, $LocaleDirUrl);
 	
 	if (!isset($doing_install) or !$doing_install) {
+		// Get the current Session Timeout Value
+		$currentTimeoutInSecs = ini_get(’session.gc_maxlifetime’);
+
+		// Change the session timeout value to 60 minutes  // 8*60*60 = 8 hours
+		ini_set(’session.gc_maxlifetime’, 60*60);
+
 		/* Make session user info available on all pages. */
-		include_once(REL(__FILE__, "../classes/OBsession.php"));
+		//include_once(REL(__FILE__, "../classes/OBsession.php"));  //obsolete?
+
 		session_start();
 		# Forcibly disable register_globals
 		if (ini_get('register_globals')) {

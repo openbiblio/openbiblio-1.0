@@ -144,7 +144,7 @@ class BiblioRowsIter extends Iter {
 					} else {
 							$r[strtolower($name)] .= $row['subfield_data'];
 					}
-					break;
+					break; ## done with this $row, start on another
 				}
 			}
 		}
