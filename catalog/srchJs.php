@@ -150,6 +150,7 @@ var bs = {
 		bs.fetchCollectionList();
 		bs.fetchSiteList();
 		bs.fetchMediaDisplayInfo();
+		bs.fetchMediaLineCnt();
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -281,6 +282,11 @@ var bs = {
 	fetchMediaDisplayInfo: function () {
 	  $.getJSON(bs.url,{mode:'getMediaDisplayInfo',howMany:'all'}, function(response){
 			bs.displayInfo = response;
+		});
+	},
+	fetchMediaLineCnt: function () {
+	  $.getJSON(bs.url,{mode:'getMediaLineCnt'}, function(response){
+			bs.mediaLineCnt = response;
 		});
 	},
 
@@ -478,7 +484,8 @@ var bs = {
 				continue;
 			}
 			// TODO find a way to make the number be based on Media type, or some user interface.
-			var N = 5;
+			//var N = 5;
+			var N = bs.mediaLineCnt[biblio.matlCd];
 
 			//--// Display first 'N' lines of biblio information
 			html += '<td id="itemInfo">\n';

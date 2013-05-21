@@ -102,6 +102,15 @@ function mkBiblioArray($dbObj) {
 		$media = $theDb->getDisplayInfo($_GET['howMany']);
 		echo json_encode($media);
 		break;
+	case 'getMediaLineCnt':
+		require_once(REL(__FILE__, "../model/MediaTypes.php"));
+		$theDb =new MediaTypes;
+		$set = $theDb->getAll('code');
+		while ($row = $set->next()) {
+		  $media[$row['code']] = $row['srch_disp_lines'];
+		}
+		echo json_encode($media);
+		break;
 
 	case 'getSiteList':
 		$sites_table = new Sites;		
