@@ -16,6 +16,7 @@ class MediaTypes extends DmTable {
 			'adult_checkout_limit'=>'number',
 			'juvenile_checkout_limit'=>'number',
 			'image_file'=>'string',
+			'srch_disp_lines'=>'number',
 		));
 		$this->setSequenceField('code');
 		$this->setKey('code');
@@ -23,13 +24,13 @@ class MediaTypes extends DmTable {
 	function getAllWithStats() {
 		$sql = "SELECT t.code, t.description, t.default_flg, "
 				 . 				"t.adult_checkout_limit, t.juvenile_checkout_limit, "
-				 . 				"t.image_file, COUNT(distinct b.bibid) as count "
+				 . 				"t.image_file, t.srch_disp_lines, COUNT(distinct b.bibid) as count "
 				 . " FROM material_type_dm t "
 				 . " LEFT JOIN biblio b "
 				 . "   ON b.material_cd=t.code "
 				 . "GROUP BY t.code, t.description, t.default_flg, "
 				 . "				 t.adult_checkout_limit, t.juvenile_checkout_limit, "
-				 . "				 t.image_file "
+				 . "				 t.image_file, t.srch_disp_lines "
 				 . "ORDER BY t.description ";
 		return $this->db->select($sql);
 	}

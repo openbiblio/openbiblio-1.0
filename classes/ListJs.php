@@ -194,10 +194,7 @@ List.prototype.doNewFields = function (e) {
 List.prototype.doSubmitFields = function (e) {
 	e.preventDefault();
 	e.stopPropagation();
-	// target.id => form id; this.id=>undefined; $(e.target).id=>undefined
-//console.log('tgt id='+e.target.id+'; this id='+this.id+'; $tgt id='+$(e.target).id);
 	var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
-//console.log('id='+theId);
 	switch (theId) {
 		case 'addBtn':	this.doAddFields();	break;
 		case 'updtBtn':	this.doUpdateFields();	break;

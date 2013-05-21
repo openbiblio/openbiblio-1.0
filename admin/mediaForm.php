@@ -28,6 +28,7 @@
 			<th colspan="2"><?php echo T("Checkout Limit"); ?></th>
 			<th rowspan="2"><?php echo T("Image File"); ?></th>
 			<th rowspan="2"><?php echo T("Item Count"); ?></th>
+			<th rowspan="2"><?php echo T("Display Lines"); ?></th>
 			<th rowspan="2"><?php echo T("Default"); ?></th>
 		</tr>
 		<tr>
@@ -63,6 +64,7 @@
       <input id="description" name="description" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
 		</li>
+
 		<li>
 		  <fieldset>
 				<legend><?php echo T("Checkout Limit");?>:</legend>
@@ -71,12 +73,14 @@
 		  	</fieldset>
 		  	<fieldset class="inlineFldSet">
 		  		<label for="adult_checkout_limit"><?php echo T("Adult");?>:</label><br />
-					<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
+					<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2"
+						pattern="[0-9]{1,2}" title="0-99" required aria-required="true" />
 					<span class="reqd">*</span>
 		  	</fieldset>
 		  	<fieldset class="inlineFldSet">
 		  		<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:</label><br />
-					<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2" min="0" max="99" required aria-required="true" />
+					<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2"
+						pattern="[0-9]{1,2}" title="0-99" required aria-required="true" />
 					<span class="reqd">*</span>  
 		  	</fieldset>
 		  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
@@ -88,17 +92,29 @@
 				</fieldset>
 		  </fieldset>
 		</li>
+
+		<li>
+			<fieldset>
+				<legend><?php echo T("Search Display Lines");?></legend>
+				<label for="srch_disp_lines"><?php echo T("NumberOfLines");?>:</label>
+				<input id="srch_disp_lines" name="srch_disp_lines" type="number" size="2"
+					pattern="[1-9]{1,2}" min="1" max="19" title="0-19" required aria-required="true" />
+				<span class="reqd">*</span>
+		  </fieldset>
+		</li>
+
 		<li>
 			<fieldset>
 				<legend><?php echo T("Image File");?></legend>
 				<label for="image_file"><?php echo T("CrntImageFile");?>:</label>
 				<input id="image_file" name="crntImage_file" type="text" size="32" maxlength="128" readonly />
+					<span class="reqd">*</span>
 					<br />
 				<label for="newImageFile"><?php echo T("NewImageFile");?>:</label>
-				<input id="newImageFile" name="image_file" type="file" size="32" maxlength="128" required aria-required="true" />
-				<span class="reqd">*</span>  
+				<input id="newImageFile" name="image_file" type="file" size="32" maxlength="128" />
 			</fieldset>  
 		</li>
+
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
 			<input type="hidden" id="cat" name="cat" value="media">

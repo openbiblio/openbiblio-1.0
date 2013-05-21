@@ -25,6 +25,7 @@ $(document).ready(function () {
 									'juvenile_checkout_limit': 'number',
 									'image_file': 'image',
 									'count': 'number',
+									'srch_disp_lines': 'number',
 									'default_flg': 'center'
 									};
 	var opts = {};

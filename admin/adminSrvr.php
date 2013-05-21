@@ -253,6 +253,7 @@
 				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
 				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
 				'image_file'=>$_POST["image_file"],
+        'srch_disp_lines'=>$_POST["srch_disp_lines"],
 				);
 			list($id, $errors) = $ptr->insert_el($type);
 			if (empty($errors)) {
@@ -275,6 +276,7 @@
 				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
 				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
 				'image_file'=>$imgFile,
+        'srch_disp_lines'=>$_POST["srch_disp_lines"],
 			);
 			$errors = $ptr->update_el($type);
 			if (empty($errors)) {

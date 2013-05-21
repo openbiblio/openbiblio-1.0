@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS `material_type_dm` (
   `adult_checkout_limit` tinyint(3) unsigned NOT NULL,
   `juvenile_checkout_limit` tinyint(3) unsigned NOT NULL,
   `image_file` varchar(128) DEFAULT NULL,
+	`srch_disp_lines` tinyint(3) unsigned NOT NULL DEFAULT '4',
   PRIMARY KEY (`code`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
