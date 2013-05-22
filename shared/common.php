@@ -104,7 +104,7 @@
 		Settings::load();
 		$CharSet = Settings::get('charset');
 		$ThemeId = Settings::get('theme_name');
-		$ThemeDirUrl = "../themes/".Settings::get('theme_dir_url');
+		$ThemeDirUrl = trim(Settings::get('theme_dir_url'));
 		$Locale = Settings::get('locale');
 	}
 	else {
@@ -113,7 +113,6 @@
 		$ThemeDirUrl = "../themes/default";
 		$Locale = "en";
 	}
-	
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";
 	$HTMLHead = "";
@@ -121,17 +120,17 @@
 	$LocaleDir = REL(__FILE__, $LocaleDirUrl);
 	
 	if (!isset($doing_install) or !$doing_install) {
-		// Get the current Session Timeout Value
+		## Get the current Session Timeout Value
 		$currentTimeoutInSecs = ini_get(’session.gc_maxlifetime’);
 
-		// Change the session timeout value to 60 minutes  // 8*60*60 = 8 hours
+		## Change the session timeout value to 60 minutes,  8*60*60 = 8 hours
 		ini_set(’session.gc_maxlifetime’, 60*60);
 
-		/* Make session user info available on all pages. */
+		## Make session user info available on all pages. ##
 		//include_once(REL(__FILE__, "../classes/OBsession.php"));  //obsolete?
 
 		session_start();
-		# Forcibly disable register_globals
+		# Forcibly disable register_globals if php.ini does not do it already
 		if (ini_get('register_globals')) {
 			foreach ($_SESSION as $k=>$v) {
 				unset(${$k});

@@ -23,7 +23,7 @@
 	}
 	else {
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
-		
+
 		Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
 		Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));

@@ -17,17 +17,8 @@ class Page {
 			staff_menu();
 		}
 		require_once($params['theme_dir']."/header.php");
+//		require_once(REL(__FILE__, $params['theme_dir']."/header.php"));
 	}
-/*
-	function header_opac($params=array()) {
-		global $_Page_params;
-		$params = Page::clean_params($params);
-		$_Page_params = $params;
-		require_once(REL(__FILE__, '../opac/menu.php'));
-		opac_menu();
-		require_once($params['theme_dir']."/header_opac.php");
-	}
-*/
 	function header_help($params=array()) {
 		global $_Page_params;
 		$params = Page::clean_params($params);
@@ -51,8 +42,8 @@ class Page {
 		//$theme = Settings::get('theme_dir_url');
 		//$themeid = Settings::get('themeid');
 		$params['themeid'] = $ThemeId;
-		$params['theme_dir'] = REL(__FILE__, "../themes/".$ThemeDirUrl);
-		$params['theme_dir_url'] = "../themes/".$ThemeDirUrl;
+		$params['theme_dir'] = $ThemeDirUrl;
+		$params['theme_dir_url'] = $ThemeDirUrl;
 		if (!isset($params['html_head'])) {
 			$params['html_head'] = '';
 		}

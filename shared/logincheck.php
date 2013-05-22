@@ -32,7 +32,7 @@ if (!OBIB_DEMO_FLG) {
 		}	
 		exit();
 	}
-	
+
 	#****************************************************************************
 	#*  Checking authorization for this tab
 	#*  The session authorization flags were set at login in login.php
