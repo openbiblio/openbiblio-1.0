@@ -10,6 +10,7 @@ class BiblioRows {
 	function columns() {
 		return array(
 			array('name'=>'bibid', 'hidden'=>true, 'checkbox'=>true),
+/*
 			array('name'=>'title_0', 'hidden'=>true),
 			array('name'=>'title_a', 'hidden'=>true),
 			array('name'=>'title_b', 'hidden'=>true),
@@ -20,15 +21,18 @@ class BiblioRows {
 			array('name'=>'author_b', 'hidden'=>true),
 			array('name'=>'date_0', 'hidden'=>true),
 			array('name'=>'date_a', 'hidden'=>true),
+*/
 			array('name'=>'material_cd', 'hidden'=>true),
 			array('name'=>'create_dt', 'hidden'=>true),
 			array('name'=>'callno', 'title'=>'Call No.', 'sort'=>'callno'),
 			array('name'=>'title', 'title'=>'Title', 'func'=>'biblio_link', 'sort'=>'title'),
 			array('name'=>'author', 'title'=>'Author', 'sort'=>'author'),
 			array('name'=>'date', 'title'=>'Date', 'sort'=>'date'),
-			array('name'=>'level', 'title'=>'Grade Level'),
+//			array('name'=>'level', 'title'=>'Grade Level'),
 			array('name'=>'pubdate', 'title'=>'Publication Date'),
-			array('name'=>'material_type', 'title'=>'Type'),
+//			array('name'=>'material_type', 'title'=>'Type'),
+//			array('name'=>'publication date', 'title'=>'Publication Date'),
+			array('name'=>'material_type', 'title'=>'Type', 'sort'=>'type'),
 		);
 	}
 	function getOrderSql($col, $order_by_raw) {
@@ -137,12 +141,26 @@ class BiblioRowsIter extends Iter {
 				list($t, $s) = explode('$', $f);
 				if ($row['tag'] == $t and $row['subfield_cd'] == $s) {
 					//echo " <== matched<br /><br />";
+/*
 					if (strtolower($name) == 'call number') $name = 'callno';
 					if (strtolower($name) == 'subtitle') $name = 'title';
 					if (empty($r[strtolower($name)])) {
 							$r[strtolower($name)] = $row['subfield_data'];
 					} else {
 							$r[strtolower($name)] .= $row['subfield_data'];
+					}
+*/
+					if (strtolower($name) == 'call number') $name = 'callno';
+					if (strtolower($name) == 'corporate name') $name = 'author';
+					if (strtolower($name) == 'book title') $name = 'title';
+					if (strtolower($name) == 'report title') $name = 'title';
+					if (strtolower($name) == 'subtitle') $name = 'title';
+					if (strtolower($name) == 'year') $name = 'date';
+					if (strtolower($name) == 'publication date') $name = 'pubdate';
+					if (empty($r[strtolower($name)])) {
+							$r[strtolower($name)] = $row['subfield_data'];
+					} else {
+							$r[strtolower($name)] .= ' '.$row['subfield_data'];
 					}
 					break; ## done with this $row, start on another
 				}

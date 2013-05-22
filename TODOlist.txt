@@ -83,10 +83,22 @@ Member checked-out books: book detail screen copy areahas trouble with edit & de
 20 May 2013 - Neil
 Member checked-out books: book detail screen bibid number is missing.
 
+20 May 2013 - Neil/Fred
+implement copy of Neil's DB for test purposes.
+
+21 May 2013 - Fred
+description tag 245c is being truncated at ',' in Admin|BiblioFields
+
+21 May 2013 - Fred
+MediaType screen is loosing the media image during updates.
+
 21 May 2013 - Neil/Fred
-The 'N' in sechJs.php needs a user interface.
+investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+21 May 2013 - Neil/Fred, done 21 May 2013
+The 'N' in sechJs.php needs a user interface.
 
 19 May 2013 - Fred, done 20 May 2013
 Modify Item_search Report to use material_fields to control display.
