@@ -483,11 +483,10 @@ var bs = {
 				title = 'unknown'; callNo = 'not assigned';
 				continue;
 			}
-			// TODO find a way to make the number be based on Media type, or some user interface.
-			//var N = 5;
-			var N = bs.mediaLineCnt[biblio.matlCd];
 
 			//--// Display first 'N' lines of biblio information
+			// number of rows to display is based on Media type
+			var N = bs.mediaLineCnt[biblio.matlCd];
 			html += '<td id="itemInfo">\n';
 			for (var i=1; i<=N; i++) {
 				if (!lines[i]) continue; // skip null, undefined or non-existent elements
