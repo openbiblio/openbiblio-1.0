@@ -2,7 +2,6 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-// JavaScript Document
 "use strict";
 
 function Med ( url, form, dbAlias, hdrs, listFlds, opts ) {

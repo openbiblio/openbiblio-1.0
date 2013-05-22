@@ -28,7 +28,7 @@
 			<th colspan="2"><?php echo T("Checkout Limit"); ?></th>
 			<th rowspan="2"><?php echo T("Image File"); ?></th>
 			<th rowspan="2"><?php echo T("Item Count"); ?></th>
-			<th rowspan="2"><?php echo T("Display Lines"); ?></th>
+			<th rowspan="2"><?php echo T("DisplayLines"); ?></th>
 			<th rowspan="2"><?php echo T("Default"); ?></th>
 		</tr>
 		<tr>

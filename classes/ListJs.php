@@ -162,6 +162,9 @@ List.prototype.showFields = function (item) {
 		else if ($(this).is('[type=radio]')) {
 			$(this).val([item[this.id]]);
 		}
+		else if ($(this).is('[type=file]')) {
+			$(this).val([item[this.id]]);
+		}
 		else {
 			$(this).val(item[this.id]);
 		}
@@ -221,7 +224,8 @@ List.prototype.doUpdateFields = function () {
 	$('#mode').val('update_'+this.dbAlias);
 	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
-	parms += '&image_file='+$('#newImageFile').val();
+	if ($('#newImageFile').val() != '')
+		parms += '&image_file='+$('#newImageFile').val();
 	$.post(this.url, parms, $.proxy(this.updateHandler, this));
 	return false;
 };

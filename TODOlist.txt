@@ -97,6 +97,9 @@ investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
 
+21 May 2013 - Fred, fixed 21 May 2013
+MediaType screen is loosing the media image during updates.
+
 21 May 2013 - Neil/Fred, done 21 May 2013
 The 'N' in sechJs.php needs a user interface.
 
