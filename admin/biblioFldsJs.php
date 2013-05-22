@@ -208,7 +208,7 @@ var mtl = {
 				var label = temp;
 				// remove extraneous tag from label
 				if (temp.indexOf('-') >= 0) label = $.trim(entry.text().split('-')[1]);
-				if (temp.indexOf(',') >= 0) label = $.trim(entry.text().split(',')[1]);
+				//if (temp.indexOf(',') >= 0) label = $.trim(entry.text().split(',')[1]);
 				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'","material_cd":"'+$('#typeList').val()+'"'+
 									 ',"tag":"'+tag+'","subfield_cd":"'+subFld+'","label":"'+label+'"},';
 			} else {
