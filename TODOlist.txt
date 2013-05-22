@@ -78,18 +78,18 @@ and perhaps via circ/checkout allow me to retrieve a copy.
 we need an admin function to import / export a media layout.
 
 20 May 2013 - Neil
-Member checked-out books: book detail screen copy areahas trouble with edit & delete buttons.
+Member checked-out books: book detail screen copy area has trouble with edit & delete buttons.
 
 20 May 2013 - Neil
 Member checked-out books: book detail screen bibid number is missing.
-
-21 May 2013 - Fred
-description tag 245c is being truncated at ',' in Admin|BiblioFields
 
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+21 May 2013 - Fred, fixed 22 May 2013
+description tag 245c is being truncated at ',' in Admin|BiblioFields
 
 21 May 2013 - Fred, fixed 22 May 2013
 MediaType screen is loosing the media image during updates.

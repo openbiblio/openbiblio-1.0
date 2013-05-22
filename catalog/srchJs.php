@@ -646,14 +646,18 @@ var bs = {
 					else {
 						$('#siteFld').hide();
 					}
+					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
+
 					html += "	<td>"+crntCopy.status
 					if (crntCopy.mbrId) {
 						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
 					  html += ' to<br /><a '+text+'>'+crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
+
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
-					// Due back is onyl needed when checkked out - LJ
+
+					// Due back is onyl needed when checked out - LJ
 					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
 						// Sometimes the info has to come out of an array (if coming from list) - LJ
 						var daysDueBack = parseInt(bs.biblio.daysDueBack);
@@ -664,8 +668,9 @@ var bs = {
 					} else {
 						html += "<td>---</td>";
 					}
-					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
+
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
+
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);

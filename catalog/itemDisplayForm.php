@@ -28,10 +28,10 @@
 						echo "<th id=\"siteFld\" align=\"center\" nowrap=\"yes\">" . T("Site") . "</th>";
 					}
 				?>
+				<th><?php echo T("Barcode"); ?></th>
 				<th><?php echo T("Status"); ?></th>
 				<th><?php echo T("Status Dt"); ?></th>
 				<th><?php echo T("Due Back"); ?></th>
-				<th><?php echo T("Barcode"); ?></th>
 				<th><?php echo T("Description"); ?></th>
 		</tr>
 		</thead>

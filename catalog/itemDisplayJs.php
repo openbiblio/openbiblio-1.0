@@ -37,6 +37,7 @@ var idis = {
 			idis.theBiblio = $(this).prev().val();
 		else
 	  	idis.theBiblio = biblio;
+		$('#theBibId').html(idis.theBiblio.bibid);
 
   	idis.crntFoto = null;
   	idis.crntBibid = idis.theBiblio.bibid;
@@ -121,14 +122,13 @@ var idis = {
 						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
 						html += '	</td>\n';
 					}
-					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
-					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
 					if (crntCopy.site) {
 						html += "	<td>"+crntCopy.site+"</td>\n";
 					}
 					else {
 						$('#siteFld').hide();
 					}
+					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
 					html += "	<td>"+crntCopy.status
 					if (crntCopy.mbrId) {
 						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
@@ -147,6 +147,7 @@ var idis = {
 					} else {
 						html += "<td>---</td>";
 					}
+					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);

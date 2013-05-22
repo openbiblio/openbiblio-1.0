@@ -163,14 +163,13 @@
 		$chkOutList = array();
 		while ($copy = $checkouts->next()) {
 			$biblio = $biblios->getOne($copy['bibid']);
-			//$copy['title'] = $biblio['marc']->getValue('245$a');
-$a = $biblio['marc']->getValue('240$a');
-$b = $biblio['marc']->getValue('245$a');
-$c = $biblio['marc']->getValue('245$b');
-$d = $biblio['marc']->getValue('246$a');
-$e = $biblio['marc']->getValue('246$b');
-if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
-if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
+			$a = $biblio['marc']->getValue('240$a');
+			$b = $biblio['marc']->getValue('245$a');
+			$c = $biblio['marc']->getValue('245$b');
+			$d = $biblio['marc']->getValue('246$a');
+			$e = $biblio['marc']->getValue('246$b');
+			if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
+			if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
 			$copy['status'] = $history->getOne($copy['histid']);
 			$copy['booking'] = $bookings->getByHistid($copy['histid']);
 			$copy['booking']['days_late'] = $bookings->getDaysLate($copy['booking']);
@@ -180,6 +179,7 @@ if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
 		}
 	  echo json_encode($chkOutList);
 		break;
+
 	case 'doCheckout':
 		$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
 		$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
