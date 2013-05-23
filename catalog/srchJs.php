@@ -184,7 +184,7 @@ var bs = {
 	  bs.checkBarcdSrchBtn();
 		$('#marcBtn').val(bs.showMarc);
 		if (opacMode) $('#barcodeSearch').hide();
-		$('#searchText').focus();
+		$('#ph_searchText').focus();
 	},
 	rtnToSrch: function () {
   	$('tbody#biblio').html('');

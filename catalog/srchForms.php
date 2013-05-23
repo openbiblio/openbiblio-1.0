@@ -16,7 +16,7 @@
 
 	$nav = "localSearch";
 	$focus_form_name = "barcodesearch";
-	$focus_form_field = "searchText";
+	$focus_form_field = "ph_searchText";
 
 	if ($tab == 'opac') {
 		Page::header(array('nav'=>$nav, 'title'=>'Library Catalog'));
