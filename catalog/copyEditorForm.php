@@ -5,7 +5,7 @@
  
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));	
-	require_once(REL(__FILE__, "../model/CopyStates.php"));	
+	require_once(REL(__FILE__, "../model/CopyStatus.php"));	
 ?>
 <p class="note"><?php echo T("Fields marked are required"); ?></p>
 <p id="editRsltMsg" class="error"></p>
@@ -46,7 +46,7 @@ if($_SESSION['multi_site_func'] > 0){
 		<td>
 			</select>
 			<?php 	
-				$states = new CopyStates;
+				$states = new CopyStatus;
 				$state_select = $states->getSelect();
 				// These should not be selectable
 				unset($state_select[OBIB_STATUS_OUT]);

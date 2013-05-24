@@ -12,6 +12,7 @@
 	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
+	require_once(REL(__FILE__, "../model/CopyStatus.php"));
 
   $focus_form_name = "specForm";
   $focus_form_field = "imptSrce";
@@ -25,6 +26,9 @@
 
 <section id="intro">
 	<form id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
+		<input type="hidden" id="mode" name="mode" value="csvPreview" \>
+		<input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
+
 		<fieldset>
 			<!--label><?php echo T("CSVloadTest"); ?>: 
 				<?php //echo T("CSVloadTestTrue"); ?>
@@ -32,8 +36,7 @@
 				<?php //echo T("CSVloadTestFalse"); ?>
 					<input type="radio" id="testFalse" name="test" value="false" \>
 			</label> <br /-->
-			<input type="hidden" id="mode" name="mode" value="csvPreview" \>
-			<label><?php echo T("CSVloadTestFileUpload"); ?>: 
+			<label><?php echo T("CSVInputFile"); ?>:
 				<input type="file" id="imptSrce" name="imptSrce" required aria-required="true" autofocus \>
 			</label>
 		</fieldset>
@@ -63,7 +66,7 @@
 				</tr>
 			  
 			  <tr>
-					<td colspan="3"><label for="opacFlg"><?php echo T("biblioFieldsOpacFlg"); ?></label></td>
+					<td colspan="3"><label for="opacFlg"><?php echo T("biblioFieldsOpacFlg"); ?>:</label></td>
 			    <td colspan="2">
 			      <select name="opacFlg" id="opacFlg">
 			        <option value="Y" SELECTED><?php echo T("AnswerYes"); ?></option>
@@ -79,24 +82,33 @@
 							&nbsp;Make Item Copies?
 						</label></td>
 			    <td colspan="2">
-			    	<select id="bcdDeflt">
+			    	<select id="cpyAction" name="cpyAction">
 			    		<option value="0"><?php echo T("Never"); ?></option>
 			    		<option value="1"><?php echo T("Only if Barcode present"); ?></option>
-			    		<option value="2"><?php echo T("Always"); ?></option>
+			    		<option value="2" selected ><?php echo T("Always"); ?></option>
 			    	</select>
 			    </td>
 			  </tr>
 			  
 			  <tr>
-					<td colspan="3"><label for="copyText"><?php echo T("CSVcopyDescription"); ?></label></td>
+					<td colspan="3"><label for="copyText"><?php echo T("CSVcopyDescription"); ?>:</label></td>
 			    <td colspan="2">
-			      <input type=text name="copyText" id="copyText" size=32 maxsize=256 value="CSV Import">
-			      <input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
+			      <input type=text name="copyText" id="copyText" size=20 maxsize=256 value="<?php echo T("CSVImport"); ?>" />
 			    </td>
 			  </tr>
-			  
+
 			  <tr>
-					<td colspan="3" nowrap><label for="showAll"><?php echo T("CSVshowAllFiles"); ?></label></td>
+					<td colspan="3"><label for="code"><?php echo T("CSVcopyStatus"); ?>:</label></td>
+			    <td colspan="2">
+						<?php
+						$cpyStatus = new CopyStatus;
+						echo inputfield('select', "code", $cpyStatus->getDefault(), NULL, $cpyStatus->getSelect());
+						?>
+			    </td>
+			  </tr>
+
+			  <tr>
+					<td colspan="3" nowrap><label for="showAll"><?php echo T("CSVshowAllFiles"); ?>:</label></td>
 			    <td colspan="2">
 			      <select name="showAll" id="showAll">
 			        <option value="Y"><?php echo T("AnswerYes"); ?></option>

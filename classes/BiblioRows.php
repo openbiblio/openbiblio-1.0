@@ -137,7 +137,7 @@ class BiblioRowsIter extends Iter {
 					if (empty($r[strtolower($name)])) {
 							$r[strtolower($name)] = $row['subfield_data'];
 					} else {
-							$r[strtolower($name)] .= ' '.$row['subfield_data'];
+							$r[strtolower($name)] .= ' - '.$row['subfield_data'];
 					}
 					break; ## done with this $row, start on another
 				}

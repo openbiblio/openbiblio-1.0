@@ -12,7 +12,7 @@
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
-	require_once(REL(__FILE__, "../model/CopyStates.php"));
+	require_once(REL(__FILE__, "../model/CopyStatus.php"));
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 

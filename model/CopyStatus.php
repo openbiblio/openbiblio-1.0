@@ -5,8 +5,8 @@
 
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
-class CopyStates extends DmTable {
-	function CopyStates() {
+class CopyStatus extends DmTable {
+	function CopyStatus() {
 		$this->DmTable();
 		$this->setName('biblio_status_dm');
 		$this->setFields(array(

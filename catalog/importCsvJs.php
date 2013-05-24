@@ -103,12 +103,18 @@ var csvi = {
 	getShowAllFlg: function () {
 		return ($('#showAll').val() == 'Y'?true:false);
 	},
-	getTestTF: function () {
-		return $('[name="test"]:checked').val();
+	//getTestTF: function () {
+	//	return $('[name="test"]:checked').val();
+	//},
+	getDfltStatus: function () {
+		return $('#code').val();
+	},
+	getCopyAction: function () {
+		return $('#cpyAction').val();
 	},
 	isDupBarCd: function (barCd) {
 /*
-  					// Check for uniqueness with existing barcodes and new entries read.
+TODO				// Check for uniqueness with existing barcodes and new entries read.
   					$barcode = $rec["barcode_nmbr"];
 					  if ($barcode != "") {
 				    	if (in_array($barcode, $newBarcodes)) {
@@ -121,9 +127,9 @@ var csvi = {
 				  	  array_push($newBarcodes, $barcode);
 					  }					  
 */
-return false;
+		return false;
 	}, 
-		
+
 	//------------------------------
 	processImportFile: function (e) {
 		e.preventDefault();
@@ -217,11 +223,11 @@ return false;
 		var width = <?php echo $_SESSION[item_barcode_width]; ?>;
 	 	if( width <= 1 ) var w = 13; else var w = width;
 	  	
-		for (var i=1; i<csvi.File.length; i++) {
-			//console.log('working row #'+i+' of '+csvi.File.length+' : '+csvi.File[i]);
+		for (var line=1; line<csvi.File.length; line++) {
+			//console.log('working row #'+line+' of '+csvi.File.length+' : '+csvi.File[line]);
 					
 			/* break an input line into an array of its parts */
-			var data = csvi.File[i].split(csvi.fldTerminator);	
+			var data = csvi.File[line].split(csvi.fldTerminator);
 
 			if (showAll) csvRcrds.append(' <tr><td colspan="3">&nbsp</td></tr>\n');
     	if (showAll) csvRcrds.append(' <tr><td colspan="3"> - - - - - - - Line #'+i+' - - - - - - - - </td></tr>\n');
@@ -229,15 +235,18 @@ return false;
   		var mandatoryCols = {
   			'coll'  : false,		// collection name
   			'media' : false,		// media type name
-  			//'099$a' : false,		// local call number
-    		//'100$a' : false,		// author
-    		//'245$a' : false,		// title
 			};
 			
-	  	/* for use with MARC tags */
-			var fields = {}, 
-					rec = {};	
-			
+			var fields = {},
+					rec = {};
+
+			/* default options */
+			rec['copy_desc'] = $('#copyText').val();
+			rec['copy_action'] = csvi.getCopyAction();
+			rec['status_cd'] = csvi.getDfltStatus();
+			//console.log(rec);
+			//console.log("desc="+rec['copy_desc']+"; action="+rec['copy_action']+"; status="+rec['status_cd']);
+
 			for (var n=0; n<csvi.headings.length; n++) {
     		if ( (data[n] === undefined) || (data[n] == '') ) {
 					var entry = '';
@@ -247,7 +256,7 @@ return false;
     		var target = csvi.headings[n].trim();
 				//console.log("working "+(n)+" of "+csvi.headings.length+" with entry '"+entry+"' in column '"+target+"'");    
 
-				/* if current column is a 'mandatory' is present in headings mark as 'seen' */
+				/* if current column is a 'mandatory' and is present in headings mark as 'seen' */
     		if ( mandatoryCols[target] ) mandatoryCols[target] = true;
     		
     		switch (target) {
@@ -315,17 +324,15 @@ return false;
 			}
 			
 			/* check for barcode present, and add if user wishes */
-			if ((! rec['barcode_nmbr'] ) && ( $('#bcdDeflt').val() == csvi.BCD_ALWAYS )){
-				csvErrs.append(' <tr><td colspan="3">Line #'+i+" "+<?php echo "'".T("barcode missing, auto-generating")."'"; ?>+"</td></tr>\n");
+			if ((! rec['barcode_nmbr'] ) && ( $('#cpyAction').val() == csvi.BCD_ALWAYS )){
+				csvErrs.append(' <tr><td colspan="3">Line #'+line+" "+<?php echo "'".T("barcode missing, auto-generating")."'"; ?>+"</td></tr>\n");
       	rec['barcode_nmbr'] = 'autogen';
 			}
-			rec['copy_desc'] = $('#copyText').val();
-			//console.log(rec);
-			
+
 			/* now add 'fields array' to rec */
 			rec['fields'] = fields
-			//console.log(rec);	
-			csvi.csvRecords[i-1] = rec; 		
+			//console.log(rec);
+			csvi.csvRecords[line-1] = rec;
 		}	
 		
 		/* parsing complete, ready to send to server for posting to database */

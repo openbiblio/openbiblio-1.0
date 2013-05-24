@@ -240,7 +240,7 @@ class SrchDb {
 	function getCopyInfo ($bibid) {
 		$copies = new Copies; // needed later
 		$bcopies = $copies->getMatches(array('bibid'=>$bibid));
-		$copy_states = new CopyStates;
+		$copy_states = new CopyStatus;
 		$states = $copy_states->getSelect();
 		$history = new History;
 		$bookings = new Bookings;

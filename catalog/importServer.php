@@ -89,10 +89,11 @@ switch ($_REQUEST[mode]){
 	case 'postCsvData':
 		$theDb = new SrchDB;
 		$cpys = new Copies;
-		$rslt = [];
+		//$rslt = [];
 
 		$rec = $_POST['record'];
 		$barCd = $rec['barcode_nmbr'];
+		$cpyAction = $rec['copy_action'];
 		if ($barCd == 'autogen') {
 			$barCd = $cpys->getNewBarCode($_SESSION[item_barcode_width]);
 			$rec['barcode_nmbr'] = $barCd;
@@ -100,12 +101,16 @@ switch ($_REQUEST[mode]){
 
 		$bibid = doPostNewBiblio($rec);
 		$text = "Biblio #$bibid posted successfully.";
-		if (isset($rec['barcode_nmbr'])) {
+//echo "barCd=$barCd; cpy action=$cpyAction<br />";
+		if (($cpyAction >= 1) && (isset($rec['barcode_nmbr']))) {
+//$text.= "inserting new copy";
 			if ($theDb->insertCopy($bibid,NULL) == '!!success!!') {
 				$text .= "<br />\n".T("Copy successfully created.")." ".T("Barcode")." = ".$barCd.". ";
 			} else {
 				$text .= "<br />\n".T("Error creating New Copy")." ".T("Barcode")." = ".$barCd.". ";
 			}
+		} else {
+//$text.= "no copies made.";
 		}
 		echo $text;
 		break;
