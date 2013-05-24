@@ -38,13 +38,17 @@
 			  "}";
 			*/
 		  $rcd['msg'] = T("Nothing Found");
-		  $srch['byName'] = $srchByName;
-		  $srch['lookupVal'] = $lookupVal;
-		  $rcd['srch1'] = json_encode($srch);
+		  $srch1['byName'] = $srchByName;
+		  $srch1['lookupVal'] = $lookupVal;
+		  $rcd['srch1'] = json_encode($srch1);
 			if (isset($srchByName2)) {
-			  $srch['byName'] = $srchByName2;
-			  $srch['lookupVal'] = $lookupVal2;
-			  $rcd['srch2'] = json_encode($srch);
+			  $srch2['byName'] = $srchByName2;
+			  $srch2['lookupVal'] = $lookupVal2;
+			  $rcd['srch2'] = json_encode($srch2);
+			} else {
+			  $srch2['byName'] = 0;
+			  $srch2['lookupVal'] = '';
+			  $rcd['srch2'] = json_encode($srch2);
 			}
 		  echo json_encode($rcd);
 		}

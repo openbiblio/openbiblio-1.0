@@ -408,9 +408,10 @@ var ni = {
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
 					// 'srch2':['byName':$srchByName2,'val':$lookupVal2]}
-					var str = rslts.msg+':<br />&nbsp;&nbsp;&nbsp;'+rslts.srch1.byName+' = '+rslts.srch1.lookupVal;
-					if ((rslts.srch2.lookupVal) && (rslts.srch2.lookupVal != ''))
-						str += '<br />&nbsp;&nbsp;&nbsp;'+rslts.srch2.byName+' = '+rslts.srch2.lookupVal;
+					var srch1 = $.parseJSON(rslts['srch1']), srch2 = $.parseJSON(rslts['srch2']);
+					var str = rslts.msg+':<br />&nbsp;&nbsp;for '+srch1["byName"]+' = '+srch1["lookupVal"];
+					if ((srch2['lookupVal']) && (srch2['lookupVal'] != ''))
+						str += '<br />&nbsp;&nbsp;&nbsp;'+srch2['byName']+' = '+srch2['lookupVal'];
 					$('#retryHead').empty();
 					$('#retryHead').html('<?php echo T("Nothing Found"); ?>');
 					$('#retryMsg').empty();
