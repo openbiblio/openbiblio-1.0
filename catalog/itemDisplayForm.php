@@ -20,7 +20,7 @@
 		<table id="copyList">
 		<thead>
 		<tr>
-				<?php if (!(strtolower($tab) == "opac" || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))){ ?>
+				<?php if ($_SESSION["hasCatalogAuth"]){ ?>
 					<th><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<?php

@@ -4,6 +4,12 @@
 "use strict";
 
 var idis = {
+	<?php
+		echo "showMarc: '".T("Show Marc Tags")."',\n";
+		echo "hideMarc: '".T("Hide Marc Tags")."',\n";
+	?>
+	multiMode: false,
+
 	init: function (opts) {
 		idis.opts = opts;
 		idis.url = '../catalog/catalogServer.php';
@@ -23,7 +29,6 @@ var idis = {
 				}
 				else {
 					idis.showOneBiblio(idis.biblio)
-					idis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();
@@ -58,6 +63,7 @@ var idis = {
 				}
   		});
 		}
+		idis.fetchCopyInfo();
 
 	  var txt = '';
 		$.each(idis.theBiblio.data, function(fldIndex,fldData) {
@@ -101,9 +107,9 @@ var idis = {
 		return dateOut.toDateString();
 	},
 	
-	fetchCopyInfo: function () {
+	fetchCopyInfo: function (bibid) {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
-	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.biblio.bibid}, function(jsonInpt){
+	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.theBiblio.bibid}, function(jsonInpt){
 				idis.copyJSON = jsonInpt;
 				if (!idis.copyJSON) {
 					var msg = '(<?php echo T("No copies"); ?>)';
@@ -117,25 +123,30 @@ var idis = {
 				  html += "<tr>\n";
 					if (!window.opacMode) {
 						html += '	<td>\n';
-						html += '		<button class="editBtn" value="<?php echo T("edit"); ?>" />\n';
-						html += '		<button class="deltBtn" value="<?php echo T("del"); ?>" />\n';
+						html += '		<input type="button" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
+						html += '		<input type="button" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
 						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
 						html += '	</td>\n';
 					}
+
 					if (crntCopy.site) {
 						html += "	<td>"+crntCopy.site+"</td>\n";
 					}
 					else {
 						$('#siteFld').hide();
 					}
+
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
+
 					html += "	<td>"+crntCopy.status
 					if (crntCopy.mbrId) {
 						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
 					  html += ' to <a '+text+'>'+crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
+
 					html += "	<td>"+idis.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
+
 					// Due back is onyl needed when checkked out - LJ
 					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
 						// Sometimes the info has to come out of an array (if coming from list) - LJ
@@ -147,6 +158,7 @@ var idis = {
 					} else {
 						html += "<td>---</td>";
 					}
+
 					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
 					html += "</tr>\n";
 				}

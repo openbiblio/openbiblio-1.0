@@ -27,7 +27,6 @@ var bs = {
 	init: function () {
 		// get header stuff going first
 		bs.initWidgets();
-
 		bs.url = 'catalogServer.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
 
@@ -144,7 +143,7 @@ var bs = {
 		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
 
 		bs.resetForms();
-		bs.fetchOpts();
+		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
@@ -245,6 +244,7 @@ var bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
+			idis.init(bs.opts); // used for biblio item & copy displays
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -385,8 +385,8 @@ var bs = {
 				  bs.multiMode = false;
       		// Changed from 0 to 1 as the first row shows record info
 					bs.biblio = $.parseJSON(biblioList[1]);
-					bs.showOneBiblio(bs.biblio)
-					bs.fetchCopyInfo();
+					idis.showOneBiblio(bs.biblio)
+					idis.fetchCopyInfo();
 				}
 				// multiple hits
 				else {
@@ -538,8 +538,8 @@ var bs = {
 	getPhraseSrchDetails: function () {
 	  var bibid = $(this).prev().val();
 		bs.biblio.bibid = bibid;
-		bs.showOneBiblio(bs.biblio[bibid]);
-		bs.fetchCopyInfo();
+		idis.showOneBiblio(bs.biblio[bibid]);
+		//idis.fetchCopyInfo(bs.biblio[bibid]);
 	},
 	doAddItemToCart:function () {
     var params = "mode=addToCart&name=bibid&tab=catalog";
@@ -550,7 +550,7 @@ var bs = {
 	},
 	
 	/* ====================================== */
-	showOneBiblio: function (biblio) {
+	xshowOneBiblio: function (biblio) {
 	  if(!biblio)
 			bs.theBiblio = $(this).prev().val();
 		else
@@ -619,7 +619,7 @@ var bs = {
 		return dateOut.toDateString();
 	},
 	
-	fetchCopyInfo: function () {
+	xfetchCopyInfo: function () {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
 				bs.copyJSON = jsonInpt;
@@ -633,7 +633,7 @@ var bs = {
 				for (nCopy in bs.copyJSON) {
 				  var crntCopy = eval('('+bs.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
-					if (!opacMode) {
+					if (!window.opacMode) {
 						html += "	<td>\n";
 						html += '		<input type="button" value="<?php echo T("edit"); ?>" class="editBtn" /> \n';
 						html += '		<input type="button" value="<?php echo T("delete"); ?>" class="deltBtn" /> \n';
@@ -647,14 +647,12 @@ var bs = {
 						$('#siteFld').hide();
 					}
 					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
-
 					html += "	<td>"+crntCopy.status
 					if (crntCopy.mbrId) {
 						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
 					  html += ' to<br /><a '+text+'>'+crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
-
 					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
 
 					// Due back is onyl needed when checked out - LJ
