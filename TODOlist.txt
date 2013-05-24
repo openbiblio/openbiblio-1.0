@@ -58,16 +58,6 @@ so search can be refined.
 investigate making school grade, teacher, optional.  If not used then 'Audience Level'
 should not appear on advanced search screen.
 
-18 MAy 2013 - Neil
-Copy edit dialog does not show current location of copy.  Code should set current
-site 'selected' when editor dialo is displayed.
-
-18 May 2013 - Neil
-> copy edit dialog for new copy via csvImport- status: blank. Change to 'Checked In'.
-(Would it be wise to make this the default setting for CSV import
-or would it complicate matters if copy status had a default setting?)
-Certainly makes sense to me that they be be checked in!
-
 19 May 2013 - Fred
 why can't I store that entire document right in OB, along with all the usual
 biblio information. Then when I search for a topic, that paper will spring up
@@ -81,6 +71,16 @@ we need an admin function to import / export a media layout.
 investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+18 MAy 2013 - Neil
+Copy edit dialog does not show current location of copy.  Code should set current
+site 'selected' when editor dialo is displayed.
+
+18 May 2013 - Neil, fixed 23 May 2013
+> copy edit dialog for new copy via csvImport- status: blank. Change to 'Checked In'.
+(Would it be wise to make this the default setting for CSV import
+or would it complicate matters if copy status had a default setting?)
+Certainly makes sense to me that they be be checked in!
 
 20 May 2013 - Neil, edit/del buttons not available to circ users - 22 May 2013
 Member checked-out books: book detail screen copy area has trouble with edit & delete buttons.

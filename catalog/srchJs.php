@@ -993,11 +993,14 @@ var bs = {
 		$('#copyTbl #status_cd').val(bs.crntCopy.statusCd);
 		$('#copyEditorDiv fieldset legend').html("<?php echo T("Edit Copy Properties"); ?>");
 
+  	var crntsite = bs.opts.current_site
+		$('#copy_site').val(crntsite);
+
 		// custom fields
 		for(nField in bs.crntCopy.custFields){
 			$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val(bs.crntCopy.custFields[nField].data);
 		}
-		
+
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').on('click',null,function () {
