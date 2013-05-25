@@ -146,9 +146,11 @@ var bs = {
 		bs.resetForms();
 		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
+		// prepare pull-down lists
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
 		bs.fetchSiteList();
+		// needed for search results presentation
 		bs.fetchMediaDisplayInfo();
 		bs.fetchMediaLineCnt();
 	},
@@ -253,26 +255,7 @@ var bs = {
 			$('#crntMbrDiv').empty().html(data).show();
 		});
 	},
-	fetchSiteList: function () {
-	  $.get(bs.url,{mode:'getSiteList'}, function(data){
-			$('#copy_site').html(data);
-			// Add all for search sites
-			data = '<option value="all"  selected="selected">All</option>' + data;
-			$('#srchSites').html(data);
-			
-			// now ready to begin a search
-			bs.doAltStart();
-		});
-	},	
 	fetchMaterialList: function () {
-/*
-	  $.get(bs.url,{mode:'getMaterialList'}, function(data){
-			$('#itemMediaTypes').html(data);
-			// Add all for search media
-			data = '<option value="all"  selected="selected">All</option>' + data;
-			$('#srchMediaTypes').html(data);
-		});
-*/
 	  $.getJSON(bs.listSrvr,{mode:'getMediaList'}, function(data){
 			var html = '';
       for (var n in data) {
@@ -284,14 +267,6 @@ var bs = {
 		});
 	},
 	fetchCollectionList: function () {
-	  /*
-		$.get(bs.url,{mode:'getCollectionList'}, function(data){
-			$('#itemEditColls').html(data);
-			// Add all for search collections
-			data = '<option value="all"  selected="selected">All</option>' + data;
-			$('#srchCollections').html(data);
-		});
-		*/
 	  $.getJSON(bs.listSrvr,{mode:'getCollectionList'}, function(data){
 			var html = '';
       for (var n in data) {
@@ -300,6 +275,20 @@ var bs = {
 			$('#itemEditColls').html(html);
 			html = '<option value="all"  selected="selected">All</option>' + html;
 			$('#srchCollections').html(html);
+		});
+	},
+	fetchSiteList: function () {
+	  $.getJSON(bs.listSrvr,{mode:'getSiteList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#copy_site').html(html);
+			html = '<option value="all"  selected="selected">All</option>' + html;
+			$('#srchSites').html(html);
+
+			// now ready to begin a search
+			bs.doAltStart();
 		});
 	},
 	fetchMediaDisplayInfo: function () {

@@ -6,6 +6,13 @@
   require_once("../shared/common.php");
 	//print_r($_REQUEST);echo "<br />";
 
+	function getDbData ($db) {
+		$sites = $db->getSelect();
+		foreach ($sites as $val => $desc) {
+			$list[$val] = $desc;
+		}
+		return $list;
+	}
 	function getDmData ($db) {
 		$set = $db->getAll('description');
 		while ($row = $set->next()) {
@@ -33,6 +40,13 @@
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;
 		$list = getDmData($db);
+		echo json_encode($list);
+	  break;
+
+	case 'getSiteList':
+		require_once(REL(__FILE__, "../model/Sites.php"));
+		$db = new Sites;
+		$list = getDbData($db);
 		echo json_encode($list);
 	  break;
 

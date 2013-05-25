@@ -57,6 +57,15 @@ var pdl = {
 			$('#material_cd').html(html);
 		});
 	},
+	fetchSiteList: function () {
+	  $.getJSON(pdl.url,{mode:'getSiteList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#site_cd').html(html);
+		});
+	},
 	fetchStateList: function () {
 	  $.getJSON(pdl.url,{mode:'getStateList'}, function(data){
 			var html = '';
@@ -73,6 +82,7 @@ var pdl = {
 		pdl.fetchCalendarList();
 		pdl.fetchCollectionList();
 		pdl.fetchMediaList();
+		pdl.fetchSiteList();
 		pdl.fetchStateList();
 		$('#rsltsArea').show();
 	},

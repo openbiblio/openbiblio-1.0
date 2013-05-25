@@ -10,7 +10,6 @@
 	require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
-	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStatus.php"));
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
@@ -64,38 +63,10 @@ function mkBiblioArray($dbObj) {
 		//setSessionFmSettings(); // only activate for debugging!
 		echo json_encode($opts);
 	  break;
-
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
 	  break;
-/*
-	case 'getMaterialList':
-		require_once(REL(__FILE__, "../model/MediaTypes.php"));
-		$db = new MediaTypes;
-		$media = $db->getSelect();
-		$dflt = $_REQUEST['selectedMt'];
-		foreach ($media as $val => $desc) {
-			$s .= '<option value="'.H($val).'" ';
-			if ($val == $dflt) $s .= 'selected ';
-			$s .= ">".H($desc)."</option>\n";
-		}
-		echo $s;
-	  break;
-
-	case 'getCollectionList':
-		require_once(REL(__FILE__, "../model/Collections.php"));
-		$db = new Collections;
-		$colls = $db->getSelect();
-		$dflt = $_REQUEST['selectedCt'];
-		foreach ($colls as $val => $desc) {
-			$s .= '<option value="'.H($val).'" ';
-			if ($val == $dflt) $s .= 'selected ';
-			$s .= ">".H($desc)."</option>\n";
-		}
-		echo $s;
-	  break;
-*/
 	case 'getMediaDisplayInfo':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$theDb = new MaterialFields;
@@ -112,15 +83,6 @@ function mkBiblioArray($dbObj) {
 		echo json_encode($media);
 		break;
 
-	case 'getSiteList':
-		$sites_table = new Sites;		
-		$sites = $sites_table->getSelect();
-		foreach ($sites as $val => $desc) {
-			$s .= '<option value="'.H($val).'" '.">".H($desc)."</option>\n";
-		}
-		echo $s;
-	  break;
-	  
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
 	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
