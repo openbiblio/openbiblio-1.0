@@ -106,7 +106,7 @@ var mf = {
 	rtnToMbr: function () {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
-	  //mf.resetForms();
+	  mf.resetForms();
 	  mf.doFetchMember();
 	  $('#biblioDiv').hide();
 	},

@@ -42,7 +42,7 @@ var idis = {
 			idis.theBiblio = $(this).prev().val();
 		else
 	  	idis.theBiblio = biblio;
-		bs.theBiblio = idis.theBiblio;
+		if (typeof bs !== 'undefined') bs.theBiblio = idis.theBiblio;
 		$('#theBibId').html(idis.theBiblio.bibid);
 
   	idis.crntFoto = null;
