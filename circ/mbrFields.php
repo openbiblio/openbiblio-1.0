@@ -6,7 +6,7 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
-	## set up default values fornew member
+	## set up default values for new member
 	require_once(REL(__FILE__, "../model/Sites.php"));
 	$sites_table = new Sites;
 	$lib = $sites_table->getOne($_SESSION['current_site']);
@@ -15,15 +15,11 @@
 		echo '<strong>'.T("mbrFldsMustAddSite", array('link'=>'<a '.$text.' >', 'end'=>'</a>')).'</strong>';
 		return;
 	}
+
 	$mbr[siteid] = $lib[siteid];
 	$mbr[city] = $lib[city];
 	$mbr[state] = $lib[state];
 	$mbr[zip] = $lib[zip];
-	
-	//$sites = $sites_table->getSelect();
-
-	//require_once(REL(__FILE__, "../model/States.php"));
-	//$states = new States;
 
 	require_once(REL(__FILE__, "../model/MemberTypes.php"));
 	$mbrtypes = new MemberTypes;
@@ -120,7 +116,7 @@
 
 
 <?php
-	## add custom fields to array to be displayed
+	## add custom fields
 	$customFields = new MemberCustomFields;
 	foreach ($customFields->getSelect() as $name=>$title) {
 		echo "<tr>\n";
@@ -130,7 +126,4 @@
     echo "	</td>\n";
 		echo "</tr>\n";
 	}
-	//foreach ($fields as $title => $html) {
-	//	echo $html;
-	//}
 ?>

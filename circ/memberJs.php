@@ -506,13 +506,15 @@ var mf = {
 
 		$('#mbrid').val(mbr.mbrid);
 		$('#siteid').val(mbr.siteid);
-// folowing 'readonly' if existing member
-$('#barcode_nmbr').val(mbr.barcode_nmbr);
-if (mbr.barcode_nmbr) {
-	$('#barcode_nmbr').attr('readonly','readonly');
-} else {
-	$('#barcode_nmbr').removeAttr('readonly');
-}
+
+		// folowing 'readonly' if existing member
+		$('#barcode_nmbr').val(mbr.barcode_nmbr);
+		if (mbr.barcode_nmbr) {
+			$('#barcode_nmbr').attr('readonly','readonly');
+		} else {
+			$('#barcode_nmbr').removeAttr('readonly');
+		}
+
 		$('#last_name').val(mbr.last_name);
 		$('#first_name').val(mbr.first_name);
 		$('#address1').val(mbr.address1);
