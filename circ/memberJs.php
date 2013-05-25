@@ -20,6 +20,7 @@ var mf = {
 	
 	init: function () {
 		mf.url = 'memberServer.php';
+		mf.listSrvr = "../shared/listSrvr.php";
 
 		// get header stuff going first
 		mf.initWidgets();
@@ -60,6 +61,11 @@ var mf = {
 			mf.doFetchMember(); 
 			mf.rtnToMbr();
 		});
+
+		// prepare pull-down lists
+		mf.fetchMbrTypList();
+		mf.fetchSiteList();
+		mf.fetchStateList();
 	},
 	
 	//------------------------------
@@ -109,6 +115,33 @@ var mf = {
 	fetchOpts: function () {
 	  $.getJSON(mf.url,{mode:'getOpts'}, function(jsonData){
 	    mf.opts = jsonData
+		});
+	},
+	fetchMbrTypList: function () {
+	  $.getJSON(mf.listSrvr,{mode:'getMbrTypList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#classification').html(html);
+		});
+	},
+	fetchSiteList: function () {
+	  $.getJSON(mf.listSrvr,{mode:'getSiteList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#siteid').html(html);
+		});
+	},
+	fetchStateList: function () {
+	  $.getJSON(mf.listSrvr,{mode:'getStateList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#state').html(html);
 		});
 	},
 	fetchCustomFlds: function () {
@@ -473,7 +506,13 @@ var mf = {
 
 		$('#mbrid').val(mbr.mbrid);
 		$('#siteid').val(mbr.siteid);
-		$('#barcd_nmbr').val(mbr.barcode_nmbr);
+// folowing 'readonly' if existing member
+$('#barcode_nmbr').val(mbr.barcode_nmbr);
+if (mbr.barcode_nmbr) {
+	$('#barcode_nmbr').attr('readonly','readonly');
+} else {
+	$('#barcode_nmbr').removeAttr('readonly');
+}
 		$('#last_name').val(mbr.last_name);
 		$('#first_name').val(mbr.first_name);
 		$('#address1').val(mbr.address1);

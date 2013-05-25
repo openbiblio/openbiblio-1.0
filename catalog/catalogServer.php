@@ -67,7 +67,7 @@ function mkBiblioArray($dbObj) {
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
 	  break;
-	case 'getMediaDisplayInfo':
+ 	case 'getMediaDisplayInfo':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$theDb = new MaterialFields;
 		$media = $theDb->getDisplayInfo($_GET['howMany']);

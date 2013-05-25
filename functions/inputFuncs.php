@@ -29,16 +29,20 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	// FIXME radio
 	case 'select':
 		$s .= '<select name="'.H($name).'" ';
-		foreach ($attrs as $k => $v) {
-			$s .= H($k).'="'.H($v).'" ';
+		if ($attrs) {
+			foreach ($attrs as $k => $v) {
+				$s .= H($k).'="'.H($v).'" ';
+			}
 		}
 		$s .= ">\n";
-		foreach ($data as $val => $desc) {
-			$s .= '<option value="'.H($val).'" ';
-			if ($value == $val) {
-				$s .= ' selected="selected"';
+		if ($data) {
+			foreach ($data as $val => $desc) {
+				$s .= '<option value="'.H($val).'" ';
+				if ($value == $val) {
+					$s .= ' selected="selected"';
+				}
+				$s .= ">".H($desc)."</option>\n";
 			}
-			$s .= ">".H($desc)."</option>\n";
 		}
 		$s .= "</select>\n";
 		break;

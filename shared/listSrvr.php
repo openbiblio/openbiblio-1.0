@@ -43,6 +43,13 @@
 		echo json_encode($list);
 	  break;
 
+	case 'getMbrTypList':
+		require_once(REL(__FILE__, "../model/MemberTypes.php"));
+		$db = new MemberTypes;
+		$list = getDmData($db);
+		echo json_encode($list);
+	  break;
+
 	case 'getSiteList':
 		require_once(REL(__FILE__, "../model/Sites.php"));
 		$db = new Sites;

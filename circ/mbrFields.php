@@ -3,73 +3,134 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once(REL(__FILE__, "../model/States.php"));
-	require_once(REL(__FILE__, "../model/MemberTypes.php"));
-	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
-	require_once(REL(__FILE__, "../model/Sites.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
+	## set up default values fornew member
+	require_once(REL(__FILE__, "../model/Sites.php"));
 	$sites_table = new Sites;
-	$sites = $sites_table->getSelect();
-
 	$lib = $sites_table->getOne($_SESSION['current_site']);
+	if (empty($lib	)) {
+		$text = 'href="../admin/sites_list.php"';
+		echo '<strong>'.T("mbrFldsMustAddSite", array('link'=>'<a '.$text.' >', 'end'=>'</a>')).'</strong>';
+		return;
+	}
 	$mbr[siteid] = $lib[siteid];
 	$mbr[city] = $lib[city];
 	$mbr[state] = $lib[state];
 	$mbr[zip] = $lib[zip];
 	
+	//$sites = $sites_table->getSelect();
+
+	//require_once(REL(__FILE__, "../model/States.php"));
+	//$states = new States;
+
+	require_once(REL(__FILE__, "../model/MemberTypes.php"));
 	$mbrtypes = new MemberTypes;
 	$mbr[classification] = $mbrtypes->getDefault();
 
 	$_SESSION[postVars] = $postVars;
 	$_SESSION[pageErrors] = $pageErrors;
+?>
 
-	if (empty($sites)) {
-		$text = 'href="../admin/sites_list.php"';
-		echo '<strong>'.T("mbrFldsMustAddSite", array('link'=>'<a '.$text.' >', 'end'=>'</a>')).'</strong>';
-		return;
-	}
-	$states = new States;
-	$mbrtypes = new MemberTypes;
+	<tr>
+		<td><label for="siteid"><?php echo T("Site");?></label></td>
+		<td valign="top">
+			<?php echo inputfield('select', 'siteid', $mbr['siteid']);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="barcode_nmbr"><?php echo T("Card Number");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","barcode_nmbr",$mbr['barcode_nmbr'],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors); ?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="last_name"><?php echo T("LastName");?></label></td>
+		<td valign="top">
+      <?php echo inputfield("text","last_name",$mbr['last_name'],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors); ?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="first_name"><?php echo T("FirstName");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","first_name",$mbr['first_name'],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="address1"><?php echo T("AddressLine1");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","address1",$mbr['address1'],$attr=array("size"=>40,"max"=>128),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="address2"><?php echo T("AddressLine2");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","address2",$mbr['address1'],$attr=array("size"=>40,"max"=>128),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="city"><?php echo T("City");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","city",$mbr['city'],$attr=array("size"=>30,"max"=>50),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="state"><?php echo T("State");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("select","state",$mbr['state']);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="zip"><?php echo T("ZipCode");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","zip",$mbr['zip'],$attr=array("size"=>10,"max"=>10),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="zip_ext"><?php echo T("ZipCodeExt");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","zip_ext",$mbr['zip_ext'],$attr=array("size"=>10,"max"=>10),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="home_phone"><?php echo T("HomePhone");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","home_phone",$mbr['home_phone'],$attr=array("required"=>"required","size"=>15,"max"=>15),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="work_phone"><?php echo T("WorkPhone");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","work_phone",$mbr['work_phone'],$attr=array("size"=>15,"max"=>15),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="email"><?php echo T("EmailAddress");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("text","email",$mbr['email'],$attr=array("size"=>40,"max"=>128),$pageErrors);?>
+		</td>
+	</tr>
+	<tr>
+		<td><label for="classification"><?php echo T("MemberType");?></label></td>
+		<td valign="top">
+			<?php echo inputfield("select", "classification",$mbr['classification']);?>
+		</td>
+	</tr>
 
-	$fields = array(
-		'Site' => inputfield('select', 'siteid', $mbr[siteid], NULL, $sites),
-		'Card Number' => inputfield("text","barcode_nmbr",$mbr[barcode_nmbr],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors),
-		'Last Name' => inputfield("text","last_name",$mbr[last_name],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors),
-		'First Name' => inputfield("text","first_name",$mbr[first_name],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors),
-		'Address Line 1' => inputfield("text","address1",$mbr[address1],$attr=array("size"=>40,"max"=>128),$pageErrors),
-		'Address Line 2' => inputfield("text","address2",$mbr[address2],$attr=array("size"=>40,"max"=>128),$pageErrors),
-		'City' => inputfield("text","city",$mbr[city],$attr=array("size"=>30,"max"=>50),$pageErrors),
-		'State' => inputfield("select","state",$mbr[state], NULL, $states->getSelect()),
-		'Zip Code' => inputfield("text","zip",$mbr[zip],$attr=array("size"=>10,"max"=>10),$pageErrors),
-		"Zip Code ext" => inputfield("text","zip_ext",$mbr[zip_ext],$attr=array("size"=>10,"max"=>10),$pageErrors),
-		"Home Phone" => inputfield("text","home_phone",$mbr[home_phone],$attr=array("required"=>"required","size"=>15,"max"=>15),$pageErrors),
-		"Work Phone" => inputfield("text","work_phone",$mbr[work_phone],$attr=array("size"=>15,"max"=>15),$pageErrors),
-		"Email Address" => inputfield("text","email",$mbr[email],$attr=array("size"=>40,"max"=>128),$pageErrors),
-		//"password" => inputfield("password","password",$mbr[password],$attr=array("required"=>"required","size"=>10),$pageErrors),
-		//"passwordConfirm" => inputfield("password","confirm-pw",$mbr[passwordConfirm],$attr=array("required"=>"required","size"=>10),$pageErrors),
-		"Classification" => inputfield("select", "classification",$mbr[classification], NULL, $mbrtypes->getSelect()),
-	);
 
+<?php
 	## add custom fields to array to be displayed
 	$customFields = new MemberCustomFields;
 	foreach ($customFields->getSelect() as $name=>$title) {
-		$fields[$title] = inputfield('text', 'custom_'.$name, '', NULL,$pageErrors);
+		echo "<tr>\n";
+		echo "	<td><label>";echo T($title); echo "</label></td>\n";
+		echo "	<td valign=\"top\" >";
+		echo inputfield('text', 'custom_'.$name, '', NULL,$pageErrors);
+    echo "	</td>\n";
+		echo "</tr>\n";
 	}
-?>
-
-<?php
-	foreach ($fields as $title => $html) {
-	  if (($title == 'Card Number') && (($_SESSION[mbrBarcode_flg]=='N') || ($_SESSION[mbr_autoBarcode_flg]=='Y'))){
-			echo "<tr>\n";
-			echo "	<td colspan=\"2\">";inputfield('hidden',"barcode_nmbr",'000000');echo "	</td>\n";
-			echo "</tr>\n";
-		}
-		else {
-			echo "<tr>\n";
-			echo "	<td><label>";echo T($title); echo "</label></td>\n";
-			echo "	<td valign=\"top\" >";echo $html; echo "</td>\n";
-			echo "</tr>\n";
-		}
-	}
+	//foreach ($fields as $title => $html) {
+	//	echo $html;
+	//}
 ?>

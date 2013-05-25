@@ -34,6 +34,8 @@
 			<label for="collection_cd" >Collections:<select id="collection_cd" ></select></label>
 			<br />
 			<label for="material_cd" >Media:<select id="material_cd" ></select></label>
+			<label for="mbrTyp_cd" >Member Types:<select id="mbrTyp_cd" ></select></label>
+			<br />
 			<label for="state_cd" >States:<select id="state_cd" ></select></label>
 			<label for="site_cd" >Sites:<select id="site_cd" ></select></label>
 		</fieldset>
