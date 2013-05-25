@@ -70,6 +70,10 @@ we need an admin function to import / export a media layout.
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
 
+23 May 2013 - Fred
+consolidate all pull-down lists services into single server used by all modules.
+construct test/verification plugin for develop and test.
+
 ###################### Completed, most recent at top #########################
 
 18 MAy 2013 - Neil

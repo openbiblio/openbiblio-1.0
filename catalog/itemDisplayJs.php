@@ -107,7 +107,7 @@ var idis = {
 		return dateOut.toDateString();
 	},
 	
-	fetchCopyInfo: function (bibid) {
+	fetchCopyInfo: function () {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.theBiblio.bibid}, function(jsonInpt){
 				idis.copyJSON = jsonInpt;

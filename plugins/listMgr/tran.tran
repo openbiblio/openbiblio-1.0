@@ -1,0 +1,11 @@
+<?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+#****************************************************************************
+#*  Translation text for page lookup_form.php
+#****************************************************************************
+$trans["ListManager"] = "List Manager";
+$trans["pullDownListMgr"] = "Pull-Down List Manager";
+$trans["PullDowns"] = "Pull downs";
+$trans["ShowMe"] = "Show Me";

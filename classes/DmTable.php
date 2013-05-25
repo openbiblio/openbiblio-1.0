@@ -9,15 +9,25 @@ class DmTable extends DBTable {
 	function DmTable() {
 		$this->DBTable();
 	}
+	function getList() {
+		$list = array();
+		$recs = $this->getAll('description');
+		while ($rec = $recs->next()) {
+			$list[$rec['code']] = $rec['description'];
+		}
+		return $list;
+	}
 	function getSelect($all=false) {
-		$select = array();
+		$select = $this->getList();
 		if ($all) {
 			$select['all'] = 'All';
 		}
+/*
 		$recs = $this->getAll('description');
 		while ($rec = $recs->next()) {
 			$select[$rec['code']] = $rec['description'];
 		}
+*/
 		return $select;
 	}
 	function getDefault() {
