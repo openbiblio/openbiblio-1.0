@@ -30,9 +30,10 @@
 	<section id="rsltsArea">
 		<fieldset id="pullDowns">
 			<legend><?php echo T("PullDowns"); ?></legend>
+			<label for="calendar_cd" >Calendars:<select id="calendar_cd" ></select></label>
 			<label for="collection_cd" >Collections:<select id="collection_cd" ></select></label>
-			<label for="material_cd" >Media:<select id="material_cd" ></select></label>
 			<br />
+			<label for="material_cd" >Media:<select id="material_cd" ></select></label>
 			<label for="state_cd" >States:<select id="state_cd" ></select></label>
 		</fieldset>
 	</section>

@@ -69,7 +69,7 @@ function mkBiblioArray($dbObj) {
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
 	  break;
-
+/*
 	case 'getMaterialList':
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;
@@ -95,7 +95,7 @@ function mkBiblioArray($dbObj) {
 		}
 		echo $s;
 	  break;
-
+*/
 	case 'getMediaDisplayInfo':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$theDb = new MaterialFields;

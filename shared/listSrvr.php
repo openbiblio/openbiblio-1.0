@@ -15,6 +15,13 @@
 	}
 	
 	switch ($_REQUEST['mode']) {
+	case 'getCalendarList':
+		require_once(REL(__FILE__, "../model/Calendars.php"));
+		$db = new Calendars;
+		$list = getDmData($db);
+		echo json_encode($list);
+	  break;
+
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
 		$db = new Collections;

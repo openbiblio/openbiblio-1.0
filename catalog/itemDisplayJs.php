@@ -42,6 +42,7 @@ var idis = {
 			idis.theBiblio = $(this).prev().val();
 		else
 	  	idis.theBiblio = biblio;
+		bs.theBiblio = idis.theBiblio;
 		$('#theBibId').html(idis.theBiblio.bibid);
 
   	idis.crntFoto = null;
@@ -150,9 +151,9 @@ var idis = {
 					// Due back is onyl needed when checkked out - LJ
 					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
 						// Sometimes the info has to come out of an array (if coming from list) - LJ
-						var daysDueBack = parseInt(idis.biblio.daysDueBack);
+						var daysDueBack = parseInt(idis.theBiblio.daysDueBack);
 						if(isNaN(daysDueBack)) {			
-							daysDueBack = parseInt(idis.biblio[idis.biblio.bibid].daysDueBack);
+							daysDueBack = parseInt(idis.theBiblio[idis.theBiblio.bibid].daysDueBack);
 						}					
 						html += "	<td>"+idis.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
 					} else {

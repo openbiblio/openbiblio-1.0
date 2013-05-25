@@ -28,6 +28,7 @@ var bs = {
 		// get header stuff going first
 		bs.initWidgets();
 		bs.url = 'catalogServer.php';
+		bs.listSrvr = '../shared/listSrvr.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
 
 		// for search criteria form
@@ -264,19 +265,41 @@ var bs = {
 		});
 	},	
 	fetchMaterialList: function () {
+/*
 	  $.get(bs.url,{mode:'getMaterialList'}, function(data){
 			$('#itemMediaTypes').html(data);
 			// Add all for search media
 			data = '<option value="all"  selected="selected">All</option>' + data;
 			$('#srchMediaTypes').html(data);
 		});
+*/
+	  $.getJSON(bs.listSrvr,{mode:'getMediaList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#itemMediaTypes').html(html);
+			html = '<option value="all"  selected="selected">All</option>' + html;
+			$('#srchMediaTypes').html(html);
+		});
 	},
 	fetchCollectionList: function () {
-	  $.get(bs.url,{mode:'getCollectionList'}, function(data){
+	  /*
+		$.get(bs.url,{mode:'getCollectionList'}, function(data){
 			$('#itemEditColls').html(data);
 			// Add all for search collections
 			data = '<option value="all"  selected="selected">All</option>' + data;
 			$('#srchCollections').html(data);
+		});
+		*/
+	  $.getJSON(bs.listSrvr,{mode:'getCollectionList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#itemEditColls').html(html);
+			html = '<option value="all"  selected="selected">All</option>' + html;
+			$('#srchCollections').html(html);
 		});
 	},
 	fetchMediaDisplayInfo: function () {
@@ -334,8 +357,8 @@ var bs = {
 				}
 				else {
 					bs.multiMode = false;
-					bs.showOneBiblio(bs.biblio)
-					bs.fetchCopyInfo();
+					idis.showOneBiblio(bs.biblio)
+					isis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();

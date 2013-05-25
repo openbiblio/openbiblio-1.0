@@ -11,7 +11,7 @@
 var pdl = {
 	init: function () {
 		//console.log('initializing orf');	
-		pdl.url = 'listSrvr.php';
+		pdl.url = '../shared/listSrvr.php';
 		
 		pdl.resetForms();
 		pdl.initWidgets();
@@ -30,15 +30,13 @@ var pdl = {
 	},
 	
 	//------------------------------
-	fetchSiteList: function () {
-	  $.get(bs.url,{mode:'getSiteList'}, function(data){
-			$('#copy_site').html(data);
-			// Add all for search sites
-			data = '<option value="all"  selected="selected">All</option>' + data;
-			$('#srchSites').html(data);
-
-			// now ready to begin a search
-			bs.doAltStart();
+	fetchCalendarList: function () {
+	  $.getJSON(pdl.url,{mode:'getCalendarList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#calendar_cd').html(html);
 		});
 	},
 	fetchCollectionList: function () {
@@ -72,9 +70,9 @@ var pdl = {
 	//------------------------------
 	showLists: function () {
 		$('#pulldowns').html(' ');
+		pdl.fetchCalendarList();
 		pdl.fetchCollectionList();
 		pdl.fetchMediaList();
-		$('#pullDowns').append('<br />');
 		pdl.fetchStateList();
 		$('#rsltsArea').show();
 	},
