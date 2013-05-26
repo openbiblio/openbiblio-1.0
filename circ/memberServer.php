@@ -108,6 +108,10 @@
 		$mbr = array_merge($mbrDflt, $mbrCstm);
 		echo json_encode($mbr);
 	  break;
+	case 'getNewBarCd':
+		$barCd = $members->getNewBarCode($_GET['width']);
+		echo $barCd;
+		break;
 	case 'doBarcdSearch':
 		$mbrDflt = $members->getMbrByBarcode($_GET['barcdNmbr']);
 		$cstmFlds = $members->getCustomfields($mbrDflt['mbrid']);

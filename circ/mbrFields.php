@@ -4,7 +4,6 @@
  */
 
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 
 	## set up default values for new member
 	require_once(REL(__FILE__, "../model/Sites.php"));
@@ -32,6 +31,7 @@
 	<tr>
 		<td><label for="siteid"><?php echo T("Site");?></label></td>
 		<td valign="top">
+			<?php echo inputfield('hidden', 'crntSite', $mbr['siteid']);?>
 			<?php echo inputfield('select', 'siteid', $mbr['siteid']);?>
 		</td>
 	</tr>
@@ -117,6 +117,7 @@
 
 <?php
 	## add custom fields
+	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 	$customFields = new MemberCustomFields;
 	foreach ($customFields->getSelect() as $name=>$title) {
 		echo "<tr>\n";

@@ -117,6 +117,11 @@ var mf = {
 	    mf.opts = jsonData
 		});
 	},
+	getNewBarCd: function () {
+	  $.get(mf.url,{mode:'getNewBarCd', width:4}, function(data){
+			$('#barcode_nmbr').val(data);
+		});
+	},
 	fetchMbrTypList: function () {
 	  $.getJSON(mf.listSrvr,{mode:'getMbrTypList'}, function(data){
 			var html = '';
@@ -542,7 +547,11 @@ var mf = {
 		$('#updtMbrBtn').hide();
 		$('#deltMbrBtn').hide();
 		$('.gobkNewBtn').show();
-		
+
+		$('#siteid').val([$('#crntSite').val()]);
+		$('#city').val([$('#crntCity').val()]);
+		mf.getNewBarCd();  // posts directly to screen
+
 		$('#searchDiv').hide();
 		$('#editHdr').html('<?php T("Add New Member"); ?>');
 		$('#editMode').val('addNewMember');

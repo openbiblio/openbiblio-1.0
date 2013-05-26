@@ -55,6 +55,14 @@ class Members extends CoreTable {
 		$this->custom->setForeignKey('mbrid', 'member', 'mbrid');
 	}
 	
+	function getNewBarCode($width) {
+		//$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastNmbr from member");
+		$mbr = $this->db->select1($sql);
+	  if(empty($width)) $w = 13; else $w = $width;
+		return sprintf("%0".$w."s",($mbr[lastNmbr]+1));
+	}
+
 	function getNextMbr() {
 		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastMbr from member");
 		$lastMbr = $this->db->select1($sql);
