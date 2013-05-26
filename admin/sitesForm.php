@@ -72,11 +72,11 @@
       <select id="calendar" name="calendar" > </select>
 		</li>
     <li>
-      <label for="address1"><?php echo T("Address Line 1"); ?>:</label>
+      <label for="address1"><?php echo T("AddressLine1"); ?>:</label>
       <input id="address1" name="address1" type="text" size="32" />
     </li>
     <li>
-      <label for="address2"><?php echo T("Address Line 2"); ?>:</label>
+      <label for="address2"><?php echo T("AddressLine2"); ?>:</label>
       <input id="address2" name="address2" type="text" size="32" />
     </li>
     <li>
@@ -88,7 +88,7 @@
       <select id="state" name="state" > </select>
     </li>
     <li>
-      <label for="zip"><?php echo T("Zip Code"); ?>:</label>
+      <label for="zip"><?php echo T("ZipCode"); ?>:</label>
       <input id="zip" name="zip" type="text" size="32" />
     </li>
     <li>
@@ -115,10 +115,10 @@
 		</li>
 	</ul>
 	<ul id="btnRow">
-    <li><input type="submit" id="addBtn"  name="addBtn" value="<?php echo T("Add"); ?>" /></li>
-    <li><input type="submit" id="updtBtn" name="updtBtn" value="<?php echo T("Update"); ?>" /></li>
+    <li><input type="submit" id="addBtn"  name="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" /></li>
+    <li><input type="submit" id="updtBtn" name="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" /></li>
     <li><input type="button" id="cnclBtn" name="cnclBtn" value="<?php echo T("Cancel"); ?>" /></li>
-    <li><input type="submit" id="deltBtn" name="deltBtn" value="<?php echo T("Delete"); ?>" /></li>
+    <li><input type="submit" id="deltBtn" name="deltBtn" class="actnBtns" value="<?php echo T("Delete"); ?>" /></li>
 	</ul>
 </fieldset>
 </form>

@@ -34,17 +34,9 @@ However, in any other Circulation page, I can log out immediately
 08 May 2013 - Fred
 Admin Calendars does not appear to be working
 
-09 May 2013 - UWE
-Unable to add new site using Chrome Browser. Works fine with FF.
-Problem appears to be inability to acess 'clicked' button via form.submit
-
 11 May 2013 - Fred
 Add New Copy screen should show suggested CallNmbr
 with suggested cpy no. (c.x) if not first copy.
-
-11 May 2013 - Fred
-When online search fails, GOBack should leave search screen contents intact
-so search can be refined.
 
 12 May 2013 - Fred
 investigate making school grade, teacher, optional.  If not used then 'Audience Level'
@@ -73,6 +65,14 @@ we need an admin function to import / export a media layout.
 investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+09 May 2013 - UWE, fixed 26 May 2013
+Unable to add new site using Chrome Browser. Works fine with FF.
+Problem appears to be inability to acess 'clicked' button via form.submit
+
+11 May 2013 - Fred, fixed 26 May 2013
+When online search fails, GOBack should leave search screen contents intact
+so search can be refined.
 
 25 May 2013 - Fred, done 26 May 2013
 verify new member is working correctly

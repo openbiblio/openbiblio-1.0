@@ -51,7 +51,8 @@ List.prototype.init = function () {
 	$('#updateMsg').hide();
 
 	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
-	$('#editForm').on('submit',null,$.proxy(this.doSubmitFields,this));
+	//('#editForm').on('submit',null,$.proxy(this.doSubmitFields,this));
+	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
 	$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
 
 	this.fetchList();
@@ -197,7 +198,7 @@ List.prototype.doNewFields = function (e) {
 List.prototype.doSubmitFields = function (e) {
 	e.preventDefault();
 	e.stopPropagation();
-	var theId = $("#editForm").find('input[type="submit"]:focus').attr('id');
+	var theId = e.target.id;
 	switch (theId) {
 		case 'addBtn':	this.doAddFields();	break;
 		case 'updtBtn':	this.doUpdateFields();	break;
