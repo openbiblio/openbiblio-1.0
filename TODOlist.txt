@@ -46,6 +46,12 @@ with suggested cpy no. (c.x) if not first copy.
 When online search fails, GOBack should leave search screen contents intact
 so search can be refined.
 
+12 May 2013 - Fred
+investigate making school grade, teacher, optional.  If not used then 'Audience Level'
+should not appear on advanced search screen.
+note 26 May 2013:
+teacher & grade are custom copy fields. Audience level should be removed.
+
 12 May 2013 - Neil Redgate
 >  Advanced search options:-
 > Whilst investigating the above and the importance/relevance of the level column
@@ -53,10 +59,6 @@ so search can be refined.
 > The 'audience level' drop down menu has a predetermined list
 > (in -/catalog/SrchForms.php line 113). I assume 'audience level' refers to member type?
 > If so, this drop down menu does not reflect the current member type list
-
-12 May 2013 - Fred
-investigate making school grade, teacher, optional.  If not used then 'Audience Level'
-should not appear on advanced search screen.
 
 19 May 2013 - Fred
 why can't I store that entire document right in OB, along with all the usual

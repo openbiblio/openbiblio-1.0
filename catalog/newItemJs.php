@@ -117,6 +117,7 @@ var ni = {
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
 		//ni.fetchHosts();
+    $('span#ttlHits').html('');
 
 		$('#lookupVal').focus();
 		ni.disableSrchBtn();
@@ -137,7 +138,8 @@ var ni = {
 	},
 	
 	doBackToChoice: function () {
-		if (ni.singleHit) {
+		var nmbr = $('span#ttlHits').html();
+		if ((nmbr == '')||(nmbr == 0 )) {
 			ni.doBackToSrch();
 		} else {
 			$('#selectionDiv').hide();
