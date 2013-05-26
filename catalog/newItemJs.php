@@ -534,19 +534,19 @@ var ni = {
 	
 	doMakeItemForm: function (mediaType) {
 	  // fill out empty form with MARC fields
-	  if (mediaType == '') mediaType = $('#itemMediaTypes option:selected').val();
+	  if ((mediaType == '') || (mediaType === undefined)) mediaType = ni.dfltMedia;
 	  $.get(ni.url,{'mode':'getBiblioFields', 'material_cd':mediaType}, function (response) {
 			$('#marcBody').html(response);
 			$('#selectionDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
 			$('#opacFlg').val(['CHECKED','Y']);
 
-			ni.doShowOne(ni.crntData);
+			ni.doShowOne(ni.crntData,mediaType);
 		});
 		$('.itemGobkBtn').on('click',null,ni.doBackToChoice);
 	},
 	
-	doShowOne: function (data){
+	doShowOne: function (data, media){
 	  // display biblio item data in form
 	  $('#searchDiv').hide();
 		for (var tag in data) {
@@ -558,10 +558,10 @@ var ni = {
 		if (data != null){
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
-			$('#itemMediaTypes').val(mediaType)
+			$('#itemMediaTypes').val(media)
 		} else {
-			$('#itemEditColls').val(ni.opts.defaultCollect);
-			$('#itemMediaTypes').val(ni.opts.defaultMedia);
+			$('#itemEditColls').val(ni.dfltColl);
+			$('#itemMediaTypes').val(ni.dfltMedia);
 		}
 
 	  $('#selectionDiv input.online').disable();	/**/

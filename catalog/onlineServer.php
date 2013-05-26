@@ -32,16 +32,15 @@
 	$postVars = $opts->next();
 	
 	## get default collection
-	require_once(REL(__FILE__, "../model/Collections.php"));
-	$db = new Collections;
-	$coll = $db->getDefault();
- 	$postVars['defaultCollect'] = $coll;
-
+//	require_once(REL(__FILE__, "../model/Collections.php"));
+//	$db = new Collections;
+//	$coll = $db->getDefault();
+// 	$postVars['defaultCollect'] = $coll;
 	## get default media name
-	require_once(REL(__FILE__, "../model/MediaTypes.php"));
-	$db = new MediaTypes;
-	$med = $db->getDefault();
- 	$postVars['defaultMedia'] = $med;
+//	require_once(REL(__FILE__, "../model/MediaTypes.php"));
+//	$db = new MediaTypes;
+//	$med = $db->getDefault();
+// 	$postVars['defaultMedia'] = $med;
 
 	## prepare list of hosts
 	if (!empty($_POST['srchHost'])) {	
