@@ -87,6 +87,11 @@ var mf = {
 	  $('#acntDiv').hide();
 	  $('#histDiv').hide();
 		$('#msgDiv').hide();
+		if(mf.showBarCd) {
+			$('#searchByBarcd').focus();
+		} else {
+			$('#nameFrag').focus();
+		}
 	},
 	rtnToSrch: function () {
 	  $('#rsltMsg').html('');

@@ -13,7 +13,7 @@
 		$focus_form_field = "searchByBarcd";
 	} else {
 		$focus_form_name = "nameSrchForm";
-		$focus_form_field = "searchByName";
+		$focus_form_field = "nameFrag";
 	}
 
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
