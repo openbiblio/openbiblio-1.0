@@ -5,12 +5,12 @@
 // element enable/disable - 'jQuery in Action', p12, 22Aug2008 - fl
 $.fn.disable = function () {
 	return this.each(function () {
-					if (typeof this.disabled != "undefined)") this.disabled = true;
+					if (typeof this.disabled != "undefined") this.disabled = true;
 				 });
 };
 $.fn.enable = function () {
 	return this.each(function () {
-					if (typeof this.disabled != "undefined)") this.disabled = false;
+					if (typeof this.disabled != "undefined") this.disabled = false;
 				 });
 };
 

@@ -116,20 +116,21 @@ var ni = {
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
-		//ni.fetchHosts();
-    $('span#ttlHits').html('');
 
-		$('#lookupVal').focus();
+		//ni.fetchHosts();
+
 		ni.disableSrchBtn();
+    $('span#ttlHits').html('');
+		$('#lookupVal').focus();
 	},
 	
 	disableSrchBtn: function () {
-	  ni.srchBtnBgClr = ni.srchBtn.css('color');
-	  ni.srchBtn.css('color', '#888888');
+	  //ni.srchBtnBgClr = ni.srchBtn.css('color');
+	  //ni.srchBtn.css('color', '#888888');
 		ni.srchBtn.disable();
 	},
 	enableSrchBtn: function () {
-	  ni.srchBtn.css('color', ni.srchBtnBgClr);
+	  //ni.srchBtn.css('color', ni.srchBtnBgClr);
 		ni.srchBtn.enable();
 	},
 
