@@ -53,10 +53,3 @@ class Hosts extends DBTable {
 		$this->setSequenceField('seq');
 	}
 }
-
-class myColl extends Collections {
-	function getDefault() {
-		$sql = "SELECT * FROM ".$this->name." WHERE `default_flg`='Y' ";
-		return $this->db->select1($sql);
-	}
-}

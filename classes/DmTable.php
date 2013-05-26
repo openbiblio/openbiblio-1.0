@@ -22,12 +22,6 @@ class DmTable extends DBTable {
 		if ($all) {
 			$select['all'] = 'All';
 		}
-/*
-		$recs = $this->getAll('description');
-		while ($rec = $recs->next()) {
-			$select[$rec['code']] = $rec['description'];
-		}
-*/
 		return $select;
 	}
 	function getDefault() {

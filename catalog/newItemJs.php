@@ -11,9 +11,13 @@
 
 var ni = {
 	<?php
-	echo "empty: '".T("Nothing Found")."',\n";
+		echo "empty: '".T("Nothing Found")."',\n";
+		$colTypes = new Collections;
+		echo "dfltColl: '".$colTypes->getDefault()."',\n";
+		$medTypes = new MediaTypes;
+		echo "dfltMedia: '".$medTypes->getDefault()."',\n";
 	?>
-	
+
 	init: function () {
 		// get header stuff going first
 		ni.initWidgets();
@@ -21,7 +25,8 @@ var ni = {
 		ni.url = '../catalog/onlineServer.php';
 		ni.form = $('#lookupForm');
 		ni.bs_url = '../catalog/catalogServer.php';
-		
+		ni.listSrvr = "../shared/listSrvr.php";
+
 		ni.srchBtn = $('#srchBtn');
 		ni.resetForm();
 
@@ -88,11 +93,11 @@ var ni = {
 		$('#100a').on('change',null,ni.fixAuthor);
 		$('#245a').on('change',null,ni.fixTitle);
 
-		ni.fetchHosts();  //on completion, search form will appear
-		ni.fetchMaterialList(); // for new items
-		ni.fetchCollectionList(); // for new items
-		ni.fetchSiteList(); // for new copy use
-		ni.fetchOpts();  //for debug use
+		ni.fetchHosts(); // for searches
+		ni.fetchOpts(); // starts chain to call the following
+		//ni.fetchSiteList(); // for new copy use
+		//ni.fetchMaterialList(); // for new items
+		//ni.fetchCollectionList(); // for new items
 	},
 	
 	//------------------------------
@@ -111,7 +116,7 @@ var ni = {
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
-		ni.fetchHosts();
+		//ni.fetchHosts();
 
 		$('#lookupVal').focus();
 		ni.disableSrchBtn();
@@ -143,11 +148,49 @@ var ni = {
 	fetchOpts: function () {
 	  $.getJSON(ni.url,{mode:'getOpts'}, function(data){
 			ni.opts = data;
+			ni.fetchMaterialList(); // chaining
+		});
+	},
+	fetchMaterialList: function () {
+	  <?php // get default material type
+			$matTypes = new MediaTypes;
+			echo "var dfltMedia = ".$matTypes->getDefault().";";
+	  ?>
+	  $.getJSON(ni.listSrvr,{mode:'getMediaList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#srchMatTypes').html(html);
+			$('#itemMediaTypes').html(html);
+			$('#materialCd').on('change',null,function () {
+				ni.doMakeItemForm($('#materialCd').val());
+			});
+			ni.fetchCollectionList(); // chaining
+		});
+	},
+	fetchCollectionList: function () {
+	  $.getJSON(ni.listSrvr,{mode:'getCollectionList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#itemEditColls').html(html);
+			ni.fetchSiteList(); // chaining
+		});
+	},
+	fetchSiteList: function () {
+	  $.getJSON(ni.listSrvr,{mode:'getSiteList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#copy_site').html(html);
 		});
 	},
 
 	fetchHosts: function () {
-		//console.log('svr:'+ni.url);	
+		//console.log('svr:'+ni.url);
 	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
 	  	// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;
@@ -159,42 +202,12 @@ var ni = {
 				}
 				$('#srchHosts span').html(theTxt);
 				$('#srchHosts').show();
-				
+
 			} else {
 				$('#srchHosts').hide();
 			}
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
-		});
-	},
-
-	fetchMaterialList: function () {
-	  <?php // Set default material type
-			$matTypes = new MediaTypes;
-			$material_cd_value = $matTypes->getDefault();
-	  ?>
-	  $.get(ni.bs_url,{mode:'getMaterialList', selectedMt:'<?php echo $material_cd_value ?>'}, function(data){
-			$('#srchMatTypes').html(data);
-			$('#itemMediaTypes').html(data);
-			$('#materialCd').on('change',null,function () {
-				ni.doMakeItemForm($('#materialCd').val());
-			});
-		});
-	},
-	
-	fetchCollectionList: function () {
-	  <?php // Set default collection type
-			$colTypes = new Collections;
-			$col_cd_value = $colTypes->getDefault();
-	  ?>
-	  $.get(ni.bs_url,{mode:'getCollectionList', selectedCt:'<?php echo $col_cd_value ?>'}, function(data){
-			$('#itemEditColls').html(data);
-		});
-	},
-	
-	fetchSiteList: function () {
-	  $.get(ni.bs_url,{mode:'getSiteList'}, function(data){
-			$('#copy_site').html(data);
 		});
 	},
 
@@ -529,7 +542,6 @@ var ni = {
 			$('#opacFlg').val(['CHECKED','Y']);
 
 			ni.doShowOne(ni.crntData);
-			$('#itemMediaTypes').val(mediaType)
 		});
 		$('.itemGobkBtn').on('click',null,ni.doBackToChoice);
 	},
@@ -546,6 +558,10 @@ var ni = {
 		if (data != null){
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
+			$('#itemMediaTypes').val(mediaType)
+		} else {
+			$('#itemEditColls').val(ni.opts.defaultCollect);
+			$('#itemMediaTypes').val(ni.opts.defaultMedia);
 		}
 
 	  $('#selectionDiv input.online').disable();	/**/
