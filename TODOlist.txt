@@ -32,7 +32,7 @@ When Log out button is clicked - nothing happens.
 However, in any other Circulation page, I can log out immediately
 
 08 May 2013 - Fred
-Admin Calendars does not appear to be working
+Admin Calendars does not appear to be working; unable to edit.
 
 11 May 2013 - Fred
 Add New Copy screen should show suggested CallNmbr

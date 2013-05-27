@@ -10,10 +10,12 @@
 "use strict";
 
 // If a circulation user and NOT a cataloging user the system should treat the user as opac
+<?php
 if($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"])
   echo "var opacMode = true;";
 else
   echo "var opacMode = false;";
+?>
 
 var chk = {
 	init: function () {
