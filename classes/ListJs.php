@@ -51,7 +51,6 @@ List.prototype.init = function () {
 	$('#updateMsg').hide();
 
 	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
-	//('#editForm').on('submit',null,$.proxy(this.doSubmitFields,this));
 	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
 	$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
 
@@ -196,6 +195,7 @@ List.prototype.doNewFields = function (e) {
 };
 	
 List.prototype.doSubmitFields = function (e) {
+	//console.log(e);
 	e.preventDefault();
 	e.stopPropagation();
 	var theId = e.target.id;

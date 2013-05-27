@@ -140,11 +140,11 @@
   <tfoot>
   <tr>
     <td colspan="1">
-			<input type="button" id="editUpdtBtn" value="<?php echo T("Update"); ?>" />
-			<input type="button" id="editCnclBtn" value="<?php echo T("Go Back"); ?>" />
+			<input type="button" id="editUpdtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
+			<input type="button" id="editCnclBtn" class="actnBtns" value="<?php echo T("Go Back"); ?>" />
     </td>
     <td colspan="2" colspan="1" class="primary" align="right">
-			<input type="button" id="editDeltBtn" value="<?php echo T("Delete"); ?>" />
+			<input type="button" id="editDeltBtn" class="actnBtns" value="<?php echo T("Delete"); ?>" />
     </td>
   </tr>
   </tfoot>

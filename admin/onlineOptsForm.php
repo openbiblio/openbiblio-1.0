@@ -139,7 +139,7 @@
   </tr>
   <tr>
     <td colspan="2" class="primary btnFld">
-      <input type="submit" id="updtBtn" name="updtBtn" class="button" value="<?php echo T("Update"); ?>" />
+      <input type="submit" id="updtBtn" name="updtBtn" class="actnBtns button" value="<?php echo T("Update"); ?>" />
     </td>
   </tr>
 	</tfoot>
