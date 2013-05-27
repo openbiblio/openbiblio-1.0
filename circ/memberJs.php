@@ -30,16 +30,20 @@ var mf = {
 		mf.fetchAcnttranTypes();
 				
 		$('form').on('submit',null,function (e) {
-			e.preventDefault();
-			e.stopPropagation();
 			var theId = $('input[type="submit"]:focus').attr('id');
 			//console.log('the btn id is: '+theId);
-			switch (theId) {
-				case 'barCdSrchBtn':	mf.doBarCdSearch();	break;
-				case 'nameSrchBtn':		mf.doNameSearch();	break;
-				case 'addMbrBtn':			mf.doMbrAdd();			break;
-				case 'updtMbrBtn':		mf.doMbrUpdate();		break;
-				case 'addTransBtn':		mf.doTransAdd();		break;
+			if (theId != 'logoutBtn') {
+				e.preventDefault();
+				e.stopPropagation();
+				switch (theId) {
+					case 'barCdSrchBtn':	mf.doBarCdSearch();	break;
+					case 'nameSrchBtn':		mf.doNameSearch();	break;
+					case 'addMbrBtn':			mf.doMbrAdd();			break;
+					case 'updtMbrBtn':		mf.doMbrUpdate();		break;
+					case 'addTransBtn':		mf.doTransAdd();		break;
+					default:
+						console.log(theId+' is an invalid button id');
+				}
 			}
 		});
 		

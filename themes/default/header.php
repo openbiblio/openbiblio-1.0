@@ -48,8 +48,8 @@
 		</h3>
 		
 		<?php if ($tab != 'opac') { ?>
-		<form class="notForInstall" method="get" action="../shared/logout.php">
-			<input type="submit" value="<?php echo T("Logout") ?>" />
+		<form id="logoutForm" class="notForInstall" method="get" action="../shared/logout.php">
+			<input type="submit" id="logoutBtn" value="<?php echo T("Logout") ?>" />
 		</form>
 		<?php } ?>
 	</header>

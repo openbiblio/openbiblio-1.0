@@ -26,11 +26,6 @@ update to look/work like CSV import
 - Fred 
 Install needs to work for new installations
 
-07 May 2013 - Neil Redgate
-Whilst in Circulation | Member | Current member, I cannot logout.
-When Log out button is clicked - nothing happens.
-However, in any other Circulation page, I can log out immediately
-
 08 May 2013 - Fred
 Admin Calendars does not appear to be working; unable to edit.
 
@@ -65,6 +60,11 @@ we need an admin function to import / export a media layout.
 investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+07 May 2013 - Neil Redgate, member & checkin fixed 26 May 2013
+Whilst in Circulation | Member | Current member, I cannot logout.
+When Log out button is clicked - nothing happens.
+However, in any other Circulation page, I can log out immediately
 
 09 May 2013 - UWE, fixed 26 May 2013
 Unable to add new site using Chrome Browser. Works fine with FF.

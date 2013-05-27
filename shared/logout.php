@@ -5,9 +5,10 @@
 
 require_once("../shared/common.php");
 
+echo "got to logout.php<br />";
+
 $_SESSION = array();
 session_destroy();
-echo "got to logout.php<br />";
 
 header("Location: ../index.php");
 exit();

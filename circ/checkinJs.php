@@ -28,12 +28,14 @@ var chk = {
 		chk.fetchShelvingCart();
 		
 		$('form').on('submit',null,function (e) {
-			e.preventDefault();
-			e.stopPropagation();
 			var theId = $('input[type="submit"]:focus').attr('id');
 			//console.log('the btn id is: '+theId);
-			switch (theId) {
-				case 'addToCrtBtn':		chk.doCheckin();		break;
+			if (theId != 'logoutBtn') {
+				e.preventDefault();
+				e.stopPropagation();
+				switch (theId) {
+					case 'addToCrtBtn':		chk.doCheckin();		break;
+				}
 			}
 		});
 		$('.shelvItemBtn').on('click',null,chk.doShelfSelected);
