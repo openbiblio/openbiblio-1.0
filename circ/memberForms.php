@@ -236,6 +236,11 @@
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
+<div id="copyEditorDiv">
+	<?php require_once(REL(__FILE__,"../catalog/copyEditorForm.php"));?>
+</div>
+
+<!-- ------------------------------------------------------------------------ -->
 <div id="acntDiv">
 	<input type="button" class="gobkAcntBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset>

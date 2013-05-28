@@ -6,6 +6,7 @@
 
 <script language="JavaScript" defer>
 // JavaScript Document
+"use strict";
 <?php
 	// If a circulation user and NOT a cataloging user the system should treat the user as opac
 	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
@@ -14,8 +15,6 @@
 	  echo "var opacMode = false;";
 ?>
 //------------------------------------------------------------------------------
-// biblio_search Javascript
-"use strict";
 
 var bs = {
 	<?php
@@ -785,7 +784,6 @@ var bs = {
 	  	$.post(bs.url,{'mode':'deletePhoto',
 										 'bibid':$('#fotoBibid').val(),
 										 'url':$('#fotoFile').val(),
-										 'url':$('#fotoFile').val(),
 										 }
 										 ,function(response){
 				if(response) {
@@ -990,7 +988,7 @@ var bs = {
 	},
 
 	/* ====================================== */
-	doCopyEdit: function (e) {
+	xdoCopyEdit: function (e) {
 		$('#editRsltMsg').html('');
 		var copyid = $(this).next().next().val();
 		for (nCopy in bs.copyJSON) {
@@ -1041,7 +1039,7 @@ var bs = {
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').on('click',null,function () {
-			bs.doCopyNew();
+			idis.doCopyNew();
 			//bs.rtnToBiblio();
 			return false;
 		});
@@ -1073,7 +1071,8 @@ var bs = {
 		}
 		})
 	},
-	doCopyNew: function () {
+/*
+	xdoCopyNew: function () {
 		$('#copyForm #bibid').val(bs.biblio.bibid);
 		$('#copyForm #mode').val('newCopy');
 		var params= $('#copyForm').serialize()+"&bibid="+bs.biblio.bibid+"&mode=newCopy";
@@ -1082,9 +1081,9 @@ var bs = {
 		}
 		
 		// post to DB
-		bs.doPostCopy2DB(params);
+		idis.doPostCopy2DB(params);
 	},
-	doCopyUpdate: function () {
+	xdoCopyUpdate: function () {
 	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
 	  
 	  // serialize() ignores disabled fields, so cant reliably use in this case
@@ -1105,7 +1104,7 @@ var bs = {
 		// post to DB
 		bs.doPostCopy2DB(params);
 	},
-	doPostCopy2DB: function (parms) {
+	xdoPostCopy2DB: function (parms) {
 		//console.log('parms='+parms);
 	  $.post(bs.url,parms, function(response){
 	  	if(response == '!!success!!') {
@@ -1119,7 +1118,7 @@ var bs = {
 	  // prevent submit button from firing a 'submit' action
 	  return false;
 	},
-	doCopyDelete: function (e) {
+	xdoCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
 	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
 	  	//var copyid = e.data.copyid;
@@ -1133,6 +1132,7 @@ var bs = {
 	  $(this).parent().parent().removeClass('hilite');
 		return false;
 	}
+*/
 };
 $(document).ready(bs.init);
 

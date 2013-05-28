@@ -60,7 +60,6 @@ if($_SESSION['multi_site_func'] > 0){
 	<?php
 		$BCQ = new BiblioCopyFields;
 		$rows = $BCQ->getAll();
-			
 		while ($row = $rows->next()) {
 			echo "<tr>";
 			echo "<td nowrap=\"true\" valign=\"top\"><label for=\"custom_". $row["code"] . "\">" . T($row["description"]) . "</td>";

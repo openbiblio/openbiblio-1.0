@@ -1,5 +1,10 @@
 ############### Open issues, oldest at top #########################
 
+-- unknown 0.70 users
+We would like to add e-books in our library with direct links to their
+respective PDFs. We were not albe to add any HTML codes to the book entries,
+in order to create a hyperlink to the e-book download.
+
 - Fred
 unable to return to non-circulating list after clicking on an item.
 
@@ -58,6 +63,22 @@ we need an admin function to import / export a media layout.
 
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
+
+01 Mar 2010 - Luuk Jansen
+In the process of another test I deleted all the entries in my system
+(using the web-interface). Just checking the tables, which should all be empty,
+I found that the Custom Fields are still there.
+So the remove function should include custom fields, which is currently probably not the case.
+
+28 May 2013 - Neil, srch screns fixed 28May, mbr scrnsnot yet
+The perennial edit/delete buttons in the copy information:
+These buttons are present in both member & existing item pages but they are not
+functional (tested with both yours and my dbase).
+
+28 May 2013 - Neil
+When clicking on the title of an item in the report results page, I am taken to
+the existing item search window and not directly to the item's summary page.
+I cannot remember if this link worked in the past or not.
 
 ###################### Completed, most recent at top #########################
 

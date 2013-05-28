@@ -120,47 +120,47 @@ var idis = {
 				
 				var html = '';
 				for (var nCopy in idis.copyJSON) {
-				  var crntCopy = eval('('+idis.copyJSON[nCopy]+')')
+				  idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
 					if (!window.opacMode) {
 						html += '	<td>\n';
 						html += '		<input type="button" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
 						html += '		<input type="button" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
-						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
+						html += '		<input type="hidden" value="'+idis.crntCopy.copyid+'">\n';
 						html += '	</td>\n';
 					}
 
-					if (crntCopy.site) {
-						html += "	<td>"+crntCopy.site+"</td>\n";
+					if (idis.crntCopy.site) {
+						html += "	<td>"+idis.crntCopy.site+"</td>\n";
 					}
 					else {
 						$('#siteFld').hide();
 					}
 
-					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
+					html += "	<td>"+idis.crntCopy.barcode_nmbr+"</td>\n";
 
-					html += "	<td>"+crntCopy.status
-					if (crntCopy.mbrId) {
-						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
-					  html += ' to <a '+text+'>'+crntCopy.mbrName+'</a>';
+					html += "	<td>"+idis.crntCopy.status
+					if (idis.crntCopy.mbrId) {
+						var text = 'href="../circ/mbr_view.php?mbrid='+idis.crntCopy.mbrId+'"';
+					  html += ' to <a '+text+'>'+idis.crntCopy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
 
-					html += "	<td>"+idis.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
+					html += "	<td>"+idis.makeDueDateStr(idis.crntCopy.last_change_dt)+"</td>\n";
 
 					// Due back is onyl needed when checkked out - LJ
-					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
+					if(idis.crntCopy.statusCd == "ln" || idis.crntCopy.statusCd == "out"){
 						// Sometimes the info has to come out of an array (if coming from list) - LJ
 						var daysDueBack = parseInt(idis.theBiblio.daysDueBack);
 						if(isNaN(daysDueBack)) {			
 							daysDueBack = parseInt(idis.theBiblio[idis.theBiblio.bibid].daysDueBack);
 						}					
-						html += "	<td>"+idis.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
+						html += "	<td>"+idis.makeDueDateStr(idis.crntCopy.last_change_dt,daysDueBack)+"</td>\n";
 					} else {
 						html += "<td>---</td>";
 					}
 
-					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
+					html += "	<td>"+idis.crntCopy.copy_desc+"</td>\n";
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
@@ -168,9 +168,109 @@ var idis = {
 
 				// dynamically created buttons
 				$('.editBtn').on('click',null,idis.doCopyEdit);
-				$('.deltBtn').on('click',{'copyid':crntCopy.copyid},idis.doCopyDelete);
+				$('.deltBtn').on('click',{'copyid':idis.crntCopy.copyid},idis.doCopyDelete);
 	  });
 	},
+
+	doCopyNew: function () {
+		$('#copyForm #bibid').val(idis.theBiblio.bibid);
+		$('#copyForm #mode').val('newCopy');
+		var params= $('#copyForm').serialize()+"&bibid="+idis.theBiblio.bibid+"&mode=newCopy";
+		if ($('#autobarco:checked').length > 0) {
+			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
+		}
+
+		// post to DB
+		idis.doPostCopy2DB(params);
+	},
+
+	doCopyEdit: function (e) {
+		$('#editRsltMsg').html('');
+		var copyid = $(this).next().next().val();
+		for (var nCopy in idis.copyJSON) {
+			idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
+		  if (idis.crntCopy['copyid'] == copyid) break;
+		}
+		$('#copyTbl #barcode_nmbr').val(idis.crntCopy.barcode_nmbr);
+		$('#copyTbl #copy_desc').val(idis.crntCopy.copy_desc);
+		$('#copyTbl #copy_site').val([idis.crntCopy.site]);
+		$('#copyTbl #status_cd').val(idis.crntCopy.statusCd);
+		$('#copyEditorDiv fieldset legend').html("<?php echo T("Edit Copy Properties"); ?>");
+
+  	var crntsite = idis.opts.current_site
+		$('#copy_site').val(crntsite);
+
+		// custom fields
+		for(var nField in idis.crntCopy.custFields){
+			$('#copyTbl #custom_'+idis.crntCopy.custFields[nField].code).val(idis.crntCopy.custFields[nField].data);
+		}
+
+		// unbind & bind needed here because of button reuse elsewhere
+		$('#copySubmitBtn').unbind('click');
+		$('#copySubmitBtn').on('click',null,function () {
+			idis.doCopyUpdate();
+			// Moved to function
+			//bs.rtnToBiblio();
+			return false;
+		});
+
+		// Set 'update' button to enabled in case it wasn't from a previous edit
+		$('#copySubmitBtn').enable();
+
+		$('#biblioDiv').hide();
+		$('#copyEditorDiv').show();
+	  // prevent submit button from firing a 'submit' action
+		return false;
+	},
+	doCopyUpdate: function () {
+	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
+
+	  // serialize() ignores disabled fields, so cant reliably use in this case
+	  var copyDesc = $('#copyTbl #copy_desc').val();
+	  var statusCd = $('#copyTbl #status_cd').val();
+	  var siteid = $('#copyTbl #copy_site').val();
+		var params = "&mode=updateCopy&bibid="+idis.theBiblio.bibid+"&copyid="+idis.crntCopy.copyid
+					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
+					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
+
+		// Custom fields
+		for(var nField in idis.crntCopy.custFields){
+			// Only add if has a value, or changed from a value to nothing
+			if($('#copyTbl #custom_'+idis.crntCopy.custFields[nField].code).val() != idis.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+idis.crntCopy.custFields[nField].code).val() != ""){
+				params = params + '&custom_'+idis.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+idis.crntCopy.custFields[nField].code).val();
+			}
+		}
+		// post to DB
+		idis.doPostCopy2DB(params);
+	},
+	doPostCopy2DB: function (parms) {
+		//console.log('parms='+parms);
+	  $.post(idis.url,parms, function(response){
+	  	if(response == '!!success!!') {
+				idis.fetchCopyInfo(); // refresh copy display
+				$('#editCancelBtn').val("Go Back");
+				bs.rtnToBiblio();
+			} else {
+				$('#editRsltMsg').html(response);
+			}
+	  });
+	  // prevent submit button from firing a 'submit' action
+	  return false;
+	},
+	doCopyDelete: function (e) {
+	  $(this).parent().parent().addClass('hilite');
+	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
+	  	//var copyid = e.data.copyid;
+			var copyid = $(this).next().val();
+	    var params = "&mode=deleteCopy&bibid="+idis.theBiblio.bibid+"&copyid="+copyid;
+	  	$.post(idis.url,params, function(response){
+	  	  $('#rsltMsg').html(response);
+	  		idis.fetchCopyInfo(); // refresh copy display
+	  	});
+		};
+	  $(this).parent().parent().removeClass('hilite');
+		return false;
+	}
 
 };
 // this package normally initialized by parent such as .../catalog/new_itemJs.php
