@@ -561,61 +561,6 @@ var bs = {
 	},
 	
 	/* ====================================== */
-	xshowOneBiblio: function (biblio) {
-	  if(!biblio)
-			bs.theBiblio = $(this).prev().val();
-		else
-	  	bs.theBiblio = biblio;
-		$('#theBibId').html(bs.theBiblio.bibid);
-		
-  	bs.crntFoto = null;
-  	bs.crntBibid = bs.theBiblio.bibid;
-		$('#photoEditBtn').hide();		
-		$('#photoAddBtn').hide();		
-		$('#bibBlkB').html('');
-		if (bs.opts.showBiblioPhotos == 'Y') {
-  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bs.theBiblio.bibid  }, function(data){
-  			if (data == null) {
-  				bs.crntFoto = data;
-					$('#photoAddBtn').show();
-					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
-  			} else {
-  				bs.crntFoto = data[0];
-					$('#photoEditBtn').show();
-					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url;
-					$('#bibBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
-				}
-  		});
-		}
-
-	  var txt = '';
-		$.each(bs.theBiblio.data, function(fldIndex,fldData) {
-		  var tmp = JSON.parse(fldData);
-		  txt += "<tr>\n";
-			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
-			txt += "	<td>"+tmp.label+"</td>\n";
-			txt += "	<td>"+tmp.value+"</td>\n";
-			txt += "</tr>\n";
-			if (tmp.marcTag == '245a') {
-				bs.crntTitle = tmp.value;
-				//console.log('title==>>'+bs.crntTitle);				
-			}
-		});
-		txt += "<tr>\n";
-		txt += "	<td class=\"filterable hilite\">&nbsp</td>\n";
-		txt += "	<td>Date Added</td>\n";
-		txt += "	<td>"+bs.theBiblio.createDt+"</td>\n";
-		txt += "</tr>\n";
-  	$('tbody#biblio').html(txt);
-		obib.reStripe2('biblioTbl','odd');
-		$('#biblioDiv td.filterable').hide();
-		$('#marcBtn').val(bs.showMarc);
-
-		if (!bs.lookupAvailable)$('#onlnUpdtBtn').hide();
-	  $('#searchDiv').hide();
-    $('#biblioListDiv').hide()
-		$('#biblioDiv').show();
-	},
 	
 	makeDueDateStr: function (dtOut, daysDueBack) {
 		if(daysDueBack==null) daysDueBack=0;
@@ -630,66 +575,6 @@ var bs = {
 		return dateOut.toDateString();
 	},
 	
-	xfetchCopyInfo: function () {
-	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
-	  $.getJSON(bs.url,{'mode':'getCopyInfo','bibid':bs.biblio.bibid}, function(jsonInpt){
-				bs.copyJSON = jsonInpt;
-				if (!bs.copyJSON) {
-					var msg = '(<?php echo T("No copies"); ?>)';
-					$('tbody#copies').html('<tr><td colspan="9" class="hilite">'+msg+'</td></tr>');
-					return false; // no copies found
-				}
-				
-				var html = '';
-				for (nCopy in bs.copyJSON) {
-				  var crntCopy = eval('('+bs.copyJSON[nCopy]+')')
-				  html += "<tr>\n";
-					if (!window.opacMode) {
-						html += "	<td>\n";
-						html += '		<input type="button" value="<?php echo T("edit"); ?>" class="editBtn" /> \n';
-						html += '		<input type="button" value="<?php echo T("delete"); ?>" class="deltBtn" /> \n';
-						html += '		<input type="hidden" value="'+crntCopy.copyid+'">\n';
-						html += "	</td>\n";
-					}
-					if (crntCopy.site) {
-						html += "	<td>"+crntCopy.site+"</td>\n";
-					}
-					else {
-						$('#siteFld').hide();
-					}
-					html += "	<td>"+crntCopy.barcode_nmbr+"</td>\n";
-					html += "	<td>"+crntCopy.status
-					if (crntCopy.mbrId) {
-						var text = 'href="../circ/mbr_view.php?mbrid='+crntCopy.mbrId+'"';
-					  html += ' to<br /><a '+text+'>'+crntCopy.mbrName+'</a>';
-					}
-					html += "	</td>\n";
-					html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt)+"</td>\n";
-
-					// Due back is onyl needed when checked out - LJ
-					if(crntCopy.statusCd == "ln" || crntCopy.statusCd == "out"){
-						// Sometimes the info has to come out of an array (if coming from list) - LJ
-						var daysDueBack = parseInt(bs.biblio.daysDueBack);
-						if(isNaN(daysDueBack)) {			
-							daysDueBack = parseInt(bs.biblio[bs.biblio.bibid].daysDueBack);
-						}					
-						html += "	<td>"+bs.makeDueDateStr(crntCopy.last_change_dt,daysDueBack)+"</td>\n";
-					} else {
-						html += "<td>---</td>";
-					}
-
-					html += "	<td>"+crntCopy.copy_desc+"</td>\n";
-
-					html += "</tr>\n";
-				}
-  			$('tbody#copies').html(html);
-				obib.reStripe2('copyList','odd');
-
-				// dynamically created buttons
-				$('.editBtn').on('click',null,bs.doCopyEdit);
-				$('.deltBtn').on('click',{'copyid':crntCopy.copyid},bs.doCopyDelete);
-	  });
-	},
 
 	//------------------------------
 	findMarcField: function (biblio, tag) {
@@ -988,44 +873,6 @@ var bs = {
 	},
 
 	/* ====================================== */
-	xdoCopyEdit: function (e) {
-		$('#editRsltMsg').html('');
-		var copyid = $(this).next().next().val();
-		for (nCopy in bs.copyJSON) {
-			bs.crntCopy = eval('('+bs.copyJSON[nCopy]+')')
-		  if (bs.crntCopy['copyid'] == copyid) break;
-		}
-		$('#copyTbl #barcode_nmbr').val(bs.crntCopy.barcode_nmbr);
-		$('#copyTbl #copy_desc').val(bs.crntCopy.copy_desc);
-		$('#copyTbl #copy_site').val([bs.crntCopy.site]);
-		$('#copyTbl #status_cd').val(bs.crntCopy.statusCd);
-		$('#copyEditorDiv fieldset legend').html("<?php echo T("Edit Copy Properties"); ?>");
-
-  	var crntsite = bs.opts.current_site
-		$('#copy_site').val(crntsite);
-
-		// custom fields
-		for(nField in bs.crntCopy.custFields){
-			$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val(bs.crntCopy.custFields[nField].data);
-		}
-
-		// unbind & bind needed here because of button reuse elsewhere
-		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').on('click',null,function () {
-			bs.doCopyUpdate();
-			// Moved to function
-			//bs.rtnToBiblio();
-			return false;
-		});
-
-		// Set 'update' button to enabled in case it wasn't from a previous edit
-		$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
-		
-		$('#biblioDiv').hide();
-		$('#copyEditorDiv').show();
-	  // prevent submit button from firing a 'submit' action
-		return false;
-	},
 	makeNewCopy: function () {
 		$('#biblioDiv').hide();
 		if ($('#autobarco:checked').length > 0) {
