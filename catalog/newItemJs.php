@@ -38,7 +38,7 @@ var ni = {
 			$('#searchDiv').hide();
 			$('#selectionDiv').show();
 		});
-		$('#itemMediaTypes').bind('change',null,function () {
+		$('#itemMediaTypes').on('change',null,function () {
 	  	var mediaType = $('#itemMediaTypes option:selected').val();
 			ni.doClearItemForm();
 			ni.doMakeItemForm(mediaType);

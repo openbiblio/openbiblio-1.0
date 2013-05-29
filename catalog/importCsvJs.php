@@ -30,12 +30,12 @@ var csvi = {
 		csvi.getCollections();
 		csvi.getMediaTypes();
 		
-		$('#imptSrce').bind('change',null,function () {$('#imptBtn').enable();});
-		$("#imptBtn").bind('click',null,csvi.processImportFile);
-		$("#helpBtn").bind('click',null,function () {$('.help').toggle();});
-		$(".bkupBtn").bind('click',null,csvi.rtnToIntro);
-		$("#Post2DbBtn").bind('click',null,csvi.post2Db);
-		$("#bcdDeflt").bind('change',null,function () {csvi.bcdOpt = $('bcdDflt').val();});
+		$('#imptSrce').on('change',null,function () {$('#imptBtn').enable();});
+		$("#imptBtn").on('click',null,csvi.processImportFile);
+		$("#helpBtn").on('click',null,function () {$('.help').toggle();});
+		$(".bkupBtn").on('click',null,csvi.rtnToIntro);
+		$("#Post2DbBtn").on('click',null,csvi.post2Db);
+		$("#bcdDeflt").on('change',null,function () {csvi.bcdOpt = $('bcdDflt').val();});
 		
 		csvi.resetForm();
 	},

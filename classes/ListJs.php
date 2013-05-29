@@ -116,7 +116,7 @@ List.prototype.fetchHandler = function(dataAray){
 		}
 		html += '</tr>\n';
 		$theList.append(html);
-		$('#row'+ident).bind('click',null,$.proxy(this.doEditFields,this));
+		$('#row'+ident).on('click',null,$.proxy(this.doEditFields,this));
 	}
 		
 	var $stripes = $theTbl.find('tbody.striped');

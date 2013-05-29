@@ -9,7 +9,7 @@ var cdc = {
 		cdc.initWidgets();
 		cdc.resetForms();
 		
-		$('#action').bind('click',null,cdc.makeChanges);
+		$('#action').on('click',null,cdc.makeChanges);
 		cdc.fetchCollations();
 	},
 	
