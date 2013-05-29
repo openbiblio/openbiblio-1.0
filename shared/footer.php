@@ -11,9 +11,9 @@ unset($_SESSION['postVars']);
 ?>
 </div>
 
-<!--[if lt IE 9]><script src="../shared/jquery/jquery-1.9.0.min.js"></script><!--<![endif]-->
+<!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.0.min.js"></script><!--<![endif]-->
 <!--[if gt IE 8]><!-->
-<script src="../shared/jquery/jquery-2.0.0.min.js"></script>
+<script src="../shared/jquery/jquery-2.0.1.min.js"></script>
 <!--<![endif]-->
 
 

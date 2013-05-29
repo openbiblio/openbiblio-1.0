@@ -1071,68 +1071,6 @@ var bs = {
 		}
 		})
 	},
-/*
-	xdoCopyNew: function () {
-		$('#copyForm #bibid').val(bs.biblio.bibid);
-		$('#copyForm #mode').val('newCopy');
-		var params= $('#copyForm').serialize()+"&bibid="+bs.biblio.bibid+"&mode=newCopy";
-		if ($('#autobarco:checked').length > 0) {
-			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
-		}
-		
-		// post to DB
-		idis.doPostCopy2DB(params);
-	},
-	xdoCopyUpdate: function () {
-	  var barcdNmbr = $('#copyTbl #barcode_nmbr').val();
-	  
-	  // serialize() ignores disabled fields, so cant reliably use in this case
-	  var copyDesc = $('#copyTbl #copy_desc').val();
-	  var statusCd = $('#copyTbl #status_cd').val();
-	  var siteid = $('#copyTbl #copy_site').val();
-		params = "&mode=updateCopy&bibid="+bs.biblio.bibid+"&copyid="+bs.crntCopy.copyid
-					 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
-					 + "&status_cd="+statusCd+"&siteid="+siteid;
-
-		// Custom fields
-		for(nField in bs.crntCopy.custFields){
-			// Only add if has a value, or changed from a value to nothing
-			if($('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != bs.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val() != ""){
-				params = params + '&custom_'+bs.crntCopy.custFields[nField].code+'='+$('#copyTbl #custom_'+bs.crntCopy.custFields[nField].code).val();
-			}
-		}					
-		// post to DB
-		bs.doPostCopy2DB(params);
-	},
-	xdoPostCopy2DB: function (parms) {
-		//console.log('parms='+parms);
-	  $.post(bs.url,parms, function(response){
-	  	if(response == '!!success!!') {
-				bs.fetchCopyInfo(); // refresh copy display
-				$('#editCancelBtn').val("Go Back");
-				bs.rtnToBiblio();
-			} else {
-				$('#editRsltMsg').html(response);
-			}
-	  });
-	  // prevent submit button from firing a 'submit' action
-	  return false;
-	},
-	xdoCopyDelete: function (e) {
-	  $(this).parent().parent().addClass('hilite');
-	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
-	  	//var copyid = e.data.copyid;
-		var copyid = $(this).next().val();
-	    var params = "&mode=deleteCopy&bibid="+bs.biblio.bibid+"&copyid="+copyid;
-	  	$.post(bs.url,params, function(response){
-	  	  $('#rsltMsg').html(response);
-	  		bs.fetchCopyInfo(); // refresh copy display
-	  	});
-		};
-	  $(this).parent().parent().removeClass('hilite');
-		return false;
-	}
-*/
 };
 $(document).ready(bs.init);
 
