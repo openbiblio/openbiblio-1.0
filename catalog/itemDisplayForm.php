@@ -20,7 +20,7 @@
 		<table id="copyList">
 		<thead>
 		<tr>
-				<?php if ($_SESSION["hasCatalogAuth"]){ ?>
+				<?php if (!(strtolower($tab) == 'opac' || strtolower($tab) == 'circulation' )){ ?>
 					<th><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<?php

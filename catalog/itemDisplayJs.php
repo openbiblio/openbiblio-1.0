@@ -2,6 +2,14 @@
 //------------------------------------------------------------------------------
 // itemDisplay Javascript
 "use strict";
+<?php
+	// If a circulation user and NOT a cataloging user the system should treat the user as opac
+//	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
+	if(strtolower($tab) == 'opac' || strtolower($tab) == 'circulation' )
+	  echo "var opacMode = true;";
+	else
+	  echo "var opacMode = false;";
+?>
 
 var idis = {
 	<?php
