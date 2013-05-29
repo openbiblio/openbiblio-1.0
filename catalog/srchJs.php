@@ -316,8 +316,8 @@ var bs = {
 	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
 				}
 				else {
-					bs.showOneBiblio(bs.biblio)
-					bs.fetchCopyInfo();
+					idis.showOneBiblio(bs.biblio)
+					idis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();
