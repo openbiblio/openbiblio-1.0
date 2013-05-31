@@ -29,10 +29,8 @@
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));
 	}
 	
+	//print_r($_SESSION); // for debugging
 ?>
-
-<!--h3><?php echo T("Existing Items"); ?></h3-->
-<?php //print_r($_SESSION); // for debugging ?>
 
 <div id="crntMbrDiv">to be filled by server</div>
 
@@ -263,6 +261,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="photoEditorDiv">
+	<h3 id="fotoHdr"><?php echo T("PhotoEditor"); ?></h3>
 	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 	<p id="fotoMsg" class="error"></p>
 
@@ -273,31 +272,36 @@
 	
 	<fieldset>
 		<legend id="fotoEdLegend"></legend>
-		<table id="editTbl" role="presentation">
-				<tr id="imgSrce">
-					<td>
-						<label for="fotoSrce"><?php echo T("Source"); ?>:</label>
-						<input type="file" id="fotoSrce" value="" name="image" size="32" required aria-required="true" />
-						<span class="reqd">*</span>
-					</td>
-					<td id="fotoBlkB" rowspan="3"></td>
-				</tr>
-				<tr>
-					<td>
-						<label for="fotoFile"><?php echo T("StoreAs"); ?>:</label>
-						<input type="text" id="fotoFile" name="url" size="32" 
-								pattern="(.*?)\.(jpg|jpg|png)$" required aria-required="true" 
-								title="Only jpg and png files are acceptable." />
-						<span class="reqd">*</span>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label for="fotoCapt"><?php echo T("Caption"); ?>:</label>
-						<input type="text" id="fotoCapt" name="caption" size="32" />
-					</td>
-				</tr>
-		</table>
+		<div id="fotoBlks">
+			<div id="fotoBlkA">
+				<table id="editTbl" role="presentation">
+						<tr id="imgSrce">
+							<td>
+								<label for="fotoSrce"><?php echo T("Source"); ?>:</label>
+								<input type="file" id="fotoSrce" value="" name="image" size="32" required aria-required="true" />
+								<span class="reqd">*</span>
+							</td>
+							<td id="fotoBlkB" rowspan="3"></td>
+						</tr>
+						<tr>
+							<td>
+								<label for="fotoFile"><?php echo T("StoreAs"); ?></label>
+								<input type="text" id="fotoFile" name="url" size="32"
+										pattern="(.*?)\.(jpg|jpg|png)$" required aria-required="true"
+										title="Only jpg and png files are acceptable." />
+								<span class="reqd">*</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="fotoCapt"><?php echo T("Caption"); ?>:</label>
+								<input type="text" id="fotoCapt" name="caption" size="32" />
+							</td>
+						</tr>
+				</table>
+			</div>
+			<div id="fotoBlkB"> </div>
+		</div>
 	</fieldset>
 	
 	<input type="hidden" id="fotoBibid" name="bibid" value="" />

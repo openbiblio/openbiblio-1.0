@@ -159,13 +159,8 @@ class BiblioImages {
 		$this->db->lock();
 		$imgs = $this->getByBibid($bibid);
 		while ($img = $imgs->next()) {
-//			if ($img['type'] == 'Thumb'
-//					and preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $img['url'])) {
-				@unlink("../photos/".$img['url']);
-//			}
-//			if (preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $imgurl)) {
-				@unlink("../photos/".$img['imgurl']);
-//			}
+			@unlink("../photos/".$img['url']);
+			@unlink("../photos/".$img['imgurl']);
 			$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
 				$bibid, $img['imgurl']);
 			$this->db->act($sql);

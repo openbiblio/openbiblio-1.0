@@ -31,6 +31,12 @@ update to look/work like CSV import
 - Fred 
 Install needs to work for new installations
 
+01 Mar 2010 - Luuk Jansen
+In the process of another test I deleted all the entries in my system
+(using the web-interface). Just checking the tables, which should all be empty,
+I found that the Custom Fields are still there.
+So the remove function should include custom fields, which is currently probably not the case.
+
 08 May 2013 - Fred
 Admin Calendars does not appear to be working; unable to edit.
 
@@ -64,11 +70,11 @@ we need an admin function to import / export a media layout.
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
 
-01 Mar 2010 - Luuk Jansen
-In the process of another test I deleted all the entries in my system
-(using the web-interface). Just checking the tables, which should all be empty,
-I found that the Custom Fields are still there.
-So the remove function should include custom fields, which is currently probably not the case.
+31 May 2013 - Fred
+Item photo editor need to show photo selected or to be deleted.
+Needs success/failure messages.
+When complete, item display needs to refresh so photo is shown.
+'required' not working on name of new file.'
 
 ###################### Completed, most recent at top #########################
 

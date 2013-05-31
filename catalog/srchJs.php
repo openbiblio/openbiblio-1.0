@@ -601,6 +601,7 @@ var bs = {
 	/* ====================================== */
 	doPhotoEdit: function () {
 		$('#updtFotoBtn').hide();  //see doUpdatePhoto() below
+		$('#fotoHdr').val('<?php echo T("EditingExistingFoto"); ?>')
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
 		$('#fotoMode').val('updatePhoto')
@@ -609,6 +610,7 @@ var bs = {
 	},
 	doPhotoAdd: function () {
 		$('#updtFotoBtn').hide(); //see doUpdatePhoto() below
+		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
 		$('#deltFotoBtn').hide();
 		$('#addFotoBtn').show();
 		$('#fotoMode').val('addNewPhoto')
@@ -618,19 +620,22 @@ var bs = {
 	showPhotoForm: function () {
 	  $('#biblioDiv').hide();
 	  $('#fotoSrce').val('')
-		$('#fotoEdLegend').html('Cover Photo for: '+idis.crntTitle);
 	  $('#fotoBibid').val(idis.crntBibid);
 
-	  if (bs.crntFoto != null) {
-	  	$('#fotoFile').val(bs.crntFoto.url);
-	  	$('#fotoBlkB').html('<img src="<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url+'" id="foto" class="hover" >');
-	  	$('#fotoCapt').val(bs.crntFoto.caption);
-	  	$('#fotoImgUrl').val(bs.crntFoto.imgurl);
-	  } else {
-	  	$('#fotoBlkB').html('');
+	  if (idis.crntFoto == null) {
+			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
+					$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
 	  	$('#fotoFile').val('');
 	  	$('#fotoCapt').val('');
 	  	$('#fotoImgUrl').val('');
+	  } else {
+			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
+	  	$('#fotoFile').val(idis.crntFoto.url);
+					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
+					$('#fotoBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
+	  	//$('#fotoBlkB').html('<img src="<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url+'" id="foto" class="hover" >');
+	  	$('#fotoCapt').val(idis.crntFoto.caption);
+	  	$('#fotoImgUrl').val(fotoFile);
 		}
 		$('#photoEditorDiv').show();
 	},
@@ -638,6 +643,7 @@ var bs = {
 	  /// left as an exercise for the motivated - FL (I'm burned out on this project)
 	},
 	doAddNewPhoto: function (e) {
+		e.stopPropagation();
 		$.ajaxFileUpload({
 				url:							bs.url,
 				secureuri:				false,
@@ -654,22 +660,17 @@ var bs = {
 														//console.log('success');
 														if(typeof(data.error) != 'undefined') {
 															if(data.error != '') {
-																alert(data.error);
+																$('#fotoMsg').html(data.error);
 															} else {
-																alert(status);
+																$('#fotoMsg').html(status);
 															}
 														}
-														bs.returnToBiblio();
 													},
 				error: 						function (data, status, e) {
-														console.log('error');
+														$('#fotoMsg').html('status');
 														console.log(data);
-														console.log(status);
-														alert(e);
 													},
 			});
-		e.stopPropagation();
-		idis.showOneBiblio($('#fotoBibid').val())
 		return false;
 	},
 	doDeletePhoto: function (e) {
@@ -680,7 +681,7 @@ var bs = {
 										 }
 										 ,function(response){
 				if(response) {
-					$('#fotoMsg').html(response);
+					$('#fotoMsg').html('<?php T("Delete completed"); ?>');
 				}
 			});
 		}

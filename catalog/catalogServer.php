@@ -318,7 +318,6 @@ function mkBiblioArray($dbObj) {
 	case 'deletePhoto':
 	  $ptr = new BiblioImages;
 		$ptr->deleteByBibid($_POST['bibid']);
-		echo $err;	  
 		break;
 			  
 	//// ====================================////
