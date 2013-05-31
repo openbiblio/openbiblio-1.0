@@ -16,14 +16,14 @@
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
 	
-	// Load session data in case of OPAC (eg no user logged on)
+	## Load session data in case of OPAC (eg no user logged on)
 	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
 	if(empty($_SESSION['show_detail_opac'])) $_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');	
 	if(empty($_SESSION['multi_site_func'])) $_SESSION['multi_site_func'] = Settings::get('multi_site_func');
 	if(empty($_SESSION['show_item_photos'])) $_SESSION['show_item_photos'] = Settings::get('show_item_photos');	
 	if(empty($_SESSION['items_per_page'])) $_SESSION['items_per_page'] = Settings::get('items_per_page');
 	
-	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
+	## Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
 	if(empty($_SESSION['current_site'])) {
 		if(isset($_COOKIE['OpenBiblioSiteID'])) {
 			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];				
@@ -104,7 +104,7 @@ function mkBiblioArray($dbObj) {
 	  $theDb = new SrchDB;
 		$params = makeTagObj(getSrchTags($_REQUEST[searchType]));
 
-		// Add search params
+		# Add search params
 		$searchTags = "";
 		
 		if(isset($_REQUEST['sortBy'])){
@@ -169,10 +169,10 @@ function mkBiblioArray($dbObj) {
 			$rcd['itemsPage'] = $_SESSION['items_per_page'];
 			$biblio[] = json_encode($rcd);
 
-			// Only show as many as in the settings (not the most efficient way to get the whole result query, this should be rewritten
+			# Only show as many as in the settings (not the most efficient way to get the whole result query, this should be rewritten
 			$iterCounter = 0;		
 			foreach ($biblioLst as $bibid) {
-				// Skip if before requested items and break when amount of items is past - LJ
+				# Skip if before requested items and break when amount of items is past - LJ
 				$iterCounter++;
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
@@ -313,7 +313,7 @@ function mkBiblioArray($dbObj) {
 			$err = $ptr->appendThumb_e($_POST['bibid'], $_POST['caption'],
 				$_FILES['image']);
 		}
-		echo $err;
+		echo json_encode($err);
 		break;
 	case 'deletePhoto':
 	  $ptr = new BiblioImages;

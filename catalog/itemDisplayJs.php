@@ -58,7 +58,8 @@ var idis = {
 		$('#photoEditBtn').hide();		
 		$('#photoAddBtn').hide();		
 		$('#bibBlkB').html('');
-		if (idis.opts.show_item_photos == 'Y') {
+
+		if (idis.opts.showBiblioPhotos == 'Y') {
   		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.theBiblio.bibid  }, function(data){
   			if (data == null) {
   				idis.crntFoto = data;
@@ -84,7 +85,6 @@ var idis = {
 			txt += "</tr>\n";
 			if (tmp.marcTag == '245a') {
 				idis.crntTitle = tmp.value;
-				//console.log('title==>>'+idis.crntTitle);				
 			}
 		});
 		txt += "<tr>\n";

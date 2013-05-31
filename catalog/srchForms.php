@@ -219,7 +219,8 @@
 		<li><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		<li><input type="button" id="marcBtn" value=""></li>
 		<li><input type="button" id="addItem2CartBtn" value="<?php echo T("Add To Cart"); ?>" /></li>
-		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
+		<?php //if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
+		<?php if ($_SESSION["hasCatalogAuth"]) {?>
 		<li><input type="button" id="biblioEditBtn" value="<?php echo T("Edit This Item"); ?>"></li>
 		<li><input type="button" id="photoEditBtn" value="<?php echo T("Edit This Photo"); ?>"></li>
 		<li><input type="button" id="photoAddBtn" value="<?php echo T("Add New Photo"); ?>"></li>
@@ -283,7 +284,7 @@
 				</tr>
 				<tr>
 					<td>
-						<label for="fotoFile"><?php echo T("Name"); ?>:</label>
+						<label for="fotoFile"><?php echo T("StoreAs"); ?>:</label>
 						<input type="text" id="fotoFile" name="url" size="32" 
 								pattern="(.*?)\.(jpg|jpg|png)$" required aria-required="true" 
 								title="Only jpg and png files are acceptable." />

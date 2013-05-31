@@ -779,6 +779,7 @@ $trans["Status:"] = "Status:";
 $trans["Status"] = "Status";
 $trans["Start OpenBiblio now"] = "Start OpenBiblio now";
 $trans["Start Using OpenBiblio"] = "Start Using OpenBiblio";
+$trans["StoreAs"] = "Store as .../photos/";
 $trans["Subfield Contains"] = "Subfield contains";
 $trans["Subfield Starts With"] = "Subfield starts with";
 $trans["Subject"] = "Subject";

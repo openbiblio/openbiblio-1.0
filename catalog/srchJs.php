@@ -618,9 +618,9 @@ var bs = {
 	showPhotoForm: function () {
 	  $('#biblioDiv').hide();
 	  $('#fotoSrce').val('')
-		$('#fotoEdLegend').html('Cover Photo for: '+bs.crntTitle);
-	  $('#fotoBibid').val(bs.crntBibid);
-	  
+		$('#fotoEdLegend').html('Cover Photo for: '+idis.crntTitle);
+	  $('#fotoBibid').val(idis.crntBibid);
+
 	  if (bs.crntFoto != null) {
 	  	$('#fotoFile').val(bs.crntFoto.url);
 	  	$('#fotoBlkB').html('<img src="<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFoto.url+'" id="foto" class="hover" >');
@@ -644,29 +644,36 @@ var bs = {
 				fileElementId:		'fotoSrce',
 				dataType: 				'json',
 				data:							{'mode':'addNewPhoto',
-													 'bibid':$('#fotoBibid').val(), 
+													 'bibid':$('#fotoBibid').val(),
 													 'url':$('#fotoFile').val(), 
 													 'caption':$('#fotoCapt').val(),
 													 'type':$('#fotoType').val(),
 													 'position':$('#fotoPos').val(),
 													},
 				success: 					function (data, status) {
+														//console.log('success');
 														if(typeof(data.error) != 'undefined') {
 															if(data.error != '') {
 																alert(data.error);
 															} else {
-																alert(data.msg);
+																alert(status);
 															}
 														}
 														bs.returnToBiblio();
 													},
-				error: 						function (data, status, e) { alert(e); }
+				error: 						function (data, status, e) {
+														console.log('error');
+														console.log(data);
+														console.log(status);
+														alert(e);
+													},
 			});
 		e.stopPropagation();
+		idis.showOneBiblio($('#fotoBibid').val())
 		return false;
 	},
-	doDeletePhoto: function () {
-		if ("<?php echo T("Are you sure you want to delete this cover photo"); ?>") {
+	doDeletePhoto: function (e) {
+		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {
 	  	$.post(bs.url,{'mode':'deletePhoto',
 										 'bibid':$('#fotoBibid').val(),
 										 'url':$('#fotoFile').val(),
