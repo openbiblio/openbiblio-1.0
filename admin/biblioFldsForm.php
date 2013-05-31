@@ -64,13 +64,13 @@
 <table id="showList" name="showList">
 	<thead>
   <tr>
-    <th class="colHead">&nbsp</th>
-    <th class="colHead"><?php echo T("Seq"); ?></th>
-    <th class="colHead"><?php echo T("Tag"); ?></th>
-    <th class="colHead"><?php echo T("Label"); ?></th>
-    <th class="colHead"><?php echo T("Type"); ?></th>
-    <th class="colHead"><?php echo T("Reqd"); ?></th>
-    <th class="colHead"><?php echo T("Rpts"); ?></th>
+    <th>&nbsp</th>
+    <th><?php echo T("Seq"); ?></th>
+    <th><?php echo T("Tag"); ?></th>
+    <th><?php echo T("Label"); ?></th>
+    <th><?php echo T("Type"); ?></th>
+    <th><?php echo T("Reqd"); ?></th>
+    <th><?php echo T("Rpts"); ?></th>
   </tr>
 	</thead>
 	<tbody id="fldSet" class="striped">
@@ -143,7 +143,7 @@
 			<input type="button" id="editUpdtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
 			<input type="button" id="editCnclBtn" class="actnBtns" value="<?php echo T("Go Back"); ?>" />
     </td>
-    <td colspan="2" colspan="1" class="primary" align="right">
+    <td colspan="2" colspan="1" align="right">
 			<input type="button" id="editDeltBtn" class="actnBtns" value="<?php echo T("Delete"); ?>" />
     </td>
   </tr>

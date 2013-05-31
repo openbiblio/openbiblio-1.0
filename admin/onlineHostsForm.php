@@ -29,14 +29,14 @@
 <table id="showList" name="showList">
 	<thead>
   <tr>
-    <th colspan="1"  class="colHead">&nbsp;</th>
-    <th class="colHead"><?php echo T("Sequence"); ?></th>
-    <th class="colHead"><?php echo T("Active"); ?></th>
-    <th class="colHead"><?php echo T("Host URL"); ?></th>
-    <th class="colHead"><?php echo T("Name"); ?></th>
-    <th class="colHead"><?php echo T("Database"); ?></th>
-    <th class="colHead"><?php echo T("Userid"); ?></th>
-    <th class="colHead"><?php echo T("Password"); ?></th>
+    <th colspan="1">&nbsp;</th>
+    <th><?php echo T("Sequence"); ?></th>
+    <th><?php echo T("Active"); ?></th>
+    <th><?php echo T("Host URL"); ?></th>
+    <th><?php echo T("Name"); ?></th>
+    <th><?php echo T("Database"); ?></th>
+    <th><?php echo T("Userid"); ?></th>
+    <th><?php echo T("Password"); ?></th>
   </tr>
 	</thead>
 	<tbody class="striped">
@@ -144,7 +144,7 @@
 			<input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
 			<input type="button" id="cnclBtn" value="<?php echo T("Cancel"); ?>" />
     </td>
-    <td colspan="1" class="primary" align="right">
+    <td colspan="1" align="right">
 			<input type="submit" id="deltBtn" class="actnBtns" value="<?php echo T("Delete"); ?>" />
     </td>
   </tr>

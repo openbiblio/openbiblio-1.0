@@ -372,6 +372,7 @@ $trans["Font Color:"] = "Font Color:";
 $trans["Font Face:"] = "Font Face:";
 $trans["Font Size:"] = "Font Size:";
 $trans["For Date:"] = "For Date:";
+$trans["ForDeveloperUse"] = "For Developer Use only";
 $trans["Form Type Label"] = 'Data Type:';
 $trans["From Year:"] = "From year:";
 $trans["Function"] = "Function";

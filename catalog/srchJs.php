@@ -835,7 +835,7 @@ var bs = {
 	  // verify all required fields are present
 	  //if (!ie.validate()) return false;
 	  
-		params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
+		var params = "&mode=updateBiblio&bibid="+bs.biblio.bibid +
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
 	    if (response == '!!success!!'){

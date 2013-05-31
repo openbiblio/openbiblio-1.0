@@ -1,0 +1,10 @@
+<?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+#****************************************************************************
+#*  Translation text for page transUtils.php
+#****************************************************************************
+$trans["Check4Unused"] = "Check for Unused Classes";
+$trans["cssUtilities"] = "CSS Utilities";
+

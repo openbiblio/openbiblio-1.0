@@ -23,8 +23,8 @@
 	<thead>
 	<tr>
 		<th colspan="1" rowspan="2" valign="top"><?php echo T("Function"); ?></th>
-		<th rowspan="2" valign="top" nowrap="yes"><?php echo T("Last Name"); ?></th>
-		<th rowspan="2" valign="top" nowrap="yes"><?php echo T("First Name"); ?></th>
+		<th rowspan="2" valign="top" nowrap="yes"><?php echo T("LastName"); ?></th>
+		<th rowspan="2" valign="top" nowrap="yes"><?php echo T("FirstName"); ?></th>
 		<th rowspan="2" valign="top"><?php echo T("Userid"); ?></th>
 		<th colspan="6"><?php echo T("Authorization"); ?></th>
 		<th rowspan="2" valign="top"><?php echo T("Suspended"); ?></th>
@@ -61,12 +61,12 @@
 	<legend id="fieldsHdr"></legend>
 	<ul id="editTbl">
     <li>
-      <label for="last_name"><?php echo T("Last Name"); ?>:</label>
+      <label for="last_name"><?php echo T("LastName"); ?>:</label>
       <input id="last_name" name="last_name" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
 		</li>
     <li>
-      <label for="first_name"><?php echo T("First Name"); ?>:</label>
+      <label for="first_name"><?php echo T("FirstName"); ?>:</label>
       <input id="first_name" name="first_name" type="text" size="32" />
 		</li>
     <li>
@@ -79,12 +79,12 @@
 				<ul>
     			<li>
    			   <label for="pwd"><?php echo T("Password"); ?>:</label>
-   			   <input type="password" id="pwd" name="pwd" class="pwdFlds" size="20" required aria-required="true" />
+   			   <input type="password" id="pwd" name="pwd" size="20" required aria-required="true" />
 						<span class="reqd">*</span>    
 					</li>
   			  <li>
   			    <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
-  			    <input type="password" id="pwd2" name="pwd2" class="pwdFlds" size="20" required aria-required="true" />
+  			    <input type="password" id="pwd2" name="pwd2" size="20" required aria-required="true" />
 						<span class="reqd">*</span>    
 					</li>
 				</ul>
