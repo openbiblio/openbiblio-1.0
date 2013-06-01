@@ -313,7 +313,11 @@ function mkBiblioArray($dbObj) {
 			$err = $ptr->appendThumb_e($_POST['bibid'], $_POST['caption'],
 				$_FILES['image']);
 		}
-		echo json_encode($err);
+  	$set = $ptr->getByBibid($_REQUEST['bibid']);
+		while ($row = $set->next()) {
+		  $imgs[] = $row;
+		}
+		echo json_encode($imgs);
 		break;
 	case 'deletePhoto':
 	  $ptr = new BiblioImages;

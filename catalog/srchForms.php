@@ -266,10 +266,9 @@
 	<p id="fotoMsg" class="error"></p>
 
 	<form id="fotoForm" name="fotoForm" enctype="multipart/form-data" method="POST" >
-	<ul class="btnRow">
+	<!--ul class="btnRow">
 		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
-	</ul>
-	
+	</ul-->
 	<fieldset>
 		<legend id="fotoEdLegend"></legend>
 		<div id="fotoBlks">
