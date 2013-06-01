@@ -423,7 +423,6 @@ var bs = {
 		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 			if (data != null) {
 				var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
-console.log('in getPhoto: fotoFile='+fotoFile);
 				$(dest).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
 			}
 		});
@@ -670,16 +669,15 @@ console.log('in getPhoto: fotoFile='+fotoFile);
 													},
 				success: 					function (response) {
 														var data = JSON.parse(response);
-console.log('data0=' + data[0]);
-console.log('data0url=' + data[0]['url']);
 														bs.crntFotoUrl = '../photos/' + data[0]['url'];
-console.log('urla='+bs.crntFotoUrl);
 														$('#fotoMsg').html('cover photo posted').show();
-console.log('urlb='+bs.crntFotoUrl);
 														var fotoFile = '../photos/'+bs.crntFotoUrl;
-console.log('fotoFile='+fotoFile);
-														$('#fotoBlkB').html($('<img src="'+fotoFile+'" id="fotoBiblio" class="hover" >'));
-														$('#bibBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
+console.log('ht='+bs.fotoHeight);
+console.log('wid='+bs.fotoWidth);
+														$('#fotoBlkB').html('<img src="'+fotoFile+'" id="fotoBiblio" class="hover" '
+      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+														$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
+      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
 														$('#photoAddBtn').hide();
 														$('#photoEditBtn').show();
 													},
@@ -697,13 +695,18 @@ console.log('fotoFile='+fotoFile);
 										 'url':$('#fotoFile').val(),
 										},
 										function(response){
-console.log('delete response='+response);
-			$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
-			$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
-					$('#photoAddBtn').show();
-					$('#photoEditBtn').hide();
-					$('#fotoMsg').html('cover phloto deleted').show();
-			});
+											$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+											$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+                      idis.crntFoto = null;
+						          $('#fotoFile').val('');
+						          $('#fotoCapt').val('');
+											$('#photoAddBtn').show();
+											$('#photoEditBtn').hide();
+											$('#fotoMsg').html('cover photo deleted').show();
+										}
+			);
 		}
 		e.stopPropagation();
 		return false;
