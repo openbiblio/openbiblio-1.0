@@ -247,7 +247,13 @@ var bs = {
 	fetchOpts: function () {
 	  $.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
 	    bs.opts = jsonData
+			bs.opts['lookupAvail'] = bs.opts['lookup2'];
+			bs.opts['showBiblioPhotos'] = bs.opts['show_item_photos'];
+			bs.opts['barcdWidth'] = bs.opts['item_barcode_width'];
 			idis.init(bs.opts); // used for biblio item & copy displays
+
+			bs.fotoWidth = bs.opts['thumbnail_width'];
+			bs.fotoHeight = bs.opts['thumbnail_height'];
 		});
 	},
 	fetchCrntMbrInfo: function () {
@@ -455,20 +461,10 @@ console.log('in getPhoto: fotoFile='+fotoFile);
 			html += '		<div> \n';
 				//// if wanted, we create space for a possible photo, and fill it if one is found //
 			if (bs.opts.showBiblioPhotos == 'Y') {
-				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n'+
-								'			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" />\n'+
-								'		</div>'+"\n";
-/*
-	  		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':biblio.bibid  }, function(data){
-	  			//--// when this returns, it will over-write the above shim, if there is anything found //
-	  			if (data != null) {
-						var theId = data[0].bibid, 
-								fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
-						//console.log(theId+'==>>'+fotoFile);
-						$('#photo_'+theId).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
-					}
-	  		});
-*/
+				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n';
+				html += '			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" '
+												   + 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >';
+				html += '		</div>'+"\n";
 				bs.getPhoto(biblio.bibid, '#photo_'+biblio.bibid );
 			}
 			//--// some administrative info and a 'more detail' button
@@ -639,16 +635,17 @@ console.log('in getPhoto: fotoFile='+fotoFile);
 
 	  if (idis.crntFoto == null) {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
-			$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
+			$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
 	  	$('#fotoFile').val('');
 	  	$('#fotoCapt').val('');
 	  	$('#fotoImgUrl').val('');
 	  } else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
-	  	$('#fotoFile').val(idis.crntFotoUrl);
-			var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFotoUrl;
-			$('#fotoBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
-	  	//$('#fotoBlkB').html('<img src="<?php echo OBIB_UPLOAD_DIR; ?>'+bs.crntFotoUrl+'" id="foto" class="hover" >');
+	  	$('#fotoFile').val(idis.crntFoto.url);
+			var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
+			$('#fotoBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
+      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
 	  	$('#fotoCapt').val(idis.crntFoto.caption);
 	  	$('#fotoImgUrl').val(fotoFile);
 		}
@@ -683,6 +680,8 @@ console.log('urlb='+bs.crntFotoUrl);
 console.log('fotoFile='+fotoFile);
 														$('#fotoBlkB').html($('<img src="'+fotoFile+'" id="fotoBiblio" class="hover" >'));
 														$('#bibBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
+														$('#photoAddBtn').hide();
+														$('#photoEditBtn').show();
 													},
 				error: 						function (data) {
 														console.log(data);
@@ -701,8 +700,8 @@ console.log('fotoFile='+fotoFile);
 console.log('delete response='+response);
 			$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
 			$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
-//					$('#fotoBlkB').html('');
-//					$('#bibBlkB').html('');
+					$('#photoAddBtn').show();
+					$('#photoEditBtn').hide();
 					$('#fotoMsg').html('cover phloto deleted').show();
 			});
 		}

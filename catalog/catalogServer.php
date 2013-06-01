@@ -8,6 +8,7 @@
 	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 	require_once(REL(__FILE__, "../functions/utilFuncs.php"));
 	require_once(REL(__FILE__, "../classes/Query.php"));
+	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
@@ -36,9 +37,9 @@
 
 	## fetch opts here for general use as needed
 	$opts['lookupAvail'] = in_array('lookup2',$_SESSION);
-	$opts['current_site'] = $_SESSION[current_site];
-	$opts['showBiblioPhotos'] = $_SESSION[show_item_photos];
-	$opts['barcdWidth'] = $_SESSION[item_barcode_width];
+	$opts['current_site'] = $_SESSION['current_site'];
+	$opts['showBiblioPhotos'] = $_SESSION['show_item_photos'];
+	$opts['barcdWidth'] = $_SESSION['item_barcode_width'];
 	
 	require_once(REL(__FILE__, "../classes/SrchDb.php"));
 	
@@ -61,6 +62,8 @@ function mkBiblioArray($dbObj) {
 	switch ($_REQUEST[mode]) {
 	case 'getOpts':
 		//setSessionFmSettings(); // only activate for debugging!
+		$db = new Settings;
+		$opts = $db->getAll();
 		echo json_encode($opts);
 	  break;
 	case 'getCrntMbrInfo':

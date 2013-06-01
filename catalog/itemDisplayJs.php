@@ -64,12 +64,14 @@ var idis = {
   			if (data == null) {
   				idis.crntFoto = data;
 					$('#photoAddBtn').show();
-					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" >');
+					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
   			} else {
   				idis.crntFoto = data[0];
 					$('#photoEditBtn').show();
 					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
-					$('#bibBlkB').html($('<img src="'+fotoFile+'" id="biblioFoto" class="hover" >'));
+					$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
+      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
 				}
   		});
 		}
