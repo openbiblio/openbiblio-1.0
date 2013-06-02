@@ -70,13 +70,12 @@ we need an admin function to import / export a media layout.
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
 
-31 May 2013 - Fred
+###################### Completed, most recent at top #########################
+
+31 May 2013 - Fred, done 1 Jun 2013
 Item photo editor need to show photo selected or to be deleted.
 Needs success/failure messages.
 When complete, item display needs to refresh so photo is shown.
-'required' not working on name of new file.'
-
-###################### Completed, most recent at top #########################
 
 28 May 2013 - Neil
 When clicking on the title of an item in the report results page, I am taken to
