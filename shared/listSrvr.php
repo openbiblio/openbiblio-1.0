@@ -64,8 +64,8 @@
 		echo json_encode($list);
 	  break;
 
-		default:
-		  echo "<h4>".T("invalid mode").": &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+	default:
+		  echo "<h4>".T("invalid mode")."@listSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
 		break;
 	}
 

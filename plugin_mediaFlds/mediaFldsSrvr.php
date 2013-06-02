@@ -15,12 +15,30 @@
 			while ($row = $set->next()) {
 			  $list[] = $row;
 			}
-//print_r($list);
 			echo json_encode($list);
 			break;
-			
+
+	  case 'inportLayout':
+			$db = new MaterialFields;
+			$recs = json_decode($_POST['layout']);
+			$nRecs = count($recs);
+			echo "got to server with $nRecs records.<br />";
+			$rec = [];
+			## one row at a time
+			foreach ($recs as $recO) {
+				## convert 'std obj' to array
+				foreach ($recO as $k=>$v) {
+					$rec[$k] = $v;
+					$rec['material_field_id'] = null;
+					$rec['material_cd'] = 999;
+				}
+				$err = $db->insert($rec);
+				echo $err;
+			}
+			break;
+
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode")." @mediaFldsSrvr.php: &gt;$_REQUEST[mode]&lt;</h4><br />";
 		break;
 	}
 

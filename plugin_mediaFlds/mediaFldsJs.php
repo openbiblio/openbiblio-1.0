@@ -5,7 +5,7 @@
 var mlo = {
 	init: function () {
 		mlo.url = 'mediaFldsSrvr.php';
-		mlo.listSrvr = '../shared/listSrvr.php'
+		mlo.listSrvr = '../shared/listSrvr.php';
 		mlo.initWidgets();
 		mlo.resetForms();
 		
@@ -56,8 +56,15 @@ var mlo = {
 		var fn = $('#newLayout').prop('files');
 		reader.readAsText(fn[0]);
 		reader.onload = function () {
-			var text = reader.result;
-			$('#rslts').html(text);
+			var json = reader.result;
+			//$('#rslts').html(json);
+			$.post(mlo.url, {'mode':'inportLayout',
+											 'layout':json,
+											},
+				function (response) {
+					$('#rslts').html(response);
+				}
+			);
 		};
 	},
 

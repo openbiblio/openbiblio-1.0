@@ -20,15 +20,25 @@
 	<section id="entry">
 		<fieldset id="actionArea">
 		<legend><?php echo T("layoutExport"); ?></legend>
+			<p class="note">
+				 1. Select Existing Layout.<br />
+				 2. Highlight entire output below.<br />
+				 3. Copy highlighted text to favorite text editor.<br />
+				 4. Save using a meaningful name.<br />
+			</p>
+			<hr />
 			<label for="material_cd" ><?php echo T("ChooseMedia"); ?>:</label>
 				<select id="material_cd" ></select>
-		  <input type="button" id="exportBtn" value="<?php echo T("Export"); ?>" />
+		  <input type="button" id="exportBtn" value="<?php echo T("FetchLayout"); ?>" />
 		</fieldset>
+		<br />
 		<fieldset id="actionArea">
 		<legend><?php echo T("layoutInport"); ?></legend>
-			<label for="newMedia"><?php echo T("NewMediaName"); ?>:</label>
+			<p class="note"><?php echo T("InportInstructions"); ?><p>
+			<hr />
+			<label for="newMedia"><?php echo T("NewLayoutFile"); ?>:</label>
 				<input type="file" id="newLayout" name="newLayout" />
-		  <input type="button" id="inportBtn" value="<?php echo T("Inport"); ?>" />
+		  <input type="button" id="inportBtn" value="<?php echo T("InportLayout"); ?>" />
 		</fieldset>
 	</section>
 	
