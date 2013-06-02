@@ -27,7 +27,7 @@
 		<fieldset id="actionArea">
 		<legend><?php echo T("layoutInport"); ?></legend>
 			<label for="newMedia"><?php echo T("NewMediaName"); ?>:</label>
-				<input type="text" id="newMedia" name="newMedia" />
+				<input type="file" id="newLayout" name="newLayout" />
 		  <input type="button" id="inportBtn" value="<?php echo T("Inport"); ?>" />
 		</fieldset>
 	</section>

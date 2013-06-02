@@ -11,7 +11,6 @@ var mlo = {
 		
 		$('#exportBtn').on('click',null,mlo.exportLayout);
 		$('#inportBtn').on('click',null,mlo.inportLayout);
-
 	},
 	
 	//------------------------------
@@ -30,7 +29,7 @@ var mlo = {
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
+			};
 			$('#material_cd').html(html);
 		});
 	},
@@ -41,21 +40,25 @@ var mlo = {
 		$('#rslts').html('');
 		$('#rsltsArea').show();
 		var choice = $('#material_cd option:selected');
-		$.getJSON(mlo.url, {'mode':'exportLayout',
+		$.get(mlo.url, {'mode':'exportLayout',
 										 		'material_cd':choice.val(),
 									  	 },
 			function (response) {
-				var text = '';
-				for (var i=0; i<response.length; i++){
-					text += JSON.stringify(response[i])+'<br />';
-				}
-				$('#rslts').html(text);
+			$('#rslts').html(response);
 			}
 		);
 	},
-	inportLayout: function () {
-		$('#msgArea').html('under construction');
-		$('#msgDiv').show();
+	inportLayout: function (e) {
+		$('#msgDiv').hide();
+		$('#rslts').html('');
+		$('#rsltsArea').show();
+		var reader = new FileReader();
+		var fn = $('#newLayout').prop('files');
+		reader.readAsText(fn[0]);
+		reader.onload = function () {
+			var text = reader.result;
+			$('#rslts').html(text);
+		};
 	},
 
 }
