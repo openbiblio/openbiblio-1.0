@@ -18,7 +18,7 @@
 			echo json_encode($list);
 			break;
 
-	  case 'inportLayout':
+	  case 'importLayout':
 			$db = new MaterialFields;
 			$recs = json_decode($_POST['layout']);
 			$nRecs = count($recs);
@@ -30,7 +30,7 @@
 				foreach ($recO as $k=>$v) {
 					$rec[$k] = $v;
 					$rec['material_field_id'] = null;
-					$rec['material_cd'] = 999;
+					$rec['material_cd'] = $_POST['material_cd'];
 				}
 				$err = $db->insert($rec);
 				echo $err;

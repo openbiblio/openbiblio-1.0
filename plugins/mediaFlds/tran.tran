@@ -7,14 +7,15 @@
 #****************************************************************************
 $trans["ChooseMedia"] = "Choose Media";
 $trans["FetchLayout"] = "Fetch Layout";
-$trans["InportLayout"] = "Inport Layout";
-$trans["InportInstructions"] ="Prior to inporting a new media layout,<br />
+$trans["importLayout"] = "Import Layout";
+$trans["importInstructions"] ="Prior to importing a new media layout,<br />
 			you must FIRST create an entry for that media type.<br />
 			For that, go to 'Media Types' under the Admin menu.";
 $trans["ExportInstructions"] = "";
 $trans["layoutExport"] = "Export Existing Layout";
-$trans["layoutInport"] = "Inport New Layout";
+$trans["layoutimport"] = "import New Layout";
 $trans["mediaFlds"] = "Media Layouts";
-$trans["mediaFldsInOut"] = "Media Layout Inport/Export";
+$trans["mediaFldsInOut"] = "Media Layout import/Export";
 $trans["NewLayoutFile"] = "File with New Layout";
+$trans["UseForMedia"] = "Use For this Media";
 

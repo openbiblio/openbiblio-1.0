@@ -2,19 +2,12 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
- 
   require_once("../shared/common.php");
-
 	session_cache_limiter(null);
-
   $tab = "tools";
   $nav = "mediaFlds";
-  //$focus_form_name = "utilForm";
-  //$focus_form_field = "collSet";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-
 ?>
-
 	<h1 id="pageHdr" class="title"><?php echo T("mediaFldsInOut"); ?></h1>
 
 	<section id="entry">
@@ -27,18 +20,22 @@
 				 4. Save using a meaningful name.<br />
 			</p>
 			<hr />
-			<label for="material_cd" ><?php echo T("ChooseMedia"); ?>:</label>
-				<select id="material_cd" ></select>
+			<label for="exportMedia" ><?php echo T("ChooseMedia"); ?>:</label>
+				<select id="exportMedia" ></select>
 		  <input type="button" id="exportBtn" value="<?php echo T("FetchLayout"); ?>" />
 		</fieldset>
+
 		<br />
+
 		<fieldset id="actionArea">
-		<legend><?php echo T("layoutInport"); ?></legend>
-			<p class="note"><?php echo T("InportInstructions"); ?><p>
+		<legend><?php echo T("layoutimport"); ?></legend>
+			<p class="note"><?php echo T("importInstructions"); ?><p>
 			<hr />
 			<label for="newMedia"><?php echo T("NewLayoutFile"); ?>:</label>
-				<input type="file" id="newLayout" name="newLayout" />
-		  <input type="button" id="inportBtn" value="<?php echo T("InportLayout"); ?>" />
+				<input type="file" id="newLayout" name="newLayout" /><br />
+			<label for="importMedia" ><?php echo T("UseForMedia"); ?>:</label>
+				<select id="importMedia" ></select>
+		  <input type="button" id="importBtn" value="<?php echo T("importLayout"); ?>" />
 		</fieldset>
 	</section>
 	

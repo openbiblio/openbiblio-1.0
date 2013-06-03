@@ -64,13 +64,13 @@ biblio information. Then when I search for a topic, that paper will spring up
 just like any other, and the call number will imediately me its in local storage,
 and perhaps via circ/checkout allow me to retrieve a copy.
 
-19 May 2013 - Fred
-we need an admin function to import / export a media layout.
-
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+19 May 2013 - Fred, done 2 Jun 2013
+we need an admin function to import / export a media layout.
 
 31 May 2013 - Fred, done 1 Jun 2013
 Item photo editor need to show photo selected or to be deleted.

@@ -10,7 +10,7 @@ var mlo = {
 		mlo.resetForms();
 		
 		$('#exportBtn').on('click',null,mlo.exportLayout);
-		$('#inportBtn').on('click',null,mlo.inportLayout);
+		$('#importBtn').on('click',null,mlo.importLayout);
 	},
 	
 	//------------------------------
@@ -30,7 +30,8 @@ var mlo = {
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			};
-			$('#material_cd').html(html);
+			$('#exportMedia').html(html);
+			$('#importMedia').html(html);
 		});
 	},
 
@@ -39,7 +40,7 @@ var mlo = {
 		$('#msgDiv').hide();
 		$('#rslts').html('');
 		$('#rsltsArea').show();
-		var choice = $('#material_cd option:selected');
+		var choice = $('#exportMedia option:selected');
 		$.get(mlo.url, {'mode':'exportLayout',
 										 		'material_cd':choice.val(),
 									  	 },
@@ -48,18 +49,19 @@ var mlo = {
 			}
 		);
 	},
-	inportLayout: function (e) {
+	importLayout: function (e) {
 		$('#msgDiv').hide();
 		$('#rslts').html('');
 		$('#rsltsArea').show();
 		var reader = new FileReader();
 		var fn = $('#newLayout').prop('files');
+		var choice = $('#importMedia option:selected');
 		reader.readAsText(fn[0]);
 		reader.onload = function () {
 			var json = reader.result;
-			//$('#rslts').html(json);
-			$.post(mlo.url, {'mode':'inportLayout',
+			$.post(mlo.url, {'mode':'importLayout',
 											 'layout':json,
+											 'material_cd':choice.val(),
 											},
 				function (response) {
 					$('#rslts').html(response);
