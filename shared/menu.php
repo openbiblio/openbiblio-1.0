@@ -98,7 +98,6 @@ function staff_menu() {
 	}
 
 	##-------------------------------------------------------------------------------------##
-	//print_r($_SESSION);
 	if($_SESSION["hasToolsAuth"]){
 		Nav::node('tools', T("Tools"), '../tools/index.php');
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
@@ -111,7 +110,10 @@ function staff_menu() {
 	}
 	
 	##-------------------------------------------------------------------------------------##
+		Nav::node('working', T("Under Construction"), '../working/index.php');
+		Nav::node('working/testApp', T("webcam"), '../working/webcamForm.php');
 
+	##-------------------------------------------------------------------------------------##
 	$text = "../shared/help.php";
 	$helpurl = "javascript:popSecondary(".$text.")";
 
@@ -121,6 +123,7 @@ function staff_menu() {
 	$helpurl .= "')";
 	Nav::node('help', T("Help"), $helpurl);
 	
+	##-------------------------------------------------------------------------------------##
 	## #######################################
 	## For plug-in support
 	## #######################################
