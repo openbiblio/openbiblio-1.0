@@ -316,6 +316,10 @@ function mkBiblioArray($dbObj) {
 			$err = $ptr->appendThumb_e($_POST['bibid'], $_POST['caption'],
 				$_FILES['image']);
 		}
+		if(isset($err)) {
+			print_r($err);
+			break;
+		}
   	$set = $ptr->getByBibid($_REQUEST['bibid']);
 		while ($row = $set->next()) {
 		  $imgs[] = $row;

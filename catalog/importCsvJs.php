@@ -217,7 +217,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 		var showAll = csvi.getShowAllFlg();
 		csvi.csvRecords = [];
 		//console.log('showAll='+showAll);
-		//console.log('bcdDflt='+$('#bcdDeflt').val());	
+		//console.log('bcdDflt='+$('#bcdDeflt').val());
 	
 		/* for use with barcodes */
 		var width = <?php echo $_SESSION[item_barcode_width]; ?>;
@@ -228,15 +228,14 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 					
 			/* break an input line into an array of its parts */
 			var data = csvi.File[line].split(csvi.fldTerminator);
-
 			if (showAll) csvRcrds.append(' <tr><td colspan="3">&nbsp</td></tr>\n');
-    	if (showAll) csvRcrds.append(' <tr><td colspan="3"> - - - - - - - Line #'+i+' - - - - - - - - </td></tr>\n');
+    	if (showAll) csvRcrds.append(' <tr><td colspan="3"> - - - - - - - Line #'+line+' - - - - - - - - </td></tr>\n');
 
   		var mandatoryCols = {
   			'coll'  : false,		// collection name
   			'media' : false,		// media type name
 			};
-			
+
 			var fields = {},
 					rec = {};
 
@@ -244,6 +243,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 			rec['copy_desc'] = $('#copyText').val();
 			rec['copy_action'] = csvi.getCopyAction();
 			rec['status_cd'] = csvi.getDfltStatus();
+
 			//console.log(rec);
 			//console.log("desc="+rec['copy_desc']+"; action="+rec['copy_action']+"; status="+rec['status_cd']);
 
@@ -254,7 +254,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
     			var entry = data[n].trim();
 				}
     		var target = csvi.headings[n].trim();
-				//console.log("working "+(n)+" of "+csvi.headings.length+" with entry '"+entry+"' in column '"+target+"'");    
+				//console.log("working "+(n)+" of "+csvi.headings.length+" with entry '"+entry+"' in column '"+target+"'");
 
 				/* if current column is a 'mandatory' and is present in headings mark as 'seen' */
     		if ( mandatoryCols[target] ) mandatoryCols[target] = true;
@@ -278,9 +278,9 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 			    	var thisOne = csvi.collections.indexOf(entry);
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltColl();
-							csvErrs.append(" <tr><td colspan=\"3\">"+<?php echo "'".T("LineNmbr")."'"; ?>+i+" "+<?php echo "'".T("Collection")."'"; ?>
+							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+line+" "+<?php echo "'".T("Collection")."'"; ?>
 															+" '"+entry+"' <?php echo T("invalid, using default"); ?></td></tr>\n");
-			      }		      
+			      }
 			      rec['collection_cd'] = thisOne;
       			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Collection")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
 			      break;
@@ -322,7 +322,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 			      break;
 			  }
 			}
-			
+
 			/* check for barcode present, and add if user wishes */
 			if ((! rec['barcode_nmbr'] ) && ( $('#cpyAction').val() == csvi.BCD_ALWAYS )){
 				csvErrs.append(' <tr><td colspan="3">Line #'+line+" "+<?php echo "'".T("barcode missing, auto-generating")."'"; ?>+"</td></tr>\n");
@@ -340,17 +340,18 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 	},
 	
 	post2Db: function () {
-		//console.log('sending records to OB database now');
-			$('#intro').hide();
-			$('#review').show();
-			$('#rslts').show();
+		//console.log('sending '+csvi.csvRecords.length+' records to OB database now');
+		$('#intro').hide();
+		$('#review').show();
+		$('#rslts').show();
 
-			$('#csvImportRslts').html('<ul id="postRslt"></ul>');
-			for (var i=0; i<csvi.csvRecords.length; i++) {
-				csvi.postOneRecd(csvi.csvRecords[i]);
-			}
+		$('#csvImportRslts').html('<ul id="postRslt"></ul>');
+		for (var i=0; i<csvi.csvRecords.length; i++) {
+			csvi.postOneRecd(csvi.csvRecords[i]);
+		}
 	},
 	postOneRecd: function (aRcd) {
+		//console.log(aRcd);
 		$.post(csvi.url, {'mode':'postCsvData', 'record':aRcd}, function (response) {
 			$('#postRslt').append('<li>'+response+'</li>');
 		});

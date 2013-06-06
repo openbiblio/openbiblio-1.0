@@ -682,6 +682,7 @@ console.log('wid='+bs.fotoWidth);
 														$('#photoEditBtn').show();
 													},
 				error: 						function (data) {
+console.log('upload failure');
 														console.log(data);
 														$('#fotoMsg').html(data).show();
 													},
