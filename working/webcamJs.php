@@ -54,6 +54,10 @@ var wc = {
 			wc.rotateImage(-90);
 			wc.ctxOut.drawImage(wc.canvasIn,0,0, 100,150, 0,0, 100,150);
 		});
+		$('#fotoSrce').on('change',null,function () {
+    	if(this.files.length === 0) return;
+			$('#fotoFile').val($('#fotoSrce').val());
+		});
 
 		wc.resetForm();
 	},

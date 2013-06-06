@@ -142,6 +142,10 @@ var bs = {
 		$('#updtFotoBtn').on('click',null,bs.doUpdatePhoto);
 		$('#deltFotoBtn').on('click',null,bs.doDeletePhoto);
 		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
+		$('#fotoSrce').on('change',null,function () {
+    	if(this.files.length === 0) return;
+			$('#fotoFile').val($('#fotoSrce').val());
+		});
 
 		bs.resetForms();
 		bs.fetchOpts(); // also inits itemDisplayJs
@@ -672,8 +676,6 @@ var bs = {
 														bs.crntFotoUrl = '../photos/' + data[0]['url'];
 														$('#fotoMsg').html('cover photo posted').show();
 														var fotoFile = '../photos/'+bs.crntFotoUrl;
-console.log('ht='+bs.fotoHeight);
-console.log('wid='+bs.fotoWidth);
 														$('#fotoBlkB').html('<img src="'+fotoFile+'" id="fotoBiblio" class="hover" '
       													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
 														$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
@@ -682,11 +684,12 @@ console.log('wid='+bs.fotoWidth);
 														$('#photoEditBtn').show();
 													},
 				error: 						function (data) {
-console.log('upload failure');
+														console.log('upload failure');
 														console.log(data);
 														$('#fotoMsg').html(data).show();
 													},
 			});
+		e.preventDefault();
 		return false;
 	},
 	doDeletePhoto: function (e) {
