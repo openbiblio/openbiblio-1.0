@@ -50,7 +50,7 @@ var wc = {
 		}
 
 		$('#capture').on('click',null,function() {
-			console.log('click!');
+			//console.log('click!');
 			wc.ctxIn.drawImage(wc.video,0,0, 150,100);
 			wc.rotateImage(-90);
 			wc.ctxOut.drawImage(wc.canvasIn,0,0, 100,150, 0,0, 100,150);
