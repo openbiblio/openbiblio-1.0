@@ -51,6 +51,7 @@ var wc = {
 
 		$('#capture').on('click',null,function() {
 			//console.log('click!');
+    	$('#errSpace').hide();
 			wc.ctxIn.drawImage(wc.video,0,0, 150,100);
 			wc.rotateImage(-90);
 			wc.ctxOut.drawImage(wc.canvasIn,0,0, 100,150, 0,0, 100,150);
@@ -92,15 +93,20 @@ var wc = {
 
 	sendFoto: function (e) {
 		e.stopPropagation();
+    $('#errSpace').hide();
+		var imgMode = '',
+				url = $('#fotoName').val();
+		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
 		$.post(wc.url,{'mode':'addNewFoto',
 									 'type':'base64',
-									 'img':wc.canvasOut.toDataURL('image/jpeg'),
+									 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
                    'bibid':'99999',
-									 'url':$('#fotoName').val(),
+									 'url': url,
                    'position':0,
 									},
 									function (response) {
-console.log(response);
+									if (response.indexOf('posted') >= 0)
+										$('#errSpace').html(response).show();
 									});
 		e.preventDefault();
 		return false;

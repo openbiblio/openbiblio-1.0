@@ -308,7 +308,23 @@ function mkBiblioArray($dbObj) {
 	  ### left as an exercise for the motivated - FL (I'm burned out on this project)
 		break;
 	case 'addNewFoto':
-print_r($_POST);
+		define('UPLOAD_DIR', '../photos/');
+		$file = UPLOAD_DIR . $_POST['url'];
+		$img = $_POST['img'];
+		if (substr($file, -3,3) == 'png')
+			$imgFmt = 'png';
+		 else
+			$imgFmt = 'jpeg';
+		$img = str_replace('data:image/'.$imgFmt.';base64,', '', $img);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);
+		$success = file_put_contents($file, $data);
+		if ($success) {
+			echo $file.' posted';
+		} else {
+			echo 'Unable to save the file.';
+			print_r($_POST);
+		}
 		break;
 
 	case 'addNewPhoto':

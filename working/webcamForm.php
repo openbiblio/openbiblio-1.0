@@ -36,12 +36,12 @@
 					<input type="button" id="capture" name="capture" value="Take Photograph" /><br ><br />
           <br />
 					<label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
-					<p id="fotoFolder">../photos/<i>filename</i>.png</p>
+					<p id="fotoFolder">../photos/<i>filename</i>.jpg</p>
 					<br />
 					<label for="fotoName"><?php echo T("Name"); ?>:</label>
 					<input type="text" id="fotoName" name="url" size="32"
-								pattern="(.*?)(\.)(jpg|png)$" required aria-required="true"
-								title="Only png files are acceptable." />
+								pattern="(.*?)(\.)(jpg|jpeg|png)$" required aria-required="true"
+								title="Only jpeg or png files are acceptable." />
 								<span class="reqd">*</span>
 				</fieldset>
 			</form>
@@ -53,9 +53,6 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 	include "./webcamJs.php";
 ?>
-
-<script src="http://www.nihilogic.dk/labs/exif/exif.js" type="text/javascript"></script>
-<script src="http://www.nihilogic.dk/labs/binaryajax/binaryajax.js" type="text/javascript"></script>
 
 </body>
 </html>
