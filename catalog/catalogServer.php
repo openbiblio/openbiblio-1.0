@@ -307,6 +307,10 @@ function mkBiblioArray($dbObj) {
 	  $ptr = new BiblioImages;
 	  ### left as an exercise for the motivated - FL (I'm burned out on this project)
 		break;
+	case 'addNewFoto':
+print_r($_POST);
+		break;
+
 	case 'addNewPhoto':
 	  $ptr = new BiblioImages;
 		if ($_POST['type'] == 'Link') {

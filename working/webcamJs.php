@@ -9,6 +9,7 @@
 
 var wc = {
 	init: function () {
+		wc.url = '../catalog/catalogServer.php';
 		wc.initWidgets();
 		$('.help').hide();
 
@@ -54,10 +55,14 @@ var wc = {
 			wc.rotateImage(-90);
 			wc.ctxOut.drawImage(wc.canvasIn,0,0, 100,150, 0,0, 100,150);
 		});
+
 		$('#fotoSrce').on('change',null,function () {
     	if(this.files.length === 0) return;
 			$('#fotoFile').val($('#fotoSrce').val());
 		});
+
+		$('#addFotoBtn').on('click',null,wc.sendFoto);
+		//$('#fotoForm').on('submit',null,wc.sendFoto);
 
 		wc.resetForm();
 	},
@@ -69,7 +74,7 @@ var wc = {
 		//console.log('resetting Search Form');
 		$('.help').hide();
 		$('#errSpace').hide();
-		$('#fotoDiv').show();
+		$('#fotoAreaDiv').show();
 	},
 	//----//
 
@@ -83,6 +88,22 @@ var wc = {
 		wc.ctxIn.translate(-th, -tw);
 		wc.ctxIn.drawImage(canvasIn, 0,0);
 		wc.ctxIn.restore();
+	},
+
+	sendFoto: function (e) {
+		e.stopPropagation();
+		$.post(wc.url,{'mode':'addNewFoto',
+									 'type':'base64',
+									 'img':wc.canvasOut.toDataURL('image/jpeg'),
+                   'bibid':'99999',
+									 'url':$('#fotoName').val(),
+                   'position':0,
+									},
+									function (response) {
+console.log(response);
+									});
+		e.preventDefault();
+		return false;
 	},
 
 	share: function (){
