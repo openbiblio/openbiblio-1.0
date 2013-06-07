@@ -49,6 +49,8 @@ var wc = {
 				errBack);
 		}
 
+		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
+
 		$('#capture').on('click',null,function() {
 			//console.log('click!');
     	$('#errSpace').hide();
@@ -57,9 +59,14 @@ var wc = {
 			wc.ctxOut.drawImage(wc.canvasIn,0,0, 100,150, 0,0, 100,150);
 		});
 
-		$('#fotoSrce').on('change',null,function () {
-    	if(this.files.length === 0) return;
-			$('#fotoFile').val($('#fotoSrce').val());
+		$('#browse').on('change',null,function (e) {
+			// Get the FileList object from the file select event
+			var files = e.target.files;
+			if(files.length === 0) return;
+			var file = files[0];
+			if(file.type !== '' && !file.type.match('image.*')) return;
+			$('#fotoName').val($('#browse').val());
+			wc.readFile(file)
 		});
 
 		$('#addFotoBtn').on('click',null,wc.sendFoto);
@@ -76,9 +83,19 @@ var wc = {
 		$('.help').hide();
 		$('#errSpace').hide();
 		$('#fotoAreaDiv').show();
+		wc.changeImgSource();
 	},
 	//----//
-
+	changeImgSource: function () {
+		if ($("input:checked").val() == 'cam') {
+			$('#capture').show();
+			$('#browse').hide();
+		} else {
+			$('#capture').hide();
+			$('#browse').show();
+		}
+	},
+	//----//
 	rotateImage: function (angle) {
     var tw = wc.canvasIn.width/2,
 				th = wc.canvasIn.height/2,
@@ -90,7 +107,23 @@ var wc = {
 		wc.ctxIn.drawImage(canvasIn, 0,0);
 		wc.ctxIn.restore();
 	},
+	readFile: function (file) {
+		var reader = new FileReader();  // output is to reader.result
+		reader.onerror = function () {
+			console.log('FileReader error: '+reader.error);
+			return;
+		}
+		reader.onloadend = function(e) {
+    	var tempImg = new Image();
+    	tempImg.src = reader.result;
+    	tempImg.onload = function() {
+        wc.ctxOut.drawImage(tempImg, 0, 0, 100,150);
+			}
+		};
+    reader.readAsDataURL(file);
+	},
 
+	//------------------------------
 	sendFoto: function (e) {
 		e.stopPropagation();
     $('#errSpace').hide();
@@ -112,42 +145,6 @@ var wc = {
 		return false;
 	},
 
-	share: function (){
-		/* derived from the following work:
-		 * 'Uploading directly from HTML5 canvas to imgur
-		 * written by Jonas Wagner, on 9/11/11 4:28 PM.
-		 */
-		// trigger me onclick
-    try {
-        var img = canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
-    } catch(e) {
-        var img = canvas.toDataURL().split(',')[1];
-    }
-    // open the popup in the click handler so it will not be blocked
-    var w = window.open();
-    w.document.write('Uploading...');
-    // upload to imgur using jquery/CORS
-    // https://developer.mozilla.org/En/HTTP_access_control
-    $.ajax({
-        url: 'http://api.imgur.com/2/upload.json',
-        type: 'POST',
-        data: {
-            type: 'base64',
-            // get your key here, quick and fast http://imgur.com/register/api_anon
-            key: 'YOUR-API-KEY',
-            name: 'neon.jpg',
-            title: 'test title',
-            caption: 'test caption',
-            image: img
-        },
-        dataType: 'json'
-    }).success(function(data) {
-        w.location.href = data['upload']['links']['imgur_page'];
-    }).error(function() {
-        alert('Could not reach api.imgur.com. Sorry :(');
-        w.close();
-    });
-	},
 }
 $(document).ready(wc.init);
 </script>

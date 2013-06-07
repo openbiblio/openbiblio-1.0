@@ -50,6 +50,8 @@ hr {
 	}
 figure { border: 1px solid gray; }
 legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
+label { margin:0; padding:0; }
+
 
 fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
 /*.inlinFldset { display:inline; };*/
@@ -213,7 +215,7 @@ div#content {
 .btnRow li input[value="Delete"] { float:right; margin-right:0; }
 
 .inlineFldSet { float:left; width:auto; border:0; margin-right:0.5em; padding:0; }
-.inlineFldSet label { display:block; }
+.inlineFldSet label { display:inline; }
 #vertSep { width:0; height:3em; margin-right:0.5em; padding:0; border:1px solid gray}
 
 #barcodeSearch { display:none; } /* reserved for desktop users */
@@ -267,6 +269,7 @@ xul.pagBtns li:last-child { float:right; color:green; }
 
 .cover_image { width:75px; }
 .cover_image img { border:solid black 2px; width:75px; }
+.fotoSrceBtns { display:inline; }
 .biblioImage { float:left; border:1px solid green; height:50px; width:40px; padding:0; }
 .photos {margin:0; padding:0; }
 /*

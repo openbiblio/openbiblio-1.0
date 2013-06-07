@@ -367,6 +367,7 @@ $trans["Field must be greater than zero"] = "Field must be greater than zero";
 $trans["Field must be numeric"] = "Field must be numeric";
 $trans["Fields marked are required"] = "Fields marked with <span class='reqd'>*</span> are required.";
 $trans["File name end not jpg or png"] = "File name does not end in '.jpg' or '.png'.";
+$trans["FileName"] = "Item Name or Id";
 $trans["Find Item by Barcode"] = "Find Item by Barcode";
 $trans["Find Member by Barcode"] = "Search Member by Barcode";
 $trans["Find Member by Name"] = "Search Member by Name";

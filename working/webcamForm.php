@@ -33,12 +33,18 @@
 			 		<canvas id="canvasOut" width="100" height="150"></canvas>
 				</fieldset>
 				<fieldset class="inlineFldSet">
-					<input type="button" id="capture" name="capture" value="Take Photograph" /><br ><br />
+					<fieldset>
+						<legend>Select an image Source</legend>
+						<label><input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>Camera</label>
+						<label><input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" \>Browse</label>
+					</fieldset>
+					<input type="button" id="capture" name="capture" value="Take Photograph" />
+					<input type="file" id="browse" name="browse" accept="image/png image/jpeg image/jpg" />
           <br />
 					<label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
 					<p id="fotoFolder">../photos/<i>filename</i>.jpg</p>
 					<br />
-					<label for="fotoName"><?php echo T("Name"); ?>:</label>
+					<label for="fotoName"><?php echo T("FileName"); ?>:</label>
 					<input type="text" id="fotoName" name="url" size="32"
 								pattern="(.*?)(\.)(jpg|jpeg|png)$" required aria-required="true"
 								title="Only jpeg or png files are acceptable." />
