@@ -141,12 +141,13 @@ var bs = {
 		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);
 		$('#updtFotoBtn').on('click',null,bs.doUpdatePhoto);
 		$('#deltFotoBtn').on('click',null,bs.doDeletePhoto);
-		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
+//		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
+/*
 		$('#fotoSrce').on('change',null,function () {
     	if(this.files.length === 0) return;
 			$('#fotoFile').val($('#fotoSrce').val());
 		});
-
+*/
 		bs.resetForms();
 		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
@@ -640,17 +641,19 @@ var bs = {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 			$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
       			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-	  	$('#fotoFile').val('');
+//	  	$('#fotoFile').val('');
+wc.eraseImage();
+	  	$('#fotoName').val(idis.crntBibid+'.jpg');
 	  	$('#fotoCapt').val('');
 	  	$('#fotoImgUrl').val('');
 	  } else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
 	  	$('#fotoFile').val(idis.crntFoto.url);
 			var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
-			$('#fotoBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
-      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-	  	$('#fotoCapt').val(idis.crntFoto.caption);
-	  	$('#fotoImgUrl').val(fotoFile);
+//			$('#fotoBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
+//      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+//	  	$('#fotoCapt').val(idis.crntFoto.caption);
+//	  	$('#fotoImgUrl').val(fotoFile);
 		}
 		$('#photoEditorDiv').show();
 	},

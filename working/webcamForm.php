@@ -19,20 +19,21 @@
 ?>
 
 	<div id="crntMbrDiv">to be filled by server</div>
-	<p id="errSpace" class="error">to be filled by server</p>
+	<p id="errSpace" class="error"></p>
 
-	<div id="fotoAreaDiv" role="main">
+	<fieldset>
+		<legend id="fotoEdLegend"></legend>
 		<div id="fotoDiv">
-		  <video id="camera" autoplay width="150" height="100" autoplay  style="display:none"></video>
+		  <video id="camera" width="150" height="100" preload="none" style="display:none"></video>
 		 	<canvas id="canvasIn" width="150" height="150" style="display:none"></canvas>
 		</div>
 
 		<div id="fotoCntlDiv">
 			<form id="fotoForm">
-				<fieldset class="inlineFldSet">
+				<fieldset class="inline">
 			 		<canvas id="canvasOut" width="100" height="150"></canvas>
 				</fieldset>
-				<fieldset class="inlineFldSet">
+				<fieldset class="inline">
 					<fieldset>
 						<legend>Select an image Source</legend>
 						<label><input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>Camera</label>
@@ -53,7 +54,7 @@
 			</form>
 			<input type="submit" id="addFotoBtn" value="<?php echo T("Add New"); ?>" />
 		</div>
-	</div>
+	</fieldset>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

@@ -56,6 +56,8 @@ class BiblioImages {
 		if (!is_numeric($bibid) or !is_numeric($position)) {
 			return new Error(T("Invalid bibid or position."));
 		}
+		$n = $position;
+		/*
 		if (preg_match('/\.(jpg|png)$/', strtolower($file['name']), $regs)) {
 			$ext = $regs[0];
 		} else {
@@ -83,6 +85,7 @@ class BiblioImages {
 //		} else {
 //			@unlink($full);
 //		}
+		*/
 		$this->_renumber($position);
 		$sql = $this->db->mkSQL("insert into images values (%N, %Q, %Q, %N, %Q, %Q) ",
 												$bibid, $thumb, $url, $position, $caption, $type);

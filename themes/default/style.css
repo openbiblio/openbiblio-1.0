@@ -54,7 +54,9 @@ label { margin:0; padding:0; }
 
 
 fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
-/*.inlinFldset { display:inline; };*/
+fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5em; padding:0; }
+fieldset.inlineFldSet label { display:inline; }
+.inline { display:inline; };
 
 /* tables & parts of */
 table { margin:2px; width:99%; border-spacing:0; }
@@ -214,8 +216,6 @@ div#content {
 .btnRow li input[value="Delete This Item"],
 .btnRow li input[value="Delete"] { float:right; margin-right:0; }
 
-.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5em; padding:0; }
-.inlineFldSet label { display:inline; }
 #vertSep { width:0; height:3em; margin-right:0.5em; padding:0; border:1px solid gray}
 
 #barcodeSearch { display:none; } /* reserved for desktop users */
@@ -272,7 +272,7 @@ xul.pagBtns li:last-child { float:right; color:green; }
 .fotoSrceBtns { display:inline; }
 .biblioImage { float:left; border:1px solid green; height:50px; width:40px; padding:0; }
 .photos {margin:0; padding:0; }
-/*
+
 .no-touch .biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform:	scale(5.0); -webkit-transform-origin:top right;
 	-moz-transform:		scale(5.0); -moz-transform-origin:		top right;
@@ -280,7 +280,7 @@ xul.pagBtns li:last-child { float:right; color:green; }
 	-o-transform:			scale(5.0);
 	transform:					scale(5.0);
 	}
-*/
+
 #bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
 #bibBlkA, fotoBlkA { display:inline-block; float:left; }
 #bibBlkB, fotoBlkB { display:inline-block; float:right; }

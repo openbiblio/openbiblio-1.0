@@ -265,10 +265,58 @@
 	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 	<p id="fotoMsg" class="error"></p>
 
-	<form id="fotoForm" name="fotoForm" enctype="multipart/form-data" method="POST" >
-	<!--ul class="btnRow">
+	<fieldset>
+		<legend id="fotoEdLegend"></legend>
+		<div id="fotoDiv" style="display:none" >
+		  <video id="camera" width="150" height="100" preload="none" ></video>
+		 	<canvas id="canvasIn" width="150" height="150" ></canvas>
+		</div>
+
+		<div id="fotoCntlDiv">
+			<form id="fotoForm">
+				<fieldset class="inline">
+			 		<canvas id="canvasOut" width="100" height="150"></canvas>
+				</fieldset>
+				<fieldset class="inline">
+					<fieldset>
+						<legend>Select an image Source</legend>
+						<label><input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>Camera</label>
+						<label><input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" \>Browse</label>
+					</fieldset>
+					<input type="button" id="capture" name="capture" value="Take Photograph" />
+					<input type="file" id="browse" name="browse" accept="image/png image/jpeg image/jpg" />
+          <br />
+					<label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
+					<p id="fotoFolder">../photos/<i>filename</i>.jpg</p>
+					<br />
+					<label for="fotoName"><?php echo T("FileName"); ?>:</label>
+					<input type="text" id="fotoName" name="url" size="32"
+								pattern="(.*?)(\.)(jpg|jpeg|png)$" required aria-required="true"
+								title="Only jpeg or png files are acceptable." />
+								<span class="reqd">*</span>
+				</fieldset>
+
+				<input type="hidden" id="fotoBibid" name="bibid" value="" />
+			</form>
+		</div>
+	</fieldset>
+
+	<ul class="btnRow">
 		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
-	</ul-->
+		<li><input type="submit" id="addFotoBtn" value="<?php echo T("Add New"); ?>" /></li>
+		<li><input type="button" id="updtFotoBtn" value="<?php echo T("Update"); ?>" /></li>
+		<li><input type="button" id="deltFotoBtn" value="<?php echo T("Delete"); ?>" /></li>
+	</ul>
+
+<!--
+	<h3 id="fotoHdr"><?php echo T("PhotoEditor"); ?></h3>
+	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
+	<p id="fotoMsg" class="error"></p>
+
+	<form id="fotoForm" name="fotoForm" enctype="multipart/form-data" method="POST" >
+	<ul class="btnRow">
+		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
+	</ul>
 	<fieldset>
 		<legend id="fotoEdLegend"></legend>
 		<div id="fotoBlks">
@@ -317,6 +365,7 @@
 		<li><input type="button" id="deltFotoBtn" value="<?php echo T("Delete"); ?>" /></li>
 	</ul>
 	</form>
+-->
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
@@ -328,7 +377,8 @@
 	include_once(REL(__FILE__,'itemEditorJs.php'));
 	//include_once(REL(__FILE__,'copyEditorJs.php'));
 	include_once(REL(__FILE__,'srchJs.php'));
-?>	
+	include_once(REL(__FILE__,'../working/webcamJs.php'));
+?>
 
 </body>
 </html>
