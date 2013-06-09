@@ -250,6 +250,7 @@ var bs = {
 			bs.opts['lookupAvail'] = bs.opts['lookup2'];
 			bs.opts['showBiblioPhotos'] = bs.opts['show_item_photos'];
 			bs.opts['barcdWidth'] = bs.opts['item_barcode_width'];
+      bs.opts['current_site'] = bs.opts['library_name'];
 			idis.init(bs.opts); // used for biblio item & copy displays
 
 			bs.fotoWidth = bs.opts['thumbnail_width'];
