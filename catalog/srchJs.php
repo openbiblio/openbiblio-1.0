@@ -639,8 +639,8 @@ var bs = {
 
 	  if (idis.crntFoto == null) {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
-			$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+			//$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+      //			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
 //	  	$('#fotoFile').val('');
 wc.eraseImage();
 	  	$('#fotoName').val(idis.crntBibid+'.jpg');
