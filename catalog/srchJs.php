@@ -137,17 +137,12 @@ var bs = {
 		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
 		
-		// for the photo editor screen.availHeight
+		// for the photo editor screen
 		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);
-		$('#updtFotoBtn').on('click',null,bs.doUpdatePhoto);
-		$('#deltFotoBtn').on('click',null,bs.doDeletePhoto);
-//		$('#addFotoBtn').on('click',null,bs.doAddNewPhoto);
-/*
-		$('#fotoSrce').on('change',null,function () {
-    	if(this.files.length === 0) return;
-			$('#fotoFile').val($('#fotoSrce').val());
-		});
-*/
+		$('#updtFotoBtn').on('click',null,wc.doUpdatePhoto);
+		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
+		$('#addFotoBtn').on('click',null,wc.sendFoto);
+
 		bs.resetForms();
 		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
@@ -639,84 +634,14 @@ var bs = {
 
 	  if (idis.crntFoto == null) {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
-			//$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      //			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-//	  	$('#fotoFile').val('');
-wc.eraseImage();
+			wc.eraseImage();
 	  	$('#fotoName').val(idis.crntBibid+'.jpg');
-	  	$('#fotoCapt').val('');
-	  	$('#fotoImgUrl').val('');
 	  } else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
 	  	$('#fotoFile').val(idis.crntFoto.url);
 			var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
-//			$('#fotoBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
-//      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-//	  	$('#fotoCapt').val(idis.crntFoto.caption);
-//	  	$('#fotoImgUrl').val(fotoFile);
 		}
 		$('#photoEditorDiv').show();
-	},
-	doUpdatePhoto: function () {
-	  /// left as an exercise for the motivated - FL (I'm burned out on this project)
-	},
-	doAddNewPhoto: function (e) {
-		e.stopPropagation();
-		$.ajaxFileUpload({
-				url:							bs.url,
-				secureuri:				false,
-				fileElementId:		'fotoSrce',
-				dataType: 				'text',
-				data:							{'mode':'addNewPhoto',
-													 'bibid':$('#fotoBibid').val(),
-													 'url':$('#fotoFile').val(), 
-													 'caption':$('#fotoCapt').val(),
-													 'type':$('#fotoType').val(),
-													 'position':$('#fotoPos').val(),
-													},
-				success: 					function (response) {
-														var data = JSON.parse(response);
-														bs.crntFotoUrl = '../photos/' + data[0]['url'];
-														$('#fotoMsg').html('cover photo posted').show();
-														var fotoFile = '../photos/'+bs.crntFotoUrl;
-														$('#fotoBlkB').html('<img src="'+fotoFile+'" id="fotoBiblio" class="hover" '
-      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-														$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
-      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-														$('#photoAddBtn').hide();
-														$('#photoEditBtn').show();
-													},
-				error: 						function (data) {
-														console.log('upload failure');
-														console.log(data);
-														$('#fotoMsg').html(data).show();
-													},
-			});
-		e.preventDefault();
-		return false;
-	},
-	doDeletePhoto: function (e) {
-		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {
-	  	$.post(bs.url,{'mode':'deletePhoto',
-										 'bibid':$('#fotoBibid').val(),
-										 'url':$('#fotoFile').val(),
-										},
-										function(response){
-											$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-											$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
-                      idis.crntFoto = null;
-						          $('#fotoFile').val('');
-						          $('#fotoCapt').val('');
-											$('#photoAddBtn').show();
-											$('#photoEditBtn').hide();
-											$('#fotoMsg').html('cover photo deleted').show();
-										}
-			);
-		}
-		e.stopPropagation();
-		return false;
 	},
 	
 	/* ====================================== */

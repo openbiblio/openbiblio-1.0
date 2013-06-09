@@ -265,64 +265,12 @@
 <div id="photoEditorDiv">
 	<?php require_once(REL(__FILE__,"../catalog/photoEditorForm.php"));?>
 
-<!--
-	<h3 id="fotoHdr"><?php echo T("PhotoEditor"); ?></h3>
-	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-	<p id="fotoMsg" class="error"></p>
-
-	<form id="fotoForm" name="fotoForm" enctype="multipart/form-data" method="POST" >
-	<ul class="btnRow">
-		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
-	</ul>
-	<fieldset>
-		<legend id="fotoEdLegend"></legend>
-		<div id="fotoBlks">
-			<div id="fotoBlkA">
-				<table id="editTbl" role="presentation">
-						<tr id="imgSrce">
-							<td>
-								<label for="fotoSrce"><?php echo T("Source"); ?>:</label>
-								<input type="file" id="fotoSrce" value="" name="image" size="32"
-												accept="image/*" capture="camera" required aria-required="true" />
-								<span class="reqd">*</span>
-							</td>
-							<td id="fotoBlkB" rowspan="3"></td>
-						</tr>
-						<tr>
-							<td>
-								<label for="fotoFile"><?php echo T("StoreAs"); ?></label>
-								<input type="text" id="fotoFile" name="url" size="32"
-										pattern="(.*?)(\.)(jpg|png)$" required aria-required="true"
-										title="Only jpg and png files are acceptable." />
-								<span class="reqd">*</span>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label for="fotoCapt"><?php echo T("Caption"); ?>:</label>
-								<input type="text" id="fotoCapt" name="caption" size="32" />
-							</td>
-						</tr>
-				</table>
-			</div>
-			<div id="fotoBlkB"> </div>
-		</div>
-	</fieldset>
-	
-	<input type="hidden" id="fotoBibid" name="bibid" value="" />
-	<input type="hidden" id="fotoMode" name="mode" value="" />
-	<input type="hidden" id="fotoType" name="type" value="Link" />
-	<input type="hidden" id="fotoImgUrl" name="imgurl" value="Link" />
-	<input type="hidden" id="fotoPos" name="position" value="0" />
-	
 	<ul class="btnRow">
 		<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		<li><input type="submit" id="addFotoBtn" value="<?php echo T("Add New"); ?>" /></li>
 		<li><input type="button" id="updtFotoBtn" value="<?php echo T("Update"); ?>" /></li>
 		<li><input type="button" id="deltFotoBtn" value="<?php echo T("Delete"); ?>" /></li>
 	</ul>
-	</form>
--->
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
