@@ -16,7 +16,7 @@ var wc = {
 		wc.video = document.querySelector('video');
 		wc.videoOpts = { video:true, audio:false, };
     var errBack = function (error) {
- 			alert("You must allow webcam access for the camera part of this page to work.");
+ 			alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
 			console.log("Video capture error: ", error.code);
 		};
 		var handleVideo = function (stream) {
@@ -119,7 +119,7 @@ var wc = {
 		var imgMode = '',
 				url = $('#fotoName').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
-		$.post(wc.url,{'mode':'addNewFoto',
+		$.post(wc.url,{'mode':'addNewPhoto',
 									 'type':'base64',
 									 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
                    'bibid':$('#fotoBibid').val(),
@@ -147,16 +147,14 @@ var wc = {
 		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {
 	  	$.post(bs.url,{'mode':'deletePhoto',
 										 'bibid':$('#fotoBibid').val(),
-										 'url':$('#fotoFile').val(),
+										 'url':$('#fotoName').val(),
 										},
 										function(response){
-											$('#fotoBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+											wc.eraseImage();
 											$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
       													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
                       idis.crntFoto = null;
-						          $('#fotoFile').val('');
-						          $('#fotoCapt').val('');
+						          $('#fotoName').val('');
 											$('#photoAddBtn').show();
 											$('#photoEditBtn').hide();
 											$('#fotoMsg').html('cover photo deleted').show();

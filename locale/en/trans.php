@@ -79,6 +79,7 @@ $trans["Adult"] = "Adult";
 $trans["Advanced Search?"] = "Advanced Search?";
 $trans["Align:"] = "Align:";
 $trans["All"] = "All";
+$trans["allowWebcamAccess4Camera"] = "You must allow webcam access for the camera part of this page to work.";
 $trans["Always"] = "Always";
 $trans["Amount:"] = "Amount:";
 $trans["Amount"] = "Amount";

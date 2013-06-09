@@ -1,3 +1,9 @@
+<?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+?>
+
 	<h3 id="fotoHdr"><?php echo T("PhotoEditor"); ?></h3>
 	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 	<p id="fotoMsg" class="error"></p>

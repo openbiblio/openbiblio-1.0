@@ -307,7 +307,7 @@ function mkBiblioArray($dbObj) {
 	  $ptr = new BiblioImages;
 	  ### left as an exercise for the motivated - FL (I'm burned out on this project)
 		break;
-	case 'addNewFoto':
+	case 'addNewPhoto':
 		define('UPLOAD_DIR', '../photos/');
 		$file = UPLOAD_DIR . $_POST['url'];
 		$img = $_POST['img'];
@@ -336,8 +336,12 @@ function mkBiblioArray($dbObj) {
 			print_r($_POST);
 		}
 		break;
+	case 'deletePhoto':
+	  $ptr = new BiblioImages;
+		$ptr->deleteByBibid($_POST['bibid']);
+		break;
 
-	case 'addNewPhoto':
+	case 'XaddNewPhoto':
 	  $ptr = new BiblioImages;
 		if ($_POST['type'] == 'Link') {
 			$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'],
@@ -355,10 +359,6 @@ function mkBiblioArray($dbObj) {
 		  $imgs[] = $row;
 		}
 		echo json_encode($imgs);
-		break;
-	case 'deletePhoto':
-	  $ptr = new BiblioImages;
-		$ptr->deleteByBibid($_POST['bibid']);
 		break;
 			  
 	//// ====================================////
