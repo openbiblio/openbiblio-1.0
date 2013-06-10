@@ -14,15 +14,22 @@
 		<!-- to reduce annoyance, only load video comppnents if wanted-->
 		<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 		<div id="fotoDiv" style="display:none" >
-		  <video id="camera" width="150" height="100" preload="none" ></video>
-		 	<canvas id="canvasIn" width="150" height="150" ></canvas>
+			<!-- The following have their dimensions interchanged for books that have spine facing user -->
+		  <video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"
+												 height="<?php echo Settings::get('thumbnail_width');?>"
+												 preload="none" ></video>
+		 	<canvas id="canvasIn" width="<?php echo Settings::get('thumbnail_height');?>"
+			 											height="<?php echo Settings::get('thumbnail_height');?>" >
+			</canvas>
 		</div>
 		<?php } ?>
 
 		<div id="fotoCntlDiv">
 			<form id="fotoForm">
 				<fieldset class="inline">
-			 		<canvas id="canvasOut" width="100" height="150"></canvas>
+			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_width');?>"
+					 											 height="<?php echo Settings::get('thumbnail_height');?>">
+					</canvas>
 				</fieldset>
 				<fieldset class="inline">
 					<fieldset>

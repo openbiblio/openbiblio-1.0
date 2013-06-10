@@ -29,29 +29,16 @@ var wc = {
 		    navigator.getUserMedia(wc.videoOpts, handleVideo, errBack);
 		}
 
+		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 200;
+		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 300;
 		wc.canvasOut = document.getElementById('canvasOut'),
 		wc.ctxOut = canvasOut.getContext('2d');
 		wc.canvasIn = document.getElementById('canvasIn'),
 		wc.ctxIn = canvasIn.getContext('2d');
 
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
-
-		$('#capture').on('click',null,function() {
-    	$('#errSpace').hide();
-			wc.ctxIn.drawImage(wc.video,0,0, 150,100);
-			wc.rotateImage(-90);
-			wc.ctxOut.drawImage(wc.canvasIn,0,0, 100,150, 0,0, 100,150);
-		});
-
-		$('#browse').on('change',null,function (e) {
-			// Get the FileList object from the file select event
-			var files = e.target.files;
-			if(files.length === 0) return;
-			var file = files[0];
-			if(file.type !== '' && !file.type.match('image.*')) return;
-			$('#fotoName').val($('#browse').val());
-			wc.readFile(file)
-		});
+		$('#capture').on('click',null,wc.takeFoto);
+		$('#browse').on('change',null,wc.getFotoFile);
 
 		wc.resetForm();
 	},
@@ -106,13 +93,28 @@ var wc = {
     	var tempImg = new Image();
     	tempImg.src = reader.result;
     	tempImg.onload = function() {
-        wc.ctxOut.drawImage(tempImg, 0, 0, 100,150);
+        wc.ctxOut.drawImage(tempImg, 0, 0, wc.fotoWidth,wc.fotoHeight);
 			}
 		};
     reader.readAsDataURL(file);
 	},
 
 	//------------------------------
+	getFotoFile: function () {
+		// Get the FileList object from the file select event
+		var files = e.target.files;
+		if(files.length === 0) return;
+		var file = files[0];
+		if(file.type !== '' && !file.type.match('image.*')) return;
+		$('#fotoName').val($('#browse').val());
+		wc.readFile(file)
+	},
+	takeFoto: function () {
+  	$('#errSpace').hide();
+		wc.ctxIn.drawImage(wc.video,0,0, wc.fotoHeight,wc.fotoWidth);
+		wc.rotateImage(-90);
+		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
+	},
 	sendFoto: function (e) {
 		e.stopPropagation();
     $('#errSpace').hide();
@@ -132,7 +134,7 @@ var wc = {
 										bs.crntFotoUrl = '../photos/' + data[0]['url'];
 										$('#fotoMsg').html('cover photo posted').show();
 										$('#bibBlkB').html('<img src="'+bs.crntFotoUrl+'" id="biblioFoto" class="hover" '
-      									+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+      									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
 										$('#photoAddBtn').hide();
 										$('#photoEditBtn').show();
 									}
@@ -152,7 +154,7 @@ var wc = {
 										function(response){
 											wc.eraseImage();
 											$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      													+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+      													+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
                       idis.crntFoto = null;
 						          $('#fotoName').val('');
 											$('#photoAddBtn').show();
