@@ -29,8 +29,10 @@ var wc = {
 		    navigator.getUserMedia(wc.videoOpts, handleVideo, errBack);
 		}
 
-		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 200;
-		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 300;
+		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
+		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
+		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+
 		wc.canvasOut = document.getElementById('canvasOut'),
 		wc.ctxOut = canvasOut.getContext('2d');
 		wc.canvasIn = document.getElementById('canvasIn'),
@@ -112,7 +114,7 @@ var wc = {
 	takeFoto: function () {
   	$('#errSpace').hide();
 		wc.ctxIn.drawImage(wc.video,0,0, wc.fotoHeight,wc.fotoWidth);
-		wc.rotateImage(-90);
+		wc.rotateImage(wc.fotoRotate);
 		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
 	},
 	sendFoto: function (e) {

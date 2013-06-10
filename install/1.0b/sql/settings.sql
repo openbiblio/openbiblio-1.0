@@ -74,6 +74,8 @@ INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data
 ('checkout_interval', 26, 'Checkout_Interval', 'select', NULL, NULL, NULL, '1', 'tools'),
 ('item_barcode_width', 27, 'Item Barcode Width', 'int', NULL, NULL, NULL, '13', 'tools'),
 ('show_lib_info', 28, 'Show Lib Info on Staff pages', 'bool', NULL, NULL, NULL, 'N', 'admin'),
-('thumbnail_width', 29, 'Thumbnail Max Width', 'int', NULL, NULL, NULL, '100', 'admin'),
-('thumbnail_height', 30, 'Thumbnail Max Height', 'int', NULL, NULL, NULL, '150', 'admin'),
-('version', 33, NULL, 'text', NULL, '\0', NULL, '1.0b', 'none');
+('thumbnail_width', 29, 'Thumbnail Max Width (mm)', 'int', NULL, NULL, NULL, '100', 'admin'),
+('thumbnail_height', 30, 'Thumbnail Max Height (mm)', 'int', NULL, NULL, NULL, '150', 'admin'),
+('version', 33, NULL, 'text', NULL, '\0', NULL, '1.0b', 'none'),
+('thumbnail_rotation', 31, 'Thumbnail Rotation (deg)', 'int', NULL, NULL, NULL, '0', 'admin');
+;
