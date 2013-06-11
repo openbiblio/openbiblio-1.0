@@ -138,12 +138,6 @@ var bs = {
 		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
 		
-		// for the photo editor screen
-		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);
-		$('#updtFotoBtn').on('click',null,wc.doUpdatePhoto);
-		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
-		$('#addFotoBtn').on('click',null,wc.sendFoto);
-
 		bs.resetForms();
 		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
@@ -643,6 +637,7 @@ var bs = {
 	  	$('#fotoFile').val(idis.crntFoto.url);
 			var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
 		}
+		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);
 		$('#photoEditorDiv').show();
 	},
 	

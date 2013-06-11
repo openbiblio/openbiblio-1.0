@@ -116,6 +116,7 @@ var ni = {
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
 
 		//ni.fetchHosts();
 
@@ -232,12 +233,14 @@ var ni = {
 			else {
 	    	var rslt = $.parseJSON(response);
 	    	ni.bibid = rslt.bibid;
-	  		ni.showCopyEditor();
+	  		ni.showCopyEditor(ni.bibid);
 	  	}
 		});
 		return false;
 	},
 	
+	//------------------------------------------------------------------------------------------
+	// copy-editor support
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,<?php echo $defBarcodeDigits; ?>,'0');
@@ -245,6 +248,12 @@ var ni = {
 	  $.get(ni.bs_url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
 	  	$('#editRsltMsg').html(response).show();
 		})
+	},
+
+	getNewBarcd: function () {
+		$.getJSON(ni.bs_url,{'mode':'getNewBarcd'}, function(jsonInpt){
+		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
+		});
 	},
 
 	showCopyEditor: function () {
@@ -265,7 +274,7 @@ var ni = {
 		}
 	  $.post(ni.bs_url,params, function(response){
 			if(response == '!!success!!') {
-				ni.doBackToSrch();
+				ni.doPhotoAdd(ni.bibid);
 			} else {
 				$('#editRsltMsg').html(response).show();
 			}
@@ -273,10 +282,31 @@ var ni = {
 	  return false;
 	},
 
-	getNewBarcd: function () {
-		$.getJSON(ni.bs_url,{'mode':'getNewBarcd'}, function(jsonInpt){
-		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
+	//------------------------------------------------------------------------------------------
+	// photo-editor support
+	doPhotoAdd: function (bibid) {
+		$('#copyEditorDiv').hide();
+		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
+    $('#fotoMsg').hide();
+		$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
+
+		$('#updtFotoBtn').hide();
+		$('#deltFotoBtn').hide();
+		$('#addFotoBtn').show();
+		$('.gobkFotoBtn').on('click',null, function () {
+console.log('goBack clicked');
+			ni.doBackToSrch();
 		});
+		//$('#addFotoBtn').on('click',null,wc.sendFoto); //now in photoEditor
+
+		$('#fotoMode').val('addNewPhoto')
+		$('#fotoSrce').attr({'required':true, 'aria-required':true});
+	  $('#fotoSrce').val('')
+	  $('#fotoBibid').val(bibid);
+		wc.eraseImage();
+  	$('#fotoName').val(bibid+'.jpg');
+    $('#searchDiv').hide();
+		$('#photoEditorDiv').show();
 	},
 
 	//------------------------------------------------------------------------------------------

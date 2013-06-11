@@ -41,6 +41,9 @@ var wc = {
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
 		$('#capture').on('click',null,wc.takeFoto);
 		$('#browse').on('change',null,wc.getFotoFile);
+		$('#addFotoBtn').on('click',null,wc.sendFoto);
+		$('#updtFotoBtn').on('click',null,wc.doUpdatePhoto);
+		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
 
 		wc.resetForm();
 	},
@@ -133,9 +136,10 @@ var wc = {
 									function (response) {
 										var data = JSON.parse(response);
 										//console.log('image posting OK');
-										bs.crntFotoUrl = '../photos/' + data[0]['url'];
+										var crntFotoUrl = '../photos/' + data[0]['url'];
+										if (typeof(bs) !== 'undefined') bs.crntFotoUrl = crntFotoUrl;
 										$('#fotoMsg').html('cover photo posted').show();
-										$('#bibBlkB').html('<img src="'+bs.crntFotoUrl+'" id="biblioFoto" class="hover" '
+										$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
       									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
 										$('#photoAddBtn').hide();
 										$('#photoEditBtn').show();
