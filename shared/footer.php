@@ -10,7 +10,7 @@ unset($_SESSION['postVars']);
 ?>
 </div>
 
-<-- All JavaScript is placed at the end of <body> to improve overall performance 
+<!-- All JavaScript is placed at the end of <body> to improve overall performance
 		note:
 		jQuery was here, moved to header-top so it would be available to conditional modules
 -->
