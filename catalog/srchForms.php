@@ -282,9 +282,6 @@
 	include_once(REL(__FILE__,'itemEditorJs.php'));
 	//include_once(REL(__FILE__,'copyEditorJs.php'));
 	include_once(REL(__FILE__,'srchJs.php'));
-	if ($_SESSION['show_item_photos'] == 'Y') {
-		include_once(REL(__FILE__,'photoEditorJs.php'));
-	}
 ?>
 
 </body>

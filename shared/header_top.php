@@ -73,7 +73,14 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
 <script src="../shared/prefixfree.min.js"></script>
   
-<!-- All other JavaScript is placed at the end of <body> (see footer.php) 
+<!-- we place jQuery here because several JS modules loaded in line require -->
+<!-- it be inplace before they are loaded. -->
+<!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.0.min.js"></script><!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<script src="../shared/jquery/jquery-2.0.1.min.js"></script>
+<!--<![endif]-->
+
+<!-- All other JavaScript is placed at the end of <body> (see footer.php)
 		 to match industry best practices and to improve overall performance -->
 
 <!-- This style sheet resets all browsers to a common default style -->

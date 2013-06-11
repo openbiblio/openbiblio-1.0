@@ -7,15 +7,13 @@
 unset($_SESSION['pageErrors']);
 unset($_SESSION['postVars']);
 
-/* All JavaScript is placed at the end of <body> to improve overall performance */
 ?>
 </div>
 
-<!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.0.min.js"></script><!--<![endif]-->
-<!--[if gt IE 8]><!-->
-<script src="../shared/jquery/jquery-2.0.1.min.js"></script>
-<!--<![endif]-->
-
+<-- All JavaScript is placed at the end of <body> to improve overall performance 
+		note:
+		jQuery was here, moved to header-top so it would be available to conditional modules
+-->
 
 <script src="../shared/jsLib.js" defer></script>
 

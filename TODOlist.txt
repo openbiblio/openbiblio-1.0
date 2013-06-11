@@ -56,6 +56,7 @@ teacher & grade are custom copy fields. Audience level should be removed.
 > If so, this drop down menu does not reflect the current member type list
 
 19 May 2013 - Fred
+on-line papers, articles, blogs, etc. Siters go away, or change URL.
 why can't I store that entire document right in OB, along with all the usual
 biblio information. Then when I search for a topic, that paper will spring up
 just like any other, and the call number will imediately me its in local storage,
@@ -66,7 +67,7 @@ investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
 
-08 May 2013 - Fred
+08 May 2013 - Fred, working now 10 Jun
 Admin Calendars does not appear to be working; unable to edit.
 
 10 Jun 2013 - Fred/Neil, fixed 10 Jun
