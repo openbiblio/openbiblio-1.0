@@ -341,26 +341,6 @@ function mkBiblioArray($dbObj) {
 		$ptr->deleteByBibid($_POST['bibid']);
 		break;
 
-	case 'XaddNewPhoto':
-	  $ptr = new BiblioImages;
-		if ($_POST['type'] == 'Link') {
-			$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'],
-				$_FILES['image'], $_POST['url']);
-		} else {
-			$err = $ptr->appendThumb_e($_POST['bibid'], $_POST['caption'],
-				$_FILES['image']);
-		}
-		if(isset($err)) {
-			print_r($err);
-			break;
-		}
-  	$set = $ptr->getByBibid($_REQUEST['bibid']);
-		while ($row = $set->next()) {
-		  $imgs[] = $row;
-		}
-		echo json_encode($imgs);
-		break;
-			  
 	//// ====================================////
 	default:
 	  echo "<h5>Invalid mode: $_REQUEST[mode]</h5>";

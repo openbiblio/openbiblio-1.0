@@ -48,7 +48,7 @@ var bs = {
 		$('#ph_searchText').on('keyup',null,bs.checkPhraseSrchBtn);
 
 		// for the search results section
-		$('#addNewBtn').on('click',null,bs.makeNewCopy);
+		$('#addNewBtn').on('click',null,bs.doNewCopy);
 		$('#addList2CartBtn').on('click',null,bs.doAddListToCart);
 		$('#addItem2CartBtn').on('click',null,bs.doAddItemToCart);
 		$('#biblioListDiv .gobkBtn').on('click',null,bs.rtnToSrch);
@@ -95,6 +95,9 @@ var bs = {
 			}
 		});
 
+		// for the copy editor screen
+		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
+
 		// for the item edit and online update functions
 	  $('#onlnUpdtBtn').on('click',null,function (){
 			$('#onlnDoneBtn').show();
@@ -114,30 +117,6 @@ var bs = {
 		 	$('#biblioDiv').show();
 		});
 			
-		// for the new copy function
-		// to handle startup condition
-		if ($('#autobarco:checked').length > 0) {
-			$('#barcode_nmbr').disable();
-		}
-		// if user changes his/her mind
-		$('#autobarco').on('change',null,function (){
-		  if ($('#autobarco:checked').length > 0) {
-				$('#barcode_nmbr').disable();
-				bs.doGetBarcdNmbr();
-				$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
-			}
-			else {
-				$('#barcode_nmbr').enable();
-			}
-		});
-
-		// for the copy editor screen
-		$('#barcode_nmbr').on('change',null,bs.chkBarcdForDupe);
-		$('#copySubmitBtn').val('<?php echo T("Update"); ?>');
-		$('#copySubmitBtn').on('click',null,bs.doCopyUpdate);
-		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
-		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
-		
 		bs.resetForms();
 		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
@@ -285,7 +264,7 @@ var bs = {
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
-			$('#copy_site').html(html);
+			$('#copySite').html(html);
 			html = '<option value="all"  selected="selected">All</option>' + html;
 			$('#srchSites').html(html);
 
@@ -834,51 +813,17 @@ var bs = {
 	},
 
 	/* ====================================== */
-	makeNewCopy: function () {
+	doNewCopy: function (e) {
+  	e.stopPropagation();
 		$('#biblioDiv').hide();
-		if ($('#autobarco:checked').length > 0) {
-			bs.doGetBarcdNmbr();
-		}
   	var crntsite = bs.opts.current_site
 		$('#copy_site').val(crntsite);
-		
-		$('#copyEditorDiv').show();
 
-		// unbind & bind needed here because of button reuse elsewhere
-		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').on('click',null,function () {
-			idis.doCopyNew();
-			//bs.rtnToBiblio();
-			return false;
-		});
-	  // prevent submit button from firing a 'submit' action
-		return false;
+		$('#copyEditorDiv').show();
+		ced.doCopyNew(e);
+		e.preventDefault();
 	},
-	doGetBarcdNmbr: function () {
-		$.getJSON(bs.url,{'mode':'getNewBarcd'}, function(jsonInpt){
-		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);		  
-		});	
-	},
-	chkBarcdForDupe: function () {
-		var barcd = $.trim($('#barcode_nmbr').val());
-		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
-		$('#barcode_nmbr').val(barcd);
-		// Set copyId to null if not defined (in case of new item)
-		var currCopyId = null;
-		if(typeof(bs.crntCopy) != "undefined"){
-			currCopyId = bs.crntCopy.copyid;
-		}
-		
-	  $.get(bs.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
-	  	if(response.length > 0){
-			$('#copySubmitBtn').disable().css('color', '#888888');
-			$('#editRsltMsg').html(response).show();
-		} else {
-			$('#copySubmitBtn').enable().css('color', bs.srchBtnClr);
-			$('#editRsltMsg').html(response).show();
-		}
-		})
-	},
+
 };
 $(document).ready(bs.init);
 

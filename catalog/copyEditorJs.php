@@ -1,0 +1,183 @@
+<script language="JavaScript" >
+<?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+   See the file COPYRIGHT.html for more details.
+ */
+?>
+// JavaScript Document
+"use strict";
+
+var ced = {
+	init: function () {
+		ced.url = '../catalog/catalogServer.php';
+		ced.initWidgets();
+		$('.help').hide();
+
+		$('#barcode_nmbr').on('change',null,ced.chkBarcdForDupe);
+		$('#copySubmitBtn').val('<?php echo T("Update"); ?>');
+		$('#copySubmitBtn').on('click',null,ced.doCopyUpdate);
+		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
+
+		if ($('#autobarco:checked').length > 0) {
+			$('#barcode_nmbr').disable();
+		}
+		// if user changes his/her mind
+		$('#autobarco').on('change',null,function (){
+		  if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
+				ced.doGetBarcdNmbr();
+				$('#copySubmitBtn').enable(); //.css('color', bs.srchBtnClr);
+			}
+			else {
+				$('#barcode_nmbr').enable();
+			}
+		});
+
+	},
+
+	//------------------------------
+	initWidgets: function () {
+	},
+	//----//
+	resetForm: function () {
+		$('#editRsltMsg').hide();
+	},
+	//----//
+	doGetBarcdNmbr: function () {
+		$.getJSON(ced.url,{'mode':'getNewBarcd'}, function(jsonInpt){
+		  $('#copyBarcode_nmbr').val(jsonInpt.barcdNmbr)
+														.attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>)');
+ 			//pattern="[0]{10}"
+		});
+	},
+
+	chkBarcdForDupe: function () {
+		var barcd = $.trim($('#barcode_nmbr').val());
+		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
+		$('#barcode_nmbr').val(barcd);
+		// Set copyId to null if not defined (in case of new item)
+		var currCopyId = null;
+		if(typeof(bs.crntCopy) != "undefined"){
+			currCopyId = bs.crntCopy.copyid;
+		}
+
+	  $.get(ced.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
+	  	if(response.length > 0){
+			$('#copySubmitBtn').disable(); //.css('color', '#888888');
+			$('#editRsltMsg').html(response).show();
+		} else {
+			$('#copySubmitBtn').enable(); //.css('color', bs.srchBtnClr);
+			$('#editRsltMsg').html(response).show();
+		}
+		})
+	},
+	/* ====================================== */
+	doCopyNew: function () {
+		if ($('#autobarco:checked').length > 0) {
+			ced.doGetBarcdNmbr(); //results will be posted to copyBarcode_nmbr field
+		}
+		$('#copySite').val(<?php echo Settings::get('library_name');?>);
+		$('#copyBibid').val(idis.theBiblio.bibid);
+		$('#copyMode').val('newCopy');
+
+		// unbind & bind needed here because of button reuse elsewhere
+		$('#copySubmitBtn').unbind('click');
+		$('#copySubmitBtn').on('click',null,function () {
+			var params= $('#copyForm').serialize();
+			var rslt = ced.doPostCopy2DB(params);
+			if (rslt == '!!success!!') $('#editRsltMsg').html('Copy posted successfully!');
+			return false;
+		});
+	  // prevent submit button from firing a 'submit' action
+		return false;
+	},
+
+	doCopyEdit: function (e) {
+		$('#editRsltMsg').html('');
+		var copyid = $(this).next().next().val();
+		for (var nCopy in idis.copyJSON) {
+			idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
+		  if (idis.crntCopy['copyid'] == copyid) break;
+		}
+		$('#copyBarcode_nmbr').val(idis.crntCopy.barcode_nmbr);
+		$('#copyDesc').val(idis.crntCopy.copy_desc);
+		$('#copySite').val([idis.crntCopy.site]);
+		$('#copyTbl #status_cd').val(idis.crntCopy.statusCd);
+		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
+
+  	var crntsite = idis.opts.current_site
+		$('#copySite').val(crntsite);
+
+		// custom fields
+		for(var nField in idis.crntCopy.custFields){
+			$('#copyCustom_'+idis.crntCopy.custFields[nField].code).val(idis.crntCopy.custFields[nField].data);
+		}
+
+		// unbind & bind needed here because of button reuse elsewhere
+		$('#copySubmitBtn').unbind('click');
+		$('#copySubmitBtn').on('click',null,function () {
+			ced.doCopyUpdate();
+			return false;
+		});
+
+		// Set 'update' button to enabled in case it wasn't from a previous edit
+		$('#copySubmitBtn').enable();
+
+	  // prevent submit button from firing a 'submit' action
+		return false;
+	},
+	doCopyUpdate: function () {
+	  var barcdNmbr = $('#copyBarcode_nmbr').val();
+
+	  // serialize() ignores disabled fields, so cant reliably use it in this case
+	  var copyDesc = $('#copyDesc').val();
+	  var statusCd = $('#copyTbl #status_cd').val();
+	  var siteid = $('#copySite').val();
+		var params = "&mode=updateCopy&bibid="+idis.theBiblio.bibid+"&copyid="+idis.crntCopy.copyid
+					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
+					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
+
+		// Custom fields
+		for(var nField in idis.crntCopy.custFields){
+			// Only add if has a value, or changed from a value to nothing
+			if($('#copyCustom_'+idis.crntCopy.custFields[nField].code).val() != idis.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+idis.crntCopy.custFields[nField].code).val() != ""){
+				params = params + '&custom_'+idis.crntCopy.custFields[nField].code+'='+$('#copyCustom_'+idis.crntCopy.custFields[nField].code).val();
+			}
+		}
+
+		// post to DB
+		var rslt = ced.doPostCopy2DB(params);
+		if (rslt == '!!success!!') $('#editRsltMsg').html('Copy updated successfully!');
+		return false;
+	},
+	doPostCopy2DB: function (parms) {
+		//console.log('parms='+parms);
+	  $.post(ced.url,parms, function(response){
+	  	if(response == '!!success!!') {
+				idis.fetchCopyInfo(); // refresh copy display
+				$('#copyCancelBtn').val("Go Back");
+				return response;
+				//bs.rtnToBiblio();
+			} else {
+				$('#editRsltMsg').html(response);
+			}
+	  });
+	  // prevent submit button from firing a 'submit' action
+	  return false;
+	},
+	doCopyDelete: function (e) {
+	  $(this).parent().parent().addClass('hilite');
+	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
+			var copyid = $(this).next().val();
+	    var params = "&mode=deleteCopy&bibid="+idis.theBiblio.bibid+"&copyid="+copyid;
+	  	$.post(ced.url,params, function(response){
+	  	  $('#editRsltMsg').html(response);
+	  		idis.fetchCopyInfo(); // refresh copy display
+	  	});
+		};
+	  $(this).parent().parent().removeClass('hilite');
+		return false;
+	}
+}
+$(document).ready(ced.init);
+</script>
