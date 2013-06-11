@@ -37,9 +37,6 @@ In the process of another test I deleted all the entries in my system
 I found that the Custom Fields are still there.
 So the remove function should include custom fields, which is currently probably not the case.
 
-08 May 2013 - Fred
-Admin Calendars does not appear to be working; unable to edit.
-
 11 May 2013 - Fred
 Add New Copy screen should show suggested CallNmbr
 with suggested cpy no. (c.x) if not first copy.
@@ -68,6 +65,9 @@ and perhaps via circ/checkout allow me to retrieve a copy.
 investigate 'doi' for lookup consideration.
 
 ###################### Completed, most recent at top #########################
+
+08 May 2013 - Fred
+Admin Calendars does not appear to be working; unable to edit.
 
 10 Jun 2013 - Fred/Neil, fixed 10 Jun
 Thumbnail sizes set in Settings is ignored, fix it!

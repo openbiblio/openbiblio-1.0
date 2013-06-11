@@ -21,7 +21,6 @@
 	} else {
 		$calendar = NULL;
 	}
-
 	if ($calendar) {
 		$template = $calendar;
 		$calendars = new Calendars;
@@ -34,7 +33,6 @@
 		$template = 1;
 		$calname = '';
 	}
-
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
@@ -113,20 +111,25 @@
 		}
 	}
 ?>
+<style>
+	.calendarClosed { background-color:green; color:white; }
+</style>
 <script type="text/javascript">
 	function toggleDay(id) {
-		var input = document.getElementById('input-'+id);
-		var cell = document.getElementById('date-'+id);
+		var input$ = $('#input-'+id);
+		var cell$ = $('#date-'+id);
 		var className = "";
-		if (cell.className.match(/calendarToday/)) {
+		if (cell$.hasClass('calendarToday')) {
 			className = "calendarToday ";
 		}
-		if (input.value == "No") {
-			input.value = "Yes";
-			cell.className = className+"calendarOpen";
+		if(input$.val() == 'Yes') {
+      input$.val('No');
+			cell$.removeClass('calendarOpen');
+			cell$.addClass('calendarClosed');
 		} else {
-			input.value = "No";
-			cell.className = className+"calendarClosed";
+      input$.val('Yes');
+			cell$.removeClass('calendarClosed');
+			cell$.addClass('calendarOpen');
 		}
 		modified=true; // for link confirmation
 	}
@@ -139,31 +142,29 @@
 		}
 		pattern += '-'+year+'-'+month+'-[0-9][0-9])$';
 		var re = new RegExp(pattern);
-
-		var elems = document.getElementsByTagName('input');
-		for (var i=0; i<elems.length; i++) {
-			var m = re.exec(elems[i].id);
-			if (m) {
-				toggleDay(m[1]);
-			}
-		}
+		$('input').each(function(n){
+			var m = re.exec(this.id);
+			if (m) toggleDay(m[1]);
+		});
 	}
 </script>
-<h3><?php echo T("Edit Calendar"); ?></h3>
 
-<fieldset>
-<p><?php echo T("calendarEditFormMsg");?></p>
-<form name="calendar_edit" id="calendar_edit" method="post" action="../admin/calendar_edit.php">
-<input type="hidden" name="calendar" value="<?php echo H($calendar); ?>" />
-<table class="biblio_view">
-<tr>
-<td class="name" valign="bottom"><?php echo T("Name:"); ?></td>
-<td class="value" valign="bottom"><?php echo inputfield('text', 'name', $calname, array('size'=>'32')); ?></td>
-<td class="value" valign="bottom"><input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" /></td>
-</tr>
-</table>
-</fieldset>
-<br />
+	<h3><?php echo T("Edit Calendar"); ?></h3>
+
+	<p class="note"><?php echo T("calendarEditFormMsg");?></p>
+	<form name="calendar_edit" id="calendar_edit" method="post" action="../admin/calendar_edit.php">
+		<fieldset>
+			<input type="hidden" name="calendar" value="<?php echo H($calendar); ?>" />
+			<table class="biblio_view">
+			<tr>
+				<td class="name" valign="bottom"><?php echo T("Name:"); ?></td>
+				<td class="value" valign="bottom"><?php echo inputfield('text', 'name', $calname, array('size'=>'32')); ?></td>
+				<td class="value" valign="bottom"><input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" /></td>
+			</tr>
+			</table>
+		</fieldset>
+
+		<fieldset>
 <?php
 
 	$d = getdate(time());
@@ -183,12 +184,19 @@
 	$end = Date::addMonths($start, 12);
 	$cal = new EditingCalendar($template, $start, $end);
 	echo '<div style="padding: 4px; border-top: solid #006500 2px; border-bottom: solid #006500 2px">';
+	//echo '<div style="padding: 4px; >';
 	echo $cal->setStartMonth($d['mon']);
 	echo $cal->getYearView($d['year']);
 	echo '</div>';
+
 ?>
-<div style="padding-top: 4px; text-align: right"><input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" /></div>
-</form>
+		</fieldset>
+		<div style="padding-top: 4px; text-align: right">
+			<input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" />
+		</div>
+	</form>
+
 <?php
+	require_once("../shared/footer.php");
 
 	 ;

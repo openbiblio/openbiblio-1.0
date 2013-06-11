@@ -22,6 +22,8 @@ body {
 .error { color: red; font-weight:bold; !important; }
 .warning { color:orange; font-weight:bold; !important; }
 .bold { font-size:larger; font-weight:bold; }
+.note { font-size:0.7em; }
+.help { font-size:0.7em; display:none; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
@@ -193,9 +195,6 @@ div#content {
 	}
 .ie #content figure {width:480px;}
 #content .altBG { background:#dddddd; }
-
-.note { font-size:0.7em; }
-.help { font-size:0.7em; display:none; }
 
 #copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width:1px; padding:2px; border-style:solid; border-color:black; }

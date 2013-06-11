@@ -10,8 +10,7 @@
 .end parameters
 
 .sql
-	select c.code as calendar, c.description as name,
-		count(s.siteid) as sites
+	select c.code as calendar, c.description as name, count(s.siteid) as sites
 	from calendar_dm c
 		left join site s on s.calendar=c.code
 	group by c.code, c.description

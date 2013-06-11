@@ -44,8 +44,7 @@ if ($rpt->count() == 0) {
 	exit();
 }
 
-$page_url = new LinkUrl("../admin/calendars_list.php",
-	'page', array('type'=>'previous'));
+$page_url = new LinkUrl("../admin/calendars_list.php", 'page', array('type'=>'previous'));
 $disp = new ReportDisplay($rpt);
 echo '<div class="results_count">';
 echo T("%count% calendars.", array('count'=>$rpt->count()));
