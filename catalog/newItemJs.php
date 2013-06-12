@@ -68,9 +68,10 @@ var ni = {
 		// for the copy editor functions
 		// to handle startup condition
 		$('#copyForm').on('submit',null,function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			ni.doCopyNew();
+			//e.preventDefault();
+			//e.stopPropagation();
+			//ni.doCopyNew();
+			ni.doNewCopy(e);
 			return false;
 		});
 		$('#copyCancelBtn').on('click',null,function () {
@@ -241,7 +242,7 @@ var ni = {
 	
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
-	chkBarcdForDupe: function () {
+	xchkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,<?php echo $defBarcodeDigits; ?>,'0');
 		$('#barcode_nmbr').val(barcd);
@@ -250,24 +251,24 @@ var ni = {
 		})
 	},
 
-	getNewBarcd: function () {
+	xgetNewBarcd: function () {
 		$.getJSON(ni.bs_url,{'mode':'getNewBarcd'}, function(jsonInpt){
 		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
 		});
 	},
 
-	showCopyEditor: function () {
+	showCopyEditor: function (e) {
+  	//e.stopPropagation();
   	$('#selectionDiv').hide();
   	var crntsite = ni.opts.session.current_site
-		//console.log('crnt site='+crntsite);
-		$('#copyTbl #copy_site').val(crntsite);
-		if ($('#autobarco:checked').length > 0) {
-			ni.getNewBarcd(ni.bibid);
-		}
+		$('#copyBibid').val(ni.bibid);
+		$('#copy_site').val(crntsite);
 		$('#copyEditorDiv').show();
+		ced.doCopyNew(e);
+		//e.preventDefault();
 	},
 
-	doCopyNew: function () {
+	xdoCopyNew: function () {
 		var params= $('#copyForm').serialize()+ "&mode=newCopy&bibid="+ni.bibid;
 		if ($('#autobarco:checked').length > 0) {
 			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();

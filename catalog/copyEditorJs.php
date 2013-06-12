@@ -45,9 +45,8 @@ var ced = {
 	//----//
 	doGetBarcdNmbr: function () {
 		$.getJSON(ced.url,{'mode':'getNewBarcd'}, function(jsonInpt){
-		  $('#copyBarcode_nmbr').val(jsonInpt.barcdNmbr)
-														.attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>)');
- 			//pattern="[0]{10}"
+		  $('#copyBarcode_nmbr').val(jsonInpt.barcdNmbr)         // e.g. pattern="[0]{10}"
+														.attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
 		});
 	},
 
@@ -74,10 +73,10 @@ var ced = {
 	/* ====================================== */
 	doCopyNew: function () {
 		if ($('#autobarco:checked').length > 0) {
-			ced.doGetBarcdNmbr(); //results will be posted to copyBarcode_nmbr field
+      ced.doGetBarcdNmbr();
+      $('#copyBarcode_nmbr').disable();
 		}
 		$('#copySite').val(<?php echo Settings::get('library_name');?>);
-		$('#copyBibid').val(idis.theBiblio.bibid);
 		$('#copyMode').val('newCopy');
 
 		// unbind & bind needed here because of button reuse elsewhere
@@ -154,7 +153,6 @@ var ced = {
 		//console.log('parms='+parms);
 	  $.post(ced.url,parms, function(response){
 	  	if(response == '!!success!!') {
-				idis.fetchCopyInfo(); // refresh copy display
 				$('#copyCancelBtn').val("Go Back");
 				return response;
 				//bs.rtnToBiblio();

@@ -96,7 +96,10 @@ var bs = {
 		});
 
 		// for the copy editor screen
-		$('#copyCancelBtn').on('click',null,bs.rtnToBiblio);
+		$('#copyCancelBtn').on('click',null,function () {
+			idis.fetchCopyInfo(); // refresh copy display
+			bs.rtnToBiblio();
+		});
 
 		// for the item edit and online update functions
 	  $('#onlnUpdtBtn').on('click',null,function (){
@@ -816,6 +819,7 @@ var bs = {
 	doNewCopy: function (e) {
   	e.stopPropagation();
 		$('#biblioDiv').hide();
+		$('#copyBibid').val(bs.biblio.bibid);
   	var crntsite = bs.opts.current_site
 		$('#copy_site').val(crntsite);
 
