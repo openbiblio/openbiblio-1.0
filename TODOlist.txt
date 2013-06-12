@@ -56,7 +56,7 @@ teacher & grade are custom copy fields. Audience level should be removed.
 > If so, this drop down menu does not reflect the current member type list
 
 19 May 2013 - Fred
-on-line papers, articles, blogs, etc. Siters go away, or change URL.
+on-line papers, articles, blogs, etc. Sites go away, or change URL.
 why can't I store that entire document right in OB, along with all the usual
 biblio information. Then when I search for a topic, that paper will spring up
 just like any other, and the call number will imediately me its in local storage,
@@ -71,20 +71,24 @@ I get a blank page (no LH menu and library banner). However, if I select the
 browser's back button, I return to the login page (see attached image) but
 I can simply select where I want to go using the LH menu.
 
-12 Jun 2103 - Fred
+12 Jun 2013 - Neil/Fred
+> How do you remove unwanted calendars?
+dump existing and write new without using report generator.
+
+12 Jun 2013 - Fred
+deleting a biblio does not remove copy-status records
+
+###################### Completed, most recent at top #########################
+
+12 Jun 2103 - Fred, fixed 12 Jun
 New Item Copies, site list is unpopulated, no default selected too?
 No success message. No photo screen.
 
-12 Jun 2013 - Neil
+12 Jun 2013 - Neil, fixed 12 Jun
 >  The file browser facility does not work - I can select the image source and
 provide a file name. When I select 'add new' the red message 'cover photo posted'
 appears but the thumbnail box does not show the image.
 > The cover image that is posted to the item is all black.
-
-12 Jun 2013 - Neil
-> How do you remove unwanted calendars?
-
-###################### Completed, most recent at top #########################
 
 11 Jun 2013 - Fred, done 11 Jun
 CopyEditor, ItemEditor & ItemDisplay should be modularized like PhotoEditor.

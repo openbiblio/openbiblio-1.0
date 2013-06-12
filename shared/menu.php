@@ -111,7 +111,7 @@ function staff_menu() {
 	
 	##-------------------------------------------------------------------------------------##
 		Nav::node('working', T("Under Construction"), '../working/index.php');
-		Nav::node('working/testApp', T("webcam"), '../working/webcamForm.php');
+		Nav::node('working/testApp', T("Calendar Manager"), '../working/calendarForm.php');
 
 	##-------------------------------------------------------------------------------------##
 	$text = "../shared/help.php";

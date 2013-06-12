@@ -24,7 +24,7 @@ body {
 .bold { font-size:larger; font-weight:bold; }
 .note { font-size:0.7em; }
 .help { font-size:0.7em; display:none; }
-i { font-size:0.7em; color:light-blue; }
+i { font-size:0.7em; color:lightblue; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
@@ -54,7 +54,6 @@ hr {
 figure { border: 1px solid gray; }
 legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
 label { margin:0; padding:0; }
-
 
 fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
 fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5em; padding:0; }
@@ -229,6 +228,10 @@ ul.pagBtns li { display:block; list-style:none; margin:0; padding:0; }
 xul.pagBtns li:first-child { float:left; color:red; }
 xul.pagBtns li:last-child { float:right; color:green; }
  
+ul#calList { float:left; margin:0; padding:0; width:100%; }
+ul#calList li { display:block; list-style:none; margin:0; padding:0; }
+.calendarClosed { background-color:green; color:white; }
+
 /* search results displays */
 .listTbl { width:100%; text-align:left; }
 .title {

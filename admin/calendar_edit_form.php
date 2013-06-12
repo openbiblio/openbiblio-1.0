@@ -155,6 +155,7 @@
 	<form name="calendar_edit" id="calendar_edit" method="post" action="../admin/calendar_edit.php">
 		<fieldset>
 			<input type="hidden" name="calendar" value="<?php echo H($calendar); ?>" />
+
 			<table class="biblio_view">
 			<tr>
 				<td class="name" valign="bottom"><?php echo T("Name:"); ?></td>
@@ -162,6 +163,7 @@
 				<td class="value" valign="bottom"><input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" /></td>
 			</tr>
 			</table>
+
 		</fieldset>
 
 		<fieldset>
