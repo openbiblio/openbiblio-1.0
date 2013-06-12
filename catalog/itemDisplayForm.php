@@ -38,3 +38,6 @@
 		<tbody id="copies" class="striped"></tbody>
 		</table>
 	</fieldset>
+<?php
+	include_once(REL(__FILE__,'itemDisplayJs.php'));
+?>

@@ -278,9 +278,6 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
 	include_once('../shared/ajaxFileUpload/ajaxfileupload.js');
-	include_once(REL(__FILE__,'itemDisplayJs.php'));
-	include_once(REL(__FILE__,'itemEditorJs.php'));
-	//include_once(REL(__FILE__,'copyEditorJs.php'));
 	include_once(REL(__FILE__,'srchJs.php'));
 ?>
 

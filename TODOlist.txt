@@ -65,10 +65,10 @@ and perhaps via circ/checkout allow me to retrieve a copy.
 22 May 2013 - Neil/Fred
 investigate 'doi' for lookup consideration.
 
-11 Jun 2013 - Fred
-CopyEditor & ItemDisplay should be modularized like PhotoEditor.
-
 ###################### Completed, most recent at top #########################
+
+11 Jun 2013 - Fred, done 11 Jun
+CopyEditor, ItemEditor & ItemDisplay should be modularized like PhotoEditor.
 
 11 Jun 2013 - Fred, done 11 Jun
 Photo editor should work in NewItems, and popup after new Copy screen.
