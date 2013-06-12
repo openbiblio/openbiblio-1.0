@@ -145,8 +145,7 @@ var ced = {
 		}
 
 		// post to DB
-		var rslt = ced.doPostCopy2DB(params);
-		if (rslt == '!!success!!') $('#editRsltMsg').html('Copy updated successfully!');
+		ced.doPostCopy2DB(params);
 		return false;
 	},
 	doPostCopy2DB: function (parms) {
@@ -154,8 +153,7 @@ var ced = {
 	  $.post(ced.url,parms, function(response){
 	  	if(response == '!!success!!') {
 				$('#copyCancelBtn').val("Go Back");
-				return response;
-				//bs.rtnToBiblio();
+				$('#editRsltMsg').html('Copy updated successfully!');
 			} else {
 				$('#editRsltMsg').html(response);
 			}

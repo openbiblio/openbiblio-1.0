@@ -62,12 +62,12 @@ var wc = {
 		var chkd = $('input[name=imgSrce]:checked', '#fotoForm').val();
 		if (chkd == 'cam') {
 			$('#camera').attr('autoplay',true);
-			$('#fotoName').val('filename.jpg');
+			//$('#fotoName').val('filename.jpg');
 			$('#capture').show();
 			$('#browse').hide();
 		} else {
 			$('#camera').removeAttr('autoplay');
-			$('#fotoName').val('');
+			//$('#fotoName').val('');
 			$('#capture').hide();
 			$('#browse').show();
 		}
@@ -105,13 +105,13 @@ var wc = {
 	},
 
 	//------------------------------
-	getFotoFile: function () {
+	getFotoFile: function (e) {
 		// Get the FileList object from the file select event
 		var files = e.target.files;
 		if(files.length === 0) return;
 		var file = files[0];
 		if(file.type !== '' && !file.type.match('image.*')) return;
-		$('#fotoName').val($('#browse').val());
+		//$('#fotoName').val($('#browse').val());
 		wc.readFile(file)
 	},
 	takeFoto: function () {

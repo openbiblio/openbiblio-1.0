@@ -821,7 +821,7 @@ var bs = {
 		$('#biblioDiv').hide();
 		$('#copyBibid').val(bs.biblio.bibid);
   	var crntsite = bs.opts.current_site
-		$('#copy_site').val(crntsite);
+		$('#copySite').val(crntsite);
 
 		$('#copyEditorDiv').show();
 		ced.doCopyNew(e);

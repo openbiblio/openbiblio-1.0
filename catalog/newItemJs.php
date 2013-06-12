@@ -190,7 +190,7 @@ var ni = {
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
-			$('#copy_site').html(html);
+			$('#copySite').html(html);
 		});
 	},
 
@@ -242,50 +242,23 @@ var ni = {
 	
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
-	xchkBarcdForDupe: function () {
-		var barcd = $.trim($('#barcode_nmbr').val());
-		barcd = flos.pad(barcd,<?php echo $defBarcodeDigits; ?>,'0');
-		$('#barcode_nmbr').val(barcd);
-	  $.get(ni.bs_url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd}, function (response) {
-	  	$('#editRsltMsg').html(response).show();
-		})
-	},
-
-	xgetNewBarcd: function () {
-		$.getJSON(ni.bs_url,{'mode':'getNewBarcd'}, function(jsonInpt){
-		  $('#copyTbl #barcode_nmbr').val(jsonInpt.barcdNmbr);
-		});
-	},
-
 	showCopyEditor: function (e) {
   	//e.stopPropagation();
   	$('#selectionDiv').hide();
   	var crntsite = ni.opts.session.current_site
 		$('#copyBibid').val(ni.bibid);
-		$('#copy_site').val(crntsite);
+		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
 		ced.doCopyNew(e);
 		//e.preventDefault();
-	},
-
-	xdoCopyNew: function () {
-		var params= $('#copyForm').serialize()+ "&mode=newCopy&bibid="+ni.bibid;
-		if ($('#autobarco:checked').length > 0) {
-			params += "&barcode_nmbr="+$('#copyTbl #barcode_nmbr').val();
-		}
-	  $.post(ni.bs_url,params, function(response){
-			if(response == '!!success!!') {
-				ni.doPhotoAdd(ni.bibid);
-			} else {
-				$('#editRsltMsg').html(response).show();
-			}
-	  });
-	  return false;
+		$('#copyCancelBtn').on('click',null, function () {
+			ni.doPhotoAdd();
+		});
 	},
 
 	//------------------------------------------------------------------------------------------
 	// photo-editor support
-	doPhotoAdd: function (bibid) {
+	doPhotoAdd: function () {
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
     $('#fotoMsg').hide();
@@ -295,17 +268,15 @@ var ni = {
 		$('#deltFotoBtn').hide();
 		$('#addFotoBtn').show();
 		$('.gobkFotoBtn').on('click',null, function () {
-console.log('goBack clicked');
 			ni.doBackToSrch();
 		});
-		//$('#addFotoBtn').on('click',null,wc.sendFoto); //now in photoEditor
 
 		$('#fotoMode').val('addNewPhoto')
 		$('#fotoSrce').attr({'required':true, 'aria-required':true});
 	  $('#fotoSrce').val('')
-	  $('#fotoBibid').val(bibid);
+	  $('#fotoBibid').val(ni.bibid);
 		wc.eraseImage();
-  	$('#fotoName').val(bibid+'.jpg');
+  	$('#fotoName').val(ni.bibid+'.jpg');
     $('#searchDiv').hide();
 		$('#photoEditorDiv').show();
 	},
