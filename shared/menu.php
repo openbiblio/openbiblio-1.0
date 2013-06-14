@@ -55,9 +55,7 @@ function staff_menu() {
 				. "&".$params);
 			Nav::node('cataloging/biblio/holds', T("Hold Requests"), "../catalog/biblio_hold_list.php?".$params);
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/upload_usmarc_form.php");			
-			
-		Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");			
-			
+		Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"), "../catalog/bulkDelForm.php");
 	}
 	
@@ -66,7 +64,6 @@ function staff_menu() {
 		Nav::node('admin', T("Admin"), '../admin/index.php');
 		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');
 		Nav::node('admin/settings', T("Library Settings"), '../admin/settings_edit_form.php?reset=Y');
-
 		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
 		Nav::node('admin/calendar', T("Calendar Manager"), '../admin/calendarForm.php');

@@ -35,7 +35,7 @@ $form = array(
 			'default'=>$site['name']),
 		array('name'=>'barcode_nmbr', 'type=>fixed', 'title'=>T("Card Number").':',
 			'default'=>$mbr['barcode_nmbr']),
-		array('name'=>'email', 'title'=>T("Email Address:"),
+		array('name'=>'email', 'title'=>T("EmailAddress"),
 			'default'=>$mbr['email']),
 		array('name'=>'password', 'type'=>'password', 'title'=>T("Password:"),
 			'attrs'=>array('size'=>10, 'onchange'=>'document.forms["edit_account"].elements["confirm-pw"].value=""'),

@@ -45,7 +45,7 @@ if ($_REQUEST['confirm'] == 'Y') {
 		$pageErrors['email'] = T("Please enter your e-mail address.");
 	}
 	$msg .= T("requestSendPleaseSend")."\r\n";
-	$msg .= T("Email Address:").$_REQUEST['email']."\r\n\r\n";
+	$msg .= T("EmailAddress").$_REQUEST['email']."\r\n\r\n";
 }
 if ($_REQUEST['alternate'] == 'Y') {
 	$msg .= T("requestSendPleaseSelect")."\r\n\r\n";

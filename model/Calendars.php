@@ -23,7 +23,7 @@ class Calendars extends DmTable {
 	}
 	function deleteOne($code) {
 		if ($code == OBIB_MASTER_CALENDAR)
-			Fatal::internalError(T("Cannot Delete Master Calendar"));
+			Fatal::internalError(T("CannotDeleteMasterCalendar"));
 		$this->db->lock();
 		$sql = $this->db->mkSQL('DELETE FROM calendar_dm WHERE code=%N', $code);
 		$this->db->act($sql);

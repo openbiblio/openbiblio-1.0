@@ -5,6 +5,7 @@
 #****************************************************************************
 #*  Translation text for page transUtils.php
 #****************************************************************************
+$trans["All css class entries are being used"] = "All css class entries are being used";
 $trans["ChooseMedia"] = "Choose Media";
 $trans["FetchLayout"] = "Fetch Layout";
 $trans["importLayout"] = "Import Layout";

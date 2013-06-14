@@ -47,7 +47,7 @@
 					<label for="fotoName"><?php echo T("FileName"); ?>:</label>
 					<input type="text" id="fotoName" name="url" size="32"
 								pattern="(.*?)(\.)(jpg|jpeg|png)$" required aria-required="true"
-								title="<?php echo T("Only jpg or png files are acceptable."); ?>" />
+								title="<?php echo T("OnlyJpgOrPngFiles"); ?>" />
 								<span class="reqd">*</span>
 				</fieldset>
 

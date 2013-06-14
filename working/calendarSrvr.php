@@ -23,7 +23,7 @@
 		$ptr = new Calendars;
 		if ($_REQUEST["calendar"] != OBIB_MASTER_CALENDAR) {
 			$ptr->deleteOne($_REQUEST["calendar"]);
-			$msg = T("Calendar Deleted");
+			$msg = T("CalendarDeleted");
 		} else {
 			$msg = T("CannotDeleteMasterCalendar");
 		}

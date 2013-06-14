@@ -27,7 +27,14 @@
 		  if ($file != '.' && $file != '..') {
 				if ((is_dir('../'.$file)) && 
 						(substr($file,0,1) != '.') && 
-						($file != 'images') && ($file != 'font') && ($file != 'photos')   
+						## folowing names are main directories
+						($file != 'images') &&
+						($file != 'font') &&
+						($file != 'layouts') &&
+						($file != 'locale') &&
+						($file != 'themes') &&
+						($file != 'working') &&
+						($file != 'photos')
 					 ) {
 					$dirs[] = $file;
 				}
@@ -37,20 +44,6 @@
 		sort($dirs,SORT_LOCALE_STRING);
 		return $dirs;
 	};
-/*
-	function getFileList ($dir) {
-		$handl = opendir('../'.$dir);
-		$files = [];
-		while (false !== ($file = readdir($handl))) {
-		  if ($file != '.' && $file != '..') {
-				//echo "$file <br />";		
-				$files[] = '../'.$dir.'/'.$file;
-			}
-		}
-		closedir($handl);
-		return $files;	
-	};
-*/
 	function array_flat($array) {
 		$tmp = [];
 	  foreach($array as $a) {
@@ -66,10 +59,17 @@
   	$files = array();
   	if ($handle = opendir($dir)) {
     	while (false !== ($file = readdir($handle))) {
-      	if ($file != "." && $file != ".." && 
-						$file != 'sql' && 
-						$file != 'legacy' && 
-						$file != 'themes') {
+				$info = pathInfo($file);
+      	if (($file != ".") && ($file != "..") &&
+						 ## folowing names are sub-directories
+						($file != 'sql') &&
+						($file != 'legacy') &&
+						($file != 'jquery') &&
+						## folowing names are file extensions
+						($info['extension'] != 'tran') &&
+						## folowing are special filenames
+						($info['basename'] != 'custom_head.php')
+						 ) {
           if(is_dir($dir.'/'.$file)) {
           	$dir2 = $dir.'/'.$file;
           	$files[] = getFileList($dir2);
@@ -105,7 +105,7 @@
 		$in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(href=\")(.*?)(.php)/', $in, $out);
+		preg_match('/(href=\")(.*?)(.php|.css)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -115,6 +115,15 @@
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
 		preg_match('/(action=\")(.*?)(.php)/', $in, $out);
+		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
+		$rslt = $out[2].$out[3];
+		$rslt = str_replace('"',"",$rslt);
+		return trim($rslt);
+	}
+	function getFnFmPhpArray($text, $dir) {
+		$in = str_replace("'", "\"", $text);
+		if($verbose) {echo "in===>";echo $in;echo"<br />";}
+		preg_match('/(\"action\"=>\")(.*?)(.php)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -198,7 +207,7 @@
 							if ( (substr($line,0,7) == "<script") || 
 									 (substr($line,0,5) == "<link") || 
 									 (substr($line,0,5) == "<form") || 
-									 (substr($line,0,3) == "<a ") || 
+									 (substr($line,0,3) == "<a ") ||
 									 (
 										substr($line,0,2) != "/*" &&
 										substr($line,0,2) != "*/" &&
@@ -215,6 +224,8 @@
 									$fn = getFnFmPhpReq($line, $dir);
 								} elseif (stripos($line, 'href=', 0) >= 1) {
 									$fn = getFnFmPhpHref($line, $dir);
+								} elseif (stripos($line, "action'=>", 0) >= 1) {
+									$fn = getFnFmPhpArray($line, $dir);
 								} elseif (stripos($line, 'action=', 0) >= 1) {
 									$fn = getFnFmPhpActn($line, $dir);
 								} elseif (stripos($line, 'LinkUrl', 0) >= 1) {
@@ -251,29 +262,32 @@
 			sort($allFiles);
 			//var_dump($found);		
 	
-			if (count($allFiles) == count($found)) {
-				echo "All project files are in use.";
-			} elseif (count($allFiles) > count($found)) {
+//			if (count($allFiles) == count($found)) {
+//				echo "All project files are in use.";
+//			} elseif (count($allFiles) > count($found)) {
 				echo "<p>The following files are not being used and may be removed.</p>";
 				for ($i=0; $i<count($allFiles); $i++) {
 					$file = trim($allFiles[$i]);	
 					if ((array_key_exists($file, $found)) && ($found[$file] == 'OK')) {
 						continue;
 					} else {
-						echo "unused===> $file <br />";
+						$info = pathinfo($file);
+						if ($info['extension'] != 'nav'){
+							echo "unused===> $file <br />";
+						}
 					}
 				}
-			} else {
-				echo (count($found)-count($allFiles))." scanned-in filenames are invalid.<br />";
-				for ($i=0; $i<count($found); $i++) {
-					$file = trim($found[$i]);	
-					if (array_key_exists($file, $allFiles)) {
-						continue;
-					} else {
-						echo "invalid===> $file <br />";
-					}
-				}
-			}
+//			} else {
+//				echo (count($found)-count($allFiles))." scanned-in filenames are invalid.<br />";
+//				for ($i=0; $i<count($found); $i++) {
+//					$file = trim($found[$i]);
+//					if (array_key_exists($file, $allFiles)) {
+//						continue;
+//					} else {
+//						echo "invalid===> $file <br />";
+//					}
+//				}
+//			}
 			break;
 			
 		default:

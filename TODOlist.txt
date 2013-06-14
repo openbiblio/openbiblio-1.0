@@ -71,14 +71,17 @@ I get a blank page (no LH menu and library banner). However, if I select the
 browser's back button, I return to the login page (see attached image) but
 I can simply select where I want to go using the LH menu.
 
-12 Jun 2013 - Neil/Fred
-> How do you remove unwanted calendars?
-dump existing and write new without using report generator.
-
 12 Jun 2013 - Fred
 deleting a biblio does not remove copy-status records
 
+14 Jun 2013 - Fred
+Photos do not appear on biblio summary gotten to from member page.
+
 ###################### Completed, most recent at top #########################
+
+12 Jun 2013 - Neil/Fred, fixed 14 Jun 2013
+> How do you remove unwanted calendars?
+dump existing and write new without using report generator.
 
 12 Jun 2103 - Fred, fixed 12 Jun
 New Item Copies, site list is unpopulated, no default selected too?
