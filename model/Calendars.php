@@ -57,7 +57,8 @@ class Calendars extends DmTable {
 		}
 		foreach (Date::getDays($from, $to) as $d) {
 			$sql = $this->db->mkSQL("INSERT INTO calendar SET "
-				. "calendar=%N, date=%Q, open='Unset' ",
+//				. "calendar=%N, date=%Q, open='Unset' ",
+				. "calendar=%N, date=%Q, open='Yes' ",
 				$calendar, $d);
 			$this->db->act($sql);
 		}
@@ -68,6 +69,7 @@ class Calendars extends DmTable {
 			. 'WHERE calendar=%N AND date >= %Q '
 			. 'AND date <= %Q ',
 			$calendar, $from, $to);
+		//echo "sql=$sql<br />";
 		return $this->db->select($sql);
 	}
 	function setDays($calendar, $days) {

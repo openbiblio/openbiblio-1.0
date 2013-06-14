@@ -29,6 +29,7 @@
 				<li>Filled by server</li>
 			</ul>
 		</fieldset>
+		<input type="submit" id="calAddNewBtn" value="<?php echo T("Add New"); ?>" />
 	</div>
 
 <!-- ------------------------------------------------------------------------ -->
@@ -36,24 +37,24 @@
 		<h3><?php echo T("Edit Calendar"); ?></h3>
 
 		<p class="note"><?php echo T("calendarEditFormMsg");?></p>
-		<form name="editForm" id="editForm">
+		<form id="editForm" name="editForm">
 			<fieldset>
-				<input type="hidden" name="calendar" value="" />
+				<input type="hidden" id="calMode" name="mode" value="" />
+				<input type="hidden" id="calName" name="oldName" value="" />
+				<input type="hidden" id="calCd" name="calendar" value="" />
 
-				<table class="biblio_view">
-				<tr>
-					<th class="name" valign="bottom"><?php echo T("Name:"); ?></th>
-					<td class="value" valign="bottom"><?php echo inputfield('text', 'name', $calname, array('size'=>'32', 'required'=>'required')); ?></td>
-					<td class="value" valign="bottom"><input type="submit" id="calSave" value="<?php echo T("Save Changes"); ?>" class="button" /></td>
-				</tr>
-				</table>
+				<label for="name"><?php echo T("Name:"); ?></label>
+				<?php echo inputfield('text', 'name', $calname, array('size'=>'32', 'required'=>'required')); ?>
+				<input type="submit" class="calSaveBtn" value="<?php echo T("Save Changes"); ?>" />
 			</fieldset>
 
 			<fieldset id="calArea">
 			</fieldset>
-			<div style="padding-top: 4px; text-align: right">
-				<input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" />
-			</div>
+
+			<ul class="btnRow">
+				<li><input type="button" class="calGoBkBtn" value="<?php echo T("Go Back"); ?>" /></li>
+				<li><input type="button" class="calDeltBtn" value="<?php echo T("Delete"); ?>" /></li>
+			</ul>
 		</form>
 	</div>
 

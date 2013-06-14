@@ -433,7 +433,6 @@ class Calendar {
 			}
 			$dt = getdate(mktime(0, 0, 0, $month, $day, $year));
 			$id = $dt['wday'].'-'.$date;
-			//return '<input type="hidden" id="input-'.H($id).'" '
 			return '<input type="hidden" id="IN-'.H($id).'" '
 				. 'name="IN-'.H($id).'" value="'.H($this->open[$date]).'" />'
 				. '<a onclick="toggleDay(\''.$id.'\')" >'.$day.'</a>';

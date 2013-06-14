@@ -230,7 +230,9 @@ xul.pagBtns li:last-child { float:right; color:green; }
  
 ul#calList { float:left; margin:0; padding:0; width:100%; }
 ul#calList li { display:block; list-style:none; margin:0; padding:0; }
-.calendarClosed { background-color:green; color:white; }
+.calendarClosed { background:url('../../images/Ximage.jpg') 50% 5px no-repeat;
+									background-size:auto;
+								}
 
 /* search results displays */
 .listTbl { width:100%; text-align:left; }

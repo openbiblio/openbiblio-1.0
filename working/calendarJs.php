@@ -49,7 +49,10 @@ var cal = {
 		cal.initWidgets();
 		$('.help').hide();
 
-		$('.calSaveBtn').on('click',null,cal.saveCalendar);
+		$('#calAddNewBtn').on('click',null,cal.newCalendar);
+		$('#editForm').on('submit',null,cal.saveCalendar);
+		$('.calGoBkBtn').on('click',null,cal.rtnToList);
+		$('.calDeltBtn').on('click',null,cal.deleteCalendar);
 
 		cal.resetForm();
 	},
@@ -62,22 +65,40 @@ var cal = {
 		$('#errSpace').hide();
 		$('#listDiv').show();
 		$('#editDiv').hide();
+		$('#calDeltBtn').disable();
     cal.fetchCalendarList();
+	},
+	rtnToList: function () {
+		cal.resetForm()
 	},
 
 	//------------------------------
+	newCalendar: function (e) {
+		e.stopPropagation();
+		$('#name').val('');
+		$('#calCd').val(1);
+		$('#calName').val('');
+		$('#calMode').val('getCalendar');
+		e.preventDefault();
+		cal.doGetCalendar(e);
+		$('#calMode').val('makeNewCalendar');
+		$('#calDeltBtn').hide();
+		$('#listDiv').hide();
+		$('#editDiv').show();
+	},
+
 	saveCalendar: function (e) {
 		e.stopPropagation();
-		$.post(cal.url, { 'mode':'saveCalendar',
-											'oldName':cal.calName,
-										},
-										function (response) {
-
+		$('#calName').val(cal.calName);
+		$('#calCd').val(cal.calCd);
+	  var params = $('#editForm').serialize();
+	  $.post(cal.url, params, function(response){
+			$('#errSpace').html(response).show();
 		});
     e.preventDefault();
 	},
 
-	fetchCalendarList: function () {
+	fetchCalendarList: function (e) {
 	  $.getJSON(cal.listSrvr,{mode:'getCalendarList'}, function(data){
 			var html = '';
       for (var n in data) {
@@ -92,22 +113,36 @@ var cal = {
 		});
 	},
 
+	doGetCalendar: function () {
+		$.get(cal.url, {'mode':$('#calMode').val(), 'calendar':cal.calCd}, function (response) {
+			$('#calArea').html(response);
+		});
+	},
+
 	showCalendar: function (e) {
 		e.stopPropagation();
 		cal.calCd = $(this).next().val();
 		cal.calName = $(this).next().next().val();
 		$('#name').val(cal.calName);
-
-		console.log('show calendar for '+cal.calName);
-		$.get(cal.url, {'mode':'getCalendar', 'calendar':cal.calCd}, function (response) {
-			$('#calArea').html(response);
-		});
+		$('#calCd').val(cal.calCd);
+		$('#calName').val(cal.calName);
+		$('#calMode').val('getCalendar');
+		cal.doGetCalendar(e);
 		e.preventDefault();
-
+		$('#calMode').val('saveCalendar');
+		$('#calDeltBtn').show().enable();
 		$('#listDiv').hide();
 		$('#editDiv').show();
 	},
 
+	deleteCalendar: function (e) {
+		if (confirm("<?php echo T("DeleteThisCalendar?"); ?>")) {
+			$.post(cal.url, {'mode':'deleteCalendar', 'calendar':cal.calCd}, function (response) {
+				$('#errSpace').html(response).show();
+				$('#calDeltBtn').disable();
+			});
+		}
+	},
 }
 $(document).ready(cal.init);
 </script>

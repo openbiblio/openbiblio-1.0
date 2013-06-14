@@ -8,28 +8,45 @@
 	require_once("../model/Calendars.php");
 	//print_r($_REQUEST);echo "<br />";
 
-	switch ($_REQUEST['mode']) {
-	case 'saveCalendar':
-		$calendars = new Calendars;
-
-		if (!isset($_POST['calendar']) or !$_POST['calendar']) {
-			$calendar = $calendars->insert(array('description'=>$_POST['name']));
-		} else {
-			$calendar = $_POST['calendar'];
-			$calendars->rename($calendar, $_POST['name']);
-		}
-
+	function doSetDays($ptr, $cal) {
 		$days = array();
 		foreach ($_POST as $k => $v) {
-			if (preg_match('/^input-[0-9]-([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])$/', $k, $m)) {
+			if (preg_match('/^IN-[0-9]-([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])$/', $k, $m)) {
 				$days[] = array($m[1], $v);
 			}
 		}
-		$calendars->setDays($calendar, $days);
+		$ptr->setDays($cal, $days);
+	}
+
+	switch ($_REQUEST['mode']) {
+	case "deleteCalendar":
+		$ptr = new Calendars;
+		if ($_REQUEST["calendar"] != OBIB_MASTER_CALENDAR) {
+			$ptr->deleteOne($_REQUEST["calendar"]);
+			$msg = T("Calendar Deleted");
+		} else {
+			$msg = T("CannotDeleteMasterCalendar");
+		}
+		echo $msg;
+		break;
+
+	case 'makeNewCalendar':
+		$ptr = new Calendars;
+		$calendar = $ptr->insert(array('description'=>$_POST['name']));
+		doSetDays($ptr, $calendar);
+		echo "Created New Calendar '".$_POST['name']."'";
+		break;
+
+	case 'saveCalendar':
+		$ptr = new Calendars;
+		$calendar = $_POST['calendar'];
+		$ptr->rename($calendar, $_POST['name']);
+		doSetDays($ptr, $calendar);
+		echo "Successfully updated Calendar '".$_POST['name']."'";
 		break;
 
 	case 'getCalendar':
-		$template = $_REQUEST['calCd'];
+		$template = $_REQUEST['calendar'];
 
 		$d = getdate(time());
 		if ($_REQUEST['month'] != "") {
