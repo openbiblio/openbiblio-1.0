@@ -69,12 +69,7 @@ function staff_menu() {
 
 		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
-		Nav::node('admin/calendars', T("Calendars"), '../admin/calendars_list.php');
-		Nav::node('admin/calendars/new', T("New Calendar"), '../admin/calendar_edit_form.php');
-		Nav::node('admin/calendars/edit', T("Edit Calendar"));
-		if (isset($calendar) and $calendar != OBIB_MASTER_CALENDAR) {
-			Nav::node('admin/calendars/del', T("Delete Calendar"), '../admin/calendar_del_confirm.php?calendar='.U($calendar));
-		}
+		Nav::node('admin/calendar', T("Calendar Manager"), '../admin/calendarForm.php');
 		Nav::node('admin/collections', T("Collections"), '../admin/collectionsForm.php');
 		Nav::node('admin/media', T("Media Types"), '../admin/mediaForm.php');
 		Nav::node('admin/memberTypes', T("Member Types"), '../admin/memberTypeForm.php');
