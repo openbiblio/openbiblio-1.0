@@ -38,9 +38,15 @@ var chk = {
 				}
 			}
 		});
-		$('.shelvItemBtn').on('click',null,chk.doShelfSelected);
-		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);
 
+		$('.markAllBtn').on('click',null,function (e) {
+			$(':checkbox[value=copyid]').prop('checked',true);
+		});
+		$('.clerAllBtn').on('click',null,function (e) {
+			$(':checkbox[value=copyid]').prop('checked',false);
+		});
+		$('.shelvItemBtn').on('click',null,chk.doShelvSelected);
+		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -70,7 +76,7 @@ var chk = {
 	},
 	
 	//------------------------------
-	doShelfSelected: function () {
+	doShelvSelected: function (e) {
 		$('#shelveMode').val('doShelveItem');
 		var parms = $('#shelvingForm').serialize();
 		$.post(chk.url, parms, function(response) {

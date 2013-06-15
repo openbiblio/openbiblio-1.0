@@ -29,30 +29,32 @@
 		<input type="text" readonly id="ckinTitle" size="100" />
 	</fieldset>
 	</form>
-	
+
 	<form id="shelvingForm" name="shelvingForm" >
 	<fieldset>
-	<legend><?php echo T("Shelving Cart Contents"); ?></legend>
-		<input type="button" value="<?php echo T("Shelve selected items"); ?>" class="shelvItemBtn" />
-		<input type="button" value="<?php echo T("Shelve all items"); ?>" class="shelvAllBtn" />
+		<legend><?php echo T("Shelving Cart Contents"); ?></legend>
+		<button class="shelvItemBtn"><?php echo T("Shelve selected items"); ?></button>
+		<button class="markAllBtn"><?php echo T("Mark all"); ?></button>
+		<button class="clerAllBtn"><?php echo T("Clear all"); ?></button>
+
 		<fieldset>
-
-		<table id="shelvingList">
-			<thead>
-				<tr>
-					<th>&nbsp;</th>
-					<th><?php echo T("Checked In"); ?></th>
-					<th><?php echo T("Barcode"); ?></th>
-					<th><?php echo T("Title"); ?></th>
-				</tr>
-			</thead>
-			<tbody class="striped" ><!-- filled in by server --></tbody>
-		</table>
-
-		<input type="hidden" name="mode" value="doShelveItem">
+			<table id="shelvingList">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th><?php echo T("Checked In"); ?></th>
+						<th><?php echo T("Barcode"); ?></th>
+						<th><?php echo T("Title"); ?></th>
+					</tr>
+				</thead>
+				<tbody class="striped" ><!-- filled in by server --></tbody>
+			</table>
+			<input type="hidden" name="mode" value="doShelveItem">
 		</fieldset>
-		<input type="button" value="<?php echo T("Shelve selected items"); ?>" class="shelvItemBtn" />
-		<input type="button" value="<?php echo T("Shelve all items"); ?>" class="shelvAllBtn" />
+
+		<button class="shelvItemBtn"><?php echo T("Shelve selected items"); ?></button>
+		<button class="markAllBtn" ><?php echo T("Mark all"); ?></button>
+		<button class="clerAllBtn" ><?php echo T("Clear all"); ?></button>
 	</fieldset>
 	</form>
 </div>
