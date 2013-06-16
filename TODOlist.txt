@@ -80,6 +80,9 @@ Photos do not appear on biblio summary gotten to from member page.
 14 Jun 2013 - Fred
 DB integrity reports 2 status problems, fix db problem or code to auto-repair
 
+16 Jun 2013 - Fred
+Displayamount due on checkout list
+
 ###################### Completed, most recent at top #########################
 
 16 Jun 2013 - Neil/Fred, fixed 16 Jun

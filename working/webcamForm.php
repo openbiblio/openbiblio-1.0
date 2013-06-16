@@ -36,8 +36,14 @@
 				<fieldset class="inline">
 					<fieldset>
 						<legend>Select an image Source</legend>
-						<label><input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>Camera</label>
-						<label><input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" \>Browse</label>
+						<label>
+							<input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>
+							Camera
+						</label>
+						<label>
+							<input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" accept="image/png, image/jpg" \>
+							Browse
+						</label>
 					</fieldset>
 					<input type="button" id="capture" name="capture" value="Take Photograph" />
 					<input type="file" id="browse" name="browse" accept="image/png image/jpeg image/jpg" />

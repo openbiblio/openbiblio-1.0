@@ -45,6 +45,14 @@ var wc = {
 		$('#updtFotoBtn').on('click',null,wc.doUpdatePhoto);
 		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
 
+		wc.canvasOut.ondragover = function (){  return false; };
+		wc.canvasOut.ondrop = function (e) {
+			e.preventDefault();
+			e = e || window.event;
+			var files = e.dataTransfer.files;
+			if (files) wc.readFile(files[0]);
+		};
+
 		wc.resetForm();
 	},
 	//------------------------------

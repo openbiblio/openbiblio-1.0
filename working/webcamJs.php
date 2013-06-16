@@ -53,6 +53,14 @@ var wc = {
 			wc.readFile(file)
 		});
 
+		wc.canvasOut.ondragover = function (){  return false; };
+		wc.canvasOut.ondrop = function (e) {
+			e.preventDefault();
+			e = e || window.event;
+			var files = e.dataTransfer.files;
+			if (files) wc.readFile(files[0]);
+		};
+
 		$('#addFotoBtn').on('click',null,wc.sendFoto);
 
 		wc.resetForm();
