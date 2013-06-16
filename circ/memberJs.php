@@ -285,7 +285,7 @@ var mf = {
 						html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
 						html += '	<td>'+dueDate+'</td>';
 						html += '	<td class="number">'+cpy.booking.days_late+'</td>';
-						html += '	<td class="number">'+'0.00'+'</td>';
+						html += '	<td class="number">'+((cpy.booking.owed).toFixed(2)).toLocaleString()+'</td>';
 						html += '</tr>\n';
 					}
 					mf.nmbrOnloan = nCpy+1;

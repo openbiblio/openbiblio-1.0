@@ -12,7 +12,7 @@ body {
   font-family: verdana,arial,helvetica, serif;
   color: #000000; background: #90b0b8;
   font-size:100%; /*0.9em;*/
-  width: auto;
+  width: auto; padding 1em;
 	}
 	.ie body {width: 540px;}
 

@@ -75,7 +75,7 @@ I can simply select where I want to go using the LH menu.
 deleting a biblio does not remove copy-status records
 
 14 Jun 2013 - Fred
-Photos do not appear on biblio summary gotten to from member page.
+Photos do not appear on biblio summary reached through member page.
 
 14 Jun 2013 - Fred
 DB integrity reports 2 status problems, fix db problem or code to auto-repair
@@ -84,6 +84,9 @@ DB integrity reports 2 status problems, fix db problem or code to auto-repair
 Display amount due on checkout list
 
 ###################### Completed, most recent at top #########################
+
+16 Jun 2013 - Fred, mis-spoke, works fine 16 Jun
+Unable to search for a Call Nmbr that has a '.' in it
 
 16 Jun 2013 - Neil/Fred, fixed 16 Jun
 Calculation of due date:

@@ -22,6 +22,8 @@
 		$transtypes = new TransactionTypes;
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 		$biblios = new Biblios;
+	require_once(REL(__FILE__, "../model/Collections.php"));
+		$colls = new CircCollections;
 	require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 	require_once(REL(__FILE__, "../model/History.php"));
@@ -185,6 +187,9 @@
 			$copy['booking']['days_late'] = $bookings->getDaysLate($copy['booking']);
 			$copy['material_img_url'] = '../images/'.$mediaImageFiles[$biblio['material_cd']];
 			$copy['material_type'] = $mediaTypeDm[$biblio['material_cd']];
+			$col = $colls->getOne($biblio['collection_cd']);
+			$fee = $col['daily_late_fee'];
+			$copy['booking']['owed'] = $copy['booking']['days_late'] * $fee;
 			$chkOutList[] = $copy;
 		}
 	  echo json_encode($chkOutList);
