@@ -46,12 +46,9 @@ var wc = {
 		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
 
 		wc.canvasOut.ondragover = function (){  return false; };
-		wc.canvasOut.ondrop = function (e) {
-			e.preventDefault();
-			e = e || window.event;
-			var files = e.dataTransfer.files;
-			if (files) wc.readFile(files[0]);
-		};
+		wc.canvasOut.ondrop = function (e) { wc.getFotoDrop(e); };
+		//$('#canvasOut').on('dragover',null,function (){  return false; };
+		//$('#canvasOut').on('drop',null,wc.getFotoDrop);
 
 		wc.resetForm();
 	},
@@ -113,6 +110,12 @@ var wc = {
 	},
 
 	//------------------------------
+	getFotoDrop: function () {
+		e.preventDefault();
+		e = e || window.event;
+		var files = e.dataTransfer.files;
+		if (files) wc.readFile(files[0]);
+	},
 	getFotoFile: function (e) {
 		// Get the FileList object from the file select event
 		var files = e.target.files;

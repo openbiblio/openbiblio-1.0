@@ -31,7 +31,7 @@
 		<div id="fotoCntlDiv">
 			<form id="fotoForm">
 				<fieldset class="inline">
-			 		<canvas id="canvasOut" width="100" height="150"></canvas>
+			 		<canvas id="canvasOut" width="100" height="150" contenteditable ></canvas>
 				</fieldset>
 				<fieldset class="inline">
 					<fieldset>

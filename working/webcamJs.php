@@ -53,12 +53,24 @@ var wc = {
 			wc.readFile(file)
 		});
 
-		wc.canvasOut.ondragover = function (){  return false; };
-		wc.canvasOut.ondrop = function (e) {
+		//wc.canvasOut.ondragover = function (){  return false; };
+		//wc.canvasOut.ondrop = function (e) { wc.getFotoDrop(e); };
+		$('#canvasOut').on('dragover',null,function (e){  return false; });
+		$('#canvasOut').on('drop',null,wc.getFotoDrop);
+
+		wc.canvasOut.onpaste = function (e) {
 			e.preventDefault();
-			e = e || window.event;
-			var files = e.dataTransfer.files;
-			if (files) wc.readFile(files[0]);
+			if (e.clipboardData && e.clipboardData.items) {
+        var items = e.clipboardData.items;
+        if(!items){ alert("Image Not found"); return false;}
+				for (var i=0; i<items.length; i++) {
+					if (items[i].kind === 'file' && items[i].type.match(/^image/)) {
+						wc.readFile(items[i].getAsFile());
+						break;
+					}
+				}
+			}
+			return false;
 		};
 
 		$('#addFotoBtn').on('click',null,wc.sendFoto);
@@ -123,6 +135,12 @@ var wc = {
 	},
 
 	//------------------------------
+	getFotoDrop: function (e) {
+			e.preventDefault();
+			e = e || window.event;
+			var files = e.dataTransfer.files;
+			if (files) wc.readFile(files[0]);
+	},
 	sendFoto: function (e) {
 		e.stopPropagation();
     $('#errSpace').hide();

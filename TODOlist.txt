@@ -81,7 +81,7 @@ Photos do not appear on biblio summary gotten to from member page.
 DB integrity reports 2 status problems, fix db problem or code to auto-repair
 
 16 Jun 2013 - Fred
-Displayamount due on checkout list
+Display amount due on checkout list
 
 ###################### Completed, most recent at top #########################
 
