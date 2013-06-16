@@ -96,6 +96,7 @@
 				<th class="center"><?php echo T("Title");?></th>
 				<th class="center"><?php echo T("Due Back");?></th>
 				<th class="center"><?php echo T("Days Late");?><th>
+				<th class="center"><?php echo T("AmountOwed");?><th>
 			</tr>
 			</thead>
 			<tbody class="striped"></tbody>

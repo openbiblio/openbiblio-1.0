@@ -423,19 +423,21 @@ class Calendar {
 				. (($showYear > 0) ? " " . $year : "") . '</a>';
 		}
 		function getDateHTML($day, $month, $year) {
+			$dayTags = array("Su", "Mo", "Tu", "We", "Th", "Fr", "Sa");
 			$date = sprintf("%04d-%02d-%02d", $year, $month, $day);
 			if ($this->open[$date] == 'Yes') {
 				$class .= "calendarOpen ";
 			} elseif ($this->open[$date] == 'No') {
-				$class .= "calendarClosed ";
+				$class .= "calendarHoliday ";
 			} else {
 				$class .= "calendarUnknown ";
 			}
 			$dt = getdate(mktime(0, 0, 0, $month, $day, $year));
 			$id = $dt['wday'].'-'.$date;
+			$tag = $dayTags[$dt['wday']];
 			return '<input type="hidden" id="IN-'.H($id).'" '
 				. 'name="IN-'.H($id).'" value="'.H($this->open[$date]).'" />'
-				. '<a onclick="toggleDay(\''.$id.'\')" >'.$day.'</a>';
+				. '<a class="'.$tag.'" onclick="toggleDay(\''.$id.'\')" >'.$day.'</a>';
 		}
 		function getDateId($day, $month, $year) {
 			$dt = getdate(mktime(0, 0, 0, $month, $day, $year));

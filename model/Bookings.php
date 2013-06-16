@@ -442,7 +442,7 @@ class Bookings extends CoreTable {
 		return array();
 	}
 
-	function quickCheckout_e($barcode, $mbrids) {
+	function quickCheckout_e($barcode, $calCd=1, $mbrids) {
 		$this->db->lock();
 		$copies = new Copies;
 		$copy = $copies->getByBarcode($barcode);
@@ -469,6 +469,7 @@ class Bookings extends CoreTable {
 				}
 			}
 		}
+
 		$collections = new Collections;
 		$coll = $collections->getByBibid($copy['bibid']);
 		$daysDueBack = $coll['days_due_back'];
@@ -480,7 +481,20 @@ class Bookings extends CoreTable {
 		if ($err) {
 			Fatal::internalError(T("Unexpected date error: ").$err->toStr());
 		}
+
+		## assure due date is a 'library open' day
+		$cal = new Calendars;
 		$due_dt = Date::addDays($book_dt, $daysDueBack);
+		$row = $cal->isOpen($calCd, $due_dt);
+		$status = $row['open'];
+  	if ($status == 'No') {
+			do {
+				$due_dt = Date::addDays($due_dt, 1); // advance to next day
+				$row = $cal->isOpen($calCd, $due_dt);
+				$status = $row['open'];
+			} while ($status == 'No');
+		}
+
 		$booking = new Bookings($copy['bibid'], $book_dt, $due_dt, $mbrids);
 		list($bookingid, $err) = $this->insert_el(array("book_dt" => $book_dt, "bibid" => $copy['bibid'], "bidid2" => $bidid, "due_dt" => $due_dt, "mbrids" => $mbrids));
 		if ($err) {

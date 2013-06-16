@@ -8,7 +8,7 @@
 
 	session_cache_limiter(null);
 
-	$tab = "working";
+	$tab = "admin";
 	$nav = "calendarForm";
 	$focus_form_name = "";
 	$focus_form_field = "";

@@ -80,16 +80,16 @@ Photos do not appear on biblio summary gotten to from member page.
 14 Jun 2013 - Fred
 DB integrity reports 2 status problems, fix db problem or code to auto-repair
 
-15 Jun 2013 - Neil/Fred
+###################### Completed, most recent at top #########################
+
+16 Jun 2013 - Neil/Fred, fixed 16 Jun
 Calculation of due date:
 This is not altered if any closed day falls within the pre-determined loan period
 for the media-type in question. For example, 10 day loan period from today
 (15th June) = 25 June. This due date remains the same regardless of whether
 there any closed days.  Should compute for 'business' days only'.
 
-###################### Completed, most recent at top #########################
-
-15 Jun 2013 - Neil
+15 Jun 2013 - Neil, fixed 15 Jun
 Checking in:
 When the items being returned are listed and checked, only the 'shelve selected
 items' button works. The 'shelve all items' button does not.

@@ -18,6 +18,13 @@ class Calendars extends DmTable {
 		$this->setKey('code');
 		$this->setSequenceField('code');
 	}
+	function isOpen($calendar, $day) {
+		$sql = $this->db->mkSQL('SELECT open FROM calendar '
+			. 'WHERE calendar=%N AND date = %Q ',
+			$calendar, $day);
+		//echo "sql=$sql<br />";
+		return $this->db->select1($sql);
+	}
 	function rename($code, $name) {
 		$this->update(array('code'=>$code, 'description'=>$name));
 	}

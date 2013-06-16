@@ -32,7 +32,9 @@
 		$mediaTypes = new MediaTypes;
 	require_once(REL(__FILE__, "../model/Bookings.php"));
 		$bookings = new Bookings;
-		
+	require_once(REL(__FILE__, "../model/Sites.php"));
+		$sites = new Sites;
+
 	#****************************************************************************
 	function mbrArray() {
 		$mbr = array(
@@ -96,7 +98,11 @@
 	case 'getBookings':
 		break;
 */
-		
+	case 'getSite':
+		$site = $sites->getOne($_GET['siteid']);
+    echo json_encode($site);
+		break;
+
 	//// ====================================////
 	case 'doGetMbr':
 		$mbrDflt = $members->maybeGetOne($_GET['mbrid']);
@@ -186,7 +192,7 @@
 
 	case 'doCheckout':
 		$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
-		$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], array($_POST["mbrid"]));
+		$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], $_POST['calCd'], array($_POST["mbrid"]));
 		if ($err) {
 			if(is_array($err)){
 				$errors = ""; $nErr = 0;

@@ -240,12 +240,18 @@ var mf = {
 				else {
 					mf.multiMode = false;
 					mf.showOneMbr(mf.mbr)
+					mf.getMbrSite();
 				}
 	    }
 		  $('#searchDiv').hide();
 	    $('#mbrDiv').show();
 	},
-	
+	getMbrSite: function () {
+		$.getJSON(mf.url,{mode:'getSite', 'siteid':mf.mbr.siteid}, function (response) {
+			mf.calCd = response['calendar'];
+		});
+	},
+
 	//------------------------------
 	showOneMbr: function (mbr) {
 		$('#mbrName').val(mbr.last_name+', '+mbr.first_name);
@@ -273,11 +279,13 @@ var mf = {
 						var dueDate = cpy.booking.due_dt.split(' ')[0];
 						html += '<tr>'
 						html += '	<td>'+outDate+'</td>';
-						html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
+						//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
+						html += '	<td>'+cpy.material_type+'	</td>\n';
 						html += '	<td>'+cpy.barcode_nmbr+'</td>';
 						html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
 						html += '	<td>'+dueDate+'</td>';
 						html += '	<td class="number">'+cpy.booking.days_late+'</td>';
+						html += '	<td class="number">'+'0.00'+'</td>';
 						html += '</tr>\n';
 					}
 					mf.nmbrOnloan = nCpy+1;
@@ -431,8 +439,7 @@ var mf = {
 		var barcd = $.trim($('#ckoutBarcd').val());
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
 		$('#ckoutBarcd').val(barcd); // redisplay expanded value
-
-		var parms = {'mode':'doCheckout', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
+		var parms = {'mode':'doCheckout', 'mbrid':mf.mbr.mbrid, 'barcodeNmbr':barcd, 'calCd':mf.calCd };
 		$.post(mf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);

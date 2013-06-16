@@ -11,10 +11,6 @@
 	function toggleDay (id) {
 		var input$ = $('#IN-'+id);
 		var cell$ = $('#date-'+id);
-		var className = "";
-		if (cell$.hasClass('calendarToday')) {
-			className = "calendarToday ";
-		}
 		if(input$.val() == 'Yes') {
       input$.val('No');
 			cell$.removeClass('calendarOpen');
@@ -43,6 +39,8 @@
 	//------------------------------------------------------------------------//
 
 var cal = {
+	<?php echo "calMASTER:".OBIB_MASTER_CALENDAR.","; ?>
+
 	init: function () {
 		cal.url = 'calendarSrvr.php';
     cal.listSrvr = '../shared/listSrvr.php';
@@ -75,11 +73,12 @@ var cal = {
 	//------------------------------
 	newCalendar: function (e) {
 		e.stopPropagation();
+		e.preventDefault();
+		cal.calCd = cal.calMASTER;
+		$('#calCd').val(cal.calCd);
 		$('#name').val('');
-		$('#calCd').val(1);
 		$('#calName').val('');
 		$('#calMode').val('getCalendar');
-		e.preventDefault();
 		cal.doGetCalendar(e);
 		$('#calMode').val('makeNewCalendar');
 		$('#calDeltBtn').hide();
@@ -89,13 +88,13 @@ var cal = {
 
 	saveCalendar: function (e) {
 		e.stopPropagation();
+    e.preventDefault();
 		$('#calName').val(cal.calName);
 		$('#calCd').val(cal.calCd);
 	  var params = $('#editForm').serialize();
 	  $.post(cal.url, params, function(response){
 			$('#errSpace').html(response).show();
 		});
-    e.preventDefault();
 	},
 
 	fetchCalendarList: function (e) {
@@ -121,14 +120,18 @@ var cal = {
 
 	showCalendar: function (e) {
 		e.stopPropagation();
+		e.preventDefault();
 		cal.calCd = $(this).next().val();
 		cal.calName = $(this).next().next().val();
+		if (cal.calCd == 1)
+			$('#masterOnly').show();
+		else
+			$('#masterOnly').hide();
 		$('#name').val(cal.calName);
 		$('#calCd').val(cal.calCd);
 		$('#calName').val(cal.calName);
 		$('#calMode').val('getCalendar');
 		cal.doGetCalendar(e);
-		e.preventDefault();
 		$('#calMode').val('saveCalendar');
 		$('#calDeltBtn').show().enable();
 		$('#listDiv').hide();

@@ -18,9 +18,13 @@
 		$ptr->setDays($cal, $days);
 	}
 
+	$ptr = new Calendars;
 	switch ($_REQUEST['mode']) {
+	case "isOpen":
+		echo $ptr->isOpen($_GET['date']);
+		break;
+
 	case "deleteCalendar":
-		$ptr = new Calendars;
 		if ($_REQUEST["calendar"] != OBIB_MASTER_CALENDAR) {
 			$ptr->deleteOne($_REQUEST["calendar"]);
 			$msg = T("CalendarDeleted");
@@ -31,14 +35,12 @@
 		break;
 
 	case 'makeNewCalendar':
-		$ptr = new Calendars;
 		$calendar = $ptr->insert(array('description'=>$_POST['name']));
 		doSetDays($ptr, $calendar);
 		echo "Created New Calendar '".$_POST['name']."'";
 		break;
 
 	case 'saveCalendar':
-		$ptr = new Calendars;
 		$calendar = $_POST['calendar'];
 		$ptr->rename($calendar, $_POST['name']);
 		doSetDays($ptr, $calendar);
