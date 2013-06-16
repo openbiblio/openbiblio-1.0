@@ -125,7 +125,7 @@ class Copies extends CoreTable {
 	}
 	# Added this function to lookup the member who has the copy,
 	#	for detailed view (not sure if there is a shorter way - LJ
-	# Also, I return the member record directly to prevent unnecisary code,
+	# Also, I return the member record directly to prevent unnecesary code,
 	#	even though I am not sure if that is accroding to the design idea
 	function getCheckoutMember($histid) {
 		$sql = "select mbr.* "

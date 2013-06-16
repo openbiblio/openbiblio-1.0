@@ -263,43 +263,40 @@ var mf = {
 	doGetCheckOuts: function () {
 	  var params = 'mode=getChkOuts&mbrid='+mf.mbrid;
 	  $.get(mf.url,params, function(jsonInpt){
-			if ($.trim(jsonInpt).substr(0,2) != '[{') {
+			if ($.trim(jsonInpt) == '[]') {
+				mf.cpys = [];
+				$('#chkOutList tBody').html('');
+			} else if ($.trim(jsonInpt).substr(0,2) != '[{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				mf.cpys = $.parseJSON(jsonInpt);
-				if (! mf.cpys) {
-	  			$('#msgArea').html('<?php echo T("Nothing Found") ?>');
-					$('#msgDiv').show();
+				var html = '';
+				for (var nCpy in mf.cpys) {
+					var cpy = mf.cpys[nCpy];
+					var outDate = cpy.booking.out_dt.split(' ')[0];
+					var dueDate = cpy.booking.due_dt.split(' ')[0];
+					html += '<tr>'
+					html += '	<td>'+outDate+'</td>';
+					//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
+					html += '	<td>'+cpy.material_type+'	</td>\n';
+					html += '	<td>'+cpy.barcode_nmbr+'</td>';
+					html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
+					html += '	<td>'+dueDate+'</td>';
+					html += '	<td class="number">'+cpy.booking.days_late+'</td>';
+					html += '	<td class="number">'+((cpy.booking.owed).toFixed(2)).toLocaleString()+'</td>';
+					html += '</tr>\n';
 				}
-				else {
-					var html = '';
-					for (var nCpy in mf.cpys) {
-						var cpy = mf.cpys[nCpy];
-						var outDate = cpy.booking.out_dt.split(' ')[0];
-						var dueDate = cpy.booking.due_dt.split(' ')[0];
-						html += '<tr>'
-						html += '	<td>'+outDate+'</td>';
-						//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
-						html += '	<td>'+cpy.material_type+'	</td>\n';
-						html += '	<td>'+cpy.barcode_nmbr+'</td>';
-						html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
-						html += '	<td>'+dueDate+'</td>';
-						html += '	<td class="number">'+cpy.booking.days_late+'</td>';
-						html += '	<td class="number">'+((cpy.booking.owed).toFixed(2)).toLocaleString()+'</td>';
-						html += '</tr>\n';
-					}
-					mf.nmbrOnloan = nCpy+1;
-					$('#chkOutList tBody').html(html);
-					$('table tbody.striped tr:odd td').addClass('altBG');
-					$('table tbody.striped tr:even td').addClass('altBG2');	
-					$('#chkOutList a').on('click',null,function (e) {
-						e.preventDefault(); e.stopPropagation();
-						idis.init(mf.opts); // be sure all is ready	
-						idis.doBibidSearch(e.target.id);
-						$('#biblioDiv').show();
-						$('#mbrDiv').hide();					
-					});			
-				}
+				mf.nmbrOnloan = nCpy+1;
+				$('#chkOutList tBody').html(html);
+				$('table tbody.striped tr:odd td').addClass('altBG');
+				$('table tbody.striped tr:even td').addClass('altBG2');	
+				$('#chkOutList a').on('click',null,function (e) {
+					e.preventDefault(); e.stopPropagation();
+					idis.init(mf.opts); // be sure all is ready	
+					idis.doBibidSearch(e.target.id);
+					$('#biblioDiv').show();
+					$('#mbrDiv').hide();					
+				});			
 	    }
 		});
 		mf.doGetHolds();
