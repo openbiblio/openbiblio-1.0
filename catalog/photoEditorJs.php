@@ -45,10 +45,13 @@ var wc = {
 		$('#updtFotoBtn').on('click',null,wc.doUpdatePhoto);
 		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
 
-		wc.canvasOut.ondragover = function (){  return false; };
+		/* support drag and drop during 'Browse mode' */
+		wc.canvasOut.ondragover = function (e){
+			// keep browser from replacing entire page with dropped image //
+      e.preventDefault();
+			return false;
+		};
 		wc.canvasOut.ondrop = function (e) { wc.getFotoDrop(e); };
-		//$('#canvasOut').on('dragover',null,function (){  return false; };
-		//$('#canvasOut').on('drop',null,wc.getFotoDrop);
 
 		wc.resetForm();
 	},
@@ -115,7 +118,7 @@ var wc = {
 	},
 
 	//------------------------------
-	getFotoDrop: function () {
+	getFotoDrop: function (e) {
 		e.preventDefault();
 		e = e || window.event;
 		var files = e.dataTransfer.files;
