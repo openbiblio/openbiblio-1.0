@@ -82,7 +82,7 @@ var ced = {
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').on('click',null,function () {
-			var params= $('#copyForm').serialize();
+			var params= $('#copyForm').serialize() + '&barcode_nmbr='+$('#copyBarcode_nmbr').val();
 			var rslt = ced.doPostCopy2DB(params);
 			if (rslt == '!!success!!') $('#editRsltMsg').html('Copy posted successfully!');
 			return false;
@@ -149,7 +149,6 @@ var ced = {
 		return false;
 	},
 	doPostCopy2DB: function (parms) {
-		//console.log('parms='+parms);
 	  $.post(ced.url,parms, function(response){
 	  	if(response == '!!success!!') {
 				$('#copyCancelBtn').val("Go Back");
