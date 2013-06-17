@@ -75,12 +75,12 @@ I can simply select where I want to go using the LH menu.
 deleting a biblio does not remove copy-status records
 
 14 Jun 2013 - Fred
-Photos do not appear on biblio summary reached through member page.
-
-14 Jun 2013 - Fred
 DB integrity reports 2 status problems, fix db problem or code to auto-repair
 
 ###################### Completed, most recent at top #########################
+
+14 Jun 2013 - Fred, fixed 16 Jun
+Photos do not appear on biblio summary reached through member page.
 
 16 Jun 2013 - Fred, fixed 16 Jun
 checkout list is common to ALL members? Each member should show only own items.

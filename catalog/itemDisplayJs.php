@@ -59,19 +59,23 @@ var idis = {
 		$('#photoAddBtn').hide();		
 		$('#bibBlkB').html('');
 
-		if (idis.opts.showBiblioPhotos == 'Y') {
+		var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
+		if (showFoto == 'Y'){
   		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.theBiblio.bibid  }, function(data){
+				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
+				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;
+
   			if (data == null) {
   				idis.crntFoto = data;
 					$('#photoAddBtn').show();
 					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+      			+ 'height="'+fotoHt+'" width="'+fotoWid+'" >');
   			} else {
   				idis.crntFoto = data[0];
 					$('#photoEditBtn').show();
 					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
 					$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
-      			+ 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >');
+      			+ 'height="'+fotoHt+'" width="'+fotoWid+'" >');
 				}
   		});
 		}

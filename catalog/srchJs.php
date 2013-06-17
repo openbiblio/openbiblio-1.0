@@ -616,8 +616,8 @@ var bs = {
 	  	$('#fotoName').val(idis.crntBibid+'.jpg');
 	  } else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
-	  	$('#fotoFile').val(idis.crntFoto.url);
-			var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
+	  	$('#fotoName').val('<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url);
+			wc.showImage($('#fotoName').val());
 		}
 		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);
 		$('#photoEditorDiv').show();

@@ -89,6 +89,11 @@ var wc = {
 		wc.ctxIn.drawImage(canvasIn, 0,0);
 		wc.ctxIn.restore();
 	},
+	showImage: function (fn) {
+		var img = new Image;
+		img.onload = function() { wc.ctxOut.drawImage(img, 0,0, wc.fotoWidth,wc.fotoHeight); };
+		img.src = fn;
+	},
 	eraseImage: function () {
 		wc.ctxOut.clearRect(0,0, wc.canvasOut.width,wc.canvasOut.height)
 		wc.ctxIn.clearRect(0,0, wc.canvasIn.width,wc.canvasIn.height)
