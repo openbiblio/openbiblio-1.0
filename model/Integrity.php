@@ -64,7 +64,10 @@ class Integrity {
 					. 'from biblio_copy left join biblio_status_hist '
 					. 'on biblio_status_hist.histid=biblio_copy.histid '
 					. 'where biblio_status_hist.histid is null ',
-				// FIXME - Check in copies
+				'fixSql' => 'delete from biblio_copy '
+					. 'using biblio_copy left join biblio_status_hist '
+					. 'on biblio_status_hist.histid=biblio_copy.histid '
+					. 'where biblio_status_hist.histid is null ',
 			),
 			
 /*			
@@ -188,7 +191,13 @@ class Integrity {
 					. 'on biblio_status_hist.histid=booking.out_histid '
 					. 'where booking.out_histid is not null '
 					. 'and biblio_status_hist.histid is null ',
-				// NO AUTOMATIC FIX
+				'fixSql' => 'DELETE b FROM `booking` as b '
+					. 'WHERE b.`out_histid` IN (Select out_histid FROM('
+					. 'select DISTINCT bk.`out_histid` from booking as bk '
+					. 'left join biblio_status_hist '
+					. 'on biblio_status_hist.histid=bk.out_histid '
+					. 'where bk.out_histid is not null '
+					. 'and biblio_status_hist.histid is null) X)',
 			),
 			array(
 				'error' => T("IntegrityQueryBrokenReturnRef"),
@@ -264,8 +273,13 @@ class Integrity {
 					. 'on booking.out_histid=biblio_status_hist.histid '
 					. 'where biblio_status_hist.status_cd=\'out\' '
 					. 'and booking.bookingid is null ',
-				// NO AUTOMATIC FIX
-			),
+				'fixSql' => 'delete bsh from biblio_status_hist as bsh where bsh.histid in '
+					. '(select histid from (select distinct bs.histid '
+					. 'from biblio_status_hist as bs left join booking as b '
+					. 'on b.out_histid=bs.histid '
+					. 'where bs.status_cd=\'out\' '
+					. 'and b.bookingid is null) X) ',
+		),
 			array(
 				'error' => T("%count% double check outs"), 'countFn' => 'countDoubleCheckouts',
 				// NO AUTOMATIC FIX

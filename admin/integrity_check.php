@@ -23,7 +23,7 @@
 ?>
 	<h3><?php echo T("Checking Database Integrity"); ?></h3>
 
-	<fieldset>
+	<fieldset id="errList">
 <?php
 	if (empty($errors)) {
 		echo '<p>'.T("No errors found").'</p>';
@@ -43,18 +43,16 @@
 				<input type="submit" class="button" value="<?php echo T("Recheck"); ?>" />
 			</form>
 		</td>
-<?php
-	if (!empty($errors)) {
-?>
+
+<?php if (!empty($errors)) { ?>
 		<td>
 			<form method="post" action="../admin/integrity_check.php">
 				<input type="hidden" name="fix" value="1" />
 				<input type="submit" class="button" value="<?php echo T("Try to Fix Errors"); ?>" />
 			</form>
 		</td>
-<?php
-	}
-?>
+<?php } ?>
+
 	</tr>
 	</table>
 	</fieldset>

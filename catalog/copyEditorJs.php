@@ -81,18 +81,18 @@ var ced = {
 
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').on('click',null,function () {
+		$('#copySubmitBtn').on('click',null,function (e) {
+			e.preventDefault();
+			e.stopPropagation();
 			var params= $('#copyForm').serialize() + '&barcode_nmbr='+$('#copyBarcode_nmbr').val();
-			var rslt = ced.doPostCopy2DB(params);
-			if (rslt == '!!success!!') $('#editRsltMsg').html('Copy posted successfully!');
-			return false;
+			ced.doPostCopy2DB(params);
 		});
 	  // prevent submit button from firing a 'submit' action
 		return false;
 	},
 
 	doCopyEdit: function (e) {
-		$('#editRsltMsg').html('');
+		$('#editRsltMsg').html('').hide();
 		var copyid = $(this).next().next().val();
 		for (var nCopy in idis.copyJSON) {
 			idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
@@ -114,8 +114,8 @@ var ced = {
 
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').on('click',null,function () {
-			ced.doCopyUpdate();
+		$('#copySubmitBtn').on('click',null,function (e) {
+			ced.doCopyUpdate(e);
 			return false;
 		});
 
@@ -125,7 +125,9 @@ var ced = {
 	  // prevent submit button from firing a 'submit' action
 		return false;
 	},
-	doCopyUpdate: function () {
+	doCopyUpdate: function (ee) {
+		e.stopPropagation();
+		e.preventDefault();
 	  var barcdNmbr = $('#copyBarcode_nmbr').val();
 
 	  // serialize() ignores disabled fields, so cant reliably use it in this case
@@ -152,13 +154,11 @@ var ced = {
 	  $.post(ced.url,parms, function(response){
 	  	if(response == '!!success!!') {
 				$('#copyCancelBtn').val("Go Back");
-				$('#editRsltMsg').html('Copy updated successfully!');
+				$('#editRsltMsg').html('Copy updated successfully!').show();
 			} else {
-				$('#editRsltMsg').html(response);
+				$('#editRsltMsg').html(response).show();
 			}
 	  });
-	  // prevent submit button from firing a 'submit' action
-	  return false;
 	},
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
@@ -166,12 +166,11 @@ var ced = {
 			var copyid = $(this).next().val();
 	    var params = "&mode=deleteCopy&bibid="+idis.theBiblio.bibid+"&copyid="+copyid;
 	  	$.post(ced.url,params, function(response){
-	  	  $('#editRsltMsg').html(response);
+	  	  $('#editRsltMsg').html(response).show();
 	  		idis.fetchCopyInfo(); // refresh copy display
 	  	});
 		};
 	  $(this).parent().parent().removeClass('hilite');
-		return false;
 	}
 }
 $(document).ready(ced.init);
