@@ -31,7 +31,9 @@ var ni = {
 		ni.resetForm();
 
 		// New On-Line Entry Item - search form functions
-    $('.criteria').on('change',null,ni.enableSrchBtn);
+    $('.criteria').on('change',null, function () {
+			ni.enableSrchBtn();
+		});
     $('#manualBtn').on('click',null, function() {
 			ni.doClearItemForm();
 			ni.doMakeItemForm('');
@@ -68,8 +70,8 @@ var ni = {
 		// for the copy editor functions
 		// to handle startup condition
 		$('#copyForm').on('submit',null,function (e) {
-			//e.preventDefault();
-			//e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 			//ni.doCopyNew();
 			ni.doNewCopy(e);
 			return false;
@@ -118,25 +120,23 @@ var ni = {
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
 		$('#photoEditorDiv').hide();
-
-		//ni.fetchHosts();
-
 		ni.disableSrchBtn();
     $('span#ttlHits').html('');
 		$('#lookupVal').focus();
 	},
 	
 	disableSrchBtn: function () {
-	  //ni.srchBtnBgClr = ni.srchBtn.css('color');
-	  //ni.srchBtn.css('color', '#888888');
 		ni.srchBtn.disable();
 	},
 	enableSrchBtn: function () {
-	  //ni.srchBtn.css('color', ni.srchBtnBgClr);
 		ni.srchBtn.enable();
 	},
 
-	doBackToSrch: function () {
+	doBackToSrch: function (e) {
+		if(e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 		ni.resetForm();
 	},
 	
