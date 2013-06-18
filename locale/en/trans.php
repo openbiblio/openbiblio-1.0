@@ -649,6 +649,7 @@ $trans["Pending Bookings"] = "Pending Bookings";
 $trans["Phone:"] = "Phone:";
 $trans["Phone"] = "Phone";
 $trans["PhotoEditor"] = "Photo Editor";
+$trans["Photo Import"] = "Photo Import";
 $trans["Pickup List"] = "Pickup List";
 $trans["Place on Hold"] = "Place on Hold";
 $trans["Please enter your e-mail address."] = "Please enter your e-mail address.";
