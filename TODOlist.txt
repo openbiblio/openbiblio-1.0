@@ -62,13 +62,16 @@ biblio information. Then when I search for a topic, that paper will spring up
 just like any other, and the call number will imediately me its in local storage,
 and perhaps via circ/checkout allow me to retrieve a copy.
 
-22 May 2013 - Neil/Fred
-investigate 'doi' for lookup consideration.
-
 12 Jun 2013 - Fred
 deleting a biblio does not remove copy-status records
 
+19 Jun 2013 - Neil
+NewItems report produces 'No Results' for 0 (zero) days. It should report today's items.
+
 ###################### Completed, most recent at top #########################
+
+22 May 2013 - Neil/Fred, available as beta plug-in in 'under construction' menu
+investigate 'doi' for lookup consideration.
 
 12 Jun 2013 - Neil, unable to duplicate 18 Jun
 Chrome 27, There is a slight problem after the initial login -

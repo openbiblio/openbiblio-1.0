@@ -125,7 +125,7 @@ var ced = {
 	  // prevent submit button from firing a 'submit' action
 		return false;
 	},
-	doCopyUpdate: function (ee) {
+	doCopyUpdate: function (e) {
 		e.stopPropagation();
 		e.preventDefault();
 	  var barcdNmbr = $('#copyBarcode_nmbr').val();

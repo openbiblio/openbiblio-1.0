@@ -1,7 +1,6 @@
 <script language="JavaScript">
 // JavaScript Document
 "use strict";
-
 var dio = {
 	init: function () {
 		dio.url = 'dioSearchSrvr.php';
@@ -9,13 +8,7 @@ var dio = {
 		dio.initWidgets();
 		dio.resetForms();
 		
-		$('#orfnChkBtn').bind('click',null,dio.findOrfans);
-
-		//$('#dupChkBtn').bind('click',null,dio.findDupes);
-		//$('#absntChkBtn').bind('click',null,dio.findAbsnts);
-		//$('#maybeChkBtn').bind('click',null,dio.findMaybes);
-
-		//dio.fetchModuleList();
+		$('#doiForm').bind('submit',null,dio.search);
 	},
 	
 	//------------------------------
@@ -28,67 +21,20 @@ var dio = {
 	},
 	
 	//------------------------------
-	fetchModuleList: function () {
-	  $.getJSON(dio.url,{'cat':'locale', 
-											 'mode':'getModuleList'}, function(data){
-			dio.obMods = data.sort();
-		});
-	},
-	
-	//------------------------------
-	findOrfans: function () {
-		$('#rslts').html('');
-		$('#rsltsArea').show();
-		var choice = $('#locSet option:selected');
-		$.post(dio.url, {'mode':'ck4CssUnused',
-									  },
-						function (response) {
-			$('#rslts').html(response);
-		});
-	},
+	search: function (e) {
+		e.preventDefault;
+		e.stopPropagation();
 
-	findDupes: function () {
-		$('#rslts').html('');
-		$('#rsltsArea').show();
-		var choice = $('#locSet option:selected');
-		$.post(dio.url, {'cat':'locale', 
-										 'mode':'ck4TransDupes',
-										 'locale':choice.val(),
-									  },
-						function (response) {
-			$('#rslts').html(response);
-		});
-	},
-	findAbsnts: function () {
-		$('#rslts').html('');
-		$('#rsltsArea').show();
-		$.each(dio.obMods, function (n,module) {
-			var choice = $('#locSet option:selected');
-			$.post(dio.url, {'cat':'locale',
-											 'mode':'ck4TransNeeded',
-											 'locale':choice.val(),
-											 'module':module,
-										  },
-							function (response) {
-				$('#rslts').append(response);
-			});
-		});
-	},
+  	var Qr=$('#dioCd').val()
+		if(Qr){
+			if(Qr.indexOf('doi://')==0)Qr=Qr.substr(6);
+			if(Qr.indexOf('doi:')==0)Qr=Qr.substr(4)
 
-	findMaybes: function () {
-		$('#rslts').html('');
-		$('#rsltsArea').show();
-		$.each(dio.obMods, function (n,module) {
-			var choice = $('#locSet option:selected');
-			$.post(dio.url, {'cat':'locale',
-											 'mode':'ck4TransMaybe',
-											 'locale':choice.val(),
-											 'module':module,
-										  },
-							function (response) {
-				$('#rslts').append(response);
-			});
-		});
+			//example doi: 10.1007/s10531-011-0143-8
+			var newLoc = 'http://dx.doi.org/'+escape(Qr);
+			window.open(newLoc,'doiWin');
+			return false;
+		}
 	},
 
 }

@@ -6,7 +6,7 @@
 .column callnum title="Call No." sort=callnum
 .column title func=biblio_link title=Title sort=title
 .parameters
-.	string days title="Added in the last N days" default=365
+.	string days title="Added in the last N days"
 .	order_by default="added!r"
 .		item added title="Date Added" expr="b.create_dt"
 .		item callnum title="Call No." expr="cs.subfield_data"
@@ -26,6 +26,6 @@
 		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
 		and cf.bibid=b.bibid and cf.tag='099'
 		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
-		and b.create_dt >= now() - interval %#days% day
+		and b.create_dt >= (now() - interval %#days% day)
 .	order_by_expr
 .end sql

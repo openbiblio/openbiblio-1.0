@@ -237,6 +237,7 @@ $trans["Copy successfully created."] = "Copy successfully created.";
 $trans["Copyright"] = "Copyright";
 $trans["Copyright Date"] = "Copyright Date";
 $trans["Count"] = "Count";
+$trans["Cover Type"] = "Cover Type";
 $trans["CoverPhotoFor"] = "Cover Photo for";
 $trans["Create Booking"] = "Create Booking";
 $trans["Created Since"] = "Created Since";
