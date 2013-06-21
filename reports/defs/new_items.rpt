@@ -15,17 +15,23 @@
 .end parameters
 
 .sql
-	select b.bibid, cs.subfield_data as callnum,
-		date_format(b.create_dt, '%%c/%%e/%%Y') as added,
-		concat(ts.subfield_data, ' ', ifnull(sub.subfield_data, '')) as title
-	from biblio b join biblio_field tf join biblio_subfield ts
-		join biblio_field cf join biblio_subfield cs
-		left join biblio_subfield sub on sub.fieldid=tf.fieldid
-			and sub.subfield_cd='b'
-	where tf.bibid=b.bibid and tf.tag='245'
-		and ts.fieldid=tf.fieldid and ts.subfield_cd='a'
-		and cf.bibid=b.bibid and cf.tag='099'
-		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
-		and b.create_dt >= (now() - interval %#days% day)
+SELECT b.bibid,
+			 cs.subfield_data AS callnum,
+       date_format(b.create_dt, '%%c/%%e/%%Y') AS added,
+       concat(ts.subfield_data, ' ',
+       ifnull(sub.subfield_data, '')) AS title
+FROM biblio b
+	JOIN biblio_field AS tf
+	JOIN biblio_subfield AS ts
+	JOIN biblio_field AS cf
+	JOIN biblio_subfield AS cs
+	LEFT JOIN biblio_subfield AS sub
+					ON (sub.fieldid=tf.fieldid) AND (sub.subfield_cd='b')
+	WHERE (tf.bibid=b.bibid)
+	  AND ((tf.tag='240') OR (tf.tag='245') OR (tf.tag='246'))
+	  AND (ts.fieldid=tf.fieldid) AND (ts.subfield_cd='a')
+	  AND (cf.bibid=b.bibid) AND (cf.tag='099')
+	  AND (cs.fieldid=cf.fieldid) AND (cs.subfield_cd='a')
+	  AND (b.create_dt >= (now() - interval %#days% day))
 .	order_by_expr
 .end sql
