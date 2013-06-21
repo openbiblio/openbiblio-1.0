@@ -87,10 +87,12 @@ var idis = {
 		  txt += "<tr>\n";
 			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
 			txt += "	<td>"+tmp.label+"</td>\n";
-			if (tmp.marcTag != '024a') {
-				txt += "	<td>"+tmp.value+"</td>\n";
-			} else {
+			if (tmp.marcTag == '024a') {
 				txt += '	<td><a href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
+			} else if (tmp.marcTag == '505a') {
+				txt += '	<td><textarea cols="60" wrap >'+tmp.value+"</textarea></td>\n";
+			} else {
+				txt += "	<td>"+tmp.value+"</td>\n";
 			}
 			txt += "</tr>\n";
 			if (tmp.marcTag == '245a') {

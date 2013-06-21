@@ -83,7 +83,6 @@ var bs = {
 			}
 		});
 		$('.bibGobkBtn').on('click',null,function () {
-console.log('bib goback clicked')
 		  if (bs.multiMode) {
 //				if (bs.srchType = 'phrase')
 //					bs.doPhraseSearch();
