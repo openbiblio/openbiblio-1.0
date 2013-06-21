@@ -6,4 +6,4 @@
 #*  Translation text for page transUtils.php
 #****************************************************************************
 
-	Nav::node('working/dioSearch', T("dioSearch"), '../plugin_dioSearch/dioSearchForms.php');
+	Nav::node('cataloging/dioSearch', T("dioSearch"), '../plugin_dioSearch/dioSearchForms.php');

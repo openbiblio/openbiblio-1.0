@@ -88,7 +88,7 @@ var idis = {
 			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
 			txt += "	<td>"+tmp.label+"</td>\n";
 			if (tmp.marcTag == '024a') {
-				txt += '	<td><a href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
+				txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
 			} else if (tmp.marcTag == '505a') {
 				txt += '	<td><textarea cols="60" wrap >'+tmp.value+"</textarea></td>\n";
 			} else {
@@ -104,6 +104,21 @@ var idis = {
 		txt += "	<td>Date Added</td>\n";
 		txt += "	<td>"+idis.theBiblio.createDt+"</td>\n";
 		txt += "</tr>\n";
+
+		/* support for doi search link */
+		$('.hotDoi').on('click',null,function () {
+			var Qr = $(this).val();
+			if(Qr){
+				if(Qr.indexOf('doi://')==0)Qr=Qr.substr(6);
+				if(Qr.indexOf('doi:')==0)Qr=Qr.substr(4)
+
+				//example doi: 10.1007/s10531-011-0143-8
+				var	newLoc = 'http://dx.doi.org/'+escape(Qr);
+				window.open(newLoc,'doiWin');
+				return false;
+			}
+		});
+
   	$('tbody#biblio').html(txt);
 		obib.reStripe2('biblioTbl','odd');
 		$('#biblioDiv td.filterable').hide();

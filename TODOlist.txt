@@ -84,6 +84,9 @@ immediately after import, if I locate the new items in the existing items search
 the icon for the media-type is missing.
 The icon only becomes visible after I  have edited (and updated) the item.
 
+21 Jun 2013 - Fred
+dio values for 024$a not saved to database.
+
 ###################### Completed, most recent at top #########################
 
 20 Jun 2013 - Neil, fixed 20 Jun - now returns to list page last viewed

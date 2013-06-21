@@ -75,15 +75,19 @@ function PostBiblioChange($nav) {
 	 */
 	
 	foreach ($_POST['fields'] as $f) {
+		//echo 'working field ';print_r($f);
 		if (strlen($f['tag']) != 3 or strlen($f['subfield_cd']) != 1) {
+			echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
 			continue;
 		}
 		$fidx = $f['tag'].'-';
-		
+		//echo 'fidx = '.$f['tag'].' <br />';
+
 		// Only do this when there is no field yet with this field value
 		$fidxSuffix = null;
 		foreach ($_POST[fields] as $s){
 			if (strlen($s[tag]) != 3 or strlen($s[subfield_cd]) != 1) {
+				echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
 				continue;
 			}
 	
@@ -113,11 +117,13 @@ function PostBiblioChange($nav) {
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}	
 	}
-	//echo "flds===>";print_r($fields);echo"<br />";
+	//echo "flds========================>";print_r($fields);echo"<br />";
 	$mrc = new MarcRecord();
 	$mrc->setLeader($biblio[marc]->getLeader());
 	
 	foreach ($biblio[marc]->fields as $f) {
+		//if ($f->tag == '024') print_r($f);
+
 		$fidx = $f->tag .'-'. $f->fieldid;
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
 			array_push($mrc->fields, $f);

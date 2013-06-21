@@ -7,7 +7,7 @@
 
 	session_cache_limiter(null);
 
-  $tab = "working";
+  $tab = "cataloging";
   $nav = "dioSearch";
   $focus_form_name = "srchArea";
   $focus_form_field = "dioCd";
