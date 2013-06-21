@@ -40,10 +40,6 @@
 	
 	<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
-	<!--script src="../../doi/firefox/chrome/content/scripts/HandleLinkFinder.js"></script>
-	<script src="../../doi/firefox/components/HdlHttpProtocol.js"></script>
-	<script src="../../doi/firefox/components/HdlLinkFinder.js"></script>
-	<script src="../../doi/firefox/components/HdlProtocol.js"></script-->
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
   require_once(REL(__FILE__,'../plugin_dioSearch/dioSearchJs.php'));

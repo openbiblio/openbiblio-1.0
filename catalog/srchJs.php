@@ -51,7 +51,7 @@ var bs = {
 		$('#addNewBtn').on('click',null,bs.doNewCopy);
 		$('#addList2CartBtn').on('click',null,bs.doAddListToCart);
 		$('#addItem2CartBtn').on('click',null,bs.doAddItemToCart);
-		$('#biblioListDiv .gobkBtn').on('click',null,bs.rtnToSrch);
+		$('.listGobkBtn').on('click',null,bs.rtnToSrch);
 		$('#biblioListDiv .goPrevBtn').on('click',null,function () {bs.goPrevPage(bs.previousPageItem);});
 		$('#biblioListDiv .goNextBtn').on('click',null,function () {bs.goNextPage(bs.nextPageItem);});
 		$('#biblioListDiv .goNextBtn').disable();
@@ -82,15 +82,15 @@ var bs = {
 				$('#marcBtn').val(bs.showMarc);
 			}
 		});
-		$('#biblioDiv .gobkBtn').on('click',null,function () {
+		$('.bibGobkBtn').on('click',null,function () {
+console.log('bib goback clicked')
 		  if (bs.multiMode) {
-				if (bs.srchType = 'phrase')
-					bs.doPhraseSearch();
-				else
-					bs.doBarCdSearch();
+//				if (bs.srchType = 'phrase')
+//					bs.doPhraseSearch();
+//				else
+//					bs.doBarCdSearch();
 				bs.rtnToList();
-			}
-			else {
+			} else {
 			  bs.rtnToSrch();
 			}
 		});

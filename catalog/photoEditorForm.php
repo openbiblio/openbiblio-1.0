@@ -42,7 +42,7 @@
 					<input type="file" id="browse" name="browse" accept="image/png image/jpg" />
           <br />
 					<label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
-					<p id="fotoFolder">../photos/<i><?php echo T("filename"); ?></i>.jpg</p>
+					<p id="fotoFolder">../photos/<span class="italic"><?php echo T("filename"); ?></span>.jpg</p>
 					<br />
 					<label for="fotoName"><?php echo T("FileName"); ?>:</label>
 					<input type="text" id="fotoName" name="url" size="32"

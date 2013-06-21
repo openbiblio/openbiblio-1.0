@@ -68,7 +68,28 @@ deleting a biblio does not remove copy-status records
 19 Jun 2013 - Neil
 NewItems report produces 'No Results' for 0 (zero) days. It should report today's items.
 
+20 Jun 2013 - Neil
+I have just discovered that there are doi's for books, see links
+http://www.doi.org/factsheets/ISBN-A.html
+http://www.crossref.org/02publishers/dois_for_books.html
+This facility maybe become valuable to more general users
+
+20 Jun 2013 - Neil
+CSV import:
+The collection and media-type are not retained through the import process.
+OBs default selection for these are provided for each item imported.
+(I no longer have columns for these categories in my csv file)
+I don't think they are actually registered with the item initially -
+immediately after import, if I locate the new items in the existing items search window,
+the icon for the media-type is missing.
+The icon only becomes visible after I  have edited (and updated) the item.
+
 ###################### Completed, most recent at top #########################
+
+20 Jun 2013 - Neil, fixed 20 Jun - now returns to list page last viewed
+Viewing item's summary information & search results
+After viewing an item's information, I press 'go back' and I am returned to the top of the very first page of the search results.
+Would it be possible to be returned to the viewed item's position/page in the search results?
 
 22 May 2013 - Neil/Fred, available as beta plug-in in 'under construction' menu
 investigate 'doi' for lookup consideration.

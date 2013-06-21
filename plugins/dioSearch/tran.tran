@@ -5,6 +5,6 @@
 #****************************************************************************
 #*  Translation text for page transUtils.php
 #****************************************************************************
-$trans["dioSearch"] = "dio/hdl Search";
+$trans["dioSearch"] = "dio Search";
 $trans["EnterDOI2Resolve"] = "Enter DOI to resolve, e.g. 10.1000/202";
 $trans["Search4DocumentInfo"] = "Search for Document Info";

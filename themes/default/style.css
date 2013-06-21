@@ -24,7 +24,7 @@ body {
 .bold { font-size:larger; font-weight:bold; }
 .note { font-size:0.7em; }
 .help { font-size:0.7em; display:none; }
-i { font-size:0.7em; color:lightblue; }
+.italic { font-size:0.7em; font-style:italic; color:lightblue; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {

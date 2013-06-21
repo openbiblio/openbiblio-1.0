@@ -162,8 +162,8 @@
 		<td colspan="3">
 			<ul class="pagBtns">
 				<li>
-					<input type="button" class="gobkBtn button" value="<?php echo T("Go Back"); ?>" />
-					<input type="button" id="addList2CartBtn" class="button" value="<?php echo T("Add List To Cart"); ?>" />
+					<input type="button" class="listGobkBtn" value="<?php echo T("Go Back"); ?>" />
+					<input type="button" id="addList2CartBtn" value="<?php echo T("Add List To Cart"); ?>" />
 				</li>
 				<li>
 					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T("Previous Page"); ?>">
@@ -198,7 +198,7 @@
 	<tr>
 		<td colspan="3">
 			<ul class="pagBtns">
-				<li><input type="button" class="gobkBtn button" value="<?php echo T("Go Back"); ?>" /></li>
+				<li><input type="button" class="listGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
 				<li>
 					<input type="button" class="goPrevBtn PgBtn" value="<?php echo T("Previous Page"); ?>">
 					<span class="rsltQuan"></span>
@@ -214,7 +214,7 @@
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
-		<li><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
+		<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		<li><input type="button" id="marcBtn" value=""></li>
 		<li><input type="button" id="addItem2CartBtn" value="<?php echo T("Add To Cart"); ?>" /></li>
 		<?php //if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
@@ -231,7 +231,7 @@
 	<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
-		<li><input type="button" class="gobkBtn" value="<?php echo T("Go Back"); ?>"></li>
+		<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>"></li>
 		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 			<li><input type="button" id="addNewBtn" class="button" value="<?php echo T("Add New Copy"); ?>"></li>
 		<?php } ?>
