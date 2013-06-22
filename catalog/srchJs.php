@@ -221,17 +221,10 @@ var bs = {
 	},
 	//------------------------------
 	fetchOpts: function () {
-	  //$.getJSON(bs.url,{mode:'getOpts'}, function(jsonData){
-	  //  bs.opts = jsonData
-		//	bs.opts['lookupAvail'] = <?php echo Settings::get('lookup2');?>;
-			bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';
-			bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
-      bs.opts['current_site'] = <?php echo Settings::get('library_name');?>;
-			idis.init(bs.opts); // used for biblio item & copy displays
-
-			//bs.fotoWidth = bs.opts['thumbnail_width'];
-			//bs.fotoHeight = bs.opts['thumbnail_height'];
-		//});
+		bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';
+		bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
+    bs.opts['current_site'] = <?php echo Settings::get('library_name');?>;
+		idis.init(bs.opts); // used for biblio item & copy displays
 	},
 	fetchCrntMbrInfo: function () {
 	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){
@@ -361,6 +354,7 @@ var bs = {
 	  bs.srchType = 'phrase';		
 	  var params = $('#phraseSearch').serialize();
 		params += '&mode=doPhraseSearch&firstItem='+firstItem;
+
 	  $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
 				$('#errSpace').html(jsonInpt).show();
@@ -388,7 +382,6 @@ var bs = {
 				  bs.multiMode = true;
 				  bs.showList(firstItem, biblioList);
 				}
-//				bs.rtnToList();
 	    }
 
 		});
@@ -406,9 +399,7 @@ var bs = {
 	},
 
 	showList: function (firstItem, biblioList) {
-	  if(firstItem==null){
-	    firstItem=0;
-	  }
+	  if(firstItem == null) firstItem=0;
 	  
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = $.parseJSON(biblioList[0]);
@@ -460,8 +451,9 @@ var bs = {
 				//// Actual number of lines displayed will be seperately determined later
 				var lineTag = [];
 				var lineSpec = bs.displayInfo[biblio.matlCd];
-				for (var i=0; i<lineSpec.length; i++) {
-					if (!lineSpec[i]) continue; // skip null, undefined or non-existent elements
+//				for (var i=0; i<lineSpec.length; i++) {
+				for (var i in lineSpec) {
+//					if (!lineSpec[i]) continue; // skip null, undefined or non-existent elements
 					var n = parseInt(lineSpec[i]['row'])+1;
 					lineTag[n] = lineSpec[i]['tag']+lineSpec[i]['suf'];
 				}
