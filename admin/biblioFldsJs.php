@@ -203,6 +203,7 @@ var mtl = {
 			  var entry = $('#'+arayd[n]);
 			  var id = (arayd[n]).substr(5,99);
 				var tag = entry.attr('tag');
+				while (tag.length < 3) { tag = '0'+tag; };
 				var subFld = entry.attr('subFld');
 				var temp = entry.text();
 				var label = temp;
