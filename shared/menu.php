@@ -60,6 +60,25 @@ function staff_menu() {
 	}
 	
 	##-------------------------------------------------------------------------------------##
+	/*
+	Nav::node('opac', T("OPAC"), '../catalog/srchForms.php?tab=OPAC');
+	Nav::node('opac/search', T("Search"), '../catalog/srchForms.php?tab=OPAC');
+	Nav::node('opac/images', T("Images"), '../shared/image_browse.php?tab=opac');
+	*/
+	Nav::node('opac', T("OPAC"), '../catalog/srchForms.php?tab=OPAC');
+	Nav::node('opac/search', T("Search"), '../catalog/srchForms.php?tab=OPAC');
+	Nav::node('opac/images', T("Images"), '../shared/image_browse.php?tab=OPAC');
+	Nav::node('opac/biblio', T("Record Info"));
+	Nav::node('opac/cart', T("Cart"), '../shared/req_cart.php?tab=opac');
+	Nav::node('opac/request', T("Booking"));
+	if (isset($_SESSION['authMbrid'])) {
+		Nav::node('opac/account', T("My Account"), '../opac/my_account.php');
+		Nav::node('opac/account/edit', T("Edit Info"), '../opac/edit_account.php');
+		Nav::node('opac/account/bookings', T("Bookings"), '../opac/bookings.php');
+		Nav::node('opac/account/bookings/view', T("View"));
+	}
+
+	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasAdminAuth"]){
 		Nav::node('admin', T("Admin"), '../admin/index.php');
 		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');

@@ -18,12 +18,16 @@
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "ph_searchText";
 
-	if ($tab == 'opac') {
-		Page::header(array('nav'=>$nav, 'title'=>'Library Catalog'));
+	if ($tab == 'OPAC') {
+		//Page::header(array('nav'=>$nav, 'title'=>'Library Catalog'));
+
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+		Nav::node('opac/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
+		Nav::node('opac/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
+		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Library Catalog'));
 	}
 	else {
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
-
 		Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
 		Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));

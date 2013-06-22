@@ -78,6 +78,9 @@ immediately after import, if I locate the new items in the existing items search
 the icon for the media-type is missing.
 The icon only becomes visible after I  have edited (and updated) the item.
 
+21 Jun 2013 - Fred
+OPAC image browser image links to biblios are not working.
+
 ###################### Completed, most recent at top #########################
 
 21 Jun 2013 - Fred, fixed 21 Jun

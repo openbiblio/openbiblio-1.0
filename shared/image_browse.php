@@ -59,6 +59,7 @@
 	} else {
 		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 	}
+	echo "<h3>Browse Images</h3>";
 
 	if ($msg) {
 		echo '<p class="error">'.H($msg).'</p><br /><br />';
@@ -66,7 +67,6 @@
 
 	# Display no results message if no results returned from search.
 	if ($rpt->count() == 0) {
-	  echo "<h3>Browse Images</h3>";
 		echo "<p class=\"error\">".T("No images found")."</p>";
 		 ;
 		exit();
