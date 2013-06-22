@@ -5,7 +5,7 @@
 
 	require_once("../shared/common.php");
 
-	$tab = "cataloging";
+	$tab = "opac";
 	if (isset($_REQUEST["tab"])) {
 		$tab = $_REQUEST["tab"];
 	}
@@ -21,7 +21,6 @@
 
 	function getRpt() {
 		global $tab;
-echo "'getRpt()' called <br />";
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('Images');
 
@@ -32,18 +31,15 @@ echo "'getRpt()' called <br />";
 		}
 
 		$rpt = Report::create('images', 'Images');
-echo "back from rpt generator <br />";
 		if (!$rpt) {
-echo "nothing found <br />";
 			return false;
 		}
 		$rpt->initCgi();
-echo "'initCgi()' called <br />";
 		return $rpt;
 	}
+	/* ---------------------------------------------------*/
 
 	$rpt = getRpt();
-echo "got a rpt <br />";
 
 	if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
 		$currentPageNmbr = $_REQUEST["page"];
@@ -82,13 +78,13 @@ echo "got a rpt <br />";
 		*  Printing result stats and page nav
 		************************************************************************** -->
 <?php
-	echo $rpt->count().T("%count% results found.", array("count"=>$rpt->count()));
+	echo $rpt->count().' '.T("results found.");
 	$page_url = new LinkUrl("../shared/image_browse.php", 'page',
 		array('type'=>'previous', 'tab'=>$tab));
 	$disp = new ReportDisplay($rpt);
 	echo $disp->pages($page_url, $currentPageNmbr);
 
-	echo '<table><tr>';
+	echo '<fieldset><table><tr>';
 	$col = 0;
 	$page = $rpt->pageIter($currentPageNmbr);
 	while($row = $page->next()) {
@@ -97,11 +93,14 @@ echo "got a rpt <br />";
 			$col = 0;
 		}
 		echo '<td valign="bottom" align="center" style="padding-bottom: 15px">'
-				.'<a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
-				.'<img src="'.H($row['imgurl']).'" /><br />'.H($row['callnum']).'</a></td>';
+				.'	<a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
+				.'		<img src="../photos/'.H($row['url']).'" width="100" height="150" /><br />'
+				.			H($row['callnum'])
+				.'	</a>'
+				.'</td>';
 		$col++;
 	}
-	echo '</tr></table>';
+	echo '</tr></table></fieldset>';
 
 	echo $disp->pages($page_url, $currentPageNmbr);
 	 ;
