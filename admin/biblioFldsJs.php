@@ -211,7 +211,8 @@ var mtl = {
 				if (temp.indexOf('-') >= 0) label = $.trim(entry.text().split('-')[1]);
 				//if (temp.indexOf(',') >= 0) label = $.trim(entry.text().split(',')[1]);
 				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'","material_cd":"'+$('#typeList').val()+'"'+
-									 ',"tag":"'+tag+'","subfield_cd":"'+subFld+'","label":"'+label+'"},';
+									 ',"tag":"'+tag+'","subfield_cd":"'+subFld+'","label":"'+label+'"'+
+									 ',"required":"0","repeatable":"0"},';
 			} else {
 				// position of holdovers from original layout
 		  	// param name & value MUST be in double quotes

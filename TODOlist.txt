@@ -81,6 +81,9 @@ The icon only becomes visible after I  have edited (and updated) the item.
 21 Jun 2013 - Fred
 OPAC image browser image links to biblios are not working.
 
+22 Jun 2013 - Neil
+Removing a MARC tag via Admin | BiblioFields causes Search Results list to loose all right-side info.
+
 ###################### Completed, most recent at top #########################
 
 21 Jun 2013 - Fred, fixed 21 Jun
@@ -88,7 +91,8 @@ tag 024$a not saved to database. problem is in saving new 0xx tags.
 
 20 Jun 2013 - Neil, fixed 20 Jun - now returns to list page last viewed
 Viewing item's summary information & search results
-After viewing an item's information, I press 'go back' and I am returned to the top of the very first page of the search results.
+After viewing an item's information, I press 'go back' and I am returned to the
+top of the very first page of the search results.
 Would it be possible to be returned to the viewed item's position/page in the search results?
 
 22 May 2013 - Neil/Fred, available as beta plug-in in 'under construction' menu
