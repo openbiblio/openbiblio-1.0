@@ -20,7 +20,8 @@
 		left join biblio_subfield sub on sub.fieldid=tf.fieldid
 			and sub.subfield_cd='b'
 	where tf.bibid=i.bibid and ts.fieldid=tf.fieldid
-		and (tf.tag='245'  and ts.subfield_cd='a')
+		and ((tf.tag='240') or (tf.tag='245') or (tf.tag='246'))
+		and ts.subfield_cd='a'
 		and cf.bibid=i.bibid and cf.tag='099'
 		and cs.fieldid=cf.fieldid and cs.subfield_cd='a'
 .	order_by_expr
