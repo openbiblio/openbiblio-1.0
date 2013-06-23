@@ -424,10 +424,11 @@ var bs = {
 			html += '<tr class="listItem">\n';
 
 			//--// the leftside pretty stuff
-			html += '	<td id="itemVisual">\n';
-			html += '		<div> \n';
+			html += '	<td>\n';
+			html += '		<div id="itemVisual"> \n';
 				//// if wanted, we create space for a possible photo, and fill it if one is found //
-			if (bs.opts.showBiblioPhotos == 'Y') {
+			var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
+			if ((showFoto == 'Y') && (Modernizr.video)){
 				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n';
 				html += '			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" '
 												   + 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >';

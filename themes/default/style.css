@@ -40,6 +40,8 @@ h4 { font-size: 0.75em; margin: 2px; }	/* 12/16 */
 h5 { font-size: 0.63em; color: black; }	/* 10/16 */
 h6 { font-size: 0.5em; }	/* 8/16 */
 
+img { margin:3px 3px 0 3px; }
+
 sup, span.reqd, #reqdNote { color: red; text-align:center; }
 .smallType { font-size: 75%; }
 p { margin:2px; padding:0; }
@@ -205,7 +207,7 @@ div#content {
 .inlineFS { box-flex:1; }
 
 #biblioListDiv { width:100%; }
-#itemVisual { width:40%; }
+#itemVisual { width:auto; }
 #photo, #dashBd { display:inline; }
 #itemInfo { float:left; width:95%; }
 
@@ -290,7 +292,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 #bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
 #bibBlkA, fotoBlkA { display:inline-block; float:left; }
 #bibBlkB, fotoBlkB { display:inline-block; float:right; }
-#biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:10px; border:1px solid green }
+#biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
 /*
 .no-touch #biblioFoto.hover:hover { 
 	top:20px;
@@ -474,8 +476,8 @@ div#configDiv{
 
 	/*.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }*/
 	/*listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }*/
-	#itemVisual { width:110px; }
-	#photo, #dashBd { display:inline; }
+	#itemVisual { width:auto; height:auto; display:flex; }
+	#photo, #dashBd { display:inline-block; }
 
 	#flagInfo {text-align:center; margin:0; padding:0; }
 	#flagInfo li { float:left; display:inline; list-style:none; margin:0; padding:0; margin-right:15px; }

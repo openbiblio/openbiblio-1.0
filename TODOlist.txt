@@ -80,6 +80,14 @@ The icon only becomes visible after I  have edited (and updated) the item.
 
 21 Jun 2013 - Fred
 OPAC image browser image links to biblios are not working.
+Make call.no appear below images (see Meyer's "more on CSS")
+
+22 Jun 2013 - Fred
+ImageDisplay meeds a container for all txt fields so they can be sized to 100%
+instead of using size= for text, and cols= for textarea.
+
+22 Jun 2013 - Fred
+Going to OPAC menu area looses all other parts of menu.
 
 ###################### Completed, most recent at top #########################
 

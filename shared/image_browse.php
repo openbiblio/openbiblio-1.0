@@ -93,10 +93,12 @@
 			$col = 0;
 		}
 		echo '<td valign="bottom" align="center" style="padding-bottom: 15px">'
-				.'	<a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
-				.'		<img src="../photos/'.H($row['url']).'" width="100" height="150" /><br />'
-				.			H($row['callnum'])
-				.'	</a>'
+				.'	<label>'
+				.'		<img src="../photos/'.H($row['url']).'" width="100" height="150" class="biblioImage hover" /><br />'
+				.'		<a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
+				.'		<span class="smallType">'.H($row['callnum']).'</span>'
+				.'		</a>'
+				.'	</label>'
 				.'</td>';
 		$col++;
 	}

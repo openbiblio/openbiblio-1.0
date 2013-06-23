@@ -60,7 +60,7 @@ var idis = {
 		$('#bibBlkB').html('');
 
 		var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
-		if (showFoto == 'Y'){
+		if ((showFoto == 'Y') && (Modernizr.video)){
   		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.theBiblio.bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
 				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;
@@ -90,7 +90,7 @@ var idis = {
 			if (tmp.marcTag == '024a') {
 				txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
 			} else if (tmp.marcTag == '505a') {
-				txt += '	<td><textarea cols="60" wrap >'+tmp.value+"</textarea></td>\n";
+				txt += '	<td><textarea cols="60" wrap="soft" readonly >'+tmp.value+"</textarea></td>\n";
 			} else {
 				txt += "	<td>"+tmp.value+"</td>\n";
 			}
