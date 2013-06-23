@@ -426,7 +426,7 @@ var bs = {
 			//--// the leftside pretty stuff
 			html += '	<td>\n';
 			html += '		<div id="itemVisual"> \n';
-				//// if wanted, we create space for a possible photo, and fill it if one is found //
+			/* if wanted, we create space for a possible photo, and fill it if one is found */
 			var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
 			if ((showFoto == 'Y') && (Modernizr.video)){
 				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n';
@@ -435,7 +435,7 @@ var bs = {
 				html += '		</div>'+"\n";
 				bs.getPhoto(biblio.bibid, '#photo_'+biblio.bibid );
 			}
-			//--// some administrative info and a 'more detail' button
+			/*  some administrative info and a 'more detail' button */
 			html += '	<div id="dashBd">\n';
 			html += '		<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
 			html += '		<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
@@ -445,11 +445,12 @@ var bs = {
 			html += '	</div>\n';
 			html += '</div></td>';
 
-			//--// the more useful stuff, biblio data
+			/* the more useful stuff, biblio data */
 			if (biblio.data) {
-				//// Construct a set of tags to define content of displayable lines.
-				//// Order of lines is determined by 'position' column of material_fields table.
-				//// Actual number of lines displayed will be seperately determined later
+				/* Construct a set of tags to define content of displayable lines.
+				 * Order of lines is determined by 'position' column of material_fields table.
+				 * Actual number of lines displayed will be seperately determined later
+				 */
 				var lineTag = [];
 				var lineSpec = bs.displayInfo[biblio.matlCd];
 //				for (var i=0; i<lineSpec.length; i++) {

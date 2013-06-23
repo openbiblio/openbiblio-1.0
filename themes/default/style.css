@@ -6,73 +6,62 @@
  * we start here assuming a small mobile screen less than 720px wide
  * larger screens will be progressively enhanced at the end of this document 
  */
-
 body {
-  /*font-size: 45%; line-height: 1.25em;*/
-  font-family: verdana,arial,helvetica, serif;
-  color: #000000; background: #90b0b8;
-  font-size:100%; /*0.9em;*/
-  width: auto; padding 1em;
+  font-family:verdana,arial,helvetica, serif;
+  color:#000000; background:#90b0b8;
+  width:auto; padding:1rem;
 	}
-	.ie body {width: 540px;}
+	.ie body {width:540px;}
 
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
-.error { color: red; font-weight:bold; !important; }
+.error { color:red; font-weight:bold; !important; }
 .warning { color:orange; font-weight:bold; !important; }
 .bold { font-size:larger; font-weight:bold; }
-.note { font-size:0.7em; }
-.help { font-size:0.7em; display:none; }
-.italic { font-size:0.7em; font-style:italic; color:lightblue; }
+.note { font-size:0.7rem; }
+.help { font-size:0.7rem; display:none; }
+.italic { font-size:0.7rem; font-style:italic; color:lightblue; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
-	font: 0.5em sans-serif; text-align: center;
-	color: white; background: #ccb470;
-	border: solid black 2px;
-	margin: 2px;
+	font:1rem sans-serif; text-align:center;
+	color:white; background:#ccb470;
+	border:solid black 2px;
+	margin:2px;
 	}
-h1 { font-size: 1.5em; }	/* 24/16 */
-h2 { font-size: 1.0em; }	/* 16/16 */
-h3 { font-size: 0.87em; color: white;}	/* 14/16 */
-h4 { font-size: 0.75em; margin: 2px; }	/* 12/16 */
-h5 { font-size: 0.63em; color: black; }	/* 10/16 */
-h6 { font-size: 0.5em; }	/* 8/16 */
 
 img { margin:3px 3px 0 3px; }
 
-sup, span.reqd, #reqdNote { color: red; text-align:center; }
-.smallType { font-size: 75%; }
+sup, span.reqd, #reqdNote { color:red; text-align:center; }
+.smallType { font-size:75%; }
 p { margin:2px; padding:0; }
 hr {
-	display: block; position: relative; 
-	padding: 0; margin: 8px auto;
-	clear: both; width: 90%;
-	border: none; border-top: 1px solid #AAA; border-bottom: 1px solid #000;
-	font-size: 1px; line-height: 0;
-	overflow: visible;
+	display:block; position:relative; 
+	padding:0; margin:8px auto;
+	clear:both; width:90%;
+	border:none; border-top:1px solid #AAA; border-bottom:1px solid #000;
+	/*font-size:1px; line-height:0;*/
+	overflow:visible;
 	}
-figure { border: 1px solid gray; }
-legend { font-size: 0.87em; font-weight: bold; margin: 0 10px 0 10px; padding: 0 5px 0 5px; }
+figure { border:1px solid gray; }
+legend { font-weight:bold; margin:0 10px 0 10px; padding:0 5px 0 5px; }
 label { margin:0; padding:0; }
 
 fieldset { background-color:#ffffdd; max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
-fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5em; padding:0; }
+fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5rem; padding:0; }
 fieldset.inlineFldSet label { display:inline; }
 .inline { display:inline; };
 
 /* tables & parts of */
 table { margin:2px; width:99%; border-spacing:0; }
-tbody.striped tr.odd td { background-color: #EEE; }
-/*tbody.striped tr:even td { background-color: #CCC; }*/
-td,th { padding: 0 5px 0 5px; vertical-align: top;}
-td.number { text-align: right; }
-td.center, th.center { text-align: center; }
+tbody.striped tr.odd td { background-color:#EEE; }
+/*tbody.striped tr:even td { background-color:#CCC; }*/
+td,th { padding:0 5px 0 5px; vertical-align:top;}
+td.number { text-align:right; }
+td.center, th.center { text-align:center; }
 td.label { text-align:left; white-space:nowrap; }
-th, label, .lblFld { font-size: 0.75em; font-weight: bold; margin-left: 2px;}
-
-/*.colLbl { display: block; float:left; }*/
+th, label, .lblFld { font-size:0.75rem; font-weight:bold; margin-left:2px;}
 
 /* styling for javascript stop-gap placeholder for browsers without native support */
 .placeholder { color:#aaa; }
@@ -90,28 +79,24 @@ input[type=button], input[type=submit], button {
 	border-radius:23px;
 	box-shadow:0 1px 2px rgba(0,0,0,0.5);
 	}
-.touch input[type=button], input[type=submit], button { font-size:20px; }
-.no-touch input[type=button], input[type=submit], button { font-size:12px; }
+.touch input[type=button], input[type=submit], button { font-size:0.9rem; }
+.no-touch input[type=button], input[type=submit], button { font-size:0.9rem; }
 
 /* form user-input fields */
 input:focus { background:rgb(230,255,255); }
-/*input:blur { background:rgb(255,255,255); }*/
 input:disabled,
 button:disabled { background:#dddddd; color:#888888; }
 input:disabled { cursor:not-allowed; }
-input, select, textarea { margin: 2px; }
+input, select, textarea { margin:2px; }
 input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
 select:focus,
-textarea:focus {
-	/* place blue shadow on all read/write input fields in focus*/
-	box-shadow: 0 0 12px rgba(51,204,255, 0.5);
-	}
-input[readonly] { border: none; background-color: #ffffdd; }
-input[type=checkbox] { padding-left: 5px; }
+textarea:focus { box-shadow:0 0 12px rgba(51,204,255, 0.5); } /* blue shadow */
+input[readonly] { border:none; background-color:#ffffdd; }
+input[type=checkbox] { padding-left:5px; }
+input[type=text], textarea, select { font-size:1.0rem; }
 
 /* required fields */
 :required::after { content:"*"; color:red; !important; }
-/*:required { border-color:red; }*/
 
 /*************************************************/
 aside { 
@@ -125,7 +110,7 @@ aside {
 h1.theHead {
 	display:block; width:100%
 	text-align:right;
-	font:bold 2.0em serif;
+	font:bold 2.0rem serif;
 	color:white;
 	margin:0; padding:0;
 	}
@@ -134,8 +119,8 @@ aside input[type=submit] { position:relative; left:30%; }
 .hdrSpacer { display:none; }
 #library_name, 
 #library_hours, 
-#library_phone { margin:0; font:1.0em sans-serif; }
-#library_name { color:black; font-size:2.0em; }
+#library_phone { margin:0; font:1.0rem sans-serif; }
+#library_name { color:black; font-size:2.0rem; }
 
 /*************************************************/
 ul.nav_main {
@@ -145,10 +130,10 @@ ul.nav_main {
 	text-align:center;
 	}
 ul.nav_main li {
-	margin-bottom:1.1em;
+	margin-bottom:1.1rem;
 	white-space:nowrap;
 	margin-left:2px;
-	display:inline; padding-right:1.0em;
+	display:inline; padding-right:1.0rem;
 	}
 ul.nav_main li:last-child { padding:0; margin-bottom:0;
  }
@@ -167,7 +152,7 @@ ul.nav_main > li.nav_selected {
 	}
 ul.nav_sub {
 	width:120px; /*FL change  */
-	margin-left:0; padding-left:1em;
+	margin-left:0; padding-left:1rem;
 	list-style-type:circle; 
 	}
 ul.nav_sub ul.nav_sub { padding-left:1em }
@@ -212,18 +197,18 @@ div#content {
 #itemInfo { float:left; width:95%; }
 
 #btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0; }
-#btnRow li, ul.btnRow li { display:inline; margin-right:1em; }
+#btnRow li, ul.btnRow li { display:inline; margin-right:1rem; }
 #btnRow li input[value="Delete"], 
 .btnRow li input[value="Delete This Item"],
 .btnRow li input[value="Delete"] { float:right; margin-right:0; }
 
-#vertSep { width:0; height:3em; margin-right:0.5em; padding:0; border:1px solid gray}
+#vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray}
 
 #barcodeSearch { display:none; } /* reserved for desktop users */
 #phraseSearch #searchType  { display:block; }
 #phraseSearch legend { display:none; }
 
-.searchListItem { font-size:smaller; }
+.searchListItem { /*font-size:smaller;*/ }
 
 ul.pagBtns { float:left; margin:0; padding:0; width:100%; }
 ul.pagBtns li { display:block; list-style:none; margin:0; padding:0; }
@@ -240,7 +225,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 /* search results displays */
 .listTbl { width:100%; text-align:left; }
 .title {
-	font:1.25em sans-serif; /* 20/16 */
+	font:1.25rem sans-serif; /* 20/16 */
 	text-align:center;
 	color:white;
 	background:#ccb470;
@@ -248,19 +233,19 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	margin-bottom:5px;
 	}
 .results_found {
-	font:0.75em serif; /* 12/16 */
+	font:0.75rem serif; /* 12/16 */
 	text-align:right;
-	margin:0.5em 0;
+	margin:0.5rem 0;
 	}
 .results_pages {
-	font:0.75em serif; /* 12/16 */
+	font:0.75rem serif; /* 12/16 */
 	text-align:right;
 	float:right;
 	}
 .search_terms {
-	font-size:0.75em; /* 12/16 */
+	font-size:0.75rem; /* 12/16 */
 	font-weight:bold;
-	margin:0.5em 0;
+	margin:0.5rem 0;
 	}
 .results_list {
 	margin-top:10px;
@@ -339,8 +324,8 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	}
 .compact_info_display li {
 	font:0.87em serif;	/* 14/16 */
-	margin-left:2em;
-	text-indent:-2em;
+	margin-left:2rem;
+	text-indent:-2rem;
 	}
 .compact_info_display .heading {
 	font-weight:bold;
@@ -399,7 +384,7 @@ div#configDiv{
 	}
 #configDiv ul#existing li,ul#potential li {
 	margin-bottom:2px;
-	font-size:1.2em;	/* 20/16 */
+	/*font-size:1.2rem;	/* 20/16 */
 	}
 #configDiv ul#existing li {
 	color:black; background:#FFFF99;
@@ -427,7 +412,7 @@ div#configDiv{
 	body { font-size:90%; }
 	/* rounded corners and shadows for major layout elements */
 	h1,h2,h3,h4,h5,h6, fieldset, img, aside, header, #content {
-		border-radius:				 0.3em;
+		border-radius:0.3rem;
 		}
 	h1,h2,h3,h4,h5,h6, aside, #content {
 		box-shadow:3px 6px 8px -4px #000;
@@ -435,9 +420,9 @@ div#configDiv{
 	/*************************************************/
 	aside { 
 		position:fixed; top:1%; left:1%; float:left; width:15%; 
-		padding-bottom:0.2em; height:auto;
-		font-size:0.87em; /* 14/16 */
-		box-shadow:0.2em 0.4em 0.6em -0.2em #000;
+		padding-bottom:0.2rem; height:auto;
+		font-size:0.87rem; /* 14/16 */
+		box-shadow:0.2rem 0.4rem 0.6rem -0.2rem #000;
 		}
 	#obLogo { display:block; }
 	#logo { 
@@ -460,7 +445,7 @@ div#configDiv{
 	#library_phone { margin:2px 5px 2px 5px; font:0.82em sans-serif; }
 	
 	/*************************************************/
-	ul.nav_main { padding-left:0.5em; text-align:left; }
+	ul.nav_main { padding-left:0.5rem; text-align:left; }
 	ul.nav_main li { display:block; padding:0; }
 	
 	/*************************************************/
@@ -475,7 +460,7 @@ div#configDiv{
 	#phraseSearch legend { display:inline; }
 
 	/*.listItem { float:left; margin:5px 0 5px; padding:0; width:100%; }*/
-	/*listItem li { float:left; margin:0 0.1em; padding:0; list-style:none; }*/
+	/*listItem li { float:left; margin:0 0.1rem; padding:0; list-style:none; }*/
 	#itemVisual { width:auto; height:auto; display:flex; }
 	#photo, #dashBd { display:inline-block; }
 

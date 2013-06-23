@@ -90,7 +90,7 @@ var idis = {
 			if (tmp.marcTag == '024a') {
 				txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
 			} else if (tmp.marcTag == '505a') {
-				txt += '	<td><textarea cols="60" wrap="soft" readonly >'+tmp.value+"</textarea></td>\n";
+				txt += '	<td><textarea cols="48" wrap="soft" readonly >'+tmp.value+"</textarea></td>\n";
 			} else {
 				txt += "	<td>"+tmp.value+"</td>\n";
 			}

@@ -76,7 +76,7 @@
 				// though I have some misgivings about it.  This will make
 				// the font smaller for some people.
 				$attrs["style"] = "font-size:10pt; font-weight: normal;";
-				$attrs["rows"] = "7"; $attrs["cols"] = "38";
+				$attrs["rows"] = "7"; $attrs["cols"] = "48";
 				echo inputfield('textarea', $namePrefix."[data]", H($i['data']),$attrs, H($i['data']))." \n";
 			}
 			echo "</td> \n";

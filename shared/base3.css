@@ -37,9 +37,9 @@ audio:not([controls]) { display:none; height:0; }
   *    `em` units.
   * 2. Prevent iOS text size adjust after orientation change, without disabling
   *    user zoom. */
-html { font-size:100%; /* 1 */
-    -webkit-text-size-adjust:100%; /* 2 */
-    -ms-text-size-adjust:100%; /* 2 */
+html { font-size:62.5%; /* 1 */
+    -webkit-text-size-adjust:62.5%; /* 2 */
+    -ms-text-size-adjust:62.5%; /* 2 */
 	}
 
 /** Address `font-family` inconsistency between `textarea` and other form
@@ -72,12 +72,12 @@ a:hover { outline:0; }
   * Address font sizes within `section` and `article` in Firefox 4+, Safari 5,
   * and Chrome. */
 
-h1 { font-size:2.00em; margin:0.67em 0; }
-h2 { font-size:1.50em; margin:0.83em 0; }
-h3 { font-size:1.17em; margin:1.00em 0; }
-h4 { font-size:1.00em; margin:1.33em 0; }
-h5 { font-size:0.83em; margin:1.67em 0; }
-h6 { font-size:0.67em; margin:2.33em 0; }
+h1 { font-size:2.00rem; margin:0.67rem 0; }
+h2 { font-size:1.50rem; margin:0.83rem 0; }
+h3 { font-size:1.17rem; margin:1.00rem 0; }
+h4 { font-size:1.00rem; margin:1.33rem 0; }
+h5 { font-size:0.83rem; margin:1.67rem 0; }
+h6 { font-size:0.67rem; margin:2.33rem 0; }
 
 /** * Address styling not present in IE 7/8/9, Safari 5, and Chrome. */
 abbr[title] { border-bottom:1px dotted; }
@@ -86,7 +86,7 @@ abbr[title] { border-bottom:1px dotted; }
 b,
 strong { font-weight:bold; }
 
-blockquote { margin:1em 40px; }
+blockquote { margin:1rem 40px; }
 
 /** Address styling not present in Safari 5 and Chrome. */
 dfn { font-style:italic; }
@@ -100,13 +100,13 @@ mark { background:#ff0; color:#000; }
 
 /** Address margins set differently in IE 6/7. */
 p,
-pre { margin:1em 0; }
+pre { margin:1rem 0; }
 
 /** Correct font family set oddly in IE 6, Safari 4/5, and Chrome. */
 code,
 kbd,
 pre,
-samp { font-family:monospace, serif; _font-family:'courier new', monospace; font-size:1em; }
+samp { font-family:monospace, serif; _font-family:'courier new', monospace; font-size:1rem; }
 
 /** Improve readability of pre-formatted text in all browsers. */
 pre { white-space:pre; white-space:pre-wrap; word-wrap:break-word; }
@@ -124,8 +124,8 @@ small { font-size:80%; }
 /** Prevent `sub` and `sup` affecting `line-height` in all browsers. */
 sub,
 sup { font-size:75%; line-height:0; position:relativ vertical-align:baseline; }
-sup { top:-0.5em; }
-sub { bottom:-0.25em; }
+sup { top:-0.5rem; }
+sub { bottom:-0.25rem; }
 
 /* ==========================================================================
    Lists
@@ -134,7 +134,7 @@ sub { bottom:-0.25em; }
 dl,
 menu,
 ol,
-ul { margin:1em 0; }
+ul { margin:1rem 0; }
 dd { margin:0 0 0 40px; }
 
 /** Address paddings set differently in IE 6/7. */
@@ -169,7 +169,7 @@ figure { margin:0; }
 form { margin:0; }
 
 /** Define consistent border, margin, and padding. */
-fieldset { border:1px solid #c0c0c0; margin:0 2px; padding:0.35em 0.625em 0.75em; }
+fieldset { border:1px solid #c0c0c0; margin:0 2px; padding:0.35rem 0.625rem 0.75rem; }
 
 /** 1. Correct color not being inherited in IE 6/7/8/9.
   * 2. Correct text not wrapping in Firefox 3.
@@ -183,7 +183,7 @@ legend { border:0; /* 1 */ padding:0; white-space:normal; /* 2 */ *margin-left:-
 button,
 input,
 select,
-textarea { font-size:100%; /* 1 */ margin:0; /* 2 */ vertical-align:baseline; /* 3 */ *vertical-align:middle; /* 3 */ }
+textarea { /*font-size:100%;*/ /* 1 */ margin:0; /* 2 */ vertical-align:baseline; /* 3 */ *vertical-align:middle; /* 3 */ }
 
 /** Address Firefox 3+ setting `line-height` on `input` using `!important` in
   * the UA stylesheet. */
