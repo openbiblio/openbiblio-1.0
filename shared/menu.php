@@ -127,7 +127,7 @@ function staff_menu() {
 
 	##-------------------------------------------------------------------------------------##
 	$text = "../shared/help.php";
-	$helpurl = "javascript:popSecondary(".$text.")";
+	$helpurl = "javascript:popSecondary('" . $text;
 
 	if (isset($helpPage)) {
 		$helpurl .= "?page=".$helpPage;

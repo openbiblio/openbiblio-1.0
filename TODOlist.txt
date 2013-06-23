@@ -89,6 +89,9 @@ instead of using size= for text, and cols= for textarea.
 22 Jun 2013 - Fred
 Going to OPAC menu area looses all other parts of menu.
 
+23 Jun 2013 - Neil
+prior / next links are missing on OPAC | image browser.
+
 ###################### Completed, most recent at top #########################
 
 22 Jun 2013 - Neil
