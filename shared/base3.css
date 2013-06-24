@@ -37,9 +37,9 @@ audio:not([controls]) { display:none; height:0; }
   *    `em` units.
   * 2. Prevent iOS text size adjust after orientation change, without disabling
   *    user zoom. */
-html { font-size:62.5%; /* 1 */
-    -webkit-text-size-adjust:62.5%; /* 2 */
-    -ms-text-size-adjust:62.5%; /* 2 */
+html { font-size:80%; /* 1 */
+    -webkit-text-size-adjust:80%; /* 2 */
+    -ms-text-size-adjust:80%; /* 2 */
 	}
 
 /** Address `font-family` inconsistency between `textarea` and other form

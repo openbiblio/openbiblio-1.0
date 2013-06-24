@@ -90,9 +90,9 @@ var idis = {
 			if (tmp.marcTag == '024a') {
 				txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
 			} else if (tmp.marcTag == '505a') {
-				txt += '	<td><textarea cols="48" wrap="soft" readonly >'+tmp.value+"</textarea></td>\n";
+				txt += '	<td><textarea wrap="soft" readonly cols="50" >'+tmp.value+"</textarea></td>\n";
 			} else {
-				txt += "	<td>"+tmp.value+"</td>\n";
+				txt += '	<td><input type="text" readonly size="50" maxlength="256" value="'+tmp.value+'" \></td>\n';
 			}
 			txt += "</tr>\n";
 			if (tmp.marcTag == '245a') {

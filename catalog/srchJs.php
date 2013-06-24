@@ -428,7 +428,7 @@ var bs = {
 			html += '		<div id="itemVisual"> \n';
 			/* if wanted, we create space for a possible photo, and fill it if one is found */
 			var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
-			if ((showFoto == 'Y') && (Modernizr.video)){
+			if (showFoto == 'Y'){
 				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n';
 				html += '			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" '
 												   + 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >';
