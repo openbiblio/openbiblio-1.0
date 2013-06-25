@@ -89,6 +89,9 @@ prior / next links are missing on OPAC | image browser.
 camera related features should be surpressed if video not supported.
 photo editing should be surpressed if no canvas or fileReader support.
 
+25 Jun 2013 - Fred
+Research menu needs Loc & doi search links. Integrate doi plugin, parts of Lookup;
+
 ###################### Completed, most recent at top #########################
 
 22 Jun 2013 - Fred, fixed 25 Jun, changed internal menu name to 'Research'

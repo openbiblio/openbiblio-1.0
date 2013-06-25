@@ -264,8 +264,14 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 .cover_image { width:75px; }
 .cover_image img { border:solid black 2px; width:75px; }
 .fotoSrceBtns { display:inline; }
-.biblioImage { float:left; border:1px solid green; height:50px; width:40px; padding:0; }
+.biblioImage { float:left; border:1px solid green; height:75px; padding:0; }
 .photos { margin:0; padding:0; }
+
+.galleryBox {
+		padding-bottom:15px;
+		display:-webkit-flex; -webkit-flex-direction:column;
+		display:flex; flex-direction:column;
+	}
 
 /*.no-touch*/ .biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform:scale(5.0); -webkit-transform-origin:top right;

@@ -20,15 +20,15 @@ class ReportDisplay {
 			if ($url && $col['sort']) {
 				if ($order == $col['sort']) {
 					$href = $url->get($col['sort'].'!r');
-					$img = " <img border='0' src='../images/down.png' alt='&darr;'>";
+					$img = " <img border='0' src='../images/down.png' alt='&darr;'>"."\n";
 				} else if ($order == $col['sort'].'!r') {
 					$href = $url->get($col['sort']);
-					$img = " <img border='0' src='../images/up.png' alt='&uarr;'>";
+					$img = " <img border='0' src='../images/up.png' alt='&uarr;'>"."\n";
 				} else {
 					$href = $url->get($col['sort']);
 					$img = "";
 				}
-				$c['title'] = '<a href="'.$href.'">'.H($col['title']).'</a>'.$img;
+				$c['title'] = '<a href="'.$href.'">'.H($col['title']).'</a>'.$img."\n";
 			} else {
 				$c['title'] = H($col['title']);
 			}
@@ -58,9 +58,10 @@ class ReportDisplay {
 		if ($pageCount <= 1) {
 			return '';
 		}
-		$s = '<div class="pagelist">'.T("Pages:").' ';
+		$s = '<div class="pageAvail">'."\n";
+		$s .= T("Pages:").' ';
 		if ($currPage > 1) {
-			$s .= '<a href="'.$url->get($currPage-1).'" class="prevpage">'.T("Prev").'</a> ';
+			$s .= '<a href="'.$url->get($currPage-1).'" class="prevpage">'.T("Prev").'</a> '."\n";
 		}
 		$i = min($pageCount-OBIB_SEARCH_MAXPAGES + 1,
 						 $currPage-OBIB_SEARCH_MAXPAGES/2 + 1);
@@ -71,18 +72,18 @@ class ReportDisplay {
 		}
 		for (;$i <= $maxPg; $i++) {
 			if ($i == $currPage) {
-				$s .= "<b>".$i."</b> ";
+				$s .= "<b>".H($i)."</b> "."\n";
 			} else {
-				$s .= '<a href="'.$url->get($i).'">'.H($i).'</a> ';
+				$s .= '<a href="'.$url->get($i).'">'.H($i).'</a>'."\n";
 			}
 		}
 		if ($maxPg < $pageCount) {
 			$s .= "... ";
 		}
 		if ($currPage < $pageCount) {
-			$s .= '<a href="'.$url->get($currPage+1).'" class="nextpage">'.T("Next").'</a> ';
+			$s .= '<a href="'.$url->get($currPage+1).'" class="nextpage">'.T("Next").'</a>'."\n";
 		}
-		$s .= '</div>';
+		$s .= '</div>'."\n";
 		return $s;
 	}
 }
@@ -102,7 +103,7 @@ class ReportDisplayFuncs {
 		if ($col['link_class']) {
 			$s .= 'class="'.$col['link_class'].'" ';
 		}
-		$s .= 'href="'.$url->get($id, $params).'">'.H($row[$col['name']]).'</a>';
+		$s .= 'href="'.$url->get($id, $params).'">'.H($row[$col['name']]).'</a>'."\n";
 		return $s;
 	}
 	function item_cart_add($col, $row, $rpt) {
@@ -173,7 +174,7 @@ class ReportDisplayFuncs {
 				$s .= 'checked="checked" ';
 			}
 		}
-		$s .= '/>';
+		$s .= '/>'."\n";
 		return $s;
 	}
 	function select($col, $row, $rpt) {
@@ -199,7 +200,7 @@ class ReportDisplayFuncs {
 			$t = 'href="../circ/mbr_view.php?mbrid';
 			$s .= '<a '.$t.'='.HURL($m['mbrid']).'">'
 						. H($m['first_name']).' '.H($m['last_name']).' ('.H($m['site_code']).')'
-						. '</a>, ';
+						. '</a>, '."\n";
 		}
 		return substr($s, 0, -2);  # lose the final ', '
 	}

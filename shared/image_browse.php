@@ -53,7 +53,7 @@
 		$msg = '';
 	}
 
-	if ($tab == "opac") {
+	if ($tab != "cataloging") {
 		//Page::header_opac(array('nav'=>$nav, 'title'=>''));
 		Page::header(array('nav'=>$nav, 'title'=>''));
 	} else {
@@ -67,8 +67,7 @@
 
 	# Display no results message if no results returned from search.
 	if ($rpt->count() == 0) {
-		echo "<p class=\"error\">".T("No images found")."</p>";
-		 ;
+		echo "<p class=\"error\">".T("No images found")."</p>\n";
 		exit();
 	}
 
@@ -78,31 +77,45 @@
 		*  Printing result stats and page nav
 		************************************************************************** -->
 <?php
-	echo $rpt->count().' '.T("results found.");
+	echo '<div id="rptArea">'."\n";
+	echo '<p>'.$rpt->count().' '.T("results found.")."</p>\n";
 	$page_url = new LinkUrl("../shared/image_browse.php", 'page',
 		array('type'=>'previous', 'tab'=>$tab));
 	$disp = new ReportDisplay($rpt);
 	echo $disp->pages($page_url, $currentPageNmbr);
 
-	echo '<fieldset><table><tr>';
+	echo '<fieldset><table><tr>'."\n";
 	$col = 0;
 	$page = $rpt->pageIter($currentPageNmbr);
 	while($row = $page->next()) {
 		if ($col == 4) {
-			echo '</tr><tr>';
+			echo '</tr>'."\n".'<tr>'."\n";
 			$col = 0;
 		}
-		echo '<td valign="bottom" align="center" style="padding-bottom: 15px">'
-				.'	<label>'
-				.'		<img src="../photos/'.H($row['url']).'" width="100" height="150" class="biblioImage hover" /><br />'
-				.'		<a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'
-				.'		<span class="smallType">'.H($row['callnum']).'</span>'
-				.'		</a>'
-				.'	</label>'
-				.'</td>';
+		echo '<td valign="bottom" align="center">'."\n"
+				.'	<div class="galleryBox">'."\n"
+				.'		<div><img src="../photos/'.H($row['url']).'" class="biblioImage hover" /></div>'."\n"
+				.'		<div class="smallType"><a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'."\n"
+				.'			<output >'.H($row['callnum']).'</output>'."\n"
+				.'		</a></div>'."\n"
+				.'</td>'."\n";
 		$col++;
 	}
-	echo '</tr></table></fieldset>';
+	echo '</tr></table></fieldset>'."\n";
 
 	echo $disp->pages($page_url, $currentPageNmbr);
-	 ;
+
+	echo '</div>'."\n"; // end of rptArea
+
+  require_once(REL(__FILE__,'../shared/footer.php'));
+?>
+
+<script language="JavaScript" defer>
+"use strict";
+	$(document).ready(function () {
+		$('#rptArea').show();
+	});
+</script>
+
+</body>
+</html>
