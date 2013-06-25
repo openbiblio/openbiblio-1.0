@@ -9,30 +9,26 @@
 
 	session_cache_limiter(null);
 
-	if(empty($_REQUEST[tab]))
+	$tab = strToLower($_REQUEST[tab]);
+	if(empty($tab)) {
 		$tab = "cataloging";
-	else
-	  $tab = strtolower($_REQUEST[tab]);
+		$title = 'Existing Items';
+	} else if ($tab == 'user'){
+		$title = 'Library Catalog';
+	} else if ($tab == 'opac'){
+		$title = 'Library Catalog';
+	}
 
 	$nav = "localSearch";
+	$menu = $tab . '/search/catalog';
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "ph_searchText";
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	if ($tab == 'OPAC') {
-		//Page::header(array('nav'=>$nav, 'title'=>'Library Catalog'));
+	Nav::node($menu, T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
+	Nav::node($menu, T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>$title));
 
-		require_once(REL(__FILE__, "../shared/logincheck.php"));
-		Nav::node('opac/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
-		Nav::node('opac/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
-		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Library Catalog'));
-	}
-	else {
-		require_once(REL(__FILE__, "../shared/logincheck.php"));
-		Nav::node('cataloging/search/catalog', T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
-		Nav::node('cataloging/search/catalog', T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
-		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Existing Items'));
-	}
-	
 	//print_r($_SESSION); // for debugging
 ?>
 
@@ -222,13 +218,13 @@
 		<li><input type="button" id="marcBtn" value=""></li>
 		<li><input type="button" id="addItem2CartBtn" value="<?php echo T("Add To Cart"); ?>" /></li>
 		<?php //if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
-		<?php if ($_SESSION["hasCatalogAuth"]) {?>
-		<li><input type="button" id="biblioEditBtn" value="<?php echo T("Edit This Item"); ?>"></li>
-		<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-		<li><input type="button" id="photoEditBtn" value="<?php echo T("Edit This Photo"); ?>"></li>
-		<li><input type="button" id="photoAddBtn" value="<?php echo T("Add New Photo"); ?>"></li>
-		<?php } ?>
-		<li><input type="button" id="biblioDeleteBtn" value="<?php echo T("Delete This Item"); ?>"></li>
+		<?php if (($_SESSION["hasCatalogAuth"]) && ($tab == 'cataloging')) {?>
+			<li><input type="button" id="biblioEditBtn" value="<?php echo T("Edit This Item"); ?>"></li>
+			<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
+				<li><input type="button" id="photoEditBtn" value="<?php echo T("Edit This Photo"); ?>"></li>
+				<li><input type="button" id="photoAddBtn" value="<?php echo T("Add New Photo"); ?>"></li>
+			<?php } ?>
+			<li><input type="button" id="biblioDeleteBtn" value="<?php echo T("Delete This Item"); ?>"></li>
 		<?php }?>
 	</ul>
 		
@@ -236,7 +232,7 @@
 
 	<ul class="btnRow">
 		<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>"></li>
-		<?php if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
+		<?php if (!($tab != 'cataloging' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 			<li><input type="button" id="addNewBtn" class="button" value="<?php echo T("Add New Copy"); ?>"></li>
 		<?php } ?>
 	</ul>
@@ -266,6 +262,7 @@
 </div>
 
 <!-- ------------------------------------------------------------------------ -->
+<?php if ($tab == 'cataloging') { ?>
 <div id="photoEditorDiv">
 	<?php require_once(REL(__FILE__,"../catalog/photoEditorForm.php"));?>
 
@@ -276,6 +273,7 @@
 		<li><input type="button" id="deltFotoBtn" value="<?php echo T("Delete"); ?>" /></li>
 	</ul>
 </div>
+<?php } ?>
 
 <!-- ------------------------------------------------------------------------ -->
 <?php

@@ -65,17 +65,17 @@ function staff_menu() {
 	Nav::node('opac/search', T("Search"), '../catalog/srchForms.php?tab=OPAC');
 	Nav::node('opac/images', T("Images"), '../shared/image_browse.php?tab=opac');
 	*/
-	Nav::node('opac', T("OPAC"), '../catalog/srchForms.php?tab=OPAC');
-	Nav::node('opac/search', T("Search"), '../catalog/srchForms.php?tab=OPAC');
-	Nav::node('opac/images', T("Images"), '../shared/image_browse.php?tab=OPAC');
-	Nav::node('opac/biblio', T("Record Info"));
-	Nav::node('opac/cart', T("Cart"), '../shared/req_cart.php?tab=opac');
-	Nav::node('opac/request', T("Booking"));
+	Nav::node('user', T("Research"), '../catalog/srchForms.php?tab=user');
+	Nav::node('user/localSearch', T("Local Search"), '../catalog/srchForms.php?tab=user');
+	Nav::node('user/images', T("Images"), '../shared/image_browse.php?tab=user');
+	Nav::node('user/biblio', T("Record Info"));
+	Nav::node('user/cart', T("Cart"), '../shared/req_cart.php?tab=user');
+	Nav::node('user/request', T("Booking"));
 	if (isset($_SESSION['authMbrid'])) {
-		Nav::node('opac/account', T("My Account"), '../opac/my_account.php');
-		Nav::node('opac/account/edit', T("Edit Info"), '../opac/edit_account.php');
-		Nav::node('opac/account/bookings', T("Bookings"), '../opac/bookings.php');
-		Nav::node('opac/account/bookings/view', T("View"));
+		Nav::node('user/account', T("My Account"), '../opac/my_account.php');
+		Nav::node('user/account/edit', T("Edit Info"), '../opac/edit_account.php');
+		Nav::node('user/account/bookings', T("Bookings"), '../opac/bookings.php');
+		Nav::node('user/account/bookings/view', T("View"));
 	}
 
 	##-------------------------------------------------------------------------------------##

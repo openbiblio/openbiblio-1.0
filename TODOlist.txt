@@ -82,19 +82,23 @@ The icon only becomes visible after I  have edited (and updated) the item.
 OPAC image browser image links to biblios are not working.
 Make call.no appear below images (see Meyer's "more on CSS")
 
-22 Jun 2013 - Fred
-ImageDisplay meeds a container for all txt fields so they can be sized to 100%
-instead of using size= for text, and cols= for textarea.
-
-22 Jun 2013 - Fred
-Going to OPAC menu area looses all other parts of menu.
-
 23 Jun 2013 - Neil
 prior / next links are missing on OPAC | image browser.
 
+25 Jun 2013 - Fred
+camera related features should be surpressed if video not supported.
+photo editing should be surpressed if no canvas or fileReader support.
+
 ###################### Completed, most recent at top #########################
 
-22 Jun 2013 - Neil
+22 Jun 2013 - Fred, fixed 25 Jun, changed internal menu name to 'Research'
+Going to OPAC menu area looses all other parts of menu.
+
+22 Jun 2013 - Fred, fixed 24 Jun
+ImageDisplay meeds a container for all txt fields so they can be sized to 100%
+instead of using size= for text, and cols= for textarea.
+
+22 Jun 2013 - Neil, fixed 23 Jun
 Removing a MARC tag via Admin | BiblioFields causes Search Results list to loose all right-side info.
 
 21 Jun 2013 - Fred, fixed 21 Jun
