@@ -189,6 +189,7 @@
 			$copy['material_type'] = $mediaTypeDm[$biblio['material_cd']];
 			$col = $colls->getOne($biblio['collection_cd']);
 			$fee = $col['daily_late_fee'];
+			$copy['booking']['fee'] = $fee;
 			$copy['booking']['owed'] = $copy['booking']['days_late'] * $fee;
 			$chkOutList[] = $copy;
 		}

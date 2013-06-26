@@ -83,7 +83,7 @@ camera related features should be surpressed if video not supported.
 photo editing should be surpressed if no canvas or fileReader support.
 
 25 Jun 2013 - Fred
-Research menu needs Loc & doi search links. Integrate doi plugin, parts of Lookup;
+Research menu needs Loc search link. Integrate parts of Lookup;
 
 25 Jun 2013 - Fred
 Next/Prior should look the same in reports as on Existing item search.
@@ -93,6 +93,9 @@ Research Image Viewer image links do not provide return to gallery page. Instead
 the return is to the Local Search function.
 
 ###################### Completed, most recent at top #########################
+
+25 Jun 2013 - Fred, done 26 Jun
+Research menu needs doi search links. Integrate doi plugin;
 
 21 Jun 2013 - Fred
 OPAC image browser image links to biblios are not working.

@@ -272,9 +272,12 @@ var mf = {
 				mf.cpys = $.parseJSON(jsonInpt);
 				var html = '';
 				for (var nCpy in mf.cpys) {
-					var cpy = mf.cpys[nCpy];
-					var outDate = cpy.booking.out_dt.split(' ')[0];
-					var dueDate = cpy.booking.due_dt.split(' ')[0];
+					var cpy = mf.cpys[nCpy],
+							outDate = cpy.booking.out_dt.split(' ')[0],
+							dueDate = cpy.booking.due_dt.split(' ')[0],
+							daysLate = cpy.booking.days_late,
+							owedAmnt = ((cpy.booking.owed).toFixed(2)).toLocaleString(),
+							lateFee = (cpy.booking.fee).toLocaleString();
 					html += '<tr>'
 					html += '	<td>'+outDate+'</td>';
 					//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
@@ -282,8 +285,8 @@ var mf = {
 					html += '	<td>'+cpy.barcode_nmbr+'</td>';
 					html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
 					html += '	<td>'+dueDate+'</td>';
-					html += '	<td class="number">'+cpy.booking.days_late+'</td>';
-					html += '	<td class="number">'+((cpy.booking.owed).toFixed(2)).toLocaleString()+'</td>';
+					html += '	<td class="number">'+daysLate+'@'+lateFee+'</td>';
+					html += '	<td class="number">'+owedAmnt+'</td>';
 					html += '</tr>\n';
 				}
 				mf.nmbrOnloan = nCpy+1;
