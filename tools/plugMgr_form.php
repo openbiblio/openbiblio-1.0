@@ -19,7 +19,7 @@
 ?>
 <h3 id="pageHdr" class="title"><?php echo T("Plugin Manager"); ?></h3>
 
-<section id="listArea">
+<div id="formArea">
 	<form id="listForm" name="listForm" class="form">
 		<label for="pluginOK"><?php echo T("Plugins Allowed?"); ?></label>
   	<?php echo inputfield('checkbox', 'pluginOK', 'Y', NULL, $_SESSION['allow_plugins_flg']); ?>
@@ -29,7 +29,7 @@
    		<ul id="pluginList" ></ul>
 		</fieldset>
 	</form>
-</section>
+</div>
 
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 

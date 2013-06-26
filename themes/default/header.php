@@ -78,7 +78,7 @@
 <!-- **************************************************************************************
 		 * beginning of main body
 		 **************************************************************************************-->
-<div id="content">
+<div id="content" role="main" aria-role="main">
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an <strong>outdated</strong> browser.<br /> 
 			Please <a href="http://browsehappy.com/">upgrade your browser</a> 

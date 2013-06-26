@@ -67,6 +67,7 @@ function staff_menu() {
 	*/
 	Nav::node('user', T("Research"), '../catalog/srchForms.php?tab=user');
 	Nav::node('user/localSearch', T("Local Search"), '../catalog/srchForms.php?tab=user');
+	Nav::node('user/doiSearch', T("doiSearch"), '../opac/doiSearchForms.php');
 	Nav::node('user/images', T("Images"), '../shared/image_browse.php?tab=user');
 	Nav::node('user/biblio', T("Record Info"));
 	Nav::node('user/cart', T("Cart"), '../shared/req_cart.php?tab=user');

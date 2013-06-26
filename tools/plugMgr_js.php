@@ -54,6 +54,7 @@ var plm = {
 		//console.log('resetting!');
 
 	  $('#msgDiv').hide();
+		$('#formArea').show();
 		plm.checkPluginOK();
 	},
 
