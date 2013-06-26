@@ -263,9 +263,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	-webkit-flex-direction: row; flex-direction: row;
 	width:120px;
 	}
-.photos, .dashBds {
-	margin:0; padding:0;
-	}
+.photos, dashBds { margin:0; padding:0; }
 .dashBds {
 	-webkit-flex-direction: row; flex-direction: column; -webkit-justify-content:flex-end;
 	display:-webkit-flex; display:flex; justify-content:flex-end;
@@ -280,13 +278,9 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	/*transform:scale(0.75);*/
 	vertical-align:bottom;
 	}
-.cover_image { width:75px; }
-.cover_image img { border:solid black 2px; width:75px; }
-.fotoSrceBtns { display:inline; }
-.biblioImage { float:left; border:1px solid green; height:75px; padding:0; }
-.photos { margin:0; padding:0; }
 
-/*.no-touch*/ .biblioImage.hover:hover { top:30px; left:200px;
+.biblioImage { border:1px solid green; height:auto; width:50px; padding:0; }
+.biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform:scale(5.0); -webkit-transform-origin:top right;
 	-moz-transform:scale(5.0); 		-moz-transform-origin:top right;
 	-ms-transform:scale(5.0); 		-ms-transform-origin:top right;
@@ -294,20 +288,23 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	transform:scale(5.0);  				transform-origin:top right;
 	}
 
+.cover_image { width:75px; }
+.cover_image img { border:solid black 2px; width:75px; }
+.fotoSrceBtns { display:inline; }
+
 #bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
 #bibBlkA, fotoBlkA { display:inline-block; float:left; }
 #bibBlkB, fotoBlkB { display:inline-block; float:right; }
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
-/*
-.no-touch #biblioFoto.hover:hover { 
+#biblioFoto.hover:hover {
 	top:20px;
-	-webkit-transform:	scale(3.0); -webkit-transform-origin:top right;
-	-moz-transform:		scale(3.0); -moz-transform-origin:		top right;
-	-ms-transform:			scale(3.0); -ms-transform-origin:		top right;
-	-o-transform:			scale(3.0);
-	transform:					scale(3.0);
+	-webkit-transform:scale(3.0); -webkit-transform-origin:top right;
+	-moz-transform:scale(3.0); -moz-transform-origin:top right;
+	-ms-transform:scale(3.0); -ms-transform-origin:top right;
+	-o-transform:scale(3.0);
+	transform:scale(3.0); transform-origin:top right;
 }
-*/
+
 #flagInfo li { list-style:none; }
 /* end of search results display */
 /*************************************************/

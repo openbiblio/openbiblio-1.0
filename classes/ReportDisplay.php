@@ -62,6 +62,7 @@ class ReportDisplay {
 		$s .= T("Pages:").' ';
 		if ($currPage > 1) {
 			$s .= '<a href="'.$url->get($currPage-1).'" class="prevpage">'.T("Prev").'</a> '."\n";
+			//$s .= '<input type="button" class="prevpage" value="'.T("Previous Page").'">'."\n";
 		}
 		$i = min($pageCount-OBIB_SEARCH_MAXPAGES + 1,
 						 $currPage-OBIB_SEARCH_MAXPAGES/2 + 1);
@@ -82,6 +83,7 @@ class ReportDisplay {
 		}
 		if ($currPage < $pageCount) {
 			$s .= '<a href="'.$url->get($currPage+1).'" class="nextpage">'.T("Next").'</a>'."\n";
+			//$s .=	'<input type="button" class="nextpage" value="'.T("Next Page").'">'."\n";
 		}
 		$s .= '</div>'."\n";
 		return $s;
