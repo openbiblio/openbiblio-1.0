@@ -95,7 +95,7 @@
 		echo '<td valign="bottom" align="center">'."\n"
 				.'	<div class="galleryBox">'."\n"
 				.'		<div><img src="../photos/'.H($row['url']).'" class="biblioImage hover" /></div>'."\n"
-				.'		<div class="smallType"><a href="../shared/biblio_view.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'."\n"
+				.'		<div class="smallType"><a href="../catalog/srchForms.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'."\n"
 				.'			<output >'.H($row['callnum']).'</output>'."\n"
 				.'		</a></div>'."\n"
 				.'</td>'."\n";

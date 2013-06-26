@@ -78,13 +78,6 @@ immediately after import, if I locate the new items in the existing items search
 the icon for the media-type is missing.
 The icon only becomes visible after I  have edited (and updated) the item.
 
-21 Jun 2013 - Fred
-OPAC image browser image links to biblios are not working.
-Make call.no appear below images (see Meyer's "more on CSS")
-
-23 Jun 2013 - Neil
-prior / next links are missing on OPAC | image browser.
-
 25 Jun 2013 - Fred
 camera related features should be surpressed if video not supported.
 photo editing should be surpressed if no canvas or fileReader support.
@@ -92,7 +85,21 @@ photo editing should be surpressed if no canvas or fileReader support.
 25 Jun 2013 - Fred
 Research menu needs Loc & doi search links. Integrate doi plugin, parts of Lookup;
 
+25 Jun 2013 - Fred
+Next/Prior should look the same in reports as on Existing item search.
+
+25 Jun 2013 - Fred
+Research Image Viewer image links do not provide return to gallery page. Instead
+the return is to the Local Search function.
+
 ###################### Completed, most recent at top #########################
+
+21 Jun 2013 - Fred
+OPAC image browser image links to biblios are not working.
+Make call.no appear below images (see Meyer's "more on CSS")
+
+23 Jun 2013 - Neil, fixed 25 Jun
+prior / next links are missing on Research/OPAC | image browser.
 
 22 Jun 2013 - Fred, fixed 25 Jun, changed internal menu name to 'Research'
 Going to OPAC menu area looses all other parts of menu.
