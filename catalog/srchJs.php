@@ -425,27 +425,28 @@ var bs = {
 
 			//--// the leftside pretty stuff
 			html += '	<td>\n';
-			html += '		<div id="itemVisual"> \n';
+			html += '		<div class="itemVisual"> \n';
 			/* if wanted, we create space for a possible photo, and fill it if one is found */
 			var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
 			if (showFoto == 'Y'){
-				html += '		<div id="photo_'+biblio.bibid+'" class="photos" >\n';
+				html += '		<div class="photos"  id="photo_'+biblio.bibid+'">\n';
 				html += '			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" '
 												   + 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >';
 				html += '		</div>'+"\n";
 				bs.getPhoto(biblio.bibid, '#photo_'+biblio.bibid );
 			}
 			/*  some administrative info and a 'more detail' button */
-			html += '	<div id="dashBd">\n';
-			html += '  <div id="dummyDiv">'
-			html += '		<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
-			html += '		<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
-			html += '		<br />\n';
-			html += '		<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
-			html += '		<input type="button" class="moreBtn" value="<?php echo T("More info"); ?>" />'+'\n';
-			html += '  </div>'
+			html += '	<div class="dashBds">\n';
+			html += ' 	<div class="dashBdsA">'
+			html += '			<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
+			html += '			<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
+			html += '		</div>\n';
+			html += ' 	<div class="dashBdsB">'
+			html += '			<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
+			html += '			<input type="button" class="moreBtn" value="<?php echo T("More info"); ?>" />'+'\n';
+			html += ' 	</div>'
 			html += '	</div>\n';
-			html += '</div></td>';
+			html += '</div></td>';  // end of itemVisual div
 
 			/* the more useful stuff, biblio data */
 			if (biblio.data) {

@@ -2,7 +2,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/* This file builds upon the structures defined within ../shared/base2.css
+/* This file builds upon the structures defined within ../shared/base3.css
  * we start here assuming a small mobile screen less than 720px wide
  * larger screens will be progressively enhanced at the end of this document 
  */
@@ -177,7 +177,7 @@ nav a.button:hover { text-decoration:underline; }
 footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 
 /*************************************************/
-div#content {
+#content {
   left:0; vertical-align:top; border:solid black 2px; background:white; padding:0;
 	width:720px; max-width:100%;
 	}
@@ -191,11 +191,6 @@ div#content {
 	
 #srchSpecs { display:box; box-orient:vertical; }
 .inlineFS { box-flex:1; }
-
-#biblioListDiv { width:100%; }
-#itemVisual { width:auto; }
-#photo, #dashBd { display:inline; }
-#itemInfo { float:left; width:95%; }
 
 #btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0; }
 #btnRow li, ul.btnRow li { display:inline; margin-right:1rem; }
@@ -223,6 +218,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 									background-size:auto;
 								}
 
+/*************************************************/
 /* search results displays */
 .listTbl { width:100%; text-align:left; }
 .title {
@@ -261,17 +257,34 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	}
 .search_result td { vertical-align:top; }
 
+#biblioListDiv { width:100%; }
+.itemVisual {
+	display:-webkit-flex; display:flex;
+	-webkit-flex-direction: row; flex-direction: row;
+	width:120px;
+	}
+.photos, .dashBds {
+	margin:0; padding:0;
+	}
+.dashBds {
+	-webkit-flex-direction: row; flex-direction: column; -webkit-justify-content:flex-end;
+	display:-webkit-flex; display:flex; justify-content:flex-end;
+	}
+.dashBdsA, .dashBdsB {
+	-webkit-flex-direction: row; flex-direction: row;
+	display:-webkit-flex; display:flex;
+	}
+.itemInfo { float:left; width:95%; }
+.flgDot {
+	width:20px; height:20px;
+	/*transform:scale(0.75);*/
+	vertical-align:bottom;
+	}
 .cover_image { width:75px; }
 .cover_image img { border:solid black 2px; width:75px; }
 .fotoSrceBtns { display:inline; }
 .biblioImage { float:left; border:1px solid green; height:75px; padding:0; }
 .photos { margin:0; padding:0; }
-
-.galleryBox {
-		padding-bottom:15px;
-		display:-webkit-flex; -webkit-flex-direction:column;
-		display:flex; flex-direction:column;
-	}
 
 /*.no-touch*/ .biblioImage.hover:hover { top:30px; left:200px;
 	-webkit-transform:scale(5.0); -webkit-transform-origin:top right;
@@ -296,11 +309,8 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 }
 */
 #flagInfo li { list-style:none; }
-.flgDot {
-	transform:				 	scale(0.75);
-	vertical-align:bottom;
-	}
 /* end of search results display */
+/*************************************************/
 
 #onlineMsg { color:blue; }
 .call_media {
@@ -353,18 +363,16 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 div#msgDiv {
 	color:red;
 	}
-		
+
 table.sigh {
 	width:100%;
 	}
 table.sigh .spacer {
 	width:5px;
 	}
-
 span.highLite {
   color:#FF8A00;
 	}
-
 tr.searchRow {
 	height:35px;
 	}
@@ -404,8 +412,16 @@ div#configDiv{
 	text-align:center;
 	}
 
+/*************************************************/
+/* unique report items */
 .report_category { font-weight:bold; }
 .report_name { font-weight:normal; }
+.galleryBox {
+		padding-bottom:15px;
+		display:-webkit-flex; -webkit-flex-direction:column;
+		display:flex; flex-direction:column;
+	}
+
 
 /* ####################################################### */
 /* For Tablets and Desktops */
