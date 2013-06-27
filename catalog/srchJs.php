@@ -112,8 +112,8 @@ var bs = {
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
 		});
-		$('#itemSubmitBtn').val('<?php echo T("Update"); ?>')
-											 .on('click',null,bs.doItemUpdate);
+		$('#itemSubmitBtn').on('click',null,bs.doItemUpdate)
+											 .val('<?php echo T("Update"); ?>');
 		$('.itemGobkBtn').on('click',null,function () {
    		$('#itemEditorDiv').hide();
 		 	$('#biblioDiv').show();

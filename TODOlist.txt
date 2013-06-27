@@ -92,6 +92,9 @@ Next/Prior should look the same in reports as on Existing item search.
 Research Image Viewer image links do not provide return to gallery page. Instead
 the return is to the Local Search function.
 
+27 Jun 2013 - Neil
+checkout overdue fine should be limited by 'max fine' in member-type in admin menu.
+
 ###################### Completed, most recent at top #########################
 
 25 Jun 2013 - Fred, done 26 Jun

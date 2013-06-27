@@ -220,7 +220,8 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 
 /*************************************************/
 /* search results displays */
-.listTbl { width:100%; text-align:left; }
+#biblioListDiv { width:100%; }
+.listTbl { max-width:100%; text-align:left; }
 .title {
 	font:1.25rem sans-serif; /* 20/16 */
 	text-align:center;
@@ -229,26 +230,12 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	border:solid black 2px;
 	margin-bottom:5px;
 	}
-.results_found {
-	font:0.75rem serif; /* 12/16 */
-	text-align:right;
-	margin:0.5rem 0;
-	}
-.results_pages {
-	font:0.75rem serif; /* 12/16 */
-	text-align:right;
-	float:right;
-	}
-.search_terms {
-	font-size:0.75rem; /* 12/16 */
-	font-weight:bold;
-	margin:0.5rem 0;
-	}
-.results_list {
-	margin-top:10px;
-	padding:10px 5px;
-	border-top:solid #90b0b8 4px;
-	}
+.results_found, .results_pages, .search_terms { 	font:0.75rem serif; /* 12/16 */ }
+.results_found, .results_pages { text-align:right; }
+.results_found { margin:0.5rem 0; }
+.results_pages { float:right; }
+.search_terms { font-weight:bold; margin:0.5rem 0; }
+.results_list { margin-top:10px; padding:10px 5px; border-top:solid #90b0b8 4px; }
 .search_result {
 	border:solid #90b0b8 4px;
 	padding:3px;
@@ -257,35 +244,31 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	}
 .search_result td { vertical-align:top; }
 
-#biblioListDiv { width:100%; }
 .itemVisual {
+	display:inline-block;
 	display:-webkit-flex; display:flex;
-	-webkit-flex-direction: row; flex-direction: row;
-	width:120px;
+	-webkit-flex-direction:row; flex-direction:row;
+	/*width:120px;*/
 	}
-.photos, dashBds { margin:0; padding:0; }
+.photos, dashBds { display:inline-block; margin:0; padding:0; }
 .dashBds {
-	-webkit-flex-direction: row; flex-direction: column; -webkit-justify-content:flex-end;
-	display:-webkit-flex; display:flex; justify-content:flex-end;
+	display:-webkit-flex; display:flex;
+	-webkit-flex-direction:row; flex-direction:column;
+	-webkit-justify-content:flex-end; justify-content:flex-end;
 	}
 .dashBdsA, .dashBdsB {
-	-webkit-flex-direction: row; flex-direction: row;
 	display:-webkit-flex; display:flex;
+	-webkit-flex-direction:row; flex-direction: row;
 	}
+.flgDot { width:20px; height:20px; vertical-align:bottom; }
 .itemInfo { float:left; width:95%; }
-.flgDot {
-	width:20px; height:20px;
-	/*transform:scale(0.75);*/
-	vertical-align:bottom;
-	}
 
 .biblioImage { border:1px solid green; height:auto; width:50px; padding:0; }
 .biblioImage.hover:hover { top:30px; left:200px;
-	-webkit-transform:scale(5.0); -webkit-transform-origin:top right;
-	-moz-transform:scale(5.0); 		-moz-transform-origin:top right;
-	-ms-transform:scale(5.0); 		-ms-transform-origin:top right;
-	/*-o-transform:scale(5.0);*/
-	transform:scale(5.0);  				transform-origin:top right;
+	-webkit-transform:scale(5.0); -webkit-transform-origin:bottom right;
+	-moz-transform:scale(5.0); 		-moz-transform-origin:bottom right;
+	-ms-transform:scale(5.0); 		-ms-transform-origin:bottom right;
+	transform:scale(5.0);  				transform-origin:bottom right;
 	}
 
 .cover_image { width:75px; }
