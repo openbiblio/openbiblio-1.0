@@ -279,7 +279,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltColl();
 							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+line+" "+<?php echo "'".T("Collection")."'"; ?>
-															+" '"+entry+"' <?php echo T("invalid, using default"); ?></td></tr>\n");
+															+" '"+entry+"' <?php echo T("invalid, using default"); ?>: '"+csvi.collections[thisOne]+"'</td></tr>\n");
 			      }
 			      rec['collection_cd'] = thisOne;
       			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Collection")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
@@ -289,7 +289,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 			      if (thisOne < 0) {
 			        thisOne = csvi.getDfltMedia();
 							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+i+" "+<?php echo "'".T("Media")."'"; ?>
-															+" '"+entry+"' <?php echo T("invalid, using default"); ?></td></tr>\n");
+															+" '"+entry+"' <?php echo T("invalid, using default"); ?>: '"+csvi.mediaTypes[thisOne]+"'</td></tr>\n");
 			      }
 			      rec['material_cd'] = thisOne;
       			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Media Type")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.mediaTypes[thisOne]+"</td></tr>\n");
@@ -352,7 +352,10 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 	},
 	postOneRecd: function (aRcd) {
 		//console.log(aRcd);
-		$.post(csvi.url, {'mode':'postCsvData', 'record':aRcd}, function (response) {
+		$.post(csvi.url, {'mode':'postCsvData',
+											'record':aRcd,
+											'userid':$('#userid').val()
+										 }, function (response) {
 			$('#postRslt').append('<li>'+response+'</li>');
 		});
 	},

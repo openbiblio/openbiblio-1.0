@@ -2144,7 +2144,7 @@ obiblio-10-wip
 			admin\statesJs.php
 			admin\themeForm.php
 			admin\themeJS.php
-		+catalog
+		-catalog
 			-legacy
 				catalog\legacy\index.php
 			catalog\biblioChange.php
@@ -2178,7 +2178,7 @@ obiblio-10-wip
 			catalog\srchJs.php
 			catalog\upload_usmarc.php
 			catalog\upload_usmarc_form.php
-		-circ
+		+circ
 			-legacy
 				circ\legacy\book.php
 				circ\legacy\bookdate.php
@@ -2199,7 +2199,7 @@ obiblio-10-wip
 			circ\memberJs.php
 			circ\memberServer.php
 			circ\noauth.php
-		+classes
+		-classes
 			-legacy
 				classes\legacy\BiblioRows.php.old
 				classes\legacy\CompactInfoDisplay.php
@@ -2726,10 +2726,6 @@ obiblio-10-wip
 			plugin_cssUtils\cssUtilJs.php
 			plugin_cssUtils\cssUtilSrvr.php
 			plugin_cssUtils\custom_head.php
-		-plugin_dioSearch
-			plugin_dioSearch\custom_head.php
-			plugin_dioSearch\dioSearchForms.php
-			plugin_dioSearch\dioSearchJs.php
 		-plugin_listMgr
 			plugin_listMgr\custom_head.php
 			plugin_listMgr\listMgrForms.php
@@ -2753,9 +2749,6 @@ obiblio-10-wip
 			-cssUtils
 				plugins\cssUtils\nav.nav
 				plugins\cssUtils\tran.tran
-			-dioSearch
-				plugins\dioSearch\nav.nav
-				plugins\dioSearch\tran.tran
 			-listMgr
 				plugins\listMgr\nav.nav
 				plugins\listMgr\tran.tran
@@ -3149,14 +3142,14 @@ obiblio-10-wip
 Main=
 Selected=TODOlist.txt
 [TODOlist.txt]
-TopLine=71
-Caret=23,93
+TopLine=62
+Caret=48,86
 [shared\base3.css]
-TopLine=184
-Caret=32,210
+TopLine=25
+Caret=20,40
 [themes\default\style.css]
-TopLine=416
-Caret=23,271
+TopLine=260
+Caret=16,282
 [shared\common.php]
 TopLine=59
 Caret=1,1
@@ -3164,14 +3157,14 @@ Caret=1,1
 TopLine=1
 Caret=1,1
 [themes\default\header.php]
-TopLine=1
-Caret=1,1
+TopLine=45
+Caret=5,81
 [shared\footer.php]
 TopLine=1
-Caret=1,22
+Caret=6,11
 [shared\menu.php]
 TopLine=51
-Caret=32,68
+Caret=36,70
 [classes\CoreTable.php]
 TopLine=1
 Caret=1,1
@@ -3188,14 +3181,14 @@ Caret=1,1
 TopLine=1
 Caret=1,1
 [locale\en\trans.php]
-TopLine=628
-Caret=33,721
+TopLine=718
+Caret=1,750
 [shared\image_browse.php]
-TopLine=68
+TopLine=70
 Caret=61,98
 [classes\ReportDisplay.php]
 TopLine=49
-Caret=38,61
+Caret=6,86
 [catalog\srchForms.php]
-TopLine=236
-Caret=1,288
+TopLine=168
+Caret=1,206

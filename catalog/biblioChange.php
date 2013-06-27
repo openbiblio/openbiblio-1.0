@@ -196,8 +196,14 @@ function PostBiblioChange($nav) {
 	#**************************************************************************
 	//echo "Posting insert/update now.<br /><br />";
 	//echo "biblioChange @end POST==> ";print_r($_POST); echo "<br /><br />";
-	$biblio['material_cd'] = $_POST["materialCd"];
-	$biblio['collection_cd'] = $_POST["collectionCd"];
+	if (empty($_POST['material_cd']))
+		$biblio['material_cd'] = $_POST["materialCd"];
+	else
+		$biblio['material_cd'] = $_POST['material_cd'];
+	if (empty($_POST['material_cd']))
+		$biblio['collection_cd'] = $_POST["collectionCd"];
+	else
+		$biblio['collection_cd'] = $_POST['collection_cd'];
 	$biblio['last_change_userid'] = $_POST["userid"];
 	$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
 	
