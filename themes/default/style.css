@@ -179,7 +179,7 @@ footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 /*************************************************/
 #content {
   left:0; vertical-align:top; border:solid black 2px; background:white; padding:0;
-	width:720px; max-width:100%;
+	/*width:720px;*/  max-width:100%;
 	}
 .ie #content figure {width:480px;}
 #content .altBG { background:#dddddd; }

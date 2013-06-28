@@ -83,7 +83,7 @@ camera related features should be surpressed if video not supported.
 photo editing should be surpressed if no canvas or fileReader support.
 
 25 Jun 2013 - Fred
-Research menu needs Loc search link. Integrate parts of Lookup;
+Research menu needs LoC search link. Integrate parts of Lookup;
 
 25 Jun 2013 - Fred
 Next/Prior should look the same in reports as on Existing item search.
