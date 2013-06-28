@@ -12,10 +12,7 @@
 		<!-- to reduce annoyance, only load video components if wanted-->
 		<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 		<div id="fotoDiv" style="display:none" >
-			<!-- The following have their dimensions interchanged for books that have spine facing user -->
-		  <video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"
-												 height="<?php echo Settings::get('thumbnail_width');?>"
-												 preload="none" ></video>
+			<!-- video element will be inserted here when JS is activated -->
 			<!-- folowing dimensions are not an error, the box MUST be square for later image rotation -->
 		 	<canvas id="canvasIn" width="<?php echo Settings::get('thumbnail_height');?>"
 			 											height="<?php echo Settings::get('thumbnail_height');?>" >

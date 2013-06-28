@@ -61,6 +61,9 @@ var idis = {
 
 		var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
 		if ((showFoto == 'Y') && (Modernizr.video)){
+console.log('video element: '+wc.video);
+			if (wc.video === undefined) wc.init();
+
   		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.theBiblio.bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
 				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;

@@ -95,6 +95,9 @@ the return is to the Local Search function.
 27 Jun 2013 - Neil
 checkout overdue fine should be limited by 'max fine' in member-type in admin menu.
 
+27 Jun 2013 - Fred
+bulk delete fails to start
+
 ###################### Completed, most recent at top #########################
 
 25 Jun 2013 - Fred, done 26 Jun

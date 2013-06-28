@@ -13,6 +13,19 @@ var wc = {
 		wc.initWidgets();
 		$('.help').hide();
 
+		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
+			if (Modernizr.video) {
+				console.log('video is supported here');
+		  	var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
+								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
+								 + ' preload="none" ></video>';
+				$('#canvasIn').before(html);
+				$('#fotoDiv').show();
+			} else {
+				console.log('video is not supported here');
+			}
+		}
+
 		wc.video = document.querySelector('video');
 		wc.videoOpts = { video:true, audio:false, };
     var errBack = function (error) {
@@ -62,9 +75,13 @@ var wc = {
 	resetForm: function () {
 		$('.help').hide();
 		//$('#errSpace').hide();
+		$('#camera').hide();
+		$('#canvasIn').hide();
 		$('#fotoAreaDiv').show();
+		$('#addFotoBtn').show();
 		wc.changeImgSource();
 	},
+
 	//----//
 	changeImgSource: function (e) {
 		var chkd = $('input[name=imgSrce]:checked', '#fotoForm').val();
@@ -193,5 +210,8 @@ var wc = {
 	},
 
 }
-$(document).ready(wc.init);
+/*  this code should be explicity initialized when needed unless
+		the appearance of the video allow/deny prompt is acceptable
+ */
+//$(document).ready(wc.init);
 </script>
