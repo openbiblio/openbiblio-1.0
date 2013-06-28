@@ -12,11 +12,13 @@
 	$tab = strToLower($_REQUEST[tab]);
 	if(empty($tab)) {
 		$tab = "cataloging";
-		$title = 'Existing Items';
+		$title = T("Existing Items");
 	} else if ($tab == 'user'){
-		$title = 'Library Catalog';
+		$title = T("Library Catalog");
 	} else if ($tab == 'opac'){
-		$title = 'Library Catalog';
+		$title = T("Library Catalog");
+	} else if ($tab == 'rpt'){
+		$title = T("ReportSelection");
 	}
 
 	$nav = "localSearch";
@@ -214,11 +216,12 @@
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
-		<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
+		<?php if (!(($tab == 'opac') || ($tab == 'user')|| ($tab == 'rpt'))) { ?>
+			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
+		<?php } ?>
 		<li><input type="button" id="marcBtn" value=""></li>
 		<li><input type="button" id="addItem2CartBtn" value="<?php echo T("Add To Cart"); ?>" /></li>
-		<?php //if (!(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) {?>
-		<?php if (($_SESSION["hasCatalogAuth"]) && ($tab == 'cataloging')) {?>
+<?php echo "tab=$tab"; if (($_SESSION["hasCatalogAuth"]) && ($tab == 'cataloging')) {?>
 			<li><input type="button" id="biblioEditBtn" value="<?php echo T("Edit This Item"); ?>"></li>
 			<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 				<li><input type="button" id="photoEditBtn" value="<?php echo T("Edit This Photo"); ?>"></li>
@@ -231,7 +234,9 @@
 	<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
-		<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>"></li>
+		<?php if (!(($tab == 'opac') || ($tab == 'user')|| ($tab == 'rpt'))) { ?>
+			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>"></li>
+		<?php } ?>
 		<?php if (!($tab != 'cataloging' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
 			<li><input type="button" id="addNewBtn" class="button" value="<?php echo T("Add New Copy"); ?>"></li>
 		<?php } ?>

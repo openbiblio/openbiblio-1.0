@@ -108,6 +108,9 @@ The delete button for any transaction does not work.
 28 Jun 2013 - Neil
 The member's 'history' page does not work.
 
+28 Jun 2013 - Fred
+move conditionals from BiblioDiv of srchForms to srchJs
+
 ###################### Completed, most recent at top #########################
 
 25 Jun 2013 - Fred, done 26 Jun

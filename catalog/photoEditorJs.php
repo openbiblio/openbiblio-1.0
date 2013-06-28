@@ -15,14 +15,14 @@ var wc = {
 
 		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
 			if (Modernizr.video) {
-				console.log('video is supported here');
+				console.log('video supported in this browser');
 		  	var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
 								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
 								 + ' preload="none" ></video>';
 				$('#canvasIn').before(html);
 				$('#fotoDiv').show();
 			} else {
-				console.log('video is not supported here');
+				console.log('video NOT supported in this browser');
 			}
 		}
 

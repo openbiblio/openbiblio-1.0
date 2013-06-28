@@ -60,10 +60,12 @@ var idis = {
 		$('#bibBlkB').html('');
 
 		var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
-		if ((showFoto == 'Y') && (Modernizr.video)){
-			if (typeof(wc) !== 'undefined') {
-				if (wc.video === undefined) wc.init();
-			}
+		if (showFoto == 'Y'){
+			<?php if (strtolower($tab) == 'cataloging') { ?>
+				if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
+					if (wc.video === undefined) wc.init();
+				}
+			<?php } ?>
 
   		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.theBiblio.bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
