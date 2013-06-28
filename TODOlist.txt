@@ -79,10 +79,6 @@ the icon for the media-type is missing.
 The icon only becomes visible after I  have edited (and updated) the item.
 
 25 Jun 2013 - Fred
-camera related features should be surpressed if video not supported.
-photo editing should be surpressed if no canvas or fileReader support.
-
-25 Jun 2013 - Fred
 Research menu needs LoC search link. Integrate parts of Lookup;
 
 25 Jun 2013 - Fred
@@ -112,6 +108,10 @@ The member's 'history' page does not work.
 move conditionals from BiblioDiv of srchForms to srchJs
 
 ###################### Completed, most recent at top #########################
+
+25 Jun 2013 - Fred, fixed 28 Jun
+camera related features should be surpressed if video not supported.
+photo editing should be surpressed if no canvas or fileReader support.
 
 25 Jun 2013 - Fred, done 26 Jun
 Research menu needs doi search links. Integrate doi plugin;

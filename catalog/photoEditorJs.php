@@ -160,12 +160,13 @@ var wc = {
 		e.stopPropagation();
     $('#errSpace').hide();
 		var imgMode = '',
-				url = $('#fotoName').val();
+				url = $('#fotoName').val(),
+				bibid = $('#fotoBibid').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
 		$.post(wc.url,{'mode':'addNewPhoto',
 									 'type':'base64',
 									 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
-                   'bibid':$('#fotoBibid').val(),
+                   'bibid':bibid,
 									 'url': url,
                    'position':0,
 									},
@@ -177,6 +178,7 @@ var wc = {
 										$('#fotoMsg').html('cover photo posted').show();
 										$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
       									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+										bs.getPhoto(bibid, '#photo_'+bibid );
 										$('#photoAddBtn').hide();
 										$('#photoEditBtn').show();
 									}

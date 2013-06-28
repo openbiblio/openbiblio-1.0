@@ -216,12 +216,12 @@
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
-		<?php if (!(($tab == 'opac') || ($tab == 'user')|| ($tab == 'rpt'))) { ?>
+		<?php if (!(($tab == 'opac') || ($tab == 'rpt'))) { ?>
 			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		<?php } ?>
 		<li><input type="button" id="marcBtn" value=""></li>
 		<li><input type="button" id="addItem2CartBtn" value="<?php echo T("Add To Cart"); ?>" /></li>
-<?php echo "tab=$tab"; if (($_SESSION["hasCatalogAuth"]) && ($tab == 'cataloging')) {?>
+			<?php if (($_SESSION["hasCatalogAuth"]) && ($tab == 'cataloging')) {?>
 			<li><input type="button" id="biblioEditBtn" value="<?php echo T("Edit This Item"); ?>"></li>
 			<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 				<li><input type="button" id="photoEditBtn" value="<?php echo T("Edit This Photo"); ?>"></li>
@@ -234,7 +234,7 @@
 	<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
-		<?php if (!(($tab == 'opac') || ($tab == 'user')|| ($tab == 'rpt'))) { ?>
+		<?php if (!(($tab == 'opac') || ($tab == 'rpt'))) { ?>
 			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>"></li>
 		<?php } ?>
 		<?php if (!($tab != 'cataloging' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>
