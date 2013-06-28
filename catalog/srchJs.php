@@ -779,6 +779,7 @@ var bs = {
 						 '&'+ $('#biblioEditForm').not('.online').serialize();
 	  $.post(bs.url,params, function(response){
 	    if (response == '!!success!!'){
+				//bs.rtnToBiblio();
     		$('#itemEditorDiv').hide();
 				// successful update, repeat search with existing criteria
 				if (bs.srchType == 'barCd')

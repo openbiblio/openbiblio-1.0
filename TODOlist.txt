@@ -98,6 +98,16 @@ checkout overdue fine should be limited by 'max fine' in member-type in admin me
 27 Jun 2013 - Fred
 bulk delete fails to start
 
+28  Jun 2013 - Neil
+I have observed the following for a member's account page
+manually add charges to  their account (could be overdue fees, photocopying service fees, etc);
+credit and debit amounts
+a running total of the member's balance is kept.
+The delete button for any transaction does not work.
+
+28 Jun 2013 - Neil
+The member's 'history' page does not work.
+
 ###################### Completed, most recent at top #########################
 
 25 Jun 2013 - Fred, done 26 Jun

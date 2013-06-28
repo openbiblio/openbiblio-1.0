@@ -281,11 +281,11 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
 #biblioFoto.hover:hover {
 	top:20px;
-	-webkit-transform:scale(3.0); -webkit-transform-origin:top right;
-	-moz-transform:scale(3.0); -moz-transform-origin:top right;
-	-ms-transform:scale(3.0); -ms-transform-origin:top right;
+	-webkit-transform:scale(3.0); -webkit-transform-origin:top left;
+	-moz-transform:scale(3.0); -moz-transform-origin:top left;
+	-ms-transform:scale(3.0); -ms-transform-origin:top left;
 	-o-transform:scale(3.0);
-	transform:scale(3.0); transform-origin:top right;
+	transform:scale(3.0); transform-origin:top left;
 }
 
 #flagInfo li { list-style:none; }
