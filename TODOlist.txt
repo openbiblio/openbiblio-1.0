@@ -91,9 +91,6 @@ the return is to the Local Search function.
 27 Jun 2013 - Neil
 checkout overdue fine should be limited by 'max fine' in member-type in admin menu.
 
-27 Jun 2013 - Fred
-bulk delete fails to start
-
 28  Jun 2013 - Neil
 I have observed the following for a member's account page
 manually add charges to  their account (could be overdue fees, photocopying service fees, etc);
@@ -108,6 +105,9 @@ The member's 'history' page does not work.
 move conditionals from BiblioDiv of srchForms to srchJs
 
 ###################### Completed, most recent at top #########################
+
+27 Jun 2013 - Fred
+bulk delete fails to start
 
 25 Jun 2013 - Fred, fixed 28 Jun
 camera related features should be surpressed if video not supported.

@@ -31,7 +31,7 @@
 			<br />
 			<label for="del_items">
 				<?php echo inputfield('checkbox','del_items','1','',($vars['del_items']?'1':'')); ?>
-				<?php echo T("Delete items if all copies are deleted.") ?>
+				<?php echo T("DeleteItemsIfAllCopiesDeleted") ?>
 			</label>
 			<br />
 			<input type="button" id="bulkDel_btn" value="<?php echo T("Submit");?>" />

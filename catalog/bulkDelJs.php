@@ -4,7 +4,7 @@
 // biblio_bulkDel Javascript
 "use strict";
 
-bbd = {
+var bbd = {
 	init: function () {
 		// get header stuff going first
 		bbd.initWidgets();
@@ -56,9 +56,9 @@ bbd = {
 	 		bbd.errAray = jsonData[2];
 	 		bbd.barcdStr= jsonData[3].join('\n');
 	  	$('#barcodes').val(bbd.barcdStr);
-			//console.log('jsonData:'+jsonData);	  	
+console.log('jsonData:'+jsonData);	  	
 	 		if (bbd.errAray[0]) {
-				//console.log('we have an error');	 	
+console.log('we have an error');	 	
 				$('#errSpace').html(bbd.errAray[0].msg).show();
 				return false;
 			}
@@ -88,6 +88,7 @@ bbd = {
 	 	});	
 	},
 	
-}
+};
+
 $(document).ready(bbd.init);
 </script>
