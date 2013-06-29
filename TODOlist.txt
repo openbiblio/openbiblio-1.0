@@ -97,6 +97,11 @@ The member's 'history' page does not work.
 28 Jun 2013 - Fred
 move conditionals from BiblioDiv of srchForms to srchJs
 
+29 Jun 2013 - Neil
+>  Member account transactions: delete works fine. After deleting, the user is taken back
+straight to the member's summary page. If more than one transaction is to me deleted,
+user will need to return to account page.
+
 ###################### Completed, most recent at top #########################
 
 28  Jun 2013 - Neil, fixed 29 Jun

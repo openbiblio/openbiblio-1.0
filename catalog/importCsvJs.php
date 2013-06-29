@@ -287,8 +287,11 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 						}
 						if (flg) {
 			        var thisOne = csvi.getDfltColl();
-							csvErrs.append(' <tr><td colspan="3">'+<?php echo "'".T("LineNmbr")."'"; ?>+line+" "+<?php echo "'".T("Collection"); ?>
-															+" "+txt+" <?php echo T("using default"); ?>: '"+csvi.collections[thisOne]+"'</td></tr>\n");
+							csvErrs.append(' <tr><td colspan="3">'+
+															 <?php echo "'".T("LineNmbr")."'"; ?>+line+" "+
+															 <?php echo "'".T("Collection")."'"; ?>+" "+txt+
+															 " <?php echo T("using default"); ?>: '"+
+															 csvi.collections[thisOne]+"'</td></tr>\n");
 						}
 			      rec['collection_cd'] = thisOne;
       			if (showAll) csvRcrds.append("  <tr><td>"+<?php echo "'".T("Collection")."'"; ?>+"</td><td>&nbsp;</td><td>"+csvi.collections[thisOne]+"</td></tr>\n");
