@@ -416,10 +416,11 @@ var mf = {
 			}
 		});
 	},
-	doDelAcntTrans: function () {
-		if (!confirm(mf.delConfirmMsg+' this transaction?')) return false;
+	doDelAcntTrans: function (e) {
+		var transid = $(this).next().val();
+		if (!confirm('<?php echo T("Are you sure you want to delete "); ?>'+'this transaction?')) return false;
 
-  	var parms = {	'mode':'d-3-L-3-tAcntTrans', 'mbrid':mf.mbrid, 'transid':mf.transid };
+  	var parms = {	'mode':'d-3-L-3-tAcntTrans', 'mbrid':mf.mbrid, 'transid':transid };
   	$.post(mf.url, parms, function(response){
 			if (($.trim(response)).substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);

@@ -86,17 +86,10 @@ Next/Prior should look the same in reports as on Existing item search.
 
 25 Jun 2013 - Fred
 Research Image Viewer image links do not provide return to gallery page. Instead
-the return is to the Local Search function.
+the return is to the Local Search function. Same applies to all reports.
 
 27 Jun 2013 - Neil
 checkout overdue fine should be limited by 'max fine' in member-type in admin menu.
-
-28  Jun 2013 - Neil
-I have observed the following for a member's account page
-manually add charges to  their account (could be overdue fees, photocopying service fees, etc);
-credit and debit amounts
-a running total of the member's balance is kept.
-The delete button for any transaction does not work.
 
 28 Jun 2013 - Neil
 The member's 'history' page does not work.
@@ -106,7 +99,11 @@ move conditionals from BiblioDiv of srchForms to srchJs
 
 ###################### Completed, most recent at top #########################
 
-27 Jun 2013 - Fred
+28  Jun 2013 - Neil, fixed 29 Jun
+I have observed the following for a member's account page
+The delete button for any transaction does not work.
+
+27 Jun 2013 - Fred, fixed 29 Jun
 bulk delete fails to start
 
 25 Jun 2013 - Fred, fixed 28 Jun
