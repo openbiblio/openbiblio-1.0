@@ -102,6 +102,12 @@ move conditionals from BiblioDiv of srchForms to srchJs
 straight to the member's summary page. If more than one transaction is to me deleted,
 user will need to return to account page.
 
+29 Jun 2013 - Fred
+Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
+
+30 Jun 2013 - Neil/Fred
+all text fields of Biblio Summary screen should be multi-line with wordwrap.
+
 ###################### Completed, most recent at top #########################
 
 28  Jun 2013 - Neil, fixed 29 Jun

@@ -71,7 +71,6 @@ var bs = {
 			bs.doItemDelete(bs.theBiblio);
 		});
 		$('#marcBtn').on('click',null,function () {
-		  //console.log('swapping state to MARC column');
 		  var marcFld$ = $('#biblioDiv td.filterable');
 		  if (marcFld$.is(':hidden')) {
 				$('#biblioDiv td.filterable').show();
@@ -84,10 +83,6 @@ var bs = {
 		});
 		$('.bibGobkBtn').on('click',null,function () {
 		  if (bs.multiMode) {
-//				if (bs.srchType = 'phrase')
-//					bs.doPhraseSearch();
-//				else
-//					bs.doBarCdSearch();
 				bs.rtnToList();
 			} else {
 			  bs.rtnToSrch();
@@ -342,8 +337,9 @@ var bs = {
 		var searchText = $('#ph_searchText').val();
 		//console.log('searchType==>'+searchType+'; searchText==>'+searchText);
 		if (searchType == 'id') {
+			e.preventDefault();
       bs.doBibidSearch(searchText);
-			return;
+			return false;
 		}
 
     //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.

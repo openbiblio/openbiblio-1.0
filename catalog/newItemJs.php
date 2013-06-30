@@ -250,6 +250,12 @@ var ni = {
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
 		ced.doCopyNew(e);
+
+		/* prepare in advance for photo editing */
+		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
+			if (wc.video === undefined) wc.init();
+		}
+
 		//e.preventDefault();
 		$('#copyCancelBtn').on('click',null, function () {
 			ni.doPhotoAdd();
