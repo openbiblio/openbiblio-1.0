@@ -98,7 +98,9 @@ var idis = {
 			} else if (tmp.marcTag == '505a') {
 				txt += '	<td><textarea wrap="soft" readonly cols="50" >'+tmp.value+"</textarea></td>\n";
 			} else {
-				txt += '	<td><input type="text" readonly size="50" maxlength="256" value="'+tmp.value+'" \></td>\n';
+				//txt += '	<td><input type="text" readonly  maxlength="256" value="'+tmp.value+'" \></td>\n';
+				//txt += '	<td><span class="WIDE"><input type="text" readonly  maxlength="256" value="'+tmp.value+'" \></span></td>\n';
+				txt += '	<td><p>'+tmp.value+'</p></td>\n';
 			}
 			txt += "</tr>\n";
 			if (tmp.marcTag == '245a') {
