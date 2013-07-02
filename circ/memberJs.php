@@ -430,7 +430,8 @@ var mf = {
 			else {
 				$('#msgArea').html('transaction deleted!');
 				$('#msgDiv').show().hide(10000);
-		  	mf.rtnToMbr();
+		  	//mf.rtnToMbr();
+				mf.doShowMbrAcnt();
 			}
 		});
 	},

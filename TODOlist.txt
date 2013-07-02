@@ -97,31 +97,31 @@ The member's 'history' page does not work.
 28 Jun 2013 - Fred
 move conditionals from BiblioDiv of srchForms to srchJs
 
-29 Jun 2013 - Neil
->  Member account transactions: delete works fine. After deleting, the user is taken back
-straight to the member's summary page. If more than one transaction is to me deleted,
-user will need to return to account page.
-
 29 Jun 2013 - Fred
 Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
 
-30 Jun 2013 - Neil/Fred
-all text fields of Biblio Summary screen should be multi-line with wordwrap.
-
 ###################### Completed, most recent at top #########################
 
-28  Jun 2013 - Neil, fixed 29 Jun
+29 Jun 2013 - Neil, fixed 2 July
+>  Member account transactions: delete works fine. After deleting, the user is taken back
+straight to the member's summary page. If more than one transaction is to be deleted,
+user will need to return to account page.
+
+30 Jun 2013 - Neil/Fred, fixed 1 July
+all text fields of Biblio Summary screen should be multi-line with wordwrap.
+
+28  Jun 2013 - Neil, fixed 29 June
 I have observed the following for a member's account page
 The delete button for any transaction does not work.
 
-27 Jun 2013 - Fred, fixed 29 Jun
+27 Jun 2013 - Fred, fixed 29 June
 bulk delete fails to start
 
-25 Jun 2013 - Fred, fixed 28 Jun
+25 Jun 2013 - Fred, fixed 28 June
 camera related features should be surpressed if video not supported.
 photo editing should be surpressed if no canvas or fileReader support.
 
-25 Jun 2013 - Fred, done 26 Jun
+25 Jun 2013 - Fred, done 26 June
 Research menu needs doi search links. Integrate doi plugin;
 
 21 Jun 2013 - Fred
