@@ -91,6 +91,8 @@ var mf = {
 	  $('#acntDiv').hide();
 	  $('#histDiv').hide();
 		$('#msgDiv').hide();
+		$('#chkOutBtn').enable();
+		$('#chkOutMsg').html('').hide();
 		if(mf.showBarCd) {
 			$('#searchByBarcd').focus();
 		} else {
@@ -109,6 +111,8 @@ var mf = {
 	  $('#editRsltMsg').html('');
 		$('#ckOutBarcd').val('')
 	  //mf.resetForms();
+		$('#chkOutBtn').enable();
+		$('#chkOutMsg').html('').hide();
 	  $('#mbrDiv').hide();
 	  $('#listDiv').show();
 	},
@@ -239,7 +243,6 @@ var mf = {
 				}
 				else {
 					mf.multiMode = false;
-					mf.showOneMbr(mf.mbr)
 					mf.getMbrSite();
 				}
 	    }
@@ -249,6 +252,13 @@ var mf = {
 	getMbrSite: function () {
 		$.getJSON(mf.url,{mode:'getSite', 'siteid':mf.mbr.siteid}, function (response) {
 			mf.calCd = response['calendar'];
+			mf.getMbrType();
+		});
+	},
+	getMbrType: function () {
+		$.getJSON(mf.url,{mode:'getMbrType', 'classification':mf.mbr.classification}, function (response) {
+			mf.typeInfo = response;
+			mf.showOneMbr(mf.mbr)
 		});
 	},
 
@@ -261,7 +271,9 @@ var mf = {
 		mf.doGetCheckOuts(mf.mbrid);
 	},
 	doGetCheckOuts: function () {
-	  var params = 'mode=getChkOuts&mbrid='+mf.mbrid;
+		var ttlOwed = 0.00,
+				maxFines = mf.typeInfo.max_fines,
+	  		params = 'mode=getChkOuts&mbrid='+mf.mbrid;
 	  $.get(mf.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt) == '[]') {
 				mf.cpys = [];
@@ -288,11 +300,21 @@ var mf = {
 					html += '	<td class="number">'+daysLate+'@'+lateFee+'</td>';
 					html += '	<td class="number">'+owedAmnt+'</td>';
 					html += '</tr>\n';
+					ttlOwed += parseFloat(cpy.booking.owed);
 				}
 				mf.nmbrOnloan = nCpy+1;
 				$('#chkOutList tBody').html(html);
 				$('table tbody.striped tr:odd td').addClass('altBG');
 				$('table tbody.striped tr:even td').addClass('altBG2');	
+
+				if (ttlOwed >= maxFines) {
+					$('#chkOutBtn').disable();
+					$('#ckoutBarcd').disable();
+					$('#chkOutMsg').html('<?php echo T("NotAllowed");?>').show();
+				}
+				$('#maxFine').html((Number(maxFines).toFixed(2)).toLocaleString());
+				$('#ttlOwed').html((ttlOwed.toFixed(2)).toLocaleString());
+
 				$('#chkOutList a').on('click',null,function (e) {
 					e.preventDefault(); e.stopPropagation();
 					idis.init(mf.opts); // be sure all is ready	

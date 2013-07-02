@@ -67,14 +67,9 @@
 		$opts = Settings::getAll();
 		echo json_encode($opts);
 	  break;
-	case 'getMbrTypes':
-		$mbr['type'] = $mbrTypes->getOne($mbr['classification']);
-		# FIXME - this should me the type's code, not description
-		if ($mbr['type']['description'] == 'denied') {
-			$mbr['checkouts_allowed'] = false;
-		} else {
-			$mbr['checkouts_allowed'] = true;
-		}
+	case 'getMbrType':
+		$type = $mbrTypes->getOne($_GET['classification']);
+		echo json_encode($type);
 		break;
 	case 'getCustomFlds':
 		$flds = $customFlds->getSelect();
@@ -87,8 +82,8 @@
 		$mbr['balance'] = $acct->getBalance($mbrid);
 		break;
 	case 'getAcntTranTypes':
-		$trans = $transtypes->getSelect();
-		echo json_encode($trans);
+		$type = $transtypes->getSelect();
+		echo json_encode($type);
 		break;
 /*
 	case 'getMediaType':

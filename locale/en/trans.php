@@ -484,6 +484,7 @@ $trans["Library Hours"] = "Library Hours";
 $trans["Library Phone"] = "Library Phone";
 $trans["Library Settings"] = "Library Settings";
 $trans["Library Site"] = "Library Site";
+$trans["Limit"] = "Limit";
 $trans["Limit Search Results"] = "Limit Search Results";
 $trans["LineNmbr"] = "Line #";
 $trans["Link Color:"] = "Link Color:";
@@ -604,6 +605,7 @@ $trans["Non-circulating Titles"] = "Non-circulating Titles";
 $trans["Non-delivery List"] = "Non-delivery List";
 $trans["Non-delivery Notices"] = "Non-delivery Notices";
 $trans["noTbl"] = "Table not found";
+$trans["NotAllowed"] = "Not permitted, total owed exceeds allowance.";
 $trans["Not authorized for cataloging"] = "You are not authorized to use the Cataloging tab.";
 $trans["Not Available yet, Under Construction"] = "Not Available yet, Under Construction";
 $trans["Not enough arguments given to mkSQL()."] = "Not enough arguments given to mkSQL().";
@@ -850,6 +852,7 @@ $trans["toolsIndexDesc"] = "Use the functions located in the left hand navigatio
 													.	" - System Settings: maintain options not appropriate to day-to-day managers.<br />"
 													.	" - Plugin Manager: determine which, if any, plugin to allow.<br />";
 $trans["toolsNoauth"] = "You are not authorized to use the Tools tab.";
+$trans["Total"] = "Total";
 $trans["Total Holdings Value"] = "Total Holdings Value";
 $trans["Transaction Activity"] = "Transaction Activity";
 $trans["Transaction Type:"] = "Transaction Type:";

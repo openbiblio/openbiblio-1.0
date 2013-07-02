@@ -76,15 +76,15 @@
 		<label for="MbrCardNo"><?php echo T("Card Number");?>:</label>
 		<input type="text" readonly id="mbrCardNo" />
 	</fieldset>
-	
+<!-- -->
 	<fieldset id="newLoans">
 		<legend for="ckoutBarcd"><?php echo T("Check Out");?></legend>
 		<label><?php echo T("Barcode Number");?>:</label>
 		<input type="text" id="ckoutBarcd" size="20" />
 		<input type="button" value="<?php echo T("Check Out");?>" id="chkOutBtn" />
-		<input type="text" readonly class="error" id="chkOutMsg" /> 
+		<p class="error" id="chkOutMsg"></p>
 	</fieldset>
-	
+<!-- -->
 	<fieldset id="onLoan">
 		<legend><?php echo T("Items Currently Checked Out");?></legend>
 		<table id="chkOutList">
@@ -100,9 +100,18 @@
 			</tr>
 			</thead>
 			<tbody class="striped"></tbody>
+			<tfoot class="topBorder">
+			<tr>
+				<th><?php echo T("Limit");?></th>
+				<td id="maxFine"></td>
+				<td colspan="3">&nbsp</td>
+        <th><?php echo T("Total");?></th>
+				<td id="ttlOwed" class="number"></td>
+			</tr>
+      </tfoot>
 		</table>
 	</fieldset>
-	
+<!-- -->
 	<fieldset id="newBooking">
 		<legend><?php echo T("Make Booking");?></legend>
 			<select name="searchType">
@@ -119,7 +128,7 @@
 			<input type="hidden" name="lookup" value="Y" /-->
 			<input type="button" value="<?php echo T("Search");?>" id="bkgBtn" />
 	</fieldset>
-	
+<!-- -->
 	<fieldset id="newHolds">
 		<legend><?php echo T("Place on Hold");?></legend>
 			<label for="holdBarcd"><?php echo T("Barcode Number");?></label>
@@ -129,7 +138,7 @@
 			<input type="hidden" name="classification" value="" />
 			<input type="button" value="<?php echo T("Hold");?>" id="holdBtn" />
 	</fieldset>
-	
+<!-- -->
 	<fieldset id="onHold">
 		<legend><?php echo T("Items Currently On Hold");?></legend>
 		<table id="holdList">
