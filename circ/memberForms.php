@@ -31,7 +31,7 @@
 		<tr>
 			<td nowrap="true">
 				<label for="searchByBarcd"><?php echo T("Library Card Number");?>:</label>
-				<input type="text" id="searchByBarcd" name="searchByBarcd" size="20" />
+				<input type="number" id="searchByBarcd" name="searchByBarcd" size="20" />
 				<input type="submit" id="barCdSrchBtn" value="<?php echo T("Search"); ?>" />
 			</td>
 		</tr>
@@ -74,13 +74,13 @@
 		<input type="text" readonly id="mbrSite" />
 		<br />
 		<label for="MbrCardNo"><?php echo T("Card Number");?>:</label>
-		<input type="text" readonly id="mbrCardNo" />
+		<input type="number" readonly id="mbrCardNo" />
 	</fieldset>
 <!-- -->
 	<fieldset id="newLoans">
 		<legend for="ckoutBarcd"><?php echo T("Check Out");?></legend>
 		<label><?php echo T("Barcode Number");?>:</label>
-		<input type="text" id="ckoutBarcd" size="20" />
+		<input type="number" id="ckoutBarcd" size="20" />
 		<input type="button" value="<?php echo T("Check Out");?>" id="chkOutBtn" />
 		<p class="error" id="chkOutMsg"></p>
 	</fieldset>
@@ -132,7 +132,7 @@
 	<fieldset id="newHolds">
 		<legend><?php echo T("Place on Hold");?></legend>
 			<label for="holdBarcd"><?php echo T("Barcode Number");?></label>
-			<input type="text" id="holdBarcd" size="20" />
+			<input type="number" id="holdBarcd" size="20" />
 			<!--a href="javascript:popSecondaryLarge('../opac/index.php?lookup=Y')"Search</a-->
 			<input type="hidden" name="mbrid" value="" />
 			<input type="hidden" name="classification" value="" />

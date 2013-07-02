@@ -37,10 +37,6 @@ In the process of another test I deleted all the entries in my system
 I found that the Custom Fields are still there.
 So the remove function should include custom fields, which is currently probably not the case.
 
-11 May 2013 - Fred
-Add New Copy screen should show suggested CallNmbr
-with suggested cpy no. (c.x) if not first copy.
-
 12 May 2013 - Fred
 investigate making school grade, teacher, optional.  If not used then 'Audience Level'
 should not appear on advanced search screen.
@@ -79,7 +75,7 @@ the icon for the media-type is missing.
 The icon only becomes visible after I  have edited (and updated) the item.
 
 25 Jun 2013 - Fred
-Research menu needs LoC search link. Integrate parts of Lookup;
+Research menu needs external LoC-type search link. Integrate parts of Lookup;
 
 25 Jun 2013 - Fred
 Next/Prior should look the same in reports as on Existing item search.
@@ -99,6 +95,10 @@ move conditionals from BiblioDiv of srchForms to srchJs
 Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
 
 ###################### Completed, most recent at top #########################
+
+11 May 2013 - Fred, withdrawn 2 July
+Add New Copy screen should show suggested CallNmbr
+with suggested cpy no. (c.x) if not first copy.
 
 27 Jun 2013 - Neil, fixed 2 July
 checkout overdue fine should be limited by 'max fine' in member-type in admin menu.
