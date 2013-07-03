@@ -191,7 +191,7 @@ class MembersIter extends Iter {
 		$this->rows = $rows;
 	}
 	function next() {
-		$row = $this->rows->fetch_assoc();
+		$row = $this->rows->next();
 		if (!$row)
 			return NULL;
 		if ($row['password']) {

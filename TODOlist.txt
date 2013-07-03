@@ -94,6 +94,13 @@ move conditionals from BiblioDiv of srchForms to srchJs
 29 Jun 2013 - Fred
 Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
 
+2 Jul 2013 - Fred
+Move OB's db models to PHP's mysqli interface, preferably using the OO mode;
+
+3 Jul 2013 - Fred
+Research Image viewer needs user controls to set rows & columns displayed.
+Or make display adapt to current width and set nmbr of rows accordingly.
+
 ###################### Completed, most recent at top #########################
 
 11 May 2013 - Fred, withdrawn 2 July

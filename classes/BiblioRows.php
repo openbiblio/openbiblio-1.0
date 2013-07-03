@@ -80,7 +80,7 @@ class BiblioRowsIter extends Iter {
 	}
 	function next() {
 		## this builds the sql to get search item details for later display
-		$r = $this->iter->fetch_assoc();
+		$r = $this->iter->next();
 		if ($r === NULL) return $r;
 		//print_r($r);
 
@@ -116,12 +116,12 @@ class BiblioRowsIter extends Iter {
 		$iter = $this->q->select($sql);
 
 		## process each biblio tag, one at a time
-		while (($row = $iter->fetch_assoc()) !== NULL) {
+		while (($row = $iter->next()) !== NULL) {
 			$r['material_cd'] = $row['material_cd'];
 			$r['material_type'] = $row['description'];
 			$r['create_dt'] = $row['create_dt'];
 
-			## if a tag matches a displayable fieldadd it to the display array $r
+			## if a tag matches a displayable field, add it to the display array $r
 			foreach ($mc as $name=>$f) {
 				//echo "mc tag=".$f."; row tag=".$row['tag']."; row suff=".$row['subfield_cd'];
 				list($t, $s) = explode('$', $f);

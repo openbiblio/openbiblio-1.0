@@ -15,7 +15,7 @@
 .sql
 	select b.material_cd, m.description as media_type,
 		count(b.bibid) as items,
-		avg(replace(s.subfield_data, 'c', '')) as copyright
+		round(avg(replace(s.subfield_data, 'c', '')),1) as copyright
 	from biblio b, material_type_dm m, biblio_field f, biblio_subfield s
 	where m.code=b.material_cd and f.bibid=b.bibid and f.tag='260'
 		and s.fieldid=f.fieldid and s.subfield_cd='c'

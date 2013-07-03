@@ -5,7 +5,8 @@
 <?php
 	// If a circulation user and NOT a cataloging user the system should treat the user as opac
 //	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
-	if(strtolower($tab) == 'opac' || strtolower($tab) == 'circulation' )
+	$tab = strtolower($tab);
+	if($tab == 'opac' || $tab == 'circulation' )
 	  echo "var opacMode = true;";
 	else
 	  echo "var opacMode = false;";
@@ -61,7 +62,7 @@ var idis = {
 
 		var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
 		if (showFoto == 'Y'){
-			<?php if (strtolower($tab) == 'cataloging') { ?>
+			<?php if ($tab == 'cataloging') { ?>
 				if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
 					if (wc.video === undefined) wc.init();
 				}
@@ -165,7 +166,7 @@ var idis = {
 				for (var nCopy in idis.copyJSON) {
 				  idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
-				<?php if (!(strtolower($tab) == 'opac' || strtolower($tab) == 'user' || strtolower($tab) == 'circulation' )){ ?>
+				<?php if (!($tab == 'opac' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
 						html += '	<td>\n';
 						html += '		<input type="button" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
 						html += '		<input type="button" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';

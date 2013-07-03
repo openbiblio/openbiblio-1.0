@@ -61,8 +61,8 @@
 			require_once(REL(__FILE__, "../model/MarcDBs.php"));
 			$ptr = new MarcBlocks;
 		  $vals = array();
-			$rslt = $ptr->getAll();
-			while ($row = $rslt->next('block_nmbr')) {
+			$rslt = $ptr->getAll('block_nmbr');
+			while ($row = $rslt->fetch_assoc()) { //'block_nmbr'
 			  $vals[] = $row;
 			}
 			//print_r($blks);
