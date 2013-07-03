@@ -270,7 +270,7 @@ class Bookings extends CoreTable {
 		$rows = $this->db->select($sql);
 		if ($rows->count() != 0) {
 			$ids = array();
-			while ($r = $rows->next()) {
+			while ($r = $rows->fetch_assoc()) {
 				if ($r['histid'] == $r['curr_histid']) {
 					$history = new History;
 					$history->insert(array(
@@ -294,7 +294,7 @@ class Bookings extends CoreTable {
 	function deleteMatches($fields) {
 		$this->db->lock();
 		$rows = $this->getMatches($fields);
-		while ($r = $rows->next()) {
+		while ($r = $rows->fetch_assoc()) {
 			$this->deleteOne($r['bookingid']);
 		}
 		$this->db->unlock();
@@ -534,14 +534,14 @@ class BookingsIter extends Iter {
 		$this->db = new Query;
 	}
 	function next() {
-		$row = $this->rows->next();
+		$row = $this->rows->fetch_assoc();
 		if (!$row)
 			return NULL;
 		$sql = $this->db->mkSQL('SELECT * FROM booking_member '
 			. 'WHERE bookingid=%N ', $row['bookingid']);
 		$rs = $this->db->select($sql);
 		$row['mbrids'] = array();
-		while ($r = $rs->next())
+		while ($r = $rs->fetch_assoc())
 			$row['mbrids'][] = $r['mbrid'];
 		return $row;
 	}

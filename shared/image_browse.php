@@ -88,7 +88,7 @@
 	$col = 0;
 	$page = $rpt->pageIter($currentPageNmbr);
 	while($row = $page->next()) {
-		if ($col == 4) {
+		if ($col == 5) {
 			echo '</tr>'."\n".'<tr>'."\n";
 			$col = 0;
 		}

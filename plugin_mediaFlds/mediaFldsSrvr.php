@@ -12,7 +12,7 @@
 	  case 'exportLayout':
 			$db = new MaterialFields;
 			$set = $db->getMatches(array('material_cd'=>$_GET['material_cd']));
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $list[] = $row;
 			}
 			echo json_encode($list);

@@ -17,7 +17,7 @@
 			$tptr = new MediaTypes;
 		  $matls = array();
 			$tSet = $tptr->getAll('code');
-			while ($row = $tSet->next()) {
+			while ($row = $tSet->fetch_assoc()) {
 			  $matls[] = $row;
 			}
 			//print_r($matls);
@@ -32,7 +32,7 @@
 			$typeCd = array('material_cd' => $_GET['matlCd']);
 		  $flds = array();
 			$fSet = $fptr->getMatches($typeCd,'position');
-			while ($row = $fSet->next()) {
+			while ($row = $fSet->fetch_assoc()) {
 			  $flds[] = $row;
 			}
 			//print_r($hosts);
@@ -77,7 +77,7 @@
 			$params = array('block_nmbr' => $_GET['block_nmbr']);
 		  $vals = array();
 			$rslt = $ptr->getMatches($params,'tag');
-			while ($row = $rslt->next()) {
+			while ($row = $rslt->fetch_assoc()) {
 			  $vals[] = $row;
 			}
 			echo json_encode($vals);
@@ -91,7 +91,7 @@
 			$params = array('tag' => $_GET['tag']);
 		  $vals = array();
 			$rslt = $ptr->getMatches($params,'subfield_cd');
-			while ($row = $rslt->next()) {
+			while ($row = $rslt->fetch_assoc()) {
 			  $vals[] = $row;
 			}
 			echo json_encode($vals);

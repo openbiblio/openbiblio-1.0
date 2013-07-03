@@ -117,7 +117,7 @@ class Members extends CoreTable {
 		if ($rows->count() != 1) {
 			return NULL;
 		}
-		$r = $rows->next();
+		$r = $rows->fetch_assoc();
 		return $r['mbrid'];
 	}
 	function insert_el($mbr, $confirmed=false) {
@@ -163,7 +163,7 @@ class Members extends CoreTable {
 	function deleteMatches($fields) {
 		$this->db->lock();
 		$rows = $this->getMatches($fields);
-		while (($row = $rows->next()) !== NULL) {
+		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$this->deleteOne($row['mbrid']);
 		}
 		$this->db->unlock();
@@ -191,7 +191,7 @@ class MembersIter extends Iter {
 		$this->rows = $rows;
 	}
 	function next() {
-		$row = $this->rows->next();
+		$row = $this->rows->fetch_assoc();
 		if (!$row)
 			return NULL;
 		if ($row['password']) {

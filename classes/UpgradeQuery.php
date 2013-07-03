@@ -369,7 +369,7 @@ class UpgradeQuery extends InstallQuery {
 		$bibs = $this->select($sql);
 		$n = 0; $fldid = 1; $subid = 1;
 
-		while (($bib = $bibs->next()) != NULL) {
+		while (($bib = $bibs->fetch_assoc()) != NULL) {
 			# we will be posting to the db in blocks of 100 records to avoid server overload
 			$n++;
 			$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'
@@ -415,7 +415,7 @@ class UpgradeQuery extends InstallQuery {
 			### get each biblio_field entry for this biblio in MARC tag order
 			$sql = "SELECT * FROM `$prfx`.`biblio_field` WHERE (`bibid`=$bib[bibid]) ORDER BY `tag` ";
 			$flds = $this->select($sql);
-			while ($fld = $flds->next()) {
+			while ($fld = $flds->fetch_assoc()) {
 			  $tag = sprintf("%03d",$fld[tag]);
 				$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
 				$fld[field_data] = preg_replace("/'/","''",$fld[field_data]);

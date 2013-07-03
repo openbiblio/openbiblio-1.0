@@ -48,7 +48,7 @@ class Themes extends DBTable {
 			$select['all'] = 'All';
 		}
 		$recs = $this->getAll('theme_name');
-		while ($rec = $recs->next()) {
+		while ($rec = $recs->fetch_assoc()) {
 			$select[$rec['themeid']] = $rec['theme_name'];
 		}
 		return $select;

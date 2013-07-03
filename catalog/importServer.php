@@ -60,7 +60,7 @@ switch ($_REQUEST[mode]){
 		$params = array('tag' =>$tag[0], 'subfield_cd' =>$tag[1] );
 	  $vals = array();
 		$rslt = $ptr->getMatches($params, 'subfield_cd');
-		while ($row = $rslt->next()) {
+		while ($row = $rslt->fetch_assoc()) {
 		  $vals[] = $row;
 		}
 		$val = $vals[0]['description'];

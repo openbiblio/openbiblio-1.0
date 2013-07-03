@@ -706,27 +706,34 @@ var bs = {
 		if ($('#022a').length > 0) var issn  = ($('#022a').val()).split(',');
 		//console.log('issn==>'+issn);
 
+		var msgText = '',
+				params = '',
+				item = '';
 	  if (isbn) {
-	  	var msgText = '<?php T("Searching for ISBN"); ?>'+' '+isbn;
-	  	params = "&mode=search&srchBy=7&lookupVal="+isbn;
-	  	var item = isbn;
+	  	msgText = '<?php T("Searching for ISBN"); ?>'+' '+isbn,
+	  	params = "&mode=search&srchBy=7&lookupVal="+isbn,
+	  	item = isbn;
 		} else if (issn) {
-	  	var msgText = '<?php T("Searching for ISSN"); ?>'+' '+issn;
+	  	msgText = '<?php T("Searching for ISSN"); ?>'+' '+issn;
 	  	params = "&mode=search&srchBy=7&lookupVal="+issn;
-	  	var item = issn;
+	  	item = issn;
 		} else if (title && author) {
-	  	var msgText = "Searching for<br />Title: '"+title+"',<br />by "+author;
+	  	msgText = "Searching for<br />Title: '"+title+"',<br />by "+author;
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
-	  	var item = '"'+title+'", by '+author;
+	  	item = '"'+title+'", by '+author;
+		} else {
+			msgText = '<?php T("NotEnoughtData"); ?>';
+			return;
 		}
+
 	  msgText += '.<br />' + '<?php echo T("this may take a moment.");?>'
 		$('#onlineMsg').html(msgText);
 		
 	  $.post(bs.urlLookup,params,function(response){
 			//console.log('params==>'+params)
-			var rslts = JSON.parse(response);
-			var numHits = parseInt(rslts.ttlHits);
-			var maxHits = parseInt(rslts.maxHits);
+			var rslts = JSON.parse(response),
+					numHits = parseInt(rslts.ttlHits),
+					maxHits = parseInt(rslts.maxHits);
 			if (numHits < 1) {
 				$('#onlineMsg').html(rslts.msg+' for '+item);
 			}

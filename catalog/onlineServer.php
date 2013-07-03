@@ -29,19 +29,8 @@
 	## --- MUST BE FIRST !!!!! ---
 	$optr = new Opts;
 	$opts = $optr->getAll();
-	$postVars = $opts->next();
+	$postVars = $opts->fetch_assoc();
 	
-	## get default collection
-//	require_once(REL(__FILE__, "../model/Collections.php"));
-//	$db = new Collections;
-//	$coll = $db->getDefault();
-// 	$postVars['defaultCollect'] = $coll;
-	## get default media name
-//	require_once(REL(__FILE__, "../model/MediaTypes.php"));
-//	$db = new MediaTypes;
-//	$med = $db->getDefault();
-// 	$postVars['defaultMedia'] = $med;
-
 	## prepare list of hosts
 	if (!empty($_POST['srchHost'])) {	
 		# but first we extract those hosts acceptable to user for THIS search
@@ -57,7 +46,7 @@
 	$hptr = new Hosts;
 	$hosts = array();
 	$hSet = $hptr->getMatches(array('active'=>'y'), 'seq');
-	while ($row = $hSet->next()) {
+	while ($row = $hSet->fetch_assoc()) {
 		if (!empty($useHosts)) {	
 	  	if (in_array($row['id'], $useHosts)) {
 				$hosts[] = $row;

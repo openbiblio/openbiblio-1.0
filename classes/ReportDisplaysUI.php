@@ -25,7 +25,7 @@ class ReportDisplaysUI {
 			$t->title = $disp['title'];
 			$t->columns = $rdisp->columns();
 			echo $t->begin();
-			while ($r = $iter->next()) {
+			while ($r = $iter->fetch_assoc()) {
 				echo $t->rowArray($rdisp->row($r));
 			}
 			echo $t->end();

@@ -610,6 +610,7 @@ $trans["Not authorized for cataloging"] = "You are not authorized to use the Cat
 $trans["Not Available yet, Under Construction"] = "Not Available yet, Under Construction";
 $trans["Not enough arguments given to mkSQL()."] = "Not enough arguments given to mkSQL().";
 $trans["Note:"] = "Note:";
+$trans["NotEnoughtDataForSearch"] = "Not enough data for search; Need ISBN, ISSN, or Title & Author";
 $trans["NothingFoundError"] = "Nothing Found error";
 $trans["Nothing Found"] = "Nothing Found";
 $trans["NothingFoundByBarcdSearch"] = "Nothing found by Barcode search";

@@ -39,7 +39,8 @@ class Sites extends DBTable {
 			$select['all'] = 'All';
 		}
 		$recs = $this->getAll('name');
-		while ($rec = $recs->next()) {
+		//while ($rec = $recs->fetch_assoc()) {
+		while ($rec = $recs->fetch_assoc()) {
 			$select[$rec['siteid']] = $rec['name'];
 		}
 		return $select;

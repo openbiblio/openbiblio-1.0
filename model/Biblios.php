@@ -79,7 +79,7 @@ class Biblios extends CoreTable {
 	function deleteMatches($fields) {
 		$this->db->lock();
 		$rows = parent::getMatches($fields);
-		while ($r = $rows->next()) {
+		while ($r = $rows->fetch_assoc()) {
 			$this->deleteOne($r['bibid']);
 		}
 		$this->db->unlock();

@@ -165,13 +165,13 @@ var idis = {
 				for (var nCopy in idis.copyJSON) {
 				  idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
-					if (!window.opacMode) {
+				<?php if (!(strtolower($tab) == 'opac' || strtolower($tab) == 'user' || strtolower($tab) == 'circulation' )){ ?>
 						html += '	<td>\n';
 						html += '		<input type="button" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
 						html += '		<input type="button" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
 						html += '		<input type="hidden" value="'+idis.crntCopy.copyid+'">\n';
 						html += '	</td>\n';
-					}
+				<?php } ?>
 
 					if (idis.crntCopy.site) {
 						html += "	<td>"+idis.crntCopy.site+"</td>\n";

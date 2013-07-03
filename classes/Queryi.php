@@ -28,20 +28,24 @@ class Queryi extends mysqli{
 	}
 	function select1($sql) {
 		$r = $this->select($sql);
-		if ($r->count() != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("NothingFoundError"));
+		if ($r->num_rows != 1) {
+			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("NothingFoundError"));
 		} else {
-			return $r->next();
+			return $r->fetch_assoc();
 		}
 	}
 	function select01($sql) {
 		$r = $this->select($sql);
-		if ($r->count() == 0) {
+		//if ($r->count() == 0) {
+		if ($r->num_rows == 0) {
 			return NULL;
-		} else if ($r->count() != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
+		//} else if ($r->count() != 1) {
+		} else if ($r->num_rows != 1) {
+			//Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
+			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
 		} else {
-			return $r->next();
+			//return $r->fetch_assoc();
+			return $r->fetch_assoc();
 		}
 	}
 	function _act($sql) {
@@ -56,7 +60,8 @@ class Queryi extends mysqli{
 	 * might be something like PEAR::DB's sequences.
 	 */
 	function getInsertID() {
-		return mysql_insert_id($this->_link);
+		//return mysql_insert_id($this->_link);
+		return $this->insert_id;
 	}
 
 	/* Locking functions
@@ -70,6 +75,7 @@ class Queryi extends mysqli{
 	 * Calls to lock/unlock may be nested, but must be paired.
 	 */
 	function lock() {
+return;
 		global $_Query_lock_depth;
 		if ($_Query_lock_depth < 0) {
 			Fatal::internalError(T("Negative lock depth"));
@@ -87,6 +93,7 @@ class Queryi extends mysqli{
 		$_Query_lock_depth++;
 	}
 	function unlock() {
+return;
 		global $_Query_lock_depth;
 		if ($_Query_lock_depth <= 0) {
 			Fatal::internalError(T("Tried to unlock an unlocked database."));
@@ -190,10 +197,12 @@ class Queryi extends mysqli{
 					$SQL .= $this->_numstr($arg);
 					break;
 				case 'Q':
-					$SQL .= "'".mysql_real_escape_string($arg, $this->_link)."'";
+					//$SQL .= "'".mysql_real_escape_string($arg, $this->_link)."'";
+					$SQL .= "'".parent::real_escape_string($arg)."'";
 					break;
 				case 'q':
-					$SQL .= mysql_real_escape_string($arg, $this->_link);
+					//$SQL .= mysql_real_escape_string($arg, $this->_link);
+					$SQL .= parent::real_escape_string($arg);
 					break;
 				default:
 					Fatal::internalError($badSqlFmt);

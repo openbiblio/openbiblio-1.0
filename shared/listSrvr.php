@@ -15,7 +15,7 @@
 	}
 	function getDmData ($db) {
 		$set = $db->getAll('description');
-		while ($row = $set->next()) {
+		while ($row = $set->fetch_assoc()) {
 		  $list[$row['code']] = $row['description'];
 		}
 		return $list;

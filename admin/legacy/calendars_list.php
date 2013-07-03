@@ -58,7 +58,7 @@ $t = new TableDisplay;
 $t->columns = $disp->columns($sort_url);
 echo $t->begin();
 $page = $rpt->pageIter($currentPageNmbr);
-while ($r = $page->next()) {
+while ($r = $page->fetch_assoc()) {
 	echo $t->rowArray($disp->row($r));
 }
 echo $t->end();

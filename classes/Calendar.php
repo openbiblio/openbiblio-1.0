@@ -397,7 +397,7 @@ class Calendar {
 			$calendars = new Calendars;
 			$rows = $calendars->getDays($calendar, $start, $end);
 			$this->open = array();
-			while ($row = $rows->next()) {
+			while ($row = $rows->fetch_assoc()) {
 				if ($row['open'] == 'No') {
 					$this->open[$row['date']] = 'No';
 				} else {

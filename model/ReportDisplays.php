@@ -10,7 +10,7 @@ class ReportDisplaysIter extends Iter {
 		$this->rows = $rows;
 	}
 	function next() {
-		$row = $this->rows->next();
+		$row = $this->rows->fetch_assoc();
 		if (!$row)
 			return NULL;
 		$row['params'] = unserialize($row['params']);

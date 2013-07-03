@@ -64,7 +64,7 @@
 
 	echo $t->begin();
 	$selected = array();
-	while ($r = $rpt->next()) {
+	while ($r = $rpt->fetch_assoc()) {
 		$available = array();
 		foreach ($r['copies'] as $c) {
 			if (!in_array($c['barcode_nmbr'], $selected)) {

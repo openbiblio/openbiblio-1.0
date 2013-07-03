@@ -20,7 +20,7 @@ class SrchDb {
 	public $avIcon = "circle_green.png";
 
 	function SrchDb () {
-		$this->db = new Query;
+		$this->db = new Queryi;
 	}
 	## ========================= ##
 	function getBiblioByBarcd($barcd){
@@ -131,7 +131,7 @@ class SrchDb {
 		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
 		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
-		while (($row = $rows->next()) !== NULL) {
+		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = $row[bibid];
 		}
 		return $rslt;
@@ -213,7 +213,7 @@ class SrchDb {
 				 . " ORDER BY m.position ";
 		//echo "sql=$sql<br />";
 		$rows = $this->db->select($sql);
-		while (($row = $rows->next()) !== NULL) {
+		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = json_encode($row);
 			//$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes($row[value]) . "'"
 			//				 .",'fieldid':'$row[fieldid]','subfieldid':'$row[subfieldid]'}";
@@ -248,11 +248,13 @@ class SrchDb {
 		$BCQ = new BiblioCopyFields;
 		$custRows = $BCQ->getAll();			
 		$custFieldList = array();
-		while ($row = $custRows->next()) {
+		//while ($row = $custRows->fetch_assoc()) {
+		while ($row = $custRows->fetch_assoc()) {
 			$custFieldList[$row["code"]] = "";
 		}			
 		
-		while ($copy = $bcopies->next()) {
+		//while ($copy = $bcopies->fetch_assoc()) {
+		while ($copy = $bcopies->fetch_assoc()) {
 			$status = $history->getOne($copy['histid']);
 			$booking = $bookings->getByHistid($copy['histid']);
 			if ($_SESSION['multi_site_func'] > 0) {
@@ -276,7 +278,8 @@ class SrchDb {
 			$custom = $copies->getCustomFields($copy[copyid]);
 			$copy['custFields'] = array();
 			$fieldList = $custFieldList;
-			while ($row = $custom->next() ) {
+			//while ($row = $custom->fetch_assoc() ) {
+			while ($row = $custom->fetch_assoc() ) {
 				$fieldList[$row["code"]] = $row["data"];
 			}
 
@@ -329,7 +332,7 @@ class SrchDb {
 		$custom = array();
 		$BCQ = new BiblioCopyFields;
 		$rows = $BCQ->getAll();
-		while ($row = $rows->next()) {
+		while ($row = $rows->fetch_assoc()) {
 			if (isset($_POST['custom_'.$row["code"]])) {
 				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
 			}
@@ -365,7 +368,7 @@ class SrchDb {
 		$custom = array();
 		$BCQ = new BiblioCopyFields;
 		$rows = $BCQ->getAll();		
-		while ($row = $rows->next()) {
+		while ($row = $rows->fetch_assoc()) {
 			if (isset($_REQUEST['custom_'.$row["code"]])) {
 				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
 			}			

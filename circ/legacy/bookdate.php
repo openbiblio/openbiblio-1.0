@@ -33,7 +33,7 @@
 			$rows = $bookings->getCalendarTotals($start, $end, $calendar, NULL, $bibid);
 			$this->copies=array();
 			$this->open = array();
-			while ($row = $rows->next()) {
+			while ($row = $rows->fetch_assoc()) {
 				$this->copies[$row['date']] = $row['ncopies'];
 				$this->open[$row['date']] = $row['open'];
 			}
@@ -193,7 +193,7 @@
 	$t = new TableDisplay;
 	$t->columns = $disp->columns();
 	echo $t->begin();
-	while ($r = $rpt->next()) {
+	while ($r = $rpt->fetch_assoc()) {
 		echo $t->rowArray($disp->row($r));
 	}
 	echo $t->end();

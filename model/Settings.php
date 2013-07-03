@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-require_once(REL(__FILE__, '../classes/Query.php'));
+require_once(REL(__FILE__, '../classes/Queryi.php'));
 require_once(REL(__FILE__, '../model/Sites.php'));
 
 global $_settings_cache, $_settings_validators;
@@ -14,9 +14,9 @@ $_settings_validators = array();
 class Settings {
 	static function load() {
 		global $_settings_cache, $_settings_validators;
-		$db = new Query;
+		$db = new Queryi;
 		$r = $db->select('SELECT * FROM settings');
-		while ($s = $r->next()) {
+		while ($s = $r->fetch_assoc()) {
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validators']);
 		}
@@ -30,7 +30,7 @@ class Settings {
 		return $_settings_cache;
 	}
 	function getFormFields($menu=NULL) {
-		$db = new Query;
+		$db = new Queryi;
 		$sql = "SELECT * FROM settings WHERE (title <> '') ";
 		if (!empty($menu)) {
 			$sql .= " AND (menu = '$menu') ";
@@ -38,14 +38,14 @@ class Settings {
 		$sql .= " ORDER BY position ";
 		$r = $db->select($sql);
 		$fields = array();
-		while ($s = $r->next()) {
+		while ($s = $r->fetch_assoc()) {
 			$fields[] = Settings::_mkField($s);
 		}
 		return $fields;
 	}
 	function setOne_e($name, $value) {
 		# FIXME - VALIDATE
-		$db = new Query;
+		$db = new Queryi;
 		$db->lock();
 		$sql = $db->mkSQL('UPDATE settings SET value=%Q WHERE name=%Q', $value, $name);
 		$db->act($sql);
@@ -54,7 +54,7 @@ class Settings {
 	}
 	function setOne_el($name, $value) {
 		# FIXME - VALIDATE
-		$db = new Query;
+		$db = new Queryi;
 		$db->lock();
 		$sql = $db->mkSQL('UPDATE settings SET value=%Q WHERE name=%Q', $value, $name);
 		$db->act($sql);
@@ -67,7 +67,7 @@ class Settings {
 		if (!empty($errors)) {
 			return $errors;
 		}
-		$db = new Query;
+		$db = new Queryi;
 		$db->lock();
 		foreach ($settings as $n=>$v) {
 			$sql = $db->mkSQL('UPDATE settings SET value=%Q WHERE name=%Q', $v, $n);

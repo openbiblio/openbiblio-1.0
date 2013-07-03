@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 
 class BiblioImages {
 	function BiblioImages() {
@@ -161,7 +161,7 @@ class BiblioImages {
 	function deleteByBibid($bibid) {
 		$this->db->lock();
 		$imgs = $this->getByBibid($bibid);
-		while ($img = $imgs->next()) {
+		while ($img = $imgs->fetch_assoc()) {
 			@unlink("../photos/".$img['url']);
 			@unlink("../photos/".$img['imgurl']);
 			$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",

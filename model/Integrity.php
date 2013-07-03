@@ -311,7 +311,7 @@ class Integrity {
 					} elseif (isset($chk['listSql'])) {
 						$msg .= '<br />list: ';
 						$rows = $this->db->select($chk['listSql']);
-						while ($row = $rows->next()) {
+						while ($row = $rows->fetch_assoc()) {
 							$msg .= '<a href="../catalog/srchForms.php?bibid='.$row['bibid'].'">'.$row['bibid'].'</a>, ';
 						}
 					} elseif (isset($chk['fixFn'])) {

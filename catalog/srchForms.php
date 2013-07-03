@@ -216,7 +216,7 @@
 <div id="biblioDiv">
 	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
-		<?php if (!(($tab == 'opac') || ($tab == 'user') || ($tab == 'rpt'))) { ?>
+		<?php if (!(($tab == 'opac') || ($tab == 'rpt'))) { ?>
 			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		<?php } ?>
 		<li><input type="button" id="marcBtn" value=""></li>
@@ -234,7 +234,7 @@
 	<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
 
 	<ul class="btnRow">
-		<?php if (!(($tab == 'opac') || ($tab == 'user') || ($tab == 'rpt'))) { ?>
+		<?php if (!(($tab == 'opac') || ($tab == 'rpt'))) { ?>
 			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>"></li>
 		<?php } ?>
 		<?php if (!($tab != 'cataloging' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))) { ?>

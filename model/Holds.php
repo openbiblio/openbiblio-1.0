@@ -44,7 +44,7 @@ class Holds extends DBTable {
 					 . "AND bh.copyid IS NULL ";
 		$copies = $this->db->select($sql);
 		$history = new History;
-		while ($copy = $copies->next()) {
+		while ($copy = $copies->fetch_assoc()) {
 			$history->insert(array(
 				'bibid'=>$copy['bibid'],
 				'copyid'=>$copy['copyid'],

@@ -218,10 +218,10 @@ class Report {
 	}
 	function next() {
 		$this->_getIter();
-		return $this->iter->next();
+		return $this->iter->num_rows;
 	}
 	function each() { # FIXME - get rid of this
-		return $this->next();
+		return $this->fetch_assoc();
 	}
 	function row($num) {
 		if (isset($this->cache['rows'][$num])) {

@@ -31,7 +31,7 @@ function setupMember_el($values) {
 	if ($mbrs->count() != 1) {
 		return array(NULL, array(new Error(T('registerNoMatch'))));
 	}
-	$mbr = $mbrs->next();
+	$mbr = $mbrs->fetch_assoc();
 	if (strlen($mbr['password'])) {
 		return array(NULL, array(new Error(T('registerGotLogin'))));
 	}

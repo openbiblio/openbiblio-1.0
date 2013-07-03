@@ -105,7 +105,7 @@
 		$mbrDflt = $members->maybeGetOne($_GET['mbrid']);
 		$cstmFlds = $members->getCustomfields($_GET['mbrid']);
 		$mbrCstm = array();
-		while ($fld = $cstmFlds->next()) {
+		while ($fld = $cstmFlds->fetch_assoc()) {
 			$mbrCstm[$fld['code']] = $fld['data'];
 		}
 		$mbr = array_merge($mbrDflt, $mbrCstm);
@@ -119,7 +119,7 @@
 		$mbrDflt = $members->getMbrByBarcode($_GET['barcdNmbr']);
 		$cstmFlds = $members->getCustomfields($mbrDflt['mbrid']);
 		$mbrCstm = array();
-		while ($fld = $cstmFlds->next()) {
+		while ($fld = $cstmFlds->fetch_assoc()) {
 			$mbrCstm[$fld['code']] = $fld['data'];
 		}
 		$mbr = array_merge($mbrDflt, $mbrCstm);
@@ -128,7 +128,7 @@
 	case 'doNameFragSearch':
 		$rows = $members->getMbrByName($_GET['nameFrag']);
 		$mbrs = array();
-		while ($row = $rows->next()) {
+		while ($row = $rows->fetch_assoc()) {
 			$mbrs[] = $row;
 		}
 		echo json_encode($mbrs);
@@ -138,7 +138,7 @@
 	case 'getAcntActivity':
 		$transactions = $acct->getByMbrid($_GET['mbrid']);
 		$tranList = array();
-		while ($tran = $transactions->next()) {
+		while ($tran = $transactions->fetch_assoc()) {
 			$tranList[] = $tran;
 		}
 		echo json_encode($tranList);
@@ -161,14 +161,14 @@
 		$types = $mediaTypes->getAll();
 		$mediaTypeDm = array();
 		$mediaImageFiles = array();
-		while ($type = $types->next()) {
+		while ($type = $types->fetch_assoc()) {
 			$mediaTypeDm[$type['code']] = $type['description'];
 			$mediaImageFiles[$type['code']] = $type['image_file'];
 		}
 
 		$checkouts = $copies->getMemberCheckouts($_GET['mbrid']);
 		$chkOutList = array();
-		while ($copy = $checkouts->next()) {
+		while ($copy = $checkouts->fetch_assoc()) {
 			$biblio = $biblios->getOne($copy['bibid']);
 			$a = $biblio['marc']->getValue('240$a');
 			$b = $biblio['marc']->getValue('245$a');
@@ -216,7 +216,7 @@
 		$holds = Report::create('holds');
 		$holds->init(array('mbrid'=>$_GET['mbrid']));
 		$holdList = array();
-		while ($hold = $holds->next()) {
+		while ($hold = $holds->fetch_assoc()) {
 			$holdList[] = $hold;
 		}
 	  echo json_encode($holdList);

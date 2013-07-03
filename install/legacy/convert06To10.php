@@ -58,7 +58,7 @@
 	$bibs = $db->select($sql);
 	$n = 0; $fldid = 1; $subid = 1;
 	
-	while (($bib = $bibs->next()) != NULL) {
+	while (($bib = $bibs->fetch_assoc()) != NULL) {
 		$n++;
 		$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'.$bib[last_change_userid].'", "'.$bib[material_cd].'", "'.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
 
@@ -101,7 +101,7 @@
 		### get each biblio_field entry for this biblio in MARC tag order
 		$sql = "SELECT * FROM `$prfx`.`biblio_field` WHERE (bibid=$bib[bibid]) ORDER BY `tag` ";
 		$flds = $db->select($sql);
-		while ($fld = $flds->next()) {
+		while ($fld = $flds->fetch_assoc()) {
 		  $tag = sprintf("%03d",$fld[tag]);
 			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
 			$fld[field_data] = preg_replace("/'/","''",$fld[field_data]);

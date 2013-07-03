@@ -28,8 +28,10 @@ if ($pwd == "") {
 if (!$error_found) {
 	$staff = new Staff;
 	$rows = $staff->getMatches(array('username'=>$username, 'pwd'=>md5($pwd)));
-	if ($rows->count() == 1) {
-		$user = $rows->next();
+	//if ($rows->count() == 1) {
+	if ($rows->num_rows == 1) {
+		//$user = $rows->fetch_assoc();
+		$user = $rows->fetch_assoc();
 	} else {
 		# invalid username or password.  Add one to login attempts.
 		$error_found = true;

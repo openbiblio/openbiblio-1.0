@@ -71,7 +71,7 @@
 		case 'getAllCalendars':
 		  $cals = array();
 			$set = $ptr1->getAll('description');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $cals[] = $row;
 			}
 			echo json_encode($cals);
@@ -82,7 +82,7 @@
 			$ptr = new CircCollections;
 		  $colls = array();
 			$set = $ptr->getAll('code');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
@@ -91,7 +91,7 @@
 			$ptr = new DistCollections;
 		  $colls = array();
 			$set = $ptr->getAll('code');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
@@ -104,7 +104,7 @@
 			$ptr = new Collections;
 		  $colls = array();
 			$set = $ptr->getAllWithStats();
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
@@ -153,7 +153,7 @@
 		case 'getAll_copyFlds':
 			$flds = array();
 			$set = $ptr->getAll();
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -181,7 +181,7 @@
 		case 'getAll_mbrFlds':
 			$flds = array();
 			$set = $ptr->getAll();
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -209,7 +209,7 @@
 		case 'getAll_mbrTypes':
 			$flds = array();
 			$set = $ptr->getAll();
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -241,7 +241,7 @@
 		case 'getAll_media':
 			$med = array();
 			$set = $ptr->getAllWithStats();
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $med[] = $row;
 			}
 			echo json_encode($med);
@@ -296,7 +296,7 @@
 		case 'getAll_hosts':
 		  $hosts = array();
 			$set = $ptr->getAll('seq');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $hosts[] = $row;
 			}
 			echo json_encode($hosts);
@@ -322,7 +322,7 @@
 		case 'getOpts':
 	  	$opts = array();
 			$set = $ptr->getAll();
-			$row = $set->next();
+			$row = $set->fetch_assoc();
 			echo json_encode($row);
 			break;
 		case 'updateOpts':
@@ -340,7 +340,7 @@
 		case 'getAll_sites':
 		  $sites = array();
 			$set = $ptr->getAll('name');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $sites[] = $row;
 			}
 			echo json_encode($sites);
@@ -359,7 +359,7 @@
 		case 'getAll_staff':
 		  $staff = array();
 			$set = $ptr->getAll('last_name');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $staff[] = $row;
 			}
 			echo json_encode($staff);
@@ -396,7 +396,7 @@
 		case 'getAll_states':
 		  $states = array();
 			$set = $ptr2->getAll('description');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $states[] = $row;
 			}
 			echo json_encode($states);
@@ -415,7 +415,7 @@
 		case 'getAllThemes':
 		  $thms = array();
 			$set = $ptr->getAll('theme_name');
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $thms[] = $row;
 			}
 			echo json_encode($thms);

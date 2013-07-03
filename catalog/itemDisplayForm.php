@@ -20,7 +20,7 @@
 		<table id="copyList">
 		<thead>
 		<tr>
-				<?php if (!(strtolower($tab) == 'opac' || strtolower($tab) == 'circulation' )){ ?>
+				<?php if (!(strtolower($tab) == 'opac' || strtolower($tab) == 'user' || strtolower($tab) == 'circulation' )){ ?>
 					<th><?php echo T("Function"); ?></th>
 				<?php } ?>
 				<?php

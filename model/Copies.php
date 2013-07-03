@@ -110,7 +110,7 @@ class Copies extends CoreTable {
 		if ($rows->count() == 0) {
 			return NULL;
 		} else if ($rows->count() == 1) {
-			return $rows->next();
+			return $rows->fetch_assoc();
 		} else {
 			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));
 		}
@@ -134,8 +134,9 @@ class Copies extends CoreTable {
 				 . "and bkm.bookingid=bk.bookingid ";
 		$sql .= $this->db->mkSQL("and bk.out_histid=%N ", $histid);
 		$result = $this->db->select($sql);
-		return ($result->next());
-	}	
+		//return ($result->fetch_assoc());
+		return ($result->fetch_assoc());
+	}
 	# Added this function to lookup the member who has the copy on hold,
 	#	for detailed view (not sure if there is a shorter way - LJ
 	# Also, I return the member record directly to prevent unnecisary code,
@@ -146,7 +147,7 @@ class Copies extends CoreTable {
 				 . "where mbr.mbrid=bh.mbrid ";
 		$sql .= $this->db->mkSQL("and bh.copyid=%N order by bh.hold_begin_dt", $copyid);
 		$result = $this->db->select($sql);
-		return ($result->next());
+		return ($result->fetch_assoc());
 	}	
 	function lookupBulk_el($barcodes) {
 		$copyids = array();
@@ -172,7 +173,7 @@ class Copies extends CoreTable {
 		foreach ($bibids as $bibid) {
 			$has_copies = false;
 			$copies = $this->getMatches(array('bibid'=>$bibid));
-			while ($c = $copies->next()) {
+			while ($c = $copies->fetch_assoc()) {
 				if (!in_array($c['copyid'], $del_copyids)) {
 					$has_copies = true;
 					break;
@@ -210,7 +211,7 @@ class Copies extends CoreTable {
 		$cart = $this->getShelvingCart();
 		$bibids = array();
 		$copyids = array();
-		while ($copy = $cart->next()) {
+		while ($copy = $cart->fetch_assoc()) {
 			array_push($bibids, $copy['bibid']);
 			array_push($copyids, $copy['copyid']);
 		}

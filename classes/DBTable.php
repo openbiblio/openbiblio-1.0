@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, '../classes/Query.php'));
+require_once(REL(__FILE__, '../classes/Queryi.php'));
 
 class DBTable {
 	var $db;
@@ -18,7 +18,7 @@ class DBTable {
 		'number'=>'%N',
 	);
 	function DBTable() {
-		$this->db = new Query();
+		$this->db = new Queryi();
 	}
 	function setName($name) {
 		$this->name = $name;
@@ -73,8 +73,7 @@ class DBTable {
 	}
 	function getAll($orderby=NULL) {
 		$sql = $this->db->mkSQL('SELECT * FROM %I ', $this->name);
-		if ($orderby)
-			$sql .= $this->db->mkSQL('ORDER BY %q ', $orderby);
+		if (!empty($orderby)) $sql .= $this->db->mkSQL('ORDER BY %q ', $orderby);
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->db->select($sql));

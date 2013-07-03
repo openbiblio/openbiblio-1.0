@@ -113,7 +113,7 @@
 	// actual display content controlled by ../classes/BiblioRows.php (see function next())
 	echo $t->begin();
 	$pg = $rpt->pageIter($page);
-	while ($r = $pg->next()) {
+	while ($r = $pg->fetch_assoc()) {
 		echo $t->rowArray($disp->row($r));
 	}
 	echo $t->end();

@@ -61,7 +61,8 @@
 		<?php
 			$BCQ = new BiblioCopyFields;
 			$rows = $BCQ->getAll();
-			while ($row = $rows->next()) {
+			//while ($row = $rows->fetch_assoc()) {
+			while ($row = $rows->fetch_assoc()) {
 				echo "<tr>";
 				echo "<td nowrap=\"true\" valign=\"top\"><label for=\"copyCustom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
 				echo "<td valign=\"top\" \">" . inputfield('text', 'copyCustom_'.$row["code"], "",NULL) . "</td>";

@@ -92,7 +92,7 @@
 	case 'fetchShelvingCart':
 		$scart = $copies->getShelvingCart();
 		$rec = array();
-		while ($copy = $scart->next()) {
+		while ($copy = $scart->fetch_assoc()) {
 			$biblio = $biblios->getOne($copy['bibid']);
 			$status = $history->getOne($copy['histid']);
 			$rec[] = array(

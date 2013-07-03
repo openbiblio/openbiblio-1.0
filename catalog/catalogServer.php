@@ -79,7 +79,7 @@ function mkBiblioArray($dbObj) {
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$theDb =new MediaTypes;
 		$set = $theDb->getAll('code');
-		while ($row = $set->next()) {
+		while ($row = $set->fetch_assoc()) {
 		  $media[$row['code']] = $row['srch_disp_lines'];
 		}
 		echo json_encode($media);

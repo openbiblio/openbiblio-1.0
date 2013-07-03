@@ -29,7 +29,7 @@ class MaterialFields extends DBTable {
 	function getDisplayInfo ($nmbr) {
 		$media = [];
 		$set = $this->getAll('material_cd,position');
-		while ($row = $set->next()) {
+		while ($row = $set->fetch_assoc()) {
       if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {
 				$media[$row['material_cd']][$row['position']] =
 					array('tag'=>$row['tag'],'suf'=>$row['subfield_cd'],'lbl'=>$row['label'],'row'=>$row['position']);

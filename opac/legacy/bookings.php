@@ -30,7 +30,7 @@ class BookingCalendar extends Calendar {
 		$rows = $bookings->getCalendarTotals($start, $end, $calendar, $mbrid);
 		$this->copies=array();
 		$this->open = array();
-		while ($row = $rows->next()) {
+		while ($row = $rows->fetch_assoc()) {
 			$this->copies[$row['date']] = $row['ncopies'];
 			$this->open[$row['date']] = $row['open'];
 		}

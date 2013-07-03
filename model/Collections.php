@@ -170,7 +170,7 @@ class Collections extends DmTable {
 	}
 	function deleteMatches($fields) {
 		$rows = $this->getMatches($fields);
-		while ($row = $rows->next()) {
+		while ($row = $rows->fetch_assoc()) {
 			$this->deleteOne($row['code']);
 		}
 	}

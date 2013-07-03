@@ -453,7 +453,7 @@ class RptParser {
 				}
 				$q = new Query();
 				$r = $q->select($sql);
-				while ($row = $r->next()) {
+				while ($row = $r->fetch_assoc()) {
 					array_push($list, array($row['value'], $row));
 				}
 			} else {

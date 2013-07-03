@@ -87,7 +87,7 @@ $t->columns = $disp->columns($sort_url);
 array_unshift($t->columns, $t->mkCol('<b>'.T("All").'</b><br /><input type="checkbox" name="all" value="all" onclick="setCheckboxes()" />'));
 echo $t->begin();
 $page = $rpt->pageIter($currentPageNmbr);
-while ($r = $page->next()) {
+while ($r = $page->fetch_assoc()) {
 	$dr = $disp->row($r);
 	array_unshift($dr, '<input type="checkbox" name="id[]" value="'.H($r['bookingid']).'" />');
 	echo $t->rowArray($dr);
