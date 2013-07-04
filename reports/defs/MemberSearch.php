@@ -6,10 +6,10 @@
 require_once(REL(__FILE__, "../../classes/Query.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 
-class member_search_rpt {
+class MemberSearch_rpt {
 	var $searchTypes;
 
-	function member_search_rpt() {
+	function MemberSearch_rpt() {
 		$this->searchTypes = array(
 			'keyword' => Search::type('Keyword', 'ms', array('m.first_name', 'm.last_name', 's.name', 'm.barcode_nmbr')),
 			'barcode' => Search::type('Barcode', 'ms', array('m.barcode_nmbr'), 'phrase'),

@@ -2144,7 +2144,7 @@ obiblio-10-wip
 			admin\statesJs.php
 			admin\themeForm.php
 			admin\themeJS.php
-		-catalog
+		+catalog
 			-legacy
 				catalog\legacy\index.php
 			catalog\biblioChange.php
@@ -2178,7 +2178,7 @@ obiblio-10-wip
 			catalog\srchJs.php
 			catalog\upload_usmarc.php
 			catalog\upload_usmarc_form.php
-		+circ
+		-circ
 			-legacy
 				circ\legacy\book.php
 				circ\legacy\bookdate.php
@@ -2574,7 +2574,7 @@ obiblio-10-wip
 			mediaLayouts\magazines.lay
 			mediaLayouts\maps.lay
 			mediaLayouts\videoDvd.lay
-		+model
+		-model
 			-legacy
 				model\legacy\Stock.php
 			model\BiblioCopyFields.php
@@ -3129,22 +3129,20 @@ obiblio-10-wip
 5=themes\default\header.php
 6=shared\footer.php
 7=shared\menu.php
-8=classes\CoreTable.php
-9=classes\DBTable.php
+8=classes\SrchDb.php
+9=classes\CoreTable.php
 10=classes\DmTable.php
-11=classes\Query.php
+11=classes\DBTable.php
 12=classes\Queryi.php
-13=locale\en\trans.php
-14=circ\memberForms.php
-15=circ\memberJs.php
-16=circ\memberServer.php
-17=model\MemberTypes.php
+13=classes\Query.php
+14=locale\en\trans.php
+15=catalog\photoEditorJs.php
 [Selected Project Files]
 Main=
-Selected=circ\memberForms.php
+Selected=catalog\photoEditorJs.php
 [TODOlist.txt]
-TopLine=386
-Caret=1,103
+TopLine=82
+Caret=1,104
 [shared\base3.css]
 TopLine=25
 Caret=20,40
@@ -3166,33 +3164,27 @@ Caret=6,11
 [shared\menu.php]
 TopLine=51
 Caret=36,70
+[classes\SrchDb.php]
+TopLine=1
+Caret=25,23
 [classes\CoreTable.php]
 TopLine=1
-Caret=1,1
-[classes\DBTable.php]
-TopLine=1
-Caret=1,1
+Caret=34,8
 [classes\DmTable.php]
 TopLine=1
-Caret=1,1
-[classes\Query.php]
-TopLine=1
-Caret=1,1
+Caret=22,30
+[classes\DBTable.php]
+TopLine=125
+Caret=1,149
 [classes\Queryi.php]
-TopLine=1
-Caret=1,1
+TopLine=16
+Caret=19,31
+[classes\Query.php]
+TopLine=19
+Caret=19,83
 [locale\en\trans.php]
-TopLine=581
-Caret=58,608
-[circ\memberForms.php]
-TopLine=267
-Caret=23,135
-[circ\memberJs.php]
-TopLine=272
-Caret=33,312
-[circ\memberServer.php]
-TopLine=48
-Caret=9,87
-[model\MemberTypes.php]
-TopLine=1
-Caret=1,1
+TopLine=592
+Caret=102,613
+[catalog\photoEditorJs.php]
+TopLine=43
+Caret=96,68
