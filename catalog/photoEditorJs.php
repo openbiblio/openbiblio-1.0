@@ -58,13 +58,19 @@ var wc = {
 		$('#updtFotoBtn').on('click',null,wc.doUpdatePhoto);
 		$('#deltFotoBtn').on('click',null,wc.doDeletePhoto);
 
-		/* support drag and drop during 'Browse mode' */
+		/* support drag and drop of image */
 		wc.canvasOut.ondragover = function (e){
 			// keep browser from replacing entire page with dropped image //
       e.preventDefault();
 			return false;
 		};
-		wc.canvasOut.ondrop = function (e) { wc.getFotoDrop(e); };
+		wc.canvasOut.ondrop = function (e) {
+			wc.getFotoDrop(e);
+		};
+		/* support cut&paste of image */
+		document.onpaste = function (e) {
+			wc.getFotoPaste(e);
+		};
 
 		wc.resetForm();
 	},
@@ -118,23 +124,21 @@ var wc = {
 		wc.ctxOut.clearRect(0,0, wc.canvasOut.width,wc.canvasOut.height)
 		wc.ctxIn.clearRect(0,0, wc.canvasIn.width,wc.canvasIn.height)
 	},
-	readFile: function (file) {
-		var reader = new FileReader();  // output is to reader.result
-		reader.onerror = function () {
-			console.log('FileReader error: '+reader.error);
-			return;
-		}
-		reader.onloadend = function(e) {
-    	var tempImg = new Image();
-    	tempImg.src = reader.result;
-    	tempImg.onload = function() {
-        wc.ctxOut.drawImage(tempImg, 0, 0, wc.fotoWidth,wc.fotoHeight);
-			}
-		};
-    reader.readAsDataURL(file);
-	},
 
 	//------------------------------
+	getFotoPaste: function (e) {
+		e.preventDefault();
+		if (e.clipboardData &&e.clipboardData.items) {
+			var items = e.clipboardData.items;
+			for (var i=0; i<items.length; i++) {
+				if (items[i].kind === 'file' && items[i].type.match(/^image/)) {
+					wc.readFile(items[i].getAsFile());
+					break;
+				}
+			}
+		}
+		return false;
+	},
 	getFotoDrop: function (e) {
 		e.preventDefault();
 		e = e || window.event;
@@ -149,6 +153,21 @@ var wc = {
 		if(file.type !== '' && !file.type.match('image.*')) return;
 		//$('#fotoName').val($('#browse').val());
 		wc.readFile(file)
+	},
+	readFile: function (file) {
+		var reader = new FileReader();  // output is to reader.result
+		reader.onerror = function () {
+			console.log('FileReader error: '+reader.error);
+			return;
+		}
+		reader.onloadend = function(e) {
+    	var tempImg = new Image();
+    	tempImg.src = reader.result;
+    	tempImg.onload = function() {
+        wc.ctxOut.drawImage(tempImg, 0, 0, wc.fotoWidth,wc.fotoHeight);
+			}
+		};
+    reader.readAsDataURL(file);
 	},
 	takeFoto: function () {
   	$('#errSpace').hide();
