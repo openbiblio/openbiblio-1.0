@@ -29,7 +29,7 @@
 ?>
 
 	<p id="errSpace" class="error"></p>
-	<input type="hidden" id="tab" />
+	<input type="hidden" id="tab" value="<?php echo $tab;?>" />
 
 <!-- ------------------------------------------------------------------------ -->
 	<div id="rptArea">

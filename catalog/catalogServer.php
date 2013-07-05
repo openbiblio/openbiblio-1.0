@@ -297,7 +297,7 @@ function mkBiblioArray($dbObj) {
 	case 'getPhoto':
 	  $ptr = new BiblioImages;
 	  $set = $ptr->getByBibid($_REQUEST['bibid']);
-		while ($row = $set->next()) {
+		while ($row = $set->fetch_assoc()) {
 		  $imgs[] = $row;
 		}
 		echo json_encode($imgs);
@@ -326,7 +326,7 @@ function mkBiblioArray($dbObj) {
 				break;
 			}
 	  	$set = $ptr->getByBibid($_REQUEST['bibid']);
-			while ($row = $set->next()) {
+			while ($row = $set->fetch_assoc()) {
 			  $imgs[] = $row;
 			}
 			echo json_encode($imgs);

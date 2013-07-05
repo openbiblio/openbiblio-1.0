@@ -22,7 +22,7 @@ var img = {
 	//----//
 	resetForm: function () {
 		img.pageNmbr = 0;
-		img.srchType = 'previous';
+		img.srchType = '';
     img.fetchFotoPage();
 		$('#rptArea').show();
 	},
@@ -33,7 +33,7 @@ var img = {
 	},
 
 	fetchFotoPage: function () {
-		var orderBy = $('#orderBy option:selected').text();
+		var orderBy = $('#orderBy option:selected').val();
 	  $.getJSON(img.url,{'mode':				'getPage',
 											 'orderBy':			orderBy,
                        'searchType':	img.srchType,

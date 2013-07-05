@@ -54,9 +54,9 @@ class SrchDb {
 		foreach ($keywords as $kwd) {
 			// Add Join
 			$sqlSelect .= " JOIN `biblio_field` bf$keywordnr JOIN `biblio_subfield` bs$keywordnr";
-			$sqlWhere .= " AND bf$keywordnr.bibid = b.bibid "
-									." AND bs$keywordnr.fieldid = bf$keywordnr.fieldid "
-									." AND bs$keywordnr.`subfield_data` LIKE '%$kwd%'";
+			$sqlWhere  .= "  AND bf$keywordnr.bibid = b.bibid "
+									 ."  AND bs$keywordnr.fieldid = bf$keywordnr.fieldid "
+									 ."  AND bs$keywordnr.`subfield_data` LIKE '%$kwd%'";
 			$termnr = 1;
 			$sqlWhere .= " AND (";
 			$firstWhere = true;

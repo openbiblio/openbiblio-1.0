@@ -9,16 +9,14 @@
 	//print_r($_REQUEST);echo "<br />";
 
 	function getRpt() {
-		global $tab;
+		//global $tab;
 		if ($_REQUEST['searchType'] == 'previous') {
 			$rpt = Report::load('Images');
-
 			if ($rpt && $_REQUEST['orderBy']) {
 				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['orderBy']));
 			}
 			return $rpt;
 		}
-
 		$rpt = Report::create('images', 'Images');
 		if (!$rpt) {
 			return false;
@@ -31,8 +29,7 @@
 	switch ($_REQUEST['mode']) {
 	case "getPage":
 		$rpt = getRpt();
-		$page_url = new LinkUrl("../shared/image_browse.php", 'page',
-													array('type'=>'previous', 'tab'=>$_REQUEST['tab']));
+		$page_url = new LinkUrl("#", 'page', array('type'=>'previous', 'tab'=>$_REQUEST['tab']));
 		$disp = new ReportDisplay($rpt);
 
 		if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {

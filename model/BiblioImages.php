@@ -3,12 +3,26 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Queryi.php"));
+require_once(REL(__FILE__, "../classes/DBTable.php"));
 
-class BiblioImages {
+class BiblioImages extends DBTable {
 	function BiblioImages() {
-		$this->db = new Query;
+		$this->DBTable();
+		$this->setName('images');
+		$this->setFields(array(
+			'bibid'=>'number',
+			'imgurl'=>'string',
+			'url'=>'string',
+			'position'=>'number',
+			'caption'=>'string',
+			'type'=>'string',
+		));
+		$this->setKey('bibid');
+		$this->setForeignKey('bibid', 'biblio', 'bibid');
 	}
+//	function BiblioImages() {
+//		$this->db = new Queryi;
+//	}
 	function getOne($bibid, $imgurl) {
 		$sql = $this->db->mkSQL("select * from images where bibid=%N "
 			. "and imgurl=%Q ", $bibid, $imgurl);
@@ -23,6 +37,8 @@ class BiblioImages {
 		$sql = $this->db->mkSQL("select * from images where bibid=%N ", $bibid);
 		$sql .= "order by position ";
 		return $this->db->select($sql);
+	}
+	function getAll($orderBy=null) {
 	}
 	function insertThumb_e($bibid, $position, $caption, $file) {
 		return $this->_do_insert_e($bibid, $file, $position, $caption, 'Thumb', '');

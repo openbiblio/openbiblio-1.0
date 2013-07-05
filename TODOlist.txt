@@ -101,6 +101,9 @@ Move OB's db models to PHP's mysqli interface, preferably using the OO mode;
 Research Image viewer needs user controls to set rows & columns displayed.
 Or make display adapt to current width and set nmbr of rows accordingly.
 
+5 Jul 2013 - Fred
+consolidate ../classes/SrchDb.php into ../model/Biblios.php, its really a SuperBiblios class.
+
 ###################### Completed, most recent at top #########################
 
 11 May 2013 - Fred, withdrawn 2 July
