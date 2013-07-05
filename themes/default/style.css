@@ -401,7 +401,9 @@ div#configDiv{
 /* unique report items */
 .report_category { font-weight:bold; }
 .report_name { font-weight:normal; }
-.galleryBox {
+.cntlArea { padding:1em; display:-webkit-flex; display:flex; justify-content:space-between; }
+#gallery { }
+.fotoBox {
 		padding-bottom:15px;
 		display:-webkit-flex; -webkit-flex-direction:column;
 		display:flex; flex-direction:column;

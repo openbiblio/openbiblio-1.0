@@ -67,22 +67,25 @@
 
 	# Display no results message if no results returned from search.
 	if ($rpt->count() == 0) {
-		echo "<p class=\"error\">".T("No images found")."</p>\n";
+		echo '<p class="error">'.T("No images found")."</p>\n";
 		exit();
 	}
 
-?>
-
-<!--**************************************************************************
-		*  Printing result stats and page nav
-		************************************************************************** -->
-<?php
-	echo '<div id="rptArea">'."\n";
-	echo '<p>'.$rpt->count().' '.T("results found.")."</p>\n";
+	/**************************************************************************
+	 *  Printing result stats and page nav
+	 **************************************************************************/
 	$page_url = new LinkUrl("../shared/image_browse.php", 'page',
-		array('type'=>'previous', 'tab'=>$tab));
+													array('type'=>'previous', 'tab'=>$tab));
 	$disp = new ReportDisplay($rpt);
+
+	echo '<div id="rptArea">'."\n";
+	echo '	<div class="cntlArea">'."\n";
+	echo '		<div class="nmbrbox">'."\n";
 	echo $disp->pages($page_url, $currentPageNmbr);
+	echo '		</div>'."\n";
+	echo '		<div class="countBox"><p>'.$rpt->count().' '.T("results found.")."</p></div>\n";
+	echo '		<div class="sortBox"><p>'."</p></div>\n";
+	echo '	</div>'."\n"; // end of cntlArea
 
 	echo '<fieldset><table><tr>'."\n";
 	$col = 0;
@@ -103,7 +106,11 @@
 	}
 	echo '</tr></table></fieldset>'."\n";
 
+	echo '	<div class="cntlArea">'."\n";
+	echo '		<div class="nmbrbox">'."\n";
 	echo $disp->pages($page_url, $currentPageNmbr);
+	echo '		</div>'."\n";
+	echo '	</div>'."\n"; // end of cntlArea
 
 	echo '</div>'."\n"; // end of rptArea
 

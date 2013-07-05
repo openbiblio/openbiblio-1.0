@@ -50,7 +50,6 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 <?php
 foreach (array_keys($reports) as $category) {
-	//echo '<li class="report_category"><strong>'.T($category).'</strong><ul>';
 	echo '<li class="report_category">'.T($category);
 	echo '	<ul>';
 	foreach ($reports[$category] as $type => $title) {
