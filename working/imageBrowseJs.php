@@ -17,8 +17,10 @@ var img = {
 		});
 		$('.nextBtn').on('click',null,img.getNextPage);
 		$('.prevBtn').on('click',null,img.getPrevPage);
+		$('.gobkBiblioBtn').on('click',null,img.rtnToGallery);
 
 		img.resetForm();
+    img.fetchFotoPage();
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -27,17 +29,28 @@ var img = {
 	resetForm: function () {
 		img.firstItem = 0;
 		img.srchType = '';
-    img.fetchFotoPage();
-		$('#rptArea').show();
+		$('#biblioDiv').hide();
+		$('#rptDiv').show();
 		$('#prevBtn').disable();
 		$('#nextBtn').disable();
 	},
+	rtnToGallery: function () {
+		$('#biblioDiv').hide();
+		$('#rptDiv').show();
+	},
 
+	//------------------------------
+	fetchOpts: function () {
+	  $.getJSON(img.url,{mode:'getOpts'}, function(jsonData){
+	    img.opts = jsonData
+		});
+	},
 	//------------------------------
 	getNextPage:function () {
 		$('.nextBtn').disable();
 		img.fetchFotoPage(img.nextPageItem);
 	},
+
 	getPrevPage:function () {
 		$('.prevBtn').disable();
 		img.fetchFotoPage(img.prevPageItem);
@@ -72,13 +85,22 @@ var img = {
 				}
 				html  = '<td valign="bottom" align="center">'+"\n";
 				html += '	<div class="galleryBox">'+"\n";
-				html += '		<div><img src="../photos/'+cell['url']+'" class="biblioImage hover" /></div>';
-				html += '		<div class="smallType"><a href="../catalog/srchForms.php?tab='+tab+'&amp;bibid='+cell['bibid']+'">'
-				html += '			<output >'+cell[orderBy]+'</output>';
-				html += '		</a></div>';
+				html += '		<div><img src="../photos/'+cell['url']+'" class="biblioImage hover" /></div>'+"\n";
+				html += '		<div class="smallType">'+"\n";
+				html += '			<a href="#" id="'+cell['bibid']+'" >'+"\n";
+				html += '			<output >'+cell[orderBy]+'</output>'+"\n";
+				html += '		</a></div>'+"\n";
 				html += '</td>'+"\n";
 				cntr++;
 				$table.append(html);
+
+				$('#fotos a').on('click',null,function (e) {
+					e.preventDefault(); e.stopPropagation();
+					idis.init(img.opts); // be sure all is ready
+					idis.doBibidSearch(e.currentTarget.id);
+					$('#biblioDiv').show();
+					$('#rptDiv').hide();
+				});
 			}
 			$table.append('</tr>');
 			$('#gallery').show();

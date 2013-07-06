@@ -13,6 +13,11 @@
 	$map['author'] = ['100$a'];
 
 	switch ($_REQUEST['mode']) {
+	case 'getOpts':
+		$opts = Settings::getAll();
+		echo json_encode($opts);
+	  break;
+
 	case "getPage":
 		$db = new BiblioImages;
 //		$rslt = $db->getAll();

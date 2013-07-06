@@ -32,7 +32,7 @@
 	<input type="hidden" id="tab" value="<?php echo $tab;?>" />
 
 <!-- ------------------------------------------------------------------------ -->
-	<div id="rptArea">
+	<div id="rptDiv">
 		<div class="cntlArea">
 			<div class="btnBox">
 				<ul class="btnRow">
@@ -64,6 +64,19 @@
 		</div>
 
 	</div>
+
+<!-- ------------------------------------------------------------------------ -->
+<div id="biblioDiv">
+	<ul class="btnRow">
+		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T("Go Back"); ?>" /></li>
+	</ul>
+
+		<?php include(REL(__FILE__,"../catalog/itemDisplayForm.php")); ?>
+
+	<ul class="btnRow">
+		<li><input type="button" class="gobkBiblioBtn" value="<?php echo T("Go Back"); ?>"></li>
+	</ul>
+</div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

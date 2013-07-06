@@ -166,7 +166,7 @@ var idis = {
 				for (var nCopy in idis.copyJSON) {
 				  idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
 				  html += "<tr>\n";
-				<?php if (!($tab == 'opac' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
+				<?php if (!($tab == 'opac' || $tab == 'working' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
 						html += '	<td>\n';
 						html += '		<input type="button" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
 						html += '		<input type="button" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
