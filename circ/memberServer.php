@@ -216,7 +216,7 @@
 		$holds = Report::create('holds');
 		$holds->init(array('mbrid'=>$_GET['mbrid']));
 		$holdList = array();
-		while ($hold = $holds->fetch_assoc()) {
+		while ($hold = $holds->next()) {
 			$holdList[] = $hold;
 		}
 	  echo json_encode($holdList);

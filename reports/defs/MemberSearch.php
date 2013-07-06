@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-require_once(REL(__FILE__, "../../classes/Query.php"));
+require_once(REL(__FILE__, "../../classes/Queryi.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 
 class MemberSearch_rpt {

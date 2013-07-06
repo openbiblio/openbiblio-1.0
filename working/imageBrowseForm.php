@@ -34,21 +34,33 @@
 <!-- ------------------------------------------------------------------------ -->
 	<div id="rptArea">
 		<div class="cntlArea">
-			<div class="nmbrbox"> <p class="pageList">xxxx</p> </div>
+			<div class="btnBox">
+				<ul class="btnRow">
+					<li><button class="prevBtn"><?php echo T("Prev");?></button></li>
+					<li><button class="nextBtn"><?php echo T("Next");?></button></li>
+				</ul>
+			</div>
 			<div class="countBox"> <p> foto count goes here </p> </div>
 			<div class="sortBox">
 				<select id="orderBy">
 					<option value="title">Title</option>
 					<option value="author" SELECTED>Author</option>
-					<option value="callNo">Call No.</option>
+					<option value="callno">Call No.</option>
 				</select>
 			</div>
 		</div>
 
-		<fieldset id="gallery">filled by server</fieldset>
+		<fieldset id="gallery">
+			<table id="fotos"> </table>
+		</fieldset>
 
 		<div class="cntlArea">
-			<div class="nmbrbox"> <p class="pageList">yyyy</p> </div>
+			<div class="nmbrbox">
+				<ul class="btnRow">
+					<li><button class="prevBtn"><?php echo T("Prev");?></button></li>
+					<li><button class="nextBtn"><?php echo T("Next");?></button></li>
+				</ul>
+			</div>
 		</div>
 
 	</div>

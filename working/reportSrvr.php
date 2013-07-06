@@ -4,63 +4,57 @@
  */
 
 	require_once("../shared/common.php");
-	require_once(REL(__FILE__, "../classes/Report.php"));
-	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
+	require_once(REL(__FILE__, "../model/BiblioImages.php"));
 	//print_r($_REQUEST);echo "<br />";
 
-	function getRpt() {
-		//global $tab;
-		if ($_REQUEST['searchType'] == 'previous') {
-			$rpt = Report::load('Images');
-			if ($rpt && $_REQUEST['orderBy']) {
-				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['orderBy']));
-			}
-			return $rpt;
-		}
-		$rpt = Report::create('images', 'Images');
-		if (!$rpt) {
-			return false;
-		}
-		$rpt->initCgi();
-		return $rpt;
-	}
-
+	##### do NOT use " on these items #####
+	$map['callno'] = ['099$a'];
+	$map['title'] = ['245$a'];
+	$map['author'] = ['100$a'];
 
 	switch ($_REQUEST['mode']) {
 	case "getPage":
-		$rpt = getRpt();
-		$page_url = new LinkUrl("#", 'page', array('type'=>'previous', 'tab'=>$_REQUEST['tab']));
-		$disp = new ReportDisplay($rpt);
+		$db = new BiblioImages;
+//		$rslt = $db->getAll();
+		$orderBy = $_GET['orderBy'];
+		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);
+		$numRows = $rslt->num_rows;
 
-		if (isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"])) {
-			$currentPageNmbr = $_REQUEST["page"];
+		// Add amount of search results.
+		$perPage = Settings::get('items_per_page');
+		if($_REQUEST['firstItem'] == null){
+			$firstItem = 0;
 		} else {
-			$currentPageNmbr = $rpt->curPage();
+			$firstItem = $_REQUEST['firstItem'];
+		}
+		if($perPage <= ($numRows - $firstItem)){
+			$lastItem = $firstItem + $perPage;
+		} else {
+			$lastItem = $numRows;
 		}
 
-		$col = 0;
-		$page = $rpt->pageIter($currentPageNmbr);
-		$tbl = '<tbody><tr>';
-		while($row = $page->next()) {
+		## multi-page record header
+		$rcd['nmbr'] = $numRows;
+		$rcd['firstItem'] = $firstItem;
+		$rcd['lastItem'] = $lastItem;
+		$rcd['perPage'] = $perPage;
+
+		$imgCntr = 0;
+		$tbl = [];
+		while($row = $rslt->fetch_assoc()) {
+			$imgCntr++;
+			if($imgCntr-1 < $firstItem) continue;
+			if($imgCntr   > $lastItem) break;
 			if ($col == 7) {
-				$tbl .= '</tr>'."\n".'<tr>'."\n";
 				$col = 0;
 			}
-			$tbl .= '<td valign="bottom" align="center">'."\n"
-						 .'	<div class="galleryBox">'."\n"
-						 .'		<div><img src="../photos/'.H($row['url']).'" class="biblioImage hover" /></div>'."\n"
-						 .'		<div class="smallType"><a href="../catalog/srchForms.php?tab='.H($tab).'&amp;bibid='.H($row['bibid']).'">'."\n"
-						 .'			<output >'.H($row['callnum']).'</output>'."\n"
-						 .'		</a></div>'."\n"
-						 .'</td>'."\n";
+			$tbl[] = ["bibid"=>$row['bibid'],"url"=>$row['url'],$orderBy=>$row['data']];
+			
 			$col++;
 		}
-		$tbl .= '</tr></tbody>';
-    $ndx = $disp->pages($page_url, $currentPageNmbr);
-		$nmbr = $rpt->count();
-		$curPage = $rpt->curPage();
-		$rslt = ["nmbr"=>$nmbr, "ndx"=>$ndx, "tbl"=>$tbl, "curPage"=>$curPage];
-		echo json_encode($rslt);
+//		$tbl = '<tbody><tr>'.$tbl.'</tr></tbody>';
+		$rcd['tbl'] = $tbl;
+		echo json_encode($rcd);
 		break;
 
 	default:

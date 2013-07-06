@@ -3,14 +3,14 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 
 // previously known as 'SessionHandler'
 // renamed due to conflict with PHP 5.4+ class of same name - FL()
 
 class OBsession {
 	function OBsession() {
-		$this->db = new Query;
+		$this->db = new Queryi;
 	}
 
 	function open($save_path, $session_name) {

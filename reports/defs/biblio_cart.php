@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../../classes/Query.php"));
+require_once(REL(__FILE__, "../../classes/Queryi.php"));
 require_once(REL(__FILE__, "../../classes/BiblioRows.php"));
 
 class biblio_cart_rpt extends BiblioRows {
@@ -25,7 +25,7 @@ class biblio_cart_rpt extends BiblioRows {
 	}
 	function select($params) {
 		$this->params = $params;
-		$this->q = new Query;
+		$this->q = new Queryi;
 		list( , , $raw) = $this->params->getFirst('order_by');
 		$sortq = $this->getOrderSql('cart.id', $raw);
 		$sql = "select cart.id as bibid "

@@ -3,11 +3,11 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 
 class Integrity {
 	function Integrity() {
-		$this->db = new Query;
+		$this->db = new Queryi;
 		$this->checks = array(
 			array(
 				//'error' => T("%count% unattached MARC fields"),
@@ -377,7 +377,7 @@ class Integrity {
 		$status = array();
 		$errors = 0;
 		$r = $this->db->select($sql);
-		while ($row = $r->next()) {
+		while ($row = $r->fetch_assoc()) {
 			if ($row['status_cd'] == 'out' and isset($status[$row['copyid']])) {
 				if ($status[$row['copyid']]['status_cd'] == 'out') {
 					$errors++;

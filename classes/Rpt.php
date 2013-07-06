@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 
 class Rpt {
 	function load_e($filename) {
@@ -682,7 +682,7 @@ class RptIter extends Iter {
 	#		the query at this point.
 	function RptIter($sqls, $params) {
 		$this->params = $params;
-		$this->q = new Query();
+		$this->q = new Queryi();
 		foreach ($sqls as $s) {
 			list($code, $subs) = $s;
 			$sql = $this->_exec($code, $params);
@@ -698,13 +698,13 @@ class RptIter extends Iter {
 		}
 	}
 	function count() {
-		return $this->iter->count();
+		return $this->iter->num_rows;
 	}
 	function skip() {
-		return $this->iter->skip();
+//		return $this->iter->skip();
 	}
 	function next() {
-		$row = $this->iter->next();
+		$row = $this->iter->fetch_assoc();
 		if ($row === NULL) {
 			return $row;
 		}

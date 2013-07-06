@@ -6,7 +6,7 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 	require_once(REL(__FILE__, "../functions/utilFuncs.php"));
-	require_once(REL(__FILE__, "../classes/Query.php"));
+	//require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
@@ -150,6 +150,12 @@ function mkBiblioArray($dbObj) {
 		/* - - - - - - - - - - - - - */
 		/* Actual Search begins here */		
 		$paramStr = "[" . $params . "," . $searchTags . "]";
+		/* typical form of $paramStr:
+			[{"tag":"240","suf":"a"},{"tag":"245","suf":"a"},{"tag":"245","suf":"b"},
+			 {"tag":"245","suf":"c"},{"tag":"246","suf":"a"},{"tag":"246","suf":"b"},
+			 {"tag":"502","suf":"a"},{"tag":"505","suf":"a"},{"tag":"650","suf":"a"},.............
+		*/
+		/* $type may be null at times */
 		$biblioLst = $theDb->getBiblioByPhrase($type, $paramStr);
 		if (sizeof($biblioLst) > 0) {
 			// Add amount of search results.

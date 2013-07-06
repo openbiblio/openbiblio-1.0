@@ -27,8 +27,8 @@
 	# in the folowing lines. - F.L. - 8 Dec 2009
 	######
 	#
-	require_once(REL(__FILE__, "../classes/Query.php"));
-	$db = new Query;
+	require_once(REL(__FILE__, "../classes/Queryi.php"));
+	$db = new Queryi;
 	$prfx = 'OpenBiblio';
 	$tmpPrfx = 'obiblio-10';
 	

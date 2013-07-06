@@ -103,13 +103,13 @@ class Copies extends CoreTable {
 	}
 	function getByBarcode($barcode) {
 		$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
-		if ($rows->count() == 0) {
+		if ($rows->num_rows == 0) {
 			$barcode = $this->normalizeBarcode($barcode);
 			$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
 		}
-		if ($rows->count() == 0) {
+		if ($rows->num_rows == 0) {
 			return NULL;
-		} else if ($rows->count() == 1) {
+		} else if ($rows->num_rows == 1) {
 			return $rows->fetch_assoc();
 		} else {
 			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));

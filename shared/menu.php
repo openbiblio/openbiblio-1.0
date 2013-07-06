@@ -123,7 +123,7 @@ function staff_menu() {
 	
 	##-------------------------------------------------------------------------------------##
 		Nav::node('working', T("Under Construction"), '../working/index.php');
-		Nav::node('working/testApp', T("Cover Photos"), '../working/imageBrowseForm.php?tab=working');
+		Nav::node('working/testApp', T("CoverPhotos"), '../working/imageBrowseForm.php?tab=working');
 		Nav::node('working/testApp', T("Photo Import"), '../working/webcamForm.php');
 
 	##-------------------------------------------------------------------------------------##

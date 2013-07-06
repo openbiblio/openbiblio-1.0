@@ -3,7 +3,7 @@
 .column bibid hidden
 .column callnum title="Call No." sort=callnum
 .column title func=biblio_link title=Title sort=title
-.column imgurl title="Thumbnail URL"
+.column imgurl title="Thumbnail URL" hidden
 .column url title="Link URL"
 .parameters
 .	order_by default="callnum"

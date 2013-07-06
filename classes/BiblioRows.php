@@ -69,11 +69,11 @@ class BiblioRows {
 
 class BiblioRowsIter extends Iter {
 	function BiblioRowsIter($iter) {
-		$this->q = new Query;
+		$this->q = new Queryi;
 		$this->iter = $iter;
 	}
 	function count() {
-		return $this->iter->count();
+		return $this->iter->num_rows;
 	}
 	function skip() {
 		$this->iter->skip();

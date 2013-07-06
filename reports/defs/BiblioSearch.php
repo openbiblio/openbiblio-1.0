@@ -5,7 +5,7 @@
 
 require_once(REL(__FILE__, "../../functions/utilFuncs.php"));
 require_once(REL(__FILE__, "../../classes/Report.php"));
-require_once(REL(__FILE__, "../../classes/Query.php"));
+require_once(REL(__FILE__, "../../classes/Queryi.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 require_once(REL(__FILE__, "../../classes/BiblioRows.php"));
 

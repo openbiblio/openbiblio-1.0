@@ -3,14 +3,14 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 
 class Cart {
 	var $name;
 	var $db;
 	function Cart($name) {
 		$this->name = $name;
-		$this->db = new Query;
+		$this->db = new Queryi;
 	}
 	function viewURL() {
 		$urls = array(

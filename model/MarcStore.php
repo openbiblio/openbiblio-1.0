@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 require_once(REL(__FILE__, "../classes/Marc.php"));
 
 # Note: this doesn't follow the standard table API.
@@ -11,7 +11,7 @@ require_once(REL(__FILE__, "../classes/Marc.php"));
 
 class MarcStore {
 	function MarcStore () {
-		$this->db = new Query;
+		$this->db = new Queryi;
 	}
 	function delete($bibid) {
 		$this->db->lock();
@@ -31,14 +31,14 @@ class MarcStore {
 			$bibid);
 		$rows = $this->db->select($sql);
 
-		if ($rows->count() == 0) {
+		if ($rows->num_rows == 0) {
 			return NULL;
 		}
 
 		$rec = new MarcRecord();
 		$fieldid = NULL;
 		$field = NULL;
-		while (($row = $rows->next()) !== NULL) {
+		while (($row = $rows->fetch_assoc()) !== NULL) {
 			if ($row['fieldid'] != $fieldid) {
 				if ($field) {
 					array_push($rec->fields, $field);

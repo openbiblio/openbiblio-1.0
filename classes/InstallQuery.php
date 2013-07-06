@@ -4,7 +4,7 @@
  */
  
 require_once("../shared/global_constants.php");
-require_once("../classes/Query.php");
+require_once("../classes/Queryi.php");
 
 class InstallQuery extends Query {
   /* Override constructor so the installer can test the database connection */

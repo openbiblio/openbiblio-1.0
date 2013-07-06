@@ -531,7 +531,7 @@ class Bookings extends CoreTable {
 class BookingsIter extends Iter {
 	function BookingsIter($rows) {
 		$this->rows = $rows;
-		$this->db = new Query;
+		$this->db = new Queryi;
 	}
 	function next() {
 		$row = $this->rows->fetch_assoc();
