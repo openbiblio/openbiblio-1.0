@@ -8,7 +8,7 @@
 "use strict";
 var img = {
 	init: function () {
-		img.url = '../working/imageSrvr.php';
+		img.url = '../opac/imageSrvr.php';
 		img.initWidgets();
 
 		$('#orderBy').on('change',null,function () {

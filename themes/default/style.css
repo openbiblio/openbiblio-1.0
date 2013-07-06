@@ -402,7 +402,13 @@ div#configDiv{
 .report_category { font-weight:bold; }
 .report_name { font-weight:normal; }
 .cntlArea { padding:1em; display:-webkit-flex; display:flex; justify-content:space-between; }
-#gallery { }
+.resize {
+	-webkit-transform:scale(3.0); -webkit-transform-origin:top left;
+	-moz-transform:scale(3.0); -moz-transform-origin:top left;
+	-ms-transform:scale(3.0); -ms-transform-origin:top left;
+	-o-transform:scale(3.0);
+	transform:scale(5.0); transform-origin:center center;
+	}
 .fotoBox {
 		padding-bottom:15px;
 		display:-webkit-flex; -webkit-flex-direction:column;

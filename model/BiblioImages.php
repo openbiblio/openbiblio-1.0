@@ -23,16 +23,13 @@ class BiblioImages extends DBTable {
 	function getBiblioMatches($fields) {
 		$sql = 'SELECT DISTINCT(i.bibid), i.url, s.subfield_data as data '.
 					 'FROM images i, biblio b, biblio_field f, biblio_subfield s '.
-					 'WHERE (f.bibid = i.bibid) AND ';
+					 'WHERE (f.bibid = i.bibid) AND (s.fieldid = f.fieldid) AND (("A" = "B") ';
 		foreach ($fields as $field) {
 			$set = explode('$',$field);
-//echo "$field =>";print_r($set);echo "<br />\n";
-			$sql .= "((f.tag = '$set[0]') AND (s.fieldid = f.fieldid) AND (s.subfield_cd = '$set[1]'))";
-//			$sql .= ' OR ';
+			$sql .= " OR ((f.tag = '$set[0]') AND (s.subfield_cd = '$set[1]')) ";
 		}
-		$sql .= ' AND (1=1)';
+		$sql .= ' )';
 		$sql .= ' ORDER BY data';
-//echo "sql=$sql";
 
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP

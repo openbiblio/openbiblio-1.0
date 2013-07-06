@@ -9,7 +9,7 @@
 
 	##### do NOT use " on these items #####
 	$map['callno'] = ['099$a'];
-	$map['title'] = ['245$a'];
+	$map['title'] = ['245$a', '240$a', '246$a'];
 	$map['author'] = ['100$a'];
 
 	switch ($_REQUEST['mode']) {
@@ -20,7 +20,6 @@
 
 	case "getPage":
 		$db = new BiblioImages;
-//		$rslt = $db->getAll();
 		$orderBy = $_GET['orderBy'];
 		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);
 		$numRows = $rslt->num_rows;
@@ -57,13 +56,13 @@
 			
 			$col++;
 		}
-//		$tbl = '<tbody><tr>'.$tbl.'</tr></tbody>';
+
 		$rcd['tbl'] = $tbl;
 		echo json_encode($rcd);
 		break;
 
 	default:
-		  echo '<h4 class="error">'.T("invalid mode")."@calendarSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
 		break;
 	}
 
