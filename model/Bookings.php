@@ -101,7 +101,6 @@ class Bookings extends CoreTable {
 	}
 	function validate_el($new, $insert) {
 		$modelBookingsNotEnoughCopiesText = T("modelBookingsNotEnoughCopies");
-		
 		if ($insert) {
 			$old = array();
 		} else {
@@ -180,7 +179,7 @@ class Bookings extends CoreTable {
 			$sql .= $this->db->mkSQL('group by b1.bookingid '
 				. 'having ncopies >= %N ', $ncopies);
 			$rows = $this->db->select($sql);
-			if ($rows->count() != 0) {
+			if ($rows->num_rows != 0) {
 				$errors[] = new Error($modelBookingsNotEnoughCopiesText);
 				return $errors;
 			}
@@ -192,6 +191,7 @@ class Bookings extends CoreTable {
 		# field is nonzero, otherwise no checkouts are allowed. (is done in verifyCheckout_e() - LJ)
 
 		if (isset($new['mbrids']) and !empty($booking['mbrids'])) {
+			## determine if library is open today ##
 			$sql = $this->db->mkSQL('select c.date, c.open '
 				. 'from calendar c, member m, site s '
 				. 'where c.calendar=s.calendar '
@@ -205,9 +205,11 @@ class Bookings extends CoreTable {
 			}
 			$sql .= '('.implode(",", $mbrids).') ';
 			$rows = $this->db->select($sql);
-			if ($rows->count() != 0) {
-				$errors[] = new IgnorableError(T("modelBookingsClosedOnBookDate"));
+			if ($rows->num_rows != 0) {
+				$errors[] = new IgnorableError(T("modelBookingsClosedOnBookDate").": ".$booking['book_dt']);
 			}
+
+			## determine if library is open on due date ##
 			$sql = $this->db->mkSQL('select c.date, c.open '
 				. 'from calendar c, member m, site s '
 				. 'where c.calendar=s.calendar '
@@ -217,8 +219,8 @@ class Bookings extends CoreTable {
 				$booking['due_dt']);
 			$sql .= '('.implode(",", $mbrids).') ';
 			$rows = $this->db->select($sql);
-			if ($rows->count() != 0) {
-				$errors[] = new IgnorableError(T("modelBookingsClosedOnDueDate"));
+			if ($rows->num_rows != 0) {
+				$errors[] = new IgnorableError(T("modelBookingsClosedOnDueDate").": ".$booking['due_dt']);
 			}
 		}
 
@@ -236,6 +238,7 @@ class Bookings extends CoreTable {
 		}
 	}
 	function insert_el($rec, $confirmed=false) {
+//echo "in Bookings: insert_el<br />";
 		$this->db->lock();
 		list($id, $errs) = parent::insert_el($rec, $confirmed);
 		if ($errs) {
@@ -508,6 +511,7 @@ class Bookings extends CoreTable {
 			return $err;
 		}
 		$this->db->unlock();
+
 		return NULL;
 	}
 	function removeMember($bookingid, $mbrid) {

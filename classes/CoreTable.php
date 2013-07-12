@@ -19,6 +19,7 @@ class CoreTable extends DBTable {
 		parent::setFields(array_merge($common, $fields));
 	}
 	function insert_el($rec, $confirmed=false) {
+//echo "in CoreTable: insert_el<br />";
 		$date = date('Y-m-d H:i:s');
 		$rec['create_dt'] = $rec['last_change_dt'] = $date;
 		$rec['last_change_userid'] = $_SESSION['userid'];

@@ -80,10 +80,6 @@ Research menu needs external LoC-type search link. Integrate parts of Lookup;
 25 Jun 2013 - Fred
 Next/Prior should look the same in reports as on Existing item search.
 
-25 Jun 2013 - Fred
-Research Image Viewer image links do not provide return to gallery page. Instead
-the return is to the Local Search function. Same applies to all reports.
-
 28 Jun 2013 - Neil
 The member's 'history' page does not work. (not yet implemented.)
 note: no idea what was intended to be displayed- FL 1 July 2013
@@ -94,9 +90,6 @@ move conditionals from BiblioDiv of srchForms to srchJs
 29 Jun 2013 - Fred
 Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
 
-2 Jul 2013 - Fred
-Move OB's db models to PHP's mysqli interface, preferably using the OO mode;
-
 3 Jul 2013 - Fred
 Research Image viewer needs user controls to set rows & columns displayed.
 Or make display adapt to current width and set nmbr of rows accordingly.
@@ -104,7 +97,27 @@ Or make display adapt to current width and set nmbr of rows accordingly.
 5 Jul 2013 - Fred
 consolidate ../classes/SrchDb.php into ../model/Biblios.php, its really a SuperBiblios class.
 
+9 July 2013 - Neil
+After selecting a barcode for the item to check out and select 'check out' the item is not displayed.
+
+9 July 2013 - Neil
+The Research | Cover photo page appears to be restricted to 7 images in a row.
+I presume this is to keep it usable for the smaller screen of any mobile device?
+Is it possible to allow the number of images in a row to expand automatically for a pc monitor?
+Sometime ago, I recall you mentioning something similar to this about pages (search results?)
+automatically adjusting themselves according to  screen (browser window) size
+
+11 July 2013 - Fred
+Cover Photos - click to expand works on every-other image only.
+
 ###################### Completed, most recent at top #########################
+
+25 Jun 2013 - Fred, new Cover Photo app deals with this 6 July
+Research Image Viewer image links do not provide return to gallery page. Instead
+the return is to the Local Search function. Same applies to all reports.
+
+2 Jul 2013 - Fred, done 4 July
+Move OB's db models to PHP's mysqli interface, preferably using the OO mode;
 
 11 May 2013 - Fred, withdrawn 2 July
 Add New Copy screen should show suggested CallNmbr
