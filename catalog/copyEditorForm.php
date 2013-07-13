@@ -4,7 +4,7 @@
  */
  
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-	require_once(REL(__FILE__, "../model/Copies.php"));	
+	//require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStatus.php"));	
 ?>
 

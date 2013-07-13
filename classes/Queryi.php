@@ -7,6 +7,7 @@ $_Query_lock_depth = 0;
 
 class Queryi extends mysqli{
 	function __construct() {
+		$this->lockDepth = 0;
 		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
 		if(mysqli_connect_error()) {
 			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
@@ -74,41 +75,42 @@ class Queryi extends mysqli{
 	 *
 	 * Calls to lock/unlock may be nested, but must be paired.
 	 */
+
+	function clearLocks () {
+//echo "clearing all DB locks!<br />\n";
+		$this->_act('set global read_only = off');
+		$this->_act('unlock tables');
+	}
+
 	function lock() {
-return;
-		global $_Query_lock_depth;
-		if ($_Query_lock_depth < 0) {
+//		global $_Query_lock_depth;
+		if ($this->lockDepth < 0) {
 			Fatal::internalError(T("Negative lock depth"));
 		}
-		if ($_Query_lock_depth == 0) {
-			/*
+		if ($this->lockDepth == 0) {
 			$row = $this->select1($this->mkSQL('select get_lock(%Q, %N) as locked',
 				OBIB_LOCK_NAME, OBIB_LOCK_TIMEOUT));
 			if (!isset($row['locked']) or $row['locked'] != 1) {
 				Fatal::cantLock();
 			}
-			*/
-			$this->lock();
 		}
-		$_Query_lock_depth++;
+		$this->lockDepth++;
+//echo "locking; depth=$this->lockDepth\n";
 	}
 	function unlock() {
-return;
-		global $_Query_lock_depth;
-		if ($_Query_lock_depth <= 0) {
+//		global $_Query_lock_depth;
+		if ($this->lockDepth <= 0) {
 			Fatal::internalError(T("Tried to unlock an unlocked database."));
 		}
-		$_Query_lock_depth--;
-		/*
-		if ($_Query_lock_depth == 0) {
+		$this->lockDepth--;
+//echo "un-locking; depth=$this->lockDepth\n";
+		if ($this->lockDepth == 0) {
 			$row = $this->select1($this->mkSQL('select release_lock(%Q) as unlocked',
 				OBIB_LOCK_NAME));
 			if (!isset($row['unlocked']) or $row['unlocked'] != 1) {
 				Fatal::internalError(T("Cannot release lock"));
 			}
 		}
-		*/
-		$this->unlock();
 	}
 
 	/****************************************************************************

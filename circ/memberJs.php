@@ -460,6 +460,8 @@ var mf = {
 	
 	//------------------------------
 	doCheckout: function () {
+				$('#msgArea').html('');
+				$('#msgDiv').hide();
 		var barcd = $.trim($('#ckoutBarcd').val());
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
 		$('#ckoutBarcd').val(barcd); // redisplay expanded value
@@ -470,16 +472,14 @@ var mf = {
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
 			}
-			else {
-				if (response) {
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				} else {
-					$('#msgArea').html('Checkout Completed!');
-					$('#msgDiv').show().hide(10000);
-					$('#ckoutBarcd').val('')
-					mf.showOneMbr(mf.mbr)
-				}
+			else if (response == '') {
+				$('#msgArea').html('Checkout Completed!');
+				$('#msgDiv').show().hide(10000);
+				$('#ckoutBarcd').val('')
+				mf.showOneMbr(mf.mbr)
+			} else {
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
 			}
 		});
 		return false;

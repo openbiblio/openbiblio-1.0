@@ -49,7 +49,6 @@ class DBTable {
 	}
 	/* Abstract Method OVERRIDE THIS */
 	function validate_el($rec, $insert) {
-//echo "in DBTable:validate_el<br />\n";
 		return array();
 	}
 	function maybeGetOne() {
@@ -125,16 +124,13 @@ class DBTable {
 		return $seq_val;
 	}
 	function insert_el($rec, $confirmed=false) {
-//echo "in DBtable: insert_el<br />\n";
 		$this->db->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
 			$this->db->unlock();
 			return array(NULL, $errs);
 		}
-//echo "ckFrnKeys done<br />\n";
 		$errs = $this->validate_el($rec, true);
-//echo "confirmed=$confirmed<br />\n";
 		if ($confirmed) {
 			$errs = $this->skipIgnorableErrors($errs);
 		}
@@ -142,10 +138,8 @@ class DBTable {
 			$this->db->unlock();
 			return array(NULL, $errs);
 		}
-//echo "validate_el done<br />\n";
 		$sql = $this->db->mkSQL('INSERT INTO %I SET ', $this->name)
 			. $this->_pairs($rec);
-//echo "sql=$sql<br />\n";
 		$this->db->act($sql);
 		if ($this->sequence) {
 			if (isset($rec[$this->sequence])) {
@@ -156,7 +150,6 @@ class DBTable {
 		} else {
 			$seq_val = NULL;
 		}
-//echo "act done<br />\n";
 		$this->db->unlock();
 		return array($seq_val, array());
 	}
