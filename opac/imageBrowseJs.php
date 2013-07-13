@@ -68,11 +68,17 @@ var img = {
 			img.lastItem = parseInt(data.lastItem);
 			img.perPage = parseInt(data.perPage);
 			img.columns = parseInt(data.columns);
-			var ttlNmbr = parseInt(data.nmbr);
-			$('.countBox').html((img.firstItem+1)+' - '+img.lastItem+' <?php echo T("of");?> '+ttlNmbr).show();
+			img.ttlNmbr = parseInt(data.nmbr);
+			img.cells = data.tbl;
+
+			img.showFotos();
+			$(window).on('resize',null,img.showFotos);
+		});
+	},
+	showFotos: function () {
+			$('.countBox').html((img.firstItem+1)+' - '+img.lastItem+' <?php echo T("of");?> '+img.ttlNmbr).show();
 
 			var $table = $('#fotos'),
-					cells = data.tbl,
 					tab = '<?php echo $tab;?>',
 					html = '',
 					cntr = 0;
@@ -91,8 +97,8 @@ var img = {
 			}
 
 			$table.html('<tr>');
-			for (var entry in cells) {
-				var cell = cells[entry];
+			for (var entry in img.cells) {
+				var cell = img.cells[entry];
 				if (cntr == perLine) {
 					$table.append('</tr>'+"\n"+'<tr>');
 					cntr = 0;
@@ -123,7 +129,6 @@ var img = {
 					$('#fotoDiv').hide();
 				});
 			}
-			$table.append('</tr>');
 			$('#gallery').show();
 
 			// enable or disable next / prev buttons
@@ -133,13 +138,12 @@ var img = {
 			} else {
 				$('.prevBtn').disable();
 			}
-			if(((img.perPage+img.firstItem) <= img.lastItem) && (ttlNmbr > img.lastItem)){
+			if(((img.perPage+img.firstItem) <= img.lastItem) && (img.ttlNmbr > img.lastItem)){
 				img.nextPageItem = img.perPage + img.firstItem;
 				$('.nextBtn').enable();
 			} else {
 				$('.nextBtn').disable();
 			}
-		});
 	},
 
 }
