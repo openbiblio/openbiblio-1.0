@@ -32,7 +32,7 @@
 	<input type="hidden" id="tab" value="<?php echo $tab;?>" />
 
 <!-- ------------------------------------------------------------------------ -->
-	<div id="rptDiv">
+	<div id="fotoDiv">
 		<div class="cntlArea">
 			<div class="btnBox">
 				<ul class="btnRow">
@@ -78,6 +78,11 @@
 	</ul>
 </div>
 
+<!-- ------------------------------------------------------------------------ -->
+<div id="workDiv">
+	<img id="img-dummy" src="../images/shim.gif" class="biblioImage" />
+</div>
+<!-- ------------------------------------------------------------------------ -->
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	include "./imageBrowseJs.php";
@@ -85,5 +90,3 @@
 
 </body>
 </html>
-
-?>

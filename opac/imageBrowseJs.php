@@ -28,14 +28,15 @@ var img = {
 	resetForm: function () {
 		img.firstItem = 0;
 		img.srchType = '';
+		$('#workDiv').hide();
 		$('#biblioDiv').hide();
-		$('#rptDiv').show();
+		$('#fotoDiv').show();
 		$('#prevBtn').disable();
 		$('#nextBtn').disable();
 	},
 	rtnToGallery: function () {
 		$('#biblioDiv').hide();
-		$('#rptDiv').show();
+		$('#fotoDiv').show();
 	},
 
 	//------------------------------
@@ -66,15 +67,29 @@ var img = {
 			img.firstItem = parseInt(data.firstItem);
 			img.lastItem = parseInt(data.lastItem);
 			img.perPage = parseInt(data.perPage);
+			img.columns = parseInt(data.columns);
 			var ttlNmbr = parseInt(data.nmbr);
 			$('.countBox').html((img.firstItem+1)+' - '+img.lastItem+' <?php echo T("of");?> '+ttlNmbr).show();
 
 			var $table = $('#fotos'),
 					cells = data.tbl,
 					tab = '<?php echo $tab;?>',
-					perLine = 7,
 					html = '',
 					cntr = 0;
+
+			if (img.columns == 0) {
+				/* provide for flexible nmbr of columns based on screen width */
+				var bodyWidth = $('body').width();
+				var asideWidth = $('aside').outerWidth();
+				var displayWidth = bodyWidth - asideWidth;
+				var fotoWidth = parseInt($('#img-dummy').outerWidth())*1.5;
+				var perLine = Math.round((displayWidth/fotoWidth),0);
+//console.log('width: body='+bodyWidth+'; aside='+asideWidth+'; display='+displayWidth+'; foto='+fotoWidth+'; perLine='+perLine);
+			} else {
+				/* columns will be per Admin|Settings entry */
+				var perLine = img.columns;
+			}
+
 			$table.html('<tr>');
 			for (var entry in cells) {
 				var cell = cells[entry];
@@ -105,7 +120,7 @@ var img = {
 					var idParts = e.currentTarget.id.split('-');
 					idis.doBibidSearch(idParts[1]);
 					$('#biblioDiv').show();
-					$('#rptDiv').hide();
+					$('#fotoDiv').hide();
 				});
 			}
 			$table.append('</tr>');
@@ -129,4 +144,11 @@ var img = {
 
 }
 $(document).ready(img.init);
+
+/*
+INSERT INTO `openbibliowork`.`settings` (
+`name`,`position`,`title`,`type`,`width`,`type_data`,`validator`,`value`,`menu`)
+VALUES ('item_columns','8','Photo Columns,'int',NULL,NULL,NULL,'7','admin');
+*/
+
 </script>

@@ -2144,7 +2144,7 @@ obiblio-10-wip
 			admin\statesJs.php
 			admin\themeForm.php
 			admin\themeJS.php
-		+catalog
+		-catalog
 			-legacy
 				catalog\legacy\index.php
 			catalog\biblioChange.php
@@ -2229,7 +2229,7 @@ obiblio-10-wip
 			classes\Page.php
 			classes\Params.php
 			classes\PDF.php
-			classes\Query.php
+			classes\xQuery.php
 			classes\Queryi.php
 			classes\Report.php
 			classes\ReportDisplay.php
@@ -2606,7 +2606,7 @@ obiblio-10-wip
 			model\States.php
 			model\Themes.php
 			model\TransactionTypes.php
-		-opac
+		+opac
 			-legacy
 				opac\legacy\book_item.php
 				opac\legacy\bookings.php
@@ -2614,6 +2614,9 @@ obiblio-10-wip
 				opac\legacy\register.php
 			opac\booking.php
 			opac\edit_account.php
+			opac\imageBrowseForm.php
+			opac\imageBrowseJs.php
+			opac\imageSrvr.php
 			opac\index.php
 			opac\login.php
 			opac\menu.php
@@ -2778,7 +2781,7 @@ obiblio-10-wip
 				reports\defs\holds.rpt
 				reports\defs\images.rpt
 				reports\defs\media_counts.rpt
-				reports\defs\member_search.php
+				reports\defs\MemberSearch.php
 				reports\defs\must_returns.rpt
 				reports\defs\new_items.rpt
 				reports\defs\noncirc.rpt
@@ -3100,8 +3103,8 @@ obiblio-10-wip
 			tools\yazTest.php
 		-working
 			working\calendarForm.php
-			working\calendarJs.php
-			working\calendarSrvr.php
+			working\imageBrowseJs.php
+			working\imageSrvr.php
 			working\demo.php
 			working\index.php
 			working\shutter.mp3
@@ -3134,39 +3137,41 @@ obiblio-10-wip
 10=classes\DmTable.php
 11=classes\DBTable.php
 12=classes\Queryi.php
-13=classes\Query.php
+13=classes\xQuery.php
 14=locale\en\trans.php
-15=catalog\photoEditorJs.php
+15=opac\imageBrowseForm.php
+16=opac\imageBrowseJs.php
+17=opac\imageSrvr.php
 [Selected Project Files]
 Main=
-Selected=catalog\photoEditorJs.php
+Selected=TODOlist.txt
 [TODOlist.txt]
-TopLine=82
-Caret=1,104
+TopLine=65
+Caret=19,100
 [shared\base3.css]
 TopLine=25
 Caret=20,40
 [themes\default\style.css]
-TopLine=38
-Caret=49,65
+TopLine=371
+Caret=54,410
 [shared\common.php]
-TopLine=54
-Caret=1,1
+TopLine=70
+Caret=51,84
 [shared\header_top.php]
 TopLine=1
 Caret=1,1
 [themes\default\header.php]
-TopLine=45
+TopLine=43
 Caret=5,81
 [shared\footer.php]
 TopLine=1
 Caret=6,11
 [shared\menu.php]
-TopLine=51
-Caret=36,70
+TopLine=62
+Caret=35,71
 [classes\SrchDb.php]
-TopLine=1
-Caret=25,23
+TopLine=38
+Caret=30,34
 [classes\CoreTable.php]
 TopLine=1
 Caret=34,8
@@ -3174,17 +3179,23 @@ Caret=34,8
 TopLine=1
 Caret=22,30
 [classes\DBTable.php]
-TopLine=125
-Caret=1,149
+TopLine=60
+Caret=21,77
 [classes\Queryi.php]
-TopLine=16
+TopLine=12
 Caret=19,31
-[classes\Query.php]
+[classes\xQuery.php]
 TopLine=19
 Caret=19,83
 [locale\en\trans.php]
-TopLine=592
-Caret=102,613
-[catalog\photoEditorJs.php]
-TopLine=43
-Caret=96,68
+TopLine=216
+Caret=1,243
+[opac\imageBrowseForm.php]
+TopLine=35
+Caret=1,1
+[opac\imageBrowseJs.php]
+TopLine=57
+Caret=21,11
+[opac\imageSrvr.php]
+TopLine=1
+Caret=1,1

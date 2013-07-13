@@ -24,7 +24,7 @@
 		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);
 		$numRows = $rslt->num_rows;
 
-		// Add amount of search results.
+		// add amount of search results.
 		$perPage = Settings::get('items_per_page');
 		if($_REQUEST['firstItem'] == null){
 			$firstItem = 0;
@@ -37,11 +37,13 @@
 			$lastItem = $numRows;
 		}
 
-		## multi-page record header
+		## record header
 		$rcd['nmbr'] = $numRows;
 		$rcd['firstItem'] = $firstItem;
 		$rcd['lastItem'] = $lastItem;
 		$rcd['perPage'] = $perPage;
+		$rcd['columns'] = Settings::get('item_columns');
+		$rcd['fotoWidth'] = Settings::get('thumbnail_width');
 
 		$imgCntr = 0;
 		$tbl = [];
