@@ -58,9 +58,9 @@ var img = {
 
 	fetchFotoPage: function (firstItem) {
 		if (firstItem === undefined) firstItem = img.firstItem;
-		var orderBy = $('#orderBy option:selected').val();
+		img.orderBy = $('#orderBy option:selected').val();
 	  $.getJSON(img.url,{'mode':				'getPage',
-											 'orderBy':			orderBy,
+											 'orderBy':			img.orderBy,
 											 'firstItem':		firstItem,
 											 'tab':					$('#tab').val(),
 											}, function(data){
@@ -108,9 +108,8 @@ var img = {
 				html += '	<div class="galleryBox">'+"\n";
 				html += '		<div><img id="img-'+bibid+'" src="../photos/'+cell['url']+'" class="biblioImage" /></div>'+"\n";
 				html += '		<div class="smallType">'+"\n";
-				html += '			<a href="#" id="a-'+bibid+'" >'+"\n";
-				html += '			<output >'+cell[orderBy]+'</output>'+"\n";
-				html += '		</a></div>'+"\n";
+				html += '			<a href="#" id="a-'+bibid+'" >'+cell[img.orderBy]+'</a>'+"\n";
+				html += '		</div>'+"\n";
 				html += '</td>'+"\n";
 				cntr++;
 				$table.append(html);

@@ -2,7 +2,7 @@
 
 -- unknown 0.70 users
 We would like to add e-books in our library with direct links to their
-respective PDFs. We were not albe to add any HTML codes to the book entries,
+respective PDFs. We were not able to add any HTML codes to the book entries,
 in order to create a hyperlink to the e-book download.
 
 - Fred
@@ -20,17 +20,6 @@ Report Generator does not handle all fields correctly (item search and csv outpu
 
 - Fred / Neil
 Add a backup mechanism to Tool or Admin menu
-
-- Fred
-Help system needs lots of work
-
-- Fred
-MARC import needs facelift
-update to look/work like CSV import
-
-- Fred 
-Install needs to work for new installations
-
 01 Mar 2010 - Luuk Jansen
 In the process of another test I deleted all the entries in my system
 (using the web-interface). Just checking the tables, which should all be empty,
@@ -51,28 +40,11 @@ teacher & grade are custom copy fields. Audience level should be removed.
 > (in -/catalog/SrchForms.php line 113). I assume 'audience level' refers to member type?
 > If so, this drop down menu does not reflect the current member type list
 
-19 May 2013 - Fred
-on-line papers, articles, blogs, etc. Sites go away, or change URL.
-why can't I store that entire document right in OB, along with all the usual
-biblio information. Then when I search for a topic, that paper will spring up
-just like any other, and the call number will imediately me its in local storage,
-and perhaps via circ/checkout allow me to retrieve a copy.
-
 12 Jun 2013 - Fred
 deleting a biblio does not remove copy-status records
 
 19 Jun 2013 - Neil
 NewItems report produces 'No Results' for 0 (zero) days. It should report today's items.
-
-20 Jun 2013 - Neil
-CSV import:
-The collection and media-type are not retained through the import process.
-OBs default selection for these are provided for each item imported.
-(I no longer have columns for these categories in my csv file)
-I don't think they are actually registered with the item initially -
-immediately after import, if I locate the new items in the existing items search window,
-the icon for the media-type is missing.
-The icon only becomes visible after I  have edited (and updated) the item.
 
 25 Jun 2013 - Fred
 Research menu needs external LoC-type search link. Integrate parts of Lookup;
@@ -87,30 +59,57 @@ note: no idea what was intended to be displayed- FL 1 July 2013
 28 Jun 2013 - Fred
 move conditionals from BiblioDiv of srchForms to srchJs
 
-29 Jun 2013 - Fred
-Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
-
-3 Jul 2013 - Fred
-Research Image viewer needs user controls to set rows & columns displayed.
-Or make display adapt to current width and set nmbr of rows accordingly.
-
 5 Jul 2013 - Fred
 consolidate ../classes/SrchDb.php into ../model/Biblios.php, its really a SuperBiblios class.
+
+- Fred
+Help system needs lots of work
+
+- Fred
+MARC import needs facelift
+update to look/work like CSV import
+
+- Fred
+Install needs to work for new installations
 
 9 July 2013 - Neil
 After selecting a barcode for the item to check out and select 'check out' the item is not displayed.
 
-9 July 2013 - Neil
+###################### Completed, most recent at top #########################
+
+19 May 2013 - Fred, proposal withdrawn by Fred 13 July
+on-line papers, articles, blogs, etc. Sites go away, or change URL.
+why can't I store that entire document right in OB, along with all the usual
+biblio information. Then when I search for a topic, that paper will spring up
+just like any other, and the call number will imediately me its in local storage,
+and perhaps via circ/checkout allow me to retrieve a copy.
+
+11 July 2013 - Fred, done 13 July
+Cover Photos - click to expand works on every-other image only.
+
+3 Jul 2013 - Fred, done 13 July, both features available
+Research Image viewer needs user controls to set rows & columns displayed.
+Or make display adapt to current width and set nmbr of rows accordingly.
+
+9 July 2013 - Neil, done 13 July, Photo Columns Settings must be zero to work
 The Research | Cover photo page appears to be restricted to 7 images in a row.
 I presume this is to keep it usable for the smaller screen of any mobile device?
 Is it possible to allow the number of images in a row to expand automatically for a pc monitor?
 Sometime ago, I recall you mentioning something similar to this about pages (search results?)
 automatically adjusting themselves according to  screen (browser window) size
 
-11 July 2013 - Fred
-Cover Photos - click to expand works on every-other image only.
+20 Jun 2013 - Neil, fixed early July
+CSV import:
+The collection and media-type are not retained through the import process.
+OBs default selection for these are provided for each item imported.
+(I no longer have columns for these categories in my csv file)
+I don't think they are actually registered with the item initially -
+immediately after import, if I locate the new items in the existing items search window,
+the icon for the media-type is missing.
+The icon only becomes visible after I  have edited (and updated) the item.
 
-###################### Completed, most recent at top #########################
+29 Jun 2013 - Fred, fixed early July
+Adding a new item via on-line lookup does not go to PhotoEditor after new copy.
 
 25 Jun 2013 - Fred, new Cover Photo app deals with this 6 July
 Research Image Viewer image links do not provide return to gallery page. Instead
@@ -142,7 +141,7 @@ The delete button for any transaction does not work.
 bulk delete fails to start
 
 25 Jun 2013 - Fred, fixed 28 June
-camera related features should be surpressed if video not supported.
+camera related features should be supressed if video not supported.
 photo editing should be surpressed if no canvas or fileReader support.
 
 25 Jun 2013 - Fred, done 26 June
