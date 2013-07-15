@@ -329,12 +329,8 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	margin-left:2rem;
 	text-indent:-2rem;
 	}
-.compact_info_display .heading {
-	font-weight:bold;
-	}
-.hilite {
-	color:white; background-color:green;
-	}
+.compact_info_display .heading { font-weight:bold; }
+.hilite { color:white; background-color:green; }
 .search_result .right_info {
 	width:125px;
 	text-align:center; vertical-align:middle

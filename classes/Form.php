@@ -94,8 +94,10 @@ class Form {
 			} else {
 				$err = '';
 			}
+			//echo $r['html'].$err;
+			//echo '<label for="'.$r["id"].'">'.H($r["title"]).':</label>';
+			echo '<label for="'.$r["id"].'">'.$r["title"].':</label>';
 			echo $r['html'].$err;
-			echo '<label for="'.$r["id"].'">'.H($r["title"]).':</label>';
 			echo '<br />';
 		}
 		echo '<input type="submit" value="'.H($params['submit']).'" />';

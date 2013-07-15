@@ -82,7 +82,33 @@ Login does not start with id field having focus.
 Edit Biblio does not allow entering more than one subject line at a time.  Look into
 using more of code from 'new item' server process.
 
+15 Jul 2013 - Neil/Fred
+Member search:
+In Chrome, I cannot search the members list -clicking on search results in nothing happening
+Works with FF and Epiphany.
+
+15 July 2013 - Neil/Fred
+Checkout:
+Check does not work - after entering barcode number and pressing "check out" - nothing happens.
+
+15 July 2013 - Neil
+Update button of item copy editor produces lot of red text.
+
 ###################### Completed, most recent at top #########################
+
+15 July 2013 - Neil, reverted for consistancy 15 July
+I have only noticed this problem now and so I am not aware of when it first appeared
+(this problem is still present with changeset 810) - see attached image of library settings -
+the field entries are placed before the field title
+This occurs with with Tools | system settings (see image) but not with Admin |
+online options (see image)
+
+15 Jul 2013 - Neil, line break insertion now allowed - 15 July
+In phpMyAdmin, I have added (0 = auto arrange) to the new photo column field title
+but cannot get it to sit below the field title (see image library settings) -
+thought it would be useful to give the user this option?
+I have relabelled some of my fields - see attached images.
+UPDATE `openbibliowork`.`settings` SET `title` = 'Photo Columns<br>(0 for auto)' WHERE `settings`.`name` = 'item_columns';
 
 19 May 2013 - Fred, proposal withdrawn by Fred 13 July
 on-line papers, articles, blogs, etc. Sites go away, or change URL.
