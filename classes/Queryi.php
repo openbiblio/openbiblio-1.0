@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-$_Query_lock_depth = 0;
+//$_Query_lock_depth = 0;
 
 class Queryi extends mysqli{
 	function __construct() {
@@ -77,25 +77,25 @@ class Queryi extends mysqli{
 	 */
 
 	function clearLocks () {
-//echo "clearing all DB locks!<br />\n";
 		$this->_act('set global read_only = off');
 		$this->_act('unlock tables');
 	}
 
-	function lock() {
+	function lock($tblName) {
 //		global $_Query_lock_depth;
 		if ($this->lockDepth < 0) {
 			Fatal::internalError(T("Negative lock depth"));
 		}
+/*
 		if ($this->lockDepth == 0) {
 			$row = $this->select1($this->mkSQL('select get_lock(%Q, %N) as locked',
 				OBIB_LOCK_NAME, OBIB_LOCK_TIMEOUT));
 			if (!isset($row['locked']) or $row['locked'] != 1) {
-				Fatal::cantLock();
+				Fatal::cantLock($row['locked']);
 			}
 		}
+*/
 		$this->lockDepth++;
-//echo "locking; depth=$this->lockDepth\n";
 	}
 	function unlock() {
 //		global $_Query_lock_depth;
@@ -103,7 +103,7 @@ class Queryi extends mysqli{
 			Fatal::internalError(T("Tried to unlock an unlocked database."));
 		}
 		$this->lockDepth--;
-//echo "un-locking; depth=$this->lockDepth\n";
+/*
 		if ($this->lockDepth == 0) {
 			$row = $this->select1($this->mkSQL('select release_lock(%Q) as unlocked',
 				OBIB_LOCK_NAME));
@@ -111,6 +111,7 @@ class Queryi extends mysqli{
 				Fatal::internalError(T("Cannot release lock"));
 			}
 		}
+*/
 	}
 
 	/****************************************************************************

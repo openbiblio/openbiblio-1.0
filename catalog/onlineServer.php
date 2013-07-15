@@ -15,7 +15,7 @@
 		require_once(REL(__FILE__, "../classes/Marc.php"));
 
 	  $nav = "newconfirm";
-	  
+
 	  include(REL(__FILE__,'../catalog/biblioChange.php'));
   	$msg = PostBiblioChange($nav);
   	if (is_object($msg)) {
@@ -30,7 +30,7 @@
 	$optr = new Opts;
 	$opts = $optr->getAll();
 	$postVars = $opts->fetch_assoc();
-	
+
 	## prepare list of hosts
 	if (!empty($_POST['srchHost'])) {	
 		# but first we extract those hosts acceptable to user for THIS search
@@ -41,7 +41,7 @@
 			}
 		}
 	}	
-	
+
 	# now build acceptable list
 	$hptr = new Hosts;
 	$hosts = array();
@@ -58,7 +58,6 @@
 	$postVars['hosts'] = $hosts;
 	$postVars['numHosts'] = count($hosts);
 	$postVars['session'] = $_SESSION;
-	//print_r($postVars);
 
 ## main body of code
 switch ($_REQUEST[mode]){

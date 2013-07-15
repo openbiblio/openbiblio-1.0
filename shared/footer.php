@@ -8,11 +8,12 @@ unset($_SESSION['pageErrors']);
 unset($_SESSION['postVars']);
 
 ?>
-</div>
+</div>  <!-- closing of div Content -->
 
 <!-- All JavaScript is placed at the end of <body> to improve overall performance
-		note:
-		jQuery was here, moved to header-top so it would be available to conditional modules
+
+		note: jQuery was here, moved to header-top so it would be available to
+		HTML/JS conditional modules loaded in line as required.
 -->
 
 <script src="../shared/jsLib.js" defer></script>
@@ -23,11 +24,11 @@ unset($_SESSION['postVars']);
 // main javascript functionality set in own namespace to avoid potential conflict
 var obib = {
 	<?php
-	echo "focusFormName:  '$focus_form_name',\n";
-	echo "focusFormField:	'$focus_form_field',\n";
-	if (isset($confirm_links) and $confirm_links) {
-		echo "confirmLinks:		$confirm_links,\n";
-	}
+		echo "focusFormName:  '$focus_form_name',\n";
+		echo "focusFormField:	'$focus_form_field',\n";
+		if (isset($confirm_links) and $confirm_links) {
+			echo "confirmLinks:		$confirm_links,\n";
+		}
 	?>
 
 	init: function() {

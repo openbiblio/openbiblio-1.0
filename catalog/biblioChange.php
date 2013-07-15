@@ -49,9 +49,6 @@ function fieldCmp($a, $b) {
 }
 
 function PostBiblioChange($nav) {
-	//echo "running biblioChange code now<br />";
-	//echo "biblioChange @start POST==> ";print_r($_POST); echo "<br /><br />";
-
 	#****************************************************************************
 	#*  Validate data
 	#****************************************************************************
@@ -64,7 +61,7 @@ function PostBiblioChange($nav) {
 		$biblio = array(marc=>new MarcRecord);
 	}
 	assert($biblio != NULL);
-	
+
 	/* Construct a list of changed fields. */
 	$fields = array();
 	/* Because of the way this list is constructed, only one
@@ -73,7 +70,7 @@ function PostBiblioChange($nav) {
 	 * identifier may be added at once.  This should be quite
 	 * sufficient for the easy-edit interface.
 	 */
-	
+
 	foreach ($_POST['fields'] as $f) {
 		//echo 'working field ';print_r($f);
 		if (strlen($f['tag']) != 3 or strlen($f['subfield_cd']) != 1) {
@@ -81,7 +78,6 @@ function PostBiblioChange($nav) {
 			continue;
 		}
 		$fidx = $f['tag'].'-';
-		//echo 'fidx = '.$f['tag'].' <br />';
 
 		// Only do this when there is no field yet with this field value
 		$fidxSuffix = null;
@@ -90,7 +86,7 @@ function PostBiblioChange($nav) {
 				echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
 				continue;
 			}
-	
+
 			if($s['tag'] == $f['tag']){
 				if ($s['fieldid']) {
 					$fidxSuffix = $s['fieldid'];
@@ -99,7 +95,7 @@ function PostBiblioChange($nav) {
 				}			
 			}
 		}	
-	
+
 		$fidx .= $fidxSuffix;
 		
 		if (!is_array($fields[$fidx])) {
@@ -111,18 +107,16 @@ function PostBiblioChange($nav) {
 		} else {
 			$sfidx .= 'new';
 		}
-	
+
 		//$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
 		if (!array_key_exists($sfidx,$fields[$fidx])) {
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}	
 	}
-	//echo "flds========================>";print_r($fields);echo"<br />";
 	$mrc = new MarcRecord();
 	$mrc->setLeader($biblio[marc]->getLeader());
-	
+
 	foreach ($biblio[marc]->fields as $f) {
-		//if ($f->tag == '024') print_r($f);
 
 		$fidx = $f->tag .'-'. $f->fieldid;
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
@@ -150,7 +144,7 @@ function PostBiblioChange($nav) {
 			array_push($mrc->fields, $fld);
 		}
 	}
-	
+
 	/* Add new fields */
 	foreach ($fields as $fidx => $subfields) {
 		$fld = new MarcDataField(substr($fidx, 0, 3));
@@ -163,8 +157,7 @@ function PostBiblioChange($nav) {
 			array_push($mrc->fields, $fld);
 		}
 	}
-	//echo "mrc==> ";var_dump($mrc); echo "<br /><br />";
-	
+
 	/* Sort subfields and apply "smart" processing for particular fields */
 	for ($i=0; $i < count($mrc->fields); $i++) {
 	
@@ -184,18 +177,15 @@ function PostBiblioChange($nav) {
 		}
 	}
 	/* Set field display values -- TODO */
-	
+
 	/* Sort fields by tag and display value */
 	usort($mrc->fields, fieldCmp);
-	
-	//echo "mrc==> ";var_dump($mrc); echo "<br /><br />";
+
 	$biblio['marc'] = $mrc;
-	
+
 	#**************************************************************************
 	#*  Insert/Update bibliography
 	#**************************************************************************
-	//echo "Posting insert/update now.<br /><br />";
-	//echo "biblioChange @end POST==> ";print_r($_POST); echo "<br /><br />";
 	if (empty($_POST['material_cd']))
 		$biblio['material_cd'] = $_POST["materialCd"];
 	else
@@ -206,9 +196,8 @@ function PostBiblioChange($nav) {
 		$biblio['collection_cd'] = $_POST['collection_cd'];
 	$biblio['last_change_userid'] = $_POST["userid"];
 	$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
-	
+
 	if ($nav == "newconfirm") {
-		//echo "biblio==> ";print_r($biblio);echo "<br /><br />";
 		$bibid = $biblios->insert($biblio);
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {

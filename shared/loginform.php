@@ -38,9 +38,6 @@
 	require_once(REL(__FILE__, "../shared/get_form_vars.php"));
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
-	//# for later use by inputfields()
-	//$attrs = array(size=>"15", maxlength=>"15", required=>"required", aria-required=>"true");
-
 ?>
 <h3 class="title"><?php echo T("Staff Login"); ?></h3>
 <?php //print_r($_SESSION); //debugging only ?>

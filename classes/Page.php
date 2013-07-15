@@ -17,7 +17,6 @@ class Page {
 			staff_menu();
 		}
 		require_once($params['theme_dir']."/header.php");
-//		require_once(REL(__FILE__, $params['theme_dir']."/header.php"));
 	}
 	function header_help($params=array()) {
 		global $_Page_params;
@@ -39,8 +38,6 @@ class Page {
 				Fatal::internalError(T("Missing required page parameter: %param%", array('param'=>$r)));
 			}
 		}
-		//$theme = Settings::get('theme_dir_url');
-		//$themeid = Settings::get('themeid');
 		$params['themeid'] = $ThemeId;
 		$params['theme_dir'] = $ThemeDirUrl;
 		$params['theme_dir_url'] = $ThemeDirUrl;
