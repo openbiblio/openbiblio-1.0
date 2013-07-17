@@ -279,9 +279,10 @@ class Integrity {
 					. 'on b.out_histid=bs.histid '
 					. 'where bs.status_cd=\'out\' '
 					. 'and b.bookingid is null) X) ',
-		),
+			),
 			array(
-				'error' => T("%count% double check outs"), 'countFn' => 'countDoubleCheckouts',
+				'error' => T("%count% double check outs"),
+				'countFn' => 'countDoubleCheckouts',
 				// NO AUTOMATIC FIX
 			),
 		);
@@ -356,15 +357,12 @@ class Integrity {
 											'subId'=>$bib['subfieldid']
 											];
 		}
-//print_r($dups);
 		## loop through all cases found above
 		foreach ($dups as $case) {
 			## attempt to delete all but one entry in this case
 			for ($i=0; $i<$case['nmbr']-1; $i++) {
-//print_r($case);			
 				$sql = "Delete FROM biblio_subfield ".
 							 "WHERE (subfieldid = ".$case['subId'].") ";
-//echo "$sql <br />";
 				$this->db->act($sql);			 
 			}
 		}

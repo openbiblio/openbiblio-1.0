@@ -170,11 +170,11 @@
 		$chkOutList = array();
 		while ($copy = $checkouts->fetch_assoc()) {
 			$biblio = $biblios->getOne($copy['bibid']);
-			$a = $biblio['marc']->getValue('240$a');
-			$b = $biblio['marc']->getValue('245$a');
-			$c = $biblio['marc']->getValue('245$b');
-			$d = $biblio['marc']->getValue('246$a');
-			$e = $biblio['marc']->getValue('246$b');
+			$a = $biblios->marcRec->getValue('240$a');
+			$b = $biblios->marcRec->getValue('245$a');
+			$c = $biblios->marcRec->getValue('245$b');
+			$d = $biblios->marcRec->getValue('246$a');
+			$e = $biblios->marcRec->getValue('246$b');
 			if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
 			if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
 			$copy['status'] = $history->getOne($copy['histid']);

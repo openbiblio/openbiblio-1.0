@@ -112,7 +112,7 @@ class Bookings extends CoreTable {
 		foreach (array('mbrids', 'bibid', 'book_dt', 'due_dt') as $req) {
 			if (!isset($booking[$req])
 					or isset($booking[$req]) and $booking[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
+				$errors[] = new FieldError($req, T("Required field missing").": $req");
 			}
 		}
 
@@ -226,6 +226,16 @@ class Bookings extends CoreTable {
 
 		return $errors;
 	}
+	function _getMbrids($bookingid) {
+		$sql = $this->db->mkSQL('SELECT * FROM booking_member '
+			. 'WHERE bookingid=%N ', $bookingid);
+		$rs = $this->db->select($sql);
+		$mbrids = array();
+		while ($r = $rs->fetch_assoc())
+			$mbrids[] = $r['mbrid'];
+		if (!in_array($_REQUEST['mbrid'],$mbrids)) $mbrids[] = $_REQUEST['mbrid'];
+		return $mbrids;
+	}
 	function _putMbrids($bookingid, $mbrids) {
 		$sql = $this->db->mkSQL('DELETE FROM booking_member '
 			. 'WHERE bookingid=%N ', $bookingid);
@@ -238,7 +248,6 @@ class Bookings extends CoreTable {
 		}
 	}
 	function insert_el($rec, $confirmed=false) {
-//echo "in Bookings: insert_el<br />";
 		$this->db->lock();
 		list($id, $errs) = parent::insert_el($rec, $confirmed);
 		if ($errs) {
@@ -271,7 +280,7 @@ class Bookings extends CoreTable {
 			. 'and c.copyid=s.copyid '
 			. $this->db->mkSQL(' and b.bookingid=%N ', $bookingid);
 		$rows = $this->db->select($sql);
-		if ($rows->count() != 0) {
+		if ($rows->num_rows != 0) {
 			$ids = array();
 			while ($r = $rows->fetch_assoc()) {
 				if ($r['histid'] == $r['curr_histid']) {
@@ -323,6 +332,7 @@ class Bookings extends CoreTable {
 				$err = new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
 				break;
 			}
+
 			$booking = $this->getOne($bookingid);
 			if ($copy['bibid'] != $booking['bibid']) {
 				$err = new Error(T("modelBookingsBarcodeNoMatch"));
@@ -332,6 +342,8 @@ class Bookings extends CoreTable {
 				$err = new Error(T("modelBookingsAlreadyCheckedOut"));
 				break;
 			}
+			$booking['mbrids'] = $this->_getMbrids($booking['bibid']);
+
 			$history = new History;
 			$status = $history->getOne($copy['histid']);
 			if ($status['status_cd'] == OBIB_STATUS_OUT) {
@@ -342,20 +354,23 @@ class Bookings extends CoreTable {
 				$err = new Error(T("modelBookingsSetForOtherBooking", array('barcode'=>$barcode)));
 				break;
 			}
+
 			if (Settings::get('block_checkouts_when_fines_due')) {
 				$all_fined = true;
 				$acct = new MemberAccounts;
 				foreach ($booking['mbrids'] as $mbrid) {
-					if ($acct->getBalance($mbrid) == 0) {
+					$balance = $acct->getBalance($mbrid);
+					if ($balance <= 0) {
 						$all_fined = false;
 						break;
 					}
 				}
 				if ($all_fined) {
-					$err = new Error(T("modelBookingsPayFinesFirst"));
+					$err = new Error((T("modelBookingsPayFinesFirst")." $balance"));
 					break;
 				}
 			}
+
 			# Check if collection allows checkout - added here as it seem the right place - LJ
 			$collections = new Collections;
 			$coll = $collections->getByBibid($copy['bibid']);
@@ -363,6 +378,7 @@ class Bookings extends CoreTable {
 				$err = new Error(T("modelBookingsNotAvailable"));
 				break;
 			}
+
 			# Check wherether the user can take out more books (not sure if I understand this) - LJ
 			$MediaTypes = new MediaTypes();
 			$material = $MediaTypes->getByBibid($copy['bibid']);
@@ -371,7 +387,7 @@ class Bookings extends CoreTable {
 			$members = new Members();
 			$checkouts = 0;
 			foreach ($booking['mbrids'] as $mbrid) {
-				$checkouts .= $copies->getMemberCheckouts($mbrid)->count();
+				$checkouts .= $copies->getMemberCheckouts($mbrid)->nmbr_rows;
 				# Also get if an adult (1) or juvenile (2). Not sure why there can be more members, and assume it will only be one, 
 				# but will take adult as overruling if both are given - LJ
 				$mbr = $members->maybeGetOne($mbrid);
@@ -407,7 +423,6 @@ class Bookings extends CoreTable {
 			'bibid'=>$bibid,
 			'copyid'=>$copyid,
 			'status_cd'=>OBIB_STATUS_OUT,
-			'bookingid'=>$bookingid,
 		));
 		$this->db->unlock();
 		return NULL;
@@ -497,7 +512,6 @@ class Bookings extends CoreTable {
 				$status = $row['open'];
 			} while ($status == 'No');
 		}
-
 		$booking = new Bookings($copy['bibid'], $book_dt, $due_dt, $mbrids);
 		list($bookingid, $err) = $this->insert_el(array("book_dt" => $book_dt, "bibid" => $copy['bibid'], "bidid2" => $bidid, "due_dt" => $due_dt, "mbrids" => $mbrids));
 		if ($err) {

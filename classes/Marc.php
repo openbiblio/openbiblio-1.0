@@ -9,9 +9,11 @@ define("MARC_DELIMITER", "\x1f");
 define("MARC_FT", "\x1e");	# Field terminator
 define("MARC_RT", "\x1d");	# Record terminator
 
+/* -------------------------------------------------------------------------- */
 # FIXME - These conversions only support those characters that are
 # absolutey necessary.  The mnemonics for other characters should
 # be added at some point.
+/* -------------------------------------------------------------------------- */
 class MarcHelpers {
 	function toMnem($s) {
 		$map = array(
@@ -71,7 +73,9 @@ class MarcHelpers {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
 /* Base class for Control and Data fields */
+/* -------------------------------------------------------------------------- */
 class MarcField {
 	var $tag;
 	function MarcField($tag='') {
@@ -96,6 +100,8 @@ class MarcField {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcControlField extends MarcField {
 	var $data;
 	function MarcControlField($tag='', $data='') {
@@ -117,6 +123,8 @@ class MarcControlField extends MarcField {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcSubfield {
 	var $identifier;
 	var $data;
@@ -132,6 +140,8 @@ class MarcSubfield {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcDataField extends MarcField {
 	var $indicators;
 	var $subfields;
@@ -181,6 +191,8 @@ class MarcDataField extends MarcField {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcRecord {
 	var $default_leader = '00000nam a2200000uu 4500';
 	var $_leader_fields = array(
@@ -342,6 +354,9 @@ class MarcRecord {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+## MARC parsing stuff below here
+/* -------------------------------------------------------------------------- */
 class MarcParseError {
 	var $msg;
 	var $record;
@@ -363,6 +378,8 @@ class MarcParseError {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcBaseParser {
 	var $lenient;
 	var $records;
@@ -392,6 +409,8 @@ class MarcBaseParser {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcParser extends MarcBaseParser {
 	function eof() {
 		if (!$this->lenient and strlen($this->_unparsed) > 0) {
@@ -514,6 +533,8 @@ class MarcParser extends MarcBaseParser {
 	}
 }
 
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 class MarcMnemParser extends MarcBaseParser {
 	function MarcMnemParser($lenient=True) {
 		$this->MarcBaseParser($lenient);
