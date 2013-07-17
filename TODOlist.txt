@@ -94,6 +94,16 @@ Check does not work - after entering barcode number and pressing "check out" - n
 15 July 2013 - Neil
 Update button of item copy editor produces lot of red text.
 
+15 July 2013 - Fred
+DB Integrity Check is broken.
+
+15 July 2013 - Nel/Fred
+There is no good design reason for not allowing editing copy or item data while
+a book is on loan or any other status for that matter.  Book/copy data is just
+that and doesn't change because the item is unavailable.  Now it could be that
+the code has a hole in it and this was a simple temporary fix.
+But it should not be left in place.
+
 ###################### Completed, most recent at top #########################
 
 15 July 2013 - Neil, reverted for consistancy 15 July

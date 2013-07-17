@@ -57,7 +57,7 @@ class BiblioSearch_rpt extends BiblioRows {
 	function select($params) {
 		## build the sql to find bibds that match search criteria
 		$this->params = $params;
-		$this->q = new Query();
+		$this->q = new Queryi();
 
 		$query = $this->_doQuery();
 
