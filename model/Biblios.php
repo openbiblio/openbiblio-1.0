@@ -42,6 +42,7 @@ class Biblios extends CoreTable {
 		$this->setIter('BiblioIter');
 		
 		$this->marc = new MarcStore;
+		$this->marcRec = new MarcRecord;
 	}
 	function insert_el($biblio) {
 		$this->db->lock();

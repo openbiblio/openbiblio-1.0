@@ -24,6 +24,7 @@ class Queryi extends mysqli{
 		$results = $this->_act($sql);
 		if (is_bool($results)) {
 			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
+			echo "sql=$sql<br />\n";
 		}
 		return $results;
 	}
@@ -31,6 +32,7 @@ class Queryi extends mysqli{
 		$r = $this->select($sql);
 		if ($r->num_rows != 1) {
 			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("NothingFoundError"));
+			echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
@@ -44,6 +46,7 @@ class Queryi extends mysqli{
 		} else if ($r->num_rows != 1) {
 			//Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
 			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
+			echo "sql=$sql<br />\n";
 		} else {
 			//return $r->fetch_assoc();
 			return $r->fetch_assoc();
@@ -53,6 +56,7 @@ class Queryi extends mysqli{
 		$r =  parent::query($sql);
 		if ($r === false) {
 			Fatal::dbError($sql, T("Database query failed"), mysql_error());
+			echo "sql=$sql<br />\n";
 		}
 		return $r;
 	}
@@ -81,7 +85,7 @@ class Queryi extends mysqli{
 		$this->_act('unlock tables');
 	}
 
-	function lock($tblName) {
+	function lock() {
 //		global $_Query_lock_depth;
 		if ($this->lockDepth < 0) {
 			Fatal::internalError(T("Negative lock depth"));

@@ -117,8 +117,9 @@ class Copies extends CoreTable {
 	}
 	function getMemberCheckouts($mbrid) {
 		$sql = "select bc.* "
-			. "from biblio_copy bc, booking bk, booking_member bkm "
+			. "from biblio_copy bc, booking_status_hist bs, booking bk, booking_member bkm "
 			. "where bc.histid=bk.out_histid "
+			. "and bk.status_cd='out' "
 			. "and bkm.bookingid=bk.bookingid ";
 		$sql .= $this->db->mkSQL("and bkm.mbrid=%N ", $mbrid);
 		return $this->db->select($sql);

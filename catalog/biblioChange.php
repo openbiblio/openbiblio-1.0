@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/*
+require_once(REL(__FILE__, "../classes/Marc.php"));
 
 /* Not for stand-alone use. Normally 'included' in some other php block */
 
@@ -42,6 +42,8 @@ function fieldCmp($a, $b) {
 	if ($tagcmp != 0) {
 		return $tagcmp;
 	}
+	if (empty($a->tag) || empty($b->tag)) return 0;
+
 	/* Use actual display values after we add them -- TODO */
 	$dispa = implode(" ", $a->getValues());
 	$dispb = implode(" ", $b->getValues());
@@ -54,14 +56,11 @@ function PostBiblioChange($nav) {
 	#****************************************************************************
 	if (!isset ($biblios)) $biblios = new Biblios();
 	if ($_POST["bibid"]) {
-		//echo "in bibChg ==> re-using bibid #$bibid<br />";
 		$biblio = $biblios->getOne($_POST["bibid"]);
 	} else {
-		//echo "in bibChg ==> creating new MARC record<br />";
 		$biblio = array(marc=>new MarcRecord);
 	}
 	assert($biblio != NULL);
-
 	/* Construct a list of changed fields. */
 	$fields = array();
 	/* Because of the way this list is constructed, only one
@@ -111,13 +110,15 @@ function PostBiblioChange($nav) {
 		//$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
 		if (!array_key_exists($sfidx,$fields[$fidx])) {
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
-		}	
+		}
+
 	}
 	$mrc = new MarcRecord();
-	$mrc->setLeader($biblio[marc]->getLeader());
+	//$mrc->setLeader($biblio[marc]->getLeader());
+	$ldr = $mrc->getLeader();
+	$mrc->setLeader($ldr);
 
-	foreach ($biblio[marc]->fields as $f) {
-
+	foreach ($_POST['fields'] as $f) {
 		$fidx = $f->tag .'-'. $f->fieldid;
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
 			array_push($mrc->fields, $f);
@@ -135,7 +136,8 @@ function PostBiblioChange($nav) {
 			}
 		}
 		foreach($fields[$fidx] as $sf) {
-			if (strlen($sf->data) != 0) {
+			//if (strlen($sf->data) != 0) {
+			if (!empty($sf->data)) {
 				array_push($fld->subfields, $sf);
 			}
 		}

@@ -89,13 +89,14 @@ class MarcStore {
 					$this->db->unlock();
 					return false;
 				}
-			} else {
+			} else if (is_a($field, 'MarcDataField')){
 				$fieldid = $this->_putData($bibid, $fldseq, $field->tag, $field->indicators);
 				if (!$fieldid) {
 					$this->db->unlock();
 					return false;
 				}
 				$subseq = 1;
+//echo"put===============>";print_r($field);echo"\n";
 				foreach ($field->subfields as $subf) {
 					if (!$this->_putSub($bibid, $fieldid, $subseq++, $subf->identifier, $subf->data)) {
 						$this->db->unlock();

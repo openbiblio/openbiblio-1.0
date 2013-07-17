@@ -32,6 +32,7 @@ class DBTable {
 		foreach ($this->key as $k) {
 			if (!isset($this->fields[$k])) {
 				Fatal::internalError(T("Key field %key% not in field list", array('key'=>$k)));
+			echo "sql=$sql<br />\n";
 			}
 		}
 	}
@@ -39,6 +40,7 @@ class DBTable {
 		$this->sequence = $sequence;
 		if (!isset($this->fields[$sequence])) {
 			Fatal::internalError(T("DBTableSequenceField", array('sequence'=>$sequence)));
+			echo "sql=$sql<br />\n";
 		}
 	}
 	function setForeignKey($key, $table, $field) {
@@ -56,11 +58,6 @@ class DBTable {
 		$sql = $this->db->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_keyTerms($key);
 		$row = $this->db->select01($sql);
-		if ($row && $this->iter) {
-			$c = $this->iter;	# Silly PHP
-			$it = new $c(new ArrayIter(array($row)));
-			return $it->next();
-		}
 		return $row;
 	}
 	function getOne() {
@@ -68,6 +65,7 @@ class DBTable {
 		$row = call_user_func_array(array($this, 'maybeGetOne'), $key);
 		if (!$row) {
 			Fatal::internalError(T("Bad key (%key%) for %name% table", array('key'=>implode(', ', $key), 'name'=>$this->name)));
+			echo "sql=$sql<br />\n";
 		}
 		return $row;
 	}
@@ -118,9 +116,9 @@ class DBTable {
 	}
 	function insert($rec, $confirmed=false) {
 		list($seq_val, $errors) = $this->insert_el($rec, $confirmed);
-		if ($errors) {
-			Fatal::internalError(T("DBTableErrorInserting", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
-		}
+//		if ($errors) {
+//			Fatal::internalError(T("DBTableErrorInserting")." '".$this->name."', ".Error::listToStr($errors));
+//		}
 		return $seq_val;
 	}
 	function insert_el($rec, $confirmed=false) {
@@ -156,7 +154,8 @@ class DBTable {
 	function update($rec, $confirmed=false) {
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
-			Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
+			//Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
+			Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
 		}
 	}
 	function update_el($rec, $confirmed=false) {

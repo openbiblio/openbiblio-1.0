@@ -25,10 +25,13 @@ class Error {
 	/* static */
 	function listToStr($errors) {
 		$l = array();
-		foreach ($errors as $e) {
-			$l[] = $e->toStr();
+		if ($errors && (!empty($errors))) {
+			foreach ($errors as $e) {
+				$l[] = $e->toStr();
+			}
+			return implode('; ', $l);
 		}
-		return implode('; ', $l);
+		return null;
 	}
 }
 
