@@ -89,10 +89,7 @@ Works with FF and Epiphany.
 
 15 July 2013 - Neil/Fred
 Checkout:
-Check does not work - after entering barcode number and pressing "check out" - nothing happens.
-
-15 July 2013 - Neil
-Update button of item copy editor produces lot of red text.
+Checkout does not work - after entering barcode number and pressing "check out" - nothing happens.
 
 15 July 2013 - Fred
 DB Integrity Check is broken.
@@ -105,6 +102,13 @@ the code has a hole in it and this was a simple temporary fix.
 But it should not be left in place.
 
 ###################### Completed, most recent at top #########################
+
+15 July 2013 - Neil/Fred, fixed 17 July
+Checkout:
+Checkout list is inconsistent, some times not complete, sometimes absent
+
+15 July 2013 - Neil, fixed 17 July
+Update button of item copy editor produces lot of red text.
 
 15 July 2013 - Neil, reverted for consistancy 15 July
 I have only noticed this problem now and so I am not aware of when it first appeared

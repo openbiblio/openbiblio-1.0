@@ -28,8 +28,8 @@ class BiblioIter extends Iter {
 }
 
 class Biblios extends CoreTable {
-	function Biblios() {
-		$this->CoreTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('biblio');
 		$this->setFields(array(
 			'bibid'=>'number',

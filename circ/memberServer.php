@@ -37,6 +37,8 @@
 	require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites = new Sites;
 
+	require_once(REL(__FILE__, "../classes/Biblio.php"));
+
 	#****************************************************************************
 	function mbrArray() {
 		$mbr = array(
@@ -169,20 +171,23 @@
 		$checkouts = $copies->getMemberCheckouts($_GET['mbrid']);
 		$chkOutList = array();
 		while ($copy = $checkouts->fetch_assoc()) {
-			$biblio = $biblios->getOne($copy['bibid']);
-			$a = $biblios->marcRec->getValue('240$a');
-			$b = $biblios->marcRec->getValue('245$a');
-			$c = $biblios->marcRec->getValue('245$b');
-			$d = $biblios->marcRec->getValue('246$a');
-			$e = $biblios->marcRec->getValue('246$b');
+			$biblio = new Biblio($copy['bibid']);
+			$bibData = $biblio->getData();
+			$marc = $bibData['marc'];
+			$hdr = $bibData['hdr'];
+			$a = $marc['240$a'];
+			$b = $marc['245$a'];
+			$c = $marc['245$b'];
+			$d = $marc['246$a'];
+			$e = $marc['246$b'];
 			if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
 			if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
 			$copy['status'] = $history->getOne($copy['histid']);
 			$copy['booking'] = $bookings->getByHistid($copy['histid']);
 			$copy['booking']['days_late'] = $bookings->getDaysLate($copy['booking']);
-			$copy['material_img_url'] = '../images/'.$mediaImageFiles[$biblio['material_cd']];
-			$copy['material_type'] = $mediaTypeDm[$biblio['material_cd']];
-			$col = $colls->getOne($biblio['collection_cd']);
+			$copy['material_img_url'] = '../images/'.$mediaImageFiles[$hdr['material_cd']];
+			$copy['material_type'] = $mediaTypeDm[$hdr['material_cd']];
+			$col = $colls->getOne($hdr['collection_cd']);
 			$fee = $col['daily_late_fee'];
 			$copy['booking']['fee'] = $fee;
 			$copy['booking']['owed'] = $copy['booking']['days_late'] * $fee;

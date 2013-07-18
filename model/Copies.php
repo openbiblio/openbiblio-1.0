@@ -7,8 +7,8 @@ require_once(REL(__FILE__, "../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../model/History.php"));
 
 class Copies extends CoreTable {
-	function Copies() {
-		$this->CoreTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('biblio_copy');
 		$this->setFields(array(
 			'bibid'=>'number',
@@ -117,9 +117,8 @@ class Copies extends CoreTable {
 	}
 	function getMemberCheckouts($mbrid) {
 		$sql = "select bc.* "
-			. "from biblio_copy bc, booking_status_hist bs, booking bk, booking_member bkm "
+			. "from biblio_copy bc, booking bk, booking_member bkm "
 			. "where bc.histid=bk.out_histid "
-			. "and bk.status_cd='out' "
 			. "and bkm.bookingid=bk.bookingid ";
 		$sql .= $this->db->mkSQL("and bkm.mbrid=%N ", $mbrid);
 		return $this->db->select($sql);

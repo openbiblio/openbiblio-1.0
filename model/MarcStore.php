@@ -10,7 +10,7 @@ require_once(REL(__FILE__, "../classes/Marc.php"));
 # It's really only intended to be used by Biblios.php
 
 class MarcStore {
-	function MarcStore () {
+	public function __construct () {
 		$this->db = new Queryi;
 	}
 	function delete($bibid) {
@@ -21,7 +21,7 @@ class MarcStore {
 		$this->db->act($fldsql);
 		$this->db->unlock();
 	}
-	function get($bibid) {
+	public function fetchMarcFlds ($bibid) {
 		$sql = $this->db->mkSQL("select * "
 			. "from biblio_field as bf "
 			. "left join biblio_subfield as bs "
@@ -30,7 +30,10 @@ class MarcStore {
 			. "order by bf.seq, bf.fieldid, bs.seq ",
 			$bibid);
 		$rows = $this->db->select($sql);
-
+		return $rows;
+	}
+	function get($bibid) {
+		$rows = $this->fetchMarcFlds($bibid);
 		if ($rows->num_rows == 0) {
 			return NULL;
 		}

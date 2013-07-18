@@ -194,8 +194,8 @@ class MarcDataField extends MarcField {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcRecord {
-	var $default_leader = '00000nam a2200000uu 4500';
-	var $_leader_fields = array(
+	private $default_leader = '00000nam a2200000uu 4500';
+	private $_leader_fields = array(
 		# array(name, type, length, title, required value)
 		array('length', 'num', 5, 'length', NULL),
 		array('status', 'str', 1, 'record status', NULL),
@@ -211,9 +211,9 @@ class MarcRecord {
 		array('entryMapImpl', 'num', 1, 'implementation-defined length', 0),
 		array('entryMapUndef', 'num', 1, 'undefined entry-map field', 0),
 	);
+	private $fields;
 
-	var $fields;
-	function MarcRecord() {
+	public function __construct() {
 		# Provide a default leader
 		$this->setLeader($this->default_leader);
 		$this->fields = array();

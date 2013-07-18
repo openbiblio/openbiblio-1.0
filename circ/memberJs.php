@@ -115,6 +115,7 @@ var mf = {
 		$('#chkOutMsg').html('').hide();
 	  $('#mbrDiv').hide();
 	  $('#listDiv').show();
+		$('#msgDiv').hide();
 	},
 	rtnToMbr: function () {
 	  $('#rsltMsg').html('');
@@ -271,11 +272,16 @@ var mf = {
 		mf.doGetCheckOuts(mf.mbrid);
 	},
 	doGetCheckOuts: function () {
+		$('#msgDiv').hide();
+		$('#msgArea').html('');
 		var ttlOwed = 0.00,
 				maxFines = mf.typeInfo.max_fines,
 	  		params = 'mode=getChkOuts&mbrid='+mf.mbrid;
 	  $.get(mf.url,params, function(jsonInpt){
-			if ($.trim(jsonInpt) == '[]') {
+			if (jsonInpt.substr(0,1) == '<') {
+				$('#msgArea').html(jsonInpt);
+				$('#msgDiv').show();
+			} else if ($.trim(jsonInpt) == '[]') {
 				mf.cpys = [];
 				$('#chkOutList tBody').html('');
 			} else if ($.trim(jsonInpt).substr(0,2) != '[{') {
