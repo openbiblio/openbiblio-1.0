@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class DmTable extends DBTable {
-	function DmTable() {
-		$this->DBTable();
+	public function __construct() {
+		parent::__construct();
 	}
 	function getList() {
 		$list = array();

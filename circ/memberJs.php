@@ -466,23 +466,20 @@ var mf = {
 	
 	//------------------------------
 	doCheckout: function () {
-				$('#msgArea').html('');
-				$('#msgDiv').hide();
+		$('#msgArea').html('');
+		$('#msgDiv').hide();
+
 		var barcd = $.trim($('#ckoutBarcd').val());
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
 		$('#ckoutBarcd').val(barcd); // redisplay expanded value
+
 		var parms = {'mode':'doCheckout', 'mbrid':mf.mbr.mbrid, 'barcodeNmbr':barcd, 'calCd':mf.calCd };
 		$.post(mf.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else if (response == '') {
+			if (response == '') {
 				$('#msgArea').html('Checkout Completed!');
-				$('#msgDiv').show().hide(10000);
+				$('#msgDiv').show().hide(5000);
 				$('#ckoutBarcd').val('')
-				mf.showOneMbr(mf.mbr)
+				mf.showOneMbr(mf.mbr);  // refresh member with latest checkout list
 			} else {
 				$('#msgArea').html(response);
 				$('#msgDiv').show();
@@ -499,20 +496,14 @@ var mf = {
 
 		var parms = {'mode':'doHold', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
 		$.post(mf.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else {
-				if (response) {
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				} else {
+			if (response == '') {
 					$('#msgArea').html('Hold Completed!');
-					$('#msgDiv').show().hide(10000);
+					$('#msgDiv').show().hide(5000);
 					$('#holdBarcd').val('')
 					mf.showOneMbr(mf.mbr)
+				} else {
+					$('#msgArea').html(response);
+					$('#msgDiv').show();
 				}
 			}
 		});

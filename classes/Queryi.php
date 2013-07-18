@@ -3,10 +3,11 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-//$_Query_lock_depth = 0;
 
 class Queryi extends mysqli{
-	function __construct() {
+	private $lock_depth;
+
+	public function __construct() {
 		$this->lockDepth = 0;
 		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
 		if(mysqli_connect_error()) {
@@ -14,7 +15,7 @@ class Queryi extends mysqli{
 		}
 		return;
 	}
-	function act($sql) {
+	public function act($sql) {
 		//$this->lock();
 		$results = $this->_act($sql);
 		//$this->unlock();
@@ -39,10 +40,8 @@ class Queryi extends mysqli{
 	}
 	function select01($sql) {
 		$r = $this->select($sql);
-		//if ($r->count() == 0) {
 		if ($r->num_rows == 0) {
 			return NULL;
-		//} else if ($r->count() != 1) {
 		} else if ($r->num_rows != 1) {
 			//Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
 			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
@@ -52,7 +51,7 @@ class Queryi extends mysqli{
 			return $r->fetch_assoc();
 		}
 	}
-	function _act($sql) {
+	private function _act($sql) {
 		$r =  parent::query($sql);
 		if ($r === false) {
 			Fatal::dbError($sql, T("Database query failed"), mysql_error());
@@ -80,13 +79,12 @@ class Queryi extends mysqli{
 	 * Calls to lock/unlock may be nested, but must be paired.
 	 */
 
-	function clearLocks () {
+	protected function clearLocks () {
 		$this->_act('set global read_only = off');
 		$this->_act('unlock tables');
 	}
 
-	function lock() {
-//		global $_Query_lock_depth;
+	protected function lock() {
 		if ($this->lockDepth < 0) {
 			Fatal::internalError(T("Negative lock depth"));
 		}
@@ -101,8 +99,7 @@ class Queryi extends mysqli{
 */
 		$this->lockDepth++;
 	}
-	function unlock() {
-//		global $_Query_lock_depth;
+	protected function unlock() {
 		if ($this->lockDepth <= 0) {
 			Fatal::internalError(T("Tried to unlock an unlocked database."));
 		}

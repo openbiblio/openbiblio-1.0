@@ -8,8 +8,8 @@ require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/Bookings.php"));
 
 class History extends DBTable {
-	function History() {
-		$this->DBTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('biblio_status_hist');
 		$this->setFields(array(
 			'histid'=>'number',
@@ -31,7 +31,7 @@ class History extends DBTable {
 	}
 	function insert_el($rec) {
 		$rec['status_begin_dt'] = date('Y-m-d H:i:s');
-		$this->db->lock();
+		$this->lock();
 		list($id, $errs) = parent::insert_el($rec);
 		if (!$errs) {
 			$copies = new Copies;
@@ -49,7 +49,7 @@ class History extends DBTable {
 				$bookings->update($update);
 			}
 		}
-		$this->db->unlock();
+		$this->unlock();
 		return array($id, $errs);
 	}
 }

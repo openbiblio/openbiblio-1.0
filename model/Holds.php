@@ -6,8 +6,9 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Holds extends DBTable {
-	function Holds() {
-		$this->DBTable();
+	public function __construct() {
+//		$this->DBTable();
+		parent::__construct();
 		$this->setName('biblio_hold');
 		$this->setFields(array(
 			'bibid'=>'number',

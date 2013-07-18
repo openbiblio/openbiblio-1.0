@@ -5,29 +5,28 @@
 
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 
-class DBTable {
-	var $db;
-	var $name;
-	var $fields = array();
-	var $key = array();
-	var $sequence = NULL;
-	var $iter = NULL;
-	var $foreign_keys = array();
-	var $types = array(
+class DBTable extends Queryi {
+	private $name;
+	private $fields = array();
+	private $key = array();
+	private $sequence = NULL;
+	private $iter = NULL;
+	private $foreign_keys = array();
+	private $types = array(
 		'string'=>'%Q',
 		'number'=>'%N',
 	);
-	function DBTable() {
-		$this->db = new Queryi();
+	public function __construct() {
+		parent::__construct();
 	}
-	function setName($name) {
+	public function setName($name) {
 		$this->name = $name;
 	}
-	function setFields($fields) {
+	public function setFields($fields) {
 		$this->fields = $fields;
 		# FIXME - Check that field types are valid.
 	}
-	function setKey() {
+	public function setKey() {
 		$this->key = func_get_args();
 		foreach ($this->key as $k) {
 			if (!isset($this->fields[$k])) {
@@ -36,17 +35,17 @@ class DBTable {
 			}
 		}
 	}
-	function setSequenceField($sequence) {
+	public function setSequenceField($sequence) {
 		$this->sequence = $sequence;
 		if (!isset($this->fields[$sequence])) {
 			Fatal::internalError(T("DBTableSequenceField", array('sequence'=>$sequence)));
 			echo "sql=$sql<br />\n";
 		}
 	}
-	function setForeignKey($key, $table, $field) {
+	public function setForeignKey($key, $table, $field) {
 		$this->foreign_keys[] = array('key'=>$key, 'table'=>$table, 'field'=>$field);
 	}
-	function setIter($classname) {
+	public function setIter($classname) {
 		$this->iter = $classname;
 	}
 	/* Abstract Method OVERRIDE THIS */
@@ -55,9 +54,9 @@ class DBTable {
 	}
 	function maybeGetOne() {
 		$key = func_get_args();
-		$sql = $this->db->mkSQL('SELECT * FROM %I WHERE ', $this->name)
+		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_keyTerms($key);
-		$row = $this->db->select01($sql);
+		$row = $this->select01($sql);
 		return $row;
 	}
 	function getOne() {
@@ -79,15 +78,15 @@ class DBTable {
 			return $this->db->select($sql);
 	}
 	function getMatches($fields, $orderby=NULL) {
-		$sql = $this->db->mkSQL('SELECT * FROM %I WHERE ', $this->name)
+		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
 		if ($orderby)
-			$sql .= $this->db->mkSQL(' ORDER BY %I ', $orderby);
+			$sql .= $this->mkSQL(' ORDER BY %I ', $orderby);
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->db->select($sql));
 		} else
-			return $this->db->select($sql);
+			return $this->select($sql);
 	}
 	function checkForeignKeys_el($rec) {
 		$errors = array();
@@ -95,10 +94,10 @@ class DBTable {
 			if (!isset($rec[$k['key']]) or $rec[$k['key']] == NULL) {
 				continue;
 			}
-			$sql = $this->db->mkSQL('SELECT * FROM %I '
+			$sql = $this->mkSQL('SELECT * FROM %I '
 				. 'WHERE %I='.$this->types[$this->fields[$k['key']]],
 				$k['table'], $k['field'], $rec[$k['key']]);
-			$r = $this->db->select01($sql);
+			$r = $this->select01($sql);
 			if (!$r) {
 				$errors[] = new FieldError($k['key'], T("DBTableBadForeignKey", array('key'=>$rec[$k['key']], 'field'=>$k['key'])));
 			}
@@ -122,10 +121,10 @@ class DBTable {
 		return $seq_val;
 	}
 	function insert_el($rec, $confirmed=false) {
-		$this->db->lock();
+		$this->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
-			$this->db->unlock();
+			$this->unlock();
 			return array(NULL, $errs);
 		}
 		$errs = $this->validate_el($rec, true);
@@ -133,22 +132,22 @@ class DBTable {
 			$errs = $this->skipIgnorableErrors($errs);
 		}
 		if (!empty($errs)) {
-			$this->db->unlock();
+			$this->unlock();
 			return array(NULL, $errs);
 		}
-		$sql = $this->db->mkSQL('INSERT INTO %I SET ', $this->name)
+		$sql = $this->mkSQL('INSERT INTO %I SET ', $this->name)
 			. $this->_pairs($rec);
-		$this->db->act($sql);
+		$this->act($sql);
 		if ($this->sequence) {
 			if (isset($rec[$this->sequence])) {
 				$seq_val = $rec[$this->sequence];
 			} else {
-				$seq_val = $this->db->getInsertID();
+				$seq_val = $this->getInsertID();
 			}
 		} else {
 			$seq_val = NULL;
 		}
-		$this->db->unlock();
+		$this->unlock();
 		return array($seq_val, array());
 	}
 	function update($rec, $confirmed=false) {
@@ -208,7 +207,7 @@ class DBTable {
 		for ($i=0; $i<count($key); $i++) {
 			$name = $this->key[$i];
 			$type = $this->fields[$name];
-			$terms[] = $this->db->mkSQL('%I='.$this->types[$type], $name, $key[$i]);
+			$terms[] = $this->mkSQL('%I='.$this->types[$type], $name, $key[$i]);
 		}
 		return implode(' AND ', $terms);
 	}
@@ -216,7 +215,7 @@ class DBTable {
 		$vals = array();
 		foreach ($this->fields as $name => $type) {
 			if (isset($rec[$name])) {
-				$vals[] = $this->db->mkSQL('%I='.$this->types[$type], $name, $rec[$name]);
+				$vals[] = $this->mkSQL('%I='.$this->types[$type], $name, $rec[$name]);
 			}
 		}
 		return implode($separator, $vals);

@@ -8,8 +8,8 @@ require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 require_once(REL(__FILE__, "../model/MemberAccounts.php"));
 
 class Members extends CoreTable {
-	function Members() {
-		$this->DBTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('member');
 		$this->setFields(array(
 			'mbrid'=>'number',
@@ -26,10 +26,7 @@ class Members extends CoreTable {
 			'home_phone'=>'string',
 			'work_phone'=>'string',
 			'email'=>'string',
-//			'password'=>'string',
 			'classification'=>'string',
-//			'school_grade'=>'string',
-//			'school_teacher'=>'string',
 		));
 		$this->setKey('mbrid');
 		$this->setSequenceField('mbrid');
@@ -187,7 +184,8 @@ class Members extends CoreTable {
 	}
 }
 class MembersIter extends Iter {
-	function MembersIter($rows) {
+	public function __construct($rows) {
+		parent::__construct();
 		$this->rows = $rows;
 	}
 	function next() {

@@ -6,8 +6,9 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Sites extends DBTable {
-	function Sites() {
-		$this->DBTable();
+	public function __construct() {
+//		$this->DBTable();
+		parent::__construct();
 		$this->setName('site');
 		$this->setFields(array(
 			'siteid'=>'number',

@@ -89,7 +89,7 @@ class Copies extends CoreTable {
 			}
 			$duplicates = $this->db->select1($sql);
 			if ($duplicates['count'] > 0) {
-//				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
+				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
 				return true;
 			}
 			return false;
@@ -120,8 +120,8 @@ class Copies extends CoreTable {
 			. "from biblio_copy bc, booking bk, booking_member bkm "
 			. "where bc.histid=bk.out_histid "
 			. "and bkm.bookingid=bk.bookingid ";
-		$sql .= $this->db->mkSQL("and bkm.mbrid=%N ", $mbrid);
-		return $this->db->select($sql);
+		$sql .= $this->mkSQL("and bkm.mbrid=%N ", $mbrid);
+		return $this->select($sql);
 	}
 	# Added this function to lookup the member who has the copy,
 	#	for detailed view (not sure if there is a shorter way - LJ

@@ -6,8 +6,9 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class CircCollections extends DBTable {
-	function CircCollections() {
-		$this->DBTable();
+	public function __construct() {
+//		$this->DBTable();
+		parent::__construct();
 		$this->setName('collection_circ');
 		$this->setFields(array(
 			'code'=>'number',
@@ -38,8 +39,9 @@ class CircCollections extends DBTable {
 }
 
 class DistCollections extends DBTable {
-	function DistCollections() {
-		$this->DBTable();
+	public function __construct() {
+//		$this->DBTable();
+		parent::__construct();
 		$this->setName('collection_dist');
 		$this->setFields(array(
 			'code'=>'number',
@@ -69,8 +71,9 @@ class DistCollections extends DBTable {
 }
 
 class Collections extends DmTable {
-	function Collections() {
-		$this->DmTable();
+	public function __construct() {
+//		$this->DmTable();
+		parent::__construct();
 		$this->setName('collection_dm');
 		$this->setFields(array(
 			'code'=>'number',
@@ -96,8 +99,10 @@ class Collections extends DmTable {
 	function getByBibid($bibid) {
 		$sql = "SELECT c.* FROM collection_circ c, biblio b "
 			. "WHERE c.code=b.collection_cd "
-			. $this->db->mkSQL("AND b.bibid=%N ", $bibid);
-		return $this->db->select1($sql);
+//			. $this->db->mkSQL("AND b.bibid=%N ", $bibid);
+			. $this->mkSQL("AND b.bibid=%N ", $bibid);
+//		return $this->db->select1($sql);
+		return $this->select1($sql);
 	}
 	function getAllWithStats() {
 		$sql = "SELECT c.*, "

@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class MediaTypes extends DmTable {
-	function MediaTypes() {
-		$this->DmTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('material_type_dm');
 		$this->setFields(array(
 			'code'=>'string',
@@ -38,12 +38,12 @@ class MediaTypes extends DmTable {
 	function getAll($orderBy='description') {
 		$sql = "SELECT * FROM material_type_dm "
 				 . " ORDER BY $orderBy ";
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 	function getByBibid($bibid) {
 		$sql = "SELECT m.* FROM material_type_dm m, biblio b"
 				 . " WHERE $bibid = b.bibid AND m.code = b.material_cd";
-		return $this->db->select1($sql);
+		return $this->select1($sql);
 	}
 	function validate_el($rec, $insert) {
 		$errors = array();

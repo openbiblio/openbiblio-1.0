@@ -6,8 +6,9 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class CoreTable extends DBTable {
-	function CoreTable() {
-		$this->DBTable();
+	public function __construct() {
+//		$this->DBTable();
+		parent::__construct();
 	}
 	function setFields($fields) {
 		$common = array(

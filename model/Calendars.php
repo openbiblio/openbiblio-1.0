@@ -7,8 +7,9 @@ require_once(REL(__FILE__, "../classes/DmTable.php"));
 require_once(REL(__FILE__, "../classes/Date.php"));
 
 class Calendars extends DmTable {
-	function Calendars() {
-		$this->DmTable();
+	public function __construct() {
+//		$this->DmTable();
+		parent::__construct();
 		$this->setName('calendar_dm');
 		$this->setFields(array(
 			'code'=>'string',
@@ -19,11 +20,13 @@ class Calendars extends DmTable {
 		$this->setSequenceField('code');
 	}
 	function isOpen($calendar, $day) {
-		$sql = $this->db->mkSQL('SELECT open FROM calendar '
+//		$sql = $this->db->mkSQL('SELECT open FROM calendar '
+		$sql = $this->mkSQL('SELECT open FROM calendar '
 			. 'WHERE calendar=%N AND date = %Q ',
 			$calendar, $day);
 		//echo "sql=$sql<br />";
-		return $this->db->select1($sql);
+//		return $this->db->select1($sql);
+		return $this->select1($sql);
 	}
 	function rename($code, $name) {
 		$this->update(array('code'=>$code, 'description'=>$name));

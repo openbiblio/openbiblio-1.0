@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class BiblioImages extends DBTable {
-	function BiblioImages() {
-		$this->DBTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('images');
 		$this->setFields(array(
 			'bibid'=>'number',
@@ -48,9 +48,9 @@ class BiblioImages extends DBTable {
 		return $this->db->select01($sql);
 	}
 	function getByBibid($bibid) {
-		$sql = $this->db->mkSQL("select * from images where bibid=%N ", $bibid);
+		$sql = $this->mkSQL("select * from images where bibid=%N ", $bibid);
 		$sql .= "order by position ";
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 	function insertThumb_e($bibid, $position, $caption, $file) {
 		return $this->_do_insert_e($bibid, $file, $position, $caption, 'Thumb', '');

@@ -7,26 +7,6 @@ require_once(REL(__FILE__, "../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
-class BiblioIter extends Iter {
-	function BiblioIter($rows) {
-		$this->rows = $rows;
-		$this->marc = new MarcStore;
-	}
-	function next() {
-		$row = $this->rows->next();
-		if (!$row)
-			return NULL;
-		$row['marc'] = $this->marc->get($row['bibid']);
-		return $row;
-	}
-	function skip() {
-		$this->rows->skip();
-	}
-	function count() {
-		return $this->rows->count();
-	}
-}
-
 class Biblios extends CoreTable {
 	public function __construct() {
 		parent::__construct();
@@ -86,3 +66,25 @@ class Biblios extends CoreTable {
 		$this->db->unlock();
 	}
 }
+
+class BiblioIter extends Iter {
+	public function __construct($rows) {
+		parenr::__construct();
+		$this->rows = $rows;
+		$this->marc = new MarcStore;
+	}
+	function next() {
+		$row = $this->rows->next();
+		if (!$row)
+			return NULL;
+		$row['marc'] = $this->marc->get($row['bibid']);
+		return $row;
+	}
+	function skip() {
+		$this->rows->skip();
+	}
+	function count() {
+		return $this->rows->count();
+	}
+}
+

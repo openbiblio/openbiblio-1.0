@@ -6,8 +6,9 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class MemberAccounts extends DBTable {
-	function MemberAccounts() {
-		$this->DBTable();
+	public function __construct() {
+//		$this->DBTable();
+		parent::__construct();
 		$this->setName('member_account');
 		$this->setFields(array(
 			'transid'=>'number',
@@ -29,10 +30,12 @@ class MemberAccounts extends DBTable {
 		$this->deleteMatches(array('mbrid'=>$mbrid));
 	}
 	function getBalance($mbrid) {
-		$sql = $this->db->mkSQL("SELECT SUM(member_account.amount) balance "
+//		$sql = $this->db->mkSQL("SELECT SUM(member_account.amount) balance "
+		$sql = $this->mkSQL("SELECT SUM(member_account.amount) balance "
 			. "FROM member_account "
 			. "WHERE member_account.mbrid = %N ", $mbrid);
-		$row = $this->db->select1($sql);
+//		$row = $this->db->select1($sql);
+		$row = $this->select1($sql);
 		return $row['balance'];
 	}
 	function insert_el($rec, $confirmed=false) {

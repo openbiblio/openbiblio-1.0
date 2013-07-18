@@ -14,8 +14,8 @@ require_once(REL(__FILE__, "../model/MediaTypes.php"));
 require_once(REL(__FILE__, "../model/Members.php"));
 
 class Bookings extends CoreTable {
-	function Bookings() {
-		$this->CoreTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('booking');
 		$this->setFields(array(
 			'bookingid'=>'number',
@@ -35,10 +35,10 @@ class Bookings extends CoreTable {
 		$this->setIter('BookingsIter');
 	}
 	function getByHistid($histid) {
-		$sql = $this->db->mkSQL("select * from booking "
+		$sql = $this->mkSQL("select * from booking "
 			. "where out_histid=%N or ret_histid=%N ",
 			$histid, $histid);
-		return $this->db->select01($sql);
+		return $this->select01($sql);
 	}
 
 	function getDaysLate($booking) {
@@ -119,9 +119,9 @@ class Bookings extends CoreTable {
 		# Check that mbrids exist
 		if (isset($new['mbrids'])) {
 			foreach ($new['mbrids'] as $mbrid) {
-				$sql = $this->db->mkSQL('select mbrid from member '
+				$sql = $this->mkSQL('select mbrid from member '
 					. 'where mbrid=%N', $mbrid);
-				if (!$this->db->select01($sql)) {
+				if (!$this->select01($sql)) {
 					$errors[] = new Error(T("modelBookingsMemberNoExist"));
 				}
 			}
@@ -137,10 +137,10 @@ class Bookings extends CoreTable {
 			}
 
 			# Get total number of copies
-			$sql = $this->db->mkSQL('select count(*) as copies '
+			$sql = $this->mkSQL('select count(*) as copies '
 				. 'from biblio_copy where bibid=%N',
 				$booking['bibid']);
-			$row = $this->db->select1($sql);
+			$row = $this->select1($sql);
 			$ncopies = $row['copies'];
 
 			# Check that copies exist
@@ -158,7 +158,7 @@ class Bookings extends CoreTable {
 			# Using to_days() ensures that a booking made for 2005-05-05
 			# won't overlap with one that was returned 2005-05-05 12:35:42.
 			# Can't use date() as that requires MySQL 4.1.1.
-			$sql .= $this->db->mkSQL('where b1.bibid=%N '
+			$sql .= $this->mkSQL('where b1.bibid=%N '
 				. 'and b2.bibid=b1.bibid '
 				. 'and to_days(ifnull(b1.out_dt, b1.book_dt)) < to_days(%Q) '
 				. 'and to_days(ifnull(b2.out_dt, b2.book_dt)) < to_days(%Q) '
@@ -173,12 +173,12 @@ class Bookings extends CoreTable {
 				$booking['bibid'], $booking['due_dt'], $booking['due_dt'],
 				$booking['book_dt'], $booking['book_dt']);
 			if (isset($booking['bookingid']) and $booking['bookingid'] !== NULL) {
-				$sql .= $this->db->mkSQL('and b1.bookingid != %N and b2.bookingid != %N ',
+				$sql .= $this->mkSQL('and b1.bookingid != %N and b2.bookingid != %N ',
 				$booking['bookingid'], $booking['bookingid']);
 			}
-			$sql .= $this->db->mkSQL('group by b1.bookingid '
+			$sql .= $this->mkSQL('group by b1.bookingid '
 				. 'having ncopies >= %N ', $ncopies);
-			$rows = $this->db->select($sql);
+			$rows = $this->select($sql);
 			if ($rows->num_rows != 0) {
 				$errors[] = new Error($modelBookingsNotEnoughCopiesText);
 				return $errors;
@@ -192,7 +192,7 @@ class Bookings extends CoreTable {
 
 		if (isset($new['mbrids']) and !empty($booking['mbrids'])) {
 			## determine if library is open today ##
-			$sql = $this->db->mkSQL('select c.date, c.open '
+			$sql = $this->mkSQL('select c.date, c.open '
 				. 'from calendar c, member m, site s '
 				. 'where c.calendar=s.calendar '
 				. 'and s.siteid=m.siteid '
@@ -201,16 +201,16 @@ class Bookings extends CoreTable {
 				$booking['book_dt']);
 			$mbrids = array();
 			foreach ($booking['mbrids'] as $m) {
-				$mbrids[] = $this->db->mkSQL('%N', $m);
+				$mbrids[] = $this->mkSQL('%N', $m);
 			}
 			$sql .= '('.implode(",", $mbrids).') ';
-			$rows = $this->db->select($sql);
+			$rows = $this->select($sql);
 			if ($rows->num_rows != 0) {
 				$errors[] = new IgnorableError(T("modelBookingsClosedOnBookDate").": ".$booking['book_dt']);
 			}
 
 			## determine if library is open on due date ##
-			$sql = $this->db->mkSQL('select c.date, c.open '
+			$sql = $this->mkSQL('select c.date, c.open '
 				. 'from calendar c, member m, site s '
 				. 'where c.calendar=s.calendar '
 				. 'and s.siteid=m.siteid '
@@ -218,7 +218,7 @@ class Bookings extends CoreTable {
 				. 'and c.date=%Q and m.mbrid in ',
 				$booking['due_dt']);
 			$sql .= '('.implode(",", $mbrids).') ';
-			$rows = $this->db->select($sql);
+			$rows = $this->select($sql);
 			if ($rows->num_rows != 0) {
 				$errors[] = new IgnorableError(T("modelBookingsClosedOnDueDate").": ".$booking['due_dt']);
 			}
@@ -227,9 +227,9 @@ class Bookings extends CoreTable {
 		return $errors;
 	}
 	function _getMbrids($bookingid) {
-		$sql = $this->db->mkSQL('SELECT * FROM booking_member '
+		$sql = $this->mkSQL('SELECT * FROM booking_member '
 			. 'WHERE bookingid=%N ', $bookingid);
-		$rs = $this->db->select($sql);
+		$rs = $this->select($sql);
 		$mbrids = array();
 		while ($r = $rs->fetch_assoc())
 			$mbrids[] = $r['mbrid'];
@@ -237,25 +237,25 @@ class Bookings extends CoreTable {
 		return $mbrids;
 	}
 	function _putMbrids($bookingid, $mbrids) {
-		$sql = $this->db->mkSQL('DELETE FROM booking_member '
+		$sql = $this->mkSQL('DELETE FROM booking_member '
 			. 'WHERE bookingid=%N ', $bookingid);
-		$this->db->act($sql);
+		$this->act($sql);
 		foreach ($mbrids as $mbrid) {
-			$sql = $this->db->mkSQL('INSERT INTO booking_member '
+			$sql = $this->mkSQL('INSERT INTO booking_member '
 				. 'SET bookingid=%N, mbrid=%N',
 				$bookingid, $mbrid);
-			$this->db->act($sql);
+			$this->act($sql);
 		}
 	}
 	function insert_el($rec, $confirmed=false) {
-		$this->db->lock();
+		$this->lock();
 		list($id, $errs) = parent::insert_el($rec, $confirmed);
 		if ($errs) {
-			$this->db->unlock();
+			$this->unlock();
 			return array(NULL, $errs);
 		}
 		$this->_putMbrids($id, $rec['mbrids']);
-		$this->db->unlock();
+		$this->unlock();
 		return array($id, NULL);
 	}
 	function update_el($rec, $confirmed=false) {
@@ -320,7 +320,7 @@ class Bookings extends CoreTable {
 	 * Error object indicating the reason.
 	 */
 	function verifyCheckout_e($bookingid, $barcode, $out_copyids=array()) {
-		$this->db->lock();
+		$this->lock();
 		do {
 			if (!$barcode) {
 				$err = new Error(T("No barcode set."));
@@ -403,7 +403,7 @@ class Bookings extends CoreTable {
 				break;
 			}
 		} while (0);
-		$this->db->unlock();
+		$this->unlock();
 		if ($err) {
 			return array(NULL, NULL, $err);
 		} else {
@@ -412,10 +412,10 @@ class Bookings extends CoreTable {
 	}
 
 	function checkout_e($bookingid, $barcode) {
-		$this->db->lock();
+		$this->lock();
 		list($bibid, $copyid, $error) = $this->verifyCheckout_e($bookingid, $barcode);
 		if ($error) {
-			$this->db->unlock();
+			$this->unlock();
 			return $error;
 		}
 		$history = new History;
@@ -424,7 +424,7 @@ class Bookings extends CoreTable {
 			'copyid'=>$copyid,
 			'status_cd'=>OBIB_STATUS_OUT,
 		));
-		$this->db->unlock();
+		$this->unlock();
 		return NULL;
 	}
 
@@ -461,13 +461,11 @@ class Bookings extends CoreTable {
 	}
 
 	function quickCheckout_e($barcode, $calCd=1, $mbrids) {
-		$this->db->lock();
+ 		$this->lock();
 		$copies = new Copies;
 		$copy = $copies->getByBarcode($barcode);
 		if (!$copy) {
 			$this->db->unlock();
-			//return new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
-			//return new Error($errMsg);
 			return T("No copy with barcode %barcode%", array('barcode'=>$barcode));
 		}
 		$history = new History;
@@ -512,19 +510,20 @@ class Bookings extends CoreTable {
 				$status = $row['open'];
 			} while ($status == 'No');
 		}
-		$booking = new Bookings($copy['bibid'], $book_dt, $due_dt, $mbrids);
+
+		## all OK, begin DB update for checking out
 		list($bookingid, $err) = $this->insert_el(array("book_dt" => $book_dt, "bibid" => $copy['bibid'], "bidid2" => $bidid, "due_dt" => $due_dt, "mbrids" => $mbrids));
 		if ($err) {
-			$this->db->unlock();
+			$this->unlock();
 			return $err;
 		}
 		$err = $this->checkout_e($bookingid, $barcode);
 		if ($err) {
 			$this->deleteOne($bookingid);
-			$this->db->unlock();
+			$this->unlock();
 			return $err;
 		}
-		$this->db->unlock();
+		$this->unlock();
 
 		return NULL;
 	}
@@ -547,7 +546,8 @@ class Bookings extends CoreTable {
 }
 
 class BookingsIter extends Iter {
-	function BookingsIter($rows) {
+	public function __construct($rows) {
+		parent::__construct();
 		$this->rows = $rows;
 		$this->db = new Queryi;
 	}

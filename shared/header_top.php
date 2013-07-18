@@ -17,10 +17,10 @@
 <!--[if gt IE 8]><!-->  
 <html lang="en" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
 <!--<![endif]-->
+<meta charset="<?php echo $CharSet; ?>" />
+<!-- charset MUST be specified within first 1024 char of file start to be effective -->
 
 <head>	
-<!-- charset MUST be specified within first 1024 char of file start to be effective -->
-<meta charset="<?php echo $CharSet; ?>" />
 
 <title>
 <?php
