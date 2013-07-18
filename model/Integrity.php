@@ -5,11 +5,11 @@
 
 require_once(REL(__FILE__, "../classes/Queryi.php"));
 
-class Integrity {
-	function Integrity() {
-		$this->db = new Queryi;
-		$this->checks = array(
-			array(
+class Integrity extends Queryi{
+	private $checks= array();
+	public function __construct() {
+		parent::__construct();
+			$this->checks[] = array(
 				//'error' => T("%count% unattached MARC fields"),
 				'error' => T("unattached MARC fields"),
 				'countSql' => 'select count(*) as count '
@@ -20,8 +20,8 @@ class Integrity {
 					. 'using biblio_field left join biblio '
 					. 'on biblio.bibid=biblio_field.bibid '
 					. 'where biblio.bibid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				//'error' => T("%count% unattached MARC subfields"),
 				'error' => T("unattached MARC subfields"),
 				'countSql' => 'select count(*) as count '
@@ -32,8 +32,8 @@ class Integrity {
 					. 'using biblio_subfield left join biblio_field '
 					. 'on biblio_subfield.fieldid=biblio_field.fieldid '
 					. 'where biblio_field.fieldid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				//'error' => T("%count% unattached images"),
 				'error' => T("unattached images"),
 				'countSql' => 'select count(*) as count '
@@ -44,8 +44,8 @@ class Integrity {
 					. 'using images left join biblio '
 					. 'on biblio.bibid=images.bibid '
 					. 'where biblio.bibid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				//'error' => T("%count% unattached copies"),
 				'error' => T("unattached copies"),
 				'countSql' => 'select count(*) as count '
@@ -56,8 +56,8 @@ class Integrity {
 					. 'using biblio_copy left join biblio '
 					. 'on biblio.bibid=biblio_copy.bibid '
 					. 'where biblio.bibid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				//'error' => T("%count% copies with broken status references"),
 				'error' => T("copies with broken status references"),
 				'countSql' => 'select count(*) as count '
@@ -68,7 +68,7 @@ class Integrity {
 					. 'using biblio_copy left join biblio_status_hist '
 					. 'on biblio_status_hist.histid=biblio_copy.histid '
 					. 'where biblio_status_hist.histid is null ',
-			),
+			);
 			
 /*			
 			array(
@@ -95,7 +95,7 @@ class Integrity {
 				// NO AUTOMATIC FIX
 			),			
 */
-			array(
+			$this->checks[] = array(
 				'error' => T("%count% items with multiple un-repeatable fields"),
 				'countSql' => 'SELECT COUNT(DISTINCT t.bibid)AS count FROM ('
 					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
@@ -119,8 +119,8 @@ class Integrity {
 */
 				'fixFn' => 'removeRepeaters',
 				// NO AUTOMATIC FIX
-			),			
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% items with empty collections"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
@@ -129,8 +129,8 @@ class Integrity {
 					. '(SELECT code FROM collection_dm '
 					. ' WHERE default_flg = \'Y\' )'
 					.	'WHERE collection_cd = 0 ',
-			),			
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% items with empty media-type"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
@@ -139,8 +139,8 @@ class Integrity {
 					. '(SELECT code FROM material_type_dm '
 					. ' WHERE default_flg = \'Y\' )'
 					.	'WHERE material_cd = 0 ',
-			),			
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% unattached copy status history records"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio_copy '
@@ -150,8 +150,8 @@ class Integrity {
 					. 'using biblio_status_hist left join biblio_copy '
 					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
 					. 'where biblio_copy.copyid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% invalid biblio in copy status history records"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio '
@@ -161,8 +161,8 @@ class Integrity {
 					. 'using biblio_status_hist left join biblio '
 					. 'on biblio.bibid=biblio_status_hist.bibid '
 					. 'where biblio.bibid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryInvalidStatusCodes"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio_status_dm '
@@ -172,8 +172,8 @@ class Integrity {
 					. 'using biblio_status_hist left join biblio_status_dm '
 					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
 					. 'where biblio_status_dm.code is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenBibidRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio '
@@ -183,8 +183,8 @@ class Integrity {
 					. 'using booking left join biblio '
 					. 'on booking.bibid=biblio.bibid '
 					. 'where biblio.bibid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenBooking"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking '
@@ -193,8 +193,8 @@ class Integrity {
 				'fixSql' => 'DELETE FROM `booking` '
 					. 'where booking.due_dt is not null '
 					. 'and booking.out_dt is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenOutRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio_status_hist '
@@ -208,8 +208,8 @@ class Integrity {
 					. 'on biblio_status_hist.histid=bk.out_histid '
 					. 'where bk.out_histid is not null '
 					. 'and biblio_status_hist.histid is null) X)',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenReturnRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio_status_hist '
@@ -217,8 +217,8 @@ class Integrity {
 					. 'where booking.ret_histid is not null '
 					. 'and biblio_status_hist.histid is null ',
 				// NO AUTOMATIC FIX
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryNoAssBooking"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking_member left join booking '
@@ -228,8 +228,8 @@ class Integrity {
 					. 'using booking_member left join booking '
 					. 'on booking.bookingid=booking_member.bookingid '
 					. 'where booking.bookingid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryNoAssMember"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking_member left join member '
@@ -239,24 +239,24 @@ class Integrity {
 					. 'using booking_member left join member '
 					. 'on member.mbrid=booking_member.mbrid '
 					. 'where member.mbrid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% copies without site"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_copy left join site '
 					. 'on site.siteid=biblio_copy.siteid '
 					. 'where biblio_copy.siteid is null',
 				// NO AUTOMATIC FIX
-			),			
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% members without sites"),
 				'countSql' => 'select count(*) as count '
 					. 'from member left join site '
 					. 'on site.siteid=member.siteid '
 					. 'where site.siteid is null ',
 				// NO AUTOMATIC FIX
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryUnattachedAccTrans"),
 				'countSql' => 'select count(*) as count '
 					. 'from member_account left join member '
@@ -266,8 +266,8 @@ class Integrity {
 					. 'using member_account left join member '
 					. 'on member.mbrid=member_account.mbrid '
 					. 'where member.mbrid is null ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryChangedCopyStatus"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking b, biblio_status_hist h, biblio_copy c '
@@ -275,8 +275,8 @@ class Integrity {
 					. 'and h.histid=b.out_histid and c.copyid=h.copyid '
 					. 'and c.histid != b.out_histid ',
 				// NO AUTOMATIC FIX
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("IntegrityQueryOutRecNoBooking"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join booking '
@@ -289,21 +289,21 @@ class Integrity {
 					. 'on b.out_histid=bs.histid '
 					. 'where bs.status_cd=\'out\' '
 					. 'and b.bookingid is null) X) ',
-			),
-			array(
+			);
+			$this->checks[] = array(
 				'error' => T("%count% double check outs"),
 				'countFn' => 'countDoubleCheckouts',
 				// NO AUTOMATIC FIX
-			),
-		);
+			);
 	}
 	function check_el($fix=false) {
 		$errors = array();
-		foreach ($this->checks as $chk) {
+		$checks = $this->checks;
+		foreach ($checks as $chk) {
 			assert('isset($chk["error"])');
-			//echo $chk["error"]."<br />";			
+			//echo $chk["error"]."<br />";
 			if (isset($chk['countSql'])) {
-				$row = $this->db->select1($chk['countSql']);
+				$row = $this->select1($chk['countSql']);
 				$count = $row["count"];
 			} elseif (isset($chk['countFn'])) {
 				$fn = $chk['countFn'];
@@ -317,11 +317,11 @@ class Integrity {
 				$msg = $count." ".$chk["error"];
 				if ($fix) {
 					if (isset($chk['fixSql'])) {
-						$this->db->act($chk['fixSql']);
+						$this->act($chk['fixSql']);
 						$msg .= ' <b>'.T("FIXED").'</b> ';
 					} elseif (isset($chk['listSql'])) {
 						$msg .= '<br />list: ';
-						$rows = $this->db->select($chk['listSql']);
+						$rows = $this->select($chk['listSql']);
 						while ($row = $rows->fetch_assoc()) {
 							$msg .= '<a href="../catalog/srchForms.php?bibid='.$row['bibid'].'">'.$row['bibid'].'</a>, ';
 						}
@@ -357,7 +357,7 @@ class Integrity {
 					. 'HAVING count > 1 ';
 		$status = array();
 		$errors = 0;
-		$ptr = $this->db->select($sql);
+		$ptr = $this->select($sql);
 		while ($bib = $ptr->fetch_assoc()) {
 			$case = $bib['bibid'].'-'.$bib['tag'].$bib['subfield_cd'];
 			$dups[$case] = ['nmbr'=>$bib['count'], 
@@ -373,7 +373,7 @@ class Integrity {
 			for ($i=0; $i<$case['nmbr']-1; $i++) {
 				$sql = "Delete FROM biblio_subfield ".
 							 "WHERE (subfieldid = ".$case['subId'].") ";
-				$this->db->act($sql);			 
+				$this->act($sql);			 
 			}
 		}
 		return $errors;
@@ -384,7 +384,7 @@ class Integrity {
 		$sql = 'select histid, copyid, status_cd from biblio_status_hist order by histid ';
 		$status = array();
 		$errors = 0;
-		$r = $this->db->select($sql);
+		$r = $this->select($sql);
 		while ($row = $r->fetch_assoc()) {
 			if ($row['status_cd'] == 'out' and isset($status[$row['copyid']])) {
 				if ($status[$row['copyid']]['status_cd'] == 'out') {
