@@ -185,6 +185,16 @@ class Integrity {
 					. 'where biblio.bibid is null ',
 			),
 			array(
+				'error' => T("IntegrityQueryBrokenBooking"),
+				'countSql' => 'select count(*) as count '
+					. 'from booking '
+					. 'where booking.due_dt is not null '
+					. 'and booking.out_dt is null ',
+				'fixSql' => 'DELETE FROM `booking` '
+					. 'where booking.due_dt is not null '
+					. 'and booking.out_dt is null ',
+			),
+			array(
 				'error' => T("IntegrityQueryBrokenOutRef"),
 				'countSql' => 'select count(*) as count '
 					. 'from booking left join biblio_status_hist '
@@ -348,7 +358,7 @@ class Integrity {
 		$status = array();
 		$errors = 0;
 		$ptr = $this->db->select($sql);
-		while ($bib = $ptr->next()) {
+		while ($bib = $ptr->fetch_assoc()) {
 			$case = $bib['bibid'].'-'.$bib['tag'].$bib['subfield_cd'];
 			$dups[$case] = ['nmbr'=>$bib['count'], 
 											'bibid'=>$bib['bibid'], 

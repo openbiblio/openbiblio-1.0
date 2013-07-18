@@ -417,6 +417,7 @@ $trans["Installing DB tables without test data"] = "Installing DB tables without
 $trans["Installing DB tables with test data"] = "Installing DB tables with test data";
 $trans["integrityMsg"] = "OpenBiblio can check its database for inconsistencies.<br />Would you like to do so now?";
 $trans["IntegrityQueryBrokenBibidRef"] = "bookings with broken bibid references";
+$trans["IntegrityQueryBrokenBooking"] = "bookings with due date, but no checkout date";
 $trans["IntegrityQueryBrokenOutRef"] = "bookings with broken 'out' status references";
 $trans["IntegrityQueryBrokenReturnRef"] = "bookings with broken 'return' status references";
 $trans["IntegrityQueryChangedCopyStatus"] = "'out' bookings where copy status has changed";

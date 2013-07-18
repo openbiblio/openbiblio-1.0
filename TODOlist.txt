@@ -92,7 +92,7 @@ Checkout:
 Checkout does not work - after entering barcode number and pressing "check out" - nothing happens.
 
 15 July 2013 - Fred
-DB Integrity Check is broken.
+DB Integrity Check is broken, my end only; probably bad DB entries here.
 
 15 July 2013 - Nel/Fred
 There is no good design reason for not allowing editing copy or item data while
