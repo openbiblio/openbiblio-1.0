@@ -6,7 +6,7 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Themes extends DBTable {
-	public function __constuct() {
+	public function __construct() {
 		parent::__construct();
 		$this->setName('theme');
 		$this->setFields(array(

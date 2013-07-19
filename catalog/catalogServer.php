@@ -44,19 +44,6 @@
 	
 	## --------------------- ##
 
-function mkBiblioArray($dbObj) {
- 	$rslt['barCd'] = $dbObj->barCd;
- 	$rslt['bibid'] = $dbObj->bibid;
- 	$rslt['imageFile'] = $dbObj->imageFile;
- 	$rslt['daysDueBack'] = $dbObj->daysDueBack;
- 	$rslt['createDt'] = $dbObj->createDt;
- 	$rslt['matlCd'] = $dbObj->matlCd;
- 	$rslt['collCd'] = $dbObj->collCd;
- 	$rslt['opacFlg'] = $dbObj->opacFlg;
- 	$rslt['data'] = $dbObj->getBiblioDetail();
- 	return $rslt;
-}
-
 	#****************************************************************************
 	switch ($_REQUEST['mode']) {
 	case 'getOpts':
@@ -99,7 +86,8 @@ function mkBiblioArray($dbObj) {
 	case 'doBibidSearch':
 	  $theDb = new SrchDB;
   	$theDb->getBiblioInfo($_REQUEST[bibid]);
-	  	echo json_encode(mkBiblioArray($theDb));
+	  //echo json_encode(mkBiblioArray($theDb));
+	  echo json_encode($theDb->getData());
 	  break;
 
 	case 'doPhraseSearch':
@@ -185,9 +173,9 @@ function mkBiblioArray($dbObj) {
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
 				$theDb->getBiblioInfo($bibid);
-	  		$rslt = mkBiblioArray($theDb);
-				if($_SESSION['show_detail_opac'] == 'Y')
-					$rslt['avIcon'] = $theDb->avIcon;
+	  		$rslt = $theDb->getData();
+				//if($_SESSION['show_detail_opac'] == 'Y')
+				//	$rslt['avIcon'] = $theDb->avIcon;
 	  		$biblio[] = json_encode($rslt);
 			}
 			echo json_encode($biblio);

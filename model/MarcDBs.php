@@ -6,7 +6,7 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class MarcBlocks extends DBTable {
-	public function __constuct() {
+	public function __construct() {
 		parent::__construct();
 		$this->setName('usmarc_block_dm');
 		$this->setFields(array(
@@ -19,7 +19,7 @@ class MarcBlocks extends DBTable {
 }
 
 class MarcTags extends DBTable {
-	public function __constuct() {
+	public function __construct() {
 		parent::__construct();
 		$this->setName('usmarc_tag_dm');
 		$this->setFields(array(
@@ -36,7 +36,7 @@ class MarcTags extends DBTable {
 }
 
 class MarcSubfields extends DBTable {
-	public function __constuct() {
+	public function __construct() {
 		parent::__construct();
 		$this->setName('usmarc_subfield_dm');
 		$this->setFields(array(

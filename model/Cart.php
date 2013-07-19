@@ -8,7 +8,7 @@ require_once(REL(__FILE__, "../classes/Queryi.php"));
 class Cart extends Queryi {
 	private $name;
 	private $db;
-	public function __constuct($name) {
+	public function __construct($name) {
 		parent::__construct();
 		$this->name = $name;
 	}

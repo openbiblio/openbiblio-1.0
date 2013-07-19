@@ -121,7 +121,8 @@ function PostBiblioChange($nav) {
 	foreach ($_POST['fields'] as $f) {
 		$fidx = $f->tag .'-'. $f->fieldid;
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
-			array_push($mrc->fields, $f);
+			//array_push($mrc->fields, $f);
+			$mrc->addFields($f);
 			continue;
 		}
 		$fld = new MarcDataField($f->tag, $f->indicators);
@@ -143,7 +144,8 @@ function PostBiblioChange($nav) {
 		}
 		unset($fields[$fidx]);
 		if (!empty($fld->subfields)) {
-			array_push($mrc->fields, $fld);
+			//array_push($mrc->fields, $fld);
+			$mrc->addFields($fld);
 		}
 	}
 
@@ -156,32 +158,34 @@ function PostBiblioChange($nav) {
 			}
 		}
 		if (!empty($fld->subfields)) {
-			array_push($mrc->fields, $fld);
+			//array_push($mrc->fields, $fld);
+			$mrc->addFields($fld);
 		}
 	}
 
 	/* Sort subfields and apply "smart" processing for particular fields */
-	for ($i=0; $i < count($mrc->fields); $i++) {
+	$fields = $mrc->getFields();
+	for ($i=0; $i < count($fields); $i++) {
 	
 		//usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
 		
 		/* Special processing for 245$a -- FIXME, this should be generalized */
-		if ($mrc->fields[$i]->tag == 245) {
+		if ($fields[$i]->tag == 245) {
 			/* No title added entry. */
-			$mrc->fields[$i]->indicators{0} = 0;
-			$a = $mrc->fields[$i]->getValue(a);
+			$fields[$i]->indicators{0} = 0;
+			$a = $fields[$i]->getValue(a);
 			/* Set non-filing characters */
 			if (preg_match("/^((a |an |the )?[^a-z0-9]*)/i", $a, $regs) and strlen($regs[1]) <= 9) {
-				$mrc->fields[$i]->indicators{1} = strlen($regs[1]);
+				$fields[$i]->indicators{1} = strlen($regs[1]);
 			} else {
-				$mrc->fields[$i]->indicators{1} = 0;
+				$fields[$i]->indicators{1} = 0;
 			}
 		}
 	}
 	/* Set field display values -- TODO */
 
 	/* Sort fields by tag and display value */
-	usort($mrc->fields, fieldCmp);
+	usort($fields, fieldCmp);
 
 	$biblio['marc'] = $mrc;
 

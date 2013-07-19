@@ -16,8 +16,7 @@ class Iter {
 		# Discards the next item in the sequence.
 		# This method is meant to sidestep any expensive processing
 		# a subclass might perform as part of next().
-//		$this->next();
-		$this->fetch_assoc();
+		$this->next();
 	}
 	function toArray() {
 		# Returns an array containing all the elements in the Iter.

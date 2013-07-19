@@ -15,7 +15,6 @@ class BiblioCopyFields extends DmTable {
 			'default_flg'=>'string',
 		));
 		$this->setKey('code');
-echo "BCF const, names=".$this->name."\n";
 	}
 	function validate_el($rec, $insert) {
 		$errors = array();

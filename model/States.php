@@ -6,7 +6,7 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class States extends DmTable {
-	public function __constuct() {
+	public function __construct() {
 		parent::__construct();
 		$this->setName('state_dm');
 		$this->setFields(array(

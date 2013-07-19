@@ -5,7 +5,7 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class CopiesCustomFields extends DmTable {
-	public function __constuct() {
+	public function __construct() {
 		parent::__construct();
 		$this->setName('biblio_copy_fields_dm');
 		$this->setFields(array(

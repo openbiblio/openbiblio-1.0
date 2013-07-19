@@ -194,8 +194,8 @@ class MarcDataField extends MarcField {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcRecord {
-	private $default_leader = '00000nam a2200000uu 4500';
-	private $_leader_fields = array(
+	protected $default_leader = '00000nam a2200000uu 4500';
+	protected $_leader_fields = array(
 		# array(name, type, length, title, required value)
 		array('length', 'num', 5, 'length', NULL),
 		array('status', 'str', 1, 'record status', NULL),
@@ -211,12 +211,27 @@ class MarcRecord {
 		array('entryMapImpl', 'num', 1, 'implementation-defined length', 0),
 		array('entryMapUndef', 'num', 1, 'undefined entry-map field', 0),
 	);
-	private $fields;
+	protected $fields;
 
 	public function __construct() {
 		# Provide a default leader
 		$this->setLeader($this->default_leader);
 		$this->fields = array();
+	}
+	public function addFields($entry) {
+		$this->fields[] = $entry;
+	}
+	public function getFields($tag=NULL) {
+		if ($tag === NULL) {
+			return $this->fields;
+		}
+		$a = array();
+		foreach ($this->fields as $f) {
+			if ($f->tag == $tag) {
+				array_push($a, $f);
+			}
+		}
+		return $a;
 	}
 	function setLeader($ldr, $lenient=False) {
 		if ($lenient) {
@@ -302,18 +317,6 @@ class MarcRecord {
 		return $s . "\n";
 	}
 
-	function getFields($tag=NULL) {
-		if ($tag === NULL) {
-			return $this->fields;
-		}
-		$a = array();
-		foreach ($this->fields as $f) {
-			if ($f->tag == $tag) {
-				array_push($a, $f);
-			}
-		}
-		return $a;
-	}
 
 
 	function getField($tag=NULL) {

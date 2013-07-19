@@ -214,6 +214,12 @@ var bs = {
 		}
 		?>
 	},
+
+	showMsg: function (msg) {
+		$('#errSpace').html(msg);
+		$('.error').show();
+	},
+
 	//------------------------------
 	fetchOpts: function () {
 		bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';

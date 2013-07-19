@@ -85,7 +85,9 @@ class MarcStore extends Queryi{
 			$this->unlock();
 			return false;
 		}
-		foreach ($record->fields as $field) {
+		$fields = $record->getFields();
+//print_r($rcd);
+		foreach ($fields as $field) {
 			$fldseq += 1;
 			if (is_a($field, 'MarcControlField')) {
 				if (!$this->_putControl($bibid, $fldseq, $field->tag, $field->data)) {
@@ -99,7 +101,6 @@ class MarcStore extends Queryi{
 					return false;
 				}
 				$subseq = 1;
-//echo"put===============>";print_r($field);echo"\n";
 				foreach ($field->subfields as $subf) {
 					if (!$this->_putSub($bibid, $fieldid, $subseq++, $subf->identifier, $subf->data)) {
 						$this->unlock();

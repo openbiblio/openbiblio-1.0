@@ -4,24 +4,39 @@
  */
 
 	require_once("../shared/common.php");
+	require_once(REL(__FILE__, '../classes/Queryi.php'));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
-class SrchDb {
-	public $bibid;
-	public $createDt;
-	public $daysDueBack;
-	public $matlCd;
-	public $collCd;
-	public $imageFile;
-	public $opacFlg;
-	public $avIcon = "circle_green.png";
+class SrchDb extends Queryi {
+	private $bibid;
+	private $createDt;
+	private $daysDueBack;
+	private $matlCd;
+	private $collCd;
+	private $imageFile;
+	private $opacFlg;
+	private $avIcon = "circle_green.png";
 
-	function SrchDb () {
-		$this->db = new Queryi;
+	public function __construct() {
+		parent::__construct();
 	}
+	public function getData (){
+		//function mkBiblioArray($dbObj) {
+	 	$rslt['barCd'] = $this->barCd;
+	 	$rslt['bibid'] = $this->bibid;
+	 	$rslt['imageFile'] = $this->imageFile;
+	 	$rslt['daysDueBack'] = $this->daysDueBack;
+	 	$rslt['createDt'] = $this->createDt;
+	 	$rslt['matlCd'] = $this->matlCd;
+	 	$rslt['collCd'] = $this->collCd;
+	 	$rslt['opacFlg'] = $this->opacFlg;
+	 	$rslt['data'] = $this->getBiblioDetail();
+	 	return $rslt;
+	}
+
 	## ========================= ##
 	function getBiblioByBarcd($barcd){
 		$sql = "SELECT b.bibid "
