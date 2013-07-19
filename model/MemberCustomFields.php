@@ -7,7 +7,6 @@ require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class MemberCustomFields extends DmTable {
 	public function __construct () {
-//		$this->DmTable();
 		parent::__construct();
 		$this->setName('member_fields_dm');
 		$this->setFields(array(

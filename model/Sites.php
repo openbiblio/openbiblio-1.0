@@ -7,7 +7,6 @@ require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Sites extends DBTable {
 	public function __construct() {
-//		$this->DBTable();
 		parent::__construct();
 		$this->setName('site');
 		$this->setFields(array(
@@ -30,9 +29,9 @@ class Sites extends DBTable {
 		$this->setForeignKey('calendar', 'calendar_dm', 'code');
 	}
 	function getByMbrid($mbrid) {
-		$sql = $this->db->mkSQL('SELECT s.* FROM member m, site s '
+		$sql = $this->mkSQL('SELECT s.* FROM member m, site s '
 			. 'WHERE m.mbrid=%N and s.siteid=m.siteid ', $mbrid);
-		return $this->db->select1($sql);
+		return $this->select1($sql);
 	}
 	function getSelect($all=false) {
 		$select = array();
@@ -58,9 +57,9 @@ class Sites extends DBTable {
 	}
 	////TODO this should not be needed, but DBTable function doesn't work - FL
 	//function deleteOne($siteid) {
-	//	$this->db->lock();
-	//	$sql = $this->db->mkSQL('DELETE FROM `site` WHERE `siteid`=%N', $siteid);
-	//	$this->db->act($sql);
-	//	$this->db->unlock();
+	//	$this->lock();
+	//	$sql = $this->mkSQL('DELETE FROM `site` WHERE `siteid`=%N', $siteid);
+	//	$this->act($sql);
+	//	$this->unlock();
 	//}
 }

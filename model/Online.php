@@ -7,8 +7,8 @@ require_once(REL(__FILE__, "../classes/DBTable.php"));
 require_once(REL(__FILE__, "../model/Collections.php"));
 
 class Opts extends DBTable {
-	function Opts() {
-		$this->DBTable();
+	public function __constuct() {
+		parent::__construct();
 		$this->setName('lookup_settings');
 		$this->setFields(array(
 			'id'=>'number',
@@ -33,8 +33,8 @@ class Opts extends DBTable {
 }
 
 class Hosts extends DBTable {
-	function Hosts() {
-		$this->DBTable();
+	public function __constuct() {
+		parent::__construct();
 		$this->setName('lookup_hosts');
 		$this->setFields(array(
 			'id'=>'number',

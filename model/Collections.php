@@ -7,7 +7,6 @@ require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class CircCollections extends DBTable {
 	public function __construct() {
-//		$this->DBTable();
 		parent::__construct();
 		$this->setName('collection_circ');
 		$this->setFields(array(
@@ -40,7 +39,6 @@ class CircCollections extends DBTable {
 
 class DistCollections extends DBTable {
 	public function __construct() {
-//		$this->DBTable();
 		parent::__construct();
 		$this->setName('collection_dist');
 		$this->setFields(array(
@@ -72,7 +70,6 @@ class DistCollections extends DBTable {
 
 class Collections extends DmTable {
 	public function __construct() {
-//		$this->DmTable();
 		parent::__construct();
 		$this->setName('collection_dm');
 		$this->setFields(array(
@@ -99,9 +96,7 @@ class Collections extends DmTable {
 	function getByBibid($bibid) {
 		$sql = "SELECT c.* FROM collection_circ c, biblio b "
 			. "WHERE c.code=b.collection_cd "
-//			. $this->db->mkSQL("AND b.bibid=%N ", $bibid);
 			. $this->mkSQL("AND b.bibid=%N ", $bibid);
-//		return $this->db->select1($sql);
 		return $this->select1($sql);
 	}
 	function getAllWithStats() {
@@ -112,7 +107,7 @@ class Collections extends DmTable {
 			. "ON b.collection_cd=c.code "
 			. "GROUP BY c.code, c.description, c.default_flg "
 			. "ORDER BY c.description ";
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 	function getTypeData($rec) {
 		$table = $this->colltypes[$rec['type']];
@@ -135,7 +130,7 @@ class Collections extends DmTable {
 		$sql = "SELECT description "
 			. "FROM collection_dm "
 			. "WHERE code='".$code."';";
-		$row = $this->db->select1($sql);
+		$row = $this->select1($sql);
 		return $row['description'];
 	}
 	function insert_el($rec) {

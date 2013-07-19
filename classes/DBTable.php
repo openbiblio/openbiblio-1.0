@@ -69,13 +69,13 @@ class DBTable extends Queryi {
 		return $row;
 	}
 	function getAll($orderby=NULL) {
-		$sql = $this->db->mkSQL('SELECT * FROM %I ', $this->name);
-		if (!empty($orderby)) $sql .= $this->db->mkSQL('ORDER BY %q ', $orderby);
+		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
+		if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
-			return new $c($this->db->select($sql));
+			return new $c($this->select($sql));
 		} else
-			return $this->db->select($sql);
+			return $this->select($sql);
 	}
 	function getMatches($fields, $orderby=NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
@@ -84,7 +84,7 @@ class DBTable extends Queryi {
 			$sql .= $this->mkSQL(' ORDER BY %I ', $orderby);
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
-			return new $c($this->db->select($sql));
+			return new $c($this->select($sql));
 		} else
 			return $this->select($sql);
 	}
@@ -127,14 +127,14 @@ class DBTable extends Queryi {
 			$this->unlock();
 			return array(NULL, $errs);
 		}
-		$errs = $this->validate_el($rec, true);
-		if ($confirmed) {
-			$errs = $this->skipIgnorableErrors($errs);
-		}
-		if (!empty($errs)) {
-			$this->unlock();
-			return array(NULL, $errs);
-		}
+//		$errs = $this->validate_el($rec, true);
+//		if ($confirmed) {
+//			$errs = $this->skipIgnorableErrors($errs);
+//		}
+//		if (!empty($errs)) {
+//			$this->unlock();
+//			return array(NULL, $errs);
+//		}
 		$sql = $this->mkSQL('INSERT INTO %I SET ', $this->name)
 			. $this->_pairs($rec);
 		$this->act($sql);
@@ -164,10 +164,10 @@ class DBTable extends Queryi {
 				Fatal::internalError(T("DBTableIncompleteKey", array('key'=>$k)));
 			$key[] = $rec[$k];
 		}
-		$this->db->lock();
+		$this->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
-			$this->db->unlock();
+			$this->unlock();
 			return $errs;
 		}
 		$errs = $this->validate_el($rec, false);
@@ -175,29 +175,29 @@ class DBTable extends Queryi {
 			$errs = $this->skipIgnorableErrors($errs);
 		}
 		if (!empty($errs)) {
-			$this->db->unlock();
+			$this->unlock();
 			return $errs;
 		}
-		$sql = $this->db->mkSQL('UPDATE %I ', $this->name)
+		$sql = $this->mkSQL('UPDATE %I ', $this->name)
 			. ' SET '.$this->_pairs($rec)
 			. ' WHERE '.$this->_keyTerms($key);
-		$this->db->act($sql);
-		$this->db->unlock();
+		$this->act($sql);
+		$this->unlock();
 		return array();
 	}
 	function deleteOne() {
-		$this->db->lock();
-		$sql = $this->db->mkSQL('DELETE FROM %I WHERE ', $this->name)
+		$this->lock();
+		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
-		$this->db->act($sql);
-		$this->db->unlock();
+		$this->act($sql);
+		$this->unlock();
 	}
 	function deleteMatches($fields) {
-		$this->db->lock();
-		$sql = $this->db->mkSQL('DELETE FROM %I WHERE ', $this->name)
+		$this->lock();
+		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
-		$this->db->act($sql);
-		$this->db->unlock();
+		$this->act($sql);
+		$this->unlock();
 	}
 	function _keyTerms($key) {
 		if (count($key) != count($this->key)) {

@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class States extends DmTable {
-	function States() {
-		$this->DmTable();
+	public function __constuct() {
+		parent::__construct();
 		$this->setName('state_dm');
 		$this->setFields(array(
 			'code'=>'string',
@@ -18,9 +18,9 @@ class States extends DmTable {
 	}
 	////TODO this should not be needed, but DBTable function doesn't work - FL
 	function deleteOne($code) {
-		$this->db->lock();
-		$sql = $this->db->mkSQL('DELETE FROM `state_dm` WHERE `code`=%Q', $code);
-		$this->db->act($sql);
-		$this->db->unlock();
+		$this->lock();
+		$sql = $this->mkSQL('DELETE FROM `state_dm` WHERE `code`=%Q', $code);
+		$this->act($sql);
+		$this->unlock();
 	}
 }

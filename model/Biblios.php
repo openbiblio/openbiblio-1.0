@@ -25,7 +25,7 @@ class Biblios extends CoreTable {
 		$this->marcRec = new MarcRecord;
 	}
 	function insert_el($biblio) {
-		$this->db->lock();
+		$this->lock();
 		if (!isset($biblio['marc']) or !is_a($biblio['marc'], 'MarcRecord')) {
 			return array(NULL, array(new FieldError('marc', T("No MARC record set"))));
 		}
@@ -34,11 +34,11 @@ class Biblios extends CoreTable {
 			return array($bibid, $errors);
 		}
 		$this->marc->put($bibid, $biblio['marc']);
-		$this->db->unlock();
+		$this->unlock();
 		return array($bibid, NULL);
 	}
 	function update_el($biblio) {
-		$this->db->lock();
+		$this->lock();
 		if (!isset($biblio['bibid'])) {
 			Fatal::internalError(T("No bibid set in biblio update"));
 		}
@@ -46,24 +46,24 @@ class Biblios extends CoreTable {
 			$this->marc->put($biblio['bibid'], $biblio['marc']);
 		}
 		$r = parent::update_el($biblio);
-		$this->db->unlock();
+		$this->unlock();
 		return $r;
 	}
 	function deleteOne($bibid) {
-		$this->db->lock();
+		$this->lock();
 		$imgs = new BiblioImages;
 		$imgs->deleteByBibid($bibid);
 		$this->marc->delete($bibid);
 		parent::deleteOne($bibid);
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function deleteMatches($fields) {
-		$this->db->lock();
+		$this->lock();
 		$rows = parent::getMatches($fields);
 		while ($r = $rows->fetch_assoc()) {
 			$this->deleteOne($r['bibid']);
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 }
 

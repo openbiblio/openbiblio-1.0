@@ -33,22 +33,6 @@ class History extends DBTable {
 		$rec['status_begin_dt'] = date('Y-m-d H:i:s');
 		$this->lock();
 		list($id, $errs) = parent::insert_el($rec);
-		if (!$errs) {
-			$copies = new Copies;
-			$copies->update(array('copyid'=>$rec['copyid'], 'histid'=>$id));
-			if (isset($rec['bookingid']) and $rec['bookingid']) {
-				$bookings = new Bookings;
-				$update = array('bookingid'=>$rec['bookingid']);
-				if ($rec['status_cd'] == OBIB_STATUS_OUT) {
-					$update['out_histid']=$id;
-					$update['out_dt']=$rec['status_begin_dt'];
-				} else {
-					$update['ret_histid']=$id;
-					$update['ret_dt']=$rec['status_begin_dt'];
-				}
-				$bookings->update($update);
-			}
-		}
 		$this->unlock();
 		return array($id, $errs);
 	}

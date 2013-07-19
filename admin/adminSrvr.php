@@ -315,7 +315,7 @@
 			break;
 		case 'd-3-L-3-t_hosts':
 			$sql = "DELETE FROM $ptr->name WHERE `id`=$_POST[id]";
-			echo $ptr->db->act($sql);
+			echo $ptr->act($sql);
 			break;
 
 	  #-.-.-.-.-.- Online Options -.-.-.-.-.-.-

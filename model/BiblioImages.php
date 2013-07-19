@@ -33,19 +33,19 @@ class BiblioImages extends DBTable {
 
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
-			return new $c($this->db->select($sql));
+			return new $c($this->select($sql));
 		} else
-			return $this->db->select($sql);
+			return $this->select($sql);
 	}
 	function getOne($bibid, $imgurl) {
-		$sql = $this->db->mkSQL("select * from images where bibid=%N "
+		$sql = $this->mkSQL("select * from images where bibid=%N "
 			. "and imgurl=%Q ", $bibid, $imgurl);
-		return $this->db->select1($sql);
+		return $this->select1($sql);
 	}
 	function maybeGetOne($bibid, $imgurl) {
-		$sql = $this->db->mkSQL("select * from images where bibid=%N "
+		$sql = $this->mkSQL("select * from images where bibid=%N "
 			. "and imgurl=%Q ", $bibid, $imgurl);
-		return $this->db->select01($sql);
+		return $this->select01($sql);
 	}
 	function getByBibid($bibid) {
 		$sql = $this->mkSQL("select * from images where bibid=%N ", $bibid);
@@ -65,11 +65,11 @@ class BiblioImages extends DBTable {
 		return $this->_do_insert_e($bibid, $file, 'end', $caption, 'Link', $url);
 	}
 	function _do_insert_e($bibid, $file, $position, $caption, $type='Thumb', $url='') {
-		$this->db->lock();
+		$this->lock();
 		if ($position == 'end') {
-			$sql = $this->db->mkSQL('select max(position) as pos from images where bibid=%N '
+			$sql = $this->mkSQL('select max(position) as pos from images where bibid=%N '
 				. 'order by bibid ', $bibid);
-			$r = $this->db->select01($sql);
+			$r = $this->select01($sql);
 			if (!$r or !is_numeric($r['pos'])) {
 				$position = 0;
 			} else {
@@ -77,7 +77,7 @@ class BiblioImages extends DBTable {
 			}
 		}
 		$result = $this->_insert_e($bibid, $file, $position, $caption, $type, $url);
-		$this->db->unlock();
+		$this->unlock();
 		return $result;
 	}
 	function _insert_e($bibid, $file, $position, $caption, $type, $url) {
@@ -115,9 +115,9 @@ class BiblioImages extends DBTable {
 //		}
 		*/
 		$this->_renumber($position);
-		$sql = $this->db->mkSQL("insert into images values (%N, %Q, %Q, %N, %Q, %Q) ",
+		$sql = $this->mkSQL("insert into images values (%N, %Q, %Q, %N, %Q, %Q) ",
 												$bibid, $thumb, $url, $position, $caption, $type);
-		$this->db->act($sql);
+		$this->act($sql);
 		return NULL;
 	}
 	function _mkThumbnail($full, $thumb) {
@@ -181,44 +181,44 @@ class BiblioImages extends DBTable {
 		if (preg_match('/^'.quotemeta(OBIB_UPLOAD_DIR).'[-.A-Za-z0-9]+/', $imgurl)) {
 			@unlink($imgurl);
 		}
-		$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
+		$sql = $this->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
 												$bibid, $imgurl);
-		$this->db->act($sql);
+		$this->act($sql);
 		$this->unlock();
 	}
 	function deleteByBibid($bibid) {
-		$this->db->lock();
+		$this->lock();
 		$imgs = $this->getByBibid($bibid);
 		while ($img = $imgs->fetch_assoc()) {
 			@unlink("../photos/".$img['url']);
 			@unlink("../photos/".$img['imgurl']);
-			$sql = $this->db->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
+			$sql = $this->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
 				$bibid, $img['imgurl']);
-			$this->db->act($sql);
+			$this->act($sql);
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function reposition($bibid, $imgurl, $position) {
-		$this->db->lock();
+		$this->lock();
 		$this->_renumber($position);
-		$sql = $this->db->mkSQL("update images set position=%N "
+		$sql = $this->mkSQL("update images set position=%N "
 			. "where bibid=%N and imgurl=%Q ",
 			$position, $bibid, $imgurl);
-		$this->db->act($sql);
+		$this->act($sql);
 		// Renumber all positions now and again.
 		if (rand(0, 3) == 0) {
-			$this->db->act('set @pos=0');
-			$this->db->act('update images set position=(@pos:=@pos+1) order by position');
+			$this->act('set @pos=0');
+			$this->act('update images set position=(@pos:=@pos+1) order by position');
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function _renumber($position) {
-		$sql = $this->db->mkSQL("update images set position=position+1 "
+		$sql = $this->mkSQL("update images set position=position+1 "
 			. "where position >= %N ", $position);
-		$this->db->act($sql);
+		$this->act($sql);
 	}
 	function updateCaption($bibid, $imgurl, $caption) {
-		$sql = $this->db->mkSQL("update images set caption=%Q "
+		$sql = $this->mkSQL("update images set caption=%Q "
 			. "where bibid=%N and imgurl=%Q ", $caption, $bibid, $imgurl);
 		$this->act($sql);
 	}

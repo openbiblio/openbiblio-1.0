@@ -8,7 +8,6 @@ require_once(REL(__FILE__, "../classes/Date.php"));
 
 class Calendars extends DmTable {
 	public function __construct() {
-//		$this->DmTable();
 		parent::__construct();
 		$this->setName('calendar_dm');
 		$this->setFields(array(
@@ -20,12 +19,9 @@ class Calendars extends DmTable {
 		$this->setSequenceField('code');
 	}
 	function isOpen($calendar, $day) {
-//		$sql = $this->db->mkSQL('SELECT open FROM calendar '
 		$sql = $this->mkSQL('SELECT open FROM calendar '
 			. 'WHERE calendar=%N AND date = %Q ',
 			$calendar, $day);
-		//echo "sql=$sql<br />";
-//		return $this->db->select1($sql);
 		return $this->select1($sql);
 	}
 	function rename($code, $name) {
@@ -34,19 +30,19 @@ class Calendars extends DmTable {
 	function deleteOne($code) {
 		if ($code == OBIB_MASTER_CALENDAR)
 			Fatal::internalError(T("CannotDeleteMasterCalendar"));
-		$this->db->lock();
-		$sql = $this->db->mkSQL('DELETE FROM calendar_dm WHERE code=%N', $code);
-		$this->db->act($sql);
-		$sql = $this->db->mkSQL('DELETE FROM calendar WHERE calendar=%N', $code);
-		$this->db->act($sql);
-		$this->db->unlock();
+		$this->lock();
+		$sql = $this->mkSQL('DELETE FROM calendar_dm WHERE code=%N', $code);
+		$this->act($sql);
+		$sql = $this->mkSQL('DELETE FROM calendar WHERE calendar=%N', $code);
+		$this->act($sql);
+		$this->unlock();
 	}
 	function extend($calendar, $from, $to) {
-		$this->db->lock();
-		$sql = $this->db->mkSQL('SELECT MAX(date) max, MIN(date) min FROM calendar '
+		$this->lock();
+		$sql = $this->mkSQL('SELECT MAX(date) max, MIN(date) min FROM calendar '
 			. 'WHERE calendar=%N GROUP BY calendar ',
 			$calendar);
-		$row = $this->db->select01($sql);
+		$row = $this->select01($sql);
 		if (!$row) {
 			$this->_createDays($calendar, $from, $to);
 		} else {
@@ -59,28 +55,28 @@ class Calendars extends DmTable {
 				$this->_createDays($calendar, Date::addDays($max, 1), $to);
 			}
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function _createDays($calendar, $from, $to) {
 		if (Date::daysLater($to, $from) < 0) {
 			Fatal::internalError(T("CalendarsLaterDate"));
 		}
 		foreach (Date::getDays($from, $to) as $d) {
-			$sql = $this->db->mkSQL("INSERT INTO calendar SET "
+			$sql = $this->mkSQL("INSERT INTO calendar SET "
 //				. "calendar=%N, date=%Q, open='Unset' ",
 				. "calendar=%N, date=%Q, open='Yes' ",
 				$calendar, $d);
-			$this->db->act($sql);
+			$this->act($sql);
 		}
 	}
 	function getDays($calendar, $from, $to) {
 		$this->extend($calendar, $from, $to);
-		$sql = $this->db->mkSQL('SELECT date, open FROM calendar '
+		$sql = $this->mkSQL('SELECT date, open FROM calendar '
 			. 'WHERE calendar=%N AND date >= %Q '
 			. 'AND date <= %Q ',
 			$calendar, $from, $to);
 		//echo "sql=$sql<br />";
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 	function setDays($calendar, $days) {
 		if (empty($days)) {
@@ -97,15 +93,15 @@ class Calendars extends DmTable {
 			if ($date > $max) {
 				$max = $date;
 			}
-			$sql .= $this->db->mkSQL('(%N, %Q, %Q), ',
+			$sql .= $this->mkSQL('(%N, %Q, %Q), ',
 				$calendar, $date, $open);
 		}
 		# Remove trailing ', '
 		$sql = substr($sql, 0, -2);
 		# Be sure we can't have gaps in the calendar.
 		$this->extend($calendar, $min, $max);
-		$this->db->lock();
-		$this->db->act($sql);
-		$this->db->unlock();
+		$this->lock();
+		$this->act($sql);
+		$this->unlock();
 	}
 }

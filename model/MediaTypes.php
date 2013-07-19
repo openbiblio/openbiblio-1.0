@@ -32,7 +32,7 @@ class MediaTypes extends DmTable {
 				 . "				 t.adult_checkout_limit, t.juvenile_checkout_limit, "
 				 . "				 t.image_file, t.srch_disp_lines "
 				 . "ORDER BY t.description ";
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 //	function getAll($orderBy=null) {
 	function getAll($orderBy='description') {
@@ -67,7 +67,7 @@ class MediaTypes extends DmTable {
 		$sql = "SELECT t.description "
 			. "FROM material_type_dm t "
 			. "WHERE code='".$code."';";
-		$row = $this->db->select1($sql);
+		$row = $this->select1($sql);
 		return $row['description'];
 	}
 

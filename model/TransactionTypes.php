@@ -7,7 +7,6 @@ require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class TransactionTypes extends DmTable {
 	public function __construct() {
-//		$this->DmTable();
 		parent::__construct();
 		$this->setName('transaction_type_dm');
 		$this->setFields(array(

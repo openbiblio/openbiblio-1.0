@@ -53,29 +53,29 @@ class Members extends CoreTable {
 	}
 	
 	function getNewBarCode($width) {
-		//$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
-		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastNmbr from member");
-		$mbr = $this->db->select1($sql);
+		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from member");
+		$mbr = $this->select1($sql);
 	  if(empty($width)) $w = 13; else $w = $width;
 		return sprintf("%0".$w."s",($mbr[lastNmbr]+1));
 	}
 
 	function getNextMbr() {
-		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastMbr from member");
-		$lastMbr = $this->db->select1($sql);
+		$sql = $this->mkSQL("select max(barcode_nmbr) as lastMbr from member");
+		$lastMbr = $this->select1($sql);
 		return $lastMbr["lastMbr"]+1;
 	}
 	
 	function getMbrByBarcode($barcd) {
-		$sql = $this->db->mkSQL("SELECT * FROM member WHERE barcode_nmbr = %Q ", $barcd);
-		return $this->db->select1($sql);
+		$sql = $this->mkSQL("SELECT * FROM member WHERE barcode_nmbr = %Q ", $barcd);
+		return $this->select1($sql);
 	}
 	
 	function getMbrByName($nameFrag) {
 		$frag = '%'.$nameFrag.'%';
-		$sql = $this->db->mkSQL("SELECT * FROM member WHERE last_name LIKE %Q "
+		$sql = $this->mkSQL("SELECT * FROM member WHERE last_name LIKE %Q "
 													 ."ORDER BY last_name", $frag);
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 	
 	function validate_el($mbr, $insert) {
@@ -88,13 +88,13 @@ class Members extends CoreTable {
 		}
 		# Check for duplicate barcodes
 		if (isset($mbr['barcode_nmbr']) && ($mbr['barcode_nmbr'] != '000000')) {
-			$sql = $this->db->mkSQL("SELECT COUNT(*) duplicates FROM member "
+			$sql = $this->mkSQL("SELECT COUNT(*) duplicates FROM member "
 				. "WHERE barcode_nmbr = %Q ",
 				$mbr['barcode_nmbr']);
 			if (isset($mbr['mbrid'])) {
-				$sql .= $this->db->mkSQL("AND mbrid <> %N ", $mbr['mbrid']);
+				$sql .= $this->mkSQL("AND mbrid <> %N ", $mbr['mbrid']);
 			}
-			$row = $this->db->select1($sql);
+			$row = $this->select1($sql);
 			if ($row['duplicates'] != 0) {
 				$errors[] = new FieldError('barcode_nmbr', T("Barcode number in use."));
 			}
@@ -106,11 +106,11 @@ class Members extends CoreTable {
 		if (!$id or !$password) {
 			return NULL;
 		}
-		$sql = $this->db->mkSQL('SELECT mbrid FROM member '
+		$sql = $this->mkSQL('SELECT mbrid FROM member '
 			. 'WHERE password=MD5(%Q) '
 			. 'AND (barcode_nmbr=%Q or email=%Q) ',
 			$password, $id, $id);
-		$rows = $this->db->select($sql);
+		$rows = $this->select($sql);
 		if ($rows->count() != 1) {
 			return NULL;
 		}
@@ -144,10 +144,10 @@ class Members extends CoreTable {
 		return parent::update_el($mbr, $confirmed);
 	}
 	function getCalendarId($mbrid) {
-		$sql = $this->db->mkSQL("SELECT calendar FROM site, member "
+		$sql = $this->mkSQL("SELECT calendar FROM site, member "
 			. "WHERE site.siteid=member.siteid AND mbrid=%N ",
 			$mbrid);
-		$row = $this->db->select1($sql);
+		$row = $this->select1($sql);
 		return $row['calendar'];
 	}
 	function deleteOne($mbrid) {
@@ -158,12 +158,12 @@ class Members extends CoreTable {
 		parent::deleteOne($mbrid);
 	}
 	function deleteMatches($fields) {
-		$this->db->lock();
+		$this->lock();
 		$rows = $this->getMatches($fields);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$this->deleteOne($row['mbrid']);
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function getCustomFields($mbrid) {
 		return $this->custom->getMatches(array('mbrid'=>$mbrid));

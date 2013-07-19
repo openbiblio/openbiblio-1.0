@@ -6,7 +6,8 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class ReportDisplaysIter extends Iter {
-	function ReportDisplaysIter($rows) {
+	public function __constuct() {
+		parent::__construct();
 		$this->rows = $rows;
 	}
 	function next() {
@@ -25,8 +26,8 @@ class ReportDisplaysIter extends Iter {
 }
 
 class ReportDisplays extends DBTable {
-	function ReportDisplays() {
-		$this->DBTable();
+	public function __constuct() {
+		parent::__construct();
 		$this->setName('report_displays');
 		$this->setFields(array(
 			'page'=>'string',

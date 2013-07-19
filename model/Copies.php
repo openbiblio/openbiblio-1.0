@@ -40,21 +40,21 @@ class Copies extends CoreTable {
 
 	function getNextCopy() {
 	  ## deprecated - retained for compatability with legacy code
-		$sql = $this->db->mkSQL("select max(copyid) as nextCopy from biblio_copy");
-		$nextCopy = $this->db->select1($sql);
+		$sql = $this->mkSQL("select max(copyid) as nextCopy from biblio_copy");
+		$nextCopy = $this->select1($sql);
 		return $nextCopy["nextCopy"]+1;
 	}
 	
 	function getNewBarCode($width) {
-		//$sql = $this->db->mkSQL("select max(copyid) as lastCopy from biblio_copy");
-		$sql = $this->db->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
-		$cpy = $this->db->select1($sql);
+		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
+		$cpy = $this->select1($sql);
 	  if(empty($width)) $w = 13; else $w = $width;
 		return sprintf("%0".$w."s",($cpy[lastNmbr]+1));
 	}
 	
 	function insert_el($copy) {
-		$this->db->lock();
+		$this->lock();
 		list($id, $errors) = parent::insert_el($copy);
 		if (!$errors) {
 			$history = new History;
@@ -62,7 +62,7 @@ class Copies extends CoreTable {
 				'bibid'=>$copy['bibid'], 'copyid'=>$id, 'status_cd'=>'in', 'siteid'=>$copy['siteid'],
 			));
 		}
-		$this->db->unlock();
+		$this->unlock();
 		return array($id, $errors);
 	}
 	function validate_el($copy, $insert) {
@@ -82,12 +82,12 @@ class Copies extends CoreTable {
 		/* Check for duplicate barcodes */
 		/* broken out from validate_el() for access by client via AJAX - fl*/
 		if (isset($barcd)) {
-			$sql = $this->db->mkSQL("select count(*) count from biblio_copy "
+			$sql = $this->mkSQL("select count(*) count from biblio_copy "
 				. "where barcode_nmbr=%Q ", $barcd);
 			if (isset($cpyid)) {
-				$sql .= $this->db->mkSQL("and not copyid=%N ", $cpyid);
+				$sql .= $this->mkSQL("and not copyid=%N ", $cpyid);
 			}
-			$duplicates = $this->db->select1($sql);
+			$duplicates = $this->select1($sql);
 			if ($duplicates['count'] > 0) {
 				$errors[] = new FieldError('barcode_nmbr', T("Barcode number already in use."));
 				return true;
@@ -95,6 +95,7 @@ class Copies extends CoreTable {
 			return false;
 		}
 	}
+
 	// Convert a barcode to the preferred form.
 	// Currently this strips leading zeros, possibly after an
 	// alphabetic prefix.
@@ -115,40 +116,35 @@ class Copies extends CoreTable {
 			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));
 		}
 	}
+
 	function getMemberCheckouts($mbrid) {
-		$sql = "select bc.* "
-			. "from biblio_copy bc, booking bk, booking_member bkm "
-			. "where bc.histid=bk.out_histid "
-			. "and bkm.bookingid=bk.bookingid ";
-		$sql .= $this->mkSQL("and bkm.mbrid=%N ", $mbrid);
+		$sql = "select c.copyid "
+			. "from biblio_copy c, booking b, booking_member m "
+			. "where c.histid = b.out_histid "
+			. "and m.bookingid = b.bookingid ";
+		$sql .= $this->mkSQL("and m.mbrid=%N ", $mbrid);
 		return $this->select($sql);
 	}
-	# Added this function to lookup the member who has the copy,
-	#	for detailed view (not sure if there is a shorter way - LJ
-	# Also, I return the member record directly to prevent unnecesary code,
-	#	even though I am not sure if that is accroding to the design idea
+
 	function getCheckoutMember($histid) {
 		$sql = "select mbr.* "
 				 . "from member mbr, booking bk, booking_member bkm "
 				 . "where mbr.mbrid=bkm.mbrid "
 				 . "and bkm.bookingid=bk.bookingid ";
-		$sql .= $this->db->mkSQL("and bk.out_histid=%N ", $histid);
-		$result = $this->db->select($sql);
-		//return ($result->fetch_assoc());
+		$sql .= $this->mkSQL("and bk.out_histid=%N ", $histid);
+		$result = $this->select($sql);
 		return ($result->fetch_assoc());
 	}
-	# Added this function to lookup the member who has the copy on hold,
-	#	for detailed view (not sure if there is a shorter way - LJ
-	# Also, I return the member record directly to prevent unnecisary code,
-	#	even though I am not sure if that is accroding to the design idea
+
 	function getHoldMember($copyid) {
 		$sql = "select mbr.* "
 				 . "from member mbr, biblio_hold bh "
 				 . "where mbr.mbrid=bh.mbrid ";
-		$sql .= $this->db->mkSQL("and bh.copyid=%N order by bh.hold_begin_dt", $copyid);
-		$result = $this->db->select($sql);
+		$sql .= $this->mkSQL("and bh.copyid=%N order by bh.hold_begin_dt", $copyid);
+		$result = $this->select($sql);
 		return ($result->fetch_assoc());
 	}	
+
 	function lookupBulk_el($barcodes) {
 		$copyids = array();
 		$bibids = array();
@@ -189,12 +185,12 @@ class Copies extends CoreTable {
 		$sql = "select bc.* "
 			. "from biblio_copy bc, biblio_status_hist bsh "
 			. "where bc.histid=bsh.histid "
-			. $this->db->mkSQL("and bsh.status_cd=%Q ",
+			. $this->mkSQL("and bsh.status_cd=%Q ",
 				OBIB_STATUS_SHELVING_CART);
-		return $this->db->select($sql);
+		return $this->select($sql);
 	}
 	function checkin($bibids,$copyids) {
-		$this->db->lock();
+		$this->lock();
 		$history = new History;
 		for ($i=0; $i < count($bibids); $i++) {
 		 $hist = array(
@@ -204,10 +200,10 @@ class Copies extends CoreTable {
 		 );
 		 $history->insert($hist);
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function massCheckin() {
-		$this->db->lock();
+		$this->lock();
 		$cart = $this->getShelvingCart();
 		$bibids = array();
 		$copyids = array();
@@ -216,7 +212,7 @@ class Copies extends CoreTable {
 			array_push($copyids, $copy['copyid']);
 		}
 		$this->checkin($bibids, $copyids);
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function getCustomFields($copyid) {
 		return $this->custom->getMatches(array('copyid'=>$copyid));

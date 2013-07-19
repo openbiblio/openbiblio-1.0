@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class MaterialFields extends DBTable {
-	function MaterialFields() {
-		$this->DBTable();
+	public function __constuct() {
+		parent::__construct();
 		$this->setName('material_fields');
 		$this->setFields(array(
 			'material_field_id'=>'number',

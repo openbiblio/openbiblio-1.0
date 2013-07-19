@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
 
 class Staff extends CoreTable {
-	function Staff() {
-		$this->DBTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('staff');
 		# if you add to this array, check with array in ../circ/staff_new_form.php
 		$this->setFields(array(
@@ -41,11 +41,11 @@ class Staff extends CoreTable {
 			}
 		}
 		if (isset($rec['username'])) {
-			$sql = $this->db->mkSQL("SELECT * FROM staff WHERE username=%Q ", $rec['username']);
+			$sql = $this->mkSQL("SELECT * FROM staff WHERE username=%Q ", $rec['username']);
 			if (isset($rec['userid'])) {
-				$sql .= $this->db->mkSQL("AND userid <> %N ", $rec['userid']);
+				$sql .= $this->mkSQL("AND userid <> %N ", $rec['userid']);
 			}
-			$rows = $this->db->select($sql);
+			$rows = $this->select($sql);
 			if ($rows->count() != 0) {
 				$errors[] = new FieldError('username', T("Username already taken by another user"));
 			}

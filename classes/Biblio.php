@@ -26,8 +26,9 @@ class Biblio {
 	}
 	##----------------------##
 	private function fetch_biblio () {
-		$bib = new Biblios;
-		$rslt = $bib->getOne($this->bibid);
+		$ptr = new Biblios;
+		$rslt = $ptr->getOne($this->bibid);
+		$this->hdrFlds['bibid'] = $rslt['bibid'];
 		$this->hdrFlds['collection_cd'] = $rslt['collection_cd'];
 		$this->hdrFlds['material_cd'] = $rslt['material_cd'];
 		$this->hdrFlds['opac_flg'] = $rslt['opac_flg'];

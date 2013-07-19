@@ -26,20 +26,20 @@ class ctrQuery {
 
 	function getNmbrPt1($theName) {
 		$sql .= "select max(theName) as name from cutter where theName < '" . $theName . "'";
-		if (! $this->db->select1($sql, "Error in trying to match name in cutter table.")) {
+		if (! $this->select1($sql, "Error in trying to match name in cutter table.")) {
 			return "???";	
 		} else {
-			$array = $this->db->fetchRow();
+			$array = $this->fetchRow();
 			$name = $array['name'];	
 			return $name;
 		}
 	}
 	function getNmbrPt2($theName) {
 		$sql = "select theNmbr from cutter where theName = '" . $theName . "'";
-		if (! $this->db->select01($sql, "Error in trying to fetch number from cutter table.")) {
+		if (! $this->select01($sql, "Error in trying to fetch number from cutter table.")) {
 			return "XXX";	
 		} else {
-			$array = $this->db->fetchRow();
+			$array = $this->fetchRow();
 			$nmbr = $array['theNmbr'];
 			return $nmbr;
 		}
@@ -58,13 +58,13 @@ function getCutter ($aName) {
 	$ctrQ->setFields(array('theName'=>'string', 'theNmbr'=>'number'));
 	$ctrQ->setKey('theName');
 
-	$sql = $ctrQ->db->mkSQL("SELECT MAX(`theName`) as name FROM `cutter` WHERE `theName` < '$aName'" );
-	$rslt1 = $ctrQ->db->select1($sql);
+	$sql = $ctrQ->mkSQL("SELECT MAX(`theName`) as name FROM `cutter` WHERE `theName` < '$aName'" );
+	$rslt1 = $ctrQ->select1($sql);
 	$name = $rslt1[name];
 	//echo "using key '$name' <br />";
 
-	$sql = $ctrQ->db->mkSQL("SELECT `theNmbr` FROM `cutter` WHERE `theName` = '$name'" );
-	$rslt2 = $ctrQ->db->select1($sql);
+	$sql = $ctrQ->mkSQL("SELECT `theNmbr` FROM `cutter` WHERE `theName` = '$name'" );
+	$rslt2 = $ctrQ->select1($sql);
   return substr($aName,0,1) . $rslt2[theNmbr];
 }
 ?>

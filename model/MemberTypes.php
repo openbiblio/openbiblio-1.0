@@ -7,7 +7,6 @@ require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class MemberTypes extends DmTable {
 	public function __construct() {
-//		$this->DmTable();
 		parent::__construct();
 		$this->setName('mbr_classify_dm');
 		$this->setFields(array(

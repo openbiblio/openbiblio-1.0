@@ -125,6 +125,11 @@ var mf = {
 	  $('#biblioDiv').hide();
 	},
 
+	showMsg: function (msg) {
+		$('#msgArea').html(msg);
+		$('#msgDiv').show();
+	},
+
 	//------------------------------
 	fetchOpts: function () {
 	  $.getJSON(mf.url,{mode:'getOpts'}, function(jsonData){
@@ -240,7 +245,7 @@ var mf = {
 			} else {
 				mf.mbr = $.parseJSON(jsonInpt);
 				if (mf.mbr == null) {
-	  			$('#msgArea').html('<?php echo T("Nothing Found") ?>');
+	  			mf.showMsg('<?php echo T("Nothing Found") ?>');
 				}
 				else {
 					mf.multiMode = false;
@@ -291,22 +296,23 @@ var mf = {
 				var html = '';
 				for (var nCpy in mf.cpys) {
 					var cpy = mf.cpys[nCpy],
-							outDate = cpy.booking.out_dt.split(' ')[0],
-							dueDate = cpy.booking.due_dt.split(' ')[0],
-							daysLate = cpy.booking.days_late,
-							owedAmnt = ((cpy.booking.owed).toFixed(2)).toLocaleString(),
-							lateFee = (cpy.booking.fee).toLocaleString();
+							outDate = cpy.out_dt,
+							dueDate = cpy.due_dt,
+							daysLate = cpy.daysLate,
+							lateFee = (cpy.lateFee).toLocaleString(),
+							owed = (cpy.daysLate*cpy.lateFee).toFixed(2),
+							owedAmnt = owed.toLocaleString();
 					html += '<tr>'
 					html += '	<td>'+outDate+'</td>';
 					//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
-					html += '	<td>'+cpy.material_type+'	</td>\n';
-					html += '	<td>'+cpy.barcode_nmbr+'</td>';
+					html += '	<td>'+cpy.media+'	</td>\n';
+					html += '	<td>'+cpy.barcode+'</td>';
 					html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
 					html += '	<td>'+dueDate+'</td>';
 					html += '	<td class="number">'+daysLate+'@'+lateFee+'</td>';
 					html += '	<td class="number">'+owedAmnt+'</td>';
 					html += '</tr>\n';
-					ttlOwed += parseFloat(cpy.booking.owed);
+					ttlOwed += owed;
 				}
 				mf.nmbrOnloan = nCpy+1;
 				$('#chkOutList tBody').html(html);
@@ -319,7 +325,7 @@ var mf = {
 					$('#chkOutMsg').html('<?php echo T("NotAllowed");?>').show();
 				}
 				$('#maxFine').html((Number(maxFines).toFixed(2)).toLocaleString());
-				$('#ttlOwed').html((ttlOwed.toFixed(2)).toLocaleString());
+				$('#ttlOwed').html((Number(ttlOwed).toFixed(2)).toLocaleString());
 
 				$('#chkOutList a').on('click',null,function (e) {
 					e.preventDefault(); e.stopPropagation();
@@ -340,8 +346,7 @@ var mf = {
 			} else {
 				mf.holds = $.parseJSON(jsonInpt);
 				if (! mf.holds) {
-	  			$('#msgArea').html('<?php echo T("Nothing Found") ?>');
-					$('#msgDiv').show();
+	  			mf.showMsg('<?php echo T("Nothing Found") ?>');
 				}
 				else {
 					var html = '';
@@ -434,12 +439,10 @@ var mf = {
 		$.post(mf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 			else {
-				$('#msgArea').html('Added!');
-				$('#msgDiv').show().hide(10000);
+				mf.showMsg('Added!');
 				mf.doShowMbrAcnt();
 			}
 		});
@@ -452,12 +455,10 @@ var mf = {
   	$.post(mf.url, parms, function(response){
 			if (($.trim(response)).substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 			else {
-				$('#msgArea').html('transaction deleted!');
-				$('#msgDiv').show().hide(10000);
+				mf.showMsg('transaction deleted!');
 		  	//mf.rtnToMbr();
 				mf.doShowMbrAcnt();
 			}
@@ -470,19 +471,21 @@ var mf = {
 		$('#msgDiv').hide();
 
 		var barcd = $.trim($('#ckoutBarcd').val());
+		if (barcd == '') {
+      mf.showMsg('Please enter a number');
+			return false;
+		}
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');
 		$('#ckoutBarcd').val(barcd); // redisplay expanded value
 
 		var parms = {'mode':'doCheckout', 'mbrid':mf.mbr.mbrid, 'barcodeNmbr':barcd, 'calCd':mf.calCd };
 		$.post(mf.url, parms, function(response) {
 			if (response == '') {
-				$('#msgArea').html('Checkout Completed!');
-				$('#msgDiv').show().hide(5000);
+				mf.showMsg('Checkout Completed!');
 				$('#ckoutBarcd').val('')
 				mf.showOneMbr(mf.mbr);  // refresh member with latest checkout list
 			} else {
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 		});
 		return false;
@@ -497,14 +500,11 @@ var mf = {
 		var parms = {'mode':'doHold', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
 		$.post(mf.url, parms, function(response) {
 			if (response == '') {
-					$('#msgArea').html('Hold Completed!');
-					$('#msgDiv').show().hide(5000);
-					$('#holdBarcd').val('')
-					mf.showOneMbr(mf.mbr)
-				} else {
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				}
+				mf.showMsg('Hold Completed!');
+				$('#holdBarcd').val('')
+				mf.showOneMbr(mf.mbr)
+			} else {
+				mf.showMsg(response);
 			}
 		});
 		return false;
@@ -519,12 +519,10 @@ var mf = {
   	$.post(mf.url, parms, function(response){
 			if (($.trim(response)).substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 			else {
-				$('#msgArea').html('hold deleted!');
-				$('#msgDiv').show().hide(10000);
+				mf.showMsg('hold deleted!');
 				mf.showOneMbr(mf.mbr)
 			}
 		});
@@ -575,8 +573,7 @@ var mf = {
 			$('#custom_'+name).val(mbr[name]);
 		});
 			
-		$('#msgArea').html('Updated!');
-		$('#mbrDiv').hide();
+		mf.showMsg('Updated!');
 		$('#editDiv').show();
 	},
 	doShowMbrAdd: function () {
@@ -592,7 +589,7 @@ var mf = {
 		$('#searchDiv').hide();
 		$('#editHdr').html('<?php T("Add New Member"); ?>');
 		$('#editMode').val('addNewMember');
-		$('#msgArea').html('Added!');
+		mf.showMsg('Added!');
 		$('#editDiv').show();
 	},
 	
@@ -602,15 +599,14 @@ var mf = {
 		$.post(mf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 			else {
 				if (response.substr(0,1)=='1'){
 					$('#updateMsg').html('<?php echo T("Added");?>');
 					$('#updateMsg').show();
 				}
-				$('#msgArea').html('Added!');
+				mf.showMsg('Added!');
 				$('#msgDiv').show().hide(10000);
 			}
 		});
@@ -624,16 +620,14 @@ var mf = {
 		$.post(mf.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 			else {
 				if (response.substr(0,1)=='1'){
 					$('#updateMsg').html('<?php echo T("Updated");?>');
 					$('#updateMsg').show();
 				}
-				//$('#msgArea').html('Updated!');
-				$('#msgDiv').show().hide(10000);
+				mf.showMsg('Updated!');
 				mf.doFetchMember();
 				$('#editDiv').hide();
 			}
@@ -654,12 +648,10 @@ var mf = {
   	$.post(mf.url, parms, function(response){
 			if (($.trim(response)).substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				mf.showMsg(response);
 			}
 			else {
-				$('#msgArea').html('member deleted!');
-				$('#msgDiv').show().hide(10000);
+				mf.showMsg('member deleted!');
 		  	mf.rtnToSrch();
 			}
 		});

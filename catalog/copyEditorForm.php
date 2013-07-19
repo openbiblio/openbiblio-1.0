@@ -4,7 +4,6 @@
  */
  
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-	//require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/CopyStatus.php"));	
 ?>
 
@@ -59,9 +58,8 @@
 		</tr>
 		<!-- Custom fields /-->
 		<?php
-			$BCQ = new BiblioCopyFields;
-			$rows = $BCQ->getAll();
-			//while ($row = $rows->fetch_assoc()) {
+			$BCF = new BiblioCopyFields;
+			$rows = $BCF->getAll();
 			while ($row = $rows->fetch_assoc()) {
 				echo "<tr>";
 				echo "<td nowrap=\"true\" valign=\"top\"><label for=\"copyCustom_". $row["code"] . "\">" . T($row["description"]) . "</td>";

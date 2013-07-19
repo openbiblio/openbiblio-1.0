@@ -20,32 +20,32 @@ class OBsession {
 		return true;
 	}
 	function read($id) {
-		$sql = $this->db->mkSQL("select data from php_sess where id=%Q ", $id);
-		$row = $this->db->select01($sql);
+		$sql = $this->mkSQL("select data from php_sess where id=%Q ", $id);
+		$row = $this->select01($sql);
 		if ($row) {
 			return $row['data'];
 		}
 		return "";
 	}
 	function write($id, $sess_data) {
-		$sql = $this->db->mkSQL("replace into php_sess values (%Q, sysdate(), %Q) ",
+		$sql = $this->mkSQL("replace into php_sess values (%Q, sysdate(), %Q) ",
 			$id, $sess_data);
-		$this->db->act($sql);
+		$this->act($sql);
 		return true;
 	}
 	function destroy($id) {
-		$sql = $this->db->mkSQL("delete from php_sess where id=%Q ", $id);
-		$this->db->act($sql);
-		$this->db->mkSQL("delete from cart where sess_id=%Q ", $id);
-		$this->db->act($sql);
+		$sql = $this->mkSQL("delete from php_sess where id=%Q ", $id);
+		$this->act($sql);
+		$this->mkSQL("delete from cart where sess_id=%Q ", $id);
+		$this->act($sql);
 		return true;
 	}
 	function gc($maxlifetime) {
-		$sql = $this->db->mkSQL("delete from php_sess where "
+		$sql = $this->mkSQL("delete from php_sess where "
 			. "unix_timestamp()-unix_timestamp(last_access_dt) > %N ",
 			$maxlifetime);
-		$this->db->act($sql);
-		$this->db->act("delete cart from cart left join php_sess "
+		$this->act($sql);
+		$this->act("delete cart from cart left join php_sess "
 			. "on sess_id=php_sess.id "
 			. "where php_sess.id is NULL ");
 		return true;

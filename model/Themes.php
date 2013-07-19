@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Themes extends DBTable {
-	function Themes() {
-		$this->DBTable();
+	public function __constuct() {
+		parent::__construct();
 		$this->setName('theme');
 		$this->setFields(array(
 			'themeid'=>'number',

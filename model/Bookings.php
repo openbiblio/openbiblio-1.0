@@ -67,19 +67,19 @@ class Bookings extends CoreTable {
 		if ($mbrid !== NULL) {
 			$sql .= ', booking_member bkm ';
 		}
-		$sql .= $this->db->mkSQL('where ifnull(bk.out_dt, bk.book_dt) <= %Q '
+		$sql .= $this->mkSQL('where ifnull(bk.out_dt, bk.book_dt) <= %Q '
 			. 'and ifnull(bk.ret_dt, greatest(bk.due_dt, sysdate())) >= %Q ',
 			$before, $since);
 		if ($bibid !== NULL) {
-			$sql .= $this->db->mkSQL('and bk.bibid=%N ', $bibid);
+			$sql .= $this->mkSQL('and bk.bibid=%N ', $bibid);
 		}
 		if ($mbrid !== NULL) {
-			$sql .= $this->db->mkSQL('and bk.bookingid=bkm.bookingid '
+			$sql .= $this->mkSQL('and bk.bookingid=bkm.bookingid '
 				. 'and bkm.mbrid=%N ', $mbrid);
 		}
-		$this->db->act($sql);
+		$this->act($sql);
 		# MySQL doesn't support self joins on temp tables
-		$this->db->act('create temporary table bk2 type=heap select * from bk1');
+		$this->act('create temporary table bk2 type=heap select * from bk1');
 		$sql = 'create temporary table overlaps type=heap '
 					 . 'select c.date, c.open, bk1.bookingid, '
 					 . 'count(distinct bk2.bookingid) as noverlaps '
@@ -90,12 +90,12 @@ class Bookings extends CoreTable {
 					 . 'and bk2.retd >= c.date + interval 1 day '
 					 . 'and bk1.outd < bk2.retd '
 					 . 'and bk2.outd < bk1.retd ';
-		$sql .= $this->db->mkSQL('where c.calendar=%N '
+		$sql .= $this->mkSQL('where c.calendar=%N '
 			. 'and c.date >= %Q and c.date <= %Q ',
 			$calendar, $since, $before);
 		$sql .= 'group by c.date, bk1.bookingid ';
-		$this->db->act($sql);
-		return $this->db->select('select date, open, max(noverlaps) as ncopies '
+		$this->act($sql);
+		return $this->select('select date, open, max(noverlaps) as ncopies '
 			. 'from overlaps '
 			. 'group by date order by date ');
 	}
@@ -247,8 +247,10 @@ class Bookings extends CoreTable {
 			$this->act($sql);
 		}
 	}
+
 	function insert_el($rec, $confirmed=false) {
 		$this->lock();
+//echo"booking inset_el, rec====>";print_r($rec);echo"\n";
 		list($id, $errs) = parent::insert_el($rec, $confirmed);
 		if ($errs) {
 			$this->unlock();
@@ -258,28 +260,29 @@ class Bookings extends CoreTable {
 		$this->unlock();
 		return array($id, NULL);
 	}
+
 	function update_el($rec, $confirmed=false) {
-		$this->db->lock();
+		$this->lock();
 		$errs = parent::update_el($rec, $confirmed);
 		if ($errs) {
-			$this->db->unlock();
+			$this->unlock();
 			return $errs;
 		}
 		if (isset($rec['mbrids'])) {
 			$this->_putMbrids($rec['bookingid'], $rec['mbrids']);
 		}
-		$this->db->unlock();
+		$this->unlock();
 		return NULL;
 	}
 	function deleteOne($bookingid) {
-		$this->db->lock();
+		$this->lock();
 		# Older MySQL doesn't support DELETE using multiple tables.
 		$sql = 'select s.histid, s.bibid, s.copyid, c.histid as curr_histid '
 			. 'from booking b, biblio_status_hist s, biblio_copy c '
 			. 'where (s.histid=b.out_histid or s.histid=b.ret_histid) '
 			. 'and c.copyid=s.copyid '
-			. $this->db->mkSQL(' and b.bookingid=%N ', $bookingid);
-		$rows = $this->db->select($sql);
+			. $this->mkSQL(' and b.bookingid=%N ', $bookingid);
+		$rows = $this->select($sql);
 		if ($rows->num_rows != 0) {
 			$ids = array();
 			while ($r = $rows->fetch_assoc()) {
@@ -291,25 +294,25 @@ class Bookings extends CoreTable {
 						'status_cd'=>OBIB_STATUS_IN,
 					));
 				}
-				$ids[] = $this->db->mkSQL('%N', $r['histid']);
+				$ids[] = $this->mkSQL('%N', $r['histid']);
 			}
 			$sql = 'delete from biblio_status_hist where histid in ( '
 						 . implode(',', $ids).') ';
-			$this->db->act($sql);
+			$this->act($sql);
 		}
-		$sql = $this->db->mkSQL('DELETE FROM booking_member '
+		$sql = $this->mkSQL('DELETE FROM booking_member '
 			. 'WHERE bookingid=%N ', $bookingid);
-		$this->db->act($sql);
+		$this->act($sql);
 		parent::deleteOne($bookingid);
-		$this->db->unlock();
+		$this->unlock();
 	}
 	function deleteMatches($fields) {
-		$this->db->lock();
+		$this->lock();
 		$rows = $this->getMatches($fields);
 		while ($r = $rows->fetch_assoc()) {
 			$this->deleteOne($r['bookingid']);
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 	/* Takes a bookingid, a copy barcode, and optionally a list of
 	 * copyids already set to be checked out in this transaction,
@@ -338,19 +341,21 @@ class Bookings extends CoreTable {
 				$err = new Error(T("modelBookingsBarcodeNoMatch"));
 				break;
 			}
-			if ($booking['out_histid']) {
+			if (!empty($booking['out_histid'])) {
 				$err = new Error(T("modelBookingsAlreadyCheckedOut"));
 				break;
 			}
 			$booking['mbrids'] = $this->_getMbrids($booking['bibid']);
 
-			$history = new History;
-			$status = $history->getOne($copy['histid']);
-			if ($status['status_cd'] == OBIB_STATUS_OUT) {
+//			$history = new History;
+//			$status = $history->getOne($copy['histid']);
+//			$status = $history->maybeGetOne($this->histid);
+//			if ($status['status_cd'] == OBIB_STATUS_OUT) {
+			if ($this->statusCd == OBIB_STATUS_OUT) {
 				$err = new Error(T("modelBookingsCopyUnavailable", array('barcode'=>$barcode)));
 				break;
 			}
-			if (in_array($copy['copyid'], $out_copyids)) {
+			if (in_array($this->copyid, $out_copyids)) {
 				$err = new Error(T("modelBookingsSetForOtherBooking", array('barcode'=>$barcode)));
 				break;
 			}
@@ -373,7 +378,7 @@ class Bookings extends CoreTable {
 
 			# Check if collection allows checkout - added here as it seem the right place - LJ
 			$collections = new Collections;
-			$coll = $collections->getByBibid($copy['bibid']);
+			$coll = $collections->getByBibid($this->bibid);
 			if ($coll['days_due_back'] <= 0) {
 				$err = new Error(T("modelBookingsNotAvailable"));
 				break;
@@ -381,7 +386,7 @@ class Bookings extends CoreTable {
 
 			# Check wherether the user can take out more books (not sure if I understand this) - LJ
 			$MediaTypes = new MediaTypes();
-			$material = $MediaTypes->getByBibid($copy['bibid']);
+			$material = $MediaTypes->getByBibid($this->bibid);
 			$copies = new Copies;
 			$acct = new MemberAccounts;
 			$members = new Members();
@@ -407,7 +412,7 @@ class Bookings extends CoreTable {
 		if ($err) {
 			return array(NULL, NULL, $err);
 		} else {
-			return array($copy['bibid'], $copy['copyid'], NULL);
+			return array($this->bibid, $this->copyid, NULL);
 		}
 	}
 
@@ -420,8 +425,9 @@ class Bookings extends CoreTable {
 		}
 		$history = new History;
 		$history->insert(array(
-			'bibid'=>$bibid,
-			'copyid'=>$copyid,
+			'histid'=>$this->histid,
+			'bibid'=>$this->bibid,
+			'copyid'=>$this->copyid,
 			'status_cd'=>OBIB_STATUS_OUT,
 		));
 		$this->unlock();
@@ -429,7 +435,7 @@ class Bookings extends CoreTable {
 	}
 
 	function checkoutBatch_el($checkouts) {
-		$this->db->lock();
+		$this->lock();
 		$bibids = array();
 		$copyids = array();
 		$errors = array();
@@ -444,7 +450,7 @@ class Bookings extends CoreTable {
 			}
 		}
 		if (!empty($errors)) {
-			$this->db->unlock();
+			$this->unlock();
 			return $errors;
 		}
 		$history = new History;
@@ -456,7 +462,7 @@ class Bookings extends CoreTable {
 				'bookingid'=>$bookingid,
 			));
 		}
-		$this->db->unlock();
+		$this->unlock();
 		return array();
 	}
 
@@ -465,20 +471,32 @@ class Bookings extends CoreTable {
 		$copies = new Copies;
 		$copy = $copies->getByBarcode($barcode);
 		if (!$copy) {
-			$this->db->unlock();
-			return T("No copy with barcode %barcode%", array('barcode'=>$barcode));
+			$this->unlock();
+			return T("No copy with barcode")." ".$barcode;
 		}
+
+		$this->copyid = $copy['copyid'];
+		$this->histid = $copy['histid'];
+		$this->bibid = $copy['bibid'];
+
 		$history = new History;
-		$status = $history->getOne($copy['histid']);
-		if($status['status_cd'] == OBIB_STATUS_NOT_ON_LOAN){
+		$status = $history->maybeGetOne($this->histid);
+		if ($status == NULL) {
+			## no entry found, need an initial entry for reports
+			$status['status_cd'] = OBIB_DEFAULT_STATUS;
+			$rslt = $history->insert(array(
+				'bibid'=>$this->bibid,
+				'copyid'=>$this->copyid,
+				'status_cd'=>$status['status_cd'],
+			));
+		} else if($status['status_cd'] == OBIB_STATUS_NOT_ON_LOAN){
 			return new Error(T("modelBookingsNotOnLoan", array("barcode"=>$barcode)));
-		}
-		if ($status['status_cd'] == OBIB_STATUS_ON_HOLD) {
+		} else if ($status['status_cd'] == OBIB_STATUS_ON_HOLD) {
 			include_once(REL(__FILE__, "../model/Holds.php"));
 			$holds = new Holds;
-			if ($hold = $holds->getFirstHold($copy['copyid'])) {
+			if ($hold = $holds->getFirstHold($this->copyid)) {
 				if (!in_array($hold['mbrid'], $mbrids)) {
-					$this->db->unlock();
+					$this->unlock();
 					return new Error(T("modelBookingsHeldForOtherMember", array("barcode"=>$barcode)));
 				} else {
 					$holds->deleteOne($hold['holdid']);
@@ -487,20 +505,23 @@ class Bookings extends CoreTable {
 		}
 
 		$collections = new Collections;
-		$coll = $collections->getByBibid($copy['bibid']);
-		$daysDueBack = $coll['days_due_back'];
-		if ($daysDueBack <= 0) {
-			$this->db->unlock();
+		$coll = $collections->getByBibid($this->bibid);
+		$loanDuration = $coll['days_due_back'];
+		if ($loanDuration <= 0) {
+			$this->unlock();
 			return new Error(T("modelBookingsNotAvailable", array("barcode"=>$barcode)));
 		}
-		list($book_dt, $err) = Date::read_e('now');
+
+		## get current date
+		list($today, $err) = Date::read_e('now');
 		if ($err) {
 			Fatal::internalError(T("Unexpected date error: ").$err->toStr());
 		}
+		$this->outDate = $today;
 
-		## assure due date is a 'library open' day
+		## assure potential due date is a 'library open' day
+		$due_dt = Date::addDays($this->outDate, $loanDuration);
 		$cal = new Calendars;
-		$due_dt = Date::addDays($book_dt, $daysDueBack);
 		$row = $cal->isOpen($calCd, $due_dt);
 		$status = $row['open'];
   	if ($status == 'No') {
@@ -510,29 +531,63 @@ class Bookings extends CoreTable {
 				$status = $row['open'];
 			} while ($status == 'No');
 		}
+    $this->due_dt = $due_dt;
 
-		## all OK, begin DB update for checking out
-		list($bookingid, $err) = $this->insert_el(array("book_dt" => $book_dt, "bibid" => $copy['bibid'], "bidid2" => $bidid, "due_dt" => $due_dt, "mbrids" => $mbrids));
+		## all OK, begin DB update for checkout
+		list($this->bookingid, $err) = $this->insert_el(
+					array("book_dt" =>$today,
+								"bibid" =>$this->bibid,
+								"out_dt" =>$this->outDate,
+								"out_histid" =>$this->histid,
+								"due_dt" =>$this->due_dt,
+								"mbrids" =>$mbrids,
+		));
 		if ($err) {
 			$this->unlock();
 			return $err;
 		}
-		$err = $this->checkout_e($bookingid, $barcode);
+
+		$this->statusCd = OBIB_STATUS_OUT;
+		list($this->histid, $err) = $history->insert_el(array(
+			'bibid'=>$this->bibid,
+			'copyid'=>$this->copyid,
+			'status_cd'=>$this->statusCd,
+			'bookingid'=>$this->bookingid,
+		));
 		if ($err) {
-			$this->deleteOne($bookingid);
 			$this->unlock();
 			return $err;
 		}
+
+		$copies = new Copies;
+		$copies->update(array(
+			'copyid'=>$this->copyid,
+			'histid'=>$this->histid,
+		));
+
+		$this->update(array(
+			"bookingid"=>$this->bookingid,
+			"out_histid" =>$this->histid,
+			"out_dt" =>$this->outDate,
+      "mbrids" =>$mbrids,
+		));
+
+	//	$err = $this->checkout_e($bookingid, $barcode);
+	//	if ($err) {
+	//		$this->deleteOne($bookingid);
+	//		$this->unlock();
+	//		return $err;
+	//	}
+
 		$this->unlock();
-
 		return NULL;
 	}
 	function removeMember($bookingid, $mbrid) {
-		$this->db->lock();
+		$this->lock();
 		$b = $this->getOne($bookingid);
 		$idx = array_search($mbrid, $b['mbrids']);
 		if ($idx === false) {
-			$this->db->unlock();
+			$this->unlock();
 			return;
 		}
 		unset($b['mbrids'][$idx]);
@@ -541,7 +596,7 @@ class Bookings extends CoreTable {
 		} else {
 			$this->update($b, true);
 		}
-		$this->db->unlock();
+		$this->unlock();
 	}
 }
 
@@ -555,9 +610,9 @@ class BookingsIter extends Iter {
 		$row = $this->rows->fetch_assoc();
 		if (!$row)
 			return NULL;
-		$sql = $this->db->mkSQL('SELECT * FROM booking_member '
+		$sql = $this->mkSQL('SELECT * FROM booking_member '
 			. 'WHERE bookingid=%N ', $row['bookingid']);
-		$rs = $this->db->select($sql);
+		$rs = $this->select($sql);
 		$row['mbrids'] = array();
 		while ($r = $rs->fetch_assoc())
 			$row['mbrids'][] = $r['mbrid'];

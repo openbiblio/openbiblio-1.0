@@ -29,7 +29,7 @@ class SrchDb {
 					." WHERE (bc.`barcode_nmbr` = '".$barcd."')"
 					."	 AND (b.`bibid` = bc.`bibid`)";
 		//echo "sql=$sql<br />";
-		$rcd = $this->db->select01($sql);
+		$rcd = $this->select01($sql);
 		$this->barCd = $barcd;
 		$this->bibid = $rcd[bibid];
 		return $rcd;
@@ -130,7 +130,7 @@ class SrchDb {
 		
 		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
 		//echo "sql=$sql<br />";
-		$rows = $this->db->select($sql);
+		$rows = $this->select($sql);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = $row[bibid];
 		}
@@ -147,7 +147,7 @@ class SrchDb {
 					."	 AND (cd.`code` = b.`collection_cd`)"
 					."	 AND (cc.`code` = b.`collection_cd`)";
 		//echo "sql=$sql<br />\n";
-		$rcd = $this->db->select01($sql);
+		$rcd = $this->select01($sql);
 
 		$this->createDt = $rcd['create_dt'];
 		$this->daysDueBack = $rcd['days_due_back'];
@@ -212,7 +212,7 @@ class SrchDb {
 				 . "	 AND (m.`subfield_cd` = bs.`subfield_cd`) "
 				 . " ORDER BY m.position ";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->select($sql);
+		$rows = $this->select($sql);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = json_encode($row);
 			//$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes($row[value]) . "'"
@@ -293,7 +293,7 @@ class SrchDb {
 	}
 	## ========================= ##
 	function insertCopy($bibid,$copyid) {
-		$this->db->lock();
+		$this->lock();
 		if (empty($_POST['copy_site'])) {
 			$theSite = $_SESSION['current_site'];
 		} else {
@@ -308,24 +308,24 @@ class SrchDb {
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->act($sql);
+		$rows = $this->act($sql);
 		
-		$copyid = $this->db->getInsertID();
+		$copyid = $this->getInsertID();
 		$sql = "Insert `biblio_status_hist` SET "
 		      ."`bibid` = $bibid,"
 		      ."`copyid` = $copyid,"
 		      ."`status_cd` = '$_POST[status_cd]',"
 		      ."`status_begin_dt` = NOW()";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->act($sql);
-		$histid = $this->db->getInsertID();
+		$rows = $this->act($sql);
+		$histid = $this->getInsertID();
 		
 		$sql = "Update `biblio_copy` SET "
 		      ."`histid` = '$histid' "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->act($sql);
-		$this->db->unlock();
+		$rows = $this->act($sql);
+		$this->unlock();
 		
 		// Update custom fields if set
 		$copies = new Copies;
@@ -342,26 +342,26 @@ class SrchDb {
 	}
 	## ========================= ##
 	function updateCopy($bibid,$copyid) {
-		$this->db->lock();
+		$this->lock();
 		$sql = "UPDATE `biblio_copy` SET "
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]', "
 		      ."`copy_desc` = '$_POST[copy_desc]', "
 		      ."`siteid` = '$_POST[siteid]' "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->act($sql);
+		$rows = $this->act($sql);
 
 		$sql = "SELECT `status_cd` FROM `biblio_status_hist` "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)";
 		//echo "sql=$sql<br />";
-		$rcd = $this->db->select1($sql);
+		$rcd = $this->select1($sql);
 		if ($rcd[status_cd] != $_POST[status_cd]) {
 			$sql = "UPDATE `biblio_status_hist` SET "
 			      ."`status_cd` = '$_POST[status_cd]',"
 			      ."`status_begin_dt` = NOW() "
 						." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 			//echo "sql=$sql<br />";
-			$rows = $this->db->act($sql);
+			$rows = $this->act($sql);
 		}
 		// Update custom fields if set
 		$copies = new Copies;
@@ -375,7 +375,7 @@ class SrchDb {
 		}		
 		$copies->setCustomFields($copyid, $custom);		
 		
-		$this->db->unlock();
+		$this->unlock();
 		// Changed this to nothing, so any message/output is taken as an error message - LJ
 		// Changed to specific success text to be looked for in JS - FL
 		echo "!!success!!";
@@ -383,16 +383,16 @@ class SrchDb {
 	}
 	## ========================= ##
 	function deleteCopy($bibid,$copyid) {
-		$this->db->lock();
+		$this->lock();
 		$sql = "DELETE FROM `biblio_copy` "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->act($sql);
+		$rows = $this->act($sql);
 		$sql = "DELETE FROM `biblio_copy_fields` "
 					." WHERE (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
-		$rows = $this->db->act($sql);
-		$this->db->unlock();
+		$rows = $this->act($sql);
+		$this->unlock();
 		return T("Delete completed");
 	}
 	## ========================= ##

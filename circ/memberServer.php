@@ -38,6 +38,7 @@
 		$sites = new Sites;
 
 	require_once(REL(__FILE__, "../classes/Biblio.php"));
+	require_once(REL(__FILE__, "../classes/Copy.php"));
 
 	#****************************************************************************
 	function mbrArray() {
@@ -87,16 +88,6 @@
 		$type = $transtypes->getSelect();
 		echo json_encode($type);
 		break;
-/*
-	case 'getMediaType':
-		break;
-	case 'getHistory':
-		break;
-	case 'getBiblios':
-		break;
-	case 'getBookings':
-		break;
-*/
 	case 'getSite':
 		$site = $sites->getOne($_GET['siteid']);
     echo json_encode($site);
@@ -160,37 +151,23 @@
 
 	//// ====================================////
 	case 'getChkOuts':
-		$types = $mediaTypes->getAll();
-		$mediaTypeDm = array();
-		$mediaImageFiles = array();
-		while ($type = $types->fetch_assoc()) {
-			$mediaTypeDm[$type['code']] = $type['description'];
-			$mediaImageFiles[$type['code']] = $type['image_file'];
-		}
-
-		$checkouts = $copies->getMemberCheckouts($_GET['mbrid']);
 		$chkOutList = array();
-		while ($copy = $checkouts->fetch_assoc()) {
+		$cpys = $copies->getMemberCheckouts($_REQUEST['mbrid']);
+		while ($row = $cpys->fetch_assoc()) {
+			$ptr = new Copy($row['copyid']);
+			$copy = $ptr->getData();
+
 			$biblio = new Biblio($copy['bibid']);
 			$bibData = $biblio->getData();
-			$marc = $bibData['marc'];
-			$hdr = $bibData['hdr'];
-			$a = $marc['240$a'];
-			$b = $marc['245$a'];
-			$c = $marc['245$b'];
-			$d = $marc['246$a'];
-			$e = $marc['246$b'];
+			$bibMarc = $bibData['marc'];
+			$bibHdr = $bibData['hdr'];
+			$a = $bibMarc['240$a'];
+			$b = $bibMarc['245$a'];
+			$c = $bibMarc['245$b'];
+			$d = $bibMarc['246$a'];
+			$e = $bibMarc['246$b'];
 			if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
 			if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
-			$copy['status'] = $history->getOne($copy['histid']);
-			$copy['booking'] = $bookings->getByHistid($copy['histid']);
-			$copy['booking']['days_late'] = $bookings->getDaysLate($copy['booking']);
-			$copy['material_img_url'] = '../images/'.$mediaImageFiles[$hdr['material_cd']];
-			$copy['material_type'] = $mediaTypeDm[$hdr['material_cd']];
-			$col = $colls->getOne($hdr['collection_cd']);
-			$fee = $col['daily_late_fee'];
-			$copy['booking']['fee'] = $fee;
-			$copy['booking']['owed'] = $copy['booking']['days_late'] * $fee;
 			$chkOutList[] = $copy;
 		}
 	  echo json_encode($chkOutList);

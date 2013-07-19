@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
 class BiblioCopyFields extends DmTable {
-	function BiblioCopyFields() {
-		$this->DmTable();
+	public function __construct() {
+		parent::__construct();
 		$this->setName('biblio_copy_fields_dm');
 		$this->setFields(array(
 			'code'=>'string',
@@ -15,6 +15,7 @@ class BiblioCopyFields extends DmTable {
 			'default_flg'=>'string',
 		));
 		$this->setKey('code');
+echo "BCF const, names=".$this->name."\n";
 	}
 	function validate_el($rec, $insert) {
 		$errors = array();

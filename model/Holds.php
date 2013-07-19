@@ -7,7 +7,6 @@ require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Holds extends DBTable {
 	public function __construct() {
-//		$this->DBTable();
 		parent::__construct();
 		$this->setName('biblio_hold');
 		$this->setFields(array(
@@ -25,9 +24,9 @@ class Holds extends DBTable {
 	}
 	function getFirstHold($copyid) {
 		$sql = "SELECT * FROM biblio_hold "
-					 . $this->db->mkSQL("WHERE copyid=%N ", $copyid)
+					 . $this->mkSQL("WHERE copyid=%N ", $copyid)
 					 . "ORDER BY hold_begin_dt LIMIT 1 ";
-		return $this->db->select01($sql);
+		return $this->select01($sql);
 	}
 	function insert_el($rec, $confirmed=false) {
 		$rec['hold_begin_dt'] = date('Y-m-d H:i:s');
@@ -43,7 +42,7 @@ class Holds extends DBTable {
 					 . "WHERE h.histid=c.histid "
 					 . "AND h.status_cd='hld' "
 					 . "AND bh.copyid IS NULL ";
-		$copies = $this->db->select($sql);
+		$copies = $this->select($sql);
 		$history = new History;
 		while ($copy = $copies->fetch_assoc()) {
 			$history->insert(array(
