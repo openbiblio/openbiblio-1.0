@@ -574,7 +574,8 @@ var mf = {
 			$('#custom_'+name).val(mbr[name]);
 		});
 			
-		mf.showMsg('Updated!');
+		//mf.showMsg('Updated!');
+		$('#mbrDiv').hide();
 		$('#editDiv').show();
 	},
 	doShowMbrAdd: function () {
