@@ -392,6 +392,7 @@ var bs = {
 
 	/* ====================================== */
 	getPhoto: function (bibid, dest) {
+		if (bibid === undefined) console.log('Missing bibid in getPhoto()');
 		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 			if (data != null) {
 				var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
@@ -430,7 +431,7 @@ var bs = {
 			html += '		<div class="itemVisual"> \n';
 			/* if wanted, we create space for a possible photo, and fill it if one is found */
 			var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
-			if (showFoto == 'Y'){
+			if ((showFoto == 'Y') && (biblio.bibid !== undefined)){
 				html += '		<div class="photos"  id="photo_'+biblio.bibid+'">\n';
 				html += '			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" '
 												   + 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >';

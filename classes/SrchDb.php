@@ -33,6 +33,7 @@ class SrchDb extends Queryi {
 	 	$rslt['matlCd'] = $this->matlCd;
 	 	$rslt['collCd'] = $this->collCd;
 	 	$rslt['opacFlg'] = $this->opacFlg;
+		$rslt['avIcon'] = $this->avIcon;
 	 	$rslt['data'] = $this->getBiblioDetail();
 	 	return $rslt;
 	}
@@ -168,6 +169,7 @@ class SrchDb extends Queryi {
 		$this->daysDueBack = $rcd['days_due_back'];
 		$this->imageFile =$rcd['image_file'];
 		$this->opacFlg = $rcd['opac_flg'];
+
 		#### following intended to deal with a bad database, these conditions should never happen ####
 		if ( empty($rcd['material_cd'])) {
 			$ptr = new MediaTypes;
@@ -184,7 +186,7 @@ class SrchDb extends Queryi {
 		#### end of bad data fix ####
 		
 		// If the show details OPAC  flag is set get info on the copies	
-		if ($_SESSION['show_detail_opac'] == 'Y'){
+//		if ($_SESSION['show_detail_opac'] == 'Y'){
 			$copies = $this->getCopyInfo($bibid);
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
@@ -210,7 +212,7 @@ class SrchDb extends Queryi {
 				$this->avIcon = "circle_red.png"; // no copy found
 			}
 			$rcd['avIcon'] = $this->avIcon;
-		}
+//		}
 		return $rcd;
 	}
 	## ========================= ##
