@@ -19,6 +19,7 @@ var rpt = {
 		$('.nextBtn').on('click',null,rpt.getNextPage);
 		$('.prevBtn').on('click',null,rpt.getPrevPage);
 		$('.gobkRptBtn').on('click',null,rpt.rtnToSpecs);
+		$('.gobkBiblioBtn').on('click',null,rpt.rtnToReport);
 
 		$('#reportcriteriaform').on('submit', null, rpt.doSearch);
 
@@ -33,6 +34,7 @@ var rpt = {
 		$('#specsDiv').show();
 		$('#reportDiv').hide();
 		$('#detailDiv').hide();
+		$('#biblioDiv').hide();
 		$('#workDiv').hide();
 		$('#errSpace').hide();
 		$('#prevBtn').disable();
@@ -41,6 +43,10 @@ var rpt = {
 	rtnToSpecs: function () {
 		$('#specsDiv').show();
 		$('#reportDiv').hide();
+	},
+	rtnToReport: function () {
+		$('#reportDiv').show();
+		$('#biblioDiv').hide();
 	},
 
 	//------------------------------
@@ -80,9 +86,23 @@ var rpt = {
 			$('#rptCount').html(parts[0]);
 			$('#report').html(parts[1]);
 
+			$('div#report a').on('click',null,rpt.displayBiblio);
+
 			$('#specsDiv').hide();
 			$('#reportDiv').show();
 		});
+	},
+
+	displayBiblio: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		idis.init(rpt.opts); // be sure all is ready
+		var href = e.currentTarget.href,
+				query = href.split('?')[1],
+				args = obib.urlArgs(query); //parse query into 'named' properties
+		idis.doBibidSearch(args.bibid);
+		$('#biblioDiv').show();
+		$('#reportDiv').hide();
 	},
 }
 $(document).ready(rpt.init);

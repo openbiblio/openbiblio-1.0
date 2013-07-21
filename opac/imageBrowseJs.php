@@ -127,6 +127,7 @@ var img = {
 					$('#biblioDiv').show();
 					$('#fotoDiv').hide();
 				});
+
 			}
 			$('#gallery').show();
 
@@ -147,11 +148,5 @@ var img = {
 
 }
 $(document).ready(img.init);
-
-/*
-INSERT INTO `openbibliowork`.`settings` (
-`name`,`position`,`title`,`type`,`width`,`type_data`,`validator`,`value`,`menu`)
-VALUES ('item_columns','8','Photo Columns,'int',NULL,NULL,NULL,'7','admin');
-*/
 
 </script>
