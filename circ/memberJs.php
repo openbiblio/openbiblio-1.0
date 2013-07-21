@@ -31,7 +31,9 @@ var mf = {
 				
 		$('form').on('submit',null,function (e) {
 			var theId = $('input[type="submit"]:focus').attr('id');
-			//console.log('the btn id is: '+theId);
+//console.log(e);
+//console.log('the btn id is: '+theId);
+//console.log('the btn id is: '+e.currentTarget.id);
 			if (theId != 'logoutBtn') {
 				e.preventDefault();
 				e.stopPropagation();

@@ -273,6 +273,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	-webkit-transform:scale(5.0); -webkit-transform-origin:bottom right;
 	-moz-transform:scale(5.0); 		-moz-transform-origin:bottom right;
 	-ms-transform:scale(5.0); 		-ms-transform-origin:bottom right;
+	-o-transform:scale(5.0);
 	transform:scale(5.0);  				transform-origin:bottom right;
 	}
 
@@ -286,11 +287,11 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
 #biblioFoto.hover:hover {
 	top:20px;
-	-webkit-transform:scale(3.0); -webkit-transform-origin:top left;
-	-moz-transform:scale(3.0); -moz-transform-origin:top left;
-	-ms-transform:scale(3.0); -ms-transform-origin:top left;
+	-webkit-transform:scale(3.0); -webkit-transform-origin:bottom right;
+	-moz-transform:scale(3.0); -moz-transform-origin:bottom right;
+	-ms-transform:scale(3.0); -ms-transform-origin:bottom right;
 	-o-transform:scale(3.0);
-	transform:scale(3.0); transform-origin:top left;
+	transform:scale(3.0); transform-origin:bottom right;
 }
 
 #flagInfo li { list-style:none; }

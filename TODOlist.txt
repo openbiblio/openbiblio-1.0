@@ -72,27 +72,12 @@ update to look/work like CSV import
 - Fred
 Install needs to work for new installations
 
-9 July 2013 - Neil
-After selecting a barcode for the item to check out and select 'check out' the item is not displayed.
-
 14 July 2013 - Fred
 Login does not start with id field having focus.
 
 14 July 2013 - Fred
 Edit Biblio does not allow entering more than one subject line at a time.  Look into
 using more of code from 'new item' server process.
-
-15 Jul 2013 - Neil/Fred
-Member search:
-In Chrome, I cannot search the members list -clicking on search results in nothing happening
-Works with FF and Epiphany.
-
-15 July 2013 - Neil/Fred
-Checkout:
-Checkout does not work - after entering barcode number and pressing "check out" - nothing happens.
-
-15 July 2013 - Fred
-DB Integrity Check is broken, my end only; probably bad DB entries here.
 
 15 July 2013 - Nel/Fred
 There is no good design reason for not allowing editing copy or item data while
@@ -101,7 +86,31 @@ that and doesn't change because the item is unavailable.  Now it could be that
 the code has a hole in it and this was a simple temporary fix.
 But it should not be left in place.
 
+19 July 2013 - Fred
+Online search is not working.
+Z3950 failing due to no YAZ installed.
+SRU/SRW failing due to lack of search results from host.
+
 ###################### Completed, most recent at top #########################
+
+15 Jul 2013 - Neil/Fred, seems to be working now, 20 July
+Member search:
+In Chrome, I cannot search the members list -clicking on search results in nothing happening
+Works with FF and Epiphany.
+
+19 July 2013 - Neil, withdrawn, unable to reproduce 20 July
+Items with 2 or more copies show intermingling of copy info.
+May be caused by use of Inegrity checker following addition of new copies.
+
+15 July 2013 - Fred, withdrawn, unable to duplicate 19 July
+DB Integrity Check is broken, my end only; probably bad DB entries here.
+
+9 July 2013 - Neil, fixed 19 July
+After selecting a barcode for the item to check out and select 'check out' the item is not displayed.
+
+15 July 2013 - Neil/Fred, fixed 19 July
+Checkout:
+Checkout does not work - after entering barcode number and pressing "check out" - nothing happens.
 
 15 July 2013 - Neil/Fred, fixed 17 July
 Checkout:

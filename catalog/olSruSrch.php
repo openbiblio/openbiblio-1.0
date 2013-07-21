@@ -70,22 +70,24 @@ echo "to host=>".nl2br($text)." at port "."$thePort<br />";
 		$info = stream_get_meta_data($fp); 
 		
 		### fetch the response, if any
-echo "preparing to read any responses <br />";
+//echo "preparing to read any responses <br />";
 		$hitList = '';
-    $headerdone = false;
+    $headerDone = false;
     while(!feof($fp) && (!$info['timed_out'])) {
       $line = fgets($fp, 2048);
-echo "line: <br />";print_r($line);echo "<br />";  	
+//echo "line: <br />";print_r($line);echo "<br />";
 	  	$info = stream_get_meta_data($fp);
-echo "info: <br />";print_r($info);echo "<br />";  	
+//echo "info: <br />";print_r($info);echo "<br />";
       if (!line) {
       	echo "Failure while reading response from $theHost <br />";
       	break;
 			} else if (strcmp($line, "\r\n") == 0) {
-      	// read the header
-      	$headerdone = true;
-      } else if ($headerdone) {
-      	// header has been read. now build the contents
+echo "reading the header<br />";
+      	$headerDone = true;
+      } else if ($headerDone && (trim($line) != '')) {
+				$line = trim($line);
+//echo "collecting data<br />";
+echo "line: >>".$line."<<<br />";
       	$hitList .= $line;
       }
       else {
@@ -95,10 +97,9 @@ echo "info: <br />";print_r($info);echo "<br />";
   	}
   	if (!empty($hitList)) $hits[$i] = $hitList;
   	fclose($fp);
-echo "summary:<br />";print_r($hits[$i]);echo "<br />";  	
+echo "summary:<br />";print_r($hits[$i]);echo "<br />";
 	}
 	$ttlHits = 0;
-
 /*
 	### create and parse downloaded XML
 	$xml_parser = xml_parser_create();
