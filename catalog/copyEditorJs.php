@@ -93,7 +93,8 @@ var ced = {
 
 	doCopyEdit: function (e) {
 		$('#editRsltMsg').html('').hide();
-		var copyid = $(this).next().next().val();
+		var btnid = e.currentTarget.id,
+				copyid = btnid.split('-')[1];
 		for (var nCopy in idis.copyJSON) {
 			idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
 		  if (idis.crntCopy['copyid'] == copyid) break;
@@ -128,13 +129,13 @@ var ced = {
 	doCopyUpdate: function (e) {
 		e.stopPropagation();
 		e.preventDefault();
-	  var barcdNmbr = $('#copyBarcode_nmbr').val();
 
 	  // serialize() ignores disabled fields, so cant reliably use it in this case
-	  var copyDesc = $('#copyDesc').val();
-	  var statusCd = $('#copyTbl #status_cd').val();
-	  var siteid = $('#copySite').val();
-		var params = "&mode=updateCopy&bibid="+idis.theBiblio.bibid+"&copyid="+idis.crntCopy.copyid
+	  var barcdNmbr = $('#copyBarcode_nmbr').val(),
+	  		copyDesc = $('#copyDesc').val(),
+	  		statusCd = $('#copyTbl #status_cd').val(),
+	  		siteid = $('#copySite').val(),
+				params = "&mode=updateCopy&bibid="+idis.theBiblio.bibid+"&copyid="+idis.crntCopy.copyid
 					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
 
@@ -163,8 +164,9 @@ var ced = {
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
 	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
-			var copyid = $(this).next().val();
-	    var params = "&mode=deleteCopy&bibid="+idis.theBiblio.bibid+"&copyid="+copyid;
+			var btnid = e.currentTarget.id,
+					copyid = btnid.split('-')[1],
+	    		params = "&mode=deleteCopy&bibid="+idis.theBiblio.bibid+"&copyid="+copyid;
 	  	$.post(ced.url,params, function(response){
 	  	  $('#editRsltMsg').html(response).show();
 	  		idis.fetchCopyInfo(); // refresh copy display

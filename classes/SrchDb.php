@@ -254,7 +254,7 @@ class SrchDb extends Queryi {
 	## ========================= ##
 	function getCopyInfo ($bibid) {
 		$copies = new Copies; // needed later
-		$bcopies = $copies->getMatches(array('bibid'=>$bibid));
+		$bcopies = $copies->getMatches(array('bibid'=>$bibid),'barcode_nmbr');
 		$copy_states = new CopyStatus;
 		$states = $copy_states->getSelect();
 		$history = new History;

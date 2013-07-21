@@ -91,7 +91,23 @@ Online search is not working.
 Z3950 failing due to no YAZ installed.
 SRU/SRW failing due to lack of search results from host.
 
+21 July 2013 - Fred
+Check in does not fully work -
+I can enter a barcode and select "add to shelving cart" button
+- message "added" pops up but no item is listed in the shelving cart section.
+Selecting "mark all" and then "shelve selected items" does not work
+- the item still remains booked out to the member in question.
+
+21 July 2013 - Neil
+I like the new arrangement of the member's details appearing in a box below
+the member's summary information box.
+
 ###################### Completed, most recent at top #########################
+
+21 July 2013 - Neil, fixed 21 July
+In the copy summary table the correct details are shown for each separate barcode.
+However, if I select to edit the copy with the lowest or a lower barcode,
+the edit page lists the details for the most recent copy added (ie highest barcode).
 
 15 Jul 2013 - Neil/Fred, seems to be working now, 20 July
 Member search:

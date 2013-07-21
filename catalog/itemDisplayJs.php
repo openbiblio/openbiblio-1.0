@@ -99,8 +99,6 @@ var idis = {
 			} else if (tmp.marcTag == '505a') {
 				txt += '	<td><textarea wrap="soft" readonly cols="50" >'+tmp.value+"</textarea></td>\n";
 			} else {
-				//txt += '	<td><input type="text" readonly  maxlength="256" value="'+tmp.value+'" \></td>\n';
-				//txt += '	<td><span class="WIDE"><input type="text" readonly  maxlength="256" value="'+tmp.value+'" \></span></td>\n';
 				txt += '	<td><p>'+tmp.value+'</p></td>\n';
 			}
 			txt += "</tr>\n";
@@ -165,12 +163,13 @@ var idis = {
 				var html = '';
 				for (var nCopy in idis.copyJSON) {
 				  idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
+					var cpyId = idis.crntCopy.copyid;
 				  html += "<tr>\n";
 				<?php if (!($tab == 'opac' || $tab == 'working' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
 						html += '	<td>\n';
-						html += '		<input type="button" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
-						html += '		<input type="button" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
-						html += '		<input type="hidden" value="'+idis.crntCopy.copyid+'">\n';
+						html += '		<input type="button" id="edit-'+cpyId+'" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
+						html += '		<input type="button" id="delt-'+cpyId+'" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
+						html += '		<input type="hidden" value="'+cpyId+'" />\n';
 						html += '	</td>\n';
 				<?php } ?>
 
