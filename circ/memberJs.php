@@ -30,16 +30,15 @@ var mf = {
 		mf.fetchAcnttranTypes();
 				
 		$('form').on('submit',null,function (e) {
-			var theId = $('input[type="submit"]:focus').attr('id');
-//console.log(e);
-//console.log('the btn id is: '+theId);
-//console.log('the btn id is: '+e.currentTarget.id);
+			e.preventDefault();
+			e.stopPropagation();
+			var theId = e.currentTarget.id
 			if (theId != 'logoutBtn') {
-				e.preventDefault();
-				e.stopPropagation();
 				switch (theId) {
-					case 'barCdSrchBtn':	mf.doBarCdSearch();	break;
-					case 'nameSrchBtn':		mf.doNameSearch();	break;
+					case 'barCdSrchBtn':
+					case 'barCdSrchForm':	mf.doBarCdSearch();	break;
+					case 'nameSrchBtn':
+					case 'nameSrchForm':	mf.doNameSearch();	break;
 					case 'addMbrBtn':			mf.doMbrAdd();			break;
 					case 'updtMbrBtn':		mf.doMbrUpdate();		break;
 					case 'addTransBtn':		mf.doTransAdd();		break;
