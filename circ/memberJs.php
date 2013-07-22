@@ -576,7 +576,9 @@ console.log('show mbr detail');
 		$('#addMbrBtn').show();
 		$('#updtMbrBtn').hide();
 		$('#deltMbrBtn').hide();
+		$('#msgDiv').hide();
 		$('.gobkNewBtn').show();
+		document.forms.editForm.reset();
 
 		$('#siteid').val([$('#crntSite').val()]);
 		$('#city').val([$('#crntCity').val()]);
@@ -585,7 +587,7 @@ console.log('show mbr detail');
 		$('#searchDiv').hide();
 		$('#editHdr').html('<?php T("Add New Member"); ?>');
 		$('#editMode').val('addNewMember');
-		mf.showMsg('Added!');
+		//mf.showMsg('Added!');
 		$('#editDiv').show();
 	},
 	
