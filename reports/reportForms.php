@@ -58,11 +58,12 @@
 			<form id="reportcriteriaform" name="reportcriteriaform">
 				<input type="hidden" id="title" name="title" value="" />
 				<input type="hidden" id="type" name="type" value="" />
-				<input type="hidden" id="mode" name="mode" value="makeReport" />
+				<input type="hidden" id="firstItem" name="firstItem" value="0" />
+				<input type="hidden" id="mode" name="mode" value="getPage" />
 
 				<div id="specs"> </div>
 
-				<input id="submitBtn" type="submit" value="<?php echo T("Submit"); ?>" class="button" />
+				<input id="searchBtn" type="button" value="<?php echo T("Submit"); ?>" class="button" />
 			</form>
 		</fieldset>
 	</div>
@@ -79,11 +80,11 @@
 				</div>
 				<div class="countBox"><span id="rptCount"></span> <?php echo T("items found"); ?></div>
 				<div class="sortBox">
-					<select id="orderBy">
+					<!--select id="orderBy">
 						<option value="title">Title</option>
 						<option value="author" SELECTED>Author</option>
 						<option value="callno">Call No.</option>
-					</select>
+					</select-->
 				</div>
 			</div>
 

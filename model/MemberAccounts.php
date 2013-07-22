@@ -36,12 +36,14 @@ class MemberAccounts extends DBTable {
 		return $row['balance'];
 	}
 	function insert_el($rec, $confirmed=false) {
+echo 'in acnts<br>\n';
 		$date = date('Y-m-d H:i:s');
 		$rec['create_dt'] = $rec['last_change_dt'] = $date;
 		$rec['create_userid'] = $_SESSION['userid'];
 		if ($rec['transaction_type_cd']{0} == '-') {
 			$rec['amount'] *= -1;
 		}
+echo 'in acnts: ';print_r($rec);echo"<br>\n";
 		return parent::insert_el($rec, $confirmed);
 	}
 	function update_el($rec, $confirmed=false) {

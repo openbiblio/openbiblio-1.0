@@ -29,24 +29,6 @@ var mf = {
 		mf.fetchCustomFlds();
 		mf.fetchAcnttranTypes();
 				
-		$('form').on('submit',null,function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			var theId = e.currentTarget.id
-			if (theId != 'logoutBtn') {
-				switch (theId) {
-					case 'barCdSrchBtn':
-					case 'barCdSrchForm':	mf.doBarCdSearch();	break;
-					case 'nameSrchBtn':
-					case 'nameSrchForm':	mf.doNameSearch();	break;
-					case 'addMbrBtn':			mf.doMbrAdd();			break;
-					case 'updtMbrBtn':		mf.doMbrUpdate();		break;
-					case 'addTransBtn':		mf.doTransAdd();		break;
-					default:
-						console.log(theId+' is an invalid button id');
-				}
-			}
-		});
 		
 		$('.gobkBtn').on('click',null,mf.rtnToSrch);
 		$('.gobkMbrBtn').on('click',null,mf.rtnToList);
@@ -55,17 +37,28 @@ var mf = {
 		$('.gobkBiblioBtn').on('click',null,mf.rtnToMbr);
 		$('.gobkAcntBtn').on('click',null,mf.rtnToMbr);
 		$('.gobkHistBtn').on('click',null,mf.rtnToMbr);
+
+		$('#barCdSrchBtn').on('click',null,mf.doBarCdSearch);
+		$('#nameSrchBtn').on('click',null,mf.doNameSearch);
 		$('#addNewMbrBtn').on('click',null,mf.doShowMbrAdd);
-		$('#mbrDetlBtn').on('click',null,mf.doShowMbrDetails);
-		$('#mbrAcntBtn').on('click',null,mf.doShowMbrAcnt);
-		$('#mbrHistBtn').on('click',null,mf.doShowMbrHist);
-		$('#chkOutBtn').on('click',null,mf.doCheckout);
-		$('#holdBtn').on('click',null,mf.doHold);
+
+		$('#addMbrBtn').on('click',null,mf.doMbrAdd);
+		$('#updtMbrBtn').on('click',null,mf.doMbrUpdate);
 		$('#deltMbrBtn').on('click',null,mf.doDeleteMember);
 		$('#cnclMbrBtn').on('click',null,function(){
-			mf.doFetchMember(); 
+			mf.doFetchMember();
 			mf.rtnToMbr();
 		});
+
+		$('#mbrDetlBtn').on('click',null,mf.doShowMbrDetails);
+
+		$('#mbrAcntBtn').on('click',null,mf.doShowMbrAcnt);
+		$('#addTransBtn').on('click',null,mf.doTransAdd);
+
+		$('#mbrHistBtn').on('click',null,mf.doShowMbrHist);
+
+		$('#chkOutBtn').on('click',null,mf.doCheckout);
+		$('#holdBtn').on('click',null,mf.doHold);
 
 		// prepare pull-down lists
 		mf.fetchMbrTypList();
@@ -537,6 +530,7 @@ var mf = {
 	
 	//------------------------------
 	doShowMbrDetails: function () {
+console.log('show mbr detail');
 		var mbr = mf.mbr;
 		$('#addMbrBtn').hide();
 		$('#updtMbrBtn').show().enable();

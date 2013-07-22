@@ -21,44 +21,25 @@ require_once(REL(__FILE__, "../classes/Params.php"));
  *   count(), curPage(), row(), each(), table(), and pageTable()
  */
 class Report {
-	var $name;
-	var $rpt;
-	var $params;
-	var $iter;
-	var $cache;
-	var $pointer = 0;
+	public $name;
+	private $rpt;
+	public $params;
+	private $iter;
+	private $cache;
+	private $startAt;
+	private $howMany;
+	private $pointer = 0;
 	
-	function link($name, $msg='', $tab='') {
-		$urls = array(
-			'Report'=>'../reports/run_report.php?type=previous&msg=',
-			//'BiblioSearch'=>'../shared/biblio_search.php?searchType=previous&msg=',
-			'BiblioCart'=>'../shared/req_cart.php?msg=',
-		);
-		if (isset($urls[$name])) {
-			$url = $urls[$name];
-		} else {
-			$url = '../reports/index.html?msg=';
-		}
-		$url .= U($msg);
-		if ($tab) {
-			$url .= '&tab='.U($tab);
-		}
-		return $url;
+	public function __construct () {
 	}
-	function create($type, $name=NULL) {
+	static function create($type, $name=NULL) {
 		list($rpt, $err) = Report::create_e($type, $name);
 		if($err) {
 			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
 		}
 		return $rpt;
 	}
-	function create_e($type, $name=NULL) {
-		$cache = array('type'=>$type);
-		$rpt = new Report;
-		$err = $rpt->_load_e($name, $cache);
-		return array($rpt, $err);
-	}
-	function load($name) {
+	static function load($name) {
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
 		}
@@ -69,6 +50,17 @@ class Report {
 			Fatal::internalError(T("ReportNoLoadReport", array('name'=>$name)));
 		}
 		return $rpt;
+	}
+	public function setPagination($startAt, $howMany) {
+echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
+		$this->startAt = $startAt;
+		$this->howMany = $howMany;
+	}
+	function create_e($type, $name=NULL) {
+		$cache = array('type'=>$type);
+		$rpt = new Report;
+		$err = $rpt->_load_e($name, $cache);
+		return array($rpt, $err);
 	}
 	function _load_e($name, $cache) {
 		$this->name = $name;
@@ -95,6 +87,7 @@ class Report {
 		$classname = $type.'_rpt';
 		include_once($fname);
 		$this->rpt = new $classname;
+		$this->rpt->setPagination ($firstItem, $perPage);
 		return NULL;		# Can't error non-fatally
 	}
 	function _load_rpt_e($type, $fname) {
@@ -106,6 +99,23 @@ class Report {
 		} else {
 			$this->rpt = $rpt;
 		}
+	}
+	function link($name, $msg='', $tab='') {
+		$urls = array(
+			'Report'=>'../reports/run_report.php?type=previous&msg=',
+			//'BiblioSearch'=>'../shared/biblio_search.php?searchType=previous&msg=',
+			'BiblioCart'=>'../shared/req_cart.php?msg=',
+		);
+		if (isset($urls[$name])) {
+			$url = $urls[$name];
+		} else {
+			$url = '../reports/index.html?msg=';
+		}
+		$url .= U($msg);
+		if ($tab) {
+			$url .= '&tab='.U($tab);
+		}
+		return $url;
 	}
 	function type() {
 		return $this->cache['type'];

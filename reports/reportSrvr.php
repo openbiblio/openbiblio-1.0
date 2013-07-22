@@ -27,49 +27,65 @@
 		Params::printForm($rpt->paramDefs());
 	  break;
 
-	case "makeReport":
-		if ($_REQUEST['type'] == 'previous') {
-			$rpt = Report::load('Report');
-			if ($_REQUEST['rpt_order_by']) {
-				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
-			}
-		} else {
-			$rpt = Report::create($_REQUEST['type'], 'Report');
-			$errs = $rpt->initCgi_el();
-			if (!empty($errs)) {
-				FieldError::backToForm('../reports/report_criteria.php', $errs);
-			}
+	case "getPage":
+		$rpt = Report::load('Report');
+		if ($_REQUEST['rpt_order_by']) {
+			$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
 		}
-
-		if ($_REQUEST['page']) {
-			$page = $_REQUEST['page'];
-		} else {
-			$page = $rpt->curPage();
-		}
-
-		if ($rpt->count() == 0) {
+		$numRows = $rpt->count();
+		if ($numRows == 0) {
 			echo T("No results found.");
-		} else {
-			echo $rpt->count()."|";
-			$disp = new ReportDisplay($rpt);
-			$t = new TableDisplay;
-
-			// get column headings
-			$t->columns = $disp->columns($sort_url);
-
-			// create and display actual data rows
-			// actual display of biblio content controlled by ../classes/BiblioRows.php (see function next())
-			echo $t->begin();
-			$pg = $rpt->pageIter($page);
-			while ($r = $pg->next()) {
-				echo $t->rowArray($disp->row($r));
-			}
-			echo $t->end();
-			echo $disp->pages($page_url, $page);
+			exit;
 		}
+
+		// add amount of search results.
+		$perPage = Settings::get('items_per_page');
+		if($_REQUEST['firstItem'] == null){
+			$firstItem = 0;
+			$page = 1;
+		} else {
+			$firstItem = $_REQUEST['firstItem'];
+			$page = floor($firstItem / $perPage);
+		}
+		if($perPage <= ($numRows - $firstItem)){
+			$lastItem = $firstItem + $perPage;
+		} else {
+			$lastItem = $numRows;
+		}
+		## legacy code doen't work with pagination via AJAX
+		$rpt->setPagination ($firstItem, $perPage);
+
+		//if ($_REQUEST['page']) {
+		//	$page = $_REQUEST['page'];
+		//} else {
+		//	$page = 1; //$rpt->curPage();
+		//}
+
+		## record header
+		$rcd['nmbr'] = $numRows;
+		$rcd['firstItem'] = $firstItem;
+		$rcd['lastItem'] = $lastItem;
+		$rcd['perPage'] = $perPage;
+		$rcd['columns'] = Settings::get('item_columns');
+
+		echo json_encode($rcd)."|";
+		$disp = new ReportDisplay($rpt);
+		$t = new TableDisplay;
+
+		// get column headings
+		$t->columns = $disp->columns($sort_url);
+
+		// create and display actual data rows
+		// actual display of biblio content controlled by ../classes/BiblioRows.php (see function next())
+		echo $t->begin();
+		$pg = $rpt->pageIter($page);
+		while ($r = $pg->next()) {
+			echo $t->rowArray($disp->row($r));
+		}
+		echo $t->end();
 	  break;
 
-	case "getPage":
+	case "xgetPage":
 		$db = new BiblioImages;
 		$orderBy = $_GET['orderBy'];
 		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);

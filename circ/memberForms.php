@@ -32,7 +32,7 @@
 			<td nowrap="true">
 				<label for="searchByBarcd"><?php echo T("Library Card Number");?>:</label>
 				<input type="number" id="searchByBarcd" name="searchByBarcd" size="20" />
-				<input type="submit" id="barCdSrchBtn" value="<?php echo T("Search"); ?>" />
+				<input type="button" id="barCdSrchBtn" value="<?php echo T("Search"); ?>" />
 			</td>
 		</tr>
 	</table>
@@ -47,7 +47,7 @@
 			<td nowrap="true">
 				<label for="nameFrag"><?php echo T("Last Name Contains");?>:</label>
 				<input type="text" id="nameFrag" name="nameFrag" size="20" />
-				<input type="submit" id="nameSrchBtn" value="<?php echo T("Search"); ?>" />
+				<input type="button" id="nameSrchBtn" value="<?php echo T("Search"); ?>" />
 			</td>
 		</tr>
 	</table>

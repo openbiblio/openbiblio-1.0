@@ -137,6 +137,7 @@
 		echo json_encode($tranList);
 		break;
 	case 'addAcntTrans':
+echo 'in srvr<br>\n';
 		list($id, $errs) = $acct->insert_el(array(
 			'mbrid'=>$_POST['mbrid'],
 			'transaction_type_cd'=>$_POST["transaction_type_cd"],

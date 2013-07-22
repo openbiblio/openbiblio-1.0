@@ -8,10 +8,11 @@
  */
  
 class TableDisplay {
-	var $title;
-	var $columns;
-	var $rown;
-	function TableDisplay() {
+	private $title;
+	public $columns;
+	private $rown;
+
+	public function __construct() {
 		$this->title = NULL;
 		$this->columns = array();
 		$this->rown = 0;

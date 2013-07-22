@@ -13,15 +13,17 @@ var rpt = {
 
 		rpt.rptType = '<?php echo $_GET['type']; ?>';
 
-		$('#orderBy').on('change',null,function () {
-			rpt.fetchFotoPage(0);
-		});
+		//$('#orderBy').on('change',null,function () {
+		//	rpt.fetchFotoPage(0);
+		//});
 		$('.nextBtn').on('click',null,rpt.getNextPage);
 		$('.prevBtn').on('click',null,rpt.getPrevPage);
 		$('.gobkRptBtn').on('click',null,rpt.rtnToSpecs);
 		$('.gobkBiblioBtn').on('click',null,rpt.rtnToReport);
 
-		$('#reportcriteriaform').on('submit', null, rpt.doSearch);
+		$('#searchBtn').on('click', null, function () {
+			rpt.doSearch(0);
+		});
 
 		rpt.resetForm();
     rpt.getCriteriaForm();
@@ -37,6 +39,7 @@ var rpt = {
 		$('#biblioDiv').hide();
 		$('#workDiv').hide();
 		$('#errSpace').hide();
+
 		$('#prevBtn').disable();
 		$('#nextBtn').disable();
 	},
@@ -70,26 +73,51 @@ var rpt = {
 	//------------------------------
 	getNextPage:function () {
 		$('.nextBtn').disable();
-		rpt.fetchFotoPage(rpt.nextPageItem);
+		rpt.doSearch(rpt.nextPageItem);
 	},
 	getPrevPage:function () {
 		$('.prevBtn').disable();
-		rpt.fetchFotoPage(rpt.prevPageItem);
+		rpt.doSearch(rpt.prevPageItem);
 	},
 
-	doSearch: function (e) {
-		e.preventDefault();
-		e.stopPropagation();
+	doSearch: function (itemNmbr) {
+		if (typeof(itemNmbr) !== 'undefined') {
+			firstItem = itemNmbr;
+		} else {
+      firstItem = 0;
+		}
+		$('#firstItem').val(firstItem);
+
     var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
 			var parts = response.split('|');
-			$('#rptCount').html(parts[0]);
+			var hdr = JSON.parse(parts[0]);
+			rpt.ttlNmbr = parseInt(hdr.nmbr);
+			rpt.firstItem = parseInt(hdr.firstItem);
+			rpt.lastItem = parseInt(hdr.lastItem);
+			rpt.perPage = parseInt(hdr.perPage);
+
+			$('.countBox').html((rpt.firstItem+1)+' - '+rpt.lastItem+' <?php echo T("of");?> '+rpt.ttlNmbr).show();
 			$('#report').html(parts[1]);
 
 			$('div#report a').on('click',null,rpt.displayBiblio);
 
 			$('#specsDiv').hide();
 			$('#reportDiv').show();
+
+			// enable or disable next / prev buttons
+			if(rpt.firstItem >= rpt.perPage){
+				rpt.prevPageItem = rpt.firstItem - rpt.perPage;
+				$('.prevBtn').enable();
+			} else {
+				$('.prevBtn').disable();
+			}
+			if(((rpt.perPage+rpt.firstItem) <= rpt.lastItem) && (rpt.ttlNmbr > rpt.lastItem)){
+				rpt.nextPageItem = rpt.perPage + rpt.firstItem;
+				$('.nextBtn').enable();
+			} else {
+				$('.nextBtn').disable();
+			}
 		});
 	},
 
