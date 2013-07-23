@@ -102,6 +102,11 @@ Selecting "mark all" and then "shelve selected items" does not work
 Checking-In: cannot add any item to shelving cart. Thence not able to mark and
 shelve items to clear loan material
 
+23 July 2013 - Neil
+Can delete transaction: delete message appears but the transaction remains visible.
+Only after logging out is the transaction removed from the display (Epiphany, Chrome & Firefox)
+
+
 ###################### Completed, most recent at top #########################
 
 22 July 2013 - Neil, fixed 22 JUly

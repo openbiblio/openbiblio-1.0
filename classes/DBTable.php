@@ -181,6 +181,7 @@ class DBTable extends Queryi {
 		$sql = $this->mkSQL('UPDATE %I ', $this->name)
 			. ' SET '.$this->_pairs($rec)
 			. ' WHERE '.$this->_keyTerms($key);
+		//echo "sql=$sql<br />\n";
 		$this->act($sql);
 		$this->unlock();
 		return array();
@@ -189,7 +190,7 @@ class DBTable extends Queryi {
 		$this->lock();
 		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
-echo "sql=$sql<br />\n";
+		//echo "sql=$sql<br />\n";
 		$this->act($sql);
 		$this->unlock();
 	}

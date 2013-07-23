@@ -40,23 +40,23 @@ class Copy {
 	}
 	public function setCheckedIn($statusCd) {
 		$this->hdrFlds['status'] = $statusCd;
-		$rslt = $this->hist->insert(array(
+		$newHistid = $this->hist->insert(array(
 			'bibid'=>$this->hdrFlds['bibid'],
 			'copyid'=>$this->copyid,
 			'status_cd'=>$statusCd,
 			'bookingid'=>$this->hdrFlds['bookingid'],
 		));
-		$histid = $rslt[0];
-		$this->hdrFlds['histid'] = $histid;
 		$this->cpy->update(array(
 			'copyid'=>$this->copyid,
-			'histid'=>$histid,
+			'histid'=>$newHistid,
 		));
 		$this->book->update(array(
 			'bookingid'=>$this->hdrFlds['bookingid'],
-			'ret_histid'=>$histid,
+			'ret_histid'=>$newHistid,
 			'ret_dt'=>date('Y-m-d H:i:s'),
+			'mbrids'=>array($this->hdrFlds['ckoutMbr']),
 		));
+		$this->hdrFlds['histid'] = $newHistid;
 	}
 	##----------------------##
 	private function fetch_copy() {
@@ -76,7 +76,8 @@ class Copy {
 		$rslt = $ptr->getOne($this->hdrFlds['histid']);
 		$this->hdrFlds['status'] = $rslt['status_cd'];
 		if ($rslt['status_cd'] == 'out') {
-			$this->hdrFlds['ckoutMbr'] = $this->cpy->getCheckoutMember($this->hdrFlds['histid']);
+			$mbr = $this->cpy->getCheckoutMember($this->hdrFlds['histid']);
+			$this->hdrFlds['ckoutMbr'] = $mbr['mbrid'];
 
 			$ptr = new Biblios;
 			$this->bib = $ptr;
