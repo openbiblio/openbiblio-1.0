@@ -5,8 +5,10 @@
 
 	require_once("../shared/common.php");
 
+	require_once(REL(__FILE__, "../classes/Biblio.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 		$biblios = new Biblios;
+	require_once(REL(__FILE__, "../classes/Copy.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 	require_once(REL(__FILE__, "../model/History.php"));
@@ -28,79 +30,57 @@
 		$opts = Settings::getAll();
 		echo json_encode($opts);
 	  break;
-	 
+/*
 	case "getBarcdTitle":
 		$copy = $copies->getByBarcode($_GET['barcodeNmbr']);
-		if (!$copy) {
-			echo $badBarcodeText;
-			exit;
-		}
-		$biblio = $biblios->getOne($copy['bibid']);
-		echo json_encode(array('title'=>$biblio['marc']->getValue('245$a')));
+		if (empty($copy->copyid)) { echo $badBarcodeText.; exit; }
 		break;
-		
+*/
 	case "doItemCheckin":
-		$copy = $copies->getByBarcode($_POST['barcodeNmbr']);
-		if (!$copy) {
-			echo $badBarcodeText;
-			exit;
-		}
-		$status = $history->getOne($copy['histid']);
-		## FIXME? item may not have been checked out, wrong valid barcode, etc.
-		# 		
-		$booking = $bookings->getByHistid($copy['histid']);	# May be null
-		
-		$hold = $holds->getFirstHold($copy['copyid']);	// is copy on hold?
-		if ($hold) {
+		$cpy = new BarcdCopy($_POST['barcodeNmbr']);
+		$copy = $cpy->getData();
+		if (!$copy) { echo $badBarcodeText; exit; }
+
+		if ($copy['status'] != 'out') {echo T("This item not checked out"); exit; }
+		if (!$copy['histid']) {echo "no hist id recorded"; exit; }
+		if ($copy['hold']) {
 			$newStatus = OBIB_STATUS_ON_HOLD;
 		} else {
 			$newStatus = OBIB_STATUS_SHELVING_CART;
 		}
-		
-		$hist = array(
-			'bibid'=>$copy['bibid'],
-			'copyid'=>$copy['copyid'],
-			'status_cd'=>$newStatus,
-		);
-		if ($booking) {
-			$hist['bookingid'] = $booking['bookingid'];
-		}
-		$history->insert($hist);
 
-		if ($booking) {
-			$daysLate = $bookings->getDaysLate($booking);
-			$coll = $collections->getByBibid($booking['bibid']);
-			$dailyLateFee = $coll['daily_late_fee'];
-			if (($daysLate > 0) and ($dailyLateFee > 0)) {
-				$fee = $dailyLateFee * $daysLate;
-				$acct->insert(array(
-					'mbrid'=>$saveMbrid,
-					'transaction_type_cd'=>'+c',
-					'amount'=>$fee,
-					'description'=>T("Late fee (barcode=%barcode%)", array("barcode" => $barcode))
-				));
-			}
+		### post to all related files
+		$cpy->setCheckedIn($newStatus);
+
+		### post over-due fees
+		$owed = $copy['lateFee'] * $copy['daysLate'];
+		if ($owed > 0) {
+			$acct->insert(array(
+				'mbrid'=>$copy['ckoutMbr'],
+				'transaction_type_cd'=>'+c',
+				'amount'=>$owed,
+				'description'=>T("Late fee").': '.$copy['barcode'],
+			));
 		}
-		
-		$msg = T("%barcode% added to shelving cart.", array('barcode'=>$barcode));
-		if (!$booking) {
-			$msg .= T("THIS ITEM WAS NOT CHECKED OUT.");
-		}
+
+		$msg = $copy['barcode'].' '.T("added to shelving cart.");
 		echo $msg;
 		break;
-	
+
 	case 'fetchShelvingCart':
 		$scart = $copies->getShelvingCart();
 		$rec = array();
 		while ($copy = $scart->fetch_assoc()) {
-			$biblio = $biblios->getOne($copy['bibid']);
+			//$biblio = $biblios->getOne($copy['bibid']);
+			$ptr = new Biblio($copy['bibid']);
+			$bib = $ptr->getData();
 			$status = $history->getOne($copy['histid']);
 			$rec[] = array(
 				'bibid'=>$copy['bibid'],
 				'copyid'=>$copy['copyid'],
 				'barcd'=>$copy['barcode_nmbr'],
 				'beginDt'=>$status['status_begin_dt'],
-				'title'=>$biblio['marc']->getValue('245$a'),
+				'title'=>$bib['hdr']['title'],
 			);
 		}
 		echo json_encode($rec);

@@ -27,17 +27,7 @@ var chk = {
 		chk.fetchOpts();
 		chk.fetchShelvingCart();
 		
-		$('form').on('submit',null,function (e) {
-			var theId = $('input[type="submit"]:focus').attr('id');
-			//console.log('the btn id is: '+theId);
-			if (theId != 'logoutBtn') {
-				e.preventDefault();
-				e.stopPropagation();
-				switch (theId) {
-					case 'addToCrtBtn':		chk.doCheckin();		break;
-				}
-			}
-		});
+		$('#addToCrtBtn').on('click',null,chk.doCheckin);
 
 		$('.markAllBtn').on('click',null,function (e) {
 			$(':checkbox[value=copyid]').prop('checked',true);
@@ -69,15 +59,34 @@ var chk = {
 		var barcd = $.trim($('#barcodeNmbr').val());
 		barcd = flos.pad(barcd,chk.opts.item_barcode_width,'0');
 		$('#barcodeNmbr').val(barcd); // redisplay expanded value
-
-	  $.getJSON(chk.url,{'mode':'getBarcdTitle', 'barcodeNmbr':barcd}, function(jsonData){
-	    $('#ckinTitle').val(jsonData.title);
-		});
+//
+//	  $.getJSON(chk.url,{'mode':'getBarcdTitle', 'barcodeNmbr':barcd}, function(jsonData){
+//	    $('#ckinTitle').val(jsonData.title);
+//		});
 	},
 	
 	//------------------------------
+	doCheckin: function () {
+		$('#ckinMode').val('doItemCheckin');
+		var parms = $('#chekinForm').serialize();
+		$.post(chk.url, parms, function(response) {
+			if (response.substr(0,1)=='<') {
+				//console.log('rcvd error msg from server :<br />'+response);
+				$('#msgArea').html(response);
+				$('#msgDiv').show();
+			}
+			else {
+				$('#msgArea').html(response);
+				$('#msgDiv').show().hide(10000);
+				chk.fetchShelvingCart();
+			}
+		});
+		return false;
+	},
+
+	//------------------------------
 	doShelvSelected: function (e) {
-		$('#shelveMode').val('doShelveItem');
+		$('#shelveMode').val('doshelveItem');
 		var parms = $('#shelvingForm').serialize();
 		$.post(chk.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
@@ -92,24 +101,6 @@ var chk = {
 			}
 		});
 	}	,
-	
-	//------------------------------
-	doCheckin: function () {
-		var parms = $('#chekinForm').serialize();
-		$.post(chk.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
-				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
-			}
-			else {
-				$('#msgArea').html('Added!');
-				$('#msgDiv').show().hide(10000);
-				chk.fetchShelvingCart();
-			}
-		});
-		return false;
-	},
 	
 	//------------------------------
 	fetchShelvingCart: function () {

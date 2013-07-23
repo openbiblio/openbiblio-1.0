@@ -161,7 +161,7 @@ echo 'in srvr<br>\n';
 			$biblio = new Biblio($copy['bibid']);
 			$bibData = $biblio->getData();
 			$bibMarc = $bibData['marc'];
-			$bibHdr = $bibData['hdr'];
+			//$bibHdr = $bibData['hdr'];
 			$a = $bibMarc['240$a'];
 			$b = $bibMarc['245$a'];
 			$c = $bibMarc['245$b'];

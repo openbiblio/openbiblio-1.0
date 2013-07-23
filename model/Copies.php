@@ -187,8 +187,10 @@ class Copies extends CoreTable {
 			. "where bc.histid=bsh.histid "
 			. $this->mkSQL("and bsh.status_cd=%Q ",
 				OBIB_STATUS_SHELVING_CART);
+		//echo "sql=$sql<br />\n";
 		return $this->select($sql);
 	}
+	/* way incomplete, done in Copy object now
 	function checkin($bibids,$copyids) {
 		$this->lock();
 		$history = new History;
@@ -202,6 +204,7 @@ class Copies extends CoreTable {
 		}
 		$this->unlock();
 	}
+	*/
 	function massCheckin() {
 		$this->lock();
 		$cart = $this->getShelvingCart();

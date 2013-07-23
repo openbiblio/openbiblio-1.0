@@ -98,20 +98,20 @@ I can enter a barcode and select "add to shelving cart" button
 Selecting "mark all" and then "shelve selected items" does not work
 - the item still remains booked out to the member in question.
 
-21 July 2013 - Neil
-I like the new arrangement of the member's details appearing in a box below
-the member's summary information box.
-
-22 July 2013 - Neil
-Member's details: opens in a new screen. Cannot update
-Member's accounts: Cannot add or delete transactions
-Add New Member: Not working -  selecting 'add new member' opens up an existing member's account details
-
 22 July 2013 - Neil
 Checking-In: cannot add any item to shelving cart. Thence not able to mark and
 shelve items to clear loan material
 
 ###################### Completed, most recent at top #########################
+
+22 July 2013 - Neil, fixed 22 JUly
+Member's details: opens in a new screen. Cannot update
+Member's accounts: Cannot add or delete transactions
+Add New Member: Not working -  selecting 'add new member' opens up an existing member's account details
+
+21 July 2013 - Neil, fixed 21 July
+I like the new arrangement of the member's details appearing in a box below
+the member's summary information box.
 
 21 July 2013 - Neil, fixed 21 July
 In the copy summary table the correct details are shown for each separate barcode.

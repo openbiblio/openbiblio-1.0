@@ -24,7 +24,7 @@
 		<label for="barcodeNmbr"><?php echo T("Barcode Number").":"; ?></label>
 		<input type="text" id="barcodeNmbr" name="barcodeNmbr" size="18" />
 		<input type="hidden" id="ckinMode" name="mode" value="doItemCheckin">
-		<input type="submit" id="addToCrtBtn" value="<?php echo T("Add to Shelving Cart"); ?>" />
+		<input type="button" id="addToCrtBtn" value="<?php echo T("Add to Shelving Cart"); ?>" />
 		<br />
 		<input type="text" readonly id="ckinTitle" size="100" />
 	</fieldset>

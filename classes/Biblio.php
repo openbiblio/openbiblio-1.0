@@ -16,6 +16,7 @@ class Biblio {
 		$this->bibid = $bibid;
 		$this->fetch_biblio();
 		$this->fetch_marc();
+		$this->fetch_title();
 		$this->fetch_photoData();
 	}
 	public function getData () {
@@ -42,6 +43,17 @@ class Biblio {
 			$theValue = $row['subfield_data'];
 			$this->marcFlds[$theTag.'$'.$theSuff] = $theValue;
 		}
+	}
+	private function fetch_title () {
+		$bibMarc = $this->marcFlds;
+		$a = $bibMarc['240$a'];
+		$b = $bibMarc['245$a'];
+		$c = $bibMarc['245$b'];
+		$d = $bibMarc['246$a'];
+		$e = $bibMarc['246$b'];
+		if (!empty($a) || !empty($b) || !empty($c)) $title = $a.' '.$b.' '.$c;
+		if (!empty($d) || !empty($e)) $title = $d.' '.$e;
+		$this->hdrFlds['title'] = $title;
 	}
 	private function fetch_photoData () {
 		$img = new BiblioImages;

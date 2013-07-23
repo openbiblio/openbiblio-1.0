@@ -530,7 +530,6 @@ var mf = {
 	
 	//------------------------------
 	doShowMbrDetails: function () {
-console.log('show mbr detail');
 		var mbr = mf.mbr;
 		$('#addMbrBtn').hide();
 		$('#updtMbrBtn').show().enable();
