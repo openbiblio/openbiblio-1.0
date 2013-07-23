@@ -33,6 +33,9 @@
 			$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
 		}
 		$numRows = $rpt->count();
+		if (!$rpt) {
+			die("no report available");
+		}
 		if ($numRows == 0) {
 			echo T("No results found.");
 			exit;

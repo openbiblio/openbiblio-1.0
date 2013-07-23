@@ -24,12 +24,40 @@
 
 	#****************************************************************************
 	$badBarcodeText = T("No copy with that barcode");
-	
+
 	switch ($_REQUEST['mode']) {
+	case 'doShelveItem':
+//echo "in doShelve<br />\n";
+		break;
+
+		$bibids = array();
+		$copyids = array();
+		foreach($_POST as $key => $value) {
+			if ($key == "copyid") {
+//echo "found copyid: $key<br />\n";
+				$parts = $value.split('-');
+				$copyids[] = $parts[1];
+			}
+		}
+		if (empty($copyids)) {
+			echo "<h3>".T("No items have been selected.")."</h3>";
+			exit();
+		}
+//echo "copyids==>";print_r($copyids);echo "<br />\n";
+		foreach ($copyids as $copyid) {
+			$cpy = new Copy($copyid);
+			$copy = $cpy->getData();
+			$newStatus = OBIB_STATUS_IN;
+			$cpy->setShelved($newStatus);
+			unset($cpy);
+		}
+
+
 	case 'getOpts':
 		$opts = Settings::getAll();
 		echo json_encode($opts);
 	  break;
+
 /*
 	case "getBarcdTitle":
 		$copy = $copies->getByBarcode($_GET['barcodeNmbr']);
@@ -43,11 +71,7 @@
 
 		if ($copy['status'] != 'out') {echo T("This item not checked out"); exit; }
 		if (!$copy['histid']) {echo "no hist id recorded"; exit; }
-		if ($copy['hold']) {
-			$newStatus = OBIB_STATUS_ON_HOLD;
-		} else {
-			$newStatus = OBIB_STATUS_SHELVING_CART;
-		}
+		$newStatus = OBIB_STATUS_SHELVING_CART;
 
 		### post to all related files
 		$cpy->setCheckedIn($newStatus);
@@ -85,25 +109,7 @@
 		}
 		echo json_encode($rec);
 		break;
-		
-	case 'doShelveItem':
-		$bibids = array();
-		$copyids = array();
-		foreach($_POST as $key => $value) {
-			if ($value == "copyid") {
-				parse_str($key,$output);
-				$bibids[] = $output["bibid"];
-				$copyids[] = $output["copyid"];
-			}
-		}
-		if (empty($bibids)) {
-			echo "<h3>".T("No items have been selected.")."</h3>";
-			//header("Location: ../circ/checkin_form.php?msg=".U($msg));
-			exit();
-		}
-		$copies->checkin($bibids, $copyids);
-		break;
-		
+
 	case 'doShelveAll':
 		$copies->massCheckin();
 		break;

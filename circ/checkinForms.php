@@ -36,6 +36,7 @@
 		<button class="shelvItemBtn"><?php echo T("Shelve selected items"); ?></button>
 		<button class="markAllBtn"><?php echo T("Mark all"); ?></button>
 		<button class="clerAllBtn"><?php echo T("Clear all"); ?></button>
+		<input type="hidden" id="shelveMode" name="mode" value="doShelveItem">
 
 		<fieldset>
 			<table id="shelvingList">
@@ -49,7 +50,6 @@
 				</thead>
 				<tbody class="striped" ><!-- filled in by server --></tbody>
 			</table>
-			<input type="hidden" name="mode" value="doShelveItem">
 		</fieldset>
 
 		<button class="shelvItemBtn"><?php echo T("Shelve selected items"); ?></button>

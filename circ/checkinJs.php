@@ -78,7 +78,7 @@ var chk = {
 			else {
 				$('#msgArea').html(response);
 				$('#msgDiv').show().hide(10000);
-				chk.fetchShelvingCart();
+				chk.fetchShelvingCart();  //update screen
 			}
 		});
 		return false;
@@ -86,8 +86,9 @@ var chk = {
 
 	//------------------------------
 	doShelvSelected: function (e) {
-		$('#shelveMode').val('doshelveItem');
+		$('#shelveMode').val('doShelveItem');
 		var parms = $('#shelvingForm').serialize();
+console.log(parms);
 		$.post(chk.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
@@ -95,9 +96,9 @@ var chk = {
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html('Shelved!');
+				$('#msgArea').html('response');
 				$('#msgDiv').show().hide(10000);
-				chk.fetchShelvingCart();
+				chk.fetchShelvingCart();  //update screen
 			}
 		});
 	}	,
@@ -112,7 +113,8 @@ var chk = {
 				var cpy = chk.cart[nCpy];
 				var beginDate = cpy.beginDt.split(' ')[0];
 				txt += '<tr>\n';
-				txt += '	<td><input type="checkbox" name="bibid='+cpy.bibid+'&amp;copyid='+cpy.copyid+'" value="copyid" /></td>\n';
+				//txt += '	<td><input type="checkbox" name="bibid='+cpy.bibid+'&amp;copyid='+cpy.copyid+'" value="copyid" /></td>\n';
+				txt += '	<td><input type="checkbox" name="copyid" value="copy-'+cpy.copyid+'" /></td>\n';
 				txt += '	<td>'+beginDate+'</td>\n';
 				txt += '	<td>'+cpy.barcd+'</td>\n';
 				txt += '	<td>'+cpy.title+'</td>';

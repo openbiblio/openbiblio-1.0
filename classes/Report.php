@@ -52,7 +52,7 @@ class Report {
 		return $rpt;
 	}
 	public function setPagination($startAt, $howMany) {
-echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
+//echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
 		$this->startAt = $startAt;
 		$this->howMany = $howMany;
 	}
@@ -87,7 +87,7 @@ echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
 		$classname = $type.'_rpt';
 		include_once($fname);
 		$this->rpt = new $classname;
-		$this->rpt->setPagination ($firstItem, $perPage);
+//		$this->rpt->setPagination ($firstItem, $perPage);
 		return NULL;		# Can't error non-fatally
 	}
 	function _load_rpt_e($type, $fname) {

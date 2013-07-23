@@ -98,16 +98,16 @@ I can enter a barcode and select "add to shelving cart" button
 Selecting "mark all" and then "shelve selected items" does not work
 - the item still remains booked out to the member in question.
 
-22 July 2013 - Neil
-Checking-In: cannot add any item to shelving cart. Thence not able to mark and
-shelve items to clear loan material
-
 23 July 2013 - Neil
 Can delete transaction: delete message appears but the transaction remains visible.
 Only after logging out is the transaction removed from the display (Epiphany, Chrome & Firefox)
 
 
 ###################### Completed, most recent at top #########################
+
+22 July 2013 - Neil, fixed 23 July
+Checking-In: cannot add any item to shelving cart. Thence not able to mark and
+shelve items to clear loan material
 
 22 July 2013 - Neil, fixed 22 JUly
 Member's details: opens in a new screen. Cannot update

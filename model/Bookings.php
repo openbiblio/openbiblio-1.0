@@ -534,6 +534,7 @@ class Bookings extends CoreTable {
     $this->due_dt = $due_dt;
 
 		## all OK, begin DB update for checkout
+//echo "mbrids===>";print_r($mbrids);echo"<br />\n";
 		list($this->bookingid, $err) = $this->insert_el(
 					array("book_dt" =>$today,
 								"bibid" =>$this->bibid,

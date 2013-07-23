@@ -43,7 +43,7 @@ class BiblioSearch_rpt extends BiblioRows {
 		);
 	}
 	public function setPagination($startAt, $howMany) {
-echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
+//echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
 		$this->startAt = $startAt;
 		$this->howMany = $howMany;
 	}
@@ -77,7 +77,7 @@ echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
 		if (!empty($this->firstItem) && !empty($this->howMany)) {
 			$sql .= " LIMIT ".$this->firstItem.", ".$this->howMany;
 		}
-echo "sql===>$sql<br /><br />";
+//echo "sql===>$sql<br /><br />";
 		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {

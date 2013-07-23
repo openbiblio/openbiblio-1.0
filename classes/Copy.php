@@ -58,7 +58,35 @@ class Copy {
 		));
 		$this->hdrFlds['histid'] = $newHistid;
 	}
+	public function setShelved($statusCd) {
+		$this->hdrFlds['status'] = $statusCd;
+		$this->insert_statusHist();
+		$this->update_copy();
+	}
 	##----------------------##
+	private function insert_statusHist () {
+		$newHistid = $this->hist->insert(array(
+			'bibid'=>$this->hdrFlds['bibid'],
+			'copyid'=>$this->copyid,
+			'status_cd'=>$this->hdrFlds['status'],
+			'bookingid'=>$this->hdrFlds['bookingid'],
+		));
+		$this->hdrFlds['histid'] = $newHistid;
+	}
+	private function update_copy () {
+		$this->cpy->update(array(
+			'copyid'=>$this->copyid,
+			'histid'=>$this->hdrFlds['histid'],
+		));
+	}
+	private function update_booking () {
+		$this->book->update(array(
+			'bookingid'=>$this->hdrFlds['bookingid'],
+			'ret_histid'=>$this->hdrFlds['histid'],
+			'ret_dt'=>date('Y-m-d H:i:s'),
+			'mbrids'=>array($this->hdrFlds['ckoutMbr']),
+		));
+	}
 	private function fetch_copy() {
 		$ptr = new Copies;
 		$this->cpy = $ptr;
