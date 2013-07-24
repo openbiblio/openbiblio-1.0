@@ -11,7 +11,7 @@ var ced = {
 	init: function () {
 		ced.url = '../catalog/catalogServer.php';
 		ced.initWidgets();
-		$('.help').hide();
+		ced.resetForm();
 
 		$('#barcode_nmbr').on('change',null,ced.chkBarcdForDupe);
 		$('#copySubmitBtn').val('<?php echo T("Update"); ?>');
@@ -41,6 +41,8 @@ var ced = {
 	//----//
 	resetForm: function () {
 		$('#editRsltMsg').hide();
+		$('#crntStatus').hide();
+		$('.help').hide();
 	},
 	//----//
 	doGetBarcdNmbr: function () {
@@ -104,6 +106,11 @@ var ced = {
 		$('#copySite').val([idis.crntCopy.site]);
 		$('#copyTbl #status_cd').val(idis.crntCopy.statusCd);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
+
+		var status = idis.crntCopy.statusCd;
+		if ((status == 'in') || (status == 'out') ||(status == 'hold')) {
+			$('#crntStatus').html('current: '+idis.crntCopy.status).show();
+		}
 
   	var crntsite = idis.opts.current_site
 		$('#copySite').val(crntsite);

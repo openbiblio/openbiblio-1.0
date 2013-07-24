@@ -27,6 +27,7 @@ var chk = {
 		chk.fetchOpts();
 		chk.fetchShelvingCart();
 		
+		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);
 		$('#addToCrtBtn').on('click',null,chk.doCheckin);
 
 		$('.markAllBtn').on('click',null,function (e) {
@@ -38,7 +39,6 @@ var chk = {
 			$('#shelvingForm :checkbox').prop('checked',false);
 		});
 		$('.shelvItemBtn').on('click',null,chk.doShelvSelected);
-		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);
 	},
 	//------------------------------
 	initWidgets: function () {

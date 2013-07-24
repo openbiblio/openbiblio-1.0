@@ -11,7 +11,7 @@
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
 class SrchDb extends Queryi {
-	private $bibid;
+	public $bibid;
 	private $createDt;
 	private $daysDueBack;
 	private $matlCd;

@@ -14,6 +14,7 @@
 	require_once(REL(__FILE__, "../model/CopyStatus.php"));
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
+	require_once(REL(__FILE__, "../classes/SrchDb.php"));
 
 	
 	## Load session data in case of OPAC (eg no user logged on)
@@ -39,8 +40,6 @@
 	$opts['current_site'] = $_SESSION['current_site'];
 	$opts['showBiblioPhotos'] = $_SESSION['show_item_photos'];
 	$opts['barcdWidth'] = $_SESSION['item_barcode_width'];
-	
-	require_once(REL(__FILE__, "../classes/SrchDb.php"));
 	
 	## --------------------- ##
 
@@ -77,7 +76,8 @@
 	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
 	  if ($rslt != NULL) {
 	  	$theDb->getBiblioInfo($theDb->bibid);
-	  	echo json_encode(mkBiblioArray($theDb));
+	  	//echo json_encode(mkBiblioArray($theDb));
+	  	echo json_encode($theDb->getData());
 		} else {
 			echo '{"data":null}';
 		}

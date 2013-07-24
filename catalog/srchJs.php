@@ -45,6 +45,7 @@ var bs = {
 		$('#phraseSrchBtn').on('click',null,bs.doPhraseSearch);
 		bs.srchBtnClr = $('#phraseSrchBtn').css('color');
 		$('#bc_searchBarcd').on('keyup',null,bs.checkBarcdSrchBtn);
+		$('#bc_searchBarcd').on('change',null,bs.formatBarcode);
 		$('#ph_searchText').on('keyup',null,bs.checkPhraseSrchBtn);
 
 		// for the search results section
@@ -128,20 +129,6 @@ var bs = {
 	//------------------------------
 	initWidgets: function () {
 	},
-	checkPhraseSrchBtn: function () {
-		if (($('#ph_searchText').val()).length > 0) { // empty input
-			$('#phraseSrchBtn').enable().css('color', bs.srchBtnClr);
-		} else {
-			$('#phraseSrchBtn').disable().css('color', '#888888');
-		}
-	},
-	checkBarcdSrchBtn: function () {
-		if (($('#bc_searchBarcd').val()).length > 0) { // empty input
-			$('#barcdSrchBtn').enable().css('color', bs.srchBtnClr);
-		} else {
-			$('#barcdSrchBtn').disable().css('color', '#888888');
-		}
-	},
 	resetForms: function () {
 	  //console.log('resetting Search Form');
 	  $('#crntMbrDiv').hide();
@@ -194,6 +181,26 @@ var bs = {
 	  $('#itemEditorDiv').hide();
 	  $('#copyEditorDiv').hide();
 	  $('#photoEditorDiv').hide();
+	},
+
+	checkPhraseSrchBtn: function () {
+		if (($('#ph_searchText').val()).length > 0) { // empty input
+			$('#phraseSrchBtn').enable().css('color', bs.srchBtnClr);
+		} else {
+			$('#phraseSrchBtn').disable().css('color', '#888888');
+		}
+	},
+	checkBarcdSrchBtn: function () {
+		if (($('#bc_searchBarcd').val()).length > 0) { // empty input
+			$('#barcdSrchBtn').enable().css('color', bs.srchBtnClr);
+		} else {
+			$('#barcdSrchBtn').disable().css('color', '#888888');
+		}
+	},
+	formatBarcode: function () {
+		var barcd = $.trim($('#bc_searchBarcd').val());
+		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
+		$('#bc_searchBarcd').val(barcd); // redisplay expanded value
 	},
 
 	doAltStart: function () {
@@ -324,7 +331,7 @@ var bs = {
 				else {
 					bs.multiMode = false;
 					idis.showOneBiblio(bs.biblio)
-					isis.fetchCopyInfo();
+					idis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();
