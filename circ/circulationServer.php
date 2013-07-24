@@ -27,31 +27,21 @@
 
 	switch ($_REQUEST['mode']) {
 	case 'doShelveItem':
-//echo "in doShelve<br />\n";
-		break;
-
-		$bibids = array();
 		$copyids = array();
 		foreach($_POST as $key => $value) {
-			if ($key == "copyid") {
-//echo "found copyid: $key<br />\n";
-				$parts = $value.split('-');
-				$copyids[] = $parts[1];
+			if (substr($key,0,4) == "copy") {
+				$copyids[] = $value;
 			}
 		}
-		if (empty($copyids)) {
-			echo "<h3>".T("No items have been selected.")."</h3>";
-			exit();
-		}
-//echo "copyids==>";print_r($copyids);echo "<br />\n";
+		if (count($copyids) < 1) die("<h3>".T("No items have been selected.")."</h3>");
 		foreach ($copyids as $copyid) {
 			$cpy = new Copy($copyid);
 			$copy = $cpy->getData();
 			$newStatus = OBIB_STATUS_IN;
-			$cpy->setShelved($newStatus);
-			unset($cpy);
+			$cpy->setShelved();
+			unset($cpy); // important if many copies involved to recover resources
 		}
-
+	break;
 
 	case 'getOpts':
 		$opts = Settings::getAll();
@@ -71,10 +61,9 @@
 
 		if ($copy['status'] != 'out') {echo T("This item not checked out"); exit; }
 		if (!$copy['histid']) {echo "no hist id recorded"; exit; }
-		$newStatus = OBIB_STATUS_SHELVING_CART;
 
 		### post to all related files
-		$cpy->setCheckedIn($newStatus);
+		$cpy->setCheckedIn();
 
 		### post over-due fees
 		$owed = $copy['lateFee'] * $copy['daysLate'];

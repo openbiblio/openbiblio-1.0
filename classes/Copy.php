@@ -14,6 +14,9 @@ class BarcdCopy extends Copy {
 	public function __construct ($barcd) {
 		$ptr = new Copies;
 		$cpy = $ptr->getByBarcode($_POST['barcodeNmbr']);
+		if(!$cpy) {
+			die(T("No copy with barcode")." ".$barcode);
+		}
 		parent::__construct ($cpy['copyid']);
 	}
 }
@@ -38,28 +41,14 @@ class Copy {
 	public function getData() {
 		return $this->hdrFlds;
 	}
-	public function setCheckedIn($statusCd) {
-		$this->hdrFlds['status'] = $statusCd;
-		$newHistid = $this->hist->insert(array(
-			'bibid'=>$this->hdrFlds['bibid'],
-			'copyid'=>$this->copyid,
-			'status_cd'=>$statusCd,
-			'bookingid'=>$this->hdrFlds['bookingid'],
-		));
-		$this->cpy->update(array(
-			'copyid'=>$this->copyid,
-			'histid'=>$newHistid,
-		));
-		$this->book->update(array(
-			'bookingid'=>$this->hdrFlds['bookingid'],
-			'ret_histid'=>$newHistid,
-			'ret_dt'=>date('Y-m-d H:i:s'),
-			'mbrids'=>array($this->hdrFlds['ckoutMbr']),
-		));
-		$this->hdrFlds['histid'] = $newHistid;
+	public function setCheckedIn() {
+		$this->hdrFlds['status'] = OBIB_STATUS_SHELVING_CART;
+		$this->insert_statusHist();
+		$this->update_copy();
+		$this->update_booking();
 	}
-	public function setShelved($statusCd) {
-		$this->hdrFlds['status'] = $statusCd;
+	public function setShelved() {
+		$this->hdrFlds['status'] = OBIB_STATUS_IN;
 		$this->insert_statusHist();
 		$this->update_copy();
 	}
