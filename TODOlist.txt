@@ -101,7 +101,37 @@ Member screen: Hold list not showing entries in database.
 23 July 2013 - Fred
 Rewrite Report front end to be more compatible, and use more of common code.
 
+24 July 2013 - Neil
+Item search report: first page listed correctly but the links to subsequent pages
+do not work - just shows the results page headers and no items.
+Images & Subject search reports: same problem
+
+24 July 2013 - Neil
+>  When I view the edit page for any copy currently out on loan, the status drop down
+menu is blank - is this normal/expected behaviour? The summary page clearly shows the
+copy out on loan and to which member
+> Typically, an non-checked out copy has 'checked in' showing in the status drop-down menu
+> If an item is loaned out, should this status box show 'on loan' ?
+Certainly 'in, out, crt, hold' should not be allowed as choices or all control goes bad.
+The other book maintenance related values make sense as there is no other way to take book
+off the shelve to patrons.
+
 ###################### Completed, most recent at top #########################
+
+24 July 2013 - Neil, fixed 24 July
+Shelving Cart:
+manually select (tick box): works, 'mark all' button: does not work, 'clear all' button: works
+
+24 July 2013 - Neil, trans table fixed, 24 July
+Checking-in:
+list barcode, select 'add to shelving cart' : message "added to shelving cart"
+appears (the text needs translating as it appears between T! ) and the returned item is
+immediately shown on screen
+
+24 July 2013 - Neil, withdrawn, unable to duplicate 24 July
+> Delete transaction: message 'deleted' appears but transaction remains on screen.
+Have to leave the circulation "environment" (eg select cataloging | existing items)
+and then return to the accounts page to see that the deleted transaction is no longer displayed.
 
 23 July 2013 - Neil, fixed 23 July
 Can delete transaction: delete message appears but the transaction remains visible.

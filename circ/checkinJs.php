@@ -30,10 +30,12 @@ var chk = {
 		$('#addToCrtBtn').on('click',null,chk.doCheckin);
 
 		$('.markAllBtn').on('click',null,function (e) {
-			$(':checkbox[value=copyid]').prop('checked',true);
+			e.preventDefault();
+			$('#shelvingForm :checkbox').prop('checked',true);
 		});
 		$('.clerAllBtn').on('click',null,function (e) {
-			$(':checkbox[value=copyid]').prop('checked',false);
+			e.preventDefault();
+			$('#shelvingForm :checkbox').prop('checked',false);
 		});
 		$('.shelvItemBtn').on('click',null,chk.doShelvSelected);
 		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);

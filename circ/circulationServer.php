@@ -76,7 +76,7 @@
 			));
 		}
 
-		$msg = $copy['barcode'].' '.T("added to shelving cart.");
+		$msg = $copy['barcode'].' '.T("added to shelving cart");
 		echo $msg;
 		break;
 

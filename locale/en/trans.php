@@ -18,7 +18,6 @@ $trans["headerDateFormat"]	 = "m.d.Y";
 
 $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
 $trans["(when available)"] = "(when available)";
-$trans["%barcode% added to shelving cart."] = "%barcode% added to shelving cart.";
 $trans["%count% bookings in cart."] = "%count% bookings in cart.";
 $trans["%count% calendars."] = "%count% calendars.";
 $trans["%count% copies with broken status references"] = "%count% copies with broken status references";
@@ -68,6 +67,7 @@ $trans["Add to Shelving Cart"] = "Add to Shelving Cart";
 $trans["Added"] = "Added";
 $trans["Added Before Date"] = "Added Before Date";
 $trans["Added in the last N days"] = "Added in the last N days";
+$trans["added to shelving cart"] = "added to shelving cart.";
 $trans["AddingNewFoto"] = "Adding New Photo";
 $trans["Address"] = "Address";
 $trans["AddressLine1"] = "Address Line 1";
