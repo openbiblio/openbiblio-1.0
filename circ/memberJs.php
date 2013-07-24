@@ -426,7 +426,9 @@ var mf = {
 		$('#mbrDiv').hide();
 		$('#acntDiv').show();
 	},
-	doTransAdd: function () {
+	doTransAdd: function (e) {
+		e.preventDefault;
+		e.stopPropagation;
 		$('#acntMbrid').val(mf.mbrid);
 		var parms = $('#acntForm').serialize();
 		//console.log('adding: '+parms);
@@ -440,6 +442,7 @@ var mf = {
 				mf.doShowMbrAcnt();
 			}
 		});
+		return false;
 	},
 	doDelAcntTrans: function (e) {
 		var transid = $(this).next().val();

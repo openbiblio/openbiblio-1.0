@@ -23,53 +23,51 @@
 
 	case "getCriteriaForm":
 		$rpt = Report::create($_GET['type']);
+		if (!$rpt) die("no report available");
 		echo T($rpt->title())."|";
 		Params::printForm($rpt->paramDefs());
 	  break;
 
 	case "getPage":
-		$rpt = Report::load('Report');
-		if ($_REQUEST['rpt_order_by']) {
-			$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
+		if ($_POST['type'] == 'previous') {
+			$rpt = Report::load('Report');
+			if ($_REQUEST['rpt_order_by']) {
+				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
+			}
+		} else {
+			$rpt = Report::create($_POST['type'], 'Report');
+			$errs = $rpt->initCgi_el();
+			if (!empty($errs)) die($errs);
 		}
 		$numRows = $rpt->count();
-		if (!$rpt) {
-			die("no report available");
-		}
-		if ($numRows == 0) {
-			echo T("No results found.");
-			exit;
-		}
+		if ($numRows == 0) die(T("No results found."));
 
-		// add amount of search results.
+		## add amount of search results.
 		$perPage = Settings::get('items_per_page');
 		if($_REQUEST['firstItem'] == null){
 			$firstItem = 0;
 			$page = 1;
 		} else {
 			$firstItem = $_REQUEST['firstItem'];
-			$page = floor($firstItem / $perPage);
+			$page = floor($firstItem / $perPage)+1;
 		}
 		if($perPage <= ($numRows - $firstItem)){
 			$lastItem = $firstItem + $perPage;
 		} else {
 			$lastItem = $numRows;
 		}
-		## legacy code doen't work with pagination via AJAX
-		$rpt->setPagination ($firstItem, $perPage);
-
-		//if ($_REQUEST['page']) {
-		//	$page = $_REQUEST['page'];
-		//} else {
-		//	$page = 1; //$rpt->curPage();
-		//}
 
 		## record header
-		$rcd['nmbr'] = $numRows;
-		$rcd['firstItem'] = $firstItem;
-		$rcd['lastItem'] = $lastItem;
-		$rcd['perPage'] = $perPage;
-		$rcd['columns'] = Settings::get('item_columns');
+		$rcd['nmbr'] = (string)$numRows;
+		$rcd['firstItem'] = (string)$firstItem;
+		$rcd['lastItem'] = (string)$lastItem;
+		$rcd['perPage'] = (string)$perPage;
+		$rcd['columns'] = (string)Settings::get('item_columns');
+
+//echo "page=$page; firstItem=$firstItem; lastItem=$lastItem<br />\n";
+
+		## legacy code doen't work with pagination via AJAX
+		//$rpt->setPagination ($firstItem, $perPage);
 
 		echo json_encode($rcd)."|";
 		$disp = new ReportDisplay($rpt);
@@ -87,51 +85,6 @@
 		}
 		echo $t->end();
 	  break;
-
-	case "xgetPage":
-		$db = new BiblioImages;
-		$orderBy = $_GET['orderBy'];
-		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);
-		$numRows = $rslt->num_rows;
-
-		// add amount of search results.
-		$perPage = Settings::get('items_per_page');
-		if($_REQUEST['firstItem'] == null){
-			$firstItem = 0;
-		} else {
-			$firstItem = $_REQUEST['firstItem'];
-		}
-		if($perPage <= ($numRows - $firstItem)){
-			$lastItem = $firstItem + $perPage;
-		} else {
-			$lastItem = $numRows;
-		}
-
-		## record header
-		$rcd['nmbr'] = $numRows;
-		$rcd['firstItem'] = $firstItem;
-		$rcd['lastItem'] = $lastItem;
-		$rcd['perPage'] = $perPage;
-		$rcd['columns'] = Settings::get('item_columns');
-		$rcd['fotoWidth'] = Settings::get('thumbnail_width');
-
-		$imgCntr = 0;
-		$tbl = [];
-		while($row = $rslt->fetch_assoc()) {
-			$imgCntr++;
-			if($imgCntr-1 < $firstItem) continue;
-			if($imgCntr   > $lastItem) break;
-			if ($col == 7) {
-				$col = 0;
-			}
-			$tbl[] = ["bibid"=>$row['bibid'],"url"=>$row['url'],$orderBy=>$row['data']];
-			
-			$col++;
-		}
-
-		$rcd['tbl'] = $tbl;
-		echo json_encode($rcd);
-		break;
 
 	default:
 		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";

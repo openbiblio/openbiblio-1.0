@@ -12,6 +12,7 @@ var rpt = {
 		rpt.initWidgets();
 
 		rpt.rptType = '<?php echo $_GET['type']; ?>';
+		$('#type').val(rpt.rptType);
 
 		//$('#orderBy').on('change',null,function () {
 		//	rpt.fetchFotoPage(0);
@@ -66,7 +67,7 @@ var rpt = {
 			$('#specs').html(parts[1]);
 			$('#type').val(rpt.rptType);
 			$('#pageTitle').html(parts[0]);
-			$('#title').val(parts[0]);
+			//$('#title').val(parts[0]);
 		});
 	},
 
@@ -97,6 +98,7 @@ var rpt = {
 			rpt.lastItem = parseInt(hdr.lastItem);
 			rpt.perPage = parseInt(hdr.perPage);
 
+			$('#type').val('previous');
 			$('.countBox').html((rpt.firstItem+1)+' - '+rpt.lastItem+' <?php echo T("of");?> '+rpt.ttlNmbr).show();
 			$('#report').html(parts[1]);
 

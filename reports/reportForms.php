@@ -56,7 +56,7 @@
 		<fieldset>
 			<legend>Report Criteria</legend>
 			<form id="reportcriteriaform" name="reportcriteriaform">
-				<input type="hidden" id="title" name="title" value="" />
+				<!--input type="hidden" id="title" name="title" value="" /-->
 				<input type="hidden" id="type" name="type" value="" />
 				<input type="hidden" id="firstItem" name="firstItem" value="0" />
 				<input type="hidden" id="mode" name="mode" value="getPage" />

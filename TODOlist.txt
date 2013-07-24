@@ -91,19 +91,28 @@ Online search is not working.
 Z3950 failing due to no YAZ installed.
 SRU/SRW failing due to lack of search results from host.
 
-21 July 2013 - Fred
+23 July 2013 - Fred
+make more use of ListSrvr for getOpts() and other lookup table use.
+Remove from the various xxxSrvr.php files.
+
+23 July 2013 - Fred
+Member screen: Hold list not showing entries in database.
+
+23 July 2013 - Fred
+Rewrite Report front end to be more compatible, and use more of common code.
+
+###################### Completed, most recent at top #########################
+
+23 July 2013 - Neil, fixed 23 July
+Can delete transaction: delete message appears but the transaction remains visible.
+Only after logging out is the transaction removed from the display (Epiphany, Chrome & Firefox)
+
+21 July 2013 - Fred, fixed 23 July
 Check in does not fully work -
 I can enter a barcode and select "add to shelving cart" button
 - message "added" pops up but no item is listed in the shelving cart section.
 Selecting "mark all" and then "shelve selected items" does not work
 - the item still remains booked out to the member in question.
-
-23 July 2013 - Neil
-Can delete transaction: delete message appears but the transaction remains visible.
-Only after logging out is the transaction removed from the display (Epiphany, Chrome & Firefox)
-
-
-###################### Completed, most recent at top #########################
 
 22 July 2013 - Neil, fixed 23 July
 Checking-In: cannot add any item to shelving cart. Thence not able to mark and
