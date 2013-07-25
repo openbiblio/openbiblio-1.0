@@ -5,7 +5,7 @@
 
 require_once(REL(__FILE__, "../../functions/utilFuncs.php"));
 require_once(REL(__FILE__, "../../classes/Report.php"));
-require_once(REL(__FILE__, "../../classes/Queryi.php"));
+require_once(REL(__FILE__, "../../classes/Query.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 require_once(REL(__FILE__, "../../classes/BiblioRows.php"));
 
@@ -18,8 +18,8 @@ class BiblioSearch_rpt extends BiblioRows {
 	private $startAt;
 	private $howMany;
 
-	//public function BiblioSearch_rpt() {
-	public function __construct() {
+	public function BiblioSearch_rpt() {
+	//public function __construct() {
 		$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
 		$tags = json_decode_nice($json,true);
 		//echo"titleTags===>";var_dump($tags['title']);echo"<br />";
@@ -42,11 +42,6 @@ class BiblioSearch_rpt extends BiblioRows {
 			'barcode' => Search::type('Barcode', 'biblio_copy', array('barcode_nmbr'), 'phrase', 'like', 'start'),
 		);
 	}
-	public function setPagination($startAt, $howMany) {
-echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
-		$this->startAt = $startAt;
-		$this->howMany = $howMany;
-	}
 	function title() { return "Item Search"; }
 	function category() { return "Cataloging"; }
 	function layouts() { return array(array('title'=>'MARC Export', 'name'=>'marc')); }
@@ -65,7 +60,7 @@ echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
 	function select($params) {
 		## build the sql to find bibds that match search criteria
 		$this->params = $params;
-		$this->q = new Queryi();
+		$this->q = new Query();
 
 		$query = $this->_doQuery();
 
@@ -74,12 +69,11 @@ echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
 		$sql = "select distinct b.bibid, b.material_cd "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
-		if (!empty($this->startAt) && !empty($this->howMany)) {
-			$sql .= " LIMIT ".$this->startAt.", ".$this->howMany;
+		if (!empty($this->firstItem) && !empty($this->howMany)) {
+			$sql .= " LIMIT ".$this->firstItem.", ".$this->howMany;
 		}
-echo "sql===>$sql<br />\n<br />\n";
-		//return new BiblioRowsIter($this->q->select($sql));
-		return $this->q->select($sql);
+//echo "sql===>$sql<br /><br />";
+		return new BiblioRowsIter($this->q->select($sql));
 	}
 	function _tmpQuery($from, $to, $query) {
 		$this->q->act($this->q->mkSQL('delete from %I', $to));

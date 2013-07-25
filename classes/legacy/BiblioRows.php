@@ -3,23 +3,23 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Iter.php"));
-require_once(REL(__FILE__, "../model/MaterialFields.php"));
-
 class BiblioRows {
 	var $q;
 	function columns() {
 		return array(
 			array('name'=>'bibid', 'hidden'=>true, 'checkbox'=>true),
+			array('name'=>'title_0', 'hidden'=>true),
+			array('name'=>'title_a', 'hidden'=>true),
+			array('name'=>'title_b', 'hidden'=>true),
 			array('name'=>'material_cd', 'hidden'=>true),
 			array('name'=>'create_dt', 'hidden'=>true),
 			array('name'=>'callno', 'title'=>'Call No.', 'sort'=>'callno'),
 			array('name'=>'title', 'title'=>'Title', 'func'=>'biblio_link', 'sort'=>'title'),
 			array('name'=>'author', 'title'=>'Author', 'sort'=>'author'),
 			array('name'=>'date', 'title'=>'Date', 'sort'=>'date'),
-//			array('name'=>'level', 'title'=>'Grade Level'),
-			array('name'=>'pubdate', 'title'=>'Publication Date'),
-			array('name'=>'material_type', 'title'=>'Type', 'sort'=>'type'),
+			array('name'=>'level', 'title'=>'Grade Level'),
+			array('name'=>'length', 'title'=>'Length', 'sort'=>'length'),
+			array('name'=>'material_type', 'title'=>'Type'),
 		);
 	}
 	function getOrderSql($col, $order_by_raw) {
@@ -28,11 +28,12 @@ class BiblioRows {
 		 */
 		$sortFields = array(
 			'callno'=>array('field'=>'099$a'),
-			'title'=>array('field'=>'240$a',
+			'title'=>array('field'=>'245$a',
 				'expr'=>'ifnull(substring(sorts.subfield_data, sortf.ind2_cd+1), '
 					. 'sorts.subfield_data)'),
 			'author'=>array('field'=>'100$a'),
-			'date'=>array('field'=>'240$f'),
+			'date'=>array('field'=>'260$c'),
+			'length'=>array('field'=>'300$a'),
 		);
 		$query = array();
 		$sort_r = 0;
@@ -80,72 +81,53 @@ class BiblioRowsIter extends Iter {
 		$this->iter->skip();
 	}
 	function next() {
-		## this builds the sql to get search item details for later display
 		$r = $this->iter->next();
-		if ($r === NULL) return $r;
-		//print_r($r);
-
-		## Construct an array of displayable fields for the material_cd of this biblio
-		$media = new MaterialFields;
-		$data = $media->getDisplayInfo($r['material_cd']);
-		$fldset = $data[$r['material_cd']];
-		//print_r($fldset);echo"<br /><br />";
-		for ($i=0; $i<count($fldset); $i++) {
-			$t = $fldset[$i]['tag'];
-			$s = $fldset[$i]['suf'];
-			$l =$fldset[$i]['lbl'];
-			$mc[$l] = $t.'$'.$s;
+		if ($r === NULL) {
+			return $r;
 		}
-		//print_r($mc);echo"<br />.................<br />";
-
-		## get data for this biblio, one tag$suf per row
-		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, "
-					 . "bf.tag, bs.subfield_cd, bs.subfield_data "
+		$marcCols = array(
+			'callno' => '099$a',
+			'title_0' => '240$a',
+			'title_a' => '245$a',
+			'title_b' => '245$b',
+			'date' => '260$c',
+			'author' => '100$a',
+			'level' => '521$a',
+			'length' => '300$a');
+		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, bf.tag, bs.subfield_cd, bs.subfield_data "
 					 . "from biblio b, material_type_dm m, biblio_field bf, biblio_subfield bs "
 					 . $this->q->mkSQL("where b.bibid=%N ", $r['bibid'])
 					 . "and m.code=b.material_cd "
 					 . "and bf.bibid=b.bibid and bs.fieldid=bf.fieldid "
-					 . "and ( (1=0) "; // <=== this is NOT a typo, do not FIX it!!!
-
-		foreach ($mc as $f) {
+					 . "and (1=0 ";
+		foreach ($marcCols as $f) {
 			list($t, $s) = explode('$', $f);
-			$sql .= $this->q->mkSQL('or (bf.tag=%Q and bs.subfield_cd=%Q) ', $t, $s);
+			$sql .= $this->q->mkSQL('or bf.tag=%Q and bs.subfield_cd=%Q ', $t, $s);
 		}
 		$sql .= ") ";
-		$sql .= " order by bf.tag,bs.subfield_cd"; ## be sure tags are in proper order
-		//echo "sql===>$sql<br />";
-		$iter = $this->q->select($sql);
 
-		## process each biblio tag, one at a time
+		$iter = $this->q->select($sql);
 		while (($row = $iter->next()) !== NULL) {
 			$r['material_cd'] = $row['material_cd'];
 			$r['material_type'] = $row['description'];
 			$r['create_dt'] = $row['create_dt'];
-
-			## if a tag matches a displayable field, add it to the display array $r
-			foreach ($mc as $name=>$f) {
-				//echo "mc tag=".$f."; row tag=".$row['tag']."; row suff=".$row['subfield_cd'];
+			foreach ($marcCols as $name=>$f) {
 				list($t, $s) = explode('$', $f);
 				if ($row['tag'] == $t and $row['subfield_cd'] == $s) {
-					//echo " <== matched<br /><br />";
-					if (strtolower($name) == 'call number') $name = 'callno';
-					if (strtolower($name) == 'corporate name') $name = 'author';
-					if (strtolower($name) == 'book title') $name = 'title';
-					if (strtolower($name) == 'report title') $name = 'title';
-					if (strtolower($name) == 'subtitle') $name = 'title';
-					if (strtolower($name) == 'year') $name = 'date';
-					if (strtolower($name) == 'publication date') $name = 'pubdate';
-					if (empty($r[strtolower($name)])) {
-							$r[strtolower($name)] = $row['subfield_data'];
-					} else {
-							$r[strtolower($name)] .= ' - '.$row['subfield_data'];
-					}
-					break; ## done with this $row, start on another
+					$r[$name] = $row['subfield_data'];
 				}
 			}
 		}
-		//print_r($r);echo"<br />............<br />";
-
+		if (!isset($r['title_0'])) {
+			$r['title_0'] = '';
+		}
+		if (!isset($r['title_a'])) {
+			$r['title_a'] = '';
+		}
+		if (!isset($r['title_b'])) {
+			$r['title_b'] = '';
+		}
+		$r['title'] = $r['title_0'].' '.$r['title_a'].' '.$r['title_b'];
 		return $r;
 	}
 }

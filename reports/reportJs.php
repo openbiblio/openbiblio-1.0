@@ -65,7 +65,7 @@ var rpt = {
 											 }, function (resp){
 			var parts = resp.split('|');
 			$('#specs').html(parts[1]);
-			$('#type').val(rpt.rptType);
+			//$('#type').val(rpt.rptType);
 			$('#pageTitle').html(parts[0]);
 			//$('#title').val(parts[0]);
 		});

@@ -6,8 +6,8 @@
 require_once(REL(__FILE__, "../classes/Links.php"));
 
 class ReportDisplay {
-	//function ReportDisplay($rpt) {
-	public function __construct($rpt) {
+	function ReportDisplay($rpt) {
+	//public function __construct($rpt) {
 		$this->rpt = $rpt;
 	}
 	function columns($url=NULL) {

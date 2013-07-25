@@ -26,12 +26,10 @@ class Report {
 	public $params;
 	private $iter;
 	private $cache;
-	private $startAt;
-	private $howMany;
 	private $pointer = 0;
 	
-	public function __construct () {
-	}
+	//public function __construct () {
+	//}
 	static function create($type, $name=NULL) {
 		list($rpt, $err) = Report::create_e($type, $name);
 		if($err) {
@@ -50,11 +48,6 @@ class Report {
 			Fatal::internalError(T("ReportNoLoadReport", array('name'=>$name)));
 		}
 		return $rpt;
-	}
-	public function setPagination($startAt, $howMany) {
-echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
-		$this->startAt = $startAt;
-		$this->howMany = $howMany;
 	}
 	function create_e($type, $name=NULL) {
 		$cache = array('type'=>$type);
@@ -87,7 +80,7 @@ echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
 		$classname = $type.'_rpt';
 		include_once($fname);
 		$this->rpt = new $classname;
-		$this->rpt->setPagination ($this->firstItem, $this->perPage);
+//		$this->rpt->setPagination ($firstItem, $perPage);
 		return NULL;		# Can't error non-fatally
 	}
 	function _load_rpt_e($type, $fname) {
@@ -228,10 +221,10 @@ echo "in Report: startAt=$startAt; howMany=$howMany<br />\n";
 	}
 	function next() {
 		$this->_getIter();
-		return $this->iter->num_rows;
+		return $this->iter->count();
 	}
 	function each() { # FIXME - get rid of this
-		return $this->fetch_assoc();
+		return $this->next();
 	}
 	function row($num) {
 		if (isset($this->cache['rows'][$num])) {
