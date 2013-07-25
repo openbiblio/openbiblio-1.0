@@ -29,19 +29,6 @@
 	  break;
 
 	case "getPage":
-		if ($_POST['type'] == 'previous') {
-			$rpt = Report::load('Report');
-			if ($_REQUEST['rpt_order_by']) {
-				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
-			}
-		} else {
-			$rpt = Report::create($_POST['type'], 'Report');
-			$errs = $rpt->initCgi_el();
-			if (!empty($errs)) die($errs);
-		}
-		$numRows = $rpt->count();
-		if ($numRows == 0) die(T("No results found."));
-
 		## add amount of search results.
 		$perPage = Settings::get('items_per_page');
 		if($_REQUEST['firstItem'] == null){
@@ -64,12 +51,27 @@
 		$rcd['perPage'] = (string)$perPage;
 		$rcd['columns'] = (string)Settings::get('item_columns');
 
-//echo "page=$page; firstItem=$firstItem; lastItem=$lastItem<br />\n";
+echo "in reportSrvr: page=$page; firstItem=$firstItem; lastItem=$lastItem<br />\n";
 
 		## legacy code doen't work with pagination via AJAX
-		//$rpt->setPagination ($firstItem, $perPage);
+	//	$rpt->setPagination ($firstItem, $perPage);
 
-		echo json_encode($rcd)."|";
+		if ($_POST['type'] == 'previous') {
+			$rpt = Report::load('Report');
+			$rpt->setPagination ($firstItem, $perPage);
+			if ($_REQUEST['rpt_order_by']) {
+				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
+			}
+		} else {
+			$rpt = Report::create($_POST['type'], 'Report');
+			$rpt->setPagination ($firstItem, $perPage);
+			$errs = $rpt->initCgi_el();
+			if (!empty($errs)) die($errs);
+		}
+		$numRows = $rpt->count();
+		if ($numRows == 0) die(T("No results found."));
+
+		echo json_encode($rcd)."| ";
 		$disp = new ReportDisplay($rpt);
 		$t = new TableDisplay;
 

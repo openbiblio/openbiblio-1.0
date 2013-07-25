@@ -43,7 +43,7 @@ class BiblioSearch_rpt extends BiblioRows {
 		);
 	}
 	public function setPagination($startAt, $howMany) {
-//echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
+echo "in BiblioSearch: startAt=$startAt; howMany=$howMany<br />\n";
 		$this->startAt = $startAt;
 		$this->howMany = $howMany;
 	}
@@ -74,11 +74,12 @@ class BiblioSearch_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid, b.material_cd "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
-		if (!empty($this->firstItem) && !empty($this->howMany)) {
-			$sql .= " LIMIT ".$this->firstItem.", ".$this->howMany;
+		if (!empty($this->startAt) && !empty($this->howMany)) {
+			$sql .= " LIMIT ".$this->startAt.", ".$this->howMany;
 		}
-//echo "sql===>$sql<br /><br />";
-		return new BiblioRowsIter($this->q->select($sql));
+echo "sql===>$sql<br />\n<br />\n";
+		//return new BiblioRowsIter($this->q->select($sql));
+		return $this->q->select($sql);
 	}
 	function _tmpQuery($from, $to, $query) {
 		$this->q->act($this->q->mkSQL('delete from %I', $to));

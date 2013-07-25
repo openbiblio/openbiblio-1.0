@@ -75,10 +75,12 @@ class NumberedIter extends Iter {
 		$this->n = 0;
 	}
 	function count() {
-		return $this->iter->count();
+		//return $this->iter->count();
+		return $this->iter->num_rows;
 	}
 	function next() {
-		$r = $this->iter->next();
+		//$r = $this->iter->next();
+		$r = $this->iter->fetch_assoc();
 		if (is_array($r)) {
 			$r['.seqno'] = $this->n++;
 		}

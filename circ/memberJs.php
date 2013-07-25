@@ -384,8 +384,9 @@ var mf = {
 	doShowMbrAcnt: function () {
 	  var params = 'mode=getAcntActivity&mbrid='+mf.mbrid;
 	  $.get(mf.url,params, function(jsonInpt){
-			if ($.trim(jsonInpt).substr(0,2) != '[{') {
-				//$('#msgArea').html(jsonInpt);
+			$('#tranList tBody').html(''); // clear any residue from past displays
+			if ($.trim(jsonInpt).substr(0,1) != '[') {
+				$('#msgArea').html(jsonInpt);
 				$('#msgDiv').show();
 			} else {
 				mf.trans = $.parseJSON(jsonInpt);

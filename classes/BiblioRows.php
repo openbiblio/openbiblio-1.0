@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+require_once(REL(__FILE__, "../classes/Iter.php"));
 require_once(REL(__FILE__, "../model/MaterialFields.php"));
 
 class BiblioRows {
