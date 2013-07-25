@@ -8,7 +8,8 @@
 "use strict";
 var rpt = {
 	init: function () {
-		rpt.url = '../reports/reportSrvr.php';
+		rpt.url = './reportSrvr.php';
+		rpt.listSrvr = '../shared/listSrvr.php';
 		rpt.initWidgets();
 
 		rpt.rptType = '<?php echo $_GET['type']; ?>';
@@ -31,6 +32,7 @@ var rpt = {
 	},
 	//------------------------------
 	initWidgets: function () {
+		rpt.fetchOpts();
 	},
 	//----//
 	resetForm: function () {
@@ -55,7 +57,7 @@ var rpt = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(rpt.url,{mode:'getOpts'}, function(jsonData){
+	  $.getJSON(rpt.listSrvr,{mode:'getOpts'}, function(jsonData){
 	    rpt.opts = jsonData;
 		});
 	},

@@ -31,6 +31,17 @@
 		session_cache_limiter('nocache');
 	}
 	
+	## autoload any needed Object definition files when instantiated
+	function __autoLoad($classname) {
+		if (file_exists("../model/{$classname}.php")) {
+  		require_once(REL(__FILE__, "../model/{$classname}.php"));
+		} else if (file_exists("../classes/{$classname}.php")) {
+  		require_once(REL(__FILE__, "../classes/{$classname}.php"));
+		} else {
+			throw new Exception ("No file {$classname}.php in model or classes directories.");
+		}
+	}
+
 	function getOBroot() {
 		/* obtain OpenBiblio path ref to wep pages root */
 		/* may be useful later in system (thinking plug-ins, etc.) */
