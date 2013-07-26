@@ -7,11 +7,26 @@ require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 require_once(REL(__FILE__, "../classes/Date.php"));
 
 class Params {
-	var $dict = array();
-	function load_el($paramdefs, $params) {
-		return $this->_load_el($this->dict, $paramdefs, $params);
+	private $dict = array();
+
+	## ------------------------------------------------------------------------ ##
+	public static function printForm($defs, $prefix='rpt_', $namel=array()) {
+		echo '<table class="'.$prefix.'params">';
+		foreach ($defs as $def) {
+			$def = array_pad($def, 4, NULL);		# Sigh.
+			list($type, $name, $options, $list) = $def;
+			$l = array_merge($namel, array($name));
+			if (isset($options['repeatable']) && $options['repeatable']) {
+				for ($i=0; $i<4; $i++) {
+					Params::_print($type, array_merge($l, array($i)), $options, $list, $prefix);
+				}
+			} else {
+				Params::_print($type, $l, $options, $list, $prefix);
+			}
+		}
+		echo '</table>';
 	}
-	function loadCgi_el($paramdefs, $prefix='rpt_') {
+	public function loadCgi_el($paramdefs, $prefix='rpt_') {
 		$params = array();
 		$preflen = strlen($prefix);
 		foreach ($_REQUEST as $k => $v) {
@@ -29,22 +44,10 @@ class Params {
 		}
 		return $errs;
 	}
-	/* Careful! */
-	function loadDict($dict) {
-		$this->dict = array_merge($this->dict, $dict);
+	public function getDict () {
+		return $this->dict;
 	}
-	function exists($name) {
-		return $this->getFirst($name) != false;
-	}
-	function getFirst($name) {
-		$l = $this->getList($name);
-		if (isset($l[0])) {
-			return $l[0];
-		} else {
-			return NULL;
-		}
-	}
-	function getList($name) {
+	public function getList($name) {
 		$values = array(array('group', $this->dict));
 		foreach ($this->_splitName($name) as $n) {
 		 $dicts = array();
@@ -69,7 +72,27 @@ class Params {
 		}
 		return $values;
 	}
-	function set($name, $type, $value) {
+	public function getFirst($name) {
+		$l = $this->getList($name);
+		if (isset($l[0])) {
+			return $l[0];
+		} else {
+			return NULL;
+		}
+	}
+	public function getCopy() {
+		$p = new Params;
+		$p->loadDict($this->dict);
+		return $p;
+	}
+	/* Careful! */
+	public function loadDict($dict) {
+		$this->dict = array_merge($this->dict, $dict);
+	}
+	public function load_el($paramdefs, $params) {
+		return $this->_load_el($this->dict, $paramdefs, $params);
+	}
+	public function set($name, $type, $value) {
 		$path = $this->_splitName($name);
 		$n = array_pop($path);
 		$dict =& $this->dict;
@@ -86,30 +109,12 @@ class Params {
 		}
 		$dict[$n] = array($type, $value);
 	}
-	function copy() {
-		$p = new Params;
-		$p->loadDict($this->dict);
-		return $p;
+	## ------------------------------------------------------------------------ ##
+
+	private function exists($name) {
+		return $this->getFirst($name) != false;
 	}
-	/* STATIC */
-	function printForm($defs, $prefix='rpt_', $namel=array()) {
-		echo '<table class="'.$prefix.'params">';
-		foreach ($defs as $def) {
-			$def = array_pad($def, 4, NULL);		# Sigh.
-			list($type, $name, $options, $list) = $def;
-			$l = array_merge($namel, array($name));
-			if (isset($options['repeatable']) && $options['repeatable']) {
-				for ($i=0; $i<4; $i++) {
-					Params::_print($type, array_merge($l, array($i)), $options, $list, $prefix);
-				}
-			} else {
-				Params::_print($type, $l, $options, $list, $prefix);
-			}
-		}
-		echo '</table>';
-	}
-	/* PRIVATE */
-	function _print($type, $namel, $options, $list, $prefix) {
+	private function _print($type, $namel, $options, $list, $prefix) {
 		global $loc;
 		//assert('$loc');
 		assert('!empty($namel)');
@@ -177,10 +182,10 @@ class Params {
 		}
 		echo '</td></tr>';
 	}
-	function _splitName($name) {
+	private function _splitName($name) {
 		return explode('.', $name);
 	}
-	function _load_el(&$parameters, $paramdefs, $params, $errprefix=NULL) {
+	private function _load_el(&$parameters, $paramdefs, $params, $errprefix=NULL) {
 		$errs = array();
 		foreach ($paramdefs as $p) {
 			$p = array_pad($p, 4, NULL);		# Sigh.
@@ -227,7 +232,7 @@ class Params {
 		}
 		return $errs;
 	}
-	function _mkParam_el($val, $type, $options, $list, $errprefix) {
+	private function _mkParam_el($val, $type, $options, $list, $errprefix) {
 		$noerrors = array();
 		switch ($type) {
 			case 'string':
@@ -280,7 +285,7 @@ class Params {
 		}
 		return array(NULL, $noerrors);
 	}
-	function getOrderExpr($name, $list, $desc) {
+	private function getOrderExpr($name, $list, $desc) {
 		$expr = false;
 		foreach ($list as $v) {
 			if ($v[0] != $name) continue;

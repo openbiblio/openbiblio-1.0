@@ -24,14 +24,16 @@
 
 class Report {
 	public $name;
-	private $rpt;
 	public $params;
+
+	private $rpt;
 	private $iter;
 	private $cache;
 	private $pointer = 0;
 	private $statrAt;
 	private $howMany;
-	
+
+	## ------------------------------------------------------------------------ ##
 	public function __construct ($startAt=NULL, $howMany=NULL) {
     $this->startAt = $startAt;
 		$this->howMany = $howMany;
@@ -57,17 +59,58 @@ echo "in load<br />\n";
 		}
 		return $rpt;
 	}
-	public static function clearCache() {
-		unset($_SESSION['rpt_'.$name]);
+	//public static function clearCache() {
+	//	unset($_SESSION['rpt_'.$name]);
+	//}
+	public function getTitle() {
+		return $this->rpt->getTitle();
 	}
-	function create_e($type, $name=NULL) {
+	public function getType() {
+		return $this->cache['type'];
+	}
+	public function getParamDefs() {
+		return $this->rpt->getParamDefs();
+	}
+	public function getColumns() {
+		return $this->rpt->columns();
+	}
+	public function initCgi_el($prefix='rpt_') {
+		$p = new Params;
+		$errs = $p->loadCgi_el($this->rpt->getParamDefs(), $prefix);
+		if (!empty($errs)) {
+			return $errs;
+		}
+		return $this->_init_el($p);
+	}
+	public function getVariant($newParams, $newName=NULL) {
+		list($rpt, $errs) = $this->variant_el($newParams, $newName);
+		if(!empty($errs)) {
+			Fatal::internalError(T("ReportMakingVariant", array('error'=>Error::listToStr($errs))));
+		}
+		return $rpt;
+	}
+	public function count() {
+		if ($this->cache['count'] === NULL) {
+			$this->_getIter();
+			$this->cache['count'] = $this->iter->count();
+			$this->_save();
+		}
+		return $this->cache['count'];
+	}
+	public function pageIter($page) {
+		$this->_cachePage($page);
+		return new ArrayIter(array_values($this->cache['rows']));
+	}
+
+	## ------------------------------------------------------------------------ ##
+	private function create_e($type, $name=NULL) {
 echo "in create_e<br />\n";
 		$cache = array('type'=>$type);
 		$rpt = new Report();
 		$err = $rpt->_load_e($name, $cache);
 		return array($rpt, $err);
 	}
-	function _load_e($name, $cache) {
+	private function _load_e($name, $cache) {
 echo "in load_e<br />\n";
 		$this->name = $name;
 		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
@@ -95,7 +138,7 @@ echo "its .rpt<br />\n";
 		}
 		return NULL;
 	}
-	function _load_php_e($type, $fname) {
+	private function _load_php_e($type, $fname) {
 echo "in load_php_e<br />\n";
 		$classname = $type.'_rpt';
 		include_once($fname);
@@ -103,7 +146,7 @@ echo "in load_php_e<br />\n";
 //		$this->rpt->setPagination ($firstItem, $perPage);
 		return NULL;		# Can't error non-fatally
 	}
-	function _load_rpt_e($type, $fname) {
+	private function _load_rpt_e($type, $fname) {
 echo "in load_php_e<br />\n";
 		//require_once(REL(__FILE__, '../classes/Rpt.php'));
 		include_once(REL(__FILE__, '../working/Rpt.php'));
@@ -115,7 +158,7 @@ echo "in load_php_e<br />\n";
 			$this->rpt = $rpt;
 		}
 	}
-	function link($name, $msg='', $tab='') {
+	private function link($name, $msg='', $tab='') {
 		$urls = array(
 			'Report'=>'../reports/run_report.php?type=previous&msg=',
 			//'BiblioSearch'=>'../shared/biblio_search.php?searchType=previous&msg=',
@@ -132,34 +175,22 @@ echo "in load_php_e<br />\n";
 		}
 		return $url;
 	}
-	function type() {
-		return $this->cache['type'];
-	}
-	function title() {
-		return $this->rpt->title();
-	}
-	function category() {
+	private function category() {
 		return $this->rpt->category();
 	}
-	function layouts() {
+	private function layouts() {
 		return $this->rpt->layouts();
 	}
-	function paramDefs() {
-		return $this->rpt->paramDefs();
-	}
-	function columns() {
-		return $this->rpt->columns();
-	}
-	function columnNames() {
+	private function columnNames() {
 		return array_map(create_function('$x', 'return $x["name"];'), $this->columns());
 	}
-	function init($params) {
+	private function init($params) {
 		$errs = $this->init_el($params);
 		if(!empty($errs)) {
 			Fatal::internalError(T("ReportInitReport", array('error'=>Error::listToStr($errs))));
 		}
 	}
-	function init_el($params) {
+	private function init_el($params) {
 		assert('is_array($params)');
 		$p = new Params;
 		$errs = $p->load_el($this->rpt->paramDefs(), $params);
@@ -168,35 +199,20 @@ echo "in load_php_e<br />\n";
 		}
 		return $this->_init_el($p);
 	}
-	function initCgi($prefix='rpt_') {
+	private function initCgi($prefix='rpt_') {
 		$errs = $this->initCgi_el($prefix);
 		if(!empty($errs)) {
 			Fatal::internalError(T("ReportInitReport", array('error'=>Error::listToStr($errs))));
 		}
 	}
-	function initCgi_el($prefix='rpt_') {
-		$p = new Params;
-		$errs = $p->loadCgi_el($this->rpt->paramDefs(), $prefix);
-		if (!empty($errs)) {
-			return $errs;
-		}
-		return $this->_init_el($p);
-	}
-	function _init_el($params) {
+	private function _init_el($params) {
 		unset($this->cache['params']);
 		$this->params = $params;
-		$this->cache['params'] = $params->dict;
+		$this->cache['params'] = $params->getDict();
 		$this->_save();
 		return array();
 	}
-	function variant($newParams, $newName=NULL) {
-		list($rpt, $errs) = $this->variant_el($newParams, $newName);
-		if(!empty($errs)) {
-			Fatal::internalError(T("ReportMakingVariant", array('error'=>Error::listToStr($errs))));
-		}
-		return $rpt;
-	}
-	function variant_el($newParams, $newName=NULL) {
+	private function variant_el($newParams, $newName=NULL) {
 		if(!is_array($this->cache["params"])) {
 			Fatal::internalError(T("ReportNoParams"));
 		}
@@ -209,7 +225,7 @@ echo "in load_php_e<br />\n";
 		}
 		$params = new Params;
 		$params->loadDict($this->cache['params']);
-		$errs = $params->load_el($rpt->rpt->paramDefs(), $newParams);
+		$errs = $params->load_el($rpt->rpt->getParamDefs(), $newParams);
 		if (!empty($errs)) {
 			return array(NULL, $errs);
 		}
@@ -219,36 +235,28 @@ echo "in load_php_e<br />\n";
 		}
 		return array($rpt, array());
 	}
-	function curPage() {
+	private function curPage() {
 		if ($this->cache['page']) {
 			return $this->cache['page'];
 		} else {
 			return 1;
 		}
 	}
-	function _getIter() {
+	private function _getIter() {
 		if (isset($this->iter) && $this->iter) {
 			return;
 		} else {
 			$this->iter = new NumberedIter($this->rpt->select($this->params));
 		}
 	}
-	function count() {
-		if ($this->cache['count'] === NULL) {
-			$this->_getIter();
-			$this->cache['count'] = $this->iter->count();
-			$this->_save();
-		}
-		return $this->cache['count'];
-	}
-	function next() {
+	private function next() {
 		$this->_getIter();
 		return $this->iter->count();
 	}
-	function each() { # FIXME - get rid of this
+	private function each() { # FIXME - get rid of this
 		return $this->next();
 	}
-	function row($num) {
+	private function row($num) {
 		if (isset($this->cache['rows'][$num])) {
 			return $this->cache['rows'][$num];
 		}
@@ -260,7 +268,7 @@ echo "in load_php_e<br />\n";
 			return NULL;
 		}
 	}
-	function _cacheSlice($skip, $len=NULL) {
+	private function _cacheSlice($skip, $len=NULL) {
 		if ($len === NULL) {
 			$len = Settings::get('items_per_page');
 		}
@@ -280,14 +288,10 @@ echo "in load_php_e<br />\n";
 		}
 		$this->_save();
 	}
-	function _cachePage($page) {
+	private function _cachePage($page) {
 		$this->_cacheSlice(($page-1)*Settings::get('items_per_page'));
 	}
-	function pageIter($page) {
-		$this->_cachePage($page);
-		return new ArrayIter(array_values($this->cache['rows']));
-	}
-	function _save() {
+	private function _save() {
 		if ($this->name) {
 			$_SESSION['rpt_'.$this->name] = $this->cache;
 		}

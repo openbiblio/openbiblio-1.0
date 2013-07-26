@@ -14,7 +14,7 @@ class ReportDisplay {
 	function columns($url=NULL) {
 		$cl = array();
 		list($type, $exp, $order) = $this->rpt->params->getFirst('order_by');
-		foreach ($this->rpt->columns() as $col) {
+		foreach ($this->rpt->getColumns() as $col) {
 			if (isset($col['hidden']) and $col['hidden']) {
 				continue;
 			}
@@ -43,7 +43,7 @@ class ReportDisplay {
 	}
 	function row($row) {
 		$r = array();
-		foreach ($this->rpt->columns() as $col) {
+		foreach ($this->rpt->getColumns() as $col) {
 			if (isset($col['hidden']) and $col['hidden']) {
 				continue;
 			}

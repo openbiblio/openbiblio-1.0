@@ -28,14 +28,14 @@ require_once(REL(__FILE__, "../classes/Iter.php"));
 	  break;
 
 	case "resetReport":
-		Report::clearCache();
+		//Report::clearCache();
 		break;
 
 	case "getCriteriaForm":
 		$rpt = Report::create($_GET['type']);
 		if (!$rpt) die("no report available");
-		echo T($rpt->title())."|".$rpt->type()."|";
-		Params::printForm($rpt->paramDefs());
+		echo T($rpt->getTitle())."|".$rpt->getType()."|";
+		Params::printForm($rpt->getParamDefs());
 	  break;
 
 	case "getPage":
@@ -53,7 +53,7 @@ require_once(REL(__FILE__, "../classes/Iter.php"));
 		if ($_POST['type'] == 'previous') {
 			$rpt = Report::load('Report', $firstItem, $perPage);
 			if ($_REQUEST['rpt_order_by']) {
-				$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
+				$rpt = $rpt->getVariant(array('order_by'=>$_REQUEST['rpt_order_by']));
 			}
 		} else {
 			$rpt = Report::create($_POST['type'], 'Report', $firstItem, $perPage);

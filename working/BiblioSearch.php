@@ -14,17 +14,18 @@ require_once(REL(__FILE__, "../working/Search.php"));
 require_once(REL(__FILE__, "../working/BiblioRows.php"));
 
 class BiblioSearch_rpt extends BiblioRows {
+	public $q;
+
 	private $params = NULL;
 	private $searchTypes;
-	public $q;
 	private $countSQL = NULL;
 	private $sliceSQL = NULL;
 	private $startAt;
 	private $howMany;
 
-	public function BiblioSearch_rpt() {
+	## ------------------------------------------------------------------------ ##
+	public function __construct() {
 	//public function __construct() {
-		$this->q = new Queryi();
 		//$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
 		$json = file_get_contents(REL(__FILE__, '../shared/tagGroup.json'));
 		$tags = json_decode_nice($json,true);
@@ -48,24 +49,10 @@ class BiblioSearch_rpt extends BiblioRows {
 			'barcode' => Search::type('Barcode', 'biblio_copy', array('barcode_nmbr'), 'phrase', 'like', 'start'),
 		);
 	}
-	function title() { return "Item Search"; }
-	function category() { return "Cataloging"; }
-	function layouts() { return array(array('title'=>'MARC Export', 'name'=>'marc')); }
-	function paramDefs() {
-		$p = array(
-			array('order_by', 'order_by', array(), array(
-				array('callno', array('title'=>'Call No.')),
-				array('title', array('title'=>'Title')),
-				array('author', array('title'=>'Author')),
-				array('date', array('title'=>'Date')),
-				array('length', array('title'=>'Length')),
-			)),
-		);
-		return array_merge(Search::getParamDefs($this->searchTypes), $p);
-	}
-	function select($params) {
+	public function select($params) {
 		## build the sql to find bibds that match search criteria
 		$this->params = $params;
+		$this->q = new Queryi();
 
 		$query = $this->_doQuery();
 
@@ -77,10 +64,27 @@ class BiblioSearch_rpt extends BiblioRows {
 		if (!empty($this->firstItem) && !empty($this->howMany)) {
 			$sql .= " LIMIT ".$this->firstItem.", ".$this->howMany;
 		}
-//echo "sql===>$sql<br /><br />";
+		//echo "sql===>$sql<br /><br />";
 		return new BiblioRowsIter($this->q->select($sql));
 	}
-	function _tmpQuery($from, $to, $query) {
+	public function getTitle() { return "Item Search"; }
+	public function getParamDefs() {
+		$p = array(
+			array('order_by', 'order_by', array(), array(
+				array('callno', array('title'=>'Call No.')),
+				array('title', array('title'=>'Title')),
+				array('author', array('title'=>'Author')),
+				array('date', array('title'=>'Date')),
+				array('length', array('title'=>'Length')),
+			)),
+		);
+		return array_merge(Search::getParamDefs($this->searchTypes), $p);
+	}
+
+	## ------------------------------------------------------------------------ ##
+	private function category() { return "Cataloging"; }
+	private function layouts() { return array(array('title'=>'MARC Export', 'name'=>'marc')); }
+	private function _tmpQuery($from, $to, $query) {
 		$this->q->act($this->q->mkSQL('delete from %I', $to));
 		$sql = $this->q->mkSQL('insert into %I select distinct b.bibid ', $to);
 		array_unshift($query['from'], $this->q->mkSQL('%I as b ', $from));
@@ -92,7 +96,7 @@ class BiblioSearch_rpt extends BiblioRows {
 	}
 	// This function uses temporary tables to get around MySQL's join limitations,
 	// It returns a query that will retrieve the results from the final temporary table.
-	function _doQuery() {
+	private function _doQuery() {
 		global $tab;	# FIXME - This is TERRIBLE
 
 		$queries = array();
