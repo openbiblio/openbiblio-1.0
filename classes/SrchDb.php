@@ -269,8 +269,7 @@ class SrchDb extends Queryi {
 		while ($row = $custRows->fetch_assoc()) {
 			$custFieldList[$row["code"]] = "";
 		}			
-		
-		//while ($copy = $bcopies->fetch_assoc()) {
+
 		while ($copy = $bcopies->fetch_assoc()) {
 			$status = $history->getOne($copy['histid']);
 			$booking = $bookings->getByHistid($copy['histid']);
@@ -360,26 +359,34 @@ class SrchDb extends Queryi {
 	## ========================= ##
 	function updateCopy($bibid,$copyid) {
 		$this->lock();
+		$sql = "SELECT `status_cd`, `histid` FROM `biblio_status_hist` "
+					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)"
+					." ORDER BY status_begin_dt";
+		//echo "sql=$sql<br />";
+		$rslt = $this->select($sql);
+		$rcd = $rslt->fetch_assoc();  // only first (most recent) response wanted
+		$histid = $rcd['histid'];
+
+		if ($rcd[status_cd] != $_POST[status_cd]) {
+			$sql = "INSERT `biblio_status_hist` SET "
+			      ."`status_cd` = '$_POST[status_cd]',"
+			      ."`status_begin_dt` = NOW(),"
+						."`bibid` = $bibid,"
+						."`copyid` = $copyid ";
+			//echo "sql=$sql<br />";
+			$rslt = $this->act($sql);
+			$histid = $this->getInsertID();
+		}
+
 		$sql = "UPDATE `biblio_copy` SET "
 		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]', "
 		      ."`copy_desc` = '$_POST[copy_desc]', "
-		      ."`siteid` = '$_POST[siteid]' "
+		      ."`siteid` = '$_POST[siteid]', "
+					."`histid` = $histid "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
 
-		$sql = "SELECT `status_cd` FROM `biblio_status_hist` "
-					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)";
-		//echo "sql=$sql<br />";
-		$rcd = $this->select1($sql);
-		if ($rcd[status_cd] != $_POST[status_cd]) {
-			$sql = "UPDATE `biblio_status_hist` SET "
-			      ."`status_cd` = '$_POST[status_cd]',"
-			      ."`status_begin_dt` = NOW() "
-						." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
-			//echo "sql=$sql<br />";
-			$rows = $this->act($sql);
-		}
 		// Update custom fields if set
 		$copies = new Copies;
 		$custom = array();

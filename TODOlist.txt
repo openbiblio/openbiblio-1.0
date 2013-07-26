@@ -109,6 +109,11 @@ the text "current: checked-out" is displayed to the right of the blank drop-down
 ###################### Completed, most recent at top #########################
 
 26 July 2013 - Neil, fixed 26 July
+>  If I open the edit page for a copy with CHECKED-OUT to member status (summary table),
+the text "current: checked-out" is displayed to the right of the blank drop-down menu.
+> If I update this copy, I get all the red sql/dbase error messages.
+
+26 July 2013 - Neil, fixed 26 July
 If I update the edit page of a currently: checked in item (ie: with drop-down menu blank) -
 the status of the copy (in the summary table) is now changed to NULL and the
 availability icon (in search results) changes from green (available) to Red (on loan).
