@@ -13,6 +13,9 @@
 	//require_once(REL(__FILE__, "../classes/Links.php"));
 	//print_r($_REQUEST);echo "<br />";
 
+// needed for Queryi only
+require_once(REL(__FILE__, "../classes/Iter.php"));
+
 	##### do NOT use double quotes (") on these items #####
 	$map['callno'] = ['099$a'];
 	$map['title'] = ['245$a', '240$a', '246$a'];

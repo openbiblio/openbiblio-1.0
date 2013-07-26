@@ -7,7 +7,7 @@
 require_once(REL(__FILE__, "../functions/utilFuncs.php"));
 //require_once(REL(__FILE__, "../../working/Report.php"));
 //require_once(REL(__FILE__, "../../classes/Query.php"));
-require_once(REL(__FILE__, "../classes/Query.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 //require_once(REL(__FILE__, "../../classes/Search.php"));
 require_once(REL(__FILE__, "../working/Search.php"));
 //require_once(REL(__FILE__, "../../working/BiblioRows.php"));
@@ -24,6 +24,7 @@ class BiblioSearch_rpt extends BiblioRows {
 
 	public function BiblioSearch_rpt() {
 	//public function __construct() {
+		$this->q = new Queryi();
 		//$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
 		$json = file_get_contents(REL(__FILE__, '../shared/tagGroup.json'));
 		$tags = json_decode_nice($json,true);
@@ -65,7 +66,6 @@ class BiblioSearch_rpt extends BiblioRows {
 	function select($params) {
 		## build the sql to find bibds that match search criteria
 		$this->params = $params;
-		$this->q = new Query();
 
 		$query = $this->_doQuery();
 
