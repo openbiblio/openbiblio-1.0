@@ -4,6 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
+require_once(REL(__FILE__, "../classes/Iter.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 

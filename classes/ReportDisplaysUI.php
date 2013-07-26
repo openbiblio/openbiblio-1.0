@@ -3,11 +3,11 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-require_once("../shared/common.php");
+//require_once("../shared/common.php");
 require_once(REL(__FILE__, "../model/ReportDisplays.php"));
-require_once(REL(__FILE__, "../classes/Report.php"));
-require_once(REL(__FILE__, "../classes/TableDisplay.php"));
-require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
+//require_once(REL(__FILE__, "../classes/Report.php"));
+//require_once(REL(__FILE__, "../classes/TableDisplay.php"));
+//require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 
 class ReportDisplaysUI {
 	function display($page) {

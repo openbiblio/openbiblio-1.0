@@ -4,10 +4,13 @@
  */
 
 	require_once("../shared/common.php");
-	require_once(REL(__FILE__, "../classes/Report.php"));
-	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
-	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
-	require_once(REL(__FILE__, "../classes/Links.php"));
+	require_once("../working/Report.php");
+	require_once("../working/Params.php");
+	//require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
+	require_once(REL(__FILE__, "../working/ReportDisplay.php"));
+	//require_once(REL(__FILE__, "../classes/TableDisplay.php"));
+	require_once(REL(__FILE__, "../working/TableDisplay.php"));
+	//require_once(REL(__FILE__, "../classes/Links.php"));
 	//print_r($_REQUEST);echo "<br />";
 
 	##### do NOT use " on these items #####

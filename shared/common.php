@@ -31,17 +31,6 @@
 		session_cache_limiter('nocache');
 	}
 	
-	## autoload any needed Object definition files when instantiated
-	function __autoLoad($classname) {
-		if (file_exists("../model/{$classname}.php")) {
-  		require_once(REL(__FILE__, "../model/{$classname}.php"));
-		} else if (file_exists("../classes/{$classname}.php")) {
-  		require_once(REL(__FILE__, "../classes/{$classname}.php"));
-		} else {
-			throw new Exception ("No file {$classname}.php in model or classes directories.");
-		}
-	}
-
 	function getOBroot() {
 		/* obtain OpenBiblio path ref to wep pages root */
 		/* may be useful later in system (thinking plug-ins, etc.) */
@@ -94,14 +83,14 @@
 	  $_SESSION['site_login'] = Settings::get('site_login');
 	  $_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
-	
-	require_once(REL(__FILE__, 'compat.php'));
+
+	//require_once(REL(__FILE__, 'compat.php'));
 	require_once(REL(__FILE__, '../database_constants.php'));
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));
-	require_once(REL(__FILE__, '../classes/Iter.php'));
+	//require_once(REL(__FILE__, '../classes/Iter.php'));
 	require_once(REL(__FILE__, "../classes/Nav.php"));
-	require_once(REL(__FILE__, 'jsontemplate.php'));
+	//require_once(REL(__FILE__, 'jsontemplate.php'));
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, 'templates.php'));
 	

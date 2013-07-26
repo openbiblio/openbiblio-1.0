@@ -3,6 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+require_once(REL(__FILE__, "../classes/Iter.php"));
+
 $_Query_lock_depth = 0;
 
 class Query {

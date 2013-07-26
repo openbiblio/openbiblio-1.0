@@ -3,17 +3,15 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/Iter.php"));
-require_once(REL(__FILE__, "../classes/Params.php"));
-
 /* A report should always be created with Report::load(), Report::create(),
  * or Report::create_e(), never with new Report().  
  * Create_e() makes a new report of the given type.  If the report is given a 
- *   name, it will be saved in the session in a way that does not depend on 
+ *   name, it will be cached in the session in a way that does not depend on
  *   storing objects in the session.  
- * Load() loads a named report from data stored in the session.  
+ * Load() loads a named report from data cached in the session.
+ *
  * Create() calls create_e(), but treats any error as fatal.
- * Link() returns an URL for linking to the results of a named report.  An
+ * Link() returns an URL for linking to the results of a cached named report.  An
  *   optional message may be supplied for display on the results page.
  *
  * Public instance methods:
@@ -21,6 +19,9 @@ require_once(REL(__FILE__, "../classes/Params.php"));
  *   initCgi_el(), variant() ,variant_el(), columns(), columnNames(),
  *   count(), curPage(), row(), each(), table(), and pageTable()
  */
+
+//require_once(REL(__FILE__, "../working/Params.php"));
+
 class Report {
 	public $name;
 	private $rpt;
@@ -28,10 +29,15 @@ class Report {
 	private $iter;
 	private $cache;
 	private $pointer = 0;
+	private $statrAt;
+	private $howMany;
 	
-	//public function __construct () {
-	//}
+	public function __construct ($startAt=NULL, $howMany=NULL) {
+    $this->startAt = $startAt;
+		$this->howMany = $howMany;
+	}
 	static function create($type, $name=NULL) {
+echo "creating report for {$type}<br />\n";
 		list($rpt, $err) = Report::create_e($type, $name);
 		if($err) {
 			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
@@ -42,7 +48,7 @@ class Report {
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
 		}
-		$rpt = new Report;
+		$rpt = new Report($startAt, $howMany);
 		$err = $rpt->_load_e($name, $_SESSION['rpt_'.$name]);
 		if ($err) {
 			unset($_SESSION['rpt_'.$name]);
@@ -51,15 +57,18 @@ class Report {
 		return $rpt;
 	}
 	function create_e($type, $name=NULL) {
+echo "in create_e<br />\n";
 		$cache = array('type'=>$type);
-		$rpt = new Report;
+		$rpt = new Report();
 		$err = $rpt->_load_e($name, $cache);
 		return array($rpt, $err);
 	}
 	function _load_e($name, $cache) {
+echo "in load_e<br />\n";
 		$this->name = $name;
 		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
-		$fname = '../reports/defs/'.$cache['type'];
+		//$fname = '../reports/defs/'.$cache['type'];
+		$fname = '../working/'.$cache['type'];
 		if (is_readable($fname.'.php')) {
 			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
@@ -85,7 +94,8 @@ class Report {
 		return NULL;		# Can't error non-fatally
 	}
 	function _load_rpt_e($type, $fname) {
-		require_once(REL(__FILE__, '../classes/Rpt.php'));
+		//require_once(REL(__FILE__, '../classes/Rpt.php'));
+		require_once(REL(__FILE__, '../working/Rpt.php'));
 		$rpt = new Rpt;
 		$err = $rpt->load_e($fname);
 		if ($err) {
