@@ -50,6 +50,7 @@
 
 	<p id="errSpace" class="error"></p>
 	<input type="hidden" id="tab" value="<?php echo $tab;?>" />
+	<input type="hidden" id="rptType" value="" />
 
 <!-- ------------------------------------------------------------------------ -->
 	<div id="specsDiv">
@@ -70,6 +71,9 @@
 
 <!-- ------------------------------------------------------------------------ -->
 	<div id="reportDiv">
+		<ul class="btnRow">
+			<li><input type="button" class="gobkRptBtn" value="<?php echo T("Go Back"); ?>"></li>
+		</ul>
 		<fieldset>
 			<div class="cntlArea">
 				<div class="btnBox">
@@ -102,10 +106,10 @@
 				</div>
 			</div>
 		</fieldset>
-
 		<ul class="btnRow">
 			<li><input type="button" class="gobkRptBtn" value="<?php echo T("Go Back"); ?>"></li>
 		</ul>
+
 	</div>
 
 <!-- ------------------------------------------------------------------------ -->

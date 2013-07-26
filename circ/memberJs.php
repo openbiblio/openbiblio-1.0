@@ -439,6 +439,7 @@ var mf = {
 				mf.showMsg(response);
 			}
 			else {
+				document.forms.acntForm.reset();
 				mf.showMsg('Added!');
 				mf.doShowMbrAcnt();
 			}

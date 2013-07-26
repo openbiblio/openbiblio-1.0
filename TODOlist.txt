@@ -101,14 +101,37 @@ Member screen: Hold list not showing entries in database.
 23 July 2013 - Fred
 Rewrite Report front end to be more compatible, and use more of common code.
 
-24 July 2013 - Neil
+26 July 2013 - Neil
+If I update the edit page of a currently: checked in item (ie: with drop-down menu blank) -
+the status of the copy (in the summary table) is now changed to NULL and the
+availability icon (in search results) changes from green (available) to Red (on loan).
+Epiphany, Chromium, Firefox)
+If I open the edit page for a copy with NULL status, the text "current: checked-in"
+is displayed to the right of the blank drop-down menu.
+
+26 July 2013 - Neil
+>  If I open the edit page for a copy with CHECKED-OUT to member status (summary table),
+the text "current: checked-out" is displayed to the right of the blank drop-down menu.
+> If I update this copy, I get all the red sql/dbase error messages.
+
+###################### Completed, most recent at top #########################
+
+26 July 2013 - Neil, fixed 26 July
+Member accounts.
+The add / delete functions work perfectly.
+One minor issue - the data entered into the 'description' and 'amount' fields
+(when adding new transaction) are not removed when the transaction is displayed below.
+In fact if I go straight to any other member's account, this data is visible in the
+two fields until I leave the circulation "environment" - identical to the problem of
+deleting a single transaction
+The added transaction remains displayed with the correct member (as it should).
+
+24 July 2013 - Neil, fixed 25 July
 Item search report: first page listed correctly but the links to subsequent pages
 do not work - just shows the results page headers and no items.
 Images & Subject search reports: same problem
 
-###################### Completed, most recent at top #########################
-
-24 July 2013 - Neil
+24 July 2013 - Neil, fixed 25 July
 >  When I view the edit page for any copy currently out on loan, the status drop down
 menu is blank - is this normal/expected behaviour? The summary page clearly shows the
 copy out on loan and to which member

@@ -13,7 +13,7 @@
 	//require_once(REL(__FILE__, "../classes/Links.php"));
 	//print_r($_REQUEST);echo "<br />";
 
-	##### do NOT use " on these items #####
+	##### do NOT use double quotes (") on these items #####
 	$map['callno'] = ['099$a'];
 	$map['title'] = ['245$a', '240$a', '246$a'];
 	$map['author'] = ['100$a'];
@@ -23,6 +23,10 @@
 		$opts = Settings::getAll();
 		echo json_encode($opts);
 	  break;
+
+	case "resetReport":
+		Report::clearCache();
+		break;
 
 	case "getCriteriaForm":
 		$rpt = Report::create($_GET['type']);
@@ -41,24 +45,7 @@
 			$firstItem = $_REQUEST['firstItem'];
 			$page = floor($firstItem / $perPage)+1;
 		}
-		if($perPage <= ($numRows - $firstItem)){
-			$lastItem = $firstItem + $perPage;
-		} else {
-			$lastItem = $numRows;
-		}
-
-		## record header
-		$rcd['nmbr'] = (string)$numRows;
-		$rcd['firstItem'] = (string)$firstItem;
-		$rcd['lastItem'] = (string)$lastItem;
-		$rcd['perPage'] = (string)$perPage;
-		$rcd['columns'] = (string)Settings::get('item_columns');
-		echo json_encode($rcd)."| ";
-
-echo "in reportSrvr: page=$page; firstItem=$firstItem; perPage=$perPage<br />\n";
-
-		## legacy code doen't work with pagination via AJAX
-	//	$rpt->setPagination ($firstItem, $perPage);
+//echo "in reportSrvr: page=$page; firstItem=$firstItem; perPage=$perPage<br />\n";
 
 		if ($_POST['type'] == 'previous') {
 			$rpt = Report::load('Report', $firstItem, $perPage);
@@ -70,8 +57,22 @@ echo "in reportSrvr: page=$page; firstItem=$firstItem; perPage=$perPage<br />\n"
 			$errs = $rpt->initCgi_el();
 			if (!empty($errs)) die($errs);
 		}
+
 		$numRows = $rpt->count();
 		if ($numRows == 0) die(T("No results found."));
+		if($perPage <= ($numRows - $firstItem)){
+			$lastItem = $firstItem + $perPage;
+		} else {
+			$lastItem = $firstItem + $numRows;
+		}
+
+		## record header
+		$rcd['nmbr'] = (string)$numRows;
+		$rcd['firstItem'] = (string)$firstItem;
+		$rcd['lastItem'] = (string)$lastItem;
+		$rcd['perPage'] = (string)$perPage;
+		$rcd['columns'] = (string)Settings::get('item_columns');
+		echo "| ".json_encode($rcd)."| ";
 
 		$disp = new ReportDisplay($rpt);
 		$t = new TableDisplay;

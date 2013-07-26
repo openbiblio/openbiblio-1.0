@@ -36,7 +36,7 @@ class Report {
     $this->startAt = $startAt;
 		$this->howMany = $howMany;
 	}
-	static function create($type, $name=NULL) {
+	public static function create($type, $name=NULL) {
 echo "creating report for {$type}<br />\n";
 		list($rpt, $err) = Report::create_e($type, $name);
 		if($err) {
@@ -44,7 +44,8 @@ echo "creating report for {$type}<br />\n";
 		}
 		return $rpt;
 	}
-	static function load($name) {
+	public static function load($name) {
+echo "in load<br />\n";
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
 		}
@@ -55,6 +56,9 @@ echo "creating report for {$type}<br />\n";
 			Fatal::internalError(T("ReportNoLoadReport", array('name'=>$name)));
 		}
 		return $rpt;
+	}
+	public static function clearCache() {
+		unset($_SESSION['rpt_'.$name]);
 	}
 	function create_e($type, $name=NULL) {
 echo "in create_e<br />\n";
@@ -87,6 +91,7 @@ echo "in load_e<br />\n";
 		return NULL;
 	}
 	function _load_php_e($type, $fname) {
+echo "in load_php_e<br />\n";
 		$classname = $type.'_rpt';
 		include_once($fname);
 		$this->rpt = new $classname;
@@ -94,8 +99,9 @@ echo "in load_e<br />\n";
 		return NULL;		# Can't error non-fatally
 	}
 	function _load_rpt_e($type, $fname) {
+echo "in load_php_e<br />\n";
 		//require_once(REL(__FILE__, '../classes/Rpt.php'));
-		require_once(REL(__FILE__, '../working/Rpt.php'));
+		include_once(REL(__FILE__, '../working/Rpt.php'));
 		$rpt = new Rpt;
 		$err = $rpt->load_e($fname);
 		if ($err) {

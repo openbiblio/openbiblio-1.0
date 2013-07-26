@@ -14,6 +14,7 @@ var rpt = {
 
 		rpt.rptType = '<?php echo $_GET['type']; ?>';
 		$('#type').val(rpt.rptType);
+		$('#rptType').val(rpt.rptType);
 
 		//$('#orderBy').on('change',null,function () {
 		//	rpt.fetchFotoPage(0);
@@ -36,6 +37,7 @@ var rpt = {
 	},
 	//----//
 	resetForm: function () {
+		rpt.resetReport();
 		$('#specsDiv').show();
 		$('#reportDiv').hide();
 		$('#detailDiv').hide();
@@ -47,6 +49,8 @@ var rpt = {
 		$('#nextBtn').disable();
 	},
 	rtnToSpecs: function () {
+		rpt.resetReport();
+		$('#type').val(rpt.rptType);
 		$('#specsDiv').show();
 		$('#reportDiv').hide();
 	},
@@ -61,6 +65,11 @@ var rpt = {
 	    rpt.opts = jsonData;
 		});
 	},
+	resetReport: function () {
+		$.post(rpt.url, {'mode':'resetReport'}, function (response) {
+			$('#errSpace').html(response).show();
+		});
+	},
 	getCriteriaForm: function () {
 		$.get(rpt.url, {'mode':'getCriteriaForm',
 												'type':rpt.rptType,
@@ -68,8 +77,8 @@ var rpt = {
 			var parts = resp.split('|');
 			$('#specs').html(parts[1]);
 			//$('#type').val(rpt.rptType);
+			$('#type').val('previous');
 			$('#pageTitle').html(parts[0]);
-			//$('#title').val(parts[0]);
 		});
 	},
 
@@ -91,18 +100,18 @@ var rpt = {
 		}
 		$('#firstItem').val(firstItem);
 
+		$('#type').val('previous');
     var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
 			var parts = response.split('|');
-			var hdr = JSON.parse(parts[0]);
+			var hdr = JSON.parse(parts[1]);
 			rpt.ttlNmbr = parseInt(hdr.nmbr);
 			rpt.firstItem = parseInt(hdr.firstItem);
 			rpt.lastItem = parseInt(hdr.lastItem);
 			rpt.perPage = parseInt(hdr.perPage);
 
-			$('#type').val('previous');
 			$('.countBox').html((rpt.firstItem+1)+' - '+rpt.lastItem+' <?php echo T("of");?> '+rpt.ttlNmbr).show();
-			$('#report').html(parts[1]);
+			$('#report').html(parts[2]);
 
 			$('div#report a').on('click',null,rpt.displayBiblio);
 
