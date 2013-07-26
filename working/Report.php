@@ -73,12 +73,17 @@ echo "in load_e<br />\n";
 		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
 		//$fname = '../reports/defs/'.$cache['type'];
 		$fname = '../working/'.$cache['type'];
+echo "using file {$fname}<br />\n";
 		if (is_readable($fname.'.php')) {
+echo "its .php<br />\n";
 			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
 		} elseif (is_readable($fname.'.rpt')) {
+echo "its .rpt<br />\n";
 		  ## for scripted reports
 			$err = $this->_load_rpt_e($cache['type'], $fname.'.rpt');
+		} else {
+			die ("unrecognized file");
 		}
 		if ($err) {
 			return $err;

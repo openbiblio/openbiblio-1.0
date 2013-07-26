@@ -1,0 +1,20 @@
+.title "Item Counts by Media Type"
+.category "Statistical Reports"
+.column description title="Media Type" sort=description
+.column count title=Count width=5
+.parameters
+.
+.end parameters
+
+.sql
+SELECT
+    material_type_dm.code
+    , material_type_dm.description
+    , count(biblio.bibid) as count
+    , biblio.material_cd
+FROM
+    biblio
+    INNER JOIN material_type_dm
+        ON (biblio.material_cd = material_type_dm.code)
+GROUP BY material_type_dm.code;
+.end sql
