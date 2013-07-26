@@ -48,14 +48,8 @@
 				<?php
 					$states = new CopyStatus;
 					$state_select = $states->getSelect();
-					// These should not be selectable
-					unset($state_select[OBIB_STATUS_IN]);
-					unset($state_select[OBIB_STATUS_OUT]);
-					unset($state_select[OBIB_STATUS_ON_HOLD]);
-					//unset($state_select[OBIB_STATUS_SHELVING_CART]);
 					echo inputfield(select, status_cd, "in", null, $state_select);
 				?>
-				<span id="crntStatus"></span>
 			</td>
 		</tr>
 		<!-- Custom fields /-->

@@ -33,6 +33,8 @@ var ced = {
 			}
 		});
 
+		$('#status_cd > option[value=out]').prop('disabled',true);
+		$('#status_cd > option[value=hld]').prop('disabled',true);
 	},
 
 	//------------------------------
@@ -107,10 +109,10 @@ var ced = {
 		$('#copyTbl #status_cd').val(idis.crntCopy.statusCd);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
 
-		var status = idis.crntCopy.statusCd;
-		if ((status == 'in') || (status == 'out') ||(status == 'hold')) {
-			$('#crntStatus').html('current: '+idis.crntCopy.status).show();
-		}
+		//var status = idis.crntCopy.statusCd;
+		//if ((status == 'in') || (status == 'out') ||(status == 'hold')) {
+		//	$('#crntStatus').html('current: '+idis.crntCopy.status).show();
+		//}
 
   	var crntsite = idis.opts.current_site
 		$('#copySite').val(crntsite);
