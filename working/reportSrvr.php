@@ -31,7 +31,7 @@
 	case "getCriteriaForm":
 		$rpt = Report::create($_GET['type']);
 		if (!$rpt) die("no report available");
-		echo T($rpt->title())."|";
+		echo T($rpt->title())."|".$rpt->type()."|";
 		Params::printForm($rpt->paramDefs());
 	  break;
 
@@ -67,6 +67,7 @@
 		}
 
 		## record header
+		$rcd['type'] = 'previous';
 		$rcd['nmbr'] = (string)$numRows;
 		$rcd['firstItem'] = (string)$firstItem;
 		$rcd['lastItem'] = (string)$lastItem;

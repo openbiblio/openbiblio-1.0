@@ -101,11 +101,6 @@ Member screen: Hold list not showing entries in database.
 23 July 2013 - Fred
 Rewrite Report front end to be more compatible, and use more of common code.
 
-26 July 2013 - Neil
->  If I open the edit page for a copy with CHECKED-OUT to member status (summary table),
-the text "current: checked-out" is displayed to the right of the blank drop-down menu.
-> If I update this copy, I get all the red sql/dbase error messages.
-
 ###################### Completed, most recent at top #########################
 
 26 July 2013 - Neil, fixed 26 July

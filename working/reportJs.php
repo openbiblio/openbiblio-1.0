@@ -37,7 +37,6 @@ var rpt = {
 	},
 	//----//
 	resetForm: function () {
-		rpt.resetReport();
 		$('#specsDiv').show();
 		$('#reportDiv').hide();
 		$('#detailDiv').hide();
@@ -72,13 +71,12 @@ var rpt = {
 	},
 	getCriteriaForm: function () {
 		$.get(rpt.url, {'mode':'getCriteriaForm',
-												'type':rpt.rptType,
-											 }, function (resp){
+										'type':$('#rptType').val(),
+									 }, function (resp){
 			var parts = resp.split('|');
-			$('#specs').html(parts[1]);
-			//$('#type').val(rpt.rptType);
-			$('#type').val('previous');
 			$('#pageTitle').html(parts[0]);
+			$('#type').val(parts[1]);
+			$('#specs').html(parts[2]);
 		});
 	},
 
@@ -100,17 +98,18 @@ var rpt = {
 		}
 		$('#firstItem').val(firstItem);
 
-		$('#type').val('previous');
     var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
 			var parts = response.split('|');
 			var hdr = JSON.parse(parts[1]);
+			rpt.type = hdr.type;
 			rpt.ttlNmbr = parseInt(hdr.nmbr);
 			rpt.firstItem = parseInt(hdr.firstItem);
 			rpt.lastItem = parseInt(hdr.lastItem);
 			rpt.perPage = parseInt(hdr.perPage);
 
 			$('.countBox').html((rpt.firstItem+1)+' - '+rpt.lastItem+' <?php echo T("of");?> '+rpt.ttlNmbr).show();
+			$('#type').val(rpt.type);
 			$('#report').html(parts[2]);
 
 			$('div#report a').on('click',null,rpt.displayBiblio);
