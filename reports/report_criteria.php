@@ -11,6 +11,7 @@
 
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../classes/Report.php"));
+	require_once(REL(__FILE__, "../classes/Params.php"));
 
 	if (isset($_SESSION['postVars']['type'])) {
 		$type = $_SESSION['postVars']['type'];
@@ -47,7 +48,7 @@
 		<input type="hidden" name="type" value="<?php echo H($rpt->type()) ?>" />
 
 <?php
-	Params::printForm($rpt->paramDefs());
+	Params::printForm($rpt->getParamDefs());
 ?>
 
 		<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />
