@@ -47,7 +47,7 @@ class MemberAccounts extends DBTable {
 	function update_el($rec, $confirmed=false) {
 		Fatal::internalError(T("Update not supported for this table"));
 	}
-	function validate_el($trans, $insert) {
+	protected function validate_el($trans, $insert) {
 		if (!$insert) {
 			Fatal::internalError(T("Update not supported for this table"));
 		}

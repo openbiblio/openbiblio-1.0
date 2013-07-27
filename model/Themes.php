@@ -53,7 +53,7 @@ class Themes extends DBTable {
 		}
 		return $select;
 	}
-	function validate_el($rec, $insert) {
+	protected function validate_el($rec, $insert) {
 		$errors = array();
 		foreach (array('theme_name') as $req) {
 			if ($insert and !isset($rec[$req])

@@ -25,6 +25,9 @@ class Biblios extends CoreTable {
 		$this->marc = new MarcStore;
 		$this->marcRec = new MarcRecord;
 	}
+
+	protected function validate_el($rec, $insert) { /*return array();*/ }
+
 	function insert_el($biblio) {
 		$this->lock();
 		if (!isset($biblio['marc']) or !is_a($biblio['marc'], 'MarcRecord')) {

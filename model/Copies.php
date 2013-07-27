@@ -4,6 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
+require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));
 require_once(REL(__FILE__, "../model/History.php"));
 
 class Copies extends CoreTable {
@@ -28,7 +29,7 @@ class Copies extends CoreTable {
 		$this->setForeignKey('histid', 'biblio_status_hist', 'histid');
 		$this->setForeignKey('siteid', 'site', 'siteid');
 		
-		$this->custom = new DBTable;
+		$this->custom = new CopiesCustomFields;
 		$this->custom->setName('biblio_copy_fields');
 		$this->custom->setFields(array(
 			'copyid'=>'string',
@@ -65,7 +66,7 @@ class Copies extends CoreTable {
 		$this->unlock();
 		return array($id, $errors);
 	}
-	function validate_el($copy, $insert) {
+	protected function validate_el($copy, $insert) {
 		$errors = array();
 		foreach (array('bibid', 'barcode_nmbr') as $req) {
 			if ($insert and !isset($copy[$req])

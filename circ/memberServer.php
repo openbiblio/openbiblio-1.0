@@ -195,13 +195,24 @@
 
 	//// ====================================////
 	case 'getHolds':
-		$holds = Report::create('holds');
-		$holds->init(array('mbrid'=>$_GET['mbrid']));
+		$rslt = $holds->getByMember($_GET['mbrid']);
 		$holdList = array();
-		while ($hold = $holds->next()) {
-			$holdList[] = $hold;
+		while ($row = $rslt->fetch_assoc()) {
+			$rcd['hold_dt'] = $row['hold_begin_dt'];
+			$rcd['holdid'] = $row['holdid'];
+			$copy = new Copy($row['copyid']);
+			$cpyData = $copy->getData();
+			$rcd['barcode'] = $cpyData['barcode'];
+			$rcd['copyid'] = $cpyData['copyid'];
+			$rcd['bibid'] = $cpyData['bibid'];
+			$rcd['status'] = $cpyData['status'];
+			$rcd['due_dt'] = $cpyData['due_dt'];
+			$biblio = new Biblio($cpyData['bibid']);
+			$bibData = $biblio->getData();
+			$rcd['title'] = $bibData['hdr']['title'];
+			$holdList[] = $rcd;
 		}
-	  echo json_encode($holdList);
+		echo json_encode($holdList);
 		break;
 	case "doHold":
 		$copy = $copies->getByBarcode($_POST['barcodeNmbr']);

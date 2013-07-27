@@ -22,17 +22,34 @@ class Holds extends DBTable {
 		$this->setForeignKey('copyid', 'biblio_copy', 'copyid');
 		$this->setForeignKey('mbrid', 'member', 'mbrid');
 	}
-	function getFirstHold($copyid) {
+	public function getFirstHold($copyid) {
 		$sql = "SELECT * FROM biblio_hold "
 					 . $this->mkSQL("WHERE copyid=%N ", $copyid)
 					 . "ORDER BY hold_begin_dt LIMIT 1 ";
 		return $this->select01($sql);
 	}
-	function insert_el($rec, $confirmed=false) {
+	public function getByMember($mbrid) {
+		$sql = "SELECT * FROM biblio_hold "
+					 . $this->mkSQL("WHERE mbrid=%N ", $mbrid)
+					 . "ORDER BY hold_begin_dt ";
+		return $this->select($sql);
+	}
+	public function deleteOne($holdid) {
+		parent::deleteOne($holdid);
+		$this->_cleanup();
+	}
+	public function deleteMatches($fields) {
+		parent::deleteMatches($fields);
+		$this->_cleanup();
+	}
+	protected function validate_el($rec, $insert) { /*return array();*/ }
+	protected function insert_el($rec, $confirmed=false) {
 		$rec['hold_begin_dt'] = date('Y-m-d H:i:s');
 		return parent::insert_el($rec, $confirmed);
 	}
-	function _cleanup() {
+
+	## ------------------------------------------------------------------------ ##
+	private function _cleanup() {
 		include_once(REL(__FILE__, "../model/History.php"));
 		# Select copies with an 'on hold' status that have no hold records.
 		$sql = "SELECT c.* FROM biblio_copy c "
@@ -51,13 +68,5 @@ class Holds extends DBTable {
 				'status_cd'=>'in',
 			));
 		}
-	}
-	function deleteOne($holdid) {
-		parent::deleteOne($holdid);
-		$this->_cleanup();
-	}
-	function deleteMatches($fields) {
-		parent::deleteMatches($fields);
-		$this->_cleanup();
 	}
 }

@@ -95,13 +95,13 @@ SRU/SRW failing due to lack of search results from host.
 make more use of ListSrvr for getOpts() and other lookup table use.
 Remove from the various xxxSrvr.php files.
 
-23 July 2013 - Fred
-Member screen: Hold list not showing entries in database.
-
 27 July 2013 - Fred
 New Report front end needs common menu like original. Needs access to export choices.
 
 ###################### Completed, most recent at top #########################
+
+23 July 2013 - Fred, fixed 27 July
+Member screen: Hold list not showing entries in database.
 
 26 July 2013 - Neil, fixed 26 July
 >  If I open the edit page for a copy with CHECKED-OUT to member status (summary table),

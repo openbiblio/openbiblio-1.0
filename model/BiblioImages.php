@@ -20,7 +20,10 @@ class BiblioImages extends DBTable {
 		$this->setKey('bibid');
 		$this->setForeignKey('bibid', 'biblio', 'bibid');
 	}
-	function getBiblioMatches($fields) {
+
+	protected function validate_el($rec, $insert) { /*return array();*/ }
+
+	public function getBiblioMatches($fields) {
 		$sql = 'SELECT DISTINCT(i.bibid), i.url, s.subfield_data as data '.
 					 'FROM images i, biblio b, biblio_field f, biblio_subfield s '.
 					 'WHERE (f.bibid = i.bibid) AND (s.fieldid = f.fieldid) AND (("A" = "B") ';

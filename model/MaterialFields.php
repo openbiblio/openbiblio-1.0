@@ -26,6 +26,8 @@ class MaterialFields extends DBTable {
 		$this->setForeignKey('material_cd', 'material_type_dm', 'code');
 	}
 
+	protected function validate_el($rec, $insert) { /*return array();*/ }
+
 	function getDisplayInfo ($nmbr) {
 		$media = [];
 		$set = $this->getAll('material_cd,position');

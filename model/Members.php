@@ -34,13 +34,6 @@ class Members extends CoreTable {
 		$this->setForeignKey('siteid', 'site', 'siteid');
 		$this->setIter('MembersIter');
 
-		$this->custom = new DBTable;
-		$this->custom->setName('member_fields');
-		$this->custom->setFields(array(
-			'mbrid'=>'string',
-			'code'=>'string',
-			'data'=>'string',
-		));
 		$this->reqdFlds = array(
 			'last_name',
 			'first_name',
@@ -49,6 +42,13 @@ class Members extends CoreTable {
 		if ($_SESSION[mbrBarcode_flg]=='Y') {
 		  $this->reqdFlds[] = 'barcode_nmbr';
 		}
+		$this->custom = new MemberCustomFields;
+		$this->custom->setName('member_fields');
+		$this->custom->setFields(array(
+			'mbrid'=>'string',
+			'code'=>'string',
+			'data'=>'string',
+		));
 		$this->custom->setKey('mbrid', 'code');
 		$this->custom->setForeignKey('mbrid', 'member', 'mbrid');
 	}
@@ -79,7 +79,7 @@ class Members extends CoreTable {
 		return $this->select($sql);
 	}
 	
-	function validate_el($mbr, $insert) {
+	protected function validate_el($mbr, $insert) {
 		$errors = array();
 		foreach ($this->reqdFlds as $req) {
 			if ($insert and !isset($mbr[$req])

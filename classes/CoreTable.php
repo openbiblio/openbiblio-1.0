@@ -5,12 +5,14 @@
  
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
-class CoreTable extends DBTable {
+abstract class CoreTable extends DBTable {
 	public function __construct() {
-//		$this->DBTable();
 		parent::__construct();
 	}
-	function setFields($fields) {
+
+	protected function validate_el($rec, $insert) { /* abstracted in DBTable */ }
+
+	protected function setFields($fields) {
 		$common = array(
 			'create_dt'=>'string',
 			'last_change_dt'=>'string',
@@ -19,13 +21,13 @@ class CoreTable extends DBTable {
 		);
 		parent::setFields(array_merge($common, $fields));
 	}
-	function insert_el($rec, $confirmed=false) {
+	protected function insert_el($rec, $confirmed=false) {
 		$date = date('Y-m-d H:i:s');
 		$rec['create_dt'] = $rec['last_change_dt'] = $date;
 		$rec['last_change_userid'] = $_SESSION['userid'];
 		return parent::insert_el($rec, $confirmed);
 	}
-	function update_el($rec, $confirmed=false) {
+	protected function update_el($rec, $confirmed=false) {
 		$date = date('Y-m-d H:i:s');
 		$rec['last_change_dt'] = $date;
 		$rec['last_change_userid'] = $_SESSION['userid'];

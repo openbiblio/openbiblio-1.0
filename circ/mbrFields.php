@@ -118,7 +118,7 @@
 <?php
 	## add custom fields
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
-	$customFields = new MemberCustomFields;
+	$customFields = new MemberCustomFields_DM;
 	foreach ($customFields->getSelect() as $name=>$title) {
 		echo "<tr>\n";
 		echo "	<td><label>";echo T($title); echo "</label></td>\n";

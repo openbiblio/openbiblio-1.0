@@ -5,7 +5,7 @@
 
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 
-class DBTable extends Queryi {
+abstract class DBTable extends Queryi {
 	private $name;
 	private $fields = array();
 	private $key = array();
@@ -16,17 +16,18 @@ class DBTable extends Queryi {
 		'string'=>'%Q',
 		'number'=>'%N',
 	);
+
+	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
+
+	## ------------------------------------------------------------------------ ##
 	public function __construct() {
 		parent::__construct();
 	}
-	public function setName($name) {
-		$this->name = $name;
-	}
-	public function setFields($fields) {
+	protected function setFields($fields) {
 		$this->fields = $fields;
 		# FIXME - Check that field types are valid.
 	}
-	public function setKey() {
+	protected function setKey() {
 		$this->key = func_get_args();
 		foreach ($this->key as $k) {
 			if (!isset($this->fields[$k])) {
@@ -34,6 +35,9 @@ class DBTable extends Queryi {
 			echo "sql=$sql<br />\n";
 			}
 		}
+	}
+	public function setName($name) {
+		$this->name = $name;
 	}
 	public function setSequenceField($sequence) {
 		$this->sequence = $sequence;
@@ -48,18 +52,14 @@ class DBTable extends Queryi {
 	public function setIter($classname) {
 		$this->iter = $classname;
 	}
-	/* Abstract Method OVERRIDE THIS */
-	function validate_el($rec, $insert) {
-		return array();
-	}
-	function maybeGetOne() {
+	public function maybeGetOne() {
 		$key = func_get_args();
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_keyTerms($key);
 		$row = $this->select01($sql);
 		return $row;
 	}
-	function getOne() {
+	public function getOne() {
 		$key = func_get_args();
 		$row = call_user_func_array(array($this, 'maybeGetOne'), $key);
 		if (!$row) {
@@ -68,7 +68,7 @@ class DBTable extends Queryi {
 		}
 		return $row;
 	}
-	function getAll($orderby=NULL) {
+	public function getAll($orderby=NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
 		if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
 		if ($this->iter) {
@@ -77,7 +77,7 @@ class DBTable extends Queryi {
 		} else
 			return $this->select($sql);
 	}
-	function getMatches($fields, $orderby=NULL) {
+	public function getMatches($fields, $orderby=NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
 		if ($orderby)
@@ -88,7 +88,7 @@ class DBTable extends Queryi {
 		} else
 			return $this->select($sql);
 	}
-	function checkForeignKeys_el($rec) {
+	public function checkForeignKeys_el($rec) {
 		$errors = array();
 		foreach ($this->foreign_keys as $k) {
 			if (!isset($rec[$k['key']]) or $rec[$k['key']] == NULL) {
@@ -104,23 +104,14 @@ class DBTable extends Queryi {
 		}
 		return $errors;
 	}
-	function skipIgnorableErrors($errors) {
-		$errs = array();
-		foreach ($errors as $e) {
-			if (!is_a($e, 'IgnorableError')) {
-				$errs[] = $e;
-			}
-		}
-		return $errs;
-	}
-	function insert($rec, $confirmed=false) {
+	public function insert($rec, $confirmed=false) {
 		list($seq_val, $errors) = $this->insert_el($rec, $confirmed);
 //		if ($errors) {
 //			Fatal::internalError(T("DBTableErrorInserting")." '".$this->name."', ".Error::listToStr($errors));
 //		}
 		return $seq_val;
 	}
-	function insert_el($rec, $confirmed=false) {
+	protected function insert_el($rec, $confirmed=false) {
 		$this->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
@@ -150,14 +141,14 @@ class DBTable extends Queryi {
 		$this->unlock();
 		return array($seq_val, array());
 	}
-	function update($rec, $confirmed=false) {
+	public function update($rec, $confirmed=false) {
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
 			//Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
 			Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
 		}
 	}
-	function update_el($rec, $confirmed=false) {
+	protected function update_el($rec, $confirmed=false) {
 		$key = array();
 		foreach ($this->key as $k) {
 			if (!isset($rec[$k]))
@@ -186,7 +177,7 @@ class DBTable extends Queryi {
 		$this->unlock();
 		return array();
 	}
-	function deleteOne() {
+	public function deleteOne() {
 		$this->lock();
 		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
@@ -194,14 +185,25 @@ class DBTable extends Queryi {
 		$this->act($sql);
 		$this->unlock();
 	}
-	function deleteMatches($fields) {
+	public function deleteMatches($fields) {
 		$this->lock();
 		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
 		$this->act($sql);
 		$this->unlock();
 	}
-	function _keyTerms($key) {
+
+	## ------------------------------------------------------------------------ ##
+	private function skipIgnorableErrors($errors) {
+		$errs = array();
+		foreach ($errors as $e) {
+			if (!is_a($e, 'IgnorableError')) {
+				$errs[] = $e;
+			}
+		}
+		return $errs;
+	}
+	private function _keyTerms($key) {
 		if (count($key) != count($this->key)) {
 			Fatal::internalError(T("Wrong key length"));
 		}
@@ -213,7 +215,7 @@ class DBTable extends Queryi {
 		}
 		return implode(' AND ', $terms);
 	}
-	function _pairs($rec, $separator=', ') {
+	private function _pairs($rec, $separator=', ') {
 		$vals = array();
 		foreach ($this->fields as $name => $type) {
 			if (isset($rec[$name])) {

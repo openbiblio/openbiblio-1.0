@@ -17,7 +17,7 @@ class CircCollections extends DBTable {
 		$this->setKey('code');
 		$this->setForeignKey('code', 'collection_dm', 'code');
 	}
-	function validate_el($rec, $insert) {
+	protected function validate_el($rec, $insert) {
 		$errors = array();
 		foreach (array('code', 'days_due_back', 'daily_late_fee') as $req) {
 			if ($insert and !isset($rec[$req])
@@ -48,7 +48,7 @@ class DistCollections extends DBTable {
 		$this->setKey('code');
 		$this->setForeignKey('code', 'collection_dm', 'code');
 	}
-	function validate_el($rec, $insert) {
+	protected function validate_el($rec, $insert) {
 		$errors = array();
 		foreach (array('code', 'restock_threshold') as $req) {
 			if ($insert and !isset($rec[$req])

@@ -346,7 +346,7 @@ var mf = {
 					var html = '';
 					for (var nHold in mf.holds) {
 						var hold = mf.holds[nHold];
-						var holdDate = hold.hold_begin_dt.split(' ')[0];
+						var holdDate = hold.hold_dt.split(' ')[0];
 						if (hold.due_dt) 
 							var dueDate = hold.due_dt.split(' ')[0];
 						else
@@ -357,7 +357,7 @@ var mf = {
 						html += '		<input type="hidden" value="'+hold.holdid+'" /></td> \n';
 						html += '	</td> \n';
 						html += '	<td>'+holdDate+'</td>';
-						html += '	<td>'+hold.barcode_nmbr+'</td>';
+						html += '	<td>'+hold.barcode+'</td>';
 						html += '	<td><a href="#" id="'+hold.bibid+'">"'+hold.title+'"</a></td>';
 						html += '	<td>'+hold.status+'</td>';
 						html += '	<td>'+dueDate+'</td>';

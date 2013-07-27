@@ -9,6 +9,8 @@ class DmTable extends DBTable {
 	public function __construct() {
 		parent::__construct();
 	}
+	protected function validate_el($rec, $insert) { /*return array();*/ }
+
 	function getList() {
 		$list = array();
 		$recs = $this->getAll();

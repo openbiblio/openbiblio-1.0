@@ -99,7 +99,7 @@ class Bookings extends CoreTable {
 			. 'from overlaps '
 			. 'group by date order by date ');
 	}
-	function validate_el($new, $insert) {
+	protected function validate_el($new, $insert) {
 		$modelBookingsNotEnoughCopiesText = T("modelBookingsNotEnoughCopies");
 		if ($insert) {
 			$old = array();

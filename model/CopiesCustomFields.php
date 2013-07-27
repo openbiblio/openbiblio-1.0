@@ -4,7 +4,22 @@
  */
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 
-class CopiesCustomFields extends DmTable {
+class CopiesCustomFields extends DBTable {
+	public function __construct() {
+		parent::__construct();
+		$this->setName('biblio_copy_fields');
+		$this->setFields(array(
+			'copyid'=>'number',
+			'bibid'=>'number',
+			'code'=>'string',
+			'data'=>'string',
+		));
+		$this->setKey('code');
+	}
+	protected function validate_el($rec, $insert) {
+	}
+}
+class CopiesCustomFields_DM extends DmTable {
 	public function __construct() {
 		parent::__construct();
 		$this->setName('biblio_copy_fields_dm');
@@ -14,5 +29,7 @@ class CopiesCustomFields extends DmTable {
 			'default_flg'=>'string',
 		));
 		$this->setKey('code');
+	}
+	protected function validate_el($rec, $insert) {
 	}
 }

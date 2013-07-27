@@ -23,7 +23,7 @@ class History extends DBTable {
 		$this->setForeignKey('bibid', 'biblio', 'bibid');
 		$this->setForeignKey('copyid', 'biblio_copy', 'copyid');
 	}
-	function validate_el($new, $insert) {
+	protected function validate_el($new, $insert) {
 		return true;
 	}
 	function update_el($rec) {

@@ -27,7 +27,7 @@ class Staff extends CoreTable {
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
 	}
-	function validate_el($rec, $insert) {
+	protected function validate_el($rec, $insert) {
 		$errors = array();
 		foreach (array('username', 'last_name') as $req) {
 			if ($insert and !isset($rec[$req])

@@ -16,6 +16,7 @@ class MarcBlocks extends DBTable {
 		$this->setKey('block_nmbr');
 		$this->setSequenceField('block_nmbr');
 	}
+	protected function validate_el($rec, $insert) { /*return array();*/ }
 }
 
 class MarcTags extends DBTable {
@@ -33,6 +34,7 @@ class MarcTags extends DBTable {
 		$this->setKey('block_nmbr','tag');
 		$this->setSequenceField('tag');
 	}
+	protected function validate_el($rec, $insert) { /*return array();*/ }
 }
 
 class MarcSubfields extends DBTable {
@@ -48,4 +50,5 @@ class MarcSubfields extends DBTable {
 		$this->setKey('tag','subfield_cd');
 		$this->setSequenceField('subfield_cd');
 	}
+	protected function validate_el($rec, $insert) { /*return array();*/ }
 }
