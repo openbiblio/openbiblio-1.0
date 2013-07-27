@@ -6,7 +6,7 @@
 	require_once("../shared/common.php");
 	require_once("../classes/Report.php");
 	require_once("../classes/Params.php");
-	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
+	require_once(REL(__FILE__, "../model/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Iter.php"));
 	//print_r($_REQUEST);echo "<br />";

@@ -98,8 +98,8 @@ Remove from the various xxxSrvr.php files.
 23 July 2013 - Fred
 Member screen: Hold list not showing entries in database.
 
-23 July 2013 - Fred
-Rewrite Report front end to be more compatible, and use more of common code.
+27 July 2013 - Fred
+New Report front end needs common menu like original. Needs access to export choices.
 
 ###################### Completed, most recent at top #########################
 

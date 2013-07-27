@@ -43,7 +43,7 @@ class MemberSearch_rpt {
 		);
 	}
 	function select($params) {
-		$q = new Query();
+		$q = new Queryi();
 		$sql = 'select m.mbrid, m.barcode_nmbr, m.last_name, '
 					 . "m.first_name, concat(m.last_name, ', ', m.first_name) as name, "
 					 . 'm.school_grade, m.siteid, s.name as site_name '

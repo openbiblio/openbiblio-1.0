@@ -103,6 +103,8 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasReportsAuth"]){
 		Nav::node('reports', T("Reports"), '../reports/index.php');
+		Nav::node('reports/itemSesrch', T("new '.php' test"), '../reports/reportForms.php?type=BiblioSearch');
+		Nav::node('reports/mediaCounts', T("new '.rpt' test"), '../reports/reportForms.php?type=media_counts');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 		if (isset($_SESSION['rpt_Report'])) {
 			Nav::node('reports/results', T("Report Results"), '../reports/run_report.php?type=previous');
@@ -123,8 +125,8 @@ function staff_menu() {
 	
 	##-------------------------------------------------------------------------------------##
 		Nav::node('working', T("Under Construction"), '../working/index.php');
-		Nav::node('working/testApp', T("Item Search"), '../working/reportForms.php?type=BiblioSearch');
-		Nav::node('working/testApp', T("Media Count"), '../working/reportForms.php?type=media_counts');
+		//Nav::node('working/testApp', T("Item Search"), '../reports/reportForms.php?type=BiblioSearch');
+		//Nav::node('working/testApp', T("Media Count"), '../reports/reportForms.php?type=media_counts');
 		Nav::node('working/testApp', T("CoverPhotos"), '../working/imageBrowseForm.php?tab=working');
 		Nav::node('working/testApp', T("Photo Import"), '../working/webcamForm.php');
 

@@ -8,7 +8,6 @@ require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class ReportDisplaysIter extends Iter {
 	public function __construct($rows) {
-		//parent::__construct();
 		$this->rows = $rows;
 	}
 	function next() {

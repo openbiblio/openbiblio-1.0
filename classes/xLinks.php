@@ -4,7 +4,7 @@
  */
 
 class LinkUrl {
-	public function __construct($url, $idparam, $defparams) {
+	function LinkUrl($url, $idparam, $defparams) {
 		$this->url = $url;
 		$this->idparam = $idparam;
 		$this->defparams = $defparams;
@@ -36,7 +36,6 @@ $_Links_urls = array(
 	'booking_opac'=>new LinkUrl('../opac/booking.php', 'bookingid', array()),
 	//'subject'=>new LinkUrl('../shared/biblio_search.php', 'searchText', array('searchType'=>'subject','exact'=>'1')),
 );
-
 class Links {
 	function mkLink($type, $id, $text, $params=NULL) {
 		global $_Links_urls;

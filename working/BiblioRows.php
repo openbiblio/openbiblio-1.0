@@ -8,7 +8,8 @@
 require_once(REL(__FILE__, "../model/MaterialFields.php"));
 
 class BiblioRows {
-	var $q;
+	protected $q;
+
 	function columns() {
 		return array(
 			array('name'=>'bibid', 'hidden'=>true, 'checkbox'=>true),

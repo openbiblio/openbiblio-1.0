@@ -7,8 +7,7 @@ require_once(REL(__FILE__, "../classes/Iter.php"));
 require_once(REL(__FILE__, "../model/MaterialFields.php"));
 
 class BiblioRows {
-	protected $q;
-
+	var $q;
 	function columns() {
 		return array(
 			array('name'=>'bibid', 'hidden'=>true, 'checkbox'=>true),
@@ -71,18 +70,18 @@ class BiblioRows {
 
 class BiblioRowsIter extends Iter {
 	function BiblioRowsIter($iter) {
-		$this->q = new Queryi;
+		$this->q = new Query;
 		$this->iter = $iter;
 	}
 	function count() {
-		return $this->iter->num_rows;
+		return $this->iter->count();
 	}
 	function skip() {
-		$this->iter->fetch_assoc();
+		$this->iter->skip();
 	}
 	function next() {
 		## this builds the sql to get search item details for later display
-		$r = $this->iter->fetch_assoc();
+		$r = $this->iter->next();
 		if ($r === NULL) return $r;
 		//print_r($r);
 
@@ -118,7 +117,7 @@ class BiblioRowsIter extends Iter {
 		$iter = $this->q->select($sql);
 
 		## process each biblio tag, one at a time
-		while (($row = $iter->fetch_assoc()) !== NULL) {
+		while (($row = $iter->next()) !== NULL) {
 			$r['material_cd'] = $row['material_cd'];
 			$r['material_type'] = $row['description'];
 			$r['create_dt'] = $row['create_dt'];

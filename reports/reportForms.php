@@ -8,7 +8,7 @@
 
 	session_cache_limiter(null);
 
-	$tab="working";
+	$tab="reports";
 	$nav="results";
 	if (isset($_REQUEST['tab'])) {
 		$tab = $_REQUEST['tab'];
@@ -22,21 +22,21 @@
 	$focus_form_field = "";
 
 	## menu modifications  go here
-//	foreach ($rpt->layouts() as $l) {
-//		if ($l['title']) {
-//			$title = $l['title'];
-//		} else {
-//			$title = $l['name'];
-//		}
-//		Nav::node('reports/results/'.$l['name'], $title,
-//			'../shared/layout.php?rpt=Report&name='.U($l['name']));
-//	}
-//	Nav::node('reports/results/list', T("Print List"),
-//		'../shared/layout.php?rpt=Report&name=list');
-//	Nav::node('reports/results/list', T("Prepare CSV file"),
-//		'../shared/layout.php?rpt=Report&name=csv');
-//	Nav::node('reports/reportcriteria', T("Report Criteria"),
-//		'../reports/report_criteria.php?type='.U($rpt->type()));
+	//foreach ($rpt->layouts() as $l) {
+		if ($l['title']) {
+			$title = $l['title'];
+		} else {
+			$title = $l['name'];
+		}
+		Nav::node('reports/results/'.$l['name'], $title,
+			'../shared/layout.php?rpt=Report&name='.U($l['name']));
+	//}
+	Nav::node('reports/results/list', T("Print List"),
+		'../shared/layout.php?rpt=Report&name=list');
+	Nav::node('reports/results/list', T("Prepare CSV file"),
+		'../shared/layout.php?rpt=Report&name=csv');
+	//Nav::node('reports/reportcriteria', T("Report Criteria"),
+	//	'../reports/report_criteria.php?type='.U($rpt->type()));
 	## end of menu modifications
 
 	## create web page ###

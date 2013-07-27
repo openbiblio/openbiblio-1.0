@@ -3,8 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-//require_once(REL(__FILE__, "../classes/Links.php"));
-require_once(REL(__FILE__, "../working/Links.php"));
+	require_once(REL(__FILE__, "../classes/Links.php"));
 
 class ReportDisplay {
 	public function __construct($rpt) {
@@ -13,7 +12,7 @@ class ReportDisplay {
 	function columns($url=NULL) {
 		$cl = array();
 		list($type, $exp, $order) = $this->rpt->params->getFirst('order_by');
-		foreach ($this->rpt->getColumns() as $col) {
+		foreach ($this->rpt->columns() as $col) {
 			if (isset($col['hidden']) and $col['hidden']) {
 				continue;
 			}
@@ -42,7 +41,7 @@ class ReportDisplay {
 	}
 	function row($row) {
 		$r = array();
-		foreach ($this->rpt->getColumns() as $col) {
+		foreach ($this->rpt->columns() as $col) {
 			if (isset($col['hidden']) and $col['hidden']) {
 				continue;
 			}

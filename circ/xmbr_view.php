@@ -13,8 +13,9 @@
   require_once("../functions/inputFuncs.php");
   require_once("../functions/formatFuncs.php");
   require_once("../shared/logincheck.php");
-  require_once("../classes/Member.php");
-  require_once("../classes/MemberQuery.php");
+  //require_once("../classes/Member.php");
+  require_once("../model/Members.php");
+  //require_once("../classes/MemberQuery.php");
   require_once("../classes/BiblioSearch.php");
   require_once("../classes/BiblioSearchQuery.php");
   require_once("../classes/BiblioHold.php");

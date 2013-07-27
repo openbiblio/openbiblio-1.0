@@ -92,6 +92,9 @@ class Params {
 	public function load_el($paramdefs, $params) {
 		return $this->_load_el($this->dict, $paramdefs, $params);
 	}
+	public function exists($name) {
+		return $this->getFirst($name) != false;
+	}
 	public function set($name, $type, $value) {
 		$path = $this->_splitName($name);
 		$n = array_pop($path);
@@ -111,9 +114,6 @@ class Params {
 	}
 	## ------------------------------------------------------------------------ ##
 
-	private function exists($name) {
-		return $this->getFirst($name) != false;
-	}
 	private function _print($type, $namel, $options, $list, $prefix) {
 		global $loc;
 		//assert('$loc');

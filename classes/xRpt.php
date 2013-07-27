@@ -3,11 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once(REL(__FILE__, "../classes/Queryi.php"));
-	require_once(REL(__FILE__, "../classes/Iter.php"));
+require_once(REL(__FILE__, "../classes/Queryi.php"));
 
 class Rpt {
-	public function load_e($filename) {
+	function load_e($filename) {
 		$this->_title = $filename;
 		$this->_category = 'Misc.';
 		$this->_layouts = array();
@@ -48,23 +47,23 @@ class Rpt {
 		}
 		return NULL;
 	}
-	public function title() {
+	function title() {
 		return $this->_title;
 	}
-	public function getParamDefs() {
-		return $this->_paramdefs;
-	}
-	public function select($params) {
-		return new RptIter($this->_code, $params);
-	}
-	public function columns() {
-		return $this->_columns;
-	}
-	public function category() {
+	function category() {
 		return $this->_category;
 	}
-	public function layouts() {
+	function layouts() {
 		return $this->_layouts;
+	}
+	function paramDefs() {
+		return $this->_paramdefs;
+	}
+	function columns() {
+		return $this->_columns;
+	}
+	function select($params) {
+		return new RptIter($this->_code, $params);
 	}
 }
 
@@ -126,7 +125,7 @@ class Rpt {
 #		;
 #
 class RptParser {
-	public function load_e($filename) {
+	function load_e($filename) {
 		# returns true or an error object
 		$this->filename = $filename;
 
@@ -139,7 +138,7 @@ class RptParser {
 		$this->lex();
 		return $this->parse_e();
 	}
-	private function parse_e() {
+	function parse_e() {
 		$list = array();
 		while($d = $this->p_decl()) {
 			if (is_a($d, 'Error')) {
@@ -156,13 +155,13 @@ class RptParser {
 		return array($list, NULL);
 	}
 
-	private function error($msg) {
+	function error($msg) {
 		return new Error($this->filename.':'.$this->line.': '.$msg);
 	}
-	private function lexerError() {
+	function lexerError() {
 		return $this->error('Lexer error - FIXME');
 	}
-	private function unexpectedToken($expected=NULL) {
+	function unexpectedToken($expected=NULL) {
 		if ($this->lat[0] == 'EOF') {
 			$str = T("Unexpected end of file");
 		} else {
@@ -177,10 +176,10 @@ class RptParser {
 	/*
 	 * Lexical analyser
 	 */
-	private function lex() {
+	function lex() {
 		$this->lat = $this->_lex();
 	}
-	private function _lex() {
+	function _lex() {
 		if (!empty($this->_tokens)) {
 			return array_shift($this->_tokens);
 		}
@@ -204,7 +203,7 @@ class RptParser {
 		}
 		return array('EOF');
 	}
-	private function getCmdTokens($str) {
+	function getCmdTokens($str) {
 		$cmds = array('title', 'category', 'layout', 'column', 'parameters', 'sql',
 			'order_by', 'session_id', 'string', 'date', 'group', 'select', 'item',
 			'if_set', 'if_equal', 'if_not_equal',
@@ -236,7 +235,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function getQuoted($str) {
+	function getQuoted($str) {
 		if (empty($str)) {
 			Fatal::internalError(T("getQuoted() called with empty %str%",array('str'=>$str)));
 		}
@@ -256,7 +255,7 @@ class RptParser {
 		}
 		return array($w, substr($str, $n+1));
 	}
-	private function getSqlTokens($str) {
+	function getSqlTokens($str) {
 		static $conversions = array('!' => '%!', '#' => '%N', '"' => '%q', '.' => '%I', '`' => '%i');
 		$list = array();
 		$sql = '';
@@ -302,7 +301,7 @@ class RptParser {
 	/*
 	 * Parser
 	 */
-	private function p_decl() {
+	function p_decl() {
 		$t = $this->lat[0];
 		switch ($t) {
 			case 'title':
@@ -346,7 +345,7 @@ class RptParser {
 				return false;
 		}
 	}
-	private function p_param_decls() {
+	function p_param_decls() {
 		$list = array();
 		while (1) {
 			if ($this->lat[0] == 'order_by') {
@@ -383,7 +382,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function p_param_decl() {
+	function p_param_decl() {
 		if (!in_array($this->lat[0], array('string', 'date', 'group', 'select'))) {
 			return false;
 		}
@@ -426,7 +425,7 @@ class RptParser {
 				Fatal::internalError(T("Can't happen"));
 		}
 	}
-	private function p_items() {
+	function p_items() {
 		$list = array();
 		while (1) {
 			if ($this->lat[0] == 'item') {
@@ -463,7 +462,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function p_sql_form() {
+	function p_sql_form() {
 		$exprs = $this->p_sql_exprs();
 		if (is_a($exprs, 'Error')) {
 			return $exprs;
@@ -478,7 +477,7 @@ class RptParser {
 		}
 		return array('sql', array($exprs, $subs));
 	}
-	private function p_sql_exprs() {
+	function p_sql_exprs() {
 		$list = array();
 		while ($e = $this->p_sql_expr()) {
 			if (is_a($e, 'Error')) {
@@ -488,7 +487,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function p_sql_expr() {
+	function p_sql_expr() {
 		switch ($this->lat[0]) {
 			case 'SQLCODE':
 				$code = $this->lat[1];
@@ -563,7 +562,7 @@ class RptParser {
 				return false;
 		}
 	}
-	private function p_else_part() {
+	function p_else_part() {
 		if ($this->lat[0] == 'else') {
 			$this->lex();
 			$list = $this->p_sql_exprs();
@@ -582,7 +581,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function p_subselects() {
+	function p_subselects() {
 		$list = array();
 		while ($this->lat[0] == 'subselect') {
 			$this->lex();
@@ -599,7 +598,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function p_end() {
+	function p_end() {
 		if ($this->lat[0] != 'end') {
 			return $this->unexpectedToken('end');
 		}
@@ -610,7 +609,7 @@ class RptParser {
 		}
 		return true;
 	}
-	private function p_words() {
+	function p_words() {
 		$list = array();
 		while ($this->lat[0] == 'WORD') {
 			array_push($list, $this->lat[1]);
@@ -618,7 +617,7 @@ class RptParser {
 		}
 		return $list;
 	}
-	private function p_params() {
+	function p_params() {
 		$params = array();
 		while ($this->lat[0] == 'WORD') {
 			$name = $this->lat[1];
@@ -640,6 +639,10 @@ class RptParser {
 }
 
 class RptIter extends Iter {
+	# These are private.
+	var $params;
+	var $iter;
+	var $subselects;
 	# $sqls is a list of tuples of array($code, $subselects).
 	# $code contains the code elements which construct a single
 	# SQL query.  $subselects is a list of lists of code elements.  Each
@@ -677,15 +680,7 @@ class RptIter extends Iter {
 	#	array('order_by_expr')
 	#		An appropriate SQL ORDER BY clause is appended to
 	#		the query at this point.
-
-	# These are private.
-	private $params;
-	private $iter;
-	private $subselects;
-	## ------------------------------------------------------------------------ ##
-
-	//private function RptIter($sqls, $params) {
-	public function __construct($sqls, $params) {
+	function RptIter($sqls, $params) {
 		$this->params = $params;
 		$this->q = new Queryi();
 		foreach ($sqls as $s) {
@@ -702,18 +697,18 @@ class RptIter extends Iter {
 			}
 		}
 	}
-	public function count() {
+	function count() {
 		return $this->iter->num_rows;
 	}
-	public function skip() {
+	function skip() {
 //		return $this->iter->skip();
 	}
-	public function next() {
+	function next() {
 		$row = $this->iter->fetch_assoc();
 		if ($row === NULL) {
 			return $row;
 		}
-		$scope = $this->params->getCopy();
+		$scope = $this->params->copy();
 		foreach ($row as $n => $v) {
 			$scope->set($n, 'string', $v);
 		}
@@ -726,9 +721,7 @@ class RptIter extends Iter {
 		}
 		return $row;
 	}
-	## ------------------------------------------------------------------------ ##
-
-	private function _exec($code, $scope) {
+	function _exec($code, $scope) {
 		$query = '';
 		foreach ($code as $c) {
 			switch ($c[0]) {

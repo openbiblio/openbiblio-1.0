@@ -12,7 +12,8 @@ class TableDisplay {
 	public $columns;
 	private $rown;
 
-	public function __construct() {
+	public function TableDisplay() {
+	//public function __construct() {
 		$this->title = NULL;
 		$this->columns = array();
 		$this->rown = 0;
