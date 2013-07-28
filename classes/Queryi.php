@@ -3,7 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-
 class Queryi extends mysqli{
 	private $lock_depth;
 

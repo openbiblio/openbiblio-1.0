@@ -91,6 +91,7 @@ var rpt = {
 	},
 
 	doSearch: function (itemNmbr) {
+    $('#errSpace').html('').hide();
 		if (typeof(itemNmbr) !== 'undefined') {
 			firstItem = itemNmbr;
 		} else {
@@ -98,8 +99,14 @@ var rpt = {
 		}
 		$('#firstItem').val(firstItem);
 
+		//$('#type').val('previous');
     var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
+//console.log(response);
+			if (response.indexOf('|') < 0) {
+        $('#errSpace').html(response).show();
+				return;
+			}
 			var parts = response.split('|');
 			var hdr = JSON.parse(parts[1]);
 			rpt.type = hdr.type;

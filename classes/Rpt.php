@@ -6,8 +6,13 @@
 	require_once(REL(__FILE__, "../classes/Queryi.php"));
 	require_once(REL(__FILE__, "../classes/Iter.php"));
 
+/**
+ * script engine for report generator
+ * @author Micah Stetson
+ */
 class Rpt {
 	public function load_e($filename) {
+//echo "rpt: in load_e<br />\n";
 		$this->_title = $filename;
 		$this->_category = 'Misc.';
 		$this->_layouts = array();
@@ -51,7 +56,7 @@ class Rpt {
 	public function title() {
 		return $this->_title;
 	}
-	public function getParamDefs() {
+	public function paramDefs() {
 		return $this->_paramdefs;
 	}
 	public function select($params) {

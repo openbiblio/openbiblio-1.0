@@ -103,8 +103,8 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasReportsAuth"]){
 		Nav::node('reports', T("Reports"), '../reports/index.php');
-		Nav::node('reports/itemSesrch', T("new '.php' test"), '../reports/reportForms.php?type=BiblioSearch');
-		Nav::node('reports/mediaCounts', T("new '.rpt' test"), '../reports/reportForms.php?type=media_counts');
+		//Nav::node('reports/itemSesrch', T("new '.php' test"), '../reports/reportForms.php?type=BiblioSearch');
+		//Nav::node('reports/mediaCounts', T("new '.rpt' test"), '../reports/reportForms.php?type=media_counts');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 		if (isset($_SESSION['rpt_Report'])) {
 			Nav::node('reports/results', T("Report Results"), '../reports/run_report.php?type=previous');
@@ -118,7 +118,7 @@ function staff_menu() {
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
 		Nav::node('tools/system', T("ChangeDBCollation"), '../tools/chgDBCollForms.php');
-		//Nav::node('tools/system', T("transUtilities"), '../tools/transUtilForms.php');
+		Nav::node('tools/system', T("System Documentation"), '../docs/index.php');
 		Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 		Nav::node('install/system', T("Install"), '../install/index.php');
 	}

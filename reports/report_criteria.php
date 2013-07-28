@@ -48,7 +48,7 @@
 		<input type="hidden" name="type" value="<?php echo H($rpt->type()) ?>" />
 
 <?php
-	Params::printForm($rpt->getParamDefs());
+	Params::printForm($rpt->paramDefs());
 ?>
 
 		<input type="submit" value="<?php echo T("Submit"); ?>" class="button" />

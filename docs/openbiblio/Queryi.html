@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Queryi</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Queryi</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+							<a href="#sec-descendents">Descendents</a>
+			|											<a href="#sec-vars">Vars</a>
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+		<p class="notes">
+			Located in <a class="field" href="_classes---Queryi.php.html">/classes/Queryi.php</a> (line <span class="field">7</span>)
+		</p>
+		
+				
+		<pre>mysqli
+   |
+   --Queryi</pre>
+	
+			</div>
+</div>
+
+	<a name="sec-descendents"></a>
+	<div class="info-box">
+		<div class="info-box-title">Direct descendents</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+			<span class="disabled">Descendents</span>
+			|												<a href="#sec-vars">Vars</a>
+								|															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<table cellpadding="2" cellspacing="0" class="class-table">
+				<tr>
+					<th class="class-table-header">Class</th>
+					<th class="class-table-header">Description</th>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../openbiblio/Cart.html">Cart</a></td>
+					<td>
+											
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../openbiblio/Integrity.html">Integrity</a></td>
+					<td>
+											
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../openbiblio/MarcStore.html">MarcStore</a></td>
+					<td>
+											
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../openbiblio/SrchDb.html">SrchDb</a></td>
+					<td>
+											
+										</td>
+				</tr>
+								<tr>
+					<td style="padding-right: 2em"><a href="../openbiblio/DBTable.html">DBTable</a></td>
+					<td>
+											
+										</td>
+				</tr>
+							</table>
+		</div>
+	</div>
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+																		<a href="#sec-vars">Vars</a>
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																				
+												<div class="method-definition">
+											<span class="method-result">Queryi</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#act" title="details" class="method-name">act</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#clearLocks" title="details" class="method-name">clearLocks</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#getInsertID" title="details" class="method-name">getInsertID</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#lock" title="details" class="method-name">lock</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#mkSQL" title="details" class="method-name">mkSQL</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$fmt</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">1</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#select" title="details" class="method-name">select</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#select01" title="details" class="method-name">select01</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#select1" title="details" class="method-name">select1</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#unlock" title="details" class="method-name">unlock</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_ident" title="details" class="method-name">_ident</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$i</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_numstr" title="details" class="method-name">_numstr</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$n</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+										<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname">mysqli (Internal Class)</span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name">$affected_rows</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$client_info</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$client_version</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$connect_errno</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$connect_error</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$errno</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$error</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$error_list</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$field_count</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$host_info</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$info</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$insert_id</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$protocol_version</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$server_info</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$server_version</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$sqlstate</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$stat</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$thread_id</span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name">$warning_count</span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+							<a href="#sec-descendents">Descendents</a> |
+															<a href="#sec-vars">Vars</a>
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">10</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Queryi</span>
+		<span class="method-name">
+			__construct
+		</span>
+				()
+			</div>
+	
+		
+			
+			<hr class="separator" />
+		<div class="notes">Redefined in descendants as:</div>
+		<ul class="redefinitions">
+					<li>
+				<a href="../openbiblio/Cart.html#method__construct">Cart::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Integrity.html#method__construct">Integrity::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MarcStore.html#method__construct">MarcStore::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/SrchDb.html#method__construct">SrchDb::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/DBTable.html#method__construct">DBTable::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Holds.html#method__construct">Holds::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/CircCollections.html#method__construct">CircCollections::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/DistCollections.html#method__construct">DistCollections::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MemberCustomFields.html#method__construct">MemberCustomFields::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/ReportDisplays.html#method__construct">ReportDisplays::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MemberAccounts.html#method__construct">MemberAccounts::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MaterialFields.html#method__construct">MaterialFields::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/History.html#method__construct">History::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MarcBlocks.html#method__construct">MarcBlocks::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MarcTags.html#method__construct">MarcTags::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MarcSubfields.html#method__construct">MarcSubfields::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Opts.html#method__construct">Opts::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Hosts.html#method__construct">Hosts::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/BiblioImages.html#method__construct">BiblioImages::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Themes.html#method__construct">Themes::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/CopiesCustomFields.html#method__construct">CopiesCustomFields::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Sites.html#method__construct">Sites::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/CoreTable.html#method__construct">CoreTable::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Bookings.html#method__construct">Bookings::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Staff.html#method__construct">Staff::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Biblios.html#method__construct">Biblios::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Copies.html#method__construct">Copies::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Members.html#method__construct">Members::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/DmTable.html#method__construct">DmTable::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Collections.html#method__construct">Collections::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MemberCustomFields_DM.html#method__construct">MemberCustomFields_DM::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/BiblioCopyFields.html#method__construct">BiblioCopyFields::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MediaTypes.html#method__construct">MediaTypes::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/TransactionTypes.html#method__construct">TransactionTypes::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/CopyStatus.html#method__construct">CopyStatus::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/CopiesCustomFields_DM.html#method__construct">CopiesCustomFields_DM::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/States.html#method__construct">States::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/MemberTypes.html#method__construct">MemberTypes::__construct()</a>
+							</li>
+					<li>
+				<a href="../openbiblio/Calendars.html#method__construct">Calendars::__construct()</a>
+							</li>
+				</ul>
+	</div>
+<a name="methodact" id="act"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">act</span> (line <span class="line-number">18</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			act
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$sql</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodclearLocks" id="clearLocks"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearLocks</span> (line <span class="line-number">82</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			clearLocks
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetInsertID" id="getInsertID"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getInsertID</span> (line <span class="line-number">66</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			getInsertID
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodlock" id="lock"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">lock</span> (line <span class="line-number">87</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			lock
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodmkSQL" id="mkSQL"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">mkSQL</span> (line <span class="line-number">148</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">**************************************************************************  Makes SQL by interpolating values into a format string.</p>
+<p class="description"><p>This function works something like printf() for SQL queries.  Format  strings contain %-escapes signifying that a value from the argument  list should be inserted into the string at that point.  The routine  properly quotes or transforms the value to make sure that it will be  handled correctly by the SQL server.  The recognized format strings  are as follows:   %% - is replaced by a single '%' character and does not consume a        value form the argument list.   %! - inserts the argument in the query unaltered -- BE CAREFUL!   %B - treates the argument as a boolean value and inserts either        'Y' or 'N'as appropriate.   %C - treats the argument as a column reference.  This differs from        %I below only in that it passes the '.' operator for separating        table and column names on to the SQL server unquoted.   %I - treats the argument as an identifier to be quoted.   %i - does the same escaping as %I, but does not add surrounding        quotation marks.   %N - treats the argument as a number and strips off all of it but        an initial numeric string with optional sign and decimal point.   %Q - treats the argument as a string and quotes it.   %q - does the same escaping as %Q, but does not add surrounding        quotation marks.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> the result of interpreting $fmt</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			mkSQL
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$fmt</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">1</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$fmt</span><span class="var-description">: format string</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">1</span><span class="var-description">: ... optional argument values</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodselect" id="select"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">select</span> (line <span class="line-number">24</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			select
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$sql</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodselect01" id="select01"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">select01</span> (line <span class="line-number">41</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			select01
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$sql</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodselect1" id="select1"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">select1</span> (line <span class="line-number">32</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			select1
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$sql</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$sql</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodunlock" id="unlock"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">unlock</span> (line <span class="line-number">102</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			unlock
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_ident" id="_ident"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_ident</span> (line <span class="line-number">223</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_ident
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$i</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$i</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_numstr" id="_numstr"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_numstr</span> (line <span class="line-number">229</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_numstr
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$n</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$n</span>			</li>
+				</ul>
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname">mysqli (Internal Class)</span></p>
+					<blockquote>
+													<span class="method-name">constructor mysqli ( [$host = ], [$user = ], [$password = ], [$database = ], [$port = ], [$socket = ] )</span><br>
+													<span class="method-name">autocommit ( $mode )</span><br>
+													<span class="method-name">change_user ( $user, $password, $database )</span><br>
+													<span class="method-name">character_set_name (  )</span><br>
+													<span class="method-name">close (  )</span><br>
+													<span class="method-name">commit (  )</span><br>
+													<span class="method-name">connect ( [$host = ], [$user = ], [$password = ], [$database = ], [$port = ], [$socket = ] )</span><br>
+													<span class="method-name">debug ( $debug_options )</span><br>
+													<span class="method-name">dump_debug_info (  )</span><br>
+													<span class="method-name">escape_string ( $string_to_escape )</span><br>
+													<span class="method-name">get_charset (  )</span><br>
+													<span class="method-name">get_client_info (  )</span><br>
+													<span class="method-name">get_server_info (  )</span><br>
+													<span class="method-name">get_warnings (  )</span><br>
+													<span class="method-name">init (  )</span><br>
+													<span class="method-name">kill ( $connection_id )</span><br>
+													<span class="method-name">more_results (  )</span><br>
+													<span class="method-name">multi_query ( $query )</span><br>
+													<span class="method-name">next_result (  )</span><br>
+													<span class="method-name">options ( $option, $value )</span><br>
+													<span class="method-name">ping (  )</span><br>
+													<span class="method-name">prepare ( $query )</span><br>
+													<span class="method-name">query ( $query )</span><br>
+													<span class="method-name">real_connect ( [$host = ], [$user = ], [$password = ], [$database = ], [$port = ], [$socket = ], [$flags = ] )</span><br>
+													<span class="method-name">real_escape_string ( $string_to_escape )</span><br>
+													<span class="method-name">real_query ( $query )</span><br>
+													<span class="method-name">refresh ( $options )</span><br>
+													<span class="method-name">rollback (  )</span><br>
+													<span class="method-name">select_db ( $database )</span><br>
+													<span class="method-name">set_charset ( $charset )</span><br>
+													<span class="method-name">set_local_infile_default (  )</span><br>
+													<span class="method-name">set_local_infile_handler ( $link, [$read_callback = ] )</span><br>
+													<span class="method-name">set_opt ( $option, $value )</span><br>
+													<span class="method-name">ssl_set ( $key, $cert, $certificate_authority, $certificate_authority_path, $cipher )</span><br>
+													<span class="method-name">stat (  )</span><br>
+													<span class="method-name">stmt_init (  )</span><br>
+													<span class="method-name">store_result (  )</span><br>
+													<span class="method-name">thread_safe (  )</span><br>
+													<span class="method-name">use_result (  )</span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Sun, 28 Jul 2013 15:07:04 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</div></body>
+</html>

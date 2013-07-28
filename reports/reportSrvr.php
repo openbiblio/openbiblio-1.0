@@ -3,6 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+/**
+ * backend processor for reports package
+ */
+
 	require_once("../shared/common.php");
 	require_once("../classes/Report.php");
 	require_once("../classes/Params.php");
@@ -31,7 +35,7 @@
 		$rpt = Report::create($_GET['type']);
 		if (!$rpt) die("no report available");
 		echo T($rpt->title())."|".$rpt->type()."|";
-		Params::printForm($rpt->getParamDefs());
+		Params::printForm($rpt->paramDefs());
 	  break;
 
 	case "getPage":
@@ -47,12 +51,15 @@
 //echo "in reportSrvr: page=$page; firstItem=$firstItem; perPage=$perPage<br />\n";
 
 		if ($_POST['type'] == 'previous') {
+//echo "reportSrvr: loading 'previous'<br />\n";
 			$rpt = Report::load('Report', $firstItem, $perPage);
 			if ($_REQUEST['rpt_order_by']) {
 				$rpt = $rpt->getVariant(array('order_by'=>$_REQUEST['rpt_order_by']));
 			}
 		} else {
+//echo "reportSrvr: creating new '{$_POST['type']}'<br />\n";
 			$rpt = Report::create($_POST['type'], 'Report', $firstItem, $perPage);
+//echo "reportSrvr: initializing<br />\n";
 			$errs = $rpt->initCgi_el();
 			if (!empty($errs)) die($errs);
 		}

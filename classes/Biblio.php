@@ -7,11 +7,17 @@ require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
 
+/**
+ * provides a view of a single biblio - all relevent data in a single place.
+ * @author: Fred LaPlante, 25 July 2013
+ */
+
 class Biblio {
 	private $bibid;
 	private $hdrFlds = array();
 	private $marcFlds = array();
-	##----------------------##
+
+	## ------------------------------------------------------------------------ ##
 	public function __construct ($bibid) {
 		$this->bibid = $bibid;
 		$this->fetch_biblio();
@@ -19,13 +25,19 @@ class Biblio {
 		$this->fetch_title();
 		$this->fetch_photoData();
 	}
+	/**
+	 * returns a complete description of current Biblio as an array of 2 arrays
+	 * 'hdr' an associative array of all primitive basic data
+	 * 'marc' ann associative array of all existing tags with a xxx$x key
+	 */
 	public function getData () {
 		$data = [];
 		$data['hdr'] = $this->hdrFlds;
 		$data['marc'] = $this->marcFlds;
 		return $data;
 	}
-	##----------------------##
+
+	## ------------------------------------------------------------------------ ##
 	private function fetch_biblio () {
 		$ptr = new Biblios;
 		$rslt = $ptr->getOne($this->bibid);

@@ -63,7 +63,7 @@ class BiblioSearch_rpt extends BiblioRows {
 	public function title() { return "Item Search"; }
 	public function category() { return "Cataloging"; }
 	public function layouts() { return array(array('title'=>'MARC Export', 'name'=>'marc')); }
-	public function getParamDefs() {
+	public function paramDefs() {
 		$p = array(
 			array('order_by', 'order_by', array(), array(
 				array('callno', array('title'=>'Call No.')),

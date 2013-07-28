@@ -40,7 +40,7 @@ class Report {
 		$this->howMany = $howMany;
 	}
 	public static function create($type, $name=NULL) {
-//echo "creating report for {$type}<br />\n";
+//echo "report: in create: creating report for {$type}<br />\n";
 		list($rpt, $err) = Report::create_e($type, $name);
 		if($err) {
 			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
@@ -48,7 +48,7 @@ class Report {
 		return $rpt;
 	}
 	public static function load($name) {
-//echo "in load<br />\n";
+//echo "report: in load<br />\n";
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
 		}
@@ -60,28 +60,27 @@ class Report {
 		}
 		return $rpt;
 	}
-	//public static function clearCache() {
-	//	unset($_SESSION['rpt_'.$name]);
-	//}
 	public function title() {
 		return $this->rpt->title();
 	}
 	public function type() {
 		return $this->cache['type'];
 	}
-	public function getParamDefs() {
+	public function paramDefs() {
 		return $this->rpt->paramDefs();
 	}
 	public function columns() {
 		return $this->rpt->columns();
 	}
 	public function initCgi_el($prefix='rpt_') {
+//echo "report: in initCgi_el'<br />\n";
 		$p = new Params;
 		$errs = $p->loadCgi_el($this->rpt->paramDefs(), $prefix);
 		if (!empty($errs)) {
 			return $errs;
 		}
-		return $this->_init_el($p);
+		$rslt = $this->_init_el($p);
+		return $rslt;
 	}
 	public function getVariant($newParams, $newName=NULL) {
 		list($rpt, $errs) = $this->variant_el($newParams, $newName);
@@ -94,6 +93,7 @@ class Report {
 		return $this->rpt->category();
 	}
 	public function count() {
+//echo "report: in count'<br />\n";
 		if ($this->cache['count'] === NULL) {
 			$this->_getIter();
 			$this->cache['count'] = $this->iter->count();
@@ -119,7 +119,7 @@ class Report {
 		}
 	}
 	public function create_e($type, $name=NULL) {
-//echo "in create_e<br />\n";
+//echo "report: in create_e<br />\n";
 		$cache = array('type'=>$type);
 		$rpt = new Report();
 		$err = $rpt->_load_e($name, $cache);
@@ -128,17 +128,17 @@ class Report {
 
 	## ------------------------------------------------------------------------ ##
 	private function _load_e($name, $cache) {
-//echo "in load_e<br />\n";
+//echo "report: in load_e<br />\n";
 		$this->name = $name;
 		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
 		$fname = '../reports/defs/'.$cache['type'];
-//echo "using file {$fname}<br />\n";
+//echo "report: using file {$fname}<br />\n";
 		if (is_readable($fname.'.php')) {
-//echo "its .php<br />\n";
+//echo "report: its .php<br />\n";
 			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
 		} elseif (is_readable($fname.'.rpt')) {
-//echo "its .rpt<br />\n";
+//echo "report: its .rpt<br />\n";
 		  ## for scripted reports
 			$err = $this->_load_rpt_e($cache['type'], $fname.'.rpt');
 		} else {
@@ -147,23 +147,25 @@ class Report {
 		if ($err) {
 			return $err;
 		}
+//echo "Report: checking for params in cache<br />\n";
 		$this->cache = $cache;
 		if (array_key_exists('params', $cache) and is_array($cache['params'])) {
+//echo "Report: params exist in cache<br />\n";
 			$this->params = new Params;
 			$this->params->loadDict($cache['params']);
 		}
 		return NULL;
 	}
 	private function _load_php_e($type, $fname) {
-//echo "in load_php_e<br />\n";
+//echo "report: in load_php_e<br />\n";
 		$classname = $type.'_rpt';
 		include_once($fname);
 		$this->rpt = new $classname;
-//		$this->rpt->setPagination ($firstItem, $perPage);
+		//$this->rpt->setPagination ($firstItem, $perPage);
 		return NULL;		# Can't error non-fatally
 	}
 	private function _load_rpt_e($type, $fname) {
-//echo "in load_php_e<br />\n";
+//echo "report: in load_rpt_e<br />\n";
 		include_once(REL(__FILE__, '../classes/Rpt.php'));
 		$rpt = new Rpt;
 		$err = $rpt->load_e($fname);
@@ -200,6 +202,7 @@ class Report {
 		}
 	}
 	private function init_el($params) {
+//echo "report: in init_el<br />\n";
 		assert('is_array($params)');
 		$p = new Params;
 		$errs = $p->load_el($this->rpt->paramDefs(), $params);
@@ -215,9 +218,13 @@ class Report {
 		}
 	}
 	private function _init_el($params) {
+//echo "report: in _init_el<br />\n";
 		unset($this->cache['params']);
+//echo "report: in _init_el===>";print_r($params);echo"<br />\n";
 		$this->params = $params;
+//echo "report: in _init_el===>";print_r($params->getDict());echo"<br />\n";
 		$this->cache['params'] = $params->getDict();
+//echo "report: in _init_el===>";print_r($this->cache['params']);echo"<br />\n";
 		$this->_save();
 		return array();
 	}
@@ -234,7 +241,7 @@ class Report {
 		}
 		$params = new Params;
 		$params->loadDict($this->cache['params']);
-		$errs = $params->load_el($rpt->rpt->getParamDefs(), $newParams);
+		$errs = $params->load_el($rpt->rpt->paramDefs(), $newParams);
 		if (!empty($errs)) {
 			return array(NULL, $errs);
 		}
@@ -245,9 +252,12 @@ class Report {
 		return array($rpt, array());
 	}
 	private function _getIter() {
+//echo "report: in _getIter'<br />\n";
 		if (isset($this->iter) && $this->iter) {
+//echo "report: iter exists'<br />\n";
 			return;
 		} else {
+//echo "report: getting new iter'<br />\n";
 			$this->iter = new NumberedIter($this->rpt->select($this->params));
 		}
 	}

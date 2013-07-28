@@ -10,6 +10,10 @@ require_once(REL(__FILE__, "../model/Collections.php"));
 require_once(REL(__FILE__, "../model/Holds.php"));
 require_once(REL(__FILE__, "../model/MediaTypes.php"));
 
+/**
+ * helper class for copy allowing selection by barcode number
+ * @author Fred LaPlante 25 July 2013
+ */
 class BarcdCopy extends Copy {
 	public function __construct ($barcd) {
 		$ptr = new Copies;
@@ -21,6 +25,10 @@ class BarcdCopy extends Copy {
 	}
 }
 
+/**
+ * Manages a complete data set for a single copy of a Biblio
+ * @author Fred LaPlante 24 July 2013
+ */
 class Copy {
 	private $copyid;
 	## object pointers
@@ -38,20 +46,32 @@ class Copy {
 		$this->fetch_copy();
 		$this->fetch_status();
 	}
+	/**
+	 * returns an associtive array of this copy's data
+	 */
 	public function getData() {
 		return $this->hdrFlds;
 	}
+	/**
+	 * sets the status of this copy to 'checkedin' (in),
+	 * 	 and adjusts other DB tables as necessary
+	 */
 	public function setCheckedIn() {
 		$this->hdrFlds['status'] = OBIB_STATUS_SHELVING_CART;
 		$this->insert_statusHist();
 		$this->update_copy();
 		$this->update_booking();
 	}
+	/**
+	 * sets the status of this copy to shelved (crt),
+	 * 	 and adjusts other DB tables as necessary
+	 */
 	public function setShelved() {
 		$this->hdrFlds['status'] = OBIB_STATUS_IN;
 		$this->insert_statusHist();
 		$this->update_copy();
 	}
+
 	##----------------------##
 	private function insert_statusHist () {
 		$newHistid = $this->hist->insert(array(
