@@ -1,4 +1,13 @@
 <?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+
+/**
+ * Classes on this page should probably be re-done as Interfaces
+ *note: may be no longer needed with added ability of PHP's mysqli API - FL
+ * @author Micah Stetson
+ */
 
 class Iter {
 	# All subclasses must implement this method.

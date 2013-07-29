@@ -5,6 +5,11 @@
 
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
+/**
+ * this class provides an interface to the biblio_hold table
+ * @author Micah Stetson
+ */
+
 class Holds extends DBTable {
 	public function __construct() {
 		parent::__construct();

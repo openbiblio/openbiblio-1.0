@@ -8,6 +8,11 @@ require_once(REL(__FILE__, "../../classes/Queryi.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 require_once(REL(__FILE__, "../../classes/BiblioRows.php"));
 
+/**
+ * Biblio-specific search facilities for use with the Report generator
+ * @author Micah Stetson
+ */
+
 class BiblioSearch_rpt extends BiblioRows {
 	public $q;
 

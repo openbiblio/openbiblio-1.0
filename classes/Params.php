@@ -6,6 +6,11 @@
 require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 require_once(REL(__FILE__, "../classes/Date.php"));
 
+/**
+ * Search criteria parser for Report generator
+ * @author Micah Stetson
+ */
+
 class Params {
 	private $dict = array();
 

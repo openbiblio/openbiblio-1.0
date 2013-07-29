@@ -13,6 +13,11 @@ require_once(REL(__FILE__, "../model/MemberAccounts.php"));
 require_once(REL(__FILE__, "../model/MediaTypes.php"));
 require_once(REL(__FILE__, "../model/Members.php"));
 
+/**
+ * this class provides an interface to the booking table and related actions
+ * @author Micah Stetson
+ **/
+
 class Bookings extends CoreTable {
 	public function __construct() {
 		parent::__construct();
@@ -49,7 +54,8 @@ class Bookings extends CoreTable {
 		return round(Date::daysLater($now, $booking['due_dt']));
 	}
 
-	/* This function is intended for displaying the number of copies
+	/**
+	 * This function is intended for displaying the number of copies
 	 * booked for different days in a calendar form.  It returns an array
 	 * of dates with the corresponding numbers of copies needed to fulfill
 	 * the bookings on those dates.
@@ -206,7 +212,8 @@ class Bookings extends CoreTable {
 			$sql .= '('.implode(",", $mbrids).') ';
 			$rows = $this->select($sql);
 			if ($rows->num_rows != 0) {
-				$errors[] = new IgnorableError(T("modelBookingsClosedOnBookDate").": ".$booking['book_dt']);
+				//$errors[] = new IgnorableError(T("modelBookingsClosedOnBookDate").": ".$booking['book_dt']);
+				die (T("modelBookingsClosedToday"));
 			}
 
 			## determine if library is open on due date ##

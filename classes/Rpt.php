@@ -10,6 +10,7 @@
  * script engine for report generator
  * @author Micah Stetson
  */
+
 class Rpt {
 	public function load_e($filename) {
 //echo "rpt: in load_e<br />\n";
