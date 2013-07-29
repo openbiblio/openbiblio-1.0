@@ -4,8 +4,8 @@
  */
 
 /**
- * Classes on this page should probably be re-done as Interfaces
- *note: may be no longer needed with added ability of PHP's mysqli API - FL
+ * Classes on this page should probably be re-done as Interfaces to Iterator
+ * note: may no longer be needed with added ability of PHP's mysqli API - FL
  * @author Micah Stetson
  */
 

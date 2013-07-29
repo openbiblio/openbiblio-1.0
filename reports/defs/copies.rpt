@@ -9,7 +9,7 @@
 .column title func=biblio_link title=Title sort=title
 .parameters
 .	string barcode title="Barcode Starts With"
-.	date newer title="Newer than (yyyy-mm-dd)"
+.	date newer title="Newer than"
 .	select cart title="Only In Item Cart" default=''
 .		item none title="No"
 .		item bibid title="Yes"

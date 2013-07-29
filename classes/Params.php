@@ -7,7 +7,7 @@ require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 require_once(REL(__FILE__, "../classes/Date.php"));
 
 /**
- * Search criteria parser for Report generator
+ * Creates & displays search criteria forms for Report generator
  * @author Micah Stetson
  */
 
@@ -16,7 +16,7 @@ class Params {
 
 	## ------------------------------------------------------------------------ ##
 	public static function printForm($defs, $prefix='rpt_', $namel=array()) {
-		echo '<table class="'.$prefix.'params">';
+		echo "\n".'<table class="'.$prefix.'params">';
 		foreach ($defs as $def) {
 			$def = array_pad($def, 4, NULL);		# Sigh.
 			list($type, $name, $options, $list) = $def;
@@ -29,7 +29,7 @@ class Params {
 				Params::_print($type, $l, $options, $list, $prefix);
 			}
 		}
-		echo '</table>';
+		echo '</table>'."\n";
 	}
 	public function loadCgi_el($paramdefs, $prefix='rpt_') {
 //echo "params: in loadCgi_el<br />\n";
@@ -131,9 +131,10 @@ class Params {
 			return;
 		}
 		if ($type == 'group') {
-			echo '<tr><td class="'.$prefix.'group" colspan="2">';
+			echo '<tr>'."\n".'<td class="'.$prefix.'group" colspan="2">'."\n";
 			Params::printForm($list, $prefix, $namel);
-			echo '</td></tr>';
+			echo '</td>'."\n".'</tr>'."\n";
+			echo '<tr><td colspan="2"><hr></td></tr>'."\n";
 			return;
 		}
 		if ($type == 'order_by') {
@@ -155,12 +156,19 @@ class Params {
 		echo '<tr class="'.$prefix.'param">';
 		echo '<td><label for="'.H($name).'">';
 		echo T($title);
-		echo '</label></td><td>';
+		echo '</label>'."\n".'</td>'."\n".'<td>';
 		switch ($type) {
+/* html5 input types
+		case 'number':
+			echo inputfield('number', $name, $default);
+			break;
 		case 'string':
-		case 'date':
 			echo inputfield('text', $name, $default);
 			break;
+		case 'date':
+			echo inputfield('date', $name, $default);
+			break;
+*/
 		case 'select':
 			$l = array();
 			foreach ($list as $v) {
@@ -187,9 +195,10 @@ class Params {
 			echo inputfield('select', $name, $default, NULL, $l);
 			break;
 		default:
-			assert(NULL);
+			//assert(NULL);
+			echo inputfield($type, $name, $default);
 		}
-		echo '</td></tr>';
+		echo '</td>'."\n".'</tr>'."\n";
 	}
 	private function _splitName($name) {
 		return explode('.', $name);

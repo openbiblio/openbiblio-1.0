@@ -575,6 +575,7 @@ $trans["New Items"] = "New Items";
 $trans["New Like"] = "New Like";
 $trans["New Item"] = "New Item";
 $trans["New Member"] = "New Member";
+$trans["Newer than"] = "Newer than";
 $trans["Newer than (yyyy-mm-dd)"] = "Newer than (yyyy-mm-dd)";
 $trans["NewImageFile"] = "New image file";
 $trans["Next"] = "Next";

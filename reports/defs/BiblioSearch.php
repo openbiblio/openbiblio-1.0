@@ -9,7 +9,7 @@ require_once(REL(__FILE__, "../../classes/Search.php"));
 require_once(REL(__FILE__, "../../classes/BiblioRows.php"));
 
 /**
- * Biblio-specific search facilities for use with the Report generator
+ * Biblio-specific specification & search facilities for use with the Report generator
  * @author Micah Stetson
  */
 

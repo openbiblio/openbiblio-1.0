@@ -92,10 +92,11 @@ var rpt = {
 
 	doSearch: function (itemNmbr) {
     $('#errSpace').html('').hide();
+		var firstItem = 0;
 		if (typeof(itemNmbr) !== 'undefined') {
 			firstItem = itemNmbr;
-		} else {
-      firstItem = 0;
+//		} else {
+//      firstItem = 0;
 		}
 		$('#firstItem').val(firstItem);
 
