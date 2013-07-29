@@ -159,9 +159,9 @@ class Report {
 	private function _load_php_e($type, $fname) {
 //echo "report: in load_php_e<br />\n";
 		$classname = $type.'_rpt';
+//echo "including {$fname}<br />\n";
 		include_once($fname);
 		$this->rpt = new $classname;
-		//$this->rpt->setPagination ($firstItem, $perPage);
 		return NULL;		# Can't error non-fatally
 	}
 	private function _load_rpt_e($type, $fname) {

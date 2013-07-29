@@ -4,12 +4,19 @@
  */
  
 require_once(REL(__FILE__, "../../classes/Queryi.php"));
+//require_once(REL(__FILE__, "../../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 
-class MemberSearch_rpt {
-	var $searchTypes;
+/**
+ * Member-specific specification & search facilities for use with the Report generator
+ * @author Micah Stetson
+ */
 
-	function MemberSearch_rpt() {
+class MemberSearch_rpt {
+	private $searchTypes;
+
+	## ------------------------------------------------------------------------ ##
+	public function __construct() {
 		$this->searchTypes = array(
 			'keyword' => Search::type('Keyword', 'ms', array('m.first_name', 'm.last_name', 's.name', 'm.barcode_nmbr')),
 			'barcode' => Search::type('Barcode', 'ms', array('m.barcode_nmbr'), 'phrase'),
@@ -17,10 +24,10 @@ class MemberSearch_rpt {
 			'site' => Search::type('Site', 'ms', array('s.name')),
 		);
 	}
-	function title() { return "Member Search"; }
-	function category() { return "Member Reports"; }
-	function layouts() { return array(array('title'=>'Print List', 'name'=>'member_list')); }
-	function paramDefs() {
+	public function title() { return "Member Search"; }
+	public function category() { return "Member Reports"; }
+	public function layouts() { return array(array('title'=>'Print List', 'name'=>'member_list')); }
+	public function paramDefs() {
 		$p = array(
 			array('order_by', 'order_by', array(), array(
 				array('name', array('title'=>'Name', 'expr'=>"concat(m.last_name, ', ', m.first_name)")),
@@ -30,7 +37,7 @@ class MemberSearch_rpt {
 		);
 		return array_merge(Search::getParamDefs($this->searchTypes), $p);
 	}
-	function columns() {
+	public function columns() {
 		return array(
 			array('name'=>'mbrid', 'hidden'=>true, 'checkbox'=>true),
 			array('name'=>'last_name', 'hidden'=>true),
@@ -42,8 +49,10 @@ class MemberSearch_rpt {
 			array('name'=>'site_name', 'title'=>'Site', 'sort'=>'site_name'),
 		);
 	}
-	function select($params) {
+	public function select($params) {
+//echo "MemberSearch: in select<br />\n";
 		$q = new Queryi();
+		//$q = new CoreTable();
 		$sql = 'select m.mbrid, m.barcode_nmbr, m.last_name, '
 					 . "m.first_name, concat(m.last_name, ', ', m.first_name) as name, "
 					 . 'm.school_grade, m.siteid, s.name as site_name '
@@ -79,7 +88,8 @@ class MemberSearch_rpt {
 		if ($order_by) {
 			$sql .= 'order by '.$order_by.' ';
 		}
-		
-		return $q->select($sql);
+		$rslt = $q->select($sql);
+//echo "MemberSearch===>";print_r($rslt);echo"<br />\n";
+		return $rslt;
 	}
 }

@@ -69,6 +69,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		if ($value != "") {
 			$s .= 'value="'.H($value).'" ';
 		}
+		switch (type) {
+			case 'number': $attrs['pattern'] = "[+-]?\b[0-9]+\b"; break;
+			case 'zip': $attrs['pattern'] = "[0-9]{5}(\-[0-9]{4})?"; break;
+		}
 		foreach ($attrs as $k => $v) {
 			if ($k == 'required') {
 				//$s .= 'required="required" aria-required="true" ';

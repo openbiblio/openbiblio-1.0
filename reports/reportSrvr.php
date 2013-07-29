@@ -84,11 +84,11 @@
 		$disp = new ReportDisplay($rpt);
 		$t = new TableDisplay;
 
-		// get column headings
+		## get column headings
 		$t->columns = $disp->columns($sort_url);
 
-		// create and display actual data rows
-		// actual display of biblio content controlled by ../classes/BiblioRows.php (see function next())
+		## create and display actual data rows
+		## actual display of biblio content controlled by ../classes/BiblioRows.php (see function next())
 		echo $t->begin();
 		$pg = $rpt->pageIter($page);
 		while ($r = $pg->next()) {
