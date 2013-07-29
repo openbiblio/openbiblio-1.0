@@ -333,6 +333,7 @@ var mf = {
 		mf.doGetHolds();
 	},
 	doGetHolds: function () {
+    $('#holdList tBody').html('');
 	  var params = 'mode=getHolds&mbrid='+mf.mbrid;
 	  $.get(mf.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,2) != '[{') {
@@ -511,7 +512,7 @@ var mf = {
 	doDelHold: function (event) {
 		var $delBtn = $(event.target);
 		$delBtn.parent().parent().addClass('hilite');
-		if (!confirm(mf.delConfirmMsg+' this hold?')) return false;
+		if (!confirm('<?php echo T("Are you sure you want to delete this");?>'+' hold?')) return false;
 		
 		var holdid = $delBtn.next().val();
   	var parms = {	'mode':'d-3-L-3-tHold', 'mbrid':mf.mbrid, 'holdid':holdid };

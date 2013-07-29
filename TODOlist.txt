@@ -92,9 +92,9 @@ Remove from the various xxxSrvr.php files.
 New Report front end needs confirmed access to export choices.
 
 27 July 2013 - Fred
-Reports CopySearch needs to use input field type=date, pull down for site.
+Reports: CopySearch needs to use input field type=date, pull down for site.
 
-28 July 2013 - Fred
+28 July 2013 - Neil
 > after shelving, when I immediately search for the shelved item
 (existing item search) the availability icon still remains red.
 Similarly, if I have to change the status manually in the copy edit page
@@ -103,6 +103,12 @@ there is no change in the availability icon (still red)
 To rectify, reload the page and repeat search and the icon is now green.
 
 28 July 2013 - Fred
+verify functionality of:
+Marc input/output, cvs output, barcode printing, barcode input, .....
+
+###################### Completed, most recent at top #########################
+
+28 July 2013 - Fred, fixed 28 July
 If I try and  check-out an item on a "closed day" (see calendar)
 - get a large amount of red code. It looks very disconcerting
 and I thought something serious had occurred.
@@ -110,15 +116,9 @@ Discovered that it was due to a "closed" day - removed X from calendar
 Would it be possible to have a message stating
 "library is closed and no loans can be taken out today"
 
-28 July 2013 - Fred
-The delete operation is suffering from the last/single entry phenomenon that we
+28 July 2013 - Fred, fixed 28 July
+The hold delete operation is suffering from the last/single entry phenomenon that we
 had with transactions.
-
-28 July 2013 - Fred
-verify functionality of:
-Marc input/output, cvs output, barcode printing, barcode input, .....
-
-###################### Completed, most recent at top #########################
 
 27 July 2013 - Fred, fixed 28 July
 New Report front end needs common menu like original.

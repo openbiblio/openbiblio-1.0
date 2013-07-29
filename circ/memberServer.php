@@ -221,6 +221,10 @@
 			'copyid'=>$copy['copyid'],
 			'mbrid'=>$_POST['mbrid'],
 		));
+		/*
+		* it is not clear that there is a good reason to track hold in status_hist.
+		* If it is, it can mask the in/out condition. Also if the hold is removed,
+		* what status should the biblio return to? - FL
 		$status = $history->getOne($copy['histid']);
 		if ($status['status_cd'] == OBIB_DEFAULT_STATUS || $status['status_cd'] == OBIB_STATUS_IN || $status['status_cd'] == OBIB_STATUS_SHELVING_CART) {
 			$hist = array(
@@ -230,6 +234,7 @@
 			);
 			$history->insert($hist);
 		}
+		*/
 		break;
 	case 'd-3-L-3-tHold':
 		$holds->deleteOne($_POST['holdid']);
