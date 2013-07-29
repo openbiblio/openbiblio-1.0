@@ -77,6 +77,17 @@ var rpt = {
 			$('#pageTitle').html(parts[0]);
 			$('#type').val(parts[1]);
 			$('#specs').html(parts[2]);
+
+		if (!(Modernizr.inputtypes && Modernizr.inputtypes.date)) {
+console.log('using jQueryUI datepicker');
+  		$("input[type='date']").datepicker({
+   			dateFormat: 'yy-mm-dd',
+				maxDate: -1,
+			});
+		} else {
+console.log('using native datepicker');
+		}
+
 		});
 	},
 

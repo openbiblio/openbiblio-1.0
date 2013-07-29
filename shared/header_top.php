@@ -78,6 +78,7 @@ if (!isset($doing_install) or !$doing_install) {
 <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
 <!--[if gt IE 8]><!-->
 <script src="../shared/jquery/jquery-2.0.3.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <!--<![endif]-->
 
 <!-- All other JavaScript is placed at the end of <body> (see footer.php)
