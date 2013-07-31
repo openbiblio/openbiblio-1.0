@@ -168,19 +168,13 @@ var mf = {
 		});
 	},
 	fetchCustomFlds: function () {
-	  $.getJSON(mf.url,{mode:'getCustomFlds'}, function(jsonData){
-	  	mf.cstmFlds = jsonData;
-/*
-			var html = '';
-			$.each(mf.cstmFlds, function (name, value) {
-				//console.log(data[item]);
-	    	html += '<tr> \n';
-	    	html += '	<td><label for="custom_'+name+'">'+value+'</label></td> \n';
-	    	html += '	<td><input type="text" name="custom_'+name+'" id="custom_'+name+'" /></td> \n';
-	    	html += '</tr> \n';
-			});
-			$('#customEntries').html(html);
-*/
+	  $.get(mf.url,{mode:'getCustomFlds'}, function(jsonData){
+			if ((jsonData.trim()).substr(0,1) == '<') {
+				mf.showMsg(jsonData);
+				return false;
+			} else {
+	  		mf.cstmFlds = JSON.parse(jsonData);
+			}
 		});
 	},
 	fetchAcnttranTypes: function () {
@@ -548,7 +542,7 @@ var mf = {
 	},
 	
 	//------------------------------
-	doShowMbrDetails: function () {
+	doShowMbrDetails: function (e) {
 		var mbr = mf.mbr;
 		$('#addMbrBtn').hide();
 		$('#updtMbrBtn').show().enable();
@@ -581,12 +575,12 @@ var mf = {
 		$('#email').val(mbr.email);
 		$('#classification').val(mbr.classification);
 
-		$.each(mf.cstmFlds, function (name, value) {
-			//console.log(name+'==>'+value);		
-			$('#custom_'+name).val(mbr[name]);
+		$.each(mf.cstmFlds, function (n, value) {
+			var fld = value,
+					code=fld.code;
+			$('#custom_'+code).val(mbr[code]);
 		});
-			
-		//mf.showMsg('Updated!');
+
 		$('#mbrDiv').hide();
 		$('#editDiv').show();
 	},

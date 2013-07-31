@@ -13,7 +13,7 @@
 	require_once(REL(__FILE__, "../model/MemberTypes.php"));
 		$mbrTypes = new MemberTypes;
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
-		$customFlds = new MemberCustomFields;
+		$customFlds = new MemberCustomFields_DM;
 	require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites = new Sites;
 	require_once(REL(__FILE__, "../model/MemberAccounts.php"));
@@ -75,7 +75,11 @@
 		echo json_encode($type);
 		break;
 	case 'getCustomFlds':
-		$flds = $customFlds->getSelect();
+//		$flds = $customFlds->getSelect();
+		$rslt = $customFlds->getAll();
+		while ($row = $rslt->fetch_assoc()){
+			$flds[] = $row;
+		}
 		echo json_encode($flds);
 		break;
 	case 'getSites':

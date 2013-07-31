@@ -89,9 +89,6 @@ make more use of ListSrvr for getOpts() and other lookup table use.
 Remove from the various xxxSrvr.php files.
 
 27 July 2013 - Fred
-New Report front end needs confirmed access to export choices.
-
-27 July 2013 - Fred
 Reports: CopySearch needs to use input field type=date, pull down for site.
 
 28 July 2013 - Neil
@@ -106,7 +103,13 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
+31 July 2013 - Fred
+member checkout history not yet implemented.
+
 ###################### Completed, most recent at top #########################
+
+27 July 2013 - Fred, removed, duplicate entry 31 July
+New Report front end needs confirmed access to export choices.
 
 28 July 2013 - Fred, fixed 28 July
 If I try and  check-out an item on a "closed day" (see calendar)
