@@ -7,9 +7,14 @@ require_once(REL(__FILE__, "../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));
 require_once(REL(__FILE__, "../model/History.php"));
 
+/**
+ * BiblioCopy-specific specification & search facilities for use with the Report generator
+ * @author Micah Stetson
+ */
+
 class Copies extends CoreTable {
 	public function __construct() {
-		parent::__construct();
+		//parent::__construct();
 		$this->setName('biblio_copy');
 		$this->setFields(array(
 			'bibid'=>'number',

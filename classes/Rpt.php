@@ -717,6 +717,7 @@ class RptIter extends Iter {
 	}
 	public function skip() {
 //		return $this->iter->skip();
+    $this->iter->fetch_assoc();
 	}
 	public function next() {
 		$row = $this->iter->fetch_assoc();

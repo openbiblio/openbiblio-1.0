@@ -64,6 +64,11 @@ var mf = {
 		mf.fetchMbrTypList();
 		mf.fetchSiteList();
 		mf.fetchStateList();
+		<?php
+		if ($_GET['mbrid']) { 
+			echo "mf.doMbridSearch (".$_GET['mbrid'].");";
+		}
+		?>
 	},
 	
 	//------------------------------
@@ -190,17 +195,30 @@ var mf = {
 	},
 	
 	//------------------------------
+	doMbridSearch: function (mbrid) {
+	  mf.srchType = 'mbrid';
+		mf.mbrid = mbrid;
+	  var params = 'mode=doGetMbr&mbrid='+mbrid;
+	  $.get(mf.url,params, mf.handleMbrResponse);
+		return false;
+	},
+	doFetchMember: function () {
+	  var params = 'mode=doGetMbr&mbrid='+mf.mbrid;
+	  $.get(mf.url,params, mf.handleMbrResponse);
+		return false;
+	},
+
 	doBarCdSearch: function () {
 		var barcd = $.trim($('#searchByBarcd').val());
 		barcd = flos.pad(barcd,mf.opts.mbr_barcode_width,'0');
 		$('#searchByBarcd').val(barcd); // redisplay expanded value
-		
+
 	  mf.srchType = 'barCd';
 	  var params = 'mode=doBarcdSearch&barcdNmbr='+barcd;
 	  $.get(mf.url,params, mf.handleMbrResponse);
 		return false;
 	},
-	
+
 	doNameSearch: function () {
 	  var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val()};
 	  $.get(mf.url,params, function (jsonInpt) {
@@ -228,11 +246,6 @@ var mf = {
 		});
 	},
 	
-	doFetchMember: function () {
-	  var params = 'mode=doGetMbr&mbrid='+mf.mbrid;
-	  $.get(mf.url,params, mf.handleMbrResponse);
-		return false;
-	},
 	handleMbrResponse: function (jsonInpt) {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();

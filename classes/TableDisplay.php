@@ -7,6 +7,11 @@
  * title="........", align=[left|right|center], width=??
  */
  
+/**
+ * This class generates the actual report display in table form
+ * @author Micah Stetson
+ */
+
 class TableDisplay {
 	private $title;
 	public $columns;

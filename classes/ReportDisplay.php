@@ -4,6 +4,10 @@
  */
 
 require_once(REL(__FILE__, "../classes/Links.php"));
+/**
+ * This class converts the raw report data into displayable materail
+ *@author Micah Stetson
+ */
 
 class ReportDisplay {
 	public function __construct($rpt) {
@@ -134,7 +138,7 @@ class ReportDisplayFuncs {
 	}
 	function member_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row['mbrid'],
-			new LinkUrl('../circ/mbr_view.php', 'mbrid', array())
+			new LinkUrl('../circ/memberForms.php', 'mbrid', array('tab'=>'rpt'))
 		);
 	}
 	function site_link($col, $row, $rpt) {
@@ -198,8 +202,9 @@ class ReportDisplayFuncs {
 	}
 	function member_list($col, $row, $rpt) {
 		$s = '';
+//		$t = 'href="../circ/mbr_view.php?mbrid';
+		$t = 'href="../circ/memberForms.php?mbrid';
 		foreach ($row[$col['name']] as $m) {
-			$t = 'href="../circ/mbr_view.php?mbrid';
 			$s .= '<a '.$t.'='.HURL($m['mbrid']).'">'
 						. H($m['first_name']).' '.H($m['last_name']).' ('.H($m['site_code']).')'
 						. '</a>, '."\n";

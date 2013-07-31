@@ -126,17 +126,13 @@ class Report {
 
 	## ------------------------------------------------------------------------ ##
 	private function _load_e($name, $cache) {
-//echo "report: in load_e<br />\n";
 		$this->name = $name;
 		assert('preg_match("{^[-_/A-Za-z0-9]+\$}", $cache["type"])');
 		$fname = '../reports/defs/'.$cache['type'];
-//echo "report: using file {$fname}<br />\n";
 		if (is_readable($fname.'.php')) {
-//echo "report: its .php<br />\n";
 			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
 		} elseif (is_readable($fname.'.rpt')) {
-//echo "report: its .rpt<br />\n";
 		  ## for scripted reports
 			$err = $this->_load_rpt_e($cache['type'], $fname.'.rpt');
 		} else {
@@ -145,10 +141,8 @@ class Report {
 		if ($err) {
 			return $err;
 		}
-//echo "Report: checking for params in cache<br />\n";
 		$this->cache = $cache;
 		if (array_key_exists('params', $cache) and is_array($cache['params'])) {
-//echo "Report: params exist in cache<br />\n";
 			$this->params = new Params;
 			$this->params->loadDict($cache['params']);
 		}

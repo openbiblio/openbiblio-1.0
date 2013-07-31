@@ -10,7 +10,7 @@
 	require_once("../shared/common.php");
 	require_once("../classes/Report.php");
 	require_once("../classes/Params.php");
-	require_once(REL(__FILE__, "../model/ReportDisplay.php"));
+	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Iter.php"));
 	//print_r($_REQUEST);echo "<br />";
@@ -66,10 +66,10 @@
 
 		$numRows = $rpt->count();
 		if ($numRows == 0) die(T("No results found."));
-		if($perPage <= ($numRows - $firstItem)){
-			$lastItem = $firstItem + $perPage;
+		if(((int)$numRows - (int)$firstItem) >= (int)$perPage ){
+			$lastItem = (int)$firstItem + (int)$perPage;
 		} else {
-			$lastItem = $firstItem + $numRows;
+			$lastItem = (int)$numRows;
 		}
 
 		## record header

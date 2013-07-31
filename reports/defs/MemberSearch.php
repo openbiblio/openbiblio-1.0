@@ -40,14 +40,14 @@ class MemberSearch_rpt {
 	}
 	public function columns() {
 		return array(
+			array('name'=>'name', 'title'=>'Name', 'func'=>'member_link', 'sort'=>'name'),
+			array('name'=>'barcode_nmbr', 'title'=>'Bar Code', 'align'=>'center'),
+			array('name'=>'site_name', 'title'=>'Site', 'sort'=>'site_name'),
 			array('name'=>'mbrid', 'hidden'=>true, 'checkbox'=>true),
 			array('name'=>'last_name', 'hidden'=>true),
 			array('name'=>'first_name', 'hidden'=>true),
 			array('name'=>'school_grade', 'hidden'=>true),
 			array('name'=>'siteid', 'hidden'=>true),
-			array('name'=>'barcode_nmbr', 'title'=>'Number', 'align'=>'center', 'sort'=>'barcode_nmbr'),
-			array('name'=>'name', 'title'=>'Name', 'func'=>'member_link', 'sort'=>'name'),
-			array('name'=>'site_name', 'title'=>'Site', 'sort'=>'site_name'),
 		);
 	}
 	public function select($params) {
