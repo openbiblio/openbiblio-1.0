@@ -32,7 +32,6 @@ class Params {
 		echo '</table>'."\n";
 	}
 	public function loadCgi_el($paramdefs, $prefix='rpt_') {
-//echo "params: in loadCgi_el<br />\n";
 		$params = array();
 		$preflen = strlen($prefix);
 		foreach ($_REQUEST as $k => $v) {
@@ -48,7 +47,6 @@ class Params {
 			}
 			$errs[] = $e;
 		}
-//echo "params==>";print_r($params);echo"<br />\n";
 		return $errs;
 	}
 	public function getDict () {
@@ -204,9 +202,7 @@ class Params {
 		return explode('.', $name);
 	}
 	private function _load_el(&$parameters, $paramdefs, $params, $errprefix=NULL) {
-//echo "params: in _load_el<br />\n";
 		$errs = array();
-//echo "params: nmbr paramdefs=".count($paramdefs)."<br />\n";
 		foreach ($paramdefs as $p) {
 			$p = array_pad($p, 4, NULL);		# Sigh.
 			list($type, $name, $options, $list) = $p;
@@ -250,8 +246,6 @@ class Params {
 				}
 			}
 		}
-//echo "params: nmbr params=".count($params)."<br />\n";
-//echo "params: nmbr parameters=".count($parameters)."<br />\n";
 		return $errs;
 	}
 	private function _mkParam_el($val, $type, $options, $list, $errprefix) {

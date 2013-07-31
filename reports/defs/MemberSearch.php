@@ -88,9 +88,7 @@ class MemberSearch_rpt {
 		if ($order_by) {
 			$sql .= 'order by '.$order_by.' ';
 		}
-		//echo "MemberSearch===>sql={$sql}<br />\n";
 		$rslt = $q->select($sql);
-//echo "MemberSearch===>";print_r($rslt);echo"<br />\n";
 		$iter = new MemberIter($rslt);
 		return $iter;
 	}
@@ -106,11 +104,9 @@ class MemberIter extends Iter {
 	}
 	public function count() {
 		$nmbr=$this->rsltSet->num_rows;
-//echo "MemberIter: in count, nmbr={$nmbr}<br />\n";
 		return $nmbr;
 	}
 	public function skip() {
-//echo "MemberIter: in skip<br />\n";
 		$this->rsltSet->fetch_assoc();
 	}
 	public function next() {

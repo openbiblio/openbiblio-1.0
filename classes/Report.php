@@ -3,6 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+	require_once(REL(__FILE__, "../classes/Params.php"));
+	require_once(REL(__FILE__, "../classes/Iter.php"));
+
 /* A report should always be created with Report::load(), Report::create(),
  * or Report::create_e(), never with new Report().  
  * Create_e() makes a new report of the given type.  If the report is given a 
@@ -20,8 +23,10 @@
  *   count(), curPage(), row(), each(), table(), and pageTable()
  */
 
-	require_once(REL(__FILE__, "../classes/Params.php"));
-	require_once(REL(__FILE__, "../classes/Iter.php"));
+/**
+ * Principal class for the Report Sub-System
+ * @author Micah Stetson
+ */
 
 class Report {
 	public $name;
@@ -38,7 +43,6 @@ class Report {
 		if(!is_null($howMany)) $this->howMany = $howMany;
 	}
 	public static function create($type, $name=NULL, $startAt=NULL, $howMany=NULL) {
-//echo "report: in create: creating report for {$type}<br />\n";
 		list($rpt, $err) = Report::create_e($type, $name, $startAt, $howMany);
 		if($err) {
 			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
@@ -46,7 +50,6 @@ class Report {
 		return $rpt;
 	}
 	public static function load($name, $startAt, $howMany) {
-//echo "report: in load<br />\n";
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
 		}
@@ -71,7 +74,6 @@ class Report {
 		return $this->rpt->columns();
 	}
 	public function initCgi_el($prefix='rpt_') {
-//echo "report: in initCgi_el'<br />\n";
 		$p = new Params;
 		$errs = $p->loadCgi_el($this->rpt->paramDefs(), $prefix);
 		if (!empty($errs)) {
@@ -91,7 +93,6 @@ class Report {
 		return $this->rpt->category();
 	}
 	public function count() {
-//echo "report: in count'<br />\n";
 		if ($this->cache['count'] === NULL) {
 			$this->_getIter();
 			$this->cache['count'] = $this->iter->count();
@@ -117,7 +118,6 @@ class Report {
 		}
 	}
 	public function create_e($type, $name=NULL) {
-//echo "report: in create_e<br />\n";
 		$cache = array('type'=>$type);
 		$rpt = new Report();
 		$err = $rpt->_load_e($name, $cache);
@@ -149,14 +149,12 @@ class Report {
 		return NULL;
 	}
 	private function _load_php_e($type, $fname) {
-//echo "report: in load_php_e<br />\n";
 		$classname = $type.'_rpt';
 		include_once($fname);
 		$this->rpt = new $classname();
 		return NULL;		# Can't error non-fatally
 	}
 	private function _load_rpt_e($type, $fname) {
-//echo "report: in load_rpt_e<br />\n";
 		include_once(REL(__FILE__, '../classes/Rpt.php'));
 		$rpt = new Rpt();
 		$err = $rpt->load_e($fname);
@@ -193,7 +191,6 @@ class Report {
 		}
 	}
 	private function init_el($params) {
-//echo "report: in init_el<br />\n";
 		assert('is_array($params)');
 		$p = new Params;
 		$errs = $p->load_el($this->rpt->paramDefs(), $params);
@@ -209,13 +206,9 @@ class Report {
 		}
 	}
 	private function _init_el($params) {
-//echo "report: in _init_el<br />\n";
 		unset($this->cache['params']);
-//echo "report: in _init_el===>";print_r($params);echo"<br />\n";
 		$this->params = $params;
-//echo "report: in _init_el===>";print_r($params->getDict());echo"<br />\n";
 		$this->cache['params'] = $params->getDict();
-//echo "report: in _init_el===>";print_r($this->cache['params']);echo"<br />\n";
 		$this->_save();
 		return array();
 	}
@@ -243,16 +236,11 @@ class Report {
 		return array($rpt, array());
 	}
 	private function next() {
-//		$this->_getIter();
-//		return $this->iter->count();
 	}
 	private function _getIter() {
-//echo "report: in _getIter'<br />\n";
 		if (isset($this->iter) && $this->iter) {
-//echo "report: iter exists'<br />\n";
 			return;
 		} else {
-//echo "report: getting new iter'<br />\n";
 			$this->iter = new NumberedIter($this->rpt->select($this->params));
 		}
 	}
@@ -277,16 +265,13 @@ class Report {
 		if (isset($this->cache['rows'])
 				and isset($this->cache['rows'][$first])
 				and isset($this->cache['rows'][$last])) {
-//echo "report: _cacheSlice got rows<br />\n";
 			return;
 		}
-//echo "report: _cacheSlice no rows<br />\n";
 		$this->iter = NULL;
 		$this->_getIter();
 		$this->iter = new SliceIter($skip, $len, $this->iter);
 		$this->cache['rows'] = array();
 		while (($row = $this->iter->next()) !== NULL) {
-//echo "db row====>";print_r($row);echo"<br />\n";
 			$this->cache['rows'][$row['.seqno']] = $row;
 		}
 		$this->_save();

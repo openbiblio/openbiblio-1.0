@@ -42,16 +42,14 @@ class Queryi extends mysqli{
 		if ($r->num_rows == 0) {
 			return NULL;
 		} else if ($r->num_rows != 1) {
-			//Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->count())), T("Wrong Number Found error."));
 			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
 			echo "sql=$sql<br />\n";
 		} else {
-			//return $r->fetch_assoc();
 			return $r->fetch_assoc();
 		}
 	}
 	private function _act($sql) {
-		$r =  parent::query($sql);
+		$r =  $this->query($sql);
 		if ($r === false) {
 			Fatal::dbError($sql, T("Database query failed"), mysql_error());
 			echo "sql=$sql<br />\n";
@@ -63,7 +61,6 @@ class Queryi extends mysqli{
 	 * might be something like PEAR::DB's sequences.
 	 */
 	function getInsertID() {
-		//return mysql_insert_id($this->_link);
 		return $this->insert_id;
 	}
 
@@ -144,7 +141,7 @@ class Queryi extends mysqli{
 	 * @access public
 	 ****************************************************************************
 	 */
-	function mkSQL() {
+	public function mkSQL() {
 		$badSqlFmt = T("Bad mkSQL() format string.");
 		
 		$n = func_num_args();
@@ -219,13 +216,13 @@ class Queryi extends mysqli{
 		return $SQL;
 	}
 
-	function _ident($i) {
+	private function _ident($i) {
 		# Because the MySQL manual is unclear on how to include a ` in a `-quoted
 		# identifer, we just drop them.  The manual does not say whether backslash
 		# escapes are interpreted in quoted identifiers, so I assume they are not.
 		return str_replace('`', '', $i);
 	}
-	function _numstr($n) {
+	private function _numstr($n) {
 		if (preg_match("/^([+-]?[0-9]+(\.[0-9]*)?([Ee][0-9]+)?)/", (string)$n, $subs)) {
 			return $subs[1];
 		} else {

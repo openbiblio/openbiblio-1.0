@@ -18,7 +18,6 @@ class BiblioRows {
 			array('name'=>'title', 'title'=>'Title', 'func'=>'biblio_link', 'sort'=>'title'),
 			array('name'=>'author', 'title'=>'Author', 'sort'=>'author'),
 			array('name'=>'date', 'title'=>'Date', 'sort'=>'date'),
-//			array('name'=>'level', 'title'=>'Grade Level'),
 			array('name'=>'pubdate', 'title'=>'Publication Date'),
 			array('name'=>'material_type', 'title'=>'Type', 'sort'=>'type'),
 		);
@@ -84,7 +83,6 @@ class BiblioRowsIter extends Iter {
 		## this builds the sql to get search item details for later display
 		$r = $this->iter->fetch_assoc();
 		if ($r === NULL) return $r;
-		//print_r($r);
 
 		## Construct an array of displayable fields for the material_cd of this biblio
 		$media = new MaterialFields;
@@ -97,7 +95,6 @@ class BiblioRowsIter extends Iter {
 			$l =$fldset[$i]['lbl'];
 			$mc[$l] = $t.'$'.$s;
 		}
-		//print_r($mc);echo"<br />.................<br />";
 
 		## get data for this biblio, one tag$suf per row
 		$sql = "select b.bibid, b.create_dt, b.material_cd, m.description, "

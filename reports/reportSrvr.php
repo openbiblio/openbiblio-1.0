@@ -3,18 +3,20 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-/**
- * backend processor for reports package
- */
-
 	require_once("../shared/common.php");
 	require_once("../classes/Report.php");
 	require_once("../classes/Params.php");
 	require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 	require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 	require_once(REL(__FILE__, "../classes/Iter.php"));
-	//print_r($_REQUEST);echo "<br />";
 
+/**
+ * backend api for reports package
+ * all web pages should call here for services as needed
+ * @author Fred LaPlante
+ */
+
+	//print_r($_REQUEST);echo "<br />";
 
 	##### do NOT use double quotes (") on these items #####
 	//$map['callno'] = ['099$a'];
@@ -48,18 +50,14 @@
 			$firstItem = $_REQUEST['firstItem'];
 			$page = floor($firstItem / $perPage)+1;
 		}
-//echo "in reportSrvr: page=$page; firstItem=$firstItem; perPage=$perPage<br />\n";
 
 		if ($_POST['type'] == 'previous') {
-//echo "reportSrvr: loading 'previous'<br />\n";
 			$rpt = Report::load('Report', $firstItem, $perPage);
 			if ($_REQUEST['rpt_order_by']) {
 				$rpt = $rpt->getVariant(array('order_by'=>$_REQUEST['rpt_order_by']));
 			}
 		} else {
-//echo "reportSrvr: creating new '{$_POST['type']}'<br />\n";
 			$rpt = Report::create($_POST['type'], 'Report', $firstItem, $perPage);
-//echo "reportSrvr: initializing<br />\n";
 			$errs = $rpt->initCgi_el();
 			if (!empty($errs)) die($errs);
 		}

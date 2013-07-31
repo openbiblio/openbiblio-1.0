@@ -17,7 +17,6 @@ class Rpt {
 	public function __construct () {
 	}
 	public function load_e($filename) {
-//echo "rpt: in load_e<br />\n";
 		$this->_title = $filename;
 		$this->_category = 'Misc.';
 		$this->_layouts = array();
@@ -694,7 +693,6 @@ class RptIter extends Iter {
 	private $subselects;
 	## ------------------------------------------------------------------------ ##
 
-	//private function RptIter($sqls, $params) {
 	public function __construct($sqls, $params) {
 		$this->params = $params;
 		$this->q = new Queryi();
@@ -716,7 +714,6 @@ class RptIter extends Iter {
 		return $this->iter->num_rows;
 	}
 	public function skip() {
-//		return $this->iter->skip();
     $this->iter->fetch_assoc();
 	}
 	public function next() {

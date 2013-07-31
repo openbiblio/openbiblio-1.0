@@ -265,7 +265,6 @@ class SrchDb extends Queryi {
 		$BCQ = new BiblioCopyFields;
 		$custRows = $BCQ->getAll();			
 		$custFieldList = array();
-		//while ($row = $custRows->fetch_assoc()) {
 		while ($row = $custRows->fetch_assoc()) {
 			$custFieldList[$row["code"]] = "";
 		}			

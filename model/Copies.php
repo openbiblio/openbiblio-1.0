@@ -14,7 +14,7 @@ require_once(REL(__FILE__, "../model/History.php"));
 
 class Copies extends CoreTable {
 	public function __construct() {
-		//parent::__construct();
+		parent::__construct();
 		$this->setName('biblio_copy');
 		$this->setFields(array(
 			'bibid'=>'number',

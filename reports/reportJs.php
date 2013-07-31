@@ -105,15 +105,12 @@ var rpt = {
 		var firstItem = 0;
 		if (typeof(itemNmbr) !== 'undefined') {
 			firstItem = itemNmbr;
-//		} else {
-//      firstItem = 0;
 		}
 		$('#firstItem').val(firstItem);
 
 		//$('#type').val('previous');
     var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
-//console.log(response);
 			if (response.indexOf('|') < 0) {
         $('#errSpace').html(response).show();
 				return;
