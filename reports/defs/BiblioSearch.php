@@ -20,14 +20,11 @@ class BiblioSearch_rpt extends BiblioRows {
 	private $searchTypes;
 	private $countSQL = NULL;
 	private $sliceSQL = NULL;
-	private $startAt;
-	private $howMany;
 
 	## ------------------------------------------------------------------------ ##
 	public function __construct() {
 		$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
 		$tags = json_decode_nice($json,true);
-		//echo"titleTags===>";var_dump($tags['title']);echo"<br />";
 
 		$this->searchTypes = array(
 			'keyword' => Search::type('Keyword', 'MARC', array()),
@@ -59,9 +56,6 @@ class BiblioSearch_rpt extends BiblioRows {
 		$sql = "select distinct b.bibid, b.material_cd "
 					 . $query['from'] . $sortq['from']
 					 . $query['where'] . $sortq['order by'];
-		if (!empty($this->firstItem) && !empty($this->howMany)) {
-			$sql .= " LIMIT ".$this->firstItem.", ".$this->howMany;
-		}
 		//echo "sql===>$sql<br /><br />";
 		return new BiblioRowsIter($this->q->select($sql));
 	}

@@ -4,7 +4,6 @@
  */
  
 require_once(REL(__FILE__, "../../classes/Queryi.php"));
-//require_once(REL(__FILE__, "../../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../../classes/Search.php"));
 
 /**
@@ -14,6 +13,8 @@ require_once(REL(__FILE__, "../../classes/Search.php"));
 
 class MemberSearch_rpt {
 	private $searchTypes;
+	private $startAt;
+	private $howMany;
 
 	## ------------------------------------------------------------------------ ##
 	public function __construct() {
@@ -52,7 +53,6 @@ class MemberSearch_rpt {
 	public function select($params) {
 //echo "MemberSearch: in select<br />\n";
 		$q = new Queryi();
-		//$q = new CoreTable();
 		$sql = 'select m.mbrid, m.barcode_nmbr, m.last_name, '
 					 . "m.first_name, concat(m.last_name, ', ', m.first_name) as name, "
 					 . 'm.school_grade, m.siteid, s.name as site_name '
@@ -88,8 +88,33 @@ class MemberSearch_rpt {
 		if ($order_by) {
 			$sql .= 'order by '.$order_by.' ';
 		}
+		//echo "MemberSearch===>sql={$sql}<br />\n";
 		$rslt = $q->select($sql);
 //echo "MemberSearch===>";print_r($rslt);echo"<br />\n";
-		return $rslt;
+		$iter = new MemberIter($rslt);
+		return $iter;
+	}
+}
+
+class MemberIter extends Iter {
+	private $q;
+	private $rsltSet;
+
+	public function __construct ($rsltSet) {
+		$this->q = new Queryi;
+		$this->rsltSet = $rsltSet;
+	}
+	public function count() {
+		$nmbr=$this->rsltSet->num_rows;
+//echo "MemberIter: in count, nmbr={$nmbr}<br />\n";
+		return $nmbr;
+	}
+	public function skip() {
+//echo "MemberIter: in skip<br />\n";
+		$this->rsltSet->fetch_assoc();
+	}
+	public function next() {
+		$r = $this->rsltSet->fetch_assoc();
+		return $r;
 	}
 }

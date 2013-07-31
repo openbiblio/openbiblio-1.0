@@ -12,6 +12,10 @@
  */
 
 class Rpt {
+
+	## ------------------------------------------------------------------------ ##
+	public function __construct () {
+	}
 	public function load_e($filename) {
 //echo "rpt: in load_e<br />\n";
 		$this->_title = $filename;

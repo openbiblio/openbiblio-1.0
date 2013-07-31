@@ -31,23 +31,21 @@ class Report {
 	private $iter;
 	private $cache;
 	private $pointer = 0;
-	private $statrAt;
-	private $howMany;
 
 	## ------------------------------------------------------------------------ ##
 	public function __construct ($startAt=NULL, $howMany=NULL) {
-    $this->startAt = $startAt;
-		$this->howMany = $howMany;
+    if(!is_null($startAt)) $this->startAt = $startAt;
+		if(!is_null($howMany)) $this->howMany = $howMany;
 	}
-	public static function create($type, $name=NULL) {
+	public static function create($type, $name=NULL, $startAt=NULL, $howMany=NULL) {
 //echo "report: in create: creating report for {$type}<br />\n";
-		list($rpt, $err) = Report::create_e($type, $name);
+		list($rpt, $err) = Report::create_e($type, $name, $startAt, $howMany);
 		if($err) {
 			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
 		}
 		return $rpt;
 	}
-	public static function load($name) {
+	public static function load($name, $startAt, $howMany) {
 //echo "report: in load<br />\n";
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
@@ -159,15 +157,14 @@ class Report {
 	private function _load_php_e($type, $fname) {
 //echo "report: in load_php_e<br />\n";
 		$classname = $type.'_rpt';
-//echo "including {$fname}<br />\n";
 		include_once($fname);
-		$this->rpt = new $classname;
+		$this->rpt = new $classname();
 		return NULL;		# Can't error non-fatally
 	}
 	private function _load_rpt_e($type, $fname) {
 //echo "report: in load_rpt_e<br />\n";
 		include_once(REL(__FILE__, '../classes/Rpt.php'));
-		$rpt = new Rpt;
+		$rpt = new Rpt();
 		$err = $rpt->load_e($fname);
 		if ($err) {
 			return $err;
@@ -251,6 +248,10 @@ class Report {
 		}
 		return array($rpt, array());
 	}
+	private function next() {
+//		$this->_getIter();
+//		return $this->iter->count();
+	}
 	private function _getIter() {
 //echo "report: in _getIter'<br />\n";
 		if (isset($this->iter) && $this->iter) {
@@ -260,10 +261,6 @@ class Report {
 //echo "report: getting new iter'<br />\n";
 			$this->iter = new NumberedIter($this->rpt->select($this->params));
 		}
-	}
-	private function next() {
-		$this->_getIter();
-		return $this->iter->count();
 	}
 	private function row($num) {
 		if (isset($this->cache['rows'][$num])) {
@@ -286,13 +283,16 @@ class Report {
 		if (isset($this->cache['rows'])
 				and isset($this->cache['rows'][$first])
 				and isset($this->cache['rows'][$last])) {
+//echo "report: _cacheSlice got rows<br />\n";
 			return;
 		}
+//echo "report: _cacheSlice no rows<br />\n";
 		$this->iter = NULL;
 		$this->_getIter();
 		$this->iter = new SliceIter($skip, $len, $this->iter);
 		$this->cache['rows'] = array();
 		while (($row = $this->iter->next()) !== NULL) {
+//echo "db row====>";print_r($row);echo"<br />\n";
 			$this->cache['rows'][$row['.seqno']] = $row;
 		}
 		$this->_save();

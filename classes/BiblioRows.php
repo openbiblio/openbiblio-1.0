@@ -70,17 +70,17 @@ class BiblioRows {
 }
 
 class BiblioRowsIter extends Iter {
-	function BiblioRowsIter($iter) {
+	public function __construct($iter) {
 		$this->q = new Queryi;
 		$this->iter = $iter;
 	}
-	function count() {
+	public function count() {
 		return $this->iter->num_rows;
 	}
-	function skip() {
+	public function skip() {
 		$this->iter->fetch_assoc();
 	}
-	function next() {
+	public function next() {
 		## this builds the sql to get search item details for later display
 		$r = $this->iter->fetch_assoc();
 		if ($r === NULL) return $r;
