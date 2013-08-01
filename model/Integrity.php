@@ -64,10 +64,13 @@ class Integrity extends Queryi{
 					. 'from biblio_copy left join biblio_status_hist '
 					. 'on biblio_status_hist.histid=biblio_copy.histid '
 					. 'where biblio_status_hist.histid is null ',
-				'fixSql' => 'delete from biblio_copy '
-					. 'using biblio_copy left join biblio_status_hist '
-					. 'on biblio_status_hist.histid=biblio_copy.histid '
-					. 'where biblio_status_hist.histid is null ',
+				// NO AUTOMATIC FIX
+				/*
+				'fixSql' => "insert into biblio_status_hist "
+					. "(bibid, copyid, status_cd) "
+					. "select c.bibid, c.copyid, 'in' from biblio_copy c "
+					. "where c.copyid not in (select h.copyid from biblio_status_hist h)",
+				*/
 			);
 			
 /*			
@@ -146,10 +149,13 @@ class Integrity extends Queryi{
 					. 'from biblio_status_hist left join biblio_copy '
 					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
 					. 'where biblio_copy.copyid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'delete from biblio_status_hist '
 					. 'using biblio_status_hist left join biblio_copy '
 					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
 					. 'where biblio_copy.copyid is null ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("%count% invalid biblio in copy status history records"),
@@ -157,10 +163,13 @@ class Integrity extends Queryi{
 					. 'from biblio_status_hist left join biblio '
 					. 'on biblio.bibid=biblio_status_hist.bibid '
 					. 'where biblio.bibid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'delete from biblio_status_hist '
 					. 'using biblio_status_hist left join biblio '
 					. 'on biblio.bibid=biblio_status_hist.bibid '
 					. 'where biblio.bibid is null ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryInvalidStatusCodes"),
@@ -179,10 +188,13 @@ class Integrity extends Queryi{
 					. 'from booking left join biblio '
 					. 'on biblio.bibid=booking.bibid '
 					. 'where biblio.bibid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'delete from booking '
 					. 'using booking left join biblio '
 					. 'on booking.bibid=biblio.bibid '
 					. 'where biblio.bibid is null ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenBooking"),
@@ -190,9 +202,12 @@ class Integrity extends Queryi{
 					. 'from booking '
 					. 'where booking.due_dt is not null '
 					. 'and booking.out_dt is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'DELETE FROM `booking` '
 					. 'where booking.due_dt is not null '
 					. 'and booking.out_dt is null ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenOutRef"),
@@ -201,6 +216,8 @@ class Integrity extends Queryi{
 					. 'on biblio_status_hist.histid=booking.out_histid '
 					. 'where booking.out_histid is not null '
 					. 'and biblio_status_hist.histid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'DELETE b FROM `booking` as b '
 					. 'WHERE b.`out_histid` IN (Select out_histid FROM('
 					. 'select DISTINCT bk.`out_histid` from booking as bk '
@@ -208,6 +225,7 @@ class Integrity extends Queryi{
 					. 'on biblio_status_hist.histid=bk.out_histid '
 					. 'where bk.out_histid is not null '
 					. 'and biblio_status_hist.histid is null) X)',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenReturnRef"),
@@ -224,10 +242,13 @@ class Integrity extends Queryi{
 					. 'from booking_member left join booking '
 					. 'on booking.bookingid=booking_member.bookingid '
 					. 'where booking.bookingid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'delete from booking_member '
 					. 'using booking_member left join booking '
 					. 'on booking.bookingid=booking_member.bookingid '
 					. 'where booking.bookingid is null ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryNoAssMember"),
@@ -235,10 +256,13 @@ class Integrity extends Queryi{
 					. 'from booking_member left join member '
 					. 'on member.mbrid=booking_member.mbrid '
 					. 'where member.mbrid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'delete from booking_member '
 					. 'using booking_member left join member '
 					. 'on member.mbrid=booking_member.mbrid '
 					. 'where member.mbrid is null ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("%count% copies without site"),
@@ -283,12 +307,15 @@ class Integrity extends Queryi{
 					. 'on booking.out_histid=biblio_status_hist.histid '
 					. 'where biblio_status_hist.status_cd=\'out\' '
 					. 'and booking.bookingid is null ',
+				// NO AUTOMATIC FIX
+				/*
 				'fixSql' => 'delete bsh from biblio_status_hist as bsh where bsh.histid in '
 					. '(select histid from (select distinct bs.histid '
 					. 'from biblio_status_hist as bs left join booking as b '
 					. 'on b.out_histid=bs.histid '
 					. 'where bs.status_cd=\'out\' '
 					. 'and b.bookingid is null) X) ',
+				*/
 			);
 			$this->checks[] = array(
 				'error' => T("%count% double check outs"),

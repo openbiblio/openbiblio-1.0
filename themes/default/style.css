@@ -261,7 +261,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	-webkit-flex-direction:row; flex-direction:column;
 	-webkit-justify-content:flex-end; justify-content:flex-end;
 	}
-.dashBdsA, .dashBdsB {
+.dashBdsA, .dashBdsB, .dashBdsC {
 	display:-webkit-flex; display:flex;
 	-webkit-flex-direction:row; flex-direction: row;
 	}

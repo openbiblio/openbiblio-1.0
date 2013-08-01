@@ -7,6 +7,11 @@ require_once(REL(__FILE__, "../classes/DBTable.php"));
 require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/Bookings.php"));
 
+/**
+ * This class provides an interface to the Biblio_status_hist table
+ * @author Micah Stetson
+ */
+
 class History extends DBTable {
 	public function __construct() {
 		parent::__construct();
@@ -23,17 +28,18 @@ class History extends DBTable {
 		$this->setForeignKey('bibid', 'biblio', 'bibid');
 		$this->setForeignKey('copyid', 'biblio_copy', 'copyid');
 	}
-	protected function validate_el($new, $insert) {
-		return true;
-	}
-	function update_el($rec) {
+	public function update_el($rec) {
 		Fatal::internalError(T("Cannot update history entries"));
 	}
-	function insert_el($rec) {
+	public function insert_el($rec) {
 		$rec['status_begin_dt'] = date('Y-m-d H:i:s');
 		$this->lock();
 		list($id, $errs) = parent::insert_el($rec);
 		$this->unlock();
 		return array($id, $errs);
+	}
+
+	protected function validate_el($new, $insert) {
+		return true;
 	}
 }

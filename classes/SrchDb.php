@@ -34,6 +34,7 @@ class SrchDb extends Queryi {
 	 	$rslt['collCd'] = $this->collCd;
 	 	$rslt['opacFlg'] = $this->opacFlg;
 		$rslt['avIcon'] = $this->avIcon;
+		$rslt['nCpy'] = $this->nCpy;
 	 	$rslt['data'] = $this->getBiblioDetail();
 	 	return $rslt;
 	}
@@ -190,10 +191,12 @@ class SrchDb extends Queryi {
 			$copies = $this->getCopyInfo($bibid);
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
+			$this->nCpy = 0;
 			if (!empty($copies)) {
 				// default copy not available
 				$this->avIcon = "circle_red.png";
 				foreach($copies as $copyEnc){
+					$this->nCpy = $this->nCpy+1;
 					$copy = json_decode($copyEnc, true);
 					if($copy['statusCd'] == OBIB_STATUS_IN) {
 						// See on which site
@@ -211,8 +214,10 @@ class SrchDb extends Queryi {
 			} else {
 				$this->avIcon = "circle_red.png"; // no copy found
 			}
+			$rcd['nCpy'] = $this->nCpy;
 			$rcd['avIcon'] = $this->avIcon;
 //		}
+//echo rcd===>{$rcd} <br />\n";
 		return $rcd;
 	}
 	## ========================= ##

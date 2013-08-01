@@ -343,8 +343,8 @@ var mf = {
     $('#holdList tBody').html('');
 	  var params = 'mode=getHolds&mbrid='+mf.mbrid;
 	  $.get(mf.url,params, function(jsonInpt){
-			if ($.trim(jsonInpt).substr(0,2) != '[{') {
-				$('#errSpace').html(jsonInpt).show();
+			if ($.trim(jsonInpt).substr(0,1) == '<') {
+				mf.showMsg(jsonInpt);
 			} else {
 				mf.holds = $.parseJSON(jsonInpt);
 				if (! mf.holds) {
@@ -506,12 +506,12 @@ var mf = {
 
 		var parms = {'mode':'doHold', 'mbrid':mf.mbrid, 'barcodeNmbr':barcd};
 		$.post(mf.url, parms, function(response) {
-			if (response == '') {
+			if (response == '<') {
+				mf.showMsg(response);
+			} else {
 				mf.showMsg('Hold Completed!');
 				$('#holdBarcd').val('')
 				mf.showOneMbr(mf.mbr)
-			} else {
-				mf.showMsg(response);
 			}
 		});
 		return false;
@@ -539,6 +539,35 @@ var mf = {
 	doShowMbrHist: function () {
 		$('#mbrDiv').hide();
 		$('#histDiv').show();
+		var statMap = {'crt':'IN', 'in':'IN', 'out':'OUT'};
+	  $.get(mf.url,{mode:'getHist', 'mbrid':mf.mbrid}, function(jsonInpt){
+			$('#histList tBody').html(''); // clear any residue from past displays
+			if ($.trim(jsonInpt).substr(0,1) != '[') {
+				$('#msgArea').html(jsonInpt);
+				$('#msgDiv').show();
+			} else {
+				mf.hist = $.parseJSON(jsonInpt);
+				var html = '';
+				if (!mf.hist) {
+					html += '<tr>'
+					html += '<td colspan="6"><?php echo T("No transactions found."); ?></td> \n';
+					html += '</tr>\n';
+				} else {
+					for (var nHist in mf.hist) {
+						var hist = mf.hist[nHist];
+						html += '<tr> \n';
+						html += '	<td>'+hist.title+'</td> \n';
+						html += '	<td>'+statMap[hist.status_cd]+'</td> \n';
+						html += '	<td class="date">'+hist.status_begin_dt.split(' ')[0]+'</td> \n';
+						html += '</tr> \n';
+					}
+					$('#histList tBody').html(html);
+					$('#histList tbody.striped tr:odd td').addClass('altBG');
+					$('#histList tbody.striped tr:even td').addClass('altBG2');
+				};
+			}
+		});
+		return false;
 	},
 	
 	//------------------------------

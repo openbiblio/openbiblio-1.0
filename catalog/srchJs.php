@@ -426,7 +426,7 @@ var bs = {
 			var title = '', booktitle='', booksubtitle='', reporttitle='', reportsubtitle='',
 					author='', coauthor='', editors='', corporate='',
 					year='', journal='', jrnlDate='',
-					callNo = '', edition = '', pubDate = ''; 
+					callNo='', edition ='', pubDate='', nrCopies=0;
 			var html = '';
 			var biblio = JSON.parse(biblioList[nBiblio]);
 
@@ -447,14 +447,17 @@ var bs = {
 			}
 			/*  some administrative info and a 'more detail' button */
 			html += '	<div class="dashBds">\n';
-			html += ' 	<div class="dashBdsA">'
+			html += ' 	<div class="dashBdsA">';
+			html += '			<p>copies:'+biblio.nCpy+'</p>';
+			html += '		</div>\n';
+			html += ' 	<div class="dashBdsB">';
 			html += '			<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
 			html += '			<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
 			html += '		</div>\n';
-			html += ' 	<div class="dashBdsB">'
+			html += ' 	<div class="dashBdsC">';
 			html += '			<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
 			html += '			<input type="button" class="moreBtn" value="<?php echo T("More info"); ?>" />'+'\n';
-			html += ' 	</div>'
+			html += ' 	</div>';
 			html += '	</div>\n';
 			html += '</div></td>';  // end of itemVisual div
 

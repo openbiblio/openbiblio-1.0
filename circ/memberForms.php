@@ -286,7 +286,6 @@
 				<th><?php echo T("Balance"); ?></th>
 			</tr>
 			</thead>
-			
 			<tbody class="striped"></tbody>
 		</table>
 	</fieldset>
@@ -298,7 +297,16 @@
 	<input type="button" class="gobkHistBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset>
 		<legend><?php echo T("Checkout History"); ?></legend>
-		<p>Not yet Available</p>
+		<table id="histList">
+			<thead>
+			<tr>
+				<th><?php echo T("Item"); ?></th>
+				<th><?php echo T("In/Out"); ?></th>
+				<th><?php echo T("Date"); ?></th>
+			</tr>
+			</thead>
+			<tbody class="striped"></tbody>
+		</table>
 	</fieldset>
 	<input type="button" class="gobkHistBtn" value="<?php echo T("Go Back"); ?>" />
 </div>

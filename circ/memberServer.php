@@ -164,7 +164,7 @@
 			$biblio = new Biblio($copy['bibid']);
 			$bibData = $biblio->getData();
 			$bibMarc = $bibData['marc'];
-			//$bibHdr = $bibData['hdr'];
+			/*
 			$a = $bibMarc['240$a'];
 			$b = $bibMarc['245$a'];
 			$c = $bibMarc['245$b'];
@@ -172,6 +172,8 @@
 			$e = $bibMarc['246$b'];
 			if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
 			if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
+			*/
+      $copy['title'] = $bibData['hdr']['title'];
 			$chkOutList[] = $copy;
 		}
 	  echo json_encode($chkOutList);
@@ -198,6 +200,35 @@
 		break;
 
 	//// ====================================////
+	case 'getHist':
+		$sql = "SELECT h.* "
+				 . "FROM booking_member m, booking b, biblio_status_hist h "
+				 . "WHERE (m.mbrid = {$_GET['mbrid']}) "
+				 . "  AND (b.bookingid = m.bookingid) "
+				 . "  AND ((h.histid = b.out_histid) OR (h.histid = b.ret_histid)) "
+				 . " ORDER BY h.bibid, h.status_begin_dt ASC";
+		$rslt = $history->select($sql);
+		$histRcds = array();
+		while ($row = $rslt->fetch_assoc()) {
+			$biblio = new Biblio($row['bibid']);
+			$bibData = $biblio->getData();
+			/*
+			$bibMarc = $bibData['marc'];
+			$a = $bibMarc['240$a'];
+			$b = $bibMarc['245$a'];
+			$c = $bibMarc['245$b'];
+			$d = $bibMarc['246$a'];
+			$e = $bibMarc['246$b'];
+			if (!empty($a) || !empty($b) || !empty($c)) $row['title'] = $a.' '.$b.' '.$c;
+			if (!empty($d) || !empty($e)) $row['title'] = $d.' '.$e;
+			*/
+			$row['title'] = $bibData['hdr']['title'];
+			$histRcds[] = $row;
+		}
+		echo json_encode($histRcds);
+		break;
+
+	//// ====================================////
 	case 'getHolds':
 		$rslt = $holds->getByMember($_GET['mbrid']);
 		$holdList = array();
@@ -220,6 +251,7 @@
 		break;
 	case "doHold":
 		$copy = $copies->getByBarcode($_POST['barcodeNmbr']);
+		if (is_null($copy)) die(T("Barcode does not exist").'.');
 		$holds->insert(array(
 			'bibid'=>$copy['bibid'],
 			'copyid'=>$copy['copyid'],
@@ -239,6 +271,7 @@
 			$history->insert($hist);
 		}
 		*/
+		echo T("Success");
 		break;
 	case 'd-3-L-3-tHold':
 		$holds->deleteOne($_POST['holdid']);
