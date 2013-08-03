@@ -5,6 +5,11 @@
  
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
+/**
+ * Adds common date-time stamps to child primary table classes
+ * @author Micah Stetson
+ */
+
 abstract class CoreTable extends DBTable {
 	public function __construct() {
 		parent::__construct();

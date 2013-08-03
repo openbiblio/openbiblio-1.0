@@ -16,6 +16,13 @@
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 	require_once(REL(__FILE__, "../classes/SrchDb.php"));
 
+	require_once("../classes/Biblio.php");
+
+/**
+ * back-end API for Existing Biblio Management
+ * @author Luuk Jansen
+ * @author Fred LaPlante
+ **/
 	
 	## Load session data in case of OPAC (eg no user logged on)
 	if(empty($_SESSION['show_checkout_mbr'])) $_SESSION['show_checkout_mbr'] = Settings::get('show_checkout_mbr');	
@@ -45,12 +52,13 @@
 
 	#****************************************************************************
 	switch ($_REQUEST['mode']) {
-	case 'getOpts':
-		//setSessionFmSettings(); // only activate for debugging!
-		$db = new Settings;
-		$opts = $db->getAll();
-		echo json_encode($opts);
-	  break;
+	// replaced by listSrvr:getOpts. remove by 15 Aug 2013
+	//case 'getOpts':
+	//	//setSessionFmSettings(); // only activate for debugging!
+	//	$db = new Settings;
+	//	$opts = $db->getAll();
+	//	echo json_encode($opts);
+	//  break;
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
@@ -71,23 +79,35 @@
 		echo json_encode($media);
 		break;
 
+	case 'doBibidSearch':
+	  $theDb = new SrchDB;
+  	$theDb->getBiblioInfo($_REQUEST[bibid]);
+	  echo json_encode($theDb->getData());
+	  break;
 	case 'doBarcdSearch':
 	  $theDb = new SrchDB;
 	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
 	  if ($rslt != NULL) {
 	  	$theDb->getBiblioInfo($theDb->bibid);
-	  	//echo json_encode(mkBiblioArray($theDb));
 	  	echo json_encode($theDb->getData());
 		} else {
 			echo '{"data":null}';
 		}
 	  break;
 
-	case 'doBibidSearch':
-	  $theDb = new SrchDB;
-  	$theDb->getBiblioInfo($_REQUEST[bibid]);
-	  //echo json_encode(mkBiblioArray($theDb));
-	  echo json_encode($theDb->getData());
+	case 'doBibidSearch2':
+	  $bib = new Biblio($_REQUEST[bibid]);
+	  echo json_encode($bibb->getData());
+	  break;
+	case 'doBarcdSearch2':
+	  $ptr = new Copies;
+	  $copy = $ptr->getByBarcode($_REQUEST['searchBarcd']);
+	  if ($copy != NULL) {
+	  	$bib = new Biblio($copy['bibid']);
+	  	echo json_encode($bib->getData());
+		} else {
+			echo '{"data":null}';
+		}
 	  break;
 
 	case 'doPhraseSearch':
@@ -231,6 +251,11 @@
   		$rslt = json_decode($msg);
   		$bibid = $rslt->bibid;
 		}
+	  echo $msg;
+	  break;
+	case 'updateBiblio2':
+	  $bib = new Biblio($_POST[bibid]);
+		$msg = $bib->setData($_POST);
 	  echo $msg;
 	  break;
 

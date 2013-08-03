@@ -24,6 +24,7 @@ var idis = {
 		idis.url = '../catalog/catalogServer.php';
 	},
 	
+	/* ====================================== */
 	doBibidSearch: function (bibid) {
 	  idis.srchType = 'bibid';
 	  $('p.error').html('').hide();
@@ -34,10 +35,10 @@ var idis = {
 			} else {
 				idis.biblio = $.parseJSON(jsonInpt);
 				if (!idis.biblio.data) {
-	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
+	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBibidSearch") ?>').show();
 				}
 				else {
-					idis.showOneBiblio(idis.biblio)
+					idis.showOneBiblio(idis.biblio);
 				}
 	    }
 		  $('#searchDiv').hide();
@@ -46,16 +47,18 @@ var idis = {
 		return false;
 	},
 
+	/* ====================================== */
 	showOneBiblio: function (biblio) {
 	  if(!biblio)
 			idis.theBiblio = $(this).prev().val();
 		else
 	  	idis.theBiblio = biblio;
 		if (typeof bs !== 'undefined') bs.theBiblio = idis.theBiblio;
-		$('#theBibId').html(idis.theBiblio.bibid);
+		var bibid = idis.theBiblio.hdr.bibid
+		$('#theBibId').html(bibid);
 
   	idis.crntFoto = null;
-  	idis.crntBibid = idis.theBiblio.bibid;
+  	idis.crntBibid = bibid;
 		$('#photoEditBtn').hide();		
 		$('#photoAddBtn').hide();		
 		$('#bibBlkB').html('');
@@ -68,7 +71,7 @@ var idis = {
 				}
 			<?php } ?>
 
-  		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.theBiblio.bibid  }, function(data){
+  		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
 				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;
 
@@ -86,31 +89,39 @@ var idis = {
 				}
   		});
 		}
-		idis.fetchCopyInfo();
 
+//console.log(idis.theBiblio.marc);
 	  var txt = '';
-		$.each(idis.theBiblio.data, function(fldIndex,fldData) {
-		  var tmp = JSON.parse(fldData);
-		  txt += "<tr>\n";
-			txt += "	<td class=\"filterable hilite\">"+tmp.marcTag+"</td>\n";
-			txt += "	<td>"+tmp.label+"</td>\n";
-			if (tmp.marcTag == '024a') {
-				txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
-			} else if (tmp.marcTag == '505a') {
-				txt += '	<td><textarea wrap="soft" readonly cols="50" >'+tmp.value+"</textarea></td>\n";
-			} else {
-				txt += '	<td><p>'+tmp.value+'</p></td>\n';
-			}
-			txt += "</tr>\n";
-			if (tmp.marcTag == '245a') {
-				idis.crntTitle = tmp.value;
+		$.each(idis.theBiblio.marc, function(key,value) {
+//console.log(key);
+//console.log(value);
+		  var tmp = value;
+			tmp.marcTag = key.substr(0,5);
+			if (tmp.line && tmp.value) {
+//console.log('printing');
+		  	txt += "<tr>\n";
+				txt += '	<td class="filterable hilite">'+tmp.marcTag+"</td>\n";
+				txt += "	<td>"+tmp.lbl+"</td>\n";
+				if (tmp.marcTag == '024$a') {
+					txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
+				} else if (tmp.marcTag == '505$a') {
+					txt += '	<td><textarea wrap="soft" readonly cols="50" >'+tmp.value+"</textarea></td>\n";
+				} else {
+					txt += '	<td><p>'+tmp.value+'</p></td>\n';
+				}
+				txt += "</tr>\n";
+				if (tmp.marcTag == '245$a') {
+					idis.crntTitle = tmp.value;
+				}
 			}
 		});
 		txt += "<tr>\n";
 		txt += "	<td class=\"filterable hilite\">&nbsp</td>\n";
 		txt += "	<td>Date Added</td>\n";
-		txt += "	<td>"+idis.theBiblio.createDt+"</td>\n";
+		txt += "	<td>"+idis.theBiblio.hdr.createDt+"</td>\n";
 		txt += "</tr>\n";
+
+		idis.fetchCopyInfo();
 
 		/* support for doi search link */
 		$('.hotDoi').on('click',null,function () {
@@ -152,7 +163,9 @@ var idis = {
 	
 	fetchCopyInfo: function () {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
-	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.theBiblio.bibid}, function(jsonInpt){
+//var bibid = idis.theBiblio.bibid;
+var bibid = idis.theBiblio.hdr.bibid;
+	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':bibid}, function(jsonInpt){
 				idis.copyJSON = jsonInpt;
 				if (!idis.copyJSON) {
 					var msg = '(<?php echo T("No copies"); ?>)';

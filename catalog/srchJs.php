@@ -1,11 +1,13 @@
-<?php
+<script language="JavaScript" defer >
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-?>
 
-<script language="JavaScript" defer>
-// JavaScript Document
+/**
+ * JavaScript portion of the Biblio ExistingItem Manager
+ * @author Luuk Jansen
+ * @author Fred LaPlante
+ */
 "use strict";
 <?php
 	// If a circulation user and NOT a cataloging user the system should treat the user as opac
@@ -66,7 +68,8 @@ var bs = {
 			bs.doPhotoEdit(bs.theBiblio);
 		});
 		$('#biblioEditBtn').on('click',null,function () {
-			bs.doItemEdit(bs.theBiblio);
+//			bs.doItemEdit(bs.theBiblio);
+			ie.doItemEdit(bs.theBiblio);
 		});
 		$('#biblioDeleteBtn').on('click',null,function () {
 			bs.doItemDelete(bs.theBiblio);
@@ -97,19 +100,6 @@ var bs = {
 		});
 
 		// for the item edit and online update functions
-	  $('#onlnUpdtBtn').on('click',null,function (){
-			$('#onlnDoneBtn').show();
-			$('#onlnUpdtBtn').hide();
-			$('#itemEditorDiv td.filterable').show();
-			bs.fetchOnlnData();
-		});
-	  $('#onlnDoneBtn').on('click',null,function (){
-			$('#itemEditorDiv td.filterable').hide();
-			$('#onlnUpdtBtn').show();
-			$('#onlnDoneBtn').hide();
-		});
-		$('#itemSubmitBtn').on('click',null,bs.doItemUpdate)
-											 .val('<?php echo T("Update"); ?>');
 		$('.itemGobkBtn').on('click',null,function () {
    		$('#itemEditorDiv').hide();
 		 	$('#biblioDiv').show();
@@ -301,7 +291,7 @@ var bs = {
 				}
 				else {
 					idis.showOneBiblio(bs.biblio)
-					idis.fetchCopyInfo();
+					//idis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();
@@ -317,13 +307,19 @@ var bs = {
 	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
 	  var params = $('#barcodeSearch').serialize();
-		params += '&mode=doBarcdSearch';
+		params += '&mode=doBarcdSearch2';
 	  $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
+				return false;
 			} else {
 				bs.biblio = $.parseJSON(jsonInpt);
-				if (bs.biblio.data == null) {
+				if (bs.biblio.hdr != null) {
+					bs.multiMode = false;
+					idis.showOneBiblio(bs.biblio)
+					//idis.fetchCopyInfo();
+				}
+				else if (bs.biblio.data == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
 	  			bs.rtnToSrch();
@@ -331,7 +327,7 @@ var bs = {
 				else {
 					bs.multiMode = false;
 					idis.showOneBiblio(bs.biblio)
-					idis.fetchCopyInfo();
+//					idis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();
@@ -384,7 +380,7 @@ var bs = {
       		// Changed from 0 to 1 as the first row shows record info
 					bs.biblio = $.parseJSON(biblioList[1]);
 					idis.showOneBiblio(bs.biblio)
-					idis.fetchCopyInfo();
+					//idis.fetchCopyInfo();
 				}
 				// multiple hits
 				else {
@@ -636,10 +632,14 @@ var bs = {
 	
 	/* ====================================== */
 	doItemEdit: function (biblio) {
+ie.init(bs.opts); // ensure field bindings are current
+ie.doItemEdit(biblio);
+return;
+
 		$('#onlnUpdtBtn').show();
 		$('#onlnDoneBtn').hide();
 	  $('#biblioDiv').hide();
-	  
+
 	  bs.bibid = biblio.bibid;
 	  bs.matlCd = biblio.matlCd;
 	  bs.collCd = biblio.collCd;
@@ -698,14 +698,14 @@ var bs = {
 			  	bs.fldNo++;
 			  }
 			});
-			ie.init(); // ensure field bindings are current
+//			ie.init(); // ensure field bindings are current
 
-    	$('#itemEditorDiv').show();
+//    	$('#itemEditorDiv').show();
 		});
 	},
 
 	/* ====================================== */
-	fetchOnlnData: function () {
+	xfetchOnlnData: function () {
 		if ($('#245a').length > 0) var title =  $('#245a').val();
 		//console.log('title==>'+title);
 		if ($('#100a').length > 0) var author= $('#100a').val().split(',')[0];
@@ -783,7 +783,7 @@ var bs = {
 	},
 
 	/* ====================================== */
-	doFldUpdt: function (e) {
+	xdoFldUpdt: function (e) {
 		var rowNmbr = ((e.target.id).split('_'))[1];
 		var srcId = '#marcBody input[name="onln_'+rowNmbr+'[data]"]';
 		var text = $(srcId).val();
@@ -791,7 +791,7 @@ var bs = {
 		var destId = '#marcBody input[name="fields['+rowNmbr+'][data]"]';
 		$(destId).val(text);
 	},
-	doItemUpdate: function () {
+	xdoItemUpdate: function () {
 	  // verify all required fields are present
 	  //if (!ie.validate()) return false;
 	  
@@ -813,7 +813,7 @@ var bs = {
 	  });
 	  return false;
 	},
-	doItemDelete: function (biblio) {
+	xdoItemDelete: function (biblio) {
 		//console.log('there are '+bs.copyJSON.length+' copies.');
 		if (bs.copyJSON) {
 			alert('You must delete all copies before you can delete an item!');

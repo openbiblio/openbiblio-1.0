@@ -3,9 +3,12 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-//$myTrans = $LocaleDirUrl."/customTrans.php";
-//echo "custon Trans File ==> $myTrans";
-//if (file_exists($myTrans)) include ($myTrans);
+/**
+ * Translation table for American English (en).
+ * typically accessusing the T("...") function
+ * provided in the ..../shared/templates.php
+ * @author Micah Stetson
+ */
 
 #****************************************************************************
 #* Formats
@@ -15,7 +18,6 @@ $trans["headerDateFormat"]	 = "m.d.Y";
 #****************************************************************************
 #* Common translation text
 #****************************************************************************
-
 $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
 $trans["(when available)"] = "(when available)";
 $trans["%count% bookings in cart."] = "%count% bookings in cart.";

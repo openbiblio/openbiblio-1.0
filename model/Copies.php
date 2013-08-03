@@ -44,13 +44,37 @@ class Copies extends CoreTable {
 		$this->custom->setKey('copyid', 'code');
 	 }
 
+	public function getCpyList($bibid) {
+		$rslt = $this->getKeyList('copyid',array('bibid'=>$bibid));
+//echo"copyIds====>";print_r($rslt);echo"<br />\n";
+		$cpys = array();
+		while($row = $rslt->fetch_assoc()) {
+			$cpys[] = $row['copyid'];
+		}
+		return $cpys;
+	}
+	public function getByBarcode($barcode) {
+		$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
+		if ($rows->num_rows == 0) {
+			$barcode = $this->normalizeBarcode($barcode);
+			$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
+		}
+		if ($rows->num_rows == 0) {
+			return NULL;
+		} else if ($rows->num_rows == 1) {
+			return $rows->fetch_assoc();
+		} else {
+			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));
+		}
+	}
+/*
 	function getNextCopy() {
 	  ## deprecated - retained for compatability with legacy code
 		$sql = $this->mkSQL("select max(copyid) as nextCopy from biblio_copy");
 		$nextCopy = $this->select1($sql);
 		return $nextCopy["nextCopy"]+1;
 	}
-	
+*/
 	function getNewBarCode($width) {
 		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
 		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
@@ -102,25 +126,13 @@ class Copies extends CoreTable {
 		}
 	}
 
-	// Convert a barcode to the preferred form.
-	// Currently this strips leading zeros, possibly after an
-	// alphabetic prefix.
-	function normalizeBarcode($barcode) {
+	/**
+	 * Convert a barcode to the preferred form.
+	 * Currently this strips leading zeros, possibly after an
+	 * alphabetic prefix.
+	 */
+	protected function normalizeBarcode($barcode) {
 		return preg_replace('/^([A-Za-z]+)?0*(.*)/', '\\1\\2', $barcode);
-	}
-	function getByBarcode($barcode) {
-		$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
-		if ($rows->num_rows == 0) {
-			$barcode = $this->normalizeBarcode($barcode);
-			$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
-		}
-		if ($rows->num_rows == 0) {
-			return NULL;
-		} else if ($rows->num_rows == 1) {
-			return $rows->fetch_assoc();
-		} else {
-			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));
-		}
 	}
 
 	function getMemberCheckouts($mbrid) {

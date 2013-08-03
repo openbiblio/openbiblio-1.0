@@ -10,6 +10,12 @@
 	require_once(REL(__FILE__, "../model/Copies.php"));
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
+/**
+ * This class provides Biblio search facilities
+ * @author Luuk Jansen
+ * @author Fred LaPlante
+ */
+
 class SrchDb extends Queryi {
 	public $bibid;
 	private $createDt;
@@ -18,6 +24,7 @@ class SrchDb extends Queryi {
 	private $collCd;
 	private $imageFile;
 	private $opacFlg;
+	private $nCpy;
 	private $avIcon = "circle_green.png";
 
 	public function __construct() {

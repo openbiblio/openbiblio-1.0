@@ -5,6 +5,11 @@
 
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 
+/**
+ * provides common DB facilities needed by lookup table classes
+ * @author Micah Stetson
+ */
+
 abstract class DBTable extends Queryi {
 	private $name;
 	private $fields = array();
@@ -35,6 +40,15 @@ abstract class DBTable extends Queryi {
 			echo "sql=$sql<br />\n";
 			}
 		}
+	}
+	public function getKeyList($key, $fields) {
+		$sql = $this->mkSQL('SELECT %I FROM %I WHERE ', $key, $this->name)
+			. $this->_pairs($fields, ' AND ');
+		if ($this->iter) {
+			$c = $this->iter;	# Silly PHP
+			return new $c($this->select($sql));
+		} else
+			return $this->select($sql);
 	}
 	public function setName($name) {
 		$this->name = $name;

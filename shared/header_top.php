@@ -67,7 +67,7 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- this line MUST precede all .css & JS files - FL
 		 Based on the browser in use, it places many conditional classes 
 		 into the <body> tag for use by feature-specific CSS & JS statements.
-		 It also deals with html5 support issues for IE browsers. 	 -->
+		 It also deals with html5 support issues for older IE browsers. 	 -->
 <script src="../shared/modernizr-2.6.2.min.js"></script>
 
 <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
@@ -78,7 +78,6 @@ if (!isset($doing_install) or !$doing_install) {
 <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
 <!--[if gt IE 8]><!-->
 <script src="../shared/jquery/jquery-2.0.3.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <!--<![endif]-->
 
 <!-- All other JavaScript is placed at the end of <body> (see footer.php)
@@ -87,8 +86,8 @@ if (!isset($doing_install) or !$doing_install) {
 <!-- This style sheet resets all browsers to a common default style -->
 <link rel="stylesheet" href="../shared/base3.css" />
 
+<!-- This style sheet is specific to the jQuery UI library -->
+<!--link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /-->
+
 <!-- OpenBiblio style is set here using appropriate Theme folder -->
 <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
-
-	
-

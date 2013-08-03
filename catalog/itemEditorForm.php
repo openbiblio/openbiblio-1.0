@@ -4,39 +4,51 @@
  */
 
 	require_once("../shared/common.php");
+/**
+ * HTML portion of the Biblio Item Editor module
+ * @author Fred LaPlante
+ */
 ?>
 
-<fieldset>
-<legend><?php echo T("Item"); ?></legend>
-<table id="biblioFldTbl" >
-	<tbody id="nonMarcBody">
-	<tr>
-		<td><label for="itemMediaTypes"><?php echo T("Media Type"); ?>:</label></td>
-		<td><select id="itemMediaTypes" name="materialCd">to be filled by server</select></td>
-		<td rowspan="3" class="online filterable"><div id="onlineMsg"></div></td>
-	</tr>
-	<tr>
-		<td><label for="itemEditColls"><?php echo T("Collection"); ?>:</label></td>
-		<td><select id="itemEditColls" name="collectionCd">to be filled by server</select></td>
-	</tr>
-	<tr>
-		<td><label for="opacFlg"><?php echo T("Show in OPAC"); ?>:</label></td>
-		<td><?php echo inputfield('checkbox','opacFlg','Y',NULL,'Y'); ?></td>
-	</tr>
-	<tr>
-		<td colspan="1"><b><?php echo T("MARC Fields"); ?></b></td>
-		<td colspan="1"><b><?php echo T("Local Data"); ?></b></td>
-		<td id="onlnColTitle" colspan="1" class="filterable">
-			<b><?php echo T("Online Data"); ?></b>
-		</td>
-	</tr>
-	</tbody>
+	<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T("Fetch On-line Data"); ?>" />
+	<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T("Search Complete"); ?>" />
 
-	<tbody id="marcBody" class="striped">
-	  <!-- to be filled by server -->
-	</tbody>
-</table>
-</fieldset>
+	<fieldset>
+	<legend><?php echo T("Item"); ?></legend>
+	<table id="biblioFldTbl" >
+		<tbody id="nonMarcBody">
+		<tr>
+			<td><label for="itemMediaTypes"><?php echo T("Media Type"); ?>:</label></td>
+			<td><select id="itemMediaTypes" name="materialCd">to be filled by server</select></td>
+			<td rowspan="3" class="online filterable"><div id="onlineMsg"></div></td>
+		</tr>
+		<tr>
+			<td><label for="itemEditColls"><?php echo T("Collection"); ?>:</label></td>
+			<td><select id="itemEditColls" name="collectionCd">to be filled by server</select></td>
+			<td><input id="editBibid" name="bibid" type="hidden" value="" /></td>
+		</tr>
+		<tr>
+			<td><label for="opacFlg"><?php echo T("Show in OPAC"); ?>:</label></td>
+			<td><?php echo inputfield('checkbox','opacFlg','Y',NULL,'Y'); ?></td>
+			<td><input type="hidden" value="" /></td>
+		</tr>
+		<tr>
+			<td colspan="1"><b><?php echo T("MARC Fields"); ?></b></td>
+			<td colspan="1"><b><?php echo T("Local Data"); ?></b></td>
+			<td id="onlnColTitle" colspan="1" class="filterable">
+				<b><?php echo T("Online Data"); ?></b>
+			</td>
+		</tr>
+		</tbody>
+
+		<tbody id="marcBody" class="striped">
+		  <!-- to be filled by server -->
+		</tbody>
+	</table>
+	</fieldset>
+
+	<!--input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
+	<input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 
 <?php
 	include_once(REL(__FILE__,'itemEditorJs.php'));

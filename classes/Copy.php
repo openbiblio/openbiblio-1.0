@@ -26,9 +26,10 @@ class BarcdCopy extends Copy {
 }
 
 /**
- * Manages a complete data set for a single copy of a Biblio
+ * provides a view of a single copy of a biblio - all relevent data in a single place.
  * @author Fred LaPlante 24 July 2013
  */
+
 class Copy {
 	private $copyid;
 	## object pointers
@@ -41,17 +42,22 @@ class Copy {
 	private $media;
 
 	##----------------------##
+	/**
+	 * creates a new Copy object, complete with relevent data
+	 */
 	public function __construct($copyid) {
 		$this->copyid = $copyid;
 		$this->fetch_copy();
 		$this->fetch_status();
 	}
+
 	/**
 	 * returns an associtive array of this copy's data
 	 */
 	public function getData() {
 		return $this->hdrFlds;
 	}
+
 	/**
 	 * sets the status of this copy to 'checkedin' (in),
 	 * 	 and adjusts other DB tables as necessary
@@ -62,6 +68,7 @@ class Copy {
 		$this->update_copy();
 		$this->update_booking();
 	}
+
 	/**
 	 * sets the status of this copy to shelved (crt),
 	 * 	 and adjusts other DB tables as necessary
@@ -108,19 +115,35 @@ class Copy {
 		$this->hdrFlds['desc'] = $rslt['copy_desc'];
 	}
 	private function fetch_status() {
+		$ptr = new Biblios;
+		$this->bib = $ptr;
+		$rslt = $ptr->getOne($this->hdrFlds['bibid']);
+		$this->hdrFlds['collection_cd'] = $rslt['collection_cd'];
+		$this->hdrFlds['material_cd'] = $rslt['material_cd'];
+
+		$ptr = new MediaTypes;
+		$this->media = $ptr;
+		$rslt = $ptr->getOne($this->hdrFlds['material_cd']);
+		$this->hdrFlds['media'] = $rslt['description'];
+
+		$ptr = new Holds;
+		$this->hold = $ptr;
+		$rslt = $ptr->getFirstHold($this->hdrFlds['copyid']);
+		$this->hdrFlds['hold_cd'] = $rslt;
+
 		$ptr = new History;
 		$this->hist = $ptr;
 		$rslt = $ptr->getOne($this->hdrFlds['histid']);
 		$this->hdrFlds['status'] = $rslt['status_cd'];
+
 		if ($rslt['status_cd'] == 'out') {
 			$mbr = $this->cpy->getCheckoutMember($this->hdrFlds['histid']);
 			$this->hdrFlds['ckoutMbr'] = $mbr['mbrid'];
 
-			$ptr = new Biblios;
-			$this->bib = $ptr;
-			$rslt = $ptr->getOne($this->hdrFlds['bibid']);
-			$this->hdrFlds['collection_cd'] = $rslt['collection_cd'];
-			$this->hdrFlds['material_cd'] = $rslt['material_cd'];
+			$ptr = new CircCollections;
+			$this->cCol = $ptr;
+			$rslt = $ptr->getOne($this->hdrFlds['collection_cd']);
+			$this->hdrFlds['lateFee'] = $rslt['daily_late_fee'];
 
 			$ptr = new Bookings;
 			$this->book = $ptr;
@@ -129,21 +152,6 @@ class Copy {
       $this->hdrFlds['out_dt'] = explode(' ', $rslt['out_dt'])[0];
       $this->hdrFlds['due_dt'] = $rslt['due_dt'];
       $this->hdrFlds['daysLate'] = $ptr->getDaysLate($rslt);
-
-			$ptr = new Holds;
-			$this->hold = $ptr;
-			$rslt = $ptr->getFirstHold($this->hdrFlds['copyid']);
-			$this->hdrFlds['hold_cd'] = $rslt;
-
-			$ptr = new CircCollections;
-			$this->cCol = $ptr;
-			$rslt = $ptr->getOne($this->hdrFlds['collection_cd']);
-			$this->hdrFlds['lateFee'] = $rslt['daily_late_fee'];
-
-			$ptr = new MediaTypes;
-			$this->media = $ptr;
-			$rslt = $ptr->getOne($this->hdrFlds['material_cd']);
-			$this->hdrFlds['media'] = $rslt['description'];
 		}
 	}
 }

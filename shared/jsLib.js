@@ -1,6 +1,17 @@
 // JavaScript Document
-// jQuery plugins for openBiblio
+
+/**
+ * misc support JavaScript utility functions
+ * @author Fred LaPlante
+ */
+
+/**
+ * jQuery plugins for openBiblio
+ */
 //
+"use strict";
+
+(function($){
 //-------------------------------------------------------------------
 // element enable/disable - 'jQuery in Action', p12, 22Aug2008 - fl
 $.fn.disable = function () {
@@ -42,11 +53,75 @@ $.fn.loadSelect = function (optionsDataArray) {
 		}
 	});
 };
+})(jQuery);
+/**
+ * legacy javascript that I can't find a jQuery equivalent of
+ * - needs to be made into a jQuery plugin as above
+ */
 
-//------------------------------------------------------------------------------
-// legacy javascript that I can't find a jQuery equivalent of
-// - needs to be made into a jQuery plugin as above
-flos = {
+var flos = {
+//-------------------------------------------------------------------
+// javascript version of OpenBiblio PHP function 2Aug2013 - fl
+//inptFld: function (type, name, value="", attrs=null, data=null) {
+inptFld: function (type, name, value, attrs, data) {
+	var s = "";
+	if (!attrs) attrs = {};
+	if (!attrs['id']) attrs['id'] = name;
+
+	switch (type) {
+	// FIXME radio
+	case 'select':
+		s += '<select name="'+name+'" ';
+		$.each(attrs, function (key, val) {
+			s += key+'="'+val+'" ';
+		});
+		s += ">\n";
+		if (data) {
+			$.each(data, function (val, desc) {
+				s += '<option value="'+val+'" ';
+				if (value == val) s += ' selected ';
+				s += ">"+desc+"</option>\n";
+			});
+		}
+		$s += "</select>\n";
+		break;
+	case 'textarea':
+		s += '<textarea name="'+name+'" ';
+		$.each(attrs, function (key, val) {
+			s += key+'="'+val+'" ';
+		});
+		s += ">"+data+"</textarea>";
+		break;
+	case 'checkbox':
+		s += '<input type="checkbox" name="'+name+'" ';
+		s += 'value="'+value+'" ';
+		if (value == data) s += ' checked ';
+		$.each(attrs, function (key, val) {
+			s += key+'="'+val+'" ';
+		});
+		s += "/>";
+		break;
+	default:
+		s += '<input type="'+type+'" name="'+name+'" ';
+		if (value != "") {
+			s += 'value="'+value+'" ';
+		}
+		$.each(attrs, function (k,v) {
+			if (k == 'required') {
+				s += 'required aria-required="true" ';
+			} else {
+				s += k+'="'+v+'" ';
+			}
+		});
+		s += "/>";
+		if (attrs['required']) {
+			s += '<span class="reqd">*</span>';
+		}
+		break;
+	}
+	return s;
+},
+
 /* --------------------------------- */
 	// left pad a string 'str' with char 'ch' to width 'wid', 22Aug2008 - fl
 	pad: function (str, wid, ch) {

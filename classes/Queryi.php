@@ -3,6 +3,11 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+/**
+ * provides a customization & specialization layer to PHP's mysqli mySql API
+ * @author Micah Stetson
+ */
+
 class Queryi extends mysqli{
 	private $lock_depth;
 
@@ -20,7 +25,7 @@ class Queryi extends mysqli{
 		//$this->unlock();
 		return $results;
 	}
-	function select($sql) {
+	public function select($sql) {
 		$results = $this->_act($sql);
 		if (is_bool($results)) {
 			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
@@ -28,7 +33,7 @@ class Queryi extends mysqli{
 		}
 		return $results;
 	}
-	function select1($sql) {
+	public function select1($sql) {
 		$r = $this->select($sql);
 		if ($r->num_rows != 1) {
 			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("NothingFoundError"));
@@ -37,7 +42,7 @@ class Queryi extends mysqli{
 			return $r->fetch_assoc();
 		}
 	}
-	function select01($sql) {
+	public function select01($sql) {
 		$r = $this->select($sql);
 		if ($r->num_rows == 0) {
 			return NULL;
@@ -60,7 +65,7 @@ class Queryi extends mysqli{
 	/* This is not easily portable to many SQL DBMSs.  A better scheme
 	 * might be something like PEAR::DB's sequences.
 	 */
-	function getInsertID() {
+	protected function getInsertID() {
 		return $this->insert_id;
 	}
 

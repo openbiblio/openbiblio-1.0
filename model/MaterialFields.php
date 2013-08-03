@@ -39,4 +39,24 @@ class MaterialFields extends DBTable {
 		}
 		return $media;
 	}
+	function getMediaTags ($code) {
+		$tags = array();
+		$set = $this->getAll('material_cd,position');
+		while ($row = $set->fetch_assoc()) {
+			if ($row['material_cd'] == $code) {
+//echo "repeatable====>";print_r($row['repeatable']);echo"<br />\n";
+				for ($n=0; $n<=$row['repeatable']; $n++){
+					$tag = $row['tag'].'$'.$row['subfield_cd'];
+					if ($n>0) $tag .= '#'.$n;
+//echo "tag====>{$tag}<br />\n";
+					$tags[$tag] = array('line'=>$row['position'],
+			 										 'lbl'=>$row['label'],
+													 'required'=>$row['required'],
+													 'repeat'=>$row['repeatable'],
+													 'form_type'=>$row['form_type']);
+				}
+			}
+		}
+		return $tags;
+	}
 }

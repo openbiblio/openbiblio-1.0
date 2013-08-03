@@ -6,6 +6,11 @@
   require_once("../shared/common.php");
 	//print_r($_REQUEST);echo "<br />";
 
+/**
+ * back-end API for various pull-down lists based on DB tables
+ * @author Fred LaPlante
+ */
+
 	function getDbData ($db) {
 		$set = $db->getSelect();
 		foreach ($set as $val => $desc) {

@@ -3,9 +3,14 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-## ############################################################## ##
-## if no 'id' is specified in $attrs, 'id' will be same as 'name' ##
-## ############################################################## ##
+/**
+ * creates HTML <input ....> statements for most types
+ * if type is unrecognized, a generic type="text" will be provided
+ * if no 'id' is specified in $attrs, 'id' will be same as 'name' ##
+ * @author Micah Stetson
+ * @authot Fred LaPlante
+ */
+
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	$s = "";
 	if (isset($_SESSION['postVars'])) {

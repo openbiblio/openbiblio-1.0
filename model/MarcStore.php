@@ -16,8 +16,8 @@ class MarcStore extends Queryi{
 	function delete($bibid) {
 		$this->lock();
 		$subsql = $this->mkSQL("delete from biblio_subfield where bibid=%N ", $bibid);
-		$fldsql = $this->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
 		$this->act($subsql);
+		$fldsql = $this->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
 		$this->act($fldsql);
 		$this->unlock();
 	}
