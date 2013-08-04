@@ -36,20 +36,20 @@ var ie = {
 		var txt='',
 				attrStr = "marcBiblioFld",
 				attrs = {},
-				namePrefix='';
+				name='';
 
 		/* unique items per mode */
 	  if (mode == 'onlnCol') {
-			namePrefix = 'onln_'+key;
+			name = 'onln_'+key;
 			txt += '	<td valign="top" class="filterable">';
-	    txt += '		<input type="button" value="<--" id="'+namePrefix+'_btn" class="accptBtn" />';
+	    txt += '		<input type="button" value="<--" id="'+name+'_btn" class="accptBtn" />';
 			txt += '	</td>\n<td valign="top" class="filterable">';
 		}
 		else if (mode == 'editCol') {
-			namePrefix = 'fields['+key+']';
+			name = 'fields['+key+']';
 			txt += '	<td valign="top" >'+"\n";
 			var dataFlds = 'subfieldid='+val["subfieldid"]+'&fieldid='+val["fieldid"];
-			txt += flos.inptFld('hidden', namePrefix+'_codes', dataFlds)
+			txt += flos.inptFld('hidden', name+'[codes]', dataFlds)
 		}
 
 		/* common for both modes */
@@ -71,10 +71,10 @@ var ie = {
 
 		if (val['form_type'] == 'textarea') {
 			attrs["rows"] = "7"; attrs["cols"] = "48";
-			txt += flos.inptFld('textarea', namePrefix +"[data]", val['value'],attrs, val['value'])+"\n";
+			txt += flos.inptFld('textarea', name+'[data]', val['value'],attrs, val['value'])+"\n";
 		} else {
 		  attrs["size"] = "50"; attrs["maxLength"] = "256";
-			txt += flos.inptFld(val['form_type'], namePrefix +"[data]", val['value'], attrs)+"\n";
+			txt += flos.inptFld(val['form_type'], name+'[data]', val['value'], attrs)+"\n";
 		}
 		txt += "</td>\n";
 		return txt;

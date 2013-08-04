@@ -240,7 +240,7 @@
 	  echo json_encode($theDb->getCopyInfo($_REQUEST[bibid]));
 	  break;
 
-	case 'updateBiblio':
+	case 'xupdateBiblio':
 	  require_once(REL(__FILE__,"biblioChange.php"));
 	  $nav = '';
 	  $_POST["material_cd"] = $_POST['materialCd'];
@@ -253,9 +253,19 @@
 		}
 	  echo $msg;
 	  break;
-	case 'updateBiblio2':
-	  $bib = new Biblio($_POST[bibid]);
-		$msg = $bib->setData($_POST);
+	case 'updateBiblio':
+	  $bib = new Biblio($_POST['bibid']);
+		$hdr['bibid'] = $_POST['bibid'];
+		$hdr['material_cd'] = $_POST['material_cd'];
+		$hdr['collection_cd'] = $_POST['collection_cd'];
+		$hdr['opac_flg'] = $_POST['opac_flg'];
+		$msg = $bib->setHdr($hdr);
+		if(isset($msg)) die ($msg);
+		foreach ($_POST['fields'] as $key=>$val) {
+			$marc[$key] = array('data'=>$val['data'],'codes'=>$val['codes']);
+		}
+		$msg = $bib->setMarc($marc);
+		if(isset($msg)) die ($msg);
 	  echo $msg;
 	  break;
 

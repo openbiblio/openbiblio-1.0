@@ -41,13 +41,47 @@ class Biblio {
 		$data['cpys'] = $this->cpyList;
 		return $data;
 	}
-	public function setData ($data) {
-		$this->hdrFlds['bibid'] = $rslt['bibid'];
-		$this->hdrFlds['collection_cd'] = $rslt['collection_cd'];
-		$this->hdrFlds['material_cd'] = $rslt['material_cd'];
-		$this->hdrFlds['opac_flg'] = $rslt['opac_flg'];
+	public function setHdr($data) {
+		$this->hdrFlds['bibid'] = $data['bibid'];
+		$this->hdrFlds['collection_cd'] = $data['collection_cd'];
+		$this->hdrFlds['material_cd'] = $data['material_cd'];
+		$this->hdrFlds['opac_flg'] = $data['opac_flg'];
+		if ($data['create_dt'])
+			$this->hdrFlds['createDt'] = $data['create_dt'];
+echo"hdr===>";print_r($this->hdrFlds);echo"<br />\n";
+	}
+	public function setMarc($data) {
+		foreach ($data as $key=>$val){
+			$this->marcFlds[$key]['value'] = $val['data'];
+			$parts = explode('&', $val['codes']);
+			$fldParts = (explode('=',$parts[1]));
+			$subParts = (explode('=',$parts[0]));
+			$this->marcFlds[$key]['fieldid'] = $fldParts[1];
+			$this->marcFlds[$key]['subfieldid'] = $subParts[1];
+		}
+echo"marcData===>";var_dump($this->marcFlds);echo"<br />\n";
 	}
 
+	## ------------------------------------------------------------------------ ##
+/*	private function put_biblio ($data) {
+//		$bib = new Biblios;
+//		$msg = $bib->update(array('bibid'=>$data['bibid'],
+//                              'collection_cd'=>$data['material_cd'],
+//                              'material_cd'=>$data['material_cd'],
+//                              'opac_flg'=>$data['opac_flg'],
+//                              'createDt'=>$data['create_dt'],
+//														 ));
+	}
+	private function put_marc ($flds) {
+		$mrc = new MarcStore;
+		foreach ($flds as $key=>$value) {
+
+		}
+		$msg = $mrc->update($this->bibid, array(
+
+		));
+	}
+*/
 	## ------------------------------------------------------------------------ ##
 	private function fetch_biblio () {
 		$ptr = new Biblios;

@@ -116,21 +116,21 @@ class MarcStore extends Queryi{
 		$sql = $this->mkSQL("insert into biblio_field values "
 			. "(%N, NULL, %N, %Q, NULL, NULL, %Q, NULL) ",
 			$bibid, $seq, $tag, $data);
-		$this->act($sql);
+//		$this->act($sql);
 		return $this->getInsertID();
 	}
 	function _putData($bibid, $seq, $tag, $ind) {
 		$sql = $this->mkSQL("insert into biblio_field values "
 			. "(%N, NULL, %N, %Q, %Q, %Q, NULL, NULL) ",
 			$bibid, $seq, $tag, $ind{0}, $ind{1});
-		$this->act($sql);
+//		$this->act($sql);
 		return $this->getInsertID();
 	}
 	function _putSub($bibid, $fieldid, $seq, $identifier, $data) {
 		$sql = $this->mkSQL("insert into biblio_subfield values "
 			. "(%N, %N, NULL, %N, %Q, %Q) ",
 			$bibid, $fieldid, $seq, $identifier, $data);
-		$this->act($sql);
+//		$this->act($sql);
 		return $this->getInsertID();
 	}
 }

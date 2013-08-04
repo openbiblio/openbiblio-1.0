@@ -223,6 +223,7 @@ var bs = {
 		bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
     bs.opts['current_site'] = <?php echo Settings::get('library_name');?>;
 		idis.init(bs.opts); // used for biblio item & copy displays
+		ie.init(bs.opts); // ensure field bindings are current
 	},
 	fetchCrntMbrInfo: function () {
 	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){
@@ -632,7 +633,6 @@ var bs = {
 	
 	/* ====================================== */
 	doItemEdit: function (biblio) {
-ie.init(bs.opts); // ensure field bindings are current
 ie.doItemEdit(biblio);
 return;
 

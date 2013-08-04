@@ -3,7 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-# Data classes and a parser for MARC data.
+/**
+ * Data classes and a parser for MARC data.
+ * @author Micah Stetson
+ */
 
 define("MARC_DELIMITER", "\x1f");
 define("MARC_FT", "\x1e");	# Field terminator

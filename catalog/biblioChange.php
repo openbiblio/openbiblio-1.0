@@ -72,12 +72,6 @@ function PostBiblioChange($nav) {
 
 	foreach ($_POST['fields'] as $f) {
 		//echo 'working field ';print_r($f);
-		$partsA = explode('#',$f);
-		$f['rep'] = $parts[1];
-		$partsB = explode('$',$partsA[0]);
-		$f['tag'] = $parts[0];
-		$f['subfield_cd'] = $parts[1];
-
 		if (strlen($f['tag']) != 3 or strlen($f['subfield_cd']) != 1) {
 			echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
 			continue;
@@ -88,7 +82,7 @@ function PostBiblioChange($nav) {
 		$fidxSuffix = null;
 		foreach ($_POST[fields] as $s){
 			if (strlen($s[tag]) != 3 or strlen($s[subfield_cd]) != 1) {
-				echo 'Encountered SHORT marc code '.$s['tag'].'<br />or too long subfield code.';
+				echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
 				continue;
 			}
 
