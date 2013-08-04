@@ -5,6 +5,11 @@
  
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
+/**
+ * providess an API to the Material_fields database table
+ * @author Micah Stetson
+ */
+
 class MaterialFields extends DBTable {
 	public function __construct() {
 		parent::__construct();
@@ -44,17 +49,19 @@ class MaterialFields extends DBTable {
 		$set = $this->getAll('material_cd,position');
 		while ($row = $set->fetch_assoc()) {
 			if ($row['material_cd'] == $code) {
-//echo "repeatable====>";print_r($row['repeatable']);echo"<br />\n";
-				for ($n=0; $n<=$row['repeatable']; $n++){
+				$n = 1;
+				do {
 					$tag = $row['tag'].'$'.$row['subfield_cd'];
-					if ($n>0) $tag .= '#'.$n;
-//echo "tag====>{$tag}<br />\n";
+					if ($row['repeatable'] > 0) $tag .= '$'.$n;
 					$tags[$tag] = array('line'=>$row['position'],
-			 										 'lbl'=>$row['label'],
-													 'required'=>$row['required'],
-													 'repeat'=>$row['repeatable'],
-													 'form_type'=>$row['form_type']);
-				}
+			 												'lbl'=>$row['label'],
+															'required'=>$row['required'],
+															'repeatable'=>$row['repeatable'],
+															'seq'=>$row['seq'],
+															'form_type'=>$row['form_type']
+															);
+					$n++;
+				} while ($n<=$row['repeatable']);
 			}
 		}
 		return $tags;

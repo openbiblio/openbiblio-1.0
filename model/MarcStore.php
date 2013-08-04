@@ -6,33 +6,23 @@
 require_once(REL(__FILE__, "../classes/Queryi.php"));
 require_once(REL(__FILE__, "../classes/Marc.php"));
 
-# Note: this doesn't follow the standard table API.
-# It's really only intended to be used by Biblios.php
+/**
+ * API for dealing with the MARC portion of a Biblio
+ * Note: this doesn't follow the standard table API.
+ * It's only intended to be a supplement to Biblios.php
+ * @author Mucah Stetson
+ * @ Fred LaPlante
+ */
 
 class MarcStore extends Queryi{
 	public function __construct () {
 		parent::__construct();
 	}
-	function delete($bibid) {
-		$this->lock();
-		$subsql = $this->mkSQL("delete from biblio_subfield where bibid=%N ", $bibid);
-		$this->act($subsql);
-		$fldsql = $this->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
-		$this->act($fldsql);
-		$this->unlock();
-	}
-	public function fetchMarcFlds ($bibid) {
-		$sql = $this->mkSQL("select * "
-			. "from biblio_field as bf "
-			. "left join biblio_subfield as bs "
-			. "on bf.fieldid=bs.fieldid "
-			. "where bf.bibid=%N "
-			. "order by bf.seq, bf.fieldid, bs.seq ",
-			$bibid);
-		$rows = $this->select($sql);
-		return $rows;
-	}
-	function get($bibid) {
+	/**
+	 * retreive a formal MarcRecord object of a biblio
+	 */
+	public function get($bibid) {
+//echo "MarcStore: in get({$bibid})<br />\n";
 		$rows = $this->fetchMarcFlds($bibid);
 		if ($rows->num_rows == 0) {
 			return NULL;
@@ -76,14 +66,18 @@ class MarcStore extends Queryi{
 		}
 		return $rec;
 	}
-
-	function put($bibid, $record) {
+	/**
+	 * Post a MARC record to the database
+	 */
+	public function put($bibid, $record) {
 		$this->lock();
-		$this->delete($bibid);
+		$this->delete($bibid);  ## _field & _subfield records only
+
 		$fldseq = 1;
 		if (!$this->_putControl($bibid, $fldseq, "LDR", $record->getLeader())) {
 			$this->unlock();
-			return false;
+//			return false;
+			die ("unable to 'putControl() leader");
 		}
 		$fields = $record->getFields();
 //print_r($rcd);
@@ -112,25 +106,52 @@ class MarcStore extends Queryi{
 		$this->unlock();
 		return true;
 	}
-	function _putControl($bibid, $seq, $tag, $data) {
+	/**
+	 * retreive a mysqli result set of all MARC records of a biblio
+	 */
+	public function fetchMarcFlds ($bibid) {
+		$sql = $this->mkSQL("select * "
+			. "from biblio_field as bf "
+			. "left join biblio_subfield as bs "
+			. "on bf.fieldid=bs.fieldid "
+			. "where bf.bibid=%N "
+			. "order by bf.seq, bf.fieldid, bs.seq ",
+			$bibid);
+		$rows = $this->select($sql);
+		return $rows;
+	}
+
+	/**
+	 * delete the existing MARC records to simplify updates
+	 */
+	private function delete($bibid) {
+		$this->lock();
+		$subsql = $this->mkSQL("delete from biblio_subfield where bibid=%N ", $bibid);
+		$this->act($subsql);
+		$fldsql = $this->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
+		$this->act($fldsql);
+		$this->unlock();
+	}
+	## ------------------------------------------------------------------------##
+	private function _putControl($bibid, $seq, $tag, $data) {
 		$sql = $this->mkSQL("insert into biblio_field values "
 			. "(%N, NULL, %N, %Q, NULL, NULL, %Q, NULL) ",
 			$bibid, $seq, $tag, $data);
-//		$this->act($sql);
+		$this->act($sql);
 		return $this->getInsertID();
 	}
-	function _putData($bibid, $seq, $tag, $ind) {
+	private function _putData($bibid, $seq, $tag, $ind) {
 		$sql = $this->mkSQL("insert into biblio_field values "
 			. "(%N, NULL, %N, %Q, %Q, %Q, NULL, NULL) ",
 			$bibid, $seq, $tag, $ind{0}, $ind{1});
-//		$this->act($sql);
+		$this->act($sql);
 		return $this->getInsertID();
 	}
-	function _putSub($bibid, $fieldid, $seq, $identifier, $data) {
+	private function _putSub($bibid, $fieldid, $seq, $identifier, $data) {
 		$sql = $this->mkSQL("insert into biblio_subfield values "
 			. "(%N, %N, NULL, %N, %Q, %Q) ",
 			$bibid, $fieldid, $seq, $identifier, $data);
-//		$this->act($sql);
+		$this->act($sql);
 		return $this->getInsertID();
 	}
 }

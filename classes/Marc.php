@@ -81,7 +81,7 @@ class MarcHelpers {
 /* -------------------------------------------------------------------------- */
 class MarcField {
 	var $tag;
-	function MarcField($tag='') {
+	public function __construct($tag='') {
 		$this->tag=strtoupper($tag);
 	}
 	function getValue($identifier=NULL) {
@@ -107,8 +107,9 @@ class MarcField {
 /* -------------------------------------------------------------------------- */
 class MarcControlField extends MarcField {
 	var $data;
-	function MarcControlField($tag='', $data='') {
-		$this->MarcField($tag);
+	public function __construct($tag='', $data='') {
+		//$this->MarcField($tag);
+		parent::__construct($tag);
 		$this->data=$data;
 	}
 	function get() {
@@ -131,7 +132,7 @@ class MarcControlField extends MarcField {
 class MarcSubfield {
 	var $identifier;
 	var $data;
-	function MarcSubfield($i, $d) {
+	public function __construct($i, $d) {
 		$this->identifier=strtolower($i);
 		$this->data=$d;
 	}
@@ -148,8 +149,9 @@ class MarcSubfield {
 class MarcDataField extends MarcField {
 	var $indicators;
 	var $subfields;
-	function MarcDataField($tag='', $indicators='  ') {
-		$this->MarcField($tag);
+	public function __construct($tag='', $indicators='  ') {
+		//$this->MarcField($tag);
+		parent::__construct($tag);
 		$this->indicators=$indicators;
 		$this->subfields=array();	# list of Subfield
 	}
@@ -214,7 +216,8 @@ class MarcRecord {
 		array('entryMapImpl', 'num', 1, 'implementation-defined length', 0),
 		array('entryMapUndef', 'num', 1, 'undefined entry-map field', 0),
 	);
-	protected $fields;
+	//protected $fields;
+	public $fields;
 
 	public function __construct() {
 		# Provide a default leader
@@ -236,7 +239,7 @@ class MarcRecord {
 		}
 		return $a;
 	}
-	function setLeader($ldr, $lenient=False) {
+	public function setLeader($ldr, $lenient=False) {
 		if ($lenient) {
 			$ldr = rtrim($ldr);
 		}
@@ -265,7 +268,7 @@ class MarcRecord {
 		return NULL;
 	}
 
-	function getLeader() {
+	public function getLeader() {
 		$ldr = '';
 		foreach ($this->_leader_fields as $f) {
 			$s = '';
@@ -367,7 +370,7 @@ class MarcParseError {
 	var $msg;
 	var $record;
 	var $line;
-	function MarcParseError($msg, $record=NULL, $line=NULL) {
+	public function __construct($msg, $record=NULL, $line=NULL) {
 		$this->msg = $msg;
 		$this->record = $record;
 		$this->line = $line;
@@ -391,7 +394,7 @@ class MarcBaseParser {
 	var $records;
 	var $_recnum;
 	var $_unparsed;
-	function MarcBaseParser($lenient=true) {
+	public function __construct($lenient=true) {
 		$this->lenient = $lenient;
 		$this->records = array();
 		$this->_recnum = 0;
@@ -542,8 +545,9 @@ class MarcParser extends MarcBaseParser {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcMnemParser extends MarcBaseParser {
-	function MarcMnemParser($lenient=True) {
-		$this->MarcBaseParser($lenient);
+	public function __construct($lenient=True) {
+		//$this->MarcBaseParser($lenient);
+		parent::__construct($lenient);
 		$this->_line = 0;
 		$this->_rec = NULL;
 		$this->_field = NULL;

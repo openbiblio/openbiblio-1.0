@@ -41,6 +41,33 @@ class Biblios extends CoreTable {
 		$this->unlock();
 		return array($bibid, NULL);
 	}
+	function update ($updtData) {
+		$updts = $updtData['marc'];
+		$crntRec = $this->marc->get($updtData['bibid']);
+		$flds = $crntRec->fields;
+
+		for( $i=0; $i<count($crntRec->fields); $i++) {
+			$field = $crntRec->fields[$i];
+			foreach ($crntRec->fields[$i]->subfields as $n=>$subfld) {
+				$tag = $field->tag.'$'.$subfld->identifier;
+				if ($updts[$tag]) {
+					$newData = $updts[$tag]['value'];
+				} else {
+					$tag = $field->tag.'$'.$subfld->identifier.'$'.($n+1);
+					$newData = $updts[$tag]['value'];
+				}
+				if ($newData != $subfld->data) {
+					if ($crntRec->fields[$i]->subfields[$n]->data) {
+          		$crntRec->fields[$i]->subfields[$n]->data = $newData;
+					}
+				}
+			}
+		}
+
+		$newBiblio = $updtData;
+		$newBiblio['marc'] = $crntRec;
+		parent::update($newBiblio);
+	}
 	function update_el($biblio) {
 		$this->lock();
 		if (!isset($biblio['bibid'])) {
