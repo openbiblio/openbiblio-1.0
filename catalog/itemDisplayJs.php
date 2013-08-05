@@ -54,7 +54,7 @@ var idis = {
 		else
 	  	idis.theBiblio = biblio;
 		if (typeof bs !== 'undefined') bs.theBiblio = idis.theBiblio;
-		var bibid = idis.theBiblio.hdr.bibid
+		var bibid = idis.theBiblio.hdr.bibid;
 		$('#theBibId').html(bibid);
 
   	idis.crntFoto = null;

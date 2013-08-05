@@ -430,7 +430,6 @@ var bs = {
 		for (var nBiblio in biblioList) {
 			if (nBiblio == 0) continue;
 			var biblio = JSON.parse(biblioList[nBiblio]);
-			bs.biblio[biblio.bibid] = biblio;
 
 			var title = '', booktitle='', booksubtitle='', reporttitle='', reportsubtitle='',
 					author='', coauthor='', editors='', corporate='',
@@ -439,6 +438,7 @@ var bs = {
 			var html = '';
 			var hdr = biblio.hdr;
 			var cpys = biblio.cpys;
+			bs.biblio[hdr.bibid] = biblio;
 			var imageFile = bs.mediaIconUrls[hdr.material_cd];
 			html += '<tr class="listItem">\n';
 
