@@ -95,10 +95,13 @@
 	  break;
 
 	case 'doPhraseSearch':
+		## fetch a list of all biblio meeting user search criteria
 		$criteria = $_REQUEST;
 	  $theDb = new SrchDB;
 		$biblioLst = $theDb->getBiblioByPhrase($criteria);
 		if (sizeof($biblioLst) > 0) {
+			$srchRslt = [];
+			## succesful search, deal with results
 			// Add amount of search results.
 			if($_REQUEST['firstItem'] == null){
 				$firstItem = 0;
@@ -116,20 +119,22 @@
 			$rcd['firstItem'] = $firstItem;
 			$rcd['lastItem'] = $lastItem;
 			$rcd['itemsPage'] = $_SESSION['items_per_page'];
-			$biblio[] = json_encode($rcd);
+			$srchRslt[] = json_encode($rcd);
 
-			# Only show as many as in the settings (not the most efficient way to get the whole result query, this should be rewritten
+			## show as many as user settings specify
+			## not the most efficient way to get the whole result query, this should be rewritten
 			$iterCounter = 0;		
 			foreach ($biblioLst as $bibid) {
-				# Skip if before requested items and break when amount of items is past - LJ
+				## Skip if before requested items and break when amount of items is past - LJ
 				$iterCounter++;
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
+				## create a Biblio object for each item in range and add content to $srchRslt
 		  	$bib = new Biblio($bibid);
-		  	$biblio[] = json_encode($bib->getData());
-				unset($bib);
+		  	$srchRslt[] = json_encode($bib->getData());
+				unset($bib); ## object no longer needed, destroy it
 			}
-			echo json_encode($biblio);
+			echo json_encode($srchRslt);
 		} else {
 			echo '[]';
 		}
@@ -171,36 +176,23 @@
 	  echo json_encode($theDb->getCopyInfo($_REQUEST[bibid]));
 	  break;
 
-/*
-	case 'xupdateBiblio':
-	  require_once(REL(__FILE__,"biblioChange.php"));
-	  $nav = '';
-	  $_POST["material_cd"] = $_POST['materialCd'];
-	  $_POST["collection_cd"] = $_POST['collectionCd'];
-	  $_POST["opac_flg"] = $_POST["opacFlg"];
-  	$msg = PostBiblioChange($nav);
-  	if (is_object($msg)) {
-  		$rslt = json_decode($msg);
-  		$bibid = $rslt->bibid;
-		}
-	  echo $msg;
-	  break;
-*/
 	case 'updateBiblio':
+		## fetch biblio object with current DB data
 	  $bib = new Biblio($_POST['bibid']);
+		## overwrite header with screen content
 		$hdr['bibid'] = $_POST['bibid'];
 		$hdr['material_cd'] = $_POST['materialCd'];
 		$hdr['collection_cd'] = $_POST['collectionCd'];
 		$hdr['opac_flg'] = $_POST['opacFlg'];
 		$msg = $bib->setHdr($hdr);
 		if(isset($msg)) die ($msg);
-
+		## overwrite marc fields with screen content (new or modified))
 		foreach ($_POST['fields'] as $key=>$val) {
 			$marc[$key] = array('data'=>$val['data'],'codes'=>$val['codes']);
 		}
 		$msg = $bib->setMarc($marc);
 		if(isset($msg)) die ($msg);
-
+		## tell biblio object to post itself to DB
 		$msg = $bib->updateDB();
 	  echo $msg;
 	  break;

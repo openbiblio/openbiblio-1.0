@@ -13,6 +13,7 @@ var ie = {
 	init: function (opts) {
 		ie.opts = opts;
 		ie.url = '../catalog/catalogServer.php';
+		ie.urlLookup = '../catalog/onlineServer.php'; //may not exist
 
 	  $('#onlnUpdtBtn').on('click',null,function (){
 			$('#onlnDoneBtn').show();
@@ -165,7 +166,7 @@ var ie = {
 	  msgText += '.<br />' + '<?php echo T("this may take a moment.");?>'
 		$('#onlineMsg').html(msgText);
 
-	  $.post(bs.urlLookup,params,function(response){
+	  $.post(ie.urlLookup,params,function(response){
 			//console.log('params==>'+params)
 			var rslts = JSON.parse(response),
 					numHits = parseInt(rslts.ttlHits),
@@ -214,12 +215,8 @@ var ie = {
 	doItemUpdate: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
-
-	  // verify all required fields are present
-	  //if (!ie.validate()) return false;
-
 		var params = "&mode=updateBiblio&" + $('#biblioEditForm').not('.online').serialize();
-	  $.post(bs.url,params, function(response){
+	  $.post(ie.url,params, function(response){
 	    if (response == '!!success!!'){
     		$('#itemEditorDiv').hide();
 				// repeat search with existing criteria, to assurre a current display
@@ -242,7 +239,7 @@ var ie = {
 		else {
 	  	if (confirm('<?php echo T("Are you sure you want to delete this item?"); ?>')) {
 	    	var params = "&mode=deleteBiblio&bibid="+bs.biblio.bibid;
-	  		$.post(bs.url,params, function(response){
+	  		$.post(ie.url,params, function(response){
 	  		  $('#rsltMsg').html(response);
 					if (bs.srchType == 'barCd')
 						bs.doBarCdSearch();
