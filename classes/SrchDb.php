@@ -4,6 +4,7 @@
  */
 
 	require_once("../shared/common.php");
+	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 	require_once(REL(__FILE__, '../classes/Queryi.php'));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
@@ -59,7 +60,65 @@ class SrchDb extends Queryi {
 		return $rcd;
 	}
 	## ========================= ##
-	function getBiblioByPhrase($mode, $jsonSpec) {
+	function makeParamStr($criteria) {
+		/* typical form of $paramStr:
+			[{"tag":"240","suf":"a"},{"tag":"245","suf":"a"},{"tag":"245","suf":"b"},
+			 {"tag":"245","suf":"c"},{"tag":"246","suf":"a"},{"tag":"246","suf":"b"},
+			 {"tag":"502","suf":"a"},{"tag":"505","suf":"a"},{"tag":"650","suf":"a"},.............
+		*/
+		$params = makeTagObj(getSrchTags($criteria[searchType]));
+
+		# Add search params
+		$searchTags = "";
+
+		if(isset($criteria['sortBy'])){
+				switch ($criteria['sortBy']){
+				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
+				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																			 {"orderTag":"245","orderSuf":"b"},
+																			 {"orderTag":"240","orderSuf":"a"}'; break;
+				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																 {"orderTag":"245","orderSuf":"b"}'; break;
+			}
+		}
+
+		if($criteria['advanceQ']=='Y'){
+			if(isset($criteria['srchSites']) && $criteria['srchSites'] != 'all'){
+				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $criteria['srchSites'] . '"}';
+			}
+			if(isset($criteria['materialCd']) && $criteria['materialCd'] != 'all'){
+				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
+				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $criteria['materialCd'] . '"}';
+			}
+			if(isset($criteria['collectionCd']) && $criteria['collectionCd'] != 'all'){
+				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
+				$searchTags .= ',{"collTag":"099","collSuf":"a","collValue":"'. $criteria['collectionCd'] . '"}';
+			}
+			if(isset($criteria['audienceLevel'])){
+				//Not sure which field this, so leave this for now - LJ
+				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $criteria['audienceLevel'] . '"}';
+			}
+			if(isset($criteria['to']) && strlen($criteria['to']) == 4){
+				//$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $criteria['to'] . '"}';
+				$searchTags .= ',{"toTag":"260","toSuf":"c","toTag":"773","toSuf":"d","toValue":"'. $criteria['to'] . '"}';
+			}
+			if(isset($criteria['from']) && strlen($criteria['from']) == 4){
+				//$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $criteria['from'] . '"}';
+				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromTag":"773","fromSuf":"d","fromValue":"'. $criteria['from'] . '"}';
+			}
+		}
+
+		/* - - - - - - - - - - - - - */
+		/* Actual Search begins here */
+		$paramStr = "[" . $params . "," . $searchTags . "]";
+		return $paramStr;
+	}
+	## ========================= ##
+	function getBiblioByPhrase($criteria, $mode=null) {
+		$jsonSpec = $this->makeParamStr($criteria);
+//echo "spec==>{$jsonSpec}<br />\n";
+		/* mode may be null at times */
 	  $spec = json_decode($jsonSpec, true);
 	  $srchTxt = strtolower($_REQUEST[searchText]);
 	  if ($mode == 'words')

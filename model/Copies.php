@@ -46,7 +46,6 @@ class Copies extends CoreTable {
 
 	public function getCpyList($bibid) {
 		$rslt = $this->getKeyList('copyid',array('bibid'=>$bibid));
-//echo"copyIds====>";print_r($rslt);echo"<br />\n";
 		$cpys = array();
 		while($row = $rslt->fetch_assoc()) {
 			$cpys[] = $row['copyid'];

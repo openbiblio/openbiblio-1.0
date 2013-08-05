@@ -22,7 +22,6 @@ class MarcStore extends Queryi{
 	 * retreive a formal MarcRecord object of a biblio
 	 */
 	public function get($bibid) {
-//echo "MarcStore: in get({$bibid})<br />\n";
 		$rows = $this->fetchMarcFlds($bibid);
 		if ($rows->num_rows == 0) {
 			return NULL;
@@ -76,11 +75,9 @@ class MarcStore extends Queryi{
 		$fldseq = 1;
 		if (!$this->_putControl($bibid, $fldseq, "LDR", $record->getLeader())) {
 			$this->unlock();
-//			return false;
 			die ("unable to 'putControl() leader");
 		}
 		$fields = $record->getFields();
-//print_r($rcd);
 		foreach ($fields as $field) {
 			$fldseq += 1;
 			if (is_a($field, 'MarcControlField')) {

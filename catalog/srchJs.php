@@ -308,7 +308,7 @@ var bs = {
 	  bs.srchType = 'barCd';
 	  $('p.error').html('').hide();
 	  var params = $('#barcodeSearch').serialize();
-		params += '&mode=doBarcdSearch2';
+		params += '&mode=doBarcdSearch';
 	  $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
@@ -352,8 +352,13 @@ var bs = {
 			return false;
 		}
 
-    //Moved this forward to show a please wait text, as search can take up to a second on a large databse and user might click twice.
-	  $('#srchRslts').html('<p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p>');
+    /* Moved this forward to show a please wait text, as search can take */
+		/*up to a second on a large databse and user might click twice.      */
+		var msg = '<p class="error">'
+							'	<img src="../images/please_wait.gif" width="26" />'
+              '	<?php echo T("Searching"); ?>'
+							'</p>'+"\n";
+	  $('#srchRslts').html(msg);
 
 	  $('.rsltQuan').html('');
 	  if(firstItem==null) firstItem=0;
@@ -366,30 +371,31 @@ var bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				var biblioList = $.parseJSON(jsonInpt);
-				// no hits
+//console.log(biblioList);
+
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
+					//console.log('no hits');
 				  bs.multiMode = false;
 	  			$('#srchRslts').html('<p class="error"><?php echo T("Nothing Found") ?></p>');
 				  $('#biblioListDiv .goNextBtn').disable();
 				  $('#biblioListDiv .goPrevBtn').disable();
 				}
-
-				// single hit
-				// Changed to two, as an extra record is added with the amount of records etc. (also, if not first page ignore this) - LJ
 				else if (biblioList.length == 2 && firstItem == 0) {
+					//console.log('single hit');
+					// Changed to two, as an extra record is added with the amount of records etc.
+					// (also, if not first page ignore this) - LJ
 				  bs.multiMode = false;
       		// Changed from 0 to 1 as the first row shows record info
 					bs.biblio = $.parseJSON(biblioList[1]);
 					idis.showOneBiblio(bs.biblio)
 					//idis.fetchCopyInfo();
 				}
-				// multiple hits
 				else {
+					console.log('multiple hits');
 				  bs.multiMode = true;
 				  bs.showList(firstItem, biblioList);
 				}
 	    }
-
 		});
 		return false;
 	},
@@ -420,14 +426,20 @@ var bs = {
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
+			if (nBiblio == 0) continue;
+			var biblio = JSON.parse(biblioList[nBiblio]);
+			bs.biblio[biblio.bibid] = biblio;
+//console.log(biblio);
+
 			var title = '', booktitle='', booksubtitle='', reporttitle='', reportsubtitle='',
 					author='', coauthor='', editors='', corporate='',
 					year='', journal='', jrnlDate='',
 					callNo='', edition ='', pubDate='', nrCopies=0;
 			var html = '';
-			var biblio = JSON.parse(biblioList[nBiblio]);
+			var hdr = biblio.hdr;
+//console.log(hdr);
+			var cpys = biblio.cpys;
 
-			bs.biblio[biblio.bibid] = biblio;
 			html += '<tr class="listItem">\n';
 
 			//--// the leftside pretty stuff
@@ -435,53 +447,54 @@ var bs = {
 			html += '		<div class="itemVisual"> \n';
 			/* if wanted, we create space for a possible photo, and fill it if one is found */
 			var showFoto = '<?php echo Settings::get('show_item_photos'); ?>';
-			if ((showFoto == 'Y') && (biblio.bibid !== undefined)){
-				html += '		<div class="photos"  id="photo_'+biblio.bibid+'">\n';
+			if ((showFoto == 'Y') && (hdr.bibid !== undefined)){
+				html += '		<div class="photos"  id="photo_'+hdr.bibid+'">\n';
 				html += '			<img src="../images/shim.gif" class="biblioImage noHover" height="50px" width="50px" '
 												   + 'height="'+bs.fotoHeight+'" width="'+bs.fotoWidth+'" >';
 				html += '		</div>'+"\n";
-				bs.getPhoto(biblio.bibid, '#photo_'+biblio.bibid );
+				bs.getPhoto(hdr.bibid, '#photo_'+hdr.bibid );
 			}
 			/*  some administrative info and a 'more detail' button */
 			html += '	<div class="dashBds">\n';
 			html += ' 	<div class="dashBdsA">';
-			html += '			<p>copies:'+biblio.nCpy+'</p>';
+			html += '			<p>copies:'+cpys.length+'</p>';
 			html += '		</div>\n';
 			html += ' 	<div class="dashBdsB">';
-			html += '			<img src="../images/'+biblio.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
-			html += '			<img src="../images/'+biblio.imageFile+'" width="32" height="32" />'+'\n';
+			html += '			<img src="../images/'+hdr.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
+			html += '			<img src="../images/'+hdr.imageFile+'" width="32" height="32" />'+'\n';
 			html += '		</div>\n';
 			html += ' 	<div class="dashBdsC">';
-			html += '			<input type="hidden" value="'+biblio.bibid+'" />'+'\n';
+			html += '			<input type="hidden" value="'+hdr.bibid+'" />'+'\n';
 			html += '			<input type="button" class="moreBtn" value="<?php echo T("More info"); ?>" />'+'\n';
 			html += ' 	</div>';
 			html += '	</div>\n';
 			html += '</div></td>';  // end of itemVisual div
 
 			/* the more useful stuff, biblio data */
-			if (biblio.data) {
+			var marc = biblio.marc;
+//console.log(marc);
+			if (marc) {
 				/* Construct a set of tags to define content of displayable lines.
 				 * Order of lines is determined by 'position' column of material_fields table.
 				 * Actual number of lines displayed will be seperately determined later
 				 */
+/*
 				var lineTag = [];
-				var lineSpec = bs.displayInfo[biblio.matlCd];
-//				for (var i=0; i<lineSpec.length; i++) {
+				var lineSpec = bs.displayInfo[hdr.matlCd];
 				for (var i in lineSpec) {
-//					if (!lineSpec[i]) continue; // skip null, undefined or non-existent elements
 					var n = parseInt(lineSpec[i]['row'])+1;
-					lineTag[n] = lineSpec[i]['tag']+lineSpec[i]['suf'];
+					lineTag[n] = lineSpec[i]['tag']+'$'lineSpec[i]['suf'];
 				}
-
+*/
 				//// Construct all potential lines for later use.
-				var lines = [], lineNo;
-				$.each(biblio.data, function (fldIndex, fldData) {
-					var tmp = JSON.parse(fldData);
-					if (!tmp.value) tmp.value = 'n/a';
-					lineNo = lineTag.indexOf(tmp.marcTag);
-					lines[lineNo] = tmp.value.trim();
+				var lines = [],
+						lineNo;
+				$.each(marc, function (ndx, fld) {
+					if (!fld.value) fld.value = 'n/a';
+					lineNo = fld.line;
+					lines[lineNo] = fld.value.trim();
 				});
-
+//console.log(lines);
 			} else {
 				// skip these
 				title = 'unknown'; callNo = 'not assigned';
@@ -490,9 +503,11 @@ var bs = {
 
 			//--// Display first 'N' lines of biblio information
 			// number of rows to display is based on Media type
-			var N = bs.mediaLineCnt[biblio.matlCd];
+			var N = bs.mediaLineCnt[hdr.material_cd];
+//console.log('no of lines:'+N);
 			html += '<td id="itemInfo">\n';
-			for (var i=1; i<=N; i++) {
+			for (var i=0; i<N; i++) {
+//console.log(lines[i]);
 				if (!lines[i]) continue; // skip null, undefined or non-existent elements
 				if (lines[i] != '') html += '<p class="searchListItem">'+lines[i]+'</p>\n';
 			}

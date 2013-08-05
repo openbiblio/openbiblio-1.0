@@ -4,13 +4,12 @@
  */
 
 
-/*********************************************************************************
+/**
  * Draws input html tag of type text.
  * @param string $tag input field tag
  * @param int $occur input field occurance if field is being entered as repeatable
  * @return void
  * @access public
- *********************************************************************************
  */
 function printUsmarcText($tag,$subfieldCd,&$marcTags,&$marcSubflds,$showTagDesc){
 	$arrayIndex = sprintf("%03d",$tag).$subfieldCd;
@@ -25,12 +24,12 @@ function printUsmarcText($tag,$subfieldCd,&$marcTags,&$marcSubflds,$showTagDesc)
 	}
 }
 
-/*********************************************************************************
+/**
  * accepts a NNN$A formatted MARC tag and returns its components as an object.
  * ex. '245$a' ==> '{"tag":"245","suf":"a"}'
- *********************************************************************************
  */
 function makeTagObj($grp) {
+//echo"makeTagGrp: grp==>";print_r($grp);echo"<br />\n";
 	foreach ($grp as $tag) {
 		$parts = explode('$',$tag);
 		$rslt .= '{"tag":"'.$parts[0].'","suf":"'.$parts[1].'"},';

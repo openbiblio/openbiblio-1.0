@@ -4,7 +4,6 @@
  */
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 	require_once(REL(__FILE__, "../functions/utilFuncs.php"));
 	//require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
@@ -78,7 +77,7 @@
 		}
 		echo json_encode($media);
 		break;
-
+/*
 	case 'doBibidSearch':
 	  $theDb = new SrchDB;
   	$theDb->getBiblioInfo($_REQUEST[bibid]);
@@ -94,12 +93,13 @@
 			echo '{"data":null}';
 		}
 	  break;
-
-	case 'doBibidSearch2':
+*/
+	case 'doBibidSearch':
 	  $bib = new Biblio($_REQUEST[bibid]);
 	  echo json_encode($bibb->getData());
 	  break;
-	case 'doBarcdSearch2':
+
+	case 'doBarcdSearch':
 	  $ptr = new Copies;
 	  $copy = $ptr->getByBarcode($_REQUEST['searchBarcd']);
 	  if ($copy != NULL) {
@@ -111,60 +111,10 @@
 	  break;
 
 	case 'doPhraseSearch':
+		$criteria = $_REQUEST;
 	  $theDb = new SrchDB;
-		$params = makeTagObj(getSrchTags($_REQUEST[searchType]));
-
-		# Add search params
-		$searchTags = "";
-		
-		if(isset($_REQUEST['sortBy'])){
-				switch ($_REQUEST['sortBy']){
-				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
-				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
-				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},
-																			 {"orderTag":"245","orderSuf":"b"},
-																			 {"orderTag":"240","orderSuf":"a"}'; break;
-				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},
-																 {"orderTag":"245","orderSuf":"b"}'; break;
-			}
-		}		
-
-		if($_REQUEST['advanceQ']=='Y'){
-			if(isset($_REQUEST['srchSites']) && $_REQUEST['srchSites'] != 'all'){
-				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $_REQUEST['srchSites'] . '"}';
-			}
-			if(isset($_REQUEST['materialCd']) && $_REQUEST['materialCd'] != 'all'){
-				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
-				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $_REQUEST['materialCd'] . '"}';
-			}
-			if(isset($_REQUEST['collectionCd']) && $_REQUEST['collectionCd'] != 'all'){
-				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
-				$searchTags .= ',{"collTag":"099","collSuf":"a","collValue":"'. $_REQUEST['collectionCd'] . '"}';
-			}
-			if(isset($_REQUEST['audienceLevel'])){
-				//Not sure which field this, so leave this for now - LJ
-				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
-			}
-			if(isset($_REQUEST['to']) && strlen($_REQUEST['to']) == 4){
-				//$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $_REQUEST['to'] . '"}';
-				$searchTags .= ',{"toTag":"260","toSuf":"c","toTag":"773","toSuf":"d","toValue":"'. $_REQUEST['to'] . '"}';
-			}
-			if(isset($_REQUEST['from']) && strlen($_REQUEST['from']) == 4){
-				//$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $_REQUEST['from'] . '"}';
-				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromTag":"773","fromSuf":"d","fromValue":"'. $_REQUEST['from'] . '"}';
-			}
-		}			
-		
-		/* - - - - - - - - - - - - - */
-		/* Actual Search begins here */		
-		$paramStr = "[" . $params . "," . $searchTags . "]";
-		/* typical form of $paramStr:
-			[{"tag":"240","suf":"a"},{"tag":"245","suf":"a"},{"tag":"245","suf":"b"},
-			 {"tag":"245","suf":"c"},{"tag":"246","suf":"a"},{"tag":"246","suf":"b"},
-			 {"tag":"502","suf":"a"},{"tag":"505","suf":"a"},{"tag":"650","suf":"a"},.............
-		*/
-		/* $type may be null at times */
-		$biblioLst = $theDb->getBiblioByPhrase($type, $paramStr);
+		$biblioLst = $theDb->getBiblioByPhrase($criteria);
+//echo"catalogSrvr: bibList==>";print_r($biblioLst);echo"<br />\n";
 		if (sizeof($biblioLst) > 0) {
 			// Add amount of search results.
 			if($_REQUEST['firstItem'] == null){
@@ -192,11 +142,14 @@
 				$iterCounter++;
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
-				$theDb->getBiblioInfo($bibid);
-	  		$rslt = $theDb->getData();
+//				$theDb->getBiblioInfo($bibid);
+//	  		$rslt = $theDb->getData();
 				//if($_SESSION['show_detail_opac'] == 'Y')
 				//	$rslt['avIcon'] = $theDb->avIcon;
-	  		$biblio[] = json_encode($rslt);
+//	  		$biblio[] = json_encode($rslt);
+		  	$bib = new Biblio($bibid);
+		  	$biblio[] = json_encode($bib->getData());
+				unset($bib);
 			}
 			echo json_encode($biblio);
 		} else {
@@ -240,6 +193,7 @@
 	  echo json_encode($theDb->getCopyInfo($_REQUEST[bibid]));
 	  break;
 
+/*
 	case 'xupdateBiblio':
 	  require_once(REL(__FILE__,"biblioChange.php"));
 	  $nav = '';
@@ -253,6 +207,7 @@
 		}
 	  echo $msg;
 	  break;
+*/
 	case 'updateBiblio':
 	  $bib = new Biblio($_POST['bibid']);
 		$hdr['bibid'] = $_POST['bibid'];
