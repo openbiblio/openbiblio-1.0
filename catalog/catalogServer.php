@@ -77,23 +77,7 @@
 		}
 		echo json_encode($media);
 		break;
-/*
-	case 'doBibidSearch':
-	  $theDb = new SrchDB;
-  	$theDb->getBiblioInfo($_REQUEST[bibid]);
-	  echo json_encode($theDb->getData());
-	  break;
-	case 'doBarcdSearch':
-	  $theDb = new SrchDB;
-	  $rslt = $theDb->getBiblioByBarcd($_REQUEST['searchBarcd']);
-	  if ($rslt != NULL) {
-	  	$theDb->getBiblioInfo($theDb->bibid);
-	  	echo json_encode($theDb->getData());
-		} else {
-			echo '{"data":null}';
-		}
-	  break;
-*/
+
 	case 'doBibidSearch':
 	  $bib = new Biblio($_REQUEST[bibid]);
 	  echo json_encode($bibb->getData());
@@ -114,7 +98,6 @@
 		$criteria = $_REQUEST;
 	  $theDb = new SrchDB;
 		$biblioLst = $theDb->getBiblioByPhrase($criteria);
-//echo"catalogSrvr: bibList==>";print_r($biblioLst);echo"<br />\n";
 		if (sizeof($biblioLst) > 0) {
 			// Add amount of search results.
 			if($_REQUEST['firstItem'] == null){
@@ -142,11 +125,6 @@
 				$iterCounter++;
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
-//				$theDb->getBiblioInfo($bibid);
-//	  		$rslt = $theDb->getData();
-				//if($_SESSION['show_detail_opac'] == 'Y')
-				//	$rslt['avIcon'] = $theDb->avIcon;
-//	  		$biblio[] = json_encode($rslt);
 		  	$bib = new Biblio($bibid);
 		  	$biblio[] = json_encode($bib->getData());
 				unset($bib);

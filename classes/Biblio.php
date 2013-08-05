@@ -136,6 +136,9 @@ class Biblio {
 	private function fetch_copyList () {
 		$cpys = new Copies;
 		$this->cpyList = $cpys->getCpyList($this->bibid);
+		$info = $cpys->lookupAvability ($this->bibid);
+		$this->hdrFlds['avIcon'] = $info['avIcon'];
+		$this->hdrFlds['ncpys'] = $info['nCpy'];
 	}
 }
 

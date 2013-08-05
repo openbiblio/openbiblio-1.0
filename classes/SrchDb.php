@@ -117,7 +117,6 @@ class SrchDb extends Queryi {
 	## ========================= ##
 	function getBiblioByPhrase($criteria, $mode=null) {
 		$jsonSpec = $this->makeParamStr($criteria);
-//echo "spec==>{$jsonSpec}<br />\n";
 		/* mode may be null at times */
 	  $spec = json_decode($jsonSpec, true);
 	  $srchTxt = strtolower($_REQUEST[searchText]);
@@ -153,9 +152,7 @@ class SrchDb extends Queryi {
 				//$temp .= " bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "'";
 				$termnr++;
 			}
-			//if(!empty($temp)) {
-      //  $sqlWhere .= " AND (".$temp. ")";
-			//}
+
 			$sqlWhere .= ")";
 			$keywordnr++;
 		}		
@@ -193,7 +190,7 @@ class SrchDb extends Queryi {
 			}
 			if(isset($item['audienceTag'])){
 //				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
-				}	
+				}
 			if(isset($item['toTag'])){
 				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
 				$sqlWhere .= " AND (sf$selectNr.bibid = b.bibid "
@@ -253,7 +250,6 @@ class SrchDb extends Queryi {
 		#### end of bad data fix ####
 		
 		// If the show details OPAC  flag is set get info on the copies	
-//		if ($_SESSION['show_detail_opac'] == 'Y'){
 			$copies = $this->getCopyInfo($bibid);
 			// Need to add site specific code in here in here, for now just look for 
 			// status options: available, available on other site, on hold, not available
@@ -282,8 +278,6 @@ class SrchDb extends Queryi {
 			}
 			$rcd['nCpy'] = $this->nCpy;
 			$rcd['avIcon'] = $this->avIcon;
-//		}
-//echo rcd===>{$rcd} <br />\n";
 		return $rcd;
 	}
 	## ========================= ##

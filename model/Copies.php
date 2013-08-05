@@ -181,6 +181,36 @@ class Copies extends CoreTable {
 		}
 		return array($copyids, $bibids, $errors, $barcodes);
 	}
+	function lookupAvability ($bibid) {
+		$sql = "select c.copyid, c.siteid, h.status_cd "
+				 . "from biblio_copy c, biblio_status_hist h "
+				 . "where (c.bibid = {$bibid}) "
+				 . "  and (h.histid = c.histid) ";
+		$rslt = $this->select($sql);
+		$nCpy = $rslt->num_rows;
+
+		## default - copy not available
+		$avIcon = "circle_red.png";
+
+		while ($row = $rslt->fetch_assoc()) {
+			if($row['status_cd'] == OBIB_STATUS_IN) {
+				// See on which site
+				if($_SESSION['current_site'] == $row['siteid'] || !($_SESSION['multi_site_func'] > 0)){
+					$avIcon = "circle_green.png"; // one or more available
+					break;
+				} else {
+					$avIcon = "circle_orange.png"; // one or more available on another site
+				}
+			}
+			// Removed && $this->avIcon != "circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
+			else if($copy[status_cd] == OBIB_STATUS_ON_HOLD || $copy[status_cd] == OBIB_STATUS_NOT_ON_LOAN) {
+				$avIcon = "circle_blue.png"; // only copy is on hold
+			}
+		}
+		$rcd['nCpy'] = $nCpy;
+		$rcd['avIcon'] = $avIcon;
+		return $rcd;
+	}
 	function lookupNoCopies($bibids, $del_copyids) {
 		$no_copies = array();
 		foreach ($bibids as $bibid) {

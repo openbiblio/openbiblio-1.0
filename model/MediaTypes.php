@@ -70,5 +70,11 @@ class MediaTypes extends DmTable {
 		$row = $this->select1($sql);
 		return $row['description'];
 	}
+	function getIcons() {
+		$sql = "SELECT t.code, t.image_file "
+			. "FROM material_type_dm t ";
+		$rslt = $this->select($sql);
+		return $rslt;
+	}
 
 }

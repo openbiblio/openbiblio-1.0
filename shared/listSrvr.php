@@ -52,6 +52,15 @@
 		$list = getDmData($db);
 		echo json_encode($list);
 	  break;
+	case 'getMediaIconUrls':
+		require_once(REL(__FILE__, "../model/MediaTypes.php"));
+		$db = new MediaTypes;
+		$rslt = $db->getIcons();
+		while ($row = $rslt->fetch_assoc()) {
+		  $list[$row['code']] = $row['image_file'];
+		}
+		echo json_encode($list);
+	  break;
 
 	case 'getMbrTypList':
 		require_once(REL(__FILE__, "../model/MemberTypes.php"));

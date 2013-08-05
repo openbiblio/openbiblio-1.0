@@ -115,6 +115,7 @@ var bs = {
 		// needed for search results presentation
 		bs.fetchMediaDisplayInfo();
 		bs.fetchMediaLineCnt();
+		bs.fetchMediaIconUrls();
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -150,7 +151,6 @@ var bs = {
 	  bs.checkPhraseSrchBtn();
 	  bs.checkBarcdSrchBtn();
 	},
-
 	rtnToList: function () {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
@@ -161,7 +161,6 @@ var bs = {
 	  $('#copyEditorDiv').hide();
 	  $('#photoEditorDiv').hide();
 	},
-
 	rtnToBiblio: function () {
 	  $('#rsltMsg').html('');
 	  $('#editRsltMsg').html('');
@@ -271,6 +270,11 @@ var bs = {
 			bs.displayInfo = response;
 		});
 	},
+	fetchMediaIconUrls: function () {
+	  $.getJSON(bs.listSrvr,{mode:'getMediaIconUrls'}, function(response){
+			bs.mediaIconUrls = response;
+		});
+	},
 	fetchMediaLineCnt: function () {
 	  $.getJSON(bs.url,{mode:'getMediaLineCnt'}, function(response){
 			bs.mediaLineCnt = response;
@@ -328,7 +332,6 @@ var bs = {
 				else {
 					bs.multiMode = false;
 					idis.showOneBiblio(bs.biblio)
-//					idis.fetchCopyInfo();
 				}
 	    }
 		  $('#searchDiv').hide();
@@ -371,7 +374,6 @@ var bs = {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				var biblioList = $.parseJSON(jsonInpt);
-//console.log(biblioList);
 
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
 					//console.log('no hits');
@@ -429,7 +431,6 @@ var bs = {
 			if (nBiblio == 0) continue;
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			bs.biblio[biblio.bibid] = biblio;
-//console.log(biblio);
 
 			var title = '', booktitle='', booksubtitle='', reporttitle='', reportsubtitle='',
 					author='', coauthor='', editors='', corporate='',
@@ -437,9 +438,8 @@ var bs = {
 					callNo='', edition ='', pubDate='', nrCopies=0;
 			var html = '';
 			var hdr = biblio.hdr;
-//console.log(hdr);
 			var cpys = biblio.cpys;
-
+			var imageFile = bs.mediaIconUrls[hdr.material_cd];
 			html += '<tr class="listItem">\n';
 
 			//--// the leftside pretty stuff
@@ -457,11 +457,11 @@ var bs = {
 			/*  some administrative info and a 'more detail' button */
 			html += '	<div class="dashBds">\n';
 			html += ' 	<div class="dashBdsA">';
-			html += '			<p>copies:'+cpys.length+'</p>';
+			html += '			<p>copies:'+hdr.ncpys+'</p>';
 			html += '		</div>\n';
 			html += ' 	<div class="dashBdsB">';
 			html += '			<img src="../images/'+hdr.avIcon+'" class="flgDot" title="Grn: available<br />Blu: on hold<br />Red: not available" />\n';
-			html += '			<img src="../images/'+hdr.imageFile+'" width="32" height="32" />'+'\n';
+			html += '			<img src="../images/'+imageFile+'" width="32" height="32" />'+'\n';
 			html += '		</div>\n';
 			html += ' 	<div class="dashBdsC">';
 			html += '			<input type="hidden" value="'+hdr.bibid+'" />'+'\n';
@@ -472,20 +472,7 @@ var bs = {
 
 			/* the more useful stuff, biblio data */
 			var marc = biblio.marc;
-//console.log(marc);
 			if (marc) {
-				/* Construct a set of tags to define content of displayable lines.
-				 * Order of lines is determined by 'position' column of material_fields table.
-				 * Actual number of lines displayed will be seperately determined later
-				 */
-/*
-				var lineTag = [];
-				var lineSpec = bs.displayInfo[hdr.matlCd];
-				for (var i in lineSpec) {
-					var n = parseInt(lineSpec[i]['row'])+1;
-					lineTag[n] = lineSpec[i]['tag']+'$'lineSpec[i]['suf'];
-				}
-*/
 				//// Construct all potential lines for later use.
 				var lines = [],
 						lineNo;
@@ -494,7 +481,6 @@ var bs = {
 					lineNo = fld.line;
 					lines[lineNo] = fld.value.trim();
 				});
-//console.log(lines);
 			} else {
 				// skip these
 				title = 'unknown'; callNo = 'not assigned';
@@ -504,10 +490,8 @@ var bs = {
 			//--// Display first 'N' lines of biblio information
 			// number of rows to display is based on Media type
 			var N = bs.mediaLineCnt[hdr.material_cd];
-//console.log('no of lines:'+N);
 			html += '<td id="itemInfo">\n';
 			for (var i=0; i<N; i++) {
-//console.log(lines[i]);
 				if (!lines[i]) continue; // skip null, undefined or non-existent elements
 				if (lines[i] != '') html += '<p class="searchListItem">'+lines[i]+'</p>\n';
 			}
