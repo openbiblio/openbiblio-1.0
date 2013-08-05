@@ -324,7 +324,7 @@ var bs = {
 					idis.showOneBiblio(bs.biblio)
 					//idis.fetchCopyInfo();
 				}
-				else if (bs.biblio.data == null) {
+				else if (bs.biblio.hdr == null) {
 				  var msgTxt =
 	  			$('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
 	  			bs.rtnToSrch();

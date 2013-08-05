@@ -80,7 +80,7 @@
 
 	case 'doBibidSearch':
 	  $bib = new Biblio($_REQUEST[bibid]);
-	  echo json_encode($bibb->getData());
+	  echo json_encode($bib->getData());
 	  break;
 
 	case 'doBarcdSearch':
