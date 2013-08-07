@@ -51,25 +51,37 @@ function fieldCmp($a, $b) {
 }
 
 function postBiblioChange($nav) {
-	/** expected data format
-	bibid
-	collectionCd aa
-	fields[245$a]['codes'] subfieldid=xx&fieldid=yy
-	fields[245$a]['data'] another testing
-	*/
-	## ---------------------- ##
+	/**
+	 * expected input data format
+	 * bibid=nnnn
+	 * collectionCd=aa
+	 * fields[245$a]['codes']='subfieldid=xx&fieldid=yy'
+	 * fields[245$a]['data']='another testing'
+	 *
+	 * old format was:
+	 * bibid=nnnnn
+	 * collectionCd=aa
+	 * fields[$250$a]['tag']=250
+	 * fields[$250$a]['subfield_cd']=aa
+	 * fields[$250$a]['fieldidid']=nnnn
+	 * fields[$250$a]['subfieldid']=nnnnn
+	 * fields[$250$a]['data']='another testing'
+	 */
+	## --------------------------------------------- ##
+	## convert new format to old for MARC processing ##
 	function expand ($t, $f) {
 		list($tag, $suf, $rep) = explode('$', $t);
+    $f['tag'] = $tag;
+    $f['subfield_cd'] = $suf;
 		$codes = explode('&', $f['codes']);
 		$tmp = explode('=',$codes[1]);
 		$f['fieldid'] = $tmp[1];
 		$tmp = explode('=',$codes[0]);
 		$f['subfieldid'] = $tmp[1];
-    $f['subfield_cd'] = $suf;
-    $f['tag'] = $tag;
+    ## fields[$250$a]['data'] same for both formats
 		return $f;
 	}
-	## ---------------------- ##
+	## --------------------------------------------- ##
 
 	## --- Construct a list of changed fields. --- ##
 	/* Because of the way this list is constructed, only one
@@ -89,7 +101,7 @@ function postBiblioChange($nav) {
 			echo "f: Encountered SHORT marc code '{$f['tag']}'<br />or too long subfield code '{$f['subfield']}'.<br/>\n";
 			continue;
 		}
-		$fidx = $tag.'-';
+		$fidx = $f['tag'].'-';
 
 		## Only do this when there is no field yet with this field value
 		$fidxSuffix = null;
@@ -125,25 +137,30 @@ function postBiblioChange($nav) {
 		if (!array_key_exists($sfidx,$fields[$fidx])) {
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}
-
 	}
+echo"fields===>";print_r($fields);echo"<br/>\n";
+
 	$mrc = new MarcRecord();
 	//$mrc->setLeader($biblio[marc]->getLeader());
 	$ldr = $mrc->getLeader();
 	$mrc->setLeader($ldr);
 
 	foreach ($_POST['fields'] as $tf=>$f) {
+echo"field===>";print_r($_POST['fields'][$tf]);echo"<br/>\n";
 		$f = expand($tf,$f);
 		$fidx = $f['tag'] .'-'. $f['fieldid'];
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
 			//array_push($mrc->fields, $f);
-			$mrc->addFields($f);
+			$mrc->addFields($f);  ## adds $f to the mrc array
 			continue;
 		}
-		$fld = new MarcDataField($f->tag, $f->indicators);
+//		$fld = new MarcDataField($f->tag, $f->indicators);
+		$fld = new MarcDataField($f['tag'], $f['subfield_cd']); ## new $fld has indicators & subfields
 		## Add/remove current/updated/deleted fields/subfields ##
-		foreach ($f->subfields as $sf) {
-			$sfidx = $sf->identifier .'-'. $sf->subfieldid;
+//		foreach ($f->subfields as $sf) {
+		foreach ($fld as $sf) {
+echo"sf===>";print_r($sf);echo"<br/>\n";
+			$sfidx = $sf->indicator .'-'. $f['subfieldid'];
 			if (!array_key_exists($sfidx, $fields[$fidx])) {
 				array_push($fld->subfields, $sf);
 			} else if (strlen($fields[$fidx][$sfdix]->data) != 0) {
@@ -163,6 +180,7 @@ function postBiblioChange($nav) {
 			$mrc->addFields($fld);
 		}
 	}
+echo"mrc before 'add'===>";print_r($mrc);echo"<br/>\n";
 
 	/* Add new fields */
 	foreach ($fields as $fidx => $subfields) {
@@ -177,30 +195,31 @@ function postBiblioChange($nav) {
 			$mrc->addFields($fld);
 		}
 	}
+echo"mrc after 'add'===>";print_r($mrc);echo"<br/>\n";
 
-	/* Sort subfields and apply "smart" processing for particular fields */
-	$fields = $mrc->getFields();
-	for ($i=0; $i < count($fields); $i++) {
-	
-		//usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
-		
-		/* Special processing for 245$a -- FIXME, this should be generalized */
-		if ($fields[$i]->tag == 245) {
-			/* No title added entry. */
-			$fields[$i]->indicators{0} = 0;
-			$a = $fields[$i]->getValue(a);
-			/* Set non-filing characters */
-			if (preg_match("/^((a |an |the )?[^a-z0-9]*)/i", $a, $regs) and strlen($regs[1]) <= 9) {
-				$fields[$i]->indicators{1} = strlen($regs[1]);
-			} else {
-				$fields[$i]->indicators{1} = 0;
-			}
-		}
-	}
-	/* Set field display values -- TODO */
-
-	/* Sort fields by tag and display value */
-	usort($fields, fieldCmp);
+// ----- following does not appear to be used ----
+///* Sort subfields and apply "smart" processing for particular fields */
+//	$fields = $mrc->getFields();
+//	for ($i=0; $i < count($fields); $i++) {
+//		//usort($mrc->fields[$i]->subfields, mkSubfieldCmp());
+//		/* Special processing for 245$a -- FIXME, this should be generalized */
+//		if ($fields[$i]->tag == 245) {
+//			/* No title added entry. */
+//			$fields[$i]->indicators{0} = 0;
+//			$a = $fields[$i]->getValue(a);
+//			/* Set non-filing characters */
+//			if (preg_match("/^((a |an |the )?[^a-z0-9]*)/i", $a, $regs) and strlen($regs[1]) <= 9) {
+//				$fields[$i]->indicators{1} = strlen($regs[1]);
+//			} else {
+//				$fields[$i]->indicators{1} = 0;
+//			}
+//		}
+//	}
+//
+//	/* Set field display values -- TODO */
+//	/* Sort fields by tag and display value */
+//	usort($fields, fieldCmp);
+////echo"fields revised&sorted===>";print_r($mrc);echo"<br/>\n";
 
 	## prepare the update/insert structure
 	## note: relocated from top of function to clarify useage ##
@@ -213,7 +232,7 @@ function postBiblioChange($nav) {
 		$biblio = array(marc=>new MarcRecord);
 	}
 	assert($biblio != NULL);
-//echo "biblio==>";print_r($biblio);echo"<br/>\n";
+echo "biblio==>";print_r($biblio);echo"<br/>\n";
 
   ## over-write with update material
 	$biblio['marc'] = $mrc;
@@ -236,8 +255,8 @@ echo "biblio rdy to insert==>";print_r($biblio);echo"<br/>\n";
 		$bibid = $biblios->insert($biblio);
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {
+echo "biblio rdy to update<br/>\n";
 		$bibid = $_POST["bibid"]; /** ??? what's this for ??? **/
-echo "updating now<br/>\n";
 		$biblios->update($biblio);
 //echo "back from updating<br/>\n";
 		// system assumes ANY OTHER message implies failure
