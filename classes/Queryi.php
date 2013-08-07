@@ -20,6 +20,7 @@ class Queryi extends mysqli{
 		return;
 	}
 	public function act($sql) {
+//echo "Queryi: in act()<br/>\n";
 		//$this->lock();
 		$results = $this->_act($sql);
 		//$this->unlock();
@@ -54,6 +55,8 @@ class Queryi extends mysqli{
 		}
 	}
 	private function _act($sql) {
+//echo "Queryi: in _act()<br/>\n";
+//echo "sql=$sql<br />\n";
 		$r =  $this->query($sql);
 		if ($r === false) {
 			Fatal::dbError($sql, T("Database query failed"), mysql_error());

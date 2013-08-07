@@ -144,7 +144,7 @@ var ced = {
 	  		copyDesc = $('#copyDesc').val(),
 	  		statusCd = $('#copyTbl #status_cd').val(),
 	  		siteid = $('#copySite').val(),
-				params = "&mode=updateCopy&bibid="+idis.theBiblio.bibid+"&copyid="+idis.crntCopy.copyid
+				params = "&mode=updateCopy&bibid="+idis.bibid+"&copyid="+idis.crntCopy.copyid
 					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
 
@@ -175,7 +175,7 @@ var ced = {
 	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
 			var btnid = e.currentTarget.id,
 					copyid = btnid.split('-')[1],
-	    		params = "&mode=deleteCopy&bibid="+idis.theBiblio.bibid+"&copyid="+copyid;
+	    		params = "&mode=deleteCopy&bibid="+idis.bibid+"&copyid="+copyid;
 	  	$.post(ced.url,params, function(response){
 	  	  $('#editRsltMsg').html(response).show();
 	  		idis.fetchCopyInfo(); // refresh copy display

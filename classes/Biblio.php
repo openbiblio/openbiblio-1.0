@@ -5,6 +5,7 @@
 
 require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
+require_once(REL(__FILE__, "../catalog/biblioChange.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
 require_once(REL(__FILE__, "../model/MaterialFields.php"));
 
@@ -76,6 +77,7 @@ class Biblio {
 	 * causes the database to be updated with current biblio data
 	 */
 	public function updateDB () {
+/*
 		$ptr = new Biblios;
 		$biblioRec = array('bibid'=>$this->hdrFlds['bibid'],
                        'collection_cd'=>$this->hdrFlds['material_cd'],
@@ -85,6 +87,8 @@ class Biblio {
 											 'marc'=>$this->marcFlds,
 											);
 		$msg = $ptr->update($biblioRec);
+*/
+    $msg = postBiblioChange('');
 		echo $msg;
 	}
 

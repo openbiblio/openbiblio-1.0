@@ -50,42 +50,57 @@ function fieldCmp($a, $b) {
 	return strcasecmp($dispa, $dispb);
 }
 
-function PostBiblioChange($nav) {
-	#****************************************************************************
-	#*  Validate data
-	#****************************************************************************
-	if (!isset ($biblios)) $biblios = new Biblios();
-	if ($_POST["bibid"]) {
-		$biblio = $biblios->getOne($_POST["bibid"]);
-	} else {
-		$biblio = array(marc=>new MarcRecord);
+function postBiblioChange($nav) {
+	/** expected data format
+	bibid
+	collectionCd aa
+	fields[245$a]['codes'] subfieldid=xx&fieldid=yy
+	fields[245$a]['data'] another testing
+	*/
+	## ---------------------- ##
+	function expand ($t, $f) {
+		list($tag, $suf, $rep) = explode('$', $t);
+		$codes = explode('&', $f['codes']);
+		$tmp = explode('=',$codes[1]);
+		$f['fieldid'] = $tmp[1];
+		$tmp = explode('=',$codes[0]);
+		$f['subfieldid'] = $tmp[1];
+    $f['subfield_cd'] = $suf;
+    $f['tag'] = $tag;
+		return $f;
 	}
-	assert($biblio != NULL);
-	/* Construct a list of changed fields. */
-	$fields = array();
+	## ---------------------- ##
+
+	## --- Construct a list of changed fields. --- ##
 	/* Because of the way this list is constructed, only one
 	 * new field with a particular tag may be added at once.
 	 * Also, within a field, only one subfield with a particular
 	 * identifier may be added at once.  This should be quite
 	 * sufficient for the easy-edit interface.
 	 */
+	$fields = array();
 
-	foreach ($_POST['fields'] as $f) {
-		//echo 'working field ';print_r($f);
-		if (strlen($f['tag']) != 3 or strlen($f['subfield_cd']) != 1) {
-			echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
+//	foreach ($_POST['fields'] as $f) {
+	foreach ($_POST['fields'] as $tf=>$f) {
+		$f = expand($tf,$f);
+//echo "update field-tf {$tf}==>";print_r($f);echo"<br/>\n";
+//echo "working field-tf {$tf}<br/>\n";
+		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {
+			echo "f: Encountered SHORT marc code '{$f['tag']}'<br />or too long subfield code '{$f['subfield']}'.<br/>\n";
 			continue;
 		}
-		$fidx = $f['tag'].'-';
+		$fidx = $tag.'-';
 
-		// Only do this when there is no field yet with this field value
+		## Only do this when there is no field yet with this field value
 		$fidxSuffix = null;
-		foreach ($_POST[fields] as $s){
-			if (strlen($s[tag]) != 3 or strlen($s[subfield_cd]) != 1) {
-				echo 'Encountered SHORT marc code '.$f['tag'].'<br />or too long subfield code.';
+		foreach ($_POST['fields'] as $ts=>$s){
+		$s = expand($ts,$s);
+//echo "update field-ts {$ts}==>";print_r($s);echo"<br/>\n";
+//echo "working field-ts {$ts}<br/>\n";
+			if (strlen($s['tag']) != 3 or strlen($s['subfield_cd']) != 1) {
+				echo "s: Encountered SHORT marc code '{$s['tag']}'<br />or too long subfield code '{$s['subfield_cd']}'.<br/>\n";
 				continue;
 			}
-
 			if($s['tag'] == $f['tag']){
 				if ($s['fieldid']) {
 					$fidxSuffix = $s['fieldid'];
@@ -94,7 +109,6 @@ function PostBiblioChange($nav) {
 				}			
 			}
 		}	
-
 		$fidx .= $fidxSuffix;
 		
 		if (!is_array($fields[$fidx])) {
@@ -118,15 +132,16 @@ function PostBiblioChange($nav) {
 	$ldr = $mrc->getLeader();
 	$mrc->setLeader($ldr);
 
-	foreach ($_POST['fields'] as $f) {
-		$fidx = $f->tag .'-'. $f->fieldid;
+	foreach ($_POST['fields'] as $tf=>$f) {
+		$f = expand($tf,$f);
+		$fidx = $f['tag'] .'-'. $f['fieldid'];
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
 			//array_push($mrc->fields, $f);
 			$mrc->addFields($f);
 			continue;
 		}
 		$fld = new MarcDataField($f->tag, $f->indicators);
-		/* Add/remove current/updated/deleted fields/subfields */
+		## Add/remove current/updated/deleted fields/subfields ##
 		foreach ($f->subfields as $sf) {
 			$sfidx = $sf->identifier .'-'. $sf->subfieldid;
 			if (!array_key_exists($sfidx, $fields[$fidx])) {
@@ -187,11 +202,21 @@ function PostBiblioChange($nav) {
 	/* Sort fields by tag and display value */
 	usort($fields, fieldCmp);
 
-	$biblio['marc'] = $mrc;
+	## prepare the update/insert structure
+	## note: relocated from top of function to clarify useage ##
+	if (!isset ($biblios)) $biblios = new Biblios();
+	if ($_POST["bibid"]) {
+		## update existing, so get copy of DB data
+		$biblio = $biblios->getOne($_POST["bibid"]);
+	} else {
+		## create new empty structure
+		$biblio = array(marc=>new MarcRecord);
+	}
+	assert($biblio != NULL);
+//echo "biblio==>";print_r($biblio);echo"<br/>\n";
 
-	#**************************************************************************
-	#*  Insert/Update bibliography
-	#**************************************************************************
+  ## over-write with update material
+	$biblio['marc'] = $mrc;
 	if (empty($_POST['material_cd']))
 		$biblio['material_cd'] = $_POST["materialCd"];
 	else
@@ -203,12 +228,18 @@ function PostBiblioChange($nav) {
 	$biblio['last_change_userid'] = $_POST["userid"];
 	$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
 
+	#**************************************************************************
+	#*  Insert/Update bibliography
+	#**************************************************************************
 	if ($nav == "newconfirm") {
+echo "biblio rdy to insert==>";print_r($biblio);echo"<br/>\n";
 		$bibid = $biblios->insert($biblio);
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {
-		$bibid = $_POST["bibid"];
+		$bibid = $_POST["bibid"]; /** ??? what's this for ??? **/
+echo "updating now<br/>\n";
 		$biblios->update($biblio);
+//echo "back from updating<br/>\n";
 		// system assumes ANY OTHER message implies failure
 		// dont change this string unless you are VERY sure
 		$msg = "!!success!!";

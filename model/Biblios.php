@@ -41,34 +41,60 @@ class Biblios extends CoreTable {
 		$this->unlock();
 		return array($bibid, NULL);
 	}
-	function update ($updtData) {
+	function xupdate ($updtData) {
+		/****** currently does not post new entries to database, do NOT use ******/
+		## get user screen content
 		$updts = $updtData['marc'];
+		## get database content
 		$crntRec = $this->marc->get($updtData['bibid']);
-		$flds = $crntRec->fields;
-
-		for( $i=0; $i<count($crntRec->fields); $i++) {
-			$field = $crntRec->fields[$i];
-			foreach ($crntRec->fields[$i]->subfields as $n=>$subfld) {
-				$tag = $field->tag.'$'.$subfld->identifier;
-				if ($updts[$tag]) {
-					$newData = $updts[$tag]['value'];
-				} else {
-					$tag = $field->tag.'$'.$subfld->identifier.'$'.($n+1);
-					$newData = $updts[$tag]['value'];
-				}
-				if ($newData != $subfld->data) {
-					if ($crntRec->fields[$i]->subfields[$n]->data) {
-          		$crntRec->fields[$i]->subfields[$n]->data = $newData;
+		//$flds = $crntRec->fields;
+		function updateExisting($updts, $crntRec) {
+			## scan for differences between two data sets
+			## all (but only) fields present in DB are considered here.
+			## mark user fields when/if scanned
+			for($i=0; $i<count($crntRec->fields); $i++) {
+				$field = $crntRec->fields[$i];
+				foreach ($crntRec->fields[$i]->subfields as $n=>$subfld) {
+					$tag = $field->tag.'$'.$subfld->identifier;
+					if ($updts[$tag]) {
+						$newData = $updts[$tag]['value'];
+					} else {
+						$tag = $field->tag.'$'.$subfld->identifier.'$'.($n+1);
+						$newData = $updts[$tag]['value'];
+					}
+					$updts[$tag]['scanned']='yes';
+					if ($newData != $subfld->data) {
+						if ($crntRec->fields[$i]->subfields[$n]->data) {
+	          		$crntRec->fields[$i]->subfields[$n]->data = $newData;
+						}
 					}
 				}
 			}
+			return array($updts, $crntRec);
+		}
+		function addNewMarcFlds ($updts, $crntRec){
+			## step B. review user dataset for fields not scanned above
+			foreach ($updts as $key=>$value) {
+				if (!array_key_exists('scanned', $value)) {
+					list($tag, $suf, $seq) = explode('$', $key);
+					$mrcRec = new MarcField($tag, $suf);
+	        $crntRec->fields[] = $mrcRec;
+				}
+			}
+			return array($updts, $crntRec);
 		}
 
-		$newBiblio = $updtData;
-		$newBiblio['marc'] = $crntRec;
+		list($updts, $crntRec) = updateExisting($updts, $crntRec);
+		list($updts, $crntRec) = addNewMarcFlds($updts, $crntRec);
+		list($updts, $crntRec) = updateExisting($updts, $crntRec);
+//return "stopping as requested";
+
+		$newBiblio = $updtData; ## has needed structure
+		$newBiblio['marc'] = $crntRec; ## replaces Marc portion
 		parent::update($newBiblio);
 	}
 	function update_el($biblio) {
+//echo "Biblios: in update_el()<br/>\n";
 		$this->lock();
 		if (!isset($biblio['bibid'])) {
 			Fatal::internalError(T("No bibid set in biblio update"));

@@ -54,11 +54,11 @@ var idis = {
 		else
 	  	idis.theBiblio = biblio;
 		if (typeof bs !== 'undefined') bs.theBiblio = idis.theBiblio;
-		var bibid = idis.theBiblio.hdr.bibid;
-		$('#theBibId').html(bibid);
+		idis.bibid = idis.theBiblio.hdr.bibid;
+		$('#theBibId').html(idis.bibid);
 
   	idis.crntFoto = null;
-  	idis.crntBibid = bibid;
+  	idis.crntBibid = idis.bibid;
 		$('#photoEditBtn').hide();		
 		$('#photoAddBtn').hide();		
 		$('#bibBlkB').html('');
@@ -71,7 +71,7 @@ var idis = {
 				}
 			<?php } ?>
 
-  		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
+  		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
 				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;
 
@@ -90,15 +90,11 @@ var idis = {
   		});
 		}
 
-//console.log(idis.theBiblio.marc);
 	  var txt = '';
 		$.each(idis.theBiblio.marc, function(key,value) {
-//console.log(key);
-//console.log(value);
 		  var tmp = value;
 			tmp.marcTag = key.substr(0,5);
 			if (tmp.line && tmp.value) {
-//console.log('printing');
 		  	txt += "<tr>\n";
 				txt += '	<td class="filterable hilite">'+tmp.marcTag+"</td>\n";
 				txt += "	<td>"+tmp.lbl+"</td>\n";
@@ -163,9 +159,7 @@ var idis = {
 	
 	fetchCopyInfo: function () {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
-//var bibid = idis.theBiblio.bibid;
-var bibid = idis.theBiblio.hdr.bibid;
-	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':bibid}, function(jsonInpt){
+	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.bibid}, function(jsonInpt){
 				idis.copyJSON = jsonInpt;
 				if (!idis.copyJSON) {
 					var msg = '(<?php echo T("No copies"); ?>)';
@@ -209,7 +203,7 @@ var bibid = idis.theBiblio.hdr.bibid;
 						// Sometimes the info has to come out of an array (if coming from list) - LJ
 						var daysDueBack = parseInt(idis.theBiblio.daysDueBack);
 						if(isNaN(daysDueBack)) {			
-							daysDueBack = parseInt(idis.theBiblio[idis.theBiblio.bibid].daysDueBack);
+							daysDueBack = parseInt(idis.theBiblio[idis.bibid].daysDueBack);
 						}					
 						html += "	<td>"+idis.makeDueDateStr(idis.crntCopy.last_change_dt,daysDueBack)+"</td>\n";
 					} else {

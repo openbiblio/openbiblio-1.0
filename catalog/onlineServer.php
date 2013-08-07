@@ -10,20 +10,58 @@
 	require_once(REL(__FILE__, '../model/Online.php'));
 	require_once(REL(__FILE__, 'olSrvrFuncs.php'));	## general support functions
 
+	## ---------------------------------- ##
 	function postNewBiblio() {
 		require_once(REL(__FILE__, "../model/Biblios.php"));
 		require_once(REL(__FILE__, "../classes/Marc.php"));
-
-	  $nav = "newconfirm";
-
 	  include(REL(__FILE__,'../catalog/biblioChange.php'));
-  	$msg = PostBiblioChange($nav);
-  	if (is_object($msg)) {
-  		$rslt = json_decode($msg);
-  		$bibid = $rslt->bibid;
+
+		## new, convert old format to new ##
+		/*
+		bibid
+		collectionCd 2
+		fields[245$a]['codes'] subfieldid=xx&fieldid=yy
+		fields[245$a]['data'] another testing
+		*/
+		$input = $_POST;
+		unset($_POST);
+		$rec = [];
+		foreach ($input as $k=>$v) {
+			if (($k != 'fields') && (substr($k,0,4) != 'onln')) {
+				$_POST[$k] = $v;
+			}
+			if ($k == 'fields') {
+				foreach ($v as $fld) {
+//echo"fld==>";print_r($fld);echo"<br/>\n";
+				$tag = $fld['tag'].'$'.$fld['subfield_cd'];
+				$rec[$tag]['data'] = $fld['data'];
+				$rec[$tag]['codes'] = 'subfieldid='.$fld['subfieldid'].'&fieldid='&$fld['fieldid'];
+				}
+			}
 		}
+		$_POST['fields']= $rec;
+//echo "POST==>";print_r($_POST);echo"<br/>\n";
+//return "as requested";
+
+		## original ##
+		/*
+		bibid
+		collectionCd	2
+		fields[0][data]	another testing
+		fields[0][fieldid]
+		fields[0][subfield_cd]	a
+		fields[0][subfieldid]
+		fields[0][tag]	245
+		*/
+	  $nav = "newconfirm";
+  	$msg = PostBiblioChange($nav);
+//  	if (is_object($msg)) {
+//  		$rslt = json_decode($msg);
+//  		$bibid = $rslt->bibid;
+//		}
 	  echo $msg;
 	}
+	## ---------------------------------- ##
 
 	## fetch user options and post to $postVars
 	## --- MUST BE FIRST !!!!! ---
