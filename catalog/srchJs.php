@@ -68,11 +68,10 @@ var bs = {
 			bs.doPhotoEdit(bs.theBiblio);
 		});
 		$('#biblioEditBtn').on('click',null,function () {
-//			bs.doItemEdit(bs.theBiblio);
 			ie.doItemEdit(bs.theBiblio);
 		});
 		$('#biblioDeleteBtn').on('click',null,function () {
-			bs.doItemDelete(bs.theBiblio);
+			idis.doItemDelete(bs.theBiblio);
 		});
 		$('#marcBtn').on('click',null,function () {
 		  var marcFld$ = $('#biblioDiv td.filterable');

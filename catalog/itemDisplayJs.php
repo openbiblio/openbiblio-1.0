@@ -143,7 +143,28 @@ var idis = {
     $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
 	},
-	
+
+	doItemDelete: function (biblio) {
+		//console.log('there are '+bs.copyJSON.length+' copies.');
+		if (bs.copyJSON) {
+			alert('You must delete all copies before you can delete an item!');
+		}
+		else {
+	  	if (confirm('<?php echo T("Are you sure you want to delete this item?"); ?>: #'+ie.bibid)) {
+	    	var params = "&mode=deleteBiblio&bibid="+idis.bibid;
+	  		$.post(idis.url,params, function(response){
+	  		  $('#rsltMsg').html(response);
+					if (bs.srchType == 'barCd')
+						bs.doBarCdSearch();
+					else if (bs.srchType = 'phrase')
+						bs.doPhraseSearch();
+	  			$('#biblioDiv').hide();
+	  		});
+			}
+		}
+		return false;
+	},
+
 	makeDueDateStr: function (dtOut, daysDueBack) {
 		if(daysDueBack==null) daysDueBack=0;
 		var dt = dtOut.split(' ');
@@ -232,7 +253,6 @@ var idis = {
 		ced.doCopyEdit(e);
 		e.preventDefault();
 	},
-
 };
 // this package normally initialized by parent such as .../catalog/new_itemJs.php
 // only initialize here if used in standalone fasion

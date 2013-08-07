@@ -231,26 +231,6 @@ var ie = {
 	  });
 	  return false;
 	},
-	doItemDelete: function (biblio) {
-		//console.log('there are '+bs.copyJSON.length+' copies.');
-		if (bs.copyJSON) {
-			alert('You must delete all copies before you can delete an item!');
-		}
-		else {
-	  	if (confirm('<?php echo T("Are you sure you want to delete this item?"); ?>')) {
-	    	var params = "&mode=deleteBiblio&bibid="+bs.biblio.bibid;
-	  		$.post(ie.url,params, function(response){
-	  		  $('#rsltMsg').html(response);
-					if (bs.srchType == 'barCd')
-						bs.doBarCdSearch();
-					else if (bs.srchType = 'phrase')
-						bs.doPhraseSearch();
-	  			$('#biblioDiv').hide();
-	  		});
-			}
-		}
-		return false;
-	},
 };
 
 // this package normally initialized by parent such as .../catalog/srchJs.php

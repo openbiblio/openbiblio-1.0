@@ -186,7 +186,6 @@ th.colHead { white-space: nowrap; }
 			<?php
 				include(REL(__FILE__,"../catalog/itemEditorForm.php"));
 			?>
-			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
 		</form>
