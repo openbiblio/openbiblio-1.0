@@ -42,7 +42,10 @@ class Biblios extends CoreTable {
 		return array($bibid, NULL);
 	}
 	function xupdate ($updtData) {
-		/****** currently does not post new entries to database, do NOT use ******/
+		/** currently does not post new entries to database, do NOT use 
+		 *  TODO should be fixed to replace mess in biblioChange.php
+		 */
+
 		## get user screen content
 		$updts = $updtData['marc'];
 		## get database content
@@ -94,7 +97,6 @@ class Biblios extends CoreTable {
 		parent::update($newBiblio);
 	}
 	function update_el($biblio) {
-//echo "Biblios: in update_el()<br/>\n";
 		$this->lock();
 		if (!isset($biblio['bibid'])) {
 			Fatal::internalError(T("No bibid set in biblio update"));

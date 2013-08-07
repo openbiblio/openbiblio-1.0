@@ -92,11 +92,8 @@ function postBiblioChange($nav) {
 	 */
 	$fields = array();
 
-//	foreach ($_POST['fields'] as $f) {
 	foreach ($_POST['fields'] as $tf=>$f) {
 		$f = expand($tf,$f);
-//echo "update field-tf {$tf}==>";print_r($f);echo"<br/>\n";
-//echo "working field-tf {$tf}<br/>\n";
 		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {
 			echo "f: Encountered SHORT marc code '{$f['tag']}'<br />or too long subfield code '{$f['subfield']}'.<br/>\n";
 			continue;
@@ -107,8 +104,6 @@ function postBiblioChange($nav) {
 		$fidxSuffix = null;
 		foreach ($_POST['fields'] as $ts=>$s){
 		$s = expand($ts,$s);
-//echo "update field-ts {$ts}==>";print_r($s);echo"<br/>\n";
-//echo "working field-ts {$ts}<br/>\n";
 			if (strlen($s['tag']) != 3 or strlen($s['subfield_cd']) != 1) {
 				echo "s: Encountered SHORT marc code '{$s['tag']}'<br />or too long subfield code '{$s['subfield_cd']}'.<br/>\n";
 				continue;
@@ -133,33 +128,25 @@ function postBiblioChange($nav) {
 			$sfidx .= 'new';
 		}
 
-		//$fields[$fidx][$sfidx] = new MarcSubfield($f[subfield_cd], trim($f[data]));
 		if (!array_key_exists($sfidx,$fields[$fidx])) {
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}
 	}
-echo"fields===>";print_r($fields);echo"<br/>\n";
 
 	$mrc = new MarcRecord();
-	//$mrc->setLeader($biblio[marc]->getLeader());
 	$ldr = $mrc->getLeader();
 	$mrc->setLeader($ldr);
 
 	foreach ($_POST['fields'] as $tf=>$f) {
-echo"field===>";print_r($_POST['fields'][$tf]);echo"<br/>\n";
 		$f = expand($tf,$f);
 		$fidx = $f['tag'] .'-'. $f['fieldid'];
 		if (is_a($f, 'MarcControlField') or !array_key_exists($fidx, $fields)) {
-			//array_push($mrc->fields, $f);
 			$mrc->addFields($f);  ## adds $f to the mrc array
 			continue;
 		}
-//		$fld = new MarcDataField($f->tag, $f->indicators);
 		$fld = new MarcDataField($f['tag'], $f['subfield_cd']); ## new $fld has indicators & subfields
 		## Add/remove current/updated/deleted fields/subfields ##
-//		foreach ($f->subfields as $sf) {
 		foreach ($fld as $sf) {
-echo"sf===>";print_r($sf);echo"<br/>\n";
 			$sfidx = $sf->indicator .'-'. $f['subfieldid'];
 			if (!array_key_exists($sfidx, $fields[$fidx])) {
 				array_push($fld->subfields, $sf);
@@ -176,11 +163,9 @@ echo"sf===>";print_r($sf);echo"<br/>\n";
 		}
 		unset($fields[$fidx]);
 		if (!empty($fld->subfields)) {
-			//array_push($mrc->fields, $fld);
 			$mrc->addFields($fld);
 		}
 	}
-echo"mrc before 'add'===>";print_r($mrc);echo"<br/>\n";
 
 	/* Add new fields */
 	foreach ($fields as $fidx => $subfields) {
@@ -191,11 +176,9 @@ echo"mrc before 'add'===>";print_r($mrc);echo"<br/>\n";
 			}
 		}
 		if (!empty($fld->subfields)) {
-			//array_push($mrc->fields, $fld);
 			$mrc->addFields($fld);
 		}
 	}
-echo"mrc after 'add'===>";print_r($mrc);echo"<br/>\n";
 
 // ----- following does not appear to be used ----
 ///* Sort subfields and apply "smart" processing for particular fields */
@@ -222,7 +205,7 @@ echo"mrc after 'add'===>";print_r($mrc);echo"<br/>\n";
 ////echo"fields revised&sorted===>";print_r($mrc);echo"<br/>\n";
 
 	## prepare the update/insert structure
-	## note: relocated from top of function to clarify useage ##
+	## note: relocated from top of function to where used ##
 	if (!isset ($biblios)) $biblios = new Biblios();
 	if ($_POST["bibid"]) {
 		## update existing, so get copy of DB data
@@ -232,7 +215,6 @@ echo"mrc after 'add'===>";print_r($mrc);echo"<br/>\n";
 		$biblio = array(marc=>new MarcRecord);
 	}
 	assert($biblio != NULL);
-echo "biblio==>";print_r($biblio);echo"<br/>\n";
 
   ## over-write with update material
 	$biblio['marc'] = $mrc;
@@ -247,18 +229,13 @@ echo "biblio==>";print_r($biblio);echo"<br/>\n";
 	$biblio['last_change_userid'] = $_POST["userid"];
 	$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
 
-	#**************************************************************************
-	#*  Insert/Update bibliography
-	#**************************************************************************
+	##  Insert/Update bibliography ##
 	if ($nav == "newconfirm") {
-echo "biblio rdy to insert==>";print_r($biblio);echo"<br/>\n";
 		$bibid = $biblios->insert($biblio);
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {
-echo "biblio rdy to update<br/>\n";
 		$bibid = $_POST["bibid"]; /** ??? what's this for ??? **/
 		$biblios->update($biblio);
-//echo "back from updating<br/>\n";
 		// system assumes ANY OTHER message implies failure
 		// dont change this string unless you are VERY sure
 		$msg = "!!success!!";

@@ -16,8 +16,17 @@
 		require_once(REL(__FILE__, "../classes/Marc.php"));
 	  include(REL(__FILE__,'../catalog/biblioChange.php'));
 
-		## new, convert old format to new ##
-		/*
+		/* ---convert old format to new---
+		## legacy format, still used by 'NewItems' ##
+		bibid
+		collectionCd	2
+		fields[0][data]	another testing
+		fields[0][fieldid]
+		fields[0][subfield_cd]	a
+		fields[0][subfieldid]
+		fields[0][tag]	245
+		## new format, used in 'ExistingItems', etc.
+		## see .../catalog/catalogSrvr.php for usage example.
 		bibid
 		collectionCd 2
 		fields[245$a]['codes'] subfieldid=xx&fieldid=yy
@@ -32,7 +41,6 @@
 			}
 			if ($k == 'fields') {
 				foreach ($v as $fld) {
-//echo"fld==>";print_r($fld);echo"<br/>\n";
 				$tag = $fld['tag'].'$'.$fld['subfield_cd'];
 				$rec[$tag]['data'] = $fld['data'];
 				$rec[$tag]['codes'] = 'subfieldid='.$fld['subfieldid'].'&fieldid='&$fld['fieldid'];
@@ -40,25 +48,10 @@
 			}
 		}
 		$_POST['fields']= $rec;
-//echo "POST==>";print_r($_POST);echo"<br/>\n";
-//return "as requested";
+		## ----------------------------------
 
-		## original ##
-		/*
-		bibid
-		collectionCd	2
-		fields[0][data]	another testing
-		fields[0][fieldid]
-		fields[0][subfield_cd]	a
-		fields[0][subfieldid]
-		fields[0][tag]	245
-		*/
 	  $nav = "newconfirm";
   	$msg = PostBiblioChange($nav);
-//  	if (is_object($msg)) {
-//  		$rslt = json_decode($msg);
-//  		$bibid = $rslt->bibid;
-//		}
 	  echo $msg;
 	}
 	## ---------------------------------- ##
