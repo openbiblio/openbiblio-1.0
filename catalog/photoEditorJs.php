@@ -210,7 +210,7 @@ var wc = {
 	},
 	doDeletePhoto: function (e) {
 		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {
-	  	$.post(bs.url,{'mode':'deletePhoto',
+	  	$.post(wc.url,{'mode':'deletePhoto',
 										 'bibid':$('#fotoBibid').val(),
 										 'url':$('#fotoName').val(),
 										},

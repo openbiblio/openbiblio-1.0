@@ -193,8 +193,14 @@ class BiblioImages extends DBTable {
 		$this->lock();
 		$imgs = $this->getByBibid($bibid);
 		while ($img = $imgs->fetch_assoc()) {
-			@unlink("../photos/".$img['url']);
-			@unlink("../photos/".$img['imgurl']);
+			try {
+				//@unlink("../photos/".$img['url']);
+				//@unlink("../photos/".$img['imgurl']);
+				unlink("../photos/".$img['url']);
+			}
+			catch (Exception $err){
+				echo "Error while trying to 'unlink()' photo for biblio #{$bibid}.";
+			}
 			$sql = $this->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
 				$bibid, $img['imgurl']);
 			$this->act($sql);

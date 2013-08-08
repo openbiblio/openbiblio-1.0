@@ -132,6 +132,7 @@ inptFld: function (type, name, value, attrs, data) {
 	},
 /* --------------------------------- */
 	getSelectBox: function  (boxId, getText/*boolean*/) {
+		var sel, rslt;
 		if (typeof(boxId) === 'string')
 			sel = $('#'+boxId);
 		else
