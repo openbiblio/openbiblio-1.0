@@ -117,9 +117,6 @@ var ie = {
 		$('#itemEditorDiv td.filterable').hide();
 		obib.reStripe2('biblioFldTbl','odd');
 
-		$('#itemSubmitBtn').on('click',null,ie.doItemUpdate)
-											 .val('<?php echo T("Update"); ?>');
-
 		$('#itemSubmitBtn').enable();
 		$('#itemEditorDiv').show();
 	},
@@ -209,27 +206,6 @@ var ie = {
 		//console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
 		var destId = '#marcBody input[name="fields['+rowNmbr+'][data]"]';
 		$(destId).val(text);
-	},
-
-	/* ====================================== */
-	doItemUpdate: function (e) {
-		e.preventDefault();
-		e.stopPropagation();
-		var params = "&mode=updateBiblio&" + $('#biblioEditForm').not('.online').serialize();
-	  $.post(ie.url,params, function(response){
-	    if (response == '!!success!!'){
-    		$('#itemEditorDiv').hide();
-				// repeat search with existing criteria, to assurre a current display
-				if (bs.srchType == 'barCd')
-					bs.doBarCdSearch();
-				else if (bs.srchType = 'phrase')
-					bs.doPhraseSearch();
-			} else {
-			  // failure, show error msg, leave form in place
-				$('#itemRsltMsg').html(response);
-	 		}
-	  });
-	  return false;
 	},
 };
 

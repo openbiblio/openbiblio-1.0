@@ -92,7 +92,10 @@ var bs = {
 			}
 		});
 
-		// for the copy editor screen
+		// for the item editor screen
+		$('#itemSubmitBtn').on('click',null,bs.doItemUpdate)
+											 .val('<?php echo T("Update"); ?>');
+
 		$('#copyCancelBtn').on('click',null,function () {
 			idis.fetchCopyInfo(); // refresh copy display
 			bs.rtnToBiblio();
@@ -476,7 +479,8 @@ var bs = {
 				var lines = [],
 						lineNo;
 				$.each(marc, function (ndx, fld) {
-					if (!fld.value) fld.value = 'n/a';
+					//if (!fld.value) fld.value = 'n/a';
+					if (!fld.value) fld.value = '';
 					lineNo = fld.line;
 					lines[lineNo] = fld.value.trim();
 				});
@@ -631,75 +635,28 @@ var bs = {
 	
 	/* ====================================== */
 	doItemEdit: function (biblio) {
-ie.doItemEdit(biblio);
-return;
+		ie.doItemEdit(biblio);
+		return;
+	},
 
-		$('#onlnUpdtBtn').show();
-		$('#onlnDoneBtn').hide();
-	  $('#biblioDiv').hide();
-
-	  bs.bibid = biblio.bibid;
-	  bs.matlCd = biblio.matlCd;
-	  bs.collCd = biblio.collCd;
-	  bs.opacFlg = biblio.opacFlg;
-	  $.get(bs.url,{'mode':'getBiblioFields',
-									'bibid':bs.bibid,
-									'matlCd':bs.matlCd,
-									'collCd':bs.collCd},
-									function (response) {
-			$('#marcBody').html(response);
-			$('#itemEditorDiv fieldset legend').html('<?php echo T("Edit Item Properties"); ?>');
-			$('#itemEditorDiv td.filterable').hide();
-			obib.reStripe2('biblioFldTbl','odd');
-
-			// set non-MARC fields using data on hand
-			$('#opacFlg').val(bs.opacFlg);
-			$('#itemMediaTypes').val(bs.matlCd);
-			$('#itemEditColls').val(bs.collCd);
-			
-			// fill MARC fields with data on hand
-			// first non-repeating 'input' fields
-			$('#marcBody input.only1:text').each(function (){
-			  var tmp = bs.findMarcField(biblio, this.id);
-			  if (tmp){
-			  	$('#marcBody #'+tmp.marcTag).val(tmp.value);
-			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
-			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
-			  }
-			});
-			// then any 'textarea' fields
-			$('#marcBody textarea.only1').each(function() {
-			  var tmp = bs.findMarcField(biblio, this.id);
-			  if (tmp){
-			  	$('#marcBody #'+tmp.marcTag).val(tmp.value);
-			  	$('#marcBody #'+tmp.marcTag+'_fieldid').val(tmp.fieldid);
-			  	$('#marcBody #'+tmp.marcTag+'_subfieldid').val(tmp.subfieldid);
-				}
-			});
-			// then repeaters
-			bs.lastFldTag = ''; 
-			$('#marcBody input.rptd:text').not('.online').each(function (){
-				var fldNamePrefix = (this.name.split(']'))[0]+']';
-			  if (this.id != bs.lastFldTag) {
-					bs.lastFldTag = this.id;
-			  	bs.tmpList = bs.findMarcFieldSet(biblio, this.id);
-			  	bs.fldNo = 0; bs.maxFldNo = bs.tmpList.length;
-				}
-				if (bs.fldNo < bs.maxFldNo) {
-				  var tmp = bs.tmpList;
-					var selector1 = 'input'+'[name="'+fldNamePrefix+'[data]"]';
-			  	$(selector1).val(tmp[bs.fldNo].value);
-			  	var selector2 = 'input'+'[name="'+fldNamePrefix+'[fieldid]"]';
-			  	$(selector2).val(tmp[bs.fldNo].fieldid);
-			  	var selector3 = 'input'+'[name="'+fldNamePrefix+'[subfieldid]"]';
-			  	$(selector3).val(tmp[bs.fldNo].subfieldid);
-			  	bs.fldNo++;
-			  }
-			});
-//			ie.init(); // ensure field bindings are current
-
-//    	$('#itemEditorDiv').show();
-		});
+	doItemUpdate: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var params = "&mode=updateBiblio&" + $('#biblioEditForm').not('.online').serialize();
+	  $.post(ie.url,params, function(response){
+	    if (response == '!!success!!'){
+    		$('#itemEditorDiv').hide();
+				// repeat search with existing criteria, to assurre a current display
+				if (bs.srchType == 'barCd')
+					bs.doBarCdSearch();
+				else if (bs.srchType = 'phrase')
+					bs.doPhraseSearch();
+			} else {
+			  // failure, show error msg, leave form in place
+				$('#itemRsltMsg').html(response);
+	 		}
+	  });
+	  return false;
 	},
 
 	/* ====================================== */

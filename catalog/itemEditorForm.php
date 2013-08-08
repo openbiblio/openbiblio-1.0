@@ -10,9 +10,6 @@
  */
 ?>
 
-	<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T("Fetch On-line Data"); ?>" />
-	<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T("Search Complete"); ?>" />
-
 	<fieldset>
 	<legend><?php echo T("Item"); ?></legend>
 	<table id="biblioFldTbl" >
@@ -46,9 +43,6 @@
 		</tbody>
 	</table>
 	</fieldset>
-
-	<!--input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
-	<input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 
 <?php
 	include_once(REL(__FILE__,'itemEditorJs.php'));

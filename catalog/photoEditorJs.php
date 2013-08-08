@@ -193,11 +193,11 @@ var wc = {
 										var data = JSON.parse(response);
 										//console.log('image posting OK');
 										var crntFotoUrl = '../photos/' + data[0]['url'];
-										if (typeof(bs) !== 'undefined') bs.crntFotoUrl = crntFotoUrl;
+										if (typeof bs !== 'undefined') bs.crntFotoUrl = crntFotoUrl;
 										$('#fotoMsg').html('cover photo posted').show();
 										$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
       									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-										bs.getPhoto(bibid, '#photo_'+bibid );
+										if(typeof bs !== 'undefined') bs.getPhoto(bibid, '#photo_'+bibid );
 										$('#photoAddBtn').hide();
 										$('#photoEditBtn').show();
 									}

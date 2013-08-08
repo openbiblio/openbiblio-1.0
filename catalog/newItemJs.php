@@ -269,6 +269,7 @@ var ni = {
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
     $('#fotoMsg').hide();
 		$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
+		$('#fotoBibid').val(ni.bibid);
 
 		$('#updtFotoBtn').hide();
 		$('#deltFotoBtn').hide();

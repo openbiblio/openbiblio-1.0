@@ -105,6 +105,9 @@ member checkout history not yet implemented.
 Cover Photos: edit-delete removes photo, but adding new photo results in old
 photo being shown.
 
+8 Aug 2013 - Fred
+Content updates are not being accepted.
+
 ###################### Completed, most recent at top #########################
 
 19 July 2013 - Fred. fixed 7 Aug, YAZ is now part of PHP-PECL
