@@ -50,7 +50,7 @@ var ie = {
 			name = 'fields['+key+']';
 			txt += '	<td valign="top" >'+"\n";
 			var dataFlds = 'subfieldid='+val["subfieldid"]+'&fieldid='+val["fieldid"];
-			txt += flos.inptFld('hidden', name+'[codes]', dataFlds)
+			txt += flos.inptFld('hidden', name+'[codes]', dataFlds)+"\n";
 		}
 
 		/* common for both modes */

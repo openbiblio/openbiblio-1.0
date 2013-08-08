@@ -33,7 +33,6 @@ abstract class CoreTable extends DBTable {
 		return parent::insert_el($rec, $confirmed);
 	}
 	protected function update_el($rec, $confirmed=false) {
-echo "CoreTable: in update_el()<br/>\n";
 		$date = date('Y-m-d H:i:s');
 		$rec['last_change_dt'] = $date;
 		$rec['last_change_userid'] = $_SESSION['userid'];

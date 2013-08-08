@@ -182,25 +182,28 @@ var wc = {
 				url = $('#fotoName').val(),
 				bibid = $('#fotoBibid').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
-		$.post(wc.url,{'mode':'addNewPhoto',
-									 'type':'base64',
-									 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
-                   'bibid':bibid,
-									 'url': url,
-                   'position':0,
-									},
-									function (response) {
-										var data = JSON.parse(response);
-										//console.log('image posting OK');
-										var crntFotoUrl = '../photos/' + data[0]['url'];
-										if (typeof bs !== 'undefined') bs.crntFotoUrl = crntFotoUrl;
-										$('#fotoMsg').html('cover photo posted').show();
-										$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
-      									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-										if(typeof bs !== 'undefined') bs.getPhoto(bibid, '#photo_'+bibid );
-										$('#photoAddBtn').hide();
-										$('#photoEditBtn').show();
-									}
+		$.post(wc.url,
+						{'mode':'addNewPhoto',
+						 'type':'base64',
+						 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
+             'bibid':bibid,
+						 'url': url,
+             'position':0,
+						},
+						function (response) {
+							var data = JSON.parse(response);
+							//console.log('image posting OK');
+							var crntFotoUrl = '../photos/' + data[0]['url'];
+							$('#fotoMsg').html('cover photo posted').show();
+							$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
+									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+							if (typeof bs !== 'undefined') {
+								bs.crntFotoUrl = crntFotoUrl;
+								bs.getPhoto(bibid, '#photo_'+bibid );
+							}
+							$('#photoAddBtn').hide();
+							$('#photoEditBtn').show();
+						}
 		);
 		//e.preventDefault();
 		return false;

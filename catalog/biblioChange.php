@@ -51,25 +51,25 @@ function fieldCmp($a, $b) {
 }
 
 function postBiblioChange($nav) {
-	/**
-	 * expected input data format
-	 * bibid=nnnn
-	 * collectionCd=aa
-	 * fields[245$a]['codes']='subfieldid=xx&fieldid=yy'
-	 * fields[245$a]['data']='another testing'
-	 *
-	 * old format was:
-	 * bibid=nnnnn
-	 * collectionCd=aa
-	 * fields[$250$a]['tag']=250
-	 * fields[$250$a]['subfield_cd']=aa
-	 * fields[$250$a]['fieldidid']=nnnn
-	 * fields[$250$a]['subfieldid']=nnnnn
-	 * fields[$250$a]['data']='another testing'
-	 */
 	## --------------------------------------------- ##
 	## convert new format to old for MARC processing ##
 	function expand ($t, $f) {
+			/**
+			 * expected input data in new format
+			 * bibid=nnnn
+			 * collectionCd=aa
+			 * fields[245$a]['codes']='subfieldid=xx&fieldid=yy'
+			 * fields[245$a]['data']='another testing'
+			 *
+			 * old format was:
+			 * bibid=nnnnn
+			 * collectionCd=aa
+			 * fields[$250$a]['tag']=250
+			 * fields[$250$a]['subfield_cd']=aa
+			 * fields[$250$a]['fieldidid']=nnnn
+			 * fields[$250$a]['subfieldid']=nnnnn
+			 * fields[$250$a]['data']='another testing'
+			 */
 		list($tag, $suf, $rep) = explode('$', $t);
     $f['tag'] = $tag;
     $f['subfield_cd'] = $suf;
@@ -78,6 +78,7 @@ function postBiblioChange($nav) {
 		$f['fieldid'] = $tmp[1];
 		$tmp = explode('=',$codes[0]);
 		$f['subfieldid'] = $tmp[1];
+		unset($codes); ## no longer needed
     ## fields[$250$a]['data'] same for both formats
 		return $f;
 	}
@@ -91,7 +92,6 @@ function postBiblioChange($nav) {
 	 * sufficient for the easy-edit interface.
 	 */
 	$fields = array();
-
 	foreach ($_POST['fields'] as $tf=>$f) {
 		$f = expand($tf,$f);
 		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {
@@ -104,7 +104,7 @@ function postBiblioChange($nav) {
 		$fidxSuffix = null;
 		foreach ($_POST['fields'] as $ts=>$s){
 		$s = expand($ts,$s);
-			if (strlen($s['tag']) != 3 or strlen($s['subfield_cd']) != 1) {
+			if (strlen($s['tag']) < 3 or strlen($s['subfield_cd']) > 1) {
 				echo "s: Encountered SHORT marc code '{$s['tag']}'<br />or too long subfield code '{$s['subfield_cd']}'.<br/>\n";
 				continue;
 			}
@@ -133,6 +133,7 @@ function postBiblioChange($nav) {
 		}
 	}
 
+	## create a new empty MARC structure and copy above changed material into it
 	$mrc = new MarcRecord();
 	$ldr = $mrc->getLeader();
 	$mrc->setLeader($ldr);
@@ -146,28 +147,35 @@ function postBiblioChange($nav) {
 		}
 		$fld = new MarcDataField($f['tag'], $f['subfield_cd']); ## new $fld has indicators & subfields
 		## Add/remove current/updated/deleted fields/subfields ##
+		## for each subfield in new structure, copy existing structure if exists
 		foreach ($fld as $sf) {
 			$sfidx = $sf->indicator .'-'. $f['subfieldid'];
 			if (!array_key_exists($sfidx, $fields[$fidx])) {
+				# key exists in both places, add user input
 				array_push($fld->subfields, $sf);
 			} else if (strlen($fields[$fidx][$sfdix]->data) != 0) {
+				# user data & structure exists not in $fld, add it all
 				array_push($fld->subfields, $fields[$fidx][$sfidx]);
+				# remove user material so process not confused
 				unset($fields[$fidx][$sfidx]);
 			}
 		}
+		## if user data remains in $fields, add to $fld
+		//foreach($fields[$fidx] as $sf) {
 		foreach($fields[$fidx] as $sf) {
-			//if (strlen($sf->data) != 0) {
-			if (!empty($sf->data)) {
+			if (strlen($sf->data) != 0) {
 				array_push($fld->subfields, $sf);
 			}
 		}
+		# again, remove copied material
 		unset($fields[$fidx]);
+		# add additional empty structure where missing
 		if (!empty($fld->subfields)) {
 			$mrc->addFields($fld);
 		}
 	}
 
-	/* Add new fields */
+	/* Add new fields for any user entries not yet processed */
 	foreach ($fields as $fidx => $subfields) {
 		$fld = new MarcDataField(substr($fidx, 0, 3));
 		foreach ($subfields as $sf) {
@@ -200,9 +208,9 @@ function postBiblioChange($nav) {
 //	}
 //
 //	/* Set field display values -- TODO */
-//	/* Sort fields by tag and display value */
-//	usort($fields, fieldCmp);
-////echo"fields revised&sorted===>";print_r($mrc);echo"<br/>\n";
+	## Sort fields by tag and display value ##
+	usort($fields, fieldCmp);
+//echo"fields revised&sorted===>";print_r($mrc);echo"<br/>\n";
 
 	## prepare the update/insert structure
 	## note: relocated from top of function to where used ##
@@ -228,13 +236,14 @@ function postBiblioChange($nav) {
 		$biblio['collection_cd'] = $_POST['collection_cd'];
 	$biblio['last_change_userid'] = $_POST["userid"];
 	$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
+//echo"biblioChg: biblio===>";print_r($biblio);echo"<br/>\n";
 
 	##  Insert/Update bibliography ##
 	if ($nav == "newconfirm") {
 		$bibid = $biblios->insert($biblio);
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {
-		$bibid = $_POST["bibid"]; /** ??? what's this for ??? **/
+		//$bibid = $_POST["bibid"]; /** ??? what's this for ??? **/
 		$biblios->update($biblio);
 		// system assumes ANY OTHER message implies failure
 		// dont change this string unless you are VERY sure

@@ -28,11 +28,11 @@ class Biblio {
 		$this->bibid = $bibid;
 	}
 	/**
-	 * returns a complete description of current Biblio as an array of 2 arrays
+	 * returns a complete description of current Biblio as an array of 3 arrays
 	 * 'hdr' an associative array of all primitive basic data
 	 * 'marc' an associative array of all existing tags with a xxx$x key; each
-	 * tag has an array containing position, label, and value. A third array ['cpys']
-	 * contains a list of copy ids.
+	 *      tag has an array containing position, label, and value.
+	 * ['cpys'] contains a list of copy ids.
 	 */
 	public function getData () {
 		$this->fetch_biblio();
@@ -94,8 +94,10 @@ class Biblio {
 
 	## ------------------------------------------------------------------------ ##
 	private function fetch_biblio () {
+		## get data from db
 		$ptr = new Biblios;
 		$rslt = $ptr->getOne($this->bibid);
+		## post relevent info to this object
 		$this->hdrFlds['bibid'] = $rslt['bibid'];
 		$this->hdrFlds['collection_cd'] = $rslt['collection_cd'];
 		$this->hdrFlds['material_cd'] = $rslt['material_cd'];
@@ -103,23 +105,34 @@ class Biblio {
 		$this->hdrFlds['createDt'] = $rslt['create_dt'];
 	}
 	private function fetch_marc () {
+		## get marc field list more this biblio's media type
 		$mat = new MaterialFields;
 		$this->marcFlds = $mat->getMediaTags($this->hdrFlds['material_cd']);
-
+		## retrieve all existing marc data for this biblio
 		$mrc = new MarcStore;
 		$rslt = $mrc->fetchMarcFlds($this->bibid);
 		if ($rslt->num_rows <= 1) die(T("Nothing Found"));
+		$firstRep = true;
 		while ($row = $rslt->fetch_assoc()) {
 			$tag = $row['tag'].'$'.$row['subfield_cd'];
 			if ($this->marcFlds[$tag.'$1']['repeatable'] > 0) {
-					$tag .= '$'.$row['seq'];
+				if($firstRep) {
+					$firstRep = false;
+					$rep = 1;
+				} else {
+					$rep++;
+				}
+				$tag .= '$'.$rep;
+//echo"Biblio: marcFlds {$tag} row===>";print_r($row);echo"<br/>\n";
 			}
+			## merge data with structure and post to this object
 			$this->marcFlds[$tag]['value'] = $row['subfield_data'];
 			$this->marcFlds[$tag]['fieldid'] = $row['fieldid'];
 			$this->marcFlds[$tag]['subfieldid'] = $row['subfieldid'];
 		}
 	}
 	private function fetch_title () {
+		## select all 'title' field material previously collected
 		$bibMarc = $this->marcFlds;
 		$a = $bibMarc['240$a']['value'];
 		$b = $bibMarc['245$a']['value'];
@@ -127,20 +140,29 @@ class Biblio {
 		$d = $bibMarc['246$a']['value'];
 		$e = $bibMarc['246$b']['value'];
 		$title = T("Nothing Found");
-		if (!empty($a) || !empty($b) || !empty($c)) $title = $a.' '.$b.' '.$c;
+		## build second-choice title string
 		if (!empty($d) || !empty($e)) $title = $d.' '.$e;
+		## build first-choice title string
+		if (!empty($a) || !empty($b) || !empty($c)) $title = $a.' '.$b.' '.$c;
+		## post title to this object
 		$this->hdrFlds['title'] = $title;
 	}
 	private function fetch_photoData () {
+		## get photo link from db
 		$img = new BiblioImages;
     $rslt = $img->getByBibid($this->bibid);
 		$row = $rslt->fetch_assoc();
+		## post photo link to this object
 		$this->hdrFlds['img'] = $row['url'];
 	}
 	private function fetch_copyList () {
+		## get copy ids from db
 		$cpys = new Copies;
+		## post list to this object
 		$this->cpyList = $cpys->getCpyList($this->bibid);
+		## determine copy availability from db status records
 		$info = $cpys->lookupAvability ($this->bibid);
+		## post availability icon and number of copies to this object
 		$this->hdrFlds['avIcon'] = $info['avIcon'];
 		$this->hdrFlds['ncpys'] = $info['nCpy'];
 	}
