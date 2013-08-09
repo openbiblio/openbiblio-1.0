@@ -16,6 +16,7 @@
 	require_once(REL(__FILE__, "../classes/SrchDb.php"));
 
 	require_once("../classes/Biblio.php");
+	require_once("../classes/Copy.php");
 
 /**
  * back-end API for Existing Biblio Management
@@ -172,8 +173,17 @@
 		break;
 		
 	case 'getCopyInfo':
-	  $theDb = new SrchDB;
-	  echo json_encode($theDb->getCopyInfo($_REQUEST[bibid]));
+	  //$theDb = new SrchDB;
+	  //echo json_encode($theDb->getCopyInfo($_REQUEST[bibid]));
+	  $bib = new Biblio($_GET['bibid']);
+		$bibData = $bib->getData();
+		$cpyList = $bibData['cpys'];
+		foreach ($cpyList as $cid) {
+			$cpy = new Copy($cid);
+			$cpys[] = $cpy->getData();
+			unset($cpy); # no longer needed
+		}
+		echo json_encode($cpys);
 	  break;
 
 	case 'updateBiblio':

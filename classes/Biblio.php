@@ -111,7 +111,7 @@ class Biblio {
 		## retrieve all existing marc data for this biblio
 		$mrc = new MarcStore;
 		$rslt = $mrc->fetchMarcFlds($this->bibid);
-		if ($rslt->num_rows <= 1) die(T("Nothing Found"));
+		if ($rslt->num_rows <= 1) return 'MARC '.T("Nothing Found");
 		$firstRep = true;
 		while ($row = $rslt->fetch_assoc()) {
 			$tag = $row['tag'].'$'.$row['subfield_cd'];

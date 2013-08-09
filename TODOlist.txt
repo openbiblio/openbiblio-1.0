@@ -73,15 +73,8 @@ update to look/work like CSV import
 Install needs to work for new installations
 
 14 July 2013 - Fred
-Login does not start with id field having focus.
-
-14 July 2013 - Fred
 Edit Biblio does not allow entering more than one subject line at a time.  Look into
 using more of code from 'new item' server process.
-
-23 July 2013 - Fred
-make more use of ListSrvr for getOpts() and other lookup table use.
-Remove from the various xxxSrvr.php files.
 
 27 July 2013 - Fred
 Reports: CopySearch needs to use input field type=date, pull down for site.
@@ -101,14 +94,21 @@ Marc input/output, cvs output, barcode printing, barcode input, .....
 31 July 2013 - Fred
 member checkout history not yet implemented.
 
-7 Aug 2013 - Fred
+###################### Completed, most recent at top #########################
+
+8 Aug 2013 - Fred, fixed 8 Aug
+Content updates are not being accepted.
+
+7 Aug 2013 - Fred, fixed 8 Aug
 Cover Photos: edit-delete removes photo, but adding new photo results in old
 photo being shown.
 
-8 Aug 2013 - Fred
-Content updates are not being accepted.
+14 July 2013 - Fred, date uncertain
+Login does not start with id field having focus.
 
-###################### Completed, most recent at top #########################
+23 July 2013 - Fred, date uncertain
+make more use of ListSrvr for getOpts() and other lookup table use.
+Remove from the various xxxSrvr.php files.
 
 19 July 2013 - Fred. fixed 7 Aug, YAZ is now part of PHP-PECL
 Online search is not working. Z3950 failing due to no YAZ installed.

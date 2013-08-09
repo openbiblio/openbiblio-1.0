@@ -135,10 +135,12 @@ class Copy {
 		$this->hist = $ptr;
 		$rslt = $ptr->getOne($this->hdrFlds['histid']);
 		$this->hdrFlds['status'] = $rslt['status_cd'];
+		$this->hdrFlds['status_dt'] = $rslt['status_begin_dt'];
 
 		if ($rslt['status_cd'] == 'out') {
 			$mbr = $this->cpy->getCheckoutMember($this->hdrFlds['histid']);
 			$this->hdrFlds['ckoutMbr'] = $mbr['mbrid'];
+			$this->hdrFlds['mbrName'] = $mbr['first_name'].' '.$mbr['last_name'];
 
 			$ptr = new CircCollections;
 			$this->cCol = $ptr;

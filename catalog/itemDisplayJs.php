@@ -19,8 +19,9 @@ var idis = {
 	?>
 	multiMode: false,
 
-	init: function (opts) {
+	init: function (opts, sites) {
 		idis.opts = opts;
+		idis.sites = sites;
 		idis.url = '../catalog/catalogServer.php';
 	},
 	
@@ -181,57 +182,50 @@ var idis = {
 	fetchCopyInfo: function () {
 	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
 	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.bibid}, function(jsonInpt){
-				idis.copyJSON = jsonInpt;
-				if (!idis.copyJSON) {
+				idis.copys = jsonInpt;
+				if (!idis.copys) {
 					var msg = '(<?php echo T("No copies"); ?>)';
 					$('tbody#copies').html('<tr><td colspan="9" class="hilite">'+msg+'</td></tr>');
 					return false; // no copies found
 				}
-				
+
 				var html = '';
-				for (var nCopy in idis.copyJSON) {
-				  idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
-					var cpyId = idis.crntCopy.copyid;
+				for (var n in idis.copys) {
+					var copy = idis.copys[n];
+				  idis.crntCopy = copy;
 				  html += "<tr>\n";
 				<?php if (!($tab == 'opac' || $tab == 'working' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
 						html += '	<td>\n';
-						html += '		<input type="button" id="edit-'+cpyId+'" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
-						html += '		<input type="button" id="delt-'+cpyId+'" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
-						html += '		<input type="hidden" value="'+cpyId+'" />\n';
+						html += '		<input type="button" id="edit-'+copy.copyid+'" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
+						html += '		<input type="button" id="delt-'+copy.copyid+'" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
+						html += '		<input type="hidden" value="'+copy.copyid+'" />\n';
 						html += '	</td>\n';
 				<?php } ?>
-
-					if (idis.crntCopy.site) {
-						html += "	<td>"+idis.crntCopy.site+"</td>\n";
+					if (copy.siteid) {
+						html += "	<td>"+idis.sites[copy.siteid]+"</td>\n";
 					}
 					else {
 						$('#siteFld').hide();
 					}
 
-					html += "	<td>"+idis.crntCopy.barcode_nmbr+"</td>\n";
+					html += "	<td>"+copy.barcode+"</td>\n";
 
-					html += "	<td>"+idis.crntCopy.status
-					if (idis.crntCopy.mbrId) {
-						var text = 'href="../circ/mbr_view.php?mbrid='+idis.crntCopy.mbrId+'"';
-					  html += ' to <a '+text+'>'+idis.crntCopy.mbrName+'</a>';
+					html += "	<td>"+copy.status
+					if (copy.ckoutMbr) {
+						var text = 'href="../circ/mbr_view.php?mbrid='+copy.ckoutMbr+'"';
+					  html += ' to <a '+text+'>'+copy.mbrName+'</a>';
 					}
 					html += "	</td>\n";
 
-					html += "	<td>"+idis.makeDueDateStr(idis.crntCopy.last_change_dt)+"</td>\n";
-
-					// Due back is onyl needed when checkked out - LJ
-					if(idis.crntCopy.statusCd == "ln" || idis.crntCopy.statusCd == "out"){
-						// Sometimes the info has to come out of an array (if coming from list) - LJ
-						var daysDueBack = parseInt(idis.theBiblio.daysDueBack);
-						if(isNaN(daysDueBack)) {			
-							daysDueBack = parseInt(idis.theBiblio[idis.bibid].daysDueBack);
-						}					
-						html += "	<td>"+idis.makeDueDateStr(idis.crntCopy.last_change_dt,daysDueBack)+"</td>\n";
+					if (copy.status == 'out') {
+						html += "	<td>"+copy.out_dt+"</td>\n";
+						html += "	<td>"+copy.due_dt+"</td>\n";
 					} else {
-						html += "<td>---</td>";
+						html += "<td>"+copy.status_dt+"</td>";
+						html += "<td>- - - - - - - -</td>";
 					}
 
-					html += "	<td>"+idis.crntCopy.copy_desc+"</td>\n";
+					html += "	<td>"+copy.desc+"</td>\n";
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
@@ -239,7 +233,7 @@ var idis = {
 
 				// dynamically created buttons
 				$('.editBtn').on('click',null,idis.doCopyEdit);
-				$('.deltBtn').on('click',{'copyid':idis.crntCopy.copyid},ced.doCopyDelete);
+				$('.deltBtn').on('click',{'copyid':copy.copyid},ced.doCopyDelete);
 	  });
 	},
 

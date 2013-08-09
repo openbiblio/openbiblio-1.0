@@ -203,27 +203,20 @@
 	case 'getHist':
 		$sql = "SELECT h.* "
 				 . "FROM booking_member m, booking b, biblio_status_hist h "
-				 . "WHERE (m.mbrid = {$_GET['mbrid']}) "
+				 . "WHERE (m.mbrid = ".$_GET['mbrid'].") "
 				 . "  AND (b.bookingid = m.bookingid) "
 				 . "  AND ((h.histid = b.out_histid) OR (h.histid = b.ret_histid)) "
-				 . " ORDER BY h.bibid, h.status_begin_dt ASC";
+				 . " ORDER BY h.bibid, b.out_dt ASC";
 		$rslt = $history->select($sql);
+//		if ($rslt->num_rows == 0) die(T("Nothing Found"));
 		$histRcds = array();
 		while ($row = $rslt->fetch_assoc()) {
+//echo"row==>";print_r($row);echo"<br/>\n";
 			$biblio = new Biblio($row['bibid']);
 			$bibData = $biblio->getData();
-			/*
-			$bibMarc = $bibData['marc'];
-			$a = $bibMarc['240$a'];
-			$b = $bibMarc['245$a'];
-			$c = $bibMarc['245$b'];
-			$d = $bibMarc['246$a'];
-			$e = $bibMarc['246$b'];
-			if (!empty($a) || !empty($b) || !empty($c)) $row['title'] = $a.' '.$b.' '.$c;
-			if (!empty($d) || !empty($e)) $row['title'] = $d.' '.$e;
-			*/
 			$row['title'] = $bibData['hdr']['title'];
 			$histRcds[] = $row;
+//echo"row==>";print_r($row);echo"<br/>\n";
 		}
 		echo json_encode($histRcds);
 		break;

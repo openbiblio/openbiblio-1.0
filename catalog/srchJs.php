@@ -111,9 +111,9 @@ var bs = {
 		bs.fetchOpts(); // also inits itemDisplayJs
 		bs.fetchCrntMbrInfo();
 		// prepare pull-down lists
+		bs.fetchSiteList();
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
-		bs.fetchSiteList();
 		// needed for search results presentation
 		bs.fetchMediaDisplayInfo();
 		bs.fetchMediaLineCnt();
@@ -223,8 +223,6 @@ var bs = {
 		bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';
 		bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
     bs.opts['current_site'] = <?php echo Settings::get('library_name');?>;
-		idis.init(bs.opts); // used for biblio item & copy displays
-		ie.init(bs.opts); // ensure field bindings are current
 	},
 	fetchCrntMbrInfo: function () {
 	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){
@@ -255,6 +253,7 @@ var bs = {
 	},
 	fetchSiteList: function () {
 	  $.getJSON(bs.listSrvr,{mode:'getSiteList'}, function(data){
+			bs.siteList = data;
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
@@ -262,6 +261,9 @@ var bs = {
 			$('#copySite').html(html);
 			html = '<option value="all"  selected="selected">All</option>' + html;
 			$('#srchSites').html(html);
+
+			idis.init(bs.opts, bs.siteList); // used for biblio item & copy displays
+			ie.init(bs.opts, bs.siteList); // ensure field bindings are current
 
 			// now ready to begin a search
 			bs.doAltStart();
