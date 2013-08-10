@@ -16,9 +16,8 @@ unset($_SESSION['postVars']);
 		HTML/JS conditional modules loaded in line as required.
 -->
 
-<script src="../shared/jsLib.js" defer></script>
-
-<script language="JavaScript" defer>
+<!--script src="../shared/jsLib.js" defer></script-->
+<script language="JavaScript" >
 "use strict";
 
 // main javascript functionality set in own namespace to avoid potential conflict

@@ -1,4 +1,9 @@
+<script language="JavaScript" defer>
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
 // JavaScript Document
+"use strict";
 
 /**
  * misc support JavaScript utility functions
@@ -8,8 +13,6 @@
 /**
  * jQuery plugins for openBiblio
  */
-//
-"use strict";
 
 (function($){
 //-------------------------------------------------------------------
@@ -62,12 +65,20 @@ $.fn.loadSelect = function (optionsDataArray) {
 
 var flos = {
 //-------------------------------------------------------------------
+<?php
+			## required for inptFld() below, may be used by others ##
+			require_once(REL(__FILE__, "../model/Validations.php"));
+	  	$db = new Validations;
+			$set = $db->getAll('description');
+			echo "	patterns: {\n";
+			while ($row = $set->fetch_assoc()) {
+				echo '		"'.$row['code'].'":"'.$row['pattern'].'",'."\n";
+			}
+			echo "	},\n\n";
+?>
+
 // javascript version of OpenBiblio PHP function 2Aug2013 - fl
 inptFld: function (type, name, value, attrs, data) {
-	// establish patterns for later use
-	if (typeof flos.patterns == 'undefined') {
-		flos.patterns = {'date':'', 'year':'', 'email':'', 'isbn':'', 'issn':'', 'loc':'', 'fone':'', 'zip':'', 'url':''};
-	}
 	var s = "";
 	if (!attrs) attrs = {};
 	if (!attrs['id']) attrs['id'] = name;
@@ -205,3 +216,4 @@ inptFld: function (type, name, value, attrs, data) {
     return returnString;
 	}
 }
+</script>

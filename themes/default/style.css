@@ -101,9 +101,6 @@ span.WIDE { display: block; overflow: hidden; }
 */
 textarea { width:100%; }
 
-/* required fields */
-:required::after { content:"*"; color:red; !important; }
-
 /*************************************************/
 aside { 
 	width:auto%; margin:0; padding:0; margin-bottom:2px;

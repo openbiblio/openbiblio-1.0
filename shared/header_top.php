@@ -70,15 +70,19 @@ if (!isset($doing_install) or !$doing_install) {
 		 It also deals with html5 support issues for older IE browsers. 	 -->
 <script src="../shared/modernizr-2.6.2.min.js"></script>
 
+<!-- *********************************************************************** -->
 <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
-<script src="../shared/prefixfree.min.js"></script>
-  
-<!-- we place jQuery here because several JS modules loaded in line require -->
-<!-- it be inplace before they are loaded. -->
+<!-- this is considered to be temporary until the use of prefixes ends -->
+<script src="../shared/prefixfree.min.js"></script> <!-- review yearly -->
+<!-- *********************************************************************** -->
+
+<!-- we place these JS files here because several JS modules loaded in line -->
+<!-- depend on them being in place. -->
 <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
 <!--[if gt IE 8]><!-->
 <script src="../shared/jquery/jquery-2.0.3.min.js"></script>
 <!--<![endif]-->
+<?php include ("../shared/jsLibJs.php"); ?>
 
 <!-- All other JavaScript is placed at the end of <body> (see footer.php)
 		 to match industry best practices and to improve overall performance -->
