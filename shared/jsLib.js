@@ -54,6 +54,7 @@ $.fn.loadSelect = function (optionsDataArray) {
 	});
 };
 })(jQuery);
+
 /**
  * legacy javascript that I can't find a jQuery equivalent of
  * - needs to be made into a jQuery plugin as above
@@ -62,8 +63,11 @@ $.fn.loadSelect = function (optionsDataArray) {
 var flos = {
 //-------------------------------------------------------------------
 // javascript version of OpenBiblio PHP function 2Aug2013 - fl
-//inptFld: function (type, name, value="", attrs=null, data=null) {
 inptFld: function (type, name, value, attrs, data) {
+	// establish patterns for later use
+	if (typeof flos.patterns == 'undefined') {
+		flos.patterns = {'date':'', 'year':'', 'email':'', 'isbn':'', 'issn':'', 'loc':'', 'fone':'', 'zip':'', 'url':''};
+	}
 	var s = "";
 	if (!attrs) attrs = {};
 	if (!attrs['id']) attrs['id'] = name;
@@ -101,7 +105,17 @@ inptFld: function (type, name, value, attrs, data) {
 		});
 		s += "/>";
 		break;
-	default:
+	case 'number': attrs['pattern'] = '/\d*/'; handleInput(); break;
+	case 'date': attrs['pattern'] = flos.patterns.date; handleInput(); break;
+	case 'year': attrs['pattern'] = flos.patterns.year; handleInput(); break;
+	case 'tel': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
+	case 'url': attrs['pattern'] = flos.patterns.url; handleInput(); break;
+	case 'email': attrs['pattern'] = flos.patterns.email; handleInput(); break;
+	default: handleInput(); break;
+	}
+	return s;
+	/* ------------a part of above inptFld() ------------------- */
+	function handleInput () {
 		s += '<input type="'+type+'" name="'+name+'" ';
 		if (value != "") {
 			s += 'value="'+value+'" ';
@@ -117,9 +131,8 @@ inptFld: function (type, name, value, attrs, data) {
 		if (attrs['required']) {
 			s += '<span class="reqd">*</span>';
 		}
-		break;
 	}
-	return s;
+	/* ------------------------------------------------------- */
 },
 
 /* --------------------------------- */

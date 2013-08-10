@@ -8,6 +8,11 @@
 	
 	
 	switch ($_REQUEST['cat']) {
+		case 'validation':
+			require_once(REL(__FILE__, "../model/Validations.php"));
+	  	$db = new Validations;
+			break;
+
 		case 'locale':
 			require_once(REL(__FILE__, "../classes/Queryi.php"));
 			require_once(REL(__FILE__, "../classes/Localize.php"));
@@ -26,6 +31,26 @@
 	}
 
 	switch ($_REQUEST['mode']){
+	  #-.-.-.-.-.- validations -.-.-.-.-.-.-
+		case 'getAll_validation':
+		  $valids = array();
+			$set = $db->getAll('description');
+			while ($row = $set->fetch_assoc()) {
+			  $valids[] = $row;
+			}
+			echo json_encode($valids);
+			break;
+		case 'addNew_validation':
+			echo $db->insert($_REQUEST);
+			break;
+		case 'update_validation':
+			echo $db->update($_REQUEST);
+			break;
+		case 'd-3-L-3-t_validation':
+			echo $db->deleteOne($_POST['code']);
+			break;
+
+
 	  #-.-.-.-.-.- database -.-.-.-.-.-.-
 	  case 'fetchCollSet':
 		  $set = array();
@@ -36,7 +61,7 @@
 			ksort($set);
 			echo json_encode($set);
 	  	break;
-	  	
+
 		case 'changeColl':
 			$charset = $_REQUEST['charset'];
 			$collation = $_REQUEST['collation'];

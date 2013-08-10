@@ -8,7 +8,7 @@
  * if type is unrecognized, a generic type="text" will be provided
  * if no 'id' is specified in $attrs, 'id' will be same as 'name' ##
  * @author Micah Stetson
- * @authot Fred LaPlante
+ * @author Fred LaPlante
  */
 
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {

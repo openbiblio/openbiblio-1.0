@@ -221,7 +221,8 @@ var idis = {
 						html += "	<td>"+copy.out_dt+"</td>\n";
 						html += "	<td>"+copy.due_dt+"</td>\n";
 					} else {
-						html += "<td>"+copy.status_dt+"</td>";
+						var dt_parts = copy.status_dt.split(' ');
+						html += "<td>"+dt_parts[0]+"</td>";
 						html += "<td>- - - - - - - -</td>";
 					}
 

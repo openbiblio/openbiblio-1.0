@@ -110,6 +110,10 @@ List.prototype.fetchHandler = function(dataAray){
 						 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
 						 + 		item[fld] + '</td>\n';	
 			}
+			else if (theClass == 'textarea') {
+				html += '	<td valign="top" class="'+theClass+'">'
+						 +  '		<textarea cols="100" readonly>'+item[fld]+'</textarea></td>\n';
+			}
 			else {
 				html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
 			}

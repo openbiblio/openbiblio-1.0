@@ -52,13 +52,6 @@
 
 	#****************************************************************************
 	switch ($_REQUEST['mode']) {
-	// replaced by listSrvr:getOpts. remove by 15 Aug 2013
-	//case 'getOpts':
-	//	//setSessionFmSettings(); // only activate for debugging!
-	//	$db = new Settings;
-	//	$opts = $db->getAll();
-	//	echo json_encode($opts);
-	//  break;
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
@@ -173,8 +166,6 @@
 		break;
 		
 	case 'getCopyInfo':
-	  //$theDb = new SrchDB;
-	  //echo json_encode($theDb->getCopyInfo($_REQUEST[bibid]));
 	  $bib = new Biblio($_GET['bibid']);
 		$bibData = $bib->getData();
 		$cpyList = $bibData['cpys'];

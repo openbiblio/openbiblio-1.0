@@ -116,6 +116,7 @@ function staff_menu() {
 		Nav::node('tools', T("Tools"), '../tools/index.php');
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
+		Nav::node('tools/valid', T("Input Validations"), '../tools/validForm.php');
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
 		Nav::node('tools/system', T("ChangeDBCollation"), '../tools/chgDBCollForms.php');
 		Nav::node('tools/system', T("System Documentation"), '../docs/index.php');
