@@ -78,33 +78,33 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="zip"><?php echo T("ZipCode");?></label></td>
+		<td><label for="zip"><?php echo T("PostalCode");?></label></td>
 		<td valign="top">
-			<?php echo inputfield("text","zip",$mbr['zip'],$attr=array("size"=>10,"max"=>10),$pageErrors);?>
+			<?php echo inputfield("zip","zip",$mbr['zip'],$attr=array("size"=>10,"max"=>10),$pageErrors);?>
 		</td>
 	</tr>
-	<tr>
+	<!--tr>
 		<td><label for="zip_ext"><?php echo T("ZipCodeExt");?></label></td>
 		<td valign="top">
 			<?php echo inputfield("text","zip_ext",$mbr['zip_ext'],$attr=array("size"=>10,"max"=>10),$pageErrors);?>
 		</td>
-	</tr>
+	</tr-->
 	<tr>
 		<td><label for="home_phone"><?php echo T("HomePhone");?></label></td>
 		<td valign="top">
-			<?php echo inputfield("text","home_phone",$mbr['home_phone'],$attr=array("required"=>"required","size"=>15,"max"=>15),$pageErrors);?>
+			<?php echo inputfield("tel","home_phone",$mbr['home_phone'],$attr=array("required"=>"required","size"=>15,"max"=>15),$pageErrors);?>
 		</td>
 	</tr>
 	<tr>
 		<td><label for="work_phone"><?php echo T("WorkPhone");?></label></td>
 		<td valign="top">
-			<?php echo inputfield("text","work_phone",$mbr['work_phone'],$attr=array("size"=>15,"max"=>15),$pageErrors);?>
+			<?php echo inputfield("tel","work_phone",$mbr['work_phone'],$attr=array("size"=>15,"max"=>15),$pageErrors);?>
 		</td>
 	</tr>
 	<tr>
 		<td><label for="email"><?php echo T("EmailAddress");?></label></td>
 		<td valign="top">
-			<?php echo inputfield("text","email",$mbr['email'],$attr=array("size"=>40,"max"=>128),$pageErrors);?>
+			<?php echo inputfield("email","email",$mbr['email'],$attr=array("size"=>40,"max"=>128),$pageErrors);?>
 		</td>
 	</tr>
 	<tr>

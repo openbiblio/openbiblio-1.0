@@ -109,6 +109,7 @@ inptFld: function (type, name, value, attrs, data) {
 	case 'date': attrs['pattern'] = flos.patterns.date; handleInput(); break;
 	case 'year': attrs['pattern'] = flos.patterns.year; handleInput(); break;
 	case 'tel': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
+	case 'zip': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
 	case 'url': attrs['pattern'] = flos.patterns.url; handleInput(); break;
 	case 'email': attrs['pattern'] = flos.patterns.email; handleInput(); break;
 	default: handleInput(); break;

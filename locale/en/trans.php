@@ -686,6 +686,7 @@ $trans["Plugin Manager"] = "Plugin Manager";
 $trans["Plugins Allowed?"] = "Plugins Allowed?";
 $trans["Popular Titles"] = "Popular Titles";
 $trans["Port"] = "Port";
+$trans["PostalCode"] = "Postal Code";
 $trans["Prepare CSV file"] = "Prepare CSV file";
 $trans["Previous Page"] = "Previous Page";
 $trans["Prev"] = "Prev";
@@ -925,7 +926,6 @@ $trans["Y"] = "Y";
 $trans["Yes"] = "Yes";
 $trans["You must settle all outstanding loans before deleting a member."] = "You must settle all outstanding loans before deleting a member.";
 $trans["Your userid has been suspended."] = "Your userid has been suspended.";
-$trans["ZipCode"] = "Zip Code";
 $trans["ZipCodeExt"] = "Zip Code Ext.";
 
  ## ##################################

@@ -3,6 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+	require_once(REL(__FILE__, "../model/Validations.php"));
+
 /**
  * creates HTML <input ....> statements for most types
  * if type is unrecognized, a generic type="text" will be provided
@@ -10,8 +12,19 @@
  * @author Micah Stetson
  * @author Fred LaPlante
  */
-
+$patterns = [];
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
+	global $patterns;
+	// establish input validation patterns for later use
+	if (empty($patterns)) {
+	  $db = new Validations;
+	  $valids = array();
+		$set = $db->getAll('description');
+		while ($row = $set->fetch_assoc()) {
+		  $patterns[$row['code']] = $row['pattern'];
+		}
+	}
+
 	$s = "";
 	if (isset($_SESSION['postVars'])) {
 		$postVars = $_SESSION['postVars'];
@@ -69,25 +82,14 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		}
 		$s .= "/>";
 		break;
-	default:
-		$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
-		if ($value != "") {
-			$s .= 'value="'.H($value).'" ';
-		}
-		foreach ($attrs as $k => $v) {
-			if ($k == 'required') {
-				//$s .= 'required="required" aria-required="true" ';
-				$s .= 'required aria-required="true" ';
-			} else {
-				$s .= H($k).'="'.H($v).'" ';
-			}
-		}
-		$s .= "/>";
-		
-		if (in_array('required', $attrs)) {
-			$s .= '<span class="reqd">*</span>';
-		}
-		break;
+	case 'number': $attrs['pattern'] = '\d*'; inputHandler($type, $name, $attrs); break;
+	case 'date': $attrs['pattern'] = $patterns['date']; $s .= inputHandler($type, $name, $attrs); break;
+	case 'year': $attrs['pattern'] = $patterns['year']; $s .= inputHandler($type, $name, $attrs); break;
+	case 'tel': $attrs['pattern'] = $patterns['tel']; $s .= inputHandler($type, $name, $attrs); break;
+	case 'zip': $attrs['pattern'] = $patterns['zip']; $s .= inputHandler($type, $name, $attrs); break;
+	case 'url': $attrs['pattern'] = $patterns['url']; $s .= inputHandler($type, $name, $attrs); break;
+	case 'email': $attrs['pattern'] = $patterns['email']; $s .= inputHandler($type, $name, $attrs); break;
+	default: $s .= inputHandler($type, $name, $attrs); break;
 	}
 	#### place error messages to right of effected field -- Fred
 	if (isset($pageErrors[$name])) {
@@ -95,6 +97,27 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	}
 	return $s;
 }
+function inputHandler($type, $name, $attrs) {
+	$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
+	if ($value != "") {
+		$s .= 'value="'.H($value).'" ';
+	}
+	foreach ($attrs as $k => $v) {
+		if ($k == 'required') {
+			//$s .= 'required="required" aria-required="true" ';
+			$s .= 'required aria-required="true" ';
+		} else {
+			$s .= H($k).'="'.H($v).'" ';
+		}
+	}
+	$s .= "/>";
+
+	if (in_array('required', $attrs)) {
+		$s .= '<span class="reqd">*</span>';
+	}
+	return $s;
+}
+
 
 /*********************************************************************************
  * DEPRECATED, use inputfield.  Draws input html tag of type text.
