@@ -14,8 +14,10 @@ ins = {
 	
 	init: function () {
 		ins.initWidgets();
+console.log('starting')
 
 		ins.url = 'installSrvr.php';
+		ins.listSrvr = '..\shared\listSrvr.php';
 		ins.editForm = $('#editForm');
 
 		//$('#reqdNote').css('color','red');
@@ -53,24 +55,17 @@ ins = {
 	
 	//------------------------------
 	connectDb: function () {
+console.log('db connect test');
 		ins.informUser('<?php echo T("Testing Connection to DB server"); ?>');
 		ins.showWait('Testing Database connection');
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
-	  	if (response.indexOf('OK') == -1) {
-				console.log('no connection')
-				ins.informUser('<?php echo T("Connection to DB server failed"); ?>');
-				$('#connectErr').html(response);
-				$('#dbPblms').show();
-			}
-			else {
-				//console.log('good connection')
-				ins.informUser('<?php echo T("Connection to DB server OK"); ?>');
-				ins.dbTest();
-			}
-			$('#plsWait').hide();
+		ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
+		ins.dbTest();
+		$('#plsWait').hide();
 	  });
 	},
 	dbTest: function () {
+console.log('db tables exist?')
 		ins.informUser('<?php echo T("Looking for Database tables"); ?>');
 		ins.showWait('Checking for Database Content');
 	  $.get(ins.url,{ 'mode':'getSettings'}, function(response){
@@ -83,6 +78,7 @@ ins = {
 	  });
 	},
 	getDbVersion: function () {
+console.log('getting db version')
 		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
 		ins.showWait('Checking Database Version');
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
@@ -90,12 +86,10 @@ ins = {
 			if (response == 'noDB') {
 				ins.informUser('<?php echo T("Database not found"); ?>');
 				ins.getLocales();
-			}
-	  	else if (response == '<?php echo H(OBIB_LATEST_DB_VERSION); ?>') {
+			} else if (response == '<?php echo H(OBIB_LATEST_DB_VERSION); ?>') {
 				ins.informUser('<?php echo T("DatabaseUpToDate"); ?>');
 				$('#versionOK').show();
-			}
-			else {
+			} else {
 				ins.informUser('<?php echo T("Database needs upgrading"); ?>');
 				$('#verTxt').html(response);
 				$('#updateDB').show();
@@ -106,7 +100,7 @@ ins = {
 	getLocales: function () {
 		ins.showWait('Fetching Locales');
 		ins.informUser('<?php echo T("Fetching list of available languages"); ?>');
-	  $.get(ins.url,{ 'mode':'getLocales'}, function(response){
+	  $.getJson(ins.listSrvr,{ 'mode':'getLocales'}, function(response){
 			$('#locale').html(response);  
 			$('#newInstall').show();
 			$('#plsWait').hide();

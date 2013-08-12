@@ -3,41 +3,23 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+/**
+ * This class provides an interface for DB functions unique to OB upgrade
+ * @author Fred LaPlante
+ */
+
 class UpgradeQuery extends InstallQuery {
-  function UpgradeQuery() {
-    # Call query constructor so database connection gets made
-    $this->Query();
+  public function __construct() {
+		parent::__construct();
   }
-  function insertBiblioFields($tag, $subFieldCd, 
-                              $fromTablePrfx, $toTablePrfx,  $colName){
-    $sql = "insert into ".$toTablePrfx."biblio_field"
-          ."(bibid, fieldid, tag,   ind1_cd,ind2_cd,subfield_cd,     field_data) select "
-          ." bibid, null,  ".$tag.",null,   null,'".$subFieldCd."',".$colName
-          ." from ".$fromTablePrfx."biblio "
-          ."where ".$colName." is not null";
-    $this->exec($sql);
-   }
-   
-   function copyDataToNewTable($tableName, $fromTablePrfx, $toTablePrfx, $sqlSelectConversion) {
-        $sql = "delete from ".$toTablePrfx.$tableName;
-        !$this->exec($sql);
-        $conv = "(".implode(", ", array_keys($sqlSelectConversion)).") "
-                . "select ".implode(", ", array_values($sqlSelectConversion));
-        $sql = "insert into ".$toTablePrfx.$tableName." "
-              .$conv
-              ." from ".$fromTablePrfx.$tableName;
-        $this->exec($sql);
-   }
-   
-   function renamePrfxedTable($tableName, $fromTablePrfx, $toTablePrfx) {
-     return $this->renameTable($fromTablePrfx.$tableName, $toTablePrfx.$tableName);
-   }
-  
-  # Returns array($notices, $error).
-  # On failure, $error is an Error and $notices should not be used.
-  # On success, $error is NULL and $notices is an array of strings
-  # notifying the user of upgrade changes.
-  function performUpgrade_e($fromTablePrfx = DB_TABLENAME_PREFIX, $toTablePrfx = DB_TABLENAME_PREFIX) {
+
+	/**
+   # Returns array($notices, $error).
+   # On failure, $error is an Error and $notices should not be used.
+   # On success, $error is NULL and $notices is an array of strings
+   # notifying the user of upgrade changes.
+	 */
+  public function performUpgrade_e($fromTablePrfx = DB_TABLENAME_PREFIX, $toTablePrfx = DB_TABLENAME_PREFIX) {
     # Each of these routines should update the given version to the next higher version.
     $upgrades = array(
       '0.3.0' => '_upgrade030_e',
@@ -67,15 +49,42 @@ class UpgradeQuery extends InstallQuery {
         }
         $notices = array_merge($notices, $n);
       } elseif (!$version) {
-        $error = new Error("No existing OpenBiblio database, please perform a fresh install.");
+        $error = new Error(T("NoExistingOpenBiblioDatabasePleasePerformFreshInstall"));
         return array(NULL, $error);
       } else {
-        $error = new Error('Unknown database version: '.$version.'.  No automatic upgrade routine available.');
+        $error = new Error(T("Unknown database version").': '.$version.'. '.T("No automatic upgrade routine available."));
         return array(NULL, $error);
       }
     } while (1);
     return array($notices, NULL);
   }
+
+	## ------------------------------------------------------------------------ ##
+  private function insertBiblioFields($tag, $subFieldCd,
+                              $fromTablePrfx, $toTablePrfx,  $colName){
+    $sql = "insert into ".$toTablePrfx."biblio_field"
+          ."(bibid, fieldid, tag,   ind1_cd,ind2_cd,subfield_cd,     field_data) select "
+          ." bibid, null,  ".$tag.",null,   null,'".$subFieldCd."',".$colName
+          ." from ".$fromTablePrfx."biblio "
+          ."where ".$colName." is not null";
+    $this->exec($sql);
+   }
+   
+   private function copyDataToNewTable($tableName, $fromTablePrfx, $toTablePrfx, $sqlSelectConversion) {
+        $sql = "delete from ".$toTablePrfx.$tableName;
+        !$this->exec($sql);
+        $conv = "(".implode(", ", array_keys($sqlSelectConversion)).") "
+                . "select ".implode(", ", array_values($sqlSelectConversion));
+        $sql = "insert into ".$toTablePrfx.$tableName." "
+              .$conv
+              ." from ".$fromTablePrfx.$tableName;
+        $this->exec($sql);
+   }
+   
+   private function renamePrfxedTable($tableName, $fromTablePrfx, $toTablePrfx) {
+     return $this->renameTable($fromTablePrfx.$tableName, $toTablePrfx.$tableName);
+   }
+  
   # Individual upgrade functions
   # Each of these should upgrade the indicated database version by one version.
   # $prfx is the table prefix to be used by both the original and upgraded databases.
@@ -84,7 +93,7 @@ class UpgradeQuery extends InstallQuery {
   
   /* ======================================================================== */
 	/* Upgrade 0.3.0 to 0.4.0 */
-  function _upgrade030_e($prfx, $tmpPrfx) {
+  private function _upgrade030_e($prfx, $tmpPrfx) {
     # 0.3.0 was English only
     $this->freshInstall('en', false, '0.4.0', $tmpPrfx);
 
@@ -246,7 +255,7 @@ class UpgradeQuery extends InstallQuery {
   
   /* ======================================================================== */
   /* Upgrade 0.4.0 to 0.5.2 */
-  function _upgrade040_e($prfx, $tmpPrfx) {
+  private function _upgrade040_e($prfx, $tmpPrfx) {
     $settings = $this->exec('select * from '.$prfx.'settings ');
     if (is_dir('../locale/'.$settings[0]['locale'].'/sql/0.5.2/domain')) {
       $domainDir = '../locale/'.$settings[0]['locale'].'/sql/0.5.2/domain';
@@ -320,7 +329,7 @@ class UpgradeQuery extends InstallQuery {
   
   /* ======================================================================== */
   /* Upgrade 0.5.2 to 0.6.0 */
-  function _upgrade052_e($prfx, $tmpPrfx) {
+  private function _upgrade052_e($prfx, $tmpPrfx) {
     $this->exec('alter table '.$prfx.'biblio_copy '
                 . 'add create_dt datetime not null '
                 . 'after copyid ');
@@ -334,7 +343,7 @@ class UpgradeQuery extends InstallQuery {
   
   /* ======================================================================== */
   /* Upgrade 0.6.0 to 0.7.0 */
-  function _upgrade060_e($prfx, $tmpPrfx) {
+  private function _upgrade060_e($prfx, $tmpPrfx) {
     $this->executeSqlFile('../install/0.7.0/sql/biblio_copy_fields.sql', $prfx);
     $this->executeSqlFile('../install/0.7.0/sql/biblio_copy_fields_dm.sql', $prfx);
     $this->exec("update settings set version='0.7.0'");
@@ -344,7 +353,7 @@ class UpgradeQuery extends InstallQuery {
   
   /* ======================================================================== */
   /* Upgrade 0.7.0 to 1.0b */
-  function _upgrade070_e($prfx, $tmpPrfx) {
+  private function _upgrade070_e($prfx, $tmpPrfx) {
   
   	#### this function is here solely for clarity - intended for internal use only 
   	function __reset_strings() {

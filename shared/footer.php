@@ -16,7 +16,8 @@ unset($_SESSION['postVars']);
 		HTML/JS conditional modules loaded in line as required.
 -->
 
-<!--script src="../shared/jsLib.js" defer></script-->
+<?php include_once ("../shared/jsLibJs.php"); ?>
+
 <script language="JavaScript" >
 "use strict";
 

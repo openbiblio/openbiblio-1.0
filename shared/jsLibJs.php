@@ -66,6 +66,7 @@ $.fn.loadSelect = function (optionsDataArray) {
 var flos = {
 //-------------------------------------------------------------------
 <?php
+	if (!$doing_install) {
 			## required for inptFld() below, may be used by others ##
 			require_once(REL(__FILE__, "../model/Validations.php"));
 	  	$db = new Validations;
@@ -75,6 +76,7 @@ var flos = {
 				echo '		"'.$row['code'].'":"'.$row['pattern'].'",'."\n";
 			}
 			echo "	},\n\n";
+	}
 ?>
 
 // javascript version of OpenBiblio PHP function 2Aug2013 - fl

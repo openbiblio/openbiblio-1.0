@@ -46,6 +46,15 @@
 		echo json_encode($list);
 	  break;
 
+	case 'getLocaleList':
+		$arr_lang = Localize::getLocales();
+		foreach ($arr_lang as $langCode => $langDesc) {
+			//echo '<option value="'.H($langCode).'">'.H($langDesc)."</option>\n";
+			$list[$langCode] = $langDesc;
+		}
+		echo json_encode($list);
+		break;
+
 	case 'getMediaList':
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;

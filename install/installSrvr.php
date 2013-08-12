@@ -2,30 +2,28 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+/**
+ * Back-end API for those functions unique to OB installation
+ * @author Fred LaPlante
+ */
+
 	$doing_install = true;
   require_once("../shared/common.php");
-  
-	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
-	$installQ = new InstallQuery();
-
+ 	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
-	$upgradeQ = new UpgradeQuery();
 
+	$installQ = new InstallQuery();
 	switch ($_REQUEST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'connectDB':
-			$error = $installQ->connect_e();
-			if ($error) 
-				echo $error->toStr(); 
-			else 
-				echo T("OK");
+			$msg = $installQ->getDbServerVersion();
+			echo $msg;
 			break;
 			
 		case 'getSettings':
-			//echo "fetching version\n";
 			$resp = $installQ->getSettings();
-			if (!resp || empty($resp)) {
-				echo T("noTbl");
+			if ($resp == 'NothingFound') {
+				echo "noTbl";
 			} else {	
 				echo $resp;
 			}
@@ -55,7 +53,9 @@
 			break;
 			
 		case 'doDbUpgrade':
-			$results = $upgradeQ->performUpgrade_e();
+			//echo "upgrading database\n";
+			$upgradeQ = new UpgradeQuery();
+			$results = $upgradeQ->performUpgrade_e('', 'obupgrade_test');
 			echo json_encode($results);
 			break;
 			

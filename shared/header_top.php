@@ -82,7 +82,6 @@ if (!isset($doing_install) or !$doing_install) {
 <!--[if gt IE 8]><!-->
 <script src="../shared/jquery/jquery-2.0.3.min.js"></script>
 <!--<![endif]-->
-<?php include ("../shared/jsLibJs.php"); ?>
 
 <!-- All other JavaScript is placed at the end of <body> (see footer.php)
 		 to match industry best practices and to improve overall performance -->

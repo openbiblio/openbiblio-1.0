@@ -91,13 +91,13 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
-31 July 2013 - Fred
-member checkout history not yet implemented.
-
 ###################### Completed, most recent at top #########################
 
 8 Aug 2013 - Fred, fixed 8 Aug
 Content updates are not being accepted.
+
+31 July 2013 - Fred, fixed
+member checkout history not yet implemented.
 
 7 Aug 2013 - Fred, fixed 8 Aug
 Cover Photos: edit-delete removes photo, but adding new photo results in old

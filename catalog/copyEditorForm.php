@@ -85,5 +85,6 @@
 	</form>
 
 <?php
+	include_once ("../shared/jsLibJs.php");
 	include_once(REL(__FILE__,'copyEditorJs.php'));
 ?>

@@ -14,11 +14,12 @@ class Queryi extends mysqli{
 	public function __construct() {
 		$this->lockDepth = 0;
 		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
-		if(mysqli_connect_error()) {
+    if (mysqli_connect_error()) {
+			echo mysqli_connect_error();
 			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
 		}
-		return;
 	}
+
 	public function act($sql) {
 //echo "Queryi: in act()<br/>\n";
 		//$this->lock();
@@ -45,7 +46,7 @@ class Queryi extends mysqli{
 	}
 	public function select01($sql) {
 		$r = $this->select($sql);
-		if ($r->num_rows == 0) {
+		if (($r == 0) || ($r->num_rows == 0)) {
 			return NULL;
 		} else if ($r->num_rows != 1) {
 			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
@@ -55,12 +56,11 @@ class Queryi extends mysqli{
 		}
 	}
 	private function _act($sql) {
-//echo "Queryi: in _act()<br/>\n";
-//echo "sql=$sql<br />\n";
 		$r =  $this->query($sql);
 		if ($r === false) {
-			Fatal::dbError($sql, T("Database query failed"), mysql_error());
-			echo "sql=$sql<br />\n";
+			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
+			//echo "sql=$sql<br />\n";
+			$r = 0;
 		}
 		return $r;
 	}
