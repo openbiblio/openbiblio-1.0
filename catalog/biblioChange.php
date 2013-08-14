@@ -93,6 +93,7 @@ function postBiblioChange($nav) {
 	 */
 	$fields = array();
 	foreach ($_POST['fields'] as $tf=>$f) {
+if (!isset($f['tag'])) continue;
 		$f = expand($tf,$f);
 		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {
 			echo "f: Encountered SHORT marc code '{$f['tag']}'<br />or too long subfield code '{$f['subfield']}'.<br/>\n";
