@@ -14,7 +14,6 @@ ins = {
 	
 	init: function () {
 		ins.initWidgets();
-console.log('starting')
 
 		ins.url = 'installSrvr.php';
 		ins.listSrvr = '..\shared\listSrvr.php';
@@ -55,17 +54,17 @@ console.log('starting')
 	
 	//------------------------------
 	connectDb: function () {
-console.log('db connect test');
+//console.log('db connect test');
 		ins.informUser('<?php echo T("Testing Connection to DB server"); ?>');
 		ins.showWait('Testing Database connection');
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
-		ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
-		ins.dbTest();
-		$('#plsWait').hide();
+			$('#plsWait').hide();
+			ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
+			ins.dbTest();
 	  });
 	},
 	dbTest: function () {
-console.log('db tables exist?')
+//console.log('db tables exist?')
 		ins.informUser('<?php echo T("Looking for Database tables"); ?>');
 		ins.showWait('Checking for Database Content');
 	  $.get(ins.url,{ 'mode':'getSettings'}, function(response){
@@ -78,11 +77,12 @@ console.log('db tables exist?')
 	  });
 	},
 	getDbVersion: function () {
-console.log('getting db version')
+//console.log('getting db version')
 		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
 		ins.showWait('Checking Database Version');
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
-			//console.log('vers='+response);	  
+			$('#plsWait').hide();
+			//console.log('vers='+response);
 			if (response == 'noDB') {
 				ins.informUser('<?php echo T("Database not found"); ?>');
 				ins.getLocales();
@@ -91,19 +91,19 @@ console.log('getting db version')
 				$('#versionOK').show();
 			} else {
 				ins.informUser('<?php echo T("Database needs upgrading"); ?>');
+				ins.startVer = response;
 				$('#verTxt').html(response);
 				$('#updateDB').show();
 			}
-			$('#plsWait').hide();
 	  });
 	},
 	getLocales: function () {
 		ins.showWait('Fetching Locales');
 		ins.informUser('<?php echo T("Fetching list of available languages"); ?>');
 	  $.getJson(ins.listSrvr,{ 'mode':'getLocales'}, function(response){
-			$('#locale').html(response);  
-			$('#newInstall').show();
 			$('#plsWait').hide();
+			$('#locale').html(response);
+			$('#newInstall').show();
 		});
 	},
 	
@@ -118,18 +118,20 @@ console.log('getting db version')
 			ins.informUser('<?php echo T("Installing DB tables without test data"); ?>');
 			var test = 'NO';
 		}
-			
-		$.post(ins.url, {'mode':'doFullInstall', 'installTestData':test}, function (response) {
-			if(response) {
-				$('#connectErr').html(response);
-				$('#dbPblms').show();
-			} else {
-				ins.informUser('<?php echo T("Table installation complete"); ?>');
-				$('#newInstall').hide();
-				$('#startOB').show();		
+		$.post(ins.url, {'mode':'doFullInstall',
+										 'installTestData':test,
+										},
+			function (response) {
 				$('#plsWait').hide();
-				return false;
-			}
+				if(response) {
+					$('#connectErr').html(response);
+					$('#dbPblms').show();
+				} else {
+					ins.informUser('<?php echo T("Table installation complete"); ?>');
+					$('#newInstall').hide();
+					$('#startOB').show();
+					return false;
+				}
 		});
 		return false;
 	},
@@ -138,12 +140,19 @@ console.log('getting db version')
 	doDbUpdate: function () {
 		ins.showWait('Updating Tables');
 		ins.informUser('<?php echo T("Updating Database Tables"); ?>');
-		$.post(ins.url, {'mode':'doDbUpgrade'}, function (response) {
-			ins.informUser('<?php echo T("Table update complete"); ?>');
-			
-			$('#updateDB').hide();
-			$('#startOB').show();		
+		$.post(ins.url, {'mode':'doDbUpgrade','startVer':ins.startVer,}, function (response) {
 			$('#plsWait').hide();
+//console.log('fail: '+response);
+			if ((response.indexOf('!-!') >= 0) || (response.indexOf('error') >= 0)) {
+				ins.informUser('<p class="error">'+response+'</p>');
+				$('#updateDB').hide();
+//			} else if (response == 'Complete') {
+			} else {
+//console.log('all ok: '+response);
+				ins.informUser('<?php echo T("Table update complete"); ?>');
+				$('#updateDB').hide();
+				$('#startOB').show();
+			}
 			return false;
 		});
 		return false;

@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-/* Non-fatal errors
+/** Non-fatal errors
  *
  * This generic class allows errors to be reported to the user.
  * If an error is to be caught and handled by other code, derive a
@@ -16,14 +16,15 @@
  * ending in '_el'.
  */
 class Error {
-	function Error($msg) {
+	public function __construct($msg) {
 		$this->msg = $msg;
 	}
-	function toStr() {
+
+	public function toStr() {
 		return $this->msg;
 	}
-	/* static */
-	function listToStr($errors) {
+
+	static public function listToStr($errors) {
 		$l = array();
 		if ($errors && (!empty($errors))) {
 			foreach ($errors as $e) {
@@ -35,15 +36,18 @@ class Error {
 	}
 }
 
-/* For when an error applies to a particular form or DB field */
+
+/**
+ * For when an error applies to a particular form or DB field
+ */
 class FieldError extends Error {
-	/* public */
-	var $field;
-	function FieldError($field, $msg) {
-		parent::Error($msg);
+	public $field;
+
+	public function __construct($field, $msg) {
+		parent::__construct($msg);
 		$this->field = $field;
 	}
-	function listExtract($errors) {
+	private function listExtract($errors) {
 		$msgs = array();
 		$l = array();
 		foreach ($errors as $e) {
@@ -59,31 +63,34 @@ class FieldError extends Error {
 		}
 		return array($msg, $l);
 	}
-	function backToForm($url, $errors) {
+	private function backToForm($url, $errors) {
 		list($msg, $fielderrs) = FieldError::listExtract($errors);
 		$_SESSION["postVars"] = mkPostVars();
 		$_SESSION["pageErrors"] = $fielderrs;
-		if(strchr($url, '?')) {
-			header("Location: ".$url."&msg=".U($msg));
-		} else {
-			header("Location: ".$url."?msg=".U($msg));
-		}
+		//if(strchr($url, '?')) {
+		//	header("Location: ".$url."&msg=".U($msg));
+		//} else {
+		//	header("Location: ".$url."?msg=".U($msg));
+		//}
 		exit();
 	}
 }
 
-/* Most DB errors are fatal, but we sometimes have to catch them. */
+/**
+ * Most DB errors are fatal, but we sometimes have to catch them.
+ */
 class DbError extends Error {
 	/* The attributes here are public. */
-	var $sql;
-	var $msg;
-	var $dberror;
-	function DbError($sql, $msg, $dberror) {
+	public $sql;
+	public $dberror;
+
+	public function __construct($sql, $msg, $dberror) {
+		parent::__construct($msg);
 		$this->sql = $sql;
-		$this->msg = $msg;
 		$this->dberror = $dberror;
 	}
-	function toStr() {
+
+	public function toStr() {
 		$s = $this->msg.': '.$this->dberror;
 		if ($this->sql) {
 			$s .= ' -- FULL SQL: '.$this->sql;
@@ -92,16 +99,20 @@ class DbError extends Error {
 	}
 }
 
-/* These may be errors, but a user with proper privilege can force
+/**
+ * These may be errors, but a user with proper privilege can force
  * them to be ignored.
  */
 class IgnorableError extends Error {
+	public function __construct($msg) {
+		parent::__construct($msg);
+	}
 }
+
 class IgnorableFieldError extends IgnorableError {
-	/* public */
-	var $field;
-	function IgnorableFieldError($field, $msg) {
-		parent::Error($msg);
+	public $field;
+	public function __construct($field, $msg) {
+		parent::__construct($msg);
 		$this->field = $field;
 	}
 }

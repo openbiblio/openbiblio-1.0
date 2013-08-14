@@ -9,9 +9,25 @@
  */
 
 class UpgradeQuery extends InstallQuery {
-  public function __construct() {
+  public function __construct($startVer) {
+		$this->startVer = $startVer;
+    # Each of these routines should update the given version to the next higher version.
+    $this->upgrades = array(
+      '0.3.0' => '_upgrade030_e',
+      '0.4.0' => '_upgrade040_e',
+      '0.5.2' => '_upgrade052_e',
+      '0.6.0' => '_upgrade060_e',
+      '0.7.0' => '_upgrade070_e',
+			'0.7.1' => '_upgrade071_e',
+    );
 		parent::__construct();
   }
+	public function upgradeAvailable($ver) {
+//echo "testing version {$ver}<br/>\n";
+		$resp = array_key_exists($ver, $this->upgrades);
+//echo "version {$ver} can be upgraded? ".($resp?'yes':'no')."<br/>\n";
+		return $resp;
+	}
 
 	/**
    # Returns array($notices, $error).
@@ -19,15 +35,8 @@ class UpgradeQuery extends InstallQuery {
    # On success, $error is NULL and $notices is an array of strings
    # notifying the user of upgrade changes.
 	 */
-  public function performUpgrade_e($fromTablePrfx = DB_TABLENAME_PREFIX, $toTablePrfx = DB_TABLENAME_PREFIX) {
-    # Each of these routines should update the given version to the next higher version.
-    $upgrades = array(
-      '0.3.0' => '_upgrade030_e',
-      '0.4.0' => '_upgrade040_e',
-      '0.5.2' => '_upgrade052_e',
-      '0.6.0' => '_upgrade060_e',
-      '0.7.0' => '_upgrade070_e',
-    );
+  public function performUpgrade_e($fromTablePrfx = OBIB_DATABASE, $toTablePrfx = OBIB_DATABASE) {
+echo "dbs: to='{$fromTablePrfx}'; from='{$toTablePrfx}'<br/>\n";
     $tmpPrfx = "obiblio_upgrade_";
     # FIXME - translate upgrade messages
     $locale = $this->getCurrentLocale($fromTablePrfx);
@@ -38,25 +47,27 @@ class UpgradeQuery extends InstallQuery {
       $this->renameTables($fromTablePrfx, $toTablePrfx);
     }
     do {
+echo "in 'do loop'<br/>\n";
       $version = $this->getCurrentDatabaseVersion($toTablePrfx);
+//echo "version==>";print_r($version);echo"<br/>\n";
       if ($version == OBIB_LATEST_DB_VERSION) {
-        break;	# Done
-      } elseif (isset($upgrades[$version])) {
-        $func = $upgrades[$version];
-        list($n, $error) = $this->$func($toTablePrfx, $tmpPrfx);
+        //return json_encode(array('Done', NULL));
+				echo 'Complete';
+      } elseif (isset($this->upgrades[$version])) {
+        $func = $this->upgrades[$version];
+        list($notice, $error) = $this->$func($toTablePrfx, $tmpPrfx);
         if ($error) {
-          return array(NULL, $error);
+          die ('!-!'.$error);
         }
-        $notices = array_merge($notices, $n);
+echo "notice==>";print_r($notice);echo"<br/>\n";
+        if (is_array($notice)) $notices = array_merge($notices, $notice);
       } elseif (!$version) {
-        $error = new Error(T("NoExistingOpenBiblioDatabasePleasePerformFreshInstall"));
-        return array(NULL, $error);
-      } else {
-        $error = new Error(T("Unknown database version").': '.$version.'. '.T("No automatic upgrade routine available."));
-        return array(NULL, $error);
+        //$error = new Error(T("NoExistingOpenBiblioDatabasePleasePerformFreshInstall"));
+        //return json_encode(array(NULL, $error));
+				die ('!-!'.T("NoExistingOpenBiblioDatabasePleasePerformFreshInstall"));
       }
-    } while (1);
-    return array($notices, NULL);
+    } while (true);
+    return json_encode($notices);
   }
 
 	## ------------------------------------------------------------------------ ##
@@ -85,12 +96,13 @@ class UpgradeQuery extends InstallQuery {
      return $this->renameTable($fromTablePrfx.$tableName, $toTablePrfx.$tableName);
    }
   
-  # Individual upgrade functions
-  # Each of these should upgrade the indicated database version by one version.
-  # $prfx is the table prefix to be used by both the original and upgraded databases.
-  # $tmpPrfx is a prefix which may be used for temporary tables.
-  # Return value is the same as performUpgrade_e()
-  
+  /**
+   *	 Individual upgrade functions
+   * Each of these should upgrade the indicated database version by one version.
+   * $prfx is the table prefix to be used by both the original and upgraded databases.
+   * $tmpPrfx is a prefix which may be used for temporary tables.
+   * Return value is the same as performUpgrade_e()
+	 */
   /* ======================================================================== */
 	/* Upgrade 0.3.0 to 0.4.0 */
   private function _upgrade030_e($prfx, $tmpPrfx) {
@@ -352,9 +364,43 @@ class UpgradeQuery extends InstallQuery {
   }
   
   /* ======================================================================== */
-  /* Upgrade 0.7.0 to 1.0b */
-  private function _upgrade070_e($prfx, $tmpPrfx) {
-  
+  /* Upgrade 0.7.0 to 0.7.1 */
+  function _upgrade070_e($prfx, $tmpPrfx) {
+    # Lift some restrictions
+    $this->exec('alter table '.$prfx.'settings '
+                . 'modify locale varchar(30) not null ');
+    $this->exec('alter table '.$prfx.'collection_dm '
+                . 'modify days_due_back smallint unsigned not null ');
+    # No new features, remove orphaned database rows (checkout privileges, custom fields).
+    $this->exec('delete '.$prfx.'checkout_privs from '.$prfx.'checkout_privs '
+                . 'left join '.$prfx.'mbr_classify_dm on '
+                . $prfx.'checkout_privs.classification='.$prfx.'mbr_classify_dm.code '
+                . 'where '.$prfx.'mbr_classify_dm.code is null ');
+    $this->exec('delete '.$prfx.'checkout_privs from '.$prfx.'checkout_privs '
+                . 'left join '.$prfx.'material_type_dm on '
+                . $prfx.'checkout_privs.material_cd='.$prfx.'material_type_dm.code '
+                . 'where '.$prfx.'material_type_dm.code is null ');
+    $this->exec('delete '.$prfx.'member_fields from '.$prfx.'member_fields '
+                . 'left join '.$prfx.'member_fields_dm on '
+                . $prfx.'member_fields.code='.$prfx.'member_fields_dm.code '
+                . 'where '.$prfx.'member_fields_dm.code is null ');
+    $this->exec('delete '.$prfx.'biblio_copy_fields from '.$prfx.'biblio_copy_fields '
+                . 'left join '.$prfx.'biblio_copy_fields_dm on '
+                . $prfx.'biblio_copy_fields.code='.$prfx.'biblio_copy_fields_dm.code '
+                . 'where '.$prfx.'biblio_copy_fields_dm.code is null ');
+    $this->exec('delete '.$prfx.'material_usmarc_xref from '.$prfx.'material_usmarc_xref '
+                . 'left join '.$prfx.'material_type_dm on '
+                . $prfx.'material_usmarc_xref.materialCd='.$prfx.'material_type_dm.code '
+                . 'where '.$prfx.'material_type_dm.code is null ');
+    $this->exec("update settings set version='0.7.1'");
+    $notices = array();
+    return array($notices, NULL);
+  }
+  /* ======================================================================== */
+  /* Upgrade 0.7.1 to 1.0b */
+  private function _upgrade071_e($prfx, $tmpPrfx) {
+//echo "in 'upgrade071()'<br/>\n";
+
   	#### this function is here solely for clarity - intended for internal use only 
   	function __reset_strings() {
     	#### the existing biblio & biblio_fields tables will be re-organized
@@ -369,16 +415,22 @@ class UpgradeQuery extends InstallQuery {
 							. "(`bibid`,`fieldid`,`subfieldid`,`seq`,`subfield_cd`,`subfield_data`) "
 							. "VALUES ";
 		} 
-		
-    $this->__freshInstall('en', false, '1.0b', $tmpPrfx);
-    reset_strings();	// local function
-						
+//echo "a.<br/>\n";
+
+    $this->freshInstall('en', false, '1.0b', $tmpPrfx);
+    __reset_strings();	// local function
+//echo "b.<br/>\n";
+
 		#### scan all existing biblio entries in biblio_id order
 		$sql = "SELECT * FROM `$prfx`.`biblio` ORDER BY `bibid` ";
-		$bibs = $this->select($sql);
+//echo "sql={$sql}<br/>\n";
+		$rslt = $this->select($sql);
+//echo "rslt===>";print_r($rslt);echo"<br/>\n";
 		$n = 0; $fldid = 1; $subid = 1;
+//echo "c.<br/>\n";
 
-		while (($bib = $bibs->fetch_assoc()) != NULL) {
+		while (($bib = $rslt->fetch_assoc()) != NULL) {
+//echo "d.<br/>\n";
 			# we will be posting to the db in blocks of 100 records to avoid server overload
 			$n++;
 			$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'
@@ -440,9 +492,9 @@ class UpgradeQuery extends InstallQuery {
 				$subSql = substr($subSql,0,-1);
 
 				# process this batch
-				$rslt = $db->Act($bibSql);	
-				$rslt = $db->Act($fldSql);	
-				$rslt = $db->Act($subSql);
+				$rslt = $this->act($bibSql);
+				$rslt = $this->act($fldSql);
+				$rslt = $this->act($subSql);
 			
 				# interim progress report
 				echo "$n biblio records written.<br />";
@@ -451,7 +503,7 @@ class UpgradeQuery extends InstallQuery {
 								
 				__reset_strings();	// reset skeleton strings for next batch
 			}
-			//if ($n=1)break; ## for bebug only
+//if ($n=1)break; ## for bebug only
 		}
 		
 		### final results for main biblio tables
@@ -460,16 +512,16 @@ class UpgradeQuery extends InstallQuery {
 		echo "$subid sub-field records written.<br />";  
 		#### =========== end of the biblio, biblio_field, biblio_subfield processing =========== ####
 		
-    $this->exec('insert into '.$tmpPrfx.'biblio_copy'
+    $this->act('insert into '.$tmpPrfx.'biblio_copy'
     						.'(`bibid`,`copyid`,`create_dt`,`barcode_nmbr`,`copy_desc`)'
 								.' select  `bibid`,`copyid`,`create_dt`,`barcode_nmbr`,`copy_desc`'
 								.' from biblio_copy');        
-		$this->exec('insert into '.$tmpPrfx.'biblio_copy_fields'
+		$this->act('insert into '.$tmpPrfx.'biblio_copy_fields'
 								.' select * from biblio_copy_fields' );      
     // no change - biblio_copy_fields_dm
     // no change - biblio_hold
     // no change - biblio_status_dm
-    $this->exec('insert into '.$tmpPrfx.'biblio_status_hist'
+    $this->act('insert into '.$tmpPrfx.'biblio_status_hist'
     						.' (`histid`,`bibid`,`copyid`,`status_cd`,`status_begin_dt`)'
                 .' select NULL,`bibid`,`copyid`,`status_cd`,`status_begin_dt`'
 								.' from biblio_status_hist' );
@@ -483,24 +535,24 @@ class UpgradeQuery extends InstallQuery {
 		// new table from full install - collection_dm
     // no change - cutter
 		// new table from full install - images
-		$this->exec('replace into '.$tmpPrfx.'lookup_hosts'
+		$this->act('replace into '.$tmpPrfx.'lookup_hosts'
 								.' select * from lookup_hosts' );
-		$this->exec('replace into '.$tmpPrfx.'lookup_settings'
+		$this->act('replace into '.$tmpPrfx.'lookup_settings'
 								.' select * from lookup_settings' );
 		// new table from full install - material_fields
-		$this->exec('replace into '.$tmpPrfx.'material_type_dm'
+		$this->act('replace into '.$tmpPrfx.'material_type_dm'
 								.' select * from material_type_dm' );
-		$this->exec('replace into '.$tmpPrfx.'mbr_classify_dm'
+		$this->act('replace into '.$tmpPrfx.'mbr_classify_dm'
 								.' select * from mbr_classify_dm' );
-		$this->exec('insert into '.$tmpPrfx.'member'
+		$this->act('insert into '.$tmpPrfx.'member'
 								.' select * from member' );
-		$this->exec('insert into '.$tmpPrfx.'member_account'
+		$this->act('insert into '.$tmpPrfx.'member_account'
 								.' select * from member_account' );
-		$this->exec('replace into '.$tmpPrfx.'member_fields'
+		$this->act('replace into '.$tmpPrfx.'member_fields'
 								.' select * from member_fields' );
-		$this->exec('replace into '.$tmpPrfx.'member_fields_dm'
+		$this->act('replace into '.$tmpPrfx.'member_fields_dm'
 								.' select * from member_fields_dm' );
-		$this->exec('insert into '.$tmpPrfx.'member_fields_dm'
+		$this->act('insert into '.$tmpPrfx.'member_fields_dm'
 								.' select * from member_fields_dm' );
 		// === start block
 		$row = $this->select1('select * from settings');
@@ -508,15 +560,15 @@ class UpgradeQuery extends InstallQuery {
 		foreach ($row as $key => $val) {
 			$sql .= "(`$key`, '$val'),";
 		}
-		$this->exec($sql);
+		$this->act($sql);
 		// === end block
 		// new table from full install - site
-		$this->exec('insert into '.$tmpPrfx.'staff'
+		$this->act('insert into '.$tmpPrfx.'staff'
 								.' select * from staff' );
 		// new table from full install - state_dm
-		$this->exec('replace into '.$tmpPrfx.'theme'
+		$this->act('replace into '.$tmpPrfx.'theme'
 								.' select * from theme' );
-		$this->exec('replace into '.$tmpPrfx.'transaction_type_dm'
+		$this->act('replace into '.$tmpPrfx.'transaction_type_dm'
 								.' select * from transaction_type_dm' );
 		// new table from full install - transentries
 		// new table from full install - transkeys

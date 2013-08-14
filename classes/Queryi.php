@@ -45,7 +45,7 @@ class Queryi extends mysqli{
 		}
 	}
 	public function select01($sql) {
-		$r = $this->select($sql);
+		$r = $this->act($sql);
 		if (($r == 0) || ($r->num_rows == 0)) {
 			return NULL;
 		} else if ($r->num_rows != 1) {

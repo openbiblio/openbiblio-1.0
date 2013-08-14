@@ -22,39 +22,65 @@ class InstallQuery extends Queryi {
 		return $rslt['VERSION()'];
 	}
 
-  public function getSettings($tablePrfx = DB_TABLENAME_PREFIX) {
-    $sql = $this->mkSQL('SHOW TABLES LIKE %Q ', $tablePrfx.'settings');
-    $rows = $this->select01($sql);
+  public function getSettings($tablePrfx = OBIB_DATABASE) {
+    //$sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
+    //$rows = $this->select01($sql);
+    $sql = $this->mkSQL('SELECT * FROM %C ', $tablePrfx.'.settings');
+//echo "sql={$sql}<br/>\n";
+    $rows = $this->select($sql);
     if (!$rows || empty($rows) || !isset($rows)) {
       return 'NothingFound';
     }
-    $sql = $this->mkSQL('SELECT * FROM %I ', $tablePrfx.'settings');
-    return $this->select($sql);
+//    $sql = $this->mkSQL('SELECT * FROM %C ', $tablePrfx.'.settings');
+//echo "sql={$sql}<br/>\n";
+//    return $this->select($sql);
   }
 
-  public function getCurrentDatabaseVersion($tablePrfx = DB_TABLENAME_PREFIX) {
-    $sql = $this->mkSQL('SELECT `value` FROM %I WHERE `name`=%Q', $tablePrfx.'settings','version');
+  public function getCurrentDatabaseVersion($tablePrfx = OBIB_DATABASE) {
+    $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $tablePrfx.'settings','version');
     $row = $this->select01($sql);
 		if ($row) {
-			return $row['value'];
+			$version = $row['value'];
 		} else {
-    	$sql = $this->mkSQL('SELECT `version` FROM %I ', $tablePrfx.'settings');
+    	$sql = $this->mkSQL('SELECT `version` FROM %i ', $tablePrfx.'.settings');
     	$rslt = $this->select01($sql);
-			if ($rslt) return $rslt['version'];
+			$version = $rslt['version'];
 		}
+		return $version;
   }
 
-  private function dropTable($tableName) {
-    $sql = $this->mkSQL("drop table if exists %I ", $tableName);
-    return $this->select1($sql);
+	## ------------------------------------------------------------------------ ##
+  protected function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
+    $sql = $this->mkSQL('SELECT * FROM %I WHERE `name`=%Q', $tablePrfx.'.settings','locale');
+    $row = $this->select01($sql);
+		return $row['value'];
   }
-  
-  private function renameTables($fromTablePrfx, $toTablePrfx = DB_TABLENAME_PREFIX) {
+
+  protected function renameTables($fromTablePrfx, $toTablePrfx = DB_TABLENAME_PREFIX) {
     $fromTableNames = $this->getTableNames($fromTablePrfx.'%');
     foreach($fromTableNames as $fromTableName) {
       $toTableName = str_replace($fromTablePrfx, $toTablePrfx, $fromTableName);
       $this->renameTable($fromTableName, $toTableName);
     }
+  }
+
+  protected function freshInstall($locale, $sampleDataRequired = false,
+                        $version=OBIB_LATEST_DB_VERSION,
+                        $tablePrfx = DB_TABLENAME_PREFIX) {
+    $rootDir = '../install/' . $version . '/sql';
+    $localeDir = '../locale/' . $locale . '/sql/' . $version;
+
+    $this->executeSqlFilesInDir($rootDir, $tablePrfx);
+    $this->executeSqlFilesInDir($localeDir . '/domain/', $tablePrfx);
+    if($sampleDataRequired) {
+      $this->executeSqlFilesInDir($localeDir . '/sample/', $tablePrfx);
+    }
+  }
+
+	## ------------------------------------------------------------------------ ##
+  private function dropTable($tableName) {
+    $sql = $this->mkSQL("drop table if exists %I ", $tableName);
+    return $this->act($sql);
   }
   
   private function renameTable($fromTableName, $toTableName) {
@@ -77,26 +103,7 @@ class InstallQuery extends Queryi {
     return $tablenames;
   }
   
-  public function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
-    $sql = "SELECT * FROM `settings` WHERE `name` = 'locale'";
-    $row = $this->select01($sql);
-		return $row['value'];
-  }
-
-  public function freshInstall($locale, $sampleDataRequired = false,
-                        $version=OBIB_LATEST_DB_VERSION,
-                        $tablePrfx = DB_TABLENAME_PREFIX) {
-    $rootDir = '../install/' . $version . '/sql';
-    $localeDir = '../locale/' . $locale . '/sql/' . $version;
-    
-    $this->executeSqlFilesInDir($rootDir, $tablePrfx);
-    $this->executeSqlFilesInDir($localeDir . '/domain/', $tablePrfx);
-    if($sampleDataRequired) {
-      $this->executeSqlFilesInDir($localeDir . '/sample/', $tablePrfx);
-    }
-  }
-  
-  protected function executeSqlFilesInDir($dir, $tablePrfx = "") {
+  private function executeSqlFilesInDir($dir, $tablePrfx = "") {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($filename = readdir($dh)) !== false) {
@@ -110,9 +117,9 @@ class InstallQuery extends Queryi {
     }
   }
 
-  /**********************************************************************************
+  /**
    * Function to read through an sql file executing SQL only when ";" is encountered
-   **********************************************************************************/
+   */
   private function executeSqlFile($filename, $tablePrfx = DB_TABLENAME_PREFIX) {
     $fp = fopen($filename, "r");
     # show error if file could not be opened
