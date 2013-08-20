@@ -83,13 +83,13 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		$s .= "/>";
 		break;
 	case 'number': $attrs['pattern'] = '\d*'; inputHandler($type, $name, $attrs); break;
-	case 'date': $attrs['pattern'] = $patterns['date']; $s .= inputHandler($type, $name, $attrs); break;
-	case 'year': $attrs['pattern'] = $patterns['year']; $s .= inputHandler($type, $name, $attrs); break;
-	case 'tel': $attrs['pattern'] = $patterns['tel']; $s .= inputHandler($type, $name, $attrs); break;
-	case 'zip': $attrs['pattern'] = $patterns['zip']; $s .= inputHandler($type, $name, $attrs); break;
-	case 'url': $attrs['pattern'] = $patterns['url']; $s .= inputHandler($type, $name, $attrs); break;
-	case 'email': $attrs['pattern'] = $patterns['email']; $s .= inputHandler($type, $name, $attrs); break;
-	default: $s .= inputHandler($type, $name, $attrs); break;
+	case 'date': $attrs['pattern'] = $patterns['date']; $s .= inputHandler($type, $name, $value, $attrs); break;
+	case 'year': $attrs['pattern'] = $patterns['year']; $s .= inputHandler($type, $name, $value, $attrs); break;
+	case 'tel': $attrs['pattern'] = $patterns['tel']; $s .= inputHandler($type, $name, $value, $attrs); break;
+	case 'zip': $attrs['pattern'] = $patterns['zip']; $s .= inputHandler($type, $name, $value, $attrs); break;
+	case 'url': $attrs['pattern'] = $patterns['url']; $s .= inputHandler($type, $name, $value, $attrs); break;
+	case 'email': $attrs['pattern'] = $patterns['email']; $s .= inputHandler($type, $name, $value, $attrs); break;
+	default: $s .= inputHandler($type, $name, $value, $attrs); break;
 	}
 	#### place error messages to right of effected field -- Fred
 	if (isset($pageErrors[$name])) {
@@ -97,7 +97,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	}
 	return $s;
 }
-function inputHandler($type, $name, $attrs) {
+function inputHandler($type, $name, $value, $attrs) {
 	$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
 	if ($value != "") {
 		$s .= 'value="'.H($value).'" ';

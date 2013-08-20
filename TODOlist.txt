@@ -100,7 +100,14 @@ new entries all failing.
 14 Aug 2013 - Fred
 New Item manual entry - pub date field using type=textarea
 
+14 Aug 2013 - Jan
+Adding items *almost* works - it accepts the record, lets me enter the copy -
+but the database only saves the copy, not the bibliographic record.
+
 ###################### Completed, most recent at top #########################
+
+14 Aug 2013 - Jan, unable to duplicate, cvs working fine 20 Aug
+CSV import doesn't seem to work - it accepts the file, but doesn't get any items in.
 
 8 Aug 2013 - Fred, fixed 8 Aug
 Content updates are not being accepted.
