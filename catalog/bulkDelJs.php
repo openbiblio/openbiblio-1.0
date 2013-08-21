@@ -77,11 +77,12 @@ console.log('we have an error');
 				$.post(bbd.url,{mode:'deleteMultiCopies', cpyList:bbd.cpyAray}, function(response) {
 					$('#errSpace').html(response).show();
 					
-//					if ( $('#del_items').prop("checked") ) {
-//						$.post(bbd.url,{mode:'deleteMultiBiblios', bibList:bbd.bibAray}, function(response) {
-//							$('#errSpace').html(response).show();
-//						});
-//					};
+					if ( $('#del_items')is(":checked") ) {
+dconsole.log('deleting parent books');
+						$.post(bbd.url,{mode:'deleteMultiBiblios', bibList:bbd.bibAray}, function(response) {
+							$('#errSpace').html(response).show();
+						});
+					};
 
 				});
 			};						

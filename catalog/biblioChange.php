@@ -60,7 +60,9 @@ function postBiblioChange($nav) {
 			 * collectionCd=aa
 			 * fields[245$a]['codes']='subfieldid=xx&fieldid=yy'
 			 * fields[245$a]['data']='another testing'
-			 *
+			 */
+			 ##----##
+			/**
 			 * old format was:
 			 * bibid=nnnnn
 			 * collectionCd=aa
@@ -78,7 +80,6 @@ function postBiblioChange($nav) {
 		$f['fieldid'] = $tmp[1];
 		$tmp = explode('=',$codes[0]);
 		$f['subfieldid'] = $tmp[1];
-		unset($codes); ## no longer needed
     ## fields[$250$a]['data'] same for both formats
 		return $f;
 	}
@@ -89,7 +90,7 @@ function postBiblioChange($nav) {
 	 * new field with a particular tag may be added at once.
 	 * Also, within a field, only one subfield with a particular
 	 * identifier may be added at once.  This should be quite
-	 * sufficient for the easy-edit interface.
+	 * sufficient for the easy-edit interface. - LJ
 	 */
 	$fields = array();
 	foreach ($_POST['fields'] as $tf=>$f) {
@@ -133,12 +134,14 @@ if (!isset($f['tag'])) continue;
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}
 	}
+//echo"biblioChg: fields===>";print_r($fields);echo"<br/>\n";
 
-	## create a new empty MARC structure and copy above changed material into it
+	## create a new empty MARC structure
 	$mrc = new MarcRecord();
 	$ldr = $mrc->getLeader();
 	$mrc->setLeader($ldr);
 
+	## copy above user changed material into it
 	foreach ($_POST['fields'] as $tf=>$f) {
 		$f = expand($tf,$f);
 		$fidx = $f['tag'] .'-'. $f['fieldid'];
@@ -157,7 +160,7 @@ if (!isset($f['tag'])) continue;
 			} else if (strlen($fields[$fidx][$sfdix]->data) != 0) {
 				# user data & structure exists not in $fld, add it all
 				array_push($fld->subfields, $fields[$fidx][$sfidx]);
-				# remove user material so process not confused
+				# remove copied user material so process not confused
 				unset($fields[$fidx][$sfidx]);
 			}
 		}
@@ -188,6 +191,7 @@ if (!isset($f['tag'])) continue;
 			$mrc->addFields($fld);
 		}
 	}
+//echo"created & populated MARC structure===>";print_r($mrc);echo"<br/>\n";
 
 // ----- following does not appear to be used ----
 ///* Sort subfields and apply "smart" processing for particular fields */
@@ -213,10 +217,10 @@ if (!isset($f['tag'])) continue;
 	usort($fields, fieldCmp);
 //echo"fields revised&sorted===>";print_r($mrc);echo"<br/>\n";
 
-	## prepare the update/insert structure
+	## prepare the update/insert biblio structure
 	## note: relocated from top of function to where used ##
 	if (!isset ($biblios)) $biblios = new Biblios();
-	if ($_POST["bibid"]) {
+	if (!empty($_POST["bibid"])) {
 		## update existing, so get copy of DB data
 		$biblio = $biblios->getOne($_POST["bibid"]);
 	} else {
@@ -225,7 +229,7 @@ if (!isset($f['tag'])) continue;
 	}
 	assert($biblio != NULL);
 
-  ## over-write with update material
+  ## add to biblio the processed MARC material
 	$biblio['marc'] = $mrc;
 	if (empty($_POST['material_cd']))
 		$biblio['material_cd'] = $_POST["materialCd"];
@@ -241,6 +245,7 @@ if (!isset($f['tag'])) continue;
 
 	##  Insert/Update bibliography ##
 	if ($nav == "newconfirm") {
+		//list($bibid, $err) = $biblios->insert($biblio);
 		$bibid = $biblios->insert($biblio);
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {

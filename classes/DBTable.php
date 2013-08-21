@@ -123,7 +123,7 @@ abstract class DBTable extends Queryi {
 //		if ($errors) {
 //			Fatal::internalError(T("DBTableErrorInserting")." '".$this->name."', ".Error::listToStr($errors));
 //		}
-		return $seq_val;
+		return array($seq_val, $errors);
 	}
 	protected function insert_el($rec, $confirmed=false) {
 		$this->lock();
@@ -156,7 +156,6 @@ abstract class DBTable extends Queryi {
 		return array($seq_val, array());
 	}
 	public function update($rec, $confirmed=false) {
-//echo "DBtable: in update()<br/>\n";
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
 			//Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
@@ -164,7 +163,6 @@ abstract class DBTable extends Queryi {
 		}
 	}
 	protected function update_el($rec, $confirmed=false) {
-//echo "DBtable: in update_el()<br/>\n";
 		$key = array();
 		foreach ($this->key as $k) {
 			if (!isset($rec[$k]))
@@ -188,7 +186,6 @@ abstract class DBTable extends Queryi {
 		$sql = $this->mkSQL('UPDATE %I ', $this->name)
 			. ' SET '.$this->_pairs($rec)
 			. ' WHERE '.$this->_keyTerms($key);
-//echo "sql=$sql<br />\n";
 		$this->act($sql);
 		$this->unlock();
 		return array();

@@ -33,23 +33,26 @@
 		fields[245$a]['data'] another testing
 		*/
 		$input = $_POST;
+//echo "onlnSrvr-PostNewBiblo: input POST===>";print_r($_POST);echo"<br />\n";
 		unset($_POST);
 		$rec = [];
 		foreach ($input as $k=>$v) {
+//echo "k:{$k} ==> v:{$v} <br/>\n";
 			if (($k != 'fields') && (substr($k,0,4) != 'onln')) {
+//echo "k: {$k} is not a fields or onln arrtibute<br />\n";
 				$_POST[$k] = $v;
-			}
-			if ($k == 'fields') {
+			} else if ($k == 'fields') {
 				foreach ($v as $fld) {
+//echo "found field v: ";print_r($fld);echo"<br />\n";
 				$tag = $fld['tag'].'$'.$fld['subfield_cd'];
 				$rec[$tag]['data'] = $fld['data'];
 				$rec[$tag]['codes'] = 'subfieldid='.$fld['subfieldid'].'&fieldid='&$fld['fieldid'];
 				}
 			}
 		}
-		$_POST['fields']= $rec;
+		$_POST['fields'] = $rec;
 		## ----------------------------------
-
+//echo "onlnSrvr-PostNewBiblo: output POST===>";print_r($_POST['fields']);echo"<br />\n";
 	  $nav = "newconfirm";
   	$msg = PostBiblioChange($nav);
 	  echo $msg;

@@ -238,7 +238,7 @@
 	case 'deleteMultiCopies':
 	  $theDb = new SrchDB;
 		foreach ($_POST['cpyList'] as $copyid) {
-			echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+			echo $theDb->deleteCopy($copyid);
 		}
 		break;
 /*

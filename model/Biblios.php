@@ -26,9 +26,27 @@ class Biblios extends CoreTable {
 		$this->marcRec = new MarcRecord;
 	}
 
+	function deleteOne($bibid) {
+		$this->lock();
+		$imgs = new BiblioImages;
+		$imgs->deleteByBibid($bibid);
+		$this->marc->delete($bibid);
+		parent::deleteOne($bibid);
+		$this->unlock();
+	}
+	function deleteMatches($fields) {
+		$this->lock();
+		$rows = parent::getMatches($fields);
+		while ($r = $rows->fetch_assoc()) {
+			$this->deleteOne($r['bibid']);
+		}
+		$this->unlock();
+	}
+
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
-	function insert_el($biblio) {
+	protected function insert_el($biblio) {
+//echo "Biblios: in insert_el()<br/>\n";
 		$this->lock();
 		if (!isset($biblio['marc']) or !is_a($biblio['marc'], 'MarcRecord')) {
 			return array(NULL, array(new FieldError('marc', T("No MARC record set"))));
@@ -38,11 +56,26 @@ class Biblios extends CoreTable {
 			return array($bibid, $errors);
 		}
 		$this->marc->put($bibid, $biblio['marc']);
+
 		$this->unlock();
 		return array($bibid, NULL);
 	}
+	protected function update_el($biblio) {
+		$this->lock();
+		if (!isset($biblio['bibid'])) {
+			Fatal::internalError(T("No bibid set in biblio update"));
+		}
+		if (isset($biblio['marc']) and is_a($biblio['marc'], 'MarcRecord')) {
+			$this->marc->put($biblio['bibid'], $biblio['marc']);
+		}
+		$r = parent::update_el($biblio);
+		$this->unlock();
+		return $r;
+	}
+
 	function xupdate ($updtData) {
-		/** currently does not post new entries to database, do NOT use 
+		/** -----------------experimental-----------------------------
+		 *	currently does not post new entries to database, do NOT use
 		 *  TODO should be fixed to replace mess in biblioChange.php
 		 */
 
@@ -51,6 +84,7 @@ class Biblios extends CoreTable {
 		## get database content
 		$crntRec = $this->marc->get($updtData['bibid']);
 		//$flds = $crntRec->fields;
+
 		function updateExisting($updts, $crntRec) {
 			## scan for differences between two data sets
 			## all (but only) fields present in DB are considered here.
@@ -75,6 +109,7 @@ class Biblios extends CoreTable {
 			}
 			return array($updts, $crntRec);
 		}
+
 		function addNewMarcFlds ($updts, $crntRec){
 			## step B. review user dataset for fields not scanned above
 			foreach ($updts as $key=>$value) {
@@ -95,34 +130,6 @@ class Biblios extends CoreTable {
 		$newBiblio = $updtData; ## has needed structure
 		$newBiblio['marc'] = $crntRec; ## replaces Marc portion
 		parent::update($newBiblio);
-	}
-	function update_el($biblio) {
-		$this->lock();
-		if (!isset($biblio['bibid'])) {
-			Fatal::internalError(T("No bibid set in biblio update"));
-		}
-		if (isset($biblio['marc']) and is_a($biblio['marc'], 'MarcRecord')) {
-			$this->marc->put($biblio['bibid'], $biblio['marc']);
-		}
-		$r = parent::update_el($biblio);
-		$this->unlock();
-		return $r;
-	}
-	function deleteOne($bibid) {
-		$this->lock();
-		$imgs = new BiblioImages;
-		$imgs->deleteByBibid($bibid);
-		$this->marc->delete($bibid);
-		parent::deleteOne($bibid);
-		$this->unlock();
-	}
-	function deleteMatches($fields) {
-		$this->lock();
-		$rows = parent::getMatches($fields);
-		while ($r = $rows->fetch_assoc()) {
-			$this->deleteOne($r['bibid']);
-		}
-		$this->unlock();
 	}
 }
 

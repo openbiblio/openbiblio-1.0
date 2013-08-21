@@ -74,6 +74,13 @@ class Biblio {
 		}
 	}
 	/**
+	 * uses current data to add a new biblio to the database
+	 */
+	public function addNewBiblio() {
+    $msg = postBiblioChange('');
+		echo $msg;
+	}
+	/**
 	 * causes the database to be updated with current biblio data
 	 */
 	public function updateDB () {
@@ -105,7 +112,7 @@ class Biblio {
 		$this->hdrFlds['createDt'] = $rslt['create_dt'];
 	}
 	private function fetch_marc () {
-		## get marc field list more this biblio's media type
+		## get marc field list for this biblio's media type
 		$mat = new MaterialFields;
 		$this->marcFlds = $mat->getMediaTags($this->hdrFlds['material_cd']);
 		## retrieve all existing marc data for this biblio

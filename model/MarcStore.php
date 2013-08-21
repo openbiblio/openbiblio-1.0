@@ -66,44 +66,6 @@ class MarcStore extends Queryi{
 		return $rec;
 	}
 	/**
-	 * Post a MARC record to the database
-	 */
-	public function put($bibid, $record) {
-		$this->lock();
-		$this->delete($bibid);  ## _field & _subfield records only
-
-		$fldseq = 1;
-		if (!$this->_putControl($bibid, $fldseq, "LDR", $record->getLeader())) {
-			$this->unlock();
-			die ("unable to 'putControl() leader");
-		}
-		$fields = $record->getFields();
-		foreach ($fields as $field) {
-			$fldseq += 1;
-			if (is_a($field, 'MarcControlField')) {
-				if (!$this->_putControl($bibid, $fldseq, $field->tag, $field->data)) {
-					$this->unlock();
-					return false;
-				}
-			} else if (is_a($field, 'MarcDataField')){
-				$fieldid = $this->_putData($bibid, $fldseq, $field->tag, $field->indicators);
-				if (!$fieldid) {
-					$this->unlock();
-					return false;
-				}
-				$subseq = 1;
-				foreach ($field->subfields as $subf) {
-					if (!$this->_putSub($bibid, $fieldid, $subseq++, $subf->identifier, $subf->data)) {
-						$this->unlock();
-						return false;
-					}
-				}
-			}
-		}
-		$this->unlock();
-		return true;
-	}
-	/**
 	 * retreive a mysqli result set of all MARC records of a biblio
 	 */
 	public function fetchMarcFlds ($bibid) {
@@ -129,25 +91,88 @@ class MarcStore extends Queryi{
 		$this->act($fldsql);
 		$this->unlock();
 	}
+	/**
+	 * Post a MARC record to the database
+	 */
+	public function put($bibid, $record) {
+//echo "MarcStore: in put(); bibid={$bibid}; record==>";print_r($record);echo"<br/>\n";
+		$this->lock();
+		$this->delete($bibid);  ## _field & _subfield records only
+
+		$fldseq = 1;
+		if (!$this->_putControl($bibid, $fldseq, "LDR", $record->getLeader())) {
+			$this->unlock();
+			die ("unable to 'putControl() leader");
+		}
+		$fields = $record->getFields();
+		foreach ($fields as $field) {
+//if (is_object($field)) $className = get_class($field);
+//echo "MarcStore: field==> ({$className})";print_r($field);echo"<br/>\n";
+			$fldseq += 1;
+			if (is_a($field, 'MarcControlField')) {
+//echo "MarcStore: posting control field<br/>\n";
+				if ($this->_putControl($bibid, $fldseq, $field->tag, $field->data) == 0) {
+					$this->unlock();
+					die("unable to post MARC control field to database");
+				}
+			} else if (is_a($field, 'MarcDataField')){
+//echo "MarcStore: posting MARC structure field & subfield<br/>\n";
+				$fieldid = $this->_putField($bibid, $fldseq, $field->tag, $field->indicators);
+				if (!$fieldid) {
+					$this->unlock();
+					die ("unable to post MARC field ".$field->tag." to database.");
+				}
+				$subseq = 1;
+				foreach ($field->subfields as $subf) {
+//echo "MarcStore: posting MARC subfield<br/>\n";
+					if (!$this->_putSub($bibid, $fieldid, $subseq++, $subf->identifier, $subf->data)) {
+						$this->unlock();
+						die ("unable to post MARC subfield ".$field->tag.$subf->identifier." to database.");
+					}
+				}
+			} else {
+//echo "MarcStore: posting array structure field & subfield<br/>\n";
+				$fieldid = $this->_putField($bibid, $fldseq, $field['tag'], null);
+				if (!$fieldid) {
+					$this->unlock();
+					die ("unable to post array field ".$field['tag']." to database.");
+				}
+				$subseq = 1;
+//echo "MarcStore: posting array subfield<br/>\n";
+				if (!$this->_putSub($bibid, $fieldid, $subseq++, $field['subfield_cd'], $field['data'])) {
+					$this->unlock();
+					die ("unable to post array subfield ".$field['tag'].$field['subfield_cd']." to database.");
+				}
+			}
+		}
+		$this->unlock();
+		return true;
+	}
 	## ------------------------------------------------------------------------##
 	private function _putControl($bibid, $seq, $tag, $data) {
+//echo "MarcStore: in _putControl()<br/>\n";
 		$sql = $this->mkSQL("insert into biblio_field values "
 			. "(%N, NULL, %N, %Q, NULL, NULL, %Q, NULL) ",
 			$bibid, $seq, $tag, $data);
+//echo "sql={$sql}<br/>\n";
 		$this->act($sql);
 		return $this->getInsertID();
 	}
-	private function _putData($bibid, $seq, $tag, $ind) {
+	private function _putField($bibid, $seq, $tag, $ind) {
+//echo "MarcStore: in _putField()<br/>\n";
 		$sql = $this->mkSQL("insert into biblio_field values "
 			. "(%N, NULL, %N, %Q, %Q, %Q, NULL, NULL) ",
 			$bibid, $seq, $tag, $ind{0}, $ind{1});
+//echo "sql={$sql}<br/>\n";
 		$this->act($sql);
 		return $this->getInsertID();
 	}
 	private function _putSub($bibid, $fieldid, $seq, $identifier, $data) {
+//echo "MarcStore: in _putSub()<br/>\n";
 		$sql = $this->mkSQL("insert into biblio_subfield values "
 			. "(%N, %N, NULL, %N, %Q, %Q) ",
 			$bibid, $fieldid, $seq, $identifier, $data);
+//echo "sql={$sql}<br/>\n";
 		$this->act($sql);
 		return $this->getInsertID();
 	}

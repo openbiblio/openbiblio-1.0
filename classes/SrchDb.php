@@ -470,16 +470,20 @@ class SrchDb extends Queryi {
 		return;
 	}
 	## ========================= ##
-	function deleteCopy($bibid,$copyid) {
+	function deleteCopy($copyid) {
 		$this->lock();
 		$sql = "DELETE FROM `biblio_copy` "
-					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
+					." WHERE (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
+		if ($rows == '0') die ("copy# {$copyid} delete failed");
+
 		$sql = "DELETE FROM `biblio_copy_fields` "
 					." WHERE (`copyid` = $copyid) ";
 		//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
+		if ($rows == '0') die ("copy_field# {$copyid} delete failed");
+
 		$this->unlock();
 		return T("Delete completed");
 	}
