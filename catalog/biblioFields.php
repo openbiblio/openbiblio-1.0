@@ -66,11 +66,7 @@
 			  $attrStr .= " offline";
 			$attrs["class"] = $attrStr;
 
-			if ($i['form_type'] == 'text') {
-			  //$attrs["size"] = "50"; $attrs["maxLength"] = "75"; 
-			  $attrs["size"] = "50"; $attrs["maxLength"] = "256"; 
-				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
-			} else {
+			if ($i['form_type'] == 'textarea') {
 				// IE seems to make the font-size of a textarea overly small under
 				// certain circumstances.  We force it to a sane value, even
 				// though I have some misgivings about it.  This will make
@@ -78,6 +74,10 @@
 				$attrs["style"] = "font-size:10pt; font-weight: normal;";
 				$attrs["rows"] = "7"; $attrs["cols"] = "48";
 				echo inputfield('textarea', $namePrefix."[data]", H($i['data']),$attrs, H($i['data']))." \n";
+			} else {
+			  //$attrs["size"] = "50"; $attrs["maxLength"] = "75";
+			  $attrs["size"] = "50"; $attrs["maxLength"] = "256";
+				echo inputfield('text', $namePrefix."[data]", H($i['data']),$attrs)." \n";
 			}
 			echo "</td> \n";
 		}

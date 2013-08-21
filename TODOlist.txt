@@ -94,17 +94,14 @@ Marc input/output, cvs output, barcode printing, barcode input, .....
 14 Aug 2013 - Jan
 .htaccess causing Apache problems.
 
-14 Aug 2013 - Jan
-new entries all failing.
+###################### Completed, most recent at top #########################
 
-14 Aug 2013 - Fred
+14 Aug 2013 - Fred, fixed 21 Aug
 New Item manual entry - pub date field using type=textarea
 
-14 Aug 2013 - Jan
+14 Aug 2013 - Jan, fixed 21 Aug
 Adding items *almost* works - it accepts the record, lets me enter the copy -
 but the database only saves the copy, not the bibliographic record.
-
-###################### Completed, most recent at top #########################
 
 14 Aug 2013 - Jan, unable to duplicate, cvs working fine 20 Aug
 CSV import doesn't seem to work - it accepts the file, but doesn't get any items in.
