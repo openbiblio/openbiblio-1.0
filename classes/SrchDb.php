@@ -454,11 +454,11 @@ class SrchDb extends Queryi {
 		// Update custom fields if set
 		$copies = new Copies;
 		$custom = array();
-		$BCQ = new BiblioCopyFields;
-		$rows = $BCQ->getAll();		
+		$ptr = new BiblioCopyFields;
+		$rows = $ptr->getAll();
 		while ($row = $rows->fetch_assoc()) {
-			if (isset($_REQUEST['custom_'.$row["code"]])) {
-				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
+			if (isset($_REQUEST['copyCustom_'.$row["code"]])) {
+				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
 			}			
 		}		
 		$copies->setCustomFields($copyid, $custom);		

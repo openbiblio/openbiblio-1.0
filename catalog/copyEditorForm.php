@@ -14,55 +14,58 @@
 	<fieldset>
 	<legend id="copyLegend"><?php echo T("Add New Copy"); ?></legend>
 	<table id="copyTbl" >
-		<tbody class="unstriped">
-		<tr>
-			<td><label for="copyBarcode_nmbr"><?php echo T("Barcode Number"); ?></label></td>
-			<td>
-				<input id="copyBarcode_nmbr" name="barcode_nmbr" type="number" size="20" title="zero-filled barcode" required aria-required="true" />
-				<span class="reqd">*</span>
-			</td>
-		</tr>
-		<tr>
-			<td><label for="autobarco"><?php echo T("Auto Barcode"); ?></label></td>
-			<td>
-				<input id="autobarco" name="autobarco" type="checkbox" value="Y"
-					<?php echo ($_SESSION['item_autoBarcode_flg']=='Y'?checked:''); ?> />
-			</td>
-		</tr>
-		<tr>
-			<td><label for="copyDesc"><?php echo T("Description"); ?></label></td>
-			<td><input id="copyDesc" name="copy_desc" type="text" size="40" /></td>
-		</tr>
-	<?php // Not to be shown when in normal (non multisite mode)
-	if($_SESSION['multi_site_func'] > 0){
-	?>
-		<tr>
-			<td><label for="copySite"><?php echo T("Location"); ?></label></td>
-			<td><select id="copySite" name="copy_site">to be filled in by server</span></td>
-		</tr>
-	<?php } ?>
-		<tr>
-			<td><label for="status_cd"><?php echo T("Status:");?></label></td>
-			<td>
-				</select>
-				<?php
-					$states = new CopyStatus;
-					$state_select = $states->getSelect();
-					echo inputfield(select, status_cd, "in", null, $state_select);
-				?>
-			</td>
-		</tr>
-		<!-- Custom fields /-->
-		<?php
-			$BCF = new BiblioCopyFields;
-			$rows = $BCF->getAll();
-			while ($row = $rows->fetch_assoc()) {
-				echo "<tr>";
-				echo "<td nowrap=\"true\" valign=\"top\"><label for=\"copyCustom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
-				echo "<td valign=\"top\" \">" . inputfield('text', 'copyCustom_'.$row["code"], "",NULL) . "</td>";
-				echo "</tr>";
-			}
+		<tbody id="dfltFlds" class="unstriped">
+			<tr>
+				<td><label for="copyBarcode_nmbr"><?php echo T("Barcode Number"); ?></label></td>
+				<td>
+					<input id="copyBarcode_nmbr" name="barcode_nmbr" type="number" size="20" title="zero-filled barcode" required aria-required="true" />
+					<span class="reqd">*</span>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="autobarco"><?php echo T("Auto Barcode"); ?></label></td>
+				<td>
+					<input id="autobarco" name="autobarco" type="checkbox" value="Y"
+						<?php echo ($_SESSION['item_autoBarcode_flg']=='Y'?checked:''); ?> />
+				</td>
+			</tr>
+			<tr>
+				<td><label for="copyDesc"><?php echo T("Description"); ?></label></td>
+				<td><input id="copyDesc" name="copy_desc" type="text" size="40" /></td>
+			</tr>
+		<?php // Not to be shown when in normal (non multisite mode)
+		if($_SESSION['multi_site_func'] > 0){
 		?>
+			<tr>
+				<td><label for="copySite"><?php echo T("Location"); ?></label></td>
+				<td><select id="copySite" name="copy_site">to be filled in by server</span></td>
+			</tr>
+		<?php } ?>
+			<tr>
+				<td><label for="status_cd"><?php echo T("Status:");?></label></td>
+				<td>
+					</select>
+					<?php
+						$states = new CopyStatus;
+						$state_select = $states->getSelect();
+						echo inputfield(select, status_cd, "in", null, $state_select);
+					?>
+				</td>
+			</tr>
+		</tbody>
+		<tbody id="cstmFlds" class="unstriped">
+			<!-- Custom fields /-->
+			<?php
+				$ptr = new BiblioCopyFields;
+				$rows = $ptr->getAll();
+				while ($row = $rows->fetch_assoc()) {
+					echo "<tr>";
+					echo "<td nowrap=\"true\" valign=\"top\"><label for=\"copyCustom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
+					echo "<td valign=\"top\" \">" . inputfield('text', 'copyCustom_'.$row["code"], "",NULL) . "</td>";
+					echo "</tr>";
+				}
+			?>
+		</tbody>
 		</tr>
 		<tr>
 			<td colspan="2">

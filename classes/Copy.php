@@ -49,6 +49,7 @@ class Copy {
 		$this->copyid = $copyid;
 		$this->fetch_copy();
 		$this->fetch_status();
+		$this->fetch_custom();
 	}
 
 	/**
@@ -113,6 +114,13 @@ class Copy {
 		$this->hdrFlds['siteid'] = $rslt['siteid'];
 		$this->hdrFlds['histid'] = $rslt['histid'];
 		$this->hdrFlds['desc'] = $rslt['copy_desc'];
+	}
+	private function fetch_custom() {
+		$ptr = new Copies;
+		$flds = $ptr->getCustomFields($this->copyid, true);
+		foreach ($flds as $fld) {
+      $this->hdrFlds['custom'][$fld['code']] = $fld['data'];
+		}
 	}
 	private function fetch_status() {
 		$ptr = new Biblios;

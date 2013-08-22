@@ -74,7 +74,7 @@ class Copies extends CoreTable {
 		return $nextCopy["nextCopy"]+1;
 	}
 */
-	function getNewBarCode($width) {
+	public function getNewBarCode($width) {
 		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
 		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
 		$cpy = $this->select1($sql);
@@ -82,7 +82,7 @@ class Copies extends CoreTable {
 		return sprintf("%0".$w."s",($cpy[lastNmbr]+1));
 	}
 	
-	function insert_el($copy) {
+	protected function insert_el($copy) {
 		$this->lock();
 		list($id, $errors) = parent::insert_el($copy);
 		if (!$errors) {
@@ -107,7 +107,7 @@ class Copies extends CoreTable {
 		}
 		return $errors;
 	}
-	function isDuplicateBarcd($barcd,$cpyid) {
+	public function isDuplicateBarcd($barcd,$cpyid) {
 		/* Check for duplicate barcodes */
 		/* broken out from validate_el() for access by client via AJAX - fl*/
 		if (isset($barcd)) {
@@ -134,7 +134,7 @@ class Copies extends CoreTable {
 		return preg_replace('/^([A-Za-z]+)?0*(.*)/', '\\1\\2', $barcode);
 	}
 
-	function getMemberCheckouts($mbrid) {
+	public function getMemberCheckouts($mbrid) {
 		$sql = "select c.copyid "
 			. "from biblio_copy c, booking b, booking_member m "
 			. "where c.histid = b.out_histid "
@@ -143,7 +143,7 @@ class Copies extends CoreTable {
 		return $this->select($sql);
 	}
 
-	function getCheckoutMember($histid) {
+	public function getCheckoutMember($histid) {
 		$sql = "select mbr.* "
 				 . "from member mbr, booking bk, booking_member bkm "
 				 . "where mbr.mbrid=bkm.mbrid "
@@ -153,7 +153,7 @@ class Copies extends CoreTable {
 		return ($result->fetch_assoc());
 	}
 
-	function getHoldMember($copyid) {
+	public function getHoldMember($copyid) {
 		$sql = "select mbr.* "
 				 . "from member mbr, biblio_hold bh "
 				 . "where mbr.mbrid=bh.mbrid ";
@@ -162,7 +162,7 @@ class Copies extends CoreTable {
 		return ($result->fetch_assoc());
 	}	
 
-	function lookupBulk_el($barcodes) {
+	public function lookupBulk_el($barcodes) {
 		$copyids = array();
 		$bibids = array();
 		$errors = array();
@@ -181,7 +181,7 @@ class Copies extends CoreTable {
 		}
 		return array($copyids, $bibids, $errors, $barcodes);
 	}
-	function lookupAvability ($bibid) {
+	public function lookupAvability ($bibid) {
 		$sql = "select c.copyid, c.siteid, h.status_cd "
 				 . "from biblio_copy c, biblio_status_hist h "
 				 . "where (c.bibid = {$bibid}) "
@@ -211,7 +211,7 @@ class Copies extends CoreTable {
 		$rcd['avIcon'] = $avIcon;
 		return $rcd;
 	}
-	function lookupNoCopies($bibids, $del_copyids) {
+	public function lookupNoCopies($bibids, $del_copyids) {
 		$no_copies = array();
 		foreach ($bibids as $bibid) {
 			$has_copies = false;
@@ -228,7 +228,7 @@ class Copies extends CoreTable {
 		}
 		return $no_copies;
 	}
-	function getShelvingCart() {
+	public function getShelvingCart() {
 		$sql = "select bc.* "
 			. "from biblio_copy bc, biblio_status_hist bsh "
 			. "where bc.histid=bsh.histid "
@@ -252,7 +252,7 @@ class Copies extends CoreTable {
 		$this->unlock();
 	}
 	*/
-	function massCheckin() {
+	public function massCheckin() {
 		$this->lock();
 		$cart = $this->getShelvingCart();
 		$bibids = array();
@@ -264,14 +264,21 @@ class Copies extends CoreTable {
 		$this->checkin($bibids, $copyids);
 		$this->unlock();
 	}
-	function getCustomFields($copyid) {
-		return $this->custom->getMatches(array('copyid'=>$copyid));
+	public function getCustomFields($copyid, $arrayWanted=false) {
+		$rslt = $this->custom->getMatches(array('copyid'=>$copyid));
+		if ($arrayWanted) {
+			while ($row = $rslt->fetch_assoc()) {
+				$flds[] = $row;
+			}
+			return $flds;
+		}
+		return $rslt;
 	}
-	function deleteCustomFields($copyid) {
+	public function deleteCustomFields($copyid) {
 		return $this->custom->deleteMatches(array('copyid'=>$copyid));
 	}
 
-	function setCustomFields($copyid, $customFldsarr) {
+	public function setCustomFields($copyid, $customFldsarr) {
 		$this->custom->deleteMatches(array('copyid'=>$copyid));
 		foreach ($customFldsarr as $code => $data) {
 			$fields= array(

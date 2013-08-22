@@ -212,13 +212,13 @@
 		break;
 
 	//// ====================================////
-	case 'updateCopy':
 	case 'newCopy':
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 			return;
 		}
+	case 'updateCopy':
 	  $theDb = new SrchDB;
 		if ($_POST[mode] == 'updateCopy') {
 	  	echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);

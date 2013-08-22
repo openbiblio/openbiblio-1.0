@@ -91,10 +91,13 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
-14 Aug 2013 - Jan
-.htaccess causing Apache problems.
-
 ###################### Completed, most recent at top #########################
+
+22 Aug 2013 - Fred, fixed 22 Aug
+unable to modify content of biblio copy (description specifically))
+
+14 Aug 2013 - Jan, ignored, unable to duplicate problem, 21 Aug
+.htaccess causing Apache problems.
 
 14 Aug 2013 - Fred, fixed 21 Aug
 New Item manual entry - pub date field using type=textarea

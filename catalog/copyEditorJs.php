@@ -96,31 +96,33 @@ var ced = {
 	},
 
 	doCopyEdit: function (e) {
+		e.preventDefault();
+		e.stopPropagation();
 		$('#editRsltMsg').html('').hide();
 		var btnid = e.currentTarget.id,
 				copyid = btnid.split('-')[1];
-		for (var nCopy in idis.copyJSON) {
-			idis.crntCopy = eval('('+idis.copyJSON[nCopy]+')')
-		  if (idis.crntCopy['copyid'] == copyid) break;
+		for (var nCopy in idis.copys) {
+			var crntCopy =idis.copys[nCopy];
+		  if (crntCopy.copyid == copyid) break;
 		}
-		$('#copyBarcode_nmbr').val(idis.crntCopy.barcode_nmbr);
-		$('#copyDesc').val(idis.crntCopy.copy_desc);
-		$('#copySite').val([idis.crntCopy.site]);
-		$('#copyTbl #status_cd').val(idis.crntCopy.statusCd);
+		ced.crntCopy = crntCopy;
+		$('#copyBarcode_nmbr').val(crntCopy.barcode);
+		$('#copyDesc').val(crntCopy.desc);
+		$('#copySite').val([crntCopy.siteid]);
+		$('#copyTbl #status_cd').val(crntCopy.status);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
 
-		//var status = idis.crntCopy.statusCd;
-		//if ((status == 'in') || (status == 'out') ||(status == 'hold')) {
-		//	$('#crntStatus').html('current: '+idis.crntCopy.status).show();
-		//}
-
-  	var crntsite = idis.opts.current_site
-		$('#copySite').val(crntsite);
 
 		// custom fields
-		for(var nField in idis.crntCopy.custFields){
-			$('#copyCustom_'+idis.crntCopy.custFields[nField].code).val(idis.crntCopy.custFields[nField].data);
-		}
+		var fldData = crntCopy.custom;
+		$('#cstmFlds input').each(function (n) {
+			var parts = this.id.split('_');
+			var code = parts[1];
+			if (fldData !== null) {
+				var datum = fldData[code];
+				$(this).val(datum);
+			}
+		});
 
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
@@ -139,22 +141,21 @@ var ced = {
 		e.stopPropagation();
 		e.preventDefault();
 
-	  // serialize() ignores disabled fields, so cant reliably use it in this case
-	  var barcdNmbr = $('#copyBarcode_nmbr').val(),
+	  // serialize() ignores disabled fields, so can't reliably use it in this case
+	  var copy = ced.crntCopy,
+				barcdNmbr = $('#copyBarcode_nmbr').val(),
 	  		copyDesc = $('#copyDesc').val(),
 	  		statusCd = $('#copyTbl #status_cd').val(),
 	  		siteid = $('#copySite').val(),
-				params = "&mode=updateCopy&bibid="+idis.bibid+"&copyid="+idis.crntCopy.copyid
+				params = "&mode=updateCopy&bibid="+copy.bibid+"&copyid="+copy.copyid
 					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
 
 		// Custom fields
-		for(var nField in idis.crntCopy.custFields){
-			// Only add if has a value, or changed from a value to nothing
-			if($('#copyCustom_'+idis.crntCopy.custFields[nField].code).val() != idis.crntCopy.custFields[nField].data ||  $('#copyTbl #custom_'+idis.crntCopy.custFields[nField].code).val() != ""){
-				params = params + '&custom_'+idis.crntCopy.custFields[nField].code+'='+$('#copyCustom_'+idis.crntCopy.custFields[nField].code).val();
-			}
-		}
+		$('#cstmFlds input').each(function (n) {
+			var code = this.id.split('_');
+			params += '&'+this.id+'='+$(this).val();
+		});
 
 		// post to DB
 		ced.doPostCopy2DB(params);
