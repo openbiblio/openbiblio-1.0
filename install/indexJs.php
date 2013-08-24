@@ -137,6 +137,7 @@ ins = {
 	doDbUpdate: function () {
 		ins.showWait('<?php echo T("Updating Tables"); ?>');
 		ins.informUser('<?php echo T("Updating Database Tables"); ?>');
+		//ins.startVer='0.7.1';
 		$.post(ins.url, {'mode':'doDbUpgrade','startVer':ins.startVer,}, function (response) {
 			$('#plsWait').hide();
 			if ((response.indexOf('!-!') >= 0) || (response.indexOf('error') >= 0)) {

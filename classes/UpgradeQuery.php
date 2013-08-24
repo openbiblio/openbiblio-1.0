@@ -52,6 +52,7 @@ class UpgradeQuery extends InstallQuery {
     do {
       if ($version == OBIB_LATEST_DB_VERSION) {
 				echo 'Complete';
+				break;
       } elseif (isset($this->upgrades[$version])) {
         $func = $this->upgrades[$version];
         list($notice, $error) = $this->$func($fromDbName, $tmpPrfx);
@@ -407,6 +408,7 @@ class UpgradeQuery extends InstallQuery {
 		$subSql = "INSERT INTO `$dbName`.`biblio_subfield` "
 						. "(`bibid`,`fieldid`,`subfieldid`,`seq`,`subfield_cd`,`subfield_data`) "
 						. "VALUES ";
+		return array($bibSql,$fldSql,$subSql);
 	}
 
   private function _upgrade071_e($origName, $notused) {
@@ -424,7 +426,7 @@ class UpgradeQuery extends InstallQuery {
 		$bibRslt = $this->select($sql);
 		$n = 0; $fldid = 1; $subid = 1;
 
-    $this->_reset_strings($origName);
+    list($bibSql,$fldSql,$subSql) = $this->_reset_strings($origName);
 		while (($bib = $bibRslt->fetch_assoc()) != NULL) {
 			# we will be posting to the db in blocks of 100 records to avoid server overload
 			$n++;
@@ -433,6 +435,7 @@ class UpgradeQuery extends InstallQuery {
 										.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
 
 			### get those fields & sub-fields previosly kept in biblio table
+			# title
 			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", "0", "245", NULL, NULL, NULL, NULL),';
 			$bib[title] = preg_replace("/'/","\\'",$bib[title]);
 			$bib[title] = preg_replace('/"/','\\"',$bib[title]);
@@ -444,17 +447,17 @@ class UpgradeQuery extends InstallQuery {
 			$bib[responsibility_stmt] = preg_replace('/"/','\\"',$bib[responsibility_stmt]);
 			if ($bib[responsibility_stmt]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "c", "'.$bib[responsibility_stmt].'"),'; $subid++;}
   	  $fldid++;
-  	  
+  	  # author
 			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "100", NULL, NULL, NULL, NULL),';  
 			$bib[author] = preg_replace("/'/","''",$bib[author]);
 			$bib[author] = preg_replace("/\\\\/"," ",$bib[author]);
 			if ($bib[author]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[author].'"),'; $subid++;}
 	    $fldid++;
-    
+      # call number
 			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';
 			if ($bib[call_nmbr1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[call_nmbr1].'"),'; $subid++;}
 	    $fldid++;
-
+			# topics
 			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "650", NULL, NULL, NULL, NULL),';  
 			$bib[topic1] = preg_replace("/'/","''",$bib[topic1]);
 			if ($bib[topic1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[topic1].'"),'; $subid++;}
@@ -496,27 +499,27 @@ class UpgradeQuery extends InstallQuery {
 				//echo "$fldid field records written.<br />";
 				//echo "$subid sub-field records written.<br />";
 								
-				$this->_reset_strings($origName);	// reset skeleton strings for next batch
+				list($bibSql,$fldSql,$subSql) = $this->_reset_strings($origName);	// reset skeleton strings for next batch
 			}
-//if ($n=1)break; ## for bebug only
+//if ($n>99)break; ## for bebug only
 		}
 
 		### final results for main biblio tables
-		echo "$n total biblio records written.<br />";
-		echo "$fldid total field records written.<br />";
-		echo "$subid total sub-field records written.<br />";
+		//echo "$n total biblio records written.<br />";
+		//echo "$fldid total field records written.<br />";
+		//echo "$subid total sub-field records written.<br />";
 		#### =========== end of the biblio, biblio_field, biblio_subfield processing =========== ####
 
-    $this->act('insert into '.$origName.'biblio_copy'
+    $this->act('insert into '.$origName.'.biblio_copy'
     						.'(`bibid`,`copyid`,`create_dt`,`barcode_nmbr`,`copy_desc`)'
 								.' select  `bibid`,`copyid`,`create_dt`,`barcode_nmbr`,`copy_desc`'
 								.' from '.$copyName.'.biblio_copy');
-		$this->act('insert into '.$origName.'biblio_copy_fields'
+		$this->act('insert into '.$origName.'.biblio_copy_fields'
 								.' select * from '.$copyName.'.biblio_copy_fields' );
     // no change - biblio_copy_fields_dm
     // no change - biblio_hold
     // no change - biblio_status_dm
-    $this->act('insert into '.$origName.'biblio_status_hist'
+    $this->act('insert into '.$origName.'.biblio_status_hist'
     						.' (`histid`,`bibid`,`copyid`,`status_cd`,`status_begin_dt`)'
                 .' select NULL,`bibid`,`copyid`,`status_cd`,`status_begin_dt`'
 								.' from '.$copyName.'.biblio_status_hist' );
@@ -530,25 +533,30 @@ class UpgradeQuery extends InstallQuery {
 		// new table from full install - collection_dm
     // no change - cutter
 		// new table from full install - images
-		$this->act('replace into '.$origName.'lookup_hosts'
+		$this->act('replace into '.$origName.'.lookup_hosts'
 								.' select * from '.$copyName.'.lookup_hosts' );
-		$this->act('replace into '.$origName.'lookup_settings'
+		$this->act('replace into '.$origName.'.lookup_settings'
 								.' select * from '.$copyName.'.lookup_settings' );
 		// new table from full install - material_fields
-		$this->act('replace into '.$origName.'material_type_dm'
+		$this->act('replace into '.$origName.'.material_type_dm'
 								.' select * from '.$copyName.'.material_type_dm' );
-		$this->act('replace into '.$origName.'mbr_classify_dm'
+		$this->act('replace into '.$origName.'.mbr_classify_dm'
 								.' select * from '.$copyName.'.mbr_classify_dm' );
-		$this->act('insert into '.$origName.'member'
-								.' select * from '.$copyName.'.member' );
-		$this->act('insert into '.$origName.'member_account'
+		$sql="insert into ".$origName.".member "
+					." select `mbrid`,`barcode_nmbr`,`create_dt`,`last_change_dt`,`last_change_userid`"
+					.",`last_name`,`first_name`,`address`,'n/a','n/a','n/a','n/a','n/a'"
+					.",`home_phone`,`work_phone`,`email`,`classification`,'1','n/a','n/a'"
+					." from ".$copyName.".member";
+		$this->act($sql);
+		$this->act('insert into '.$origName.'.member_account'
 								.' select * from '.$copyName.'.member_account' );
-		$this->act('replace into '.$origName.'member_fields'
+		$this->act('replace into '.$origName.'.member_fields'
 								.' select * from '.$copyName.'.member_fields' );
-		$this->act('replace into '.$origName.'member_fields_dm'
+		$this->act('replace into '.$origName.'.member_fields_dm'
 								.' select * from '.$copyName.'.member_fields_dm' );
-		$this->act('insert into '.$origName.'member_fields_dm'
+		$this->act('insert into '.$origName.'.member_fields_dm'
 								.' select * from '.$copyName.'.member_fields_dm' );
+
 		// === start Settings block - major structural change
 		$sql = 'replace into '.$origName.'.settings'.'(`name`,`value`)';
 		$entries = $this->select1('select * from '.$copyName.'.settings');
@@ -557,13 +565,14 @@ class UpgradeQuery extends InstallQuery {
 		}
 		$this->act($sql);
 		// === end Settings block
+
 		// new table from full install - site
-		$this->act('insert into '.$origName.'staff'
+		$this->act('insert into '.$origName.'.staff'
 								.' select * from '.$copyName.'.staff' );
 		// new table from full install - state_dm
-		$this->act('replace into '.$origName.'theme'
+		$this->act('replace into '.$origName.'.theme'
 								.' select * from '.$copyName.'.theme' );
-		$this->act('replace into '.$origName.'transaction_type_dm'
+		$this->act('replace into '.$origName.'.transaction_type_dm'
 								.' select * from '.$copyName.'.transaction_type_dm' );
 		// new table from full install - transentries
 		// new table from full install - transkeys
