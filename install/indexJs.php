@@ -84,10 +84,10 @@ ins = {
 				ins.informUser('<?php echo T("Database not found"); ?>');
 				ins.getLocales();
 			} else if (response == '<?php echo H(OBIB_LATEST_DB_VERSION); ?>') {
-				ins.informUser('<?php echo T("DatabaseUpToDate"); ?>');
+				ins.informUser(response+', '+'<?php echo T("DatabaseUpToDate"); ?>');
 				$('#versionOK').show();
 			} else {
-				ins.informUser('<?php echo T("Database needs upgrading"); ?>');
+				ins.informUser(response+', '+'<?php echo T("Database needs upgrading"); ?>');
 				ins.startVer = response;
 				$('#verTxt').html(response);
 				$('#updateDB').show();

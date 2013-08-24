@@ -36,13 +36,15 @@ class InstallQuery extends Queryi {
 //    return $this->select($sql);
   }
 
-  public function getCurrentDatabaseVersion($tablePrfx = OBIB_DATABASE) {
-    $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $tablePrfx.'settings','version');
+  public function getCurrentDatabaseVersion($dbName = OBIB_DATABASE) {
+		## versions 1.0+
+    $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $dbName.'.settings','version');
     $row = $this->select01($sql);
 		if ($row) {
 			$version = $row['value'];
 		} else {
-    	$sql = $this->mkSQL('SELECT `version` FROM %i ', $tablePrfx.'.settings');
+			## versions < 1.0
+    	$sql = $this->mkSQL('SELECT `version` FROM %i ', $dbName.'.settings');
     	$rslt = $this->select01($sql);
 			$version = $rslt['version'];
 		}
@@ -67,7 +69,6 @@ class InstallQuery extends Queryi {
   protected function freshInstall($locale, $sampleDataRequired = false,
                         $version=OBIB_LATEST_DB_VERSION,
                         $dbName = DB_TABLENAME_PREFIX) {
-echo "in InstallQuery: freshInstall()<br/>\n";
     $rootDir = '../install/' . $version . '/sql';
     $localeDir = '../locale/' . $locale . '/sql/' . $version;
     $this->executeSqlFilesInDir($rootDir, $dbName);
@@ -79,16 +80,13 @@ echo "in InstallQuery: freshInstall()<br/>\n";
 
   protected function createDatabase($dbName) {
     $sql = $this->mkSQL("create database if not exists %I ", $dbName);
-echo "creating: sql={$sql}<br/>\n";
     return $this->act($sql);
   }
 
   protected function copyDatabase($fromDb, $toDb) {
     $sql = $this->mkSQL('SHOW TABLES FROM %I ', $fromDb);
-//echo "copying: sql={$sql}<br/>\n";
     $rslt = $this->select($sql);
     while ($row = $rslt->fetch_array()) {
-echo "copying table {$row[0]}<br/>\n";
       $sql = $this->mkSQL('create table %q as select * from %q', $toDb.'.'.$row[0], $fromDb.'.'.$row[0]);
 			$this->act($sql);
 			$this->dropTable($fromDb.'.'.$row[0]);
@@ -97,9 +95,7 @@ echo "copying table {$row[0]}<br/>\n";
 
 	## ------------------------------------------------------------------------ ##
   private function dropTable($tableName) {
-//    $sql = $this->mkSQL("drop table if exists %I ", $tableName);
     $sql = $this->mkSQL("drop table if exists %q ", $tableName);
-echo "droping: sql={$sql}<br/>\n";
     return $this->act($sql);
   }
 
@@ -127,7 +123,6 @@ echo "droping: sql={$sql}<br/>\n";
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($filename = readdir($dh)) !== false) {
-echo "processing sql file: $filename <br />\n";
           if(preg_match('/\\.sql$/', $filename)) {
             $this->executeSqlFile($dir.'/'.$filename, $dbName);
           }
@@ -154,7 +149,6 @@ echo "processing sql file: $filename <br />\n";
           //want to override the required prefix (eg. during upgrade / conversion 
           //process)
           $sql = str_replace("%prfx%",$dbName,$sqlStmt);
-echo "execute sql: sql={$sql}<br/>\n";
           $this->act($sql);
           $sqlStmt = "";
         } else {
