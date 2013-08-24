@@ -57,8 +57,8 @@ class Queryi extends mysqli{
 	private function _act($sql) {
 		$r =  $this->query($sql);
 		if ($r === false) {
-			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
-			//echo "sql=$sql<br />\n";
+			Fatal::dbError($sql, T("Database query failed"), mysql_error());
+			echo "sql=$sql<br />\n";
 			$r = 0;
 		}
 		return $r;

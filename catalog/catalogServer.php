@@ -218,13 +218,12 @@
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 			return;
 		}
+	  $theDb = new SrchDB;
+		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+		break;
 	case 'updateCopy':
 	  $theDb = new SrchDB;
-		if ($_POST[mode] == 'updateCopy') {
-	  	echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-		} else {	
-			echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-		}
+	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 	case 'getBibsFrmCopies':
 	  $theDb = new SrchDB;

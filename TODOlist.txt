@@ -69,9 +69,6 @@ Help system needs lots of work
 MARC import needs facelift
 update to look/work like CSV import
 
-- Fred
-Install needs to work for new installations
-
 14 July 2013 - Fred
 Edit Biblio does not allow entering more than one subject line at a time.  Look into
 using more of code from 'new item' server process.
@@ -92,6 +89,9 @@ verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
 ###################### Completed, most recent at top #########################
+
+unknown - Fred, now works 24 Aug
+Install needs to work for new installations
 
 22 Aug 2013 - Fred, fixed 22 Aug
 unable to modify content of biblio copy (description specifically))

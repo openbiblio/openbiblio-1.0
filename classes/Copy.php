@@ -118,6 +118,7 @@ class Copy {
 	private function fetch_custom() {
 		$ptr = new Copies;
 		$flds = $ptr->getCustomFields($this->copyid, true);
+		if (!$flds) return;
 		foreach ($flds as $fld) {
       $this->hdrFlds['custom'][$fld['code']] = $fld['data'];
 		}

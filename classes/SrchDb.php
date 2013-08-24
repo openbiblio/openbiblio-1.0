@@ -373,7 +373,7 @@ class SrchDb extends Queryi {
 	}
 	## ========================= ##
 	function insertCopy($bibid,$copyid) {
-		$this->lock();
+		//$this->lock();
 		if (empty($_POST['copy_site'])) {
 			$theSite = $_SESSION['current_site'];
 		} else {
@@ -387,7 +387,7 @@ class SrchDb extends Queryi {
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
-		//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
 		
 		$copyid = $this->getInsertID();
@@ -396,27 +396,28 @@ class SrchDb extends Queryi {
 		      ."`copyid` = $copyid,"
 		      ."`status_cd` = '$_POST[status_cd]',"
 		      ."`status_begin_dt` = NOW()";
-		//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
 		$histid = $this->getInsertID();
 		
 		$sql = "Update `biblio_copy` SET "
 		      ."`histid` = '$histid' "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
-		//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
-		$this->unlock();
+//echo"rows===>{$rows}<br/>\n";
+		//$this->unlock();
 		
 		// Update custom fields if set
-		$copies = new Copies;
 		$custom = array();
-		$BCQ = new BiblioCopyFields;
-		$rows = $BCQ->getAll();
+		$ptr = new BiblioCopyFields;
+		$rows = $ptr->getAll();
 		while ($row = $rows->fetch_assoc()) {
 			if (isset($_POST['custom_'.$row["code"]])) {
 				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
 			}
 		}
+		$copies = new Copies;
 		$copies->setCustomFields($copyid, $custom);
 		return "!!success!!";
 	}
@@ -426,7 +427,7 @@ class SrchDb extends Queryi {
 		$sql = "SELECT `status_cd`, `histid` FROM `biblio_status_hist` "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)"
 					." ORDER BY status_begin_dt";
-		//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 		$rslt = $this->select($sql);
 		$rcd = $rslt->fetch_assoc();  // only first (most recent) response wanted
 		$histid = $rcd['histid'];
@@ -437,7 +438,7 @@ class SrchDb extends Queryi {
 			      ."`status_begin_dt` = NOW(),"
 						."`bibid` = $bibid,"
 						."`copyid` = $copyid ";
-			//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 			$rslt = $this->act($sql);
 			$histid = $this->getInsertID();
 		}
@@ -448,11 +449,10 @@ class SrchDb extends Queryi {
 		      ."`siteid` = '$_POST[siteid]', "
 					."`histid` = $histid "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
-		//echo "sql=$sql<br />";
+//echo "sql=$sql<br />";
 		$rows = $this->act($sql);
-
+//echo"rows===>{$rows}<br/>\n";
 		// Update custom fields if set
-		$copies = new Copies;
 		$custom = array();
 		$ptr = new BiblioCopyFields;
 		$rows = $ptr->getAll();
@@ -461,7 +461,8 @@ class SrchDb extends Queryi {
 				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
 			}			
 		}		
-		$copies->setCustomFields($copyid, $custom);		
+		$copies = new Copies;
+		$copies->setCustomFields($copyid, $custom);
 		
 		$this->unlock();
 		// Changed this to nothing, so any message/output is taken as an error message - LJ

@@ -88,7 +88,7 @@ var ced = {
 		$('#copySubmitBtn').on('click',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-			var params= $('#copyForm').serialize() + '&barcode_nmbr='+$('#copyBarcode_nmbr').val();
+			var params= $('#copyForm').serialize() + '&bibid='+idis.bibid+'&barcode_nmbr='+$('#copyBarcode_nmbr').val();
 			ced.doPostCopy2DB(params);
 		});
 	  // prevent submit button from firing a 'submit' action
