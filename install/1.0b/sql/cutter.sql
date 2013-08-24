@@ -1,41 +1,10 @@
--- phpMyAdmin SQL Dump
--- version 3.3.9
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Aug 21, 2011 at 05:44 PM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `openbibliowork`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cutter`
---
-
-CREATE TABLE IF NOT EXISTS `cutter` (
+CREATE TABLE IF NOT EXISTS %prfx%.`cutter` (
   `theName` varchar(32) NOT NULL DEFAULT '',
   `theNmbr` mediumint(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`theName`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `cutter`
---
-
-INSERT INTO `cutter` (`theName`, `theNmbr`) VALUES
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO %prfx%.`cutter` (`theName`, `theNmbr`) VALUES
 ('Aa', 111),
 ('Aal', 112),
 ('Aar', 113),

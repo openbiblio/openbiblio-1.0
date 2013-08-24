@@ -1,31 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 3.3.10deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Sep 26, 2011 at 08:29 AM
--- Server version: 5.1.54
--- PHP Version: 5.3.5-1ubuntu7.2
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `openbibliowork`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lookup_hosts`
---
-
-CREATE TABLE IF NOT EXISTS `lookup_hosts` (
+CREATE TABLE IF NOT EXISTS %prfx%.`lookup_hosts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `seq` tinyint(4) NOT NULL,
   `active` enum('y','n') NOT NULL DEFAULT 'n',
@@ -39,12 +13,7 @@ CREATE TABLE IF NOT EXISTS `lookup_hosts` (
   `pw` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
-
---
--- Dumping data for table `lookup_hosts`
---
-
-INSERT INTO `lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`, `db`, `service`, `syntax`, `user`, `pw`) VALUES
+INSERT INTO %prfx%.`lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`, `db`, `service`, `syntax`, `user`, `pw`) VALUES
 (14, 1, 'y', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - z39.50', 'voyager', 'Z3950', 'marcxml', '', ''),
 (23, 1, 'n', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - SRU', 'voyager', 'SRU', 'dc', '', ''),
 (2, 2, 'n', 'copac.ac.uk', 3000, 'UK COPAC - SRU', 'COPAC', 'SRU', 'dc', '', ''),

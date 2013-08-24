@@ -21,7 +21,6 @@ class Queryi extends mysqli{
 	}
 
 	public function act($sql) {
-//echo "Queryi: in act()<br/>\n";
 		//$this->lock();
 		$results = $this->_act($sql);
 		//$this->unlock();

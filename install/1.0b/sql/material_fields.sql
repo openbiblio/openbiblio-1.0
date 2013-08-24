@@ -1,31 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 3.3.9
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Sep 08, 2011 at 04:12 PM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `openbibliowork`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `material_fields`
---
-
-CREATE TABLE IF NOT EXISTS `material_fields` (
+CREATE TABLE IF NOT EXISTS %prfx%.`material_fields` (
   `material_field_id` int(4) NOT NULL AUTO_INCREMENT,
   `material_cd` int(11) DEFAULT NULL,
   `tag` char(3) NOT NULL,
@@ -38,12 +12,7 @@ CREATE TABLE IF NOT EXISTS `material_fields` (
   `search_results` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`material_field_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=136 ;
-
---
--- Dumping data for table `material_fields`
---
-
-INSERT INTO `material_fields` (`material_field_id`, `material_cd`, `tag`, `subfield_cd`, `position`, `label`, `form_type`, `required`, `repeatable`, `search_results`) VALUES
+INSERT INTO %prfx%.`material_fields` (`material_field_id`, `material_cd`, `tag`, `subfield_cd`, `position`, `label`, `form_type`, `required`, `repeatable`, `search_results`) VALUES
 (1, 2, '245', 'a', 0, 'Title', 'text', 1, 0, NULL),
 (2, 2, '245', 'b', 1, 'Subtitle', 'text', 0, 0, NULL),
 (3, 2, '099', 'a', 0, 'Call Number', 'text', 1, 0, NULL),

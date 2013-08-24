@@ -1,31 +1,5 @@
--- phpMyAdmin SQL Dump
--- version 3.3.9
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Aug 26, 2011 at 12:23 AM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `openbibliowork`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `settings`
---
-
-CREATE TABLE IF NOT EXISTS `settings` (
+CREATE TABLE IF NOT EXISTS %prfx%.`settings` (
   `name` varchar(64) NOT NULL DEFAULT '',
   `position` int(11) DEFAULT NULL,
   `title` text,
@@ -36,13 +10,8 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `value` text,
   `menu` enum('admin','tools','none') NOT NULL DEFAULT 'admin',
   PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `settings`
---
-
-INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) VALUES
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO %prfx%.`settings` (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) VALUES
 ('plugin_list', NULL, NULL, 'text', NULL, NULL, NULL, ',lookup2,biblioFlds', ''),
 ('allow_plugins_flg', 0, 'Allow Plugins', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
 ('library_name', 1, 'Library Title', 'select', NULL, 'sites', NULL, '2', 'admin'),
@@ -78,4 +47,4 @@ INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data
 ('thumbnail_height', 30, 'Thumbnail Max Height (mm)', 'int', NULL, NULL, NULL, '150', 'admin'),
 ('version', 33, NULL, 'text', NULL, '\0', NULL, '1.0b', 'none'),
 ('thumbnail_rotation', 31, 'Thumbnail Rotation (deg)', 'int', NULL, NULL, NULL, '0', 'admin');
-;
+

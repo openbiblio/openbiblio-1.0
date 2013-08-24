@@ -1,43 +1,12 @@
--- phpMyAdmin SQL Dump
--- version 3.3.9
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Aug 26, 2011 at 08:28 PM
--- Server version: 5.5.8
--- PHP Version: 5.3.5
-
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Database: `openbibliowork`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `usmarc_indicator_dm`
---
-
-CREATE TABLE IF NOT EXISTS `usmarc_indicator_dm` (
+CREATE TABLE IF NOT EXISTS %prfx%.`usmarc_indicator_dm` (
   `tag` smallint(6) NOT NULL DEFAULT '0',
   `indicator_nmbr` tinyint(4) NOT NULL DEFAULT '0',
   `indicator_cd` char(1) NOT NULL DEFAULT '',
   `description` varchar(80) NOT NULL DEFAULT '',
   PRIMARY KEY (`tag`,`indicator_nmbr`,`indicator_cd`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `usmarc_indicator_dm`
---
-
-INSERT INTO `usmarc_indicator_dm` (`tag`, `indicator_nmbr`, `indicator_cd`, `description`) VALUES
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO %prfx%.`usmarc_indicator_dm` (`tag`, `indicator_nmbr`, `indicator_cd`, `description`) VALUES
 (10, 1, '#', 'Undefined'),
 (10, 2, '#', 'Undefined'),
 (13, 1, '#', 'Undefined'),

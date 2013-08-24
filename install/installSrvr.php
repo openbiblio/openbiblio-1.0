@@ -30,7 +30,6 @@
 			break;
 			
 		case 'getDbVersion':
-			//echo "fetching version\n";
 			$version = $installQ->getCurrentDatabaseVersion();
 			if (!$version || empty($version)) {
 				echo T("noDB");
@@ -40,7 +39,6 @@
 			break;
 			
 		case 'getLocales':
-			//echo "fetching locales\n";
 			$arr_lang = Localize::getLocales();
 			foreach ($arr_lang as $langCode => $langDesc) {
 				echo '<option value="'.H($langCode).'">'.H($langDesc)."</option>\n";
@@ -48,12 +46,10 @@
 			break;
 			
 		case 'doFullInstall':
-			//echo "full install underway\n";
 			echo 	$installQ->freshInstall($Locale, $_POST['installTestData']);
 			break;
 			
 		case 'doDbUpgrade':
-			//echo "upgrading database\n";
 			$upgradeQ = new UpgradeQuery($_POST['startVer']);
 			if ($upgradeQ->upgradeAvailable($_POST['startVer'])) {
 				$results = $upgradeQ->performUpgrade_e();
