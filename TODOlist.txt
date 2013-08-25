@@ -88,10 +88,13 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
-24 Aug 2013 - Fred
-copy editor is not being passed the bibid by whicever module is calling it.
+26 Aug 2013 - Fred
+When books are downloaded, collection should default to 'non-Fiction' unless 'PS'
 
 ###################### Completed, most recent at top #########################
+
+24 Aug 2013 - Fred, fixed 25 Aug
+copy editor is not being passed the bibid by whicever module is calling it.
 
 unknown - Fred, now works 24 Aug
 Install needs to work for new installations

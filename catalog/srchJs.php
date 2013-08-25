@@ -442,6 +442,7 @@ var bs = {
 			var html = '';
 			var hdr = biblio.hdr;
 			var cpys = biblio.cpys;
+			idis.crntBibid = hdr.bibid;
 			bs.biblio[hdr.bibid] = biblio;
 			var imageFile = bs.mediaIconUrls[hdr.material_cd];
 			html += '<tr class="listItem">\n';
@@ -795,12 +796,12 @@ var bs = {
 	doNewCopy: function (e) {
   	e.stopPropagation();
 		$('#biblioDiv').hide();
-		$('#copyBibid').val(bs.biblio.bibid);
+		$('#copyBibid').val(idis.crntBibid);
   	var crntsite = bs.opts.current_site
 		$('#copySite').val(crntsite);
 
 		$('#copyEditorDiv').show();
-		ced.bibid = bs.biblio.bibid;
+		ced.bibid = idis.crntBibid;
 		ced.doCopyNew(e);
 		e.preventDefault();
 	},

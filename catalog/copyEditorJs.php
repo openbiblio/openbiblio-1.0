@@ -88,7 +88,6 @@ var ced = {
 		$('#copySubmitBtn').on('click',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-console.log(ced.bibid);
 			var params= $('#copyForm').serialize() + '&bibid='+ced.bibid+'&barcode_nmbr='+$('#copyBarcode_nmbr').val();
 			ced.doPostCopy2DB(params);
 		});
