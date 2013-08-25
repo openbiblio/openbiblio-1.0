@@ -288,7 +288,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	-moz-transform:scale(3.0); -moz-transform-origin:bottom right;
 	-ms-transform:scale(3.0); -ms-transform-origin:bottom right;
 	-o-transform:scale(3.0);
-	transform:scale(3.0); transform-origin:bottom right;
+	transform:scale(3.0); transform-origin:top left;
 }
 
 #flagInfo li { list-style:none; }

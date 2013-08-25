@@ -88,6 +88,9 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
+24 Aug 2013 - Fred
+copy editor is not being passed the bibid by whicever module is calling it.
+
 ###################### Completed, most recent at top #########################
 
 unknown - Fred, now works 24 Aug
