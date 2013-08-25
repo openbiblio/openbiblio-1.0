@@ -94,7 +94,8 @@ function postBiblioChange($nav) {
 	 */
 	$fields = array();
 	foreach ($_POST['fields'] as $tf=>$f) {
-if (!isset($f['tag'])) continue;
+		if (!isset($f['tag'])) continue;
+
 		$f = expand($tf,$f);
 		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {
 			echo "f: Encountered SHORT marc code '{$f['tag']}'<br />or too long subfield code '{$f['subfield']}'.<br/>\n";
@@ -134,7 +135,6 @@ if (!isset($f['tag'])) continue;
 			$fields[$fidx][$sfidx] = new MarcSubfield($f['subfield_cd'], stripslashes(trim($f['data'])));
 		}
 	}
-//echo"biblioChg: fields===>";print_r($fields);echo"<br/>\n";
 
 	## create a new empty MARC structure
 	$mrc = new MarcRecord();
@@ -213,9 +213,9 @@ if (!isset($f['tag'])) continue;
 //	}
 //
 //	/* Set field display values -- TODO */
+
 	## Sort fields by tag and display value ##
 	usort($fields, fieldCmp);
-//echo"fields revised&sorted===>";print_r($mrc);echo"<br/>\n";
 
 	## prepare the update/insert biblio structure
 	## note: relocated from top of function to where used ##
@@ -241,15 +241,15 @@ if (!isset($f['tag'])) continue;
 		$biblio['collection_cd'] = $_POST['collection_cd'];
 	$biblio['last_change_userid'] = $_POST["userid"];
 	$biblio['opac_flg'] = isset($_POST["opac_flg"]) ? Y : N;
-//echo"biblioChg: biblio===>";print_r($biblio);echo"<br/>\n";
 
 	##  Insert/Update bibliography ##
 	if ($nav == "newconfirm") {
-		//list($bibid, $err) = $biblios->insert($biblio);
-		$bibid = $biblios->insert($biblio);
+		list($bibid,$err) = $biblios->insert($biblio);
+		if (!empty($err)) {
+			die('Error while inserting a new Biblio');
+		}
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {
-		//$bibid = $_POST["bibid"]; /** ??? what's this for ??? **/
 		$biblios->update($biblio);
 		// system assumes ANY OTHER message implies failure
 		// dont change this string unless you are VERY sure

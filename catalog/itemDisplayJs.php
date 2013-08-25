@@ -244,8 +244,9 @@ var idis = {
   	var crntsite = idis.opts.current_site
 		$('#copy_site').val(crntsite);
 
-		$('#copyEditorDiv').show();
+		ced.bibid = idis.bibid;
 		ced.doCopyEdit(e);
+		$('#copyEditorDiv').show();
 		e.preventDefault();
 	},
 };

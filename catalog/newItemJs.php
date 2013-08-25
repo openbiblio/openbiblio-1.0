@@ -249,6 +249,7 @@ var ni = {
 		$('#copyBibid').val(ni.bibid);
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
+		ced.bibid = ni.bibid;
 		ced.doCopyNew(e);
 
 		/* prepare in advance for photo editing */

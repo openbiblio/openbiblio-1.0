@@ -800,6 +800,7 @@ var bs = {
 		$('#copySite').val(crntsite);
 
 		$('#copyEditorDiv').show();
+		ced.bibid = bs.biblio.bibid;
 		ced.doCopyNew(e);
 		e.preventDefault();
 	},

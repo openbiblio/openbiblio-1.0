@@ -88,7 +88,8 @@ var ced = {
 		$('#copySubmitBtn').on('click',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-			var params= $('#copyForm').serialize() + '&bibid='+idis.bibid+'&barcode_nmbr='+$('#copyBarcode_nmbr').val();
+console.log(ced.bibid);
+			var params= $('#copyForm').serialize() + '&bibid='+ced.bibid+'&barcode_nmbr='+$('#copyBarcode_nmbr').val();
 			ced.doPostCopy2DB(params);
 		});
 	  // prevent submit button from firing a 'submit' action
@@ -118,7 +119,7 @@ var ced = {
 		$('#cstmFlds input').each(function (n) {
 			var parts = this.id.split('_');
 			var code = parts[1];
-			if (fldData !== null) {
+			if (typeof(fldData) !== 'undefined') {
 				var datum = fldData[code];
 				$(this).val(datum);
 			}
@@ -147,7 +148,7 @@ var ced = {
 	  		copyDesc = $('#copyDesc').val(),
 	  		statusCd = $('#copyTbl #status_cd').val(),
 	  		siteid = $('#copySite').val(),
-				params = "&mode=updateCopy&bibid="+copy.bibid+"&copyid="+copy.copyid
+				params = "&mode=updateCopy&bibid="+ced.bibid+"&copyid="+copy.copyid
 					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
 					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
 

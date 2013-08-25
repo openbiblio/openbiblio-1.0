@@ -218,6 +218,7 @@
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 			return;
 		}
+echo"bibid===>";print_r($_REQUEST[bibid]);echo"<br/>\n";
 	  $theDb = new SrchDB;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
