@@ -4,8 +4,7 @@
  */
 
 	### following needed since this is included from within a class method -- Fred
-	global $CharSet, $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
-
+	global $Locale, $CharSet, $nav, $tab, $focus_form_name, $focus_form_field, $doing_install;
 ?>
 	
 <!DOCTYPE html >
@@ -15,7 +14,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->  
-<html lang="en" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
+<html lang="<?php echo $Locale; ?>" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
 <!--<![endif]-->
 <meta charset="<?php echo $CharSet; ?>" />
 <!-- charset MUST be specified within first 1024 char of file start to be effective -->
