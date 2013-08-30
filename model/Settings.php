@@ -11,8 +11,11 @@ $_settings_cache = array();
 $_settings_validators = array();
 
 /* To be used statically. */
-class Settings {
-	static function load() {
+class Settings extends Queryi {
+	public function __construct() {
+		parent::__construct();
+	}
+	public static function load() {
 		global $_settings_cache, $_settings_validators;
 		$db = new Queryi;
 		$r = $db->select('SELECT * FROM settings');

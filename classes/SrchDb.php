@@ -48,7 +48,7 @@ class SrchDb extends Queryi {
 	}
 
 	## ========================= ##
-	function getBiblioByBarcd($barcd){
+	public function getBiblioByBarcd($barcd){
 		$sql = "SELECT b.bibid "
 					."	FROM `biblio_copy` bc,`biblio` b "
 					." WHERE (bc.`barcode_nmbr` = '".$barcd."')"
@@ -60,7 +60,7 @@ class SrchDb extends Queryi {
 		return $rcd;
 	}
 	## ========================= ##
-	function makeParamStr($criteria) {
+	protected function makeParamStr($criteria) {
 		/* typical form of $paramStr:
 			[{"tag":"240","suf":"a"},{"tag":"245","suf":"a"},{"tag":"245","suf":"b"},
 			 {"tag":"245","suf":"c"},{"tag":"246","suf":"a"},{"tag":"246","suf":"b"},
@@ -115,7 +115,7 @@ class SrchDb extends Queryi {
 		return $paramStr;
 	}
 	## ========================= ##
-	function getBiblioByPhrase($criteria, $mode=null) {
+	public function getBiblioByPhrase($criteria, $mode=null) {
 		$jsonSpec = $this->makeParamStr($criteria);
 		/* mode may be null at times */
 	  $spec = json_decode($jsonSpec, true);
@@ -217,7 +217,7 @@ class SrchDb extends Queryi {
 		return $rslt;
 	}
 	## ========================= ##
-	function getBiblioInfo($bibid) {
+	public function getBiblioInfo($bibid) {
 	  $this->bibid =$bibid;
 		$sql = "SELECT DISTINCT b.*, m.description, cd.description, cc.`days_due_back`, m.image_file "
 					."	FROM `biblio` b,`material_type_dm` m,"
@@ -281,7 +281,7 @@ class SrchDb extends Queryi {
 		return $rcd;
 	}
 	## ========================= ##
-	function getBiblioDetail() {		
+	public function getBiblioDetail() {
 		$sql = "SELECT  CONCAT(bf.tag,bs.subfield_cd) AS marcTag, "
 				 . "				m.label, bs.subfield_data AS value, "
 				 . "				bs.fieldid, bs.subfieldid "
@@ -304,7 +304,7 @@ class SrchDb extends Queryi {
 	}
 	
 	## ========================= ##
-	function getBibsForCpys ($barcode_list) {
+	public function getBibsForCpys ($barcode_list) {
 		global $opts;
 		$copies = new Copies;
 		# build an array of barcodes
@@ -319,7 +319,7 @@ class SrchDb extends Queryi {
 	}
 	
 	## ========================= ##
-	function getCopyInfo ($bibid) {
+	public function getCopyInfo ($bibid) {
 		$copies = new Copies; // needed later
 		$bcopies = $copies->getMatches(array('bibid'=>$bibid),'barcode_nmbr');
 		$copy_states = new CopyStatus;
@@ -372,7 +372,7 @@ class SrchDb extends Queryi {
 		return $rslt;
 	}
 	## ========================= ##
-	function insertCopy($bibid,$copyid) {
+	public function insertCopy($bibid,$copyid) {
 		//$this->lock();
 		if (empty($_POST['copy_site'])) {
 			$theSite = $_SESSION['current_site'];
@@ -418,7 +418,7 @@ class SrchDb extends Queryi {
 		return "!!success!!";
 	}
 	## ========================= ##
-	function updateCopy($bibid,$copyid) {
+	public function updateCopy($bibid,$copyid) {
 		$this->lock();
 		$sql = "SELECT `status_cd`, `histid` FROM `biblio_status_hist` "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)"
@@ -463,7 +463,7 @@ class SrchDb extends Queryi {
 		return;
 	}
 	## ========================= ##
-	function deleteCopy($copyid) {
+	public function deleteCopy($copyid) {
 		$this->lock();
 		$sql = "DELETE FROM `biblio_copy` "
 					." WHERE (`copyid` = $copyid) ";
@@ -481,7 +481,7 @@ class SrchDb extends Queryi {
 		return T("Delete completed");
 	}
 	## ========================= ##
-	function getBiblioFields() {
+	public function getBiblioFields() {
 	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
 	}
 } // class

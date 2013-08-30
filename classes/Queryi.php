@@ -82,12 +82,12 @@ class Queryi extends mysqli{
 	 * Calls to lock/unlock may be nested, but must be paired.
 	 */
 
-	protected function clearLocks () {
+	public function clearLocks () {
 		$this->_act('set global read_only = off');
 		$this->_act('unlock tables');
 	}
 
-	protected function lock() {
+	public function lock() {
 		if ($this->lockDepth < 0) {
 			Fatal::internalError(T("Negative lock depth"));
 		}
@@ -102,7 +102,7 @@ class Queryi extends mysqli{
 */
 		$this->lockDepth++;
 	}
-	protected function unlock() {
+	public function unlock() {
 		if ($this->lockDepth <= 0) {
 			Fatal::internalError(T("Tried to unlock an unlocked database."));
 		}

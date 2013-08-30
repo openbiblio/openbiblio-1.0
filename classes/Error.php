@@ -47,7 +47,7 @@ class FieldError extends Error {
 		parent::__construct($msg);
 		$this->field = $field;
 	}
-	private function listExtract($errors) {
+	public function listExtract($errors) {
 		$msgs = array();
 		$l = array();
 		foreach ($errors as $e) {
@@ -63,7 +63,7 @@ class FieldError extends Error {
 		}
 		return array($msg, $l);
 	}
-	private function backToForm($url, $errors) {
+	public function backToForm($url, $errors) {
 		list($msg, $fielderrs) = FieldError::listExtract($errors);
 		$_SESSION["postVars"] = mkPostVars();
 		$_SESSION["pageErrors"] = $fielderrs;

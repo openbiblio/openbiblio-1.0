@@ -75,26 +75,6 @@ var ced = {
 		})
 	},
 	/* ====================================== */
-	doCopyNew: function () {
-		if ($('#autobarco:checked').length > 0) {
-      ced.doGetBarcdNmbr();
-      $('#copyBarcode_nmbr').disable();
-		}
-		$('#copySite').val(<?php echo Settings::get('library_name');?>);
-		$('#copyMode').val('newCopy');
-
-		// unbind & bind needed here because of button reuse elsewhere
-		$('#copySubmitBtn').unbind('click');
-		$('#copySubmitBtn').on('click',null,function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			var params= $('#copyForm').serialize() + '&bibid='+ced.bibid+'&barcode_nmbr='+$('#copyBarcode_nmbr').val();
-			ced.doPostCopy2DB(params);
-		});
-	  // prevent submit button from firing a 'submit' action
-		return false;
-	},
-
 	doCopyEdit: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
@@ -137,19 +117,45 @@ var ced = {
 	  // prevent submit button from firing a 'submit' action
 		return false;
 	},
+	doCopyNew: function () {
+		if ($('#autobarco:checked').length > 0) {
+      ced.doGetBarcdNmbr();
+      $('#copyBarcode_nmbr').disable();
+		}
+		$('#copySite').val(<?php echo Settings::get('library_name');?>);
+		$('#copyMode').val('newCopy');
+
+		// unbind & bind needed here because of button reuse elsewhere
+		$('#copySubmitBtn').unbind('click');
+		$('#copySubmitBtn').on('click',null,function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var params = "&mode=newCopy&bibid="+ced.bibid;
+
+			ced.doPostCopy2DB(params);
+		});
+	  // prevent submit button from firing a 'submit' action
+		return false;
+	},
+
 	doCopyUpdate: function (e) {
 		e.stopPropagation();
 		e.preventDefault();
 
-	  // serialize() ignores disabled fields, so can't reliably use it in this case
-	  var copy = ced.crntCopy,
+	  var params = "&mode=updateCopy&bibid="+ced.bibid+"&copyid="+ced.crntCopy.copyid;
+
+		// post to DB
+		ced.doPostCopy2DB(params);
+		return false;
+	},
+	doPostCopy2DB: function (params) {
+		var copy = ced.crntCopy,
 				barcdNmbr = $('#copyBarcode_nmbr').val(),
 	  		copyDesc = $('#copyDesc').val(),
 	  		statusCd = $('#copyTbl #status_cd').val(),
-	  		siteid = $('#copySite').val(),
-				params = "&mode=updateCopy&bibid="+ced.bibid+"&copyid="+copy.copyid
-					 		 + "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
-					 		 + "&status_cd="+statusCd+"&siteid="+siteid;
+	  		siteid = $('#copySite').val();
+		params += "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
+					 +  "&status_cd="+statusCd+"&siteid="+siteid;
 
 		// Custom fields
 		$('#cstmFlds input').each(function (n) {
@@ -157,12 +163,7 @@ var ced = {
 			params += '&'+this.id+'='+$(this).val();
 		});
 
-		// post to DB
-		ced.doPostCopy2DB(params);
-		return false;
-	},
-	doPostCopy2DB: function (parms) {
-	  $.post(ced.url,parms, function(response){
+	  $.post(ced.url,params, function(response){
 	  	if(response == '!!success!!') {
 				$('#copyCancelBtn').val("Go Back");
 				$('#editRsltMsg').html('Copy updated successfully!').show();

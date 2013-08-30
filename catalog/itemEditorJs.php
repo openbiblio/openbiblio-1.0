@@ -16,6 +16,7 @@ var ie = {
 		ie.urlLookup = '../catalog/onlineServer.php'; //may not exist
 
 	  $('#onlnUpdtBtn').on('click',null,function (){
+			//console.log('online data requested');
 			$('#onlnDoneBtn').show();
 			$('#onlnUpdtBtn').hide();
 			$('#itemEditorDiv td.filterable').show();
@@ -123,12 +124,12 @@ var ie = {
 
 	/* ====================================== */
 	fetchOnlnData: function () {
-		if ($('#245a').length > 0) var title =  $('#245a').val();
-		//console.log('title==>'+title);
-		if ($('#100a').length > 0) var author= $('#100a').val().split(',')[0];
-		//console.log('author==>'+author);
-		if ($('#020a').length > 0) {
-		  var isbn  = $('#020a').val().split(',');
+		if ($('input[id="245$a"]').length > 0) var title =  $('input[id="245$a"]').val();
+			//console.log('title==>'+title);
+		if ($('input[id="100$a"]').length > 0) var author= $('input[id="100$a"]').val().split(',')[0];
+			//console.log('author==>'+author);
+		if ($('input[id="020$a"]').length > 0) {
+		  var isbn  = $('input[id="020$a"]').val().split(',');
 		  for (var i=0; i<isbn.length; i++) {
 		    if (!((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10))) {
 		    	var ISBN = isbn[i];
@@ -137,17 +138,17 @@ var ie = {
 			}
 			//console.log('isbn==>'+isbn);
 		}
-		if ($('#022a').length > 0) var issn  = ($('#022a').val()).split(',');
-		//console.log('issn==>'+issn);
+		if ($('input[id="022$a"]').length > 0) var issn  = ($('input[id="022$a"]').val()).split(',');
+			//console.log('issn==>'+issn);
 
 		var msgText = '',
 				params = '',
 				item = '';
-	  if (isbn) {
+	  if ((isbn != '') && (isbn != undefined)) {
 	  	msgText = '<?php T("Searching for ISBN"); ?>'+' '+isbn,
 	  	params = "&mode=search&srchBy=7&lookupVal="+isbn,
 	  	item = isbn;
-		} else if (issn) {
+		} else if ((issn != '') && (issn != undefined)) {
 	  	msgText = '<?php T("Searching for ISSN"); ?>'+' '+issn;
 	  	params = "&mode=search&srchBy=7&lookupVal="+issn;
 	  	item = issn;
@@ -156,12 +157,12 @@ var ie = {
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 	  	item = '"'+title+'", by '+author;
 		} else {
-			msgText = '<?php T("NotEnoughtData"); ?>';
+			$('#onlineMsg').html('<?php T("NotEnoughtData"); ?>').show();
 			return;
 		}
 
 	  msgText += '.<br />' + '<?php echo T("this may take a moment.");?>'
-		$('#onlineMsg').html(msgText);
+		$('#onlineMsg').html(msgText).show();
 
 	  $.post(ie.urlLookup,params,function(response){
 			//console.log('params==>'+params)

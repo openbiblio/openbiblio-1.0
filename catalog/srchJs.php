@@ -352,6 +352,7 @@ var bs = {
 		// searchType 'ID' gets special handling
 		var searchType = $('#ph_searchType option:selected').val();
 		var searchText = $('#ph_searchText').val();
+		$('#srchRsltTitl').html(searchText);
 		//console.log('searchType==>'+searchType+'; searchText==>'+searchText);
 		if (searchType == 'id') {
 			e.preventDefault();

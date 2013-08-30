@@ -89,9 +89,18 @@ verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
 26 Aug 2013 - Fred
-When books are downloaded, collection should default to 'non-Fiction' unless 'PS'
+custom copy fields are not saved for new items
+
+26 Aug 2013 - Fred
+value reports are not coumtig corectly
+
+29 Aug 2013 - Fred
+Online data fetch for existing item is not working
 
 ###################### Completed, most recent at top #########################
+
+25 Aug 2013 - Fred, dropped as not feasable 26 Aug
+When books are downloaded, collection should default to 'non-Fiction' unless 'PS'
 
 24 Aug 2013 - Fred, fixed 25 Aug
 copy editor is not being passed the bibid by whicever module is calling it.
