@@ -388,8 +388,8 @@ class SrchDb extends Queryi {
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
 		$rows = $this->act($sql);
-		
 		$copyid = $this->getInsertID();
+
 		$sql = "Insert `biblio_status_hist` SET "
 		      ."`bibid` = $bibid,"
 		      ."`copyid` = $copyid,"
@@ -403,18 +403,9 @@ class SrchDb extends Queryi {
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		$rows = $this->act($sql);
 		//$this->unlock();
-		
-		// Update custom fields if set
-		$custom = array();
-		$ptr = new BiblioCopyFields;
-		$rows = $ptr->getAll();
-		while ($row = $rows->fetch_assoc()) {
-			if (isset($_POST['custom_'.$row["code"]])) {
-				$custom[$row["code"]] = $_POST['custom_'.$row["code"]];
-			}
-		}
-		$copies = new Copies;
-		$copies->setCustomFields($copyid, $custom);
+
+		$this->postCstmCopyFlds($bibid, $copyid);
+
 		return "!!success!!";
 	}
 	## ========================= ##
@@ -444,18 +435,9 @@ class SrchDb extends Queryi {
 					."`histid` = $histid "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		$rows = $this->act($sql);
-		// Update custom fields if set
-		$custom = array();
-		$ptr = new BiblioCopyFields;
-		$rows = $ptr->getAll();
-		while ($row = $rows->fetch_assoc()) {
-			if (isset($_REQUEST['copyCustom_'.$row["code"]])) {
-				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
-			}			
-		}		
-		$copies = new Copies;
-		$copies->setCustomFields($copyid, $custom);
-		
+
+		$this->postCstmCopyFlds($bibid, $copyid);
+
 		$this->unlock();
 		// Changed this to nothing, so any message/output is taken as an error message - LJ
 		// Changed to specific success text to be looked for in JS - FL
@@ -483,6 +465,20 @@ class SrchDb extends Queryi {
 	## ========================= ##
 	public function getBiblioFields() {
 	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
+	}
+	## ========================= ##
+	private function postCstmCopyFlds ($bibid, $copyid) {
+		// Update custom fields if set
+		$custom = array();
+		$ptr = new BiblioCopyFields;
+		$rows = $ptr->getAll();
+		while ($row = $rows->fetch_assoc()) {
+			if (isset($_REQUEST['copyCustom_'.$row["code"]])) {
+				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
+			}
+		}
+		$copies = new Copies;
+		$copies->setCustomFields($copyid, $custom);
 	}
 } // class
 

@@ -88,16 +88,16 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
-26 Aug 2013 - Fred
-custom copy fields are not saved for new items
+###################### Completed, most recent at top #########################
 
-26 Aug 2013 - Fred
-value reports are not coumtig corectly
+26 Aug 2013 - Fred, fixed 30 Aug
+'price' custom field not being saved for new copies; updates work fine.
 
-29 Aug 2013 - Fred
+29 Aug 2013 - Fred, data now being collected 29 Aug
 Online data fetch for existing item is not working
 
-###################### Completed, most recent at top #########################
+26 Aug 2013 - Fred, fixed 29 Aug
+custom copy fields are not saved for new items
 
 25 Aug 2013 - Fred, dropped as not feasable 26 Aug
 When books are downloaded, collection should default to 'non-Fiction' unless 'PS'
