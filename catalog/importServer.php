@@ -10,7 +10,7 @@
 	require_once(REL(__FILE__, "../model/MarcDBs.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
-	require_once(REL(__FILE__, "../classes/SrchDb.php"));
+	//require_once(REL(__FILE__, "../classes/SrchDb.php"));
 
 	# Big uploads take a while
 	set_time_limit(120);
@@ -87,7 +87,8 @@ switch ($_REQUEST[mode]){
   	break;
   
 	case 'postCsvData':
-		$theDb = new SrchDB;
+		//$theDb = new SrchDB;
+	  $theDb = new Copies;
 		$cpys = new Copies;
 		//$rslt = [];
 

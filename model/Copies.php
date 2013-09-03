@@ -82,6 +82,179 @@ class Copies extends CoreTable {
 		return sprintf("%0".$w."s",($cpy[lastNmbr]+1));
 	}
 	
+	## ========================= ##
+	public function getBibsForCpys ($barcode_list) {
+		global $opts;
+		$copies = new Copies;
+		# build an array of barcodes
+		$barcodes = array();
+		foreach (explode("\n", $barcode_list) as $b) {
+			if (trim($b) != "") {
+				$barcodes[] = str_pad(trim($b), $opts['barcdWidth'], '0', STR_PAD_LEFT);
+			}
+		}
+		$rslt = $copies->lookupBulk_el($barcodes);
+		return $rslt;
+	}
+
+	## ========================= ##
+	public function getCopyInfo ($bibid) {
+		$copies = new Copies; // needed later
+		$bcopies = $copies->getMatches(array('bibid'=>$bibid),'barcode_nmbr');
+		$copy_states = new CopyStatus;
+		$states = $copy_states->getSelect();
+		$history = new History;
+		$bookings = new Bookings;
+
+		$BCQ = new BiblioCopyFields;
+		$custRows = $BCQ->getAll();
+		$custFieldList = array();
+		while ($row = $custRows->fetch_assoc()) {
+			$custFieldList[$row["code"]] = "";
+		}
+
+		while ($copy = $bcopies->fetch_assoc()) {
+			$status = $history->getOne($copy['histid']);
+			$booking = $bookings->getByHistid($copy['histid']);
+			if ($_SESSION['multi_site_func'] > 0) {
+				$sites_table = new Sites;
+				$sites = $sites_table->getSelect();
+				$copy['site'] = $sites[$copy[siteid]];
+			}
+			$copy['status'] = $states[$status[status_cd]];
+			$copy['statusCd'] = $status[status_cd];
+			if($_SESSION['show_checkout_mbr'] == "Y" && ($status[status_cd] == OBIB_STATUS_OUT || $status[status_cd] == OBIB_STATUS_ON_HOLD)){
+				if($status[status_cd] == OBIB_STATUS_OUT){
+					$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
+				} else {
+					$checkout_mbr = $copies->getHoldMember($copy[copyid]);
+				}
+				$copy['mbrId'] = $checkout_mbr[mbrid];
+				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
+			}
+			// Add custom fields - Bit complicated, but seems the easiest way to populate empty fields (list compiled at beginning of procedure to lower databse queries)
+			// Now populate data
+			$custom = $copies->getCustomFields($copy[copyid]);
+			$copy['custFields'] = array();
+			$fieldList = $custFieldList;
+			//while ($row = $custom->fetch_assoc() ) {
+			while ($row = $custom->fetch_assoc() ) {
+				$fieldList[$row["code"]] = $row["data"];
+			}
+
+			//Finally add to copy
+			foreach($fieldList as $key => $value){
+				$copy['custFields'][] = array('code' => $key, 'data' => $value);
+			}
+			$rslt[] = json_encode($copy);
+		}
+		return $rslt;
+	}
+	## ========================= ##
+	public function insertCopy($bibid,$copyid) {
+		//$this->lock();
+		if (empty($_POST['copy_site'])) {
+			$theSite = $_SESSION['current_site'];
+		} else {
+			$theSite = $_POST['copy_site'];
+		}
+		$sql = "INSERT `biblio_copy` SET "
+		      ."`bibid` = $bibid,"
+		      ."`barcode_nmbr` = '".$_POST['barcode_nmbr']."',"
+		      ."`siteid` = '$theSite'," // set to current site
+		      ."`create_dt` = NOW(),"
+		      ."`last_change_dt` = NOW(),"
+		      ."`last_change_userid` = $_SESSION[userid],"
+		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
+		$rows = $this->act($sql);
+		$copyid = $this->getInsertID();
+
+		$sql = "Insert `biblio_status_hist` SET "
+		      ."`bibid` = $bibid,"
+		      ."`copyid` = $copyid,"
+		      ."`status_cd` = '$_POST[status_cd]',"
+		      ."`status_begin_dt` = NOW()";
+		$rows = $this->act($sql);
+		$histid = $this->getInsertID();
+
+		$sql = "Update `biblio_copy` SET "
+		      ."`histid` = '$histid' "
+					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
+		$rows = $this->act($sql);
+		//$this->unlock();
+
+		$this->postCstmCopyFlds($bibid, $copyid);
+
+		return "!!success!!";
+	}
+	## ========================= ##
+	public function updateCopy($bibid,$copyid) {
+		$this->lock();
+		$sql = "SELECT `status_cd`, `histid` FROM `biblio_status_hist` "
+					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)"
+					." ORDER BY status_begin_dt";
+		$rslt = $this->select($sql);
+		$rcd = $rslt->fetch_assoc();  // only first (most recent) response wanted
+		$histid = $rcd['histid'];
+
+		if ($rcd[status_cd] != $_POST[status_cd]) {
+			$sql = "INSERT `biblio_status_hist` SET "
+			      ."`status_cd` = '$_POST[status_cd]',"
+			      ."`status_begin_dt` = NOW(),"
+						."`bibid` = $bibid,"
+						."`copyid` = $copyid ";
+			$rslt = $this->act($sql);
+			$histid = $this->getInsertID();
+		}
+
+		$sql = "UPDATE `biblio_copy` SET "
+		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]', "
+		      ."`copy_desc` = '$_POST[copy_desc]', "
+		      ."`siteid` = '$_POST[siteid]', "
+					."`histid` = $histid "
+					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
+		$rows = $this->act($sql);
+
+		$this->postCstmCopyFlds($bibid, $copyid);
+
+		$this->unlock();
+		// Changed this to nothing, so any message/output is taken as an error message - LJ
+		// Changed to specific success text to be looked for in JS - FL
+		echo "!!success!!";
+		return;
+	}
+	## ========================= ##
+	public function deleteCopy($copyid) {
+		$this->lock();
+		$sql = "DELETE FROM `biblio_copy` "
+					." WHERE (`copyid` = $copyid) ";
+		//echo "sql=$sql<br />";
+		$rows = $this->act($sql);
+		if ($rows == '0') die ("copy# {$copyid} delete failed");
+
+		$sql = "DELETE FROM `biblio_copy_fields` "
+					." WHERE (`copyid` = $copyid) ";
+		//echo "sql=$sql<br />";
+		$rows = $this->act($sql);
+		if ($rows == '0') die ("copy_field# {$copyid} delete failed");
+
+		$this->unlock();
+		return T("Delete completed");
+	}
+	## ========================= ##
+	private function postCstmCopyFlds ($bibid, $copyid) {
+		// Update custom fields if set
+		$custom = array();
+		$ptr = new BiblioCopyFields;
+		$rows = $ptr->getAll();
+		while ($row = $rows->fetch_assoc()) {
+			if (isset($_REQUEST['copyCustom_'.$row["code"]])) {
+				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
+			}
+		}
+		$copies = new Copies;
+		$copies->setCustomFields($copyid, $custom);
+	}
 	protected function insert_el($copy) {
 		$this->lock();
 		list($id, $errors) = parent::insert_el($copy);

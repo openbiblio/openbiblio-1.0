@@ -5,10 +5,13 @@
 
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
 require_once(REL(__FILE__, "../classes/Iter.php"));
+require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
 class Biblios extends CoreTable {
+	private $avIcon = "circle_green.png";
+
 	public function __construct() {
 		parent::__construct();
 		$this->setName('biblio');
@@ -24,6 +27,213 @@ class Biblios extends CoreTable {
 		
 		$this->marc = new MarcStore;
 		$this->marcRec = new MarcRecord;
+	}
+
+	## ========================= ##
+	public function getBiblioByBarcd($barcd){
+		$sql = "SELECT b.bibid "
+					."	FROM `biblio_copy` bc,`biblio` b "
+					." WHERE (bc.`barcode_nmbr` = '".$barcd."')"
+					."	 AND (b.`bibid` = bc.`bibid`)";
+		//echo "sql=$sql<br />";
+		$rcd = $this->select01($sql);
+		$this->barCd = $barcd;
+		$this->bibid = $rcd[bibid];
+		return $rcd;
+	}
+
+	## ========================= ##
+	public function getBiblioByPhrase($criteria, $mode=null) {
+		$jsonSpec = $this->makeParamStr($criteria);
+		/* mode may be null at times */
+	  $spec = json_decode($jsonSpec, true);
+	  $srchTxt = strtolower($_REQUEST[searchText]);
+	  if ($mode == 'words')
+			$keywords = explode(' ',$srchTxt);
+		else
+			$keywords[] = $srchTxt;
+
+		// Add Slashes for search - LJ
+		for($i = 0; $i < count($keywords); $i++){
+			$keywords[$i] = addslashes(stripslashes($keywords[$i]));
+		}
+
+		$sqlSelect= "SELECT DISTINCT b.bibid FROM `biblio` AS b";
+		$sqlWhere = " WHERE (1=1)";
+		$keywordnr = 1;
+		foreach ($keywords as $kwd) {
+			// Add Join
+			$sqlSelect .= " JOIN `biblio_field` bf$keywordnr JOIN `biblio_subfield` bs$keywordnr";
+			$sqlWhere  .= "  AND bf$keywordnr.bibid = b.bibid "
+									 ."  AND bs$keywordnr.fieldid = bf$keywordnr.fieldid "
+									 ."  AND bs$keywordnr.`subfield_data` LIKE '%$kwd%'";
+			$termnr = 1;
+			$sqlWhere .= " AND (";
+			$firstWhere = true;
+			//$temp = '';
+			foreach ($spec as $item) {
+				// Continue when the item has to do with selecting and ordering
+				if(!isset($item['tag'])) continue;
+				if(!$firstWhere) $sqlWhere .= " OR";
+				$firstWhere = false;
+				$sqlWhere .= " (bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "')";
+				//$temp .= " bf$keywordnr.tag='" . $item['tag'] . "' AND bs$keywordnr.subfield_cd = '" . $item['suf'] . "'";
+				$termnr++;
+			}
+
+			$sqlWhere .= ")";
+			$keywordnr++;
+		}
+		// Now do the selecting and ordering
+		$selectNr = 1;
+		foreach ($spec as $item) {
+			if(isset($item['orderTag'])){
+				// If order is already specified, add a secondairy
+				if(!isset($sqlOrder)){
+					$orderNo = 1;
+					$sqlSelect .= " LEFT JOIN biblio_field AS sortf" . $orderNo . " ON sortf" . $orderNo . ".bibid = `b`.`bibid`"
+						." AND sortf" . $orderNo . ".tag = '" . $item['orderTag'] . "'"
+						." LEFT JOIN biblio_subfield AS sorts" . $orderNo . " ON sorts" . $orderNo . ".fieldid = sortf" . $orderNo . ".fieldid"
+						." AND sorts" . $orderNo . ".subfield_cd = '" . $item['orderSuf'] . "'";
+					$sqlOrder = " ORDER BY sorts" . $orderNo . ".`subfield_data`";
+				} else {
+					$orderNo++;
+					$sqlSelect .= " LEFT JOIN biblio_field AS sortf" . $orderNo . " ON sortf" . $orderNo . ".bibid = `b`.`bibid`"
+						." AND sortf" . $orderNo . ".tag = '" . $item['orderTag'] . "'"
+						." LEFT JOIN biblio_subfield AS sorts" . $orderNo . " ON sorts" . $orderNo . ".fieldid = sortf" . $orderNo . ".fieldid"
+						." AND sorts" . $orderNo . ".subfield_cd = '" . $item['orderSuf'] . "'";
+					$sqlOrder .= ", sorts" . $orderNo . ".`subfield_data`";
+				}
+			}
+			if(isset($item['siteTag'])){
+					$sqlSelect .= " JOIN `biblio_copy` bc";
+					$sqlWhere .= " AND bc.bibid = b.bibid "
+									." AND bc.siteid = '" . $item['siteValue'] . "' ";
+			}
+			if(isset($item['mediaTag'])){
+				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";
+			}
+			if(isset($item['collTag'])){
+				$sqlWhere .= " AND b.collection_cd = '" . $item['collValue'] ."'";
+			}
+			if(isset($item['audienceTag'])){
+//				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
+				}
+			if(isset($item['toTag'])){
+				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
+				$sqlWhere .= " AND (sf$selectNr.bibid = b.bibid "
+									." AND ss$selectNr.fieldid = sf$selectNr.fieldid"
+									." AND sf$selectNr.tag='" . $item['toTag'] . "' AND ss$selectNr.subfield_cd = '" . $item['toSuf'] . "'"
+									." AND ss$selectNr.`subfield_data` < " . $item['toValue'] . ")";
+			}
+			if(isset($item['fromTag'])){
+				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
+				$sqlWhere .= " AND (sf$selectNr.bibid = b.bibid "
+									." AND ss$selectNr.fieldid = sf$selectNr.fieldid"
+									." AND sf$selectNr.tag='" . $item['fromTag'] . "' AND ss$selectNr.subfield_cd = '" . $item['fromSuf'] . "'"
+									." AND ss$selectNr.`subfield_data` > " . $item['fromValue'] . ")";
+			}
+			$selectNr++;
+		}
+
+		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
+		//echo "sql=$sql<br />";
+		$rows = $this->select($sql);
+		while (($row = $rows->fetch_assoc()) !== NULL) {
+			$rslt[] = $row[bibid];
+		}
+		return $rslt;
+	}
+	## ========================= ##
+	public function getBiblioInfo($bibid) {
+	  $this->bibid =$bibid;
+		$sql = "SELECT DISTINCT b.*, m.description, cd.description, cc.`days_due_back`, m.image_file "
+					."	FROM `biblio` b,`material_type_dm` m,"
+					."			 `collection_dm` cd, `collection_circ` cc"
+					." WHERE (b.`bibid` = '$bibid')"
+					."	 AND (m.`code` = b.`material_cd`)"
+					."	 AND (cd.`code` = b.`collection_cd`)"
+					."	 AND (cc.`code` = b.`collection_cd`)";
+		//echo "sql=$sql<br />\n";
+		$rcd = $this->select01($sql);
+
+		$this->createDt = $rcd['create_dt'];
+		$this->daysDueBack = $rcd['days_due_back'];
+		$this->imageFile =$rcd['image_file'];
+		$this->opacFlg = $rcd['opac_flg'];
+
+		#### following intended to deal with a bad database, these conditions should never happen ####
+		if ( empty($rcd['material_cd'])) {
+			$ptr = new MediaTypes;
+			$this->matlCd = $ptr->getDefault();
+		} else {
+			$this->matlCd = $rcd['material_cd'];
+		}
+		if (empty($rcd['collection_cd'])) {
+			$ptr = new Collections;
+			$this->collCd = $ptr->getDefault();
+		} else {
+			$this->collCd = $rcd['collection_cd'];
+		}
+		#### end of bad data fix ####
+
+		// If the show details OPAC  flag is set get info on the copies
+			$copies = $this->getCopyInfo($bibid);
+			// Need to add site specific code in here in here, for now just look for
+			// status options: available, available on other site, on hold, not available
+			$this->nCpy = 0;
+			if (!empty($copies)) {
+				// default copy not available
+				$this->avIcon = "circle_red.png";
+				foreach($copies as $copyEnc){
+					$this->nCpy = $this->nCpy+1;
+					$copy = json_decode($copyEnc, true);
+					if($copy['statusCd'] == OBIB_STATUS_IN) {
+						// See on which site
+						if($_SESSION['current_site'] == $copy['siteid'] || !($_SESSION['multi_site_func'] > 0)){
+							$this->avIcon = "circle_green.png"; // one or more available
+							break;
+						} else {
+							$this->avIcon = "circle_orange.png"; // one or more available on another site
+						}
+					}
+					// Removed && $this->avIcon != "circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
+					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD || $copy[statusCd] == OBIB_STATUS_NOT_ON_LOAN)
+						$this->avIcon = "circle_blue.png"; // only copy is on hold
+				}
+			} else {
+				$this->avIcon = "circle_red.png"; // no copy found
+			}
+			$rcd['nCpy'] = $this->nCpy;
+			$rcd['avIcon'] = $this->avIcon;
+		return $rcd;
+	}
+	## ========================= ##
+	public function getBiblioDetail() {
+		$sql = "SELECT  CONCAT(bf.tag,bs.subfield_cd) AS marcTag, "
+				 . "				m.label, bs.subfield_data AS value, "
+				 . "				bs.fieldid, bs.subfieldid "
+				 . "  FROM `material_fields` m, `biblio_field` bf, `biblio_subfield` bs "
+				 . " WHERE (bf.`bibid` = $this->bibid) "
+				 . "	 AND (bs.`bibid` = bf.`bibid`) "
+				 . "	 AND (bs.`fieldid` = bf.`fieldid`) "
+				 . "	 AND (m.`material_cd` = $this->matlCd) "
+				 . "	 AND (m.`tag` = bf.`tag`) "
+				 . "	 AND (m.`subfield_cd` = bs.`subfield_cd`) "
+				 . " ORDER BY m.position ";
+		//echo "sql=$sql<br />";
+		$rows = $this->select($sql);
+		while (($row = $rows->fetch_assoc()) !== NULL) {
+			$rslt[] = json_encode($row);
+			//$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes($row[value]) . "'"
+			//				 .",'fieldid':'$row[fieldid]','subfieldid':'$row[subfieldid]'}";
+		}
+		return $rslt;
+	}
+
+	## ========================= ##
+	public function getBiblioFields() {
+	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
 	}
 
 	function deleteOne($bibid) {
@@ -43,6 +253,7 @@ class Biblios extends CoreTable {
 		$this->unlock();
 	}
 
+	## ======================================================================== ##
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
 	protected function insert_el($biblio) {
@@ -130,6 +341,62 @@ class Biblios extends CoreTable {
 		$newBiblio = $updtData; ## has needed structure
 		$newBiblio['marc'] = $crntRec; ## replaces Marc portion
 		parent::update($newBiblio);
+	}
+
+	## ========================= ##
+	protected function makeParamStr($criteria) {
+		/* typical form of $paramStr:
+			[{"tag":"240","suf":"a"},{"tag":"245","suf":"a"},{"tag":"245","suf":"b"},
+			 {"tag":"245","suf":"c"},{"tag":"246","suf":"a"},{"tag":"246","suf":"b"},
+			 {"tag":"502","suf":"a"},{"tag":"505","suf":"a"},{"tag":"650","suf":"a"},.............
+		*/
+		$params = makeTagObj(getSrchTags($criteria[searchType]));
+
+		# Add search params
+		$searchTags = "";
+
+		if(isset($criteria['sortBy'])){
+				switch ($criteria['sortBy']){
+				case 'author': $searchTags .= '{"orderTag":"100","orderSuf":"a"}'; break;
+				case 'callno': $searchTags .= '{"orderTag":"099","orderSuf":"a"}'; break;
+				case 'title':  $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																			 {"orderTag":"245","orderSuf":"b"},
+																			 {"orderTag":"240","orderSuf":"a"}'; break;
+				default: $searchTags .= '{"orderTag":"245","orderSuf":"a"},
+																 {"orderTag":"245","orderSuf":"b"}'; break;
+			}
+		}
+
+		if($criteria['advanceQ']=='Y'){
+			if(isset($criteria['srchSites']) && $criteria['srchSites'] != 'all'){
+				$searchTags .= ',{"siteTag":"xxx","siteValue":"'. $criteria['srchSites'] . '"}';
+			}
+			if(isset($criteria['materialCd']) && $criteria['materialCd'] != 'all'){
+				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
+				$searchTags .= ',{"mediaTag":"099","mediaSuf":"a","mediaValue":"'. $criteria['materialCd'] . '"}';
+			}
+			if(isset($criteria['collectionCd']) && $criteria['collectionCd'] != 'all'){
+				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
+				$searchTags .= ',{"collTag":"099","collSuf":"a","collValue":"'. $criteria['collectionCd'] . '"}';
+			}
+			if(isset($criteria['audienceLevel'])){
+				//Not sure which field this, so leave this for now - LJ
+				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $criteria['audienceLevel'] . '"}';
+			}
+			if(isset($criteria['to']) && strlen($criteria['to']) == 4){
+				//$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $criteria['to'] . '"}';
+				$searchTags .= ',{"toTag":"260","toSuf":"c","toTag":"773","toSuf":"d","toValue":"'. $criteria['to'] . '"}';
+			}
+			if(isset($criteria['from']) && strlen($criteria['from']) == 4){
+				//$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromValue":"'. $criteria['from'] . '"}';
+				$searchTags .= ',{"fromTag":"260","fromSuf":"c","fromTag":"773","fromSuf":"d","fromValue":"'. $criteria['from'] . '"}';
+			}
+		}
+
+		/* - - - - - - - - - - - - - */
+		/* Actual Search begins here */
+		$paramStr = "[" . $params . "," . $searchTags . "]";
+		return $paramStr;
 	}
 }
 

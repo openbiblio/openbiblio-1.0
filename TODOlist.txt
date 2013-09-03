@@ -52,15 +52,8 @@ Research menu needs external LoC-type search link. Integrate parts of Lookup;
 25 Jun 2013 - Fred
 Next/Prior should look the same in reports as on Existing item search.
 
-28 Jun 2013 - Neil
-The member's 'history' page does not work. (not yet implemented.)
-note: no idea what was intended to be displayed- FL 1 July 2013
-
 28 Jun 2013 - Fred
 move conditionals from BiblioDiv of srchForms to srchJs
-
-5 Jul 2013 - Fred
-consolidate ../classes/SrchDb.php into ../model/Biblios.php, its really a SuperBiblios class.
 
 - Fred
 Help system needs lots of work
@@ -89,6 +82,9 @@ verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
 ###################### Completed, most recent at top #########################
+
+5 Jul 2013 - Fred, done 3 Sep
+consolidate ../classes/SrchDb.php into ../model/Biblios.php, its really a SuperBiblios class.
 
 26 Aug 2013 - Fred, fixed 30 Aug
 'price' custom field not being saved for new copies; updates work fine.
@@ -127,8 +123,9 @@ CSV import doesn't seem to work - it accepts the file, but doesn't get any items
 8 Aug 2013 - Fred, fixed 8 Aug
 Content updates are not being accepted.
 
-31 July 2013 - Fred, fixed
-member checkout history not yet implemented.
+28 Jun 2013 - Neil, fixed 31 July
+The member's 'history' page does not work. (not yet implemented.)
+note: no idea what was intended to be displayed- FL 1 July 2013
 
 7 Aug 2013 - Fred, fixed 8 Aug
 Cover Photos: edit-delete removes photo, but adding new photo results in old
