@@ -5,7 +5,6 @@
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 	require_once(REL(__FILE__, "../functions/utilFuncs.php"));
-	//require_once(REL(__FILE__, "../classes/Query.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
@@ -13,7 +12,6 @@
 	require_once(REL(__FILE__, "../model/CopyStatus.php"));
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
-	//require_once(REL(__FILE__, "../classes/SrchDb.php"));
 
 	require_once("../classes/Biblio.php");
 	require_once("../classes/Copy.php");
@@ -91,7 +89,6 @@
 	case 'doPhraseSearch':
 		## fetch a list of all biblio meeting user search criteria
 		$criteria = $_REQUEST;
-	  //$theDb = new SrchDB;
 	  $theDb = new Biblios;
 		$biblioLst = $theDb->getBiblioByPhrase($criteria);
 		if (sizeof($biblioLst) > 0) {
@@ -148,7 +145,6 @@
 	  break;
 
 	case 'getNewBarcd':
-		//require_once(REL(__FILE__, "../model/Copies.php"));
 		$copies = new Copies;
 		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION[item_barcode_width]);
 		echo json_encode($temp);
@@ -162,7 +158,6 @@
 		
 	case 'getBiblioFields':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
-		//$theDb = new SrchDB;
 		$theDb = new Biblios;
 		$theDb->getBiblioFields();
 		break;
@@ -220,42 +215,28 @@
 			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
 			return;
 		}
-	  //$theDb = new SrchDB;
 	  $theDb = new Copies;
 		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 	case 'updateCopy':
-	  //$theDb = new SrchDB;
 	  $theDb = new Copies;
 	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
 		break;
 	case 'getBibsFrmCopies':
-	  //$theDb = new SrchDB;
 	  $theDb = new Copies;
 		$rslt = $theDb->getBibsForCpys($_GET['cpyList']);
 	  echo json_encode($rslt);
 	  break;
 	case 'deleteCopy':
-	  //$theDb = new SrchDB;
 	  $theDb = new Copies;
 		echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
 		break;
 	case 'deleteMultiCopies':
-	  //$theDb = new SrchDB;
 	  $theDb = new Copies;
 		foreach ($_POST['cpyList'] as $copyid) {
 			echo $theDb->deleteCopy($copyid);
 		}
 		break;
-/*
-	case 'deleteMultiCopies':
-		$copies = new Copies;
-		foreach ($_POST['cpyList'] as $copyid) {
-			$copies->deleteOne($copyid);
-		}
-		echo T("Delete completed");
-		break;
-*/	  
 		
 	//// ====================================////
 	case 'getPhoto':

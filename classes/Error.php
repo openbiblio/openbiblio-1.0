@@ -149,7 +149,7 @@ class IgnorableFieldError extends IgnorableError {
 	}
 	assert_options(ASSERT_CALLBACK, "obibAssertHandler");
 
-/* Fatal Errors */
+/** Fatal Errors */
 class Fatal {
 	/* Override default behaviour, e.g. for suppressing errors, unit testing, etc. */
 	function setHandler(&$obj) {
@@ -196,7 +196,7 @@ class Fatal {
 	}
 }
 
-/* error is the only required method */
+/** error is the only required method */
 class FatalHandler {
 	/* FIXME - Internationalize this stuff */
 	function internalError($msg) {

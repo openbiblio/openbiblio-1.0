@@ -5,7 +5,7 @@
 
 /**
  * Translation table for American English (en).
- * typically accessusing the T("...") function
+ * typically accessed using the T("...") function
  * provided in the ..../shared/templates.php
  * @author Micah Stetson
  */
@@ -16,7 +16,7 @@
 $trans["headerDateFormat"]	 = "m.d.Y";
 
 #****************************************************************************
-#* Common translation text
+#* Common translation text, arranged alphabetically
 #****************************************************************************
 $trans["(enter 0 for unlimited)"] = "(enter 0 for unlimited)";
 $trans["(when available)"] = "(when available)";

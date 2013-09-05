@@ -71,7 +71,7 @@ class Queryi extends mysqli{
 		return $this->insert_id;
 	}
 
-	/* Locking functions
+	/** Locking functions
 	 *
 	 * Besides switching to InnoDB for transactions, I haven't been able to
 	 * come up with a good way to do locking reliably.  For now, we'll get
@@ -80,6 +80,8 @@ class Queryi extends mysqli{
 	 * everything work, even if it is heavy-handed.
 	 *
 	 * Calls to lock/unlock may be nested, but must be paired.
+	 *
+	 * ---- Locking temporarily disabled - not working with PHP5 msqli interface ----
 	 */
 
 	public function clearLocks () {
@@ -239,6 +241,7 @@ class Queryi extends mysqli{
 }
 
 /*
+	## this class disabled - does not seem necessary with mysqli interface
 class DbIter extends Iter {
 	function DbIter($results) {
 		$this->results = $results;

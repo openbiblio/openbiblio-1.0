@@ -21,7 +21,7 @@
 	}
 	
 	#apd_set_pprof_trace();
-	// TODO - will not work with db models and classes as currently written - FL
+	## TODO - will not work with db models and classes as currently written - FL
 	//error_reporting(E_ALL ^ E_NOTICE); 
 	error_reporting((E_ALL ^ E_NOTICE) & ~E_STRICT);
 
@@ -68,7 +68,6 @@
 	
 	### needs to be here so changes in settings are picked up when changes are entered
 	function setSessionFmSettings() {
-		//echo "@ set SessionFmSettings: <br />"; print_r($_SESSION);echo "<br />";
 		$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
 		$_SESSION['item_autoBarcode_flg'] = Settings::get('item_autoBarcode_flg');
 		$_SESSION['item_barcode_width'] = Settings::get('item_barcode_width');
@@ -84,13 +83,10 @@
 	  $_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
-	//require_once(REL(__FILE__, 'compat.php'));
 	require_once(REL(__FILE__, '../database_constants.php'));
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));
-	//require_once(REL(__FILE__, '../classes/Iter.php'));
 	require_once(REL(__FILE__, "../classes/Nav.php"));
-	//require_once(REL(__FILE__, 'jsontemplate.php'));
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, 'templates.php'));
 	
@@ -126,9 +122,6 @@
 		## Change the session timeout value to 60 minutes,  8*60*60 = 8 hours
 		ini_set(’session.gc_maxlifetime’, 60*60);
 
-		## Make session user info available on all pages. ##
-		//include_once(REL(__FILE__, "../classes/OBsession.php"));  //obsolete?
-
 		session_start();
 		# Forcibly disable register_globals if php.ini does not do it already
 		if (ini_get('register_globals')) {
@@ -157,22 +150,18 @@
 		clearstatcache();
 		$pluginSet = array();
   	if (is_dir('../plugins')) {
-			//echo "Plugin Dir found: <br />";
   	  ## find all plugin directories
 			if ($dirHndl = opendir('../plugins')) {
 		    # look at all plugin dirs
 		    while (false !== ($plug = readdir($dirHndl))) {
 		      if (($plug == '.') || ($plug == '..')) continue;
-					//echo "plugin => $plug<br />";
   	      $plugPath = "../plugins/$plug";
   	      if (is_dir($plugPath)) {
   	        if (!in_array($plug, $aray)) continue; // not allowed
 						if ($filHndl = opendir($plugPath)) {
 		    			while (false !== ($file = readdir($filHndl))) {
 		    			  if (($file == '.') || ($file == '..')) continue;
-								//echo "file => $file<br />";
   	      			if ($file == $wanted) {
-									//echo "got one => $plugPath/$file<br />";
 									$pluginSet[] = "$plugPath/$file";
 								}
   	      		}
@@ -186,7 +175,7 @@
 		return $pluginSet;
 	}
 
-	// Deprecated below, use the template-based functions
+	// Deprecated below, use the template-based functions - MS
 	function H($s) {
 		return htmlspecialchars($s, ENT_QUOTES);
 	}

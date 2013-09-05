@@ -8,7 +8,9 @@ require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));
 require_once(REL(__FILE__, "../model/History.php"));
 
 /**
- * BiblioCopy-specific specification & search facilities for use with the Report generator
+ * BiblioCopy-specific specification & search facilities
+ * additional functions from SrchDb integrated 3 Aug 2013 - FL
+ * some duplication apparent, re-factoring is probably desirable. - FL
  * @author Micah Stetson
  */
 

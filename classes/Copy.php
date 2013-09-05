@@ -27,6 +27,7 @@ class BarcdCopy extends Copy {
 
 /**
  * provides a view of a single copy of a biblio - all relevent data in a single place.
+ * upon creation with a copyid, the objet will be fully populated with all data.
  * @author Fred LaPlante 24 July 2013
  */
 

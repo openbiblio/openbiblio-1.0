@@ -9,6 +9,13 @@ require_once(REL(__FILE__, "../functions/marcFuncs.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 
+/**
+ * Biblio specification & search facilities
+ * additional functions from SrchDb integrated 3 Aug 2013 - FL
+ * some duplication apparent, re-factoring is probably desirable. - FL
+ * @author Micah Stetson
+ */
+
 class Biblios extends CoreTable {
 	private $avIcon = "circle_green.png";
 
@@ -35,7 +42,6 @@ class Biblios extends CoreTable {
 					."	FROM `biblio_copy` bc,`biblio` b "
 					." WHERE (bc.`barcode_nmbr` = '".$barcd."')"
 					."	 AND (b.`bibid` = bc.`bibid`)";
-		//echo "sql=$sql<br />";
 		$rcd = $this->select01($sql);
 		$this->barCd = $barcd;
 		$this->bibid = $rcd[bibid];
@@ -137,7 +143,6 @@ class Biblios extends CoreTable {
 		}
 
 		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
-		//echo "sql=$sql<br />";
 		$rows = $this->select($sql);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = $row[bibid];
@@ -154,7 +159,6 @@ class Biblios extends CoreTable {
 					."	 AND (m.`code` = b.`material_cd`)"
 					."	 AND (cd.`code` = b.`collection_cd`)"
 					."	 AND (cc.`code` = b.`collection_cd`)";
-		//echo "sql=$sql<br />\n";
 		$rcd = $this->select01($sql);
 
 		$this->createDt = $rcd['create_dt'];
@@ -221,12 +225,9 @@ class Biblios extends CoreTable {
 				 . "	 AND (m.`tag` = bf.`tag`) "
 				 . "	 AND (m.`subfield_cd` = bs.`subfield_cd`) "
 				 . " ORDER BY m.position ";
-		//echo "sql=$sql<br />";
 		$rows = $this->select($sql);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = json_encode($row);
-			//$rslt[] = "{'marcTag':'$row[marcTag]','label':'$row[label]','value':'" . addslashes($row[value]) . "'"
-			//				 .",'fieldid':'$row[fieldid]','subfieldid':'$row[subfieldid]'}";
 		}
 		return $rslt;
 	}
@@ -257,7 +258,6 @@ class Biblios extends CoreTable {
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
 	protected function insert_el($biblio) {
-//echo "Biblios: in insert_el()<br/>\n";
 		$this->lock();
 		if (!isset($biblio['marc']) or !is_a($biblio['marc'], 'MarcRecord')) {
 			return array(NULL, array(new FieldError('marc', T("No MARC record set"))));
@@ -284,10 +284,11 @@ class Biblios extends CoreTable {
 		return $r;
 	}
 
-	function xupdate ($updtData) {
+	public function xupdate ($updtData) {
 		/** -----------------experimental-----------------------------
 		 *	currently does not post new entries to database, do NOT use
 		 *  TODO should be fixed to replace mess in biblioChange.php
+		 * -----------------do not remove yet ------------------------
 		 */
 
 		## get user screen content

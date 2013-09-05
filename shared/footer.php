@@ -21,7 +21,7 @@ unset($_SESSION['postVars']);
 <script language="JavaScript" >
 "use strict";
 
-// main javascript functionality set in own namespace to avoid potential conflict
+// common javascript functionality set in own namespace to avoid potential conflict
 var obib = {
 	<?php
 		echo "focusFormName:  '$focus_form_name',\n";
@@ -38,7 +38,7 @@ var obib = {
 		  $('#'+obib.focusFormField).focus();
 		}
 		
-		// suggest this should be in code local to desired function unless widely used -- Fred
+		/* suggest this should be in code local to desired function unless widely used -- FL */
 		// bind the confirmLink routine to all <a> tags on the current form
 		if (obib.confirmLinks) {
 			$('a').on('click',null,obib.confirmLink);
@@ -55,7 +55,7 @@ var obib = {
 	 * var q = args.q || "";   // use arguement, if defined, or a default value
 	 * var n = args.n ? parseInt(args.n) : 10;
 	 *
-	 * adapted "JavaScript: the Definitive Guide", by David Flanagan, 6th ed, p.344
+	 * adapted from "JavaScript: the Definitive Guide", by David Flanagan, 6th ed, p.344
 	 */
 	urlArgs: function(url) {
 		var args = {};                            // start wit empty object

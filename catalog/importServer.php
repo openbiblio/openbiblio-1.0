@@ -10,25 +10,19 @@
 	require_once(REL(__FILE__, "../model/MarcDBs.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
-	//require_once(REL(__FILE__, "../classes/SrchDb.php"));
 
 	# Big uploads take a while
 	set_time_limit(120);
 
 	$recordTerminator="\n";
 
-	//echo "at server entry==>";print_r($_POST);echo "<br />";
-	
 	## ---------------------------------------------------------------------- ##
 
 function doPostNewBiblio($rcrd) {
-	//echo "in doPostNewBiblio()<br />";
 	$_POST = $rcrd;
-	//$biblios = null;
   require_once(REL(__FILE__,'../catalog/biblioChange.php'));
   $rtn = PostBiblioChange("newconfirm");
   $rslt = json_decode($rtn);
-	//print_r($rslt);echo "<br />";  
   return $rslt->bibid;
 }
 
@@ -45,13 +39,11 @@ switch ($_REQUEST[mode]){
   case 'getCollections':
 		$cols = new Collections;
 		$collections = $cols->getSelect();
-		//print_r($collections); echo " dflt: $dfltColl<br />";
 		echo json_encode($collections);
   	break;
   case 'getMediaTypes':
 		$meds = new MediaTypes;
 		$medTypes = $meds->getSelect();
-		//print_r($medTypes); echo " dflt: $dfltMed<br />";
 		echo json_encode($medTypes);
   	break;
   case 'getMarcDesc':
@@ -69,9 +61,7 @@ switch ($_REQUEST[mode]){
   	
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'fetchCsvFile': 
-		//echo "at fetchCsvFile==>";print_r($_FILES);echo "<br />";
 		$fn = $_FILES['imptSrce']['tmp_name'];
-		//echo "importing file: '".$_FILES['imptSrce']['name']."'<br />";
 		if (is_uploaded_file($fn)) {
 			$rows =  explode($recordTerminator, file_get_contents($fn));
 			//check the last record if there is content after the delimiter
@@ -79,7 +69,6 @@ switch ($_REQUEST[mode]){
 			if (trim($row) != "") {
 			  array_push($rows, $row);
 			}
-			//echo "array of lines==>";print_r($rows);echo "<br />";
 			echo json_encode($rows);
 		} else {
 			echo	T("error - file did not load successfully!!")."<br />";
@@ -87,10 +76,8 @@ switch ($_REQUEST[mode]){
   	break;
   
 	case 'postCsvData':
-		//$theDb = new SrchDB;
 	  $theDb = new Copies;
 		$cpys = new Copies;
-		//$rslt = [];
 
 		$rec = $_POST['record'];
 		$barCd = $rec['barcode_nmbr'];
@@ -102,16 +89,13 @@ switch ($_REQUEST[mode]){
 
 		$bibid = doPostNewBiblio($rec);
 		$text = "Biblio #$bibid posted successfully.";
-//echo "barCd=$barCd; cpy action=$cpyAction<br />";
 		if (($cpyAction >= 1) && (isset($rec['barcode_nmbr']))) {
-//$text.= "inserting new copy";
 			if ($theDb->insertCopy($bibid,NULL) == '!!success!!') {
 				$text .= "<br />\n".T("Copy successfully created.")." ".T("Barcode")." = ".$barCd.". ";
 			} else {
 				$text .= "<br />\n".T("Error creating New Copy")." ".T("Barcode")." = ".$barCd.". ";
 			}
 		} else {
-//$text.= "no copies made.";
 		}
 		echo $text;
 		break;

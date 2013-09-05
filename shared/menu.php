@@ -60,11 +60,6 @@ function staff_menu() {
 	}
 	
 	##-------------------------------------------------------------------------------------##
-	/*
-	Nav::node('opac', T("OPAC"), '../catalog/srchForms.php?tab=OPAC');
-	Nav::node('opac/search', T("Search"), '../catalog/srchForms.php?tab=OPAC');
-	Nav::node('opac/images', T("Images"), '../shared/image_browse.php?tab=opac');
-	*/
 	Nav::node('user', T("Research"), '../catalog/srchForms.php?tab=user');
 	Nav::node('user/localSearch', T("Local Search"), '../catalog/srchForms.php?tab=user');
 	Nav::node('user/doiSearch', T("doiSearch"), '../opac/doiSearchForms.php');
@@ -103,8 +98,6 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasReportsAuth"]){
 		Nav::node('reports', T("Reports"), '../reports/index.php');
-		//Nav::node('reports/itemSesrch', T("new '.php' test"), '../reports/reportForms.php?type=BiblioSearch');
-		//Nav::node('reports/mediaCounts', T("new '.rpt' test"), '../reports/reportForms.php?type=media_counts');
 		Nav::node('reports/reportlist', T("Report List"), '../reports/index.php');
 		if (isset($_SESSION['rpt_Report'])) {
 			Nav::node('reports/results', T("Report Results"), '../reports/run_report.php?type=previous');
@@ -126,8 +119,6 @@ function staff_menu() {
 	
 	##-------------------------------------------------------------------------------------##
 		Nav::node('working', T("Under Construction"), '../working/index.php');
-		//Nav::node('working/testApp', T("Item Search"), '../reports/reportForms.php?type=BiblioSearch');
-		//Nav::node('working/testApp', T("Media Count"), '../reports/reportForms.php?type=media_counts');
 		Nav::node('working/testApp', T("CoverPhotos"), '../working/imageBrowseForm.php?tab=working');
 		Nav::node('working/testApp', T("Photo Import"), '../working/webcamForm.php');
 
