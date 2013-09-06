@@ -3,6 +3,16 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+/**   required change 6Sept2013 - FL
+ *
+ALTER TABLE `material_fields` CHANGE `form_type` `form_type`
+ENUM( 'text', 'textarea', 'date', 'datetime', 'month', 'number', 'url',
+'tel', 'email', 'search', 'color', 'password', 'range' )
+NOT NULL DEFAULT 'text';
+ALTER TABLE `material_fields` ADD `validation_cd` VARCHAR( 10 ) NULL AFTER `form_type`;
+ *
+ */
+
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 /**
@@ -22,6 +32,7 @@ class MaterialFields extends DBTable {
 			'position'=>'number',
 			'label'=>'string',
 			'form_type'=>'string',
+			'validation_cd'=>'string',
 			'required'=>'string',
 			'repeatable'=>'string',
 			'search_results'=>'string',

@@ -18,7 +18,7 @@ var pdl = {
 
 		$('#showListsBtn').bind('click',null,pdl.showLists);
 	},
-	
+
 	//------------------------------
 	initWidgets: function () {
 	},
@@ -28,7 +28,21 @@ var pdl = {
 	  $('#rsltsArea').hide();
 	  $('#msgDiv').hide();
 	},
-	
+
+	//------------------------------
+	showLists: function () {
+		$('#pulldowns').html(' ');
+		pdl.fetchCalendarList();
+		pdl.fetchCollectionList();
+		pdl.fetchMediaList();
+		pdl.fetchMbrTypList();
+		pdl.fetchSiteList();
+		pdl.fetchStateList();
+		pdl.fetchInputTypes();
+		pdl.fetchValidationList();
+		$('#rsltsArea').show();
+	},
+
 	//------------------------------
 	fetchCalendarList: function () {
 	  $.getJSON(pdl.url,{mode:'getCalendarList'}, function(data){
@@ -84,18 +98,28 @@ var pdl = {
 			$('#state_cd').html(html);
 		});
 	},
-
-	//------------------------------
-	showLists: function () {
-		$('#pulldowns').html(' ');
-		pdl.fetchCalendarList();
-		pdl.fetchCollectionList();
-		pdl.fetchMediaList();
-		pdl.fetchMbrTypList();
-		pdl.fetchSiteList();
-		pdl.fetchStateList();
-		$('#rsltsArea').show();
+	fetchInputTypes: function () {
+	  $.get(pdl.url,{mode:'getInputTypes'}, function(data){
+			var partsA = (data.replace(/'/g,"")).split('(');
+			var partsB = partsA[1].split(')');
+			var list = partsB[0].split(',');
+			var html = '';
+      for (var n in list) {
+				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
+			}
+			$('#inptTyp_cd').html(html);
+		});
 	},
+	fetchValidationList: function () {
+	  $.getJSON(pdl.url,{mode:'getValidations'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#validation_cd').html(html);
+		});
+	},
+
 };
 
 $(document).ready(pdl.init);

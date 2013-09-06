@@ -46,6 +46,18 @@
 		echo json_encode($list);
 	  break;
 
+	case 'getInputTypes':
+		require_once(REL(__FILE__, "../model/MaterialFields.php"));
+		$db = new MaterialFields;
+		$sql = "SHOW COLUMNS FROM material_fields";
+		$rslt = $db->select($sql);
+		while ($col = $rslt->fetch_assoc()) {
+			if ($col['Field'] == 'form_type') break;
+		}
+		$enum = $col['Type'];
+		echo $enum;
+	  break;
+
 	case 'getLocaleList':
 		$arr_lang = Localize::getLocales();
 		foreach ($arr_lang as $langCode => $langDesc) {
@@ -88,6 +100,13 @@
 	case 'getStateList':
 		require_once(REL(__FILE__, "../model/States.php"));
 		$db = new States;
+		$list = getDmData($db);
+		echo json_encode($list);
+	  break;
+
+	case 'getValidations':
+		require_once(REL(__FILE__, "../model/Validations.php"));
+		$db = new Validations;
 		$list = getDmData($db);
 		echo json_encode($list);
 	  break;

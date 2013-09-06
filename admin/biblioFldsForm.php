@@ -69,6 +69,7 @@
     <th><?php echo T("Tag"); ?></th>
     <th><?php echo T("Label"); ?></th>
     <th><?php echo T("Type"); ?></th>
+    <th><?php echo T("Valid."); ?></th>
     <th><?php echo T("Reqd"); ?></th>
     <th><?php echo T("Rpts"); ?></th>
   </tr>
@@ -90,7 +91,7 @@
 <form id="editForm" name="tagForm">
 <h5 id="reqdNote" class="reqd"><span class="reqd">*</span><?php echo T("lookup_rqdNote"); ?></h5>
 <fieldset>
-<table id="editTbl" border="1"">
+<table id="editTbl">
 	<thead>
   </thead>
   <tbody>
@@ -113,8 +114,14 @@
     <td><label for="form_type"><?php echo T("Form Type Label"); ?></label></td>
     <td colspan="2">
     	<select id="form_type" name="form_type">
-    		<option value="text">Single Line</option>
-    		<option value="textarea">Multi Line</option>
+    	</select>
+      <span class="reqd">*</span>
+		</td>
+  </tr>
+  <tr>
+    <td><label for="validation_cd"><?php echo T("Validation Type"); ?></label></td>
+    <td colspan="2">
+    	<select id="validation_cd" name="validation_cd">
     	</select>
       <span class="reqd">*</span>
 		</td>

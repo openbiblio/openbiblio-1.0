@@ -21,6 +21,7 @@ var mtl = {
 	init: function () {
 		//console.log('initializing mtl');	
 		mtl.url = 'biblioFldsSrvr.php';
+		mtl.listUrl = '../shared/listSrvr.php';
 		mtl.editForm = $('#workForm');
 		
 		mtl.resetForms();
@@ -45,6 +46,8 @@ var mtl = {
 		$('#marcTags').on('change',null,mtl.fetchMarcFields);
 
 		mtl.fetchMatlTypes();
+		mtl.fetchInputTypes();
+		mtl.fetchValidationList();
 		mtl.resetForms();
 	},
 	
@@ -131,6 +134,27 @@ var mtl = {
 			$('#typeList').html(html);
 		});
 	},
+	fetchInputTypes: function () {
+	  $.get(mtl.listUrl,{mode:'getInputTypes'}, function(data){
+			var partsA = (data.replace(/'/g,"")).split('(');
+			var partsB = partsA[1].split(')');
+			var list = partsB[0].split(',');
+			var html = '';
+      for (var n in list) {
+				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
+			}
+			$('#form_type').html(html);
+		});
+	},
+	fetchValidationList: function () {
+	  $.getJSON(mtl.listUrl,{mode:'getValidations'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+n+'">'+data[n]+'</option>';
+			}
+			$('#validation_cd').html(html);
+		});
+	},
 
 	//------------------------------
 	// this section is for the drag & drop layout display
@@ -214,7 +238,7 @@ var mtl = {
 									 ',"tag":"'+tag+'","subfield_cd":"'+subFld+'","label":"'+label+'"'+
 									 ',"required":"0","repeatable":"0"},';
 			} else {
-				// position of holdovers from original layout
+				// position of hold-overs from original layout
 		  	// param name & value MUST be in double quotes
 				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'"},';
 			}
@@ -283,6 +307,9 @@ var mtl = {
 					html += '<span name="form_type" class="fldData">'+data[n]['form_type']+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
+					html += '<span name="validation_cd" class="fldData">'+data[n]['validation_cd']+'</span>';
+					html += '</td>';
+    			html += '<td valign="top" class="primary">\n';
 					html += '<span name="required" class="fldData">'+(data[n]['required']=='1'?'Y':'N')+'</span>';
 					html += '</td>';
     			html += '<td valign="top" class="primary">\n';
@@ -339,15 +366,23 @@ var mtl = {
 		for(var n in parms) {
 			var fldName = parms[n]['name'],
 					fldVal = parms[n]['value'];
-			if (fldName == 'required')  {
-				$('#editTbl #required').val([fldVal=='Y'?'1':'0']);
-			}
-			else if (fldName == 'form_type') {
-				$('#editTbl #form_type').val([fldVal]);
-			}
-			else {
-			  // all else
-				$('#editTbl #'+fldName).val(fldVal);
+			switch (fldName) {
+				case 'required':
+//				$('#editTbl #required').val([fldVal=='Y'?'1':'0']);
+					$('#editTbl #required').val(fldVal);
+					break;
+				case 'repeatable':
+//				$('#editTbl #repeatable').val([fldVal=='Y'?'1':'0']);
+					$('#editTbl #repeatable').val(fldVal);
+					break;
+				case 'form_type':
+					$('#editTbl #form_type').val([fldVal]);
+				  break;
+				case 'validation_cd':
+					$('#editTbl #form_type').val([fldVal]);
+				  break;
+				default:
+					$('#editTbl #'+fldName).val(fldVal);
 			}
 		}
 	},

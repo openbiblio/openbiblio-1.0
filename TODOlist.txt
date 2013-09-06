@@ -87,6 +87,17 @@ Consider moving from mysqli to PDO for db interface to loosen dependence on mysq
 5 Sep 2013 - Fred
 consider changing MySql db engine to InoDB to enable transactions.
 
+6 Sep 2013 - Fred
+consider identifying foreign keys in all DB tables as appropriate
+
+6 Sep 2013 - Fred
+complete work on patterns for biblio input validations.
+'material_fields' table needs additional form_typeallowed,
+new pattern_cd column needed pointing to 'validations' table,
+Admin | Biblio Fields edit screen must support these data items,
+PHP and JS input_flds() functions must use this information when available to set
+	the input field 'type="aaaa"' and 'pattern="aaaa"' as specified.
+
 ###################### Completed, most recent at top #########################
 
 5 Jul 2013 - Fred, done 3 Sep

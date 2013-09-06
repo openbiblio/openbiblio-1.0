@@ -44,7 +44,8 @@
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
 			$ptr = new MaterialFields;
 			if (empty($_POST[required])) $_POST[required] = '0';
-			echo $ptr->update_el($_POST);
+//			echo $ptr->update_el($_POST);
+			echo $ptr->update($_POST);
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-

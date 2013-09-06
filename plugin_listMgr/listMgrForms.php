@@ -38,6 +38,9 @@
 			<br />
 			<label for="state_cd" >States:<select id="state_cd" ></select></label>
 			<label for="site_cd" >Sites:<select id="site_cd" ></select></label>
+			<br />
+			<label for="inptType_cd" >Inputs:<select id="inptTyp_cd" ></select></label>
+			<label for="validation_cd" >Validations:<select id="validation_cd" ></select></label>
 		</fieldset>
 	</section>
 	

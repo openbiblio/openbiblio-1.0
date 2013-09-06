@@ -6,8 +6,9 @@ CREATE TABLE IF NOT EXISTS %prfx%.`material_fields` (
   `subfield_cd` varchar(10) DEFAULT NULL,
   `position` tinyint(4) NOT NULL,
   `label` varchar(128) DEFAULT NULL,
-  `form_type` enum('text','textarea') NOT NULL DEFAULT 'text',
-  `required` tinyint(1) NOT NULL,
+  `form_type` ENUM( 'text', 'textarea', 'date', 'datetime', 'month', 'number', 'url', 'tel', 'email', 'search', 'color', 'password', 'range' ) NOT NULL DEFAULT 'text',
+  `validation_cd` VARCHAR( 10 ) DEFAULT NULL,
+	`required` tinyint(1) NOT NULL,
   `repeatable` tinyint(1) DEFAULT NULL,
   `search_results` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`material_field_id`)
