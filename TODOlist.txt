@@ -81,6 +81,12 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input/output, cvs output, barcode printing, barcode input, .....
 
+5 Sep 2013 - Fred
+Consider moving from mysqli to PDO for db interface to loosen dependence on mysql
+
+5 Sep 2013 - Fred
+consider changing MySql db engine to InoDB to enable transactions.
+
 ###################### Completed, most recent at top #########################
 
 5 Jul 2013 - Fred, done 3 Sep

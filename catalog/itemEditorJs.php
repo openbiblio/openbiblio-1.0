@@ -99,6 +99,8 @@ var ie = {
 		$('#opacFlg').val(hdr.opac_flg);
 
 		// fill MARC fields with data on hand
+		// each field has a:
+		//  label, tag & suffix, fieldId, subfieldId, formInputType, displayValue, validationPattern
 	  var txt = '';
 		$.each(marc, function(key,val) {
 			if (val.lbl) {

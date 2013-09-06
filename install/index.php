@@ -44,7 +44,7 @@
 		<section id="versionOK">
 			<p>Your OpenBiblio Installation is up to date.</p>
 			<p>Nothing further is required.</p><br />
-			<form method="get" action="../circ/index.php">
+			<form method="get" action="../index.php">
 				<input id="useBtn" type="submit" value="<?php echo T("Start Using OpenBiblio"); ?>" />
 			</form>
 		</section>
