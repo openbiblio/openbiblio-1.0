@@ -36,44 +36,45 @@ var ie = {
 
 	mkFldSet: function (key, val, mode) {
 		var txt='',
-				attrStr = "marcBiblioFld",
+				classStr = "marcBiblioFld",
 				attrs = {},
 				name='';
 
 		/* unique items per mode */
-	  if (mode == 'onlnCol') {
+		if (mode == 'editCol') {
+			name = 'fields['+key+']';
+			txt += '	<td valign="top" >'+"\n";
+			var dataFlds = 'subfieldid='+val["subfieldid"]+'&fieldid='+val["fieldid"];
+			txt += flos.inptFld('hidden', name+'[codes]', dataFlds)+"\n";
+		} else if (mode == 'onlnCol') {
 			name = 'onln_'+key;
 			txt += '	<td valign="top" class="filterable">';
 	    txt += '		<input type="button" value="<--" id="'+name+'_btn" class="accptBtn" />';
 			txt += '	</td>\n<td valign="top" class="filterable">';
 		}
-		else if (mode == 'editCol') {
-			name = 'fields['+key+']';
-			txt += '	<td valign="top" >'+"\n";
-			var dataFlds = 'subfieldid='+val["subfieldid"]+'&fieldid='+val["fieldid"];
-			txt += flos.inptFld('hidden', name+'[codes]', dataFlds)+"\n";
-		}
 
 		/* common for both modes */
 		if (val['repeat'])
-		  attrStr += " rptd";
+		  classStr += " rptd";
 		else
-		  attrStr += " only1";
+		  classStr += " only1";
 	  if (mode == 'onlnCol')
-	    attrStr += " online";
+	    classStr += " online";
 		else
-		  attrStr += " offline";
-		attrs["class"] = attrStr;
+		  classStr += " offline";
+		attrs["class"] = classStr;
 
 		attrs['id'] = key;
-		if ( (val['required'] == 1) && (mode != 'onlncol') ) {
-			/* 'required' does not apply to online data fields */
-			attrs['required'] = 'required';
+		if (mode != 'onlncol') {
+			if (val['required'] == 1)  attrs['required'] = 'required';
+			if (val['validation_cd'] !== null) attrs['validation_cd'] = val['validation_cd'];
 		}
 
+//console.log('mkFldSet():');
+//console.log(attrs);
 		if (val['form_type'] == 'textarea') {
 			attrs["rows"] = "7"; attrs["cols"] = "48";
-			txt += flos.inptFld('textarea', name+'[data]', val['value'],attrs, val['value'])+"\n";
+			txt += flos.inptFld('textarea', name+'[data]', val['value'], attrs, val['value'])+"\n";
 		} else {
 		  attrs["size"] = "50"; attrs["maxLength"] = "256";
 			txt += flos.inptFld(val['form_type'], name+'[data]', val['value'], attrs)+"\n";
@@ -99,10 +100,12 @@ var ie = {
 		$('#opacFlg').val(hdr.opac_flg);
 
 		// fill MARC fields with data on hand
-		// each field has a:
-		//  label, tag & suffix, fieldId, subfieldId, formInputType, displayValue, validationPattern
+		// each field has, in array 'val', a:
+		//  label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
 	  var txt = '';
 		$.each(marc, function(key,val) {
+//console.log('doItemEdit(): key='+key);
+//console.log(val);
 			if (val.lbl) {
 				var prefix = 'fields_'+key;
 				txt += "<tr> \n";

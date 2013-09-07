@@ -69,7 +69,8 @@ class MaterialFields extends DBTable {
 															'required'=>$row['required'],
 															'repeatable'=>$row['repeatable'],
 															'seq'=>$row['seq'],
-															'form_type'=>$row['form_type']
+															'form_type'=>$row['form_type'],
+															'validation_cd'=>$row['validation_cd']
 															);
 					$n++;
 				} while ($n<=$row['repeatable']);

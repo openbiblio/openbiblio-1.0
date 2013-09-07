@@ -118,14 +118,19 @@ inptFld: function (type, name, value, attrs, data) {
 		});
 		s += "/>";
 		break;
-	case 'number': attrs['pattern'] = '/\d*/'; handleInput(); break;
-	case 'date': attrs['pattern'] = flos.patterns.date; handleInput(); break;
-	case 'year': attrs['pattern'] = flos.patterns.year; handleInput(); break;
-	case 'tel': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
-	case 'zip': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
-	case 'url': attrs['pattern'] = flos.patterns.url; handleInput(); break;
-	case 'email': attrs['pattern'] = flos.patterns.email; handleInput(); break;
-	default: handleInput(); break;
+	//case 'number': attrs['pattern'] = '/\d*/'; handleInput(); break;
+	//case 'date': attrs['pattern'] = flos.patterns.date; handleInput(); break;
+	//case 'year': attrs['pattern'] = flos.patterns.year; handleInput(); break;
+	//case 'tel': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
+	//case 'zip': attrs['pattern'] = flos.patterns.tel; handleInput(); break;
+	//case 'url': attrs['pattern'] = flos.patterns.url; handleInput(); break;
+	//case 'email': attrs['pattern'] = flos.patterns.email; handleInput(); break;
+	default:
+		attrs['pattern'] = flos.patterns[attrs['validation_cd']];
+//console.log('inptFld(): attrs');
+//console.log(attrs);
+		handleInput();
+		break;
 	}
 	return s;
 	/* ------------a part of above inptFld() ------------------- */
