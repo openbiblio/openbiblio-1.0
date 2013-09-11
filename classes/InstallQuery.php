@@ -66,7 +66,7 @@ class InstallQuery extends Queryi {
     }
   }
 
-  protected function freshInstall($locale, $sampleDataRequired = false,
+  public function freshInstall($locale, $sampleDataRequired = false,
                         $version=OBIB_LATEST_DB_VERSION,
                         $dbName = DB_TABLENAME_PREFIX) {
     $rootDir = '../install/' . $version . '/sql';

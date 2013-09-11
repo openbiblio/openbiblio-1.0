@@ -19,31 +19,6 @@
 		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 	}
 ?>
-<!-- ------------------------------------------------------------------- -->
-<!-- This segment is solely for jQuery UI date-picker support            -->
-<!-- It could be placed into its own file and included as needed    		 -->
-<!-- ------------------------------------------------------------------- -->
-<!--  code needed for datepicker -->
-<link href="../shared/jquery/themes/base/ui.all.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="../shared/jquery/themes/base/ui.datepicker.css" rel="stylesheet" type="text/css" media="screen" />
-<script src="../shared/jquery/ui/ui.core.js"></script>
-<script src="../shared/jquery/ui/ui.datepicker.js"></script>
-<script language="JavaScript" >
-	$(function(){
-	  // create date picker
-/*
-		// this version places a 'calendar' image alongside the input field as a trigger'
-	  $('#rpt_out_before').datepicker({showOn: 'button',
-																		 buttonImage: '../images/calendar.gif',
-																		 buttonImageOnly: true});
-*/
-		//this version is triggered by the input field getting focus
-		$('#rpt_out_before').datepicker();
-	});
-</script>
-<!-- ------------------------------------------------------------------- -->
-<!-- end of datepicker support segment                                   -->
-<!-- ------------------------------------------------------------------- -->
 
 <h3><?php echo T("Manage Bookings"); ?></h3>
 <form name="booking_pending" method="get" action="../circ/booking_pending.php">

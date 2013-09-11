@@ -235,7 +235,7 @@ class Report {
 		}
 		return array($rpt, array());
 	}
-	private function next() {
+	public function next() {
 	}
 	private function _getIter() {
 		if (isset($this->iter) && $this->iter) {
