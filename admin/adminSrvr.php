@@ -344,6 +344,9 @@
 		case 'getFormData':
 			echo json_encode($ptr->getFormData ('admin','name,title,type,value'));
 			break;
+		case 'update_settings':
+			echo $ptr->setAll_el($_REQUEST);
+			break;
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAll_sites':

@@ -14,11 +14,11 @@
 <h3 id="listHdr"><?php echo T("Library Settings"); ?></h3>
 
 <div id="editDiv">
-	<h5 id="updateMsg"></h5>
-	<form name="editsettingsform" id="editsettingsform">
+	<p id="updateMsg" class="warning"></p>
+	<form name="editSettingsForm" id="editSettingsForm">
 		<fieldset>
 			<label for="locale"></label>
-			<select id="locale" name="locale" ></select>
+			<select id="locale" name="locale" autofocus ></select>
 			<br />
 			<label for="charset"></label>
 			<input type="text" id="charset" name="charset" >
@@ -34,10 +34,10 @@
 			<select id="libraryName" name="library_name" ></select>
 			<br />
 			<label for="libraryHours"></label>
-			<textarea id="libraryHours" name="libraryHours" rows="1" /></textarea>
+			<textarea id="libraryHours" name="library_hours" rows="1" /></textarea>
 			<br />
 			<label for="libraryPhone"></label>
-			<input type="text" id="libraryPhone" name="libraryPhone" maxlength="32" />
+			<input type="text" id="libraryPhone" name="library_phone" maxlength="32" />
 			<br />
 			<label for="library_home"></label>
 			<input type="text" id="library_home" name="library_home" maxlength="29" />
@@ -89,7 +89,10 @@
 			<br />
 			<label for="thumbnail_rotation"></label>
 			<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19"  />(deg)
-			<br />
+			<hr>
+
+			<input type="hidden" id="cat" name="cat" value="settings" />
+			<input type="hidden" id="mode" name="mode" />
 			<input type="submit" value="Update" />
 		</fieldset>
 	</form>

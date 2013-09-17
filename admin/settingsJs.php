@@ -20,7 +20,7 @@ var set = {
 
 		set.initWidgets();
 
-		$('#editForm').on('submit',null,set.doUpdate);
+		$('#editSettingsForm').on('submit',null,set.doUpdate);
 
 		set.resetForms()
 		set.setLocaleList();
@@ -87,8 +87,10 @@ var set = {
 				if (fields[n].name == 'library_phone') fields[n].name = 'libraryPhone'
 
 				var $id = $('#'+fields[n].name);
+				/* map out deprecated values */
 				if (fields[n].type == 'int') fields[n].type = 'number';
 				if (fields[n].type == 'bool') fields[n].type = 'checkbox';
+
         $id.attr('type',fields[n].type).prev().html(fields[n].title+':');
 				switch (fields[n].type) {
 					case 'select':
@@ -99,10 +101,26 @@ var set = {
 					case 'url': $id.attr('pattern', flos.patterns.url); break;
 					case 'email': $id.attr('pattern', flos.patterns.email); break;
 				}
-				if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {
+				if (fields[n].type == 'textarea') {
+          $id.html(fields[n].value).attr('rows',fields[n].width)
+				} else if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {
 					$id.val(fields[n].value).attr('size',fields[n].width);
 				}
 			}
+		});
+	},
+
+	//------------------------------
+	doUpdate: function (e) {
+		e.stopPropagation();
+		e.preventDefault();
+		$('#mode').val('update_settings');
+		var params = $('#editSettingsForm').serialize();
+		$.post(set.url, params, function (response) {
+			//if (response === null)
+				$('#updateMsg').html(set.successMsg).show();
+			//else
+			//	$('#updateMsg').html(response);
 		});
 	},
 
