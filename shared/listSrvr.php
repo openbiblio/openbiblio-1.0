@@ -66,6 +66,15 @@
 		}
 		echo json_encode($list);
 		break;
+	case 'getThemeList':
+		require_once(REL(__FILE__, "../model/Themes.php"));
+		$db = new Themes;
+		$set = $db->getAll('theme_name');
+		while ($row = $set->fetch_assoc()) {
+		  $list[$row['themeid']] = $row['theme_name'];
+		}
+		echo json_encode($list);
+	  break;
 
 	case 'getMediaList':
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));

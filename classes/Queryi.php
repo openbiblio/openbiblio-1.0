@@ -5,6 +5,7 @@
 
 /**
  * provides a customization & specialization layer to PHP's mysqli mySql API
+ * converted from mysql lib to mysqli by F.LaPlante Aug 2013
  * @author Micah Stetson
  */
 

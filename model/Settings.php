@@ -3,6 +3,12 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+/*
+ALTER TABLE `settings` CHANGE `type` `type`
+ENUM( 'text', 'number', 'tel', 'url', 'email', 'select', 'checkbox', 'textarea', 'int', 'bool' )
+NOT NULL DEFAULT 'text'
+*/
+
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 require_once(REL(__FILE__, '../model/Sites.php'));
 
@@ -32,17 +38,29 @@ class Settings extends Queryi {
 		global $_settings_cache;
 		return $_settings_cache;
 	}
-	function getFormFields($menu=NULL) {
+	private function _getData ($menu=NULL, $cols='*'){
 		$db = new Queryi;
-		$sql = "SELECT * FROM settings WHERE (title <> '') ";
+		$sql = "SELECT ".$cols." FROM settings WHERE (title <> '') ";
 		if (!empty($menu)) {
 			$sql .= " AND (menu = '$menu') ";
 		}
 		$sql .= " ORDER BY position ";
-		$r = $db->select($sql);
+		//echo "sql={$sql}<br />\n";
+		return $db->select($sql);
+	}
+	function getFormData ($menu=NULL, $cols) {
+		$r = $this->_getData($menu, $cols);
 		$fields = array();
 		while ($s = $r->fetch_assoc()) {
-			$fields[] = Settings::_mkField($s);
+				$fields[] = $s;
+		}
+		return $fields;
+	}
+	function getFormFields($menu=NULL) {
+		$r = $this->_getData($menu);
+		$fields = array();
+		while ($s = $r->fetch_assoc()) {
+				$fields[] = Settings::_mkField($s);
 		}
 		return $fields;
 	}
@@ -79,7 +97,10 @@ class Settings extends Queryi {
 		$db->unlock();
 		return $errors;
 	}
-	function _getSubdirs($root) {
+	public function getThemeDirs () {
+		return Settings::_getSubdirs('themes');
+	}
+	private function _getSubdirs($root) {
 		$aray = array();
 	  if (is_dir('../'.$root)) {
 			//echo $root." Dir found: <br />";
@@ -101,7 +122,7 @@ class Settings extends Queryi {
 		}
 		return $aray;
 	}
-	function _mkField($s) {
+	private function _mkField($s) {
 		global $_settings_validators;
 		$attrs = array();
 

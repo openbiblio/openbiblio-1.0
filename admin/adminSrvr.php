@@ -34,6 +34,10 @@
 			require_once(REL(__FILE__, "../model/Online.php"));
 			$ptr = new Opts;
 			break;
+		case 'settings':
+			require_once(REL(__FILE__, "../model/Settings.php"));
+			$ptr = new Settings;
+			break;
 		case 'sites':
 			require_once(REL(__FILE__, "../model/Sites.php"));
 			$ptr = new Sites;
@@ -336,6 +340,11 @@
 			echo $rslt;
 			break;
 
+	  #-.-.-.-.-.- Settings -.-.-.-.-.-.-
+		case 'getFormData':
+			echo json_encode($ptr->getFormData ('admin','name,title,type,value'));
+			break;
+
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAll_sites':
 		  $sites = array();
@@ -420,20 +429,19 @@
 			}
 			echo json_encode($thms);
 			break;
+		case 'getThemeDirs':
+			echo json_encode($ptr2->getThemeDirs ());
+			break;
 		case 'setCrntTheme':
-			$ptr = new Settings;
 			echo $ptr2->setOne_el('themeid', $_POST['themeid']);
 			break;
 		case 'addNewTheme':
-			$ptr = new Themes;
 			echo $ptr->insert_el($_POST);
 			break;
 		case 'updateTheme':
-			$ptr = new Themes;
 			echo $ptr->update_el($_POST);
 			break;
 		case 'd-3-L-3-tTheme':
-			$ptr = new Themes;
 			echo $ptr->deleteOne($_POST['themeid']);
 			break;
 
