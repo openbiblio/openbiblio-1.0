@@ -28,6 +28,18 @@ var set = {
 
 	//------------------------------
 	initWidgets: function () {
+		/* simple-tab handler */
+		/* Posted by Pete Schuster on January 27, 2012 */
+		$('#tabs').find('.controls').find('a').click( function(e){
+			e.preventDefault();
+			var el = jQuery(this);
+			/* deal with actual 'tabs' */
+			$('#tabs').find('.controls').find('li').removeClass('active');
+			el.parent('li').addClass('active');
+			/* deal with the tab 'pages' */
+			$('#tabs').find('div').removeClass('active');
+			$('#tabs').find(el.attr('href')).addClass('active').find(':first-child').focus();
+		} );
 	},
 
 	resetForms: function () {

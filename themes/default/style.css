@@ -221,6 +221,24 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 								}
 
 /*************************************************/
+/* simple tabbed pages */
+#tabs ul { background:#90b0b8; margin:0; padding:0; margin-bottom:2em; }
+#tabs	ul.controls	li {
+  list-style:none; float:left; margin:0; margin-bottom:1em;
+	white-space:nowrap; border-radius:5px 5px 0 0;
+	}
+#tabs li a {
+	display:block; float:left; padding:0.5em;
+	text-decoration:none; font-weight:bold;
+	border:1px solid; border-color:#fff #333 #222 #fff;
+	background:#ccc; color:#333;
+	}
+#tabs	li a:hover { background:#333; color:#ccc; border-color:#000 #ccc #ccc #000; }
+#tabs ul.controls li.active a { color:blue; background-color:#ffffdd; border-bottom:0; }
+#tabs	.block { padding:1.25em; display:none; }
+#tabs	.block.active	{ display:block; }
+
+/*************************************************/
 /* search results displays */
 #biblioListDiv { width:100%; }
 .listTbl { max-width:100%; text-align:left; }
