@@ -107,7 +107,7 @@
 		$CharSet = "UTF-8";
 		$ThemeId = '1';
 		$ThemeDirUrl = "../themes/default";
-		$Locale = "en";
+		$Locale = navigator.language.substr(0,2);
 	}
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";

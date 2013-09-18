@@ -6,7 +6,9 @@
 /*
 ALTER TABLE `settings` CHANGE `type` `type`
 ENUM( 'text', 'number', 'tel', 'url', 'email', 'select', 'checkbox', 'textarea', 'int', 'bool' )
-NOT NULL DEFAULT 'text'
+NOT NULL DEFAULT 'text';
+ALTER TABLE `settings` CHANGE `value` `value`
+VARCHAR( 255 ) NULL DEFAULT NULL;
 */
 
 require_once(REL(__FILE__, '../classes/Queryi.php'));
@@ -92,6 +94,7 @@ class Settings extends Queryi {
 		$db->lock();
 		foreach ($settings as $n=>$v) {
 			$sql = $db->mkSQL('UPDATE settings SET value=%Q WHERE name=%Q', $v, $n);
+			//echo "sql={$sql}<br />\n";
 			$db->act($sql);
 		}
 		$db->unlock();

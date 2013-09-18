@@ -2,7 +2,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/* This file builds upon the structures defined within ../shared/base3.css
+/* This file builds upon the structures defined within "../shared/base3.css"
  * we start here assuming a small mobile screen less than 720px wide
  * larger screens will be progressively enhanced at the end of this document 
  */
