@@ -28,8 +28,7 @@ var set = {
 
 	//------------------------------
 	initWidgets: function () {
-		/* simple-tab handler */
-		/* Posted by Pete Schuster on January 27, 2012 */
+		/* simple css3 tab support */
 		$('#tabs').find('.controls').find('a').click( function(e){
 			e.preventDefault();
 			var el = jQuery(this);

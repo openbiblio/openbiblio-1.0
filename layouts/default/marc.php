@@ -5,8 +5,13 @@
 
 require_once(REL(__FILE__, '../../model/Biblios.php'));
 
+/**
+ * this class generates the MARC file output for a report
+ * @author Micah Stetson
+ */
+
 class Layout_marc {
-	function render($rpt) {
+	public function render($rpt) {
 		header('Content-Type: application/marc');
 		header('Content-disposition: inline; filename="export.mrc"');
 		$biblios = new Biblios;

@@ -3,37 +3,47 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, '../../model/Biblios.php'));
+require_once(REL(__FILE__, '../../classes/Biblio.php'));
+
+/**
+ * this class generates the CSV file output for a report
+ * @author F.LaPlante
+ */
 
 class Layout_csv {
-	function render($rpt) {
-		$biblios = new Biblios;
+	public function render($rpt) {
 		$tags = array();
 		$collection = array();
-		while ($row = $rpt->each()) {
+		$cache = $rpt->getCache();
+		$nBibs = $cache['count'];
+		for ($i=0; $i<$nBibs; $i++) {
 			## consider a single document from those selected
-			$bib = $biblios->getOne($row['bibid']);
-			if (!$bib['marc']) continue; // if no MARC data, skip it
-			$marc = $bib['marc'];
-			$flds = $marc->fields;
+			$row = $cache['rows'][$i];
+			$bib = new Biblio($row['bibid']);
+			$biblio = $bib->getData();
+			if (!$biblio['marc']) continue; // if no MARC data, skip it
+			$marc = $biblio['marc'];
 
 			## scan all fields of this document
 			$item = array();	// new empty document container
-			foreach ($flds as $fld) {
+			foreach ($marc as $k=>$fld) {
 				## extract MARC Id components
-				$tag = $fld->tag;
-				$sub = $fld->subfields[0]->identifier;
+				$parts = explode('$', $k);
+				$tag = $parts[0]; //$fld->tag;
+				if ($tag == 'LDR') continue;
+				$sub = $parts[1]; //$fld->subfields[0]->identifier;
+				if ($sub == '') continue;
 				## construct a list of all tags used
 				if (($tag == 20) || (($tag >= 99) && ($tag <= 300)) || ($tag==505)) {
 					## create MARC Id as concatenation of tag & subfield id
-					$marcId = $tag.$sub;
+					$marcId = $k; //$tag.$sub;
 					## add this MarcId to list, if not already present
 					if (!in_array($marcId, $tags)) {
 						$tags[] = $marcId;
 					}
 					## only save first occurrence of any MarcId
 					if (! array_key_exists($marcId, $item)) {
-						$item[$marcId] = $fld->subfields[0]->data;
+						$item[$marcId] = $fld['value']; //subfields[0]->data;
 					}
 				}
 			}
@@ -41,7 +51,9 @@ class Layout_csv {
 			$collection[] = $item;
 		}
 		natsort($tags); // ensure sort order is lexically correct
-		
+
+		echo "<h3>Select the following text and Save to a '.CSV' file of your choice</h3>\n";
+		echo "<hr>";
 		echo "<pre>";
 		## first we print the column headings
 		$outStr = '';
@@ -71,5 +83,6 @@ class Layout_csv {
 			echo $out."\n";
 		}
 		echo "</pre>";
+		echo "<hr>";
 	}
 }

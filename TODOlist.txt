@@ -93,6 +93,9 @@ improve referential integrity
 
 ###################### Completed, most recent at top #########################
 
+28 July 2013 - Fred, CVS out working, but screen makes no sense (Ref Packing List) 20 Sep
+verify functionality of cvs output
+
 6 Sep 2013 - Fred, implemented and tested with ISBN & ISSN fields 7 Sep
 complete work on patterns for biblio input validations.
 'material_fields' table needs additional form_type allowed,

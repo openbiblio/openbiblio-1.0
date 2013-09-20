@@ -63,6 +63,8 @@
 		'../shared/layout.php?rpt=Report&name=list');
 	Nav::node('reports/results/list', T("Prepare CSV file"),
 		'../shared/layout.php?rpt=Report&name=csv');
+	Nav::node('reports/results/list', T("Prepare MARC file"),
+		'../shared/layout.php?rpt=Report&name=marc');
 	Nav::node('reports/reportcriteria', T("Report Criteria"),
 		'../reports/report_criteria.php?type='.U($rpt->type()));
 	## end of menu modifications

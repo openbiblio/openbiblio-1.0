@@ -49,7 +49,7 @@ class Report {
 		}
 		return $rpt;
 	}
-	public static function load($name, $startAt, $howMany) {
+	public static function load($name, $startAt=NULL, $howMany=NULL) {
 		if (!isset($_SESSION['rpt_'.$name])) {
 			return NULL;
 		}
@@ -63,6 +63,9 @@ class Report {
 	}
 	public function title() {
 		return $this->rpt->title();
+	}
+	public function getCache () {
+		return $this->cache;
 	}
 	public function type() {
 		return $this->cache['type'];

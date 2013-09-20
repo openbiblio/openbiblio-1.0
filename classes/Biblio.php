@@ -4,6 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../model/Biblios.php"));
+require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 require_once(REL(__FILE__, "../catalog/biblioChange.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));

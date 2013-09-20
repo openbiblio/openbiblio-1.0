@@ -20,6 +20,20 @@
 		}
 	}
 	
+## Active assert and make it quiet
+assert_options(ASSERT_ACTIVE, 1);
+assert_options(ASSERT_WARNING, 0);
+assert_options(ASSERT_QUIET_EVAL, 1);
+## Create a handler function
+function obAssertHandler($file, $line, $code, $desc = null) {
+    echo "Assertion failed at file:'{$file}', line:'{$line}', code:'{$code}";
+    if ($desc) echo ": $desc";
+    echo "<br/>\n";
+}
+## Set up the callback
+assert_options(ASSERT_CALLBACK, 'obAssertHandler');
+
+
 	#apd_set_pprof_trace();
 	## TODO - will not work with db models and classes as currently written - FL
 	//error_reporting(E_ALL ^ E_NOTICE); 

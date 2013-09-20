@@ -113,7 +113,7 @@ function staff_menu() {
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
 		Nav::node('tools/system', T("ChangeDBCollation"), '../tools/chgDBCollForms.php');
 		Nav::node('tools/system', T("System Documentation"), '../docs/index.php');
-		Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
+		//Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 		Nav::node('install/system', T("Install"), '../install/index.php');
 	}
 	

@@ -3,6 +3,11 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+/**
+ * Optional outputs for Report sub-system
+ * @author Mich Stetson
+ */
+
 	require_once("../shared/common.php");
 
 	require_once(REL(__FILE__, '../classes/Report.php'));
@@ -17,19 +22,38 @@
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
 	}
 
+	####-------------------------------------------------------------------####
+	# Must ask for parameters
+	$nav = "layoutparams";
+	$focus_form_name = "layoutparamform";
+	$focus_form_field = "lay_skip";
+
+	if ($tab == 'opac') {
+		Page::header_opac(array('nav'=>$nav, 'title'=>''));
+	} else {
+		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+	}
+
+	require(REL(__FILE__, "../shared/get_form_vars.php"));
+
+	if (isset($_REQUEST['msg'])) {
+		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
+	}
+	####-------------------------------------------------------------------####
+
 	assert('preg_match("/^[-_A-Za-z0-9]+\$/", $_REQUEST["name"])');
 	$filename = '../layouts/'.$_REQUEST["name"].'.php';
 	if (!is_readable($filename)) {
 		$filename = '../layouts/default/'.$_REQUEST["name"].'.php';
 	}
 	assert('is_readable($filename)');
-	$classname = 'Layout_'.$_REQUEST["name"];
-
 	require_once($filename);
-
+	## get reference to class contained in '$filename'
+	$classname = 'Layout_'.$_REQUEST["name"];
 	assert('class_exists($classname)');
 
-	$rpt = Report::load($_REQUEST['rpt']);
+//	$rpt = Report::load($_REQUEST['rpt']);
+	$rpt = Report::load($_REQUEST['rpt'],1,9999);
 	assert('$rpt != NULL');
 
 	// Rendering a large layout can take a while.
@@ -49,7 +73,7 @@
 				$l->init($params);
 			}
 			$l->render($rpt);
-			exit();
+//			exit();
 		} else {
 			list($msg, $fielderrs) = FieldError::listExtract($errs);
 			if ($msg) {
@@ -59,23 +83,8 @@
 			$_SESSION['pageErrors'] = $fielderrs;
 		}
 	}
+	####-------------------------------------------------------------------####
 
-	# Must ask for parameters
-	$nav = "layoutparams";
-	$focus_form_name = "layoutparamform";
-	$focus_form_field = "lay_skip";
-
-	if ($tab == 'opac') {
-		Page::header_opac(array('nav'=>$nav, 'title'=>''));
-	} else {
-		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-	}
-
-	require(REL(__FILE__, "../shared/get_form_vars.php"));
-
-	if (isset($_REQUEST['msg'])) {
-		echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
-	}
 ?>
 <h3><?php echo T("Circulation"); ?></h3>
 
