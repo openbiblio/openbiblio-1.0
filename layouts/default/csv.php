@@ -29,14 +29,14 @@ class Layout_csv {
 			foreach ($marc as $k=>$fld) {
 				## extract MARC Id components
 				$parts = explode('$', $k);
-				$tag = $parts[0]; //$fld->tag;
+				$tag = $parts[0];
 				if ($tag == 'LDR') continue;
-				$sub = $parts[1]; //$fld->subfields[0]->identifier;
+				$sub = $parts[1];
 				if ($sub == '') continue;
 				## construct a list of all tags used
 				if (($tag == 20) || (($tag >= 99) && ($tag <= 300)) || ($tag==505)) {
 					## create MARC Id as concatenation of tag & subfield id
-					$marcId = $k; //$tag.$sub;
+					$marcId = $k;
 					## add this MarcId to list, if not already present
 					if (!in_array($marcId, $tags)) {
 						$tags[] = $marcId;
@@ -55,6 +55,7 @@ class Layout_csv {
 		echo "<h3>Select the following text and Save to a '.CSV' file of your choice</h3>\n";
 		echo "<hr>";
 		echo "<pre>";
+
 		## first we print the column headings
 		$outStr = '';
 		foreach ($tags as $tag){
@@ -82,6 +83,7 @@ class Layout_csv {
 			$out = substr($outStr,0,-1); // remove trailing seperator from last field
 			echo $out."\n";
 		}
+
 		echo "</pre>";
 		echo "<hr>";
 	}

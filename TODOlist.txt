@@ -79,7 +79,7 @@ To rectify, reload the page and repeat search and the icon is now green.
 
 28 July 2013 - Fred
 verify functionality of:
-Marc input/output, cvs output, barcode printing, barcode input, .....
+Marc input, barcode printing, barcode input, .....
 
 5 Sep 2013 - Fred
 Consider moving from mysqli to PDO for db interface to loosen dependence on mysql
@@ -92,6 +92,9 @@ consider identifying foreign keys in all DB tables as appropriate to
 improve referential integrity
 
 ###################### Completed, most recent at top #########################
+
+28 July 2013 - Fred, MARC output returns results, but nonsense to me 21 Sep
+verify functionality of Marc output
 
 28 July 2013 - Fred, CVS out working, but screen makes no sense (Ref Packing List) 20 Sep
 verify functionality of cvs output
