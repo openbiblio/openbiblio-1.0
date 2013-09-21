@@ -54,7 +54,9 @@ function staff_menu() {
 				. "&rpt_bibid=".U($_REQUEST['bibid'])
 				. "&".$params);
 			Nav::node('cataloging/biblio/holds', T("Hold Requests"), "../catalog/biblio_hold_list.php?".$params);
-		Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/upload_usmarc_form.php");			
+		//Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/upload_usmarc_form.php");
+		//Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");
+		Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/importMarcForms.php");
 		Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"), "../catalog/bulkDelForm.php");
 	}
@@ -119,8 +121,8 @@ function staff_menu() {
 	
 	##-------------------------------------------------------------------------------------##
 		Nav::node('working', T("Under Construction"), '../working/index.php');
-		Nav::node('working/testApp', T("CoverPhotos"), '../working/imageBrowseForm.php?tab=working');
-		Nav::node('working/testApp', T("Photo Import"), '../working/webcamForm.php');
+		Nav::node('working/testApp', T("MARCImport"), "../catalog/importMarcForms.php");
+		Nav::node('working/testApp', T("CSVImport"), "../catalog/importCsvForms.php");
 
 	##-------------------------------------------------------------------------------------##
 	$text = "../shared/help.php";

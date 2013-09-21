@@ -10,6 +10,8 @@
 	require_once(REL(__FILE__, "../model/MarcDBs.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
+	require_once(REL(__FILE__, "../model/Cart.php"));
+	require_once(REL(__FILE__, "../classes/Marc.php"));
 
 	# Big uploads take a while
 	set_time_limit(120);
@@ -58,9 +60,59 @@ switch ($_REQUEST[mode]){
 		$val = $vals[0]['description'];
 	  echo $val;
   	break;
-  	
+
   #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'fetchCsvFile': 
+	case 'processMarcFile':
+		$fn = $_FILES['imptSrce']['tmp_name'];
+		if (is_uploaded_file($fn)) {
+			$f = @fopen($fn, rb);
+			assert($f);
+			$p = new MarcParser();
+			$biblios = new Biblios();
+			$cart = new Cart('bibid');
+			$nrecs = 0;
+
+			$opac_flg = (isset($_POST['opac']) && $_POST['opac'] == 'Y') ? 'Y' : 'N';
+
+			while($buf = fread($f, 8192)) {
+				$err = $p->parse($buf);
+				if (is_a($err, 'MarcParseError')) {
+					echo '<p class="error">'.T("Bad MARC record, giving up: %err%", array('err'=>$err->toStr())).'</p>';
+					break;
+				}
+				foreach ($p->records as $rec) {
+					if ($_POST["test"]=="true") {
+						echo '<p><pre>';
+						echo $rec->getMnem();
+						echo '</pre></p>';
+						continue;
+					}
+					$biblio = array(
+						'last_change_userid' => $_SESSION["userid"],
+						'material_cd' => $_POST["materialCd"],
+						'collection_cd' => $_POST["collectionCd"],
+						'opac_flg' => $opac_flg,
+						'marc' => $rec,
+					);
+					$bibid = $biblios->insert($biblio);
+					$cart->add($bibid);
+					$nrecs += 1;
+				}
+				$p->records = array();
+			}
+			fclose($f);
+			echo '<p>'.$nrecs.' '.T("recordsImported").'</p>';
+			if ($_POST["test"] != "true") {
+				$text = '<a href="../shared/req_cart.php?tab='.HURL($tab).'">'.'</a>';
+				echo '<p>'.T("Records added to %url%Cart", array('url'=>$text)).'</p>';
+			}
+		} else {
+			echo	T("error - file did not load successfully!!")."<br />";
+		}
+		break;
+
+  #-.-.-.-.-.-.-.-.-.-.-.-.-
+	case 'fetchCsvFile':
 		$fn = $_FILES['imptSrce']['tmp_name'];
 		if (is_uploaded_file($fn)) {
 			$rows =  explode($recordTerminator, file_get_contents($fn));

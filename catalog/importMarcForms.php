@@ -17,26 +17,26 @@
   $focus_form_name = "specForm";
   $focus_form_field = "imptSrce";
 	$tab = "cataloging";
-	$nav = "csvImport";
+	$nav = "marcImport";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
 
-<h3 id="searchHdr"><?php echo T("CSVImport"); ?></h3>
+<h3 id="searchHdr"><?php echo T("MARCImport"); ?></h3>
 
 <section id="intro">
 	<form id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
-		<input type="hidden" id="mode" name="mode" value="csvPreview" \>
+		<input type="hidden" id="mode" name="mode" value="marcPreview" \>
 		<input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
 
 		<fieldset>
-			<!--label><?php echo T("CSVloadTest"); ?>: 
-				<?php //echo T("CSVloadTestTrue"); ?>
-					<input type="radio" id="testTrue" name="test" value="true" checked \>  
-				<?php //echo T("CSVloadTestFalse"); ?>
+			<label><?php echo T("MARCloadTest"); ?>:
+				<?php echo T("MARCloadTestTrue"); ?>
+					<input type="radio" id="testTrue" name="test" value="true" checked \>
+				<?php echo T("MARCloadTestFalse"); ?>
 					<input type="radio" id="testFalse" name="test" value="false" \>
-			</label> <br /-->
-			<label><?php echo T("CSVInputFile"); ?>:
+			</label> <br />
+			<label><?php echo T("MARCInputFile"); ?>:
 				<input type="file" id="imptSrce" name="imptSrce" required aria-required="true" autofocus \>
 			</label>
 		</fieldset>
@@ -91,14 +91,14 @@
 			  </tr>
 			  
 			  <tr>
-					<td colspan="3"><label for="copyText"><?php echo T("CSVcopyDescription"); ?>:</label></td>
+					<td colspan="3"><label for="copyText"><?php echo T("MARCcopyDescription"); ?>:</label></td>
 			    <td colspan="2">
-			      <input type=text name="copyText" id="copyText" size=20 maxsize=256 value="<?php echo T("CSVImport"); ?>" />
+			      <input type=text name="copyText" id="copyText" size=20 maxsize=256 value="<?php echo T("MARCImport"); ?>" />
 			    </td>
 			  </tr>
 
 			  <tr>
-					<td colspan="3"><label for="code"><?php echo T("CSVcopyStatus"); ?>:</label></td>
+					<td colspan="3"><label for="code"><?php echo T("MARCcopyStatus"); ?>:</label></td>
 			    <td colspan="2">
 						<?php
 						$cpyStatus = new CopyStatus;
@@ -107,21 +107,12 @@
 			    </td>
 			  </tr>
 
-			  <tr>
-					<td colspan="3" nowrap><label for="showAll"><?php echo T("CSVshowAllFiles"); ?>:</label></td>
-			    <td colspan="2">
-			      <select name="showAll" id="showAll">
-			        <option value="Y"><?php echo T("AnswerYes"); ?></option>
-			        <option value="N" SELECTED><?php echo T("AnswerNo"); ?></option>
-			      </select>
-			    </td>
-			  </tr>
 			  </tbody>
 			  
 			  <tfoot>
 			  <tr>
 			  	<td colspan="3"><input type="button" id="helpBtn" value="<?php echo T("Help"); ?>" class="button" /></td>
-	  			<td colspan="1"><input type="submit" id="imptBtn" value="<?php echo T("ScanCSVFile"); ?>" class="button" /></td>
+	  			<td colspan="1"><input type="submit" id="imptBtn" value="<?php echo T("Upload File"); ?>" class="button" /></td>
 	  			<td colspan="1">&nbsp;</td>
 			  </tr>
 			  </tfoot>
@@ -130,93 +121,12 @@
 		</fieldset>
 	</form>
 	
-	<div class="help">
-		<ul>
-			<li><?php echo T("CSVinputDescr"); ?></li>
-			<li><?php echo T("CSVimportAdvise"); ?></li>
-		</ul>
-		<table border=1>
-		  <tr>
-		    <th><?php echo T("CSVcolumnHeading"); ?></th>
-		    <th><?php echo T("CSVcolumnDescription"); ?></th>
-		    <th><?php echo T("CSVcolumnComment"); ?></th>
-		  </tr>
-		  <tr>
-		    <td><pre>Call1</pre></td>
-		    <td><?php echo T("CSVCallNumber"); ?></td>
-		    <td><?php echo T("CSVCallNrDescription"); ?></td>
-		  </tr>
-		  <tr>
-		    <td><pre>barCo</pre></td>
-		    <td><?php echo T("biblioCopyNewBarcode"); ?></td>
-		    <td><?php echo T("CSVbarCoDescription"); ?></td>
-		  </tr>
-		  <tr>
-		    <td><pre>coll</pre></td>
-		    <td><?php echo T("Collection") ?></td>
-		    <td><?php echo T("CSVoptionalDefault") ?></td>
-		  </tr>
-		  <tr>
-		    <td><pre>media</pre></td>
-		    <td><?php echo T("Media Type") ?></td>
-		    <td><?php echo T("CSVoptionalDefault") ?></td>
-		  </tr>
-		  <tr>
-		    <td><pre>showO</pre></td>
-		    <td><?php echo T("Show in OPAC"); ?></td>
-		    <td><?php echo T("CSVoptionalDefault") ?></td>
-		  </tr>
-		</table>
-		<p wordwrap><?php echo T("CSVimportMoreMARC"); ?></p>
-	</div>
 </section>	<!-- intro -->
-
-<section id="review" style="display:none;">
-	<fieldset>
-		<legend><?php echo T("CSVHeadings"); ?></legend>
-		<table>
-			<thead>
-		  <tr>
-		    <th><?php echo T("CSVTargets"); ?></th>
-		    <th><?php echo T("CSVComments"); ?></th>
-		  </tr>
-		  </thead>
-			<tbody id="colHeads"></tbody>
-		</table>
-	</fieldset>
-
-  <fieldset>
-  	<legend>Import File Records</legend>
-  	<div id="csvErrs">
-  	</div>
-  	<br />
-	  <table>
-	  	<thead>
-	  	<tr>
-				<th><?php echo T("Data Tag") ?></th>
-				<th><?php echo T("Data Subfield") ?></th>
-				<th><?php echo T("Data") ?></th>
-			</tr>
-			</thead>
-			<tbody id="csvRcrds">
-			</tbody>
-		  <tfoot>
-		  <tr>
-		  	<td colspan="1">&nbsp;</td>
-  			<td colspan="1">
-					<button id="revuBkupBtn" type="button" class="button bkupBtn"><?php echo T("Go Back"); ?></button>
-					<button id="Post2DbBtn" type="button" class="button bkupBtn"><?php echo T("Import Data"); ?></button>
-				</td>
-  			<td colspan="1">&nbsp;</td>
-		  </tr>
-		  </tfoot>		</table>
-	</fieldset>
-</section>	<!-- review -->
 
 <section id="rslts" style="display:none;">
 	<fieldset>
 		<legend>Import Results</legend>
-		<div id="csvImportRslts">
+		<div id="mrcImportRslts">
 		</div>
   	<button id="rsltBkupBtn" class="button bkupBtn" type="button"><?php echo T("Go Back"); ?></button>
 	</fieldset>
@@ -225,7 +135,7 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	include_once(REL(__FILE__,'../shared/ajaxFileUpload/ajaxfileupload.js'));
-	require_once(REL(__FILE__, "importCsvJs.php"));
+	require_once(REL(__FILE__, "importMarcJs.php"));
 ?>	
 </body>
 </html>
