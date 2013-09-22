@@ -4,31 +4,33 @@
  */
 
 function staff_menu() {
-	Nav::node('circulation', T("Circulation"), '../circ/memberForms.php');
-	Nav::node('circulation/searchform', T("Members"), '../circ/memberForms.php');
-	Nav::node('circulation/search', T("Search Results"));
+	if($_SESSION["hasCircAuth"]){
+		Nav::node('circulation', T("Circulation"), '../circ/memberForms.php');
+		Nav::node('circulation/searchform', T("Members"), '../circ/memberForms.php');
+		Nav::node('circulation/search', T("Search Results"));
 
-	Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
-	Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
-	Nav::node('circulation/bookings/pending', T("Pending Bookings"));
+		Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
+		Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
+		Nav::node('circulation/bookings/pending', T("Pending Bookings"));
 
-	if (isset($_REQUEST[bookingid])) {
-		$params = 'bookingid='.U($_REQUEST[bookingid]);
-		if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
-			$params .= '&rpt='.U($_REQUEST['rpt']);
-			$params .= '&seqno='.U($_REQUEST['seqno']);
+		if (isset($_REQUEST[bookingid])) {
+			$params = 'bookingid='.U($_REQUEST[bookingid]);
+			if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
+				$params .= '&rpt='.U($_REQUEST['rpt']);
+				$params .= '&seqno='.U($_REQUEST['seqno']);
+			}
+			Nav::node('circulation/bookings/view', T("Booking Info"), '../circ/booking_view.php?'.$params);
+			Nav::node('circulation/bookings/deleted', T("Deleted"));
 		}
-		Nav::node('circulation/bookings/view', T("Booking Info"), '../circ/booking_view.php?'.$params);
-		Nav::node('circulation/bookings/deleted', T("Deleted"));
+
+		Nav::node('circulation/bookings/book', T("Create Booking"));
+		Nav::node('circulation/checkin', T("Check In"), '../circ/checkinForms.php');
 	}
 
-	Nav::node('circulation/bookings/book', T("Create Booking"));
-	Nav::node('circulation/checkin', T("Check In"), '../circ/checkinForms.php');
-
 	##-------------------------------------------------------------------------------------##
-	Nav::node('cataloging', T("Cataloging"), '../catalog/srchForms.php');
-	Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 	if($_SESSION["hasCatalogAuth"]){
+		Nav::node('cataloging', T("Cataloging"), '../catalog/srchForms.php');
+		Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 		Nav::node('cataloging/newItem', T("New Item"), "../catalog/newItemForms.php");
 
 		if (isset($_SESSION['rpt_BiblioSearch'])) {
@@ -113,8 +115,8 @@ function staff_menu() {
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/valid', T("Input Validations"), '../tools/validForm.php');
 		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
-		Nav::node('tools/system', T("ChangeDBCollation"), '../tools/chgDBCollForms.php');
-		Nav::node('tools/system', T("System Documentation"), '../docs/index.php');
+		Nav::node('tools/system', T("DBConfig"), '../tools/chgDBCollForms.php');
+		Nav::node('tools/system', T("SystemDocumentation"), '../docs/index.php');
 		//Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 		Nav::node('install/system', T("Install"), '../install/index.php');
 	}
