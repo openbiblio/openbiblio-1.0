@@ -31,6 +31,59 @@
 	}
 
 	switch ($_REQUEST['mode']){
+	  #-.-.-.-.-.- database -.-.-.-.-.-.-
+		case 'getDbSrvrInfo':
+			$info = array();
+			$set = array();
+			$rslt = $db->select1("SELECT VERSION()");
+			$info['version'] = $rslt;
+
+			$set = array();
+			$rslt = $db->select("SELECT * FROM Information_Schema.Engines WHERE SUPPORT!='NO' ORDER by ENGINE");
+			while ($row = $rslt->fetch_assoc()) {
+				$engine = ['support'=>$row['SUPPORT'], 'transactions'=>$row['TRANSACTIONS']];
+				$set[$row['ENGINE']] = $engine;
+			}
+			$info['engines'] = $set;
+
+			$set = array();
+			$rslt = $db->select("SHOW Variables LIKE 'character\_set\_%'");
+			while ($row = $rslt->fetch_assoc()) {
+				$set[$row['Variable_name']] = $row['Value'];
+			}
+			$info['charSets'] = $set;
+
+			$set = array();
+			$rslt = $db->select("SHOW Variables LIKE 'collation\_%'");
+			while ($row = $rslt->fetch_assoc()) {
+				$set[$row['Variable_name']] = $row['Value'];
+			}
+			$info['collations'] = $set;
+			echo json_encode($info);
+			break;
+
+	  case 'fetchCollSet':
+		  $set = array();
+			$result = $db->select('SHOW COLLATION');
+			while ($row = $result->fetch_assoc()) {
+			  $set[$row['Collation']] = $row['Charset'];
+			}
+			ksort($set);
+			echo json_encode($set);
+	  	break;
+		case 'changeColl':
+			$charset = $_REQUEST['charset'];
+			$collation = $_REQUEST['collation'];
+			$rslt = $db->select('SHOW TABLES');
+			while ($row = $rslt->fetch_array()) {
+				$tbl = $row[0];
+				$sql = "ALTER TABLE `$tbl` DEFAULT CHARACTER SET $charset COLLATE $collation";
+				//echo "sql=$sql<br />\n";
+				$result = $db->act($sql);
+				echo '<p>'.T("Table")." ".$tbl." ".T("updated to")." ".$collation.'</p>';
+			}
+			break;
+				  	
 	  #-.-.-.-.-.- validations -.-.-.-.-.-.-
 		case 'getAll_validation':
 		  $valids = array();
@@ -50,31 +103,6 @@
 			echo $db->deleteOne($_POST['code']);
 			break;
 
-
-	  #-.-.-.-.-.- database -.-.-.-.-.-.-
-	  case 'fetchCollSet':
-		  $set = array();
-			$result = $db->select('SHOW COLLATION');
-			while ($row = $result->fetch_assoc()) {
-			  $set[$row['Collation']] = $row['Charset'];
-			}
-			ksort($set);
-			echo json_encode($set);
-	  	break;
-
-		case 'changeColl':
-			$charset = $_REQUEST['charset'];
-			$collation = $_REQUEST['collation'];
-			$rslt = $db->select('SHOW TABLES');
-			while ($row = $rslt->fetch_array()) {
-				$tbl = $row[0];
-				$sql = "ALTER TABLE `$tbl` DEFAULT CHARACTER SET $charset COLLATE $collation";
-				//echo "sql=$sql<br />\n";
-				$result = $db->act($sql);
-				echo '<p>'.T("Table")." ".$tbl." ".T("updated to")." ".$collation.'</p>';
-			}
-			break;
-				  	
 		default:
 		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
 		break;

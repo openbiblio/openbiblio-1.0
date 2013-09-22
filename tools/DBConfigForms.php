@@ -14,8 +14,36 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
+	<style>
+		.rowflex-container { display:flex; flex-flow: row; }
+		table { border:2px solid blue; margin:0 0.5em 0 0.5em; }
+	</style>
 
-	<h3 id="pageHdr" class="title"><?php echo T("ChangeDBCollation"); ?></h3>
+	<h3 id="pageHdr" class="title"><?php echo T("DbServerInformation"); ?></h3>
+
+	<section id="info">
+		<fieldset id="srvrVars">
+		<legend>Curent Database Server Settings</legend>
+			<h5> MySQL version <span id="version"></span></h5>
+			<div class="rowflex-container">
+			<table  id="srvrCharSets" border="1">
+				<caption>Character Sets</caption>
+				<thead><tr><th>Name</th><th>Value</th></thead>
+				<tbody class="striped"></tbody>
+			</table>
+			<table  id="srvrCollations" border="1">
+				<caption>Collation Settings</caption>
+				<thead><tr><th>Name</th><th>Value</th></thead>
+				<tbody class="striped"></tbody>
+			</table>
+			</div>
+			<table  id="srvrEngines" border="1">
+				<caption>Engines Available</caption>
+				<thead><tr><th>Name</th><th>Support</th><th>Transactions</th></thead>
+				<tbody class="striped"></tbody>
+			</table>
+		</fieldset>
+	</section>
 
 	<section id="entry">
 		<fieldset>
@@ -42,7 +70,7 @@
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
-  require_once(REL(__FILE__,'../tools/chgDBCollJs.php'));
+  require_once(REL(__FILE__,'../tools/DBConfigJs.php'));
 ?>	
 </body>
 </html>

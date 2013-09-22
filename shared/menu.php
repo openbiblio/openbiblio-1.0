@@ -114,8 +114,8 @@ function staff_menu() {
 		Nav::node('tools/settings', T("System Settings"), '../tools/settings_edit_form.php?reset=Y');
 		Nav::node('tools/plugins', T("Plugin Manager"), '../tools/plugMgr_form.php');
 		Nav::node('tools/valid', T("Input Validations"), '../tools/validForm.php');
-		Nav::node('tools/system', T("Server Information"), '../install/phpinfo.php');
-		Nav::node('tools/system', T("DBConfig"), '../tools/chgDBCollForms.php');
+		Nav::node('tools/system', T("WebServerInformation"), '../install/phpinfo.php');
+		Nav::node('tools/system', T("DbServerInformation"), '../tools/DBConfigForms.php');
 		Nav::node('tools/system', T("SystemDocumentation"), '../docs/index.php');
 		//Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 		Nav::node('install/system', T("Install"), '../install/index.php');

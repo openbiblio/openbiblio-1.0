@@ -63,6 +63,7 @@ td.center, th.center { text-align:center; }
 td.label { text-align:left; white-space:nowrap; }
 th, label, .lblFld { font-size:0.75rem; font-weight:bold; margin-left:2px;}
 tfoot.topBorder {  border-top:1px solid #AAA; margin-top:5px; }
+thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
 
 /* styling for javascript stop-gap placeholder for browsers without native support */
 .placeholder { color:#aaa; }
