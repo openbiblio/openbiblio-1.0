@@ -57,6 +57,16 @@
 		$enum = $col['Type'];
 		echo $enum;
 	  break;
+	case 'getMediaMarcTags':
+		require_once(REL(__FILE__, "../model/MaterialFields.php"));
+		$db = new MaterialFields;
+		$sql = "SELECT * FROM `material_fields` WHERE `material_cd`={$_REQUEST['media']} ORDER BY tag,subfield_cd";
+		$rslt = $db->select($sql);
+		while ($row = $rslt->fetch_assoc()) {
+			$tags[$row['tag'].'$'.$row['subfield_cd']] = $row['label'];
+		}
+		echo json_encode($tags);
+		break;
 
 	case 'getLocaleList':
 		$arr_lang = Localize::getLocales();

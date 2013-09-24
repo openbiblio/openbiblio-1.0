@@ -107,6 +107,10 @@
 			<td><label for="srchMediaTypes"><?php echo T("Media Type"); ?>: </label></td>
 			<td><select id="srchMediaTypes" name="materialCd"></select></td>
 		</tr>
+		<!--tr id="marcTagsRow" class="searchRow">
+			<td><label for="srchMarcTags"><?php echo T("MARCTags"); ?>: </label></td>
+			<td><select id="srchMarcTags" name="marcTag"></select></td>
+		</tr-->
 		<tr class="searchRow">
 			<td><label for="srchCollections"><?php echo T("Collection"); ?>: </label></td>
 			<td><select id="srchCollections" name="collectionCd"></select></td>

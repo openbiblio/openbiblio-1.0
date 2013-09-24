@@ -544,6 +544,7 @@ $trans["MARCloadTest"] = "Test Load";
 $trans["MARCloadTestTrue"] = "True";
 $trans["MARCoptionalDefault"] = "Optional. Overwrites default value as given in submit form.";
 $trans["MARCshowAllFiles"] = "Show all records (disable on large files)";
+$trans["MARCTags"] = "Marc Tags";
 $trans["MARCTargets"] = "Heading";
 $trans["MARCunknownIgnored"] = "UNKNOWN (ignored)";
 $trans["MARC Fields"] = "MARC Fields";

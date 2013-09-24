@@ -35,6 +35,13 @@ var bs = {
 		bs.opts = [];
 
 		// for search criteria form
+		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);
+		$('#phraseSrchBtn').on('click',null,bs.doPhraseSearch);
+		bs.srchBtnClr = $('#phraseSrchBtn').css('color');
+		$('#bc_searchBarcd').on('keyup',null,bs.checkBarcdSrchBtn);
+		$('#bc_searchBarcd').on('change',null,bs.formatBarcode);
+		$('#ph_searchText').on('keyup',null,bs.checkPhraseSrchBtn);
+
 		$('#advancedSrch').hide();
 		$('#advanceQ:checked').val(['N'])
 		$('#advanceQ').on('click',null,function(){
@@ -43,12 +50,16 @@ var bs = {
 			else
 				$('#advancedSrch').hide();
 		});
-		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);
-		$('#phraseSrchBtn').on('click',null,bs.doPhraseSearch);
-		bs.srchBtnClr = $('#phraseSrchBtn').css('color');
-		$('#bc_searchBarcd').on('keyup',null,bs.checkBarcdSrchBtn);
-		$('#bc_searchBarcd').on('change',null,bs.formatBarcode);
-		$('#ph_searchText').on('keyup',null,bs.checkPhraseSrchBtn);
+		/*
+		$('#srchMediaTypes').on('change',null,function (e) {
+			var materialCd = $('#srchMediaTypes option:selected').val();
+			if (materialCd == 'all')
+				$('#marcTagsRow').hide();
+			else
+				bs.fetchMediaMarcTags(materialCd);
+				$('#marcTagsRow').show();
+		});
+		*/
 
 		// for the search results section
 		$('#addNewBtn').on('click',null,bs.doNewCopy);
@@ -124,6 +135,8 @@ var bs = {
 	},
 	resetForms: function () {
 	  //console.log('resetting Search Form');
+		$('#advancedSrch').hide();
+		$('#marcTagsRow').hide();
 	  $('#crntMbrDiv').hide();
 	  $('#searchDiv').show();
 		$('p.error').hide();
@@ -230,7 +243,7 @@ var bs = {
 		});
 	},
 	fetchMaterialList: function () {
-	  $.getJSON(bs.listSrvr,{mode:'getMediaList'}, function(data){
+	  $.getJSON(bs.listSrvr,{'mode':'getMediaList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
@@ -240,8 +253,17 @@ var bs = {
 			$('#srchMediaTypes').html(html);
 		});
 	},
+	fetchMediaMarcTags: function (materialCd) {
+	  $.getJSON(bs.listSrvr,{'mode':'getMediaMarcTags', 'media':materialCd}, function(data){
+			var html = '<option value="all" selected="selected"><?php echo T("All"); ?></option>' + html;
+      $.each(data, function (key, value) {
+				html+= '<option value="'+key+'">'+key+': '+value+'</option>';
+			});
+			$('#srchMarcTags').html(html);
+		});
+	},
 	fetchCollectionList: function () {
-	  $.getJSON(bs.listSrvr,{mode:'getCollectionList'}, function(data){
+	  $.getJSON(bs.listSrvr,{'mode':'getCollectionList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
@@ -252,7 +274,7 @@ var bs = {
 		});
 	},
 	fetchSiteList: function () {
-	  $.getJSON(bs.listSrvr,{mode:'getSiteList'}, function(data){
+	  $.getJSON(bs.listSrvr,{'mode':'getSiteList'}, function(data){
 			bs.siteList = data;
 			var html = '';
       for (var n in data) {

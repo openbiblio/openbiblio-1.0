@@ -112,9 +112,8 @@ class Biblios extends CoreTable {
 				}
 			}
 			if(isset($item['siteTag'])){
-					$sqlSelect .= " JOIN `biblio_copy` bc";
-					$sqlWhere .= " AND bc.bibid = b.bibid "
-									." AND bc.siteid = '" . $item['siteValue'] . "' ";
+				$sqlSelect .= " JOIN `biblio_copy` bc";
+				$sqlWhere .= " AND bc.bibid = b.bibid AND bc.siteid = '" . $item['siteValue'] . "' ";
 			}
 			if(isset($item['mediaTag'])){
 				$sqlWhere .= " AND b.material_cd = '" . $item['mediaValue'] ."'";
@@ -122,9 +121,13 @@ class Biblios extends CoreTable {
 			if(isset($item['collTag'])){
 				$sqlWhere .= " AND b.collection_cd = '" . $item['collValue'] ."'";
 			}
+			//if (isset($item['marcTag'])){
+			//	$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
+			//	$sqlWhere .= " AND (sf$selectNr.tag='".$item['tag']."' AND ss$selectNr.subfield_cd='".$item['suf']."')";
+			//}
 			if(isset($item['audienceTag'])){
 //				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
-				}
+			}
 			if(isset($item['toTag'])){
 				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
 				$sqlWhere .= " AND (sf$selectNr.bibid = b.bibid "
@@ -380,6 +383,10 @@ class Biblios extends CoreTable {
 				//Not sure about the tag, but leave it as is for the moment, as it is a field in bibid (material_cd)
 				$searchTags .= ',{"collTag":"099","collSuf":"a","collValue":"'. $criteria['collectionCd'] . '"}';
 			}
+			//if(isset($criteria['marcTag']) && $criteria['marcTag'] != 'all'){
+			//	$parts = explode('$', $criteria['marcTag']);
+			//	$searchTags .= ',{"marcTag":"'.$parts[0].'", "marcSuf":"'.$parts[1].'"}';
+			//}
 			if(isset($criteria['audienceLevel'])){
 				//Not sure which field this, so leave this for now - LJ
 				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $criteria['audienceLevel'] . '"}';
