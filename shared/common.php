@@ -107,7 +107,7 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 	global $LOC, $CharSet, $Locale, $OBroot;
 	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl;
 	global $LocaleDirUrl, $LocaleDir, $SharedDirUrl, $HTMLHead;
-	
+
 	$LOC = new Localize;
 	if (!isset($doing_install) or !$doing_install) {
 		include_once(REL(__FILE__, "../model/Settings.php"));
@@ -121,7 +121,9 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 		$CharSet = "UTF-8";
 		$ThemeId = '1';
 		$ThemeDirUrl = "../themes/default";
-		$Locale = navigator.language.substr(0,2);
+		//$localeStrs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		//$Locale = substr($localeStrs[0],0,2);
+		$locale = 'en';
 	}
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";

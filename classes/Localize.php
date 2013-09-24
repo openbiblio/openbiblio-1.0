@@ -3,6 +3,12 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+/**
+ * OpenBiblio localization mechanism
+ * FIXME - needs to make use of PHP's INTL module - FL
+ * @author Micah Stetson
+ */
+
 // Most error messages below cannot be translated,
 // as it could result in infinite recursion.
 

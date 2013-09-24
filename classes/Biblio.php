@@ -14,7 +14,7 @@ require_once(REL(__FILE__, "../model/MaterialFields.php"));
  * Provides a view of a single biblio - all relevent data in a single place.
  * First call of getData() will populate all parts of the object and return an
  * array of header ['hdr'], marc fields ['marc'], and a list of copy ids ['cpys'].
- * Among other thngs, the hdr array contains the biblio title extracted from the marc fields.
+ * Among other things, the hdr array contains the biblio title extracted from the marc fields.
  * @author: Fred LaPlante, 25 July 2013
  */
 

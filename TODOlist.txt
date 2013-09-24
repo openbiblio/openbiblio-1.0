@@ -91,7 +91,18 @@ consider changing MySql db engine to InoDB to enable transactions.
 consider identifying foreign keys in all DB tables as appropriate to
 improve referential integrity
 
+23 sep 2013 - Fred/Jansen
+Advanced search needs a MARC tag selector with the tag list changing based on
+selected Media Type.
+
+24 Sep 2013 - Fred
+OB Localize class and relatd material need to make use of PHP5 INTL / LOCALE
+module. Rgis would require user to add this module to PHP at the server. This
+should be integrated with Javascrit's INTL API as well.
+
+##############################################################################
 ###################### Completed, most recent at top #########################
+##############################################################################
 
 28 July 2013 - Fred, MARC output returns results, but nonsense to me 21 Sep
 verify functionality of Marc output
