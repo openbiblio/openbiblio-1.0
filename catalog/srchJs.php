@@ -249,7 +249,7 @@ var bs = {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#itemMediaTypes').html(html);
-			html = '<option value="all"  selected="selected">All</option>' + html;
+			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchMediaTypes').html(html);
 		});
 	},
@@ -269,7 +269,7 @@ var bs = {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#itemEditColls').html(html);
-			html = '<option value="all"  selected="selected">All</option>' + html;
+			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchCollections').html(html);
 		});
 	},
@@ -281,7 +281,7 @@ var bs = {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#copySite').html(html);
-			html = '<option value="all"  selected="selected">All</option>' + html;
+			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchSites').html(html);
 
 			idis.init(bs.opts, bs.siteList); // used for biblio item & copy displays

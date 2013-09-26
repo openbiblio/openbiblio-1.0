@@ -3,6 +3,13 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+/**
+ * this class implements locale-specific formats, etc.
+ * @author Micah Stetson
+ */
+
+## TODO FIXME needs to be replaced by global INTL class
+
 class enMetaData {
 	public function __construct() {
 		$this->locale_description = "English";

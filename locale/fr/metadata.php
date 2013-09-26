@@ -3,9 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-class xxMetaData {
+class frMetaData {
 	public function __construct() {
-		$this->locale_description = "testish";
+		$this->locale_description = "French";
 	}
 	function pluralForm($n) {
 		if ($n == 1 or $n == -1) {
