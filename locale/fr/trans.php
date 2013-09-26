@@ -398,24 +398,26 @@ $trans["Form Type Label"] = "Type de données:";
 $trans["From Year:"] = "Depuis l\'année:";
 $trans["Function"] = "Fonction";
 ####### G #######
-$trans["getQuoted() called with empty %str%"] = "getQuoted() called with empty %str%";
-$trans["Go Back"] = "Go Back";
-$trans["Grade"] = "Grade";
-$trans["Grade Level"] = "Grade Level";
-$trans["Grade:"] = "Grade:";
-$trans["has been added"] = "has been added";
-$trans["has been deleted"] = "has been deleted";
-$trans["has been updated"] = "has been updated";
-$trans["Help"] = "Help";
-$trans["Hide Marc Tags"] = "Hide Marc Tags";
-$trans["History"] = "History";
-$trans["hits found"] = "hits found";
-$trans["hits found, too many to process"] = "hits found, too many to process";
-$trans["Hold"] = "Hold";
-$trans["Hold Requests"] = "Hold Requests";
-$trans["HomePhone"] = "Home Phone";
-$trans["Host Editor"] = "Host Editor";
-$trans["Host URL"] = "Host URL";
+$trans["getQuoted() called with empty %str%"] = "getQuoted() appelé à vide %str%";
+$trans["Go Back"] = "Aller Retour";
+$trans["Grade"] = "Niveau scolaire";
+$trans["Grade Level"] = "Niveau scolaire";
+$trans["Grade:"] = "Niveau scolaire:";
+####### H #######
+$trans["has been added"] = "ont été ajoutées";
+$trans["has been deleted"] = "a été supprimé";
+$trans["has been updated"] = "a été mis à jour";
+$trans["Help"] = "Aide";
+$trans["Hide Marc Tags"] = "Cachez Marc Balises";
+$trans["History"] = "Histoire";
+$trans["hits found"] = "occurrences trouvées";
+$trans["hits found, too many to process"] = "occurrences trouvées, trop nombreux pour traiter";
+$trans["Hold"] = "Tenez";
+$trans["Hold Requests"] = "Tenez Demandes";
+$trans["HomePhone"] = "Téléphone à domicile";
+$trans["Host Editor"] = "Editeur d'accueil";
+$trans["Host URL"] = "URL de l'hôte";
+####### I #######
 $trans["Id"] = "Id";
 $trans["Image File"] = "Image File";
 $trans["Images"] = "Images";
@@ -473,12 +475,15 @@ $trans["Item:"] = "Item:";
 $trans["Item#"] = "Item#";
 $trans["Item<br />Count"] = " Item<br/>Count";
 $trans["I would like the Media Center staff to:"] = "I would like the Media Center staff to:";
+####### J #######
 $trans["Junior High"] = "Junior High";
 $trans["Juvenile"] = "Juvenile";
+####### K #######
 $trans["Keep Dashes"] = "Keep Dashes";
 $trans["Key field %key% not in field list"] = "Key field %key% not in field list";
 $trans["Keyword"] = "Keyword";
 $trans["Kindergarten"] = "Kindergarten";
+####### L #######
 $trans["Label"] = "Label";
 $trans["Last Name Contains"] = "Last Name Contains";
 $trans["LastName"] = "Last Name";
@@ -526,6 +531,7 @@ $trans["lookup_resetInstr"] = 'After 30 secs. Press F5 to try again.';
 $trans["lookup_rqdNote"]	= 'required field';
 $trans["lookup_tooManyHits"] = "Too many hits!";
 $trans["lookup_yaz_setup_failed"] = "YAZ setup failed";
+####### M #######
 $trans["Main Body"] = "Main Body";
 $trans["Make Booking"] = "Make Booking";
 $trans["Manage Bookings"] = "Manage Bookings";
