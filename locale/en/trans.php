@@ -39,7 +39,7 @@ $trans["%count% unattached MARC fields"] = "%count% unattached MARC fields";
 $trans["%count% unattached MARC subfields"] = "%count% unattached MARC subfields";
 $trans["'%t%' is not a string"] = "'%t%' is not a string";
 $trans["'%type%' must be 'order_by'"] = "'%type%' must be 'order_by'";
-
+####### A #######
 $trans["A valid money amount"] = "A valid money amount";
 $trans["absent"] = "absent";
 $trans["Account"] = "Account";
@@ -110,6 +110,7 @@ $trans["Available"] = "Available";
 $trans["Available elsewhere"] = "Available elsewhere";
 $trans["Available Themes"] = "Available Themes";
 $trans["Average Copyright Date"] = "Average Copyright Date";
+####### B #######
 $trans["Background Color:"] = "Background Color:";
 $trans["Bad collection type"] = "Bad collection type";
 $trans["Bad day number: %day%"] = "Bad day number: %day% (please use yyyy-mm-dd)";
@@ -162,6 +163,7 @@ $trans["Browse"] = "Browse";
 $trans["Browse Images"] = "Browse Images";
 $trans["Bulk Delete"] = "Bulk Delete";
 $trans["Bulk Delete Confirm"] = "Are you certain you want to delete %copy% copies and %item% items?";
+####### C #######
 $trans["Calendar"] = "Calendar";
 $trans["CalendarDeleted"] = "Calendar Deleted";
 $trans["calendarEditFormMsg"] = "Toggle holidays by clicking on days, weekday letters, or month names.";
@@ -274,6 +276,7 @@ $trans["Current Members"] = "Current Members";
 $trans["Custom Member Fields"] = "Custom Member Fields";
 $trans["Cutter Type"] = "Cutter Type";
 $trans["Cutter Word"] = "Cutter Word";
+####### D #######
 $trans["Daily Late Fee:"] = "Daily Late Fee:";
 $trans["Database"] = "Database";
 $trans["Database needs upgrading"] = "Database needs upgrading";
@@ -319,6 +322,7 @@ $trans["Due Back"] = "Due Back";
 $trans["Due Date"] = "Due Date";
 $trans["Due Date:"] = "Due Date:";
 $trans["Duplicate barcode: %barcode%"] = "Duplicate barcode: %barcode%";
+####### E #######
 $trans["Earliest Checkout Date"] = "Earliest Checkout Date";
 $trans["Earliest Date Out"] = "Earliest Date Out";
 $trans["Earliest Return Date"] = "Earliest Return Date";
@@ -365,6 +369,7 @@ $trans["ErrorQueryFailed"] = "Query %query% failed. The DBMS said this:";
 $trans["Exact Match"] = "Exact Match";
 $trans["Existing Items"] = "Existing Items";
 $trans["expecting '%exp%'"] = "expecting '%exp%'";
+####### F #######
 $trans["Fatal Error"] = "Fatal Error";
 $trans["Fax"] = "Fax";
 $trans["Fetching list of available languages"] = "Fetching list of available languages";
@@ -393,11 +398,13 @@ $trans["ForDeveloperUse"] = "For Developer Use only";
 $trans["Form Type Label"] = 'Data Type:';
 $trans["From Year:"] = "From year:";
 $trans["Function"] = "Function";
+####### G #######
 $trans["getQuoted() called with empty %str%"] = "getQuoted() called with empty %str%";
 $trans["Go Back"] = "Go Back";
 $trans["Grade"] = "Grade";
 $trans["Grade Level"] = "Grade Level";
 $trans["Grade:"] = "Grade:";
+####### H #######
 $trans["has been added"] = "has been added";
 $trans["has been deleted"] = "has been deleted";
 $trans["has been updated"] = "has been updated";
@@ -411,6 +418,7 @@ $trans["Hold Requests"] = "Hold Requests";
 $trans["HomePhone"] = "Home Phone";
 $trans["Host Editor"] = "Host Editor";
 $trans["Host URL"] = "Host URL";
+####### I #######
 $trans["Id"] = "Id";
 $trans["Image File"] = "Image File";
 $trans["Images"] = "Images";
@@ -468,12 +476,15 @@ $trans["Item:"] = "Item:";
 $trans["Item#"] = "Item#";
 $trans["Item<br />Count"] = " Item<br/>Count";
 $trans["I would like the Media Center staff to:"] = "I would like the Media Center staff to:";
+####### J #######
 $trans["Junior High"] = "Junior High";
 $trans["Juvenile"] = "Juvenile";
+####### K #######
 $trans["Keep Dashes"] = "Keep Dashes";
 $trans["Key field %key% not in field list"] = "Key field %key% not in field list";
 $trans["Keyword"] = "Keyword";
 $trans["Kindergarten"] = "Kindergarten";
+####### L #######
 $trans["Label"] = "Label";
 $trans["Last Name Contains"] = "Last Name Contains";
 $trans["LastName"] = "Last Name";
@@ -521,6 +532,7 @@ $trans["lookup_resetInstr"] = 'After 30 secs. Press F5 to try again.';
 $trans["lookup_rqdNote"]	= 'required field';
 $trans["lookup_tooManyHits"] = "Too many hits!";
 $trans["lookup_yaz_setup_failed"] = "YAZ setup failed";
+####### M #######
 $trans["Main Body"] = "Main Body";
 $trans["Make Booking"] = "Make Booking";
 $trans["Manage Bookings"] = "Manage Bookings";
@@ -597,6 +609,7 @@ $trans["More info"] = "More info";
 $trans["Must be numeric"] = "Must be numeric";
 $trans["Must Returns"] = "Must Returns";
 $trans["My Account"] = "My Account";
+####### N #######
 $trans["N"] = "N";
 $trans["Name:"] = "Name:";
 $trans["Name"] = "Name";
@@ -656,6 +669,7 @@ $trans["NothingFoundByBarcdSearch"] = "Nothing found by Barcode search";
 $trans["Not on loan/on hold"] = "Not on loan/on hold";
 $trans["NumberOnHand"] = "Nunber on hand";
 $trans["NumberOfLines"] = "Number of lines per Item";
+####### O #######
 $trans["of"] = "of";
 $trans["OFF"] = "OFF";
 $trans["OK"] = "OK";
@@ -681,6 +695,7 @@ $trans["Out Date"] = "Out Date";
 $trans["Out Date:"] = "Out Date:";
 $trans["Overdue Items"] = "Overdue Items";
 $trans["Overdue Notices"] = "Overdue Notices";
+####### P #######
 $trans["Packing List"] = "Packing List";
 $trans["Packing Slips"] = "Packing Slips";
 $trans["Pages:"] = "Pages:";
@@ -728,8 +743,10 @@ $trans["Publication Location"] = "Publication Location";
 $trans["Publisher"] = "Publisher";
 $trans["Pull List"] = "Pull List";
 $trans["pwd"] = "pwd";
+####### Q #######
 $trans["QueryBeforeConnect"] = "Tried to make database query before connection.";
 $trans["QueryWrongNrRows"] = "Wrong number of result rows: expected 1, got %count%";
+####### R #######
 $trans["Really delete booking of %item%?"] = "Are you sure you want to delete this booking of %item%?";
 $trans["Recheck"] = "Recheck";
 $trans["Record Info"] = "Record Info";
@@ -781,6 +798,7 @@ $trans["Return Date"] = "Return Date";
 $trans["Return Date:"] = "Return Date:";
 $trans["Returned"] = "Returned";
 $trans["Rpts"] = "Rpts";
+####### S #######
 $trans["Save Changes"] = "Save Changes";
 $trans["Scan"] = "Scan";
 $trans["ScanCSVFile"] = "Scan CSV File";
@@ -863,6 +881,7 @@ $trans["Suspended"] = "Suspended";
 $trans["Syntax"] = "Syntax";
 $trans["SystemDocumentation"] = "System Documentation";
 $trans["System Settings"] = "System Settings";
+####### T #######
 $trans["Table"] = "Table";
 $trans["Table Border Color:"] = "Table Border Color:";
 $trans["Table Border Width:"] = "Table Border Width:";
@@ -908,6 +927,7 @@ $trans["Trans Type"] = "Trans Type";
 $trans["Tried to unlock an unlocked database."] = "Tried to unlock an unlocked database.";
 $trans["Try to Fix Errors"] = "Try to Fix Errors";
 $trans["Type"] = "Type";
+####### U #######
 $trans["Unable to connect to database."] = "Unable to connect to database.";
 $trans["Unable to create thumbnail."] = "Unable to create thumbnail.";
 $trans["Unable to move uploaded file."] = "Unable to move uploaded file.";
@@ -938,11 +958,13 @@ $trans["Username is required."] = "Username is required.";
 $trans["Username already taken by another user"] = "Username already taken by another user";
 $trans["Username:"] = "Username:";
 $trans["using default"] = "using default";
+####### V #######
 $trans["Validation Patterns"] = "Validation Patterns";
 $trans["Value"] = "Value";
 $trans["Value by Media Type"] = "Value by Media Type";
 $trans["View Opac"] = "View OPAC";
 $trans["View"] = "View";
+####### W #######
 $trans["waitForServer"] = "Wait For Server";
 $trans["WebServerInformation"] = "Web Server Information";
 $trans["Welcome to the Library"] = "Welcome to the Library";
@@ -952,11 +974,13 @@ $trans["WorkPhone"] = "Work Phone";
 $trans["workingDesc"] = "This area is for research & develment, use at your own risk!";
 $trans["Wrong key length"] = "Wrong key length";
 $trans["Wrong Number Found error."] = "Wrong Number Found.";
+####### Y #######
 $trans["YAZ"] = "YAZ";
 $trans["Y"] = "Y";
 $trans["Yes"] = "Yes";
 $trans["You must settle all outstanding loans before deleting a member."] = "You must settle all outstanding loans before deleting a member.";
 $trans["Your userid has been suspended."] = "Your userid has been suspended.";
+####### Z #######
 $trans["ZipCodeExt"] = "Zip Code Ext.";
 
  ## ##################################
