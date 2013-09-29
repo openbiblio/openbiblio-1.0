@@ -96,15 +96,17 @@ OB Localize class and related material need to make use of PHP5 INTL / LOCALE
 module. Rgis would require user to add this module to PHP at the server. This
 should be integrated with Javascrit's INTL API as well.
 
-28 Se 2013 - Fred
+28 Sep 2013 - Fred
 Remove excess trans.php entries.
 Remove key prefixes to expose many duplicates.
 Place trailing ':' outside of the translation to eliminate dupes.
-Run all translationsthrough some form of 'escape'er to address embedded quotes.
 
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+
+28 Sep 2013 - Fred, done 29 Sep
+Run all translationsthrough some form of 'escape'er to address embedded quotes.
 
 23 sep 2013 - Fred/Jansen - dropped since Keyword search already does this. 24 Sep
 Advanced search needs a MARC tag selector with the tag list changing based on

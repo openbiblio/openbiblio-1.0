@@ -168,9 +168,8 @@ class Localize {
 		$key = $key.$suffix;
 		$text = $k[count($k)-1];
 		if (isset($this->trans[$key])) {
-			$text = $this->trans[$key];
-		}
-		else{
+			$text = addslashes($this->trans[$key]);
+		} else {
 			// flag text without an entry in trans.php file
 			$text = 'T!'.$text."T!";
 		}

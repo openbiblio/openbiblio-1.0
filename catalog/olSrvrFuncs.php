@@ -68,7 +68,8 @@
 				
 			if ($rcdFmt != 'XML') {
 				$ar = yaz_record($id[$host],$hit,"array");
-print_r($ar);echo"<br/>";
+// used to view raw MARC response from host
+//print_r($ar);echo"<br/>";
 				if (! empty($ar)) {
 					$rec = yaz_record($id[$host],$hit,'string');
 					$rslt[$hit] = get_marc_fields_from_x3950($ar, true, $hit, $host); // an array of hits

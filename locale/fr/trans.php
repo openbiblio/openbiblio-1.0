@@ -501,7 +501,7 @@ $trans["Library Card Number"] = "Numéro de carte de bibliothèque";
 $trans["Library Catalog"] = "Catalogue de la bibliothèque";
 $trans["Library Hours"] = "Bibliothèque Heures";
 $trans["Library Phone"] = "Bibliothèque Téléphone";
-$trans["Library Settings"] = "Paramètres de la bibliothèque";
+$trans["Library Settings"] = "Library Settings";
 $trans["Library Site"] = "Bibliothèque site";
 $trans["Limit"] = "Limite";
 $trans["Limit Search Results"] = "Limiter les résultats de la recherche";
@@ -548,7 +548,7 @@ $trans["MARCHeadings"] = "Cibles identifiées rubrique";
 $trans["MARCimportAdvise"] = "Il est <b><u>fortement</u></b> recommandé d'exécuter en mode test et<br>première disposer d'une sauvegarde de base de données disponibles avant l'importation!";
 $trans["MARCImport"] = "MARC importation";
 $trans["MARCimportMoreMARC"]  = "Editer le fichier csv afin que tous les titres des colonnes soit la balise MARC approprié (utilisé dans la mise en page du type de support)<br>ou l'une des rubriques énumérées ci-dessus..";
-$trans["MARCinputDescr"] = "Le fichier d'entrée doit être un fichier texte séparé par <b><u>TAB</u></b> (pas d'indication de texte - "") avec exactement les noms de champs cibles dans la première rangée.";
+$trans["MARCinputDescr"] = "Le fichier d'entrée doit être un fichier texte séparé par <b><u>TAB</u></b> (pas d'indication de texte - \"\") avec exactement les noms de champs cibles dans la première rangée.";
 $trans["MARCloadTestFalse"] = "Faux";
 $trans["MARCInputFile"] = "MARC fichier d'entrée";
 $trans["MARCloadTest"] = "Charge d'essai";
@@ -879,6 +879,7 @@ $trans["Suspended"] = "Suspended";
 $trans["Syntax"] = "Syntax";
 $trans["SystemDocumentation"] = "System Documentation";
 $trans["System Settings"] = "System Settings";
+####### T #######
 $trans["Table"] = "Table";
 $trans["Table Border Color:"] = "Table Border Color:";
 $trans["Table Border Width:"] = "Table Border Width:";
@@ -924,6 +925,7 @@ $trans["Trans Type"] = "Trans Type";
 $trans["Tried to unlock an unlocked database."] = "Tried to unlock an unlocked database.";
 $trans["Try to Fix Errors"] = "Try to Fix Errors";
 $trans["Type"] = "Type";
+####### U #######
 $trans["Unable to connect to database."] = "Unable to connect to database.";
 $trans["Unable to create thumbnail."] = "Unable to create thumbnail.";
 $trans["Unable to move uploaded file."] = "Unable to move uploaded file.";
@@ -954,26 +956,29 @@ $trans["Username is required."] = "Username is required.";
 $trans["Username already taken by another user"] = "Username already taken by another user";
 $trans["Username:"] = "Username:";
 $trans["using default"] = "using default";
-$trans["Validation Patterns"] = "Validation Patterns";
-$trans["Value"] = "Value";
-$trans["Value by Media Type"] = "Value by Media Type";
-$trans["View Opac"] = "View OPAC";
-$trans["View"] = "View";
-$trans["waitForServer"] = "Wait For Server";
-$trans["WebServerInformation"] = "Web Server Information";
-$trans["Welcome to the Library"] = "Welcome to the Library";
-$trans["What to search for"] = "What to search for";
-$trans["Which is a"] = "Which is a";
-$trans["WorkPhone"] = "Work Phone";
-$trans["workingDesc"] = "This area is for research & develment, use at your own risk!";
-$trans["Wrong key length"] = "Wrong key length";
+####### V #######
+$trans["Validation Patterns"] = "Patterns de validation";
+$trans["Value"] = "Valeur";
+$trans["Value by Media Type"] = "Valeur par type de média";
+$trans["View Opac"] = "Voir OPAC";
+$trans["View"] = "Voir";
+####### W #######
+$trans["WebServerInformation"] = "Informations du serveur Web";
+$trans["Welcome to the Library"] = "Bienvenue à la Bibliothèque";
+$trans["What to search for"] = "Ce qu'il faut rechercher";
+$trans["Which is a"] = "Qui est un";
+$trans["WorkPhone"] = "Téléphone au travail";
+$trans["workingDesc"] = "Cette zone est pour la recherche, use at your own risk!";
+$trans["Wrong key length"] = "Longueur mauvaise touche";
 $trans["Wrong Number Found error."] = "Wrong Number Found.";
+####### Y #######
 $trans["YAZ"] = "YAZ";
-$trans["Y"] = "Y";
+$trans["Y"] = "O";
 $trans["Yes"] = "Yes";
-$trans["You must settle all outstanding loans before deleting a member."] = "You must settle all outstanding loans before deleting a member.";
-$trans["Your userid has been suspended."] = "Your userid has been suspended.";
-$trans["ZipCodeExt"] = "Zip Code Ext.";
+$trans["You must settle all outstanding loans before deleting a member."] = "Vous devez régler tous les prêts en cours avant de supprimer un membre.";
+$trans["Your userid has been suspended."] = "Votre code d'utilisateur a été suspendu.";
+####### Z #######
+$trans["ZipCodeExt"] = "Code postal Ext.";
 
  ## ##################################
  ## adds suport for plugins - fl, 2009
