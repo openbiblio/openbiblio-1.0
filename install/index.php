@@ -70,7 +70,7 @@
 		</section>
 	
 		<section id="updateDB">
-			<h1><?php echo T("Not Available yet, Under Construction"); ?></h1>
+			<!--h1><?php echo T("Not Available yet, Under Construction"); ?></h1-->
 			<p><?php echo T("The existing database is for version "); ?><span id="verTxt"></span>.<br />
 				 <?php echo T("It needs to be upgraded to version "); ?> <?php echo H(OBIB_LATEST_DB_VERSION); ?>.
 			</p>
