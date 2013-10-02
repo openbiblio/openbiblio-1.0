@@ -33,7 +33,7 @@ if ($msg) {
 <table>
 <tr>
 	<td align="right">
-		<label for="id"><?php echo T("Email or ID Number:"); ?></label>
+		<label for="id"><?php echo T("Email or ID Number"); ?>:</label>
 	</td>
 	<td>
 		<?php echo inputfield('text',"id",H($_POST[id])); ?>
@@ -41,7 +41,7 @@ if ($msg) {
 </tr>
 <tr>
 	<td align="right">
-		<label for="password"><?php echo T("Password:"); ?><label>
+		<label for="password"><?php echo T("Password"); ?>:<label>
 	</td>
 	<td>
 		<?php echo inputfield('password','password',''); ?>

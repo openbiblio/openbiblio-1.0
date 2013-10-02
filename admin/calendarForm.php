@@ -43,7 +43,7 @@
 				<input type="hidden" id="calName" name="oldName" value="" />
 				<input type="hidden" id="calCd" name="calendar" value="" />
 
-				<label for="name"><?php echo T("Name:"); ?></label>
+				<label for="name"><?php echo T("Name"); ?>:</label>
 				<?php echo inputfield('text', 'name', $calname, array('size'=>'32', 'required'=>'required')); ?>
 				<input type="submit" class="calSaveBtn" value="<?php echo T("Save Changes"); ?>" />
 			</fieldset>

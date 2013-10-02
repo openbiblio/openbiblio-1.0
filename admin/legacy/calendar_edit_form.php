@@ -158,7 +158,7 @@
 
 			<table class="biblio_view">
 			<tr>
-				<td class="name" valign="bottom"><?php echo T("Name:"); ?></td>
+				<td class="name" valign="bottom"><?php echo T("Name"); ?>:</td>
 				<td class="value" valign="bottom"><?php echo inputfield('text', 'name', $calname, array('size'=>'32')); ?></td>
 				<td class="value" valign="bottom"><input type="submit" value="<?php echo T("Save Changes"); ?>" class="button" /></td>
 			</tr>

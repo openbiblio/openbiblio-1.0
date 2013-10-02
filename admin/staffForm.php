@@ -70,7 +70,7 @@
       <input id="first_name" name="first_name" type="text" size="32" />
 		</li>
     <li>
-      <label for="username"><?php echo T("Username:"); ?></label>
+      <label for="username"><?php echo T("Username"); ?>:</label>
       <input id="username" name="username" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
 		</li>
@@ -91,13 +91,13 @@
 			</fieldset>
 		</li>	
     <li>
-      <label for="suspended_flg"><?php echo T("Suspended:"); ?></label>
+      <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
 			<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
 		</li>
 		<br />
 		<li>
 			<fieldset>
-				<legend><?php echo T("Authorization:");?></legend>
+				<legend><?php echo T("Authorization");?>:</legend>
 					<input id="circ_flg" name="circ_flg" type="checkbox" value="Y" />
 					<label for="circ_flg"><?php echo T("Circ");?></label>
 

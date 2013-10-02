@@ -47,13 +47,13 @@
 <table>
 	<tbody>
 	<tr>
-		<td><label for="username"><?php echo T("Username:"); ?></label></td>
+		<td><label for="username"><?php echo T("Username"); ?>:</label></td>
 		<td valign="top">
 			<input id="username" name="username" type="text" size="15" required aria-required="true" autofocus />
 		</td>
 	</tr>
 	<tr>
-		<td><label for="password"><?php echo T("Password:"); ?></label></td>
+		<td><label for="password"><?php echo T("Password"); ?>:</label></td>
 		<td valign="top" class="noborder">
 			<input id="pwd" name="pwd" type="password" size="15" required aria-required="true" />
 		</td>

@@ -256,13 +256,13 @@
 	<fieldset>
 		<legend><?php echo T("Add a Transaction"); ?></legend>
 		<form id="acntForm">
-			<label for="transaction_type_cd"><?php echo T("Transaction Type:"); ?></label>
+			<label for="transaction_type_cd"><?php echo T("Transaction Type"); ?>:</label>
 			<select id="transaction_type_cd" name="transaction_type_cd"></select>
 			<br />
-			<label for="description"><?php echo T("Description:"); ?></label>
+			<label for="description"><?php echo T("Description"); ?>:</label>
 			<input type="text" required size="40" maxlength="128" id="description" name="description" />
 			<br />
-			<label for="amount"><?php echo T("Amount:"); ?></label>
+			<label for="amount"><?php echo T("Amount"); ?>:</label>
 			<input type="number" required size="12" id="amount" name="amount" 
 						 pattern="^\d+\.\d{2}$" 
 						 title="<?php echo T("A valid money amount");?>" />

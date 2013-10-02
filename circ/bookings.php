@@ -28,7 +28,7 @@
 	<tbody class="unStriped">
 	<tr>
 		<td nowrap="true" class="primary">
-			<label for="rpt_out_before"><?php echo T("For Date:"); ?></label>
+			<label for="rpt_out_before"><?php echo T("For Date"); ?>:</label>
 			<?php echo inputfield('text', 'rpt_out_before', 'today', array('size'=>10)); ?>
 			<input type="submit" value="<?php echo T("Search"); ?>" class="button" />
 		</td>

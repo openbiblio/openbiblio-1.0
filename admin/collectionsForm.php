@@ -45,7 +45,7 @@
 	<legend id="editHdr"></legend>
 	<ul id="editTbl">
     <li>
-      <label for="description"><?php echo T("Description:"); ?></label>
+      <label for="description"><?php echo T("Description"); ?>:</label>
       <input id="description" name="description" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
 		</li>
@@ -63,18 +63,18 @@
 			<span class="reqd">*</span>
     </li>
     <li>
-      <label for="days_due_back" class="circOnly"><?php echo T("Days Due Back:"); ?></label>
+      <label for="days_due_back" class="circOnly"><?php echo T("Days Due Back"); ?>:</label>
       <input id="days_due_back" name="days_due_back" class="circOnly" type="number" size="3" min="1" max="365" required aria-required="true" />
 			<span class="reqd circOnly">*</span>    
 		</li>
     <li>
-      <label for="daily_late_fee" class="circOnly"><?php echo T("Daily Late Fee:"); ?></label>
+      <label for="daily_late_fee" class="circOnly"><?php echo T("Daily Late Fee"); ?>:</label>
       <input id="daily_late_fee" name="daily_late_fee" class="circOnly" type="number" size="5" min="0" max="99.99" required aria-required="true" />
       <!--select id="daily_late_fee" name="daily_late_fee" class="circOnly" > </select-->
 			<span class="reqd circOnly">*</span>    
 		</li>
     <li>
-      <label for="restock_threshold" class="distOnly"><?php echo T("Restock amount:"); ?></label>
+      <label for="restock_threshold" class="distOnly"><?php echo T("Restock amount"); ?>:</label>
       <input id="restock_threshold" name="restock_threshold" class="distOnly" type="number" size="2" min="1" max="99" required aria-required="true" />
 			<span class="reqd distOnly">*</span>    
 		</li>
@@ -96,11 +96,11 @@
 <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <p class="note">
-	<?php echo T("Note:");?><br /><?php echo T("collectionsListNoteMsg"); ?>
+	<?php echo T("Note");?>:<br /><?php echo T("collectionsListNoteMsg"); ?>
 </p>
 <br />
 <p class="note circOnly">
-	<?php echo T("Note:"); ?><br /><?php echo T("Setting zero days no checkout"); ?>
+	<?php echo T("Note"); ?>:<br /><?php echo T("Setting zero days no checkout"); ?>
 </p>
 
 <?php

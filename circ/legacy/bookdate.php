@@ -127,7 +127,7 @@
 ?>
 <table class="biblio_view">
 <tr>
-<td class="name"><?php echo T("Member:"); ?></td>
+<td class="name"><?php echo T("Member"); ?>:</td>
 <td class="value">
 <?php
 		echo H($mbr['first_name']).' ' ;
@@ -137,7 +137,7 @@
 </td>
 </tr>
 <tr>
-<td class="name"><?php echo T("Item Number:"); ?></td>
+<td class="name"><?php echo T("Item Number"); ?>:</td>
 <td class="value">
 <?php
 		echo H($biblio[marc]->getValue('099$a'));
@@ -145,7 +145,7 @@
 </td>
 </tr>
 <tr>
-<td class="name"><?php echo T("Title:"); ?></td>
+<td class="name"><?php echo T("Title"); ?>:</td>
 <td class="value">
 <?php
 		echo H($biblio['marc']->getValue('245$a')). ' ';
@@ -154,11 +154,11 @@
 </td>
 </tr>
 <tr>
-<td class="name"><?php echo T("Date:"); ?></td>
+<td class="name"><?php echo T("Date"); ?>:</td>
 <td class="value"><?php echo inputfield('date', 'date','' , array('size'=>10)); ?></td>
 </tr>
 <tr>
-<td class="name"><?php echo T("Days Out:"); ?></td>
+<td class="name"><?php echo T("Days Out"); ?>:</td>
 <td class="value"><?php echo inputfield('number', 'days', $cdat['days_due_back'], array('size'=>4)); ?></td>
 </tr>
 <tr>

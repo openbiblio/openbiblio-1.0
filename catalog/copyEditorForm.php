@@ -42,7 +42,7 @@
 			</tr>
 		<?php } ?>
 			<tr>
-				<td><label for="status_cd"><?php echo T("Status:");?></label></td>
+				<td><label for="status_cd"><?php echo T("Status");?>:</label></td>
 				<td>
 					</select>
 					<?php

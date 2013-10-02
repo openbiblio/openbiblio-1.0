@@ -58,7 +58,7 @@
 				?>
 				</label>
 				<br /><br />
-				<label for="audienceLevel"><?php echo T("Audience Level:"); ?></label>
+				<label for="audienceLevel"><?php echo T("Audience Level"); ?>:</label>
 				<?php echo inputfield('select','audienceLevel','all',null,array(
 											'K' 	=>T("Kindergarten"),
 											'P' 	=>T("Primary"),
@@ -84,10 +84,10 @@
 		</tr>
 		<tr>
 		<td colspan="3" align="right" class="primary">
-			<label><?php echo T("Production Date:"); ?></label>
-			<label for="from"><?php echo T("From Year:");?></label>
+			<label><?php echo T("Production Date"); ?>:</label>
+			<label for="from"><?php echo T("From Year");?>:</label>
 			<?php echo inputfield('text','from',null,array('size'=>'4'))?>
-			<label for="to"><?php echo T("To Year:"); ?></label>
+			<label for="to"><?php echo T("To Year"); ?>:</label>
 			<?php echo inputfield('text','to',null,array('size'=>'4'))?>
 			
 		</td>

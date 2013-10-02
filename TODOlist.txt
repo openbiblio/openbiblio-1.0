@@ -99,11 +99,13 @@ should be integrated with Javascrit's INTL API as well.
 28 Sep 2013 - Fred
 Remove excess trans.php entries.
 Remove key prefixes to expose many duplicates.
-Place trailing ':' outside of the translation to eliminate dupes.
 
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+
+28 Sep 2013 - Fred, done globally 2 Oct
+Place trailing ':' outside of the translation to eliminate aprox 50 dupes.
 
 28 Sep 2013 - Fred, done 29 Sep
 Run all translationsthrough some form of 'escape'er to address embedded quotes.

@@ -277,7 +277,7 @@ function hideDueDate() {
         <input type="submit" value="<?php echo $loc->getText("mbrViewCheckOut"); ?>" class="button">
       </td>
       </tr><tr>
-      <td class="borderless"><span id="duedate1" style="display:none"><?php echo $loc->getText("Due Date:"); ?></td>
+      <td class="borderless"><span id="duedate1" style="display:none"><?php echo $loc->getText("Due Date"); ?>:</td>
       <td class="borderless">
         <small id="duedateoverride"><a href="javascript:showDueDate()"><?php echo $loc->getText("Override Due Date"); ?></a></small>
         <span id="duedate2" style="display:none">

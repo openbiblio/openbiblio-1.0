@@ -46,7 +46,7 @@
 			<table border=0>
 			<tbody>
 			  <tr>
-					<td colspan="3"><label for="collectionCd"><?php echo T("Collection:"); ?></label></td>
+					<td colspan="3"><label for="collectionCd"><?php echo T("Collection"); ?>:</label></td>
 					<td colspan="2">
 						<?php
 						$cols = new Collections;
@@ -56,7 +56,7 @@
 			  </tr>
 			  
 				<tr>
-					<td colspan="3"><label for="materialCd"><?php echo T("Media Type:"); ?></label></td>
+					<td colspan="3"><label for="materialCd"><?php echo T("Media Type"); ?>:</label></td>
 					<td colspan="2">
 						<?php
 						$medTypes = new MediaTypes;

@@ -136,7 +136,7 @@
 </div>
 
 <p class="note">
-	<?php echo T("Note:"); ?><br /><?php echo T("mediaListNoteMsg"); ?>
+	<?php echo T("Note"); ?>:<br /><?php echo T("mediaListNoteMsg"); ?>
 </p>
 
 <?php

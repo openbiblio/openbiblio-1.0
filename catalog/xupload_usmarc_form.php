@@ -22,11 +22,11 @@
 <table>
 <tbody>
 	<tr>
-		<td><label for="test"><?php echo T("Test Load:"); ?></label></td>
+		<td><label for="test"><?php echo T("Test Load"); ?>:</label></td>
 		<td><input id="test" name="test" type="checkbox" value="true" checked /></td>
 	</tr>
 	<tr>
-		<td><label for="usmarc_data"><?php echo T("MARC File:"); ?></label></td>
+		<td><label for="usmarc_data"><?php echo T("MARC File"); ?>:</label></td>
 		<td><input id="usmarc_data" name="usmarc_data" type="file"></td>
 	</tr>
 	<tr>
@@ -34,7 +34,7 @@
 		<td><input  name="opac" id="opac" type="checkbox" value="Y" /></td>
 	</tr>
 	<tr>
-		<td><label for="collectionCd"><?php echo T("Collection:"); ?></label></td>
+		<td><label for="collectionCd"><?php echo T("Collection"); ?>:</label></td>
 		<td>
 			<?php
 			$collections = new Collections;
@@ -43,7 +43,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="materialCd"><?php echo T("Media Type:"); ?></label></td>
+		<td><label for="materialCd"><?php echo T("Media Type"); ?>:</label></td>
 		<td>
 			<?php
 			$mattypes = new MediaTypes;

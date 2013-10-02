@@ -139,11 +139,11 @@
 			</td>
 		</tr>
 		<tr class="searchRow">
-			<td><label><?php echo T("Production Date:"); ?></label><br /></td>
-			<td><label for="from"><?php echo T("From Year:");?></label>
+			<td><label><?php echo T("Production Date"); ?>:</label><br /></td>
+			<td><label for="from"><?php echo T("From Year");?>:</label>
 						<input id="from" name="from" type="number" size="4" min="1850" max="2099" />
 					<br />
-					<label for="to"><?php echo T("To Year:"); ?></label>
+					<label for="to"><?php echo T("To Year"); ?>:</label>
 						<input id="to" name="to" type="number" size="4" min="1850" max="2099" />
 			</td>
 		</tr>

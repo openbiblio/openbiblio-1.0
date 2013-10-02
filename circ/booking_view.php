@@ -106,7 +106,7 @@
 <input type="hidden" name="rpt_terms[0][exact]" value="0" />
 <table class="biblio_view">
 	<tr>
-		<td class="name"><?php echo T("Item:"); ?></td>
+		<td class="name"><?php echo T("Item"); ?>:</td>
 		<td class="value"><a href="../shared/biblio_view.php?bibid=<?php echo H($booking[bibid]) ?>&amp;tab=cataloging">
 			(<?php echo H($biblio['marc']->getValue('099$a')) ?>)
 			<?php echo H($biblio['marc']->getValue('245$a')) ?>
@@ -147,11 +147,11 @@
 ?>
 <table class="biblio_view">
 	<tr>
-		<td class="name"><?php echo T("Out Date:"); ?></td>
+		<td class="name"><?php echo T("Out Date"); ?>:</td>
 		<td class="value"><input size="10" type="text" name="book_dt" value="<?php echo H($booking['book_dt']) ?>" /></td>
 	</tr>
 	<tr>
-		<td class="name"><?php echo T("Due Date:"); ?></td>
+		<td class="name"><?php echo T("Due Date"); ?>:</td>
 		<td class="value"><input size="10" type="text" name="due_dt" value="<?php echo H($booking['due_dt']) ?>" /></td>
 	</tr>
 	<tr><td></td><td><input class="button" type="submit" value="<?php echo T("Change Dates"); ?>" /></td></tr>

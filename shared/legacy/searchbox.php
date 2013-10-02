@@ -30,7 +30,7 @@
 					echo inputfield('select', 'mediaType', 'all', NULL, $mattypes->getSelect(true));
 				?>
 		<br /><br />
-		<label><?php echo T("Audience Level:"); ?></label>
+		<label><?php echo T("Audience Level"); ?>:</label>
 				<select name="audienceLevel">
 					<option value="all" selected="selected"><?php echo T("All"); ?></option>
 					<option value="K"><?php echo T("Kindergarten"); ?></option>
@@ -41,10 +41,10 @@
 					<option value="A"><?php echo T("Adult"); ?></option>
 				</select>
 		<br /><br />
-		<label><?php echo T("Production Date:"); ?></label>
-		<label for="from"><?php echo T("From Year:");?></label>
+		<label><?php echo T("Production Date"); ?>:</label>
+		<label for="from"><?php echo T("From Year");?>:</label>
 			<?php echo inputfield('text','from','',array('size'=>'4')); ?>
-		<label for="to"><?php echo T("To Year:"); ?></label>
+		<label for="to"><?php echo T("To Year"); ?>:</label>
 			<?php echo inputfield('text','to','',array('size'=>'4')); ?>
 	</div>
 </form>

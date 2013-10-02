@@ -19,9 +19,9 @@
 <br />
 <form id="selectForm" name="selectForm">
 <fieldset>
-<legend><?php echo T("Change Theme In Use:"); ?></legend>
+<legend><?php echo T("Change Theme In Use"); ?>:</legend>
 	<div>
-		<label for"themid"><?php echo T("Choose a New Theme:"); ?>
+		<label for"themid"><?php echo T("Choose a New Theme"); ?>:
 		<select id="themeList"></select>
 		<input id="chngBtn" type="submit" value="<?php echo T("Update"); ?>" />
 	</div>
@@ -65,25 +65,25 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="border_color"><?php echo T("Table Border Color:"); ?></label></td>
+		<td><label for="border_color"><?php echo T("Table Border Color"); ?>:</label></td>
 		<td colspan="4" valign="top">
 			<input id="border_color" name="border_color" type="color" size="10" required aria-required="true">
 		</td>
 	</tr>
 	<tr>
-		<td><label for="primary_error_color"><?php echo T("Error Color:"); ?></label></td>
+		<td><label for="primary_error_color"><?php echo T("Error Color"); ?>:</label></td>
 		<td colspan="4" valign="top">
 			<input id="primary_error_color" name="primary_error_color" type="color" size="10" required aria-required="true">
 		</td>
 	</tr>
 	<tr>
-		<td><label for="border_width"><?php echo T("Table Border Width:"); ?></label></td>
+		<td><label for="border_width"><?php echo T("Table Border Width"); ?>:</label></td>
 		<td colspan="4" valign="top">
 			<input id="border_width" name="border_width" type="number" size="2" required aria-required="true">px
 		</td>
 	</tr>
 	<tr>
-		<td><label for="table_padding"><?php echo T("Table Cell Padding:"); ?></label></td>
+		<td><label for="table_padding"><?php echo T("Table Cell Padding"); ?>:</label></td>
 		<td colspan="4" valign="top">
 			<input id="table_padding" name="table_padding" type="number" size="2" required aria-required="true">px
 		</td>
@@ -102,7 +102,7 @@
 	
 	<tbody id="part2" class="striped">
 	<tr>
-		<td nowrap="true"><label><?php echo T("Background Color:"); ?></label</td>
+		<td nowrap="true"><label><?php echo T("Background Color"); ?>:</label</td>
 		<td valign="top">
 			<input id="title_bg" name="title_bg" type="color" size="20" required aria-required="true">
 		</td>
@@ -117,7 +117,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true"><label><?php echo T("Font Face:"); ?></label></td>
+		<td nowrap="true"><label><?php echo T("Font Face"); ?>:</label></td>
 		<td valign="top">
 			<input id="title_font_face" name="title_font_face" type="text" size="10" required aria-required="true">
 		</td>
@@ -132,7 +132,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true"><label><?php echo T("Font Size:"); ?></label></td>
+		<td nowrap="true"><label><?php echo T("Font Size"); ?>:</label></td>
 		<td valign="top">
 			<input id="title_font_size" name="title_font_size" type="number" size="2" required aria-required="true">px
 			<input id="title_font_bold" name="title_font_bold" checked type="checkbox"><lable for="titleFontBold"><?php echo T("bold");?></label>
@@ -149,7 +149,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true"><label><?php echo T("Font Color:"); ?></label></td>
+		<td nowrap="true"><label><?php echo T("Font Color"); ?>:</label></td>
 		<td valign="top">
 			<input id="title_font_color" name="title_font_color" type="color" size="10" required aria-required="true">
 		</td>
@@ -164,7 +164,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true"><label><?php echo T("Link Color:"); ?></label></td>
+		<td nowrap="true"><label><?php echo T("Link Color"); ?>:</label></td>
 		<td valign="top">&nbsp;</td>
 		<td valign="top">
 			<input id="primary_link_color" name="primary_link_color" type="color" size="10" required aria-required="true">
@@ -177,7 +177,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td nowrap="true"><label><?php echo T("Align:"); ?></label></td>
+		<td nowrap="true"><label><?php echo T("Align"); ?>:</label></td>
 		<td valign="top">
 			<select id="title_align" name="title_align">
 				<option value="left">Left</option>
@@ -211,7 +211,7 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <p class="note">
-	<?php echo T("Note:"); ?><br /><?php echo T("No delete on active theme"); ?>
+	<?php echo T("Note"); ?>:<br /><?php echo T("No delete on active theme"); ?>
 </p>
 
 <?php

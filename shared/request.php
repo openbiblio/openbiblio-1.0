@@ -82,13 +82,13 @@
 		}
 	?>
 	</table>
-	<h3><?php echo T("I would like the Media Center staff to:"); ?></h3>
+	<h3><?php echo T("I would like the Media Center staff to"); ?>:</h3>
 		<table>
 			<tr>
 				<td class="noborder" valign="top">
 					<?php echo inputfield('checkbox', 'call', '', NULL, 'Y'); ?>
 				</td>
-				<td class="noborder" valign="top"><?php echo T("requestCallMe"); ?><br /><?php echo T("Phone:"); ?> <?php echo inputfield('text', "phone"); ?></td>
+				<td class="noborder" valign="top"><?php echo T("requestCallMe"); ?><br /><?php echo T("Phone"); ?>: <?php echo inputfield('text', "phone"); ?></td>
 			</tr>
 			<tr>
 				<td class="noborder" valign="top">
