@@ -139,7 +139,7 @@ var cal = {
 	},
 
 	deleteCalendar: function (e) {
-		if (confirm("<?php echo T("DeleteThisCalendar?"); ?>")) {
+		if (confirm("<?php echo T("DeleteThisCalendar"); ?>?")) {
 			$.post(cal.url, {'mode':'deleteCalendar', 'calendar':cal.calCd}, function (response) {
 				$('#errSpace').html(response).show();
 				$('#calDeltBtn').disable();

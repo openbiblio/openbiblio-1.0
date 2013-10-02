@@ -7,7 +7,7 @@ function staff_menu() {
 	if($_SESSION["hasCircAuth"]){
 		Nav::node('circulation', T("Circulation"), '../circ/memberForms.php');
 		Nav::node('circulation/searchform', T("Members"), '../circ/memberForms.php');
-		Nav::node('circulation/search', T("Search Results"));
+		Nav::node('circulation/search', T("SearchResults"));
 
 		Nav::node('circulation/bookings', T("Bookings"), '../circ/bookings.php');
 		Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');

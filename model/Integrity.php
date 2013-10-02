@@ -357,7 +357,7 @@ class Integrity extends Queryi{
 						assert('method_exists($this, $fn)');
 						$error = $this->$fn();
 						if ($error) {
-							$msg .= ' <b>'.T("CAN'T FIX:").'</b> '.$error->toStr();
+							$msg .= ' <b>'.T("CAN'T FIX").'</b>: '.$error->toStr();
 						} else {
 							$msg .= ' <b>'.T("FIXED").'</b> ';
 						}

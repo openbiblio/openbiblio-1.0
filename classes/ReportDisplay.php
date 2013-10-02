@@ -63,7 +63,7 @@ class ReportDisplay {
 			return '';
 		}
 		$s = '<div class="pageAvail">'."\n";
-		$s .= T("Pages:").' ';
+		$s .= T("Pages").': ';
 		if ($currPage > 1) {
 			$s .= '<a href="'.$url->get($currPage-1).'" class="prevpage">'.T("Prev").'</a> '."\n";
 			//$s .= '<input type="button" class="prevpage" value="'.T("Previous Page").'">'."\n";

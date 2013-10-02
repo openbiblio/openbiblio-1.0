@@ -104,8 +104,6 @@ var ie = {
 		//  label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
 	  var txt = '';
 		$.each(marc, function(key,val) {
-//console.log('doItemEdit(): key='+key);
-//console.log(val);
 			if (val.lbl) {
 				var prefix = 'fields_'+key;
 				txt += "<tr> \n";
@@ -162,7 +160,7 @@ var ie = {
 	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
 	  	item = '"'+title+'", by '+author;
 		} else {
-			$('#onlineMsg').html('<?php T("NotEnoughtData"); ?>').show();
+			$('#onlineMsg').html('<?php T("NotEnoughData"); ?>').show();
 			return;
 		}
 

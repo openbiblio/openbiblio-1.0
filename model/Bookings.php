@@ -339,7 +339,7 @@ class Bookings extends CoreTable {
 			$copies = new Copies;
 			$copy = $copies->getByBarcode($barcode);
 			if (!$copy) {
-				$err = new Error(T("No copy with barcode %barcode%", array('barcode'=>$barcode)));
+				$err = new Error(T("No copy with barcode").' '.$barcode);
 				break;
 			}
 

@@ -66,11 +66,11 @@ if ($status == 'booked') {
 	));
 }
 echo $d->begin();
-echo $d->row(T("Item:"), $bib['marc']->getValue('099$a'));
-echo $d->row(T("Title:"), $bib['marc']->getValue('245$a').' '.$bib['marc']->getValue('245$b'));
-echo $d->row(T("Status:"), $states[$status]);
-echo $d->row(T("Out Date:"), H($b['book_dt']));
-echo $d->row(T("Return Date:"), H($b['due_dt']));
+echo $d->row(T("Item").':', $bib['marc']->getValue('099$a'));
+echo $d->row(T("Title").':', $bib['marc']->getValue('245$a').' '.$bib['marc']->getValue('245$b'));
+echo $d->row(T("Status").':', $states[$status]);
+echo $d->row(T("Out Date").':', H($b['book_dt']));
+echo $d->row(T("Return Date").':', H($b['due_dt']));
 echo $d->end();
 
  ;

@@ -344,7 +344,7 @@ class Copies extends CoreTable {
 		foreach ($barcodes as $b) {
 			$copy = $this->getByBarcode($b);
 			if (!$copy) {
-				$errors[] = new Error(T("No copy with barcode %barcode%", array('barcode'=>$b)));
+				$errors[] = new Error(T("No copy with barcode")/' '.$b);
 			} else {
 				if (!in_array($copy['copyid'], $copyids)) {
 					$copyids[] = $copy['copyid'];

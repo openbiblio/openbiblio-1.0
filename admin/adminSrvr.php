@@ -261,7 +261,7 @@
 				);
 			list($id, $errors) = $ptr->insert_el($type);
 			if (empty($errors)) {
-				$msg = T("Media type")." '".H($type['description'])."' ".T("has been added");
+				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been added");
 				echo $msg;
 			}
 			break;
@@ -284,7 +284,7 @@
 			);
 			$errors = $ptr->update_el($type);
 			if (empty($errors)) {
-				$msg = T("Media type")." '".H($type['description'])."' ".T("has been updated");
+				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been updated");
 				echo $msg;
 			}
 			break;
@@ -292,7 +292,7 @@
 			$code = $_POST["code"];
 			$description = $_POST["desc"];
 			$ptr->deleteOne($code);
-			$msg = T("Media type")." '".H($type['description'])."' ".T("has been deleted");
+			$msg = T("Media Type")." '".H($type['description'])."' ".T("has been deleted");
 			echo $msg;
 			break;
 				

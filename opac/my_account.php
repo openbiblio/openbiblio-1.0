@@ -32,11 +32,11 @@ $d = new InfoDisplay;
 $d->title = T("Member Information");
 $d->buttons = array(array(T("Edit Info"), '../opac/edit_account.php'));
 echo $d->begin();
-echo $d->row(T("Name:"), H($mbr['last_name'].', '.$mbr['first_name']));
-echo $d->row(T("Site:"), H($site['name']));
-echo $d->row(T("Card Number").':', H($mbr['barcode_nmbr']));
-echo $d->row(T("EmailAddress"), H($mbr['email']));
-echo $d->row(T("SchoolGrade"), H($mbr['school_grade']));
+echo $d->row(T("Name").':', H($mbr['last_name'].', '.$mbr['first_name']));
+echo $d->row(T("Site").':', H($site['name']));
+echo $d->row(T("Card Number").':'.':', H($mbr['barcode_nmbr']));
+echo $d->row(T("EmailAddress").':', H($mbr['email']));
+echo $d->row(T("SchoolGrade").':', H($mbr['school_grade']));
 echo $d->end();
 
 $rpt = Report::create('checkouts');
@@ -44,11 +44,11 @@ $rpt->init(array('mbrid'=>$_SESSION['authMbrid']));
 $t = new TableDisplay;
 $t->title = T("Current Checkouts");
 $t->columns = array(
-	$t->mkCol(T("Barcode")),
-	$t->mkCol(T("Price")),
-	$t->mkCol(T("Title")),
-	$t->mkCol(T("Date Due")),
-	$t->mkCol(T("Days Late")),
+	$t->mkCol(T("Barcode").':'),
+	$t->mkCol(T("Price").':'),
+	$t->mkCol(T("Title").':'),
+	$t->mkCol(T("Date Due").':'),
+	$t->mkCol(T("Days Late").':'),
 );
 echo $t->begin();
 while ($r = $rpt->each()) {

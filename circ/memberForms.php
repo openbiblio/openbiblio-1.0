@@ -160,7 +160,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="listDiv">
-	<h5><?php echo T("Search Results"); ?></h5>
+	<h5><?php echo T("SearchResults"); ?></h5>
 	<div id="results_found">
 		<?php //echo T("biblioSearchMsg", array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
 	</div>

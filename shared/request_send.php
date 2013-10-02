@@ -29,16 +29,16 @@ if (!$_REQUEST['grade']) {
 $from = Settings::get('request_from');
 $to = Settings::get('request_to');
 $subject = Settings::get('request_subject');
-$msg = T("Name:")." ".$_REQUEST['name']."\r\n";
-$msg .= T("School:")." ".$_REQUEST['school']."\r\n";
-$msg .= T("Grade:").' '.$_REQUEST['grade']."\r\n";
-$msg .= T("Patron #:")." ".$_REQUEST['number']."\r\n\r\n";
+$msg = T("Name").": ".$_REQUEST['name']."\r\n";
+$msg .= T("School").": ".$_REQUEST['school']."\r\n";
+$msg .= T("Grade").': '.$_REQUEST['grade']."\r\n";
+$msg .= T("Patron #").": ".$_REQUEST['number']."\r\n\r\n";
 if ($_REQUEST['call'] == 'Y') {
 	if (!$_REQUEST['phone']) {
 		$pageErrors['phone'] = T("Please enter your phone number.");
 	}
 	$msg .= T("requestSendPleaseCall")."\r\n";
-	$msg .= T("Phone:")." ".$_REQUEST['phone']."\r\n\r\n";
+	$msg .= T("Phone").": ".$_REQUEST['phone']."\r\n\r\n";
 }
 if ($_REQUEST['confirm'] == 'Y') {
 	if (!$_REQUEST['email']) {
@@ -51,7 +51,7 @@ if ($_REQUEST['alternate'] == 'Y') {
 	$msg .= T("requestSendPleaseSelect")."\r\n\r\n";
 }
 if ($_REQUEST['notes']) {
-	$msg .= T("Other notes:")."\r\n\r\n";
+	$msg .= T("Other notes")':'."\r\n\r\n";
 	str_replace("\r\n", "\n", $_REQUEST['notes']);
 	str_replace("\r", "\n", $_REQUEST['notes']);
 	str_replace("\n", "\r\n", $_REQUEST['notes']);

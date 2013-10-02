@@ -54,8 +54,8 @@ ins = {
 	
 	//------------------------------
 	connectDb: function () {
-		ins.informUser('<?php echo T("Testing Connection to DB server"); ?>');
-		ins.showWait('<?php echo T("Testing Database connection"); ?>');
+		ins.informUser('<?php echo T("TestingConnectionToDBServer"); ?>');
+		ins.showWait('<?php echo T("TestingDatabaseConnection"); ?>');
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
 			$('#plsWait').hide();
 			ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
@@ -76,7 +76,7 @@ ins = {
 	},
 	getDbVersion: function () {
 		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
-		ins.showWait('<?php echo T("Checking Database Version"); ?>');
+		ins.showWait('<?php echo T("CheckingDatabaseVersion"); ?>');
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
 			$('#plsWait').hide();
 			//console.log('vers='+response);
@@ -95,7 +95,7 @@ ins = {
 	  });
 	},
 	getLocales: function () {
-		ins.showWait('<?php echo T("Fetching Locales"); ?>');
+		ins.showWait('<?php echo T("FetchingLocales"); ?>');
 		ins.informUser('<?php echo T("Fetching list of available languages"); ?>');
 	  $.getJson(ins.listSrvr,{ 'mode':'getLocales'}, function(response){
 			$('#plsWait').hide();
@@ -106,7 +106,7 @@ ins = {
 	
 	//------------------------------
 	doNewInstall: function () {
-		ins.showWait('<?php echo T("Installing Tables"); ?>');
+		ins.showWait('<?php echo T("InstallingTables"); ?>');
 		var useTestData = $('#installTestData').prop('checked');
 		if (useTestData) {
 			ins.informUser('<?php echo T("Installing DB tables with test data"); ?>');
@@ -135,7 +135,7 @@ ins = {
 	
 	//------------------------------
 	doDbUpdate: function () {
-		ins.showWait('<?php echo T("Updating Tables"); ?>');
+		ins.showWait('<?php echo T("UpdatingTables"); ?>');
 		ins.informUser('<?php echo T("Updating Database Tables"); ?>');
 		//ins.startVer='0.7.1';
 		$.post(ins.url, {'mode':'doDbUpgrade','startVer':ins.startVer,}, function (response) {
