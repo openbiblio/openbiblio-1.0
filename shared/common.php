@@ -123,7 +123,7 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 		$ThemeDirUrl = "../themes/default";
 		//$localeStrs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
 		//$Locale = substr($localeStrs[0],0,2);
-		$locale = 'en';
+		$Locale = 'en';
 	}
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";

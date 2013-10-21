@@ -18,7 +18,7 @@ class Localize {
 	var $trans = array(); // memory image of translation table
 	var $marc = array();
 
-	function init($locale) {
+	public function init($locale) {
 		if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $locale)) {
 			Fatal::internalError('Invalid Locale: >'.$locale.'<');
 		}
@@ -28,15 +28,14 @@ class Localize {
 			Fatal::internalError('Locale >'.$locale.'< has no metadata');
 		}
 		include($this->localePath.'metadata.php');
-		
 		$classname = $locale.'MetaData';
 		if (!class_exists($classname)) {
 			Fatal::internalError('Locale >'.$locale.'< has no metadata class');
 		}
 		$this->meta = new $classname;
+
 		$this->trans = array();
 		$this->marc = NULL;
-		//$files = array('trans.php', 'custom_trans.php');
 		$files = array('trans.php', 'customTrans.php');
 		foreach ($files as $f) {
 			if (is_readable($this->localePath.$f)) {
@@ -45,7 +44,7 @@ class Localize {
 			}
 		}
 	}
-	function getMarc($key) {
+	public function getMarc($key) {
 		if ($this->marc == NULL) {
 			$this->loadMarc();
 		}
@@ -55,7 +54,7 @@ class Localize {
 			return $this->getText('Undefined');
 		}
 	}
-	function loadMarc() {
+	public function loadMarc() {
 		$this->marc = array();
 		$files = array('marc.php', 'custom_marc.php');
 		foreach ($files as $f) {
@@ -65,13 +64,13 @@ class Localize {
 			}
 		}
 	}
-	function translateOne($str) {
+	public function translateOne($str) {
 		if (isset($this->trans[$str])) {
 			return $this->trans[$str];
 		}
 		return $str;
 	}
-	function translateCallback($matches) {
+	public function translateCallback($matches) {
 		return $this->translateOne($matches[1]);
 	}
 	// Find, translate, and replace occurrences of {#trans}...{#end}
@@ -79,7 +78,7 @@ class Localize {
 	// and optionally surrounded by white space.  Alternative
 	// metacharacters may be specified if, say, [#trans] is more
 	// convenient than {#trans}.
-	function translate($str, $metachars='{}') {
+	public function translate($str, $metachars='{}') {
 		$meta = JsonTemplateModule::SplitMeta($metachars);
 		$start = preg_quote($meta[0].'#trans'.$meta[1]);
 		$end = preg_quote($meta[0].'#end'.$meta[1]);
@@ -89,10 +88,10 @@ class Localize {
 		$trans_re = '/'.$start.'\s*(.*?)\s*'.$end.'/';
 		return preg_replace_callback($trans_re, array($this, 'translateCallback'), $str);
 	}
-	function moneyFormat($amount) {
+	public function moneyFormat($amount) {
 		return $this->meta->moneyFormat($amount);
 	}
-	function getLocales () {
+	public function getLocales () {
 		$dir = opendir(LOCALE_ROOT);
 		$locales = array();
 		while (($file=readdir($dir)) !== false) {
@@ -117,14 +116,14 @@ class Localize {
 		return $locales;
 	}
 	/* This is a separate function to avoid scope contamination. */
-	function _loadFile($file) {
+	private function _loadFile($file) {
 		include($file);
 		return $trans;
 	}
 	
 	// Everything below is deprecated
 	
-	function _substituteVars($text, $vars=NULL) {
+	private function _substituteVars($text, $vars=NULL) {
 		if ($vars == NULL) {
 			$vars = array();
 		}
@@ -163,7 +162,10 @@ class Localize {
 		}
 		return $trans;
 	}
-	function getText($key, $vars=NULL, $suffix='') {
+
+	/* spelling of these names is deliberate to distinguish from PHP function
+	*/
+	public function getText($key, $vars=NULL, $suffix='') {
 		$k = explode('|', $key);
 		$key = $key.$suffix;
 		$text = $k[count($k)-1];
@@ -178,9 +180,10 @@ class Localize {
 //		if (OBIB_HIGHLIGHT_I18N_FLG) {
 //			$text = "<span color='#FF8A00'>".$text."</span>";
 //		}
+
 		return $text;
 	}
-	function nGetText($n, $key, $vars=NULL) {
+	public function nGetText($n, $key, $vars=NULL) {
 		$suffix = '|'.$this->meta->pluralForm($n);
 		return $this->getText($key, $vars, $suffix);
 	}
