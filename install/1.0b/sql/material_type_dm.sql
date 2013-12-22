@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS %prfx%.`material_type_dm` (
   `code` smallint(6) NOT NULL AUTO_INCREMENT,
   `description` varchar(40) NOT NULL,
   `default_flg` char(1) NOT NULL,
-  `adult_checkout_limit` tinyint(3) unsigned NOT NULL,
-  `juvenile_checkout_limit` tinyint(3) unsigned NOT NULL,
+  `adult_checkout_limit` tinyint(3) unsigned NOT NULL default 10,
+  `juvenile_checkout_limit` tinyint(3) unsigned NOT NULL default 5,
   `image_file` varchar(128) DEFAULT NULL,
 	`srch_disp_lines` tinyint(3) unsigned NOT NULL DEFAULT '4',
   PRIMARY KEY (`code`)

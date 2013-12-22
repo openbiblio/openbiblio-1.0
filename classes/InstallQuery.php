@@ -80,32 +80,52 @@ class InstallQuery extends Queryi {
 
   protected function createDatabase($dbName) {
     $sql = $this->mkSQL("create database if not exists %I ", $dbName);
-    return $this->act($sql);
+    $res = $this->act($sql);
+    $sql = $this->mkSQL("GRANT ALL PRIVILEGES ON %I TO %Q", $dbName, OBIB_USERNAME);
+    $r = $this->act($sql);
+    return $r;
   }
 
   protected function copyDatabase($fromDb, $toDb) {
-    $sql = $this->mkSQL('SHOW TABLES FROM %I ', $fromDb);
+    $sql = $this->mkSQL("SHOW TABLES FROM %I ", $fromDb);
     $rslt = $this->select($sql);
+	echo "copy ".$rslt->num_rows." tables from ".$fromDb." to ".$toDb." <br />\n";
+    $renaming = true;
     while ($row = $rslt->fetch_array()) {
-      $sql = $this->mkSQL('create table %q as select * from %q', $toDb.'.'.$row[0], $fromDb.'.'.$row[0]);
-			$this->act($sql);
-			$this->dropTable($fromDb.'.'.$row[0]);
+        $src = $fromDb.'.'.$row[0];
+        $dst = $toDb.'.'.$row[0];
+    
+        if ($renaming){
+              $this->dropTable($dst);
+              $sql = "rename table ".$src." to ".$dst;
+              if ($this->_act($sql) == 0){
+                $renaming = false;
+              }
+        }
+        if (!$renaming) {
+            $this->dropTable($dst);
+            $sql = $this->mkSQL("drop table if exists %i", $dst);
+            $res = $this->act($sql);
+            $sql = $this->mkSQL("create table %i as select * from %i", $dst, $src);
+            $res = $this->act($sql);
+            $this->dropTable($src);
+        }
     }
   }
 
 	## ------------------------------------------------------------------------ ##
-  private function dropTable($tableName) {
+  public function dropTable($tableName) {
     $sql = $this->mkSQL("drop table if exists %q ", $tableName);
     return $this->act($sql);
   }
 
-  private function renameTable($fromTableName, $toTableName) {
+  public function renameTable($fromTableName, $toTableName) {
       $this->dropTable($toTableName);
       $sql = "rename table ".$fromTableName." to ".$toTableName;
       return $this->act($sql);
   }
 
-  private function getTableNames($pattern = "") {
+  public function getTableNames($pattern = "") {
     if($pattern == "") {
       $pattern = DB_TABLENAME_PREFIX.'%';
     }
@@ -119,7 +139,7 @@ class InstallQuery extends Queryi {
     return $tablenames;
   }
   
-  private function executeSqlFilesInDir($dir, $dbName = "") {
+  public function executeSqlFilesInDir($dir, $dbName = "") {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($filename = readdir($dh)) !== false) {
@@ -135,29 +155,36 @@ class InstallQuery extends Queryi {
   /**
    * Function to read through an sql file executing SQL only when ";" is encountered
    */
-  private function executeSqlFile($filename, $dbName = DB_TABLENAME_PREFIX) {
+  function executeSqlFile($filename, $dbName = DB_TABLENAME_PREFIX) {
     $fp = fopen($filename, "r");
     # show error if file could not be opened
     if ($fp == false) {
       Fatal::error("Error reading file: ".H($filename));
     } else {
+        //this code based rom here :
+        //http://stackoverflow.com/questions/147821/loading-sql-files-from-within-php
       $sqlStmt = "";
       while (!feof ($fp)) {
-        $char = fgetc($fp);
-        if ($char == ";") {
+        $line = fgets($fp);
+        $line = trim($line);
+        // Skip it if it's a comment
+        if (substr($line, 0, 2) == '--' || $line == '')
+            continue;
+
+        $sqlStmt .= $line;
+        
+        if (substr($line, -1) == ';') {
           //replace table prefix, we're doing it here as the install script may
           //want to override the required prefix (eg. during upgrade / conversion 
           //process)
           $sql = str_replace("%prfx%",$dbName,$sqlStmt);
           $this->act($sql);
           $sqlStmt = "";
-        } else {
-          $sqlStmt .= $char;
         }
       }
       fclose($fp);
     }
-  }
+  } //executeSqlFile
 }
 
 ?>
