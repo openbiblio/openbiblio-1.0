@@ -204,7 +204,7 @@ class FatalHandler {
 		echo "<p>".T("ErrorInfoToSupport")."</p>\n";
 		echo "<p>".H($msg)."</p>\n";
 		$this->printBackTrace();
-		exit(1);
+		exit("fatal internal error");
 	}
 	function dbError($sql, $msg, $dberror) {
 		echo "<h1>".T("ErrorDbQuery")."</h1>\n";
@@ -213,7 +213,7 @@ class FatalHandler {
 		echo "<p>".T("ErrorQueryFailed", array('query'=>H($sql)))."</p>\n";
 		echo "<pre>".H($dberror)."</pre>";
 		$this->printBackTrace();
-		exit(1);
+		exit("fatal DB error");
 	}
 	function cantLock() {
 		# FIXME - This should return to the previous page, preserving form values.
@@ -224,7 +224,7 @@ class FatalHandler {
 		echo "<h1>".T("Fatal Error")."</h1>\n";
 		echo "<h2>".H($msg)."</h2>\n";
 		$this->printBackTrace();
-		exit(1);
+		exit("fatal error");
 	}
 	function printBackTrace() {
 		if (function_exists('debug_backtrace')) {
