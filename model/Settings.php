@@ -58,8 +58,8 @@ class Settings extends Queryi {
 		}
 		return $fields;
 	}
-	function getFormFields($menu=NULL) {
-		$r = $this->_getData($menu);
+	static function getFormFields($menu=NULL) {
+		$r = Settings::_getData($menu);
 		$fields = array();
 		while ($s = $r->fetch_assoc()) {
 				$fields[] = Settings::_mkField($s);

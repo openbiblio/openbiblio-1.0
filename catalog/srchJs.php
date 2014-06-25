@@ -420,7 +420,7 @@ var bs = {
 					//idis.fetchCopyInfo();
 				}
 				else {
-					console.log('multiple hits');
+					//console.log('multiple hits');
 				  bs.multiMode = true;
 				  bs.showList(firstItem, biblioList);
 				}

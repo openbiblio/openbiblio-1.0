@@ -100,6 +100,15 @@ should be integrated with Javascrit's INTL API as well.
 Remove excess trans.php entries.
 Remove key prefixes to expose many duplicates.
 
+25 Jun 2014 - Kees
+Install Instructions need updating to ver 1.0
+
+25 Jun 2014 - Kees
+Admin & Tool menus do not fit 16:9 screen
+
+25 Jun 2014 - Kees
+Tools|System settings broken
+
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
