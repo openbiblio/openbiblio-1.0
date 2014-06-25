@@ -106,12 +106,14 @@ Install Instructions need updating to ver 1.0
 25 Jun 2014 - Kees
 Admin & Tool menus do not fit 16:9 screen
 
-25 Jun 2014 - Kees
-Tools|System settings broken
-
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+25 Jun 2014 - Fred, fixed 25 Jun
+Library info suppression not working
+
+25 Jun 2014 - Kees, fixed 25 Jun
+Tools|System settings broken, Changed System::getFormfields() to static
 
 28 Sep 2013 - Fred, done globally 2 Oct
 Place trailing ':' outside of the translation to eliminate aprox 50 dupes.

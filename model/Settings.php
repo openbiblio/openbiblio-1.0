@@ -100,7 +100,7 @@ class Settings extends Queryi {
 		$db->unlock();
 		return $errors;
 	}
-	public function getThemeDirs () {
+	static function getThemeDirs () {
 		return Settings::_getSubdirs('themes');
 	}
 	private function _getSubdirs($root) {

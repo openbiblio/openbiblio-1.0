@@ -127,6 +127,9 @@ var set = {
 		e.preventDefault();
 		$('#mode').val('update_settings');
 		var params = $('#editSettingsForm').serialize();
+    if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";
+    if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
+    if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
 		$.post(set.url, params, function (response) {
 			//if (response === null)
 				$('#updateMsg').html(set.successMsg).show();
