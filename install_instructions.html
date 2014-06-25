@@ -94,7 +94,8 @@ have still not been implemented.  Use at your own risk.</font>
 
   <a name="step5">
   <li>Create an OpenBiblio database user.  Use phpMyAdmin for this,
-	a userid and password of your choice.
+	using a userid and password of your choice.
+	Be sure to select a proper collation. I suggest 'utf8-general-ci'.
 <blockquote><pre>
  <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
     -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>

@@ -523,6 +523,7 @@ $trans["Local Search"] = "Local Search";
 $trans["Location"] = "Location";
 $trans["Login"] = "Login";
 $trans["Logout"] = "Logout";
+$trans["Checking for Database Content"]="Checking for Database Content";
 $trans["Looking for Database Version"] = "Looking for Database Version";
 $trans["Looking for Database tables"] = "Looking for Database tables";
 $trans["lookup_badQuery"] = "Bad Query";
