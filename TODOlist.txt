@@ -101,14 +101,14 @@ Remove excess trans.php entries.
 Remove key prefixes to expose many duplicates.
 
 25 Jun 2014 - Kees
-Install Instructions need updating to ver 1.0
-
-25 Jun 2014 - Kees
 Admin & Tool menus do not fit 16:9 screen
 
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+25 Jun 2014 - Kees, done 25 Jun
+Install Instructions need updating to ver 1.0
+
 25 Jun 2014 - Fred, fixed 25 Jun
 Library info suppression not working
 
