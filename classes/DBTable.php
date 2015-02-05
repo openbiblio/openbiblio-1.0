@@ -125,7 +125,7 @@ abstract class DBTable extends Queryi {
 //		}
 		return array($seq_val, $errors);
 	}
-	protected function insert_el($rec, $confirmed=false) {
+	public function insert_el($rec, $confirmed=false) {
 		$this->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
@@ -162,7 +162,7 @@ abstract class DBTable extends Queryi {
 			Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
 		}
 	}
-	protected function update_el($rec, $confirmed=false) {
+	public function update_el($rec, $confirmed=false) {
 		$key = array();
 		foreach ($this->key as $k) {
 			if (!isset($rec[$k]))

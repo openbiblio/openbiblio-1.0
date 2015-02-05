@@ -34,7 +34,7 @@
 		*/
 		$input = $_POST;
 		unset($_POST);
-		$rec = [];
+		//$rec = [];
 		foreach ($input as $k=>$v) {
 			if (($k != 'fields') && (substr($k,0,4) != 'onln')) {
 				$_POST[$k] = $v;

@@ -26,13 +26,13 @@ abstract class CoreTable extends DBTable {
 		);
 		parent::setFields(array_merge($common, $fields));
 	}
-	protected function insert_el($rec, $confirmed=false) {
+	public function insert_el($rec, $confirmed=false) {
 		$date = date('Y-m-d H:i:s');
 		$rec['create_dt'] = $rec['last_change_dt'] = $date;
 		$rec['last_change_userid'] = $_SESSION['userid'];
 		return parent::insert_el($rec, $confirmed);
 	}
-	protected function update_el($rec, $confirmed=false) {
+	public function update_el($rec, $confirmed=false) {
 		$date = date('Y-m-d H:i:s');
 		$rec['last_change_dt'] = $date;
 		$rec['last_change_userid'] = $_SESSION['userid'];

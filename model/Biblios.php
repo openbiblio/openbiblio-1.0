@@ -260,7 +260,7 @@ class Biblios extends CoreTable {
 	## ======================================================================== ##
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
-	protected function insert_el($biblio) {
+	public function insert_el($biblio) {
 		$this->lock();
 		if (!isset($biblio['marc']) or !is_a($biblio['marc'], 'MarcRecord')) {
 			return array(NULL, array(new FieldError('marc', T("No MARC record set"))));
@@ -274,7 +274,7 @@ class Biblios extends CoreTable {
 		$this->unlock();
 		return array($bibid, NULL);
 	}
-	protected function update_el($biblio) {
+	public function update_el($biblio) {
 		$this->lock();
 		if (!isset($biblio['bibid'])) {
 			Fatal::internalError(T("No bibid set in biblio update"));
