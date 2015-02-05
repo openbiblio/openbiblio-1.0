@@ -28,7 +28,7 @@
 			break;
 		case 'mbrFlds':
 			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
-			$ptr = new MemberCustomFields;
+			$ptr = new MemberCustomFields_DM;
 			break;
 		case 'opts':
 			require_once(REL(__FILE__, "../model/Online.php"));

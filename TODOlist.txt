@@ -20,6 +20,7 @@ Report Generator does not handle all fields correctly (item search and csv outpu
 
 - Fred / Neil
 Add a backup mechanism to Tool or Admin menu
+
 01 Mar 2010 - Luuk Jansen
 In the process of another test I deleted all the entries in my system
 (using the web-interface). Just checking the tables, which should all be empty,
@@ -103,9 +104,24 @@ Remove key prefixes to expose many duplicates.
 25 Jun 2014 - Kees
 Admin & Tool menus do not fit 16:9 screen
 
+11 Aug 2014 - Kees
+Maybe you want to make a note somewhere that the Database name can not contain hyphens,
+or the other way around, specify a list a of allowed characters.
+
+12 Aug 2014 - Kees
+Just trying to add a new site to my test database and noticed that there is
+no 'Country' field for the site. Can this be added anywhere in the admin interface?
+
+12 Aug 2014 - Kees
+Make State 'Default Y/N' a checkbox
+
+
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+5 Feb2015 - Fred, fixed - had bad DB reference - 5 Feb 2015
+Member Fields 'edit' buttone not working
+
 25 Jun 2014 - Kees, done 25 Jun
 Install Instructions need updating to ver 1.0
 
