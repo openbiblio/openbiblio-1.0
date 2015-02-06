@@ -298,7 +298,7 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 .fotoSrceBtns { display:inline; }
 
 #bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
-#bibBlkA, fotoBlkA { display:inline-block; float:left; }
+#bibBlkA, fotoBlkA { display:inline-block; float:left; width:85% }
 #bibBlkB, fotoBlkB { display:inline-block; float:right; }
 #biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
 #biblioFoto.hover:hover {

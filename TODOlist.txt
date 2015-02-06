@@ -119,7 +119,11 @@ Make State 'Default Y/N' a checkbox
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
-5 Feb2015 - Fred, fixed - had bad DB reference - 5 Feb 2015
+6 Feb 2015 - Charlie, done 6 Feb
+I added a width of 85% to the css for the search table so the image stays in the
+top right even with long comments.
+
+5 Feb 2015 - Fred, fixed - had bad DB reference - 5 Feb
 Member Fields 'edit' buttone not working
 
 25 Jun 2014 - Kees, done 25 Jun
