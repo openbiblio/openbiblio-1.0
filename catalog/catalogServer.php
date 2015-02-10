@@ -92,7 +92,7 @@
 	  $theDb = new Biblios;
 		$biblioLst = $theDb->getBiblioByPhrase($criteria);
 		if (sizeof($biblioLst) > 0) {
-			$srchRslt = [];
+			$srchRslt = array();
 			## succesful search, deal with results
 			// Add amount of search results.
 			if($_REQUEST['firstItem'] == null){

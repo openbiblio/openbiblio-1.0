@@ -46,7 +46,7 @@
 		$rcd['fotoWidth'] = Settings::get('thumbnail_width');
 
 		$imgCntr = 0;
-		$tbl = [];
+		$tbl = array();
 		while($row = $rslt->fetch_assoc()) {
 			$imgCntr++;
 			if($imgCntr-1 < $firstItem) continue;

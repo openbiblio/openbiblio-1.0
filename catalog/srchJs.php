@@ -32,7 +32,7 @@ var bs = {
 		bs.url = 'catalogServer.php';
 		bs.listSrvr = '../shared/listSrvr.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
-		bs.opts = [];
+		bs.opts = array();
 
 		// for search criteria form
 		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);
@@ -608,7 +608,7 @@ var bs = {
 		return null;
 	},
 	findMarcFieldSet: function (biblio, tag) {
-	  var fldSet = []; var n = 0;
+	  var fldSet = array(); var n = 0;
 	  for (var i=0; i< biblio.data.length; i++) {
 			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {

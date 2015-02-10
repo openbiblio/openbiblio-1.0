@@ -45,7 +45,7 @@ class MaterialFields extends DBTable {
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
 	public function getDisplayInfo ($nmbr) {
-		$media = [];
+		$media = array();
 		$set = $this->getAll('material_cd,position');
 		while ($row = $set->fetch_assoc()) {
       if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {

@@ -288,7 +288,7 @@ var mf = {
 				$('#msgArea').html(jsonInpt);
 				$('#msgDiv').show();
 			} else if ($.trim(jsonInpt) == '[]') {
-				mf.cpys = [];
+				mf.cpys = array();
 				$('#chkOutList tBody').html('');
 			} else if ($.trim(jsonInpt).substr(0,2) != '[{') {
 				$('#errSpace').html(jsonInpt).show();

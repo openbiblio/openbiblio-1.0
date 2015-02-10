@@ -21,7 +21,7 @@
 	//var_dump($verbose); var_dump($detail); echo "<br />";
 	
 	function getDirList () {
-		$dirs = [];
+		$dirs = array();
 		$handl = opendir("..");
 		while (false !== ($file = readdir($handl))) {
 		  if ($file != '.' && $file != '..') {
@@ -45,7 +45,7 @@
 		return $dirs;
 	};
 	function array_flat($array) {
-		$tmp = [];
+		$tmp = array();
 	  foreach($array as $a) {
 	    if(is_array($a)) {
 	      $tmp = array_merge($tmp, array_flat($a));
@@ -182,11 +182,11 @@
 		return trim($rslt);
 	}
 	
-	$files = [];
+	$files = array();
 	
 	switch ($_REQUEST['mode']) {
 		case 'ck4Orfans':
-			$found = [];
+			$found = array();
 			$dirs = getDirList();
 			foreach ($dirs as $dir) {
 				if($detail)echo "<br /><br />---- $dir ----<br />";			

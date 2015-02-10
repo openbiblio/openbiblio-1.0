@@ -23,7 +23,7 @@
 			$recs = json_decode($_POST['layout']);
 			$nRecs = count($recs);
 			echo "got to server with $nRecs records.<br />";
-			$rec = [];
+			$rec = array();
 			## one row at a time
 			foreach ($recs as $recO) {
 				## convert 'std obj' to array

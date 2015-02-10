@@ -8,7 +8,7 @@
 
 	function getClassList() {
 		$lines = file("../themes/default/style.css");
-		$classes = [];
+		$classes = array();
 		foreach ($lines as $lineNum => $line) {
 			preg_match('/((\D|\A)\.)(\w+)([\s,])/', $line,$grp);
 			if (isset($grp[2])) {
@@ -37,7 +37,7 @@
 		return $mods;
 	};
 	function array_flat($array) {
-		$tmp = [];
+		$tmp = array();
 	  foreach($array as $a) {
 	    if(is_array($a)) {
 	      $tmp = array_merge($tmp, array_flat($a));
@@ -81,7 +81,7 @@
 			}
 
 	  	$modules = moduleList();
-	  	$found = [];
+	  	$found = array();
 			foreach ($modules as $module) {
 				$files = getFileList('../'.$module);
 				foreach ($files as $file) {

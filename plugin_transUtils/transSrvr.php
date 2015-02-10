@@ -25,7 +25,7 @@
 		return $mods;
 	};
 	function array_flat($array) {
-		$tmp = [];
+		$tmp = array();
 	  foreach($array as $a) {
 	    if(is_array($a)) {
 	      $tmp = array_merge($tmp, array_flat($a));
@@ -73,7 +73,7 @@
 	  	break;
 	  	
 	  case 'ck4TransDupes':
-	  	$arrKeys = [];
+	  	$arrKeys = array();
 			$lines = file("../locale/".$_POST['locale']."/trans.php");
 			foreach ($lines as $line_num => $line) {
 				//echo substr($line,0,1)."<br />";
@@ -104,7 +104,7 @@
 	  	
 	  case 'ck4TransUnused':
 	  	$modules = moduleList();
-	  	$found = [];
+	  	$found = array();
 			require(REL(__FILE__, "../locale/".$_POST['locale']."/trans.php"));
 			foreach ($modules as $module) {	
 				$files = getFileList('../'.$module);

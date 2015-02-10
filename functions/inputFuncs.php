@@ -12,7 +12,7 @@
  * @author Micah Stetson
  * @author Fred LaPlante
  */
-$patterns = [];
+$patterns = array();
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	global $patterns;
 	// establish input validation patterns for later use

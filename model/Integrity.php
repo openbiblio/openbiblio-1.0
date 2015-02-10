@@ -373,7 +373,7 @@ class Integrity extends Queryi{
 	
 	/* Remove repeating MARC fields that should not repeat */
 	function removeRepeaters () {
-		$bibList = [];
+		$bibList = array();
 		## collect a set of offending cases
 		$sql =  'SELECT f.bibid, f.tag, s.subfield_cd, s.subfieldid, COUNT( f.fieldid ) AS count '
 					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
