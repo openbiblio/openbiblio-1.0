@@ -8,9 +8,9 @@
 	//print_r($_REQUEST);echo "<br />";
 
 	##### do NOT use " on these items #####
-	$map['callno'] = ['099$a'];
-	$map['title'] = ['245$a', '240$a', '246$a'];
-	$map['author'] = ['100$a'];
+	$map['callno'] = array('099$a');
+	$map['title'] = array('245$a', '240$a', '246$a');
+	$map['author'] = array('100$a');
 
 	switch ($_REQUEST['mode']) {
 	case 'getOpts':

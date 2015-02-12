@@ -41,7 +41,7 @@
 			$set = array();
 			$rslt = $db->select("SELECT * FROM Information_Schema.Engines WHERE SUPPORT!='NO' ORDER by ENGINE");
 			while ($row = $rslt->fetch_assoc()) {
-				$engine = ['support'=>$row['SUPPORT'], 'transactions'=>$row['TRANSACTIONS']];
+				$engine = array('support'=>$row['SUPPORT'], 'transactions'=>$row['TRANSACTIONS']);
 				$set[$row['ENGINE']] = $engine;
 			}
 			$info['engines'] = $set;

@@ -15,7 +15,7 @@ if (empty($query) || count($host) == 0) {
         Library of Congress
     <br />
     RPN Query:
-    <input type="text" size="30" name="query" />ex.'@attr 1=4 "mysql%"'
+    <input type="text" size="30" name="query" placeholder="ex: @attr 1=4 \"mysql%\" " />
     <input type="submit" name="action" value="Search" />
     </form>
     ';        

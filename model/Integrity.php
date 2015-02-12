@@ -387,12 +387,12 @@ class Integrity extends Queryi{
 		$ptr = $this->select($sql);
 		while ($bib = $ptr->fetch_assoc()) {
 			$case = $bib['bibid'].'-'.$bib['tag'].$bib['subfield_cd'];
-			$dups[$case] = ['nmbr'=>$bib['count'], 
-											'bibid'=>$bib['bibid'], 
+			$dups[$case] = array('nmbr'=>$bib['count'],
+											'bibid'=>$bib['bibid'],
 											'tag'=>$bib['tag'], 
 											'subcd'=>$bib['subfield_cd'],
 											'subId'=>$bib['subfieldid']
-											];
+											);
 		}
 		## loop through all cases found above
 		foreach ($dups as $case) {
