@@ -32,7 +32,7 @@ var bs = {
 		bs.url = 'catalogServer.php';
 		bs.listSrvr = '../shared/listSrvr.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
-		bs.opts = array();
+		bs.opts = [];
 
 		// for search criteria form
 		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);

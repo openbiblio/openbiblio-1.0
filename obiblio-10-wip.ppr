@@ -2104,7 +2104,7 @@ obiblio-10-wip
 			.hg\undo.branch
 			.hg\undo.desc
 			.hg\undo.dirstate
-		+admin
+		-admin
 			-legacy
 				admin\legacy\calendar_del.php
 				admin\legacy\calendar_del_confirm.php
@@ -2576,7 +2576,7 @@ obiblio-10-wip
 			mediaLayouts\magazines.lay
 			mediaLayouts\maps.lay
 			mediaLayouts\videoDvd.lay
-		+model
+		-model
 			-legacy
 				model\legacy\Stock.php
 			model\BiblioCopyFields.php
@@ -2608,7 +2608,7 @@ obiblio-10-wip
 			model\States.php
 			model\Themes.php
 			model\TransactionTypes.php
-		-opac
+		+opac
 			-legacy
 				opac\legacy\book_item.php
 				opac\legacy\bookings.php
@@ -3088,7 +3088,7 @@ obiblio-10-wip
 				themes\sclrc\header.php
 				themes\sclrc\header_opac.php
 				themes\sclrc\header_top.php
-		-tools
+		+tools
 			tools\CheckLang.php
 			tools\chgDBCollForms.php
 			tools\chgDBCollJs.php
@@ -3146,9 +3146,12 @@ obiblio-10-wip
 17=admin\integrity.php
 18=admin\integrity_check.php
 19=model\Integrity.php
+20=opac\imageSrvr.php
+21=tools\toolSrvr.php
+22=tools\yazTest.php
 [Selected Project Files]
 Main=
-Selected=model\Integrity.php
+Selected=tools\yazTest.php
 [TODOlist.txt]
 TopLine=82
 Caret=2,122
@@ -3210,5 +3213,14 @@ Caret=1,1
 TopLine=1
 Caret=1,1
 [model\Integrity.php]
-TopLine=351
-Caret=1,377
+TopLine=368
+Caret=13,395
+[opac\imageSrvr.php]
+TopLine=1
+Caret=33,13
+[tools\toolSrvr.php]
+TopLine=32
+Caret=86,44
+[tools\yazTest.php]
+TopLine=1
+Caret=1,22
