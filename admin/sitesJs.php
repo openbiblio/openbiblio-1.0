@@ -11,7 +11,7 @@ function Sit ( url, form, dbAlias, hdrs, listFlds, opts ) {
 Sit.prototype = inherit(List.prototype);
 Sit.prototype.constructor = Sit;
 Sit.prototype.init = function () {
-	this.noshows = array();
+	this.noshows = [];
 	List.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
 };

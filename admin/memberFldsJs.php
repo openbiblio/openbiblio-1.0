@@ -11,7 +11,7 @@ function Mbf ( url, form, dbAlias, hdrs, listFlds, opts ) {
 Mbf.prototype = inherit(List.prototype);
 Mbf.prototype.constructor = Mbf;
 Mbf.prototype.init = function () {
-	this.noshows = array();
+	this.noshows = [];
 	List.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
 };

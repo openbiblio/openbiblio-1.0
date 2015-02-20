@@ -74,7 +74,7 @@ var csvi = {
 		
 	//------------------------------
 	getCollections: function () {
-		csvi.collections = array();
+		csvi.collections = [];
 	  $.getJSON(csvi.url,{'mode':'getCollections'}, function(json){
 	  	$.each(json, function (k,v){
 				csvi.collections[k] = v;
@@ -83,7 +83,7 @@ var csvi = {
 	},
 	//----//
 	getMediaTypes: function () {
-		csvi.mediaTypes = array();
+		csvi.mediaTypes = [];
 	  $.getJSON(csvi.url,{'mode':'getMediaTypes'}, function(json){
 	  	$.each(json, function (k,v){
 	  		csvi.mediaTypes[k] = v;
@@ -215,7 +215,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 		var csvRcrds = $('#csvRcrds'); csvRcrds.html(' ');
 		var csvErrs = $('#csvErrs'); csvErrs.html(' ');
 		var showAll = csvi.getShowAllFlg();
-		csvi.csvRecords = array();
+		csvi.csvRecords = [];
 		//console.log('showAll='+showAll);
 		//console.log('bcdDflt='+$('#bcdDeflt').val());
 	

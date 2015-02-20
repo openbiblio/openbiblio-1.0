@@ -31,7 +31,7 @@ var mtl = {
 		$('.reqd sup').css('color','red');
 		$('#updateMsg').hide();
 
-		//mtl.btnColor = array();
+		//mtl.btnColor = [];
 		mtl.configBtn = $('#configBtn');
 		mtl.saveBtn = $('#saveBtn');
 		

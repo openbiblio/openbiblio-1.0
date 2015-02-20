@@ -451,7 +451,7 @@ var bs = {
 				ttlNum = parseInt(queryInfo.totalNum),
 				modFirstItem = parseInt(queryInfo.firstItem) + 1;
 		$('.rsltQuan').html(' '+ttlNum+' <?php echo T("Items"); ?>('+modFirstItem+'-'+lastItem+ ') ');
-		bs.biblio = Array();
+		bs.biblio = [];
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
@@ -608,7 +608,7 @@ var bs = {
 		return null;
 	},
 	findMarcFieldSet: function (biblio, tag) {
-	  var fldSet = array(); var n = 0;
+	  var fldSet = []; var n = 0;
 	  for (var i=0; i< biblio.data.length; i++) {
 			var tmp = eval('('+biblio.data[i]+')');
 			if (tmp.marcTag == tag) {
