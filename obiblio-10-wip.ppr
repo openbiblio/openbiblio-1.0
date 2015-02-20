@@ -2608,7 +2608,7 @@ obiblio-10-wip
 			model\States.php
 			model\Themes.php
 			model\TransactionTypes.php
-		+opac
+		-opac
 			-legacy
 				opac\legacy\book_item.php
 				opac\legacy\bookings.php
@@ -3088,7 +3088,7 @@ obiblio-10-wip
 				themes\sclrc\header.php
 				themes\sclrc\header_opac.php
 				themes\sclrc\header_top.php
-		+tools
+		-tools
 			tools\CheckLang.php
 			tools\chgDBCollForms.php
 			tools\chgDBCollJs.php
@@ -3149,9 +3149,12 @@ obiblio-10-wip
 20=opac\imageSrvr.php
 21=tools\toolSrvr.php
 22=tools\yazTest.php
+23=circ\memberJs.php
+24=model\Settings.php
+25=catalog\srchForms.php
 [Selected Project Files]
 Main=
-Selected=tools\yazTest.php
+Selected=shared\common.php
 [TODOlist.txt]
 TopLine=82
 Caret=2,122
@@ -3165,8 +3168,8 @@ Mark1=1,472
 Mark2=1,476
 Mark3=1,474
 [shared\common.php]
-TopLine=1
-Caret=35,84
+TopLine=12
+Caret=1,41
 [shared\header_top.php]
 TopLine=1
 Caret=1,1
@@ -3195,8 +3198,8 @@ Caret=19,31
 TopLine=216
 Caret=1,243
 [catalog\srchJs.php]
-TopLine=183
-Caret=6,426
+TopLine=10
+Caret=1,36
 [catalog\onlineServer.php]
 TopLine=15
 Caret=5,37
@@ -3224,3 +3227,12 @@ Caret=86,44
 [tools\yazTest.php]
 TopLine=1
 Caret=1,22
+[circ\memberJs.php]
+TopLine=188
+Caret=27,216
+[model\Settings.php]
+TopLine=18
+Caret=3,105
+[catalog\srchForms.php]
+TopLine=1
+Caret=1,1

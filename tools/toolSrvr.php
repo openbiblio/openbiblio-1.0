@@ -39,7 +39,7 @@
 			$info['version'] = $rslt;
 
 			$set = array();
-			$rslt = $db->select("SELECT * FROM Information_Schema.Engines WHERE SUPPORT!='NO' ORDER by ENGINE");
+			$rslt = $db->select("SELECT * FROM Information_Schema.Engines ORDER by ENGINE");
 			while ($row = $rslt->fetch_assoc()) {
 				$engine = array('support'=>$row['SUPPORT'], 'transactions'=>$row['TRANSACTIONS']);
 				$set[$row['ENGINE']] = $engine;
