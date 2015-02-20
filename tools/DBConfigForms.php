@@ -28,18 +28,23 @@
 			<div class="rowflex-container">
 			<table  id="srvrCharSets" border="1">
 				<caption>Character Sets</caption>
-				<thead><tr><th>Name</th><th>Value</th></thead>
+				<thead><tr><th>Name</th><th>Value</th></tr></thead>
 				<tbody class="striped"></tbody>
 			</table>
 			<table  id="srvrCollations" border="1">
 				<caption>Collation Settings</caption>
-				<thead><tr><th>Name</th><th>Value</th></thead>
+				<thead><tr><th>Name</th><th>Value</th></tr></thead>
 				<tbody class="striped"></tbody>
 			</table>
 			</div>
 			<table  id="srvrEngines" border="1">
 				<caption>Engines Available</caption>
-				<thead><tr><th>Name</th><th>Support</th><th>Transactions</th></thead>
+				<thead><tr><th>Name</th><th>Support</th><th>Transactions</th></tr></thead>
+				<tbody class="striped"></tbody>
+			</table>
+			<table id="srvrMiscVar" border="1">
+				<caption>Misc. Variables</caption
+				<thead><tr><th>Name</th><th>Value</th></tr></thead>
 				<tbody class="striped"></tbody>
 			</table>
 		</fieldset>

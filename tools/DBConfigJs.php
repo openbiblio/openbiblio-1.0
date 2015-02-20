@@ -52,6 +52,13 @@ var cdc = {
 					sets += '<tr><td>'+key+'</td><td>'+value.support+'</td><td>'+value.transactions+'</td>';
 				});
 				$('#srvrEngines tbody').html(sets);
+
+				var sets = '';
+				var misc = response.misc;
+				$.each(misc, function (key, value){
+					sets += '<tr><td>'+key+'</td><td>'+value+'</td>';
+				});
+				$('#srvrMiscVar tbody').html(sets);
 				$('#info').show();
 			}
 		);

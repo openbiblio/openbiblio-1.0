@@ -58,8 +58,18 @@
 			while ($row = $rslt->fetch_assoc()) {
 				$set[$row['Variable_name']] = $row['Value'];
 			}
+//print_r($set);
 			$info['collations'] = $set;
+
+			$set = array();
+			$rslt = $db->select("SHOW Variables LIKE 'max_%'");
+			while ($row = $rslt->fetch_assoc()) {
+				$set[$row['Variable_name']] = $row['Value'];
+			}
+//print_r($set);
+			$info['misc'] = $set;
 			echo json_encode($info);
+
 			break;
 
 	  case 'fetchCollSet':
