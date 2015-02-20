@@ -55,8 +55,14 @@ var cdc = {
 
 				var sets = '';
 				var misc = response.misc;
+				var firstTime = true;
 				$.each(misc, function (key, value){
-					sets += '<tr><td>'+key+'</td><td>'+value+'</td>';
+console.log(key+' = '+value+';<br>/');
+					if (firstTime) {
+						if (value > '184467440737') {value = 'unlimited';}
+						sets += '<tr><td>'+key+'</td><td>'+value+'</td></tr>';
+						if (key == 'max_write_lock_count') { firstTime = false; }
+					}
 				});
 				$('#srvrMiscVar tbody').html(sets);
 

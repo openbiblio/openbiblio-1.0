@@ -29,7 +29,7 @@ class Settings extends Queryi {
 		$r = $db->select('SELECT * FROM settings');
 		while ($s = $r->fetch_assoc()) {
 			$_settings_cache[$s['name']] = $s['value'];
-			$_settings_validators[$s['name']] = explode(',', $s['validators']);
+			$_settings_validators[$s['name']] = explode(',', $s['validator']);
 		}
 	}
 	static function get($name) {
