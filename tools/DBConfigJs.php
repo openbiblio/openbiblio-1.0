@@ -59,7 +59,8 @@ var cdc = {
 					sets += '<tr><td>'+key+'</td><td>'+value+'</td>';
 				});
 				$('#srvrMiscVar tbody').html(sets);
-				$('#info').show();
+
+				$('#info').show().find("tr:odd").css( "background-color", "#eee" );
 			}
 		);
 	},

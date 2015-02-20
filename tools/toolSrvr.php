@@ -58,7 +58,6 @@
 			while ($row = $rslt->fetch_assoc()) {
 				$set[$row['Variable_name']] = $row['Value'];
 			}
-//print_r($set);
 			$info['collations'] = $set;
 
 			$set = array();
@@ -66,7 +65,6 @@
 			while ($row = $rslt->fetch_assoc()) {
 				$set[$row['Variable_name']] = $row['Value'];
 			}
-//print_r($set);
 			$info['misc'] = $set;
 			echo json_encode($info);
 

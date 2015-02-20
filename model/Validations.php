@@ -16,6 +16,7 @@ class Validations extends DmTable {
 		));
 		$this->setKey('code');
 	}
+
 	////TODO this should not be needed, but DBTable function doesn't work - FL
 	function deleteOne($code) {
 		$this->lock();

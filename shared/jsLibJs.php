@@ -2,6 +2,11 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+<?php
+	if (!$doing_install) {
+			require_once(REL(__FILE__, "../model/Validations.php"));
+	}
+?>
 // JavaScript Document
 "use strict";
 
@@ -66,9 +71,8 @@ $.fn.loadSelect = function (optionsDataArray) {
 var flos = {
 //-------------------------------------------------------------------
 <?php
+	## required for inptFld() below, may be used by others ##
 	if (!$doing_install) {
-			## required for inptFld() below, may be used by others ##
-			require_once(REL(__FILE__, "../model/Validations.php"));
 	  	$db = new Validations;
 			$set = $db->getAll('description');
 			echo "	patterns: {\n";
