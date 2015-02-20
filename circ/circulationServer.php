@@ -55,12 +55,13 @@
 		break;
 */
 	case "doItemCheckin":
-		$cpy = new BarcdCopy($_POST['barcodeNmbr']);
+		$cpy = new BarcdCopy($_POST['barcodeNmbr']);  // alternate entry to copy() object
 		$copy = $cpy->getData();
 		if (!$copy) { echo $badBarcodeText; exit; }
 
 		if ($copy['status'] != 'out') {echo T("This item not checked out"); exit; }
 		if (!$copy['histid']) {echo "no hist id recorded"; exit; }
+//echo "status & histid OK<br>/n";
 
 		### post to all related files
 		$cpy->setCheckedIn();

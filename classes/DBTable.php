@@ -126,12 +126,14 @@ abstract class DBTable extends Queryi {
 		return array($seq_val, $errors);
 	}
 	public function insert_el($rec, $confirmed=false) {
+//echo "in DBTbl:insert_el ,";
+//print_r($rec);
 		$this->lock();
-		$errs = $this->checkForeignKeys_el($rec);
-		if (!empty($errs)) {
-			$this->unlock();
-			return array(NULL, $errs);
-		}
+		//$errs = $this->checkForeignKeys_el($rec);
+		//if (!empty($errs)) {
+		//	$this->unlock();
+		//	return array(NULL, $errs);
+		//}
 //		$errs = $this->validate_el($rec, true);
 //		if ($confirmed) {
 //			$errs = $this->skipIgnorableErrors($errs);

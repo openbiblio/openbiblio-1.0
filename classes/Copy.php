@@ -89,7 +89,9 @@ class Copy {
 			'status_cd'=>$this->hdrFlds['status'],
 			'bookingid'=>$this->hdrFlds['bookingid'],
 		));
-		$this->hdrFlds['histid'] = $newHistid;
+		$this->hdrFlds['histid'] = $newHistid[0];
+//echo "newHistid=";print_r($newHistid);echo "<br>\n";
+
 	}
 	private function update_copy () {
 		$this->cpy->update(array(
