@@ -5,14 +5,27 @@
 
 	require_once("../shared/common.php");
 
-	require_once(REL(__FILE__, "../classes/Biblio.php"));
-	require_once(REL(__FILE__, "../model/Biblios.php"));
-		$biblios = new Biblios;
-	require_once(REL(__FILE__, "../classes/Copy.php"));
-	require_once(REL(__FILE__, "../model/Copies.php"));
-		$copies = new Copies;
-	require_once(REL(__FILE__, "../model/History.php"));
-		$history = new History;
+	switch ($_REQUEST['mode']) {
+	case 'doShelveItem':
+	case "doItemCheckin":
+	case 'doShelveAll':
+		require_once(REL(__FILE__, "../classes/Copy.php"));
+		require_once(REL(__FILE__, "../model/Copies.php"));
+			$copies = new Copies;
+		break;
+
+	case 'fetchShelvingCart':
+		require_once(REL(__FILE__, "../classes/Biblio.php"));
+		require_once(REL(__FILE__, "../model/Copies.php"));
+			$copies = new Copies;
+		require_once(REL(__FILE__, "../model/History.php"));
+			$history = new History;
+		break;
+
+	}
+/*
+		require_once(REL(__FILE__, "../model/Biblios.php"));
+			$biblios = new Biblios;
 	require_once(REL(__FILE__, "../model/Collections.php"));
 		$collections = new Collections;
 	require_once(REL(__FILE__, "../model/Holds.php"));
@@ -21,6 +34,7 @@
 		$bookings = new Bookings;
 	require_once(REL(__FILE__, "../model/MemberAccounts.php"));
 		$acct = new MemberAccounts;
+*/
 
 	#****************************************************************************
 	$badBarcodeText = T("No copy with that barcode");
@@ -103,7 +117,7 @@
 	case 'doShelveAll':
 		$copies->massCheckin();
 		break;
-		
+
 	//// ====================================////
 	default:
 	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";

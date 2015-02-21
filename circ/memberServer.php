@@ -6,39 +6,85 @@
 	require_once("../shared/common.php");
 	require_once("../shared/global_constants.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+
+	switch ($_REQUEST['mode']) {
+	case 'getMbrType':
+		require_once(REL(__FILE__, "../model/MemberTypes.php"));
+			$mbrTypes = new MemberTypes;
+		break;
+	case 'getCustomFlds':
+		require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+			$customFlds = new MemberCustomFields_DM;
+		break;
+	case 'getSite':
+	case 'getSites':
+		require_once(REL(__FILE__, "../model/Sites.php"));
+			$sites = new Sites;
+	  break;
+	case 'getAcnts':
+	case 'addAcntTrans':
+	case 'd-3-L-3-tAcntTrans':
+		require_once(REL(__FILE__, "../model/MemberAccounts.php"));
+			$acct = new MemberAccounts;
+		break;
+	case 'getAcntTranTypes':
+		require_once(REL(__FILE__, "../model/TransactionTypes.php"));
+			$transtypes = new TransactionTypes;
+		break;
+	case 'doGetMbr':
+	case 'getNewBarCd':
+	case 'doBarcdSearch':
+	case 'doNameFragSearch':
+	case 'addNewMember':
+	case 'updateMember':
+	case 'd-3-L-3-tMember':
+		require_once(REL(__FILE__, "../model/Members.php"));
+			$members = new Members;
+		require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+			$customFlds = new MemberCustomFields_DM;
+		break;
+	case 'getAcntActivity':
+		require_once(REL(__FILE__, "../model/MemberAccounts.php"));
+			$acct = new MemberAccounts;
+		require_once(REL(__FILE__, "../model/TransactionTypes.php"));
+			$transtypes = new TransactionTypes;
+		break;
+	case 'getChkOuts':
+		require_once(REL(__FILE__, "../classes/Copy.php"));
+		require_once(REL(__FILE__, "../model/Copies.php"));
+			$copies = new Copies;
+		require_once(REL(__FILE__, "../classes/Biblio.php"));
+		require_once(REL(__FILE__, "../model/Biblios.php"));
+			$biblios = new Biblios;
+		break;
+	case 'doCheckout':
+		require_once(REL(__FILE__, "../model/Bookings.php"));
+			$bookings = new Bookings;
+		break;
+	case 'getHist':
+		require_once(REL(__FILE__, "../model/History.php"));
+			$history = new History;
+		require_once(REL(__FILE__, "../classes/Biblio.php"));
+		break;
+	case 'getHolds':
+	case 'd-3-L-3-tHold':
+		require_once(REL(__FILE__, "../model/Holds.php"));
+			$holds = new Holds;
+		require_once(REL(__FILE__, "../classes/Copy.php"));
+		require_once(REL(__FILE__, "../classes/Biblio.php"));
+		break;
+	}
+
+
 	require_once(REL(__FILE__, "../classes/Report.php"));
 
-	require_once(REL(__FILE__, "../model/Members.php"));
-		$members = new Members;
-	require_once(REL(__FILE__, "../model/MemberTypes.php"));
-		$mbrTypes = new MemberTypes;
-	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
-		$customFlds = new MemberCustomFields_DM;
-	require_once(REL(__FILE__, "../model/Sites.php"));
-		$sites = new Sites;
-	require_once(REL(__FILE__, "../model/MemberAccounts.php"));
-		$acct = new MemberAccounts;
-	require_once(REL(__FILE__, "../model/TransactionTypes.php"));
-		$transtypes = new TransactionTypes;
-	require_once(REL(__FILE__, "../model/Biblios.php"));
-		$biblios = new Biblios;
 	require_once(REL(__FILE__, "../model/Collections.php"));
 		$colls = new CircCollections;
-	require_once(REL(__FILE__, "../model/Copies.php"));
-		$copies = new Copies;
-	require_once(REL(__FILE__, "../model/History.php"));
-		$history = new History;
-	require_once(REL(__FILE__, "../model/Holds.php"));
-		$holds = new Holds;
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$mediaTypes = new MediaTypes;
-	require_once(REL(__FILE__, "../model/Bookings.php"));
-		$bookings = new Bookings;
 	require_once(REL(__FILE__, "../model/Sites.php"));
 		$sites = new Sites;
 
-	require_once(REL(__FILE__, "../classes/Biblio.php"));
-	require_once(REL(__FILE__, "../classes/Copy.php"));
 
 	#****************************************************************************
 	function mbrArray() {
@@ -82,6 +128,10 @@
 		}
 		echo json_encode($flds);
 		break;
+	case 'getSite':
+		$site = $sites->getOne($_GET['siteid']);
+    echo json_encode($site);
+		break;
 	case 'getSites':
 		$mbr['site'] = $sites->getOne($mbr['siteid']);
 	  break;
@@ -91,10 +141,6 @@
 	case 'getAcntTranTypes':
 		$type = $transtypes->getSelect();
 		echo json_encode($type);
-		break;
-	case 'getSite':
-		$site = $sites->getOne($_GET['siteid']);
-    echo json_encode($site);
 		break;
 
 	//// ====================================////
@@ -178,7 +224,6 @@
 		}
 	  echo json_encode($chkOutList);
 		break;
-
 	case 'doCheckout':
 		$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
 		$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], $_POST['calCd'], array($_POST["mbrid"]));

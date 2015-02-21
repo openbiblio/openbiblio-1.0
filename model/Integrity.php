@@ -99,7 +99,8 @@ class Integrity extends Queryi{
 			),			
 */
 			$this->checks[] = array(
-				'error' => T("%count% items with multiple un-repeatable fields"),
+				//'error' => T("%count% items with multiple un-repeatable fields"),
+				'error' => T("items with multiple un-repeatable fields"),
 				'countSql' => 'SELECT COUNT(DISTINCT t.bibid)AS count FROM ('
 					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
 					. 'FROM biblio_field f, biblio_subfield s, material_fields m, biblio b '
@@ -124,7 +125,8 @@ class Integrity extends Queryi{
 				// NO AUTOMATIC FIX
 			);
 			$this->checks[] = array(
-				'error' => T("%count% items with empty collections"),
+				//'error' => T("%count% items with empty collections"),
+				'error' => T("items with empty collections"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
 					. 'WHERE collection_cd = 0 ',
@@ -134,7 +136,8 @@ class Integrity extends Queryi{
 					.	'WHERE collection_cd = 0 ',
 			);
 			$this->checks[] = array(
-				'error' => T("%count% items with empty media-type"),
+				//'error' => T("%count% items with empty media-type"),
+				'error' => T("items with empty media-type"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
 					. 'WHERE material_cd = 0 ',
@@ -144,7 +147,8 @@ class Integrity extends Queryi{
 					.	'WHERE material_cd = 0 ',
 			);
 			$this->checks[] = array(
-				'error' => T("%count% unattached copy status history records"),
+				//'error' => T("%count% unattached copy status history records"),
+				'error' => T("unattached copy status history records"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio_copy '
 					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
@@ -158,7 +162,8 @@ class Integrity extends Queryi{
 				*/
 			);
 			$this->checks[] = array(
-				'error' => T("%count% invalid biblio in copy status history records"),
+				//'error' => T("%count% invalid biblio in copy status history records"),
+				'error' => T("invalid biblio in copy status history records"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_status_hist left join biblio '
 					. 'on biblio.bibid=biblio_status_hist.bibid '
@@ -265,7 +270,8 @@ class Integrity extends Queryi{
 				*/
 			);
 			$this->checks[] = array(
-				'error' => T("%count% copies without site"),
+				//'error' => T("%count% copies without site"),
+				'error' => T("copies without site"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_copy left join site '
 					. 'on site.siteid=biblio_copy.siteid '
@@ -273,7 +279,8 @@ class Integrity extends Queryi{
 				// NO AUTOMATIC FIX
 			);
 			$this->checks[] = array(
-				'error' => T("%count% members without sites"),
+				//'error' => T("%count% members without sites"),
+				'error' => T("members without sites"),
 				'countSql' => 'select count(*) as count '
 					. 'from member left join site '
 					. 'on site.siteid=member.siteid '
@@ -318,7 +325,8 @@ class Integrity extends Queryi{
 				*/
 			);
 			$this->checks[] = array(
-				'error' => T("%count% double check outs"),
+				//'error' => T("%count% double check outs"),
+				'error' => T("double check outs"),
 				'countFn' => 'countDoubleCheckouts',
 				// NO AUTOMATIC FIX
 			);

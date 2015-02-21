@@ -2579,15 +2579,15 @@ obiblio-10-wip
 		-model
 			-legacy
 				model\legacy\Stock.php
+			classes\Biblio.php
 			model\BiblioCopyFields.php
 			model\BiblioImages.php
-			model\Biblios.php
 			model\Bookings.php
 			model\Calendars.php
 			model\Cart.php
 			model\Collections.php
-			model\Copies.php
 			model\CopiesCustomFields.php
+			classes\Copy.php
 			model\CopyStatus.php
 			model\History.php
 			model\Holds.php
@@ -3055,7 +3055,7 @@ obiblio-10-wip
 			shared\help_Js.php
 			shared\help_nav.php
 			shared\image_browse.php
-			shared\jsLib.js
+			shared\jsLibJs.php
 			shared\jsontemplate.php
 			shared\layout.php
 			shared\listSrvr.php
@@ -3090,9 +3090,9 @@ obiblio-10-wip
 				themes\sclrc\header_top.php
 		-tools
 			tools\CheckLang.php
-			tools\chgDBCollForms.php
-			tools\chgDBCollJs.php
 			tools\cksyntax
+			tools\DBConfigForms.php
+			tools\DBConfigJs.php
 			tools\Development_Guidelines.txt
 			tools\index.php
 			tools\noauth.php
@@ -3135,26 +3135,19 @@ obiblio-10-wip
 6=shared\footer.php
 7=shared\menu.php
 8=classes\CoreTable.php
-9=classes\DBTable.php
-10=classes\DmTable.php
-11=classes\Queryi.php
+9=classes\Queryi.php
+10=classes\DBTable.php
+11=classes\DmTable.php
 12=locale\en\trans.php
-13=catalog\srchJs.php
-14=catalog\onlineServer.php
-15=catalog\olSearch.php
-16=catalog\olSruSrch.php
-17=admin\integrity.php
-18=admin\integrity_check.php
-19=model\Integrity.php
-20=opac\imageSrvr.php
-21=tools\toolSrvr.php
-22=tools\yazTest.php
-23=circ\memberJs.php
-24=model\Settings.php
-25=catalog\srchForms.php
+13=shared\jsLibJs.php
+14=admin\integrity.php
+15=admin\integrity_check.php
+16=model\Integrity.php
+17=install\indexJs.php
+18=database_constants.php
 [Selected Project Files]
 Main=
-Selected=shared\common.php
+Selected=database_constants.php
 [TODOlist.txt]
 TopLine=82
 Caret=2,122
@@ -3162,16 +3155,16 @@ Caret=2,122
 TopLine=25
 Caret=20,40
 [themes\default\style.css]
-TopLine=272
-Caret=65,301
+TopLine=36
+Caret=18,58
 Mark1=1,472
 Mark2=1,476
 Mark3=1,474
 [shared\common.php]
 TopLine=12
-Caret=1,41
+Caret=28,41
 [shared\header_top.php]
-TopLine=1
+TopLine=38
 Caret=1,1
 [themes\default\header.php]
 TopLine=39
@@ -3185,54 +3178,33 @@ Caret=35,71
 [classes\CoreTable.php]
 TopLine=1
 Caret=8,35
+[classes\Queryi.php]
+TopLine=6
+Caret=28,39
 [classes\DBTable.php]
-TopLine=117
-Caret=8,128
+TopLine=75
+Caret=3,130
 [classes\DmTable.php]
 TopLine=1
 Caret=22,30
-[classes\Queryi.php]
-TopLine=12
-Caret=19,31
 [locale\en\trans.php]
-TopLine=216
-Caret=1,243
-[catalog\srchJs.php]
-TopLine=10
-Caret=1,36
-[catalog\onlineServer.php]
-TopLine=15
-Caret=5,37
-[catalog\olSearch.php]
-TopLine=6
-Caret=1,1
-[catalog\olSruSrch.php]
-TopLine=1
-Caret=2,18
+TopLine=395
+Caret=26,430
+[shared\jsLibJs.php]
+TopLine=34
+Caret=2,74
 [admin\integrity.php]
 TopLine=1
 Caret=1,1
 [admin\integrity_check.php]
 TopLine=1
-Caret=1,1
+Caret=3,18
 [model\Integrity.php]
-TopLine=368
-Caret=13,395
-[opac\imageSrvr.php]
+TopLine=311
+Caret=19,329
+[install\indexJs.php]
+TopLine=106
+Caret=48,109
+[database_constants.php]
 TopLine=1
-Caret=33,13
-[tools\toolSrvr.php]
-TopLine=32
-Caret=86,44
-[tools\yazTest.php]
-TopLine=1
-Caret=1,22
-[circ\memberJs.php]
-TopLine=188
-Caret=27,216
-[model\Settings.php]
-TopLine=18
-Caret=3,105
-[catalog\srchForms.php]
-TopLine=1
-Caret=1,1
+Caret=1,23
