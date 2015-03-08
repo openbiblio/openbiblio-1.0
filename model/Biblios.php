@@ -50,9 +50,12 @@ class Biblios extends CoreTable {
 
 	## ========================= ##
 	public function getBiblioByPhrase($criteria, $mode=null) {
-		$jsonSpec = $this->makeParamStr($criteria);
+		// actual sort string for a search is created by the following line
+		// warning! not straight-forward, be careful requires good understanding of MARC field intentions
+		$jsonSpec = $this->makeParamStr($criteria);   // see routine near bottom of this file
 		/* mode may be null at times */
 	  $spec = json_decode($jsonSpec, true);
+
 	  $srchTxt = strtolower($_REQUEST[searchText]);
 	  if ($mode == 'words')
 			$keywords = explode(' ',$srchTxt);
@@ -111,6 +114,7 @@ class Biblios extends CoreTable {
 					$sqlOrder .= ", sorts" . $orderNo . ".`subfield_data`";
 				}
 			}
+
 			if(isset($item['siteTag'])){
 				$sqlSelect .= " JOIN `biblio_copy` bc";
 				$sqlWhere .= " AND bc.bibid = b.bibid AND bc.siteid = '" . $item['siteValue'] . "' ";
@@ -146,6 +150,7 @@ class Biblios extends CoreTable {
 		}
 
 		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
+		//echo "sql= $sql<br>\n";
 		$rows = $this->select($sql);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = $row[bibid];
@@ -404,6 +409,7 @@ class Biblios extends CoreTable {
 		/* - - - - - - - - - - - - - */
 		/* Actual Search begins here */
 		$paramStr = "[" . $params . "," . $searchTags . "]";
+		//echo "srch params: $paramStr <br>\n";
 		return $paramStr;
 	}
 }
