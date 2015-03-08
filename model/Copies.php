@@ -225,6 +225,7 @@ class Copies extends CoreTable {
 		echo "!!success!!";
 		return;
 	}
+
 	## ========================= ##
 	public function deleteCopy($copyid) {
 		$this->lock();
@@ -243,6 +244,7 @@ class Copies extends CoreTable {
 		$this->unlock();
 		return T("Delete completed");
 	}
+
 	## ========================= ##
 	private function postCstmCopyFlds ($bibid, $copyid) {
 		// Update custom fields if set

@@ -234,7 +234,8 @@ var idis = {
 
 				// dynamically created buttons
 				$('.editBtn').on('click',null,idis.doCopyEdit);
-				$('.deltBtn').on('click',{'copyid':copy.copyid},idis.doCopyDelete);
+				//$('.deltBtn').on('click',{'copyid':copy.copyid},idis.doCopyDelete);
+				$('.deltBtn').on('click',{'copyid':copy.copyid},ced.doCopyDelete);
 	  });
 	},
 

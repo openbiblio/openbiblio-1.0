@@ -229,7 +229,8 @@
 	  break;
 	case 'deleteCopy':
 	  $theDb = new Copies;
-		echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+		//echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+		echo $theDb->deleteCopy($_REQUEST['copyid']);
 		break;
 	case 'deleteMultiCopies':
 	  $theDb = new Copies;
