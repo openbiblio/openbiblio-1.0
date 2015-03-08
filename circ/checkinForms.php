@@ -10,7 +10,9 @@
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "barcodeNmbr";
 
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	if ($tab != "opac") {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+	}
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 

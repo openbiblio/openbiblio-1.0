@@ -56,6 +56,7 @@ if (!isset($doing_install) or !$doing_install) {
 <meta name="author" content="Fred LaPlante">
 <meta name="author" content="Micah Stetson">
 <meta name="tester" content="Neil Redgate">
+<meta name="tester" content="Charlie Tudor">
 
 <!-- Mobile viewport optimized: j.mp/bplateviewport -->
 <meta name="viewport" content="width=device-width">

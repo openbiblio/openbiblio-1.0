@@ -8,7 +8,9 @@ require_once("../shared/common.php");
 //include(REL(__FILE__, "../shared/help_header.php"));
 	$tab = "help";
 	$nav = "help";
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	if ($tab != "opac") {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+	}
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 

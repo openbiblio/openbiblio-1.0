@@ -25,7 +25,9 @@
 	$menu = $tab . '/search/catalog';
 	$focus_form_name = "barcodesearch";
 	$focus_form_field = "ph_searchText";
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	if ($tab != "opac") {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+	}
 
 	Nav::node($menu, T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
 	Nav::node($menu, T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');

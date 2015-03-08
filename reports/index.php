@@ -8,7 +8,10 @@ require_once("../shared/common.php");
 $tab = "reports";
 $nav = "reportlist";
 
-include(REL(__FILE__, "../shared/logincheck.php"));
+	if ($tab != "opac") {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+	}
+
 require_once(REL(__FILE__, "../classes/Report.php"));
 define("REPORT_DEFS_DIR","../reports/defs");
 
