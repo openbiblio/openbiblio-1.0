@@ -443,6 +443,7 @@ var bs = {
 	showList: function (firstItem, biblioList) {
 	  if(firstItem == null) firstItem=0;
 	  
+		// print 'number found'('first displayed#'- 'last displayed#')
 		// Modified in order to limit results per page. First "record" contains this data - LJ
 		var queryInfo = $.parseJSON(biblioList[0]);
 		var firstItem = parseInt(queryInfo.firstItem),
@@ -457,6 +458,10 @@ var bs = {
 		for (var nBiblio in biblioList) {
 			if (nBiblio == 0) continue;
 			var biblio = JSON.parse(biblioList[nBiblio]);
+			if (!biblio.hdr) {
+				console.log('biblio hdr missing for record #'+nBiblio+' of the current setDate.');
+				continue;
+			}
 
 			var title = '', booktitle='', booksubtitle='', reporttitle='', reportsubtitle='',
 					author='', coauthor='', editors='', corporate='',
