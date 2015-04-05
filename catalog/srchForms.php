@@ -59,7 +59,7 @@
 <table>
 	<tbody id="mainTxtSrch">
 	<tr>
-		<td nowrap="true" colspan="3">
+		<td colspan="3">
 			<select id="ph_searchType" name="searchType" >
 				<option value="title"><?php echo T("Title"); ?></option>	
 				<option value="author"><?php echo T("Author"); ?></option>

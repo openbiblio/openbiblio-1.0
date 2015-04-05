@@ -85,6 +85,12 @@ class Report {
 		$rslt = $this->_init_el($p);
 		return $rslt;
 	}
+	public function initCgi($prefix='rpt_') {
+		$errs = $this->initCgi_el($prefix);
+		if(!empty($errs)) {
+			Fatal::internalError(T("ReportInitReport", array('error'=>Error::listToStr($errs))));
+		}
+	}
 	public function getVariant($newParams, $newName=NULL) {
 		list($rpt, $errs) = $this->variant_el($newParams, $newName);
 		if(!empty($errs)) {
@@ -201,12 +207,6 @@ class Report {
 			return $errs;
 		}
 		return $this->_init_el($p);
-	}
-	private function initCgi($prefix='rpt_') {
-		$errs = $this->initCgi_el($prefix);
-		if(!empty($errs)) {
-			Fatal::internalError(T("ReportInitReport", array('error'=>Error::listToStr($errs))));
-		}
 	}
 	private function _init_el($params) {
 		unset($this->cache['params']);
