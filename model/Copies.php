@@ -359,15 +359,30 @@ class Copies extends CoreTable {
 		return array($copyids, $bibids, $errors, $barcodes);
 	}
 	public function lookupAvability ($bibid) {
+		## default - copy not available
+		$avIcon = "circle_red.png";
+
+		$sql = "select sf.subfield_cd, f.tag "
+				 . "from biblio_field f, biblio_subfield sf "
+				 . "where (f.bibid = {$bibid}) "
+				 . "  and (sf.bibid = {$bibid}) "
+				 . "  and (sf.fieldid = f.fieldid) ";
+		$rslt = $this->select($sql);
+		while ($row = $rslt->fetch_assoc()) {
+                        // check for "digital copies" of ebooks and web sites
+                        // if there are physical copies, this dot will be
+                        // overriden later
+                        if('u' == $row['subfield_cd'] && '856' == $row['tag']){
+		                $avIcon = "circle_purple.png"; // digital copy available
+                                }
+                        }
+
 		$sql = "select c.copyid, c.siteid, h.status_cd "
 				 . "from biblio_copy c, biblio_status_hist h "
 				 . "where (c.bibid = {$bibid}) "
 				 . "  and (h.histid = c.histid) ";
 		$rslt = $this->select($sql);
 		$nCpy = $rslt->num_rows;
-
-		## default - copy not available
-		$avIcon = "circle_red.png";
 
 		while ($row = $rslt->fetch_assoc()) {
 			if($row['status_cd'] == OBIB_STATUS_IN) {
@@ -384,6 +399,7 @@ class Copies extends CoreTable {
 				$avIcon = "circle_blue.png"; // only copy is on hold
 			}
 		}
+
 		$rcd['nCpy'] = $nCpy;
 		$rcd['avIcon'] = $avIcon;
 		return $rcd;

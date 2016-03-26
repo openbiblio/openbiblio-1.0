@@ -199,6 +199,7 @@
 					<li><img src="../images/circle_orange.png" class="flgDot"/> <?php echo T("Available elsewhere"); ?></li>
 					<li><img src="../images/circle_blue.png" class="flgDot"/> <?php echo T("Not on loan/on hold"); ?></li>
 					<li><img src="../images/circle_red.png" class="flgDot"/> <?php echo T("On loan/not available"); ?></li>
+					<li><img src="../images/circle_purple.png" class="flgDot"/> <?php echo T("Available online"); ?></li>
 				</ul>
 				<?php } ?>
 			</fieldset>

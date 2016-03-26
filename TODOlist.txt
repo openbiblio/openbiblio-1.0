@@ -1,10 +1,5 @@
 ############### Open issues, oldest at top #########################
 
--- unknown 0.70 users
-We would like to add e-books in our library with direct links to their
-respective PDFs. We were not able to add any HTML codes to the book entries,
-in order to create a hyperlink to the e-book download.
-
 - Fred
 unable to return to non-circulating list after clicking on an item.
 
@@ -119,6 +114,11 @@ Make State 'Default Y/N' a checkbox
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+-- unknown 0.70 users
+We would like to add e-books in our library with direct links to their
+respective PDFs. We were not able to add any HTML codes to the book entries,
+in order to create a hyperlink to the e-book download.
+
 6 Feb 2015 - Charlie, done 6 Feb
 I added a width of 85% to the css for the search table so the image stays in the
 top right even with long comments.

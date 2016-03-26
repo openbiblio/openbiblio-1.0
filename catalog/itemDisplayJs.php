@@ -100,9 +100,11 @@ var idis = {
 				txt += '	<td class="filterable hilite">'+tmp.marcTag+"</td>\n";
 				txt += "	<td>"+tmp.lbl+"</td>\n";
 				if (tmp.marcTag == '024$a') {
-					txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</td>\n';
+					txt += '	<td><a class="hotDoi" href="http://dx.doi.org/'+escape(tmp.value)+'">'+tmp.value+'</a></td>\n';
 				} else if (tmp.marcTag == '505$a') {
 					txt += '	<td><textarea wrap="soft" readonly cols="50" >'+tmp.value+"</textarea></td>\n";
+				} else if (tmp.marcTag == '856$u') {
+					txt += '	<td><a href="'+tmp.value+'">'+tmp.value+'</a></td>\n';
 				} else {
 					txt += '	<td><p>'+tmp.value+'</p></td>\n';
 				}

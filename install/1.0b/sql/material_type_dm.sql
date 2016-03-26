@@ -17,4 +17,6 @@ INSERT INTO %prfx%.`material_type_dm` (`code`, `description`, `default_flg`, `ad
 (2, 'book', 'Y', 10, 5, 'book.gif'),
 (1, 'audio tapes', 'N', 10, 5, 'tape.gif'),
 (7, 'maps', 'N', 10, 5, 'map.gif'),
-(8, 'video/dvd', 'N', 10, 5, 'camera.gif');
+(8, 'video/dvd', 'N', 10, 5, 'camera.gif'),
+(9, 'ebook', 'N', 0, 0, 'computer.gif'),
+(10, 'web site', 'N', 0, 0, 'computer.gif');
