@@ -110,6 +110,9 @@ no 'Country' field for the site. Can this be added anywhere in the admin interfa
 12 Aug 2014 - Kees
 Make State 'Default Y/N' a checkbox
 
+26 MAr 2016 - Sandberg
+Cataloging: new item manual entry media type keeps changing to book despite switching to
+a different media form. Probably should drop pull-down and force to current media type.
 
 ##############################################################################
 ###################### Completed, most recent at top #########################

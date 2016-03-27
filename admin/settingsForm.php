@@ -65,10 +65,10 @@
 				<div id="miscPage" class="block">
 					<label for="mbr_barcode_width"></label>
 					<input type="number" id="mbr_barcode_width" name="mbr_barcode_width" maxlength="17" />
-					<br />
+          <br />
 					<label for="block_checkouts_when_fines_due"></label>
 					<input type="checkbox" id="block_checkouts_when_fines_due" name="block_checkouts_when_fines_due" value="Y" />
-					<br />
+          <br />
 					<label for="opac_url"></label>
 					<input type="text" id="opac_url" name="opac_url" size="17" maxlength="33" />
 				</div>
