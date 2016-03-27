@@ -107,7 +107,6 @@ $trans["Auto Cutter"] = "Auto Cutter";
 $trans["Auto Dewey"] = "Auto Dewey";
 $trans["Available"] = "Available";
 $trans["Available elsewhere"] = "Available elsewhere";
-$trans["Available online"] = "Available online";
 $trans["Available Themes"] = "Available Themes";
 $trans["Average Copyright Date"] = "Average Copyright Date";
 ####### B #######
@@ -243,6 +242,7 @@ $trans["Copy successfully created."] = "Copy successfully created.";
 $trans["Copyright"] = "Copyright";
 $trans["Copyright Date"] = "Copyright Date";
 $trans["Count"] = "Count";
+$trans["Country"] = "Country";
 $trans["Cover Type"] = "Cover Type";
 $trans["CoverPhotoFor"] = "Cover Photo for";
 $trans["CoverPhotos"] = "Cover Photos";

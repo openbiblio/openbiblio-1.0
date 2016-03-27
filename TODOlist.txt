@@ -103,16 +103,17 @@ Admin & Tool menus do not fit 16:9 screen
 Maybe you want to make a note somewhere that the Database name can not contain hyphens,
 or the other way around, specify a list a of allowed characters.
 
+##############################################################################
+###################### Completed, most recent at top #########################
+##############################################################################
+
 12 Aug 2014 - Kees
 Just trying to add a new site to my test database and noticed that there is
 no 'Country' field for the site. Can this be added anywhere in the admin interface?
 
-12 Aug 2014 - Kees
-Make State 'Default Y/N' a checkbox
+Requires new table entry:
+"ALTER TABLE `site` ADD `country` VARCHAR( 32 ) NOT NULL DEFAULT 'US';"
 
-##############################################################################
-###################### Completed, most recent at top #########################
-##############################################################################
 12 Aug 2014 - Kees, done 27 Mar
 Make State 'Default Y/N' a checkbox
 

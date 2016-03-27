@@ -92,6 +92,10 @@
       <input id="zip" name="zip" type="text" size="32" />
     </li>
     <li>
+      <label for="country"><?php echo T("Country"); ?>:</label>
+      <input id="country" name="country" type="text" size="32" />
+    </li>
+    <li>
       <label for="phone"><?php echo T("Phone"); ?>:</label>
       <input id="phone" name="phone" type="tel" size="32" />
     </li>

@@ -14,6 +14,7 @@ Sit.prototype.init = function () {
 	this.noshows = [];
 	List.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
+  $('#country').val('xxxx');
 };
 
 Sit.prototype.fetchStates = function () {
@@ -42,6 +43,14 @@ Sit.prototype.fetchCalendars = function () {
 		$('#calendar').html(html);
 	});
 };
+Sit.prototype.doNewFields = function (e) {
+  var localeCntry = navigator.language.slice(-2);
+  console.log("country is "+localeCntry);
+
+  List.prototype.doNewFields.apply(this);
+  console.log('got here');
+  $('#country').val(localeCntry);
+}
 
 $(document).ready(function () {
 	var url = 'adminSrvr.php',
