@@ -110,17 +110,21 @@ no 'Country' field for the site. Can this be added anywhere in the admin interfa
 12 Aug 2014 - Kees
 Make State 'Default Y/N' a checkbox
 
-26 MAr 2016 - Sandberg
-Cataloging: new item manual entry media type keeps changing to book despite switching to
-a different media form. Probably should drop pull-down and force to current media type.
-
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
--- unknown 0.70 users
+12 Aug 2014 - Kees, done 27 Mar
+Make State 'Default Y/N' a checkbox
+
+26 MAr 2016 - Sandberg, fixed 27 Mar
+Cataloging: new item manual entry media type keeps changing to book despite switching to
+a different media form. 
+
+-- unknown 0.70 users, Sandberg fixed 26 Mar
 We would like to add e-books in our library with direct links to their
 respective PDFs. We were not able to add any HTML codes to the book entries,
 in order to create a hyperlink to the e-book download.
+
 
 6 Feb 2015 - Charlie, done 6 Feb
 I added a width of 85% to the css for the search table so the image stays in the
