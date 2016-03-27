@@ -571,11 +571,10 @@ var ni = {
 		if (data != null){
 			ni.setCallNmbr(data);
 			ni.setCollection(data);
-			$('#itemMediaTypes').val(media)
 		} else {
 			$('#itemEditColls').val(ni.dfltColl);
-			$('#itemMediaTypes').val(ni.dfltMedia);
 		}
+		$('#itemMediaTypes').val(media);
 
 	  $('#selectionDiv input.online').disable();	/**/
 	  $('itemSubmitBtn').enable();
