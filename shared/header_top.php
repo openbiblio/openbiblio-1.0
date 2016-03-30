@@ -83,7 +83,7 @@
   		 to match industry best practices and to improve overall performance -->
 
   <!-- This style sheet resets all browsers to a common default style -->
-  <link rel="stylesheet" href="../shared/base3.css" />
+  <link rel="stylesheet" href="../shared/normalize.css" />
 
   <!-- This style sheet is specific to the jQuery UI library -->
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
