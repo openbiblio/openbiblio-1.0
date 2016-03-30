@@ -423,24 +423,21 @@ class PDF {
 		if(is_bool($dest))
 			$dest=$dest ? 'D' : 'F';
 		$dest=strtoupper($dest);
-		if($dest=='')
-		{
-			if($name=='')
-			{
+		if($dest=='') {
+			if($name=='') {
 				$name='doc.pdf';
 				$dest='I';
 			}
 			else
 				$dest='F';
 		}
-		switch($dest)
-		{
+
+		switch($dest) {
 			case 'I':
 				//Send to standard output
 				if(ob_get_contents())
 					$this->Error('Some data has already been output, can\'t send PDF file');
-				if(php_sapi_name()!='cli')
-				{
+				if(php_sapi_name()!='cli') {
 					//We send to a browser
 					header('Content-Type: application/pdf');
 					if(headers_sent())

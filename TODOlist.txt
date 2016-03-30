@@ -107,6 +107,9 @@ or the other way around, specify a list a of allowed characters.
 ###################### Completed, most recent at top #########################
 ##############################################################################
 
+30 Mar 2016 - Fred, fixed 30 Mar
+BUG - Copy Reports spec display cuts off after 'Newer Than' label.
+
 12 Aug 2014 - Kees
 Just trying to add a new site to my test database and noticed that there is
 no 'Country' field for the site. Can this be added anywhere in the admin interface?
