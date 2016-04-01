@@ -1,0 +1,9 @@
+<?php
+$trans["Call Number Utilities"] = "Call Number Utilities";
+$trans["Make call numbers searchable"] = "Make call numbers searchable";
+$trans["missing call numbers"] = "Records that lack call numbers";
+$trans["proposed call numbers"] = "Proposed call numbers";
+$trans["Record"] = "Record";
+$trans["Source field"] = "Source field";
+$trans["Call number"] = "Call number";
+$trans["added call numbers"] = "Added call numbers";
