@@ -73,7 +73,7 @@ var rpt = {
 		$.get(rpt.url, {'mode':'getCriteriaForm',
 										'type':$('#rptType').val(),
 									 }, function (resp){
-			var parts = resp.split('|');
+			var parts = resp.split('~|~');
 			$('#pageTitle').html(parts[0]);
 			$('#type').val(parts[1]);
 			$('#specs').html(parts[2]);

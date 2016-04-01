@@ -136,7 +136,7 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 	include "./reportJs.php";
 ?>
-	<script src="../shared/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="../shared/jquery/jquery-ui.min.js"></script>
 
 </body>
 </html>

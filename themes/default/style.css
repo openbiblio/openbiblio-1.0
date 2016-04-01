@@ -102,6 +102,8 @@ span.WIDE { display: block; overflow: hidden; }
 */
 textarea { width:100%; }
 
+ui-datepicker {background:-color:green}
+
 /*************************************************/
 aside { 
 	width:auto%; margin:0; padding:0; margin-bottom:2px;
