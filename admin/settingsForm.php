@@ -19,11 +19,11 @@
 
 		<fieldset>
 			<ul class="controls inline">
-				<li class="active"><a href="#localePage">Locale</a></li>
-				<li><a href="#libraryPage">Library</a></li>
-				<li><a href="#miscPage">Miscellaneous</a></li>
-				<li><a href="#requestPage">Requests</a></li>
-				<li><a href="#photoPage">Cover Photos</a></li>
+				<li class="active"><a href="#localePage"><?php echo T("Locale"); ?></a></li>
+				<li><a href="#libraryPage"><?php echo T("Library"); ?></a></li>
+				<li><a href="#miscPage"><?php echo T("Miscellaneous"); ?></a></li>
+				<li><a href="#requestPage"><?php echo T("Requests"); ?></a></li>
+				<li><a href="#photoPage"><?php echo T("CoverPhotos"); ?></a></li>
 			</ul>
 
 			<form name="editSettingsForm" id="editSettingsForm">
@@ -83,6 +83,7 @@
 					<input type="text" id="request_subject" name="request_subject" maxlength="33" />
 				</div>
 				<div id="photoPage" class="block">
+          <br />
 					<label for="use_image_flg"></label>
 					<input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />

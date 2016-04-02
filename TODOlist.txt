@@ -103,9 +103,15 @@ Admin & Tool menus do not fit 16:9 screen
 Maybe you want to make a note somewhere that the Database name can not contain hyphens,
 or the other way around, specify a list a of allowed characters.
 
+1 Apr 2016 - Sandberg
+There should be a simple way to include locale-specific strings for plugins
+
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+1 Apr 2016 - Sandberg, fixed 1 Apr
+I get a blank screen when I try to switch the locale to French.
+
 
 30 Mar 2016 - Fred, fixed 30 Mar
 BUG - Copy Reports spec display cuts off after 'Newer Than' label.
