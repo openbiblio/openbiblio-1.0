@@ -4,7 +4,7 @@
  */
 
   require_once("../shared/common.php");
-	
+
 	switch ($_REQUEST['cat']) {
 		case 'collect':
 			require_once(REL(__FILE__, "../model/Collections.php"));
@@ -342,7 +342,14 @@
 
 	  #-.-.-.-.-.- Settings -.-.-.-.-.-.-
 		case 'getFormData':
-			echo json_encode($ptr->getFormData ('admin','name,title,type,value'));
+      $formData = $ptr->getFormData ('admin','name,title,type,value');
+      $fd = array();
+      // translate these form titles
+      foreach($formData as $entry) {
+        $entry['title'] = T($entry['title']);
+        $fd[] = $entry;
+      }
+			echo json_encode($fd);
 			break;
 		case 'update_settings':
 			echo $ptr->setAll_el($_REQUEST);
