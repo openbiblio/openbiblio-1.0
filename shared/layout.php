@@ -28,11 +28,11 @@
 	$focus_form_name = "layoutparamform";
 	$focus_form_field = "lay_skip";
 
-	if ($tab == 'opac') {
-		Page::header_opac(array('nav'=>$nav, 'title'=>''));
-	} else {
-		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-	}
+//	if ($tab == 'opac') {
+//		Page::header_opac(array('nav'=>$nav, 'title'=>''));
+//	} else {
+//		Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+//	}
 
 	require(REL(__FILE__, "../shared/get_form_vars.php"));
 

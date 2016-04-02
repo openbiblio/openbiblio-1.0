@@ -649,6 +649,7 @@ class Lay {
 			assert('!$err');	# FIXME
 			$paper[1] = $l;
 		}
+
 		$this->display = new PDF($paper, $orientation);
 		$this->current = new Lay_Top_Container($this->display);
 		$this->fonts = array(array('Times-Roman', 12));
