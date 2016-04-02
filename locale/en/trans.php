@@ -107,6 +107,7 @@ $trans["Auto Cutter"] = "Auto Cutter";
 $trans["Auto Dewey"] = "Auto Dewey";
 $trans["Available"] = "Available";
 $trans["Available elsewhere"] = "Available elsewhere";
+$trans["Available online"] = "Available online";
 $trans["Available Themes"] = "Available Themes";
 $trans["Average Copyright Date"] = "Average Copyright Date";
 ####### B #######
