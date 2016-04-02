@@ -36,7 +36,7 @@ echo $d->row(T("Name").':', H($mbr['last_name'].', '.$mbr['first_name']));
 echo $d->row(T("Site").':', H($site['name']));
 echo $d->row(T("Card Number").':'.':', H($mbr['barcode_nmbr']));
 echo $d->row(T("EmailAddress").':', H($mbr['email']));
-echo $d->row(T("SchoolGrade").':', H($mbr['school_grade']));
+echo $d->row(T("School Grade").':', H($mbr['school_grade']));
 echo $d->end();
 
 $rpt = Report::create('checkouts');
