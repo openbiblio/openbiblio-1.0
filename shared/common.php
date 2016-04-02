@@ -113,7 +113,7 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 		include_once(REL(__FILE__, "../model/Settings.php"));
 		Settings::load();
 		$CharSet = Settings::get('charset');
-		$ThemeId = Settings::get('theme_name');
+		$ThemeId = Settings::get('themeid');
 		$ThemeDirUrl = trim(Settings::get('theme_dir_url'));
 		$Locale = Settings::get('locale');
 	}
