@@ -136,7 +136,7 @@ class Params {
 			return;
 		}
 		if ($type == 'order_by') {
-			$title = 'Sort By';
+			$title = 'Sort by';
 		} elseif (isset($options['title']) && $options['title']) {
 			$title = $options['title'];
 		} else {
@@ -188,7 +188,7 @@ class Params {
 				} else {
 					$l[$n] = $n;
 				}
-				$l[$n.'!r'] = $l[$n].' (Reverse)';
+				$l[$n.'!r'] = $l[$n].' (' . T('Reverse') . ')';
 			}
 			echo inputfield('select', $name, $default, NULL, $l);
 			break;

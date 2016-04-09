@@ -8,7 +8,7 @@
 .parameters
 .	order_by default="callnum"
 .		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
-.		item callnum title="Call No." expr="cs.subfield_data"
+.		item callnum title="Call Number" expr="cs.subfield_data"
 .	end order_by
 .end parameters
 

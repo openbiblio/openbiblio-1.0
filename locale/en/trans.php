@@ -816,6 +816,7 @@ $trans["results found."] = "results found.";
 $trans["Return"] = "Return";
 $trans["Return Date"] = "Return Date";
 $trans["Returned"] = "Returned";
+$trans["Reverse"] = "Reverse";
 $trans["Rpts"] = "Rpts";
 ####### S #######
 $trans["Save Changes"] = "Save Changes";

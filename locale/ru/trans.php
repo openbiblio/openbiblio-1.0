@@ -284,6 +284,7 @@ $trans["New Item"] = "Новое произведение";
 $trans["Next"] = "дальше";
 $trans["Next Page"] = "дальше";
 $trans["No"] = "Нет";
+$trans["No results found."] = "По вашему запросу ничего не нашлось.";
 $trans["Noise Words"] = "Шумовые слова";
 $trans["Non-delivery Notices"] = "Non-delivery Notices";
 $trans["NotAllowed"] = "Not permitted, total owed exceeds allowance.";
@@ -417,6 +418,7 @@ $trans["results found."] = "results found.";
 $trans["Return"] = "Return";
 $trans["Return Date"] = "Return Date";
 $trans["Returned"] = "Returned";
+$trans["Reverse"] = "в обратном порядке";
 $trans["Rpts"] = "Rpts";
 ####### S #######
 $trans["Save Changes"] = "Save Changes";

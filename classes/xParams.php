@@ -168,7 +168,7 @@ class Params {
 				} else {
 					$l[$n] = $n;
 				}
-				$l[$n.'!r'] = $l[$n].' (Reverse)';
+				$l[$n.'!r'] = $l[$n].' (' . T('Reverse') . ')';
 			}
 			echo inputfield('select', $name, $default, NULL, $l);
 			break;

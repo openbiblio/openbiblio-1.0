@@ -8,7 +8,7 @@
 .column last_name hidden
 .column mbr_name sort=member title=Member func=member_link
 .column site_name sort=site_member title=Site
-.column callnum sort=callnum title="Call No."
+.column callnum sort=callnum title="Call Number"
 .column title sort=title func=biblio_link title=Title
 .column create_dt sort=create_dt title="Date Booked"
 .column book_dt sort=book_dt func=booking_link title="Date Out"

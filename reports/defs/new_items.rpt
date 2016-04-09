@@ -9,7 +9,7 @@
 .	string days title="Added in the last N days"
 .	order_by default="added!r"
 .		item added title="Date Added" expr="b.create_dt"
-.		item callnum title="Call No." expr="cs.subfield_data"
+.		item callnum title="Call Number" expr="cs.subfield_data"
 .		item title title="Title" expr='ts.subfield_data' type=MARC skip_indicator="tf.ind2_cd"
 .	end order_by
 .end parameters
