@@ -30,7 +30,7 @@
 		<input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
 
 		<fieldset>
-			<label><?php echo T("MARCloadTest"); ?>:
+			<label><?php echo T("Test Load"); ?>:
 				<?php echo T("MARCloadTestTrue"); ?>
 					<input type="radio" id="testTrue" name="test" value="true" checked \>
 				<?php echo T("MARCloadTestFalse"); ?>
