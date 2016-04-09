@@ -166,7 +166,7 @@ th.colHead { white-space: nowrap; }
 	<div id="choiceDiv">
 		<input id="choiceBtn1" type="button" class="btnFld" value="<?php echo T("Go Back");?>" />
 		<span id="hitInfo">
-			<?php echo T("Success")."! "; ?><span id="ttlHits"></span><?php echo " ".T("hits found"); ?>
+			<?php echo T("Success")."! "; ?><span id="ttlHits"></span><?php echo " ".T("results found."); ?>
 		</span>
 	  <div id="choiceSpace">
 			Search Results go here

@@ -91,14 +91,14 @@
 			  </tr>
 			  
 			  <tr>
-					<td colspan="3"><label for="copyText"><?php echo T("CSVcopyDescription"); ?>:</label></td>
+					<td colspan="3"><label for="copyText"><?php echo T("ImportCopyDescription"); ?>:</label></td>
 			    <td colspan="2">
 			      <input type=text name="copyText" id="copyText" size=20 maxsize=256 value="<?php echo T("CSVImport"); ?>" />
 			    </td>
 			  </tr>
 
 			  <tr>
-					<td colspan="3"><label for="code"><?php echo T("CSVcopyStatus"); ?>:</label></td>
+					<td colspan="3"><label for="code"><?php echo T("Copy Status"); ?>:</label></td>
 			    <td colspan="2">
 						<?php
 						$cpyStatus = new CopyStatus;

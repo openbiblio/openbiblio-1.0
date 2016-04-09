@@ -78,7 +78,7 @@
 					foreach ($proposed_calls as $field) {
 						echo '<b>' . T('Record') . ' ' . $field['bibid'] . '</b><br />';
 						echo T('Source field') . ': ' . $field['tag'] . '$a<br />';
-						echo T('Call number') . ': ' . $field['data'] . '<br /><br />';
+						echo T('Call Number') . ': ' . $field['data'] . '<br /><br />';
 					}
 				} else {
 					echo "No call numbers are available to add.";
@@ -97,7 +97,7 @@
 						copyCallNo($field);
 						echo '<b>' . T('Record') . ' ' . $field['bibid'] . '</b><br />';
 						echo T('Source field') . ': ' . $field['tag'] . '$a<br />';
-						echo T('call number') . ': ' . $field['data'] . '<br /><br />';
+						echo T('Call Number') . ': ' . $field['data'] . '<br /><br />';
 					}
 				} else {
 					echo "No call numbers are available to add.";
