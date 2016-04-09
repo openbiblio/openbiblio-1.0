@@ -104,7 +104,7 @@
       <input id="fax" name="fax" type="tel" size="32" />
     </li>
     <li>
-      <label for="email"><?php echo T("Email"); ?>:</label>
+      <label for="email"><?php echo T("EmailAddress"); ?>:</label>
       <input id="email" name="email" type="email" size="32" />
     </li>
     <li>

@@ -20,7 +20,7 @@ Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 #*  Display update message if coming from settings_edit with a successful update.
 #****************************************************************************
 if (isset($_REQUEST["updated"])){
-	echo '<p class="error">'.T("Data has been updated.").'</p>';
+	echo '<p class="error">'.T("Update successful").'</p>';
 }
 Form::display(array(
 	'title'=>T("Edit Library Settings"),

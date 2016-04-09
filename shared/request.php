@@ -36,7 +36,7 @@
 			<td><?php echo inputfield("text", "name"); ?></td>
 		</tr>
 		<tr>
-			<td align="right"><?php echo T("Grade"); ?><span style="color: #ff0000;">*</span></td>
+			<td align="right"><?php echo T("School Grade"); ?><span style="color: #ff0000;">*</span></td>
 			<td><?php echo inputfield("text", "grade"); ?></td>
 		</tr>
 		<tr>

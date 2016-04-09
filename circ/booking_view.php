@@ -151,7 +151,7 @@
 		<td class="value"><input size="10" type="text" name="book_dt" value="<?php echo H($booking['book_dt']) ?>" /></td>
 	</tr>
 	<tr>
-		<td class="name"><?php echo T("Due Date"); ?>:</td>
+		<td class="name"><?php echo T("Due Back"); ?>:</td>
 		<td class="value"><input size="10" type="text" name="due_dt" value="<?php echo H($booking['due_dt']) ?>" /></td>
 	</tr>
 	<tr><td></td><td><input class="button" type="submit" value="<?php echo T("Change Dates"); ?>" /></td></tr>

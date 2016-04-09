@@ -47,7 +47,7 @@ $t->columns = array(
 	$t->mkCol(T("Barcode").':'),
 	$t->mkCol(T("Price").':'),
 	$t->mkCol(T("Title").':'),
-	$t->mkCol(T("Date Due").':'),
+	$t->mkCol(T("Due Back").':'),
 	$t->mkCol(T("Days Late").':'),
 );
 echo $t->begin();
