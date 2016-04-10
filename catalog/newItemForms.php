@@ -49,7 +49,7 @@ th.colHead { white-space: nowrap; }
 	  <br />
 		<form id="lookupForm" name="lookupForm" action="" >
 		<fieldset id="srchSpecs">
-		<legend>On-Line Search</legend>
+		<legend><?php echo T("On-Line Search"); ?></legend>
 			<fieldset id="srchDetl" class="inlineFS">
 			  <label class="colLbl" for="lookupVal"><?php echo T("What to search for"); ?>:</label>
 			  <label class="colLbl" for="srchBy"><?php echo T("Which is a"); ?>:</label>

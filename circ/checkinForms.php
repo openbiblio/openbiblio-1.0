@@ -16,7 +16,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
-<h3><?php echo T("Item Check-In"); ?></h3>
+<h3><?php echo T("Check In"); ?></h3>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="ckinDiv">

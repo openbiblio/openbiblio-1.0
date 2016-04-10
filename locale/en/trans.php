@@ -693,6 +693,7 @@ $trans["Online Data"] = "Online Data";
 $trans["Online Hosts"] = "Online Hosts";
 $trans["Online Options"] = "Online Options";
 $trans["Online Protocol"] = "Online Protocol";
+$trans["On-Line Search"] = "Online Search";
 $trans["On loan/not available"] = "On loan/not available";
 $trans["Only if Barcode present"] = "Only if Barcode present";
 $trans["Only In Item Cart"] = "Only In Item Cart";
