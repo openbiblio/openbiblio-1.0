@@ -142,6 +142,7 @@ $trans["Check Database Integrity"] = "Проверка базу данных";
 $trans["Check In"] = "Возвращение";
 $trans["Check Out"] = "Выдача";
 $trans["Checkout"] = "Выдача";
+$trans["Checkout History"] = "История циркуляции";
 $trans["Checked Out"] = "Выдано";
 $trans["Circulation"] = "Посетители и оборот";
 $trans["City"] = "город";
@@ -192,6 +193,7 @@ $trans["Edit This Photo"] = "Редактировать фотографию";
 $trans["Email or ID Number"] = "E-mail или идентификационный номер";
 $trans["EmailAddress"] = "E-mail";
 $trans["EnterDOI2Resolve"] = "Введите DOI, например 10.1000/202";
+$trans["ErrorDebugBacktrace"] = "Трассировку";
 $trans["Error Color"] = "цвет сообщений об ошибках";
 $trans["Existing Items"] = "Поиск";
 ####### F #######
@@ -208,6 +210,8 @@ $trans["Function"] = "функция";
 ####### G #######
 $trans["Go Back"] = "вернуться";
 ####### H #######
+$trans["Help"] = "Помощь";
+$trans["History"] = "История";
 $trans["Host URL"] = "URL сервера";
 ####### I #######
 $trans["Images"] = "Картини";
@@ -220,6 +224,7 @@ $trans["Keyword"] = "Ключевое слово";
 ####### L #######
 $trans["Last Name Contains"] = "Фамилия содержит";
 $trans["LastName"] = "фамилия";
+$trans["Library"] = "Библиотека";
 $trans["Library Card Number"] = "Штрих-код";
 $trans["Library Catalog"] = "Каталог";
 $trans["Library Hours"] = "Часы работы библиотеки";
@@ -241,17 +246,20 @@ $trans["Location"] = "Location";
 $trans["Login"] = "Войти";
 $trans["Logout"] = "Выйти";
 ####### M #######
+$trans["Make Booking"] = "Создать бронирование";
 $trans["MARCImport"] = "Импорт файла MARC";
 $trans["MARCInputFile"] = "MARC Input File";
 $trans["MARCTags"] = "Метки MARC";
 $trans["MARC File"] = "Файл MARC";
 $trans["MARC Import"] = "Импорт файла MARC";
 $trans["MediaTypeListLabel"] = 'Формат:';
+$trans["Media"] = "Формат";
 $trans["Media Type"] = "Формат";
 $trans["Media Types"] = "Форматы";
 $trans["Member Fields"] = "Поля для посетителей";
 $trans["Member Name"] = "Имя посетители";
 $trans["Member"] = "Посетитель";
+$trans["Member Information"] = "Информация о посетителя";
 $trans["Member Search"] = "Поиск посетителей";
 $trans["Members"] = "Посетители";
 $trans["MemberType"] = "Тип посетителя";
@@ -270,6 +278,7 @@ $trans["No copies"] = "Нет единиц";
 $trans["No results found."] = "По вашему запросу ничего не нашлось.";
 $trans["Noise Words"] = "Шумовые слова";
 ####### O #######
+$trans["of"] = "из";
 $trans["Online Hosts"] = "Cерверы библиографических данных";
 $trans["Online Protocol"] = "протокол";
 $trans["OPAC"] = "электронный каталог";
@@ -285,11 +294,15 @@ $trans["Previous Page"] = "назад";
 $trans["Prev"] = "назад";
 $trans["Price"] = "цена";
 $trans["Print"] = "Печать";
+$trans["Print List"] = "Печать список";
 $trans["Publisher"] = "Издатель";
 $trans["pwd"] = "пароль";
 ####### Q #######
 ####### R #######
+$trans["Report List"] = "Список отчетов";
 $trans["Reports"] = "Отчеты";
+$trans["Report Results"] = "Результаты отчета";
+$trans["Research"] = "Исследованние";
 $trans["Reverse"] = "в обратном порядке";
 ####### S #######
 $trans["Save Changes"] = "Сохранить";
@@ -333,6 +346,7 @@ $trans["Tools"] = "Системные инструменты";
 $trans["Type"] = "Тип";
 ####### U #######
 $trans["Unable to connect to database."] = "Нет подключения к базе данных.";
+$trans["Under Construction"] = "В разработке";
 $trans["Update Member"] = "Редактировать посетитель";
 $trans["Update successful"] = "Обновление завершено";
 $trans["Update"] = "Редактировать";

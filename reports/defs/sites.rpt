@@ -1,4 +1,4 @@
-.title "Site List"
+.title "List of Sites"
 .category "Member Reports"
 .column siteid hidden checkbox
 .column name title=Name sort=name func=site_link
