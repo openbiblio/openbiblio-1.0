@@ -130,7 +130,13 @@ class Biblios extends CoreTable {
 			//	$sqlWhere .= " AND (sf$selectNr.tag='".$item['tag']."' AND ss$selectNr.subfield_cd='".$item['suf']."')";
 			//}
 			if(isset($item['audienceTag'])){
-//				$searchTags .= '{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $_REQUEST['audienceLevel'] . '"}';
+
+			$sqlSelect .= " JOIN `biblio_field` bf$keywordnr JOIN `biblio_subfield` bs$keywordnr";
+			$sqlWhere  .= "  AND bf$keywordnr.bibid = b.bibid "
+									 ."  AND bs$keywordnr.fieldid = bf$keywordnr.fieldid "
+									 ."  AND bs$keywordnr.`subfield_data` LIKE '%" .$item['audienceValue']."%'";
+			$sqlWhere .= " AND (bf$keywordnr.tag='521' AND bs$keywordnr.subfield_cd = 'a')";
+
 			}
 			if(isset($item['toTag'])){
 				$sqlSelect .= " JOIN `biblio_field` sf$selectNr JOIN `biblio_subfield` ss$selectNr";
@@ -150,7 +156,7 @@ class Biblios extends CoreTable {
 		}
 
 		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
-		//echo "sql= $sql<br>\n";
+		// echo "sql= $sql<br>\n";
 		$rows = $this->select($sql);
 		while (($row = $rows->fetch_assoc()) !== NULL) {
 			$rslt[] = $row[bibid];
@@ -392,9 +398,8 @@ class Biblios extends CoreTable {
 			//	$parts = explode('$', $criteria['marcTag']);
 			//	$searchTags .= ',{"marcTag":"'.$parts[0].'", "marcSuf":"'.$parts[1].'"}';
 			//}
-			if(isset($criteria['audienceLevel'])){
-				//Not sure which field this, so leave this for now - LJ
-				//$searchTags .= ',{"audienceTag":"099","audienceSuf":"a","audienceValue":"'. $criteria['audienceLevel'] . '"}';
+			if(isset($criteria['audienceLevel']) && $criteria['audienceLevel'] != 'all'){
+				$searchTags .= ',{"audienceTag":"521","audienceSuf":"a","audienceValue":"'. $criteria['audienceLevel'] . '"}';
 			}
 			if(isset($criteria['to']) && strlen($criteria['to']) == 4){
 				//$searchTags .= ',{"toTag":"260","toSuf":"c","toValue":"'. $criteria['to'] . '"}';

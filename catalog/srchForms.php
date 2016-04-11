@@ -121,12 +121,6 @@
 			<td><label for="audienceLevel"><?php echo T("Audience Level"); ?>: </label></td>
 			<td>
 				<select id="audienceLevel" name="audienceLevel">
-					<option value="K"><?php echo T("Kindergarten"); ?></option>
-					<option value="P"><?php echo T("Primary"); ?></option>
-					<option value="I"><?php echo T("Intermediate"); ?></option>
-					<option value="J"><?php echo T("Junior High"); ?></option>
-					<option value="S"><?php echo T("SeniorHigh"); ?></option>
-					<option value="A"><?php echo T("Adult"); ?></option>
 					<option value="all" selected><?php echo T("All"); ?></option>
 				</select>
 			</td>

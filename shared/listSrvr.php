@@ -32,6 +32,22 @@
 		echo json_encode($opts);
 		break;
 
+	case 'getAudienceList':
+		require_once(REL(__FILE__, "../model/Biblios.php"));
+		$db = new Biblios;
+		$sql = "SELECT subfield_data, COUNT(*) as count " .
+ 			"FROM biblio_subfield sf, biblio_field f " .
+ 			"WHERE f.tag='521' AND sf.fieldid=f.fieldid " .
+ 			"GROUP BY subfield_data " .
+ 			"ORDER BY COUNT DESC " .
+ 			"LIMIT 10";
+		$rslt = $db->select($sql);
+		while ($col = $rslt->fetch_assoc()) {
+			$list[$col['subfield_data']] = $col['subfield_data'];
+		}
+		echo json_encode($list);
+	  break;
+
 	case 'getCalendarList':
 		require_once(REL(__FILE__, "../model/Calendars.php"));
 		$db = new Calendars;

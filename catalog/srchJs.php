@@ -125,6 +125,7 @@ var bs = {
 		bs.fetchSiteList();
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
+		bs.fetchAudienceList();
 		// needed for search results presentation
 		bs.fetchMediaDisplayInfo();
 		bs.fetchMediaLineCnt();
@@ -271,6 +272,17 @@ var bs = {
 			$('#itemEditColls').html(html);
 			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchCollections').html(html);
+		});
+	},
+	fetchAudienceList: function () {
+	  $.getJSON(bs.listSrvr,{'mode':'getAudienceList'}, function(data){
+			var html = '';
+      for (var n in data) {
+				html+= '<option value="'+data[n]+'">'+data[n]+'</option>';
+			}
+			$('#itemEditColls').html(html);
+			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
+			$('#audienceLevel').html(html);
 		});
 	},
 	fetchSiteList: function () {
