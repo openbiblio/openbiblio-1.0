@@ -114,7 +114,6 @@ Audience is now pulled from 521 field of MARC record
 1 Apr 2016 - Sandberg, fixed 1 Apr
 I get a blank screen when I try to switch the locale to French.
 
-
 30 Mar 2016 - Fred, fixed 30 Mar
 BUG - Copy Reports spec display cuts off after 'Newer Than' label.
 
