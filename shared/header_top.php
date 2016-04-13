@@ -55,10 +55,10 @@
   <meta name="description" content="OpenBiblio ver 1.0a">
   <meta name="author" content="Luuk Jansen">
   <meta name="author" content="Fred LaPlante">
+  <meta name="author" content="Jane Sandberg">
   <meta name="author" content="Micah Stetson">
   <meta name="tester" content="Neil Redgate">
   <meta name="tester" content="Charlie Tudor">
-  <meta name="tester" content="Jane Sandberg">
 
   <!-- this line MUST precede all .css & JS files - FL
   		 Based on the browser in use, it places many conditional classes
@@ -86,7 +86,7 @@
   <link rel="stylesheet" href="../shared/normalize.css" />
 
   <!-- This style sheet is specific to the jQuery UI library -->
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
 
   <!-- OpenBiblio style is set here using appropriate Theme folder -->
   <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />

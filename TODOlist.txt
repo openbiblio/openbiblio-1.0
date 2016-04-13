@@ -92,9 +92,18 @@ or the other way around, specify a list a of allowed characters.
 1 Apr 2016 - Sandberg
 There should be a simple way to include locale-specific strings for plugins
 
+12 Apr 2016 - Fred
+Biblio fields Maintennace is broken - no jQueryUI.sortable()
+
+12 Apr 2016 - Fred
+ListManager needs Add/Edit features.
+
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+12 Apr 2016 - Fred, fixed bad link references, 13 Apr 2016
+Biblio fields Maintennace is broken - no jQueryUI.sortable()
+
 12 May 2013 - Fred, fixed 10 Apr 2016
 investigate making school grade, teacher, optional.  If not used then 'Audience Level'
 should not appear on advanced search screen.
@@ -135,7 +144,6 @@ a different media form.
 We would like to add e-books in our library with direct links to their
 respective PDFs. We were not able to add any HTML codes to the book entries,
 in order to create a hyperlink to the e-book download.
-
 
 6 Feb 2015 - Charlie, done 6 Feb
 I added a width of 85% to the css for the search table so the image stays in the
