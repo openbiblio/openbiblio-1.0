@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 #****************************************************************************
-#*  Translation text for page transUtils.php
+#*  Translation text for plugin dioSearch
 #****************************************************************************
 
-	Nav::node('cataloging/dioSearch', T("dioSearch"), '../plugin_dioSearch/dioSearchForms.php');
+	Nav::node('cataloging/dioSearch', T("doiSearch"), '../plugin_dioSearch/dioSearchForms.php');
