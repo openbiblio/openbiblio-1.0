@@ -93,9 +93,6 @@ or the other way around, specify a list a of allowed characters.
 There should be a simple way to include locale-specific strings for plugins
 
 12 Apr 2016 - Fred
-Biblio fields Maintennace is broken - no jQueryUI.sortable()
-
-12 Apr 2016 - Fred
 ListManager needs Add/Edit features.
 
 ##############################################################################
