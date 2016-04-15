@@ -552,6 +552,7 @@ $trans["lookup_yaz_setup_failed"] = "YAZ setup failed";
 $trans["Main Body"] = "Main Body";
 $trans["Make Booking"] = "Make Booking";
 $trans["Manage Bookings"] = "Manage Bookings";
+$trans['Manual Entry'] = 'Manual Entry';
 $trans["MARCbarCoDescription"] = "Optional. Can be used for an initial copy entry in case of migration.";
 $trans["MARCCallNrDescription"] = "Optional. Local Call Number should be used.";
 $trans["MARCCallNumber"] = "Call Number";

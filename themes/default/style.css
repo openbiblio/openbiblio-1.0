@@ -33,7 +33,7 @@ h1,h2,h3,h4,h5,h6 {
 
 img { margin:3px 3px 0 3px; }
 
-sup, span.reqd, #reqdNote { color:red; text-align:center; }
+.reqd, sup, span.reqd, #reqdNote { color:red; text-align:center; }
 .smallType { font-size:75%; }
 p { margin:2px; padding:0; }
 hr {

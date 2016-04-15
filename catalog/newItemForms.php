@@ -45,7 +45,7 @@ th.colHead { white-space: nowrap; }
 <h3><?php echo T("Add New Item"); ?></h3>
 	<!-- =================================================== -->
 	<div id="searchDiv">
-	  <input type="button" id="manualBtn" value="Manual Entry" />
+	  <input type="button" id="manualBtn" value="<?php echo T('Manual Entry'); ?>" />
 	  <br />
 		<form id="lookupForm" name="lookupForm" action="" >
 		<fieldset id="srchSpecs">
