@@ -19,9 +19,6 @@ class Queryi extends mysqli{
 			echo mysqli_connect_error();
 			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
 		}
-		if (!parent::set_charset("utf8"))  {
-			return array(NULL, new DbError(T("Cannot get UTF-8 support"), mysql_error()));
-		}
 	}
 
 	public function act($sql) {
