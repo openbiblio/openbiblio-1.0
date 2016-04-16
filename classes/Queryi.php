@@ -19,6 +19,13 @@ class Queryi extends mysqli{
 			echo mysqli_connect_error();
 			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
 		}
+		$r = parent::query("SELECT value FROM settings where name='charset'");
+		if ($r->num_rows == 1) {
+			$row = $r->fetch_assoc();
+			if (!parent::set_charset($row['value']))  {
+				Fatal::dbError('Setting charset', T("Could not set charset"));
+			}
+		}
 	}
 
 	public function act($sql) {
