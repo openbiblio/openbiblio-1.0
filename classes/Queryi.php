@@ -23,7 +23,7 @@ class Queryi extends mysqli{
 		if ($r->num_rows == 1) {
 			$row = $r->fetch_assoc();
 			if (!parent::set_charset($row['value']))  {
-				Fatal::dbError('Setting charset', T("Could not set charset"));
+				parent::set_charset('utf8');
 			}
 		}
 	}
