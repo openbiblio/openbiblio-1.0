@@ -28,6 +28,7 @@ var mf = {
 		mf.fetchOpts();
 		mf.fetchCustomFlds();
 		mf.fetchAcnttranTypes();
+		mf.prepareCopyBarcdValidation();
 				
 		
 		$('.gobkBtn').on('click',null,mf.rtnToSrch);
@@ -97,6 +98,9 @@ var mf = {
 		} else {
 			$('#nameFrag').focus();
 		}
+	},
+	prepareCopyBarcdValidation: function (){
+		$('#ckoutBarcd').attr('pattern', "[0-9]{<?php echo Settings::get('item_barcode_width');?>}" );
 	},
 	rtnToSrch: function () {
 	  $('#rsltMsg').html('');

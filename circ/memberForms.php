@@ -82,7 +82,7 @@
 	<fieldset id="newLoans">
 		<legend for="ckoutBarcd"><?php echo T("Check Out");?></legend>
 		<label><?php echo T("Barcode Number");?>:</label>
-		<input type="number" id="ckoutBarcd" size="20" min="1" max="9999999999999" />
+		<input type="number" id="ckoutBarcd" size="20" min="1" />
 		<input type="button" value="<?php echo T("Check Out");?>" id="chkOutBtn" />
 		<p class="error" id="chkOutMsg"></p>
 	</fieldset>
