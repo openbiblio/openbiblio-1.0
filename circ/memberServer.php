@@ -66,11 +66,14 @@
 			$history = new History;
 		require_once(REL(__FILE__, "../classes/Biblio.php"));
 		break;
+	case 'doHold':
 	case 'getHolds':
 	case 'd-3-L-3-tHold':
 		require_once(REL(__FILE__, "../model/Holds.php"));
 			$holds = new Holds;
 		require_once(REL(__FILE__, "../classes/Copy.php"));
+		require_once(REL(__FILE__, "../model/Copies.php"));
+			$copies = new Copies;
 		require_once(REL(__FILE__, "../classes/Biblio.php"));
 		break;
 	}
