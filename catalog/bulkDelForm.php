@@ -6,7 +6,7 @@
 	require_once("../shared/common.php");
 	$tab = "cataloging";
 	$nav = "bulk_delete";
-	$restrictInDemo = true;
+//	$restrictInDemo = true;
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
