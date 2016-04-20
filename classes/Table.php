@@ -180,7 +180,7 @@ class TableFuncs {
 		return TableFuncs::_link_common($col, $row, $params, $url, 'siteid');
 	}
 	function calendar_link($col, $row, $params) {
-		$url = '../admin/calendar_edit_form.php?calendar='.HURL($row['calendar']);
+		$url = '../admin/calendarForm.php?calendar='.HURL($row['calendar']);
 		return TableFuncs::_link_common($col, $row, $params, $url, 'calendar');
 	}
 	function checkbox($col, $row, $params) {

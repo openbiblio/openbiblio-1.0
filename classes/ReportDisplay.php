@@ -148,7 +148,7 @@ class ReportDisplayFuncs {
 	}
 	function calendar_link($col, $row, $rpt) {
 		return ReportDisplayFuncs::_link_common($col, $row, $rpt, $row['calendar'],
-			new LinkUrl('../admin/calendar_edit_form.php', 'calendar', array())
+			new LinkUrl('../admin/calendarForm.php', 'calendar', array())
 		);
 	}
 	function subject_link($col, $row, $rpt) {

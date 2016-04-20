@@ -408,7 +408,7 @@ class Calendar {
 		function getCalendarLink($month, $year) {
 			$params = 'month='.U($month).'&year='.U($year);
 			$params .= '&calendar='.U($this->calendar);
-			return "../admin/calendar_edit_form.php?".$params;
+			return "../admin/calendarForm.php?".$params;
 		}
 		function getWeekDayHTML($wday, $month, $year) {
 			$f = sprintf("toggleDays('%1d', '%04d', '%02d')",
