@@ -307,7 +307,7 @@ var mf = {
 							lateFee = (cpy.lateFee).toLocaleString(),
 							owed = (cpy.daysLate*cpy.lateFee).toFixed(2),
 							owedAmnt = owed.toLocaleString();
-					html += '<tr>'
+					html += '<tr>';
 					html += '	<td>'+outDate+'</td>';
 					//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
 					html += '	<td>'+cpy.media+'	</td>\n';
