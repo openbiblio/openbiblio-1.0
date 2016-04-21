@@ -51,7 +51,7 @@ if ($_REQUEST['alternate'] == 'Y') {
 	$msg .= T("requestSendPleaseSelect")."\r\n\r\n";
 }
 if ($_REQUEST['notes']) {
-	$msg .= T("Other notes")':'."\r\n\r\n";
+	$msg .= T("Other notes").':'."\r\n\r\n";
 	str_replace("\r\n", "\n", $_REQUEST['notes']);
 	str_replace("\r", "\n", $_REQUEST['notes']);
 	str_replace("\n", "\r\n", $_REQUEST['notes']);
