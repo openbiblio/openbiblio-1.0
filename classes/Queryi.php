@@ -224,7 +224,7 @@ class Queryi extends mysqli{
 					break;
 				case 'Q':
 					//$SQL .= "'".mysql_real_escape_string($arg, $this->_link)."'";
-                    $SQL .= '\''.mysql_real_escape_string($arg).'\'';
+                    $SQL .= '\''.parent::real_escape_string($arg).'\'';
 					break;
 				case 'q':
 					//$SQL .= mysql_real_escape_string($arg, $this->_link);
