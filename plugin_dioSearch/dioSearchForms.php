@@ -15,7 +15,7 @@
 
 ?>
 
-	<h1 id="pageHdr" class="title"><?php echo T("dioSearch"); ?></h1>
+	<h1 id="pageHdr" class="title"><?php echo T("doiSearch"); ?></h1>
 	<h3 id="pageHdr" class="title"><?php echo T("ForDeveloperUse"); ?></h3>
 
 	<section id="entry">
