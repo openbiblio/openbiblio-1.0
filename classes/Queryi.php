@@ -9,6 +9,9 @@
  * @author Micah Stetson
  */
 
+require_once("../shared/global_constants.php");
+require_once("../classes/Error.php");
+
 class Queryi extends mysqli{
 	private $lock_depth;
 
@@ -17,7 +20,7 @@ class Queryi extends mysqli{
 		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
     if (mysqli_connect_error()) {
 			echo mysqli_connect_error();
-			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
+			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), $this->error ));
 		}
 		$r = parent::query("SELECT value FROM settings where name='charset'");
 		if ($r->num_rows == 1) {
@@ -28,14 +31,29 @@ class Queryi extends mysqli{
 		}
 	}
 
+	public function _act($sql) {
+		$r =  $this->query($sql);
+		if ($r === false) {
+			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
+			//echo "sql=$sql<br />\n";
+			return 0;
+		}
+		return $r;
+	}
+
 	public function act($sql) {
 		//$this->lock();
-		$results = $this->_act($sql);
+		$r = $this->query($sql);
+		if ($r === false) {
+			Fatal::dbError($sql, "Database query failed", $this->error );
+			//echo "sql=".$sql." <br />\n";
+		}
 		//$this->unlock();
-		return $results;
+		return $r;
 	}
+    
 	public function select($sql) {
-		$results = $this->_act($sql);
+		$results = $this->query($sql);//$this->_act($sql);
 		if (is_bool($results)) {
 			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
 			echo "sql=$sql<br />\n";
@@ -52,7 +70,7 @@ class Queryi extends mysqli{
 		}
 	}
 	public function select01($sql) {
-		$r = $this->act($sql);
+		$r = $this->_act($sql);
 		if (($r == 0) || ($r->num_rows == 0)) {
 			return NULL;
 		} else if ($r->num_rows != 1) {
@@ -61,15 +79,6 @@ class Queryi extends mysqli{
 		} else {
 			return $r->fetch_assoc();
 		}
-	}
-	private function _act($sql) {
-		$r =  $this->query($sql);
-		if ($r === false) {
-			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
-			//echo "sql=$sql<br />\n";
-			$r = 0;
-		}
-		return $r;
 	}
 
 	/* This is not easily portable to many SQL DBMSs.  A better scheme
@@ -215,7 +224,7 @@ class Queryi extends mysqli{
 					break;
 				case 'Q':
 					//$SQL .= "'".mysql_real_escape_string($arg, $this->_link)."'";
-					$SQL .= "'".parent::real_escape_string($arg)."'";
+                    $SQL .= '\''.mysql_real_escape_string($arg).'\'';
 					break;
 				case 'q':
 					//$SQL .= mysql_real_escape_string($arg, $this->_link);
