@@ -236,7 +236,7 @@ var bs = {
 	fetchOpts: function () {
 		bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';
 		bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
-    bs.opts['current_site'] = <?php echo Settings::get('library_name');?>;
+    bs.opts['current_site'] = '<?php echo Settings::get('library_name');?>';
 	},
 	fetchCrntMbrInfo: function () {
 	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){

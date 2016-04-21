@@ -122,7 +122,7 @@ var ced = {
       ced.doGetBarcdNmbr();
       $('#copyBarcode_nmbr').disable();
 		}
-		$('#copySite').val(<?php echo Settings::get('library_name');?>);
+		$('#copySite').val("<?php echo Settings::get('library_name');?>");
 		$('#copyMode').val('newCopy');
 
 		// unbind & bind needed here because of button reuse elsewhere
