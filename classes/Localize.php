@@ -22,7 +22,6 @@ class Localize {
 		if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9_]*$/', $locale)) {
 			Fatal::internalError('Invalid Locale: >'.$locale.'<');
 		}
-		
 		$this->localePath = LOCALE_ROOT."/".$locale."/";
 		if (!is_readable($this->localePath.'metadata.php')) {
 			Fatal::internalError('Locale >'.$locale.'< has no metadata');
