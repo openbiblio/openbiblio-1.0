@@ -7,7 +7,7 @@ require_once(REL(__FILE__, "../classes/Buttons.php"));
 
 class InfoDisplay {
 	var $title;
-	function InfoDisplay() {
+	function __construct() {
 		$this->title = NULL;
 		$this->buttons = array();
 	}
