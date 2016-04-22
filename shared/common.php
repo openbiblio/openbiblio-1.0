@@ -103,7 +103,7 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 	require_once(REL(__FILE__, "../classes/Nav.php"));
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, 'templates.php'));
-	
+
 	global $LOC, $CharSet, $Locale, $OBroot;
 	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl;
 	global $LocaleDirUrl, $LocaleDir, $SharedDirUrl, $HTMLHead;
