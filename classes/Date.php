@@ -28,10 +28,10 @@ class Date {
 		}
 		if ($gotit) {
 			if ($month < 1 or $month > 12) {
-				return array(NULL, new Error(T("Bad month number: %month%", array('month'=>$month))));
+				return array(NULL, new OBErr(T("Bad month number: %month%", array('month'=>$month))));
 			}
 			if ($day < 1 or $day > 31) {
-				return array(NULL, new Error(T("Bad day number: %day%", array('day'=>$day))));
+				return array(NULL, new OBErr(T("Bad day number: %day%", array('day'=>$day))));
 			}
 			if ($year < 60) {
 				$year += 2000;
@@ -55,7 +55,7 @@ class Date {
 		} elseif ($datestr == 'tomorrow') {
 			return array(Date::addDays($ref, 1), NULL);
 		} else {
-			return array(NULL, new Error(T("Invalid date format")));
+			return array(NULL, new OBErr(T("Invalid date format")));
 		}
 	}
 	function addDays($date, $days) {

@@ -15,7 +15,7 @@
  * ending in '_e'.  Those returning a list of error objects have names
  * ending in '_el'.
  */
-class Error {
+class OBErr {
 	public function __construct($msg) {
 		$this->msg = $msg;
 	}
@@ -35,12 +35,18 @@ class Error {
 		return null;
 	}
 }
+/**
+* If you use the deprecated Error class (incompatible with
+* PHP7), uncomment the following line.
+*/
+
+//use OBErr as Error;
 
 
 /**
  * For when an error applies to a particular form or DB field
  */
-class FieldError extends Error {
+class FieldError extends OBErr {
 	public $field;
 
 	public function __construct($field, $msg) {
@@ -79,7 +85,7 @@ class FieldError extends Error {
 /**
  * Most DB errors are fatal, but we sometimes have to catch them.
  */
-class DbError extends Error {
+class DbError extends OBErr {
 	/* The attributes here are public. */
 	public $sql;
 	public $dberror;
@@ -103,7 +109,7 @@ class DbError extends Error {
  * These may be errors, but a user with proper privilege can force
  * them to be ignored.
  */
-class IgnorableError extends Error {
+class IgnorableError extends OBErr {
 	public function __construct($msg) {
 		parent::__construct($msg);
 	}

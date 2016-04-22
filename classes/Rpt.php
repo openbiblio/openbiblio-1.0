@@ -141,7 +141,7 @@ class RptParser {
 
 		$this->fd = fopen($this->filename, 'rb');
 		if ($this->fd === FALSE) {
-			return array(NULL, new Error(T("Cannot open file: %file%", array('file'=>$this->filename))));
+			return array(NULL, new OBErr(T("Cannot open file: %file%", array('file'=>$this->filename))));
 		}
 		$this->_tokens = array();
 		$this->line = 0;
@@ -166,7 +166,7 @@ class RptParser {
 	}
 
 	private function error($msg) {
-		return new Error($this->filename.':'.$this->line.': '.$msg);
+		return new OBErr($this->filename.':'.$this->line.': '.$msg);
 	}
 	private function lexerError() {
 		return $this->error('Lexer error - FIXME');
