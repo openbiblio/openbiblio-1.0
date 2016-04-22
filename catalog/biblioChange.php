@@ -10,7 +10,7 @@ require_once(REL(__FILE__, "../classes/Marc.php"));
 /* Closure class for sorting subfields */
 class SubfieldOrder {
 	var $order;
-	function SubfieldOrder($order=NULL) {
+	function __construct($order=NULL) {
 		if ($order !== NULL) {
 			$this->order = strtolower($order);
 		} else {

@@ -39,7 +39,7 @@ class Iter {
 }
 
 class ArrayIter extends Iter {
-	function ArrayIter($arr) {
+	function __construct($arr) {
 		$this->arr = $arr;
 		$this->i = 0;
 	}
@@ -58,7 +58,7 @@ class ArrayIter extends Iter {
 }
 
 class MapIter extends Iter {
-	function MapIter($callback, $iter) {
+	function __construct($callback, $iter) {
 		$this->callback = $callback;
 		$this->iter = $iter;
 	}
@@ -79,7 +79,7 @@ class MapIter extends Iter {
 }
 
 class NumberedIter extends Iter {
-	function NumberedIter($iter) {
+	function __construct($iter) {
 		$this->iter = $iter;
 		$this->n = 0;
 	}
@@ -100,7 +100,7 @@ class NumberedIter extends Iter {
 }
 
 class SliceIter extends Iter {
-	function SliceIter($skip, $len, $iter) {
+	function __construct($skip, $len, $iter) {
 		for ($i=0; $i < $skip; $i++) {
 			$iter->skip();
 		}
