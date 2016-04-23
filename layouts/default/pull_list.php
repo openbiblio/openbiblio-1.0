@@ -7,7 +7,8 @@ require_once(REL(__FILE__, '../../classes/Lay.php'));
 
 class Layout_pull_list {
 	function render($rpt) {
-		$rpt = $rpt->variant(array('order_by'=>'item_num'));
+//		$rpt = $rpt->variant(array('order_by'=>'item_num'));
+		$rpt = $rpt->getVariant(array('order_by'=>'item_num'));
 
 		$lay = new Lay;
 			$lay->container('Columns', array(
