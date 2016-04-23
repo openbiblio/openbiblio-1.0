@@ -634,7 +634,7 @@ class MarcMnemParser extends MarcBaseParser {
 		}
 
 		# Set leader
-		if (eregi('^(000|LDR)$', $tag)) {
+		if (preg_match("/^(000|LDR)$/i", $tag)) {
 			$ldr = MarcHelpers::fromMnem(substr($field, 6));
 			$err = $this->_rec->setLeader($ldr, $this->lenient);
 			if ($err) {
