@@ -549,7 +549,7 @@ class Lay_Paragraph extends Lay_Columns {
 
 /* Not an element, used for underlining by Lay_TextLines and Lay_TextLine */
 class Lay_Underline {
-	function Lay_Underline(&$display, $length, $width) {
+	function __construct(&$display, $length, $width) {
 		$this->display =& $display;
 		$this->length = $length;
 		$this->width = $width;
@@ -621,7 +621,7 @@ class Lay_TextLine extends Lay_Line {
 class Lay_Top_Container {
 	var $parent = NULL;
 	var $display;
-	function Lay_Top_Container(&$display) {
+	function __construct(&$display) {
 		$this->display =& $display;
 		$this->child_max_dim = $this->display->dimensions();
 	}
@@ -640,7 +640,7 @@ class Lay_Top_Container {
 class Lay {
 	var $display;
 	var $current;
-	function Lay($paper='letter', $orientation='portrait') {
+	function __construct($paper='letter', $orientation='portrait') {
 		if (is_array($paper)) {
 			list($l, $err) = $this->lengthToPoints($paper[0], 'x');
 			assert('!$err');	# FIXME
