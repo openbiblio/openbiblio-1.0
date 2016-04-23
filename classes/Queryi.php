@@ -16,7 +16,7 @@ class Queryi extends mysqli{
 		$this->lockDepth = 0;
 		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
     if (mysqli_connect_error()) {
-			echo mysqli_connect_error();
+			echo mysqli_connect_error()."<br>\n";
 			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
 		}
 	}

@@ -19,7 +19,7 @@
 			unset(${$k});
 		}
 	}
-	
+
 ## Active assert and make it quiet
 assert_options(ASSERT_ACTIVE, 1);
 assert_options(ASSERT_WARNING, 0);
@@ -32,7 +32,6 @@ function obAssertHandler($file, $line, $code, $desc = null) {
 }
 ## Set up the callback
 assert_options(ASSERT_CALLBACK, 'obAssertHandler');
-
 
 	#apd_set_pprof_trace();
 	## TODO - will not work with db models and classes as currently written - FL
@@ -54,7 +53,7 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 		$OBroot = '/'.$pathParts[1].'/';
 		return $OBroot;
 	}
-	
+
 	/* Convenience functions for everywhere */
 	/* Work around PHP's braindead include_path stuff. */
 	function REL($sf, $if) {
@@ -125,12 +124,13 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 		//$Locale = substr($localeStrs[0],0,2);
 		$Locale = 'en';
 	}
+
 	$ThemeDir = REL(__FILE__, $ThemeDirUrl);
 	$SharedDirUrl = "../shared";
 	$HTMLHead = "";
 	$LocaleDirUrl = "../locale/".$Locale;
 	$LocaleDir = REL(__FILE__, $LocaleDirUrl);
-	
+
 	if (!isset($doing_install) or !$doing_install) {
 		## Get the current Session Timeout Value
 		$currentTimeoutInSecs = ini_get(’session.gc_maxlifetime’);
