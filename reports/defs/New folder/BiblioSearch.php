@@ -18,8 +18,7 @@ class BiblioSearch_rpt extends BiblioRows {
 	private $startAt;
 	private $howMany;
 
-	public function BiblioSearch_rpt() {
-	//public function __construct() {
+	public function __construct() {
 		$json = file_get_contents(REL(__FILE__, '../../shared/tagGroup.json'));
 		$tags = json_decode_nice($json,true);
 		//echo"titleTags===>";var_dump($tags['title']);echo"<br />";
