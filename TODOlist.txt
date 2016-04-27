@@ -37,8 +37,6 @@ Next/Prior should look the same in reports as on Existing item search.
 28 Jun 2013 - Fred
 move conditionals from BiblioDiv of srchForms to srchJs
 
-- Fred
-Help system needs lots of work
 
 - Fred
 MARC import needs facelift
@@ -85,10 +83,6 @@ Remove key prefixes to expose many duplicates.
 25 Jun 2014 - Kees
 Admin & Tool menus do not fit 16:9 screen
 
-11 Aug 2014 - Kees
-Maybe you want to make a note somewhere that the Database name can not contain hyphens,
-or the other way around, specify a list a of allowed characters.
-
 1 Apr 2016 - Sandberg
 There should be a simple way to include locale-specific strings for plugins
 
@@ -98,6 +92,13 @@ ListManager needs Add/Edit features.
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+11 Aug 2014 - Kees, fixed 27 Apr 2016
+Maybe you want to make a note somewhere that the Database name can not contain hyphens,
+or the other way around, specify a list a of allowed characters.
+note 27 Apr 2016:
+Added a note to the documentation that it's safest to use alphanumeric characters and
+underscore characters.
+
 12 Apr 2016 - Fred, fixed bad link references, 13 Apr 2016
 Biblio fields Maintennace is broken - no jQueryUI.sortable()
 
