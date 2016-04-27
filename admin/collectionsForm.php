@@ -57,9 +57,11 @@
       <select id="type" name="type" > </select>
     </li>
     <li>
-      <label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
-      <input id="default_flg" name="default_flg" type="text" size="1" value="N"
-				pattern="[Y,N]" required aria-required="true" />
+      <label><?php echo T("Default"); ?>:</label>
+      <label for="default_Y">Y:<label>
+      <input id="default_Y" name="default_flg" type="radio" value="Y" required aria-required="true" />
+      <label for="default_N">N:</label>
+      <input id="default_N" name="default_flg" type="radio" value="N" checked required aria-required="true" />
 			<span class="reqd">*</span>
     </li>
     <li>
