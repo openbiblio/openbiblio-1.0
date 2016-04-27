@@ -85,10 +85,12 @@
 		  	</fieldset>
 		  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
 		  	<fieldset class="inlineFldSet">
-	      	<label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label>
-	      	<input id="default_flg" name="default_flg" type="text" size="1" value="<?php echo T("N"); ?>"
-						pattern="[Y,N]" required aria-required="true" />
-					<span class="reqd">*</span>
+          <label><?php echo T("Default"); ?>:</label>
+          <label for="default_Y">Y:<label>
+          <input id="default_Y" name="default_flg" type="radio" value="Y" required aria-required="true" />
+          <label for="default_N">N:</label>
+          <input id="default_N" name="default_flg" type="radio" value="N" checked required aria-required="true" />
+    			<span class="reqd">*</span>
 				</fieldset>
 		  </fieldset>
 		</li>

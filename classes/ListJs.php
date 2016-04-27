@@ -164,7 +164,7 @@ List.prototype.showFields = function (item) {
 			$(this).val([item[this.id]]);
 		}
 		else if ($(this).is('[type=radio]')) {
-			$(this).val([item[this.id]]);
+			$(this).val([item[this.name]]);
 		}
 		else if ($(this).is('[type=file]')) {
 			$(this).val([item[this.id]]);
