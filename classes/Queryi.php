@@ -29,9 +29,10 @@ class Queryi extends mysqli{
 	}
 	public function select($sql) {
 		$results = $this->_act($sql);
-		if (is_bool($results)) {
+		if (0 == $results) {
 			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
 			echo "sql=$sql<br />\n";
+			
 		}
 		return $results;
 	}
