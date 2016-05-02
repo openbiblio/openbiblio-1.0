@@ -53,6 +53,6 @@
 		</div>
 	</fieldset>
 <?php
-	include_once ("../shared/jsLibJs.php");
-	include_once(REL(__FILE__,'photoEditorJs.php'));
+	require_once ("../shared/jsLibJs.php");
+	require_once(REL(__FILE__,'photoEditorJs.php'));
 ?>
