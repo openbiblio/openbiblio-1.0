@@ -14,16 +14,16 @@ var wc = {
 		$('.help').hide();
 
 		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
-			if (Modernizr.video) {
-				console.log('video supported in this browser');
+//			if (Modernizr.video) { // seems to not be working any longer - FL
+//				console.log('video supported in this browser');
 		  	var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
 								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
 								 + ' preload="none" ></video>';
 				$('#canvasIn').before(html);
 				$('#fotoDiv').show();
-			} else {
-				console.log('video NOT supported in this browser');
-			}
+//			} else {
+//				console.log('video NOT supported in this browser');
+//			}
 		}
 
 		wc.video = document.querySelector('video');
@@ -73,6 +73,7 @@ var wc = {
 		};
 
 		wc.resetForm();
+
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -235,7 +236,15 @@ var wc = {
 
 }
 /*  this code should be explicity initialized when needed unless
-		the appearance of the video allow/deny prompt is acceptable
+		the frequent appearance of the video allow/deny prompt is acceptable
+
+    in Mozilla Firefox 46, you can elinate the prompt to allow video capture
+    at "about:config | media.navigator.permission.disabled"
+    BUT BE WARY, once on, it is accesable by any page in the browser until OB is turned off
+
  */
-//$(document).ready(wc.init);
+<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
+  $(document).ready(wc.init);
+<?php } ?>
+
 </script>

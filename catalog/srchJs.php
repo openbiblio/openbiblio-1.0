@@ -10,8 +10,8 @@
  */
 "use strict";
 <?php
-	// If a circulation user and NOT a cataloging user the system should treat the user as opac
-//	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
+	// If (a circulation user and NOT a cataloging user) the system should treat the user as opac
+  //	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
 	if(strtolower($tab) == 'opac' || strtolower($tab) == 'circulation' )
 	  echo "var opacMode = true;";
 	else
@@ -443,6 +443,8 @@ var bs = {
 
 	/* ====================================== */
 	getPhoto: function (bibid, dest) {
+    if (!wc.url) wc.init;
+
 		if (bibid === undefined) console.log('Missing bibid in getPhoto()');
 		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 			if (data != null) {
@@ -637,7 +639,9 @@ var bs = {
 
 	/* ====================================== */
 	doPhotoEdit: function () {
-		$('#updtFotoBtn').hide(); 
+    if (!wc.url) wc.init;
+
+		$('#updtFotoBtn').hide();
 		$('#fotoHdr').val('<?php echo T("EditingExistingFoto"); ?>')
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
@@ -648,6 +652,8 @@ var bs = {
 		bs.showPhotoForm();
 	},
 	doPhotoAdd: function () {
+    if (!wc.url) wc.init;
+
 		$('#updtFotoBtn').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
 		$('#deltFotoBtn').hide();
@@ -659,6 +665,8 @@ var bs = {
 		bs.showPhotoForm();
 	},
 	showPhotoForm: function () {
+    if (!wc.url) wc.init;
+
 	  $('#biblioDiv').hide();
 	  $('#fotoSrce').val('')
 	  $('#fotoBibid').val(idis.crntBibid);
