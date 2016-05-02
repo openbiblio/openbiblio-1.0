@@ -92,8 +92,8 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 		$_SESSION['show_detail_opac'] = Settings::get('show_detail_opac');
 		$_SESSION['multi_site_func'] = Settings::get('multi_site_func');
 		$_SESSION['show_item_photos'] = Settings::get('show_item_photos');
-	  $_SESSION['site_login'] = Settings::get('site_login');
-	  $_SESSION['checkout_interval'] = Settings::get('checkout_interval');
+		$_SESSION['site_login'] = Settings::get('site_login');
+		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
 	require_once(REL(__FILE__, '../database_constants.php'));
@@ -153,39 +153,39 @@ assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 
 	include_once(REL(__FILE__, "../classes/Page.php"));
 
-  ###################################################################
-  ## plugin Support
-  ###################################################################
-  function getPlugIns($wanted) {
+	###################################################################
+	## plugin Support
+	###################################################################
+	function getPlugIns($wanted) {
 		## determine what is allowed
-    if ($_SESSION['allow_plugins_flg'] != 'Y') return NULL;
+		if ($_SESSION['allow_plugins_flg'] != 'Y') return NULL;
 		$list = $_SESSION['plugin_list'];
 		$aray = explode(',', $list);
 
 		## make connections where allowed
 		clearstatcache();
 		$pluginSet = array();
-  	if (is_dir('../plugins')) {
-  	  ## find all plugin directories
+		if (is_dir('../plugins')) {
+			## find all plugin directories
 			if ($dirHndl = opendir('../plugins')) {
-		    # look at all plugin dirs
-		    while (false !== ($plug = readdir($dirHndl))) {
-		      if (($plug == '.') || ($plug == '..')) continue;
-  	      $plugPath = "../plugins/$plug";
-  	      if (is_dir($plugPath)) {
-  	        if (!in_array($plug, $aray)) continue; // not allowed
+				# look at all plugin dirs
+				while (false !== ($plug = readdir($dirHndl))) {
+					if (($plug == '.') || ($plug == '..')) continue;
+					$plugPath = "../plugins/$plug";
+					if (is_dir($plugPath)) {
+						if (!in_array($plug, $aray)) continue; // not allowed
 						if ($filHndl = opendir($plugPath)) {
-		    			while (false !== ($file = readdir($filHndl))) {
-		    			  if (($file == '.') || ($file == '..')) continue;
-  	      			if ($file == $wanted) {
+							while (false !== ($file = readdir($filHndl))) {
+								if (($file == '.') || ($file == '..')) continue;
+								if ($file == $wanted) {
 									$pluginSet[] = "$plugPath/$file";
 								}
-  	      		}
-  	      		closedir($filHndl);
+							}
+							closedir($filHndl);
 						}
 					}
-  		  }
-  		  closedir($dirHndl);
+				}
+				closedir($dirHndl);
 			}
 		}
 		return $pluginSet;
