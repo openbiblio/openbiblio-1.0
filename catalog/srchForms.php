@@ -156,9 +156,9 @@
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioListDiv">
 	<h5><?php echo T("SearchResults"); ?> &quot;<span id="srchRsltTitl"></span>&quot;</h5>
-	<div id="results_found">
+	<!--div id="results_found">
 		<?php //echo T("biblioSearchMsg", array('nrecs'=>$rpt->count(), 'start'=>1, 'end'=>25)); ?>
-	</div>
+	</div-->
 	<table>
 	<tr>
 		<td colspan="3">

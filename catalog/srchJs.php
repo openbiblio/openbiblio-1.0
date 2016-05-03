@@ -443,8 +443,6 @@ var bs = {
 
 	/* ====================================== */
 	getPhoto: function (bibid, dest) {
-    if (!wc.url) wc.init;
-
 		if (bibid === undefined) console.log('Missing bibid in getPhoto()');
 		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 			if (data != null) {

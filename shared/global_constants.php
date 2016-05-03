@@ -34,8 +34,7 @@ define("OBIB_SEARCH_SERIES","8");
  *  Misc. system constants
  ****************************************************************************
  */
-define("OBIB_CODE_VERSION","CVS");
-//define("OBIB_LATEST_DB_VERSION","0.4.0-mps3");
+define("OBIB_CODE_VERSION","1.0a");
 define("OBIB_LATEST_DB_VERSION","1.0b");
 
 define("OBIB_DEFAULT_STATUS","in");
@@ -52,7 +51,6 @@ define("OBIB_DEMO_FLG",false);
 define("OBIB_HIGHLIGHT_I18N_FLG",false);
 define("OBIB_SEARCH_MAXPAGES",10);
 
-//define("OBIB_UPLOAD_DIR",REL(__FILE__, "../photos/"));
 define("OBIB_UPLOAD_DIR", "../photos/");
 
 define("OBIB_MASTER_CALENDAR",1);
