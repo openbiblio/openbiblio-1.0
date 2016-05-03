@@ -24,8 +24,6 @@
 	$focus_form_field = "";
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Cover Photos'));
-
-	//print_r($_SESSION); // for debugging
 ?>
 
 	<p id="errSpace" class="error"></p>
@@ -42,6 +40,7 @@
 			</div>
 			<div class="countBox"> <p> foto count goes here </p> </div>
 			<div class="sortBox">
+        <label= for="orderBy">Sort By:</label>
 				<select id="orderBy">
 					<option value="title">Title</option>
 					<option value="author" SELECTED>Author</option>

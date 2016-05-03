@@ -5,7 +5,7 @@
 
 function opac_menu() {
 	Nav::node('home', T("Search"), '../catalog/srchForms.php?tab=OPAC');
-	Nav::node('images', T("Images"), '../shared/image_browse.php?tab=opac');
+	Nav::node('images', T("Covers"), '../opac/imageBrowseForm.php?tab=opac');
 	Nav::node('biblio', T("Record Info"));
 	Nav::node('cart', T("Cart"), '../shared/req_cart.php?tab=opac');
 	Nav::node('request', T("Booking"));
