@@ -15,9 +15,25 @@ class Queryi extends mysqli{
 	public function __construct() {
 		$this->lockDepth = 0;
 		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
-    if (mysqli_connect_error()) {
+		if (mysqli_connect_error()) {
 			echo mysqli_connect_error()."<br>\n";
 			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysql_error()));
+		}
+		$this->set_encoding();
+
+	}
+
+
+	/** Make sure all queries have the user's preferred encoding
+	 * and default to UTF8 if they have not chosen a valid encoding
+	*/
+	private function set_encoding() {
+		$r = parent::query("SELECT value FROM settings where name='charset'");
+		if ($r->num_rows == 1) {
+			$row = $r->fetch_assoc();
+			if (!parent::set_charset($row['value']))  {
+				parent::set_charset('utf8');
+			}
 		}
 	}
 
