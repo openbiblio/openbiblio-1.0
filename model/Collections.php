@@ -162,7 +162,8 @@ class Collections extends DmTable {
 		}
 		return $errs;
 	}
-	function deleteOne($code) {
+	function deleteOne() {
+		$code = func_get_args()[0];
 		DBTable::deleteOne($code);
 		foreach ($this->colltypes as $table) {
 			$table->deleteOne($code);
