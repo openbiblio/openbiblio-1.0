@@ -16,11 +16,4 @@ class States extends DmTable {
 		));
 		$this->setKey('code');
 	}
-	////TODO this should not be needed, but DBTable function doesn't work - FL
-	function deleteOne($code) {
-		$this->lock();
-		$sql = $this->mkSQL('DELETE FROM `state_dm` WHERE `code`=%Q', $code);
-		$this->act($sql);
-		$this->unlock();
-	}
 }
