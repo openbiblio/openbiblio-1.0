@@ -85,14 +85,14 @@ var img = {
 
 			if (img.columns == 0) {
 				/* provide for flexible nmbr of columns based on screen width */
-				var bodyWidth = $('body').width();
-				var asideWidth = $('aside').outerWidth();
+				var bodyWidth = $('#fotoDiv').innerWidth();
+				var asideWidth = $('#sidebar').outerWidth();
 				var displayWidth = bodyWidth - asideWidth;
 				var fotoWidth = parseInt($('#img-dummy').outerWidth())*1.5;
-				var perLine = Math.round((displayWidth/fotoWidth),0);
-//console.log('width: body='+bodyWidth+'; aside='+asideWidth+'; display='+displayWidth+'; foto='+fotoWidth+'; perLine='+perLine);
+				var perLine = Math.floor((bodyWidth/fotoWidth),0)-1 ;
+        //console.log('width: body='+bodyWidth+'; aside='+asideWidth+'; display='+displayWidth+'; foto='+fotoWidth+'; perLine='+perLine);
 			} else {
-				/* columns will be per Admin|Settings entry */
+				/* columns will be per 'Admin|Library Settings' entrys */
 				var perLine = img.columns;
 			}
 
