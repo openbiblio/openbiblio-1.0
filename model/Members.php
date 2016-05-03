@@ -151,8 +151,9 @@ class Members extends CoreTable {
 		$row = $this->select1($sql);
 		return $row['calendar'];
 	}
-	function deleteOne($mbrid) {
+	function deleteOne() {
 		# FIXME - history
+		$mbrid = func_get_args()[0];
 		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
 		$acct = new MemberAccounts;
 		$acct->deleteByMbrid($mbrid);
