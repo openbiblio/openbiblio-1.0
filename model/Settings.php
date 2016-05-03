@@ -103,7 +103,7 @@ class Settings extends Queryi {
 	static function getThemeDirs () {
 		return Settings::_getSubdirs('themes');
 	}
-	private function _getSubdirs($root) {
+	private static function _getSubdirs($root) {
 		$aray = array();
 	  if (is_dir('../'.$root)) {
 			//echo $root." Dir found: <br />";
