@@ -90,7 +90,7 @@ class Localize {
 	public function moneyFormat($amount) {
 		return $this->meta->moneyFormat($amount);
 	}
-	public function getLocales () {
+	public static function getLocales () {
 		$dir = opendir(LOCALE_ROOT);
 		$locales = array();
 		while (($file=readdir($dir)) !== false) {
