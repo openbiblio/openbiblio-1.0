@@ -133,8 +133,8 @@ class Collections extends DmTable {
 		$row = $this->select1($sql);
 		return $row['description'];
 	}
-	function insert_el($rec) {
-		list ($id, $errs) = DBTable::insert_el($rec);
+	function insert_el($rec, $confirmed = false) {
+		list ($id, $errs) = DBTable::insert_el($rec, $confirmed);
 		if ($errs)
 			return array(NULL, $errs);
 		$rec['code'] = $id;
@@ -145,9 +145,9 @@ class Collections extends DmTable {
 		}
 		return array($id, NULL);
 	}
-	function update_el($rec) {
+	function update_el($rec, $confirmed = false) {
 		$old = $this->getOne($rec['code']);
-		$errs = DBTable::update_el($rec);
+		$errs = DBTable::update_el($rec, $confirmed);
 		if ($errs)
 			return $errs;
 		$updated = $this->getOne($rec['code']);
