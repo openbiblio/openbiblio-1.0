@@ -55,11 +55,4 @@ class Sites extends DBTable {
 		}
 		return $errors;
 	}
-	////TODO this should not be needed, but DBTable function doesn't work - FL
-	//function deleteOne($siteid) {
-	//	$this->lock();
-	//	$sql = $this->mkSQL('DELETE FROM `site` WHERE `siteid`=%N', $siteid);
-	//	$this->act($sql);
-	//	$this->unlock();
-	//}
 }
