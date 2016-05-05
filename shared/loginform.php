@@ -71,7 +71,7 @@
 	<tfoot>
 	<tr>
 		<td colspan="2" align="center">
-			<input type="submit" value="<?php echo T("Login"); ?>" />
+			<input type="submit" id="login" value="<?php echo T("Login"); ?>" />
 		</td>
 	</tr>
 	<tfoot>
