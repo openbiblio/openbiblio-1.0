@@ -23,10 +23,10 @@ class Params {
 			$l = array_merge($namel, array($name));
 			if (isset($options['repeatable']) && $options['repeatable']) {
 				for ($i=0; $i<4; $i++) {
-					Params::_print($type, array_merge($l, array($i)), $options, $list, $prefix);
+					self::_print($type, array_merge($l, array($i)), $options, $list, $prefix);
 				}
 			} else {
-				Params::_print($type, $l, $options, $list, $prefix);
+				self::_print($type, $l, $options, $list, $prefix);
 			}
 		}
 		echo '</table>'."\n";
@@ -121,7 +121,7 @@ class Params {
 	}
 	## ------------------------------------------------------------------------ ##
 
-	private function _print($type, $namel, $options, $list, $prefix) {
+	private static function _print($type, $namel, $options, $list, $prefix) {
 		global $loc;
 		//assert('$loc');
 		assert('!empty($namel)');
