@@ -126,7 +126,7 @@ class Report {
 			return 1;
 		}
 	}
-	public function create_e($type, $name=NULL) {
+	public static function create_e($type, $name=NULL) {
 		$cache = array('type'=>$type);
 		$rpt = new Report();
 		$err = $rpt->_load_e($name, $cache);

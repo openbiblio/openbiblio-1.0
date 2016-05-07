@@ -4,7 +4,7 @@
  */
 
 class Search {
-	function type($title, $within, $fields, $method='words', $operator='like', $where='anywhere') {
+	static function type($title, $within, $fields, $method='words', $operator='like', $where='anywhere') {
 		return array('title'=>$title, 'within'=>$within, 'fields'=>$fields,
 			'method'=>$method, 'operator'=>$operator, 'where'=>$where);
 	}
