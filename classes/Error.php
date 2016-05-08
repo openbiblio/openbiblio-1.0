@@ -158,14 +158,14 @@ class IgnorableFieldError extends IgnorableError {
 /** Fatal Errors */
 class Fatal {
 	/* Override default behaviour, e.g. for suppressing errors, unit testing, etc. */
-	function setHandler(&$obj) {
+	static function setHandler(&$obj) {
 		global $_Error_FatalHandler;
 		$old =& $_Error_FatalHandler;
 		$_Error_FatalHandler = $class;
 		return $old;
 	}
 	/* "Can't happen" states */
-	function internalError($msg) {
+	static function internalError($msg) {
 		global $_Error_FatalHandler;
 		if (method_exists($_Error_FatalHandler, 'internalError')) {
 			$_Error_FatalHandler->internalError($msg);
@@ -174,7 +174,7 @@ class Fatal {
 		}
 	}
 	/* Query errors */
-	function dbError($sql, $msg, $dberror) {
+	static function dbError($sql, $msg, $dberror) {
 		global $_Error_FatalHandler;
 		if (method_exists($_Error_FatalHandler, 'dbError')) {
 			$_Error_FatalHandler->dbError($sql, $msg, $dberror);
@@ -183,7 +183,7 @@ class Fatal {
 		}
 	}
 	/* Need a lock and can't get it */
-	function cantLock() {
+	static function cantLock() {
 		global $_Error_FatalHandler;
 		if (method_exists($_Error_FatalHandler, 'cantLock')) {
 			$_Error_FatalHandler->cantLock();
@@ -192,7 +192,7 @@ class Fatal {
 		}
 	}
 	/* Generic */
-	function error($msg) {
+	static function error($msg) {
 		global $_Error_FatalHandler;
 		if (method_exists($_Error_FatalHandler, 'error')) {
 			$_Error_FatalHandler->error($msg);
