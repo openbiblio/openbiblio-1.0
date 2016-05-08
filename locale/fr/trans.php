@@ -971,6 +971,7 @@ $trans["Wrong Number Found error."] = "Wrong Number Found.";
 $trans["YAZ"] = "YAZ";
 $trans["Y"] = "O";
 $trans["Yes"] = "Yes";
+$trans["You cannot delete a site that has copies attached to it."] = "Vous ne pouvez pas supprimer un site qui est attaché à des copies.";
 $trans["You must settle all outstanding loans before deleting a member."] = "Vous devez régler tous les prêts en cours avant de supprimer un membre.";
 $trans["Your userid has been suspended."] = "Votre code d'utilisateur a été suspendu.";
 ####### Z #######

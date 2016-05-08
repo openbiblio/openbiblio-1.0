@@ -377,6 +377,7 @@ $trans["WebServerInformation"] = "Про веб-сервер";
 $trans["Welcome to the Library"] = "Добро пожаловать в библиотеку";
 ####### Y #######
 $trans["Yes"] = "Да";
+$trans["You cannot delete a site that has copies attached to it."] = "Нельзя удалить организационную единицу, которую прилагается к единицей.";
 $trans["Your userid has been suspended."] = "Ваш аккаунт был заморожен.";
 ####### Z #######
 $trans["ZipCode"] = "почтовый индекс";
