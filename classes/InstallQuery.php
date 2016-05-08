@@ -23,11 +23,17 @@ class InstallQuery extends Queryi {
 	}
 
   public function getSettings($tablePrfx = OBIB_DATABASE) {
-    //$sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
-    //$rows = $this->select01($sql);
+    $sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
+    $rows = $this->select01($sql);
+
+    if (!$rows || empty($rows) || !isset($rows)) {
+      return 'NothingFound';
+    }
+
     $sql = $this->mkSQL('SELECT * FROM %C ', $tablePrfx.'.settings');
 //echo "sql={$sql}<br/>\n";
     $rows = $this->select($sql);
+
     if (!$rows || empty($rows) || !isset($rows)) {
       return 'NothingFound';
     }
