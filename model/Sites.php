@@ -62,6 +62,13 @@ class Sites extends DBTable {
 			$error = new OBErr(T("Please do not delete the current site."));
 			return $error->toStr();
 		}
+		$sql = "SELECT COUNT(copyid) as copies FROM biblio_copy WHERE siteid=" . $id_to_delete;
+		$row = $this->select1($sql);
+		if (0 != $row['copies']) {
+			$error = new OBErr(T("You cannot delete a site that has copies attached to it."));
+			return $error->toStr();
+		}
+
 		return parent::deleteOne($id_to_delete);
 	}
 }
