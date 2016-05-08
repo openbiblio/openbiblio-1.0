@@ -363,10 +363,16 @@ class Copies extends CoreTable {
 		$avIcon = "circle_red.png";
 
 		$sql = "select sf.subfield_cd, f.tag "
-				 . "from biblio_field f, biblio_subfield sf "
+				 . "from biblio_field f, biblio_subfield sf, material_fields mf, biblio b "
 				 . "where (f.bibid = {$bibid}) "
 				 . "  and (sf.bibid = {$bibid}) "
-				 . "  and (sf.fieldid = f.fieldid) ";
+				 . "  and (sf.fieldid = f.fieldid) "
+				 . "  and (f.tag = '856') "
+				 . "  and (sf.subfield_cd = 'u') "
+				 . "  and (mf.tag = '856') "
+				 . "  and (mf.subfield_cd = 'u') "
+				 . "  and (mf.material_cd = b.material_cd) "
+				 . "  and (b.bibid = {$bibid}) ";
 		$rslt = $this->select($sql);
 		while ($row = $rslt->fetch_assoc()) {
                         // check for "digital copies" of ebooks and web sites
