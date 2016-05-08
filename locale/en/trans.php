@@ -735,6 +735,7 @@ $trans["Photo Rotation"] = "Photo Rotation";
 $trans["Photos per Page"] = "Photos per Page";
 $trans["Pickup List"] = "Pickup List";
 $trans["Place on Hold"] = "Place on Hold";
+$trans["Please do not delete the current site."] = "Please do not delete the current site.";
 $trans["Please enter your e-mail address."] = "Please enter your e-mail address.";
 $trans["Please enter your phone number."] = "Please enter your phone number.";
 $trans["Please fill in your grade."] = "Please fill in your grade.";

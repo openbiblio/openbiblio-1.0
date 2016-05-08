@@ -714,6 +714,7 @@ $trans["PhotoEditor"] = "Photo Editor";
 $trans["Photo Import"] = "Importation de photos";
 $trans["Pickup List"] = "Liste de ramassage";
 $trans["Place on Hold"] = "Mise en garde";
+$trans["Please do not delete the current site."] = "S'il vous plaît ne pas supprimer le site actuel";
 $trans["Please enter your e-mail address."] = "S'il vous plaît, entrez votre adresse e-mail.";
 $trans["Please enter your phone number."] = "S'il vous plaît entrer votre numéro de téléphone.";
 $trans["Please fill in your grade."] = "S'il vous plaît remplir votre note.";

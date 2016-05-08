@@ -55,4 +55,13 @@ class Sites extends DBTable {
 		}
 		return $errors;
 	}
+
+	function deleteOne() {
+		$id_to_delete = func_get_args()[0];
+		if ($_SESSION['current_site'] == $id_to_delete) {
+			$error = new OBErr(T("Please do not delete the current site."));
+			return $error->toStr();
+		}
+		return parent::deleteOne($id_to_delete);
+	}
 }

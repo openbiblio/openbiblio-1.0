@@ -296,6 +296,7 @@ $trans["Options"] = "Настройки";
 $trans["Password"] = "Пароль";
 $trans["Pattern"] = "регулярное выражение";
 $trans["Phone"] = "Телефон";
+$trans["Please do not delete the current site."] = "Пожалуйста, не удаляйте текущую организационную единицу.";
 $trans["Please select the library"] = "Выберите вашу библиотеку, пожалуйста.";
 $trans["Port"] = "Порт";
 $trans["PostalCode"] = "почтовый индекс";
