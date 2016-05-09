@@ -266,6 +266,7 @@ $trans["Media Types"] = "Форматы";
 $trans["Member Fields"] = "Поля для посетителей";
 $trans["Member Name"] = "Имя посетители";
 $trans["Member"] = "Посетитель";
+$trans["Member creation was not successful"] = "Посетитель не был создан";
 $trans["Member Information"] = "Информация о посетителя";
 $trans["Member Search"] = "Поиск посетителей";
 $trans["Members"] = "Посетители";

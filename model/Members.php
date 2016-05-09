@@ -128,7 +128,13 @@ class Members extends CoreTable {
 			}
 			$mbr['password'] = md5($mbr['password']);
 		}
-		return parent::insert_el($mbr, $confirmed);
+		$results = parent::insert_el($mbr, $confirmed);
+		// Check to make sure insert went through
+		if (0 == $this->insert_id) {
+			return array(NULL, array(new ObErr(T('Member creation was not successful.'))));
+		} else {
+			return $results;
+		}
 	}
 	function update_el($mbr, $confirmed=false) {
 		if (isset($mbr['password']) and $mbr['password']) {

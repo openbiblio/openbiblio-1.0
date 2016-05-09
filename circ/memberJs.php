@@ -640,7 +640,7 @@ var mf = {
 		$('#msgDiv').hide();
 		var parms = $('#editForm').serialize();
 		$.post(mf.url, parms, function(response) {
-			if (response.substr(0,1)=='<') {
+			if (response.substr(0,1)=='0') {
 				//console.log('rcvd error msg from server :<br />'+response);
 				mf.showMsg(response);
 			}

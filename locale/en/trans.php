@@ -593,6 +593,7 @@ $trans["MediaTypeListLabel"] = 'Media Type:';
 $trans["Media Type"] = "Media Type";
 $trans["Media Types"] = "Media Types";
 $trans["Member"] = "Member";
+$trans["Member creation was not successful"] = "Member creation was not successful";
 $trans["Member Fields"] = "Member Fields";
 $trans["Member Card No Width"] = "Member Card No Width";
 $trans["Member Information"] = "Member Information";

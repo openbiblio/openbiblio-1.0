@@ -577,6 +577,7 @@ $trans["MediaTypeListLabel"] = 'Type de support:';
 $trans["Media Type:"] = "Type de support:";
 $trans["Media Type"] = "Type de support:";
 $trans["Media Types"] = "Type de supports";
+$trans["Member creation was not successful"] = "Le membre n'a pas été créé";
 $trans["Member Fields"] = "Member Fields";
 $trans["Member Information"] = "Renseignements sur le membre";
 $trans["Member Name"] = "Nom du membre";
