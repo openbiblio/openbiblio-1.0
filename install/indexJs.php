@@ -56,10 +56,18 @@ ins = {
 	connectDb: function () {
 		ins.informUser('<?php echo T("TestingConnectionToDBServer"); ?>');
 		ins.showWait('<?php echo T("TestingDatabaseConnection"); ?>');
+    var status= '';
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
 			$('#plsWait').hide();
-			ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
-			ins.dbTest();
+      status = response.split(' ',1);
+console.log(status);
+      if (status[0] == 'Unknown') {
+        ins.informUser('<?php echo T("Unable to connect MySQL"); ?>' );
+        return;
+      } else {
+        ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
+        ins.dbTest();
+      }
 	  });
 	},
 	dbTest: function () {

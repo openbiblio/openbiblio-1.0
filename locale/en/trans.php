@@ -950,6 +950,7 @@ $trans["Try to Fix Errors"] = "Try to Fix Errors";
 $trans["Type"] = "Type";
 ####### U #######
 $trans["Unable to connect to database."] = "Unable to connect to database.";
+$trans["Unable to connect to a MySQL server"] = "Unable to connect to a MySQL server";
 $trans["Unable to create thumbnail."] = "Unable to create thumbnail.";
 $trans["Unable to move uploaded file."] = "Unable to move uploaded file.";
 $trans["unattached copies"] = "unattached copies";
