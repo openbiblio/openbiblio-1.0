@@ -21,6 +21,37 @@
 			<span id="waitText">please wait...</span>
 		</section>
 
+    <section id="const_editor">
+      <p class="bold">Edit Database Constants</p><br />
+      <form id="dbConstForm">
+				<table cellpadding=0 cellspacing=0 border=0>
+        <tr>
+          <th><label for="hostId">Host Id</label></th>
+          <td><input id="hostId" type="text" placeholder="Ip Address or Name" required /></td>
+        </tr>
+        <tr>
+          <th><label for="userNm">User Name</label></th>
+          <td><input id="userNm" type="text" placeholder="missing" required /></td>
+        </tr>
+        <tr>
+          <th><label for="passWd">User Password</label></th>
+          <td><input id="passWd" type="password" placeholder="missing" required /></td>
+        </tr>
+        <tr>
+          <th><label for="dbName">Database Name</label></th>
+          <td><input id="dbName" type="text" placeholder="missing" required /><br />
+        </tr>
+        <tr>
+         <td colspan="2"><p class="note">Note: Above user name & password must be valid for this database server</P></td>
+        </tr>
+				<tr><td colspan="2">&nbsp;</td></tr>
+        <tr>
+				  <td><input id="constBtn" type="submit" value="<?php echo T("Update"); ?>" /></td>
+        </tr>
+        </table>
+      </form>
+    </section>
+
 		<section id="dbPblms">
 			<pre id="connectErr"></pre>
 			Please make sure the following has been done before re-running this
@@ -58,7 +89,7 @@
 					<td><select id="locale"></select></td>
 				</tr-->
 				<tr>
-					<td><label for="installTestData">Install Test Data:</label></td>
+					<th><label for="installTestData">Install Test Data:</label></th>
 					<td><input id="installTestData" type="checkbox" value="<?php echo T("Yes"); ?>" /></td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>

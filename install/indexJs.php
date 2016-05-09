@@ -23,6 +23,9 @@ ins = {
 		//$('.reqd sup').css('color','red');
 		//$('#updateMsg').hide();
 
+if ($('#constBtn')) console.log('got btn');
+if ($('ins.doUpdtConst')) console.log('got function');
+    $('#constBtn').on('click',null,ins.doUpdtConst);
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
 
@@ -36,6 +39,7 @@ ins = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#plsWait').hide();
+    $('#const_editor').hide();
 		$('#dbPblms').hide();
 		$('#versionOK').hide();
 		$('#newInstall').hide();
@@ -60,10 +64,9 @@ ins = {
 	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
 			$('#plsWait').hide();
       status = response.split(' ',1);
-console.log(status);
       if (status[0] == 'Unknown') {
-        ins.informUser('<?php echo T("Unable to connect MySQL"); ?>' );
-        return;
+        ins.informUser('<?php echo T("Unable to connect to a MySQL server"); ?>' );
+        $('#const_editor').show();
       } else {
         ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
         ins.dbTest();
@@ -112,6 +115,22 @@ console.log(status);
 		});
 	},
 	
+  //------------------------------
+  doUpdateConst: function() {
+console.log('doUpdateConst');
+		ins.showWait('<?php echo T("InstallingTables"); ?>');
+		ins.informUser('<?php echo T("Creating/Updating Database Constant File"); ?>');
+		$.post(ins.url, {'mode':'doUpdateConst',}, function (response) {
+			$('#plsWait').hide();
+			if (response.indexOf('error') >= 0) {
+				ins.informUser('<p class="error">'+response+'</p>');
+        $('#const_editor').hide();
+			}
+			return false;
+		});
+		return false;
+  },
+
 	//------------------------------
 	doNewInstall: function () {
 		ins.showWait('<?php echo T("InstallingTables"); ?>');
