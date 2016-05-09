@@ -23,12 +23,18 @@
 	if(isset($_REQUEST['selectSite'])){
 		$siteId = $_REQUEST['selectSite'];
 	} elseif(isset($_COOKIE['OpenBiblioSiteID'])) {
+		$site = new Sites;
+		$exists_in_db = $site->maybeGetOne($_COOKIE['OpenBiblioSiteID']);
+		if ($exists_in_db['siteid'] != $_COOKIE['OpenBiblioSiteID']) {
+			$_COOKIE['OpenBiblioSiteID'] = 1;
+		}
 		$siteId = $_COOKIE['OpenBiblioSiteID'];
 	} else {
 		$siteId = Settings::get('multi_site_func');
 		if(!($siteId > 0)){
 			$siteId = 1;
 		}
+		$_REQUEST['selectSite'] = $siteId;
 	}
 	$tab = "circ";
 	$nav = "";
@@ -40,7 +46,7 @@
 
 ?>
 <h3 class="title"><?php echo T("Staff Login"); ?></h3>
-<?php //print_r($_SESSION); //debugging only ?>
+<?php // print_r($_SESSION); //debugging only ?>
 
 <form name="loginform" method="post" action="../shared/login.php">
 <fieldset>
