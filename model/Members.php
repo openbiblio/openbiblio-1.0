@@ -159,7 +159,7 @@ class Members extends CoreTable {
 	}
 	function deleteOne() {
 		# FIXME - history
-		$mbrid = func_get_args()[0];
+		$mbrid = func_get_args(0);
 		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
 		$acct = new MemberAccounts;
 		$acct->deleteByMbrid($mbrid);

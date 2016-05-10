@@ -28,7 +28,7 @@ class Calendars extends DmTable {
 		$this->update(array('code'=>$code, 'description'=>$name));
 	}
 	function deleteOne() {
-		$code = func_get_args()[0];
+		$code = func_get_args(0);
 		if ($code == OBIB_MASTER_CALENDAR)
 			Fatal::internalError(T("CannotDeleteMasterCalendar"));
 		$this->lock();

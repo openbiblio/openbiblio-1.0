@@ -57,7 +57,7 @@ class Sites extends DBTable {
 	}
 
 	function deleteOne() {
-		$id_to_delete = func_get_args()[0];
+		$id_to_delete = func_get_arg(0);
 		if ($_SESSION['current_site'] == $id_to_delete) {
 			$error = new OBErr(T("Please do not delete the current site."));
 			return $error->toStr();
