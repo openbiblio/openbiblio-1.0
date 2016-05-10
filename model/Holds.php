@@ -39,7 +39,8 @@ class Holds extends DBTable {
 					 . "ORDER BY hold_begin_dt ";
 		return $this->select($sql);
 	}
-	public function deleteOne($holdid) {
+	public function deleteOne() {
+		$holdid = func_get_arg(0);
 		parent::deleteOne($holdid);
 		$this->_cleanup();
 	}

@@ -40,12 +40,16 @@ class BiblioImages extends DBTable {
 		} else
 			return $this->select($sql);
 	}
-	function getOne($bibid, $imgurl) {
+	function getOne() {
+		$bibid = func_get_args(0);
+		$imgurl = func_get_args(1);
 		$sql = $this->mkSQL("select * from images where bibid=%N "
 			. "and imgurl=%Q ", $bibid, $imgurl);
 		return $this->select1($sql);
 	}
-	function maybeGetOne($bibid, $imgurl) {
+	function maybeGetOne() {
+		$bibid = func_get_args(0);
+		$imgurl = func_get_args(1);
 		$sql = $this->mkSQL("select * from images where bibid=%N "
 			. "and imgurl=%Q ", $bibid, $imgurl);
 		return $this->select01($sql);
@@ -174,7 +178,9 @@ class BiblioImages extends DBTable {
 		}
 		return true;
 	}
-	function deleteOne($bibid, $imgurl) {
+	function deleteOne() {
+		$bibid = func_get_args(0);
+		$imgurl = func_get_args(1);
 		$this->lock();
 		$img = $this->getOne($bibid, $imgurl);
 		if ($img['type'] == 'Thumb'

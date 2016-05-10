@@ -259,9 +259,9 @@ class Copies extends CoreTable {
 		$copies = new Copies;
 		$copies->setCustomFields($copyid, $custom);
 	}
-	public function insert_el($copy) {
+	public function insert_el($copy, $confirmed=false) {
 		$this->lock();
-		list($id, $errors) = parent::insert_el($copy);
+		list($id, $errors) = parent::insert_el($copy, $confirmed);
 		if (!$errors) {
 			$history = new History;
 			$history->insert(array(

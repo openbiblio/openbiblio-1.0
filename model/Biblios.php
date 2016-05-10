@@ -251,7 +251,8 @@ class Biblios extends CoreTable {
 	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
 	}
 
-	function deleteOne($bibid) {
+	function deleteOne() {
+		$bibid = func_get_args(0);
 		$this->lock();
 		$imgs = new BiblioImages;
 		$imgs->deleteByBibid($bibid);
@@ -271,29 +272,29 @@ class Biblios extends CoreTable {
 	## ======================================================================== ##
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
-	public function insert_el($biblio) {
+	public function insert_el($rec, $confirmed=false) {
 		$this->lock();
-		if (!isset($biblio['marc']) or !is_a($biblio['marc'], 'MarcRecord')) {
+		if (!isset($rec['marc']) or !is_a($rec['marc'], 'MarcRecord')) {
 			return array(NULL, array(new FieldError('marc', T("No MARC record set"))));
 		}
-		list($bibid, $errors) = parent::insert_el($biblio);
+		list($bibid, $errors) = parent::insert_el($rec, $confirmed);
 		if ($errors) {
 			return array($bibid, $errors);
 		}
-		$this->marc->put($bibid, $biblio['marc']);
+		$this->marc->put($bibid, $rec['marc']);
 
 		$this->unlock();
 		return array($bibid, NULL);
 	}
-	public function update_el($biblio) {
+	public function update_el($rec, $confirmed=false) {
 		$this->lock();
-		if (!isset($biblio['bibid'])) {
+		if (!isset($rec['bibid'])) {
 			Fatal::internalError(T("No bibid set in biblio update"));
 		}
-		if (isset($biblio['marc']) and is_a($biblio['marc'], 'MarcRecord')) {
-			$this->marc->put($biblio['bibid'], $biblio['marc']);
+		if (isset($rec['marc']) and is_a($rec['marc'], 'MarcRecord')) {
+			$this->marc->put($rec['bibid'], $rec['marc']);
 		}
-		$r = parent::update_el($biblio);
+		$r = parent::update_el($rec);
 		$this->unlock();
 		return $r;
 	}

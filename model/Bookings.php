@@ -281,7 +281,8 @@ class Bookings extends CoreTable {
 		$this->unlock();
 		return NULL;
 	}
-	function deleteOne($bookingid) {
+	function deleteOne() {
+		$bookingid = func_get_arg(0);
 		$this->lock();
 		# Older MySQL doesn't support DELETE using multiple tables.
 		$sql = 'select s.histid, s.bibid, s.copyid, c.histid as curr_histid '
