@@ -10,7 +10,7 @@ require_once(REL(__FILE__, "../model/ReportDisplays.php"));
 //require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
 
 class ReportDisplaysUI {
-	function display($page) {
+	static function display($page) {
 		$rptdisplays = new ReportDisplays;
 		$displays = $rptdisplays->getMatches(array('page'=>$page), 'position');
 		while ($disp = $displays->next()) {

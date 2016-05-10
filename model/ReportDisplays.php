@@ -55,29 +55,31 @@ class ReportDisplays extends DBTable {
 		}
 		return $errors;
 	}
-	function getOne($page, $position) {
+	function getOne() {
+		$page = func_get_arg(0);
+		$position = func_get_arg(1);
 		$row = parent::getOne($page, $position);
 		if (!$row)
 			return NULL;
 		$row['params'] = unserialize($row['params']);
 		return $row;
 	}
-	function getAll() {
-		$rows = parent::getAll();
+	function getAll($order_by = NULL) {
+		$rows = parent::getAll($order_by);
 		return new ReportDisplaysIter($rows);
 	}
-	function getMatches($fields) {
-		$rows = parent::getMatches($fields);
+	function getMatches($fields, $order_by = NULL) {
+		$rows = parent::getMatches($fields, $order_by);
 		return new ReportDisplaysIter($rows);
 	}
-	function insert_el($rec) {
+	function insert_el($rec, $confirmed = false) {
 		if (isset($rec['params']))
 			$rec['params'] = serialize($rec['params']);
-		return parent::insert_el($rec);
+		return parent::insert_el($rec, $confirmed);
 	}
-	function update_el($rec) {
+	function update_el($rec, $confirmed = false) {
 		if (isset($rec['params']))
 			$rec['params'] = serialize($rec['params']);
-		return parent::update_el($rec);
+		return parent::update_el($rec, $confirmed);
 	}
 }
