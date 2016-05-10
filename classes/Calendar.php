@@ -391,7 +391,7 @@ class Calendar {
 /* Imported Class ends here. Rest is OB specific.
 /* -------------------------------------------------------------------------- */
 	class EditingCalendar extends Calendar {
-		function EditingCalendar($calendar, $start, $end) {
+		function __construct($calendar, $start, $end) {
 			$this->calendar = $calendar;
 
 			$calendars = new Calendars;

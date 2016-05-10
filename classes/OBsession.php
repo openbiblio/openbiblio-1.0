@@ -9,7 +9,7 @@ require_once(REL(__FILE__, "../classes/Queryi.php"));
 // renamed due to conflict with PHP 5.4+ class of same name - FL()
 
 class OBsession {
-	function OBsession() {
+	function __construct() {
 		$this->db = new Queryi;
 	}
 

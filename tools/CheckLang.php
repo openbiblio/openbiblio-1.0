@@ -134,7 +134,7 @@ class CheckLang {
 		foreach ($lines as $line_num => $line) {
 			if (substr($line, 0, 1) != " " && substr($line, 0, 1) != "#" && substr($line,0,1) != "<" && substr($line, 0, 1) != "?" && substr($line, 0, 1) != "\n") {
 				if (strpos($line, "]") > 1) {
-					list($key, $value) = split("]",$line);
+					list($key, $value) = explode("]",$line);
 					$key = str_replace("\$trans[\"", "", $key);
 					$key = str_replace("\"", "", $key);
 					if (in_array($key, $arrKeys, true)) {

@@ -54,7 +54,7 @@ class PDF {
 	*                               Public methods                                 *
 	*                                                                              *
 	*******************************************************************************/
-	function PDF($format, $orientation) {
+	function __construct($format, $orientation) {
 		$unit = 'pt';
 		//Some checks
 		$this->_dochecks();
