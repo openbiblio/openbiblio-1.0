@@ -373,7 +373,7 @@ class Integrity extends Queryi{
 						$msg .= ' <b>'.T("CANNOT BE FIXED AUTOMATICALLY").'</b>';
 					}
 				}
-				$errors[] = new Error($msg);
+				$errors[] = new ObErr($msg);
 			}
 		}
 		return $errors;
