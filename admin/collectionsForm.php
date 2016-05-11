@@ -25,7 +25,7 @@
 			<th valign="top"><?php echo T("Code"); ?></th>
 			<th valign="top"><?php echo T("Description"); ?></th>
 			<th valign="top"><?php echo T("Type"); ?></th>
-			<th valign="top"><?php echo T("Item<br />Count"); ?></th>
+			<th valign="top"><?php echo T("Item Count"); ?></th>
 			<th valign="top"><?php echo T("Default"); ?></th>
 		</tr>
 	</thead>
@@ -50,7 +50,7 @@
 			<span class="reqd">*</span>    
 		</li>
 		<li>
-			<label for "onHand"><?php echo T("NumberOnHand"); ?>:</label><span id="onHand">0</span>
+			<label for "onHand"><?php echo T("Item Count"); ?>:</label><span id="onHand">0</span>
 		</li>
     <li>
       <label for="type"><?php echo T("Collection Type"); ?>:</label>
