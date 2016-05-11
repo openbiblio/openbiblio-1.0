@@ -21,6 +21,23 @@
 			<span id="waitText">please wait...</span>
 		</section>
 
+    <section id="const_editor">
+      <p class="bold">Edit Database Constants</p><br />
+      <form id="dbConstForm">
+        <label for="hostId">Host Id: </label>
+        <input id="hostId" type="text" placeholder="Ip Address or Name" required /><br />
+        <label for="userNm">User Name: </label>
+        <input id="userNm" type="text" placeholder="missing" required /><br />
+        <label for="passWd">User Password: </label>
+        <input id="passWd" type="password" placeholder="missing" required /><br />
+        <label for="dbName">Database Name: </label>
+        <input id="dbName" type="text" placeholder="missing" required /><br />
+        <p class="note">Note: Above user name & password must be valid for this database server</P>
+        <br />
+				<input id="constBtn" type="submit" value="<?php echo T("Update"); ?>" />
+      </form>
+    </section>
+
 		<section id="dbPblms">
 			<pre id="connectErr"></pre>
 			Please make sure the following has been done before re-running this
@@ -58,7 +75,7 @@
 					<td><select id="locale"></select></td>
 				</tr-->
 				<tr>
-					<td><label for="installTestData">Install Test Data:</label></td>
+					<th><label for="installTestData">Install Test Data:</label></th>
 					<td><input id="installTestData" type="checkbox" value="<?php echo T("Yes"); ?>" /></td>
 				</tr>
 				<tr><td colspan="2">&nbsp;</td></tr>
