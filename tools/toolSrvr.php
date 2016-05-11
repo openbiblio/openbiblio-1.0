@@ -31,6 +31,7 @@
 	}
 
 	switch ($_REQUEST['mode']){
+
 	  #-.-.-.-.-.- database -.-.-.-.-.-.-
 		case 'getDbSrvrInfo':
 			$info = array();

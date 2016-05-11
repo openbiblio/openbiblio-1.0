@@ -24,31 +24,17 @@
     <section id="const_editor">
       <p class="bold">Edit Database Constants</p><br />
       <form id="dbConstForm">
-				<table cellpadding=0 cellspacing=0 border=0>
-        <tr>
-          <th><label for="hostId">Host Id</label></th>
-          <td><input id="hostId" type="text" placeholder="Ip Address or Name" required /></td>
-        </tr>
-        <tr>
-          <th><label for="userNm">User Name</label></th>
-          <td><input id="userNm" type="text" placeholder="missing" required /></td>
-        </tr>
-        <tr>
-          <th><label for="passWd">User Password</label></th>
-          <td><input id="passWd" type="password" placeholder="missing" required /></td>
-        </tr>
-        <tr>
-          <th><label for="dbName">Database Name</label></th>
-          <td><input id="dbName" type="text" placeholder="missing" required /><br />
-        </tr>
-        <tr>
-         <td colspan="2"><p class="note">Note: Above user name & password must be valid for this database server</P></td>
-        </tr>
-				<tr><td colspan="2">&nbsp;</td></tr>
-        <tr>
-				  <td><input id="constBtn" type="submit" value="<?php echo T("Update"); ?>" /></td>
-        </tr>
-        </table>
+        <label for="hostId">Host Id: </label>
+        <input id="hostId" type="text" placeholder="Ip Address or Name" required /><br />
+        <label for="userNm">User Name: </label>
+        <input id="userNm" type="text" placeholder="missing" required /><br />
+        <label for="passWd">User Password: </label>
+        <input id="passWd" type="password" placeholder="missing" required /><br />
+        <label for="dbName">Database Name: </label>
+        <input id="dbName" type="text" placeholder="missing" required /><br />
+        <p class="note">Note: Above user name & password must be valid for this database server</P>
+        <br />
+				<input id="constBtn" type="submit" value="<?php echo T("Update"); ?>" />
       </form>
     </section>
 

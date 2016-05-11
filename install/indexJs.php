@@ -6,7 +6,8 @@
 
 ins = {
 	<?php
-		echo "crntDbVer:'".OBIB_LATEST_DB_VERSION."',\n";
+    //echo "obibHost: '".OBIB_HOST."',\n";
+		//echo "crntDbVer:'".OBIB_LATEST_DB_VERSION."',\n";
 		//echo "listHdr: '".T("List of Media Types")."',\n";
 		//echo "editHdr: '".T("Edit Media")."',\n";
 		//echo "newHdr: '".T("Add New Media")."',\n";
@@ -16,19 +17,17 @@ ins = {
 		ins.initWidgets();
 
 		ins.url = 'installSrvr.php';
-		ins.listSrvr = '..\shared\listSrvr.php';
+		ins.listSrvr = '../shared/listSrvr.php';
 		ins.editForm = $('#editForm');
 
 		//$('#reqdNote').css('color','red');
 		//$('.reqd sup').css('color','red');
 		//$('#updateMsg').hide();
 
-if ($('#constBtn')) console.log('got btn');
-if ($('ins.doUpdtConst')) console.log('got function');
-    $('#constBtn').on('click',null,ins.doUpdtConst);
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
 
+    $('#constBtn').on('click',null,ins.doUpdateConst);
 		ins.resetForms()
 		ins.connectDb();
 	},
@@ -61,13 +60,15 @@ if ($('ins.doUpdtConst')) console.log('got function');
 		ins.informUser('<?php echo T("TestingConnectionToDBServer"); ?>');
 		ins.showWait('<?php echo T("TestingDatabaseConnection"); ?>');
     var status= '';
-	  $.get(ins.url,{ 'mode':'connectDB'}, function(response){	  
+	  $.get(ins.url,{ 'mode':'connectDBServer'}, function(response){
 			$('#plsWait').hide();
       status = response.split(' ',1);
       if (status[0] == 'Unknown') {
         ins.informUser('<?php echo T("Unable to connect to a MySQL server"); ?>' );
         $('#const_editor').show();
+        $('#hostId').focus();
       } else {
+        $('#const_editor').hide();
         ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
         ins.dbTest();
       }
@@ -86,8 +87,8 @@ if ($('ins.doUpdtConst')) console.log('got function');
 	  });
 	},
 	getDbVersion: function () {
-		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
 		ins.showWait('<?php echo T("CheckingDatabaseVersion"); ?>');
+		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
 	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
 			$('#plsWait').hide();
 			//console.log('vers='+response);
@@ -117,16 +118,16 @@ if ($('ins.doUpdtConst')) console.log('got function');
 	
   //------------------------------
   doUpdateConst: function() {
-console.log('doUpdateConst');
-		ins.showWait('<?php echo T("InstallingTables"); ?>');
-		ins.informUser('<?php echo T("Creating/Updating Database Constant File"); ?>');
-		$.post(ins.url, {'mode':'doUpdateConst',}, function (response) {
-			$('#plsWait').hide();
-			if (response.indexOf('error') >= 0) {
-				ins.informUser('<p class="error">'+response+'</p>');
+		ins.showWait('<?php echo T("Creating file"); ?>');
+		ins.informUser('<?php echo T("Creating new database constant file"); ?>');
+    var params = "mode=doCreateConst&host="+$('#hostId').val()+"&user="+$('#userNm').val()+"&passwd="+$('#passWd').val()+"&db="+$('#dbName').val();
+		$.post(ins.url, params, function (response) {
+			 $('#plsWait').hide();
+			 if (response.indexOf('Error:') >= 0) {
+			 	ins.informUser('<p class="error">'+response+'</p>');
         $('#const_editor').hide();
-			}
-			return false;
+			 }
+			 return false;
 		});
 		return false;
   },

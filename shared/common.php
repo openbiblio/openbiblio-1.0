@@ -96,7 +96,7 @@
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
-  if (file_exists('database_constants.php') ) {
+  if (file_exists(REL(__FILE__, '../database_constants.php')) ) {
 	 require_once(REL(__FILE__, '../database_constants.php'));
   }
 
