@@ -12,8 +12,8 @@
 
 	#-.-.-.-.-.- special case, MUST precede reference to anything mySQLi related -.-.-.-.-.-.-
   if ($_REQUEST['mode'] == 'doCreateConst') {
-      $path = getOBroot();
-      $fn = $path . "database_constants.php";
+      $path = REL(__FILE__, "..");
+      $fn = $path . "/database_constants.php";
       $content = 'define("OBIB_HOST","'.$_REQUEST["host"].'");'."\n".
 		             'define("OBIB_USERNAME","'.$_REQUEST["user"].'");'."\n".
 		             'define("OBIB_PWD","'.$_REQUEST["passwd"].'");'."\n".
