@@ -89,7 +89,7 @@ class Queryi extends mysqli{
 		return $this->insert_id;
 	}
 
-	/** Locking functions
+	/** Locking functions -MS
 	 *
 	 * Besides switching to InnoDB for transactions, I haven't been able to
 	 * come up with a good way to do locking reliably.  For now, we'll get
@@ -139,7 +139,7 @@ class Queryi extends mysqli{
 	}
 
 	/****************************************************************************
-	 * Makes SQL by interpolating values into a format string.
+	 * Makes SQL by interpolating values into a format string. -MS
 	 * This function works something like printf() for SQL queries.  Format
 	 * strings contain %-escapes signifying that a value from the argument
 	 * list should be inserted into the string at that point.  The routine
@@ -244,7 +244,7 @@ class Queryi extends mysqli{
 	private function _ident($i) {
 		# Because the MySQL manual is unclear on how to include a ` in a `-quoted
 		# identifer, we just drop them.  The manual does not say whether backslash
-		# escapes are interpreted in quoted identifiers, so I assume they are not.
+		# escapes are interpreted in quoted identifiers, so I assume they are not. MS
 		return str_replace('`', '', $i);
 	}
 	private function _numstr($n) {
@@ -257,7 +257,7 @@ class Queryi extends mysqli{
 }
 
 /*
-	## this class disabled - does not seem necessary with mysqli interface
+	## this class disabled - does not seem necessary with mysqli interface - FL
 class DbIter extends Iter {
 	function DbIter($results) {
 		$this->results = $results;

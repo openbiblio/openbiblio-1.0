@@ -9,13 +9,37 @@
 
 	$doing_install = true;
   require_once("../shared/common.php");
+
+	#-.-.-.-.-.- special case, MUST precede reference to anything mySQLi related -.-.-.-.-.-.-
+  if ($_REQUEST['mode'] == 'doCreateConst') {
+      $path = getOBroot();
+      $fn = $path . "database_constants.php";
+      $content = 'define("OBIB_HOST","'.$_REQUEST["host"].'");'."\n".
+		             'define("OBIB_USERNAME","'.$_REQUEST["user"].'");'."\n".
+		             'define("OBIB_PWD","'.$_REQUEST["passwd"].'");'."\n".
+		             'define("OBIB_DATABASE","'.$_REQUEST["db"].'");'."\n"
+                 ;
+      if (!chmod($path, 0777)) {
+        echo "Error: Unable to set write permission on folder '".$path."'";
+        exit;
+      }
+      if (false === file_put_contents($fn, $content)) {
+        echo 'Error: The file is NOT writable.'."\n";
+        echo "Please chmod 777 the folder holding '".$fn."'";
+        exit;
+      }
+      echo "success";
+    exit;
+  };
+	#-.-.-.-.-.- end special case -.-.-.-.-.-.-
+
  	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
 	$installQ = new InstallQuery();
 	switch ($_REQUEST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'connectDB':
+		case 'connectDBServer':
 			$msg = $installQ->getDbServerVersion();
 			echo $msg;
 			break;
