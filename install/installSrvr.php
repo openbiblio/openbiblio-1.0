@@ -14,10 +14,11 @@
   if ($_REQUEST['mode'] == 'doCreateConst') {
       $path = REL(__FILE__, "..");
       $fn = $path . "/database_constants.php";
-      $content = 'define("OBIB_HOST","'.$_REQUEST["host"].'");'."\n".
-		             'define("OBIB_USERNAME","'.$_REQUEST["user"].'");'."\n".
-		             'define("OBIB_PWD","'.$_REQUEST["passwd"].'");'."\n".
-		             'define("OBIB_DATABASE","'.$_REQUEST["db"].'");'."\n"
+      $content = '<?php'."\n".
+			'define("OBIB_HOST","'.$_REQUEST["host"].'");'."\n".
+			'define("OBIB_USERNAME","'.$_REQUEST["user"].'");'."\n".
+	             	'define("OBIB_PWD","'.$_REQUEST["passwd"].'");'."\n".
+	             	'define("OBIB_DATABASE","'.$_REQUEST["db"].'");'."\n"
                  ;
       if (!chmod($path, 0777)) {
         echo "Error: Unable to set write permission on folder '".$path."'";
