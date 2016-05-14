@@ -9,34 +9,37 @@
  * @author Micah Stetson
  */
 
+require_once("../shared/common.php");
+
 class Queryi extends mysqli{
 	private $lock_depth;
 
 	public function __construct() {
 		$this->lockDepth = 0;
-		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
+
+    if ((DbConst::$mode == 'noDB') || (DbConst::$mode == 'noConst') || (DbConst::$mode == '') ) {
+		  parent::__construct(DbConst::$HOST, DbConst::$USERNAME, DbConst::$PWD); // connect to db server - FL
+    } else {
+		  parent::__construct(DbConst::$HOST, DbConst::$USERNAME, DbConst::$PWD, DbConst::$DATABASE);  // connect to named db at server
+    }
 		if (mysqli_connect_error()) {
 			echo mysqli_connect_error()."<br>\n";
-			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysqli_error()));
-		}
-		$this->set_encoding();
-
+			//return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysqli_error()));
+			return T("Cannot connect to database server.");
+		} else {
+      return "success";
+    }
+		$this->set_encoding();  
 	}
 
-
-	/** Make sure all queries have the user's preferred encoding
-	 * and default to UTF8 if they have not chosen a valid encoding
-	*/
-	private function set_encoding() {
-		$r = parent::query("SELECT value FROM settings where name='charset'");
-		if ($r->num_rows == 1) {
-			$row = $r->fetch_assoc();
-			if (!parent::set_charset($row['value']))  {
-				parent::set_charset('utf8');
-			}
-		}
-	}
-
+  public function createDB($db) {
+    $sql = "CREATE DATABASE IF NOT EXISTS ".$db;
+    if ($this->query($sql) === TRUE) {
+      return T("success, Database created");
+    } else {
+      return T("Error creating database");
+    }
+  }
 	public function act($sql) {
 		//$this->lock();
 		$results = $this->_act($sql);
@@ -46,17 +49,16 @@ class Queryi extends mysqli{
 	public function select($sql) {
 		$results = $this->_act($sql);
 		if (0 == $results) {
-			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
-			echo "sql=$sql<br />\n";
-			
+			return T("NothingFoundError");
+			//echo "sql=$sql<br />\n";
 		}
 		return $results;
 	}
 	public function select1($sql) {
 		$r = $this->select($sql);
 		if ($r->num_rows != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("NothingFoundError"));
-			echo "sql=$sql<br />\n";
+		  return T("NothingFoundError");
+			//echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
@@ -66,11 +68,28 @@ class Queryi extends mysqli{
 		if (($r == 0) || ($r->num_rows == 0)) {
 			return NULL;
 		} else if ($r->num_rows != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
-			echo "sql=$sql<br />\n";
+			return T("Wrong Number Rows Found");
+			//echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
+	}
+
+	/** Make sure all queries have the user's preferred encoding
+	 * and default to UTF8 if they have not chosen a valid encoding
+	 *
+	 * this may only work if complete OB database is in place; -FL
+	*/
+	private function set_encoding() {
+		$r = parent::query("SELECT value FROM settings where name='charset'");
+		if ($r->num_rows == 1) {
+			$row = $r->fetch_assoc();
+			if (!parent::set_charset($row['value']))  {
+				parent::set_charset('utf8');
+			}
+		} else {
+			parent::set_charset('utf8');
+    }
 	}
 	private function _act($sql) {
 		$r =  $this->query($sql);

@@ -6,7 +6,6 @@
 
 ins = {
 	<?php
-    //echo "obibHost: '".OBIB_HOST."',\n";
 		//echo "crntDbVer:'".OBIB_LATEST_DB_VERSION."',\n";
 		//echo "listHdr: '".T("List of Media Types")."',\n";
 		//echo "editHdr: '".T("Edit Media")."',\n";
@@ -27,7 +26,7 @@ ins = {
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
 
-    $('#constBtn').on('click',null,ins.doUpdateConst);
+    $('#constBtn').on('click',null,ins.doCreateConstFile);
 		ins.resetForms()
 		ins.connectDb();
 	},
@@ -63,7 +62,7 @@ ins = {
 	  $.get(ins.url,{ 'mode':'connectDBServer'}, function(response){
 			$('#plsWait').hide();
       status = response.split(' ',1);
-      if (status[0] == 'Unknown') {
+      if ((response.indexOf('Unknown') > 0 ) || (response.indexOf('Denied') > 0)){
         ins.informUser('<?php echo T("Unable to connect to a MySQL server"); ?>' );
         $('#const_editor').show();
         $('#hostId').focus();
@@ -117,19 +116,40 @@ ins = {
 	},
 	
   //------------------------------
-  doUpdateConst: function() {
+  doCreateConstFile: function() {
 		ins.showWait('<?php echo T("Creating file"); ?>');
 		ins.informUser('<?php echo T("Creating new database constant file"); ?>');
-    var params = "mode=doCreateConst&host="+$('#hostId').val()+"&user="+$('#userNm').val()+"&passwd="+$('#passWd').val()+"&db="+$('#dbName').val();
+    ins.host = $('#hostId').val();
+    ins.user = $('#userNm').val();
+    ins.pw = $('#passWd').val();
+    ins.db = $('#dbName').val();
+    var params = "mode=createConstFile&host="+ins.host+"&user="+ins.user+"&passwd="+ins.pw+"&db="+ins.db;
 		$.post(ins.url, params, function (response) {
 			 $('#plsWait').hide();
 			 if (response.indexOf('Error:') >= 0) {
 			 	ins.informUser('<p class="error">'+response+'</p>');
+			 } else if (response == 'success') {
+		    ins.informUser('<?php echo T("A new database_constant file has been created"); ?>');
         $('#const_editor').hide();
-			 }
-			 return false;
+		    ins.doCreateDB();
+       }
 		});
-		return false;
+  },
+  doCreateDB: function () {
+		ins.showWait('<?php echo T("Creating empty database"); ?>');
+		ins.informUser('<?php echo T("Creating new empty database"); ?>');
+    var params = "mode=createNewDB&db="+ins.db;
+		$.post(ins.url, params, function (response) {
+			 $('#plsWait').hide();
+			 if (response.indexOf('Error:') >= 0) {
+			 	ins.informUser('<p class="error">'+response+'</p>');
+			 } else if (response.indexOf('success') > 0) {
+		    ins.informUser('<?php echo T("A new database has been created."); ?>');
+			 	ins.informUser('-.-.-.-.-.-');
+        $('#const_editor').hide();
+		    ins.connectDb();
+       }
+		});
   },
 
 	//------------------------------

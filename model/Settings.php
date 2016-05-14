@@ -3,14 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/*
-ALTER TABLE `settings` CHANGE `type` `type`
-ENUM( 'text', 'number', 'tel', 'url', 'email', 'select', 'checkbox', 'textarea', 'int', 'bool' )
-NOT NULL DEFAULT 'text';
-ALTER TABLE `settings` CHANGE `value` `value`
-VARCHAR( 255 ) NULL DEFAULT NULL;
-*/
-
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 require_once(REL(__FILE__, '../model/Sites.php'));
 

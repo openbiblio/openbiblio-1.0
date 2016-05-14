@@ -3,6 +3,31 @@
 	 * See the file COPYRIGHT.html for more details.
 	 */
 
+  class DbConst {
+    public static $mode;
+    public static $HOST;
+    public static $USERNAME;
+    public static $PWD;
+    public static $DATABASE;
+
+  	public function __construct() {
+//      if (file_exists(REL(__FILE__, '../database_constants.php')) ) {
+//     	  require_once(REL(__FILE__, '../database_constants.php'));
+//      } else {
+        $this->mode = 'noConst';
+        $this->HOST = 'x.x.x';
+        $this->USERNAME = 'x.x.x';
+        $this->PWD = 'x.x.x';
+        $this->DATABASE = 'x.x.x';
+//      }
+//    }
+    // the following content will over-write values set above, if the file exists.
+    include_once (REL(__FILE__, 'database_constants.php'));
+    }
+  }
+//  $DbConst = new DatabaseConst();
+//echo "in common: ";print_r(DbConst::$HOST);echo "<br />\n";
+
 	#### --- For those unable to set their time zone in PHP.ini --- ####
 	#### for valid entries see: http://www.php.net/manual/en/timezones.php
 	//date_default_timezone_set ( "America/New_York" );
@@ -95,10 +120,6 @@
 		$_SESSION['site_login'] = Settings::get('site_login');
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
-
-  if (file_exists(REL(__FILE__, '../database_constants.php')) ) {
-	 require_once(REL(__FILE__, '../database_constants.php'));
-  }
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));

@@ -9,16 +9,18 @@
 
 	$doing_install = true;
   require_once("../shared/common.php");
+ 	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 
 	#-.-.-.-.-.- special case, MUST precede reference to anything mySQLi related -.-.-.-.-.-.-
-  if ($_REQUEST['mode'] == 'doCreateConst') {
+  switch ($_REQUEST['mode']) {
+    case 'createConstFile':
       $path = REL(__FILE__, "..");
       $fn = $path . "/database_constants.php";
-      $content = 'define("OBIB_HOST","'.$_REQUEST["host"].'");'."\n".
-		             'define("OBIB_USERNAME","'.$_REQUEST["user"].'");'."\n".
-		             'define("OBIB_PWD","'.$_REQUEST["passwd"].'");'."\n".
-		             'define("OBIB_DATABASE","'.$_REQUEST["db"].'");'."\n"
-                 ;
+      $content = '$this->HOST='.$_REQUEST['host']."; \n".
+		             '$this->USERNAME='.$_REQUEST['user']."; \n".
+		             '$this->PWD='.$_REQUEST['passwd']."; \n".
+		             '$this->DATABASE='.$_REQUEST['db']."; \n".
+                 '$this->mode="haveConst"';
       if (!chmod($path, 0777)) {
         echo "Error: Unable to set write permission on folder '".$path."'";
         exit;
@@ -28,19 +30,39 @@
         echo "Please chmod 777 the folder holding '".$fn."'";
         exit;
       }
+      // now update current object
+      DbConst::$HOST = $_REQUEST['host'];
+      DbConst::$USERNAME = $_REQUEST['user'];
+      DbConst::$PWD = $_REQUEST['passwd'];
+      DbConst::$DATABASE = $_REQUEST['db'];
+      DbConst::$mode = 'haveConst';
       echo "success";
-    exit;
-  };
+      exit;
+      break;
+
+    case 'createNewDB':
+      DbConst::$mode = 'noDB';
+      $installQ = new InstallQuery();
+			$msg = $installQ->createDB($_REQUEST['db']);
+			echo $msg;
+      exit;
+      break;
+  }
+
 	#-.-.-.-.-.- end special case -.-.-.-.-.-.-
 
- 	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
+	//$installQ = new InstallQuery($obib->HOST,$obib->USERNAME,$obib->PWD,$obib->DATABASE);
 	$installQ = new InstallQuery();
 	switch ($_REQUEST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'connectDBServer':
-			$msg = $installQ->getDbServerVersion();
+      if ((DbConst::$HOST == '') || (DbConst::$HOST != 'x.x.x')) {
+        $msg = T('Denied, No DB host defined');
+      } else {
+			  $msg = $installQ->getDbServerVersion();
+      }
 			echo $msg;
 			break;
 			

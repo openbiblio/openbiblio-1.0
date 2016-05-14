@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+require_once("../shared/common.php");
 require_once("../shared/global_constants.php");
 require_once("../classes/Queryi.php");
 
@@ -10,19 +11,24 @@ require_once("../classes/Queryi.php");
  * This class provides an interface for DB functions unique to OB installation
  * @author Fred LaPlante
  */
+//$lclTblPrefix = $obib->DATABASE; // needed because default parameters cannot be complex items - FL
+//$lclDbName = $obib->DATABASE;
 
 class InstallQuery extends Queryi {
+
   public function __construct() {
     parent::__construct();
   }
-  
+
 	public function getDbServerVersion () {
 		$sql = $this->mkSQL("select VERSION()");
     $rslt = $this->select1($sql);
 		return $rslt['VERSION()'];
 	}
 
-  public function getSettings($tablePrfx = OBIB_DATABASE) {
+  //public function getSettings($tablePrfx = $obib->DATABASE) {
+  public function getSettings($tablePrfx) {
+    if (!isset($tablePrfx)) $tablePrfx = DbConst::DATABASE; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
     $rows = $this->select01($sql);
 
@@ -42,8 +48,10 @@ class InstallQuery extends Queryi {
 //    return $this->select($sql);
   }
 
-  public function getCurrentDatabaseVersion($dbName = OBIB_DATABASE) {
+  //public function getCurrentDatabaseVersion($dbName = $obib->DATABASE) {
+  public function getCurrentDatabaseVersion($dbName) {
 		## versions 1.0+
+    if (!isset($dbName)) $dbName = DbConst::DATABASE; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $dbName.'.settings','version');
     $row = $this->select01($sql);
 		if ($row) {
