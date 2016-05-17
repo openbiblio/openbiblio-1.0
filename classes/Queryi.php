@@ -14,10 +14,10 @@ require_once("../shared/common.php");
 class Queryi extends mysqli{
 	private $lock_depth;
 
-	public function __construct($theDbDef) {
+	public function __construct($dbConst) {
     //echo "in Queryi constructor: ";print_r($theDbDef);echo "<break /> \n";
 		$this->lockDepth = 0;
-    $this->dbConst = $theDbDef;
+    $this->dbConst = $dbConst;
     //echo "in Queryi constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
     if (($this->dbConst["mode"] == 'noDB') || ($this->dbConst["mode"] == 'noConst') || ($this->dbConst["mode"] == '') ) {
 		  parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"]); // connect to db server - FL

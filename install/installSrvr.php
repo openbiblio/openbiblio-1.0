@@ -105,4 +105,3 @@
 		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
 			break;
 	}
-?>

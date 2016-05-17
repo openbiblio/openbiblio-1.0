@@ -11,13 +11,10 @@ require_once("../classes/Queryi.php");
  * This class provides an interface for DB functions unique to OB installation
  * @author Fred LaPlante
  */
-//$lclTblPrefix = $obib->DATABASE; // needed because default parameters cannot be complex items - FL
-//$lclDbName = $obib->DATABASE;
 
 class InstallQuery extends Queryi {
 
   public function __construct($dbConst) {
-    //echo "in installQuery constructor: ";print_r($dbConst);echo "<br / \n";
     $this->dbConst = $dbConst;
     //echo "in installQuery constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
     parent::__construct($this->dbConst);
@@ -31,9 +28,8 @@ print_r($rslt);
 		return $rslt;
 	}
 
-  //public function getSettings($tablePrfx = $obib->DATABASE) {
-  public function getSettings($tablePrfx) {
-    if (!isset($tablePrfx)) $tablePrfx = $this->dbConst['database']; // needed because default parameters cannot be complex items - FL
+  public function getSettings() {
+    $tablePrfx = $this->dbConst['database'];
     $sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
     $rows = $this->select01($sql);
 
@@ -53,10 +49,9 @@ print_r($rslt);
 //    return $this->select($sql);
   }
 
-  //public function getCurrentDatabaseVersion($dbName = $obib->DATABASE) {
-  public function getCurrentDatabaseVersion($dbName) {
+  public function getCurrentDatabaseVersion() {
 		## versions 1.0+
-    if (!isset($dbName)) $dbName = $this->$dbConst['database']; // needed because default parameters cannot be complex items - FL
+    $dbName = $this->$dbConst['database']; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $dbName.'.settings','version');
     $row = $this->select01($sql);
 		if ($row) {
@@ -85,7 +80,7 @@ print_r($rslt);
   public function createDatabase($dbName, $dbUser) {
     $sql = "CREATE DATABASE IF NOT EXISTS $dbName ";
 echo $sql."<br>\n";
-    $r = $this->act($sql);
+    $r = parent::act($sql);
 echo $r."<br>\n";
     if (is_null($r)) {
       echo T("success, Database created");
@@ -99,7 +94,7 @@ echo $r."<br>\n";
   protected function  setGrants($dbName, $dbUser) {
     $sql = "GRANT CREATE, INSERT, DROP, UPDATE ON $dbName TO $dbUser ";
 echo $sql."<br>\n";
-    $r = $this->act($sql);
+    $r = parent::act($sql);
 echo $r."<br>\n";
 //     if (strpos($r, 'Error')) {
        return "$r";
@@ -222,5 +217,3 @@ echo $r."<br>\n";
     }
   } //executeSqlFile
 }
-
-?>

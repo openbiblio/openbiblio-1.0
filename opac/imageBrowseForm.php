@@ -86,6 +86,5 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 	include "./imageBrowseJs.php";
 ?>
-
 </body>
 </html>
