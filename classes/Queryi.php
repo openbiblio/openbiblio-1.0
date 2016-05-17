@@ -14,32 +14,26 @@ require_once("../shared/common.php");
 class Queryi extends mysqli{
 	private $lock_depth;
 
-	public function __construct() {
+	public function __construct($theDbDef) {
+    //echo "in Queryi constructor: ";print_r($theDbDef);echo "<break /> \n";
 		$this->lockDepth = 0;
-
-    if ((DbConst::$mode == 'noDB') || (DbConst::$mode == 'noConst') || (DbConst::$mode == '') ) {
-		  parent::__construct(DbConst::$HOST, DbConst::$USERNAME, DbConst::$PWD); // connect to db server - FL
+    $this->dbConst = $theDbDef;
+    //echo "in Queryi constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
+    if (($this->dbConst["mode"] == 'noDB') || ($this->dbConst["mode"] == 'noConst') || ($this->dbConst["mode"] == '') ) {
+		  parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"]); // connect to db server - FL
     } else {
-		  parent::__construct(DbConst::$HOST, DbConst::$USERNAME, DbConst::$PWD, DbConst::$DATABASE);  // connect to named db at server
+		  parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"], $this->dbConst["database"]);  // connect to named db at server
     }
+
 		if (mysqli_connect_error()) {
 			echo mysqli_connect_error()."<br>\n";
-			//return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysqli_error()));
-			return T("Cannot connect to database server.");
+			return T("Error: Cannot connect to database server");
 		} else {
-      return "success";
+      return "success, version# $mysqli->server_version";
     }
 		$this->set_encoding();  
 	}
 
-  public function createDB($db) {
-    $sql = "CREATE DATABASE IF NOT EXISTS ".$db;
-    if ($this->query($sql) === TRUE) {
-      return T("success, Database created");
-    } else {
-      return T("Error creating database");
-    }
-  }
 	public function act($sql) {
 		//$this->lock();
 		$results = $this->_act($sql);
@@ -48,7 +42,7 @@ class Queryi extends mysqli{
 	}
 	public function select($sql) {
 		$results = $this->_act($sql);
-		if (0 == $results) {
+		if ($results == 0) {
 			return T("NothingFoundError");
 			//echo "sql=$sql<br />\n";
 		}
@@ -64,7 +58,7 @@ class Queryi extends mysqli{
 		}
 	}
 	public function select01($sql) {
-		$r = $this->act($sql);
+		$r = parent::act($sql);
 		if (($r == 0) || ($r->num_rows == 0)) {
 			return NULL;
 		} else if ($r->num_rows != 1) {
@@ -92,10 +86,10 @@ class Queryi extends mysqli{
     }
 	}
 	private function _act($sql) {
-		$r =  $this->query($sql);
+		$r =  parent::query($sql);
 		if ($r === false) {
-			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
-			//echo "sql=$sql<br />\n";
+			Fatal::dbError($sql, T("Database query failed"), mysql_error());
+			echo "sql=$sql<br />\n";
 			$r = 0;
 		}
 		return $r;

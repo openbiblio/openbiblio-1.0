@@ -16,19 +16,24 @@ require_once("../classes/Queryi.php");
 
 class InstallQuery extends Queryi {
 
-  public function __construct() {
-    parent::__construct();
+  public function __construct($dbConst) {
+    //echo "in installQuery constructor: ";print_r($dbConst);echo "<br / \n";
+    $this->dbConst = $dbConst;
+    //echo "in installQuery constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
+    parent::__construct($this->dbConst);
   }
 
 	public function getDbServerVersion () {
-		$sql = $this->mkSQL("select VERSION()");
+		$sql = $this->mkSQL("SELECT VERSION()");
     $rslt = $this->select1($sql);
-		return $rslt['VERSION()'];
+print_r($rslt);
+		//return $rslt['VERSION()'];
+		return $rslt;
 	}
 
   //public function getSettings($tablePrfx = $obib->DATABASE) {
   public function getSettings($tablePrfx) {
-    if (!isset($tablePrfx)) $tablePrfx = DbConst::DATABASE; // needed because default parameters cannot be complex items - FL
+    if (!isset($tablePrfx)) $tablePrfx = $this->dbConst['database']; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
     $rows = $this->select01($sql);
 
@@ -51,7 +56,7 @@ class InstallQuery extends Queryi {
   //public function getCurrentDatabaseVersion($dbName = $obib->DATABASE) {
   public function getCurrentDatabaseVersion($dbName) {
 		## versions 1.0+
-    if (!isset($dbName)) $dbName = DbConst::DATABASE; // needed because default parameters cannot be complex items - FL
+    if (!isset($dbName)) $dbName = $this->$dbConst['database']; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $dbName.'.settings','version');
     $row = $this->select01($sql);
 		if ($row) {
@@ -63,21 +68,6 @@ class InstallQuery extends Queryi {
 			$version = $rslt['version'];
 		}
 		return $version;
-  }
-
-	## ------------------------------------------------------------------------ ##
-  protected function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
-    $sql = $this->mkSQL('SELECT * FROM %I WHERE `name`=%Q', $tablePrfx.'.settings','locale');
-    $row = $this->select01($sql);
-		return $row['value'];
-  }
-
-  protected function renameTables($fromTablePrfx, $toTablePrfx = DB_TABLENAME_PREFIX) {
-    $fromTableNames = $this->getTableNames($fromTablePrfx.'%');
-    foreach($fromTableNames as $fromTableName) {
-      $toTableName = str_replace($fromTablePrfx, $toTablePrfx, $fromTableName);
-      $this->renameTable($fromTableName, $toTableName);
-    }
   }
 
   public function freshInstall($locale, $sampleDataRequired = false,
@@ -92,18 +82,50 @@ class InstallQuery extends Queryi {
     }
   }
 
-  protected function createDatabase($dbName) {
-    $sql = $this->mkSQL("create database if not exists %I ", $dbName);
-    $res = $this->act($sql);
-    $sql = $this->mkSQL("GRANT ALL PRIVILEGES ON %I TO %Q", $dbName, OBIB_USERNAME);
+  public function createDatabase($dbName, $dbUser) {
+    $sql = "CREATE DATABASE IF NOT EXISTS $dbName ";
+echo $sql."<br>\n";
     $r = $this->act($sql);
-    return $r;
+echo $r."<br>\n";
+    if (is_null($r)) {
+      echo T("success, Database created");
+      $this->setGrants($dbName, $dbUser);
+    } else {
+      return T("Error: Unable to create database").': '.$mysqli->connect_error;
+    }
+  }
+
+	## ------------------------------------------------------------------------ ##
+  protected function  setGrants($dbName, $dbUser) {
+    $sql = "GRANT CREATE, INSERT, DROP, UPDATE ON $dbName TO $dbUser ";
+echo $sql."<br>\n";
+    $r = $this->act($sql);
+echo $r."<br>\n";
+//     if (strpos($r, 'Error')) {
+       return "$r";
+//    }
+//    }
+//    return "success";
+  }
+
+  protected function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
+    $sql = $this->mkSQL('SELECT * FROM %I WHERE `name`=%Q', $tablePrfx.'.settings','locale');
+    $row = $this->select01($sql);
+		return $row['value'];
+  }
+
+  protected function renameTables($fromTablePrfx, $toTablePrfx = DB_TABLENAME_PREFIX) {
+    $fromTableNames = $this->getTableNames($fromTablePrfx.'%');
+    foreach($fromTableNames as $fromTableName) {
+      $toTableName = str_replace($fromTablePrfx, $toTablePrfx, $fromTableName);
+      $this->renameTable($fromTableName, $toTableName);
+    }
   }
 
   protected function copyDatabase($fromDb, $toDb) {
     $sql = $this->mkSQL("SHOW TABLES FROM %I ", $fromDb);
     $rslt = $this->select($sql);
-	echo "copy ".$rslt->num_rows." tables from ".$fromDb." to ".$toDb." <br />\n";
+    //echo "copy ".$rslt->num_rows." tables from ".$fromDb." to ".$toDb." <br />\n";
     $renaming = true;
     while ($row = $rslt->fetch_array()) {
         $src = $fromDb.'.'.$row[0];

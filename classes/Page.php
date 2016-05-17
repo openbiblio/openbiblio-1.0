@@ -24,7 +24,7 @@ class Page {
 		$_Page_params = $params;
 		require_once($params['theme_dir']."/header_help.php");
 	}
-	function header_install($params=array()) {
+	static function header_install($params=array()) {
 		global $_Page_params;
 		$params = Page::clean_params($params);
 		$_Page_params = $params;
