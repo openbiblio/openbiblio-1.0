@@ -8,18 +8,22 @@
  */
 
 	$doing_install = true;
-  require_once("../shared/common.php");
+    require_once("../shared/common.php");
 
-	#-.-.-.-.-.- special case, MUST precede reference to anything mySQLi related -.-.-.-.-.-.-
-  if ($_REQUEST['mode'] == 'doCreateConst') {
-      $path = REL(__FILE__, "..");
-      $fn = $path . "/database_constants.php";
-      $content = '<?php'."\n".
-			'define("OBIB_HOST","'.$_REQUEST["host"].'");'."\n".
-			'define("OBIB_USERNAME","'.$_REQUEST["user"].'");'."\n".
-	             	'define("OBIB_PWD","'.$_REQUEST["passwd"].'");'."\n".
-	             	'define("OBIB_DATABASE","'.$_REQUEST["db"].'");'."\n"
-                 ;
+	#-.-.-.-.-.- special case, MUST precede reference to anything mySQLi-related -.-.-.-.-.-.-
+    if ($_REQUEST['mode'] == 'createConstFile') {
+        $path = REL(__FILE__, "..");
+        $fn = $path . "/database_constants.php";
+        $content =
+            "<?php \n".
+            '$dbConst = array('." \n".
+            "'host'     => '".$_REQUEST['host']."', \n".
+            "'username' => '".$_REQUEST['user']."', \n".
+            "'pwd'      => '".$_REQUEST['passwd']."', \n".
+            "'database' => '".$_REQUEST['db']."', \n".
+            "'mode'     => 'haveConst');"
+        ;
+
       if (!chmod($path, 0777)) {
         echo "Error: Unable to set write permission on folder '".$path."'";
         exit;
@@ -37,13 +41,18 @@
  	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
-	$installQ = new InstallQuery();
-	switch ($_REQUEST['mode']){
+	$installQ = new InstallQuery($dbConst);
+	switch ($_REQUEST['mode']) {
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
-		case 'connectDBServer':
+        case 'connectDBServer':
 			$msg = $installQ->getDbServerVersion();
 			echo $msg;
 			break;
+
+        case 'createNewDB':
+            $msg = $installQ->createDatabase();
+            echo $msg;
+            break;
 			
 		case 'getSettings':
 			$resp = $installQ->getSettings();
@@ -71,7 +80,7 @@
 			break;
 			
 		case 'doFullInstall':
-			echo 	$installQ->freshInstall($Locale, $_POST['installTestData']);
+			echo $installQ->freshInstall($Locale, $_POST['installTestData']);
 			break;
 			
 		case 'doDbUpgrade':

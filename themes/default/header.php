@@ -96,4 +96,3 @@ if (isset($params['title']) && $params['title'] != '') {
 if (isset($_REQUEST['msg'])) {
 	echo '<p class="error">'.H($_REQUEST['msg']).'</p>';
 }
-

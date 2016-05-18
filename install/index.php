@@ -111,4 +111,3 @@
 	require_once("../shared/footer.php");
 	
 	require_once(REL(__FILE__, "indexJs.php"));
-?>	

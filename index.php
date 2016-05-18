@@ -7,7 +7,3 @@
     // we have a new installation, so go to installer instead.
     header("Location: install/index.php");
   }
-?>
-
-
-

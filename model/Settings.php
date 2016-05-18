@@ -3,14 +3,6 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-/*
-ALTER TABLE `settings` CHANGE `type` `type`
-ENUM( 'text', 'number', 'tel', 'url', 'email', 'select', 'checkbox', 'textarea', 'int', 'bool' )
-NOT NULL DEFAULT 'text';
-ALTER TABLE `settings` CHANGE `value` `value`
-VARCHAR( 255 ) NULL DEFAULT NULL;
-*/
-
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 require_once(REL(__FILE__, '../model/Sites.php'));
 
@@ -19,24 +11,62 @@ $_settings_cache = array();
 $_settings_validators = array();
 
 /* To be used statically. */
-class Settings extends Queryi {
+class Settings extends Queryi
+{
 	public function __construct() {
-		parent::__construct();
+		parent::__construct($dbConst);
 	}
-	public static function load() {
-		global $_settings_cache, $_settings_validators;
-		$db = new Queryi;
+
+	static public function load() {
+		global $_settings_cache, $_settings_validators, $dbConst;
+		$db = new Queryi($dbConst);
 		$r = $db->select('SELECT * FROM settings');
+//print_r($r);
 		while ($s = $r->fetch_assoc()) {
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validator']);
 		}
+//print_r($_settings_cache);
 	}
-	static function get($name) {
+	static public function get($name) {
 		global $_settings_cache;
 		return $_settings_cache[$name];
 	}
-	function getAll() {
+	static public function getThemeDirs () {
+		return Settings::_getSubdirs('themes');
+	}
+	static public function getFormFields($menu=NULL) {
+		$r = Settings::_getData($menu);
+		$fields = array();
+		while ($s = $r->fetch_assoc()) {
+				$fields[] = Settings::_mkField($s);
+		}
+		return $fields;
+	}
+	static private function _getSubdirs($root) {
+		$aray = array();
+	  if (is_dir('../'.$root)) {
+			//echo $root." Dir found: <br />";
+  	  ## find all sub-directories
+			if ($dirHndl = opendir('../'.$root)) {
+		    # look at all sub-dirs
+		    while (false !== ($subdir = readdir($dirHndl))) {
+		      if (($subdir == '.') || ($subdir == '..')) continue;
+					//echo "subdir => $subdir<br />";
+  	      $path = "../".$root."/".$subdir;
+  	      if (is_dir($path)) {
+  	        if (!in_array($path, $aray)) {
+  	        	$aray[$path] = $path;
+						}
+					}
+  		  }
+  		  closedir($dirHndl);
+			}
+		}
+		return $aray;
+	}
+
+    public function getAll() {
 		global $_settings_cache;
 		return $_settings_cache;
 	}
@@ -55,14 +85,6 @@ class Settings extends Queryi {
 		$fields = array();
 		while ($s = $r->fetch_assoc()) {
 				$fields[] = $s;
-		}
-		return $fields;
-	}
-	static function getFormFields($menu=NULL) {
-		$r = Settings::_getData($menu);
-		$fields = array();
-		while ($s = $r->fetch_assoc()) {
-				$fields[] = Settings::_mkField($s);
 		}
 		return $fields;
 	}
@@ -99,31 +121,6 @@ class Settings extends Queryi {
 		}
 		$db->unlock();
 		return $errors;
-	}
-	static function getThemeDirs () {
-		return Settings::_getSubdirs('themes');
-	}
-	private static function _getSubdirs($root) {
-		$aray = array();
-	  if (is_dir('../'.$root)) {
-			//echo $root." Dir found: <br />";
-  	  ## find all sub-directories
-			if ($dirHndl = opendir('../'.$root)) {
-		    # look at all sub-dirs
-		    while (false !== ($subdir = readdir($dirHndl))) {
-		      if (($subdir == '.') || ($subdir == '..')) continue;
-					//echo "subdir => $subdir<br />";
-  	      $path = "../".$root."/".$subdir;
-  	      if (is_dir($path)) {
-  	        if (!in_array($path, $aray)) {
-  	        	$aray[$path] = $path;
-						}
-					}
-  		  }
-  		  closedir($dirHndl);
-			}
-		}
-		return $aray;
 	}
 	private function _mkField($s) {
 		global $_settings_validators;
@@ -186,4 +183,3 @@ class Settings extends Queryi {
 		);
 	}
 }
-
