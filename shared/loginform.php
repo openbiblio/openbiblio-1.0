@@ -5,7 +5,7 @@
 
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__,"../functions/inputFuncs.php"));
-	require_once(REL(__FILE__, "../model/Sites.php"));	
+	require_once(REL(__FILE__, "../model/Sites.php"));
 
 	## assure all session values are current
 	## session is started in ../shared/common.php
@@ -16,7 +16,7 @@
 		$_SESSION["returnPage"] = $_GET["RET"];
 	}
 
-	$sites_table = new Sites;		
+	$sites_table = new Sites(Sdbconst);
 	$sites = $sites_table->getSelect();	
 
 	// If the current_site is set, default to this site, otherwise use the cookie and finally the site default

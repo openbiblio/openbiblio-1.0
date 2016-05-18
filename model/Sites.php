@@ -6,8 +6,9 @@
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class Sites extends DBTable {
-	public function __construct() {
-		parent::__construct();
+	public function __construct($dbConst) {
+        $this->dbConst = $dbConst;
+		parent::__construct($this->dbConst);
 		$this->setName('site');
 		$this->setFields(array(
 			'siteid'=>'number',
@@ -39,7 +40,10 @@ class Sites extends DBTable {
 			$select['all'] = 'All';
 		}
 		$recs = $this->getAll('name');
-		//while ($rec = $recs->fetch_assoc()) {
+print_r($recs);
+        if (strpos($recs, 'Nothing Found error') >= 0){
+           return 'default';
+        }
 		while ($rec = $recs->fetch_assoc()) {
 			$select[$rec['siteid']] = $rec['name'];
 		}

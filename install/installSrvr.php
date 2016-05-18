@@ -14,14 +14,22 @@
     if ($_REQUEST['mode'] == 'createConstFile') {
         $path = REL(__FILE__, "..");
         $fn = $path . "/database_constants.php";
+        //$content =
+        //    "<?php \n".
+        //    '$dbConst = array('." \n".
+        //    "'host'     => '".$_REQUEST['host']."', \n".
+        //    "'username' => '".$_REQUEST['user']."', \n".
+        //    "'pwd'      => '".$_REQUEST['passwd']."', \n".
+        //    "'database' => '".$_REQUEST['db']."', \n".
+        //    "'mode'     => 'haveConst');"
+
         $content =
             "<?php \n".
-            '$dbConst = array('." \n".
-            "'host'     => '".$_REQUEST['host']."', \n".
-            "'username' => '".$_REQUEST['user']."', \n".
-            "'pwd'      => '".$_REQUEST['passwd']."', \n".
-            "'database' => '".$_REQUEST['db']."', \n".
-            "'mode'     => 'haveConst');"
+            "$this->dsn['host'] = '".$_REQUEST['host']."'; \n".
+            "$this->dsn['username'] = '".$_REQUEST['user']."'; \n".
+            "$this->dsn['pwd'] = '".$_REQUEST['passwd']."'; \n".
+            "$this->dsn['database'] = '".$_REQUEST['db']."'; \n".
+            "$this->dsn['mode'] = 'haveConst'"; \n"
         ;
 
       if (!chmod($path, 0777)) {

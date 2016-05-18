@@ -73,7 +73,7 @@ var flos = {
 <?php
 	## required for inptFld() below, may be used by others ##
 	if (!$doing_install) {
-	  	$db = new Validations;
+	  	$db = new Validations($dbConst);
 			$set = $db->getAll('description');
 			echo "	patterns: {\n";
 			while ($row = $set->fetch_assoc()) {

@@ -8,11 +8,13 @@
  * @author Micah Stetson
  */
 
+require_once("../shared/common.php");
 require_once(REL(__FILE__, "../classes/DBTable.php"));
 
 class DmTable extends DBTable {
-	public function __construct() {
-		parent::__construct();
+	public function __construct($dbConst) {
+        $this->dbConst = $dbConst;
+		parent::__construct($this->dbConst);
 	}
 
 	public function getList() {

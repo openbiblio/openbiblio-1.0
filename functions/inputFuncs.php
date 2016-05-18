@@ -3,7 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-	require_once(REL(__FILE__, "../model/Validations.php"));
+require_once("../shared/common.php");
+require_once(REL(__FILE__, "../model/Validations.php"));
 
 /**
  * creates HTML <input ....> statements for most types
@@ -17,11 +18,12 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	global $patterns;
 	// establish input validation patterns for later use
 	if (empty($patterns)) {
-	  $db = new Validations;
-	  $valids = array();
+	    $db = new Validations($dbConst);
+	    $valids = array();
 		$set = $db->getAll('description');
+//print_r($set);echo "<br />\n";
 		while ($row = $set->fetch_assoc()) {
-		  $patterns[$row['code']] = $row['pattern'];
+		    $patterns[$row['code']] = $row['pattern'];
 		}
 	}
 

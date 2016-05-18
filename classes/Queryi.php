@@ -14,15 +14,21 @@ require_once("../shared/common.php");
 class Queryi extends mysqli
 {
 	private $lock_depth;
+    private $dsn = array();
 
 	public function __construct($dbConst) {
 		$this->lockDepth = 0;
         $this->dbConst = $dbConst;
+        $this->setDSN();
+$this->dbConst["mode"] == 'haveconst';
+
         //echo "in queryi constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
         if (($this->dbConst["mode"] == 'nodb') || ($this->dbConst["mode"] == 'noconst') || ($this->dbConst["mode"] == '') ) {
-     	    parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"]); // connect to db server - fl
+     	    //parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"]); // connect to db server - fl
+     	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
         } else {
-     	    parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"], $this->dbConst["database"]);  // connect to named db at server
+     	    //parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"], $this->dbConst["database"]);  // connect to named db at server
+     	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"], $this->dsn["database"]); // connect to db server - fl
         }
 
         if (mysqli_connect_error()) {
@@ -34,6 +40,20 @@ class Queryi extends mysqli
         	$this->set_encoding();
     }
 
+    private function setDSN () {
+        // construct array of database access values for common use
+        $fn = '../dsn.php';
+        if (file_exists($fn) ) {
+            //echo "ini file(): $fn exists <br />\n";
+            include_once($fn);
+        } else {
+            $this->dsn['host'] = 'localhost';
+            $this->dsn['username'] = 'admin';
+            $this->dsn['pwd'] = 'admin';
+            $this->dsn['database'] = 'xxxopenbiblioxxx';
+        }
+        //echo "in Queryi::setDSN(): ";print_r($this->dsn);
+    }
 	public function act($sql) {
 		//$this->lock();
 		$results = $this->_act($sql);
@@ -86,6 +106,7 @@ class Queryi extends mysqli
         }
 	}
 	private function _act($sql) {
+        //echo "in queryi: $sql <br />\n";
 		$r =  parent::query($sql);
 		if ($r === false) {
 			return 'Error: '.T("Database query failed");

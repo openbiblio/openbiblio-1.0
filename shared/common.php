@@ -3,35 +3,35 @@
 	 * See the file COPYRIGHT.html for more details.
 	 */
 
-	#### --- For those unable to set their time zone in PHP.ini --- ####
-	#### for valid entries see: http://www.php.net/manual/en/timezones.php
-	//date_default_timezone_set ( "America/New_York" );
-	
-	# Forcibly disable register_globals
-	if (ini_get('register_globals')) {
-		foreach ($_REQUEST as $k=>$v) {
-			unset(${$k});
-		}
-		foreach ($_ENV as $k=>$v) {
-			unset(${$k});
-		}
-		foreach ($_SERVER as $k=>$v) {
-			unset(${$k});
-		}
-	}
+    #### --- For those unable to set their time zone in PHP.ini --- ####
+    #### for valid entries see: http://www.php.net/manual/en/timezones.php
+    //date_default_timezone_set ( "America/New_York" );
 
-  ## Active assert and make it quiet
-  assert_options(ASSERT_ACTIVE, 1);
-  assert_options(ASSERT_WARNING, 0);
-  assert_options(ASSERT_QUIET_EVAL, 1);
-  ## Create a handler function
-  function obAssertHandler($file, $line, $code, $desc = null) {
+    # Forcibly disable register_globals
+    if (ini_get('register_globals')) {
+    	foreach ($_REQUEST as $k=>$v) {
+    		unset(${$k});
+    	}
+    	foreach ($_ENV as $k=>$v) {
+    		unset(${$k});
+    	}
+    	foreach ($_SERVER as $k=>$v) {
+    		unset(${$k});
+    	}
+    }
+
+    ## Active assert and make it quiet
+    assert_options(ASSERT_ACTIVE, 1);
+    assert_options(ASSERT_WARNING, 0);
+    assert_options(ASSERT_QUIET_EVAL, 1);
+    ## Create a handler function
+    function obAssertHandler($file, $line, $code, $desc = null) {
       echo "Assertion failed at file:'{$file}', line:'{$line}', code:'{$code}";
       if ($desc) echo ": $desc";
       echo "<br/>\n";
-  }
-  ## Set up the callback
-  assert_options(ASSERT_CALLBACK, 'obAssertHandler');
+    }
+    ## Set up the callback
+    assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 
 	#apd_set_pprof_trace();
 	## TODO - will not work with db models and classes as currently written - FL
@@ -163,7 +163,7 @@
 			}
 		}
 	
-	  setSessionFmSettings();
+        setSessionFmSettings();
 	}
 
 	$LOC->init($Locale);

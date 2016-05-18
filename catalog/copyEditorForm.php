@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+    require_once("../shared/common.php");
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 	require_once(REL(__FILE__, "../model/CopyStatus.php"));	
 ?>
@@ -46,7 +47,7 @@
 				<td>
 					</select>
 					<?php
-						$states = new CopyStatus;
+						$states = new CopyStatus($dbconst);
 						$state_select = $states->getSelect();
 						echo inputfield(select, status_cd, "in", null, $state_select);
 					?>
