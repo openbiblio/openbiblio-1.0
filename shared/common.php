@@ -96,9 +96,23 @@
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
-  if (file_exists(REL(__FILE__, '../database_constants.php')) ) {
-	 require_once(REL(__FILE__, '../database_constants.php'));
-  }
+    // construct array of database access values for common use
+    $fn = '../database_constants.php';
+    if (file_exists($fn) ) {
+        //echo "ini file(): $fn exists <br />\n";
+        include_once($fn);
+    } else {
+        $dbConst = array (
+            // dummy values needed for initial run
+            'mode' => 'noConst',
+            'host' => 'x.x.x',
+            'username' => 'x.x.x',
+            'pwd' => 'x.x.x',
+            'database' => 'x.x.x'
+        );
+    }
+    global $dbConst;
+    //echo "in common: host=".$dbConst['host']."; user=".$dbConst['username']."; pw=".$dbConst['pwd']."; db=".$dbConst['database']."<br />\n";
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));

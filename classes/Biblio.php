@@ -175,5 +175,3 @@ class Biblio {
 		$this->hdrFlds['ncpys'] = $info['nCpy'];
 	}
 }
-
-?>

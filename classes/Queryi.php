@@ -9,33 +9,30 @@
  * @author Micah Stetson
  */
 
-class Queryi extends mysqli{
+require_once("../shared/common.php");
+
+class Queryi extends mysqli
+{
 	private $lock_depth;
 
-	public function __construct() {
+	public function __construct($dbConst) {
 		$this->lockDepth = 0;
-		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
-		if (mysqli_connect_error()) {
-			echo mysqli_connect_error()."<br>\n";
-			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysqli_error()));
-		}
-		$this->set_encoding();
+        $this->dbConst = $dbConst;
+        //echo "in queryi constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
+        if (($this->dbConst["mode"] == 'nodb') || ($this->dbConst["mode"] == 'noconst') || ($this->dbConst["mode"] == '') ) {
+     	    parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"]); // connect to db server - fl
+        } else {
+     	    parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"], $this->dbConst["database"]);  // connect to named db at server
+        }
 
-	}
-
-
-	/** Make sure all queries have the user's preferred encoding
-	 * and default to UTF8 if they have not chosen a valid encoding
-	*/
-	private function set_encoding() {
-		$r = parent::query("SELECT value FROM settings where name='charset'");
-		if ($r->num_rows == 1) {
-			$row = $r->fetch_assoc();
-			if (!parent::set_charset($row['value']))  {
-				parent::set_charset('utf8');
-			}
-		}
-	}
+        if (mysqli_connect_error()) {
+            echo mysqli_connect_error()."<br>\n";
+            return t("error: cannot connect to database server");
+        } else {
+            return "success, version# $mysqli->server_version";
+        }
+        	$this->set_encoding();
+    }
 
 	public function act($sql) {
 		//$this->lock();
@@ -45,39 +42,53 @@ class Queryi extends mysqli{
 	}
 	public function select($sql) {
 		$results = $this->_act($sql);
-		if (0 == $results) {
-			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
-			echo "sql=$sql<br />\n";
-			
+		if ($results == 0) {
+			return T("NothingFoundError");
+			//echo "sql=$sql<br />\n";
 		}
 		return $results;
 	}
 	public function select1($sql) {
 		$r = $this->select($sql);
 		if ($r->num_rows != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("NothingFoundError"));
-			echo "sql=$sql<br />\n";
+		  return T("NothingFoundError");
+			//echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
 	}
 	public function select01($sql) {
-		$r = $this->act($sql);
+		$r = $this::act($sql);
 		if (($r == 0) || ($r->num_rows == 0)) {
 			return NULL;
 		} else if ($r->num_rows != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
-			echo "sql=$sql<br />\n";
+			return T("Wrong Number Rows Found");
+			//echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
 	}
+
+	/** Make sure all queries have the user's preferred encoding
+	 * and default to UTF8 if they have not chosen a valid encoding
+	 *
+	 * this may only work if complete OB database is in place; -FL
+	*/
+	private function set_encoding() {
+		$r = parent::query("SELECT value FROM settings where name='charset'");
+		if ($r->num_rows == 1) {
+			$row = $r->fetch_assoc();
+			if (!parent::set_charset($row['value']))  {
+				parent::set_charset('utf8');
+			}
+		} else {
+			parent::set_charset('utf8');
+        }
+	}
 	private function _act($sql) {
-		$r =  $this->query($sql);
+		$r =  parent::query($sql);
 		if ($r === false) {
-			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
-			//echo "sql=$sql<br />\n";
-			$r = 0;
+			return 'Error: '.T("Database query failed");
 		}
 		return $r;
 	}
@@ -170,7 +181,7 @@ class Queryi extends mysqli{
 	 */
 	public function mkSQL() {
 		$badSqlFmt = T("Bad mkSQL() format string.");
-		
+
 		$n = func_num_args();
 		if ($n < 1) {
 			Fatal::internalError(T("Not enough arguments given to mkSQL()."));
