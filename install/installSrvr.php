@@ -9,43 +9,6 @@
 
 	$doing_install = true;
     require_once("../shared/common.php");
-
-	#-.-.-.-.-.- special case, MUST precede reference to anything mySQLi-related -.-.-.-.-.-.-
-    if ($_REQUEST['mode'] == 'createConstFile') {
-        $path = REL(__FILE__, "..");
-        $fn = $path . "/database_constants.php";
-        //$content =
-        //    "<?php \n".
-        //    '$dbConst = array('." \n".
-        //    "'host'     => '".$_REQUEST['host']."', \n".
-        //    "'username' => '".$_REQUEST['user']."', \n".
-        //    "'pwd'      => '".$_REQUEST['passwd']."', \n".
-        //    "'database' => '".$_REQUEST['db']."', \n".
-        //    "'mode'     => 'haveConst');"
-
-        $content =
-            "<?php \n".
-            "$this->dsn['host'] = '".$_REQUEST['host']."'; \n".
-            "$this->dsn['username'] = '".$_REQUEST['user']."'; \n".
-            "$this->dsn['pwd'] = '".$_REQUEST['passwd']."'; \n".
-            "$this->dsn['database'] = '".$_REQUEST['db']."'; \n".
-            "$this->dsn['mode'] = 'haveConst'"; \n"
-        ;
-
-      if (!chmod($path, 0777)) {
-        echo "Error: Unable to set write permission on folder '".$path."'";
-        exit;
-      }
-      if (false === file_put_contents($fn, $content)) {
-        echo 'Error: The file is NOT writable.'."\n";
-        echo "Please chmod 777 the folder holding '".$fn."'";
-        exit;
-      }
-      echo "success";
-    exit;
-  };
-	#-.-.-.-.-.- end special case -.-.-.-.-.-.-
-
  	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
@@ -107,4 +70,3 @@
 		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
 			break;
 	}
-?>

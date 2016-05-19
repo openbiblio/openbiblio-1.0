@@ -28,9 +28,7 @@
     	// If the cookie contains a site id, we take this one, otherwise the default.
     	// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
     	$libName  = Settings::get('library_name');
-//echo "lib name: $libName".PHP_EOL;
     	if(empty($_SESSION['current_site'])) {
-//echo "have a 'crnt site'".PHP_EOL;
     		if(isset($_COOKIE['OpenBiblioSiteID'])) {
     			$site = new Sites;
     			$exists_in_db = $site->maybeGetOne($_COOKIE['OpenBiblioSiteID']);
@@ -44,10 +42,8 @@
     			$_SESSION['current_site'] = 1;
     		}
     	}
-//echo "no 'crnt site'".PHP_EOL;
 
     	if($_SESSION['multi_site_func'] > 0){
-//echo "multi-site library".PHP_EOL;
     		$sit = new Sites;
     		$lib = $sit->maybeGetOne($_SESSION['current_site']);
 		    if ($lib['siteid'] != $_SESSION['current_site']) {

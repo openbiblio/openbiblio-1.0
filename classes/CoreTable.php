@@ -11,9 +11,8 @@ require_once(REL(__FILE__, "../classes/DBTable.php"));
  */
 
 abstract class CoreTable extends DBTable {
-	public function __construct($dbConst) {
-        $this->dbConst = $dbConst;
-		parent::__construct($this->dbConst);
+	public function __construct() {
+		parent::__construct();
 	}
 
 	protected function validate_el($rec, $insert) { /* abstracted in DBTable */ }

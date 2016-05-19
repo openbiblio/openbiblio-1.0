@@ -14,19 +14,18 @@ $_settings_validators = array();
 class Settings extends Queryi
 {
 	public function __construct() {
-		parent::__construct($dbConst);
+		parent::__construct();
 	}
 
 	static public function load() {
-		global $_settings_cache, $_settings_validators, $dbConst;
-		$db = new Queryi($dbConst);
+		global $_settings_cache, $_settings_validators;
+		$db = new Queryi;
 		$r = $db->select('SELECT * FROM settings');
-//print_r($r);
+print_r($r);
 		while ($s = $r->fetch_assoc()) {
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validator']);
 		}
-//print_r($_settings_cache);
 	}
 	static public function get($name) {
 		global $_settings_cache;

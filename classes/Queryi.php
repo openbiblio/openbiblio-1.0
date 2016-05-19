@@ -16,7 +16,7 @@ class Queryi extends mysqli
 	private $lock_depth;
     private $dsn = array();
 
-	public function __construct($dbConst) {
+	public function __construct() {
 		$this->lockDepth = 0;
         $this->dbConst = $dbConst;
         $this->setDSN();
@@ -52,7 +52,7 @@ $this->dbConst["mode"] == 'haveconst';
             $this->dsn['pwd'] = 'admin';
             $this->dsn['database'] = 'xxxopenbiblioxxx';
         }
-        //echo "in Queryi::setDSN(): ";print_r($this->dsn);
+        //echo "in Queryi::setDSN(): ";print_r($this->dsn);echo "<br />\n";
     }
 	public function act($sql) {
 		//$this->lock();
@@ -61,6 +61,9 @@ $this->dbConst["mode"] == 'haveconst';
 		return $results;
 	}
 	public function select($sql) {
+        $this->setDSN();
+//echo "in Queryi::select(): ";print_r($this->dsn);echo "<br />\n";
+//echo "in queryi::select(): $sql <br />\n";
 		$results = $this->_act($sql);
 		if ($results == 0) {
 			return T("NothingFoundError");
@@ -106,8 +109,10 @@ $this->dbConst["mode"] == 'haveconst';
         }
 	}
 	private function _act($sql) {
-        //echo "in queryi: $sql <br />\n";
+//echo "in queryi::_act(): $sql <br />\n";
+//echo "in Queryi::_act(): ";print_r($this->dsn);echo "<br />\n";
 		$r =  parent::query($sql);
+//echo "in queryi::_act(): ";print_r($r);echo "<br />\n";
 		if ($r === false) {
 			return 'Error: '.T("Database query failed");
 		}

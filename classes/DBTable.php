@@ -25,9 +25,8 @@ abstract class DBTable extends Queryi {
 	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
 
 	## ------------------------------------------------------------------------ ##
-	public function __construct($dbConst) {
-        $this->dbConst = $dbConst;
-		parent::__construct($this->dbConst);
+	public function __construct() {
+		parent::__construct();
 	}
 	protected function setFields($fields) {
 		$this->fields = $fields;
