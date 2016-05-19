@@ -77,13 +77,13 @@ class InstallQuery extends Queryi
     $this->executeSqlFilesInDir($rootDir, $dbName);
     $this->executeSqlFilesInDir($localeDir . '/domain/', $dbName);
     if($sampleDataRequired) {
-      $this->executeSqlFilesInDir($localeDir . '/sample/', $dbName);
+        $this->executeSqlFilesInDir($localeDir . '/sample/', $dbName);
     }
   }
 
   public function createDatabase() {
     $sql = "CREATE DATABASE IF NOT EXISTS ".$this->dbConst['database'];
-echo $sql."<br>\n";
+    //echo $sql."<br>\n";
     $r = parent::act($sql);
     if ($r === true) {
       echo T("success, Database created");
@@ -96,9 +96,9 @@ echo $sql."<br>\n";
 	## ------------------------------------------------------------------------ ##
   protected function  setGrants($dbName, $dbUser) {
     $sql = "GRANT CREATE, INSERT, DROP, UPDATE ON $dbName TO $dbUser ";
-echo $sql."<br>\n";
+    //echo $sql."<br>\n";
     $r = parent::act($sql);
-echo $r."<br>\n";
+    //echo $r."<br>\n";
 //     if (strpos($r, 'Error')) {
        return "$r";
 //    }

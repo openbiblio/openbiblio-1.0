@@ -127,9 +127,7 @@ ins = {
 			ins.informUser('<?php echo T("Installing DB tables without test data"); ?>');
 			var test = 'NO';
 		}
-		$.post(ins.url, {'mode':'doFullInstall',
-										 'installTestData':test,
-										},
+		$.post(ins.url, {'mode':'doFullInstall', 'installTestData':test },
 			function (response) {
 				$('#plsWait').hide();
 				if(response) {

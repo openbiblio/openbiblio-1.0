@@ -42,7 +42,7 @@ $this->dbConst["mode"] == 'haveconst';
 
     private function setDSN () {
         // construct array of database access values for common use
-        $fn = '../dsn.php';
+        $fn = '../database_constants.php';
         if (file_exists($fn) ) {
             //echo "ini file(): $fn exists <br />\n";
             include_once($fn);
