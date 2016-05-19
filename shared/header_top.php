@@ -77,7 +77,7 @@
   <!-- *********************************************************************** -->
   <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
   <!-- this is considered to be temporary until the use of prefixes ends -->
-  <script src="../shared/prefixfree.min.js"></script> <!-- review yearly -->
+  <!--script src="../shared/prefixfree.min.js"></script> <!-- review yearly -->
   <!-- *********************************************************************** -->
 
   <!-- we place these JS files here because several JS modules loaded in line -->

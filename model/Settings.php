@@ -21,7 +21,7 @@ class Settings extends Queryi
 		global $_settings_cache, $_settings_validators;
 		$db = new Queryi;
 		$r = $db->select('SELECT * FROM settings');
-print_r($r);
+        //echo "in Settings::load()";print_r($r);echo "<br /> \n";
 		while ($s = $r->fetch_assoc()) {
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validator']);

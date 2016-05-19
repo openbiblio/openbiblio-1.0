@@ -43,17 +43,18 @@
 	} else {
 		session_cache_limiter('nocache');
 	}
-	
+
+/* -- no longer used?? FL May 2016
 	function getOBroot() {
-		/* obtain OpenBiblio path ref to wep pages root */
-		/* may be useful later in system (thinking plug-ins, etc.) */
+		// obtain OpenBiblio path ref to wep pages root
+		// may be useful later in system (thinking plug-ins, etc.)
 		$thisApp = $_SERVER[PHP_SELF];
 		$thisPath = pathinfo($thisApp, PATHINFO_DIRNAME);
 		$pathParts = explode('/',$thisPath);
 		$OBroot = '/'.$pathParts[1].'/';
 		return $OBroot;
 	}
-
+*/
 	/* Convenience functions for everywhere */
 	/* Work around PHP's braindead include_path stuff. */
 	function REL($sf, $if) {
@@ -61,6 +62,7 @@
 	}
 	
 	/* This one should be used by all the form handlers that return errors. */
+/* -- no longer used? FL May 2016
 	function _mkPostVars($arr, $prefix) {
 		$pv = array();
 		foreach ($arr as $k => $v) {
@@ -78,7 +80,8 @@
 	function mkPostVars() {
 		return _mkPostVars($_REQUEST, NULL);
 	}
-	
+*/
+
 	### needs to be here so changes in settings are picked up when changes are entered
 	function setSessionFmSettings() {
 		$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
@@ -96,23 +99,25 @@
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
-    // construct array of database access values for common use - moved to Queryi.php - FL
-    //$fn = '../database_constants.php';
-    //if (file_exists($fn) ) {
-    //    //echo "ini file(): $fn exists <br />\n";
-    //    include_once($fn);
-    //} else {
-    //    $dbConst = array (
-    //        // dummy values needed for initial run
-    //        'mode' => 'noConst',
-    //        'host' => 'x.x.x',
-    //        'username' => 'x.x.x',
-    //        'pwd' => 'x.x.x',
-    //        'database' => 'x.x.x'
-    //    );
-    //}
-    //global $dbConst;
-    //echo "in common: host=".$dbConst['host']."; user=".$dbConst['username']."; pw=".$dbConst['pwd']."; db=".$dbConst['database']."<br />\n";
+/* -- - moved to Queryi::setDSN - FL 18May2016
+    // construct array of database access values for common use 
+    $fn = '../database_constants.php';
+    if (file_exists($fn) ) {
+        //echo "ini file(): $fn exists <br />\n";
+        include_once($fn);
+    } else {
+        $dbConst = array (
+            // dummy values needed for initial run
+            'mode' => 'noConst',
+            'host' => 'x.x.x',
+            'username' => 'x.x.x',
+            'pwd' => 'x.x.x',
+            'database' => 'x.x.x'
+        );
+    }
+    global $dbConst;
+    echo "in common: host=".$dbConst['host']."; user=".$dbConst['username']."; pw=".$dbConst['pwd']."; db=".$dbConst['database']."<br />\n";
+*/
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));
@@ -168,7 +173,10 @@
 
 	$LOC->init($Locale);
 
+    // ***********************************************
+    //Here is where we construct the actual web page
 	include_once(REL(__FILE__, "../classes/Page.php"));
+    // ***********************************************
 
 	###################################################################
 	## plugin Support

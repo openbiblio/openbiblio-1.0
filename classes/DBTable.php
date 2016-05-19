@@ -22,12 +22,13 @@ abstract class DBTable extends Queryi {
 		'number'=>'%N',
 	);
 
-	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
-
-	## ------------------------------------------------------------------------ ##
 	public function __construct() {
 		parent::__construct();
 	}
+
+	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
+
+	## ------------------------------------------------------------------------ ##
 	protected function setFields($fields) {
 		$this->fields = $fields;
 		# FIXME - Check that field types are valid.
@@ -86,7 +87,8 @@ abstract class DBTable extends Queryi {
 		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
 		//if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
 		if (!empty($orderby)) $sql .= "ORDER BY $orderby";
-echo "$sql <br />\n";
+        //echo "in DBTable::getAll(): $sql <br />\n";
+
         //		if ($this->iter) {
         //			$c = $this->iter;	# Silly PHP
         //			return new $c($this->select($sql));
@@ -94,12 +96,12 @@ echo "$sql <br />\n";
 		return $this->select($sql);
 	}
 	public function getMatches($fields, $orderby=NULL) {
-//print_r($fields);echo "<br />\n";
+        //print_r($fields);echo "<br />\n";
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
 		if ($orderby)
 			$sql .= $this->mkSQL(' ORDER BY %I ', $orderby);
-//echo "$sql <br />\n";
+        //echo "$sql <br />\n";
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->select($sql));

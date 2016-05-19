@@ -14,20 +14,18 @@ require_once("../shared/common.php");
 class Queryi extends mysqli
 {
 	private $lock_depth;
-    private $dsn = array();
+    //private $dsn = array();
 
 	public function __construct() {
 		$this->lockDepth = 0;
         $this->dbConst = $dbConst;
         $this->setDSN();
-$this->dbConst["mode"] == 'haveconst';
+        $this->dsn["mode"] == 'haveconst';
 
-        //echo "in queryi constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
-        if (($this->dbConst["mode"] == 'nodb') || ($this->dbConst["mode"] == 'noconst') || ($this->dbConst["mode"] == '') ) {
-     	    //parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"]); // connect to db server - fl
+        //echo "in queryi construct(): host=".$this->dsn["host"]."; user=".$this->dsn["username"]."; pw=".$this->dsn["pwd"]."; db=".$this->dsn["database"]."<br />\n";
+        if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
         } else {
-     	    //parent::__construct($this->dbConst["host"], $this->dbConst["username"], $this->dbConst["pwd"], $this->dbConst["database"]);  // connect to named db at server
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"], $this->dsn["database"]); // connect to db server - fl
         }
 
@@ -45,12 +43,13 @@ $this->dbConst["mode"] == 'haveconst';
         $fn = '../database_constants.php';
         if (file_exists($fn) ) {
             //echo "ini file(): $fn exists <br />\n";
-            include_once($fn);
+            include($fn); // DO NOT change to 'include_once()' !!!!!
         } else {
             $this->dsn['host'] = 'localhost';
             $this->dsn['username'] = 'admin';
             $this->dsn['pwd'] = 'admin';
             $this->dsn['database'] = 'xxxopenbiblioxxx';
+            $this->dsn['mode'] = 'nodb';
         }
         //echo "in Queryi::setDSN(): ";print_r($this->dsn);echo "<br />\n";
     }
@@ -62,8 +61,8 @@ $this->dbConst["mode"] == 'haveconst';
 	}
 	public function select($sql) {
         $this->setDSN();
-//echo "in Queryi::select(): ";print_r($this->dsn);echo "<br />\n";
-//echo "in queryi::select(): $sql <br />\n";
+        //echo "in Queryi::select(): ";print_r($this->dsn);echo "<br />\n";
+        //echo "in queryi::select(): $sql <br />\n";
 		$results = $this->_act($sql);
 		if ($results == 0) {
 			return T("NothingFoundError");
@@ -109,10 +108,10 @@ $this->dbConst["mode"] == 'haveconst';
         }
 	}
 	private function _act($sql) {
-//echo "in queryi::_act(): $sql <br />\n";
-//echo "in Queryi::_act(): ";print_r($this->dsn);echo "<br />\n";
+        //echo "in queryi::_act(): $sql <br />\n";
+        //echo "in Queryi::_act(): ";print_r($this->dsn);echo "<br />\n";
 		$r =  parent::query($sql);
-//echo "in queryi::_act(): ";print_r($r);echo "<br />\n";
+        //echo "in queryi::_act(): ";print_r($r);echo "<br />\n";
 		if ($r === false) {
 			return 'Error: '.T("Database query failed");
 		}
