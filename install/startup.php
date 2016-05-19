@@ -74,13 +74,13 @@
               <p class="note">Note: All fields MUST be filled.</P>
               <form id="dbConstForm">
                 <label for="hostId">Host Id: </label>
-                <input id="hostId" type="text" placeholder="Ip Address or Name" required value="localhost" /><br />
+                <input id="hostId" type="text" placeholder="Ip Address or Name" required /><br />
                 <label for="userNm">User Name: </label>
-                <input id="userNm" type="text" placeholder="missing" required value="fred" /><br />
+                <input id="userNm" type="text" placeholder="missing" required /><br />
                 <label for="passWd">User Password: </label>
-                <input id="passWd" type="password" placeholder="missing" required value="shhh"/><br />
+                <input id="passWd" type="password" placeholder="missing" required /><br />
                 <label for="dbName">Database Name: </label>
-                <input id="dbName" type="text" placeholder="missing" required value="openbibliowork"/><br />
+                <input id="dbName" type="text" placeholder="missing" required /><br />
                 <p class="note">Note: Above user name & password must be valid for this database server</P>
                 <br />
         		<input id="constBtn" type="submit" value="Update" />
