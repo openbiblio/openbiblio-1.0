@@ -6,7 +6,7 @@
    
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
-// newItem Javascript
+// newItem Javascript - importCsvJs.php
 "use strict";
 
 var csvi = {

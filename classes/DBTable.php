@@ -71,15 +71,17 @@ abstract class DBTable extends Queryi {
 		$key = func_get_args();
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_keyTerms($key);
+        //echo "in DBTable::maybeGetOne(): ";echo "$sql";echo "<br /> \n";
 		$row = $this->select01($sql);
 		return $row;
 	}
 	public function getOne() {
 		$key = func_get_args();
 		$row = call_user_func_array(array($this, 'maybeGetOne'), $key);
-		if (!$row) {
-			Fatal::internalError(T("Bad key (%key%) for %name% table", array('key'=>implode(', ', $key), 'name'=>$this->name)));
-			echo "sql=$sql<br />\n";
+		if (is_null($row)) {
+			//Fatal::internalError(T("Bad key (%key%) for %name% table", array('key'=>implode(', ', $key), 'name'=>$this->name)));
+            //echo "Fatal::internalError";echo "Bad key ";print_r($key);echo" for table $this->name";
+			//echo "sql=$sql<br />\n";
 		}
 		return $row;
 	}
