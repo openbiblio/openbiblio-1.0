@@ -162,10 +162,10 @@ class Copy {
 			$ptr = new Bookings;
 			$this->book = $ptr;
 			$rslt = $ptr->getByHistid($this->hdrFlds['histid']);
-      $this->hdrFlds['bookingid'] = $rslt['bookingid'];
-      $this->hdrFlds['out_dt'] = explode(' ', $rslt['out_dt'])[0];
-      $this->hdrFlds['due_dt'] = $rslt['due_dt'];
-      $this->hdrFlds['daysLate'] = $ptr->getDaysLate($rslt);
+        $this->hdrFlds['bookingid'] = $rslt['bookingid'];
+        $this->hdrFlds['out_dt'] = explode(' ', $rslt['out_dt'])[0];
+        $this->hdrFlds['due_dt'] = $rslt['due_dt'];
+        $this->hdrFlds['daysLate'] = $ptr->getDaysLate($rslt);
 		}
 	}
 }
