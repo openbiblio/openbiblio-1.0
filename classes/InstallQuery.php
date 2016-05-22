@@ -3,6 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+require_once("../shared/common.php");
 require_once("../shared/global_constants.php");
 require_once("../classes/Queryi.php");
 
@@ -11,27 +12,37 @@ require_once("../classes/Queryi.php");
  * @author Fred LaPlante
  */
 
-class InstallQuery extends Queryi {
-  public function __construct() {
-    parent::__construct();
-  }
-  
+class InstallQuery extends Queryi
+{
+    public function __construct($dbConst) {
+        $this->dbConst = $dbConst;
+        //echo "in installQuery constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
+        parent::__construct($this->dbConst);
+    }
+
 	public function getDbServerVersion () {
-		$sql = $this->mkSQL("select VERSION()");
-    $rslt = $this->select1($sql);
-		return $rslt['VERSION()'];
+		$sql = $this->mkSQL("SELECT VERSION()");
+//echo "sql={$sql}<br/>\n";
+        $rslt = parent::select1($sql);
+//print_r($rslt);
+		//return $rslt['VERSION()'];
+		return $rslt;
 	}
 
-  public function getSettings($tablePrfx = OBIB_DATABASE) {
+  public function getSettings($tablePrfx) {
+    if (!isset($tablePrfx)) $tablePrfx = $this->dbConst['database']; // needed because default parameters cannot be complex items - FL
+    //  first try to determine if setting table even exists
     $sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
+    //echo "sql={$sql}<br/>\n";
     $rows = $this->select01($sql);
 
     if (!$rows || empty($rows) || !isset($rows)) {
       return 'NothingFound';
     }
 
+    // since we have a table, fetch the contents
     $sql = $this->mkSQL('SELECT * FROM %C ', $tablePrfx.'.settings');
-//echo "sql={$sql}<br/>\n";
+    //echo "sql={$sql}<br/>\n";
     $rows = $this->select($sql);
 
     if (!$rows || empty($rows) || !isset($rows)) {
@@ -42,8 +53,9 @@ class InstallQuery extends Queryi {
 //    return $this->select($sql);
   }
 
-  public function getCurrentDatabaseVersion($dbName = OBIB_DATABASE) {
+  public function getCurrentDatabaseVersion() {
 		## versions 1.0+
+    $dbName = $this->$dbConst['database']; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $dbName.'.settings','version');
     $row = $this->select01($sql);
 		if ($row) {
@@ -57,7 +69,43 @@ class InstallQuery extends Queryi {
 		return $version;
   }
 
+  public function freshInstall($locale, $sampleDataRequired = false,
+                        $version=OBIB_LATEST_DB_VERSION,
+                        $dbName = DB_TABLENAME_PREFIX) {
+    $rootDir = '../install/' . $version . '/sql';
+    $localeDir = '../locale/' . $locale . '/sql/' . $version;
+    $this->executeSqlFilesInDir($rootDir, $dbName);
+    $this->executeSqlFilesInDir($localeDir . '/domain/', $dbName);
+    if($sampleDataRequired) {
+        $this->executeSqlFilesInDir($localeDir . '/sample/', $dbName);
+    }
+  }
+
+  public function createDatabase() {
+    $sql = "CREATE DATABASE IF NOT EXISTS ".$this->dbConst['database'];
+    //echo $sql."<br>\n";
+    $r = parent::act($sql);
+    if ($r === true) {
+      echo T("success, Database created");
+      //$this->setGrants($dbName, $dbUser); // must be done by db admin person when user created.
+    } else {
+      return T("Error: Unable to create database").': '.$mysqli->connect_error;
+    }
+  }
+
 	## ------------------------------------------------------------------------ ##
+  protected function  setGrants($dbName, $dbUser) {
+    $sql = "GRANT CREATE, INSERT, DROP, UPDATE ON $dbName TO $dbUser ";
+    //echo $sql."<br>\n";
+    $r = parent::act($sql);
+    //echo $r."<br>\n";
+//     if (strpos($r, 'Error')) {
+       return "$r";
+//    }
+//    }
+//    return "success";
+  }
+
   protected function getCurrentLocale($tablePrfx = DB_TABLENAME_PREFIX) {
     $sql = $this->mkSQL('SELECT * FROM %I WHERE `name`=%Q', $tablePrfx.'.settings','locale');
     $row = $this->select01($sql);
@@ -72,30 +120,10 @@ class InstallQuery extends Queryi {
     }
   }
 
-  public function freshInstall($locale, $sampleDataRequired = false,
-                        $version=OBIB_LATEST_DB_VERSION,
-                        $dbName = DB_TABLENAME_PREFIX) {
-    $rootDir = '../install/' . $version . '/sql';
-    $localeDir = '../locale/' . $locale . '/sql/' . $version;
-    $this->executeSqlFilesInDir($rootDir, $dbName);
-    $this->executeSqlFilesInDir($localeDir . '/domain/', $dbName);
-    if($sampleDataRequired) {
-      $this->executeSqlFilesInDir($localeDir . '/sample/', $dbName);
-    }
-  }
-
-  protected function createDatabase($dbName) {
-    $sql = $this->mkSQL("create database if not exists %I ", $dbName);
-    $res = $this->act($sql);
-    $sql = $this->mkSQL("GRANT ALL PRIVILEGES ON %I TO %Q", $dbName, OBIB_USERNAME);
-    $r = $this->act($sql);
-    return $r;
-  }
-
   protected function copyDatabase($fromDb, $toDb) {
     $sql = $this->mkSQL("SHOW TABLES FROM %I ", $fromDb);
     $rslt = $this->select($sql);
-	echo "copy ".$rslt->num_rows." tables from ".$fromDb." to ".$toDb." <br />\n";
+    //echo "copy ".$rslt->num_rows." tables from ".$fromDb." to ".$toDb." <br />\n";
     $renaming = true;
     while ($row = $rslt->fetch_array()) {
         $src = $fromDb.'.'.$row[0];
@@ -192,5 +220,3 @@ class InstallQuery extends Queryi {
     }
   } //executeSqlFile
 }
-
-?>

@@ -6,7 +6,7 @@
    
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
-// newItem Javascript
+// newItem Javascript - importMarcJs.php
 "use strict";
 
 var mrci = {

@@ -60,7 +60,7 @@ have still not been implemented.  Use at your own risk.</font>
 </ul>
 </blockquote>
 
-<h1>OpenBiblio 0.4.x Install Instructions:</h1>
+<h1>OpenBiblio 1.0.x Install Instructions:</h1>
 <ol>
   <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that is
      compatible with PHP.  If you install Apache, get familiar with starting 
@@ -85,36 +85,37 @@ have still not been implemented.  Use at your own risk.</font>
   </li>
 
   <li>Install and become familiar with phpMyAdmin as a means to maintain the MySql databases
-	</li>
+  </li>
 
   <a name="step4">
   <li>Create an OpenBiblio database using whatever tool you prefer - I recommend phpMyAdmin. Avoid '-' in the database name.
-	</li>
+  </li>
   </a>
 
   <a name="step5">
   <li>Create an OpenBiblio database user.  Use phpMyAdmin for this,
 	using a userid and password of your choice.
 	Be sure to select a proper collation. I suggest 'utf8-general-ci'.
-<blockquote><pre>
- <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
-    -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>
-</pre></blockquote>
+    <blockquote><pre>
+     <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
+        -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>
+    </pre></blockquote>
   </li>
   </a>
-  </li>
 
   <a name="step7">
   <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
     root or any subdirectory within the htdocs root.
-  </li></a>
+  </li>
+  </a>
 
   <a name="step8">
   <li>Edit the database_constants.php file (located in the main openbiblio directory)
     with the text editor of your choice.
     Change the username and password to match the new MySQL user and password that you 
     created in the previous steps.
-  </li></a>
+  </li>
+  </a>
 
   <li>Create the OpenBiblio database tables.  To do this run the install php script
    located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,

@@ -7,9 +7,9 @@
  * larger screens will be progressively enhanced at the end of this document 
  */
 body {
-  font-family:verdana,arial,helvetica, serif;
-  color:#000000; background:#90b0b8;
-  width:auto; height:auto; padding:1rem;
+    font-family:verdana,arial,helvetica, serif;
+    color:#000000; background:#90b0b8;
+    width:auto; height:auto; padding:1rem;
 	}
 	.ie body {width:540px;}
 

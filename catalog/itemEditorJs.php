@@ -7,6 +7,9 @@
  * JavaScript portion of the Biblio ItemEditor module
  * @author Fred LaPlante
  */
+
+// Javascript Document - itemEditorJs.php
+
 "use strict";
 
 var ie = {

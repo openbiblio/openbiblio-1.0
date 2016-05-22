@@ -9,23 +9,92 @@
  * @author Micah Stetson
  */
 
-class Queryi extends mysqli{
+require_once("../shared/common.php");
+
+class Queryi extends mysqli
+{
 	private $lock_depth;
+    //private $dsn = array();
 
 	public function __construct() {
 		$this->lockDepth = 0;
-		parent::__construct(OBIB_HOST,OBIB_USERNAME,OBIB_PWD,OBIB_DATABASE);
-		if (mysqli_connect_error()) {
-			echo mysqli_connect_error()."<br>\n";
-			return array(NULL, new DbError(T("Connecting to database server..."), T("Cannot connect to database server."), mysqli_error()));
-		}
-		$this->set_encoding();
+        $this->dbConst = $dbConst;
+        $this->setDSN();
+        $this->dsn["mode"] == 'haveconst';
 
+        //echo "in queryi construct(): host=".$this->dsn["host"]."; user=".$this->dsn["username"]."; pw=".$this->dsn["pwd"]."; db=".$this->dsn["database"]."<br />\n";
+        if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
+     	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
+        } else {
+     	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"], $this->dsn["database"]); // connect to db server - fl
+        }
+
+        if (mysqli_connect_error()) {
+            echo mysqli_connect_error()."<br>\n";
+            return t("error: cannot connect to database server");
+        } else {
+            return "success, version# $mysqli->server_version";
+        }
+        	$this->set_encoding();
+    }
+
+    private function setDSN () {
+        // construct array of database access values for common use
+        $fn = '../database_constants.php';
+        if (file_exists($fn) ) {
+            //echo "ini file(): $fn exists <br />\n";
+            include($fn); // DO NOT change to 'include_once()' !!!!!
+        } else {
+            $this->dsn['host'] = 'localhost';
+            $this->dsn['username'] = 'admin';
+            $this->dsn['pwd'] = 'admin';
+            $this->dsn['database'] = 'xxxopenbiblioxxx';
+            $this->dsn['mode'] = 'nodb';
+        }
+        //echo "in Queryi::setDSN(): ";print_r($this->dsn);echo "<br />\n";
+    }
+	public function act($sql) {
+		//$this->lock();
+		$results = $this->_act($sql);
+		//$this->unlock();
+		return $results;
 	}
-
+	public function select($sql) {
+        $this->setDSN();
+        //echo "in Queryi::select(): ";print_r($this->dsn);echo "<br />\n";
+        //echo "in queryi::select(): $sql <br />\n";
+		$results = $this->_act($sql);
+		if ($results == 0) {
+			return T("NothingFoundError");
+			//echo "sql=$sql<br />\n";
+		}
+		return $results;
+	}
+	public function select1($sql) {
+		$r = $this->select($sql);
+		if ($r->num_rows != 1) {
+		  return T("NothingFoundError");
+			//echo "sql=$sql<br />\n";
+		} else {
+			return $r->fetch_assoc();
+		}
+	}
+	public function select01($sql) {
+		$r = $this::act($sql);
+		if (($r == 0) || ($r->num_rows == 0)) {
+			return NULL;
+		} else if ($r->num_rows != 1) {
+			return T("Wrong Number Rows Found");
+			//echo "sql=$sql<br />\n";
+		} else {
+			return $r->fetch_assoc();
+		}
+	}
 
 	/** Make sure all queries have the user's preferred encoding
 	 * and default to UTF8 if they have not chosen a valid encoding
+	 *
+	 * this may only work if complete OB database is in place; -FL
 	*/
 	private function set_encoding() {
 		$r = parent::query("SELECT value FROM settings where name='charset'");
@@ -34,50 +103,17 @@ class Queryi extends mysqli{
 			if (!parent::set_charset($row['value']))  {
 				parent::set_charset('utf8');
 			}
-		}
-	}
-
-	public function act($sql) {
-		//$this->lock();
-		$results = $this->_act($sql);
-		//$this->unlock();
-		return $results;
-	}
-	public function select($sql) {
-		$results = $this->_act($sql);
-		if (0 == $results) {
-			Fatal::dbError($sql, T("Select did not return results."), T("NothingFoundError"));
-			echo "sql=$sql<br />\n";
-			
-		}
-		return $results;
-	}
-	public function select1($sql) {
-		$r = $this->select($sql);
-		if ($r->num_rows != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("NothingFoundError"));
-			echo "sql=$sql<br />\n";
 		} else {
-			return $r->fetch_assoc();
-		}
-	}
-	public function select01($sql) {
-		$r = $this->act($sql);
-		if (($r == 0) || ($r->num_rows == 0)) {
-			return NULL;
-		} else if ($r->num_rows != 1) {
-			Fatal::dbError($sql, T("QueryWrongNrRows", array('count'=>$r->num_rows)), T("Wrong Number Found error."));
-			echo "sql=$sql<br />\n";
-		} else {
-			return $r->fetch_assoc();
-		}
+			parent::set_charset('utf8');
+        }
 	}
 	private function _act($sql) {
-		$r =  $this->query($sql);
+        //echo "in queryi::_act(): $sql <br />\n";
+        //echo "in Queryi::_act(): ";print_r($this->dsn);echo "<br />\n";
+		$r =  parent::query($sql);
+        //echo "in queryi::_act(): ";print_r($r);echo "<br />\n";
 		if ($r === false) {
-			//Fatal::dbError($sql, T("Database query failed"), mysql_error());
-			//echo "sql=$sql<br />\n";
-			$r = 0;
+			return 'Error: '.T("Database query failed");
 		}
 		return $r;
 	}
@@ -170,7 +206,7 @@ class Queryi extends mysqli{
 	 */
 	public function mkSQL() {
 		$badSqlFmt = T("Bad mkSQL() format string.");
-		
+
 		$n = func_num_args();
 		if ($n < 1) {
 			Fatal::internalError(T("Not enough arguments given to mkSQL()."));

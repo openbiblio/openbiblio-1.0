@@ -5,9 +5,5 @@
     header("Location: catalog/srchForms.php");    // catalogging is main user
   } else {
     // we have a new installation, so go to installer instead.
-    header("Location: install/index.php");
+    header("Location: install/startup.php");
   }
-?>
-
-
-

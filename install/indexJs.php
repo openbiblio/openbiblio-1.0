@@ -5,14 +5,6 @@
 // JavaScript Document
 
 ins = {
-	<?php
-    //echo "obibHost: '".OBIB_HOST."',\n";
-		//echo "crntDbVer:'".OBIB_LATEST_DB_VERSION."',\n";
-		//echo "listHdr: '".T("List of Media Types")."',\n";
-		//echo "editHdr: '".T("Edit Media")."',\n";
-		//echo "newHdr: '".T("Add New Media")."',\n";
-	?>
-	
 	init: function () {
 		ins.initWidgets();
 
@@ -20,14 +12,9 @@ ins = {
 		ins.listSrvr = '../shared/listSrvr.php';
 		ins.editForm = $('#editForm');
 
-		//$('#reqdNote').css('color','red');
-		//$('.reqd sup').css('color','red');
-		//$('#updateMsg').hide();
-
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
 
-    $('#constBtn').on('click',null,ins.doUpdateConst);
 		ins.resetForms()
 		ins.connectDb();
 	},
@@ -38,7 +25,6 @@ ins = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#plsWait').hide();
-    $('#const_editor').hide();
 		$('#dbPblms').hide();
 		$('#versionOK').hide();
 		$('#newInstall').hide();
@@ -59,37 +45,33 @@ ins = {
 	connectDb: function () {
 		ins.informUser('<?php echo T("TestingConnectionToDBServer"); ?>');
 		ins.showWait('<?php echo T("TestingDatabaseConnection"); ?>');
-    var status= '';
-	  $.get(ins.url,{ 'mode':'connectDBServer'}, function(response){
+        $.get(ins.url,{ 'mode':'connectDBServer'}, function(response){
 			$('#plsWait').hide();
-      status = response.split(' ',1);
-      if (status[0] == 'Unknown') {
-        ins.informUser('<?php echo T("Unable to connect to a MySQL server"); ?>' );
-        $('#const_editor').show();
-        $('#hostId').focus();
-      } else {
-        $('#const_editor').hide();
-        ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
-        ins.dbTest();
-      }
-	  });
+            if ((response.indexOf('Unknown') > 0 ) || (response.indexOf('Denied') > 0) || (response.indexOf('error') > 0)){
+                ins.informUser('<?php echo T("Unable to connect to a MySQL server"); ?>' );
+            } else {
+                ins.informUser('<?php echo T("Connected to MySQL version"); ?> '+response);
+                ins.dbTest();
+            }
+	    });
 	},
 	dbTest: function () {
 		ins.informUser('<?php echo T("Looking for Database tables"); ?>');
 		ins.showWait('<?php echo T("Checking for Database Content"); ?>');
-	  $.get(ins.url,{ 'mode':'getSettings'}, function(response){
-	  	if (response == 'noTbl') {
+	    $.get(ins.url,{ 'mode':'getSettings'}, function(response){
+	  	    if (response.indexOf('noTbl') >= 0) {
 				$('#newInstall').show();
+				$('#plsWait').hide();
 			} else {
 				$('#plsWait').hide();
 				ins.getDbVersion();
 			}
-	  });
+	    });
 	},
 	getDbVersion: function () {
 		ins.showWait('<?php echo T("CheckingDatabaseVersion"); ?>');
 		ins.informUser('<?php echo T("Looking for Database Version"); ?>');
-	  $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
+	    $.get(ins.url,{ 'mode':'getDbVersion'}, function(response){
 			$('#plsWait').hide();
 			//console.log('vers='+response);
 			if (response == 'noDB') {
@@ -109,7 +91,7 @@ ins = {
 	getLocales: function () {
 		ins.showWait('<?php echo T("FetchingLocales"); ?>');
 		ins.informUser('<?php echo T("Fetching list of available languages"); ?>');
-	  $.getJson(ins.listSrvr,{ 'mode':'getLocales'}, function(response){
+	    $.getJson(ins.listSrvr,{ 'mode':'getLocales'}, function(response){
 			$('#plsWait').hide();
 			$('#locale').html(response);
 			$('#newInstall').show();
@@ -117,19 +99,21 @@ ins = {
 	},
 	
   //------------------------------
-  doUpdateConst: function() {
-		ins.showWait('<?php echo T("Creating file"); ?>');
-		ins.informUser('<?php echo T("Creating new database constant file"); ?>');
-    var params = "mode=doCreateConst&host="+$('#hostId').val()+"&user="+$('#userNm').val()+"&passwd="+$('#passWd').val()+"&db="+$('#dbName').val();
+  doCreateDB: function () {
+		ins.showWait('<?php echo T("Creating empty database"); ?>');
+		ins.informUser('<?php echo T("Creating new empty database"); ?>');
+        var params = "mode=createNewDB&db="+ins.db+"&user="+ins.user+"&passwd="+ins.pw;
 		$.post(ins.url, params, function (response) {
 			 $('#plsWait').hide();
 			 if (response.indexOf('Error:') >= 0) {
 			 	ins.informUser('<p class="error">'+response+'</p>');
+			 } else if (response.indexOf('success') > 0) {
+		        ins.informUser('<?php echo T("A new database has been created."); ?>');
+			 	ins.informUser('-.-.-.-.-.-');
         $('#const_editor').hide();
-			 }
-			 return false;
+		    ins.connectDb();
+       }
 		});
-		return false;
   },
 
 	//------------------------------
@@ -143,9 +127,7 @@ ins = {
 			ins.informUser('<?php echo T("Installing DB tables without test data"); ?>');
 			var test = 'NO';
 		}
-		$.post(ins.url, {'mode':'doFullInstall',
-										 'installTestData':test,
-										},
+		$.post(ins.url, {'mode':'doFullInstall', 'installTestData':test },
 			function (response) {
 				$('#plsWait').hide();
 				if(response) {

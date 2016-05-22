@@ -89,8 +89,9 @@
 	case 'doPhraseSearch':
 		## fetch a list of all biblio meeting user search criteria
 		$criteria = $_REQUEST;
-	  $theDb = new Biblios;
+	    $theDb = new Biblios;
 		$biblioLst = $theDb->getBiblioByPhrase($criteria);
+        //echo "in catalogSrvr, doPhraseSearch: "; print_r($biblioLst);echo "<br />\n";
 		if (sizeof($biblioLst) > 0) {
 			$srchRslt = array();
 			## succesful search, deal with results

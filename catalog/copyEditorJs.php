@@ -4,7 +4,7 @@
    See the file COPYRIGHT.html for more details.
  */
 ?>
-// JavaScript Document
+// JavaScript Document - copyEditorJs.php
 "use strict";
 
 var ced = {

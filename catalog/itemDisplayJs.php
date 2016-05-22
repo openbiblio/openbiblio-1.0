@@ -1,15 +1,22 @@
 <script language="JavaScript" >
 //------------------------------------------------------------------------------
-// itemDisplay Javascript
+// Javascript documant - itemDisplayJs.php
+
 "use strict";
 <?php
 	// If a circulation user and NOT a cataloging user the system should treat the user as opac
 //	if(strtolower($tab) == 'opac' || ($_SESSION["hasCircAuth"] && !$_SESSION["hasCatalogAuth"]))
 	$tab = strtolower($tab);
-	if($tab == 'opac' || $tab == 'circulation' )
+	if ($tab == 'opac' || $tab == 'circulation' )
 	  echo "var opacMode = true;";
 	else
 	  echo "var opacMode = false;";
+
+    if ($_SESSION['multi_site_func'] > 0)
+      echo "var multiSite = true;";
+    else
+      echo "var multiSite = false;";
+
 ?>
 
 var idis = {
@@ -194,8 +201,8 @@ var idis = {
 				var html = '';
 				for (var n in idis.copys) {
 					var copy = idis.copys[n];
-				  idis.crntCopy = copy;
-				  html += "<tr>\n";
+				    idis.crntCopy = copy;
+				    html += "<tr>\n";
 				<?php if (!($tab == 'opac' || $tab == 'working' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
 						html += '	<td>\n';
 						html += '		<input type="button" id="edit-'+copy.copyid+'" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
@@ -203,10 +210,9 @@ var idis = {
 						html += '		<input type="hidden" value="'+copy.copyid+'" />\n';
 						html += '	</td>\n';
 				<?php } ?>
-					if (copy.siteid) {
+					if ((copy.siteid) && (multiSite == true)) {
 						html += "	<td>"+idis.sites[copy.siteid]+"</td>\n";
-					}
-					else {
+					} else {
 						$('#siteFld').hide();
 					}
 
@@ -223,7 +229,12 @@ var idis = {
 						html += "	<td>"+copy.out_dt+"</td>\n";
 						html += "	<td>"+copy.due_dt+"</td>\n";
 					} else {
-						var dt_parts = copy.status_dt.split(' ');
+                        var dt_parts = [];
+                        if (copy.status_dt) {
+						  dt_parts = copy.status_dt.split(' ');
+                        } else {
+                          dt_parts[0] = '';
+                        }
 						html += "<td>"+dt_parts[0]+"</td>";
 						html += "<td>- - - - - - - -</td>";
 					}

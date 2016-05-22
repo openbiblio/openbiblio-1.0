@@ -30,12 +30,12 @@
     	$libName  = Settings::get('library_name');
     	if(empty($_SESSION['current_site'])) {
     		if(isset($_COOKIE['OpenBiblioSiteID'])) {
-			$site = new Sites;
-			$exists_in_db = $site->maybeGetOne($_COOKIE['OpenBiblioSiteID']);
-			if ($exists_in_db['siteid'] != $_COOKIE['OpenBiblioSiteID']) {
-    				$_COOKIE['OpenBiblioSiteID'] = 1;
-			}
-    			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID']; 
+    			$site = new Sites;
+    			$exists_in_db = $site->maybeGetOne($_COOKIE['OpenBiblioSiteID']);
+    			if ($exists_in_db['siteid'] != $_COOKIE['OpenBiblioSiteID']) {
+                    $_COOKIE['OpenBiblioSiteID'] = 1;
+    			}
+        			$_SESSION['current_site'] = $_COOKIE['OpenBiblioSiteID'];
     		} elseif($_SESSION['multi_site_func'] > 0){
     			$_SESSION['current_site'] = $_SESSION['multi_site_func'];
     		} else {
@@ -46,9 +46,9 @@
     	if($_SESSION['multi_site_func'] > 0){
     		$sit = new Sites;
     		$lib = $sit->maybeGetOne($_SESSION['current_site']);
-		if ($lib['siteid'] != $_SESSION['current_site']) {
+		    if ($lib['siteid'] != $_SESSION['current_site']) {
     			$lib = $sit->getOne(1);
-		}
+		    }
     		$libName = $lib[name];
     	}
 
@@ -77,7 +77,7 @@
   <!-- *********************************************************************** -->
   <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
   <!-- this is considered to be temporary until the use of prefixes ends -->
-  <script src="../shared/prefixfree.min.js"></script> <!-- review yearly -->
+  <!--script src="../shared/prefixfree.min.js"></script> <!-- review yearly -->
   <!-- *********************************************************************** -->
 
   <!-- we place these JS files here because several JS modules loaded in line -->

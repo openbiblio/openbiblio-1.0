@@ -22,12 +22,13 @@ abstract class DBTable extends Queryi {
 		'number'=>'%N',
 	);
 
-	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
-
-	## ------------------------------------------------------------------------ ##
 	public function __construct() {
 		parent::__construct();
 	}
+
+	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
+
+	## ------------------------------------------------------------------------ ##
 	protected function setFields($fields) {
 		$this->fields = $fields;
 		# FIXME - Check that field types are valid.
@@ -70,32 +71,39 @@ abstract class DBTable extends Queryi {
 		$key = func_get_args();
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_keyTerms($key);
+        //echo "in DBTable::maybeGetOne(): ";echo "$sql";echo "<br /> \n";
 		$row = $this->select01($sql);
 		return $row;
 	}
 	public function getOne() {
 		$key = func_get_args();
 		$row = call_user_func_array(array($this, 'maybeGetOne'), $key);
-		if (!$row) {
-			Fatal::internalError(T("Bad key (%key%) for %name% table", array('key'=>implode(', ', $key), 'name'=>$this->name)));
-			echo "sql=$sql<br />\n";
+		if (is_null($row)) {
+			//Fatal::internalError(T("Bad key (%key%) for %name% table", array('key'=>implode(', ', $key), 'name'=>$this->name)));
+            //echo "Fatal::internalError";echo "Bad key ";print_r($key);echo" for table $this->name";
+			//echo "sql=$sql<br />\n";
 		}
 		return $row;
 	}
-	public function getAll($orderby=NULL) {
+	public function getAll($orderby = NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
-		if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
-		if ($this->iter) {
-			$c = $this->iter;	# Silly PHP
-			return new $c($this->select($sql));
-		} else
-			return $this->select($sql);
+		//if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
+		if (!empty($orderby)) $sql .= "ORDER BY $orderby";
+        //echo "in DBTable::getAll(): $sql <br />\n";
+
+        //		if ($this->iter) {
+        //			$c = $this->iter;	# Silly PHP
+        //			return new $c($this->select($sql));
+        //		} else
+		return $this->select($sql);
 	}
 	public function getMatches($fields, $orderby=NULL) {
+        //print_r($fields);echo "<br />\n";
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
 		if ($orderby)
 			$sql .= $this->mkSQL(' ORDER BY %I ', $orderby);
+        //echo "$sql <br />\n";
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->select($sql));
@@ -108,9 +116,9 @@ abstract class DBTable extends Queryi {
 			if (!isset($rec[$k['key']]) or $rec[$k['key']] == NULL) {
 				continue;
 			}
-			$sql = $this->mkSQL('SELECT * FROM %I '
-				. 'WHERE %I='.$this->types[$this->fields[$k['key']]],
-				$k['table'], $k['field'], $rec[$k['key']]);
+			$sql = $this->mkSQL('SELECT * FROM %I '.
+				  'WHERE %I='.$this->types[$this->fields[$k['key']]],
+				  $k['table'], $k['field'], $rec[$k['key']]);
 			$r = $this->select01($sql);
 			if (!$r) {
 				$errors[] = new FieldError($k['key'], T("DBTableBadForeignKey", array('key'=>$rec[$k['key']], 'field'=>$k['key'])));
@@ -231,12 +239,20 @@ abstract class DBTable extends Queryi {
 		return implode(' AND ', $terms);
 	}
 	private function _pairs($rec, $separator=', ') {
+//echo "in pairs,";print_r($rec);echo ".:.:."; print_r($separator); echo "<br />\n";
 		$vals = array();
 		foreach ($this->fields as $name => $type) {
+//echo "name=$name; type=$type; rec[$name]=$rec[$name] <br/>\n";
 			if (isset($rec[$name])) {
-				$vals[] = $this->mkSQL('%I='.$this->types[$type], $name, $rec[$name]);
+//echo "type ".$this->types[$type]." <br /> \n";
+				 //$s = $this->mkSQL('%I='.$this->types[$type], $name, $rec[$name]);
+				 //$s = $this->mkSQL("%I=".$this->types[$type], $name, $rec[$name]);
+                 $s = "`$name` = '".$rec[$name]."'";
+//echo "mkSql string: $s <br />\n";
+                 $vals[] = $s;
 			}
 		}
+//print_r($vals);
 		return implode($separator, $vals);
 	}
 }
