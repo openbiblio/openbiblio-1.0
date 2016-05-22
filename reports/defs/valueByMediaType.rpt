@@ -21,6 +21,6 @@ WHERE (bc.bibid = b.bibid)
 	AND (bcf.copyid = bc.copyId) AND (bcf.code = 'pr') and IFNULL(bcf.data,0) 
 	AND (cd.code = b.collection_cd)
 	AND (mtd.code = b.material_cd)
-	GROUP BY cd.description, mtd.description
+	GROUP BY cd.description, mtd.description, mtd.code
 ;
 .end sql
