@@ -8,7 +8,7 @@ class Search {
 		return array('title'=>$title, 'within'=>$within, 'fields'=>$fields,
 			'method'=>$method, 'operator'=>$operator, 'where'=>$where);
 	}
-	function getParamDefs($types) {
+	static function getParamDefs($types) {
 		$l = array();
 		foreach ($types as $n=>$t) {
 			$l[] = array($n, array('title'=>$t['title']));
@@ -24,7 +24,7 @@ class Search {
 			)),
 		);
 	}
-	function getTerms($types, $terms) {
+	static function getTerms($types, $terms) {
 		$ret = array();
 		foreach ($terms as $t) {
 			assert('$t[0] == "group"');
@@ -58,7 +58,7 @@ class Search {
 		return $ret;
 	}
 	// for sorting strings longest to shortest
-	function lencmp($a, $b) {
+	static function lencmp($a, $b) {
 		$ac = count($a);
 		$bc = count($b);
 		if ($ac == $bc) {
@@ -66,7 +66,7 @@ class Search {
 		}
 		return $ac > bc ? -1 : +1;
 	}
-	function explodeQuoted($str) {
+	static function explodeQuoted($str) {
 		$elements=array();
 		$s = "";
 		$q = false;
