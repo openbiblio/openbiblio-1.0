@@ -30,7 +30,7 @@ class Layout_packing_slip {
 								'margin-right'=>'0.25in', 'margin-top'=>'0.25in',
 								'margin-bottom'=>'0.25in', 'height'=>'2.75in',
 							));
-								$lay->pushFont('Times-Bold', 10);
+								$lay->pushFont('Times', 'B', 10);
 									if ($row['pieces'] > 1) {
 										$lay->container('Line');
 											$lay->container('TextLine', array('x-align'=>'left'));
@@ -47,7 +47,7 @@ class Layout_packing_slip {
 									}
 								$lay->popFont();
 								$lay->element('Spacer', array('height'=>9));
-								$lay->pushFont('Times-Roman', 12);
+								$lay->pushFont('Times', '', 12);
 									$lay->container('TextLine');
 										$lay->text('To: '.strtoupper($row['members'][0]['site_name']));
 									$lay->close();
@@ -79,7 +79,7 @@ class Layout_packing_slip {
 											$lay->close();
 											$lay->container('TextLine', array('x-align'=>'right'));
 												$lay->text('Return By: ');
-												$lay->pushFont('Times-Bold', 12);
+												$lay->pushFont('Times', 'B', 12);
 													$lay->text($row['due_dt']);
 												$lay->popFont();
 											$lay->close();

@@ -36,7 +36,7 @@ class Layout_barcode_dwl1784 {
 							'y-align'=>'center',
 						));
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Bold', 10);
+								$lay->pushFont('Times', 'B', 10);
 									if (strlen($row['library_name']) > 35) {
 										$row['library_name'] = substr($row['library_name'], 0, 35)."...";
 									}
@@ -44,7 +44,7 @@ class Layout_barcode_dwl1784 {
 								$lay->popFont();
 							$lay->close();	
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 9);
+								$lay->pushFont('Times', '', 9);
 									if (strlen($row['title']) > 38) {
 										$row['title'] = substr($row['title'], 0, 38)."...";
 									}
@@ -52,7 +52,7 @@ class Layout_barcode_dwl1784 {
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 8);
+								$lay->pushFont('Times', '', 8);
 									if (strlen($row['author']) > 40) {
 										$row['author'] = substr($row['author'], 0, 40)."...";
 									}
@@ -60,17 +60,17 @@ class Layout_barcode_dwl1784 {
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Code39JK', 30);
+								$lay->pushFont('Code39JK', '', 30);
 									$lay->text('*'.strtoupper($row['barcode_nmbr']).'*');
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Courier', 12);
+								$lay->pushFont('Courier', '', 12);
 									$lay->text(strtoupper($row['barcode_nmbr']));
 								$lay->popFont();
 							$lay->close();
 							$lay->container('TextLine', array('x-align'=>'center'));
-								$lay->pushFont('Times-Roman', 8);
+								$lay->pushFont('Times', '',  8);
 									$site = "Lib.: " . $row['site_code'];
 									$class = "Class: " . $row['callno'];
 									$lay->text(str_pad($site , 40 - strlen($class), ".") . $class);

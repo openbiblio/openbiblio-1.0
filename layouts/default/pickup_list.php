@@ -25,19 +25,19 @@ class Layout_pickup_list {
 							));
 						}
 						$oldsite = $row['siteid'];
-						$lay->pushFont('Times-Bold', 16);
+						$lay->pushFont('Times', 'B', 16);
 							$lay->container('TextLine', array('x-align'=>'center'));
 								$lay->text('Pickup List - '.date('m/d/y'));
 							$lay->close();
 						$lay->popFont();
 						$lay->element('Spacer', array('height'=>9));
-						$lay->pushFont('Times-Bold', 12);
+						$lay->pushFont('Times', 'B', 12);
 							$lay->container('TextLine');
 								$lay->text($row['site_name']);
 							$lay->close();
 						$lay->popFont();
 						$lay->element('Spacer', array('height'=>9));
-						$lay->pushFont('Times-Italic', 12);
+						$lay->pushFont('Times', 'I', 12);
 							$lay->container('Line');
 								$lay->container('TextLine', array('width'=>'1.75in'));
 									$lay->text('Member');

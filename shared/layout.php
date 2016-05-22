@@ -104,6 +104,3 @@
 </fieldset>
 </form>
 
-<?php
-
-	 ;

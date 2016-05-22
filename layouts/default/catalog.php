@@ -31,7 +31,7 @@ class Layout_catalog {
 		));
 		list( , $title) = $this->p->getFirst('title');
 		if ($title) {
-			$lay->pushFont('Times-Bold', 16);
+			$lay->pushFont('Times', 'B', 16);
 				$lay->container('TextLine', array(
 					'margin-bottom'=>'0.125in',
 					'underline'=>true,
@@ -70,12 +70,12 @@ class Layout_catalog {
 
 			$lay->container('Columns');
 				$lay->container('Column');
-					$lay->pushFont('Times-Bold', 14);
+					$lay->pushFont('Times', 'B', 14);
 						$lay->container('TextLines');
 							$lay->text($rec['title']);
 						$lay->close();
 					$lay->popFont();
-					$lay->pushFont('Times-Bold', 10);
+					$lay->pushFont('Times', 'B', 10);
 						foreach (array(array('type', 'callno', 'audience'), array('', 'length', 'year')) as $a) {
 							$lay->container('Line', array('x-align'=>'strict-justify'));
 								foreach ($a as $f) {
@@ -94,7 +94,7 @@ class Layout_catalog {
 					array('contents', 'Contents'),
 					array('subjects', 'Subjects'),
 				);
-				$lay->pushFont('Times-Roman', 10);
+				$lay->pushFont('Times', '', 10);
 					foreach ($whole_lines as $l) {
 						if (!$rec[$l[0]]) {
 							continue;
@@ -104,7 +104,7 @@ class Layout_catalog {
 							foreach (explode("\n", $rec[$l[0]]) as $line) {
 								$lay->container('TextLines', array('x-align'=>'justify'));
 									if ($first) {
-										$lay->pushFont('Times-Bold', 10);
+										$lay->pushFont('Times', 'B', 10);
 											$lay->text($l[1].':');
 										$lay->popFont();
 										$first = 0;

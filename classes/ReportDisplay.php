@@ -49,11 +49,13 @@ class ReportDisplay {
 			if (isset($col['hidden']) and $col['hidden']) {
 				continue;
 			}
+/*
 			if ($col['func'] and in_array($col['func'], get_class_methods('ReportDisplayFuncs'))) {
 				$r[] = ReportDisplayFuncs::$col['func']($col, $row, $this->rpt);
 			} else {
+*/
 				$r[] = $row[$col['name']];
-			}
+			//}
 		}
 		return $r;
 	}

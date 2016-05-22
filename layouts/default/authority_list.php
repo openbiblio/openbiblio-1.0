@@ -23,7 +23,7 @@ class Layout_authority_list {
 			));
 				list( , $title) = $this->p->getFirst('title');
 				if ($title) {
-					$lay->pushFont('Times-Bold', 16);
+					$lay->pushFont('Times', 'B', 16);
 						$lay->container('TextLine', array(
 							'margin-bottom'=>'0.125in',
 							'underline'=>true,
@@ -33,7 +33,7 @@ class Layout_authority_list {
 						$lay->close();
 					$lay->popFont();
 				}
-				$lay->pushFont('Times-Italic', 12);
+				$lay->pushFont('Times', 'I', 12);
 					$lay->container('Line');
 						$lay->container('TextLine', array('width'=>'1in', 'underline'=>1));
 							$lay->text('Items');

@@ -12,7 +12,7 @@ class Layout_checkout_history {
 				'margin-left'=>'0.5in', 'margin-right'=>'0.5in',
 				'margin-top'=>'0.5in', 'margin-bottom'=>'0.5in',
 			));
-				$lay->pushFont('Times-Bold', 16);
+				$lay->pushFont('Times', 'B', 16);
 					$lay->container('TextLine', array('x-align'=>'center'));
 						$lay->text('Checkout History - '.date('m/d/y'));
 					$lay->close();

@@ -23,7 +23,7 @@ class Layout_site_bookings {
 						$oldsite = $row['siteid'];
 						$lay->container('Paragraph');
 							$lay->container('Column');
-								$lay->pushFont('Times-Bold', 14);
+								$lay->pushFont('Times', 'B', 14);
 									$lay->container('TextLine');
 										$lay->text($row['site_name']);
 									$lay->close();

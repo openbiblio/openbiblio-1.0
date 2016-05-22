@@ -247,7 +247,7 @@ class Report {
 			$this->iter = new NumberedIter($this->rpt->select($this->params));
 		}
 	}
-	private function row($num) {
+	public function row($num) {
 		if (isset($this->cache['rows'][$num])) {
 			return $this->cache['rows'][$num];
 		}

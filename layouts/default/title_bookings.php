@@ -23,7 +23,7 @@ class Layout_title_bookings {
 										$lay->container('TextLine', array('width'=>'1in'));
 											$lay->text($total);
 										$lay->close();
-										$lay->pushFont('Times-Bold', 12);
+										$lay->pushFont('Times', 'B', 12);
 											$lay->container('TextLine');
 												$lay->text('TOTAL');
 											$lay->close();
@@ -35,17 +35,17 @@ class Layout_title_bookings {
 								$total = 0;
 							}
 							$oldbib = $row['bibid'];
-							$lay->pushFont('Times-Bold', 14);
+							$lay->pushFont('Times', 'B', 14);
 								$lay->container('TextLine');
 									$lay->text($row['title']);
 								$lay->close();
 							$lay->popFont();
-							$lay->pushFont('Times-Bold', 10);
+							$lay->pushFont('Times', 'B', 10);
 								$lay->container('TextLine');
 									$lay->text($row['item_num']);
 								$lay->close();
 							$lay->popFont();
-							$lay->pushFont('Times-Italic', 12);
+							$lay->pushFont('Times', 'I', 12);
 								$lay->container('Line', array('margin-left'=>'0.5in'));
 									$lay->container('TextLine', array('width'=>'1in', 'underline'=>1));
 										$lay->text('Usage');

@@ -25,13 +25,13 @@ class Layout_nondelivery {
 							));
 						}
 						$oldmbr = $row['mbrid'];
-						$lay->pushFont('Times-Bold', 16);
+						$lay->pushFont('Times', 'B', 16);
 							$lay->container('TextLine', array('x-align'=>'center'));
 								$lay->text('Non-Delivery Notice - '.date('m/d/y'));
 							$lay->close();
 						$lay->popFont();
 						$lay->element('Spacer', array('height'=>9));
-						$lay->pushFont('Times-Bold', 12);
+						$lay->pushFont('Times', 'B', 12);
 							$lay->container('TextLine');
 								$lay->text($row['member']);
 							$lay->close();
@@ -48,7 +48,7 @@ class Layout_nondelivery {
 							$lay->close();
 						$lay->close();
 						$lay->element('Spacer', array('height'=>9));
-						$lay->pushFont('Times-Italic', 12);
+						$lay->pushFont('Times', 'I', 12);
 							$lay->container('Line');
 								$lay->container('TextLine', array('width'=>'1in', 'underline'=>1));
 									$lay->text('Call Num.');

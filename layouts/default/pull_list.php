@@ -15,18 +15,18 @@ class Layout_pull_list {
 				'margin-left'=>'0.5in', 'margin-right'=>'0.5in',
 				'margin-top'=>'0.5in', 'margin-bottom'=>'0.5in',
 			));
-				$lay->pushFont('Times-Bold', 16);
+				$lay->pushFont('Times', 'B', 16);
 					$lay->container('TextLine', array('x-align'=>'center'));
 						$lay->text('Instructional Media Center');
 					$lay->close();
 				$lay->popFont();
-				$lay->pushFont('Times-Roman', 12);
+				$lay->pushFont('Times', 'B', 12);
 					$lay->container('TextLine', array('x-align'=>'center'));
 						$lay->text('Pull List - '.date('m/d/y'));
 					$lay->close();
 				$lay->popFont();
 				$lay->element('Spacer', array('height'=>9));
-				$lay->pushFont('Times-Italic', 14);
+				$lay->pushFont('Times', 'I', 14);
 					$lay->container('Line');
 						$lay->container('TextLine', array('width'=>'1in'));
 							$lay->text('Item');
