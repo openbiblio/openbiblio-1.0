@@ -5,7 +5,7 @@
 
 class Date {
 	// Dates are represented internally as 'YYYY-mm-dd'
-	function read_e($datestr, $ref=NULL) {
+	static function read_e($datestr, $ref=NULL) {
 		$gotit = false;
 		if (preg_match('{^([0-9][0-9][0-9][0-9])-([0-9]+)-([0-9]+)$}', $datestr, $m)) {
 			# Canonical (ISO 8601)
