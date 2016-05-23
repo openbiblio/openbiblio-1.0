@@ -17,6 +17,7 @@ class Queryi extends mysqli
     //private $dsn = array();
 
 	public function __construct() {
+        //echo "in Queryi::__construct() <br />\n";
 		$this->lockDepth = 0;
         $this->dbConst = $dbConst;
         $this->setDSN();
@@ -28,17 +29,20 @@ class Queryi extends mysqli
         } else {
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"], $this->dsn["database"]); // connect to db server - fl
         }
+        //echo "in Queryi::__construct(), back from Mysqli <br />\n";
 
         if (mysqli_connect_error()) {
             echo mysqli_connect_error()."<br>\n";
             return t("error: cannot connect to database server");
         } else {
+            //echo "no erors <br />\n";
             return "success, version# $mysqli->server_version";
         }
         	$this->set_encoding();
     }
 
     private function setDSN () {
+        //echo "in Queryi::setDSN() <br />\n";
         // construct array of database access values for common use
         $fn = '../database_constants.php';
         if (file_exists($fn) ) {

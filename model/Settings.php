@@ -19,13 +19,16 @@ class Settings extends Queryi
 
 	static public function load() {
 		global $_settings_cache, $_settings_validators;
+        //echo "in Settings::load() <br />\n";
 		$db = new Queryi;
+        //echo "in Settings::load(), back from new Queryi <br />\n";
 		$r = $db->select('SELECT * FROM settings');
         //echo "in Settings::load()";print_r($r);echo "<br /> \n";
 		while ($s = $r->fetch_assoc()) {
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validator']);
 		}
+        //echo "in Settings::load(), at end <br />\n";
 	}
 	static public function get($name) {
 		global $_settings_cache;

@@ -37,7 +37,7 @@
 					</fieldset>
 					<input type="button" id="capture" name="capture" value="<?php echo T("Take Photograph"); ?>" />
 					<input type="file" id="browse" name="browse" accept="image/png image/jpg" />
-          <br />
+                    <br />
 					<label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
 					<p id="fotoFolder">../photos/<span class="italic"><?php echo T("filename"); ?></span>.jpg</p>
 					<br />

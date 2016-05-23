@@ -644,7 +644,7 @@ var bs = {
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
 		//$('#updtFotoBtn').show(); //not yet available
-    $('#fotoMsg').hide();
+        $('#fotoMsg').hide();
 		$('#fotoMode').val('updatePhoto')
 		$('#fotoSrce').attr({'required':false, 'aria-required':false});
 		bs.showPhotoForm();
@@ -657,7 +657,7 @@ var bs = {
 		$('#deltFotoBtn').hide();
 		//$('#updtFotoBtn').hide(); // not yet available
 		$('#addFotoBtn').show();
-    $('#fotoMsg').hide();
+        $('#fotoMsg').hide();
 		$('#fotoMode').val('addNewPhoto')
 		$('#fotoSrce').attr({'required':true, 'aria-required':true});
 		bs.showPhotoForm();
