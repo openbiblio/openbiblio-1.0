@@ -35,6 +35,30 @@
             echo "success";
         break;
 
+/*  hints for future development - FL May 2016
+$host="localhost";
+
+$root="root";
+$root_password="rootpass";
+
+$user='newuser';
+$pass='newpass';
+$db="newdb";
+
+    try {
+        $dbh = new PDO("mysql:host=$host", $root, $root_password);
+
+        $dbh->exec("CREATE DATABASE `$db`;
+                CREATE USER '$user'@'localhost' IDENTIFIED BY '$pass';
+                GRANT ALL ON `$db`.* TO '$user'@'localhost';
+                FLUSH PRIVILEGES;")
+        or die(print_r($dbh->errorInfo(), true));
+
+    } catch (PDOException $e) {
+        die("DB ERROR: ". $e->getMessage());
+    }
+*/
+
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
             echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";

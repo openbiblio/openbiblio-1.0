@@ -164,7 +164,7 @@
 		break;
 		
 	case 'getCopyInfo':
-	  $bib = new Biblio($_GET['bibid']);
+	    $bib = new Biblio($_GET['bibid']);
 		$bibData = $bib->getData();
 		$cpyList = $bibData['cpys'];
 		foreach ($cpyList as $cid) {
@@ -175,9 +175,39 @@
 		echo json_encode($cpys);
 	  break;
 
+	case 'getStatusCds':
+//		$theDb = new CopyStatus;
+//      $cdData = $theDb->getStatusCds();
+
+        try {
+            $db = new PDO("mysql:host=localhost;dbname=openbibliowork", 'root','shhh');
+        } catch (PDOException $e) {
+            echo "Error: PDO DB connection failed";
+            exit;
+        }
+        $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+        $sql = "SELECT * FROM `biblio_status_dm` ORDER BY description";
+        try {
+            $rslt = $db->query($sql);
+            //echo "$sql <br />\n";
+        } catch (PDOException $e) {
+            print_r($e);
+            exit;
+        }
+
+        //print_r($rslt);
+        $rslt->setFetchMode(PDO::FETCH_ASSOC);
+        while ($row = $rslt->fetch()) {
+            //print_r($row);
+            $cdData[] = $row;
+        }
+		echo json_encode($cdData);
+		break;
+
 	case 'updateBiblio':
 		## fetch biblio object with current DB data
-	  $bib = new Biblio($_POST['bibid']);
+	    $bib = new Biblio($_POST['bibid']);
 		## overwrite header with screen content
 		$hdr['bibid'] = $_POST['bibid'];
 		$hdr['material_cd'] = $_POST['materialCd'];
@@ -193,8 +223,8 @@
 		if(isset($msg)) die ($msg);
 		## tell biblio object to post itself to DB
 		$msg = $bib->updateDB();
-	  echo $msg;
-	  break;
+	    echo $msg;
+	    break;
 
 	case 'deleteBiblio':
 	  $bibs = new Biblios;

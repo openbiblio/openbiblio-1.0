@@ -88,14 +88,13 @@ abstract class DBTable extends Queryi {
 	public function getAll($orderby = NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
 		//if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
-		if (!empty($orderby)) $sql .= "ORDER BY $orderby";
-        //echo "in DBTable::getAll(): $sql <br />\n";
-
-        //		if ($this->iter) {
-        //			$c = $this->iter;	# Silly PHP
-        //			return new $c($this->select($sql));
-        //		} else
-		return $this->select($sql);
+		if (!empty($orderby)) {$sql .= "ORDER BY $orderby";}
+        $recs = $this->select($sql);
+//if ($this->name == 'biblio_status_dm') {
+//    echo  "$sql <br /> \n";
+//    print_r($recs);echo  "<br /> \n";
+//}
+		return $recs;
 	}
 	public function getMatches($fields, $orderby=NULL) {
         //print_r($fields);echo "<br />\n";
