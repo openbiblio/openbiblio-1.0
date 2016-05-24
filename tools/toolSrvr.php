@@ -10,18 +10,18 @@
 	switch ($_REQUEST['cat']) {
 		case 'validation':
 			require_once(REL(__FILE__, "../model/Validations.php"));
-	  	$db = new Validations;
+	  	    $db = new Validations;
 			break;
 
 		case 'locale':
 			require_once(REL(__FILE__, "../classes/Queryi.php"));
 			require_once(REL(__FILE__, "../classes/Localize.php"));
-	  	$db = new Queryi;
+	  	    $db = new Queryi;
 			break;
 
 		case 'database':
 			require_once(REL(__FILE__, "../classes/Queryi.php"));
-	  	$db = new Queryi;
+	  	    $db = new Queryi;
 			break;
 
 		default:

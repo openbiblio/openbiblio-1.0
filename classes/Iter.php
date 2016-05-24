@@ -5,8 +5,10 @@
 
 /**
  * Classes on this page should probably be re-done as Interfaces to Iterator
- * note: may no longer be needed with added ability of PHP's mysqli API - FL
  * @author Micah Stetson
+ *
+ * note: may no longer be needed with added ability of PHP's mysqli API - FL
+ * issue really in doubt with PHP features plus use of PDO. - FL May 2016
  */
 
 class Iter {

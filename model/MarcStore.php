@@ -66,7 +66,7 @@ class MarcStore extends Queryi{
 		return $rec;
 	}
 	/**
-	 * retreive a mysqli result set of all MARC records of a biblio
+	 * retreive a result set of all MARC records of a biblio
 	 */
 	public function fetchMarcFlds ($bibid) {
 		$sql = $this->mkSQL("select * "

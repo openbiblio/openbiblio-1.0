@@ -89,7 +89,8 @@ class InstallQuery extends Queryi
       echo T("success, Database created");
       //$this->setGrants($dbName, $dbUser); // must be done by db admin person when user created.
     } else {
-      return T("Error: Unable to create database").': '.$mysqli->connect_error;
+      //return T("Error: Unable to create database").': '.$mysqli->connect_error;
+      return T("Error: Unable to create database");
     }
   }
 
