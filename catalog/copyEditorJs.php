@@ -18,6 +18,8 @@ var ced = {
 		$('#copySubmitBtn').on('click',null,ced.doCopyUpdate);
 		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 
+        ced.getStatusCds();
+
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
 		}
@@ -53,7 +55,20 @@ var ced = {
 														.attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
 		});
 	},
-
+	getStatusCds: function () {
+		$.getJSON(ced.url,{'mode':'getStatusCds'}, function(jsonInpt){
+            var opts = '';
+    	  	$.each(jsonInpt, function (n, opt) {
+                var s = '<option value="' +opt['code']+ '"';
+                if (opt['default_flg'] == 'Y') {
+                    s += ' SELECTED';
+                };
+                s += '>' +opt['description']+ '</option>';
+                opts += s;
+            });
+            $('#status_cd').html(opts);
+        });
+	},
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
@@ -64,16 +79,16 @@ var ced = {
 			currCopyId = bs.crntCopy.copyid;
 		}
 
-	  $.get(ced.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
-	  	if(response.length > 0){
-			$('#copySubmitBtn').disable(); //.css('color', '#888888');
-			$('#editRsltMsg').html(response).show();
-		} else {
-			$('#copySubmitBtn').enable(); //.css('color', bs.srchBtnClr);
-			$('#editRsltMsg').html(response).show();
-		}
+        $.get(ced.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
+            if(response.length > 0){
+            	$('#copySubmitBtn').disable(); //.css('color', '#888888');
+            	$('#editRsltMsg').html(response).show();
+            } else {
+            	$('#copySubmitBtn').enable(); //.css('color', bs.srchBtnClr);
+            	$('#editRsltMsg').html(response).show();
+            }
 		})
-	},
+    },
 	/* ====================================== */
 	doCopyEdit: function (e) {
 		e.preventDefault();
@@ -92,6 +107,7 @@ var ced = {
 		$('#copyTbl #status_cd').val(crntCopy.status);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
 
+        ced.getStatusCds();
 
 		// custom fields
 		var fldData = crntCopy.custom;

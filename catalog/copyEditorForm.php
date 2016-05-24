@@ -45,12 +45,13 @@
 			<tr>
 				<td><label for="status_cd"><?php echo T("Status");?>:</label></td>
 				<td>
-					</select>
-					<?php
-						$states = new CopyStatus($dbconst);
-						$state_select = $states->getSelect();
-						echo inputfield(select, status_cd, "in", null, $state_select);
-					?>
+					<!--?php
+						$status = new CopyStatus();
+						$status_select = $status->getSelect();
+						echo inputfield(select, status_cd, "in", null, $status_select);
+					?-->
+                    <select id="status_cd">
+					<select>
 				</td>
 			</tr>
 		</tbody>

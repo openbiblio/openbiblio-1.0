@@ -14,7 +14,6 @@ require_once("../shared/common.php");
 class Queryi extends mysqli
 {
 	private $lock_depth;
-    //private $dsn = array();
 
 	public function __construct() {
 		$this->lockDepth = 0;
@@ -22,7 +21,6 @@ class Queryi extends mysqli
         $this->setDSN();
         $this->dsn["mode"] == 'haveconst';
 
-        //echo "in queryi construct(): host=".$this->dsn["host"]."; user=".$this->dsn["username"]."; pw=".$this->dsn["pwd"]."; db=".$this->dsn["database"]."<br />\n";
         if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
         } else {
@@ -39,10 +37,8 @@ class Queryi extends mysqli
     }
 
     private function setDSN () {
-        // construct array of database access values for common use
         $fn = '../database_constants.php';
         if (file_exists($fn) ) {
-            //echo "ini file(): $fn exists <br />\n";
             include($fn); // DO NOT change to 'include_once()' !!!!!
         } else {
             $this->dsn['host'] = 'localhost';
@@ -51,7 +47,6 @@ class Queryi extends mysqli
             $this->dsn['database'] = 'xxxopenbiblioxxx';
             $this->dsn['mode'] = 'nodb';
         }
-        //echo "in Queryi::setDSN(): ";print_r($this->dsn);echo "<br />\n";
     }
 	public function act($sql) {
 		//$this->lock();
@@ -60,13 +55,9 @@ class Queryi extends mysqli
 		return $results;
 	}
 	public function select($sql) {
-        $this->setDSN();
-        //echo "in Queryi::select(): ";print_r($this->dsn);echo "<br />\n";
-        //echo "in queryi::select(): $sql <br />\n";
 		$results = $this->_act($sql);
-		if ($results == 0) {
+		if (!isset($results)) {
 			return T("NothingFoundError");
-			//echo "sql=$sql<br />\n";
 		}
 		return $results;
 	}
@@ -74,7 +65,7 @@ class Queryi extends mysqli
 		$r = $this->select($sql);
 		if ($r->num_rows != 1) {
 		  return T("NothingFoundError");
-			//echo "sql=$sql<br />\n";
+		  //echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
@@ -85,7 +76,6 @@ class Queryi extends mysqli
 			return NULL;
 		} else if ($r->num_rows != 1) {
 			return T("Wrong Number Rows Found");
-			//echo "sql=$sql<br />\n";
 		} else {
 			return $r->fetch_assoc();
 		}
@@ -108,10 +98,7 @@ class Queryi extends mysqli
         }
 	}
 	private function _act($sql) {
-        //echo "in queryi::_act(): $sql <br />\n";
-        //echo "in Queryi::_act(): ";print_r($this->dsn);echo "<br />\n";
 		$r =  parent::query($sql);
-        //echo "in queryi::_act(): ";print_r($r);echo "<br />\n";
 		if ($r === false) {
 			return 'Error: '.T("Database query failed");
 		}
