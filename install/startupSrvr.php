@@ -23,14 +23,20 @@
                 '$this->dsn["mode"] = '      .       'haveConst'          ."; \n"
             ;
 
-            if (!chmod($path, 0777)) {
-                echo "Error: Unable to set write permission on folder '".$path."'";
-            exit;
-            }
             if (false === file_put_contents($fn, $content)) {
-                echo 'Error: The file is NOT writable.'."\n";
-                echo "Please chmod 777 the folder holding '".$fn."'";
-                exit;
+                echo 'The file is NOT writable -- attempting chmod'."\n";
+		try {
+		    chmod($path, 0777);
+		}
+		catch (Exception $e) {
+                    echo "Error: Unable to set write permission on folder '".$path."'";
+                    echo "Please chmod 777 the folder holding '".$fn."'";
+                    exit;
+		}
+                if (false === file_put_contents($fn, $content)) {
+                    echo 'The database constants file could not be written.  Please create' .
+			'it manually using the database_constants_deploy.php file as a model.';
+		}
             }
             echo "success";
         break;
