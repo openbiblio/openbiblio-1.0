@@ -83,14 +83,29 @@
                 <input id="dbName" type="text" placeholder="missing" required /><br />
                 <p class="note">Note: Above user name & password must be valid for this database server</P>
                 <br />
-        		<input id="constBtn" type="submit" value="Update" />
+        		<input id="constBtn" type="submit" value="Submit" />
               </form>
+            </section>
+
+            <section id="createDB">
+              <p class="bold">Enter Database Engine Access Data</p><br /></P>
+              <p class="note">Note: These items will NOT be stored.</P>
+              <form id="dbCreateForm">
+                <label for="adminNm">Admin User: </label>
+                <input id="adminNm" type="text" placeholder="missing" required /><br />
+                <label for="adminPw">Admin Password: </label>
+                <input id="adminPw" type="password" placeholder="missing" required /><br />
+                <p class="note">Press button to create new Database</p><br /></p>
+                <br />
+        		<input id="newDbBtn" type="button" value="Create Database" />
+        		<input id="skipBtn" type="button" value="Skip This Step" />
             </section>
 
             <section id="continue">
               <p class="bold">Press button to continue with installation</p><br /></p>
                 <br />
-        		<input id="contBtn" type="button" value="Update" />
+        		<input id="contBtn" type="submit" value="Continue" />
+        		<input id="restartBtn" type="button" value="Try Again" />
             </section>
         </fieldset>
     </div>
