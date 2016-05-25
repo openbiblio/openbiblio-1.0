@@ -62,7 +62,8 @@
                     //or die(print_r($dbh->errorInfo(), true));
                     //FLUSH PRIVILEGES;");
             } catch (PDOException $e) {
-                die("Error: ". $e->getMessage());
+                return ("Error: ". $e->getMessage());
+                exit;
             }
             echo "success";
         break;

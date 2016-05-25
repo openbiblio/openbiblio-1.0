@@ -17,11 +17,30 @@ class Queryi extends mysqli
 
 	public function __construct() {
 		$this->lockDepth = 0;
-        $this->dbConst = $dbConst;
-        $this->setDSN();
+        $this->getDSN();
         $this->dsn["mode"] == 'haveconst';
+/*
+        try {
+            $dbh = new PDO("mysql:host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database'],
+                                 $this->dsn['username'], $this->dsn['pwd']);
+        } catch (PDOException $e) {
+            echo "Error: Sttempted connection to DB failed".' ('.$this->dsn['database'].') '."<br />\n". $e->getMessage() ."<br />\n";
+            print_r($this->dsn); echo "<br />\n";
+            exit;
+        }
+        echo "connection successful!";
 
-        if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
+        $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+        try {
+            $stmt = $dbh->query('SELECT VERSION()');
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return "success, version# $results";
+        } catch (PDOException $e) {
+            echo "Error: Unable to fetch database version";
+            exit;
+        }
+*/
+       if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
         } else {
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"], $this->dsn["database"]); // connect to db server - fl
@@ -33,10 +52,11 @@ class Queryi extends mysqli
         } else {
             return "success, version# $mysqli->server_version";
         }
-        	$this->set_encoding();
+        $this->set_encoding();
+
     }
 
-    private function setDSN () {
+    private function getDSN () {
         $fn = '../database_constants.php';
         if (file_exists($fn) ) {
             include($fn); // DO NOT change to 'include_once()' !!!!!
