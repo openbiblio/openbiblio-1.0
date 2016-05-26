@@ -50,27 +50,6 @@
 
 	#****************************************************************************
 	switch ($_REQUEST['mode']) {
-	case 'getCrntMbrInfo':
-		require_once(REL(__FILE__, "../functions/info_boxes.php"));
-		echo currentMbrBox();
-	  break;
- 	case 'getMediaDisplayInfo':
-		require_once(REL(__FILE__, "../model/MaterialFields.php"));
-		$theDb = new MaterialFields;
-		$media = $theDb->getDisplayInfo($_GET['howMany']);
-		echo json_encode($media);
-		break;
-	case 'getMediaLineCnt':
-		require_once(REL(__FILE__, "../model/MediaTypes.php"));
-		$theDb =new MediaTypes;
-		$set = $theDb->getAll('code');
-		//while ($row = $set->fetch_assoc()) {
-        foreach ($set as $row) {
-		  $media[$row['code']] = $row['srch_disp_lines'];
-		}
-		echo json_encode($media);
-		break;
-
 	case 'doBibidSearch':
 	  $bib = new Biblio($_REQUEST[bibid]);
 	  echo json_encode($bib->getData());
@@ -82,9 +61,9 @@
 	  if ($copy != NULL) {
 	  	$bib = new Biblio($copy['bibid']);
 	  	echo json_encode($bib->getData());
-		} else {
-			echo '{"data":null}';
-		}
+	  } else {
+        echo '{"data":null}';
+	  }
 	  break;
 
 	case 'doPhraseSearch':
@@ -134,6 +113,27 @@
 		}
 		break;
 		
+	case 'getCrntMbrInfo':
+		require_once(REL(__FILE__, "../functions/info_boxes.php"));
+		echo currentMbrBox();
+	  break;
+ 	case 'getMediaDisplayInfo':
+		require_once(REL(__FILE__, "../model/MaterialFields.php"));
+		$theDb = new MaterialFields;
+		$media = $theDb->getDisplayInfo($_GET['howMany']);
+		echo json_encode($media);
+		break;
+	case 'getMediaLineCnt':
+		require_once(REL(__FILE__, "../model/MediaTypes.php"));
+		$theDb =new MediaTypes;
+		$set = $theDb->getAll('code');
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
+		  $media[$row['code']] = $row['srch_disp_lines'];
+		}
+		echo json_encode($media);
+		break;
+
 	case 'addToCart':
 		require_once(REL(__FILE__, "../model/Cart.php"));
 		$name = $_REQUEST['name'];
@@ -177,29 +177,10 @@
 	  break;
 
 	case 'getStatusCds':
-//		$theDb = new CopyStatus;
-//      $cdData = $theDb->getStatusCds();
-
-        try {
-            $db = new PDO("mysql:host=localhost;dbname=openbibliowork", 'root','shhh');
-        } catch (PDOException $e) {
-            echo "Error: PDO DB connection failed";
-            exit;
-        }
-        $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-        $sql = "SELECT * FROM `biblio_status_dm` ORDER BY description";
-        try {
-            $rslt = $db->query($sql);
-            //echo "$sql <br />\n";
-        } catch (PDOException $e) {
-            print_r($e);
-            exit;
-        }
-
-        //print_r($rslt);
-        $rslt->setFetchMode(PDO::FETCH_ASSOC);
-        while ($row = $rslt->fetch()) {
+        $theDb = new CopyStatus;
+        $rslt = $theDb->getStatusCds();
+        //while ($row = $rslt->fetch()) {
+        foreach ($rslt as $row) {
             //print_r($row);
             $cdData[] = $row;
         }
@@ -228,10 +209,11 @@
 	    break;
 
 	case 'deleteBiblio':
-	  $bibs = new Biblios;
-	  $bibs->deleteOne($_REQUEST['bibid']);
-	  echo T("Delete completed");
-	  break;
+        $bibs = new Biblios;
+        $bibs->deleteOne($_REQUEST['bibid']);
+        echo T("Delete completed");
+        break;
+
 	case 'deleteMultiBiblios':
 		$bibs = new Biblios;
 		foreach ($_POST['bibList'] as $bibid) {
@@ -242,14 +224,14 @@
 
 	//// ====================================////
 	case 'newCopy':
-	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
-			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
-			return;
-		}
-	  $theDb = new Copies;
-		echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
-		break;
+        $copies = new Copies;
+        if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
+        	echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+        	return;
+        }
+        $theDb = new Copies;
+        echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+        break;
 	case 'updateCopy':
 	  $theDb = new Copies;
 	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
@@ -260,12 +242,12 @@
 	  echo json_encode($rslt);
 	  break;
 	case 'deleteCopy':
-	  $theDb = new Copies;
+	    $theDb = new Copies;
 		//echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
 		echo $theDb->deleteCopy($_REQUEST['copyid']);
 		break;
 	case 'deleteMultiCopies':
-	  $theDb = new Copies;
+	    $theDb = new Copies;
 		foreach ($_POST['cpyList'] as $copyid) {
 			echo $theDb->deleteCopy($copyid);
 		}

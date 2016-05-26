@@ -15,9 +15,10 @@
 			## prepare list of Material Types
 			require_once(REL(__FILE__, "../model/MediaTypes.php"));
 			$tptr = new MediaTypes;
-		  $matls = array();
+		    $matls = array();
 			$tSet = $tptr->getAll('code');
-			while ($row = $tSet->fetch_assoc()) {
+			//while ($row = $tSet->fetch_assoc()) {
+            foreach ($tSet as $row) {
 			  $matls[] = $row;
 			}
 			//print_r($matls);
@@ -32,7 +33,8 @@
 			$typeCd = array('material_cd' => $_GET['matlCd']);
 		  $flds = array();
 			$fSet = $fptr->getMatches($typeCd,'position');
-			while ($row = $fSet->fetch_assoc()) {
+			//while ($row = $fSet->fetch_assoc()) {
+            foreach ($fSet as $row) {
 			  $flds[] = $row;
 			}
 			//print_r($hosts);

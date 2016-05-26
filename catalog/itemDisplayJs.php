@@ -65,8 +65,8 @@ var idis = {
 		idis.bibid = idis.theBiblio.hdr.bibid;
 		$('#theBibId').html(idis.bibid);
 
-  	idis.crntFoto = null;
-  	idis.crntBibid = idis.bibid;
+  	     idis.crntFoto = null;
+  	     idis.crntBibid = idis.bibid;
 		$('#photoEditBtn').hide();		
 		$('#photoAddBtn').hide();		
 		$('#bibBlkB').html('');
@@ -79,26 +79,26 @@ var idis = {
 				}
 			<?php } ?>
 
-  		$.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.bibid  }, function(data){
+  		    $.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
 				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;
 
-  			if (data == null) {
-  				idis.crntFoto = data;
+  			    if (data == null) {
+  				    idis.crntFoto = data;
 					$('#photoAddBtn').show();
 					$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      			+ 'height="'+fotoHt+'" width="'+fotoWid+'" >');
-  			} else {
-  				idis.crntFoto = data[0];
+      			     + 'height="'+fotoHt+'" width="'+fotoWid+'" >');
+  			    } else {
+  				    idis.crntFoto = data[0];
 					$('#photoEditBtn').show();
 					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
 					$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
-      			+ 'height="'+fotoHt+'" width="'+fotoWid+'" >');
+      			    + 'height="'+fotoHt+'" width="'+fotoWid+'" >');
 				}
-  		});
+  		    });
 		}
 
-	  var txt = '';
+	    var txt = '';
 		$.each(idis.theBiblio.marc, function(key,value) {
 		  var tmp = value;
 			tmp.marcTag = key.substr(0,5);

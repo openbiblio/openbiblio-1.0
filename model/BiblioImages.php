@@ -33,12 +33,14 @@ class BiblioImages extends DBTable {
 		}
 		$sql .= ' )';
 		$sql .= ' ORDER BY data';
-
+//echo "in BiblioImages::getBiblioMatches(): sql=$sql<br />\n";
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->select($sql));
-		} else
-			return $this->select($sql);
+		} else {
+            $recs = $this->select($sql);
+			return $recs;
+        }
 	}
 	function getOne() {
 		$bibid = func_get_args(0);

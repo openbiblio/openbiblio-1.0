@@ -20,7 +20,8 @@ class DmTable extends DBTable {
 		$list = array();
 		$recs = $this->getAll();
 		if ($recs->num_rows < 1) return NULL;
-		while ($rec = $recs->fetch_assoc()) {
+		//while ($rec = $recs->fetch_assoc()) {
+        foreach ($recs as $rec) {
 			$list[$rec['code']] = $rec['description'];
 		}
 		return $list;
@@ -33,12 +34,14 @@ class DmTable extends DBTable {
 		return $select;
 	}
 	public function getDefault() {
-		$recs = $this->getMatches(array('default_flg'=>'Y'));
-		if ($recs->num_rows != 1) {
+		$rslt = $this->getMatches(array('default_flg'=>'Y'));
+        $recs = $rslt->fetchAll();
+        $nRecs = count($recs);
+		if ($nRecs != 1) {
 			return NULL;
 		} else {
-			$r = $recs->fetch_assoc();
-			return $r['code'];
+			//$r = $recs->fetch_assoc();
+			return $recs['code'];
 		}
 	}
 

@@ -11,7 +11,8 @@ class ReportDisplaysIter extends Iter {
 		$this->rows = $rows;
 	}
 	function next() {
-		$row = $this->rows->fetch_assoc();
+		//$row = $this->rows->fetch_assoc();
+		$row = $this->rows->fetchAll();
 		if (!$row)
 			return NULL;
 		$row['params'] = unserialize($row['params']);

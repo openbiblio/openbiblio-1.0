@@ -321,10 +321,10 @@ var bs = {
 
 	/* ====================================== */
 	doBibidSearch: function (bibid) {
-	  bs.srchType = 'bibid';
-	  $('p.error').html('').hide();
-	  var params = '&mode=doBibidSearch&bibid='+bibid;
-	  $.post(bs.url,params, function(jsonInpt){
+        bs.srchType = 'bibid';
+        $('p.error').html('').hide();
+        var params = '&mode=doBibidSearch&bibid='+bibid;
+        $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
@@ -336,22 +336,23 @@ var bs = {
 					idis.showOneBiblio(bs.biblio)
 					//idis.fetchCopyInfo();
 				}
-	    }
-		  $('#searchDiv').hide();
-	    $('#biblioDiv').show();
+	        }
+		    $('#searchDiv').hide();
+	        $('#biblioDiv').show();
 		});
 		return false;
 	},
+
 	doBarcdSearch: function (e) {
 		var barcd = $.trim($('#searchBarcd').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
 		$('#searchBarcd').val(barcd); // redisplay expanded value
 		
-	  bs.srchType = 'barCd';
-	  $('p.error').html('').hide();
-	  var params = $('#barcodeSearch').serialize();
+	    bs.srchType = 'barCd';
+	    $('p.error').html('').hide();
+	    var params = $('#barcodeSearch').serialize();
 		params += '&mode=doBarcdSearch';
-	  $.post(bs.url,params, function(jsonInpt){
+	    $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 				return false;
@@ -363,17 +364,17 @@ var bs = {
 					//idis.fetchCopyInfo();
 				}
 				else if (bs.biblio.hdr == null) {
-				  var msgTxt =
-	  			$('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
-	  			bs.rtnToSrch();
+				    var msgTxt =
+	  			    $('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
+	  			    bs.rtnToSrch();
 				}
 				else {
 					bs.multiMode = false;
 					idis.showOneBiblio(bs.biblio)
 				}
-	    }
-		  $('#searchDiv').hide();
-	    $('#biblioDiv').show();
+            }
+		    $('#searchDiv').hide();
+	        $('#biblioDiv').show();
 		});
 		return false;
 	},

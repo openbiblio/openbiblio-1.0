@@ -6,9 +6,8 @@
 require_once(REL(__FILE__, "../classes/CoreTable.php"));
 
 class Staff extends CoreTable {
-	public function __construct($dbConst) {
-        $this->dbConst = $dbConst;
-		parent::__construct($this->dbConst);
+	public function __construct() {
+		parent::__construct();
 		$this->setName('staff');
 		# if you add to this array, check with array in ../circ/staff_new_form.php
 		$this->setFields(array(

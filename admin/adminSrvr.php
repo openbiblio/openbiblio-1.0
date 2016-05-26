@@ -75,7 +75,8 @@
 		case 'getAllCalendars':
 		  $cals = array();
 			$set = $ptr1->getAll('description');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $cals[] = $row;
 			}
 			echo json_encode($cals);
@@ -84,18 +85,20 @@
 	  #-.-.-.-.-.- Collections -.-.-.-.-.-.-
 		case 'getCirc_collect':
 			$ptr = new CircCollections;
-		  $colls = array();
+		    $colls = array();
 			$set = $ptr->getAll('code');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
 			break;
 		case 'getDist_collect':
 			$ptr = new DistCollections;
-		  $colls = array();
+		    $colls = array();
 			$set = $ptr->getAll('code');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
@@ -106,9 +109,10 @@
 			break;
 		case 'getAll_collect':
 			$ptr = new Collections;
-		  $colls = array();
+		    $colls = array();
 			$set = $ptr->getAllWithStats();
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
@@ -157,7 +161,8 @@
 		case 'getAll_copyFlds':
 			$flds = array();
 			$set = $ptr->getAll();
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row){
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -185,7 +190,8 @@
 		case 'getAll_mbrFlds':
 			$flds = array();
 			$set = $ptr->getAll();
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -213,7 +219,8 @@
 		case 'getAll_mbrTypes':
 			$flds = array();
 			$set = $ptr->getAll();
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -245,7 +252,8 @@
 		case 'getAll_media':
 			$med = array();
 			$set = $ptr->getAllWithStats();
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $med[] = $row;
 			}
 			echo json_encode($med);
@@ -257,7 +265,7 @@
 				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
 				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
 				'image_file'=>$_POST["image_file"],
-        'srch_disp_lines'=>$_POST["srch_disp_lines"],
+                'srch_disp_lines'=>$_POST["srch_disp_lines"],
 				);
 			list($id, $errors) = $ptr->insert_el($type);
 			if (empty($errors)) {
@@ -300,7 +308,8 @@
 		case 'getAll_hosts':
 		  $hosts = array();
 			$set = $ptr->getAll('seq');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $hosts[] = $row;
 			}
 			echo json_encode($hosts);
@@ -326,8 +335,9 @@
 		case 'getOpts':
 	  	$opts = array();
 			$set = $ptr->getAll();
-			$row = $set->fetch_assoc();
-			echo json_encode($row);
+			//$row = $set->fetch_assoc();
+            $row = $set->fetchAll();
+			echo json_encode($row[0]);
 			break;
 		case 'updateOpts':
 		  $_POST[id] = 1;
@@ -359,7 +369,8 @@
 		case 'getAll_sites':
 		  $sites = array();
 			$set = $ptr->getAll('name');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $sites[] = $row;
 			}
 			echo json_encode($sites);
@@ -378,7 +389,8 @@
 		case 'getAll_staff':
 		  $staff = array();
 			$set = $ptr->getAll('last_name');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $staff[] = $row;
 			}
 			echo json_encode($staff);
@@ -415,7 +427,8 @@
 		case 'getAll_states':
 		  $states = array();
 			$set = $ptr2->getAll('description');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $states[] = $row;
 			}
 			echo json_encode($states);
@@ -434,7 +447,8 @@
 		case 'getAllThemes':
 		  $thms = array();
 			$set = $ptr->getAll('theme_name');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $thms[] = $row;
 			}
 			echo json_encode($thms);

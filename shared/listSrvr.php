@@ -70,7 +70,7 @@
 		$sql = "SHOW COLUMNS FROM material_fields";
 		$rslt = $db->select($sql);
 		//while ($col = $rslt->fetch_assoc()) {
-        foreach ($rslt as $row) {
+        foreach ($rslt as $col) {
 			if ($col['Field'] == 'form_type') break;
 		}
 		$enum = $col['Type'];

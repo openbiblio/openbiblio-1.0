@@ -22,7 +22,13 @@
 		$db = new BiblioImages;
 		$orderBy = $_GET['orderBy'];
 		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);
-		$numRows = $rslt->num_rows;
+		//$numRows = $rslt->num_rows;
+        if ($rslt) {
+            $recs = $rslt->fetchAll();
+            $numRows = count($recs);
+        } else {
+            $numRows = 0;
+        }
 
 		// add amount of search results.
 		$perPage = Settings::get('items_per_page');
@@ -47,7 +53,8 @@
 
 		$imgCntr = 0;
 		$tbl = array();
-		while($row = $rslt->fetch_assoc()) {
+		//while($row = $rslt->fetch_assoc()) {
+        foreach ($recs as $row) {
 			$imgCntr++;
 			if($imgCntr-1 < $firstItem) continue;
 			if($imgCntr   > $lastItem) break;
