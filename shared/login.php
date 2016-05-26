@@ -8,42 +8,44 @@ require_once(REL(__FILE__, "../model/Staff.php"));
 
 $pageErrors = "";
 if (count($_POST) == 0) {
-//	header("Location: ../shared/loginform.php");
-//	exit();
+	header("Location: ../shared/loginform.php");
+	exit();
 }
+echo "in login.php ln#58<br />\n";
 
 $username = $_POST["username"];
 $error_found = false;
 if ($username == "") {
 	$error_found = true;
 	$pageErrors["username"] = T("Username is required.");
-    //echo "need user name".PHP_EOL;
+    //echo "need user name<br />\n";
 }
 $pwd = $_POST["pwd"];
 if ($pwd == "") {
 	$error_found = true;
 	$pageErrors["pwd"] = T("Password is required.");
-    //echo "need pw".PHP_EOL;
+    //echo "need pw<br />\n";
 }
-//echo "user: $username; pw: $pwd".PHP_EOL;
+//echo "user: $username; pw: $pwd<br />\n";
 
 if (!$error_found) {
-    //echo "got id & pw".PHP_EOL;
+    //echo "in login ln#32";echo "got id & pw<br />\n";echo "<br />\n";
 
 	$staff = new Staff($dbConst);
-    //echo "username'$username';  pwd: '".md5($pwd)."'<br />\n";
+    //echo "username: '$username';  pwd: '".md5($pwd)."'<br />\n";
 	$rows = $staff->getMatches(array('username'=>$username, 'pwd'=>md5($pwd)));
-    //print_r($rows);
+	$user = $rows->fetch(PDO::FETCH_ASSOC);
+    $nUsers = count($user);
+    //echo "in login ln#38 [";print_r($user);echo "] <br />\n";
+    //echo "in login # matches found: $nUsers <br />\n";
 
 	//if ($rows->count() == 1) {
-	if ($rows->num_rows == 1) {
-		//$user = $rows->fetch_assoc();
-		$user = $rows->fetch_assoc();
-	} else {
+	//if ($rows->num_rows == 1) {
+    if ($nUsers  == 0) {
 		# invalid username or password.  Add one to login attempts.
 		$error_found = true;
 		$pageErrors["pwd"] = T("Invalid signon.");
-        //echo "invalid signin".PHP_EOL;
+        //echo "invalid signin<br />\n";
 
 		# FIXME - The old code would suspend a user's account after three
 		# failed login attempts.  That's a very easy denial of service,
@@ -53,18 +55,18 @@ if (!$error_found) {
 		# time after several failed attempts.
 	}
 }
-echo "in login ln#58<br />\n";
+//echo "in login ln#57<br />\n";
 
 if ($error_found == true) {
-    //echo "login error found".PHP_EOL;
+    echo "login error found<br />\n";
 	$_SESSION["postVars"] = $_POST;
 	$_SESSION["pageErrors"] = $pageErrors;
-	header("Location: ../shared/loginform.php");
+    header("Location: ../shared/loginform.php");
 	exit();
 }
 
 if ($user['suspended_flg'] == 'Y') {
-	header("Location: ../shared/suspended.php");
+    header("Location: ../shared/suspended.php");
 	exit();
 }
 

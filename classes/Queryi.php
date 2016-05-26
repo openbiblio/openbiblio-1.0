@@ -10,29 +10,20 @@
  */
 
 require_once("../shared/common.php");
+require_once("../classes/DbCore.php");
 
-class Queryi extends mysqli
+//class Queryi extends mysqli
+class Queryi
 {
 	private $lock_depth;
 
 	public function __construct() {
 		$this->lockDepth = 0;
-        $this->getDSN();
-        $this->dsn["mode"] == 'haveconst';
+        //echo "in Queryi::__construct() <br />\n";
 /*
+        $core = Dbcore::getInstance();
         try {
-            $dbh = new PDO("mysql:host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database'],
-                                 $this->dsn['username'], $this->dsn['pwd']);
-        } catch (PDOException $e) {
-            echo "Error: Sttempted connection to DB failed".' ('.$this->dsn['database'].') '."<br />\n". $e->getMessage() ."<br />\n";
-            print_r($this->dsn); echo "<br />\n";
-            exit;
-        }
-        echo "connection successful!";
-
-        $dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-        try {
-            $stmt = $dbh->query('SELECT VERSION()');
+            $stmt = $core->$dbh->query('SELECT VERSION()');
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return "success, version# $results";
         } catch (PDOException $e) {
@@ -40,6 +31,8 @@ class Queryi extends mysqli
             exit;
         }
 */
+/*
+        $this->getDSN();
        if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
      	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
         } else {
@@ -53,7 +46,7 @@ class Queryi extends mysqli
             return "success, version# $mysqli->server_version";
         }
         $this->set_encoding();
-
+*/
     }
 
     private function getDSN () {
@@ -66,6 +59,7 @@ class Queryi extends mysqli
             $this->dsn['pwd'] = 'admin';
             $this->dsn['database'] = 'xxxopenbiblioxxx';
             $this->dsn['mode'] = 'nodb';
+            $this->dsn["mode"] == 'haveconst';
         }
     }
 	public function act($sql) {
@@ -107,7 +101,8 @@ class Queryi extends mysqli
 	 * this may only work if complete OB database is in place; -FL
 	*/
 	private function set_encoding() {
-		$r = parent::query("SELECT value FROM settings where name='charset'");
+        $core = DbCore::getInstance();
+		$r = $core->dbh->query("SELECT value FROM settings where name='charset'");
 		if ($r->num_rows == 1) {
 			$row = $r->fetch_assoc();
 			if (!parent::set_charset($row['value']))  {
@@ -118,7 +113,8 @@ class Queryi extends mysqli
         }
 	}
 	private function _act($sql) {
-		$r =  parent::query($sql);
+        $core = DbCore::getInstance();
+		$r =  $core->dbh->query($sql);
 		if ($r === false) {
 			return 'Error: '.T("Database query failed");
 		}
@@ -129,7 +125,7 @@ class Queryi extends mysqli
 	 * might be something like PEAR::DB's sequences.
 	 */
 	protected function getInsertID() {
-		return $this->insert_id;
+		return $core->$dbh->insert_id;
 	}
 
 	/** Locking functions -MS

@@ -3,10 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+echo "in srchForms.php";
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-    //echo "in srchForms.php";
 
 	session_cache_limiter(null);
 

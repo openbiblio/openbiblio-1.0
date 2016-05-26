@@ -40,10 +40,11 @@ class Sites extends DBTable {
 		}
 		$recs = $this->getAll('name');
         //echo "in sites::getSelect()"; print_r($recs);echo "<br />\n";
-        if ($recs->num_rows <= 0){
-           return 'default';
-        }
-		while ($rec = $recs->fetch_assoc()) {
+        //if ($recs->num_rows <= 0){
+        //   return 'default';
+        //}
+		//while ($rec = $recs->fetch_assoc()) {
+        foreach ($recs as $rec) {
 			$select[$rec['siteid']] = $rec['name'];
 		}
 		return $select;

@@ -9,10 +9,10 @@ require_once(REL(__FILE__, "../model/Validations.php"));
 /**
  * creates HTML <input ....> statements for most types
  * if type is unrecognized, a generic type="text" will be provided
- * if no 'id' is specified in $attrs, 'id' will be same as 'name' ##
  * @author Micah Stetson
- * @author Fred LaPlante
+ * if no 'id' is specified in $attrs, 'id' will be same as 'name' ## - FL
  */
+
 $patterns = array();
 function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	global $patterns;
@@ -20,9 +20,10 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	if (empty($patterns)) {
 	    $db = new Validations;
 	    $valids = array();
-		$set = $db->getAll('description');
-//print_r($set);echo "<br />\n";
-		while ($row = $set->fetch_assoc()) {
+		//$set = $db->getAll('description');
+		//while ($row = $set->fetch_assoc()) {
+		$stmt = $db->getAll('description');
+        foreach ($stmt as $row) {
 		    $patterns[$row['code']] = $row['pattern'];
 		}
 	}
@@ -63,7 +64,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 				}
 				$s .= ">".H($desc)."</option>\n";
 			}
-		}
+        }
 		$s .= "</select>\n";
 		break;
 	case 'textarea':
@@ -97,6 +98,8 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	if (isset($pageErrors[$name])) {
 		$s .= '<span class="error">'.H($pageErrors[$name]).'</span><br />';
 	}
+
+    //echo "in inputFuncs.php: inputfield(), final: ";echo  $s;echo "<br />\n";
 	return $s;
 }
 function inputHandler($type, $name, $value, $attrs) {

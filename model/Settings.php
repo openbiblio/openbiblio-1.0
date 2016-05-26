@@ -21,10 +21,12 @@ class Settings extends Queryi
 		global $_settings_cache, $_settings_validators;
         //echo "in Settings::load() <br />\n";
 		$db = new Queryi;
-        //echo "in Settings::load(), back from new Queryi <br />\n";
-		$r = $db->select('SELECT * FROM settings');
-        //echo "in Settings::load()";print_r($r);echo "<br /> \n";
-		while ($s = $r->fetch_assoc()) {
+
+		//$r = $db->select('SELECT * FROM settings');
+		//while ($s = $r->fetch_assoc()) {
+        $stmt = $db->act('SELECT * FROM settings');
+        while($s = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validator']);
 		}

@@ -76,7 +76,8 @@ var flos = {
 	  	$db = new Validations;
 			$set = $db->getAll('description');
 			echo "	patterns: {\n";
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            while($row = $set->fetch(PDO::FETCH_ASSOC)) {
 				echo '		"'.$row['code'].'":"'.$row['pattern'].'",'."\n";
 			}
 			echo "	},\n\n";

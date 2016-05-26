@@ -97,17 +97,22 @@ abstract class DBTable extends Queryi {
 		return $recs;
 	}
 	public function getMatches($fields, $orderby=NULL) {
-        //print_r($fields);echo "<br />\n";
+        //echo "in DBTable::getMatches()";print_r($fields);echo "<br />\n";
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_pairs($fields, ' AND ');
 		if ($orderby)
 			$sql .= $this->mkSQL(' ORDER BY %I ', $orderby);
-        //echo "$sql <br />\n";
+        //echo "in DBTable::getMatches(), sql= $sql <br />\n";
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
-			return new $c($this->select($sql));
-		} else
-			return $this->select($sql);
+            $rslt = new $c($this->select($sql));
+            //echo "in DBTable::getMatches() (with itr): ";print_r($rslt);echo "<br />\n";
+			return $rslt;
+		} else {
+            $rslt = $this->select($sql);
+            //echo "in DBTable::getMatches() (without itr): ";print_r($rslt);echo "<br />\n";
+			return $rslt;
+        }
 	}
 	public function checkForeignKeys_el($rec) {
 		$errors = array();
