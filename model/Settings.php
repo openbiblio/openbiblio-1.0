@@ -21,12 +21,10 @@ class Settings extends Queryi
 		global $_settings_cache, $_settings_validators;
         //echo "in Settings::load() <br />\n";
 		$db = new Queryi;
-
 		//$r = $db->select('SELECT * FROM settings');
 		//while ($s = $r->fetch_assoc()) {
         $stmt = $db->act('SELECT * FROM settings');
-        while($s = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
+        foreach ($stmt as $s) {
 			$_settings_cache[$s['name']] = $s['value'];
 			$_settings_validators[$s['name']] = explode(',', $s['validator']);
 		}
@@ -42,7 +40,8 @@ class Settings extends Queryi
 	static public function getFormFields($menu=NULL) {
 		$r = Settings::_getData($menu);
 		$fields = array();
-		while ($s = $r->fetch_assoc()) {
+		//while ($s = $r->fetch_assoc()) {
+        foreach ($r as $s) {
 				$fields[] = Settings::_mkField($s);
 		}
 		return $fields;
@@ -87,7 +86,8 @@ class Settings extends Queryi
 	function getFormData ($menu=NULL, $cols) {
 		$r = $this->_getData($menu, $cols);
 		$fields = array();
-		while ($s = $r->fetch_assoc()) {
+		//while ($s = $r->fetch_assoc()) {
+        foreach ($r as $s) {
 				$fields[] = $s;
 		}
 		return $fields;

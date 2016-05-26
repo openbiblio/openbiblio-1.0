@@ -41,7 +41,8 @@
 
 			$set = array();
 			$rslt = $db->select("SELECT * FROM Information_Schema.Engines ORDER by ENGINE");
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($rslt as $row) {
 				$engine = array('support'=>$row['SUPPORT'], 'transactions'=>$row['TRANSACTIONS']);
 				$set[$row['ENGINE']] = $engine;
 			}
@@ -49,21 +50,24 @@
 
 			$set = array();
 			$rslt = $db->select("SHOW Variables LIKE 'character\_set\_%'");
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+            foreach ($rslt as $row) {
 				$set[$row['Variable_name']] = $row['Value'];
 			}
 			$info['charSets'] = $set;
 
 			$set = array();
 			$rslt = $db->select("SHOW Variables LIKE 'collation\_%'");
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+            foreach ($rslt as $row) {
 				$set[$row['Variable_name']] = $row['Value'];
 			}
 			$info['collations'] = $set;
 
 			$set = array();
 			$rslt = $db->select("SHOW Variables LIKE 'max_%'");
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+            foreach ($rslt as $row) {
 				$set[$row['Variable_name']] = $row['Value'];
 			}
 			$info['misc'] = $set;
@@ -74,7 +78,8 @@
 	  case 'fetchCollSet':
 		  $set = array();
 			$result = $db->select('SHOW COLLATION');
-			while ($row = $result->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+            foreach ($rslt as $row) {
 			  $set[$row['Collation']] = $row['Charset'];
 			}
 			ksort($set);
@@ -84,7 +89,8 @@
 			$charset = $_REQUEST['charset'];
 			$collation = $_REQUEST['collation'];
 			$rslt = $db->select('SHOW TABLES');
-			while ($row = $rslt->fetch_array()) {
+			//while ($row = $rslt->fetch_assoc()) {
+            foreach ($rslt as $row) {
 				$tbl = $row[0];
 				$sql = "ALTER TABLE `$tbl` DEFAULT CHARACTER SET $charset COLLATE $collation";
 				//echo "sql=$sql<br />\n";
@@ -97,7 +103,8 @@
 		case 'getAll_validation':
 		  $valids = array();
 			$set = $db->getAll('description');
-			while ($row = $set->fetch_assoc()) {
+			//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
 			  $valids[] = $row;
 			}
 			echo json_encode($valids);
