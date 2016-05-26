@@ -47,8 +47,9 @@ class MaterialFields extends DBTable {
 	public function getDisplayInfo ($nmbr) {
 		$media = array();
 		$set = $this->getAll('material_cd,position');
-		while ($row = $set->fetch_assoc()) {
-      if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
+            if (($nmbr == 'all') || ($row['material_cd'] == $nmbr)) {
 				$media[$row['material_cd']][$row['position']] =
 					array('tag'=>$row['tag'],'suf'=>$row['subfield_cd'],'lbl'=>$row['label'],'row'=>$row['position']);
 			}
@@ -58,7 +59,8 @@ class MaterialFields extends DBTable {
 	public function getMediaTags ($code) {
 		$tags = array();
 		$set = $this->getAll('material_cd,position');
-		while ($row = $set->fetch_assoc()) {
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
 			if ($row['material_cd'] == $code) {
 				$n = 1;
 				do {

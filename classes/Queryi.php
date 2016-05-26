@@ -86,13 +86,14 @@ class Queryi
 	}
 	public function select01($sql) {
 		$r = $this::act($sql);
-		if (($r == 0) || ($r->num_rows == 0)) {
-			return NULL;
-		} else if ($r->num_rows != 1) {
-			return T("Wrong Number Rows Found");
-		} else {
-			return $r->fetch_assoc();
-		}
+//		if (($r == 0) || ($r->num_rows == 0)) {
+//			return NULL;
+//		} else if ($r->num_rows != 1) {
+//			return T("Wrong Number Rows Found");
+//		} else {
+			//return $r->fetch_assoc();
+            return $r->fetch();
+//		}
 	}
 
 	/** Make sure all queries have the user's preferred encoding
@@ -263,10 +264,12 @@ class Queryi
 					$SQL .= $this->_numstr($arg);
 					break;
 				case 'Q':
-					$SQL .= "'".mysqli::real_escape_string($arg)."'";
+					//$SQL .= "'".mysqli::real_escape_string($arg)."'";
+					$SQL .= "'".$arg."'";
 					break;
 				case 'q':
-					$SQL .= mysqli::real_escape_string($arg);
+					//$SQL .= mysqli::real_escape_string($arg);
+					$SQL .=$arg;
 					break;
 				default:
 					Fatal::internalError($badSqlFmt);

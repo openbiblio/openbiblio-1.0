@@ -119,9 +119,10 @@ class Biblio {
 		## retrieve all existing marc data for this biblio
 		$mrc = new MarcStore;
 		$rslt = $mrc->fetchMarcFlds($this->bibid);
-		if ($rslt->num_rows <= 1) return 'MARC '.T("Nothing Found");
+		//if ($rslt->num_rows <= 1) return 'MARC '.T("Nothing Found");
 		$firstRep = true;
-		while ($row = $rslt->fetch_assoc()) {
+		//while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 			$tag = $row['tag'].'$'.$row['subfield_cd'];
 			if ($this->marcFlds[$tag.'$1']['repeatable'] > 0) {
 				if($firstRep) {
@@ -158,8 +159,9 @@ class Biblio {
 	private function fetch_photoData () {
 		## get photo link from db
 		$img = new BiblioImages;
-    $rslt = $img->getByBibid($this->bibid);
-		$row = $rslt->fetch_assoc();
+        $rslt = $img->getByBibid($this->bibid);
+		//$row = $rslt->fetch_assoc();
+        $row = $rslt->fetch();
 		## post photo link to this object
 		$this->hdrFlds['img'] = $row['url'];
 	}

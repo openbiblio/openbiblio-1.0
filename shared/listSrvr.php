@@ -20,7 +20,8 @@
 	}
 	function getDmData ($db) {
 		$set = $db->getAll('description');
-		while ($row = $set->fetch_assoc()) {
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
 		  $list[$row['code']] = $row['description'];
 		}
 		return $list;
@@ -42,7 +43,8 @@
  			"ORDER BY COUNT DESC " .
  			"LIMIT 10";
 		$rslt = $db->select($sql);
-		while ($col = $rslt->fetch_assoc()) {
+		//while ($col = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 			$list[$col['subfield_data']] = $col['subfield_data'];
 		}
 		echo json_encode($list);
@@ -67,7 +69,8 @@
 		$db = new MaterialFields;
 		$sql = "SHOW COLUMNS FROM material_fields";
 		$rslt = $db->select($sql);
-		while ($col = $rslt->fetch_assoc()) {
+		//while ($col = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 			if ($col['Field'] == 'form_type') break;
 		}
 		$enum = $col['Type'];
@@ -78,7 +81,8 @@
 		$db = new MaterialFields;
 		$sql = "SELECT * FROM `material_fields` WHERE `material_cd`={$_REQUEST['media']} ORDER BY tag,subfield_cd";
 		$rslt = $db->select($sql);
-		while ($row = $rslt->fetch_assoc()) {
+		//while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 			$tags[$row['tag'].'$'.$row['subfield_cd']] = $row['label'];
 		}
 		echo json_encode($tags);
@@ -96,7 +100,8 @@
 		require_once(REL(__FILE__, "../model/Themes.php"));
 		$db = new Themes;
 		$set = $db->getAll('theme_name');
-		while ($row = $set->fetch_assoc()) {
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
 		  $list[$row['themeid']] = $row['theme_name'];
 		}
 		echo json_encode($list);
@@ -112,7 +117,8 @@
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;
 		$rslt = $db->getIcons();
-		while ($row = $rslt->fetch_assoc()) {
+		//while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 		  $list[$row['code']] = $row['image_file'];
 		}
 		echo json_encode($list);

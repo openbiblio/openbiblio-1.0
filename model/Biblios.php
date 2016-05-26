@@ -163,10 +163,11 @@ class Biblios extends CoreTable {
 		}
 
 		$sql = $sqlSelect . $sqlWhere . $sqlOrder;
-        //echo "in Biblios::getBiblioByPhrase(); sql = $sql<br>\n";
+//echo "in Biblios::getBiblioByPhrase(); sql = $sql<br>\n";
 		$rows = $this->select($sql);
-        if ($rows->num_rows < 1) return NULL;
-		while (($row = $rows->fetch_assoc()) !== NULL) {
+        //if ($rows->num_rows < 1) return NULL;
+		//while (($row = $rows->fetch_assoc()) !== NULL) {
+        foreach ($rows as $row) {
 			$rslt[] = $row[bibid];
 		}
 		return $rslt;

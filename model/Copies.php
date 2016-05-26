@@ -49,7 +49,8 @@ class Copies extends CoreTable {
 	public function getCpyList($bibid) {
 		$rslt = $this->getKeyList('copyid',array('bibid'=>$bibid));
 		$cpys = array();
-		while($row = $rslt->fetch_assoc()) {
+		//while($row = $rslt->fetch_assoc())
+        foreach ($rslt as $row) {
 			$cpys[] = $row['copyid'];
 		}
 		return $cpys;
@@ -374,23 +375,25 @@ class Copies extends CoreTable {
 				 . "  and (mf.material_cd = b.material_cd) "
 				 . "  and (b.bibid = {$bibid}) ";
 		$rslt = $this->select($sql);
-		while ($row = $rslt->fetch_assoc()) {
-                        // check for "digital copies" of ebooks and web sites
-                        // if there are physical copies, this dot will be
-                        // overriden later
-                        if('u' == $row['subfield_cd'] && '856' == $row['tag']){
-		                $avIcon = "circle_purple.png"; // digital copy available
-                                }
-                        }
+		//while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
+            // check for "digital copies" of ebooks and web sites
+            // if there are physical copies, this dot will be
+            // overriden later
+            if('u' == $row['subfield_cd'] && '856' == $row['tag']){
+              $avIcon = "circle_purple.png"; // digital copy available
+            }
+        }
 
 		$sql = "select c.copyid, c.siteid, h.status_cd "
 				 . "from biblio_copy c, biblio_status_hist h "
 				 . "where (c.bibid = {$bibid}) "
 				 . "  and (h.histid = c.histid) ";
 		$rslt = $this->select($sql);
-		$nCpy = $rslt->num_rows;
+		//$nCpy = $rslt->num_rows;
 
-		while ($row = $rslt->fetch_assoc()) {
+		//while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 			if($row['status_cd'] == OBIB_STATUS_IN) {
 				// See on which site
 				if($_SESSION['current_site'] == $row['siteid'] || !($_SESSION['multi_site_func'] > 0)){
@@ -466,7 +469,8 @@ class Copies extends CoreTable {
 	public function getCustomFields($copyid, $arrayWanted=false) {
 		$rslt = $this->custom->getMatches(array('copyid'=>$copyid));
 		if ($arrayWanted) {
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+            foreach ($rslt as $row) {
 				$flds[] = $row;
 			}
 			return $flds;

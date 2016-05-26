@@ -378,10 +378,10 @@ var bs = {
 		return false;
 	},
 	doPhraseSearch: function (e,firstItem) {
-	  $('#biblioListDiv').show()
-	  $('#searchDiv').hide();
-	  $('#resultsArea').html('');
-	  $('#errSpace').html('');
+        $('#biblioListDiv').show()
+        $('#searchDiv').hide();
+        $('#resultsArea').html('');
+        $('#errSpace').html('');
 
 		// searchType 'ID' gets special handling
 		var searchType = $('#ph_searchType option:selected').val();
@@ -390,53 +390,53 @@ var bs = {
 		//console.log('searchType==>'+searchType+'; searchText==>'+searchText);
 		if (searchType == 'id') {
 			e.preventDefault();
-      bs.doBibidSearch(searchText);
+            bs.doBibidSearch(searchText);
 			return false;
 		}
 
-    /* Moved this forward to show a please wait text, as search can take */
+        /* Moved this forward to show a please wait text, as search can take */
 		/*up to a second on a large databse and user might click twice.      */
 		var msg = '<p class="error">'
-							'	<img src="../images/please_wait.gif" width="26" />'
-              '	<?php echo T("Searching"); ?>'
-							'</p>'+"\n";
-	  $('#srchRslts').html(msg);
+				  '	<img src="../images/please_wait.gif" width="26" />'
+                  '	<?php echo T("Searching"); ?>'
+				  '</p>'+"\n";
+	    $('#srchRslts').html(msg);
 
-	  $('.rsltQuan').html('');
-	  if(firstItem==null) firstItem=0;
-	  bs.srchType = 'phrase';		
-	  var params = $('#phraseSearch').serialize();
+        $('.rsltQuan').html('');
+        if(firstItem==null) firstItem=0;
+        bs.srchType = 'phrase';
+	    var params = $('#phraseSearch').serialize();
 		params += '&mode=doPhraseSearch&firstItem='+firstItem;
 
-	  $.post(bs.url,params, function(jsonInpt){
+	    $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
 				var biblioList = $.parseJSON(jsonInpt);
 
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
-					//console.log('no hits');
-				  bs.multiMode = false;
-	  			$('#srchRslts').html('<p class="error"><?php echo T("Nothing Found") ?></p>');
-				  $('#biblioListDiv .goNextBtn').disable();
-				  $('#biblioListDiv .goPrevBtn').disable();
+                    //console.log('no hits');
+                    bs.multiMode = false;
+                    $('#srchRslts').html('<p class="error"><?php echo T("Nothing Found") ?></p>');
+                    $('#biblioListDiv .goNextBtn').disable();
+                    $('#biblioListDiv .goPrevBtn').disable();
 				}
 				else if (biblioList.length == 2 && firstItem == 0) {
-					//console.log('single hit');
+                    //console.log('single hit');
 					// Changed to two, as an extra record is added with the amount of records etc.
 					// (also, if not first page ignore this) - LJ
-				  bs.multiMode = false;
-      		// Changed from 0 to 1 as the first row shows record info
+				    bs.multiMode = false;
+      		        // Changed from 0 to 1 as the first row shows record info
 					bs.biblio = $.parseJSON(biblioList[1]);
 					idis.showOneBiblio(bs.biblio)
 					//idis.fetchCopyInfo();
 				}
 				else {
-					//console.log('multiple hits');
-				  bs.multiMode = true;
-				  bs.showList(firstItem, biblioList);
+                    //console.log('multiple hits');
+				    bs.multiMode = true;
+				    bs.showList(firstItem, biblioList);
 				}
-	    }
+	       }
 		});
 		return false;
 	},

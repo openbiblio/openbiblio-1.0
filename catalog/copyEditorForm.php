@@ -60,7 +60,8 @@
 			<?php
 				$ptr = new BiblioCopyFields;
 				$rows = $ptr->getAll();
-				while ($row = $rows->fetch_assoc()) {
+				//while ($row = $rows->fetch_assoc()) {
+                foreach ($rows as $row) {
 					echo "<tr>";
 					echo "<td nowrap=\"true\" valign=\"top\"><label for=\"copyCustom_". $row["code"] . "\">" . T($row["description"]) . "</td>";
 					echo "<td valign=\"top\" \">" . inputfield('text', 'copyCustom_'.$row["code"], "",NULL) . "</td>";

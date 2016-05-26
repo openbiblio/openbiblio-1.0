@@ -64,7 +64,8 @@
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$theDb =new MediaTypes;
 		$set = $theDb->getAll('code');
-		while ($row = $set->fetch_assoc()) {
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
 		  $media[$row['code']] = $row['srch_disp_lines'];
 		}
 		echo json_encode($media);
@@ -272,16 +273,17 @@
 		
 	//// ====================================////
 	case 'getPhoto':
-	  $ptr = new BiblioImages;
-	  $set = $ptr->getByBibid($_REQUEST['bibid']);
-		while ($row = $set->fetch_assoc()) {
-		  $imgs[] = $row;
+	    $ptr = new BiblioImages;
+	    $set = $ptr->getByBibid($_REQUEST['bibid']);
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
+		    $imgs[] = $row;
 		}
 		echo json_encode($imgs);
-	  break;
+	    break;
 	case 'updatePhoto':
-	  $ptr = new BiblioImages;
-	  ### left as an exercise for the motivated - FL (I'm burned out on this project)
+	    $ptr = new BiblioImages;
+	    ### left as an exercise for the motivated - FL (I'm burned out on this project)
 		break;
 	case 'addNewPhoto':
 		define('UPLOAD_DIR', '../photos/');
