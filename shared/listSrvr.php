@@ -28,11 +28,7 @@
 	}
 	
 	switch ($_REQUEST['mode']) {
-	case 'getOpts':
-		$opts = Settings::getAll();
-		echo json_encode($opts);
-		break;
-
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getAudienceList':
 		require_once(REL(__FILE__, "../model/Biblios.php"));
 		$db = new Biblios;
@@ -50,6 +46,7 @@
 		echo json_encode($list);
 	  break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getCalendarList':
 		require_once(REL(__FILE__, "../model/Calendars.php"));
 		$db = new Calendars;
@@ -57,6 +54,7 @@
 		echo json_encode($list);
 	  break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
 		$db = new Collections;
@@ -70,6 +68,7 @@
 		echo json_encode($rslt);
         break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getInputTypes':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$db = new MaterialFields;
@@ -82,6 +81,16 @@
 		$enum = $col['Type'];
 		echo $enum;
 	  break;
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+	case 'getLocaleList':
+		$arr_lang = Localize::getLocales();
+		foreach ($arr_lang as $langCode => $langDesc) {
+			//echo '<option value="'.H($langCode).'">'.H($langDesc)."</option>\n";
+			$list[$langCode] = $langDesc;
+		}
+		echo json_encode($list);
+		break;
+
 	case 'getMediaMarcTags':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$db = new MaterialFields;
@@ -94,25 +103,7 @@
 		echo json_encode($tags);
 		break;
 
-	case 'getLocaleList':
-		$arr_lang = Localize::getLocales();
-		foreach ($arr_lang as $langCode => $langDesc) {
-			//echo '<option value="'.H($langCode).'">'.H($langDesc)."</option>\n";
-			$list[$langCode] = $langDesc;
-		}
-		echo json_encode($list);
-		break;
-	case 'getThemeList':
-		require_once(REL(__FILE__, "../model/Themes.php"));
-		$db = new Themes;
-		$set = $db->getAll('theme_name');
-		//while ($row = $set->fetch_assoc()) {
-        foreach ($set as $row) {
-		  $list[$row['themeid']] = $row['theme_name'];
-		}
-		echo json_encode($list);
-	  break;
-
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getMediaList':
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;
@@ -136,6 +127,7 @@
 		echo json_encode($rslt);
         break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getMbrTypList':
 		require_once(REL(__FILE__, "../model/MemberTypes.php"));
 		$db = new MemberTypes;
@@ -143,19 +135,27 @@
 		echo json_encode($list);
 	  break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+	case 'getOpts':
+		$opts = Settings::getAll();
+		echo json_encode($opts);
+		break;
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getSiteList':
 		require_once(REL(__FILE__, "../model/Sites.php"));
 		$db = new Sites;
 		$list = getDbData($db);
 		echo json_encode($list);
 	  break;
-	case 'getDefaultMaterial':
+	case 'getDefaultSite':
 		require_once(REL(__FILE__, "../model/Sites.php"));
         $db = new Sites;
         $rslt = $db->getDefault();
 		echo json_encode($rslt);
         break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getStateList':
 		require_once(REL(__FILE__, "../model/States.php"));
 		$db = new States;
@@ -163,6 +163,36 @@
 		echo json_encode($list);
 	  break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+	case 'getStatusCds':
+		require_once(REL(__FILE__, "../model/CopyStatus.php"));
+        $db = new CopyStatus;
+/*
+        $rslt = $db->getStatusCds();
+        //while ($row = $rslt->fetch()) {
+        foreach ($rslt as $row) {
+            //print_r($row);
+            $cdData[] = $row;
+        }
+		echo json_encode($cdData);
+*/
+		$list = getDmData($db);
+		echo json_encode($list);
+		break;
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+	case 'getThemeList':
+		require_once(REL(__FILE__, "../model/Themes.php"));
+		$db = new Themes;
+		$set = $db->getAll('theme_name');
+		//while ($row = $set->fetch_assoc()) {
+        foreach ($set as $row) {
+		  $list[$row['themeid']] = $row['theme_name'];
+		}
+		echo json_encode($list);
+	  break;
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getValidations':
 		require_once(REL(__FILE__, "../model/Validations.php"));
 		$db = new Validations;
@@ -170,6 +200,7 @@
 		echo json_encode($list);
 	  break;
 
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	default:
 		  echo "<h4>".T("invalid mode")."@listSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
 		break;

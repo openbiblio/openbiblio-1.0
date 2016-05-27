@@ -193,27 +193,12 @@ var ni = {
                 html+= '>'+data[n]+'</option>';
 			}
 			$('#itemEditColls').html(html);
-			ni.fetchDfltSite(); // chaining
+			ni.fetchSiteList(); // chaining
 		});
 	},
-    fetchDfltSite: function() {
-        $.getJSON(ni.listSrvr,{mode:'getDefaultSite'}, function(data){
-            ni.dfltSite = data[0];
-			ni.fetchSiteList(); // chaining
-        });
-    },
 	fetchSiteList: function () {
-	    $.getJSON(ni.listSrvr,{mode:'getSiteList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'" ';
-                if (n == ni.dfltSite) {
-                    html+= 'SELECTED '
-                }
-                html+= '>'+data[n]+'</option>';
-			}
-			$('#copySite').html(html);
-		});
+        var listHtml = list.getSiteList();
+		$('#copySite').html(listHtml);
 	},
 
 	fetchHosts: function () {
@@ -249,25 +234,26 @@ var ni = {
 	doInsertNew: function () {
 	 	var parms=$('#newBiblioForm').serialize();
 		parms += '&mode=doInsertBiblio';
-	  $.post(ni.url,parms, function(response){
-	  	if (response.substr(1) == '<') {
-				$('#msgDiv').html(response).show();
-			}
-			else {
-	    	var rslt = $.parseJSON(response);
-	    	ni.bibid = rslt.bibid;
-	  		ni.showCopyEditor(ni.bibid);
-	  	}
-		});
-		return false;
+	    $.post(ni.url,parms, function(response){
+            //console.log(response);
+    	  	if (response.indexOf('<') == 0) {
+    			$('#msgDiv').html(response).show();
+    		}
+    		else {
+    	    	var rslt = $.parseJSON(response);
+    	    	ni.bibid = response.bibid;
+    	  		ni.showCopyEditor(ni.bibid);
+      	    }
+    	});
+	    return false;
 	},
 	
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
 	showCopyEditor: function (e) {
-  	//e.stopPropagation();
-  	$('#selectionDiv').hide();
-  	var crntsite = ni.opts.session.current_site
+      	//e.stopPropagation();
+      	$('#selectionDiv').hide();
+      	var crntsite = ni.opts.session.current_site
 		$('#copyBibid').val(ni.bibid);
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();

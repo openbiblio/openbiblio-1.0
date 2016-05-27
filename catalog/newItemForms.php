@@ -17,8 +17,8 @@
 	$pubNameTxt = T("Publisher");
 	$pubLocTxt  = T("Publication Location");
 		
-  require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
+    require_once(REL(__FILE__, "../functions/inputFuncs.php"));
+    require_once(REL(__FILE__, "../shared/logincheck.php"));
   
  	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
@@ -27,8 +27,8 @@
 
 	$tab = "cataloging";
 	$nav = "newItem";
-  $focus_form_name = "lookupForm";
-  $focus_form_field = "lookupVal";
+    $focus_form_name = "lookupForm";
+    $focus_form_field = "lookupVal";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <style>

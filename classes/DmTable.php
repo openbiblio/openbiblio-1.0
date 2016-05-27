@@ -19,7 +19,9 @@ class DmTable extends DBTable {
 	public function getList() {
 		$list = array();
 		$recs = $this->getAll();
-		if ($recs->num_rows < 1) return NULL;
+        $nRecs = count($recs);
+		//if ($recs->num_rows < 1) return NULL;
+        if ($nRecs < 1) return NULL;
 		//while ($rec = $recs->fetch_assoc()) {
         foreach ($recs as $rec) {
 			$list[$rec['code']] = $rec['description'];

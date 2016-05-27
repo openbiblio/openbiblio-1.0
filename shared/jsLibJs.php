@@ -77,7 +77,8 @@ var flos = {
 			$set = $db->getAll('description');
 			echo "	patterns: {\n";
 			//while ($row = $set->fetch_assoc()) {
-            while($row = $set->fetch(PDO::FETCH_ASSOC)) {
+            //while($row = $set->fetch(PDO::FETCH_ASSOC)) {
+            foreach ($set as $row) {
 				echo '		"'.$row['code'].'":"'.$row['pattern'].'",'."\n";
 			}
 			echo "	},\n\n";

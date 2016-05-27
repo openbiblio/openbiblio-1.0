@@ -16,7 +16,10 @@ unset($_SESSION['postVars']);
 		HTML/JS conditional modules loaded in line as required.
 -->
 
-<?php include_once ("../shared/jsLibJs.php"); ?>
+<?php
+    include_once ("../shared/jsLibJs.php");     // misc support functions
+    include_once ("../shared/listJs.php");     // provide content for pull-down lists
+?>
 
 <script language="JavaScript" >
 "use strict";

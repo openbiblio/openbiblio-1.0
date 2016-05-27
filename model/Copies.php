@@ -56,15 +56,19 @@ class Copies extends CoreTable {
 		return $cpys;
 	}
 	public function getByBarcode($barcode) {
-		$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
-		if ($rows->num_rows == 0) {
+		$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
+        $rows = $rslt->fetchAll();
+        $numRows = count($rows);
+		if ($numRows == 0) {
 			$barcode = $this->normalizeBarcode($barcode);
-			$rows = $this->getMatches(array('barcode_nmbr'=>$barcode));
+			$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
 		}
-		if ($rows->num_rows == 0) {
+        $rows = $rslt->fetchAll();
+        $numRows = count($rows);
+		if ($numRows == 0) {
 			return NULL;
-		} else if ($rows->num_rows == 1) {
-			return $rows->fetch_assoc();
+		} else if ($numRows == 1) {
+			return $rows;
 		} else {
 			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));
 		}
@@ -81,8 +85,15 @@ class Copies extends CoreTable {
 		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
 		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
 		$cpy = $this->select1($sql);
-	  if(empty($width)) $w = 13; else $w = $width;
-		return sprintf("%0".$w."s",($cpy[lastNmbr]+1));
+//echo "in Copies::getNewBarCode(): ";print_r($cpy);echo "<br />\n";
+        //$nmbr = $cpy[lastNmbr]+1;
+        //$nmbr = $cpy['barcdNmbr']+1;
+        if (strpos($cpy, "error"))
+            $nmbr = 1;
+        else
+            $nmbr = $cpy['barcdNmbr']+1;
+	    if(empty($width)) $w = 13; else $w = $width;
+		return sprintf("%0".$w."s",$nmbr);
 	}
 	
 	## ========================= ##
@@ -197,7 +208,8 @@ class Copies extends CoreTable {
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid)"
 					." ORDER BY status_begin_dt";
 		$rslt = $this->select($sql);
-		$rcd = $rslt->fetch_assoc();  // only first (most recent) response wanted
+		//$rcd = $rslt->fetch_assoc();  // only first (most recent) response wanted
+		$rcd = $rslt->fetchAll();  // only first (most recent) response wanted
 		$histid = $rcd['histid'];
 
 		if ($rcd[status_cd] != $_POST[status_cd]) {
@@ -252,7 +264,8 @@ class Copies extends CoreTable {
 		$custom = array();
 		$ptr = new BiblioCopyFields;
 		$rows = $ptr->getAll();
-		while ($row = $rows->fetch_assoc()) {
+		//while ($row = $rows->fetch_assoc()) {
+		foreach ($rows as $row) {
 			if (isset($_REQUEST['copyCustom_'.$row["code"]])) {
 				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
 			}

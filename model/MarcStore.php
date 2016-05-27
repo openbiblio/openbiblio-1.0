@@ -95,14 +95,14 @@ class MarcStore extends Queryi{
 	 * Post a MARC record to the database
 	 */
 	public function put($bibid, $record) {
-//echo "MarcStore: in put(); bibid={$bibid}; record==>";print_r($record);echo"<br/>\n";
+        //echo "in MarcStore::put(); bibid={$bibid}; record==>";print_r($record);echo"<br/>\n";
 		$this->lock();
 		$this->delete($bibid);  ## _field & _subfield records only
 
 		$fldseq = 1;
 		if (!$this->_putControl($bibid, $fldseq, "LDR", $record->getLeader())) {
 			$this->unlock();
-			die ("unable to 'putControl() leader");
+			die ("<Error: > unable to perform _putControl() on MARC leader");
 		}
 		$fields = $record->getFields();
 		foreach ($fields as $field) {
@@ -113,21 +113,21 @@ class MarcStore extends Queryi{
 //echo "MarcStore: posting control field<br/>\n";
 				if ($this->_putControl($bibid, $fldseq, $field->tag, $field->data) == 0) {
 					$this->unlock();
-					die("unable to post MARC control field to database");
+					die("<Error: > unable to post MARC control field to database");
 				}
 			} else if (is_a($field, 'MarcDataField')){
 //echo "MarcStore: posting MARC structure field & subfield<br/>\n";
 				$fieldid = $this->_putField($bibid, $fldseq, $field->tag, $field->indicators);
 				if (!$fieldid) {
 					$this->unlock();
-					die ("unable to post MARC field ".$field->tag." to database.");
+					die ("<Error: > unable to post MARC field ".$field->tag." to database.");
 				}
 				$subseq = 1;
 				foreach ($field->subfields as $subf) {
 //echo "MarcStore: posting MARC subfield<br/>\n";
 					if (!$this->_putSub($bibid, $fieldid, $subseq++, $subf->identifier, $subf->data)) {
 						$this->unlock();
-						die ("unable to post MARC subfield ".$field->tag.$subf->identifier." to database.");
+						die ("<Error: > unable to post MARC subfield ".$field->tag.$subf->identifier." to database.");
 					}
 				}
 			} else {
@@ -135,13 +135,13 @@ class MarcStore extends Queryi{
 				$fieldid = $this->_putField($bibid, $fldseq, $field['tag'], null);
 				if (!$fieldid) {
 					$this->unlock();
-					die ("unable to post array field ".$field['tag']." to database.");
+					die ("<Error: > unable to post array field ".$field['tag']." to database.");
 				}
 				$subseq = 1;
 //echo "MarcStore: posting array subfield<br/>\n";
 				if (!$this->_putSub($bibid, $fieldid, $subseq++, $field['subfield_cd'], $field['data'])) {
 					$this->unlock();
-					die ("unable to post array subfield ".$field['tag'].$field['subfield_cd']." to database.");
+					die ("<Error: > unable to post array subfield ".$field['tag'].$field['subfield_cd']." to database.");
 				}
 			}
 		}

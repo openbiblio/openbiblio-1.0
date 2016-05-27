@@ -73,14 +73,14 @@ function postBiblioChange($nav) {
 			 * fields[$250$a]['data']='another testing'
 			 */
 		list($tag, $suf, $rep) = explode('$', $t);
-    $f['tag'] = $tag;
-    $f['subfield_cd'] = $suf;
+        $f['tag'] = $tag;
+        $f['subfield_cd'] = $suf;
 		$codes = explode('&', $f['codes']);
 		$tmp = explode('=',$codes[1]);
 		$f['fieldid'] = $tmp[1];
 		$tmp = explode('=',$codes[0]);
 		$f['subfieldid'] = $tmp[1];
-    ## fields[$250$a]['data'] same for both formats
+        ## fields[$250$a]['data'] same for both formats
 		return $f;
 	}
 	## --------------------------------------------- ##

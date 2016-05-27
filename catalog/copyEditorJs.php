@@ -9,7 +9,8 @@
 
 var ced = {
 	init: function () {
-		ced.url = '../catalog/catalogServer.php';
+		ced.catalogSrvr = '../catalog/catalogServer.php';
+        ced.listSrvr = '../shared/listSrvr.php';
 		ced.initWidgets();
 		ced.resetForm();
 
@@ -18,7 +19,7 @@ var ced = {
 		$('#copySubmitBtn').on('click',null,ced.doCopyUpdate);
 		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 
-        ced.getStatusCds();
+        ced.fetchStatusCds();
 
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
@@ -50,24 +51,32 @@ var ced = {
 	},
 	//----//
 	doGetBarcdNmbr: function () {
-		$.getJSON(ced.url,{'mode':'getNewBarcd'}, function(jsonInpt){
-		  $('#copyBarcode_nmbr').val(jsonInpt.barcdNmbr)         // e.g. pattern="[0]{10}"
-														.attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
+		$.getJSON(ced.catalogSrvr,{'mode':'getNewBarcd'}, function(jsonInpt){
+		    $('#copyBarcode_nmbr').val(jsonInpt.barcdNmbr)
+                     // e.g. pattern="[0]{10}"
+			     .attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
 		});
 	},
-	getStatusCds: function () {
-		$.getJSON(ced.url,{'mode':'getStatusCds'}, function(jsonInpt){
-            var opts = '';
-    	  	$.each(jsonInpt, function (n, opt) {
-                var s = '<option value="' +opt['code']+ '"';
-                if (opt['default_flg'] == 'Y') {
-                    s += ' SELECTED';
-                };
-                s += '>' +opt['description']+ '</option>';
-                opts += s;
-            });
-            $('#status_cd').html(opts);
+/*
+	//----//
+    fetchDfltSite: function() {
+        $.getJSON(ced.listSrvr,{mode:'getDefaultSite'}, function(data){
+            ni.dfltSite = data[0];
+			ni.fetchSiteList(); // chaining
         });
+    },
+*/
+	//----//
+	fetchSiteList: function () {
+        var siteList = list.getSiteList();
+		$('#copySite').html(siteList);
+	},
+	//----//
+	fetchStatusCds: function () {
+        var statusList = list.getStatusCds();
+console.log('copyEditor: ');
+console.log(statusList);
+        $('#status_cd').html(statusList);
 	},
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
@@ -79,7 +88,7 @@ var ced = {
 			currCopyId = bs.crntCopy.copyid;
 		}
 
-        $.get(ced.url,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
+        $.get(ced.catalogSrvr,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
             if(response.length > 0){
             	$('#copySubmitBtn').disable(); //.css('color', '#888888');
             	$('#editRsltMsg').html(response).show();
@@ -107,7 +116,7 @@ var ced = {
 		$('#copyTbl #status_cd').val(crntCopy.status);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
 
-        ced.getStatusCds();
+        ced.fetchStatusCds();
 
 		// custom fields
 		var fldData = crntCopy.custom;
@@ -130,14 +139,17 @@ var ced = {
 		// Set 'update' button to enabled in case it wasn't from a previous edit
 		$('#copySubmitBtn').enable();
 
-	  // prevent submit button from firing a 'submit' action
+	    // prevent submit button from firing a 'submit' action
 		return false;
 	},
 	doCopyNew: function () {
-		if ($('#autobarco:checked').length > 0) {
-      ced.doGetBarcdNmbr();
-      $('#copyBarcode_nmbr').disable();
-		}
+        if ($('#autobarco:checked').length > 0) {
+            ced.doGetBarcdNmbr();
+            $('#copyBarcode_nmbr').disable();
+        }
+        ced.fetchStatusCds();
+        ced.fetchSiteList();
+
 		$('#copySite').val("<?php echo Settings::get('library_name');?>");
 		$('#copyMode').val('newCopy');
 
@@ -179,7 +191,7 @@ var ced = {
 			params += '&'+this.id+'='+$(this).val();
 		});
 
-	  $.post(ced.url,params, function(response){
+	  $.post(ced.catalogSrvr,params, function(response){
 	  	if(response == '!!success!!') {
 				$('#copyCancelBtn').val("Go Back");
 				$('#editRsltMsg').html('Copy updated successfully!').show();
@@ -194,7 +206,7 @@ var ced = {
 			var btnid = e.currentTarget.id,
 					copyid = btnid.split('-')[1],
 	    		params = "&mode=deleteCopy&bibid="+idis.bibid+"&copyid="+copyid;
-	  	$.post(ced.url,params, function(response){
+	  	$.post(ced.catalogSrvr,params, function(response){
 	  	  $('#editRsltMsg').html(response).show();
 	  		idis.fetchCopyInfo(); // refresh copy display
 	  	});

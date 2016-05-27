@@ -126,8 +126,15 @@ class Queryi
 	 * might be something like PEAR::DB's sequences.
 	 */
 	protected function getInsertID() {
-		return $core->$dbh->insert_id;
-	}
+		//return $core->$dbh->insert_id;
+
+        // this works for mySQL; others ???????
+        $core = DbCore::getInstance();
+        $rslt = $core->dbh->query('SELECT LAST_INSERT_ID() as last_id');
+        $id = $rslt->fetchAll();
+        $last_id = intval($id[0]['last_id']);
+        return $last_id;
+    }
 
 	/** Locking functions -MS
 	 *
@@ -139,7 +146,7 @@ class Queryi
 	 *
 	 * Calls to lock/unlock may be nested, but must be paired.
 	 *
-	 * ---- Locking temporarily disabled - not working with PHP5 msqli interface ----
+	 * ---- Locking temporarily disabled - not working with PHP5 msqli interface - FL ----
 	 */
 
 	public function clearLocks () {

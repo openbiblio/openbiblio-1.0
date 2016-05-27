@@ -3,8 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
-  //require_once(REL(__FILE__, "../shared/logincheck.php"));
+    require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 	require_once(REL(__FILE__, '../model/Online.php'));
@@ -14,7 +13,7 @@
 	function postNewBiblio() {
 		require_once(REL(__FILE__, "../model/Biblios.php"));
 		require_once(REL(__FILE__, "../classes/Marc.php"));
-	  include(REL(__FILE__,'../catalog/biblioChange.php'));
+	    include(REL(__FILE__,'../catalog/biblioChange.php'));
 
 		/* ---convert old format to new---
 		## legacy format, still used by 'NewItems' ##
@@ -48,9 +47,9 @@
 		}
 		$_POST['fields'] = $rec;
 		## ----------------------------------
-	  $nav = "newconfirm";
-  	$msg = PostBiblioChange($nav);
-	  echo $msg;
+	    $nav = "newconfirm";
+  	    $msg = PostBiblioChange($nav);
+	    echo $msg;
 	}
 	## ---------------------------------- ##
 
@@ -90,64 +89,60 @@
 	$postVars['numHosts'] = count($hosts);
 	$postVars['session'] = $_SESSION;
 
-## main body of code
-switch ($_REQUEST[mode]){
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'getBiblioFields':
-	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
-	  // above begins execution immediately after loading
-	  break;
+    ## main body of code
+    switch ($_REQUEST[mode]){
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'getBiblioFields':
+    	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
+    	  // above begins execution immediately after loading
+    	  break;
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'doInsertBiblio':
-	  postNewBiblio();
-	  break;
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'doInsertBiblio':
+    	  postNewBiblio();
+    	  break;
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'getHosts':
-		echo json_encode($postVars[hosts]);
-		break;
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'getHosts':
+    		echo json_encode($postVars[hosts]);
+    		break;
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'getOpts':
-		echo json_encode($postVars);
-		break;
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'getOpts':
+    		echo json_encode($postVars);
+    		break;
 
-		break;
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'getCutter':
+    		if ($postVars[cutterType] == 'LoC') {
+    			require_once('../catalog/olCutterLoc.php');
+    		}
+    		elseif ($postVars[cutterType] == 'CS3') {
+    			require_once('../catalog/olCutterCs3.php');
+    		}
+    		else {
+    			echo "Invalid cutter type selection - '$postVars[cutterType]'. <br />";
+    			exit;
+    		}
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'getCutter':
-		if ($postVars[cutterType] == 'LoC') {
-			require_once('../catalog/olCutterLoc.php');
-		}
-		elseif ($postVars[cutterType] == 'CS3') {
-			require_once('../catalog/olCutterCs3.php');
-		}
-		else {
-			echo "Invalid cutter type selection - '$postVars[cutterType]'. <br />";
-			exit;
-		}
+    		$temp['cutter'] = getCutter($_REQUEST['author']);
+    		echo json_encode($temp);
+    		break;
 
-		$temp['cutter'] = getCutter($_REQUEST['author']);
-		echo json_encode($temp);
-		break;
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'search':
+    		require_once('../catalog/olSearch.php'); ## will respond directly, depending on what is received
+    		break;
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'search':
-		require_once('../catalog/olSearch.php'); ## will respond directly, depending on what is received
-		break;
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	case 'abandon':
+    		for ($n=0; $n<$postVars[numHosts]; $n++) {
+    			yaz_close($id[$n]);
+    		}
+    		break;
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	case 'abandon':
-		for ($n=0; $n<$postVars[numHosts]; $n++) {
-			yaz_close($id[$n]);
-		}
-		break;
-
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-	default:
-	  echo T("invalid mode").": $_POST[mode] <br />";
-		break;
-}
-
-?>
+      #-.-.-.-.-.-.-.-.-.-.-.-.-
+    	default:
+    	  echo T("invalid mode").": $_POST[mode] <br />";
+    		break;
+    }

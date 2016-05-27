@@ -116,7 +116,7 @@
 	case 'getCrntMbrInfo':
 		require_once(REL(__FILE__, "../functions/info_boxes.php"));
 		echo currentMbrBox();
-	  break;
+	    break;
  	case 'getMediaDisplayInfo':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$theDb = new MaterialFields;
@@ -175,17 +175,6 @@
 		}
 		echo json_encode($cpys);
 	  break;
-
-	case 'getStatusCds':
-        $theDb = new CopyStatus;
-        $rslt = $theDb->getStatusCds();
-        //while ($row = $rslt->fetch()) {
-        foreach ($rslt as $row) {
-            //print_r($row);
-            $cdData[] = $row;
-        }
-		echo json_encode($cdData);
-		break;
 
 	case 'updateBiblio':
 		## fetch biblio object with current DB data
