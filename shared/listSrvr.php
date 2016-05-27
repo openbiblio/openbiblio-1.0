@@ -63,6 +63,12 @@
 		$list = getDmData($db);
 		echo json_encode($list);
 	  break;
+	case 'getDefaultCollection':
+		require_once(REL(__FILE__, "../model/Collections.php"));
+        $db = new Collections;
+        $rslt = $db->getDefault();
+		echo json_encode($rslt);
+        break;
 
 	case 'getInputTypes':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
@@ -143,6 +149,12 @@
 		$list = getDbData($db);
 		echo json_encode($list);
 	  break;
+	case 'getDefaultMaterial':
+		require_once(REL(__FILE__, "../model/Sites.php"));
+        $db = new Sites;
+        $rslt = $db->getDefault();
+		echo json_encode($rslt);
+        break;
 
 	case 'getStateList':
 		require_once(REL(__FILE__, "../model/States.php"));

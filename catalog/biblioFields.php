@@ -98,17 +98,19 @@
  				
 		// get field specs for this material type in 'display postition' order
 		$mf = new MaterialFields;
-		$fields = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
+		$fieldSet = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
 
 		## anything to process for current media type (material_cd) ?
 		//if ($fields->count() == 0) {
-		if ($fields->num_rows == 0) {
+        $fields = $fieldSet->fetchAll();
+		if (count($fields) == 0) {
 			echo '<tr><td colspan="2" >'.T("No fields to fill in.").'</td></tr>\n';
 		}
 
 		## build an array of fields to be displayed on user form
 		$inputs = array();
-		while (($f=$fields->fetch_assoc())) {
+		//while (($f=$fields->fetch_assoc())) {
+        foreach ($fields as $f) {
 		  #  make multiples of those so flagged
 			for ($n=0; $n<=$f['repeatable']; $n++) {
 				array_push($inputs, mkinput(NULL, NULL, NULL, $f));

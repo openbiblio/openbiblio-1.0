@@ -12,10 +12,6 @@
 var ni = {
 	<?php
 		echo "empty: '".T("Nothing Found")."',\n";
-		//$colTypes = new Collections;
-		//echo "dfltColl: '".$colTypes->getDefault()."',\n";
-		//$medTypes = new MediaTypes;
-		//echo "dfltMedia: '".$medTypes->getDefault()."',\n";
 	?>
 
 	init: function () {
@@ -177,24 +173,44 @@ var ni = {
 			$('#materialCd').on('change',null,function () {
 				ni.doMakeItemForm($('#materialCd').val());
 			});
-			ni.fetchCollectionList(); // chaining
+			ni.fetchDfltCollection(); // chaining
 		});
 	},
+    fetchDfltCollection: function() {
+        $.getJSON(ni.listSrvr,{mode:'getDefaultCollection'}, function(data){
+            ni.dfltColl = data[0];
+			ni.fetchCollectionList(); // chaining
+        });
+    },
 	fetchCollectionList: function () {
-	  $.getJSON(ni.listSrvr,{mode:'getCollectionList'}, function(data){
+	    $.getJSON(ni.listSrvr,{mode:'getCollectionList'}, function(data){
 			var html = '';
-      for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
+            for (var n in data) {
+				html+= '<option value="'+n+'" ';
+                if (n == ni.dfltColl) {
+                    html+= 'SELECTED '
+                }
+                html+= '>'+data[n]+'</option>';
 			}
 			$('#itemEditColls').html(html);
-			ni.fetchSiteList(); // chaining
+			ni.fetchDfltSite(); // chaining
 		});
 	},
+    fetchDfltSite: function() {
+        $.getJSON(ni.listSrvr,{mode:'getDefaultSite'}, function(data){
+            ni.dfltSite = data[0];
+			ni.fetchSiteList(); // chaining
+        });
+    },
 	fetchSiteList: function () {
-	  $.getJSON(ni.listSrvr,{mode:'getSiteList'}, function(data){
+	    $.getJSON(ni.listSrvr,{mode:'getSiteList'}, function(data){
 			var html = '';
-      for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
+            for (var n in data) {
+				html+= '<option value="'+n+'" ';
+                if (n == ni.dfltSite) {
+                    html+= 'SELECTED '
+                }
+                html+= '>'+data[n]+'</option>';
 			}
 			$('#copySite').html(html);
 		});
