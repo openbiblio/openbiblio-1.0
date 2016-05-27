@@ -58,7 +58,8 @@
 	## --- MUST BE FIRST !!!!! ---
 	$optr = new Opts;
 	$opts = $optr->getAll();
-	$postVars = $opts->fetch_assoc();
+	//$postVars = $opts->fetch_assoc();
+	$postVars = $opts->fetchAll();
 
 	## prepare list of hosts
 	if (!empty($_POST['srchHost'])) {	
@@ -75,8 +76,9 @@
 	$hptr = new Hosts;
 	$hosts = array();
 	$hSet = $hptr->getMatches(array('active'=>'y'), 'seq');
-	while ($row = $hSet->fetch_assoc()) {
-		if (!empty($useHosts)) {	
+	//while ($row = $hSet->fetch_assoc()) {
+	foreach ($hSet as $row) {
+		if (!empty($useHosts)) {
 	  	if (in_array($row['id'], $useHosts)) {
 				$hosts[] = $row;
 			}
@@ -109,6 +111,8 @@ switch ($_REQUEST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'getOpts':
 		echo json_encode($postVars);
+		break;
+
 		break;
 
   #-.-.-.-.-.-.-.-.-.-.-.-.-

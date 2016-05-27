@@ -123,6 +123,12 @@
 		}
 		echo json_encode($list);
 	  break;
+	case 'getDefaultMaterial':
+		require_once(REL(__FILE__, "../model/MediaTypes.php"));
+        $db = new MediaTypes;
+        $rslt = $db->getDefault();
+		echo json_encode($rslt);
+        break;
 
 	case 'getMbrTypList':
 		require_once(REL(__FILE__, "../model/MemberTypes.php"));

@@ -37,11 +37,12 @@ class DmTable extends DBTable {
 		$rslt = $this->getMatches(array('default_flg'=>'Y'));
         $recs = $rslt->fetchAll();
         $nRecs = count($recs);
-		if ($nRecs != 1) {
+        //echo "nRecs = $nRecs : ";print_r($recs);echo "<br />\n";
+		if ($nRecs < 1) {
 			return NULL;
 		} else {
 			//$r = $recs->fetch_assoc();
-			return $recs['code'];
+			return $recs[0]['code'];
 		}
 	}
 

@@ -12,10 +12,10 @@
 var ni = {
 	<?php
 		echo "empty: '".T("Nothing Found")."',\n";
-		$colTypes = new Collections;
-		echo "dfltColl: '".$colTypes->getDefault()."',\n";
-		$medTypes = new MediaTypes;
-		echo "dfltMedia: '".$medTypes->getDefault()."',\n";
+		//$colTypes = new Collections;
+		//echo "dfltColl: '".$colTypes->getDefault()."',\n";
+		//$medTypes = new MediaTypes;
+		//echo "dfltMedia: '".$medTypes->getDefault()."',\n";
 	?>
 
 	init: function () {
@@ -151,20 +151,26 @@ var ni = {
 	},
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(ni.url,{mode:'getOpts'}, function(data){
+        $.getJSON(ni.url,{mode:'getOpts'}, function(data){
 			ni.opts = data;
-			ni.fetchMaterialList(); // chaining
+			ni.fetchDfltMedia(); // chaining
 		});
 	},
+    fetchDfltMedia: function() {
+        $.getJSON(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
+            ni.dfltMedia = data[0];
+			ni.fetchMaterialList(); // chaining
+        });
+    },
 	fetchMaterialList: function () {
-	  <?php // get default material type
-			$matTypes = new MediaTypes;
-			echo "var dfltMedia = ".$matTypes->getDefault().";";
-	  ?>
-	  $.getJSON(ni.listSrvr,{mode:'getMediaList'}, function(data){
+        $.getJSON(ni.listSrvr,{mode:'getMediaList'}, function(data){
 			var html = '';
-      for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
+            for (var n in data) {
+				html+= '<option value="'+n+'" ';
+                if (n == ni.dfltMedia) {
+                    html+= 'SELECTED '
+                }
+                html+= '>'+data[n]+'</option>';
 			}
 			$('#srchMatTypes').html(html);
 			$('#itemMediaTypes').html(html);
