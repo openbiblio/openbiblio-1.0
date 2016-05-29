@@ -149,10 +149,15 @@
 		echo json_encode($list);
 	  break;
 	case 'getDefaultSite':
+/*
 		require_once(REL(__FILE__, "../model/Sites.php"));
         $db = new Sites;
         $rslt = $db->getDefault();
 		echo json_encode($rslt);
+*/
+        $siteId = Settings::get('library_name');
+echo $siteId;
+        return $siteId;
         break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
