@@ -833,6 +833,7 @@ $trans["Service"] = "Service";
 $trans["Set"] = "Régler";
 $trans["Setting zero days no checkout"] = "Réglage des jours due à zéro rend toute la collection disponible pour la caisse.";
 $trans["Shelve all items"] = "Classer tous les éléments";
+$trans["Shelve directly"] = "Classer directement";
 $trans["Shelve selected items"] = "Éléments sélectionnés Shelve";
 $trans["Shelving Cart Contents"] = "Étagères Panier";
 $trans["Show in OPAC"] = "Afficher dans l'OPAC";

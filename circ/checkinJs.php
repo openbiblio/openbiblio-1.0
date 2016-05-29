@@ -28,7 +28,7 @@ var chk = {
 		chk.fetchShelvingCart();
 		
 		$('#barcodeNmbr').on('change',null,chk.getCopyTitle);
-		$('#addToCrtBtn').on('click',null,chk.doCheckin);
+		$('#checkInBtn').on('click',null,chk.doCheckin);
 
 		$('.markAllBtn').on('click',null,function (e) {
 			e.preventDefault();
@@ -102,6 +102,7 @@ var chk = {
 				$('#msgArea').html(response);
 				$('#msgDiv').show().hide(10000);
 				chk.fetchShelvingCart();  //update screen
+				$('#shelvedCopiesList').add('<tr><td>Barcode</td><td>Title</td></tr>');
 			}
 		});
 		return false;

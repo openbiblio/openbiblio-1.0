@@ -25,8 +25,10 @@
 		<legend><?php echo T("Check In"); ?></legend>
 		<label for="barcodeNmbr"><?php echo T("Barcode Number").":"; ?></label>
 		<input type="text" id="barcodeNmbr" name="barcodeNmbr" size="18" />
-		<input type="hidden" id="ckinMode" name="mode" value="doItemCheckin">
-		<input type="button" id="addToCrtBtn" value="<?php echo T("Add to Shelving Cart"); ?>" />
+		<input type="hidden" id="ckinMode" name="mode" value="doItemCheckin" />
+		<input type="checkbox" id="ckinDirectly" name="direct" />
+		<label for="ckinDirecly"><?php echo T("Shelve directly"); ?></label>
+		<input type="button" id="checkInBtn" value="<?php echo T("Check In"); ?>" />
 		<br />
 		<input type="text" readonly id="ckinTitle" size="100" />
 	</fieldset>
@@ -57,6 +59,22 @@
 		<button class="shelvItemBtn"><?php echo T("Shelve selected items"); ?></button>
 		<button class="markAllBtn" ><?php echo T("Mark all"); ?></button>
 		<button class="clerAllBtn" ><?php echo T("Clear all"); ?></button>
+	</fieldset>
+	</form>
+	<form id="checkedInForm" name="checkedInForm" >
+	<fieldset>
+		<legend><?php echo T("Shelved Copies"); ?></legend>
+			<table id="shelvedCopiesList">
+				<thead>
+					<tr>
+						<th>&nbsp;</th>
+						<th><?php echo T("Barcode"); ?></th>
+						<th><?php echo T("Title"); ?></th>
+					</tr>
+				</thead>
+				<tbody class="striped" ><!-- filled in by server --></tbody>
+			</table>
+		</fieldset>
 	</fieldset>
 	</form>
 </div>
