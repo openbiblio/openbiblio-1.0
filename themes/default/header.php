@@ -30,7 +30,7 @@
 ?>
 
 <aside id="sidebar">
-    <div id="skiptocontent"><a href="#content" class="warning">skip to main content</a></div>
+    <div id="skiptocontent"><a href="#content" class="warning"><?php echo T("Skip to main content") ?></a></div>
 
 	<header class="notForInstall">
 		<h3 class="theHead">

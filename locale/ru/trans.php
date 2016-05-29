@@ -337,6 +337,7 @@ $trans["Site code"] = "Код организационной единицы";
 $trans["Site, Member"] = "организационной единицы, посетитель";
 $trans["Site, Out Date, Title"] = "организационной единицы, посетитель, дата, заглавие";
 $trans["Sites"] = "организационние единици";
+$trans["Skip to main content"] = "Перейти к основному содержанию";
 $trans["Sort by"] = "Сортировка:";
 $trans["SRU"] = "SRU";
 $trans["Staff Admin"] = "Сотрудники";

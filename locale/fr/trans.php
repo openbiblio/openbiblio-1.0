@@ -836,6 +836,7 @@ $trans["Shelve all items"] = "Classer tous les éléments";
 $trans["Shelve directly"] = "Classer directement";
 $trans["Shelve selected items"] = "Éléments sélectionnés Shelve";
 $trans["Shelving Cart Contents"] = "Étagères Panier";
+$trans["Skip to main content"] = "Aller au contenu principal";
 $trans["Show in OPAC"] = "Afficher dans l'OPAC";
 $trans["Show Marc Tags"] = "Afficher Marc Balises";
 $trans["Site"] = "Site";

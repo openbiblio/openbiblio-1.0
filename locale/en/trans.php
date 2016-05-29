@@ -872,6 +872,7 @@ $trans["Site Usage"] = "Site Usage";
 $trans["Site, Member"] = "Site, Member";
 $trans["Site, Out Date, Title"] = "Site, Out Date, Title";
 $trans["Sites"] = "Sites";
+$trans["Skip to main content"] = "Skip to main content";
 $trans["Soonest Delivery<br />Date Available"] = "Soonest Delivery<br />Date Available";
 $trans["Sort by"] = "Sort by";
 $trans["Sort By"] = "Sort By";
