@@ -450,7 +450,7 @@ div#configDiv{
 		}
 	/*************************************************/
 	aside { 
-		position:fixed; top:1%; left:1%; float:left; width:15%; 
+		position:fixed; top:1%; left:1%; float:left; width:15%;
 		padding-bottom:0.2rem; height:auto;
 		font-size:0.87rem; /* 14/16 */
 		box-shadow:0.2rem 0.4rem 0.6rem -0.2rem #000;
@@ -480,7 +480,7 @@ div#configDiv{
 	ul.nav_main li { display:block; padding:0; }
 	
 	/*************************************************/
-	div#content { position:absolute; top:1%; left:17.5%; width:auto; padding:2px 2px 2px 2px; }
+	main#content { position:absolute; top:1%; left:17.5%; width:auto; padding:2px 2px 2px 2px; }
 	#content > div { display:none; /* hide child screen elements until wanted */ }
 	#srchSpecs { /*display:box; box-orient:horizontal;*/ }
 	.inlineFS { display:inline-block; /*box-flex:1; box-align:start;*/ }
