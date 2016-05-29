@@ -57,15 +57,6 @@ var ced = {
 			     .attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
 		});
 	},
-/*
-	//----//
-    fetchDfltSite: function() {
-        $.getJSON(ced.listSrvr,{mode:'getDefaultSite'}, function(data){
-            ni.dfltSite = data[0];
-			ni.fetchSiteList(); // chaining
-        });
-    },
-*/
 	//----//
 	fetchSiteList: function () {
         var siteList = list.getSiteList();
@@ -73,9 +64,7 @@ var ced = {
 	},
 	//----//
 	fetchStatusCds: function () {
-        var statusList = list.getStatusCds();
-console.log('copyEditor: ');
-console.log(statusList);
+        var statusList = list.getStatusCds($('#status_cd'));
         $('#status_cd').html(statusList);
 	},
 	chkBarcdForDupe: function () {

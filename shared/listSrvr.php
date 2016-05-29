@@ -184,6 +184,12 @@ echo $siteId;
 		$list = getDmData($db);
 		echo json_encode($list);
 		break;
+	case 'getDefaultStatusCd':
+		require_once(REL(__FILE__, "../model/CopyStatus.php"));
+        $db = new CopyStatus;
+        $rslt = $db->getDefault();
+		echo json_encode($rslt);
+        break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getThemeList':

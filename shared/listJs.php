@@ -84,19 +84,23 @@ console.log(list.opts);
         });
     },
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getStatusCds: function () {
+    getStatusCds: function (where) {
+        $.getJSON(list.server,{mode:'getDefaultStatusCd'}, function(data){
+            list.dfltCd = data;
+			      list.StatusListPt2(where); // chaining
+        });
+    },
+    StatusListPt2: function (where) {
     	  $.getJSON(list.server,{'mode':'getStatusCds'}, function(data){
-console.log(data);
             var html = '';
-    	  	  $.each(jsonInpt, function (n, data) {
-                html += '<option value="' +data['code']+ '"';
-                if (opt['default_flg'] == 'Y') {
-                    html += ' SELECTED';
-                };
-                html += '>' +data['description']+ '</option>';
-            });
-console.log("listJs")
-console.log(html);
+            for (var cd in data) {
+        			  html+= '<option value="'+cd+'" ';
+                if (cd == list.dfltCd) {
+                    html+= 'SELECTED '
+                }
+                html+= '>'+data[cd]+'</option>';
+    		    }
+            where.html(html);
             return html;
         });
     },
