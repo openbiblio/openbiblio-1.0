@@ -76,12 +76,16 @@ class Queryi
 		return $results;
 	}
 	public function select1($sql) {
-		$r = $this->select($sql);
-		if ($r->num_rows != 1) {
+		$rslt = $this->select($sql);
+		//if ($r->num_rows != 1) {
+        $recs = $rslt->fetchAll();
+        $nRecs = count($recs);
+        if ($nRecs != 1) {
 		  return T("NothingFoundError");
 		  //echo "sql=$sql<br />\n";
 		} else {
-			return $r->fetch_assoc();
+			//return $r->fetch_assoc();
+            return $recs;
 		}
 	}
 	public function select01($sql) {
