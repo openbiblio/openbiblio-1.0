@@ -127,13 +127,9 @@ function staff_menu() {
 		//Nav::node('working/testApp', T("CSVImport"), "../catalog/importCsvForms.php");
 
 	##-------------------------------------------------------------------------------------##
-	$text = "../shared/help.php";
-	$helpurl = "javascript:popSecondary('" . $text;
+	$text = Settings::get('help_link');
+	$helpurl = "javascript:popSecondary('" . $text . "');";
 
-	if (isset($helpPage)) {
-		$helpurl .= "?page=".$helpPage;
-	}
-	$helpurl .= "')";
 	Nav::node('help', T("Help"), $helpurl);
 	
 	##-------------------------------------------------------------------------------------##
