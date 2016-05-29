@@ -393,11 +393,10 @@ class Calendar {
 	class EditingCalendar extends Calendar {
 		function __construct($calendar, $start, $end) {
 			$this->calendar = $calendar;
-
 			$calendars = new Calendars;
 			$rows = $calendars->getDays($calendar, $start, $end);
 			$this->open = array();
-			while ($row = $rows->fetch_assoc()) {
+			foreach ($rows as $row) {
 				if ($row['open'] == 'No') {
 					$this->open[$row['date']] = 'No';
 				} else {
