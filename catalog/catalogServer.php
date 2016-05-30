@@ -219,11 +219,11 @@
         	return;
         }
         $theDb = new Copies;
-        echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+        echo $theDb->insertCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
         break;
 	case 'updateCopy':
-	  $theDb = new Copies;
-	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+	    $theDb = new Copies;
+	    //echo $theDb->updateCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
 		break;
 	case 'getBibsFrmCopies':
 	  $theDb = new Copies;

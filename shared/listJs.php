@@ -58,19 +58,18 @@ var list = {
     getOpts: function () {
         $.getJSON(list.server,{mode:'getOpts'}, function(data){
           list.opts = data;
-console.log(list.opts);
           return list.opts;
         });
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getSiteList: function() {
+    getSiteList: function(where) {
         $.getJSON(list.server,{mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
-			      list.siteListPt2(); // chaining
+			      list.siteListPt2(where); // chaining
         });
     },
-    siteListPt2: function () {
+    siteListPt2: function (where) {
         $.getJSON(list.server, {mode:'getSiteList'}, function(data){
     		    var html = '';
             for (var n in data) {
@@ -80,6 +79,7 @@ console.log(list.opts);
                 }
                 html+= '>'+data[n]+'</option>';
     		    }
+            where.html(html);
             return html;
         });
     },
