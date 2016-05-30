@@ -198,8 +198,8 @@
 	    break;
 
 	case 'deleteBiblio':
-        $bibs = new Biblios;
-        $bibs->deleteOne($_REQUEST['bibid']);
+        $bibs = new Biblio($_REQUEST['bibid']);
+        $bibs->deleteBiblio();
         echo T("Delete completed");
         break;
 
@@ -219,11 +219,11 @@
         	return;
         }
         $theDb = new Copies;
-        echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+        echo $theDb->insertCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
         break;
 	case 'updateCopy':
-	  $theDb = new Copies;
-	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+	    $theDb = new Copies;
+	    //echo $theDb->updateCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
 		break;
 	case 'getBibsFrmCopies':
 	  $theDb = new Copies;

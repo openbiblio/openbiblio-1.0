@@ -197,7 +197,7 @@ var ni = {
 		});
 	},
 	fetchSiteList: function () {
-        var listHtml = list.getSiteList();
+        var listHtml = list.getSiteList($('#copySite'));
 		$('#copySite').html(listHtml);
 	},
 
@@ -235,13 +235,12 @@ var ni = {
 	 	var parms=$('#newBiblioForm').serialize();
 		parms += '&mode=doInsertBiblio';
 	    $.post(ni.url,parms, function(response){
-            //console.log(response);
     	  	if (response.indexOf('<') == 0) {
     			$('#msgDiv').html(response).show();
     		}
     		else {
     	    	var rslt = $.parseJSON(response);
-    	    	ni.bibid = response.bibid;
+    	    	ni.bibid = rslt['bibid'];
     	  		ni.showCopyEditor(ni.bibid);
       	    }
     	});
@@ -250,15 +249,14 @@ var ni = {
 	
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
-	showCopyEditor: function (e) {
-      	//e.stopPropagation();
+	showCopyEditor: function (bibid) {
       	$('#selectionDiv').hide();
       	var crntsite = ni.opts.session.current_site
-		$('#copyBibid').val(ni.bibid);
+		$('#copyBibid').val(bibid);
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
-		ced.bibid = ni.bibid;
-		ced.doCopyNew(e);
+		//ced.bibid = bibid;
+		ced.doCopyNew(bibid);
 
 		/* prepare in advance for photo editing */
 		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
@@ -276,7 +274,7 @@ var ni = {
 	doPhotoAdd: function () {
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
-    $('#fotoMsg').hide();
+        $('#fotoMsg').hide();
 		$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 		$('#fotoBibid').val(ni.bibid);
 
@@ -289,11 +287,11 @@ var ni = {
 
 		$('#fotoMode').val('addNewPhoto')
 		$('#fotoSrce').attr({'required':true, 'aria-required':true});
-	  $('#fotoSrce').val('')
-	  $('#fotoBibid').val(ni.bibid);
+	    $('#fotoSrce').val('')
+	    $('#fotoBibid').val(ni.bibid);
 		wc.eraseImage();
-  	$('#fotoName').val(ni.bibid+'.jpg');
-    $('#searchDiv').hide();
+  	    $('#fotoName').val(ni.bibid+'.jpg');
+        $('#searchDiv').hide();
 		$('#photoEditorDiv').show();
 	},
 

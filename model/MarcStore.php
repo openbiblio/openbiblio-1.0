@@ -84,10 +84,13 @@ class MarcStore extends Queryi{
 	 * delete the existing MARC records to simplify updates
 	 */
 	public function delete($bibid) {
+//echo "bibid= $bibid <br />\n";
 		$this->lock();
 		$subsql = $this->mkSQL("delete from biblio_subfield where bibid=%N ", $bibid);
+//echo "$subsql <br />\n";
 		$this->act($subsql);
 		$fldsql = $this->mkSQL("delete from biblio_field where bibid=%N ", $bibid);
+//echo "$fldsql <br />\n";
 		$this->act($fldsql);
 		$this->unlock();
 	}
