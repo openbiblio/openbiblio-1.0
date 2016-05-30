@@ -14,3 +14,4 @@
 	$locales = array( "en"=>"English" );
 	$locales = array( "fr"=>"Francais" );
 	$locales = array( "ru"=>"русский" );
+	$locales = array( "es"=>"Español" );
