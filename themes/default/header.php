@@ -16,6 +16,7 @@
 
 	</head>
 	<body>
+
     <!--[if lt IE 8]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -29,6 +30,8 @@
 ?>
 
 <aside id="sidebar">
+    <div id="skiptocontent"><a href="#content" class="warning"><?php echo T("Skip to main content") ?></a></div>
+
 	<header class="notForInstall">
 		<h3 class="theHead">
 			<?php 
@@ -81,7 +84,7 @@
 <!-- **************************************************************************************
 		 * beginning of main body
 		 **************************************************************************************-->
-<div id="content" role="main" aria-role="main">
+<main id="content" role="main" aria-role="main">
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an <strong>outdated</strong> browser.<br /> 
 			Please <a href="http://browsehappy.com/">upgrade your browser</a> 

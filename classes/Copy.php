@@ -81,6 +81,14 @@ class Copy {
 		$this->update_copy();
 	}
 
+    /**
+     * delete copy and all related records
+     */
+    public function deleteCopy() {
+		$ptr = new Copies;
+		$ptr->deleteCopy($this->copyid);
+    }
+
 	##----------------------##
 	private function insert_statusHist () {
 		$newHistid = $this->hist->insert(array(
@@ -123,7 +131,7 @@ class Copy {
 		$flds = $ptr->getCustomFields($this->copyid, true);
 		if (!$flds) return;
 		foreach ($flds as $fld) {
-      $this->hdrFlds['custom'][$fld['code']] = $fld['data'];
+            $this->hdrFlds['custom'][$fld['code']] = $fld['data'];
 		}
 	}
 	private function fetch_status() {
@@ -162,10 +170,10 @@ class Copy {
 			$ptr = new Bookings;
 			$this->book = $ptr;
 			$rslt = $ptr->getByHistid($this->hdrFlds['histid']);
-        $this->hdrFlds['bookingid'] = $rslt['bookingid'];
-        $this->hdrFlds['out_dt'] = explode(' ', $rslt['out_dt'])[0];
-        $this->hdrFlds['due_dt'] = $rslt['due_dt'];
-        $this->hdrFlds['daysLate'] = $ptr->getDaysLate($rslt);
+            $this->hdrFlds['bookingid'] = $rslt['bookingid'];
+            $this->hdrFlds['out_dt'] = explode(' ', $rslt['out_dt'])[0];
+            $this->hdrFlds['due_dt'] = $rslt['due_dt'];
+            $this->hdrFlds['daysLate'] = $ptr->getDaysLate($rslt);
 		}
 	}
 }

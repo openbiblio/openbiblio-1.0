@@ -66,7 +66,6 @@
 		assert(!$err);
 		$end = Date::addMonths($start, 12);
 		$cal = new EditingCalendar($template, $start, $end);
-		//echo '<div style="padding: 4px; border-top: solid #006500 2px; border-bottom: solid #006500 2px">';
 		echo '<div style="padding: 4px;" >';
 		echo $cal->setStartMonth($d['mon']);
 		echo $cal->getYearView($d['year']);

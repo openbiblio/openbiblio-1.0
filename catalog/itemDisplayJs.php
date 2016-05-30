@@ -149,27 +149,28 @@ var idis = {
 		$('#marcBtn').val(idis.showMarc);
 
 		if (!idis.lookupAvailable)$('#onlnUpdtBtn').hide();
-	  $('#searchDiv').hide();
-    $('#biblioListDiv').hide()
+	    $('#searchDiv').hide();
+        $('#biblioListDiv').hide()
 		$('#biblioDiv').show();
 	},
 
 	doItemDelete: function (biblio) {
-		//console.log('there are '+bs.copyJSON.length+' copies.');
+        //console.log(biblio);
+        idis.bibid = biblio.hdr.bibid;
 		if (bs.copyJSON) {
 			alert('You must delete all copies before you can delete an item!');
 		}
 		else {
-	  	if (confirm('<?php echo T("Are you sure you want to delete this item?"); ?>: #'+ie.bibid)) {
-	    	var params = "&mode=deleteBiblio&bibid="+idis.bibid;
-	  		$.post(idis.url,params, function(response){
-	  		  $('#rsltMsg').html(response);
-					if (bs.srchType == 'barCd')
-						bs.doBarCdSearch();
-					else if (bs.srchType = 'phrase')
-						bs.doPhraseSearch();
-	  			$('#biblioDiv').hide();
-	  		});
+    	  	if (confirm('<?php echo T("Are you sure you want to delete this item?"); ?>: #'+idis.bibid)) {
+    	    	var params = "&mode=deleteBiblio&bibid="+idis.bibid;
+    	  		$.post(idis.url,params, function(response){
+    	  		    $('#rsltMsg').html(response);
+    				if (bs.srchType == 'barCd')
+    					bs.doBarCdSearch();
+    				else if (bs.srchType = 'phrase')
+    					bs.doPhraseSearch();
+    	  			$('#biblioDiv').hide();
+    	  		});
 			}
 		}
 		return false;

@@ -19,7 +19,7 @@ var ced = {
 		$('#copySubmitBtn').on('click',null,ced.doCopyUpdate);
 		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 
-        ced.fetchStatusCds();
+//        ced.fetchStatusCds();
 
 		if ($('#autobarco:checked').length > 0) {
 			$('#barcode_nmbr').disable();
@@ -57,27 +57,18 @@ var ced = {
 			     .attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
 		});
 	},
-/*
 	//----//
-    fetchDfltSite: function() {
-        $.getJSON(ced.listSrvr,{mode:'getDefaultSite'}, function(data){
-            ni.dfltSite = data[0];
-			ni.fetchSiteList(); // chaining
-        });
-    },
-*/
+	fetchStatusCds: function () {
+        var statusList = list.getStatusCds($('#status_cd'));
+        $('#status_cd').html(statusList);
+//        ced.fetchSiteList();
+	},
 	//----//
 	fetchSiteList: function () {
-        var siteList = list.getSiteList();
+        var siteList = list.getSiteList($('#copySite'));
 		$('#copySite').html(siteList);
 	},
 	//----//
-	fetchStatusCds: function () {
-        var statusList = list.getStatusCds();
-console.log('copyEditor: ');
-console.log(statusList);
-        $('#status_cd').html(statusList);
-	},
 	chkBarcdForDupe: function () {
 		var barcd = $.trim($('#barcode_nmbr').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
@@ -117,6 +108,7 @@ console.log(statusList);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
 
         ced.fetchStatusCds();
+        ced.fetchSiteList();
 
 		// custom fields
 		var fldData = crntCopy.custom;
@@ -142,16 +134,20 @@ console.log(statusList);
 	    // prevent submit button from firing a 'submit' action
 		return false;
 	},
-	doCopyNew: function () {
+	doCopyNew: function (bibid) {
+        ced.bibid = bibid;
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();
             $('#copyBarcode_nmbr').disable();
         }
+        $('#copyBibid').val(bibid);
         ced.fetchStatusCds();
         ced.fetchSiteList();
 
 		$('#copySite').val("<?php echo Settings::get('library_name');?>");
 		$('#copyMode').val('newCopy');
+		$('#copyCancelBtn').val("Go Back");
+		$('#copySubmitBtn').enable();
 
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
@@ -162,7 +158,7 @@ console.log(statusList);
 
 			ced.doPostCopy2DB(params);
 		});
-	  // prevent submit button from firing a 'submit' action
+	    // prevent submit button from firing a 'submit' action
 		return false;
 	},
 
@@ -170,7 +166,7 @@ console.log(statusList);
 		e.stopPropagation();
 		e.preventDefault();
 
-	  var params = "&mode=updateCopy&bibid="+ced.bibid+"&copyid="+ced.crntCopy.copyid;
+	    var params = "&mode=updateCopy&bibid="+ced.bibid+"&copyid="+ced.crntCopy.copyid;
 
 		// post to DB
 		ced.doPostCopy2DB(params);
@@ -178,12 +174,12 @@ console.log(statusList);
 	},
 	doPostCopy2DB: function (params) {
 		var copy = ced.crntCopy,
-				barcdNmbr = $('#copyBarcode_nmbr').val(),
+			barcdNmbr = $('#copyBarcode_nmbr').val(),
 	  		copyDesc = $('#copyDesc').val(),
 	  		statusCd = $('#copyTbl #status_cd').val(),
 	  		siteid = $('#copySite').val();
 		params += "&barcode_nmbr="+barcdNmbr+"&copy_desc="+copyDesc
-					 +  "&status_cd="+statusCd+"&siteid="+siteid;
+					 +  "&status_cd="+statusCd+"&siteid="+siteid;  // adds to incoming argument value
 
 		// Custom fields
 		$('#cstmFlds input').each(function (n) {
@@ -191,9 +187,10 @@ console.log(statusList);
 			params += '&'+this.id+'='+$(this).val();
 		});
 
-	  $.post(ced.catalogSrvr,params, function(response){
-	  	if(response == '!!success!!') {
-				$('#copyCancelBtn').val("Go Back");
+	    $.post(ced.catalogSrvr,params, function(response){
+	  	    if(response == '!!success!!') {
+				$('#copyCancelBtn').val("Next");
+				$('#copySubmitBtn').disable();
 				$('#editRsltMsg').html('Copy updated successfully!').show();
 			} else {
 				$('#editRsltMsg').html(response).show();

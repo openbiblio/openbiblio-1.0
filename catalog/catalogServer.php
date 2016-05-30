@@ -13,8 +13,8 @@
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
-	require_once("../classes/Biblio.php");
-	require_once("../classes/Copy.php");
+	require_once(REL(__FILE__, "../classes/Biblio.php"));
+	require_once(REL(__FILE__, "../classes/Copy.php"));
 
 /**
  * back-end API for Existing Biblio Management
@@ -198,8 +198,8 @@
 	    break;
 
 	case 'deleteBiblio':
-        $bibs = new Biblios;
-        $bibs->deleteOne($_REQUEST['bibid']);
+        $bibs = new Biblio($_REQUEST['bibid']);
+        $bibs->deleteBiblio();
         echo T("Delete completed");
         break;
 
@@ -219,11 +219,11 @@
         	return;
         }
         $theDb = new Copies;
-        echo $theDb->insertCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+        echo $theDb->insertCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
         break;
 	case 'updateCopy':
-	  $theDb = new Copies;
-	  echo $theDb->updateCopy($_REQUEST[bibid],$_REQUEST[copyid]);
+	    $theDb = new Copies;
+	    //echo $theDb->updateCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
 		break;
 	case 'getBibsFrmCopies':
 	  $theDb = new Copies;

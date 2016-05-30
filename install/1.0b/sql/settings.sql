@@ -46,5 +46,6 @@ INSERT INTO %prfx%.`settings` (`name`, `position`, `title`, `type`, `width`, `ty
 ('thumbnail_width', 29, 'Thumbnail Max Width (mm)', 'int', NULL, NULL, NULL, '100', 'admin'),
 ('thumbnail_height', 30, 'Thumbnail Max Height (mm)', 'int', NULL, NULL, NULL, '150', 'admin'),
 ('version', 33, NULL, 'text', NULL, '\0', NULL, '1.0b', 'none'),
-('thumbnail_rotation', 31, 'Thumbnail Rotation (deg)', 'int', NULL, NULL, NULL, '0', 'admin');
+('thumbnail_rotation', 31, 'Thumbnail Rotation (deg)', 'int', NULL, NULL, NULL, '0', 'admin'),
+('help_link', NULL, 'URL for your system documentation', 'text', NULL, NULL, NULL, 'https://openbiblio.github.io/openbiblio_docs', 'admin');
 

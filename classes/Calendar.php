@@ -263,8 +263,8 @@ class Calendar {
 	 */
 	function getYearHTML($year) {
 		$s = "";
-		$pdate = $this->adjustDate($this->startMonth - 6, $year);
-		$ndate = $this->adjustDate($this->startMonth + 6, $year);
+		$pdate = $this->adjustDate($this->startMonth - 12, $year);
+		$ndate = $this->adjustDate($this->startMonth + 12, $year);
 		$prev = $this->getCalendarLink($pdate[0], $pdate[1]);
 		$next = $this->getCalendarLink($ndate[0], $ndate[1]);
 		$s .= "<table class=\"calendar\" border=\"0\">\n";
@@ -393,11 +393,10 @@ class Calendar {
 	class EditingCalendar extends Calendar {
 		function __construct($calendar, $start, $end) {
 			$this->calendar = $calendar;
-
 			$calendars = new Calendars;
 			$rows = $calendars->getDays($calendar, $start, $end);
 			$this->open = array();
-			while ($row = $rows->fetch_assoc()) {
+			foreach ($rows as $row) {
 				if ($row['open'] == 'No') {
 					$this->open[$row['date']] = 'No';
 				} else {
