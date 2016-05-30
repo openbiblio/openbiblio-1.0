@@ -85,13 +85,13 @@ class Copies extends CoreTable {
 		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
 		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
 		$cpy = $this->select1($sql);
-//echo "in Copies::getNewBarCode(): ";print_r($cpy);echo "<br />\n";
+        //echo "in Copies::getNewBarCode(): ";print_r($cpy);echo "<br />\n";
         //$nmbr = $cpy[lastNmbr]+1;
         //$nmbr = $cpy['barcdNmbr']+1;
-        if (strpos($cpy, "error"))
-            $nmbr = 1;
-        else
-            $nmbr = $cpy['barcdNmbr']+1;
+        //if (strpos($cpy, "error"))
+        //    $nmbr = 1;
+        //else
+            $nmbr = $cpy[0]['lastNmbr']+1;
 	    if(empty($width)) $w = 13; else $w = $width;
 		return sprintf("%0".$w."s",$nmbr);
 	}
