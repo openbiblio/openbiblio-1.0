@@ -13,8 +13,8 @@
 	require_once(REL(__FILE__, "../model/CopiesCustomFields.php"));	
  	require_once(REL(__FILE__, "../model/BiblioCopyFields.php"));
 
-	require_once("../classes/Biblio.php");
-	require_once("../classes/Copy.php");
+	require_once(REL(__FILE__, "../classes/Biblio.php"));
+	require_once(REL(__FILE__, "../classes/Copy.php"));
 
 /**
  * back-end API for Existing Biblio Management
