@@ -78,7 +78,7 @@ class Biblio {
 	 * uses current data to add a new biblio to the database
 	 */
 	public function addNewBiblio() {
-    $msg = postBiblioChange('');
+        $msg = postBiblioChange('');
 		echo $msg;
 	}
 	/**
@@ -96,9 +96,22 @@ class Biblio {
 											);
 		$msg = $ptr->update($biblioRec);
 */
-    $msg = postBiblioChange('');
+        $msg = postBiblioChange('');
 		echo $msg;
 	}
+    /**
+     * deletes all traces of a single biblio
+     */
+    public function deleteBiblio() {
+        ## first delete all existing copiesand related material
+        foreach ($this->cpyList as $cpyid) {
+            $cpy = new Copy($cpyid);
+            $cpy->deleteCopy();
+        }
+        ## next delete biblio records, including photo,
+		$bib = new Biblios;
+        $bib->deleteOne($this->bibid);
+    }
 
 	## ------------------------------------------------------------------------ ##
 	private function fetch_biblio () {

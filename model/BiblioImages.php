@@ -199,8 +199,11 @@ class BiblioImages extends DBTable {
 	}
 	function deleteByBibid($bibid) {
 		$this->lock();
-		$imgs = $this->getByBibid($bibid);
-		while ($img = $imgs->fetch_assoc()) {
+		//$imgs = $this->getByBibid($bibid);
+		//while ($img = $imgs->fetch_assoc()) {
+        $rslt = $this->getByBibid($bibid);
+        $imgs = $rslt->fetchAll();
+        foreach ($imgs as $img) {
 			try {
 				//@unlink("../photos/".$img['url']);
 				//@unlink("../photos/".$img['imgurl']);

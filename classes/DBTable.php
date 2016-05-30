@@ -208,7 +208,7 @@ abstract class DBTable extends Queryi {
 		$this->lock();
 		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
-		//echo "sql=$sql<br />\n";
+        //echo "sql=$sql<br />\n";
 		$this->act($sql);
 		$this->unlock();
 	}

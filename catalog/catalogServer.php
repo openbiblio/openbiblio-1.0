@@ -198,8 +198,8 @@
 	    break;
 
 	case 'deleteBiblio':
-        $bibs = new Biblios;
-        $bibs->deleteOne($_REQUEST['bibid']);
+        $bibs = new Biblio($_REQUEST['bibid']);
+        $bibs->deleteBiblio();
         echo T("Delete completed");
         break;
 

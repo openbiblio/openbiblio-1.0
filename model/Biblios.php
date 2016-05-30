@@ -261,14 +261,19 @@ class Biblios extends CoreTable {
 	}
 
 	function deleteOne() {
-		$bibid = func_get_args(0);
+		$arg0 = func_get_args(0);
+        $bibid = $arg0[0];
+        //echo "in Biblios::deleteOne, bibid = ";print_r($bibid);echo "<br />\n";
 		$this->lock();
 		$imgs = new BiblioImages;
 		$imgs->deleteByBibid($bibid);
+
 		$this->marc->delete($bibid);
+
 		parent::deleteOne($bibid);
 		$this->unlock();
 	}
+
 	function deleteMatches($fields) {
 		$this->lock();
 		$rows = parent::getMatches($fields);
