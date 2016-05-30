@@ -57,7 +57,14 @@ console.log('got barcds');
            } else if (theId == 'byBibid') {
 console.log('got bibIdds');
                 var bibList = $('#bibids').val();
-                bbd.bibAray = bibList.split(',');
+                var bibAray = [];
+                if (bibList.indexOf('-') > 0) {
+console.log(bibList);
+                    bbd.bibAray = flos.range(bibList);
+                } else {
+                    bbd.bibAray = bibList.split(',');
+                }
+console.log(bbd.bibAray);
                 bbd.doDeleteBibs(bbd.bibAray);
            } else {
                 console.log('invalid bulk delete selection: '+this.id);

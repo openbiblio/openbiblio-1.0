@@ -24,7 +24,7 @@
 	<!-- ------------------------------------------------------------------------ -->
 	<div id="bulkDel_formDiv">
       <fieldset>
-          <p class="note">NOTE: Use a ';' to seperate entrys</p>
+          <p class="note">NOTE: Enter as 1,2,3,4,5,... OR 1-5</p>
           <br />
           <form id="bulkDel_form" name="bulkDel_form" >
         	     <label for="byBarcd">
