@@ -9,8 +9,8 @@
  */
 define("OBIB_HOST",     "localhost");
 define("OBIB_DATABASE", "OpenBiblio");
-define("OBIB_USERNAME", "your OpenBiblio username goes here");
-define("OBIB_PWD",      "your OpenBiblio password goes here");
+define("OBIB_USERNAME", "usuario-mysql con todos los derechos sobre la base de datos");
+define("OBIB_PWD",      "contraseña del usuario-mysql");
 /*********************************************************************************
  *  /\                                                                      /\
  *  ||                                                                      ||
