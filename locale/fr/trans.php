@@ -416,6 +416,8 @@ $trans["Hold Requests"] = "Tenez Demandes";
 $trans["HomePhone"] = "Téléphone à domicile";
 $trans["Host Editor"] = "Editeur d'accueil";
 $trans["Host URL"] = "URL de l'hôte";
+$trans["Hours not attached to sites"] = "heures qui ne sont pas attachés à un site";
+$trans["Hours overlap"] = "heures qui se chevauchent";
 ####### I #######
 $trans["Id"] = "Id";
 $trans["Image File"] = "Image File";

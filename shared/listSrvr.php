@@ -211,6 +211,12 @@ echo $siteId;
 		echo json_encode($list);
 	  break;
 
+	case 'getDaysOfWeek':
+		require_once(REL(__FILE__, "../model/Week.php"));
+		$db = new Week;
+		echo json_encode($db->get_days());
+		break;
+
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	default:
 		  echo "<h4>".T("invalid mode")."@listSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";

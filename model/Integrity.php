@@ -58,6 +58,29 @@ class Integrity extends Queryi{
 					. 'where biblio.bibid is null ',
 			);
 			$this->checks[] = array(
+				'error' => T("Hours not attached to sites"),
+				'countSql' => 'select count(*) as count '
+					. 'from open_hours left join site '
+					. 'on open_hours.siteid=site.siteid '
+					. 'where site.siteid is null ',
+				'fixSql' => 'delete from open_hours '
+					. 'using open_hours left join site '
+					. 'on open_hours.siteid=site.siteid '
+					. 'where site.siteid is null ',
+			);
+			$this->checks[] = array(
+				'error' => T("Hours overlap"),
+				'countSql' => 'select count(*) as count '
+					. 'from open_hours a, open_hours b '
+					. 'where a.start_time<b.start_time '
+					. 'and a.end_time>=b.start_time '
+					. 'and a.siteid=b.siteid '
+					. 'and a.day=b.day '
+					. 'and a.effective_start_date IS NULL '
+					. 'and a.effective_end_date IS NULL ',
+					// NO AUTOMATIC FIX
+			);
+			$this->checks[] = array(
 				//'error' => T("%count% copies with broken status references"),
 				'error' => T("copies with broken status references"),
 				'countSql' => 'select count(*) as count '
