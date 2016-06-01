@@ -419,6 +419,8 @@ $trans["Hold Requests"] = "Hold Requests";
 $trans["HomePhone"] = "Home Phone";
 $trans["Host Editor"] = "Host Editor";
 $trans["Host URL"] = "Host URL";
+$trans["Hours not attached to sites"] = "Hours not attached to sites";
+$trans["Hours overlap"] = "Hours overlap";
 ####### I #######
 $trans["Id"] = "Id";
 $trans["Image File"] = "Image File";

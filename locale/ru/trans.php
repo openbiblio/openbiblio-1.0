@@ -215,6 +215,8 @@ $trans["Go Back"] = "вернуться";
 $trans["Help"] = "Помощь";
 $trans["History"] = "История";
 $trans["Host URL"] = "URL сервера";
+$trans["Hours not attached to sites"] = "часы, которые не привязаны к организационной единице";
+$trans["Hours overlap"] = "перекрывающиеся часов";
 ####### I #######
 $trans["Images"] = "Картини";
 $trans["invalid mode"] = "Этот mode не работает.";
