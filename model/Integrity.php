@@ -362,7 +362,8 @@ class Integrity extends Queryi{
 			//echo $chk["error"]."<br />";
 			if (isset($chk['countSql'])) {
 				$row = $this->select1($chk['countSql']);
-				$count = $row["count"];
+				//$count = $row["count"];
+                $count = count($row);
 			} elseif (isset($chk['countFn'])) {
 				$fn = $chk['countFn'];
 				assert('method_exists($this, $fn)');
@@ -380,7 +381,8 @@ class Integrity extends Queryi{
 					} elseif (isset($chk['listSql'])) {
 						$msg .= '<br />list: ';
 						$rows = $this->select($chk['listSql']);
-						while ($row = $rows->fetch_assoc()) {
+						//while ($row = $rows->fetch_assoc()) {
+                        foreach ($rows as $row) {
 							$msg .= '<a href="../catalog/srchForms.php?bibid='.$row['bibid'].'">'.$row['bibid'].'</a>, ';
 						}
 					} elseif (isset($chk['fixFn'])) {
@@ -413,25 +415,27 @@ class Integrity extends Queryi{
 					.	'AND m.tag=f.tag AND m.subfield_cd=s.subfield_cd '
 					. 'GROUP BY f.bibid, f.tag, s.subfield_cd '
 					. 'HAVING count > 1 ';
-		$status = array();
+		//$status = array();
 		$errors = 0;
+        $dups = array();
 		$ptr = $this->select($sql);
-		while ($bib = $ptr->fetch_assoc()) {
-			$case = $bib['bibid'].'-'.$bib['tag'].$bib['subfield_cd'];
-			$dups[$case] = array('nmbr'=>$bib['count'],
-											'bibid'=>$bib['bibid'],
-											'tag'=>$bib['tag'], 
-											'subcd'=>$bib['subfield_cd'],
-											'subId'=>$bib['subfieldid']
-											);
+		//while ($bib = $ptr->fetch_assoc()) {
+        foreach ($ptr as $bib) {
+			$caseNm = $bib['bibid'].'-'.$bib['tag'].$bib['subfield_cd'];
+			$dups[$caseNm] = array('nmbr'=>$bib['count'],
+								   'bibid'=>$bib['bibid'],
+								   'tag'=>$bib['tag'],
+								   'subcd'=>$bib['subfield_cd'],
+								   'subId'=>$bib['subfieldid']
+								  );
 		}
 		## loop through all cases found above
 		foreach ($dups as $case) {
 			## attempt to delete all but one entry in this case
 			for ($i=0; $i<$case['nmbr']-1; $i++) {
 				$sql = "Delete FROM biblio_subfield ".
-							 "WHERE (subfieldid = ".$case['subId'].") ";
-				$this->act($sql);			 
+					   "WHERE (subfieldid = ".$case['subId'].") ";
+				$this->act($sql);
 			}
 		}
 		return $errors;
@@ -443,7 +447,8 @@ class Integrity extends Queryi{
 		$status = array();
 		$errors = 0;
 		$r = $this->select($sql);
-		while ($row = $r->fetch_assoc()) {
+		//while ($row = $r->fetch_assoc()) {
+        foreach ($r as $row) {
 			if ($row['status_cd'] == 'out' and isset($status[$row['copyid']])) {
 				if ($status[$row['copyid']]['status_cd'] == 'out') {
 					$errors++;

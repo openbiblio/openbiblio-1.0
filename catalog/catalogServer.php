@@ -268,22 +268,24 @@
 		$data = base64_decode($img);
 		$success = file_put_contents($file, $data);
 		if ($success) {
-	  	$ptr = new BiblioImages;
-			$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'], $data, $_POST['url']);
-			if(isset($err)) {
-				print_r($err);
-				break;
-			}
-	  	$set = $ptr->getByBibid($_REQUEST['bibid']);
-			while ($row = $set->fetch_assoc()) {
-			  $imgs[] = $row;
-			}
-			echo json_encode($imgs);
+    	  	$ptr = new BiblioImages;
+    		$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'], $data, $_POST['url']);
+    		if(isset($err)) {
+    			print_r($err);
+    			break;
+    		}
+    	  	$set = $ptr->getByBibid($_REQUEST['bibid']);
+    		//while ($row = $set->fetch_assoc()) {
+            foreach ($set as $row) {
+    			$imgs[] = $row;
+    		}
+		    echo json_encode($imgs);
 		} else {
 			echo 'Unable to save the file.';
 			print_r($_POST);
 		}
 		break;
+
 	case 'deletePhoto':
 	  $ptr = new BiblioImages;
 		$ptr->deleteByBibid($_POST['bibid']);

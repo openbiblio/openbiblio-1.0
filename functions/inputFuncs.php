@@ -47,7 +47,8 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	}
 
 	switch ($type) {
-	// FIXME radio
+	// FIXME radio missing
+
 	case 'select':
 		$s .= '<select name="'.H($name).'" ';
 		if ($attrs) {
@@ -74,6 +75,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 		}
 		$s .= ">".H($data)."</textarea>";
 		break;
+
 	case 'checkbox':
 		$s .= '<input type="checkbox" name="'.H($name).'" ';
 		$s .= 'value="'.H($value).'" ';
@@ -92,6 +94,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	case 'zip': $attrs['pattern'] = $patterns['zip']; $s .= inputHandler($type, $name, $value, $attrs); break;
 	case 'url': $attrs['pattern'] = $patterns['url']; $s .= inputHandler($type, $name, $value, $attrs); break;
 	case 'email': $attrs['pattern'] = $patterns['email']; $s .= inputHandler($type, $name, $value, $attrs); break;
+
 	default: $s .= inputHandler($type, $name, $value, $attrs); break;
 	}
 	#### place error messages to right of effected field -- Fred

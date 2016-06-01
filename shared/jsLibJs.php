@@ -161,6 +161,19 @@ inptFld: function (type, name, value, attrs, data) {
 },
 
 /* --------------------------------- */
+    // return an array to satisfy a given 'n-m' range
+    // from a StackOverflow answer by polkovnikov.ph Nov 19 '14 at 2:10
+    range: function (limitStr) {
+        var lowEnd = Number(limitStr.split('-')[0]);
+        var highEnd = Number(limitStr.split('-')[1]);
+        var arr = new Array();
+        while(lowEnd <= highEnd) {
+            arr.push(lowEnd++);
+        }
+        return arr;
+    },
+
+/* --------------------------------- */
 	// left pad a string 'str' with char 'ch' to width 'wid', 22Aug2008 - fl
 	pad: function (str, wid, ch) {
 	  var cStr = new String(ch);
