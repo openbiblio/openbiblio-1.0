@@ -273,7 +273,7 @@ class Copies extends CoreTable {
 		$rows = $ptr->getAll();
 		//while ($row = $rows->fetch_assoc()) {
 		foreach ($rows as $row) {
-			if (isset($_REQUEST['copyCustom_'.$row["code"]])) {
+			if (isset($_POST['copyCustom_'.$row["code"]])) {
 				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
 			}
 		}

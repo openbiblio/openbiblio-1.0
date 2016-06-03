@@ -200,7 +200,7 @@
 	//// ====================================////
 		case 'getChkOuts':
 			$chkOutList = array();
-			$cpys = $copies->getMemberCheckouts($_REQUEST['mbrid']);
+			$cpys = $copies->getMemberCheckouts($_POST['mbrid']);
 			foreach ($cpys as $row) {
 				$ptr = new Copy($row['copyid']);
 				$copy = $ptr->getData();
@@ -354,6 +354,6 @@
 		
 	//// ====================================////
 	default:
-	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";
+	  echo "<h5>".T("invalid mode").": $_POST[mode]</h5>";
 	}
 
