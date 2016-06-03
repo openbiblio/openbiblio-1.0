@@ -5,11 +5,11 @@
 
   require_once("../shared/common.php");
 
-	if ((empty($_REQUEST[mode]))&& (!empty($_REQUEST[editMode]))) {
-    $_REQUEST[mode] = $_REQUEST[editMode];
+	if ((empty($_POST[mode]))&& (!empty($_POST[editMode]))) {
+    $_POST[mode] = $_POST[editMode];
 	}
 	
-	switch ($_REQUEST[mode]){
+	switch ($_POST[mode]){
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMtlTypes':
 			## prepare list of Material Types
@@ -103,7 +103,7 @@
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'updateMarcFields':
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
-			$fldSet = json_decode($_REQUEST['jsonStr'],true);
+			$fldSet = json_decode($_POST['jsonStr'],true);
 			foreach ($fldSet as $line) {
 				$ptr = new MaterialFields;
 				if (substr($line['id'],0,5) == 'zqzqz') {
@@ -122,6 +122,6 @@
 			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": $_REQUEST[mode]</h4><br />";
+		  echo "<h4>".T("invalid mode").": $_POST[mode]</h4><br />";
 		break;
 	}

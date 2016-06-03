@@ -90,7 +90,7 @@
 	$postVars['session'] = $_SESSION;
 
     ## main body of code
-    switch ($_REQUEST[mode]){
+    switch ($_POST[mode]){
       #-.-.-.-.-.-.-.-.-.-.-.-.-
     	case 'getBiblioFields':
     	  require_once(REL(__FILE__,"../catalog/biblioFields.php"));
@@ -125,7 +125,7 @@
     			exit;
     		}
 
-    		$temp['cutter'] = getCutter($_REQUEST['author']);
+    		$temp['cutter'] = getCutter($_POST['author']);
     		echo json_encode($temp);
     		break;
 

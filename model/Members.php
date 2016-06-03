@@ -38,6 +38,7 @@ class Members extends CoreTable {
 			'last_name',
 			'first_name',
 			'home_phone',
+			'classification',
 		);
 		if ($_SESSION[mbrBarcode_flg]=='Y') {
 		  $this->reqdFlds[] = 'barcode_nmbr';
@@ -119,19 +120,22 @@ class Members extends CoreTable {
 		return $r['mbrid'];
 	}
 	function insert_el($mbr, $confirmed=false) {
+		foreach ($this->reqdFlds as $field) {
+			if (!isset($mbr[$field])) {return new OBErr('Required fields missing: '.$field);}
+		}
 		if (isset($mbr['password'])) {
 			if (strlen($mbr['password']) < 4 && !$_SESSION["hasCircAuth"]) {
-				return array(NULL, array(new FieldError('password', T("Password at least 4 chars"))));
+				return new FieldError('password', T("Password at least 4 chars"));
 			}
 			if (!isset($mbr['confirm-pw']) or $mbr['confirm-pw'] != $mbr['password']) {
-				return array(NULL, array(new FieldError('password', T("Supplied passwords do not match"))));
+				return new FieldError('password', T("Supplied passwords do not match"));
 			}
 			$mbr['password'] = md5($mbr['password']);
 		}
 		$results = parent::insert_el($mbr, $confirmed);
 		// Check to make sure insert went through
 		if (0 == $this->insert_id) {
-			return array(NULL, array(new ObErr(T('Member creation was not successful.'))));
+			return new OBErr(T('Member creation was not successful.'));
 		} else {
 			return $results;
 		}

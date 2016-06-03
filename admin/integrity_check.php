@@ -13,7 +13,7 @@
 
 
 	$fix = false;
-	if (isset($_REQUEST['fix']) and $_REQUEST['fix']) {
+	if (isset($_POST['fix']) and $_POST['fix']) {
 		$fix = true;
 	}
 	$integrity = new Integrity;

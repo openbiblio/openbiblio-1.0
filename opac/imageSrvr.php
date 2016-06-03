@@ -5,14 +5,14 @@
 
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../model/BiblioImages.php"));
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 
 	##### do NOT use " on these items #####
 	$map['callno'] = array('099$a');
 	$map['title'] = array('245$a', '240$a', '246$a');
 	$map['author'] = array('100$a');
 
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 	case 'getOpts':
 		$opts = Settings::getAll();
 		echo json_encode($opts);
@@ -32,10 +32,10 @@
 
 		// add amount of search results.
 		$perPage = Settings::get('items_per_page');
-		if($_REQUEST['firstItem'] == null){
+		if($_POST['firstItem'] == null){
 			$firstItem = 0;
 		} else {
-			$firstItem = $_REQUEST['firstItem'];
+			$firstItem = $_POST['firstItem'];
 		}
 		if($perPage <= ($numRows - $firstItem)){
 			$lastItem = $firstItem + $perPage;
@@ -71,7 +71,7 @@
 		break;
 
 	default:
-		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_POST['mode']."&lt;</h4><br />";
 		break;
 	}
 

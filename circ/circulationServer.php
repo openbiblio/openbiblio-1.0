@@ -5,7 +5,7 @@
 
 	require_once("../shared/common.php");
 
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 	case 'doShelveItem':
 	case "doItemCheckin":
 	case 'doShelveAll':
@@ -38,7 +38,7 @@
 	#****************************************************************************
 	$badBarcodeText = T("No copy with that barcode");
 
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 	case 'doShelveItem':
 		$copyids = array();
 		foreach($_POST as $key => $value) {
@@ -119,7 +119,7 @@
 
 	//// ====================================////
 	default:
-	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";
+	  echo "<h5>".T("invalid mode").": $_POST[mode]</h5>";
 	}
 
 ?>

@@ -135,44 +135,44 @@ var mf = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(mf.url,{mode:'getOpts'}, function(jsonData){
-	    mf.opts = jsonData
+	  $.post(mf.url,{mode:'getOpts'}, function(jsonData){
+	    mf.opts = jsonData, 'json'
 		});
 	},
 	getNewBarCd: function () {
-	  $.get(mf.url,{mode:'getNewBarCd', width:4}, function(data){
+	  $.post(mf.url,{mode:'getNewBarCd', width:4}, function(data){
 			$('#barcode_nmbr').val(data);
 		});
 	},
 	fetchMbrTypList: function () {
-	  $.getJSON(mf.listSrvr,{mode:'getMbrTypList'}, function(data){
+	  $.post(mf.listSrvr,{mode:'getMbrTypList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#classification').html(html);
-		});
+		}, 'json');
 	},
 	fetchSiteList: function () {
-	  $.getJSON(mf.listSrvr,{mode:'getSiteList'}, function(data){
+	  $.post(mf.listSrvr,{mode:'getSiteList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#siteid').html(html);
-		});
+		}, 'json');
 	},
 	fetchStateList: function () {
-	  $.getJSON(mf.listSrvr,{mode:'getStateList'}, function(data){
+	  $.post(mf.listSrvr,{mode:'getStateList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#state').html(html);
-		});
+		}, 'json');
 	},
 	fetchCustomFlds: function () {
-	  $.get(mf.url,{mode:'getCustomFlds'}, function(jsonData){
+	  $.post(mf.url,{mode:'getCustomFlds'}, function(jsonData){
 			if ((jsonData.trim()).substr(0,1) == '<') {
 				mf.showMsg(jsonData);
 				return false;
@@ -182,14 +182,14 @@ var mf = {
 		});
 	},
 	fetchAcnttranTypes: function () {
-	  $.getJSON(mf.url,{mode:'getAcntTranTypes'}, function(jsonData){
+	  $.post(mf.url,{mode:'getAcntTranTypes'}, function(jsonData){
 	  	mf.tranType = jsonData;
 	    var html = '';
 	    $.each(jsonData, function (name, value) {
 	    	html += '<option value="'+name+'">'+value+'</option> \n';
 			});
 			$('#transaction_type_cd').html(html);
-		});
+		}, 'json');
 	},
 	
 	//------------------------------
@@ -197,12 +197,12 @@ var mf = {
 	  mf.srchType = 'mbrid';
 		mf.mbrid = mbrid;
 	  var params = 'mode=doGetMbr&mbrid='+mbrid;
-	  $.get(mf.url,params, mf.handleMbrResponse);
+	  $.post(mf.url,params, mf.handleMbrResponse);
 		return false;
 	},
 	doFetchMember: function () {
 	  var params = 'mode=doGetMbr&mbrid='+mf.mbrid;
-	  $.get(mf.url,params, mf.handleMbrResponse);
+	  $.post(mf.url,params, mf.handleMbrResponse);
 		return false;
 	},
 
@@ -213,13 +213,13 @@ var mf = {
 
 	  mf.srchType = 'barCd';
 	  var params = 'mode=doBarcdSearch&barcdNmbr='+barcd;
-	  $.get(mf.url,params, mf.handleMbrResponse);
+	  $.post(mf.url,params, mf.handleMbrResponse);
 		return false;
 	},
 
 	doNameSearch: function () {
 	  var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val()};
-	  $.get(mf.url,params, function (jsonInpt) {
+	  $.post(mf.url,params, function (jsonInpt) {
 			mf.mbrs = $.parseJSON(jsonInpt);
 			var html = '';
 			for (var nMbr in mf.mbrs) {
@@ -261,16 +261,16 @@ var mf = {
 	    $('#mbrDiv').show();
 	},
 	getMbrSite: function () {
-		$.getJSON(mf.url,{mode:'getSite', 'siteid':mf.mbr.siteid}, function (response) {
+		$.post(mf.url,{mode:'getSite', 'siteid':mf.mbr.siteid}, function (response) {
 			mf.calCd = response['calendar'];
 			mf.getMbrType();
-		});
+		}, 'json');
 	},
 	getMbrType: function () {
-		$.getJSON(mf.url,{mode:'getMbrType', 'classification':mf.mbr.classification}, function (response) {
+		$.post(mf.url,{mode:'getMbrType', 'classification':mf.mbr.classification}, function (response) {
 			mf.typeInfo = response;
 			mf.showOneMbr(mf.mbr)
-		});
+		}, 'json');
 	},
 
 	//------------------------------
@@ -287,7 +287,7 @@ var mf = {
 		var ttlOwed = 0.00,
 				maxFines = mf.typeInfo.max_fines,
 	  		params = 'mode=getChkOuts&mbrid='+mf.mbrid;
-	  $.get(mf.url,params, function(jsonInpt){
+	  $.post(mf.url,params, function(jsonInpt){
 			if (jsonInpt.substr(0,1) == '<') {
 				$('#msgArea').html(jsonInpt);
 				$('#msgDiv').show();
@@ -346,7 +346,7 @@ var mf = {
 	doGetHolds: function () {
     $('#holdList tBody').html('');
 	  var params = 'mode=getHolds&mbrid='+mf.mbrid;
-	  $.get(mf.url,params, function(jsonInpt){
+	  $.post(mf.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) == '<') {
 				mf.showMsg(jsonInpt);
 			} else {
@@ -395,7 +395,7 @@ var mf = {
 	//------------------------------
 	doShowMbrAcnt: function () {
 	  var params = 'mode=getAcntActivity&mbrid='+mf.mbrid;
-	  $.get(mf.url,params, function(jsonInpt){
+	  $.post(mf.url,params, function(jsonInpt){
 			$('#tranList tBody').html(''); // clear any residue from past displays
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
 				$('#msgArea').html(jsonInpt);
@@ -544,7 +544,7 @@ var mf = {
 		$('#mbrDiv').hide();
 		$('#histDiv').show();
 		var statMap = {'crt':'IN', 'in':'IN', 'out':'OUT'};
-	  $.get(mf.url,{mode:'getHist', 'mbrid':mf.mbrid}, function(jsonInpt){
+	  $.post(mf.url,{mode:'getHist', 'mbrid':mf.mbrid}, function(jsonInpt){
 			$('#histList tBody').html(''); // clear any residue from past displays
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
 				$('#msgArea').html(jsonInpt);
