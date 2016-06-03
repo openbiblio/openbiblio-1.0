@@ -7,7 +7,7 @@
 	require_once("../shared/global_constants.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 		case 'getMbrType':
 			require_once(REL(__FILE__, "../model/MemberTypes.php"));
 			$mbrTypes = new MemberTypes;
@@ -57,7 +57,6 @@
 			$biblios = new Biblios;
 			break;
 		case 'doCheckout':
-ini_set('display_errors', '1');
 			require_once(REL(__FILE__, "../model/Bookings.php"));
 			$bookings = new Bookings;
 			break;
@@ -113,7 +112,7 @@ ini_set('display_errors', '1');
 	}
 
 	#****************************************************************************
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 		case 'getOpts':
 			$opts = Settings::getAll();
 			echo json_encode($opts);
@@ -334,9 +333,9 @@ ini_set('display_errors', '1');
 	case 'addNewMember':
 		$_POST["barcode_nmbr"] = $members->getNextMbr();
 		$mbr = mbrArray();
-		list($mbrid, $errors) = $members->insert_el($mbr);
-		if (!empty($errors)) {
-			echo json_encode($errors);
+		$response = $members->insert_el($mbr);
+		if ($response instanceof OBErr) {
+			echo $response->toStr();
 			exit;
 		}
 		$cstmArray = array();
@@ -358,4 +357,3 @@ ini_set('display_errors', '1');
 	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";
 	}
 
-?>
