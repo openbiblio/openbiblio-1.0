@@ -4,7 +4,7 @@
  */
 
   require_once("../shared/common.php");
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 
 	function getClassList() {
 		$lines = file("../themes/default/style.css");
@@ -70,7 +70,7 @@
   	return array_flat($files);
 	}
 
-	switch ($_REQUEST['mode']){
+	switch ($_POST['mode']){
 	  case 'ck4CssUnused':
 			## collct all 'class' selectors in CSS file
 			$classes = getClassList();
@@ -129,7 +129,7 @@
 			break;
 			
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
 		break;
 	}
 

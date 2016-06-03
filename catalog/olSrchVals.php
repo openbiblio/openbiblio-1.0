@@ -4,16 +4,16 @@
  */
 
 	## collect data from a search submittal
-	$srchBy =			$_REQUEST[srchBy];
-	$lookupVal =	$_REQUEST[lookupVal];
-	$srchBy2 =		$_REQUEST[srchBy2];
-	$lookupVal2 =	$_REQUEST[lookupVal2];
-	$srchBy3 =		$_REQUEST[srchBy3];
-	$lookupVal3 =	$_REQUEST[lookupVal3];
-	$srchBy4 =		$_REQUEST[srchBy4];
-	$lookupVal4 =	$_REQUEST[lookupVal4];
-	$srchBy5 =		$_REQUEST[srchBy5];
-	$lookupVal5 =	$_REQUEST[lookupVal5];
+	$srchBy =		$_POST[srchBy];
+	$lookupVal =	$_POST[lookupVal];
+	$srchBy2 =		$_POST[srchBy2];
+	$lookupVal2 =	$_POST[lookupVal2];
+	$srchBy3 =		$_POST[srchBy3];
+	$lookupVal3 =	$_POST[lookupVal3];
+	$srchBy4 =		$_POST[srchBy4];
+	$lookupVal4 =	$_POST[lookupVal4];
+	$srchBy5 =		$_POST[srchBy5];
+	$lookupVal5 =	$_POST[lookupVal5];
 
 	$sruIndexTerm = 'dc'; // ContextSet = Dublin Core
 //	$sruIndexTerm = 'bath'; // ContextSet = Bath

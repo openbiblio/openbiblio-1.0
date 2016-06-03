@@ -49,15 +49,15 @@
 	## --------------------- ##
 
 	#****************************************************************************
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 	case 'doBibidSearch':
-	  $bib = new Biblio($_REQUEST[bibid]);
+	  $bib = new Biblio($_POST[bibid]);
 	  echo json_encode($bib->getData());
 	  break;
 
 	case 'doBarcdSearch':
 	  $ptr = new Copies;
-	  $copy = $ptr->getByBarcode($_REQUEST['searchBarcd']);
+	  $copy = $ptr->getByBarcode($_POST['searchBarcd']);
 	  if ($copy != NULL) {
 	  	$bib = new Biblio($copy['bibid']);
 	  	echo json_encode($bib->getData());
@@ -68,7 +68,7 @@
 
 	case 'doPhraseSearch':
 		## fetch a list of all biblio meeting user search criteria
-		$criteria = $_REQUEST;
+		$criteria = $_POST;
 	    $theDb = new Biblios;
 		$biblioLst = $theDb->getBiblioByPhrase($criteria);
         //echo "in catalogSrvr, doPhraseSearch: "; print_r($biblioLst);echo "<br />\n";
@@ -76,10 +76,10 @@
 			$srchRslt = array();
 			## succesful search, deal with results
 			// Add amount of search results.
-			if($_REQUEST['firstItem'] == null){
+			if($_POST['firstItem'] == null){
 				$firstItem = 0;
 			} else {
-				$firstItem = $_REQUEST['firstItem'];
+				$firstItem = $_POST['firstItem'];
 			}
 			if($_SESSION['items_per_page'] <= sizeof($biblioLst) - $firstItem){
 				$lastItem = $firstItem + $_SESSION['items_per_page'];
@@ -136,10 +136,10 @@
 
 	case 'addToCart':
 		require_once(REL(__FILE__, "../model/Cart.php"));
-		$name = $_REQUEST['name'];
+		$name = $_POST['name'];
 		$cart = getCart($name);
-		if (isset($_REQUEST['id'])) {
-			foreach ($_REQUEST['id'] as $id) {
+		if (isset($_POST['id'])) {
+			foreach ($_POST['id'] as $id) {
 				$rslt = $cart->contains($id);
 				if (!$rslt) $cart->add($id);
 			}
@@ -154,8 +154,8 @@
 	  
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_REQUEST[barcode_nmbr],$_REQUEST[copyid]))
-			echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr],$_POST[copyid]))
+			echo "Barcode $_POST[barcode_nmbr]: ". T("Barcode number already in use.");
 		break;
 		
 	case 'getBiblioFields':
@@ -198,7 +198,7 @@
 	    break;
 
 	case 'deleteBiblio':
-        $bibs = new Biblio($_REQUEST['bibid']);
+        $bibs = new Biblio($_POST['bibid']);
         $bibs->deleteBiblio();
         echo T("Delete completed");
         break;
@@ -215,15 +215,15 @@
 	case 'newCopy':
         $copies = new Copies;
         if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
-        	echo "Barcode $_REQUEST[barcode_nmbr]: ". T("Barcode number already in use.");
+        	echo "Barcode $_POST[barcode_nmbr]: ". T("Barcode number already in use.");
         	return;
         }
         $theDb = new Copies;
-        echo $theDb->insertCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+        echo $theDb->insertCopy($_POST['bibid'],$_POST['copyid']);
         break;
 	case 'updateCopy':
 	    $theDb = new Copies;
-	    //echo $theDb->updateCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
+	    //echo $theDb->updateCopy($_POST['bibid'],$_POST['copyid']);
 		break;
 	case 'getBibsFrmCopies':
 	  $theDb = new Copies;
@@ -232,8 +232,8 @@
 	  break;
 	case 'deleteCopy':
 	    $theDb = new Copies;
-		//echo $theDb->deleteCopy($_REQUEST['bibid'],$_REQUEST['copyid']);
-		echo $theDb->deleteCopy($_REQUEST['copyid']);
+		//echo $theDb->deleteCopy($_POST['bibid'],$_POST['copyid']);
+		echo $theDb->deleteCopy($_POST['copyid']);
 		break;
 	case 'deleteMultiCopies':
 	    $theDb = new Copies;
@@ -245,7 +245,7 @@
 	//// ====================================////
 	case 'getPhoto':
 	    $ptr = new BiblioImages;
-	    $set = $ptr->getByBibid($_REQUEST['bibid']);
+	    $set = $ptr->getByBibid($_POST['bibid']);
 		//while ($row = $set->fetch_assoc()) {
         foreach ($set as $row) {
 		    $imgs[] = $row;
@@ -275,7 +275,7 @@
     			print_r($err);
     			break;
     		}
-    	  	$set = $ptr->getByBibid($_REQUEST['bibid']);
+    	  	$set = $ptr->getByBibid($_POST['bibid']);
     		//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
     			$imgs[] = $row;
@@ -294,5 +294,5 @@
 
 	//// ====================================////
 	default:
-	  echo "<h5>Invalid mode: $_REQUEST[mode]</h5>";
+	  echo "<h5>Invalid mode: $_POST[mode]</h5>";
 	}

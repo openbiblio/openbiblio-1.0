@@ -7,7 +7,7 @@
 	require_once("../shared/global_constants.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 		case 'getMbrType':
 			require_once(REL(__FILE__, "../model/MemberTypes.php"));
 			$mbrTypes = new MemberTypes;
@@ -112,7 +112,7 @@
 	}
 
 	#****************************************************************************
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 		case 'getOpts':
 			$opts = Settings::getAll();
 			echo json_encode($opts);
@@ -200,7 +200,7 @@
 	//// ====================================////
 		case 'getChkOuts':
 			$chkOutList = array();
-			$cpys = $copies->getMemberCheckouts($_REQUEST['mbrid']);
+			$cpys = $copies->getMemberCheckouts($_POST['mbrid']);
 			foreach ($cpys as $row) {
 				$ptr = new Copy($row['copyid']);
 				$copy = $ptr->getData();
@@ -354,7 +354,7 @@
 		
 	//// ====================================////
 	default:
-	  echo "<h5>".T("invalid mode").": $_REQUEST[mode]</h5>";
+	  echo "<h5>".T("invalid mode").": $_POST[mode]</h5>";
 	}
 
 ?>

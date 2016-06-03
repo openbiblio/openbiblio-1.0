@@ -16,14 +16,14 @@
  * @author Fred LaPlante
  */
 
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 
 	##### do NOT use double quotes (") on these items #####
 	//$map['callno'] = ['099$a'];
 	//$map['title'] = ['245$a', '240$a', '246$a'];
 	//$map['author'] = ['100$a'];
 
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 	case 'getOpts':
 		$opts = Settings::getAll();
 		echo json_encode($opts);
@@ -43,18 +43,18 @@
 	case "getPage":
 		## add amount of search results.
 		$perPage = Settings::get('items_per_page');
-		if($_REQUEST['firstItem'] == null){
+		if($_POST['firstItem'] == null){
 			$firstItem = 0;
 			$page = 1;
 		} else {
-			$firstItem = $_REQUEST['firstItem'];
+			$firstItem = $_POST['firstItem'];
 			$page = floor($firstItem / $perPage)+1;
 		}
 
 		if ($_POST['type'] == 'previous') {
 			$rpt = Report::load('Report', $firstItem, $perPage);
-			if ($_REQUEST['rpt_order_by']) {
-				$rpt = $rpt->getVariant(array('order_by'=>$_REQUEST['rpt_order_by']));
+			if ($_POST['rpt_order_by']) {
+				$rpt = $rpt->getVariant(array('order_by'=>$_POST['rpt_order_by']));
 			}
 		} else {
 			$rpt = Report::create($_POST['type'], 'Report', $firstItem, $perPage);
@@ -96,7 +96,7 @@
 	  break;
 
 	default:
-		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_POST['mode']."&lt;</h4><br />";
 		break;
 	}
 
