@@ -61,7 +61,7 @@
 
 
 
-	switch ($_REQUEST['mode']){
+	switch ($_POST['mode']){
 	  	case 'search':
 			echo '<h4>' . T('missing call numbers') . '</h4>';
 			$missing = getBibsMissingCalls();
@@ -71,9 +71,9 @@
 			break;
 
 		case 'dry-run':
-			if (isset($_REQUEST['schemata'])) {
+			if (isset($_POST['schemata'])) {
 				echo '<h4>' . T('proposed call numbers') . '</h4>';
-				$proposed_calls = getProposedCallNumbers($_REQUEST['schemata']);
+				$proposed_calls = getProposedCallNumbers($_POST['schemata']);
 				if (isset($proposed_calls[0])) {
 					foreach ($proposed_calls as $field) {
 						echo '<b>' . T('Record') . ' ' . $field['bibid'] . '</b><br />';
@@ -89,9 +89,9 @@
 			break;
 			
 		case 'add':
-			if (isset($_REQUEST['schemata'])) {
+			if (isset($_POST['schemata'])) {
 				echo '<h4>' . T('added call numbers') . '</h4>';
-				$proposed_calls = getProposedCallNumbers($_REQUEST['schemata']);
+				$proposed_calls = getProposedCallNumbers($_POST['schemata']);
 				if (isset($proposed_calls[0])) {
 					foreach ($proposed_calls as $field) {
 						copyCallNo($field);
@@ -108,6 +108,6 @@
 			break;
 			
 		default:
-			echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
+			echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
 			break;
 	}

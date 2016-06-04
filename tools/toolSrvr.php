@@ -4,10 +4,10 @@
  */
 
   require_once("../shared/common.php");
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 	
 	
-	switch ($_REQUEST['cat']) {
+	switch ($_POST['cat']) {
 		case 'validation':
 			require_once(REL(__FILE__, "../model/Validations.php"));
 	  	    $db = new Validations;
@@ -25,12 +25,12 @@
 			break;
 
 		default:
-		  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
+		  echo "<h4>invalid category: &gt;".$_POST['cat']."&lt;</h4><br />";
 		  exit;
 			break;
 	}
 
-	switch ($_REQUEST['mode']){
+	switch ($_POST['mode']){
 
 	  #-.-.-.-.-.- database -.-.-.-.-.-.-
 		case 'getDbSrvrInfo':
@@ -86,8 +86,8 @@
 			echo json_encode($set);
 	  	break;
 		case 'changeColl':
-			$charset = $_REQUEST['charset'];
-			$collation = $_REQUEST['collation'];
+			$charset = $_POST['charset'];
+			$collation = $_POST['collation'];
 			$rslt = $db->select('SHOW TABLES');
 			//while ($row = $rslt->fetch_assoc()) {
             foreach ($rslt as $row) {
@@ -110,16 +110,16 @@
 			echo json_encode($valids);
 			break;
 		case 'addNew_validation':
-			echo $db->insert($_REQUEST);
+			echo $db->insert($_POST);
 			break;
 		case 'update_validation':
-			echo $db->update($_REQUEST);
+			echo $db->update($_POST);
 			break;
 		case 'd-3-L-3-t_validation':
 			echo $db->deleteOne($_POST['code']);
 			break;
 
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
 		break;
 	}

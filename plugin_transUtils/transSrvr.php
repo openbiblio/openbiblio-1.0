@@ -4,7 +4,7 @@
  */
 
   require_once("../shared/common.php");
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 	
 	function moduleList () {
 		$handl = opendir("..");
@@ -62,7 +62,7 @@
 	$allFileExp = "/(T\(\")(.*?)(\"(,|\)))/";
 	$rptFileExp = "/(title\=\")(.*?)(\")/";
 
-	switch ($_REQUEST['mode']){
+	switch ($_POST['mode']){
 	  case 'fetchLocaleList':
 	  	echo json_encode(Localize::getLocales());
 	  	break;
@@ -202,7 +202,7 @@
 			break;
 
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
 		break;
 	}
 

@@ -4,19 +4,19 @@
  */
 
   require_once("../shared/common.php");
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 /*
-	if ($_REQUEST['verb'] == 'No') 
+	if ($_POST['verb'] == 'No') 
 		$verbose = false; 
 	else 
 		$verbose = true;
-	if ($_REQUEST['detl'] == 'No') 
+	if ($_POST['detl'] == 'No') 
 		$detail = false; 
 	else 
 		$detail = true;
 */
-	$verbose = ($_REQUEST['verb'] == 'No')?false:true;
-	$detail = ($_REQUEST['detl'] == 'No')?false:true;
+	$verbose = ($_POST['verb'] == 'No')?false:true;
+	$detail = ($_POST['detl'] == 'No')?false:true;
 	if ($verbose == true) $detail = true;
 	//var_dump($verbose); var_dump($detail); echo "<br />";
 	
@@ -184,7 +184,7 @@
 	
 	$files = array();
 	
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
 		case 'ck4Orfans':
 			$found = array();
 			$dirs = getDirList();
@@ -291,7 +291,7 @@
 			break;
 			
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;".$_POST['mode']."&lt;</h4><br />";
 		break;
 	}
 

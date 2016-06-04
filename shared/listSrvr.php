@@ -4,7 +4,7 @@
  */
 
   require_once("../shared/common.php");
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 
 /**
  * back-end API for various pull-down lists based on DB tables
@@ -27,7 +27,7 @@
 		return $list;
 	}
 	
-	switch ($_REQUEST['mode']) {
+	switch ($_POST['mode']) {
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getAudienceList':
 		require_once(REL(__FILE__, "../model/Biblios.php"));
@@ -94,7 +94,7 @@
 	case 'getMediaMarcTags':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
 		$db = new MaterialFields;
-		$sql = "SELECT * FROM `material_fields` WHERE `material_cd`={$_REQUEST['media']} ORDER BY tag,subfield_cd";
+		$sql = "SELECT * FROM `material_fields` WHERE `material_cd`={$_POST['media']} ORDER BY tag,subfield_cd";
 		$rslt = $db->select($sql);
 		//while ($row = $rslt->fetch_assoc()) {
         foreach ($rslt as $row) {
@@ -219,7 +219,7 @@ echo $siteId;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	default:
-		  echo "<h4>".T("invalid mode")."@listSrvr.php: &gt;".$_REQUEST['mode']."&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode")."@listSrvr.php: &gt;".$_POST['mode']."&lt;</h4><br />";
 		break;
 	}
 

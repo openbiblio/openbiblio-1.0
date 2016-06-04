@@ -5,10 +5,10 @@
 
   require_once("../shared/common.php");
   require_once("../model/MaterialFields.php");
-	//print_r($_REQUEST);echo "<br />";
+	//print_r($_POST);echo "<br />";
 
 
-	switch ($_REQUEST['mode']){
+	switch ($_POST['mode']){
 	  case 'exportLayout':
 			$db = new MaterialFields;
 			$set = $db->getMatches(array('material_cd'=>$_GET['material_cd']));
@@ -38,7 +38,7 @@
 			break;
 
 		default:
-		  echo "<h4>".T("invalid mode")." @mediaFldsSrvr.php: &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode")." @mediaFldsSrvr.php: &gt;$_POST[mode]&lt;</h4><br />";
 		break;
 	}
 

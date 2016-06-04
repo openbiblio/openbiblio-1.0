@@ -57,7 +57,7 @@
 	}
 */
 	/* Convenience functions for everywhere */
-	/* Work around PHP's braindead include_path stuff. */
+	/* Work around PHP's braindead include_path stuff. - MS */
 	function REL($sf, $if) {
 		return dirname($sf)."/".$if;
 	}

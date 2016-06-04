@@ -29,7 +29,7 @@ function doPostNewBiblio($rcrd) {
 }
 
 ## main body of code
-switch ($_REQUEST[mode]){
+switch ($_POST[mode]){
   #-.-.-.-.-.-.-.-.-.-.-.-.-
   case 'isDupBarCd':
   	$cpys = new Copies;

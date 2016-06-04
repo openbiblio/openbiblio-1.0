@@ -5,7 +5,7 @@
 
   require_once("../shared/common.php");
 
-	switch ($_REQUEST['cat']) {
+	switch ($_POST['cat']) {
 		case 'collect':
 			require_once(REL(__FILE__, "../model/Collections.php"));
 			# can't set $ptr here as there are three classes used in this model.
@@ -59,14 +59,14 @@
 			$ptr2 = new Settings;
 			break;
 		default:
-		  echo "<h4>invalid category: &gt;".$_REQUEST['cat']."&lt;</h4><br />";
+		  echo "<h4>invalid category: &gt;".$_POST['cat']."&lt;</h4><br />";
 		  exit;
 			break;
 	}
 
 	$updtSuccess = T("Update successful");
 	
-	switch ($_REQUEST['mode']){
+	switch ($_POST['mode']){
 		## don't combine this switch with that above.
 		## doing so would require multiple 'switch' statements,
 		## as well as multiple 'default' blocks 
@@ -156,7 +156,7 @@
 			$msg = T("Collection, %desc%, has been deleted.", array('desc'=>$description));
 			echo $msg;
 			break;
-			
+
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
 		case 'getAll_copyFlds':
 			$flds = array();
@@ -362,7 +362,7 @@
 			echo json_encode($fd);
 			break;
 		case 'update_settings':
-			echo $ptr->setAll_el($_REQUEST);
+			echo $ptr->setAll_el($_POST);
 			break;
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
@@ -376,10 +376,10 @@
 			echo json_encode($sites);
 			break;
 		case 'addNew_sites':
-			echo $ptr->insert($_REQUEST);
+			echo $ptr->insert($_POST);
 			break;
 		case 'update_sites':
-			echo $ptr->update($_REQUEST);
+			echo $ptr->update($_POST);
 			break;
 		case 'd-3-L-3-t_sites':
 			echo $ptr->deleteOne($_POST['siteid']);
@@ -434,10 +434,10 @@
 			echo json_encode($states);
 			break;
 		case 'addNew_states':
-			echo $ptr2->insert($_REQUEST);
+			echo $ptr2->insert($_POST);
 			break;
 		case 'update_states':
-			echo $ptr2->update($_REQUEST);
+			echo $ptr2->update($_POST);
 			break;
 		case 'd-3-L-3-t_states':
 			echo $ptr2->deleteOne($_POST['code']);
@@ -471,6 +471,6 @@
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
 		break;
 	}
