@@ -44,7 +44,7 @@
         		}
             echo json_encode($response);
             } else {
-            echo "success";
+            echo json_encode(array("success"));
             }
         break;
 

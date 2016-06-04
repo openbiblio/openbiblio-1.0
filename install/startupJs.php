@@ -64,10 +64,8 @@ strt = {
         $.post(strt.url, params, function (response) {
             $('#plsWait').hide();
             if (response.hasOwnProperty('error')) {
-              $.each( response, function( key, val ) {
-                strt.informUser(val);
-              });
-            } else if (response.indexOf('success') >= 0) {
+              $.each( response, function( key, val ) { strt.informUser(val); });
+            } else  {
               strt.informUser('A new database_constant file has been created');
               $('#const_editor').hide();
               $('#createDB').show();
