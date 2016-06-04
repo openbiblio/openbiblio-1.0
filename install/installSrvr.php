@@ -35,6 +35,7 @@
 			break;
 			
 		case 'getDbVersion':
+ini_set('display_errors', 1);
 			$version = $installQ->getCurrentDatabaseVersion();
 			if (!$version || empty($version)) {
 				echo T("noDB");
