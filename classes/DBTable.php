@@ -45,6 +45,7 @@ abstract class DBTable extends Queryi {
 	public function getKeyList($key, $fields) {
 		$sql = $this->mkSQL('SELECT %I FROM %I WHERE ', $key, $this->name)
 			. $this->_pairs($fields, ' AND ');
+//if ($this->name == "biblio_copy") {echo "in DBTable::getKeyList(), sql= $sql <br />\n";}
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->select($sql));

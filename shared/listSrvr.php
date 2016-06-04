@@ -3,8 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
-	//print_r($_POST);echo "<br />";
+    require_once("../shared/common.php");
+    //echo "in listSrvr, at start: ";print_r($_POST);echo "<br />\n";
 
 /**
  * back-end API for various pull-down lists based on DB tables
@@ -147,7 +147,7 @@
 		$db = new Sites;
 		$list = getDbData($db);
 		echo json_encode($list);
-	  break;
+	    break;
 	case 'getDefaultSite':
 /*
 		require_once(REL(__FILE__, "../model/Sites.php"));
@@ -156,8 +156,8 @@
 		echo json_encode($rslt);
 */
         $siteId = Settings::get('library_name');
-echo $siteId;
-        return $siteId;
+        //echo "in listSrvr, getDefaultSite = $siteId <br />\n";
+        echo $siteId;
         break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//

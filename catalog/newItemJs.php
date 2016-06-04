@@ -147,19 +147,19 @@ var ni = {
 	},
 	//------------------------------
 	fetchOpts: function () {
-        $.getJSON(ni.url,{mode:'getOpts'}, function(data){
+        $.post(ni.url,{mode:'getOpts'}, function(data){
 			ni.opts = data;
 			ni.fetchDfltMedia(); // chaining
-		});
+		}, 'json');
 	},
     fetchDfltMedia: function() {
-        $.getJSON(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
+        $.post(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
             ni.dfltMedia = data[0];
 			ni.fetchMaterialList(); // chaining
-        });
+        }, 'json');
     },
 	fetchMaterialList: function () {
-        $.getJSON(ni.listSrvr,{mode:'getMediaList'}, function(data){
+        $.post(ni.listSrvr,{mode:'getMediaList'}, function(data){
 			var html = '';
             for (var n in data) {
 				html+= '<option value="'+n+'" ';
@@ -174,16 +174,16 @@ var ni = {
 				ni.doMakeItemForm($('#materialCd').val());
 			});
 			ni.fetchDfltCollection(); // chaining
-		});
+		}, 'json');
 	},
     fetchDfltCollection: function() {
-        $.getJSON(ni.listSrvr,{mode:'getDefaultCollection'}, function(data){
+        $.post(ni.listSrvr,{mode:'getDefaultCollection'}, function(data){
             ni.dfltColl = data[0];
 			ni.fetchCollectionList(); // chaining
-        });
+        }, 'json');
     },
 	fetchCollectionList: function () {
-	    $.getJSON(ni.listSrvr,{mode:'getCollectionList'}, function(data){
+	    $.post(ni.listSrvr,{mode:'getCollectionList'}, function(data){
 			var html = '';
             for (var n in data) {
 				html+= '<option value="'+n+'" ';
@@ -194,7 +194,7 @@ var ni = {
 			}
 			$('#itemEditColls').html(html);
 			ni.fetchSiteList(); // chaining
-		});
+		}, 'json');
 	},
 	fetchSiteList: function () {
         var listHtml = list.getSiteList($('#copySite'));
@@ -203,7 +203,7 @@ var ni = {
 
 	fetchHosts: function () {
 		//console.log('svr:'+ni.url);
-	  $.getJSON(ni.url,{mode:'getHosts'}, function(data){
+	  $.post(ni.url,{mode:'getHosts'}, function(data){
 	  	// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;
 			ni.nHosts = data.length;
@@ -220,13 +220,13 @@ var ni = {
 			}
 			$('#waitDiv').hide();
 			$('#searchDiv').show();
-		});
+		}, 'json');
 	},
 
 	doAbandon: function () {
-	  $.getJSON(ni.url,{mode:'abandon'}, function(data){
+	  $.post(ni.url,{mode:'abandon'}, function(data){
 			$('#searchDiv').show();
-		});
+		}, 'json');
 	},
 
 	//------------------------------------------------------------------------------------------
@@ -552,9 +552,9 @@ var ni = {
 	},
 	
 	doMakeItemForm: function (mediaType) {
-	  // fill out empty form with MARC fields
-	  if ((mediaType == '') || (mediaType === undefined)) mediaType = ni.dfltMedia;
-	  $.get(ni.url,{'mode':'getBiblioFields', 'material_cd':mediaType}, function (response) {
+	    // fill out empty form with MARC fields
+	    if ((mediaType == '') || (mediaType === undefined)) mediaType = ni.dfltMedia;
+	    $.post(ni.url,{'mode':'getBiblioFields', 'material_cd':mediaType}, function (response) {
 			$('#marcBody').html(response);
 			$('#selectionDiv td.filterable').hide();
 			obib.reStripe2('biblioFldTbl','odd');
@@ -566,8 +566,8 @@ var ni = {
 	},
 	
 	doShowOne: function (data, media){
-	  // display biblio item data in form
-	  $('#searchDiv').hide();
+	    // display biblio item data in form
+	    $('#searchDiv').hide();
 		for (var tag in data) {
 			if (data[tag] != '') {
 				$('#'+tag).val(data[tag]);
@@ -582,8 +582,8 @@ var ni = {
 		}
 		$('#itemMediaTypes').val(media);
 
-	  $('#selectionDiv input.online').disable();	/**/
-	  $('itemSubmitBtn').enable();
+	    $('#selectionDiv input.online').disable();	/**/
+	    $('itemSubmitBtn').enable();
 		$('#choiceDiv').hide();
 		$('#selectionDiv').show();
 	},
