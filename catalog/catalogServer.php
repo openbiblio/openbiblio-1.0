@@ -48,6 +48,8 @@
 	## --------------------- ##
 
 	#****************************************************************************
+    //echo "in catalogSrvr, at start: ";print_r($_POST);echo "<br />\n";
+
 	switch ($_POST['mode']) {
 	case 'doBibidSearch':
 	  $bib = new Biblio($_POST[bibid]);

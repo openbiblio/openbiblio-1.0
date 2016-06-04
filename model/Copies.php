@@ -54,6 +54,7 @@ class Copies extends CoreTable {
 	 }
 
 	public function getCpyList($bibid) {
+        //echo "in Copies::getCpyList, bibid= $bibid <br />\n";
 		$rslt = $this->getKeyList('copyid',array('bibid'=>$bibid));
 		$cpys = array();
 		//while($row = $rslt->fetch_assoc())

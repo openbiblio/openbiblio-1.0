@@ -184,27 +184,27 @@ var wc = {
 				bibid = $('#fotoBibid').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
 		$.post(wc.url,
-						{'mode':'addNewPhoto',
-						 'type':'base64',
-						 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
-             'bibid':bibid,
-						 'url': url,
-             'position':0,
-						},
-						function (response) {
-							var data = JSON.parse(response);
-							//console.log('image posting OK');
-							var crntFotoUrl = '../photos/' + data[0]['url'];
-							$('#fotoMsg').html('cover photo posted').show();
-							$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
-									+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-							if (typeof bs !== 'undefined') {
-								bs.crntFotoUrl = crntFotoUrl;
-								bs.getPhoto(bibid, '#photo_'+bibid );
-							}
-							$('#photoAddBtn').hide();
-							$('#photoEditBtn').show();
-						}
+				{'mode':'addNewPhoto',
+				 'type':'base64',
+				 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
+                 'bibid':bibid,
+				 'url': url,
+                 'position':0,
+				},
+				function (response) {
+					var data = JSON.parse(response);
+					//console.log('image posting OK');
+					var crntFotoUrl = '../photos/' + data[0]['url'];
+					$('#fotoMsg').html('cover photo posted').show();
+					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
+							+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+					if (typeof bs !== 'undefined') {
+						bs.crntFotoUrl = crntFotoUrl;
+						bs.getPhoto(bibid, '#photo_'+bibid );
+					}
+					$('#photoAddBtn').hide();
+					$('#photoEditBtn').show();
+				}
 		);
 		//e.preventDefault();
 		return false;
@@ -214,20 +214,21 @@ var wc = {
 	},
 	doDeletePhoto: function (e) {
 		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {
-	  	$.post(wc.url,{'mode':'deletePhoto',
-										 'bibid':$('#fotoBibid').val(),
-										 'url':$('#fotoName').val(),
-										},
-										function(response){
-											wc.eraseImage();
-											$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      													+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-                      idis.crntFoto = null;
-						          $('#fotoName').val('');
-											$('#photoAddBtn').show();
-											$('#photoEditBtn').hide();
-											$('#fotoMsg').html('cover photo deleted').show();
-										}
+	  	    $.post(wc.url,{'mode':'deletePhoto',
+					   'bibid':$('#fotoBibid').val(),
+						'url':$('#fotoName').val(),
+		              },
+					  function(response){
+							wc.eraseImage();
+							$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+      											+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+                            idis.crntFoto = null;
+						    $('#fotoName').val('');
+							$('#photoAddBtn').show();
+							$('#photoEditBtn').hide();
+							$('#fotoMsg').html('cover photo deleted').show();
+					 }
+                     , 'json'
 			);
 		}
 		e.stopPropagation();

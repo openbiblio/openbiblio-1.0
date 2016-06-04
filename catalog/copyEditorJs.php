@@ -51,11 +51,11 @@ var ced = {
 	},
 	//----//
 	doGetBarcdNmbr: function () {
-		$.getJSON(ced.catalogSrvr,{'mode':'getNewBarcd'}, function(jsonInpt){
+		$.post(ced.catalogSrvr,{'mode':'getNewBarcd'}, function(jsonInpt){
 		    $('#copyBarcode_nmbr').val(jsonInpt.barcdNmbr)
                      // e.g. pattern="[0]{10}"
 			     .attr('pattern','[0]{<?php echo Settings::get('item_barcode_width');?>}' );
-		});
+		}, 'json');
 	},
 	//----//
 	fetchStatusCds: function () {
@@ -195,7 +195,7 @@ var ced = {
 			} else {
 				$('#editRsltMsg').html(response).show();
 			}
-	  });
+	    }, 'json');
 	},
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');

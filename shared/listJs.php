@@ -14,13 +14,13 @@ var list = {
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getCollectionList: function () {
-        $.getJSON(list.server,{mode:'getDefaultCollection'}, function(data){
+        $.post(list.server,{mode:'getDefaultCollection'}, function(data){
             list.dfltColl = data[0];
 			      list.getCollListPt2(); // chaining
-        });
+        }, 'json');
     },
     getCollListPt2: function () {
-        $.getJSON(list.server,{mode:'getCollectionList'}, function(data){
+        $.post(list.server,{mode:'getCollectionList'}, function(data){
         	  var html = '';
             for (var n in data) {
         		html+= '<option value="'+n+'" ';
@@ -30,18 +30,18 @@ var list = {
                 html+= '>'+data[n]+'</option>';
         	  }
             return html
-        });
+        }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getMaterialList: function () {
-        $.getJSON(list.server,{mode:'getDefaultMateria'}, function(data){
+        $.post(list.server,{mode:'getDefaultMateria'}, function(data){
             list.dfltMatl = data;
 			      list.matlListPt2(); // chaining
-        });
+        }, 'json');
     },
     matlListPt2: function () {
-        $.getJSON(list.server,{mode:'getMediaList'}, function(data){
+        $.post(list.server,{mode:'getMediaList'}, function(data){
         	  var html = '';
             for (var n in data) {
         		html+= '<option value="'+n+'" ';
@@ -51,26 +51,26 @@ var list = {
                 html+= '>'+data[n]+'</option>';
         	  }
             return html
-        });
+        }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getOpts: function () {
-        $.getJSON(list.server,{mode:'getOpts'}, function(data){
+        $.post(list.server,{mode:'getOpts'}, function(data){
           list.opts = data;
           return list.opts;
-        });
+        }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getSiteList: function(where) {
-        $.getJSON(list.server,{mode:'getDefaultSite'}, function(data){
+        $.post(list.server,{mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
 			      list.siteListPt2(where); // chaining
-        });
+        }, 'json');
     },
     siteListPt2: function (where) {
-        $.getJSON(list.server, {mode:'getSiteList'}, function(data){
+        $.post(list.server, {mode:'getSiteList'}, function(data){
     		    var html = '';
             for (var n in data) {
         			  html+= '<option value="'+n+'" ';
@@ -81,17 +81,17 @@ var list = {
     		    }
             where.html(html);
             return html;
-        });
+        }, 'json');
     },
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getStatusCds: function (where) {
-        $.getJSON(list.server,{mode:'getDefaultStatusCd'}, function(data){
+        $.post(list.server,{mode:'getDefaultStatusCd'}, function(data){
             list.dfltCd = data;
 			      list.StatusListPt2(where); // chaining
-        });
+        }, 'json');
     },
     StatusListPt2: function (where) {
-    	  $.getJSON(list.server,{'mode':'getStatusCds'}, function(data){
+    	  $.post(list.server,{'mode':'getStatusCds'}, function(data){
             var html = '';
             for (var cd in data) {
         			  html+= '<option value="'+cd+'" ';
@@ -102,7 +102,7 @@ var list = {
     		    }
             where.html(html);
             return html;
-        });
+        }, 'json');
     },
 }
 $(document).ready(list.init);

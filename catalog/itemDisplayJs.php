@@ -79,7 +79,7 @@ var idis = {
 				}
 			<?php } ?>
 
-  		    $.getJSON(idis.url,{ 'mode':'getPhoto', 'bibid':idis.bibid  }, function(data){
+  		    $.post(idis.url,{ 'mode':'getPhoto', 'bibid':idis.bibid  }, function(data){
 				var fotoHt = <?php echo Settings::get('thumbnail_height'); ?>;
 				var fotoWid = <?php echo Settings::get('thumbnail_width'); ?>;
 
@@ -95,7 +95,7 @@ var idis = {
 					$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
       			    + 'height="'+fotoHt+'" width="'+fotoWid+'" >');
 				}
-  		    });
+  		    }, 'json');
 		}
 
 	    var txt = '';
@@ -190,8 +190,18 @@ var idis = {
 	},
 	
 	fetchCopyInfo: function () {
-	  $('tbody#copies').html('<tr><td colspan="9"><p class="error"><img src="../images/please_wait.gif" width="26" /><?php echo T("Searching"); ?></p></td></tr>');
-	  $.getJSON(idis.url,{'mode':'getCopyInfo','bibid':idis.bibid}, function(jsonInpt){
+	  $('tbody#copies').html('<tr><td colspan="9">'+
+                             '  <p class="error">'+
+                             '    <img src="../images/please_wait.gif" width="26" />'+
+                             '    <?php echo T("Searching"); ?>'+
+                             '  </p>'+
+                             '</td></tr>'
+                            );
+	  $.post(idis.url,
+            {'mode':'getCopyInfo',
+             'bibid':idis.bibid,
+            },
+            function(jsonInpt){
 				idis.copys = jsonInpt;
 				if (!idis.copys) {
 					var msg = '(<?php echo T("No copies"); ?>)';
@@ -204,13 +214,13 @@ var idis = {
 					var copy = idis.copys[n];
 				    idis.crntCopy = copy;
 				    html += "<tr>\n";
-				<?php if (!($tab == 'opac' || $tab == 'working' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
-						html += '	<td>\n';
-						html += '		<input type="button" id="edit-'+copy.copyid+'" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
-						html += '		<input type="button" id="delt-'+copy.copyid+'" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
-						html += '		<input type="hidden" value="'+copy.copyid+'" />\n';
-						html += '	</td>\n';
-				<?php } ?>
+    				<?php if (!($tab == 'opac' || $tab == 'working' || $tab == 'user' || $tab == 'rpt' || $tab == 'circulation' )){ ?>
+    						html += '	<td>\n';
+    						html += '		<input type="button" id="edit-'+copy.copyid+'" class="button editBtn" value="<?php echo T("edit"); ?>" />\n';
+    						html += '		<input type="button" id="delt-'+copy.copyid+'" class="button deltBtn" value="<?php echo T("del"); ?>" />\n';
+    						html += '		<input type="hidden" value="'+copy.copyid+'" />\n';
+    						html += '	</td>\n';
+    				<?php } ?>
 					if ((copy.siteid) && (multiSite == true)) {
 						html += "	<td>"+idis.sites[copy.siteid]+"</td>\n";
 					} else {
@@ -244,13 +254,13 @@ var idis = {
 					html += "</tr>\n";
 				}
   			$('tbody#copies').html(html);
-				obib.reStripe2('copyList','odd');
+			obib.reStripe2('copyList','odd');
 
-				// dynamically created buttons
-				$('.editBtn').on('click',null,idis.doCopyEdit);
-				//$('.deltBtn').on('click',{'copyid':copy.copyid},idis.doCopyDelete);
-				$('.deltBtn').on('click',{'copyid':copy.copyid},ced.doCopyDelete);
-	  });
+			// dynamically created buttons
+			$('.editBtn').on('click',null,idis.doCopyEdit);
+			//$('.deltBtn').on('click',{'copyid':copy.copyid},idis.doCopyDelete);
+			$('.deltBtn').on('click',{'copyid':copy.copyid},ced.doCopyDelete);
+	    }, 'json');
 	},
 
 	doCopyEdit: function (e) {
