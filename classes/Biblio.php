@@ -22,7 +22,7 @@ class Biblio {
 	private $bibid;
 	private $hdrFlds = array();
 	private $marcFlds = array();
-	private $cpyList = array();
+	public $cpyList = array();
 
 	## ------------------------------------------------------------------------ ##
 	public function __construct ($bibid) {
@@ -40,12 +40,12 @@ class Biblio {
 		$this->fetch_marc();
 		$this->fetch_title();
 		$this->fetch_photoData();
-		$this->fetch_copyList();
+//		$this->fetch_copyList();
 
 		$data = [];
 		$data['hdr'] = $this->hdrFlds;
 		$data['marc'] = $this->marcFlds;
-		$data['cpys'] = $this->cpyList;
+//		$data['cpys'] = $this->cpyList;
 		return $data;
 	}
 	/**
@@ -178,7 +178,7 @@ class Biblio {
 		## post photo link to this object
 		$this->hdrFlds['img'] = $row['url'];
 	}
-	private function fetch_copyList () {
+	public function fetch_copyList () {
 		## get copy ids from db
 		$cpys = new Copies;
 		## post list to this object
@@ -188,5 +188,6 @@ class Biblio {
 		## post availability icon and number of copies to this object
 		$this->hdrFlds['avIcon'] = $info['avIcon'];
 		$this->hdrFlds['ncpys'] = $info['nCpy'];
+        return $this->cpyList;
 	}
 }

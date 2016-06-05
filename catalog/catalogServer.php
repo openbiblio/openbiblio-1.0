@@ -166,9 +166,11 @@
 		break;
 		
 	case 'getCopyInfo':
-	    $bib = new Biblio($_GET['bibid']);
+	    $bib = new Biblio($_POST['bibid']);
 		$bibData = $bib->getData();
-		$cpyList = $bibData['cpys'];
+		//$cpyList = $bibData['cpys'];
+		$cpyList = $bib->fetch_copyList();
+        //echo "in catalogServer, getCopyInfo, cpyList = ";print_r($cpyList);echo "<br />\n";
 		foreach ($cpyList as $cid) {
 			$cpy = new Copy($cid);
 			$cpys[] = $cpy->getData();

@@ -55,7 +55,9 @@ class Copies extends CoreTable {
 
 	public function getCpyList($bibid) {
         //echo "in Copies::getCpyList, bibid= $bibid <br />\n";
-		$rslt = $this->getKeyList('copyid',array('bibid'=>$bibid));
+		$set = $this->getKeyList('copyid',array('bibid'=>$bibid));
+        $rslt = $set->fetchAll();
+        //echo "in Copies::getCpyList, copies: ";print_r($rslt);echo " <br />\n";
 		$cpys = array();
 		//while($row = $rslt->fetch_assoc())
         foreach ($rslt as $row) {
