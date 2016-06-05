@@ -12,11 +12,11 @@
 		var input$ = $('#IN-'+id);
 		var cell$ = $('#date-'+id);
 		if(input$.val() == 'Yes') {
-      input$.val('No');
+            input$.val('No');
 			cell$.removeClass('calendarOpen');
 			cell$.addClass('calendarClosed');
 		} else {
-      input$.val('Yes');
+            input$.val('Yes');
 			cell$.removeClass('calendarClosed');
 			cell$.addClass('calendarOpen');
 		}
@@ -43,7 +43,7 @@ var cal = {
 
 	init: function () {
 		cal.url = 'calendarSrvr.php';
-    cal.listSrvr = '../shared/listSrvr.php';
+        cal.listSrvr = '../shared/listSrvr.php';
 		cal.initWidgets();
 		$('.help').hide();
 
@@ -88,19 +88,19 @@ var cal = {
 
 	saveCalendar: function (e) {
 		e.stopPropagation();
-    e.preventDefault();
+        e.preventDefault();
 		$('#calName').val(cal.calName);
 		$('#calCd').val(cal.calCd);
-	  var params = $('#editForm').serialize();
-	  $.post(cal.url, params, function(response){
+	       var params = $('#editForm').serialize();
+	    $.post(cal.url, params, function(response){
 			$('#errSpace').html(response).show();
 		});
 	},
 
 	fetchCalendarList: function (e) {
-	  $.getJSON(cal.listSrvr,{mode:'getCalendarList'}, function(data){
+	  $.post(cal.listSrvr,{mode:'getCalendarList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<li>';
 				html+= '<input type="button" class="calEntryBtn" value="edit" />';
 				html+= '<input type="hidden" value="'+n+'" />';
@@ -109,11 +109,11 @@ var cal = {
 			}
 			$('#calList').html(html);
 			$('.calEntryBtn').on('click',null,cal.showCalendar);
-		});
+		}, 'json');
 	},
 
 	doGetCalendar: function () {
-		$.get(cal.url, {'mode':$('#calMode').val(), 'calendar':cal.calCd}, function (response) {
+		$.post(cal.url, {'mode':$('#calMode').val(), 'calendar':cal.calCd}, function (response) {
 			$('#calArea').html(response);
 		});
 	},

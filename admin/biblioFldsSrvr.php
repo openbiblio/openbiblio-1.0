@@ -30,8 +30,8 @@
 			## prepare list of Material fields in use
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
 			$fptr = new MaterialFields;
-			$typeCd = array('material_cd' => $_GET['matlCd']);
-		  $flds = array();
+			$typeCd = array('material_cd' => $_POST['matlCd']);
+		    $flds = array();
 			$fSet = $fptr->getMatches($typeCd,'position');
 			//while ($row = $fSet->fetch_assoc()) {
             foreach ($fSet as $row) {
@@ -55,7 +55,7 @@
 			## delete Material_fields database entry
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
 			$ptr = new MaterialFields;
-			echo $ptr->deleteOne($_GET[material_field_id]);
+			echo $ptr->deleteOne($_POST[material_field_id]);
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
@@ -77,7 +77,7 @@
 			## prepare list of MARC tags for specified block
 			require_once(REL(__FILE__, "../model/MarcDBs.php"));
 			$ptr = new MarcTags;
-			$params = array('block_nmbr' => $_GET['block_nmbr']);
+			$params = array('block_nmbr' => $_POST['block_nmbr']);
 		  $vals = array();
 			$rslt = $ptr->getMatches($params,'tag');
 			while ($row = $rslt->fetch_assoc()) {
@@ -91,7 +91,7 @@
 			## prepare list of MARC subfields for specified tags
 			require_once(REL(__FILE__, "../model/MarcDBs.php"));
 			$ptr = new MarcSubfields;
-			$params = array('tag' => $_GET['tag']);
+			$params = array('tag' => $_POST['tag']);
 		  $vals = array();
 			$rslt = $ptr->getMatches($params,'subfield_cd');
 			while ($row = $rslt->fetch_assoc()) {

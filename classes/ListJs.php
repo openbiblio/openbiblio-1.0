@@ -64,9 +64,9 @@ List.prototype.initWidgets =function () {
 
 List.prototype.resetForms = function () {
 	$('#editDiv').hide();
-  $('#listHdr').html(this.listHdr);
-  $('#editHdr').html(this.editHdr);
-  $('#cnclBtn').val('Cancel');
+    $('#listHdr').html(this.listHdr);
+    $('#editHdr').html(this.editHdr);
+    $('#cnclBtn').val('Cancel');
 	$('#listDiv').show();
 };
 
@@ -81,7 +81,7 @@ List.prototype.fetchList = function () {
 	var params = { 'cat':this.dbAlias,
 								 'mode':'getAll_'+this.dbAlias, 
 							 };
-  $.getJSON( this.url, params, $.proxy(this.fetchHandler,this));
+    $.post( this.url, params, $.proxy(this.fetchHandler,this), 'json');
 };
 List.prototype.fetchHandler = function(dataAray){
   this.json = dataAray;	// will be re-used later for editing
@@ -97,10 +97,10 @@ List.prototype.fetchHandler = function(dataAray){
 		item = dataAray[obj], 
 		ident = item[this.keyFld];
 		// these are static in all rows
-   	html  = '<tr>\n';
+   	    html  = '<tr>\n';
  		html += '	<td valign="top">\n';
-   	html += this.addFuncBtns( ident );
-   	html += '	</td>\n';
+   	    html += this.addFuncBtns( ident );
+   	    html += '	</td>\n';
 
 		// these vary by form in use
 		for (var fld in this.listFlds) {
@@ -140,7 +140,7 @@ List.prototype.doEditFields = function (e) {
 			n;
 	for (n in this.json) {
 		var item = this.json[n];
-	  if (item[ident] == code) {
+	    if (item[ident] == code) {
 			this.showFields(item);
 			this.crnt = code;
 			return false;
@@ -150,10 +150,10 @@ List.prototype.doEditFields = function (e) {
 };
 	
 List.prototype.showFields = function (item) {
-  $('#fieldsHdr').html(this.editHdr);
-  $('#addBtn').hide();
-  $('#updtBtn').show();
-  $('#deltBtn').show();
+    $('#fieldsHdr').html(this.editHdr);
+    $('#addBtn').hide();
+    $('#updtBtn').show();
+    $('#deltBtn').show();
 
 	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
 		var tagname = $(this).get(0).tagName;
@@ -176,7 +176,7 @@ List.prototype.showFields = function (item) {
 	for (var n in this.noshows){
 		$('#'+this.noshows[n]).attr('required',false).hide();
 	};
-  $('#editForm input:visible:first').focus(); 
+    $('#editForm input:visible:first').focus();
 	$('#codeReqd').hide();
 	$('#listDiv').hide();
 	$('#editDiv').show();
@@ -191,10 +191,10 @@ List.prototype.doNewFields = function (e) {
 	$('#codeReqd').show();
 	$('#deltBtn').hide();
 	$('#updtBtn').hide();
-  $('#addBtn').show();
+    $('#addBtn').show();
 	$('#listDiv').hide();
 	$('#editDiv').show();
-  $('#editForm input:visible:first').focus(); 
+    $('#editForm input:visible:first').focus();
 	return false;
 };
 	
@@ -240,14 +240,14 @@ List.prototype.updateHandler = function(response) {
 	
 List.prototype.doDeleteFields = function (e) {
 	var msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
-  if (confirm(msg)) {
-  	var parms = {	'cat':this.dbAlias, 
-									'mode':'d-3-L-3-t_'+this.dbAlias, 
-									'code':$('#'+this.keyFld).val(), 
-									'description':$('#description').val(), 
+    if (confirm(msg)) {
+  	   var parms = {'cat':this.dbAlias,
+					'mode':'d-3-L-3-t_'+this.dbAlias, 
+					'code':$('#'+this.keyFld).val(), 
+					'description':$('#description').val(), 
 								};
 		parms[this.keyFld] = $('#'+this.keyFld).val();
-  	$.post(this.url, parms, $.proxy(this.deleteHandler,this));
+  	    $.post(this.url, parms, $.proxy(this.deleteHandler,this));
 	}
 	return false;
 };

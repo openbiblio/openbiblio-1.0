@@ -47,7 +47,7 @@ var oed = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(oed.url,{ 'cat':'opts', 'mode':'getOpts'}, function(data){
+	  $.post(oed.url,{ 'cat':'opts', 'mode':'getOpts'}, function(data){
 	  	$('#protocol').val(data.protocol);
 			$('#maxHits').val(data.maxHits);
 			$('#timeout').val(data.timeout);
@@ -64,7 +64,7 @@ var oed = {
 			$('#fictionCode').val(data.fictionCode);
 			$('#fictionLoC').val(data.fictionLoc);
 			$('#fictionDew').val(data.fictionDew);
-		});
+		}, 'json');
 	},
 
 	doValidate: function () {

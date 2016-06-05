@@ -42,11 +42,11 @@ var thm = {
 	},
 	resetForms: function () {
 		//console.log('resetting!');
-	  $('#listHdr').html(thm.listHdr);
-	  $('#mediaHdr').html(thm.editHdr);
+	    $('#listHdr').html(thm.listHdr);
+	    $('#mediaHdr').html(thm.editHdr);
 		$('#editDiv').hide();
 		$('#listDiv').show();
-    $('#cnclBtn').val('Cancel');
+        $('#cnclBtn').val('Cancel');
 	},
 	doBackToList: function () {
 		$('#msgDiv').hide(10000);
@@ -56,8 +56,8 @@ var thm = {
 	
 	//------------------------------
 	fetchThemes: function () {
-	  $.getJSON(thm.url,{ 'cat':'themes', 'mode':'getAllThemes' }, function(dataAray){
-	    thm.json = dataAray;
+	  $.post(thm.url,{ 'cat':'themes', 'mode':'getAllThemes' }, function(dataAray){
+	        thm.json = dataAray;
 			var html = '', opts = '';
 			// first construct theme dropdown list
 			for (var obj in dataAray) {
@@ -90,7 +90,7 @@ var thm = {
 			$('.copyBtn').on('click',null,thm.doCopy);
 			$('table tbody.striped tr:odd td').addClass('altBG');
 			$('table tbody.striped tr:even td').addClass('altBG2');
-		});
+		}, 'json');
 	},
 
 	doChngTheme: function () {
@@ -109,7 +109,7 @@ var thm = {
 	},
 	
 	doEdit: function (e) {
-	  var themeid = $(e.target).next().val();
+	    var themeid = $(e.target).next().val();
 		//console.log('you wish to edit code: '+themeid);
 		for (var n in thm.json) {
 		  if (thm.json[n]['themeid'] == themeid) {
@@ -122,7 +122,7 @@ var thm = {
 		return false;
 	},
 	doCopy: function (e) {
-	  var themeid = $(e.target).prev().val();
+	    var themeid = $(e.target).prev().val();
 		//console.log('you wish to copy theme: '+themeid);
 		for (var n in thm.json) {
 		  if (thm.json[n]['themeid'] == themeid) {
@@ -140,9 +140,9 @@ var thm = {
 	
 	showTheme: function (th) {
 		//console.log('showing : '+media['description']);
-	  $('#themeHdr').html(thm.themeHdr);
-	  $('#theme_name').focus();
-	  if (th['themeid'] != thm.crntTheme) 
+	    $('#themeHdr').html(thm.themeHdr);
+	    $('#theme_name').focus();
+	    if (th['themeid'] != thm.crntTheme)
 			$('#deltBtn').show(); 
 		else 
 			$('#deltBtn').hide();
