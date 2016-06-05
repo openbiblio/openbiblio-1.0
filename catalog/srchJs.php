@@ -239,32 +239,32 @@ var bs = {
     bs.opts['current_site'] = '<?php echo Settings::get('library_name');?>';
 	},
 	fetchCrntMbrInfo: function () {
-	  $.get(bs.url,{mode:'getCrntMbrInfo'}, function(data){
+	  $.post(bs.url,{mode:'getCrntMbrInfo'}, function(data){
 			$('#crntMbrDiv').empty().html(data).show();
-		});
+		}, 'json');
 	},
 	fetchMaterialList: function () {
-	  $.getJSON(bs.listSrvr,{'mode':'getMediaList'}, function(data){
+	  $.post(bs.listSrvr,{'mode':'getMediaList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#itemMediaTypes').html(html);
 			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchMediaTypes').html(html);
-		});
+		}, 'json');
 	},
 	fetchMediaMarcTags: function (materialCd) {
-	  $.getJSON(bs.listSrvr,{'mode':'getMediaMarcTags', 'media':materialCd}, function(data){
+	  $.post(bs.listSrvr,{'mode':'getMediaMarcTags', 'media':materialCd}, function(data){
 			var html = '<option value="all" selected="selected"><?php echo T("All"); ?></option>' + html;
-      $.each(data, function (key, value) {
+            $.each(data, function (key, value) {
 				html+= '<option value="'+key+'">'+key+': '+value+'</option>';
 			});
 			$('#srchMarcTags').html(html);
-		});
+		}, 'json');
 	},
 	fetchCollectionList: function () {
-	  $.getJSON(bs.listSrvr,{'mode':'getCollectionList'}, function(data){
+	  $.post(bs.listSrvr,{'mode':'getCollectionList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
@@ -272,10 +272,10 @@ var bs = {
 			$('#itemEditColls').html(html);
 			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchCollections').html(html);
-		});
+		}, 'json');
 	},
 	fetchAudienceList: function () {
-	  $.getJSON(bs.listSrvr,{'mode':'getAudienceList'}, function(data){
+	  $.post(bs.listSrvr,{'mode':'getAudienceList'}, function(data){
 			var html = '';
       for (var n in data) {
 				html+= '<option value="'+data[n]+'">'+data[n]+'</option>';
@@ -283,13 +283,13 @@ var bs = {
 			$('#itemEditColls').html(html);
 			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
 			$('#audienceLevel').html(html);
-		});
+		}, 'json');
 	},
 	fetchSiteList: function () {
-	  $.getJSON(bs.listSrvr,{'mode':'getSiteList'}, function(data){
+	  $.post(bs.listSrvr,{'mode':'getSiteList'}, function(data){
 			bs.siteList = data;
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#copySite').html(html);
@@ -301,22 +301,22 @@ var bs = {
 
 			// now ready to begin a search
 			bs.doAltStart();
-		});
+		}, 'json');
 	},
 	fetchMediaDisplayInfo: function () {
-	  $.getJSON(bs.url,{mode:'getMediaDisplayInfo',howMany:'all'}, function(response){
+	  $.post(bs.url,{mode:'getMediaDisplayInfo',howMany:'all'}, function(response){
 			bs.displayInfo = response;
-		});
+		}, 'json');
 	},
 	fetchMediaIconUrls: function () {
-	  $.getJSON(bs.listSrvr,{mode:'getMediaIconUrls'}, function(response){
+	  $.post(bs.listSrvr,{mode:'getMediaIconUrls'}, function(response){
 			bs.mediaIconUrls = response;
-		});
+		}, 'json');
 	},
 	fetchMediaLineCnt: function () {
-	  $.getJSON(bs.url,{mode:'getMediaLineCnt'}, function(response){
+	  $.post(bs.url,{mode:'getMediaLineCnt'}, function(response){
 			bs.mediaLineCnt = response;
-		});
+		}, 'json');
 	},
 
 	/* ====================================== */
@@ -339,7 +339,7 @@ var bs = {
 	        }
 		    $('#searchDiv').hide();
 	        $('#biblioDiv').show();
-		});
+		}, 'json');
 		return false;
 	},
 
@@ -375,7 +375,7 @@ var bs = {
             }
 		    $('#searchDiv').hide();
 	        $('#biblioDiv').show();
-		});
+		}, 'json');
 		return false;
 	},
 	doPhraseSearch: function (e,firstItem) {
@@ -410,10 +410,12 @@ var bs = {
 		params += '&mode=doPhraseSearch&firstItem='+firstItem;
 
 	    $.post(bs.url,params, function(jsonInpt){
-			if ($.trim(jsonInpt).substr(0,1) != '[') {
-				$('#errSpace').html(jsonInpt).show();
-			} else {
-				var biblioList = $.parseJSON(jsonInpt);
+			//if ($.trim(jsonInpt).substr(0,1) != '[') {
+			//if ($.trim(jsonInpt).substr(0,1) != '[') {
+			//	$('#errSpace').html(jsonInpt).show();
+			//} else {
+				//var biblioList = $.parseJSON(jsonInpt);
+				var biblioList = jsonInpt;
 
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
                     //console.log('no hits');
@@ -437,20 +439,21 @@ var bs = {
 				    bs.multiMode = true;
 				    bs.showList(firstItem, biblioList);
 				}
-	       }
-		});
+	       //}
+		}, 'json');
 		return false;
 	},
 
 	/* ====================================== */
 	getPhoto: function (bibid, dest) {
 		if (bibid === undefined) console.log('Missing bibid in getPhoto()');
-		$.getJSON(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
+		$.post(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 			if (data != null) {
-				var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+data[0].url;
+                var foto = data[0];
+				var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+foto['url'];
 				$(dest).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
 			}
-		});
+		}, 'json');
 	},
 
 	showList: function (firstItem, biblioList) {
@@ -547,7 +550,7 @@ var bs = {
 		}
 		obib.reStripe2('listTbl','odd');
 
-	  // this button is created dynamically, so duplicate binding is not possible
+	    // this button is created dynamically, so duplicate binding is not possible
 		$('.moreBtn').on('click',null,bs.getPhraseSrchDetails);
 		
 		// enable or disable next / prev buttons
@@ -581,9 +584,9 @@ var bs = {
 		for (var bibid in bs.biblio) {
 	  	params += "&id[]="+bibid;
 		}
-	  $.post(bs.url,params, function(response){
+	    $.post(bs.url, params, function(response){
 	    $('#results_found').html(response);
-	  });
+	  }, 'json');
 	},
 	getPhraseSrchDetails: function () {
 	  var bibid = $(this).prev().val();
@@ -596,7 +599,7 @@ var bs = {
 	  params += "&id[]="+bs.biblio.bibid;
 	  $.post(bs.url,params, function(response){
 	    $('#results_found').html(response);
-	  });
+	  }, 'json');
 	},
 	
 	/* ====================================== */
@@ -693,9 +696,9 @@ var bs = {
 		e.preventDefault();
 		e.stopPropagation();
 		var params = "&mode=updateBiblio&" + $('#biblioEditForm').not('.online').serialize();
-	  $.post(ie.url,params, function(response){
-	    if (response == '!!success!!'){
-    		$('#itemEditorDiv').hide();
+	    $.post(ie.url,params, function(response){
+	        if (response == '!!success!!'){
+    		    $('#itemEditorDiv').hide();
 				// repeat search with existing criteria, to assurre a current display
 				if (bs.srchType == 'barCd')
 					bs.doBarCdSearch();
@@ -705,8 +708,8 @@ var bs = {
 			  // failure, show error msg, leave form in place
 				$('#itemRsltMsg').html(response);
 	 		}
-	  });
-	  return false;
+	    }, 'json');
+	    return false;
 	},
 
 	/* ====================================== */

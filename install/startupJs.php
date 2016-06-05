@@ -63,15 +63,15 @@ strt = {
 
         $.post(strt.url, params, function (response) {
             $('#plsWait').hide();
-            if (response.indexOf('Error:') >= 0) {
-              strt.informUser('<p class="error">'+response+'</p>');
-            } else if (response.indexOf('success') >= 0) {
+            if (response.hasOwnProperty('error')) {
+              $.each( response, function( key, val ) { strt.informUser(val); });
+            } else  {
               strt.informUser('A new database_constant file has been created');
               $('#const_editor').hide();
               $('#createDB').show();
               $('#adminNm').focus();
             }
-        });
+        }, 'json');
     },
 
     createDb: function() {
