@@ -57,6 +57,7 @@ class Integrity extends Queryi{
 					. 'on biblio.bibid=biblio_copy.bibid '
 					. 'where biblio.bibid is null ',
 			);
+/*
 			$this->checks[] = array(
 				'error' => T("Hours not attached to sites"),
 				'countSql' => 'select count(*) as count '
@@ -80,6 +81,7 @@ class Integrity extends Queryi{
 					. 'and a.effective_end_date IS NULL ',
 					// NO AUTOMATIC FIX
 			);
+*/
 			$this->checks[] = array(
 				//'error' => T("%count% copies with broken status references"),
 				'error' => T("copies with broken status references"),
@@ -97,7 +99,7 @@ class Integrity extends Queryi{
 			);
 			
 /*			
-			array(
+			$this->checks[] = array(
 				// Added as there was a bug in the code, and not sure how long
 				// it has been there so DB might be corrupt.  The problem is a
 				// duplicate 245$a where there should only be one in biblio_field
@@ -145,7 +147,6 @@ class Integrity extends Queryi{
 					.	') AS t',
 */
 				'fixFn' => 'removeRepeaters',
-				// NO AUTOMATIC FIX
 			);
 			$this->checks[] = array(
 				//'error' => T("%count% items with empty collections"),
@@ -205,10 +206,12 @@ class Integrity extends Queryi{
 					. 'from biblio_status_hist left join biblio_status_dm '
 					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
 					. 'where biblio_status_dm.code is null ',
-				'fixSql' => 'update biblio_status_hist set status_cd = \'lst\''
+/*
+				'fixSql' => 'update biblio_status_hist set status_cd = \'lst\' '
 					. 'using biblio_status_hist left join biblio_status_dm '
 					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
 					. 'where biblio_status_dm.code is null ',
+*/
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenBibidRef"),
@@ -362,8 +365,9 @@ class Integrity extends Queryi{
 			//echo $chk["error"]."<br />";
 			if (isset($chk['countSql'])) {
 				$row = $this->select1($chk['countSql']);
+//echo "in Integrity::check_el(), countSQL => ";print_r($row);echo "<br />\n";
 				//$count = $row["count"];
-                $count = count($row);
+                $count = count($row['count']);
 			} elseif (isset($chk['countFn'])) {
 				$fn = $chk['countFn'];
 				assert('method_exists($this, $fn)');
@@ -376,6 +380,7 @@ class Integrity extends Queryi{
 				$msg = $count." ".$chk["error"];
 				if ($fix) {
 					if (isset($chk['fixSql'])) {
+//echo "in Integrity::check_el(), fixSql = {$chk['fixSql']} <br />\n";
 						$this->act($chk['fixSql']);
 						$msg .= ' <b>'.T("FIXED").'</b> ';
 					} elseif (isset($chk['listSql'])) {
