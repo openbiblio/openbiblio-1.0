@@ -44,10 +44,10 @@ Stf.prototype.doPwd = function (e) {
 	  var code = $(e.target).prev().val();
 		for (var n in this.json) {
 			var item = this.json[n];
-		  if (item['userid'] == code) {
+		    if (item['userid'] == code) {
 				this.crntUser = code;
 				$('#pwdDiv fieldset legend span').html(item.username);
-  			$('#pwdChgForm input:visible:first').focus(); 
+  			    $('#pwdChgForm input:visible:first').focus();
 				$('#listDiv').hide();
 				$('#editDiv').hide();
 				$('#pwdDiv').show();
@@ -76,12 +76,12 @@ Stf.prototype.doSetStaffPwd = function (e  ) {
 	e.preventDefault();
 	e.stopPropagation();
 	if (!this.chkPwds('pwdA','pwdB')) return false;
-  var parms = {	'cat':'staff',
+    var parms = {	'cat':'staff',
 								'mode':'setPwd_staff', 
 								'pwd':$('#pwdA').val(), 
 								'pwd2':$('#pwdB').val(), 
 								'userid':this.crntUser };
-  $.post(this.url, parms, $.proxy(this.setHandler,this));
+    $.post(this.url, parms, $.proxy(this.setHandler,this));
 	return false;
 };
 Stf.prototype.setHandler = function(response){

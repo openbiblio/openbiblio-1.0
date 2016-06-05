@@ -45,79 +45,79 @@ var pdl = {
 
 	//------------------------------
 	fetchCalendarList: function () {
-	  $.getJSON(pdl.url,{mode:'getCalendarList'}, function(data){
+	  $.post(pdl.url,{mode:'getCalendarList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#calendar_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchCollectionList: function () {
-	  $.getJSON(pdl.url,{mode:'getCollectionList'}, function(data){
+	  $.post(pdl.url,{mode:'getCollectionList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#collection_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchMediaList: function () {
-	  $.getJSON(pdl.url,{mode:'getMediaList'}, function(data){
+	  $.post(pdl.url,{mode:'getMediaList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#material_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchMbrTypList: function () {
-	  $.getJSON(pdl.url,{mode:'getMbrTypList'}, function(data){
+	  $.post(pdl.url,{mode:'getMbrTypList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#mbrTyp_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchSiteList: function () {
-	  $.getJSON(pdl.url,{mode:'getSiteList'}, function(data){
+	  $.post(pdl.url,{mode:'getSiteList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#site_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchStateList: function () {
-	  $.getJSON(pdl.url,{mode:'getStateList'}, function(data){
+	  $.post(pdl.url,{mode:'getStateList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#state_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchInputTypes: function () {
-	  $.get(pdl.url,{mode:'getInputTypes'}, function(data){
+	  $.post(pdl.url,{mode:'getInputTypes'}, function(data){
 			var partsA = (data.replace(/'/g,"")).split('(');
 			var partsB = partsA[1].split(')');
 			var list = partsB[0].split(',');
 			var html = '';
-      for (var n in list) {
+            for (var n in list) {
 				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
 			}
 			$('#inptTyp_cd').html(html);
-		});
+		}, 'json');
 	},
 	fetchValidationList: function () {
-	  $.getJSON(pdl.url,{mode:'getValidations'}, function(data){
+	  $.post(pdl.url,{mode:'getValidations'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#validation_cd').html(html);
-		});
+		}, 'json');
 	},
 
 };
