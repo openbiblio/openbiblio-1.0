@@ -57,7 +57,7 @@ class Integrity extends Queryi{
 					. 'on biblio.bibid=biblio_copy.bibid '
 					. 'where biblio.bibid is null ',
 			);
-/*
+
 			$this->checks[] = array(
 				'error' => T("Hours not attached to sites"),
 				'countSql' => 'select count(*) as count '
@@ -81,7 +81,7 @@ class Integrity extends Queryi{
 					. 'and a.effective_end_date IS NULL ',
 					// NO AUTOMATIC FIX
 			);
-*/
+
 			$this->checks[] = array(
 				//'error' => T("%count% copies with broken status references"),
 				'error' => T("copies with broken status references"),
