@@ -24,6 +24,7 @@ class BiblioImages extends DBTable {
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 
 	public function getBiblioMatches($fields) {
+        //echo "in BiblioImages::getBiblioMatches(): ";print_r($fields);echo "<br />\n";
 		$sql = 'SELECT DISTINCT(i.bibid), i.url, s.subfield_data as data '.
 					 'FROM images i, biblio b, biblio_field f, biblio_subfield s '.
 					 'WHERE (f.bibid = i.bibid) AND (s.fieldid = f.fieldid) AND (("A" = "B") ';
@@ -33,7 +34,7 @@ class BiblioImages extends DBTable {
 		}
 		$sql .= ' )';
 		$sql .= ' ORDER BY data';
-//echo "in BiblioImages::getBiblioMatches(): sql=$sql<br />\n";
+        //echo "in BiblioImages::getBiblioMatches(): sql=$sql<br />\n";
 		if ($this->iter) {
 			$c = $this->iter;	# Silly PHP
 			return new $c($this->select($sql));

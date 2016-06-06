@@ -41,9 +41,12 @@ var img = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(img.url,{mode:'getOpts'}, function(jsonData){
-	    img.opts = jsonData
-		});
+	    /*
+        $.post(img.url,{mode:'getOpts'}, function(jsonData){
+	        img.opts = jsonData
+		}, 'json');
+        */
+        img.opts = list.getOpts();
 	},
 	//------------------------------
 	getNextPage:function () {
@@ -59,7 +62,7 @@ var img = {
 	fetchFotoPage: function (firstItem) {
 		if (firstItem === undefined) firstItem = img.firstItem;
 		img.orderBy = $('#orderBy option:selected').val();
-	  $.getJSON(img.url,{'mode':				'getPage',
+	    $.post(img.url,{'mode':				'getPage',
 											 'orderBy':			img.orderBy,
 											 'firstItem':		firstItem,
 											 'tab':					$('#tab').val(),
@@ -73,7 +76,7 @@ var img = {
 
 			img.showFotos();
 			$(window).on('resize',null,img.showFotos);
-		});
+		}, 'json');
 	},
 	showFotos: function () {
 			$('.countBox').html((img.firstItem+1)+' - '+img.lastItem+' <?php echo T("of");?> '+img.ttlNmbr).show();
@@ -90,7 +93,7 @@ var img = {
 				var displayWidth = bodyWidth - asideWidth;
 				var fotoWidth = parseInt($('#img-dummy').outerWidth())*1.5;
 				var perLine = Math.floor((bodyWidth/fotoWidth),0)-1 ;
-        //console.log('width: body='+bodyWidth+'; aside='+asideWidth+'; display='+displayWidth+'; foto='+fotoWidth+'; perLine='+perLine);
+                //console.log('width: body='+bodyWidth+'; aside='+asideWidth+'; display='+displayWidth+'; foto='+fotoWidth+'; perLine='+perLine);
 			} else {
 				/* columns will be per 'Admin|Library Settings' entrys */
 				var perLine = img.columns;

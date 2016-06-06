@@ -13,14 +13,16 @@
 	$map['author'] = array('100$a');
 
 	switch ($_POST['mode']) {
-	case 'getOpts':
+	/* obsolete, service provided by listSrvr available to all
+    case 'getOpts':
 		$opts = Settings::getAll();
 		echo json_encode($opts);
 	  break;
+    */
 
 	case "getPage":
 		$db = new BiblioImages;
-		$orderBy = $_GET['orderBy'];
+		$orderBy = $_POST['orderBy'];
 		$rslt = $db->getBiblioMatches($map[$orderBy],$orderBy);
 		//$numRows = $rslt->num_rows;
         if ($rslt) {

@@ -126,34 +126,34 @@ var mtl = {
 	
 	//------------------------------
 	fetchMatlTypes: function () {
-	  $.getJSON(mtl.url,{mode:'getMtlTypes'}, function(data){
+	    $.post(mtl.url,{mode:'getMtlTypes'}, function(data){
 			var html = "<option value=\"0\">Choose One</option>\n";
 			for (var n in data) {
 				html += '<option value="'+data[n]['code']+'">'+data[n]['description']+'</option>\n';
 			}
 			$('#typeList').html(html);
-		});
+		}, 'json');
 	},
 	fetchInputTypes: function () {
-	  $.get(mtl.listUrl,{mode:'getInputTypes'}, function(data){
+	    $.post(mtl.listUrl,{mode:'getInputTypes'}, function(data){
 			var partsA = (data.replace(/'/g,"")).split('(');
 			var partsB = partsA[1].split(')');
 			var list = partsB[0].split(',');
 			var html = '';
-      for (var n in list) {
+            for (var n in list) {
 				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
 			}
 			$('#form_type').html(html);
-		});
+		}, 'json');
 	},
 	fetchValidationList: function () {
-	  $.getJSON(mtl.listUrl,{mode:'getValidations'}, function(data){
+	    $.post(mtl.listUrl,{mode:'getValidations'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#validation_cd').html(html);
-		});
+		}, 'json');
 	},
 
 	//------------------------------
@@ -271,7 +271,7 @@ var mtl = {
 		$('#existing').empty();
 		$('#msgArea').hide();
 		$('#msgArea').empty();
-	  $.getJSON(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
+	  $.post(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
 			mtl.data = data;	// for later use
 			var html = '';
 			var html2 = '';
@@ -285,42 +285,42 @@ var mtl = {
 			}
 			else if (data.length > 0) {
 				for (var n in data) {
-				  var recId = 'mtl'+data[n]['material_field_id'];
-				  var btnId = 'btn'+data[n]['material_field_id'];
-	    		html  = '<tr id="'+recId+'">\n';
-    			html += '<td valign="top" class="primary">\n';
- 					html += '<input type="button" id="'+btnId+'" value="'+mtl.editLbl+'" align="center" class="button editBtn" />\n';
- 					html += '<input type="hidden" name="material_field_id" class="fldData" value="'+data[n]['material_field_id']+'" />\n';
-					html += '</td>';
-					html += '<td>';
-					html += '<span name="position" class="fldData">'+data[n]['position']+'</span>';
-					html += '</td>';
-	   			html += '<td valign="top" class="primary">\n';
- 					html += '<input type="hidden" name="tag" class="fldData" value="'+data[n]['tag']+'" />\n';
- 					html += '<input type="hidden" name="subfield_cd" class="fldData" value="'+data[n]['subfield_cd']+'" />\n';
-					html += '<span name="info" class="fldData">'+data[n]['tag']+data[n]['subfield_cd']+'</span>';
-					html += '</td>';
-    			html += '<td valign="top" class="primary">\n';
-					html += '<span name="label" class="fldData">'+data[n]['label']+'</span>';
-					html += '</td>';
-    			html += '<td valign="top" class="primary">\n';
-					html += '<span name="form_type" class="fldData">'+data[n]['form_type']+'</span>';
-					html += '</td>';
-    			html += '<td valign="top" class="primary">\n';
-					html += '<span name="validation_cd" class="fldData">'+data[n]['validation_cd']+'</span>';
-					html += '</td>';
-    			html += '<td valign="top" class="primary">\n';
-					html += '<span name="required" class="fldData">'+(data[n]['required']=='1'?'Y':'N')+'</span>';
-					html += '</td>';
-    			html += '<td valign="top" class="primary">\n';
-					html += '<span name="repeatable" class="fldData">'+data[n]['repeatable']+'</span>';
-					html += '</td>';
-					html += '</tr>\n';
-					$('#fldSet').append(html);
+				    var recId = 'mtl'+data[n]['material_field_id'];
+				    var btnId = 'btn'+data[n]['material_field_id'];
+	    		    html  = '<tr id="'+recId+'">\n';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<input type="button" id="'+btnId+'" value="'+mtl.editLbl+'" align="center" class="button editBtn" />\n';
+                    html += '<input type="hidden" name="material_field_id" class="fldData" value="'+data[n]['material_field_id']+'" />\n';
+                    html += '</td>';
+                    html += '<td>';
+                    html += '<span name="position" class="fldData">'+data[n]['position']+'</span>';
+                    html += '</td>';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<input type="hidden" name="tag" class="fldData" value="'+data[n]['tag']+'" />\n';
+                    html += '<input type="hidden" name="subfield_cd" class="fldData" value="'+data[n]['subfield_cd']+'" />\n';
+                    html += '<span name="info" class="fldData">'+data[n]['tag']+data[n]['subfield_cd']+'</span>';
+                    html += '</td>';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<span name="label" class="fldData">'+data[n]['label']+'</span>';
+                    html += '</td>';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<span name="form_type" class="fldData">'+data[n]['form_type']+'</span>';
+                    html += '</td>';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<span name="validation_cd" class="fldData">'+data[n]['validation_cd']+'</span>';
+                    html += '</td>';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<span name="required" class="fldData">'+(data[n]['required']=='1'?'Y':'N')+'</span>';
+                    html += '</td>';
+                    html += '<td valign="top" class="primary">\n';
+                    html += '<span name="repeatable" class="fldData">'+data[n]['repeatable']+'</span>';
+                    html += '</td>';
+                    html += '</tr>\n';
+                    $('#fldSet').append(html);
 
-					html2 += '<li '
+                    html2 += '<li '
 							  +  'id="'+data[n]['material_field_id']+'" '
-								+	 'tag="'+data[n]['tag']+'" '
+							  +	 'tag="'+data[n]['tag']+'" '
 							  +	 'subFld="'+data[n]['subfield_cd']+'" '
 							  +	 '>'
 							  +	 data[n]['tag']+data[n]['subfield_cd']+' - '+data[n]['label']
@@ -332,18 +332,18 @@ var mtl = {
 				$('.editBtn').on('click',null,mtl.doEdit);
 			}
 			mtl.enableBtn('configBtn');
-		});
+		}, 'json');
 	},
 	
 	collectSpanData: function (id) {
 	  // collect data from a single line in preparation for editing; return as array of JSON
 	  var rslt = '[';
 		var entry = '';
-	  $('#'+id+' span.fldData').each(function (n) {
+	    $('#'+id+' span.fldData').each(function (n) {
 			entry = "{'name':'"+$(this).attr('name')+"','value':'"+$(this).html()+"'},";
 			rslt += entry;
 		});
-	  $('#'+id+' input.fldData:hidden').each(function (n) {
+	    $('#'+id+' input.fldData:hidden').each(function (n) {
 			entry = "{'name':'"+$(this).attr('name')+"','value':'"+$(this).val()+"'},";
 			rslt += entry;
 		});
@@ -388,7 +388,7 @@ var mtl = {
 	},
 	
 	doUpdateFldset: function () {
-	  //if (!mtl.doValidate(e)) return;
+	    //if (!mtl.doValidate(e)) return;
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
 		$('#editMode').val('updateFldSet');
@@ -414,7 +414,7 @@ var mtl = {
 	
 	doDeleteFldset: function (e) {
 		var msg = mtl.delConfirmMsg+'\n>>> '+$('#editForm tbody #label').val()+' <<<';
-	  if (confirm(msg)) {
+	    if (confirm(msg)) {
 	  	$.get(mtl.url,
 								{	mode:'d-3-L-3-tFld',
 									material_field_id:$('#editForm #material_field_id').val()

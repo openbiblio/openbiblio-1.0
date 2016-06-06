@@ -416,9 +416,11 @@ class Copies extends CoreTable {
 				 . "  and (h.histid = c.histid) ";
 		$rslt = $this->select($sql);
 		//$nCpy = $rslt->num_rows;
+        $nCpy = 0;
 
 		//while ($row = $rslt->fetch_assoc()) {
         foreach ($rslt as $row) {
+            $nCpy++;
 			if($row['status_cd'] == OBIB_STATUS_IN) {
 				// See on which site
 				if($_SESSION['current_site'] == $row['siteid'] || !($_SESSION['multi_site_func'] > 0)){
