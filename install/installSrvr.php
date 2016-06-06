@@ -52,6 +52,7 @@ ini_set('display_errors', 1);
 			break;
 			
 		case 'doFullInstall':
+echo $_POST;
 			echo $installQ->freshInstall($Locale, $_POST['installTestData']);
 			break;
 			
