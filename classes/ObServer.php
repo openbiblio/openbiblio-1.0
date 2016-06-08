@@ -23,7 +23,6 @@ class ObServer {
 	}
 
 	public function respond() {
-ini_set('display_errors', 1);
 		$this->mode_requested_by_user = $_POST['mode'];
 		if ($this->task_exists()) {
 			require_once(REL(__FILE__, '../model/' . $this->current_task['model'] . '.php'));

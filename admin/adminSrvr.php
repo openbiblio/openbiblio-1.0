@@ -7,6 +7,8 @@
   require_once("../classes/ObServer.php");
   $adminServer = new ObServer();
   $adminServer->addTask('getAllHours', 'selectAll', 'OpenHours');
+  $adminServer->addTask('getAll_copyFlds', 'selectAll', 'BiblioCopyFields');
+//  $adminServer->addTask('getAll_mbrFlds', 'selectAll', 'MemberCustomFields_DM'); # not yet working
 
 	switch ($_POST['cat']) {
 		case 'collect':
@@ -167,6 +169,7 @@
 
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
 		case 'getAll_copyFlds':
+/*
 			$flds = array();
 			$set = $ptr->getAll();
 			//while ($row = $set->fetch_assoc()) {
@@ -174,6 +177,8 @@
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
+*/
+			$adminServer->respond();
 			break;
 		case 'addNew_copyFlds':
 			list($id, $errs) = $ptr->insert_el(array(
@@ -203,6 +208,7 @@
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
+			//$adminServer->respond(); #not yet working
 			break;
 		case 'addNew_mbrFlds':
 			list($id, $errs) = $ptr->insert_el(array(
