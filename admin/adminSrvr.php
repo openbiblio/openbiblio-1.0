@@ -4,6 +4,11 @@
  */
 
   require_once("../shared/common.php");
+  require_once("../classes/ObServer.php");
+  $adminServer = new ObServer();
+  $adminServer->addTask('getAllHours', 'selectAll', 'OpenHours');
+  $adminServer->addTask('getAll_copyFlds', 'selectAll', 'BiblioCopyFields');
+//  $adminServer->addTask('getAll_mbrFlds', 'selectAll', 'MemberCustomFields_DM'); # not yet working
 
 	switch ($_POST['cat']) {
 		case 'collect':
@@ -18,6 +23,9 @@
 			require_once(REL(__FILE__, "../model/Online.php"));
 			$ptr = new Hosts;
 			break;
+		case 'hours':
+			$adminServer->respond();
+			exit;
 		case 'media':
 			require_once(REL(__FILE__, "../model/MediaTypes.php"));
 			$ptr = new MediaTypes;
@@ -58,10 +66,12 @@
 			require_once(REL(__FILE__, "../model/Settings.php"));
 			$ptr2 = new Settings;
 			break;
+/*
 		default:
 		  echo "<h4>invalid category: &gt;".$_POST['cat']."&lt;</h4><br />";
 		  exit;
 			break;
+*/
 	}
 
 	$updtSuccess = T("Update successful");
@@ -159,6 +169,7 @@
 
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
 		case 'getAll_copyFlds':
+/*
 			$flds = array();
 			$set = $ptr->getAll();
 			//while ($row = $set->fetch_assoc()) {
@@ -166,6 +177,8 @@
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
+*/
+			$adminServer->respond();
 			break;
 		case 'addNew_copyFlds':
 			list($id, $errs) = $ptr->insert_el(array(
@@ -195,6 +208,7 @@
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
+			//$adminServer->respond(); #not yet working
 			break;
 		case 'addNew_mbrFlds':
 			list($id, $errs) = $ptr->insert_el(array(
