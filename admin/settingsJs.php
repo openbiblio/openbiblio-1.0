@@ -132,7 +132,7 @@ var set = {
     if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
 
 //--- suggest to prevent someone could update as null these fields and cause list of srchForms disappear --CelsoC--
-    if ($('#items_per_page').val(null)) params += "&thumbnail_width=25";
+    if ($('#items_per_page').val(null)) params += "&items_per_page=25";
     if ($('#thumbnail_width').val(null)) params += "&thumbnail_width=100";
     if ($('#thumbnail_height').val(null)) params += "&thumbnail_height=120";
     if ($('#thumbnail_rotation').val(null)) params += "&thumbnail_rotation=0";
