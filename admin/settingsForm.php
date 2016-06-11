@@ -28,79 +28,80 @@
 
 			<form name="editSettingsForm" id="editSettingsForm">
 				<div id="localePage" class="block active">
-					<label for="locale"></label>
+					<label for="locale"><?php echo T("Available languages"); ?></label>
 					<select id="locale" name="locale" autofocus ></select>
 					<br />
-					<label for="charset"></label>
+					<label for="charset"><?php echo T("Character Set"); ?></label>
 					<input type="text" id="charset" name="charset" >
 					<br />
-					<label for="themeid"></label>
+					<label for="themeid"><?php echo T("Theme id"); ?></label>
 					<select id="themeid" name="themeid"></select>
 					<br />
-					<label for="theme_dir_url"></label>
+					<label for="theme_dir_url"><?php echo T("Theme Dir URL"); ?></label>
 					<select id="theme_dir_url" name="theme_dir_url" ></select>
 				</div>
 				<div id="libraryPage" class="block">
-					<label for="libraryName"></label>
+					<label for="libraryName"><?php echo T("Library Title"); ?></label>
 					<select id="libraryName" name="library_name" ></select>
 					<br />
-					<label for="libraryHours"></label>
-					<textarea id="libraryHours" name="library_hours" rows="1" /></textarea>
+					<label for="libraryHours"><?php echo T("Library Hours"); ?></label>
+					<textarea id="libraryHours" name="library_hours" rows="1" placeholder="M-F: 8am - 5pm<br />Sat:  9am - noon" /></textarea>
 					<br />
-					<label for="libraryPhone"></label>
+					<label for="libraryPhone"><?php echo T("Library Phone"); ?></label>
 					<input type="text" id="libraryPhone" name="library_phone" maxlength="32" />
 					<br />
-					<label for="library_home"></label>
+					<label for="library_home"><?php echo T("Library Address"); ?></label>
 					<input type="text" id="library_home" name="library_home" maxlength="29" />
 					<br />
-					<label for="library_url"></label>
+					<label for="library_url"><?php echo T("Library URL"); ?></label>
 					<input type="text" id="library_url" name="library_url" maxlength="36" />
 					<br />
-					<label for="library_image_url"></label>
-					<input type="text" id="library_image_url" name="library_image_url" maxlength="36" />
+					<label for="library_image_url"><?php echo T("Library Image"); ?></label>
+					<input type="text" id="library_image_url" name="library_image_url" maxlength="36" value="../images/unam.jpg" />
 					<br />
-					<label for="show_lib_info"></label>
+					<label for="show_lib_info"><?php echo T("Show Lib Info on Staff pages"); ?></label>
 					<input type="checkbox" id="show_lib_info" name="show_lib_info" value="Y" />
 				</div>
 				<div id="miscPage" class="block">
-					<label for="mbr_barcode_width"></label>
+					<label for="mbr_barcode_width"><?php echo T("Barcode width"); ?></label>
 					<input type="number" id="mbr_barcode_width" name="mbr_barcode_width" maxlength="17" />
           <br />
-					<label for="block_checkouts_when_fines_due"></label>
+					<label for="block_checkouts_when_fines_due"><?php echo T("Block Checkouts When Fines Due"); ?></label>
 					<input type="checkbox" id="block_checkouts_when_fines_due" name="block_checkouts_when_fines_due" value="Y" />
           <br />
-					<label for="opac_url"></label>
+					<label for="opac_url"><?php echo T("OPAC URL"); ?></label>
 					<input type="text" id="opac_url" name="opac_url" size="17" maxlength="33" />
 				</div>
 				<div id="requestPage" class="block">
-					<label for="request_from"></label>
+					<label for="request_from"><?php echo T("Request From"); ?></label>
 					<input type="text" id="request_from" name="request_from" maxlength="18" />
 					<br />
-					<label for="request_to"></label>
+					<label for="request_to"><?php echo T("Request To"); ?></label>
 					<input type="text" id="request_to" name="request_to" maxlength="19" />
 					<br />
-					<label for="request_subject"></label>
+					<label for="request_subject"><?php echo T("Request Subject"); ?></label>
 					<input type="text" id="request_subject" name="request_subject" maxlength="33" />
 				</div>
 				<div id="photoPage" class="block">
           <br />
-					<label for="use_image_flg"></label>
+					<label for="use_image_flg"><?php echo T("Use Image"); ?></label>
 					<input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />
-					<label for="items_per_page"></label>
-					<input type="number" id="items_per_page" name="items_per_page" maxlength="18"  />
+					<!-- suggest next 4 default values to prevent update to null and cause srchForms list disappear CelsoC -->
+					<label for="items_per_page"><?php echo T("Items per page"); ?></label>
+					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" />
 					<br />
-					<label for="item_columns"></label>
+					<label for="item_columns"><?php echo T("Item Columns"); ?></label>
 					<input type="number" id="item_columns" name="item_columns" maxlength="17"  />
 					<br />
-					<label for="thumbnail_width"></label>
-					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19"  />(mm)
+					<label for="thumbnail_width"><?php echo T("Thumbnail width"); ?></label>
+					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19" value="100" />(mm)
 					<br />
-					<label for="thumbnail_height"></label>
-					<input type="number" id="thumbnail_height" name="thumbnail_height" maxlength="19"  />(mm)
+					<label for="thumbnail_height"><?php echo T("Thumbnail height"); ?></label>
+					<input type="number" id="thumbnail_height" name="thumbnail_height" maxlength="19" value="120" />(mm)
 					<br />
-					<label for="thumbnail_rotation"></label>
-					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19"  />(deg)
+					<label for="thumbnail_rotation"><?php echo T("Thumbnail rotation"); ?></label>
+					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19" value="0" />(deg)
 				</div>
 				<hr>
 				<input type="hidden" id="cat" name="cat" value="settings" />
