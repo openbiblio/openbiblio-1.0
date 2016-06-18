@@ -10,8 +10,9 @@ var set = {
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	//$jsLoc = new Localize(OBIB_LOCALE,$tab);
 	echo 'locs: '.json_encode($LOC->getLocales()).',';
-
-	echo 'successMsg : "'.T("Update successful").'",'."\n";
+    echo 'locale: "'.Settings::get('locale').'",';
+    echo 'charSet: "'.Settings::get('charset').'",';
+	echo 'successMsg: "'.T("Update successful").'",';
 	?>
 
 	init: function () {
@@ -19,6 +20,7 @@ var set = {
 		set.listSrvr = '../shared/listSrvr.php'
 
 		set.initWidgets();
+        $('#charset').val(set.charSet);
 
 		$('#editSettingsForm').on('submit',null,set.doUpdate);
 
@@ -50,47 +52,50 @@ var set = {
 	},
 
 	setLocaleList: function () {
-			var html = '';
-      for (var key in set.locs) {
-				html+= '<option value="'+key+'">'+set.locs[key]+'</option>';
-			}
-			$('#locale').html(html).show();
-			set.fetchSiteList();
+		var html = '';
+        for (var key in set.locs) {
+			html += '<option value="'+key+'"';
+            if (key == set.locale) html += ' selected';
+            html += ' >'+set.locs[key]+'</option>';
+		}
+		$('#locale').html(html).show();
+		set.fetchSiteList();
 	},
 	fetchSiteList: function () {
-	  $.getJSON(set.listSrvr,{'mode':'getSiteList'}, function(data){
-			var html = '';
-      for (var n in data) {
+	    $.post(set.listSrvr,{'mode':'getSiteList'}, function(data){
+            var html = '';
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#libraryName').html(html).show();
-			set.fetchThemeDirs();
-		});
+			//set.fetchThemeDirs();  // not yet supported
+			set.fetchFormData();
+		}, 'json');
 	},
 	fetchThemeDirs: function () {
-	  $.getJSON(set.url,{'cat':'themes', 'mode':'getThemeDirs'}, function(data){
-			var html = '';
-      for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#theme_dir_url').html(html).show();
-			set.fetchThemeList();
-		});
+        $.post(set.url,{'cat':'themes', 'mode':'getThemeDirs'}, function(data){
+    		var html = '';
+            for (var n in data) {
+    			html+= '<option value="'+n+'">'+data[n]+'</option>';
+    		}
+    		$('#theme_dir_url').html(html).show();
+    		set.fetchThemeList();
+		}, 'json');
 	},
 	fetchThemeList: function () {
-	  $.getJSON(set.listSrvr,{'mode':'getThemeList'}, function(data){
+	   $.post(set.listSrvr,{'mode':'getThemeList'}, function(data){
 			var html = '';
-      for (var n in data) {
+            for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#themeid').html(html).show();
 			set.fetchFormData();
-		});
+		}, 'json');
 	},
 
 	//------------------------------
 	fetchFormData: function () {
-		$.getJSON(set.url, {'cat':'settings', 'mode':'getFormData'}, function (fields) {
+		$.post(set.url, {'cat':'settings', 'mode':'getFormData'}, function (fields) {
 			for (var n in fields) {
 				/* this mapping needed due to same ids being used in <aside> */
 				if (fields[n].name == 'library_name') fields[n].name = 'libraryName'
@@ -118,7 +123,7 @@ var set = {
 					$id.val(fields[n].value).attr('size',fields[n].width);
 				}
 			}
-		});
+		}, 'json');
 	},
 
 	//------------------------------

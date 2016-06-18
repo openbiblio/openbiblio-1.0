@@ -56,14 +56,15 @@
 		return $OBroot;
 	}
 */
+
 	/* Convenience functions for everywhere */
 	/* Work around PHP's braindead include_path stuff. - MS */
 	function REL($sf, $if) {
 		return dirname($sf)."/".$if;
 	}
 	
-	/* This one should be used by all the form handlers that return errors. */
 /* -- no longer used? FL May 2016
+	// This one should be used by all the form handlers that return errors.
 	function _mkPostVars($arr, $prefix) {
 		$pv = array();
 		foreach ($arr as $k => $v) {
@@ -145,8 +146,9 @@
 		$CharSet = "UTF-8";
 		$ThemeId = '1';
 		$ThemeDirUrl = "../themes/default";
-		//$localeStrs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-		//$Locale = substr($localeStrs[0],0,2);
+        //$localeStrs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        //$Locale = substr($localeStrs[0],0,2);
+        //echo "this locale is: $Locale <br />\n";
 		$Locale = 'en';
 	}
 

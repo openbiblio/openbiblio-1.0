@@ -3,13 +3,13 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-    require_once("../shared/common.php");
-    //echo "in listSrvr, at start: ";print_r($_POST);echo "<br />\n";
-
 /**
- * back-end API for various pull-down lists based on DB tables
+ * back-end API for common, frequently used, pull-down lists based on DB tables
  * @author Fred LaPlante
  */
+
+    require_once("../shared/common.php");
+    //echo "in listSrvr, at start: ";print_r($_POST);echo "<br />\n";
 
 	function getDbData ($db) {
 		$set = $db->getSelect();

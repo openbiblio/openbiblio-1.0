@@ -34,11 +34,11 @@
 					<label for="charset"><?php echo T("Character Set"); ?></label>
 					<input type="text" id="charset" name="charset" >
 					<br />
-					<label for="themeid"><?php echo T("Theme id"); ?></label>
+					<!--label for="themeid"><?php echo T("Theme id"); ?></label>
 					<select id="themeid" name="themeid"></select>
 					<br />
 					<label for="theme_dir_url"><?php echo T("Theme Dir URL"); ?></label>
-					<select id="theme_dir_url" name="theme_dir_url" ></select>
+					<select id="theme_dir_url" name="theme_dir_url" ></select-->
 				</div>
 				<div id="libraryPage" class="block">
 					<label for="libraryName"><?php echo T("Library Title"); ?></label>
