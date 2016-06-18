@@ -65,11 +65,12 @@
 				<div id="miscPage" class="block">
 					<label for="mbr_barcode_width"><?php echo T("Barcode width"); ?></label>
 					<input type="number" id="mbr_barcode_width" name="mbr_barcode_width" maxlength="17" />
-          <br />
+                    <br />
 					<label for="block_checkouts_when_fines_due"><?php echo T("Block Checkouts When Fines Due"); ?></label>
 					<input type="checkbox" id="block_checkouts_when_fines_due" name="block_checkouts_when_fines_due" value="Y" />
-          <br />
+                    <br />>
 					<label for="opac_url"><?php echo T("OPAC URL"); ?></label>
+                    <br />
 					<input type="text" id="opac_url" name="opac_url" size="17" maxlength="33" />
 				</div>
 				<div id="requestPage" class="block">
@@ -83,16 +84,14 @@
 					<input type="text" id="request_subject" name="request_subject" maxlength="33" />
 				</div>
 				<div id="photoPage" class="block">
-          <br />
 					<label for="use_image_flg"><?php echo T("Use Image"); ?></label>
 					<input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />
-					<!-- suggest next 4 default values to prevent update to null and cause srchForms list disappear CelsoC -->
 					<label for="items_per_page"><?php echo T("Items per page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" />
 					<br />
 					<label for="item_columns"><?php echo T("Item Columns"); ?></label>
-					<input type="number" id="item_columns" name="item_columns" maxlength="17"  />
+					<input type="number" id="item_columns" name="item_columns" maxlength="17" value="5"  />
 					<br />
 					<label for="thumbnail_width"><?php echo T("Thumbnail width"); ?></label>
 					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19" value="100" />(mm)
