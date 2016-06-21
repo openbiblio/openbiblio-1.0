@@ -19,12 +19,15 @@
 		return $list;
 	}
 	function getDmData ($db) {
-		$set = $db->getAll('description');
+		//$set = $db->getAll('description');
+		$set = $db->getList('description');
+//echo "in lstSrvr, getDmData(): ";print_r($set);echo "<br />\n";
 		//while ($row = $set->fetch_assoc()) {
-        foreach ($set as $row) {
-		  $list[$row['code']] = $row['description'];
-		}
-		return $list;
+//        foreach ($set as $row) {
+//		  $list[$row['code']] = $row['description'];
+//		}
+//		return $list;
+        return $set;
 	}
 	
 	switch ($_POST['mode']) {
@@ -75,7 +78,10 @@
 		$sql = "SHOW COLUMNS FROM material_fields";
 		$rslt = $db->select($sql);
 		//while ($col = $rslt->fetch_assoc()) {
-        foreach ($rslt as $col) {
+        $recs = $rslt->fetchAll();
+//echo "in lstSrvr, getInputTypes: ";print_r($recs);echo "<br />\n";
+//        foreach ($rslt as $col) {
+        foreach ($recs as $col) {
 			if ($col['Field'] == 'form_type') break;
 		}
 		$enum = $col['Type'];
@@ -204,7 +210,13 @@
 	  break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-	case 'getValidations':
+	case 'getValidations': // deprecated
+		require_once(REL(__FILE__, "../model/Validations.php"));
+		$db = new Validations;
+		$list = getDmData($db);
+		echo json_encode($list);
+	  break;
+	case 'getValidationList':
 		require_once(REL(__FILE__, "../model/Validations.php"));
 		$db = new Validations;
 		$list = getDmData($db);

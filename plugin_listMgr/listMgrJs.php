@@ -24,9 +24,10 @@ var pdl = {
 	},
 	resetForms: function () {
 		//console.log('resetting!');
-		$('#listChkBtn').focus();
-	  $('#rsltsArea').hide();
-	  $('#msgDiv').hide();
+		$('#entrySect').show();
+	    $('#rsltsArea').hide();
+	    $('#msgDiv').hide();
+        $('#showListsBtn').focus();
 	},
 
 	//------------------------------
@@ -38,66 +39,36 @@ var pdl = {
 		pdl.fetchMbrTypList();
 		pdl.fetchSiteList();
 		pdl.fetchStateList();
-		pdl.fetchInputTypes();
 		pdl.fetchValidationList();
+		//pdl.fetchInputTypes();
+
 		$('#rsltsArea').show();
+		$('#entrySect').hide();
 	},
 
 	//------------------------------
 	fetchCalendarList: function () {
-	  $.post(pdl.url,{mode:'getCalendarList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#calendar_cd').html(html);
-		}, 'json');
+        list.getPullDownList('Calendar', $('#calendar_cd'));
 	},
 	fetchCollectionList: function () {
-	  $.post(pdl.url,{mode:'getCollectionList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#collection_cd').html(html);
-		}, 'json');
+        list.getPullDownList('Collection', $('#collection_cd'));
 	},
 	fetchMediaList: function () {
-	  $.post(pdl.url,{mode:'getMediaList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#material_cd').html(html);
-		}, 'json');
+        list.getPullDownList('Media', $('#media_cd'));
 	},
 	fetchMbrTypList: function () {
-	  $.post(pdl.url,{mode:'getMbrTypList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#mbrTyp_cd').html(html);
-		}, 'json');
-	},
-	fetchSiteList: function () {
-	  $.post(pdl.url,{mode:'getSiteList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#site_cd').html(html);
-		}, 'json');
+        list.getPullDownList('MbrTyp', $('#mbrTyp_cd'));
 	},
 	fetchStateList: function () {
-	  $.post(pdl.url,{mode:'getStateList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#state_cd').html(html);
-		}, 'json');
+        list.getPullDownList('State', $('#state_cd'));
 	},
+	fetchSiteList: function () {
+        list.getSiteList($('#site_cd'));
+	},
+	fetchValidationList: function () {
+        list.getPullDownList('Validation', $('#validation_cd'));
+	},
+/*
 	fetchInputTypes: function () {
 	  $.post(pdl.url,{mode:'getInputTypes'}, function(data){
 			var partsA = (data.replace(/'/g,"")).split('(');
@@ -105,20 +76,15 @@ var pdl = {
 			var list = partsB[0].split(',');
 			var html = '';
             for (var n in list) {
-				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
+				html += '<option value="'+n+'" ';
+                var dflt= data[n].default;
+                if (dflt == 'Y') html += 'SELECTED ';
+                html += '>'+data[n].description+'</option>';
 			}
 			$('#inptTyp_cd').html(html);
 		}, 'json');
 	},
-	fetchValidationList: function () {
-	  $.post(pdl.url,{mode:'getValidations'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#validation_cd').html(html);
-		}, 'json');
-	},
+*/
 
 };
 

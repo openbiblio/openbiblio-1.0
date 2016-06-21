@@ -16,15 +16,18 @@ class DmTable extends DBTable {
 		parent::__construct();
 	}
 
-	public function getList() {
+	public function getList($orderby=NULL) {
 		$list = array();
-		$recs = $this->getAll();
+        $data = array();
+		$rslt = $this->getAll($orderby);
+        $recs = $rslt->fetchAll();
+// echo "in DmTable::getList(): ";print_r($recs);echo "<br />\n";
         $nRecs = count($recs);
-		//if ($recs->num_rows < 1) return NULL;
         if ($nRecs < 1) return NULL;
-		//while ($rec = $recs->fetch_assoc()) {
         foreach ($recs as $rec) {
-			$list[$rec['code']] = $rec['description'];
+            $data['description'] =$rec['description'];
+            $data['default'] = $rec['default_flg'];
+			$list[$rec['code']] = $data;
 		}
 		return $list;
 	}
@@ -49,4 +52,5 @@ class DmTable extends DBTable {
 	}
 
 	protected function validate_el($rec, $insert) { /*return array();*/ }
-}
+
+}   // end of class

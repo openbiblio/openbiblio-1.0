@@ -21,7 +21,7 @@
 
 	<h1 id="pageHdr" class="title"><?php echo T("pullDownListMgr"); ?></h1>
 	<section>
-		<fieldset id="orfnFiles">
+		<fieldset id="entrySect">
 		<legend><?php echo T("pullDownListMgr"); ?></legend>
 		  <input type="button" id="showListsBtn" value="<?php echo T("ShowMe"); ?>" />
 		</fieldset> 
@@ -33,13 +33,13 @@
 			<label for="calendar_cd" >Calendars:<select id="calendar_cd" ></select></label>
 			<label for="collection_cd" >Collections:<select id="collection_cd" ></select></label>
 			<br />
-			<label for="material_cd" >Media:<select id="material_cd" ></select></label>
+			<label for="media_cd" >Media:<select id="media_cd" ></select></label>
 			<label for="mbrTyp_cd" >Member Types:<select id="mbrTyp_cd" ></select></label>
 			<br />
 			<label for="state_cd" >States:<select id="state_cd" ></select></label>
 			<label for="site_cd" >Sites:<select id="site_cd" ></select></label>
 			<br />
-			<label for="inptType_cd" >Inputs:<select id="inptTyp_cd" ></select></label>
+			<!--label for="inptType_cd" >Inputs:<select id="inptTyp_cd" ></select></label-->
 			<label for="validation_cd" >Validations:<select id="validation_cd" ></select></label>
 		</fieldset>
 	</section>
@@ -47,7 +47,7 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+    require_once(REL(__FILE__,'../shared/footer.php'));
 	require_once(REL(__FILE__, "listMgrJs.php"));
 ?>	
 	

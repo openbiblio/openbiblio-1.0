@@ -13,45 +13,36 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getCollectionList: function () {
-        $.post(list.server,{mode:'getDefaultCollection'}, function(data){
-            list.dfltColl = data[0];
-			      list.getCollListPt2(); // chaining
-        }, 'json');
-    },
-    getCollListPt2: function () {
-        $.post(list.server,{mode:'getCollectionList'}, function(data){
-        	  var html = '';
+    getPullDownList: function (listName, whereToPaste) {
+        $.post(list.server,{mode:'get'+listName+'List'}, function(data){
+    			  var html = '';
             for (var n in data) {
-        		html+= '<option value="'+n+'" ';
-                if (n == list.dfltColl) {
-                    html+= 'SELECTED '
-                }
-                html+= '>'+data[n]+'</option>';
-        	  }
-            return html
-        }, 'json');
+    				    html += '<option value="'+n+'" ';
+                var dflt= data[n].default;
+                if (dflt == 'Y') html += 'SELECTED ';
+                html += '>'+data[n].description+'</option>';
+    			  }
+            whereToPaste.html(html);
+    		    return html;
+		    }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getMaterialList: function () {
-        $.post(list.server,{mode:'getDefaultMateria'}, function(data){
-            list.dfltMatl = data;
-			      list.matlListPt2(); // chaining
-        }, 'json');
+    getCalendarList: function (where) { // deprecated
+        var html = list.getPullDownList('Calendar', where);
+        return html
     },
-    matlListPt2: function () {
-        $.post(list.server,{mode:'getMediaList'}, function(data){
-        	  var html = '';
-            for (var n in data) {
-        		html+= '<option value="'+n+'" ';
-                if (n == list.dfltMatll) {
-                    html+= 'SELECTED '
-                }
-                html+= '>'+data[n]+'</option>';
-        	  }
-            return html
-        }, 'json');
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getCollectionList: function (where) { // deprecated
+        var html = list.getPullDownList('Collection', where);
+        return html
+    },
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getMaterialList: function (where) { // deprecated
+        var html = list.getPullDownList('Media', $('#media_cd'));
+        return html;
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
@@ -63,6 +54,7 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    // different structure than other pull-down tables
     getSiteList: function(where) {
         $.post(list.server,{mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
@@ -83,6 +75,7 @@ var list = {
             return html;
         }, 'json');
     },
+
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getStatusCds: function (where) {
         $.post(list.server,{mode:'getDefaultStatusCd'}, function(data){
@@ -104,6 +97,12 @@ var list = {
             return html;
         }, 'json');
     },
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+	  getStateList: function (where) { // deprecated
+        var html = list.getPullDownList('State', where);
+        return html;
+  	},
 }
 $(document).ready(list.init);
 </script>
