@@ -1,5 +1,5 @@
-// JavaScript Document
 <script language="JavaScript">
+// JavaScript Document
 "use strict";
 
 var cdc = {
@@ -26,9 +26,9 @@ var cdc = {
 
 	//------------------------------
 	fetchDbInfo: function () {
-		$.getJSON(cdc.url, {'cat':'database',
-												'mode':'getDbSrvrInfo',
-											 },
+		$.post(cdc.url, {'cat':'database',
+							'mode':'getDbSrvrInfo',
+						   },
 			function (response) {
 				$('#version').html(response.version['VERSION()']);
 
@@ -67,30 +67,29 @@ console.log(key+' = '+value+';<br>/');
 				$('#srvrMiscVar tbody').html(sets);
 
 				$('#info').show().find("tr:odd").css( "background-color", "#eee" );
-			}
-		);
+		}, 'json');
 	},
 
 	//------------------------------
 	fetchCollations: function () {
-	  $.getJSON(cdc.url,{'cat':'database', 
-											 'mode':'fetchCollSet'
-											},
+	    $.getJSON(cdc.url,{'cat':'database',
+						 'mode':'fetchCollSet'
+						},
 			function(data){
-			//console.log(data);	 
-			var html = '',
-					prior = ''; 
-			$.each(data, function (key,value) {
-				if (prior != value) {
-					html += '<option class="bold" value="">'+value+'</option>';
-					prior = value;
-				}
-				html += '<option ';
-				if (key == 'utf8_general_ci') html += 'selected ';
-				html += 'value="'+value+'">'+key+'</option>';
-			});
+    			//console.log(data);
+    			var html = '',
+    					prior = '';
+    			$.each(data, function (key,value) {
+    				if (prior != value) {
+    					html += '<option class="bold" value="">'+value+'</option>';
+    					prior = value;
+    				}
+    				html += '<option ';
+    				if (key == 'utf8_general_ci') html += 'selected ';
+    				html += 'value="'+value+'">'+key+'</option>';
+    			});
 			$('#collSet').html(html);
-		});
+		}, 'json');
 	},
 	makeChanges: function () {
 		$('#rsltsArea').show();
