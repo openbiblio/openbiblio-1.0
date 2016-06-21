@@ -57,7 +57,7 @@ var cdc = {
 				var misc = response.misc;
 				var firstTime = true;
 				$.each(misc, function (key, value){
-console.log(key+' = '+value+';<br>/');
+                    //console.log(key+' = '+value+';<br>/');
 					if (firstTime) {
 						if (value > '184467440737') {value = 'unlimited';}
 						sets += '<tr><td>'+key+'</td><td>'+value+'</td></tr>';

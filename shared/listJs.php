@@ -14,7 +14,7 @@ var list = {
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getPullDownList: function (listName, whereToPaste) {
-        $.post(list.server,{mode:'get'+listName+'List'}, function(data){
+        $.post(list.server, {mode:'get'+listName+'List'}, function(data){
     			  var html = '';
             for (var n in data) {
     				    html += '<option value="'+n+'" ';
@@ -40,6 +40,22 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getLocaleList: function (where) {
+    	  $.post(list.server, {'mode':'getLocaleList'}, function(data){
+    			  var html = '';
+    			  $.each(data, function (key,value) {
+    				    html += '<option ';
+    				    if (key == '<?php echo $Locale ?>') {
+    					      $('#crntLoc').html(value);
+    					      html += 'selected ';
+    				    }
+    				    html += 'value="'+key+'">'+value+'</option>';
+    			  });
+    			  where.html(html);
+    		}, 'json');
+    },
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getMaterialList: function (where) { // deprecated
         var html = list.getPullDownList('Media', $('#media_cd'));
         return html;
@@ -47,7 +63,7 @@ var list = {
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getOpts: function () {
-        $.post(list.server,{mode:'getOpts'}, function(data){
+        $.post(list.server, {mode:'getOpts'}, function(data){
           list.opts = data;
           return list.opts;
         }, 'json');
@@ -56,7 +72,7 @@ var list = {
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     // different structure than other pull-down tables
     getSiteList: function(where) {
-        $.post(list.server,{mode:'getDefaultSite'}, function(data){
+        $.post(list.server, {mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
 			      list.siteListPt2(where); // chaining
         }, 'json');

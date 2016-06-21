@@ -24,30 +24,19 @@ var tru = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#rsltsArea').hide();
-	  $('#msgDiv').hide();
+	    $('#msgDiv').hide();
 	},
 	
 	//------------------------------
 	fetchLocaleList: function () {
-	  $.getJSON(tru.url,{'cat':'locale', 
-											 'mode':'fetchLocaleList'}, function(data){
-			var html = ''; 
-			$.each(data, function (key,value) {
-				html += '<option ';
-				if (key == '<?php echo $Locale ?>') {
-					$('#crntLoc').html(value);
-					html += 'selected ';
-				}
-				html += 'value="'+key+'">'+value+'</option>';
-			});
-			$('#locSet').html(html);
-		});
+        list.getLocaleList($('#locSet'));
 	},
 	fetchModuleList: function () {
-	  $.getJSON(tru.url,{'cat':'locale', 
-											 'mode':'fetchModuleList'}, function(data){
+	    $.post(tru.url,{'cat':'locale',
+						'mode':'fetchModuleList'}, function(data){
 			tru.obMods = data.sort();
-		});
+			//tru.obMods = data;
+		}, 'json');
 	},
 	
 	//------------------------------
@@ -56,9 +45,9 @@ var tru = {
 		$('#rsltsArea').show();
 		var choice = $('#locSet option:selected');
 		$.post(tru.url, {'cat':'locale', 
-										 'mode':'ck4TransDupes',
-										 'locale':choice.val(),
-									  },
+						 'mode':'ck4TransDupes',
+						 'locale':choice.val(),
+						},
 						function (response) {
 			$('#rslts').html(response);
 		});
@@ -68,9 +57,9 @@ var tru = {
 		$('#rsltsArea').show();
 		var choice = $('#locSet option:selected');
 		$.post(tru.url, {'cat':'locale', 
-										 'mode':'ck4TransUnused',
-										 'locale':choice.val(),
-									  },
+						 'mode':'ck4TransUnused',
+						 'locale':choice.val(),
+						},
 						function (response) {
 			$('#rslts').html(response);
 		});
@@ -81,10 +70,10 @@ var tru = {
 		$.each(tru.obMods, function (n,module) {
 			var choice = $('#locSet option:selected');
 			$.post(tru.url, {'cat':'locale',
-											 'mode':'ck4TransNeeded',
-											 'locale':choice.val(),
-											 'module':module,
-										  },
+							 'mode':'ck4TransNeeded',
+							 'locale':choice.val(),
+							 'module':module,
+							},
 							function (response) {
 				$('#rslts').append(response);
 			});
@@ -97,10 +86,10 @@ var tru = {
 		$.each(tru.obMods, function (n,module) {
 			var choice = $('#locSet option:selected');
 			$.post(tru.url, {'cat':'locale',
-											 'mode':'ck4TransMaybe',
-											 'locale':choice.val(),
-											 'module':module,
-										  },
+							 'mode':'ck4TransMaybe',
+							 'locale':choice.val(),
+							 'module':module,
+							},
 							function (response) {
 				$('#rslts').append(response);
 			});
