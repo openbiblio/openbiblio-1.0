@@ -23,7 +23,8 @@ var cn = {
 	},
 	resetForms: function () {
 		$('#rsltsArea').hide();
-	  $('#msgDiv').hide();
+	    $('#msgDiv').hide();
+        $('#callNoChkBtn').focus();
 	},
 	toggleFields: function () {
 		if ($("#callNoMode").val() == "search")

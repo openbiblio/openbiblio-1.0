@@ -9,15 +9,15 @@
 
 	function getBibsMissingCalls() {
 		$sql = 'SELECT bibid FROM biblio_field ' .
-			'GROUP BY bibid ' .
-			"HAVING COUNT(CASE WHEN tag='099' THEN 1 END) = 0";
+			   'GROUP BY bibid ' .
+			   "HAVING COUNT(CASE WHEN tag='099' THEN 1 END) = 0";
 
 		$call = new Biblios;
-                $rslt = $call->select($sql);
-                while ($row = $rslt->fetch_assoc()) {
-                        $results[] = $row['bibid'];
-                }
-
+        $rslt = $call->select($sql);
+        //while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
+            $results[] = $row['bibid'];
+        }
 		return $results;
 	}
 
@@ -33,23 +33,20 @@
 				"HAVING COUNT(CASE WHEN tag='099' THEN 1 END) = 0)";
 
 		$call = new Biblios;
-                $rslt = $call->select($sql);
-                while ($row = $rslt->fetch_assoc()) {
+        $rslt = $call->select($sql);
+        //while ($row = $rslt->fetch_assoc()) {
+        foreach ($rslt as $row) {
 			$tmp['bibid'] = $row['bibid'];
 			$tmp['tag'] = $row['tag'];
 			$tmp['data'] = $row['subfield_data'];
-                       	$results[] = $tmp;
-               	}
+        }
 		return $results;
-		
-
 	}
 
 	function copyCallNo($field) {
 		$sql = 'INSERT INTO biblio_field (bibid, seq, tag) ' .
-			"SELECT bibid, MAX(seq)+1, '099' FROM biblio_field " .
-			'WHERE bibid=' . $field['bibid'];
-
+			     "SELECT bibid, MAX(seq)+1, '099' FROM biblio_field " .
+			     'WHERE bibid=' . $field['bibid'];
 		$call = new Biblios;
 		$call->query($sql);
 		
