@@ -86,9 +86,8 @@
                 <td>
                     <!--input id="default_flg" name="default_flg" type="text" size="1" value="N"
 				        pattern="[Y,N]" required aria-required="true" /-->
-                    <input id="default_flg" name="default_flg" type="checkbox" value="N"
-				        required aria-required="true" />
-			         <span class="reqd">*</span>
+                    <input id="default_flg" name="default_flg" type="checkbox" value="N" />
+			        <span class="reqd">*</span>
                 </td>
             </tr>
             <tr>
@@ -111,7 +110,9 @@
             </tfoot>
             </table>
         </fieldset>
-    <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
+    <div id="msgDiv" style="display: none;">
+        <fieldSet id="msgArea"></fieldset>
+    </div>
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));

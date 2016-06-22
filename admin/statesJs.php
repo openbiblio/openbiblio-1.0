@@ -21,15 +21,15 @@ St.prototype.init = function () {
 
 $(document).ready(function () {
 	var url = 'adminSrvr.php',
-			form = $('#editForm'),
-			dbAlias = 'states';
+		form = $('#editForm'),
+		dbAlias = 'states';
 	var hdrs = {'listHdr':<?php echo '"'.T("List of States & Abreviations").'"'; ?>, 
-							'editHdr':<?php echo '"'.T("Edit State & Abreviation").'"'; ?>, 
-							'newHdr':<?php echo '"'.T("Add New State & Abreviation").'"'; ?>,
+				'editHdr':<?php echo '"'.T("Edit State & Abreviation").'"'; ?>, 
+				'newHdr':<?php echo '"'.T("Add New State & Abreviation").'"'; ?>,
 						 };
 	var listFlds = {'code':'text',
-									'description':'text',
-									'default_flg':'center',
+					'description':'text',
+					'default_flg':'center',
 								 };
 	var opts = {};
 						 

@@ -214,6 +214,7 @@ Admin.prototype.doSubmitFields = function (e) {
 };
 	
 Admin.prototype.doAddFields = function () {
+	$('#msgDiv').hide();
 	$('#mode').val('addNew_'+this.dbAlias);
 	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
@@ -257,16 +258,22 @@ Admin.prototype.deleteHandler = function(response){
 };
 
 Admin.prototype.showResponse = function (response) {
+console.log('rcvd response from server: '+response);
+var msg = response[1][0]['msg'];
+console.log('extracted msg from server :<br />'+msg);
 	if (($.trim(response)).substr(0,1)=='<') {
-		//console.log('rcvd error msg from server :<br />'+response);
 		$('#msgArea').html(response);
 		$('#msgDiv').show();
+        return;
 	}
-	else {
-		$('#msgArea').html(response);
+	else if (($.trim(msg)).indexOf('Error') < 0){
+		$('#msgArea').html(msg);
 		$('#msgDiv').show();
+        return
+	}
+	$('#msgArea').html(response);
+	$('#msgDiv').show();
   	this.doBackToList();
-	}
 };
 
 </script>

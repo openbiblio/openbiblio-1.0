@@ -4,8 +4,9 @@
  */
 
 /**
- * provides common DB facilities needed by most primary table classes
+ * provides common DB facilities needed by look-up table classes
  * @author Micah Stetson
+ * modified for PHP 5 - FL
  */
 
 require_once("../shared/common.php");
@@ -20,7 +21,7 @@ class DmTable extends DBTable {
 		$list = array();
 		$rslt = $this->getAll($orderby);
         $recs = $rslt->fetchAll();
-// echo "in DmTable::getList(): ";print_r($recs);echo "<br />\n";
+        // echo "in DmTable::getList(): ";print_r($recs);echo "<br />\n";
         $nRecs = count($recs);
         if ($nRecs < 1) return NULL;
         foreach ($recs as $rec) {

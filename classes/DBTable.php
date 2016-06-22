@@ -6,18 +6,21 @@
 require_once(REL(__FILE__, '../classes/Queryi.php'));
 
 /**
- * provides common DB facilities needed by lookup table classes
+ * provides common DB facilities used by various Models
  * @author Micah Stetson
+ * modified for PHP 5.0 FL
+ * modified to suport required Fields - June 2016 FL
  */
 
 abstract class DBTable extends Queryi {
-	private $name;
-	private $fields = array();
-	private $key = array();
-	private $sequence = NULL;
-	private $iter = NULL;
-	private $foreign_keys = array();
-	private $types = array(
+	protected $name;
+	protected $fields = array();
+    protected $reqFields = array();
+	protected $key = array();
+	protected $sequence = NULL;
+	protected $iter = NULL;
+	protected $foreign_keys = array();
+	protected $types = array(
 		'string'=>'%Q',
 		'number'=>'%N',
 	);
@@ -28,9 +31,17 @@ abstract class DBTable extends Queryi {
 
 	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
 
-	## ------------------------------------------------------------------------ ##
+	## ------------------ setters ---------------------------------------- ##
+	protected function setName($name) {
+		$this->name = $name;
+	}
 	protected function setFields($fields) {
 		$this->fields = $fields;
+		# FIXME - Check that field types are valid.
+	}
+	protected function setReq($fields) {
+		$this->reqFields = $fields;
+        //echo "in DBTable::setReq(): ";print_r($this->reqFields);echo "<br />\n";
 		# FIXME - Check that field types are valid.
 	}
 	protected function setKey() {
@@ -42,31 +53,46 @@ abstract class DBTable extends Queryi {
 			}
 		}
 	}
-	public function getKeyList($key, $fields) {
-		$sql = $this->mkSQL('SELECT %I FROM %I WHERE ', $key, $this->name)
-			. $this->_pairs($fields, ' AND ');
-//if ($this->name == "biblio_copy") {echo "in DBTable::getKeyList(), sql= $sql <br />\n";}
-		if ($this->iter) {
-			$c = $this->iter;	# Silly PHP
-			return new $c($this->select($sql));
-		} else
-			return $this->select($sql);
+	protected function setForeignKey($key, $table, $field) {
+		$this->foreign_keys[] = array('key'=>$key, 'table'=>$table, 'field'=>$field);
 	}
-	public function setName($name) {
-		$this->name = $name;
+	protected function setIter($classname) {
+		$this->iter = $classname;
 	}
-	public function setSequenceField($sequence) {
+	protected function setSequenceField($sequence) {
 		$this->sequence = $sequence;
 		if (!isset($this->fields[$sequence])) {
 			Fatal::internalError(T("DBTableSequenceField", array('sequence'=>$sequence)));
 			echo "sql=$sql<br />\n";
 		}
 	}
-	public function setForeignKey($key, $table, $field) {
-		$this->foreign_keys[] = array('key'=>$key, 'table'=>$table, 'field'=>$field);
+
+	## ------------------------------------------------------------------------ ##
+	protected function checkForeignKeys_el($rec) {
+		$errors = array();
+		foreach ($this->foreign_keys as $k) {
+			if (!isset($rec[$k['key']]) or $rec[$k['key']] == NULL) {
+				continue;
+			}
+			$sql = $this->mkSQL('SELECT * FROM %I '.
+				  'WHERE %I='.$this->types[$this->fields[$k['key']]],
+				  $k['table'], $k['field'], $rec[$k['key']]);
+			$r = $this->select01($sql);
+			if (!$r) {
+				$errors[] = new FieldError($k['key'], T("DBTableBadForeignKey", array('key'=>$rec[$k['key']], 'field'=>$k['key'])));
+			}
+		}
+		return $errors;
 	}
-	public function setIter($classname) {
-		$this->iter = $classname;
+	public function getKeyList($key, $fields) {
+		$sql = $this->mkSQL('SELECT %I FROM %I WHERE ', $key, $this->name)
+			. $this->_pairs($fields, ' AND ');
+        //if ($this->name == "biblio_copy") {echo "in DBTable::getKeyList(), sql= $sql <br />\n";}
+		if ($this->iter) {
+			$c = $this->iter;	# Silly PHP
+			return new $c($this->select($sql));
+		} else
+			return $this->select($sql);
 	}
 	public function maybeGetOne() {
 		$key = func_get_args();
@@ -115,46 +141,32 @@ abstract class DBTable extends Queryi {
 			return $rslt;
         }
 	}
-	public function checkForeignKeys_el($rec) {
-		$errors = array();
-		foreach ($this->foreign_keys as $k) {
-			if (!isset($rec[$k['key']]) or $rec[$k['key']] == NULL) {
-				continue;
-			}
-			$sql = $this->mkSQL('SELECT * FROM %I '.
-				  'WHERE %I='.$this->types[$this->fields[$k['key']]],
-				  $k['table'], $k['field'], $rec[$k['key']]);
-			$r = $this->select01($sql);
-			if (!$r) {
-				$errors[] = new FieldError($k['key'], T("DBTableBadForeignKey", array('key'=>$rec[$k['key']], 'field'=>$k['key'])));
-			}
-		}
-		return $errors;
-	}
 	public function insert($rec, $confirmed=false) {
-		list($seq_val, $errors) = $this->insert_el($rec, $confirmed);
-//		if ($errors) {
-//			Fatal::internalError(T("DBTableErrorInserting")." '".$this->name."', ".Error::listToStr($errors));
-//		}
-		return array($seq_val, $errors);
+		//list($seq_val, $errors) = $this->insert_el($rec, $confirmed);
+		$errors = $this->insert_el($rec, $confirmed);
+		if ($errors) {
+			//Fatal::internalError(T("DBTableErrorInserting")." '".$this->name."', ".Error::listToStr($errors));
+            echo "Error: $this->name; ";print_r($errors);echo "<br />\n";
+            return;
+		}
+        echo T("Add New successful");
 	}
 	public function insert_el($rec, $confirmed=false) {
-//echo "in DBTbl:insert_el ,";
-//print_r($rec);
+        //echo "in DBTbl:insert_el ,";print_r($rec);echo "<br />\n";
 		$this->lock();
-		//$errs = $this->checkForeignKeys_el($rec);
-		//if (!empty($errs)) {
-		//	$this->unlock();
-		//	return array(NULL, $errs);
-		//}
-//		$errs = $this->validate_el($rec, true);
-//		if ($confirmed) {
-//			$errs = $this->skipIgnorableErrors($errs);
-//		}
-//		if (!empty($errs)) {
-//			$this->unlock();
-//			return array(NULL, $errs);
-//		}
+		$errs = $this->checkForeignKeys_el($rec);
+		if (!empty($errs)) {
+			$this->unlock();
+			return array(NULL, $errs);
+		}
+		$errs = $this->validate_el($rec, true);
+		if ($confirmed) {
+			$errs = $this->skipIgnorableErrors($errs);
+		}
+		if (!empty($errs)) {
+			$this->unlock();
+			return array(NULL, $errs);
+		}
 		$sql = $this->mkSQL('INSERT INTO %I SET ', $this->name)
 			. $this->_pairs($rec);
 		$this->act($sql);
@@ -174,8 +186,11 @@ abstract class DBTable extends Queryi {
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
 			//Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
-			Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
+			//Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
+            echo "Error: $this->name; ";print_r($errors);echo "<br />\n";
+            return;
 		}
+        echo T("Update successful");
 	}
 	public function update_el($rec, $confirmed=false) {
 		$key = array();
