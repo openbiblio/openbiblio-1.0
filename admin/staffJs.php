@@ -6,39 +6,39 @@
 "use strict";
 
 function Stf ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Stf.prototype = inherit(List.prototype);
+Stf.prototype = inherit(Admin.prototype);
 Stf.prototype.constructor = Stf;
 
 Stf.prototype.init = function () {
-	List.prototype.init.apply( this );
+	Admin.prototype.init.apply( this );
 	$('#pwdChgForm').on('submit',null,$.proxy(this.doSetStaffPwd,this));
 	$('#pwdCnclBtn').on('click',null,$.proxy(this.resetForms,this));
 };
 Stf.prototype.resetForms = function () {
 	$('#pwdDiv').hide();
-	List.prototype.resetForms.apply( this );
+	Admin.prototype.resetForms.apply( this );
 };
 Stf.prototype.fetchHandler = function(dataAray){
-	List.prototype.fetchHandler.apply( this, [dataAray] );
+	Admin.prototype.fetchHandler.apply( this, [dataAray] );
 	$('.pwdBtn').on('click',null,$.proxy(this.doPwd,this));
 };
 Stf.prototype.showFields = function ( item ) {
 	$('#pwdFldSet').hide();
 	$('.pwdFlds').attr('required',false);
-	List.prototype.showFields.apply( this, [item] );
+	Admin.prototype.showFields.apply( this, [item] );
 };
 Stf.prototype.addFuncBtns = function ( ident ) {
 	var html = '';	
-	html  = List.prototype.addFuncBtns.apply( this, [ident] );
+	html  = Admin.prototype.addFuncBtns.apply( this, [ident] );
 	html += '		<input type="button" id="pwd'+ident+'" class="pwdBtn" value="'+<?php echo "'".T("pwd")."'"; ?>+'" />\n';
 	return html;
 };
 Stf.prototype.doNewFields = function () {
 	$('#pwdFldSet').show();
 	$('.pwdFlds').attr('required',true) ;
-	List.prototype.doNewFields.apply( this );
+	Admin.prototype.doNewFields.apply( this );
 };
 Stf.prototype.doPwd = function (e) {
 	  var code = $(e.target).prev().val();

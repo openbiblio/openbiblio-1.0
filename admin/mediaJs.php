@@ -5,9 +5,9 @@
 "use strict";
 
 function Med ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Med.prototype = inherit(List.prototype);
+Med.prototype = inherit(Admin.prototype);
 Med.prototype.constructor = Med;
 
 $(document).ready(function () {

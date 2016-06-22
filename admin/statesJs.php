@@ -6,13 +6,16 @@
 "use strict";
 
 function St ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-St.prototype = inherit(List.prototype);
+
+St.prototype = inherit(Admin.prototype);
+
 St.prototype.constructor = St;
+
 St.prototype.init = function () {
 	this.noshows = [];
-	List.prototype.init.apply( this );
+	Admin.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
 };
 

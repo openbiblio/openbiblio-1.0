@@ -6,9 +6,9 @@
 "use strict";
 
 function Hed ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Hed.prototype = inherit(List.prototype);
+Hed.prototype = inherit(Admin.prototype);
 Hed.prototype.constructor = Hed;
 
 Hed.prototype.fetchServiceList = function () {

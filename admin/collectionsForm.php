@@ -108,7 +108,7 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	require_once(REL(__FILE__, "../classes/ListJs.php"));
+	require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	require_once(REL(__FILE__, "collectionsJs.php"));
 ?>	
 </body>

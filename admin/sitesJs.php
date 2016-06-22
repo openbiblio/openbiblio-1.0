@@ -6,13 +6,13 @@
 "use strict";
 
 function Sit ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Sit.prototype = inherit(List.prototype);
+Sit.prototype = inherit(Admin.prototype);
 Sit.prototype.constructor = Sit;
 Sit.prototype.init = function () {
 	this.noshows = [];
-	List.prototype.init.apply( this );
+	Admin.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
   $('#country').val('xxxx');
 };
@@ -47,7 +47,7 @@ Sit.prototype.doNewFields = function (e) {
   var localeCntry = navigator.language.slice(-2);
   console.log("country is "+localeCntry);
 
-  List.prototype.doNewFields.apply(this);
+  Admin.prototype.doNewFields.apply(this);
   console.log('got here');
   $('#country').val(localeCntry);
 }

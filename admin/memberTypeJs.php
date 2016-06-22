@@ -6,9 +6,9 @@
 "use strict";
 
 function Mbc ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Mbc.prototype = inherit(List.prototype);
+Mbc.prototype = inherit(Admin.prototype);
 Mbc.prototype.constructor = Mbc;
 
 $(document).ready(function () {

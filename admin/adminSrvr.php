@@ -6,9 +6,6 @@
   require_once("../shared/common.php");
   require_once("../classes/ObServer.php");
   $adminServer = new ObServer();
-  $adminServer->addTask('getAllHours', 'selectAll', 'OpenHours');
-  $adminServer->addTask('getAll_copyFlds', 'selectAll', 'BiblioCopyFields');
-//  $adminServer->addTask('getAll_mbrFlds', 'selectAll', 'MemberCustomFields_DM'); # not yet working
 
 	switch ($_POST['cat']) {
 		case 'collect':
@@ -24,6 +21,7 @@
 			$ptr = new Hosts;
 			break;
 		case 'hours':
+            $adminServer->addTask('getAllHours', 'selectAll', 'OpenHours');
 			$adminServer->respond();
 			exit;
 		case 'media':
@@ -78,7 +76,7 @@
 	
 	switch ($_POST['mode']){
 		## don't combine this switch with that above.
-		## doing so would require multiple 'switch' statements,
+		## doing so would require multiple, nested, 'switch' statements,
 		## as well as multiple 'default' blocks 
 
 	  #-.-.-.-.-.- Calendars -.-.-.-.-.-.-
@@ -178,6 +176,7 @@
 			}
 			echo json_encode($flds);
 */
+            $adminServer->addTask('getAll_copyFlds', 'selectAll', 'BiblioCopyFields');
 			$adminServer->respond();
 			break;
 		case 'addNew_copyFlds':
@@ -208,6 +207,7 @@
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
+            //$adminServer->addTask('getAll_mbrFlds', 'selectAll', 'MemberCustomFields_DM'); # not yet working
 			//$adminServer->respond(); #not yet working
 			break;
 		case 'addNew_mbrFlds':

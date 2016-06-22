@@ -6,13 +6,13 @@
 "use strict";
 
 function Mbf ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Mbf.prototype = inherit(List.prototype);
+Mbf.prototype = inherit(Admin.prototype);
 Mbf.prototype.constructor = Mbf;
 Mbf.prototype.init = function () {
 	this.noshows = [];
-	List.prototype.init.apply( this );
+	Admin.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
 };
 

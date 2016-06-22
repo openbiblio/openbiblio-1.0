@@ -5,16 +5,16 @@
 // JavaScript Document
 "use strict";
 
-/* Note: Much of the functionality of this module is provided by '.../classes/ListJs.php' */
+/* Note: Much of the functionality of this module is provided by '.../classes/AdminJs.php' */
 
 function Bcf ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Bcf.prototype = inherit(List.prototype);
+Bcf.prototype = inherit(Admin.prototype);
 Bcf.prototype.constructor = Bcf;
 Bcf.prototype.init = function () {
 	this.noshows = [];
-	List.prototype.init.apply( this );
+	Admin.prototype.init.apply( this );
 };
 
 $(document).ready(function () {

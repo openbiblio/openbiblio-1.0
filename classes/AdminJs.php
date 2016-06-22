@@ -9,14 +9,14 @@
 		from "JavaScript: the definitive guide", 6th ed, p.119
  **************************************************************************** */
 function inherit(p) {
-	if (p == null) throw TypeError();						// p must be non-null object
-	if (Object.create) return Object.create(p);	// use it if you got it!
+	if (p == null) throw TypeError();						    // p must be non-null object
+	if (Object.create) return Object.create(p);	                // use it if you got it!
 	// else																			
-	var t = typeof p;														// otherwise do more type checking
+	var t = typeof p;											// otherwise do more type checking
 	if (t!== "object" && t!== "function") throw TypeError();	
-	function f() {};														// define a dummy constructor
-	f.prototype = p;														// set its prototype to p
-	return new f();															// use f() to create an 'heir' of p
+	function f() {};											// define a dummy constructor
+	f.prototype = p;											// set its prototype to p
+	return new f();												// use f() to create an 'heir' of p
 }
 
 /* ************************************************************************** */
@@ -25,7 +25,7 @@ function inherit(p) {
 //   form: id of html form to use
 //   dbAlias: nickname of server database
 //   opts: js object containing as a minimum: listHdr, editHdr, newHdr
-function List ( url, form, dbAlias, hdrs, listFlds, opts ) {
+function Admin ( url, form, dbAlias, hdrs, listFlds, opts ) {
 	this.url = url;
 	this.editForm = form;
 	this.dbAlias = dbAlias;
@@ -39,10 +39,10 @@ function List ( url, form, dbAlias, hdrs, listFlds, opts ) {
 	this.noshows.push(this.keyFld);
 };
 
-List.prototype.delConfirmMsg = <?php echo '"'.T("Are you sure you want to delete ").'"'; ?>;
-List.prototype.cancelStr = <?php echo '"'.T("Cancel").'"'?>;
+Admin.prototype.delConfirmMsg = <?php echo '"'.T("Are you sure you want to delete ").'"'; ?>;
+Admin.prototype.cancelStr = <?php echo '"'.T("Cancel").'"'?>;
 	
-List.prototype.init = function () {
+Admin.prototype.init = function () {
 	this.initWidgets();
 
 	$('#msgDiv').hide();
@@ -59,10 +59,10 @@ List.prototype.init = function () {
 };
 	
 	//------------------------------
-List.prototype.initWidgets =function () {
+Admin.prototype.initWidgets =function () {
 };
 
-List.prototype.resetForms = function () {
+Admin.prototype.resetForms = function () {
 	$('#editDiv').hide();
     $('#listHdr').html(this.listHdr);
     $('#editHdr').html(this.editHdr);
@@ -70,29 +70,30 @@ List.prototype.resetForms = function () {
 	$('#listDiv').show();
 };
 
-List.prototype.doBackToList = function () {
+Admin.prototype.doBackToList = function () {
 	$('#msgDiv').hide(10000);
 	this.resetForms();
 	this.fetchList();
 };
 	
 	//------------------------------
-List.prototype.fetchList = function () {
+Admin.prototype.fetchList = function () {
 	var params = { 'cat':this.dbAlias,
 								 'mode':'getAll_'+this.dbAlias, 
 							 };
     $.post( this.url, params, $.proxy(this.fetchHandler,this), 'json');
 };
-List.prototype.fetchHandler = function(dataAray){
+Admin.prototype.fetchHandler = function(dataAray){
   this.json = dataAray;	// will be re-used later for editing
 		
 	var $theTbl = $('#showList'),
-			$theList = $theTbl.find('tbody'),
-			html = '',
-			item, ident,
-			test = '';
+		$theList = $theTbl.find('tbody'),
+		html = '',
+		item, ident,
+		test = '';
 				
-	$theList.html('');		
+	$theList.html('');
+
 	for (var obj in dataAray) {
 		item = dataAray[obj], 
 		ident = item[this.keyFld];
@@ -127,14 +128,14 @@ List.prototype.fetchHandler = function(dataAray){
 	$stripes.find('tr:odd td').addClass('altBG');
 	$stripes.find('tr:even td').addClass('altBG2');
 };
-List.prototype.addFuncBtns = function (ident) {
+Admin.prototype.addFuncBtns = function (ident) {
 	var html = '';
 	html  = '		<input type="button" id="row'+ident+'" class="editBtn" value="'+<?php echo "'".T("edit")."'"; ?>+'" />\n';
 	html += '		<input type="hidden" value="'+ident+'"  />\n';
 	return html;
 };
        
-List.prototype.doEditFields = function (e) {
+Admin.prototype.doEditFields = function (e) {
   var code = $(e.target).next().val(),
 			ident = this.keyFld, 
 			n;
@@ -149,7 +150,7 @@ List.prototype.doEditFields = function (e) {
 	return false;
 };
 	
-List.prototype.showFields = function (item) {
+Admin.prototype.showFields = function (item) {
     $('#fieldsHdr').html(this.editHdr);
     $('#addBtn').hide();
     $('#updtBtn').show();
@@ -182,7 +183,7 @@ List.prototype.showFields = function (item) {
 	$('#editDiv').show();
 };
 	
-List.prototype.doNewFields = function (e) {
+Admin.prototype.doNewFields = function (e) {
   document.forms['editForm'].reset();
   $('#fieldsHdr').html(this.newHdr);
 	for (var n in this.noshows){
@@ -198,7 +199,7 @@ List.prototype.doNewFields = function (e) {
 	return false;
 };
 	
-List.prototype.doSubmitFields = function (e) {
+Admin.prototype.doSubmitFields = function (e) {
 	//console.log(e);
 	e.preventDefault();
 	e.stopPropagation();
@@ -212,18 +213,18 @@ List.prototype.doSubmitFields = function (e) {
 	}
 };
 	
-List.prototype.doAddFields = function () {
+Admin.prototype.doAddFields = function () {
 	$('#mode').val('addNew_'+this.dbAlias);
 	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
 	$.post(this.url, parms, $.proxy(this.addHandler,this));
 	return false;
 };
-List.prototype.addHandler = function(response) {
+Admin.prototype.addHandler = function(response) {
 	this.showResponse(response);
 };
 
-List.prototype.doUpdateFields = function () {
+Admin.prototype.doUpdateFields = function () {
 	$('#updateMsg').hide();
 	$('#msgDiv').hide();
 	$('#mode').val('update_'+this.dbAlias);
@@ -234,11 +235,11 @@ List.prototype.doUpdateFields = function () {
 	$.post(this.url, parms, $.proxy(this.updateHandler, this));
 	return false;
 };
-List.prototype.updateHandler = function(response) {
+Admin.prototype.updateHandler = function(response) {
 	this.showResponse(response);
 };
 	
-List.prototype.doDeleteFields = function (e) {
+Admin.prototype.doDeleteFields = function (e) {
 	var msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
     if (confirm(msg)) {
   	   var parms = {'cat':this.dbAlias,
@@ -251,11 +252,11 @@ List.prototype.doDeleteFields = function (e) {
 	}
 	return false;
 };
-List.prototype.deleteHandler = function(response){
+Admin.prototype.deleteHandler = function(response){
 	this.showResponse(response);
 };
 
-List.prototype.showResponse = function (response) {
+Admin.prototype.showResponse = function (response) {
 	if (($.trim(response)).substr(0,1)=='<') {
 		//console.log('rcvd error msg from server :<br />'+response);
 		$('#msgArea').html(response);

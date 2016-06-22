@@ -6,12 +6,12 @@
 "use strict";
 
 function Col ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	List.call( this, url, form, dbAlias, hdrs, listFlds, opts );
+	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
 };
-Col.prototype = inherit(List.prototype);
+Col.prototype = inherit(Admin.prototype);
 Col.prototype.constructor = Col;
 Col.prototype.init = function () {
-	List.prototype.init.apply( this );
+	Admin.prototype.init.apply( this );
   $('#type').on('change',null,$.proxy(function () {
   	this.setTypeDisplay();
 	},this));
@@ -78,7 +78,7 @@ Col.prototype.getDist = function (code) {
 
 Col.prototype.doEditFields = function (e) {
 	var lclThis = this;
-	List.prototype.doEditFields.apply( this, [e] );
+	Admin.prototype.doEditFields.apply( this, [e] );
   lclThis.setTypeDisplay();
 	var circ = this.getCirc(this.crnt);
 	if (circ) {
