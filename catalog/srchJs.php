@@ -244,15 +244,9 @@ var bs = {
 		}, 'json');
 	},
 	fetchMaterialList: function () {
-	  $.post(bs.listSrvr,{'mode':'getMediaList'}, function(data){
-			var html = '';
-            for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#itemMediaTypes').html(html);
-			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
-			$('#srchMediaTypes').html(html);
-		}, 'json');
+        list.getMaterialList($('#srchMediaTypes'), function () {
+		   $('#srchMediaTypes').prepend('<option value="all" selected="selected"><?php echo T("All");?></option>');
+        });
 	},
 	fetchMediaMarcTags: function (materialCd) {
 	  $.post(bs.listSrvr,{'mode':'getMediaMarcTags', 'media':materialCd}, function(data){
@@ -264,15 +258,9 @@ var bs = {
 		}, 'json');
 	},
 	fetchCollectionList: function () {
-	  $.post(bs.listSrvr,{'mode':'getCollectionList'}, function(data){
-			var html = '';
-      for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
-			}
-			$('#itemEditColls').html(html);
-			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
-			$('#srchCollections').html(html);
-		}, 'json');
+        list.getCollectionList($('#srchCollections'), function () {
+		   $('#srchCollections').prepend('<option value="all" selected="selected"><?php echo T("All");?></option>');
+        });
 	},
 	fetchAudienceList: function () {
 	  $.post(bs.listSrvr,{'mode':'getAudienceList'}, function(data){

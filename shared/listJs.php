@@ -14,7 +14,7 @@ var list = {
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getPullDownList: function (listName, whereToPaste) {
-        $.post(list.server, {mode:'get'+listName+'List'}, function(data){
+        $.post(list.server, {mode:'get'+listName+'List', select:'true'}, function(data){
     			  var html = '';
             for (var n in data) {
     				    html += '<option value="'+n+'" ';
@@ -23,20 +23,28 @@ var list = {
                 html += '>'+data[n].description+'</option>';
     			  }
             whereToPaste.html(html);
+            //console.log(html);
     		    return html;
 		    }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getCalendarList: function (where) { // deprecated
-        var html = list.getPullDownList('Calendar', where);
-        return html
+    getCalendarList: function (where) { 
+        $.post(list.server, {mode:'getCalendarList'}, function(data){
+            return data;
+        }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getCollectionList: function (where) { // deprecated
-        var html = list.getPullDownList('Collection', where);
-        return html
+    getCollectionList: function (where, callback) { 
+        $.post(list.server, {mode:'getCollectionList'}, function(data){
+    		    var html = '';
+            for (var n in data) {
+        			  html+= '<option value="'+n+'" >'+data[n]+'</option>';
+    		    }
+            where.html(html);
+            callback();
+        }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
@@ -56,9 +64,15 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getMaterialList: function (where) { // deprecated
-        var html = list.getPullDownList('Media', $('#media_cd'));
-        return html;
+    getMaterialList: function (where, callback) {
+        $.post(list.server, {mode:'getMediaList'}, function(data){
+    		    var html = '';
+            for (var n in data) {
+        			  html+= '<option value="'+n+'" >'+data[n]+'</option>';
+    		    }
+            where.html(html);
+            callback();
+        }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//

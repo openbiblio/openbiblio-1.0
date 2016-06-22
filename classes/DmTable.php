@@ -18,10 +18,22 @@ class DmTable extends DBTable {
 
 	public function getList($orderby=NULL) {
 		$list = array();
-        $data = array();
 		$rslt = $this->getAll($orderby);
         $recs = $rslt->fetchAll();
 // echo "in DmTable::getList(): ";print_r($recs);echo "<br />\n";
+        $nRecs = count($recs);
+        if ($nRecs < 1) return NULL;
+        foreach ($recs as $rec) {
+			$list[$rec['code']] = $rec['description'];
+		}
+		return $list;
+	}
+	public function getSelectList($orderby=NULL) {
+		$list = array();
+        $data = array();
+		$rslt = $this->getAll($orderby);
+        $recs = $rslt->fetchAll();
+        // echo "in DmTable::getList(): ";print_r($recs);echo "<br />\n";
         $nRecs = count($recs);
         if ($nRecs < 1) return NULL;
         foreach ($recs as $rec) {

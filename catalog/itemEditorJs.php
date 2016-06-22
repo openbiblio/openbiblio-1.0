@@ -18,14 +18,14 @@ var ie = {
 		ie.url = '../catalog/catalogServer.php';
 		ie.urlLookup = '../catalog/onlineServer.php'; //may not exist
 
-	  $('#onlnUpdtBtn').on('click',null,function (){
+	    $('#onlnUpdtBtn').on('click',null,function (){
 			//console.log('online data requested');
 			$('#onlnDoneBtn').show();
 			$('#onlnUpdtBtn').hide();
 			$('#itemEditorDiv td.filterable').show();
 			ie.fetchOnlnData();
 		});
-	  $('#onlnDoneBtn').on('click',null,function (){
+	    $('#onlnDoneBtn').on('click',null,function (){
 			$('#itemEditorDiv td.filterable').hide();
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
@@ -61,8 +61,8 @@ var ie = {
 		  classStr += " rptd";
 		else
 		  classStr += " only1";
-	  if (mode == 'onlnCol')
-	    classStr += " online";
+	    if (mode == 'onlnCol')
+	      classStr += " online";
 		else
 		  classStr += " offline";
 		attrs["class"] = classStr;
@@ -73,8 +73,8 @@ var ie = {
 			if (val['validation_cd'] !== null) attrs['validation_cd'] = val['validation_cd'];
 		}
 
-//console.log('mkFldSet():');
-//console.log(attrs);
+        //console.log('mkFldSet():');
+        //console.log(attrs);
 		if (val['form_type'] == 'textarea') {
 			attrs["rows"] = "7"; attrs["cols"] = "48";
 			txt += flos.inptFld('textarea', name+'[data]', val['value'], attrs, val['value'])+"\n";
@@ -90,22 +90,22 @@ var ie = {
 	doItemEdit: function (biblio) {
 		$('#onlnUpdtBtn').show();
 		$('#onlnDoneBtn').hide();
-	  $('#biblioDiv').hide();
+	    $('#biblioDiv').hide();
 
 		var hdr = biblio.hdr,
-				marc = biblio.marc;
-	  ie.bibid = hdr.bibid;
+			marc = biblio.marc;
+	    ie.bibid = hdr.bibid;
 		$('#editBibid').val(hdr.bibid);
 
-		// set non-MARC fields using data on hand
-		$('#itemMediaTypes').val(hdr.material_cd);
-		$('#itemEditColls').val(hdr.collection_cd);
-		$('#opacFlg').val(hdr.opac_flg);
+		// set non-MARC fields 
+        list.getPullDownList('Media', $('#itemMediaTypes'));
+        list.getPullDownList('Collection', $('#itemEditColls'));
+		$('#opacFlg').val(hdr.opac_flg);  // using data on hand
 
 		// fill MARC fields with data on hand
 		// each field has, in array 'val', a:
-		//  label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
-	  var txt = '';
+		// label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
+	    var txt = '';
 		$.each(marc, function(key,val) {
 			if (val.lbl) {
 				var prefix = 'fields_'+key;

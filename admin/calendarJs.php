@@ -98,7 +98,7 @@ var cal = {
 	},
 
 	fetchCalendarList: function (e) {
-	  $.post(cal.listSrvr,{mode:'getCalendarList'}, function(data){
+	  $.post(cal.listSrvr, {mode:'getCalendarList'}, function(data){
 			var html = '';
             for (var n in data) {
 				html+= '<li>';
