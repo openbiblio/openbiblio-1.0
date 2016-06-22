@@ -53,6 +53,7 @@
 			ini_set('display_errors', '1');
 			require_once(REL(__FILE__, "../model/Copies.php"));
 			$copies = new Copies;
+		    require_once(REL(__FILE__, "../classes/Copy.php"));
 			require_once(REL(__FILE__, "../model/Biblios.php"));
 			$biblios = new Biblios;
 			break;
@@ -72,6 +73,7 @@
 			$holds = new Holds;
 			require_once(REL(__FILE__, "../model/Copies.php"));
 			$copies = new Copies;
+		    require_once(REL(__FILE__, "../classes/Copy.php"));
 			require_once(REL(__FILE__, "../classes/Biblio.php"));
 			break;
 	}

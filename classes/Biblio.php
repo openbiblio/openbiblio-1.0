@@ -5,6 +5,7 @@
 
 require_once(REL(__FILE__, "../model/Biblios.php"));
 require_once(REL(__FILE__, "../model/Copies.php"));
+require_once(REL(__FILE__, "../classes/Copy.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 require_once(REL(__FILE__, "../catalog/biblioChange.php"));
 require_once(REL(__FILE__, "../model/MarcStore.php"));
@@ -22,7 +23,7 @@ class Biblio {
 	private $bibid;
 	private $hdrFlds = array();
 	private $marcFlds = array();
-	public $cpyList = array();
+	public  $cpyList = array();
 
 	## ------------------------------------------------------------------------ ##
 	public function __construct ($bibid) {

@@ -9,16 +9,18 @@
 	case 'doShelveItem':
 	case "doItemCheckin":
 	case 'doShelveAll':
+		require_once(REL(__FILE__, "../classes/Copy.php"));
 		require_once(REL(__FILE__, "../model/Copies.php"));
-			$copies = new Copies;
+		$copies = new Copies;
 		break;
 
 	case 'fetchShelvingCart':
 		require_once(REL(__FILE__, "../classes/Biblio.php"));
+		require_once(REL(__FILE__, "../classes/Copy.php"));
 		require_once(REL(__FILE__, "../model/Copies.php"));
-			$copies = new Copies;
+		$copies = new Copies;
 		require_once(REL(__FILE__, "../model/History.php"));
-			$history = new History;
+		$history = new History;
 		break;
 
 	}
