@@ -18,15 +18,11 @@
 		}
 		return $list;
 	}
-	function getDmData ($db) {
-		//$set = $db->getAll('description');
-		$set = $db->getList('description');
-//echo "in lstSrvr, getDmData(): ";print_r($set);echo "<br />\n";
-		//while ($row = $set->fetch_assoc()) {
-//        foreach ($set as $row) {
-//		  $list[$row['code']] = $row['description'];
-//		}
-//		return $list;
+	function getDmData ($db, $select=true) {
+        if ($select)
+		  $set = $db->getSelectList('description');
+        else
+		  $set = $db->getList('description');
         return $set;
 	}
 	
@@ -53,7 +49,13 @@
 	case 'getCalendarList':
 		require_once(REL(__FILE__, "../model/Calendars.php"));
 		$db = new Calendars;
-		$list = getDmData($db);
+        if (!isset($_POST['select']) && $_POST['select']=='true') {
+            //echo "select list wanted";
+		    $list = getDmData($db, true);
+        } else {
+            //echo "simple list wanted";
+		    $list = getDmData($db, false);
+        }
 		echo json_encode($list);
 	  break;
 
@@ -61,7 +63,13 @@
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
 		$db = new Collections;
-		$list = getDmData($db);
+        if ($_POST['select']=='true') {
+            //echo "select list wanted";
+		    $list = getDmData($db, true);
+        } else {
+            //echo "simple list wanted";
+		    $list = getDmData($db, false);
+        }
 		echo json_encode($list);
 	  break;
 	case 'getDefaultCollection':
@@ -113,7 +121,13 @@
 	case 'getMediaList':
 		require_once(REL(__FILE__, "../model/MediaTypes.php"));
 		$db = new MediaTypes;
-		$list = getDmData($db);
+        if ($_POST['select']=='true') {
+            //echo "select list wanted";
+		    $list = getDmData($db, true);
+        } else {
+            //echo "simple list wanted";
+		    $list = getDmData($db, false);
+        }
 		echo json_encode($list);
 	  break;
 	case 'getMediaIconUrls':
