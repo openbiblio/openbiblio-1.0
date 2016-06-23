@@ -71,11 +71,13 @@ Admin.prototype.resetForms = function () {
 };
 
 Admin.prototype.doBackToList = function () {
-	$('#msgDiv').hide(10000);
+	$('#msgDiv').hide('50000', $.proxy(this.backHandler, this));
+};
+Admin.prototype.backHandler = function(e) {
 	this.resetForms();
 	this.fetchList();
 };
-	
+
 	//------------------------------
 Admin.prototype.fetchList = function () {
 	var params = { 'cat':this.dbAlias,
@@ -218,11 +220,14 @@ Admin.prototype.doAddFields = function () {
 	$('#mode').val('addNew_'+this.dbAlias);
 	$('#cat').val(this.dbAlias);
 	var parms = $('#editForm').serialize();
-	$.post(this.url, parms, $.proxy(this.addHandler,this));
+	$.post(this.url, parms, $.proxy(this.addHandler,this), 'json');
 	return false;
 };
 Admin.prototype.addHandler = function(response) {
-	this.showResponse(response);
+console.log('got response');
+console.log(response);
+    this.seqNum = response[0];
+	this.showResponse(response[1]);
 };
 
 Admin.prototype.doUpdateFields = function () {
@@ -259,21 +264,20 @@ Admin.prototype.deleteHandler = function(response){
 
 Admin.prototype.showResponse = function (response) {
 console.log('rcvd response from server: '+response);
-var msg = response[1][0]['msg'];
-console.log('extracted msg from server :<br />'+msg);
 	if (($.trim(response)).substr(0,1)=='<') {
 		$('#msgArea').html(response);
 		$('#msgDiv').show();
         return;
 	}
-	else if (($.trim(msg)).indexOf('Error') < 0){
+	else if (($.trim(response)).indexOf('Success') > 0){
 		$('#msgArea').html(msg);
 		$('#msgDiv').show();
         return
-	}
-	$('#msgArea').html(response);
-	$('#msgDiv').show();
-  	this.doBackToList();
+	} else {
+	     $('#msgArea').html(response);
+	     $('#msgDiv').show();
+         this.doBackToList();
+    }
 };
 
 </script>

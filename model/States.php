@@ -39,7 +39,8 @@ class States extends DmTable {
 		$rows = $this->select($sql);
 		//if ($rows->count() != 0) {
         if ($insert&& (count($rows) != 0)) {
-			$errors[] = new FieldError('code', T("Duplicate State Code not allowed"));
+			//$errors[] = new FieldError('code', T("Duplicate State Code not allowed"));
+			$errors[] = T("Duplicate State Code not allowed");
 		}
         // otherwise limit default flg to Y or N only
         if ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N') {

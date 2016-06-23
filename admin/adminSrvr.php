@@ -448,7 +448,8 @@
 			echo json_encode($states);
 			break;
 		case 'addNew_states':
-			echo $ptr2->insert($_POST);
+			$rslt = $ptr2->insert($_POST);
+            echo json_encode($rslt);
 			break;
 		case 'update_states':
 			echo $ptr2->update($_POST);
