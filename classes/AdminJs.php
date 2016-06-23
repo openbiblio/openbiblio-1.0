@@ -11,7 +11,6 @@
 function inherit(p) {
 	if (p == null) throw TypeError();						    // p must be non-null object
 	if (Object.create) return Object.create(p);	                // use it if you got it!
-	// else																			
 	var t = typeof p;											// otherwise do more type checking
 	if (t!== "object" && t!== "function") throw TypeError();	
 	function f() {};											// define a dummy constructor
@@ -20,11 +19,14 @@ function inherit(p) {
 }
 
 /* ************************************************************************** */
-// Base class for DB lookup table maintenance
-//   url: data server URL
-//   form: id of html form to use
-//   dbAlias: nickname of server database
-//   opts: js object containing as a minimum: listHdr, editHdr, newHdr
+/* Base class for DB lookup table maintenance
+ *   url: data server URL
+ *   form: id of html form to use
+ *   dbAlias: nickname of server database
+ *   opts: js object containing as a minimum: listHdr, editHdr, newHdr
+ *
+ * @author Fred LaPlante
+ */
 function Admin ( url, form, dbAlias, hdrs, listFlds, opts ) {
 	this.url = url;
 	this.editForm = form;
@@ -83,12 +85,12 @@ Admin.prototype.backHandler = function(e) {
 	//------------------------------
 Admin.prototype.fetchList = function () {
 	var params = { 'cat':this.dbAlias,
-								 'mode':'getAll_'+this.dbAlias, 
+				   'mode':'getAll_'+this.dbAlias,
 							 };
     $.post( this.url, params, $.proxy(this.fetchHandler,this), 'json');
 };
 Admin.prototype.fetchHandler = function(dataAray){
-  this.json = dataAray;	// will be re-used later for editing
+    this.json = dataAray;	// will be re-used later for editing
 		
 	var $theTbl = $('#showList'),
 		$theList = $theTbl.find('tbody'),
@@ -112,12 +114,12 @@ Admin.prototype.fetchHandler = function(dataAray){
 			var theClass = this.listFlds[fld];
 			if (theClass == 'image') {
 				html += '	<td valign="top">'
-						 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
-						 + 		item[fld] + '</td>\n';	
+					 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
+					 + 		item[fld] + '</td>\n';
 			}
 			else if (theClass == 'textarea') {
 				html += '	<td valign="top" class="'+theClass+'">'
-						 +  '		<textarea cols="100" readonly>'+item[fld]+'</textarea></td>\n';
+					 +  '		<textarea cols="100" readonly>'+item[fld]+'</textarea></td>\n';
 			}
 			else {
 				html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
@@ -140,9 +142,9 @@ Admin.prototype.addFuncBtns = function (ident) {
 };
        
 Admin.prototype.doEditFields = function (e) {
-  var code = $(e.target).next().val(),
-			ident = this.keyFld, 
-			n;
+    var code = $(e.target).next().val(),
+	    ident = this.keyFld,
+		n;
 	for (n in this.json) {
 		var item = this.json[n];
 	    if (item[ident] == code) {
@@ -188,8 +190,8 @@ Admin.prototype.showFields = function (item) {
 };
 	
 Admin.prototype.doNewFields = function (e) {
-  document.forms['editForm'].reset();
-  $('#fieldsHdr').html(this.newHdr);
+    document.forms['editForm'].reset();
+    $('#fieldsHdr').html(this.newHdr);
 	for (var n in this.noshows){
 		$('#'+this.noshows[n]).attr('readonly',true).attr('required',false).hide();
 	};
@@ -197,9 +199,10 @@ Admin.prototype.doNewFields = function (e) {
 	$('#deltBtn').hide();
 	$('#updtBtn').hide();
     $('#addBtn').show();
+
 	$('#listDiv').hide();
-	$('#editDiv').show();
     $('#editForm input:visible:first').focus();
+	$('#editDiv').show();
 	return false;
 };
 	
@@ -213,7 +216,7 @@ Admin.prototype.doSubmitFields = function (e) {
 		case 'updtBtn':	this.doUpdateFields();	break;
 		case 'deltBtn':	this.doDeleteFields();	break;
 		default: $('#msgArea').html("'"+theId+"' is not a valid action button id");
-						 $('#msgDiv').show();
+				 $('#msgDiv').show();
 	}
 };
 	

@@ -24,6 +24,9 @@ class Sites extends DBTable {
 			'email'=>'string',
 			'calendar'=>'number',
 		));
+        $this->setReq(array(
+            'name', 'calendar', 'country',
+        ));
 		$this->setKey('siteid');
 		$this->setSequenceField('siteid');
 		$this->setForeignKey('calendar', 'calendar_dm', 'code');
@@ -51,7 +54,8 @@ class Sites extends DBTable {
 	}
 	protected function validate_el($rec, $insert) {
 		$errors = array();
-		foreach (array('name') as $req) {
+        // check for missing entries
+		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
 				$errors[] = new FieldError($req, T("Required field missing"));

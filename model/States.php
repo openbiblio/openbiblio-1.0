@@ -20,13 +20,19 @@ class States extends DmTable {
 		$this->setKey('code');
         //echo "in States::__construct(): ";print_r($this->fields);echo "<br />\n";
 	}
-	protected function validate_el($rec, $insert) {
-		$errors = array();
-        //echo "in States::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
+
+	public function insert($rec, $confirmed=false) {
         // if no default flg present, set to 'N'
 		if (!isset($rec['default_flg'])) {
             $rec['default_flg'] = 'N';
         }
+        list($parm1, $parm2) = parent::insert($rec, $confirmed=false);
+        return array($parm1, $parm2);
+    }
+
+	protected function validate_el($rec, $insert) {
+		$errors = array();
+        //echo "in States::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
         // check for missing entries
 		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
