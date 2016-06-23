@@ -22,10 +22,10 @@ class Sit extends Admin {
 
     doNewFields (e) {
         var localeCntry = navigator.language.slice(-2);
-console.log("country is "+localeCntry);
+        //console.log("country is "+localeCntry);
 
         super.doNewFields.apply(this);
-console.log('got here');
+        //console.log('got here');
         $('#country').val(localeCntry);
     	$('#editDiv').show();
     }

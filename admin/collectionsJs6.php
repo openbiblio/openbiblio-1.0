@@ -6,15 +6,30 @@
 "use strict";
 
 class Col extends Admin {
-    constructor ( url, form, dbAlias, hdrs, listFlds, opts ) {
+    constructor ( ) {
+	   var url = 'adminSrvr.php',
+	       form = $('#editForm'),
+	       dbAlias = 'collect',
+    	   hdrs = {'listHdr':<?php echo '"'.T("List of Collections").'"'; ?>,
+			       'editHdr':<?php echo '"'.T("Edit Collection").'"'; ?>,
+			       'newHdr':<?php echo '"'.T("Add New Collection").'"'; ?>,
+		          },
+	       listFlds = {'code': 'number',
+				        'description':'text',
+				        'type':'text',
+				        'count':'number',
+				        'default_flg':'center',
+			         },
+	       opts = {};
+
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
+    	this.noshows = [];
+
+	    this.fetchTypes();
+
         $('#type').on('change',null,$.proxy(function () {
       	     this.setTypeDisplay();
         },this));
-    	this.noshows = [];
-	    this.fetchTypes();
-
-$('#listDiv').show();
     };
 
     setTypeDisplay () {
@@ -93,21 +108,7 @@ $('#listDiv').show();
 }
 
 $(document).ready(function () {
-	var url = 'adminSrvr.php',
-	form = $('#editForm'),
-	dbAlias = 'collection',
-	hdrs = {'listHdr':<?php echo '"'.T("List of Collections").'"'; ?>, 
-			'editHdr':<?php echo '"'.T("Edit Collection").'"'; ?>, 
-			'newHdr':<?php echo '"'.T("Add New Collection").'"'; ?>,
-		   },
-	listFlds = {'code': 'number',
-				'description':'text',
-				'type':'text',
-				'count':'number',
-				'default_flg':'center',
-			   },
-	opts = {};
-						 
-	var xxxx = new Col( url, form, dbAlias, hdrs, listFlds, opts );
+    var xxxx = new Col;
 });
+
 </script>
