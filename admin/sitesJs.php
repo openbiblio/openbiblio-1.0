@@ -14,7 +14,7 @@ Sit.prototype.init = function () {
 	this.noshows = [];
 	Admin.prototype.init.apply( this );
 	//this.noshows.push(this.keyFld);
-  $('#country').val('xxxx');
+    $('#country').val('xxxx');
 };
 
 Sit.prototype.fetchStates = function () {
