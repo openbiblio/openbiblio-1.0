@@ -6,9 +6,26 @@
 "use strict";
 
 class Sit extends Admin {
-    constructor ( url, form, dbAlias, hdrs, listFlds, opts ) {
+    constructor () {
+    	var url = 'adminSrvr.php',
+    		form = $('#editForm'),
+    		dbAlias = 'sites';
+    	var hdrs = {'listHdr':<?php echo '"'.T("List of Sites").'"'; ?>,
+    				'editHdr':<?php echo '"'.T("Edit Site").'"'; ?>,
+    				'newHdr':<?php echo '"'.T("Add New Site").'"'; ?>,
+    						 };
+    	var listFlds = {'name': 'text',
+    					'code': 'text',
+    					'city':'text',
+    				   };
+    	var opts = { 'focusFld':'name', 'keyFld':'siteid' };
+
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
+
     	this.noshows = [];
+	    this.fetchStates();
+	    this.fetchCalendars();
+
         $('#country').val('xxxx');
     };
 
@@ -32,22 +49,7 @@ class Sit extends Admin {
 }
 
 $(document).ready(function () {
-	var url = 'adminSrvr.php',
-		form = $('#editForm'),
-		dbAlias = 'sites';
-	var hdrs = {'listHdr':<?php echo '"'.T("List of Sites").'"'; ?>,
-				'editHdr':<?php echo '"'.T("Edit Site").'"'; ?>,
-				'newHdr':<?php echo '"'.T("Add New Site").'"'; ?>,
-						 };
-	var listFlds = {'name': 'text',
-					'code': 'text',
-					'city':'text',
-				   };
-	var opts = { 'focusFld':'name', 'keyFld':'siteid' };
-
-	var xxxx = new Sit( url, form, dbAlias, hdrs, listFlds, opts );
-	xxxx.fetchStates();
-	xxxx.fetchCalendars();
+	var xxxx = new Sit();
 });
 
 </script>
