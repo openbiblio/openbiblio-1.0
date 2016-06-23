@@ -101,7 +101,7 @@
                 <td colspan="1" align="left">
 			         <input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" />
 			         <input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
-			         <input type="button" id="cnclBtn" value="<?php echo T("Cancel"); ?>" />
+			         <input type="button" id="cnclBtn" value="<?php echo T("Go Back"); ?>" />
                 </td>
                 <td colspan="1" align="right">
 			         <input type="submit" id="deltBtn" class="actnBtns" value="<?php echo T("Delete"); ?>" />

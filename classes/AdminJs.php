@@ -52,7 +52,8 @@ Admin.prototype.init = function () {
 
 	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
 	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
-	$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
+	//$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
+	$('#cnclBtn').on('click',null,$.proxy(this.doBackToList,this));
 
 	this.fetchList();
 	this.resetForms()
@@ -66,12 +67,13 @@ Admin.prototype.resetForms = function () {
 	$('#editDiv').hide();
     $('#listHdr').html(this.listHdr);
     $('#editHdr').html(this.editHdr);
-    $('#cnclBtn').val('Cancel');
+    $('#cnclBtn').val('Go Back');
 	$('#listDiv').show();
 };
 
 Admin.prototype.doBackToList = function () {
-	$('#msgDiv').hide('50000', $.proxy(this.backHandler, this));
+    //console.log('in back to list');
+	$('#msgDiv').hide('slow', $.proxy(this.backHandler, this));
 };
 Admin.prototype.backHandler = function(e) {
 	this.resetForms();
@@ -224,8 +226,7 @@ Admin.prototype.doAddFields = function () {
 	return false;
 };
 Admin.prototype.addHandler = function(response) {
-console.log('got response');
-console.log(response);
+    //console.log(response);
     this.seqNum = response[0];
 	this.showResponse(response[1]);
 };
@@ -263,21 +264,16 @@ Admin.prototype.deleteHandler = function(response){
 };
 
 Admin.prototype.showResponse = function (response) {
-console.log('rcvd response from server: '+response);
-	if (($.trim(response)).substr(0,1)=='<') {
+    //console.log('rcvd response from server: '+response);
+	if (($.trim(response)).indexOf('Success') > 0){
 		$('#msgArea').html(response);
 		$('#msgDiv').show();
-        return;
-	}
-	else if (($.trim(response)).indexOf('Success') > 0){
-		$('#msgArea').html(msg);
-		$('#msgDiv').show();
-        return
+        this.doBackToList();
 	} else {
-	     $('#msgArea').html(response);
-	     $('#msgDiv').show();
-         this.doBackToList();
+	    $('#msgArea').html(response);
+	    $('#msgDiv').show();
     }
+    return
 };
 
 </script>
