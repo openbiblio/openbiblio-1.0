@@ -24,17 +24,22 @@ class Staff extends CoreTable {
 			'catalog_flg'=>'string',
 			'reports_flg'=>'string',
 		));
+        $this->setReq(array(
+            'userid', 'username', 'pwd', 'last_name', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg',
+        ));
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
 	}
 	protected function validate_el($rec, $insert) {
 		$errors = array();
-		foreach (array('username', 'last_name') as $req) {
+        // all required fields present?
+		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
 				$errors[] = new FieldError($req, T("Required field missing"));
 			}
 		}
+        // login credentials
 		if (isset($rec['pwd'])) {
 			if (!isset($rec['pwd2']) or $rec['pwd'] != $rec['pwd2']) {
 				$errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
