@@ -42,14 +42,11 @@ class States extends DmTable {
 		}
         // duplicate state codes not allowed
 		$sql = $this->mkSQL("SELECT * FROM %q WHERE code=%Q ", $this->name, $rec['code']);
-        //echo "sql= $sql <br />\n";
 		$rslt = $this->select($sql);
         $rows = $rslt->fetchAll();
-        //print_r($rows);echo "<br />\n";
-		//if ($rows->count() != 0) {
         if ($insert&& (count($rows) != 0)) {
 			//$errors[] = new FieldError('code', T("Duplicate State Code not allowed"));
-			$errors[] = T("Duplicate State Code not allowed");
+			$errors[] = T("Duplicate Code not allowed");
 		}
         // otherwise limit default flg to Y or N only
         if ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N') {

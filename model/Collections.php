@@ -78,6 +78,9 @@ class Collections extends DmTable {
 			'default_flg'=>'string',
 			'type'=>'string',
 		));
+        $this->setReq(array(
+            'code', 'description', 'default_flg', 'type'
+        ));
 		$this->setSequenceField('code');
 		$this->setKey('code');
 
@@ -86,20 +89,57 @@ class Collections extends DmTable {
 			'Distributed' => new DistCollections,
 		);
 	}
-	function getTypeSelect() {
+
+	protected function validate_el($rec, $insert) {
+		$errors = array();
+		foreach ($this->reqFields as $req) {
+			if ($insert and !isset($rec[$req])
+					or isset($rec[$req]) and $rec[$req] == '') {
+				$errors[] = new FieldError($req, T("Required field missing"));
+			}
+		}
+        // valid collection type?
+		if (isset($rec['type']) and !array_key_exists($rec['type'], $this->colltypes)) {
+			$errors[] = new FieldError('type', T("Bad collection type"));
+		}
+        // duplicate state codes not allowed
+		$sql = $this->mkSQL("SELECT * FROM %q WHERE code=%Q ", $this->name, $rec['code']);
+		$rslt = $this->select($sql);
+        $rows = $rslt->fetchAll();
+        if ($insert&& (count($rows) != 0)) {
+			//$errors[] = new FieldError('code', T("Duplicate State Code not allowed"));
+			$errors[] = T("Duplicate Code not allowed");
+		}
+        // otherwise limit default flg to Y or N only
+        if ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N') {
+			$errors[] = new FieldError('default_flg', T("Default Flg MUST be 'Y' or 'N'"));
+        }
+		return $errors;
+	}
+
+	public function insert($rec, $confirmed=false) {
+        // if no default flg present, set to 'N'
+		if (!isset($rec['default_flg'])) {
+            $rec['default_flg'] = 'N';
+        }
+        list($parm1, $parm2) = parent::insert($rec, $confirmed=false);
+        return array($parm1, $parm2);
+    }
+
+	public function getTypeSelect() {
 		$types = array();
 		foreach (array_keys($this->colltypes) as $t) {
 			$types[$t] = $t;
 		}
 		return $types;
 	}
-	function getByBibid($bibid) {
+	public function getByBibid($bibid) {
 		$sql = "SELECT c.* FROM collection_circ c, biblio b "
 			. "WHERE c.code=b.collection_cd "
 			. $this->mkSQL("AND b.bibid=%N ", $bibid);
 		return $this->select1($sql);
 	}
-	function getAllWithStats() {
+	public function getAllWithStats() {
 		$sql = "SELECT c.*, "
 			. "COUNT(distinct b.bibid) as count "
 			. "FROM collection_dm c "
@@ -109,31 +149,18 @@ class Collections extends DmTable {
 			. "ORDER BY c.description ";
 		return $this->select($sql);
 	}
-	function getTypeData($rec) {
+	public function getTypeData($rec) {
 		$table = $this->colltypes[$rec['type']];
 		return $table->getOne($rec['code']);
 	}
-	function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('description', 'type') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
-		if (isset($rec['type']) and !array_key_exists($rec['type'], $this->colltypes)) {
-			$errors[] = new FieldError('type', T("Bad collection type"));
-		}
-		return $errors;
-	}
-	function get_name($code) {
+	public function get_name($code) {
 		$sql = "SELECT description "
 			. "FROM collection_dm "
 			. "WHERE code='".$code."';";
 		$row = $this->select1($sql);
 		return $row['description'];
 	}
-	function insert_el($rec, $confirmed = false) {
+	public function insert_el($rec, $confirmed = false) {
 		list ($id, $errs) = DBTable::insert_el($rec, $confirmed);
 		if ($errs)
 			return array(NULL, $errs);
@@ -145,7 +172,7 @@ class Collections extends DmTable {
 		}
 		return array($id, NULL);
 	}
-	function update_el($rec, $confirmed = false) {
+	public function update_el($rec, $confirmed = false) {
 		$old = $this->getOne($rec['code']);
 		$errs = DBTable::update_el($rec, $confirmed);
 		if ($errs)
@@ -162,14 +189,14 @@ class Collections extends DmTable {
 		}
 		return $errs;
 	}
-	function deleteOne() {
+	public function deleteOne() {
 		$code = func_get_args(0);
 		DBTable::deleteOne($code);
 		foreach ($this->colltypes as $table) {
 			$table->deleteOne($code);
 		}
 	}
-	function deleteMatches($fields) {
+	public function deleteMatches($fields) {
 		$rows = $this->getMatches($fields);
 		while ($row = $rows->fetch_assoc()) {
 			$this->deleteOne($row['code']);
