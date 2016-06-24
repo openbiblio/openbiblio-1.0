@@ -92,6 +92,7 @@ class Collections extends DmTable {
 
 	protected function validate_el($rec, $insert) {
 		$errors = array();
+        // all required fields present?
 		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {

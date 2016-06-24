@@ -18,10 +18,47 @@ class MediaTypes extends DmTable {
 			'image_file'=>'string',
 			'srch_disp_lines'=>'number',
 		));
+        $this->setReq(array(
+            'code', 'description', 'default_flg', 'adult_checkout_limit', 'juvenile_checkout_limit', 'srch_disp_lines',
+        ));
 		$this->setSequenceField('code');
 		$this->setKey('code');
 	}
-	function getAllWithStats() {
+
+	protected function validate_el($rec, $insert) {
+		$errors = array();
+        // all required fields present?
+		foreach ($this->reqFields as $req) {
+			if ($insert and !isset($rec[$req])
+					or isset($rec[$req]) and $rec[$req] == '') {
+				$errors[] = new FieldError($req, T("Required field missing"));
+			}
+		}
+        // test checkout_limits
+		$positive = array('adult_checkout_limit', 'juvenile_checkout_limit');
+		foreach ($positive as $f) {
+			if (!is_numeric($rec[$f])) {
+				$errors[] = new FieldError($f, T("Field must be numeric"));
+			} else if ($rec[$f] < 0) {
+				$errors[] = new FieldError($f, T("Field cannot be less than zero"));
+			}
+		}
+        // otherwise limit default flg to Y or N only
+        if ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N') {
+			$errors[] = new FieldError('default_flg', T("Default Flg MUST be 'Y' or 'N'"));
+        }
+		return $errors;
+	}
+
+	public function insert($rec, $confirmed=false) {
+        // if no default flg present, set to 'N'
+		if (!isset($rec['default_flg'])) {
+            $rec['default_flg'] = 'N';
+        }
+        list($parm1, $parm2) = parent::insert($rec, $confirmed=false);
+        return array($parm1, $parm2);
+    }
+	public function getAllWithStats() {
 		$sql = "SELECT t.code, t.description, t.default_flg, "
 				 . 				"t.adult_checkout_limit, t.juvenile_checkout_limit, "
 				 . 				"t.image_file, t.srch_disp_lines, COUNT(distinct b.bibid) as count "
@@ -35,42 +72,24 @@ class MediaTypes extends DmTable {
 		return $this->select($sql);
 	}
 //	function getAll($orderBy=null) {
-	function getAll($orderBy='description') {
+	public function getAll($orderBy='description') {
 		$sql = "SELECT * FROM material_type_dm "
 				 . " ORDER BY $orderBy ";
 		return $this->select($sql);
 	}
-	function getByBibid($bibid) {
+	public function getByBibid($bibid) {
 		$sql = "SELECT m.* FROM material_type_dm m, biblio b"
 				 . " WHERE $bibid = b.bibid AND m.code = b.material_cd";
 		return $this->select1($sql);
 	}
-	function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('description', 'adult_checkout_limit', 'juvenile_checkout_limit') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
-		$positive = array('adult_checkout_limit', 'juvenile_checkout_limit');
-		foreach ($positive as $f) {
-			if (!is_numeric($rec[$f])) {
-				$errors[] = new FieldError($f, T("Field must be numeric"));
-			} else if ($rec[$f] < 0) {
-				$errors[] = new FieldError($f, T("Field cannot be less than zero"));
-			}
-		}
-		return $errors;
-	}
-	function get_name($code) {
+	public function get_name($code) {
 		$sql = "SELECT t.description "
 			. "FROM material_type_dm t "
 			. "WHERE code='".$code."';";
 		$row = $this->select1($sql);
 		return $row['description'];
 	}
-	function getIcons() {
+	public function getIcons() {
 		$sql = "SELECT t.code, t.image_file "
 			. "FROM material_type_dm t ";
 		$rslt = $this->select($sql);
