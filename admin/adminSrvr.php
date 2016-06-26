@@ -240,13 +240,8 @@
 			echo json_encode($flds);
 			break;
 		case 'addNew_mbrTypes':
-			list($id, $errs) = $ptr->insert_el(array(
-				'code'=>@$_POST['code'],
-				'max_fines'=>@$_POST['max_fines'],
-				'default_flg'=>@$_POST['default_flg'],
-				'description'=>@$_POST['description'],
-			));
-			if ($errs) {echo $errs;} else {echo T("Add New successful");}
+			$rslt = $ptr->insert_el($_POST);
+            echo json_encode($rslt);
 			break;
 		case 'update_mbrTypes':
 			$errs = $ptr->update_el(array(

@@ -130,7 +130,7 @@ abstract class DBTable extends Queryi {
 		if ($errors) {
 			//Fatal::internalError(T("DBTableErrorInserting")." '".$this->name."', ".Error::listToStr($errors));
             //echo "Error: $this->name; ";print_r($errors);echo "<br />\n";
-            return array($seqVal, $errors);
+            return array(NULL, $errors);
 		}
         return array($seqVal, 'Success');
 	}
