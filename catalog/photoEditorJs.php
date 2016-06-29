@@ -16,7 +16,7 @@ var wc = {
 		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
 //			if (Modernizr.video) { // seems to not be working any longer - FL
 //				console.log('video supported in this browser');
-		  	var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
+		  	    var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
 								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
 								 + ' preload="none" ></video>';
 				$('#canvasIn').before(html);
@@ -28,7 +28,7 @@ var wc = {
 
 		wc.video = document.querySelector('video');
 		wc.videoOpts = { video:true, audio:false, };
-    var errBack = function (error) {
+        var errBack = function (error) {
  			alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
 			console.log("Video capture error: ", error.code);
 		};
@@ -61,7 +61,7 @@ var wc = {
 		/* support drag and drop of image */
 		wc.canvasOut.ondragover = function (e){
 			// keep browser from replacing entire page with dropped image //
-      e.preventDefault();
+            e.preventDefault();
 			return false;
 		};
 		wc.canvasOut.ondrop = function (e) {
@@ -97,13 +97,14 @@ var wc = {
 			//$('#fotoName').val('filename.jpg');
 			$('#capture').show();
 			$('#browse').hide();
-		} else {
+		} else if (chkd == 'brw') {
 			$('#camera').removeAttr('autoplay');
 			//$('#fotoName').val('');
 			$('#capture').hide();
 			$('#browse').show();
 		}
 	},
+
 	//----//
 	rotateImage: function (angle) {
     var tw = wc.canvasIn.width/2,

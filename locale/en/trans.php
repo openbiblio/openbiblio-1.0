@@ -848,6 +848,7 @@ $trans["Searching for ISBN"] = "Searching for ISBN";
 $trans["Searching for ISSN"] = "Searching for ISBN";
 $trans["Select did not return results."] = "Select did not return results.";
 $trans["Selecting database..."] = "Selecting database...";
+$trans["Select an image Source"] = "Select an image Source";
 $trans["Select Plugins"] = "Select Plugins to be used.";
 $trans["Select site"] = "Select site";
 $trans["SeniorHigh"] = "Senior High";

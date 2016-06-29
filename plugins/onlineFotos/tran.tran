@@ -6,6 +6,7 @@
 #*  Translation text for page lookup_form.php
 #****************************************************************************
 $trans["enable"] = "Enable";
+$trans["fetchPhoto"] = "Fetch Photo";
 $trans["onlineFotos"] = "Online Cover Photos";
 $trans["openLibrary"] = "OpenLibrary";
 $trans["Save"] = "Save";

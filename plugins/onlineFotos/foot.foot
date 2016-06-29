@@ -1,0 +1,63 @@
+<script language="JavaScript" >
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+
+/**
+ * JavaScript portion of the Biblio ExistingItem Manager
+ * @author Luuk Jansen
+ * @author Fred LaPlante
+ */
+"use strict";
+
+// JavaScript Document OnlineFotos foot.foot
+
+class FotoFt {
+    constructor () {
+        // add OpenLibrary to list of choices
+        var srcInsert = ""
+						+'<label for="useOpenLib">  <?php echo T("openLibrary"); ?></label>'
+						+'<input type="radio" id="useOpenLib" name="imgSrce" value="olib" class="fotoSrceBtns" \>'
+        ;
+        $('#fotoSources').append(srcInsert);
+
+        // add alternate action button
+        var actionInsert = ""
+					 +'<input type="button" id="fetch" name="fetch" value="<?php echo T("fetchPhoto"); ?>" />';
+        $('#fotoControls').append(actionInsert);
+
+		    $('input.fotoSrceBtns').on('click', null, this.changeImgSource);
+        $('#fetch').on('click', null, this.getOpnLibFile);
+
+        this.resetForm();
+    }
+
+	  //----//
+	  resetForm () {
+        // force OpenLibrary as default
+			  $('#capture').hide();
+        $('#fetch').show();
+        $('input').val(['olib']);
+    }
+
+	  //----//
+	  changeImgSource (e) {
+		    var chkd = $('input[name="imgSrce"]:checked', '#fotoForm').val();
+		    if (chkd == 'olib') {
+			      $('#capture').hide();
+			      $('#browse').hide();
+            $('#fetch').show();
+        } else
+            $('#fetch').hide();
+    }
+
+    getOpnLibFile() {
+console.log('in FotoFt::getOpenfile()');
+    }
+}
+
+$(document).ready(function () {
+	var xxxx = new FotoFt();
+});
+
+</script>

@@ -28,24 +28,34 @@
 					</canvas>
 				</fieldset>
 				<fieldset class="inline">
-					<fieldset>
-						<legend>Select an image Source</legend>
+                    <!-- source choices -->
+					<fieldset id="fotoSources">
+						<legend><?php echo T("Select an image Source"); ?></legend>
 						<label for="useCapture"><?php echo T("Camera"); ?></label>
 						<input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>
-						<label for="useBrowse"><?php echo T("Browse"); ?></label>
+						<label for="useBrowse">  <?php echo T("Browse"); ?></label>
 						<input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" \>
 					</fieldset>
-					<input type="button" id="capture" name="capture" value="<?php echo T("Take Photograph"); ?>" />
-					<input type="file" id="browse" name="browse" accept="image/png image/jpg" />
                     <br />
-					<label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
-					<p id="fotoFolder">../photos/<span class="italic"><?php echo T("filename"); ?></span>.jpg</p>
-					<br />
-					<label for="fotoName"><?php echo T("FileName"); ?>:</label>
-					<input type="text" id="fotoName" name="url" size="32"
-								pattern="(.*?)(\.)(jpg|jpeg|png)$" required aria-required="true"
-								title="<?php echo T("OnlyJpgOrPngFiles"); ?>" />
-								<span class="reqd">*</span>
+
+                    <!-- action controls -->
+                    <span id="fotoControls">
+					   <input type="button" id="capture" name="capture" value="<?php echo T("Take Photograph"); ?>" />
+					   <input type="file" id="browse" name="browse" accept="image/png image/jpg" />
+                    </span>
+                    <br />
+
+                    <!-- user information -->
+                    <span id="fotoInfo">
+					   <label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
+					   <p id="fotoFolder">../photos/<span class="italic"><?php echo T("filename"); ?></span>.jpg</p>
+					   <br />
+					   <label for="fotoName"><?php echo T("FileName"); ?>:</label>
+					   <input type="text" id="fotoName" name="url" size="32"
+							 pattern="(.*?)(\.)(jpg|jpeg|png)$" required aria-required="true"
+							 title="<?php echo T("OnlyJpgOrPngFiles"); ?>" />
+							 <span class="reqd">*</span>
+                    </span>
 				</fieldset>
 
 				<input type="hidden" id="fotoBibid" name="bibid" value="" />

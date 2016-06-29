@@ -126,3 +126,13 @@ function backToMain(URL) {
 var modified = false;
 
 </script>
+
+<?php
+ ## ##################################
+ ## adds suport for plugins - fl, 2016
+ ## ##################################
+		$list = getPlugIns('foot.foot');
+		for ($x=0; $x<count($list); $x++) {
+			include($list[$x]);
+		}
+ ## ##################################
