@@ -107,9 +107,9 @@ var wc = {
 
 	//----//
 	rotateImage: function (angle) {
-    var tw = wc.canvasIn.width/2,
-				th = wc.canvasIn.height/2,
-				angle = angle*(Math.PI/180.0);
+        var tw = wc.canvasIn.width/2,
+    		th = wc.canvasIn.height/2,
+    		angle = angle*(Math.PI/180.0);
 		wc.ctxIn.save();
 		wc.ctxIn.translate(tw, th);
 		wc.ctxIn.rotate(angle);
