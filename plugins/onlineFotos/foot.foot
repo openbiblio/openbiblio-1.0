@@ -37,7 +37,7 @@ class FotoFt {
         // force OpenLibrary as default
 			  $('#capture').hide();
         $('#fetch').show();
-        $('input').val(['olib']);
+        $('input[name="imgSrce"]').val(['olib']);
     }
 
 	  //----//
