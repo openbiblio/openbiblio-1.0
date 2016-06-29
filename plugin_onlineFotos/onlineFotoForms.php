@@ -26,7 +26,7 @@
 			<legend><?php echo T("openLibrary"); ?></legend>
             <label for="fotoEnable"><?php echo T("enable"); ?><input type="checkbox" CHECKED value="Y" /></label>
             <br />
-			<label for="fotoURL" >URL:<input type="url" /></label>
+			<label for="fotoURL" >URL:<input type="url" value="http://covers.openlibrary.org"/></label>
             <br /><br />
 		    <input type="button" id="submitBtn" value="<?php echo T("Submit"); ?>" />
 		</fieldset>

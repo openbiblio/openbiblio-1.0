@@ -163,26 +163,26 @@ var wc = {
 			return;
 		}
 		reader.onloadend = function(e) {
-    	var tempImg = new Image();
-    	tempImg.src = reader.result;
-    	tempImg.onload = function() {
-        wc.ctxOut.drawImage(tempImg, 0, 0, wc.fotoWidth,wc.fotoHeight);
-			}
+        	var tempImg = new Image();
+        	tempImg.src = reader.result;
+        	tempImg.onload = function() {
+                wc.ctxOut.drawImage(tempImg, 0, 0, wc.fotoWidth,wc.fotoHeight);
+    		}
 		};
-    reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
 	},
 	takeFoto: function () {
-  	$('#errSpace').hide();
+  	    $('#errSpace').hide();
 		wc.ctxIn.drawImage(wc.video,0,0, wc.fotoHeight,wc.fotoWidth);
 		wc.rotateImage(wc.fotoRotate);
 		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
 	},
 	sendFoto: function (e) {
 		e.stopPropagation();
-    $('#errSpace').hide();
+        $('#errSpace').hide();
 		var imgMode = '',
-				url = $('#fotoName').val(),
-				bibid = $('#fotoBibid').val();
+			url = $('#fotoName').val(),
+			bibid = $('#fotoBibid').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
 		$.post(wc.url,
 				{'mode':'addNewPhoto',
@@ -238,9 +238,9 @@ var wc = {
 
 }
 /*  this code should be explicity initialized when needed unless
-		the frequent appearance of the video allow/deny prompt is acceptable
+	the frequent appearance of the video allow/deny prompt is acceptable
 
-    in Mozilla Firefox 46, you can elinate the prompt to allow video capture
+    in Mozilla Firefox 46+, you can elinate the prompt to allow video capture
     at "about:config | media.navigator.permission.disabled"
     BUT BE WARY, once on, it is accesable by any page in the browser until OB is turned off
 

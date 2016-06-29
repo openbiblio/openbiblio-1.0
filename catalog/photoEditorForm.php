@@ -15,7 +15,7 @@
 			<!-- video element will be inserted here when JS is activated -->
 			<!-- folowing dimensions are not an error, the box MUST be square for later image rotation -->
 		 	<canvas id="canvasIn" width="<?php echo Settings::get('thumbnail_height');?>"
-			 											height="<?php echo Settings::get('thumbnail_height');?>" >
+			 					  height="<?php echo Settings::get('thumbnail_height');?>" >
 			</canvas>
 		</div>
 		<?php } ?>

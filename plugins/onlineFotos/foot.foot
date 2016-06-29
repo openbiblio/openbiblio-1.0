@@ -52,7 +52,22 @@ class FotoFt {
     }
 
     getOpnLibFile() {
-console.log('in FotoFt::getOpenfile()');
+//console.log('in FotoFt::getOpenfile()');
+        var what = $('#biblio  td:contains("ISBN")').next().children('p').html();
+//console.log(what);
+        var key = 'isbn',
+            code = what,
+            image = new Image(),
+            size = 'M';
+
+        image.onload = function () {
+            wc.ctxOut.drawImage(image, 0, 0, wc.fotoWidth,wc.fotoHeight);
+		        //wc.rotateImage(wc.fotoRotate);
+		        //wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
+        };
+
+        image.src = "https://covers.openlibrary.org/b/"+key+'/'+code+'-'+size+'.jpg';
+//console.log(image.src);
     }
 }
 
