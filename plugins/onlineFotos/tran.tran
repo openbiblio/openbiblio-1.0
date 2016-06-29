@@ -1,0 +1,12 @@
+<?php
+/* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
+ * See the file COPYRIGHT.html for more details.
+ */
+#****************************************************************************
+#*  Translation text for page lookup_form.php
+#****************************************************************************
+$trans["enable"] = "Enable";
+$trans["onlineFotos"] = "Online Cover Photos";
+$trans["openLibrary"] = "OpenLibrary";
+$trans["Save"] = "Save";
+$trans["sourceSelection"] = "Source Selection";
