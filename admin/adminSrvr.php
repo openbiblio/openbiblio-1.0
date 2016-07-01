@@ -402,9 +402,9 @@
 					$_POST[$flg.'_flg'] = 'N';
 				}
 			}
-			if ($_POST['mode'] == 'addNew_staff')
+			if ($_POST['mode'] == 'addNew_staff') {
 				echo $ptr->insert_el($_POST);
-			else {
+			} else {
 				$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen
 				echo $ptr->update($_POST);
 			}

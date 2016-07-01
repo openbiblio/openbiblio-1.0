@@ -59,6 +59,26 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
+				'error' => T("Secret key column is missing for staff members"),
+				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+					. 'FROM information_schema.COLUMNS '
+					. 'WHERE TABLE_NAME = "staff"'
+					. 'AND COLUMN_NAME = "secret_key"',
+				'fixSql' => 'alter table staff '
+					. 'add column secret_key char(32) NOT NULL'
+			);
+
+			$this->checks[] = array(
+				'error' => T("Staff member does not have secret key"),
+				'countSql' => 'select count(*) as count '
+					. 'from staff '
+					. 'where secret_key is null ',
+				'fixSql' => 'update staff '
+					. 'set secret_key ="' . md5(time()) .'" '
+					. 'where secret_key is null ',
+			);
+
+			$this->checks[] = array(
 				'error' => T("Hours not attached to sites"),
 				'countSql' => 'select count(*) as count '
 					. 'from open_hours left join site '

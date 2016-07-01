@@ -16,6 +16,7 @@ class Staff extends CoreTable {
 			'pwd'=>'string',
 			'last_name'=>'string',
 			'first_name'=>'string',
+			'secret_key'=>'string',
 			'suspended_flg'=>'string',
 			'admin_flg'=>'string',
 			'tools_flg'=>'string',
@@ -25,7 +26,7 @@ class Staff extends CoreTable {
 			'reports_flg'=>'string',
 		));
         $this->setReq(array(
-            'userid', 'username', 'pwd', 'last_name', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg',
+            'username', 'pwd', 'last_name', 'secret_key', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg',
         ));
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
@@ -45,13 +46,14 @@ class Staff extends CoreTable {
 				$errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
 			}
 		}
+ini_set('display_errors', 1);
 		if (isset($rec['username'])) {
-			$sql = $this->mkSQL("SELECT * FROM staff WHERE username=%Q ", $rec['username']);
+			$sql = $this->mkSQL("SELECT 1 FROM staff WHERE username=%Q ", $rec['username']);
 			if (isset($rec['userid'])) {
 				$sql .= $this->mkSQL("AND userid <> %N ", $rec['userid']);
 			}
 			$rows = $this->select($sql);
-			if ($rows->count() != 0) {
+			if ($rows->fetchColumn()) {
 				$errors[] = new FieldError('username', T("Username already taken by another user"));
 			}
 		}
@@ -64,6 +66,10 @@ class Staff extends CoreTable {
 		if(isset($rec['pwd2'])) {
 			$rec['pwd2'] = md5($rec['pwd2']);
 		}
+		if(!isset($rec['secret_key'])) {
+			$rec['secret_key'] = md5(time());
+		}
+		unset($rec['userid']);
 		return parent::insert_el($rec, $confirmed);
 	}
 	function update_el($rec, $confirmed=false) {
