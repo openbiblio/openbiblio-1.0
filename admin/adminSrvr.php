@@ -62,12 +62,10 @@
 			require_once(REL(__FILE__, "../model/Settings.php"));
 			$ptr2 = new Settings;
 			break;
-/*
 		default:
 		  echo "<h4>invalid category: &gt;".$_POST['cat']."&lt;</h4><br />";
 		  exit;
 			break;
-*/
 	}
 
 	$updtSuccess = T("Update successful");
