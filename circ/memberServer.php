@@ -4,8 +4,6 @@
  */
 
 	require_once("../shared/common.php");
-	require_once("../shared/global_constants.php");
-	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 	switch ($_POST['mode']) {
 		case 'getMbrType':
@@ -15,11 +13,6 @@
 		case 'getCustomFlds':
 			require_once(REL(__FILE__, "../model/MemberCustomFields_DM.php"));
 			$customFlds = new MemberCustomFields_DM;
-			break;
-		case 'getSite':
-		case 'getSites':
-			require_once(REL(__FILE__, "../model/Sites.php"));
-			$sites = new Sites;
 			break;
 		case 'getAcnts':
 		case 'addAcntTrans':
@@ -134,9 +127,6 @@
 			$site = $sites->getOne($_GET['siteid']);
     			echo json_encode($site);
 			break;
-		case 'getSites':
-			$mbr['site'] = $sites->getOne($mbr['siteid']);
-	  		break;
 		case 'getAcnts':
 			$mbr['balance'] = $acct->getBalance($mbrid);
 			break;

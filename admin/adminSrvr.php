@@ -4,8 +4,6 @@
  */
 
   require_once("../shared/common.php");
-  require_once("../classes/ObServer.php");
-  $adminServer = new ObServer();
 
 	switch ($_POST['cat']) {
 		case 'collect':
@@ -21,8 +19,8 @@
 			$ptr = new Hosts;
 			break;
 		case 'hours':
-            $adminServer->addTask('getAllHours', 'selectAll', 'OpenHours');
-			$adminServer->respond();
+			require_once(REL(__FILE__, "../model/OpenHours.php"));
+			$ptr = new OpenHours;
 			exit;
 		case 'media':
 			require_once(REL(__FILE__, "../model/MediaTypes.php"));
@@ -167,17 +165,12 @@
 
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
 		case 'getAll_copyFlds':
-/*
 			$flds = array();
 			$set = $ptr->getAll();
-			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row){
+            		foreach ($set as $row){
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
-*/
-            $adminServer->addTask('getAll_copyFlds', 'selectAll', 'BiblioCopyFields');
-			$adminServer->respond();
 			break;
 		case 'addNew_copyFlds':
 			list($id, $errs) = $ptr->insert_el(array(
@@ -207,8 +200,6 @@
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
-            //$adminServer->addTask('getAll_mbrFlds', 'selectAll', 'MemberCustomFields_DM'); # not yet working
-			//$adminServer->respond(); #not yet working
 			break;
 		case 'addNew_mbrFlds':
 			list($id, $errs) = $ptr->insert_el(array(
