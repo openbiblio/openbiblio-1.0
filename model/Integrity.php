@@ -76,7 +76,7 @@ class Integrity extends Queryi{
 					. 'from (select 1 as secret_key) as dummy;',
 				'fixSql' => 'update staff '
 					. 'set secret_key ="' . md5(time()) .'" '
-					. 'where secret_key is null ',
+					. 'where secret_key="" ',
 			);
 
 			$this->checks[] = array(
