@@ -46,7 +46,6 @@ class Staff extends CoreTable {
 				$errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
 			}
 		}
-ini_set('display_errors', 1);
 		if (isset($rec['username'])) {
 			$sql = $this->mkSQL("SELECT 1 FROM staff WHERE username=%Q ", $rec['username']);
 			if (isset($rec['userid'])) {
