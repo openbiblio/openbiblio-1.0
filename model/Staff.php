@@ -37,13 +37,15 @@ class Staff extends CoreTable {
 		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
+				//$errors[] = new FieldError($req, T("Required field missing"));
+				$errors[] = array('NULL', T("Required field missing").": ".$req);
 			}
 		}
         // login credentials
 		if (isset($rec['pwd'])) {
 			if (!isset($rec['pwd2']) or $rec['pwd'] != $rec['pwd2']) {
-				$errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
+				//$errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
+				$errors[] = array('NULL', T("Supplied passwords do not match"));
 			}
 		}
 		if (isset($rec['username'])) {
@@ -53,7 +55,8 @@ class Staff extends CoreTable {
 			}
 			$rows = $this->select($sql);
 			if ($rows->fetchColumn()) {
-				$errors[] = new FieldError('username', T("Username already taken by another user"));
+				//$errors[] = new FieldError('username', T("Username already taken by another user"));
+				$errors[] = array('NULL', T("Username already taken by another user"));
 			}
 		}
 		return $errors;
@@ -69,7 +72,8 @@ class Staff extends CoreTable {
 			$rec['secret_key'] = md5(time());
 		}
 		unset($rec['userid']);
-		return parent::insert_el($rec, $confirmed);
+		$rslt = parent::insert_el($rec, $confirmed);
+        return $rslt;
 	}
 	function update_el($rec, $confirmed=false) {
 		if (isset($rec['pwd']) && isset($rec['pwd2']) && ($rec['pwd'] == $rec['pwd2']) ) {

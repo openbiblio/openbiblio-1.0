@@ -60,74 +60,74 @@
 <fieldset>
 	<legend id="fieldsHdr"></legend>
 	<ul id="editTbl">
-    <li>
-      <label for="last_name"><?php echo T("LastName"); ?>:</label>
-      <input id="last_name" name="last_name" type="text" size="32" required aria-required="true" />
-			<span class="reqd">*</span>    
-		</li>
-    <li>
-      <label for="first_name"><?php echo T("FirstName"); ?>:</label>
-      <input id="first_name" name="first_name" type="text" size="32" />
-		</li>
-    <li>
-      <label for="username"><?php echo T("Username"); ?>:</label>
-      <input id="username" name="username" type="text" size="32" required aria-required="true" />
-			<span class="reqd">*</span>    
-		</li>
-		<li id="pwdFldSet">
-			<fieldset>
-				<ul>
-    			<li>
-   			   <label for="pwd"><?php echo T("Password"); ?>:</label>
-   			   <input type="password" id="pwd" name="pwd" size="20" required aria-required="true" />
-						<span class="reqd">*</span>    
-					</li>
-  			  <li>
-  			    <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
-  			    <input type="password" id="pwd2" name="pwd2" size="20" required aria-required="true" />
-						<span class="reqd">*</span>    
-					</li>
-				</ul>
-			</fieldset>
-		</li>	
-    <li>
-      <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
-			<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
-		</li>
-		<br />
-		<li>
-			<fieldset>
-				<legend><?php echo T("Authorization");?>:</legend>
-					<input id="circ_flg" name="circ_flg" type="checkbox" value="Y" />
-					<label for="circ_flg"><?php echo T("Circ");?></label>
+        <li>
+          <label for="last_name"><?php echo T("LastName"); ?>:</label>
+          <input id="last_name" name="last_name" type="text" size="32" required aria-required="true" />
+    			<span class="reqd">*</span>
+    	</li>
+        <li>
+          <label for="first_name"><?php echo T("FirstName"); ?>:</label>
+          <input id="first_name" name="first_name" type="text" size="32" />
+    	</li>
+        <li>
+          <label for="username"><?php echo T("Username"); ?>:</label>
+          <input id="username" name="username" type="text" size="32" required aria-required="true" />
+    			<span class="reqd">*</span>
+    	</li>
+    	<li id="pwdFldSet">
+    		<fieldset>
+    			<ul>
+        			<li>
+       			        <label for="pwd1"><?php echo T("Password"); ?>:</label>
+       			        <input type="password" id="pwd1" name="pwd" size="20" required aria-required="true" />
+    						<span class="reqd">*</span>
+    				</li>
+      			    <li>
+      			        <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
+      			        <input type="password" id="pwd2" name="pwd2" size="20" required aria-required="true" />
+    						<span class="reqd">*</span>
+    				</li>
+    			</ul>
+    		</fieldset>
+    	</li>
+        <li>
+            <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
+    		<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
+    	</li>
+    	<br />
+    	<li>
+    		<fieldset>
+    			<legend><?php echo T("Authorization");?>:</legend>
+    			<input id="circ_flg" name="circ_flg" type="checkbox" class="roles" value="Y" />
+    			<label for="circ_flg"><?php echo T("Circ");?></label>
 
-					<input id="circ_mbr_flg" name="circ_mbr_flg" type="checkbox" value="Y" />
-					<label for="circ_mbr_flg"><?php echo T("Update Member");?></label>
-					
-					<input id="catalog_flg" name="catalog_flg" type="checkbox" value="Y" />
-		  		<label for="catalog_flg"><?php echo T("Catalog");?></label>
+    			<input id="circ_mbr_flg" name="circ_mbr_flg" type="checkbox" class="roles" value="Y" />
+    			<label for="circ_mbr_flg"><?php echo T("Update Member");?></label>
 
-					<input id="admin_flg" name="admin_flg" type="checkbox" value="Y" />
-		  		<label for="admin_flg"><?php echo T("Admin");?></label>
+    			<input id="catalog_flg" name="catalog_flg" type="checkbox" class="roles" value="Y" />
+    	  		<label for="catalog_flg"><?php echo T("Catalog");?></label>
 
-					<input id="tools_flg" name="tools_flg" type="checkbox" value="Y" />
-		  		<label for="tools_flg"><?php echo T("Tools");?></label>
+    			<input id="admin_flg" name="admin_flg" type="checkbox" class="roles" value="Y" />
+    	  		<label for="admin_flg"><?php echo T("Admin");?></label>
 
-					<input id="reports_flg" name="reports_flg" type="checkbox" value="Y" />
-		  		<label for="reports_flg"><?php echo T("Reports");?></label>
-			</fieldset>
-		</li>
-    <li>
-			<input type="hidden" id="cat" name="cat" value="staff">
-			<input type="hidden" id="mode" name="mode" value="">
-			<input type="hidden" id="userid" name="userid" value="">
-		</li>
+    			<input id="tools_flg" name="tools_flg" type="checkbox" class="roles" value="Y" />
+    	  		<label for="tools_flg"><?php echo T("Tools");?></label>
+
+    			<input id="reports_flg" name="reports_flg" type="checkbox" class="roles" value="Y" />
+    	  		<label for="reports_flg"><?php echo T("Reports");?></label>
+    		</fieldset>
+    	</li>
+        <li>
+    		<input type="hidden" id="cat" name="cat" value="staff">
+    		<input type="hidden" id="mode" name="mode" value="">
+    		<input type="hidden" id="userid" name="userid" value="">
+    	</li>
 	</ul>
 	<ul class="btnRow">
-    <li><input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add");?>" /></li>
-    <li><input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update");?>" /></li>
-    <li><input type="button" id="cnclBtn" value="<?php echo T("Cancel");?>" /></li>
-    <li><input type="submit" id="deltBtn" class="actnBtns" value="<?php echo T("Delete");?>" /></li>
+        <li><input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add");?>" /></li>
+        <li><input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update");?>" /></li>
+        <li><input type="button" id="cnclBtn" value="<?php echo T("Cancel");?>" /></li>
+        <li><input type="submit" id="deltBtn" class="actnBtns" value="<?php echo T("Delete");?>" /></li>
 	</ul>
 </fieldset>
 </form>
@@ -139,20 +139,20 @@
 <fieldset>
 	<legend><?php echo T("Reset Password"); ?> for <span></span></legend>
 	<ul id="editTbl">
-    <li>
-      <label for="pwdA"><?php echo T("Password"); ?>:</label>
-      <input type="password" id="pwdA" name="pwd" size="20" required aria-required="true" />
-			<span class="reqd">*</span>    
-		</li>
-    <li>
-      <label for="pwdB"><?php echo T("Password"); ?>:</label>
-      <input type="password" id="pwdB" name="pwd2" size="20" required aria-required="true" />
-			<span class="reqd">*</span>    
-		</li>
+        <li>
+            <label for="pwdA"><?php echo T("Password"); ?>:</label>
+            <input type="password" id="pwdA" name="pwd" size="20" required aria-required="true" />
+    			<span class="reqd">*</span>
+    	</li>
+        <li>
+            <label for="pwdB"><?php echo T("Password"); ?>:</label>
+            <input type="password" id="pwdB" name="pwd2" size="20" required aria-required="true" />
+    			<span class="reqd">*</span>
+    	</li>
 	</ul>
 	<ul id="btnRow">
-    <li><input type="submit" id="pwdChgBtn" value="<?php echo T("Set"); ?>" /></li>
-    <li><input type="button" id="pwdCnclBtn" value="<?php echo T("Cancel"); ?>" /></li>
+        <li><input type="submit" id="pwdChgBtn" value="<?php echo T("Set"); ?>" /></li>
+        <li><input type="button" id="pwdCnclBtn" value="<?php echo T("Cancel"); ?>" /></li>
 	</ul>
 </fieldset>
 </form>
