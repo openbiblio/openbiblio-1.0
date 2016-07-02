@@ -1,17 +1,16 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-CREATE TABLE IF NOT EXISTS %prfx%.`settings` (
-  `name` varchar(64) NOT NULL DEFAULT '',
-  `position` int(11) DEFAULT NULL,
-  `title` text,
-  `type` enum('text','int','bool','select') NOT NULL DEFAULT 'text',
-  `width` int(11) DEFAULT NULL,
-  `type_data` text,
-  `validator` text,
-  `value` text,
-  `menu` enum('admin','tools','none') NOT NULL DEFAULT 'admin',
-  PRIMARY KEY (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-INSERT INTO %prfx%.`settings` (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) VALUES
+CREATE TABLE IF NOT EXISTS %prfx%.settings (
+  name varchar(64) NOT NULL DEFAULT '',
+  position int DEFAULT NULL,
+  title text,
+  type enum('text','int','bool','select') NOT NULL DEFAULT 'text',
+  width int DEFAULT NULL,
+  type_data text,
+  validator text,
+  value text,
+  menu enum('admin','tools','none') NOT NULL DEFAULT 'admin',
+  PRIMARY KEY (name)
+);
+INSERT INTO %prfx%.settings (name, position, title, type, width, type_data, validator, value, menu) VALUES
 ('plugin_list', NULL, NULL, 'text', NULL, NULL, NULL, ',lookup2,biblioFlds', ''),
 ('allow_plugins_flg', 0, 'Allow Plugins', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
 ('library_name', 1, 'Library Title', 'select', NULL, 'sites', NULL, '2', 'admin'),
@@ -48,5 +47,6 @@ INSERT INTO %prfx%.`settings` (`name`, `position`, `title`, `type`, `width`, `ty
 ('version', 33, NULL, 'text', NULL, '\0', NULL, '1.0b', 'none'),
 ('thumbnail_rotation', 31, 'Thumbnail Rotation (deg)', 'int', NULL, NULL, NULL, '0', 'admin'),
 ('help_link', NULL, 'URL for your system documentation', 'text', NULL, NULL, NULL, 'https://openbiblio.github.io/openbiblio_docs', 'admin'),
+('hmac_timeout', NULL, 'Number of minutes before a request for sensitive data expires', 'int', NULL, NULL, NULL, '30', 'admin'),
 ('first_day_of_week', NULL, 'The day of the week to display first', 'select', NULL, 'dates', NULL, 6, 'admin');
 
