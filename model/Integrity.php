@@ -4,6 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../classes/Queryi.php"));
+ini_set('display_errors', 1);
 
 class Integrity extends Queryi{
 	private $checks= array();
@@ -70,9 +71,9 @@ class Integrity extends Queryi{
 
 			$this->checks[] = array(
 				'error' => T("Staff member does not have secret key"),
-				'countSql' => 'select count(*) as count '
-					. 'from staff '
-					. 'where secret_key is null ',
+				'countSql' => 'select ( select count(*) as count from staff as s '
+					. 'where secret_key="") as count '
+					. 'from (select 1 as secret_key) as dummy;',
 				'fixSql' => 'update staff '
 					. 'set secret_key ="' . md5(time()) .'" '
 					. 'where secret_key is null ',
