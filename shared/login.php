@@ -81,6 +81,7 @@ if(isset($_REQUEST['selectSite'])){
 
 $_SESSION["username"] = $user['username'];
 $_SESSION["userid"] = $user['userid'];
+$_SESSION["secret_key"] = $user['secret_key'];
 $_SESSION["loginAttempts"] = 0;
 $_SESSION["hasAdminAuth"] = ($user['admin_flg'] == 'Y');
 $_SESSION["hasCircAuth"] = ($user['circ_flg'] == 'Y');
