@@ -118,7 +118,7 @@ class Queryi
         }
 	}
 	private function _act($sql) {
-        $core = DbCore::getInstance();
+        	$core = DbCore::getInstance();
 		$r =  $core->dbh->query($sql);
 		if ($r === false) {
 			return 'Error: '.T("Database query failed");
