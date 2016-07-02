@@ -31,6 +31,7 @@ class Stf extends Admin {
 
     	$('#pwdChgForm').on('submit',null,$.proxy(this.doSetStaffPwd,this));
     	$('#pwdCnclBtn').on('click',null,$.proxy(this.resetForms,this));
+    	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFlds,this));
     };
 
     resetForms () {
@@ -52,11 +53,57 @@ class Stf extends Admin {
     	html += '		<input type="button" id="pwd'+ident+'" class="pwdBtn" value="'+<?php echo "'".T("pwd")."'"; ?>+'" />\n';
     	return html;
     };
+
     doNewFields () {
     	$('#pwdFldSet').show();
     	$('.pwdFlds').attr('required',true) ;
     	Admin.prototype.doNewFields.apply( this );
     };
+
+    doSubmitFlds (e) {
+console.log('in staffJs6::doSubmitFields()');
+        //console.log(e);
+    	e.preventDefault();
+    	e.stopPropagation();
+    	var theId = e.target.id;
+        if (theId == 'addBtn') {
+console.log('got "addBtn"');
+    		var pw1 = $('#pwd1').val(),
+    			pw2 = $('#pwd2').val();
+//console.log('in submitFlds: pw1='+pw1+'; pw2='+pw2);
+            var pwOk = this.chkPwds(pw1, pw2);
+            var rolesOk = this.chkRoles();
+            if (pwOk && rolesOk) {
+                super.doAddFields(e);
+            } else {
+                return false;
+            }
+    	}
+    };
+
+    chkRoles () {
+        var roles = $('.roles').is(':checked');
+console.log(roles);
+    }
+
+
+    chkPwds (pw1, pw2) {
+    		var errMsg = '';
+//console.log('in chkPwds: pw1='+pw1+'; pw2='+pw2);
+    		if ( pw1 !== pw2 ) {
+    			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
+    		} else if (!pw1 || !pw2) {
+    			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
+    		}
+    		if (errMsg != '') {
+console.log(errMag);
+    			$('#msgArea').html(errMsg).show();
+    			$('#msgDiv').show();
+    			return false;
+    		}
+    		return true;
+    };
+
     doPwd (e) {
     	  var code = $(e.target).prev().val();
     		for (var n in this.json) {
@@ -73,31 +120,20 @@ class Stf extends Admin {
     		}
     		return false;
     };
-    chkPwds (pwd1,pwd2) {
-    		var pw1 = $('#'+pwd1).val(),
-    				pw2 = $('#'+pwd2).val(),
-    				errMsg = '';
-    		if ( pw1 !== pw2 ) {
-    			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
-    		} else if (!pw1 || !pw2) {
-    			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
-    		}
-    		if (errMsg) {
-    			$('#msgArea').html(errMsg);
-    			$('#msgDiv').show();
-    			return false;
-    		}
-    		return true;
-    };
+
     doSetStaffPwd (e) {
     	e.preventDefault();
     	e.stopPropagation();
-    	if (!this.chkPwds('pwdA','pwdB')) return false;
-        var parms = {	'cat':'staff',
-    								'mode':'setPwd_staff',
-    								'pwd':$('#pwdA').val(),
-    								'pwd2':$('#pwdB').val(),
-    								'userid':this.crntUser };
+		var pwd1 = $('#pwdA').val(),
+			pwd2 = $('#pwdB').val();
+    	if (!this.chkPwds(pwd1, pwd2))
+            return false;
+
+        var parms = {'cat': 'staff',
+    				 'mode': 'setPwd_staff',
+    				 'pwd': pwd1,
+    				 'pwd2': pwd2,
+    				 'userid':this.crntUser };
         $.post(this.url, parms, $.proxy(this.setHandler,this));
     	return false;
     };

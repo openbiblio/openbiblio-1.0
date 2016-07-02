@@ -2,7 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-// JavaScript Document
+// JavaScript Document - JSAdmin.php
 "use strict"
 
 /* ************************************************************************** */
@@ -12,7 +12,7 @@
  *   dbAlias: nickname of server database
  *   opts: js object containing as a minimum: listHdr, editHdr, newHdr
  *
- * @author Fred LaPlante
+ * @author Fred LaPlante, June 2016
  */
 
 class Admin {
@@ -194,9 +194,9 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-    	//console.log(e);
+console.log('in JSAdmin::doSubmitFields()');
     	e.preventDefault();
-    	e.stopPropagation();
+    	//e.stopPropagation();
     	var theId = e.target.id;
     	switch (theId) {
     		case 'addBtn':	this.doAddFields();	break;

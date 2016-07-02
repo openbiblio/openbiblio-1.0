@@ -3,7 +3,7 @@
  * See the file COPYRIGHT.html for more details.
  */
 #****************************************************************************
-#*  Translation text for page lookup_form.php
+#*  Translation text for page onlineFotosplugin
 #****************************************************************************
 $trans["enable"] = "Enable";
 $trans["fetchPhoto"] = "Fetch Photo";
