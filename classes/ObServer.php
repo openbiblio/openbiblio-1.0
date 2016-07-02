@@ -1,75 +1,38 @@
 <?php
 require_once("../shared/common.php");
-
+require_once("../model/Staff.php");
 
 class ObServer {
-
-	function __construct() {
-		$this->tasks = Array();
-	}
-
-	public function addTask($request_mode, $task_type) {
-		$tmp['request_mode'] = $request_mode;
-		$tmp['task_type'] = $task_type;
-		switch($task_type) {
-			case 'selectAll':
-				$tmp['model'] = func_get_arg(2);
-				if (func_get_arg(3)) {
-					$tmp['order_by'] = func_get_arg(3);
-				}
-				break;
-		}
-		$this->tasks[] = $tmp;
-	}
-
-	public function respond() {
-		$this->mode_requested_by_user = $_POST['mode'];
-		if ($this->task_exists()) {
-			require_once(REL(__FILE__, '../model/' . $this->current_task['model'] . '.php'));
-			$ptr = new $this->current_task['model'];
-
-			switch($this->current_task['task_type']) {
-				case 'selectAll':
-					if (isset($this->current_task['order_by'])) {
-						$set = $ptr->getAll();
-					} else {
-						$set = $ptr->getAll();
-					}
-					try {
-						$this->response_object = Array();
-						foreach ($set as $row) {
-							$this->response_object[] = $row;
-						}
-					} catch (Exception $e) {
-						$this->response_object = new ObErr($e);
-					}
-					break;
-			}	
-		}
-		$this->echo_json_response();
-	}
-
-	private function task_exists() {
-		if (NULL == $this->mode_requested_by_user) {
-			$this->response_object = new ObErr('Please include a mode');
-			return false;
-		} else  {
-			foreach ($this->tasks as $task) {
-
-				if ($this->mode_requested_by_user == $task['request_mode']) {
-					$this->current_task = $task;
-					return true;
-				}
+	public static function check_hmac() {
+		$headers = apache_request_headers();
+  		if(isset($headers['Authorization'])){
+    			$matches = array();
+    			preg_match('/Token token="(.*)"/', $headers['Authorization'], $matches);
+    			if(isset($matches[1])){
+      				$token = $matches[1];
+    			} else {
+				return 0;
 			}
+  		} 
+		if (Settings::get('hmac_timeout')) {
+			$tokenTimedOut = time() - (Settings::get('hmac_timeout') * 60); 
+		} else {
+			$tokenTimedOut = time() + (28 * 24 * 60 * 60); // Four weeks later
 		}
-		$this->response_object = new ObErr('invalid mode');
-		return false;
+		if (!isset($_POST['timestamp'])) {
+			return 0;
+		}
+		if ($tokenTimedOut < ($_POST['timestamp'])) {
+			return 0;
+		}
+		$requestor = new Staff;
+		$rows = $requestor->getMatches(array('username'=>$_POST['username']));
+                foreach ($rows as $row) {
+			$expected_hash = hash_hmac('md5', $_POST['mode'].'-'.$row['username'].'-'.$_POST['timestamp'], $row['secret_key']);
+                }
+		return ($expected_hash === $token);
 	}
 
-	private function echo_json_response() {
-		if(!isset($this->response_object)) {
-			$this->response_object = new ObErr('The data server is misconfigured');
-		}
-		echo json_encode($this->response_object);
-	}
 }
+
+?>

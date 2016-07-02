@@ -4,7 +4,17 @@
  */
 
 	require_once("../shared/common.php");
+	require_once("../classes/ObServer.php");
 
+	// Check that anything revealing personal data passes an HMAC check
+	$sensitive_modes = Array( 'doNameFragSearch');
+	if (False !== array_search($_POST['mode'], $sensitive_modes)) {
+		if (!ObServer::check_hmac()) {
+			$err = new ObErr('Authentication failed');
+			echo $err->toStr();
+			exit;
+		}
+	}
 	switch ($_POST['mode']) {
 		case 'getMbrType':
 			require_once(REL(__FILE__, "../model/MemberTypes.php"));

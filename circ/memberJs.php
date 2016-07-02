@@ -2,6 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+$current_timestamp = time();
 ?>
 
 <script language="JavaScript" defer>
@@ -216,10 +217,17 @@ var mf = {
 	  $.post(mf.url,params, mf.handleMbrResponse);
 		return false;
 	},
-
 	doNameSearch: function () {
-	  var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val()};
-	  $.post(mf.url,params, function (jsonInpt) {
+	  var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val(), 'timestamp': <?php echo $current_timestamp; ?>, 'username': '<?php echo $_SESSION['username'] ?>'};
+	  $.ajax({
+		url: mf.url,
+		type: 'POST',
+		dataType: 'json',
+		headers: {
+			'Authorization': 'Token token="<?php echo hash_hmac('md5', 'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp, $_SESSION['secret_key']); ?>"'
+		},
+		data: params,
+		success: function (jsonInpt) {
 			mf.mbrs = $.parseJSON(jsonInpt);
 			var html = '';
 			for (var nMbr in mf.mbrs) {
@@ -241,7 +249,7 @@ var mf = {
 				mf.doFetchMember();
 		  	$('#listDiv').hide();
 			});			
-		});
+		}});
 	},
 	
 	handleMbrResponse: function (jsonInpt) {
