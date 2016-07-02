@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS %prfx%.`open_hours` (
+CREATE TABLE IF NOT EXISTS %prfx%.open_hours (
 hourid INT(11) NOT NULL AUTO_INCREMENT,
 siteid INT(11) NOT NULL,
 day INT NOT NULL,
