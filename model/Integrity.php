@@ -61,11 +61,11 @@ class Integrity extends Queryi{
 
 			$this->checks[] = array(
 				'error' => T("Secret key column is missing for staff members"),
-//				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
-//					. 'FROM information_schema.COLUMNS '
-//					. 'WHERE TABLE_NAME = "staff"'
-//					. 'AND COLUMN_NAME = "secret_key"',
-'countSql' => 'show columns from staff where field="secret_key"',
+				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+					. 'FROM information_schema.COLUMNS '
+					. 'WHERE TABLE_NAME = "staff"'
+					. 'AND COLUMN_NAME = "secret_key"',
+                //'countSql' => 'show columns from staff where field="secret_key"',
 				'fixSql' => 'alter table staff '
 					. 'add column secret_key char(32) NOT NULL'
 			);
