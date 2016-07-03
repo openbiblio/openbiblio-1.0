@@ -43,7 +43,7 @@ class Staff extends CoreTable {
 		}
         // login credentials
 		if (isset($rec['pwd'])) {
-			if (!isset($rec['pwd2']) or $rec['pwd'] != $rec['pwd2']) {
+			if (!isset($rec['pwd2']) or ($rec['pwd'] != $rec['pwd2']) ) {
 				//$errors[] = new FieldError('pwd', T("Supplied passwords do not match"));
 				$errors[] = array('NULL', T("Supplied passwords do not match"));
 			}

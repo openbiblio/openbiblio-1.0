@@ -31,94 +31,95 @@ class Stf extends Admin {
 
     	$('#pwdChgForm').on('submit',null,$.proxy(this.doSetStaffPwd,this));
     	$('#pwdCnclBtn').on('click',null,$.proxy(this.resetForms,this));
-    	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFlds,this));
     };
 
     resetForms () {
+        super.resetForms();
     	$('#pwdDiv').hide();
-    	Admin.prototype.resetForms.apply( this );
     };
     fetchHandler (dataAray){
-    	Admin.prototype.fetchHandler.apply( this, [dataAray] );
+    	super.fetchHandler(dataAray);
     	$('.pwdBtn').on('click',null,$.proxy(this.doPwd,this));
     };
     showFields ( item ) {
+    	super.showFields(item);
     	$('#pwdFldSet').hide();
     	$('.pwdFlds').attr('required',false);
-    	Admin.prototype.showFields.apply( this, [item] );
     };
     addFuncBtns ( ident ) {
     	var html = '';
-    	html  = Admin.prototype.addFuncBtns.apply( this, [ident] );
+    	html  = super.addFuncBtns(ident);
     	html += '		<input type="button" id="pwd'+ident+'" class="pwdBtn" value="'+<?php echo "'".T("pwd")."'"; ?>+'" />\n';
     	return html;
     };
 
     doNewFields () {
+    	super.doNewFields();
     	$('#pwdFldSet').show();
     	$('.pwdFlds').attr('required',true) ;
-    	Admin.prototype.doNewFields.apply( this );
     };
 
-    doSubmitFlds (e) {
-console.log('in staffJs6::doSubmitFields()');
-        //console.log(e);
-    	e.preventDefault();
-    	e.stopPropagation();
-    	var theId = e.target.id;
-        if (theId == 'addBtn') {
-console.log('got "addBtn"');
-    		var pw1 = $('#pwd1').val(),
-    			pw2 = $('#pwd2').val();
-//console.log('in submitFlds: pw1='+pw1+'; pw2='+pw2);
-            var pwOk = this.chkPwds(pw1, pw2);
-            var rolesOk = this.chkRoles();
-            if (pwOk && rolesOk) {
-                super.doAddFields(e);
-            } else {
-                return false;
-            }
-    	}
+    doAddBtn () {
+        //console.log('in staffJs6::doAddBtn()');
+        //console.log('got "addBtn"');
+		var pw1 = $('#pwd1').val(),
+			pw2 = $('#pwd2').val();
+        var pwOk = this.chkPwds(pw1, pw2);
+        //console.log('pwOk = '+pwOk);
+        var rolesOk = this.chkRoles();
+        //console.log('rolesOk = '+rolesOk);
+        if (rolesOk && pwOk) {
+            //console.log('passed all validation chks')
+            this.doAddFields();
+        } else {
+            //console.log('failed a validation chk')
+            return false;
+        }
     };
 
     chkRoles () {
         var roles = $('.roles').is(':checked');
-console.log(roles);
+        console.log('in staffJs6::chkRoles()');
+        if (!roles) {
+            var errMsg = '<?php echo T("Role MUST be selected"); ?>';
+    		$('#msgArea').html(errMsg).show();
+    		$('#msgDiv').show();
+    	}
+    	return roles;
     }
 
-
     chkPwds (pw1, pw2) {
-    		var errMsg = '';
-//console.log('in chkPwds: pw1='+pw1+'; pw2='+pw2);
-    		if ( pw1 !== pw2 ) {
-    			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
-    		} else if (!pw1 || !pw2) {
-    			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
-    		}
-    		if (errMsg != '') {
-console.log(errMag);
-    			$('#msgArea').html(errMsg).show();
-    			$('#msgDiv').show();
-    			return false;
-    		}
-    		return true;
+		var errMsg = '';
+        console.log('in staffJs6::chkPwds()');
+		if ( pw1 !== pw2 ) {
+			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
+		} else if (!pw1 || !pw2) {
+			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
+		}
+		if (errMsg != '') {
+            console.log(errMag);
+			$('#msgArea').html(errMsg).show();
+			$('#msgDiv').show();
+			return false;
+		}
+		return true;
     };
 
     doPwd (e) {
-    	  var code = $(e.target).prev().val();
-    		for (var n in this.json) {
-    			var item = this.json[n];
-    		    if (item['userid'] == code) {
-    				this.crntUser = code;
-    				$('#pwdDiv fieldset legend span').html(item.username);
-      			    $('#pwdChgForm input:visible:first').focus();
-    				$('#listDiv').hide();
-    				$('#editDiv').hide();
-    				$('#pwdDiv').show();
-    				break;
-    			}
-    		}
-    		return false;
+	    var code = $(e.target).prev().val();
+		for (var n in this.json) {
+			var item = this.json[n];
+		    if (item['userid'] == code) {
+				this.crntUser = code;
+				$('#pwdDiv fieldset legend span').html(item.username);
+  			    $('#pwdChgForm input:visible:first').focus();
+				$('#listDiv').hide();
+				$('#editDiv').hide();
+				$('#pwdDiv').show();
+				break;
+			}
+		}
+		return false;
     };
 
     doSetStaffPwd (e) {

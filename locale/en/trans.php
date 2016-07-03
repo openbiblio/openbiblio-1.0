@@ -825,6 +825,7 @@ $trans["Return"] = "Return";
 $trans["Return Date"] = "Return Date";
 $trans["Returned"] = "Returned";
 $trans["Reverse"] = "Reverse";
+$trans["Role MUST be selected"] = "A staff member role MUST be selected";
 $trans["Rpts"] = "Rpts";
 ####### S #######
 $trans["Save Changes"] = "Save Changes";

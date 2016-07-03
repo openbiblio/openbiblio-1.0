@@ -395,13 +395,23 @@
 			break;
 		case 'addNew_staff':
 		case 'update_staff':
-			foreach (array('suspended','admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
-				if (isset($_POST[$flg.'_flg'])) {
-					$_POST[$flg.'_flg'] = 'Y';
+			if (!isset($_POST['suspended_flg'])) {
+				$_POST['suspended_flg'] = 'N';
+			}
+
+            $nYflg = 0;
+			foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
+				if (isset($_POST[$flg.'_flg']) && ($_POST[$flg.'_flg'] == 'Y')) {
+                    $nFlg++;
 				} else {
 					$_POST[$flg.'_flg'] = 'N';
 				}
 			}
+            if ($nFlg < 1) {
+                echo json_encode(array(NULL, T("Role MUST be selected")));
+                return;
+            }
+
 			if ($_POST['mode'] == 'addNew_staff') {
 				//echo $ptr->insert_el($_POST);
 				$rslt = $ptr->insert_el($_POST);

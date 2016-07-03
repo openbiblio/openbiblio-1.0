@@ -194,20 +194,30 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-console.log('in JSAdmin::doSubmitFields()');
+        //console.log('in JSAdmin::doSubmitFields()');
     	e.preventDefault();
-    	//e.stopPropagation();
+    	e.stopPropagation();
     	var theId = e.target.id;
     	switch (theId) {
-    		case 'addBtn':	this.doAddFields();	break;
-    		case 'updtBtn':	this.doUpdateFields();	break;
-    		case 'deltBtn':	this.doDeleteFields();	break;
+    		case 'addBtn':	this.doAddBtn();	  break;
+    		case 'updtBtn':	this.doUpdtBtn();  break;
+    		case 'deltBtn':	this.doDeltBtn();  break;
     		default: $('#msgArea').html("'"+theId+"' is not a valid action button id");
     				 $('#msgDiv').show();
     	}
     };
-	
+	doAddBtn () {
+        this.doAddFields()
+    }
+	doUpdtBtn () {
+        this.doUpdateFields()
+    }
+	doDeltBtn () {
+        this.doDeleteFields();
+    }
+
     doAddFields () {
+        //console.log('in JSAdmin::doAddFields()');
     	$('#msgDiv').hide();
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
