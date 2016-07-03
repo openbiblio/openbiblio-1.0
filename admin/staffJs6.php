@@ -25,7 +25,7 @@ class Stf extends Admin {
     					'tools_flg':'center',
     					'suspended_flg':'center',
     				   };
-    	var opts = { 'keyFld':'userid' };
+    	var opts = { 'keyFld':'userid', 'focusFld':'last_name' };
 
     	super ( url, form, dbAlias, hdrs, listFlds, opts );
 
@@ -36,6 +36,7 @@ class Stf extends Admin {
     resetForms () {
         super.resetForms();
     	$('#pwdDiv').hide();
+        $('#pwdCnclBtn').val(<?php echo "'".T("Cancel")."'"; ?>);
     };
     fetchHandler (dataAray){
     	super.fetchHandler(dataAray);
@@ -90,14 +91,14 @@ class Stf extends Admin {
 
     chkPwds (pw1, pw2) {
 		var errMsg = '';
-        console.log('in staffJs6::chkPwds()');
+        //console.log('in staffJs6::chkPwds()');
 		if ( pw1 !== pw2 ) {
 			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
 		} else if (!pw1 || !pw2) {
 			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
 		}
 		if (errMsg != '') {
-            console.log(errMag);
+            console.log(errMsg);
 			$('#msgArea').html(errMsg).show();
 			$('#msgDiv').show();
 			return false;
@@ -140,6 +141,7 @@ class Stf extends Admin {
     };
     setHandler (response){
     	this.showResponse(response);
+        $('#pwdCnclBtn').val(<?php echo "'".T("Go Back")."'"; ?>);
     };
 }
 
