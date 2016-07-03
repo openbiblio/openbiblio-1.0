@@ -61,10 +61,11 @@ class Integrity extends Queryi{
 
 			$this->checks[] = array(
 				'error' => T("Secret key column is missing for staff members"),
-				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
-					. 'FROM information_schema.COLUMNS '
-					. 'WHERE TABLE_NAME = "staff"'
-					. 'AND COLUMN_NAME = "secret_key"',
+//				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+//					. 'FROM information_schema.COLUMNS '
+//					. 'WHERE TABLE_NAME = "staff"'
+//					. 'AND COLUMN_NAME = "secret_key"',
+'countSql' => 'show columns from staff where field="secret_key"',
 				'fixSql' => 'alter table staff '
 					. 'add column secret_key char(32) NOT NULL'
 			);
@@ -371,13 +372,14 @@ class Integrity extends Queryi{
 					. 'and b.bookingid is null) X) ',
 				*/
 			);
-			$this->checks[] = array(
-				//'error' => T("%count% double check outs"),
-				'error' => T("double check outs"),
-				'countFn' => 'countDoubleCheckouts',
-				// NO AUTOMATIC FIX
-			);
+//			$this->checks[] = array(
+//				//'error' => T("%count% double check outs"),
+//				'error' => T("double check outs"),
+//				'countFn' => 'countDoubleCheckouts',
+//				// NO AUTOMATIC FIX
+//			);
 	}
+
 	function check_el($fix=false) {
 		$errors = array();
 		$checks = $this->checks;
@@ -385,10 +387,13 @@ class Integrity extends Queryi{
 			assert('isset($chk["error"])');
 			//echo $chk["error"]."<br />";
 			if (isset($chk['countSql'])) {
-				$row = $this->select1($chk['countSql']);
-//echo "in Integrity::check_el(), countSQL => ";print_r($row);echo "<br />\n";
-				//$count = $row["count"];
-                $count = count($row['count']);
+				$rslt = $this->select1($chk['countSql']);
+                $row = $rslt[0];
+                //echo "in Integrity::check_el(), countSQL => ".$chk['countSql']." <br />\n";
+                //echo "in Integrity::check_el(), countSQL => ";print_r($row);echo "<br />\n";
+                $count = $row["count"];
+                //$count = count($row['count']);
+                //echo "count= $count <br />\n";
 			} elseif (isset($chk['countFn'])) {
 				$fn = $chk['countFn'];
 				assert('method_exists($this, $fn)');
@@ -401,7 +406,7 @@ class Integrity extends Queryi{
 				$msg = $count." ".$chk["error"];
 				if ($fix) {
 					if (isset($chk['fixSql'])) {
-//echo "in Integrity::check_el(), fixSql = {$chk['fixSql']} <br />\n";
+                        //echo "in Integrity::check_el(), fixSql = {$chk['fixSql']} <br />\n";
 						$this->act($chk['fixSql']);
 						$msg .= ' <b>'.T("FIXED").'</b> ';
 					} elseif (isset($chk['listSql'])) {
