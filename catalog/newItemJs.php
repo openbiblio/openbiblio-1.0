@@ -239,7 +239,7 @@ var ni = {
     			$('#msgDiv').html(response).show();
     		}
     		else {
-    	    	var rslt = $.parseJSON(response);
+    	    	var rslt = JSON.parse(response);
     	    	ni.bibid = rslt['bibid'];
     	  		ni.showCopyEditor(ni.bibid);
       	    }
@@ -431,7 +431,7 @@ var ni = {
 				$('#retryDiv').show();
 			}
 			else {
-				var rslts = $.parseJSON(response);
+				var rslts = JSON.parse(response);
 				var numHits = parseInt(rslts.ttlHits);
 				var maxHits = parseInt(rslts.maxHits);
 				if (numHits < 1) {
@@ -440,7 +440,7 @@ var ni = {
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
 					// 'srch2':['byName':$srchByName2,'val':$lookupVal2]}
-					var srch1 = $.parseJSON(rslts['srch1']), srch2 = $.parseJSON(rslts['srch2']);
+					var srch1 = JSON.parse(rslts['srch1']), srch2 = JSON.parse(rslts['srch2']);
 					var str = rslts.msg+':<br />&nbsp;&nbsp;for '+srch1["byName"]+' = '+srch1["lookupVal"];
 					if ((srch2['lookupVal']) && (srch2['lookupVal'] != ''))
 						str += '<br />&nbsp;&nbsp;&nbsp;'+srch2['byName']+' = '+srch2['lookupVal'];

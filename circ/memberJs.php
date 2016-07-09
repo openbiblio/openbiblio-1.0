@@ -228,7 +228,7 @@ var mf = {
 		},
 		data: params,
 		success: function (jsonInpt) {
-			mf.mbrs = $.parseJSON(jsonInpt);
+			mf.mbrs = JSON.parse(jsonInpt);
 			var html = '';
 			for (var nMbr in mf.mbrs) {
 				var mbr = mf.mbrs[nMbr];
@@ -256,7 +256,7 @@ var mf = {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				mf.mbr = $.parseJSON(jsonInpt);
+				mf.mbr = JSON.parse(jsonInpt);
 				if (mf.mbr == null) {
 	  			mf.showMsg('<?php echo T("Nothing Found") ?>');
 				}
@@ -305,7 +305,7 @@ var mf = {
 			} else if ($.trim(jsonInpt).substr(0,2) != '[{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				mf.cpys = $.parseJSON(jsonInpt);
+				mf.cpys = JSON.parse(jsonInpt);
 				var html = '';
 				for (var nCpy in mf.cpys) {
 					var cpy = mf.cpys[nCpy],
@@ -358,7 +358,7 @@ var mf = {
 			if ($.trim(jsonInpt).substr(0,1) == '<') {
 				mf.showMsg(jsonInpt);
 			} else {
-				mf.holds = $.parseJSON(jsonInpt);
+				mf.holds = JSON.parse(jsonInpt);
 				if (! mf.holds) {
 	  			mf.showMsg('<?php echo T("Nothing Found") ?>');
 				}
@@ -409,7 +409,7 @@ var mf = {
 				$('#msgArea').html(jsonInpt);
 				$('#msgDiv').show();
 			} else {
-				mf.trans = $.parseJSON(jsonInpt);
+				mf.trans = JSON.parse(jsonInpt);
 				var html = '';
 				if (!mf.trans) {
 					html += '<tr>'
@@ -558,7 +558,7 @@ var mf = {
 				$('#msgArea').html(jsonInpt);
 				$('#msgDiv').show();
 			} else {
-				mf.hist = $.parseJSON(jsonInpt);
+				mf.hist = JSON.parse(jsonInpt);
 				var html = '';
 				if (!mf.hist) {
 					html += '<tr>'

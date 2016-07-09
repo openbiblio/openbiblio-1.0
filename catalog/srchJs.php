@@ -316,7 +316,7 @@ var bs = {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				bs.biblio = $.parseJSON(jsonInpt);
+				bs.biblio = JSON.parse(jsonInpt);
 				if (!bs.biblio.data) {
 	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
 				}
@@ -345,7 +345,7 @@ var bs = {
 				$('#errSpace').html(jsonInpt).show();
 				return false;
 			} else {
-				bs.biblio = $.parseJSON(jsonInpt);
+				bs.biblio = JSON.parse(jsonInpt);
 				if (bs.biblio.hdr != null) {
 					bs.multiMode = false;
 					idis.showOneBiblio(bs.biblio)
@@ -402,7 +402,7 @@ var bs = {
 			//if ($.trim(jsonInpt).substr(0,1) != '[') {
 			//	$('#errSpace').html(jsonInpt).show();
 			//} else {
-				//var biblioList = $.parseJSON(jsonInpt);
+				//var biblioList = JSON.parse(jsonInpt);
 				var biblioList = jsonInpt;
 
 				if ((biblioList.length == 0) || ($.trim(jsonInpt) == '[]') ) {
@@ -418,7 +418,7 @@ var bs = {
 					// (also, if not first page ignore this) - LJ
 				    bs.multiMode = false;
       		        // Changed from 0 to 1 as the first row shows record info
-					bs.biblio = $.parseJSON(biblioList[1]);
+					bs.biblio = JSON.parse(biblioList[1]);
 					idis.showOneBiblio(bs.biblio)
 					//idis.fetchCopyInfo();
 				}
@@ -449,7 +449,7 @@ var bs = {
 	  
 		// print 'number found'('first displayed#'- 'last displayed#')
 		// Modified in order to limit results per page. First "record" contains this data - LJ
-		var queryInfo = $.parseJSON(biblioList[0]);
+		var queryInfo = JSON.parse(biblioList[0]);
 		var firstItem = parseInt(queryInfo.firstItem),
 				lastItem = parseInt(queryInfo.lastItem),
 				perPage = parseInt(queryInfo.itemsPage),

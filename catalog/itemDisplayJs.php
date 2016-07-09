@@ -41,7 +41,7 @@ var idis = {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
 			} else {
-				idis.biblio = $.parseJSON(jsonInpt);
+				idis.biblio = JSON.parse(jsonInpt);
 				if (!idis.biblio.hdr) {
 	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBibidSearch") ?>').show();
 				}
