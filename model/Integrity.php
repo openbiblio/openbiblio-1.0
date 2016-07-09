@@ -218,19 +218,21 @@ class Integrity extends Queryi{
 					. 'on biblio.bibid=biblio_status_hist.bibid '
 					. 'where biblio.bibid is null ',
 				// NO AUTOMATIC FIX
-				/*
 				'fixSql' => 'delete from biblio_status_hist '
-					. 'using biblio_status_hist left join biblio '
-					. 'on biblio.bibid=biblio_status_hist.bibid '
-					. 'where biblio.bibid is null ',
-				*/
+//					. 'using biblio_status_hist left join biblio '
+//					. 'on biblio.bibid=biblio_status_hist.bibid '
+//					. 'where biblio.bibid is null ',
+                   . 'where bibid is null ',
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryInvalidStatusCodes"),
 				'countSql' => 'select count(*) as count '
-					. 'from biblio_status_hist left join biblio_status_dm '
-					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
-					. 'where biblio_status_dm.code is null ',
+//					. 'from biblio_status_hist left join biblio_status_dm '
+//					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
+//					. 'where biblio_status_dm.code is null ',
+                    . 'from biblio_status_hist as bsh '
+                    . 'where bsh.status_cd NOT IN ('
+                    . 'select code from biblio_status_dm as bsd ) '
 /*
 				'fixSql' => 'update biblio_status_hist set status_cd = \'lst\' '
 					. 'using biblio_status_hist left join biblio_status_dm '
