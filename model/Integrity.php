@@ -214,9 +214,11 @@ class Integrity extends Queryi{
 				//'error' => T("%count% invalid biblio in copy status history records"),
 				'error' => T("invalid biblio in copy status history records"),
 				'countSql' => 'select count(*) as count '
-					. 'from biblio_status_hist left join biblio '
-					. 'on biblio.bibid=biblio_status_hist.bibid '
-					. 'where biblio.bibid is null ',
+//					. 'from biblio_status_hist left join biblio '
+//					. 'on biblio.bibid=biblio_status_hist.bibid '
+//					. 'where biblio.bibid is null ',
+                    . 'from biblio_status_hist as bsh '
+                    . 'where bsh.bibid is null ',
 				// NO AUTOMATIC FIX
 				'fixSql' => 'delete from biblio_status_hist '
 //					. 'using biblio_status_hist left join biblio '
