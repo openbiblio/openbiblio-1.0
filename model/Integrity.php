@@ -196,9 +196,12 @@ class Integrity extends Queryi{
 				//'error' => T("%count% unattached copy status history records"),
 				'error' => T("unattached copy status history records"),
 				'countSql' => 'select count(*) as count '
-					. 'from biblio_status_hist left join biblio_copy '
-					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
-					. 'where biblio_copy.copyid is null ',
+//					. 'from biblio_status_hist left join biblio_copy '
+//					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
+//					. 'where biblio_copy.copyid is null ',
+                    . 'from biblio_status_hist as bsh, biblio_copy as bc '
+                    . 'where bsh.bibid = bc.bibid '
+                    . 'and bc.copyid is null ',
 				// NO AUTOMATIC FIX
 				/*
 				'fixSql' => 'delete from biblio_status_hist '
