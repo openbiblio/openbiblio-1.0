@@ -102,7 +102,8 @@
 		return trim($rslt);
 	}
 	function getFnFmPhpHref($text, $dir) {
-		$in = str_replace("'", "\"", $text);
+        if (stripos($text, '#') >= 1) return '';
+        $in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
 		preg_match('/(href=\")(.*?)(.php|.css)/', $in, $out);
