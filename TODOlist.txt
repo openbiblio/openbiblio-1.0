@@ -26,17 +26,16 @@ So the remove function should include custom fields, which is currently probably
 deleting a biblio does not remove copy-status records
 
 19 Jun 2013 - Neil
-NewItems report produces 'No Results' for 0 (zero) days. It should report today's items.
+Reports: NewItems report produces 'No Results' for 0 (zero) days. It should report today's items.
 
 25 Jun 2013 - Fred
-Research menu needs external LoC-type search link. Integrate parts of Lookup;
+Research: menu needs external LoC-type search link. Integrate parts of Lookup;
 
 25 Jun 2013 - Fred
-Next/Prior should look the same in reports as on Existing item search.
+Reports: Next/Prior should look the same in reports as on Existing item search.
 
 28 Jun 2013 - Fred
 move conditionals from BiblioDiv of srchForms to srchJs
-
 
 - Fred
 MARC import needs facelift
@@ -61,12 +60,6 @@ To rectify, reload the page and repeat search and the icon is now green.
 verify functionality of:
 Marc input, barcode printing, barcode input, .....
 
-5 Sep 2013 - Fred
-Consider moving from mysqli to PDO for db interface to loosen dependence on mysql
-
-5 Sep 2013 - Fred
-consider changing MySql db engine to InoDB to enable transactions.
-
 6 Sep 2013 - Fred
 consider identifying foreign keys in all DB tables as appropriate to
 improve referential integrity
@@ -80,18 +73,27 @@ should be integrated with Javascrit's INTL API as well.
 Remove excess trans.php entries.
 Remove key prefixes to expose many duplicates.
 
-25 Jun 2014 - Kees
-Admin & Tool menus do not fit 16:9 screen
-
-1 Apr 2016 - Sandberg
-There should be a simple way to include locale-specific strings for plugins
-
 12 Apr 2016 - Fred
 ListManager needs Add/Edit features.
 
 ##############################################################################
 ###################### Completed, most recent at top #########################
 ##############################################################################
+5 Sep 2013 - Fred, done, May 2016
+Consider moving from mysqli to PDO for db interface to loosen dependence on mysql
+
+5 Sep 2013 - Fred, deleted, 9 July 2016
+consider changing MySql db engine to InoDB to enable transactions.
+- PHP backend now uses PDO so that user can use an engine of choice
+i.e PostgreSql, or InoDB, or whatever.
+
+25 Jun 2014 - Kees, deleted, not reproducible here. FL 9 July 2016
+Admin & Tool menus do not fit 16:9 screen
+
+1 Apr 2016 - Sandberg, deleted, solution already exists, FL 9 July 2016.
+There should be a simple way to include locale-specific strings for plugins
+-plug-in specific strings should go into tran.tran in the plug-in's folder.
+
 11 Aug 2014 - Kees, fixed 27 Apr 2016
 Maybe you want to make a note somewhere that the Database name can not contain hyphens,
 or the other way around, specify a list a of allowed characters.
