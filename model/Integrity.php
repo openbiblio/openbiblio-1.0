@@ -11,7 +11,6 @@ class Integrity extends Queryi{
 	public function __construct() {
 		parent::__construct();
 			$this->checks[] = array(
-				//'error' => T("%count% unattached MARC fields"),
 				'error' => T("unattached MARC fields"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_field left join biblio '
@@ -23,7 +22,6 @@ class Integrity extends Queryi{
 					. 'where biblio.bibid is null ',
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% unattached MARC subfields"),
 				'error' => T("unattached MARC subfields"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_subfield left join biblio_field '
@@ -35,7 +33,6 @@ class Integrity extends Queryi{
 					. 'where biblio_field.fieldid is null ',
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% unattached images"),
 				'error' => T("unattached images"),
 				'countSql' => 'select count(*) as count '
 					. 'from images left join biblio '
@@ -47,7 +44,6 @@ class Integrity extends Queryi{
 					. 'where biblio.bibid is null ',
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% unattached copies"),
 				'error' => T("unattached copies"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_copy left join biblio '
@@ -65,7 +61,6 @@ class Integrity extends Queryi{
 					. 'FROM information_schema.COLUMNS '
 					. 'WHERE TABLE_NAME = "staff"'
 					. 'AND COLUMN_NAME = "secret_key"',
-                //'countSql' => 'show columns from staff where field="secret_key"',
 				'fixSql' => 'alter table staff '
 					. 'add column secret_key char(32) NOT NULL'
 			);
@@ -105,48 +100,15 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
-				//'error' => T("%count% copies with broken status references"),
 				'error' => T("copies with broken status references"),
 				'countSql' => 'select count(*) as count '
 					. 'from biblio_copy left join biblio_status_hist '
 					. 'on biblio_status_hist.histid=biblio_copy.histid '
 					. 'where biblio_status_hist.histid is null ',
 				// NO AUTOMATIC FIX
-				/*
-				'fixSql' => "insert into biblio_status_hist "
-					. "(bibid, copyid, status_cd) "
-					. "select c.bibid, c.copyid, 'in' from biblio_copy c "
-					. "where c.copyid not in (select h.copyid from biblio_status_hist h)",
-				*/
 			);
 			
-/*			
 			$this->checks[] = array(
-				// Added as there was a bug in the code, and not sure how long
-				// it has been there so DB might be corrupt.  The problem is a
-				// duplicate 245$a where there should only be one in biblio_field
-				// for a bibid. Fix to be designed if needed.
-				//'error' => T("%count% items with multiple 245 fields"),
-				'error' => T("items with multiple 245 fields"),
-				'countSql' => 'SELECT COUNT(*) AS count '
-					. 'FROM (SELECT f.bibid, COUNT(f.fieldid)'
-					. 'FROM biblio_field f, biblio_subfield s '
-					. 'WHERE s.subfield_cd=\'a\' AND f.tag=\'245\' '
-					. 'AND f.bibid=s.bibid AND f.fieldid=s.fieldid '
-					. 'GROUP BY f.bibid '
-					. 'HAVING COUNT(f.fieldid) > 1) AS t',
-				'listSql' => 'SELECT bibid, COUNT(*) AS count '
-					. 'FROM (SELECT f.bibid, COUNT(f.fieldid)'
-					. 'FROM biblio_field f, biblio_subfield s '
-					. 'WHERE s.subfield_cd=\'a\' AND f.tag=\'245\' '
-					. 'AND f.bibid=s.bibid AND f.fieldid=s.fieldid '
-					. 'GROUP BY f.bibid '
-					. 'HAVING COUNT(f.fieldid) > 1) AS t',
-				// NO AUTOMATIC FIX
-			),			
-*/
-			$this->checks[] = array(
-				//'error' => T("%count% items with multiple un-repeatable fields"),
 				'error' => T("items with multiple un-repeatable fields"),
 				'countSql' => 'SELECT COUNT(DISTINCT t.bibid)AS count FROM ('
 					. 'SELECT f.bibid, concat( f.tag, s.subfield_cd ) AS marc, COUNT( f.fieldid ) AS count '
@@ -171,7 +133,6 @@ class Integrity extends Queryi{
 				'fixFn' => 'removeRepeaters',
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% items with empty collections"),
 				'error' => T("items with empty collections"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
@@ -182,7 +143,6 @@ class Integrity extends Queryi{
 					.	'WHERE collection_cd = 0 ',
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% items with empty media-type"),
 				'error' => T("items with empty media-type"),
 				'countSql' => 'SELECT COUNT(*) AS count '
 					. 'FROM biblio '
@@ -193,12 +153,8 @@ class Integrity extends Queryi{
 					.	'WHERE material_cd = 0 ',
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% unattached copy status history records"),
 				'error' => T("unattached copy status history records"),
 				'countSql' => 'select count(*) as count '
-//					. 'from biblio_status_hist left join biblio_copy '
-//					. 'on biblio_copy.copyid=biblio_status_hist.copyid '
-//					. 'where biblio_copy.copyid is null ',
                     . 'from biblio_status_hist as bsh, biblio_copy as bc '
                     . 'where bsh.bibid = bc.bibid '
                     . 'and bc.copyid is null ',
@@ -211,36 +167,20 @@ class Integrity extends Queryi{
 				*/
 			);
 			$this->checks[] = array(
-				//'error' => T("%count% invalid biblio in copy status history records"),
 				'error' => T("invalid biblio in copy status history records"),
 				'countSql' => 'select count(*) as count '
-//					. 'from biblio_status_hist left join biblio '
-//					. 'on biblio.bibid=biblio_status_hist.bibid '
-//					. 'where biblio.bibid is null ',
                     . 'from biblio_status_hist as bsh '
                     . 'where bsh.bibid is null ',
 				// NO AUTOMATIC FIX
 				'fixSql' => 'delete from biblio_status_hist '
-//					. 'using biblio_status_hist left join biblio '
-//					. 'on biblio.bibid=biblio_status_hist.bibid '
-//					. 'where biblio.bibid is null ',
                    . 'where bibid is null ',
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryInvalidStatusCodes"),
 				'countSql' => 'select count(*) as count '
-//					. 'from biblio_status_hist left join biblio_status_dm '
-//					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
-//					. 'where biblio_status_dm.code is null ',
-                    . 'from biblio_status_hist as bsh '
-                    . 'where bsh.status_cd NOT IN ('
-                    . 'select code from biblio_status_dm as bsd ) '
-/*
-				'fixSql' => 'update biblio_status_hist set status_cd = \'lst\' '
-					. 'using biblio_status_hist left join biblio_status_dm '
-					. 'on biblio_status_dm.code=biblio_status_hist.status_cd '
-					. 'where biblio_status_dm.code is null ',
-*/
+                    		. 'from biblio_status_hist as bsh '
+                    		. 'where bsh.status_cd NOT IN ('
+                    		. 'select code from biblio_status_dm as bsd ) '
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenBibidRef"),

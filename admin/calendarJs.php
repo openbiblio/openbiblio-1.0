@@ -43,7 +43,7 @@ var cal = {
 
 	init: function () {
 		cal.url = 'calendarSrvr.php';
-        cal.listSrvr = '../shared/listSrvr.php';
+                cal.listSrvr = '../shared/listSrvr.php';
 		cal.initWidgets();
 		$('.help').hide();
 
