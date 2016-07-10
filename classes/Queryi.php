@@ -52,7 +52,8 @@ class Queryi
     private function getDSN () {
         $fn = '../database_constants.php';
         if (file_exists($fn) ) {
-            include($fn); // DO NOT change to 'include_once()' !!!!!
+            // DO NOT change to 'Include Once' !!!!!
+            include($fn); 
         } else {
             $this->dsn['host'] = 'localhost';
             $this->dsn['username'] = 'admin';
