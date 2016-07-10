@@ -193,8 +193,8 @@
                 // select each file in the current directory and add to array
 				foreach ($dirFiles as $fileName) {
 					if (is_dir($dir.'/'.$fileName)) {
-						if($detail) echo "--dir-- fn===> $fileName skipped <br />";							
-						break;
+						if($detail) echo "--dir-- fn===> $fileName skipped <br />";
+						continue;
 					} 
 					if($detail)echo '<p class="bold">'.$fileName."</p>";
 					$allFiles[] = $fileName;
@@ -220,6 +220,7 @@
                         }
 
                         // for any of following, extract file reference
+                        $fn = '';
 						if (stripos($line, 'equire', 0) >= 1) {
 							$fn = getFnFmPhpReq($line, $dir);
 						} elseif (stripos($line, 'nclude', 0) >= 1) {
@@ -241,10 +242,13 @@
 						} elseif (stripos($line, "av::node", 0) >= 1) {
 							$fn = getFilenameFmMenu($line, $dir);
 						} else {
-						  $fn = '';
                           continue;
 						}
+
+                        // normalize filename
 						$fn = trim($fn);
+                		$fn = str_replace('../',"",$fn);
+                		$fn = str_replace('..',"",$fn);
 
                         // add file reference to array if not a duplicate
                         if ($fn != '') {
@@ -263,14 +267,18 @@
 			ksort($found);
 			echo count($allFiles) . " ". T("files exist"). "<br />";
 			echo count($found) . " ". T("files are referenced")."<br />";
-            foreach ($found as $k=>$v) {
-				echo "referenced ===> $k <br />";
+            if ($verbose) {
+                foreach ($found as $k=>$v) {
+			     	echo "referenced ===> $k <br />";
+                }
             }
-	
+
             $unused = count($allFiles) - count($found);
 			echo "<p>The following $unused files appear to not be inuse.</p>";
             foreach($allFiles as $file) {
 				$file = trim($file);
+		        $file = str_replace('../',"",$file);
+		        $file = str_replace('..',"",$file);
 				if ((array_key_exists($file, $found)) && ($found[$file] == 'OK')) {
 					continue;
 				} else {
