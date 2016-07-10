@@ -46,7 +46,7 @@
 					<li>E-commerce Site Development</li>
 				</ul> 
 			</p>   	
-		<img id="loading" src="loading.gif" style="display:none;">
+		<img id="loading" src="../../images/loading.gif" style="display:none;">
 		
 		<form name="form" action="" method="POST" enctype="multipart/form-data">
 		<table cellpadding="0" cellspacing="0" class="tableForm">
