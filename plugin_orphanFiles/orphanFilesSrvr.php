@@ -21,7 +21,7 @@
 						($file != 'images') &&
 						($file != 'font') &&
 						($file != 'docs') &&
-						($file != 'layouts') &&
+//						($file != 'layouts') &&
 						($file != 'locale') &&
 						($file != 'themes') &&
 						($file != 'working') &&
