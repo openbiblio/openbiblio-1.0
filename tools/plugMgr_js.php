@@ -38,7 +38,7 @@ var plm = {
 	  //init(); // part of original openbiblio js code
 		plm.initWidgets();
 
-		plm.url = 'plugMgrSrvr.php';
+		plm.url = '../tools/plugMgrSrvr.php';
 		plm.editForm = $('#workForm');
 
 		$('#pluginOK').on('change',null,plm.doToggleList)

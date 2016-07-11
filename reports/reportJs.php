@@ -8,7 +8,7 @@
 "use strict";
 var rpt = {
 	init: function () {
-		rpt.url = './reportSrvr.php';
+		rpt.url = '../reports/reportSrvr.php';
 		rpt.listSrvr = '../shared/listSrvr.php';
 		rpt.initWidgets();
 

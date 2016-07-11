@@ -17,7 +17,7 @@ Val.prototype.init = function () {
 };
 
 $(document).ready(function () {
-	var url = 'toolSrvr.php',
+	var url = '../tools/toolSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'validation';
 	var hdrs = {'listHdr':<?php echo '"'.T("List of Input Validation Patterns").'"'; ?>,

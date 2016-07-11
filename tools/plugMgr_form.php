@@ -34,8 +34,8 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
-	require_once(REL(__FILE__, "plugMgr_js.php"));
+    require_once(REL(__FILE__, '../shared/footer.php'));
+	require_once(REL(__FILE__, "../tools/plugMgr_js.php"));
 ?>	
 </body>
 </html>

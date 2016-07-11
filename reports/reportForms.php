@@ -133,8 +133,8 @@
 </div>
 <!-- ------------------------------------------------------------------------ -->
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
-	include "./reportJs.php";
+    require_once(REL(__FILE__,'../shared/footer.php'));
+	include "../reports/reportJs.php";
 ?>
 	<script src="../shared/jquery/jquery-ui.min.js"></script>
 

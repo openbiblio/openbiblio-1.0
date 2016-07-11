@@ -4,7 +4,7 @@
 
 var cdc = {
 	init: function () {
-		cdc.url = 'toolSrvr.php';
+		cdc.url = '../tools/toolSrvr.php';
 
 		cdc.initWidgets();
 		cdc.resetForms();
