@@ -111,7 +111,7 @@
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "collectionsJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
-	require_once(REL(__FILE__, "collectionsJs6.php"));
+	require_once(REL(__FILE__, "../admin/collectionsJs6.php"));
 ?>
 </body>
 </html>
