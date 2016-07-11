@@ -3,6 +3,10 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+/*
+ * @author Micah Stetson
+ */
+
 require_once("../shared/common.php");
 require_once(REL(__FILE__, "../classes/Form.php"));
 

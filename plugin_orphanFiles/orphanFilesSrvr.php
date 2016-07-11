@@ -38,8 +38,8 @@
 					($value != 'images') &&
 					($value != 'font') &&
 					($value != 'docs') &&
-					($value != 'locale') &&
-					($value != 'themes') &&
+					//($value != 'locale') &&
+					//($value != 'themes') &&
 					($value != 'working') &&
 					($value != 'photos')     ) {
 					$dirs[] = $value;
@@ -78,16 +78,18 @@
 					($file != '.Thumbnails') &&
 					## folowing names are file extensions
 					($info['extension'] != 'tran') &&
+					//($info['extension'] != 'nav') &&
 					($info['extension'] != 'ico') &&
 					## folowing are special filenames
-					($info['basename'] != 'custom_head.php') &&
 					($info['basename'] != '.hgignore') &&
 					($info['basename'] != '.hgtags') &&
 					($info['basename'] != '.htaccess') &&
+					($info['basename'] != 'custom_head.php') &&
 					($info['basename'] != 'COPYRIGHT.html') &&
 					($info['basename'] != 'install_instructions.html') &&
 					($info['basename'] != 'database_constants.php') &&
 					($info['basename'] != 'database_constants_deploy.php') &&
+					($info['basename'] != 'Development_Guidelines.txt') &&
 					($info['basename'] != 'GPL.txt') &&
 					($info['basename'] != 'README.md') &&
 					($info['basename'] != 'cache.appcache') &&
@@ -204,82 +206,93 @@
 		return trim($rslt);
 	}
 	
+    function str_replace_first($search, $replace, $subject) {
+        $pos = strpos($subject, $search);
+        if ($pos !== false) {
+            return substr_replace($subject, $replace, $pos, strlen($search));
+        }
+        return $subject;
+    }
+
     function findFileRef($fileArray) {
-                // select each file in the current directory and add to array
-                global $found, $allFiles, $verbose, $detail;
+        // select each file in the current directory and add to array
+        global $found, $allFiles, $verbose, $detail;
 
-				foreach ($fileArray as $fileName) {
-					if (is_dir($dir.'/'.$fileName)) {
-						if($detail) echo "--dir-- fn===> $fileName skipped <br />";
-						continue;
-					}
-					if($detail)echo '<p class="bold">'.$fileName."</p>";
-					$allFiles[] = $fileName;
-				    $lines = file($fileName, FILE_SKIP_EMPTY_LINES);
+		foreach ($fileArray as $fileName) {
+			if (is_dir($dir.'/'.$fileName)) {
+				if($detail) echo "--dir-- fn===> $fileName skipped <br />";
+				continue;
+			}
+			if($detail)echo '<p class="bold">'.$fileName."</p>";
+			$allFiles[] = $fileName;
+		    $lines = file($fileName, FILE_SKIP_EMPTY_LINES);
 
-                    // scan every line for reference to another file
-					foreach ($lines as $linNum=>$line) {
-					    $line = trim($line);
+            // scan every line for reference to another file
+			foreach ($lines as $linNum=>$line) {
+			    $line = trim($line);
 
-                        // ignore all non-code lines
-                        if (($line == '' ) ||
-                            (substr($line,0,2) == "/*") ||
-							(substr($line,0,2) == "*/") ||
-							(substr($line,0,2) == "//") ||
-							(substr($line,0,1) == "#")  ||
-							(substr($line,0,1) == "<!--")  ||
-							//(substr($line,0,1) == "<") ||
-							(substr($line,0,1) == "?")  ||
-							(substr($line,0,1) == "\n") ||
-							(substr($line,0,1) == "*")
-                           ){
-                            continue;
-                        }
+                // ignore all non-code lines
+                if (($line == '' ) ||
+                    (substr($line,0,2) == "/*") ||
+					(substr($line,0,2) == "*/") ||
+					(substr($line,0,2) == "//") ||
+					(substr($line,0,1) == "#")  ||
+					(substr($line,0,1) == "<!--")  ||
+					//(substr($line,0,1) == "<") ||
+					(substr($line,0,1) == "?")  ||
+					(substr($line,0,1) == "\n") ||
+					(substr($line,0,1) == "*")
+                   ){
+                    continue;
+                }
 
-                        // for any of following, extract file reference
-                        $fn = '';
-						if (stripos($line, 'equire', 0) >= 1) {
-							$fn = getFnFmPhpReq($line, $dir);
-						} elseif (stripos($line, 'nclude', 0) >= 1) {
-							$fn = getFnFmPhpReq($line, $dir);
-						} elseif (stripos($line, 'href=', 0) >= 1) {
-							$fn = getFnFmPhpHref($line, $dir);
-						} elseif (stripos($line, "action'=>", 0) >= 1) {
-							$fn = getFnFmPhpArray($line, $dir);
-						} elseif (stripos($line, 'action=', 0) >= 1) {
-							$fn = getFnFmPhpActn($line, $dir);
-						} elseif (stripos($line, 'LinkUrl', 0) >= 1) {
-							$fn = getFnFmPhpLinkUrl($line, $dir);
-						} elseif (stripos($line, 'eader(', 0) >= 1) {
-							$fn = getFnFmPhpHdr($line, $dir);
-						} elseif (stripos($line, 'src=', 0) >= 1) {
-							$fn = getFnFmPhpSrc($line, $dir);
-						} elseif (stripos($line, "url = ", 0) >= 1) {
-							$fn = getFilenameFmJS($line, $dir);
-						} elseif (stripos($line, "av::node", 0) >= 1) {
-							$fn = getFilenameFmMenu($line, $dir);
-						} else {
-                          continue;
-						}
-
-                        // normalize filename
-						$fn = trim($fn);
-                		$fn = str_replace('../',"",$fn);
-                		$fn = str_replace('..',"",$fn);
-                		$fn = str_replace('./',"",$fn);
-
-                        // add file reference to array if not a duplicate
-                        if ($fn != '') {
-    						if (array_key_exists($fn, $found)) {
-    							if($detail)echo "--dupe-- fn===> $fn<br />";
-    							continue;
-    						} else {
-    							if($detail)echo "--added-- fn===> $fn<br />";
-    							$found[$fn] = 'OK';
-    						}
-                        }
-					}
+                // for any of following, extract file reference
+                $fn = '';
+				if (stripos($line, 'equire', 0) >= 1) {
+					$fn = getFnFmPhpReq($line, $dir);
+				} elseif (stripos($line, 'nclude', 0) >= 1) {
+					$fn = getFnFmPhpReq($line, $dir);
+				} elseif (stripos($line, 'href=', 0) >= 1) {
+					$fn = getFnFmPhpHref($line, $dir);
+				} elseif (stripos($line, "action'=>", 0) >= 1) {
+					$fn = getFnFmPhpArray($line, $dir);
+				} elseif (stripos($line, 'action=', 0) >= 1) {
+					$fn = getFnFmPhpActn($line, $dir);
+				} elseif (stripos($line, 'LinkUrl', 0) >= 1) {
+					$fn = getFnFmPhpLinkUrl($line, $dir);
+				} elseif (stripos($line, 'eader(', 0) >= 1) {
+					$fn = getFnFmPhpHdr($line, $dir);
+				} elseif (stripos($line, 'src=', 0) >= 1) {
+					$fn = getFnFmPhpSrc($line, $dir);
+				} elseif (stripos($line, "url = ", 0) >= 1) {
+					$fn = getFilenameFmJS($line, $dir);
+				} elseif (stripos($line, "av::node", 0) >= 1) {
+					$fn = getFilenameFmMenu($line, $dir);
+				} elseif (stripos($line, "file_get_contents", 0) >= 1) {
+					$fn = getFnFmPhpReq($line, $dir);
+				} else {
+                  continue;
 				}
+
+                // normalize filename
+				$fn = trim($fn);
+        		//$fn = str_replace('../',"",$fn);
+        		//$fn = str_replace_first('../',"",$fn);
+        		//$fn = str_replace('..',"",$fn);
+        		//$fn = str_replace('./',"",$fn);
+
+                // add file reference to array if not a duplicate
+                if ($fn != '') {
+					if (array_key_exists($fn, $found)) {
+						if($detail)echo "--dupe-- fn===> $fn<br />";
+						continue;
+					} else {
+						if($detail)echo "--added-- fn===> $fn<br />";
+						$found[$fn] = 'OK';
+					}
+                }
+			}
+		}
     }
 
 	switch ($_POST['mode']) {
@@ -315,8 +328,8 @@
             //echo "reporting results";
 			sort($allFiles);
 			ksort($found);
-			echo count($allFiles) . " ". T("files exist"). "<br />";
-			echo count($found) . " ". T("files are referenced")."<br />";
+			//echo count($allFiles) . " ". T("files exist"). "<br />";
+			//echo count($found) . " ". T("files are referenced")."<br />";
             if ($verbose) {
                 echo "<br />Referenced files: <br />";
                 foreach ($found as $k=>$v) {
@@ -325,12 +338,13 @@
             }
 
             $unused = count($allFiles) - count($found);
-			echo "<p>The following $unused files appear to not be inuse.</p>";
+			echo "<p>The following files appear to not be in use.</p>";
             foreach($allFiles as $file) {
 				$file = trim($file);
-		        $file = str_replace('../',"",$file);
-		        $file = str_replace('..',"",$file);
-		        $file = str_replace('./',"",$file);
+		        //$file = str_replace('../',"",$file);
+		        //$file = str_replace_first('../',"",$file);
+		        //$file = str_replace('..',"",$file);
+		        //$file = str_replace('./',"",$file);
 				if ((array_key_exists($file, $found)) && ($found[$file] == 'OK')) {
 					continue;
 				} else {

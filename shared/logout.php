@@ -5,7 +5,7 @@
 
 require_once("../shared/common.php");
 
-echo "got to logout.php<br />";
+//echo "got to logout.php<br />";
 
 $_SESSION = array();
 session_destroy();

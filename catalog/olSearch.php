@@ -4,15 +4,15 @@
  */
 
 		#### prepare user search criteria ####
-		require_once(REL(__FILE__, 'olSrchVals.php'));
+		require_once(REL(__FILE__, '../catalog/olSrchVals.php'));
 		
 		#### perform the search ####
 		$numHosts = $postVars[numHosts];
 		//print("will be trying $numHosts host(s)<br />");
 		if (function_exists(yaz_connect))
-			require_once (REL(__FILE__, 'olYazSrch.php'));
+			require_once (REL(__FILE__, '../catalog/olYazSrch.php'));
 		else	{
-			require_once (REL(__FILE__, 'olSruSrch.php'));
+			require_once (REL(__FILE__, '../catalog/olSruSrch.php'));
 		}
 		
 		#### process the results ####
