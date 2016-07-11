@@ -223,9 +223,9 @@
 </section>	
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+    require_once(REL(__FILE__,'../shared/footer.php'));
 	include_once(REL(__FILE__,'../shared/ajaxFileUpload/ajaxfileupload.js'));
-	require_once(REL(__FILE__, "importCsvJs.php"));
+	require_once(REL(__FILE__, "../catalog/importCsvJs.php"));
 ?>	
 </body>
 </html>

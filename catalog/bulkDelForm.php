@@ -58,7 +58,7 @@
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	require_once(REL(__FILE__, "bulkDelJs.php"));
+	require_once(REL(__FILE__, "../catalog/bulkDelJs.php"));
 ?>	
 </body>
 </html>

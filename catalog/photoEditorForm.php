@@ -64,5 +64,5 @@
 	</fieldset>
 <?php
 	require_once ("../shared/jsLibJs.php");
-	require_once(REL(__FILE__,'photoEditorJs.php'));
+	require_once(REL(__FILE__,'../catalog/photoEditorJs.php'));
 ?>
