@@ -3,7 +3,7 @@
 "use strict";
 var dio = {
 	init: function () {
-		dio.url = 'dioSearchSrvr.php';
+		dio.url = '../plugin_dioSearch/dioSearchSrvr.php';
 
 		dio.initWidgets();
 		dio.resetForms();

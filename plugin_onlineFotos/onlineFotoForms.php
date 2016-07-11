@@ -36,7 +36,7 @@
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
-	require_once(REL(__FILE__, "onlineFotoJs.php"));
+	require_once(REL(__FILE__, "../plugin_onlineFotos/onlineFotoJs.php"));
 ?>	
 	
 </body>

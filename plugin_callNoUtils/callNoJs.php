@@ -4,7 +4,7 @@
 
 var cn = {
 	init: function () {
-		cn.url = 'callNoSrvr.php';
+		cn.url = '../plugin_callNoUtils/callNoSrvr.php';
 
 		cn.resetForms();
 		cn.toggleFields();

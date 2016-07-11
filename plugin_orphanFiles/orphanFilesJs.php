@@ -11,7 +11,7 @@
 var orf = {
 	init: function () {
 		//console.log('initializing orf');	
-		orf.url = 'orphanFilesSrvr.php';
+		orf.url = '../plugin_orphanFiles/orphanFilesSrvr.php';
 		
 		orf.resetForms();
 		orf.initWidgets();

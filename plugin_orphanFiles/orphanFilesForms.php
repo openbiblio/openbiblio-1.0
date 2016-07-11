@@ -45,8 +45,8 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
-	require_once(REL(__FILE__, "orphanFilesJs.php"));
+    require_once(REL(__FILE__,'../shared/footer.php'));
+	require_once(REL(__FILE__, "../plugin_orphanFiles/orphanFilesJs.php"));
 ?>	
 	
 </body>
