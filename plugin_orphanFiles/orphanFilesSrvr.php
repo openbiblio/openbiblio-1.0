@@ -10,30 +10,9 @@
 	if ($verbose == true) $detail = true;
 	//var_dump($verbose); var_dump($detail); echo "<br />";
 	
-	function getDirList () {
-		$dirs = array();
-		$handl = opendir("..");
-		while (false !== ($file = readdir($handl))) {
-		  if ($file != '.' && $file != '..') {
-				if ((is_dir('../'.$file)) && 
-						(substr($file,0,1) != '.') && 
-						## following directories do not contain project code
-						($file != 'images') &&
-						($file != 'font') &&
-						($file != 'docs') &&
-						($file != 'locale') &&
-						($file != 'themes') &&
-						($file != 'working') &&
-						($file != 'photos')
-					 ) {
-					$dirs[] = $file;
-				}
-			}
-		}
-		closedir($handl);
-		sort($dirs, SORT_LOCALE_STRING);
-		return $dirs;
-	};
+    //global variables
+    $allFiles = array();
+    $found = array();
 
 	function array_flat($array) {
 		$tmp = array();
@@ -47,34 +26,84 @@
   	    return $tmp;
 	}
 
+	function getDirList ($root) {
+        $dirs = array();
+        $cdir = scandir($root);
+        foreach ($cdir as $key => $value) {
+            if ((!in_array($value, array(".", ".."))))  {
+				if (is_dir($root . DIRECTORY_SEPARATOR . $value) &&
+                    ($value != '.hg') &&
+                    ($value != '.hgignore') &&
+                    ($value != '.htags') &&
+					($value != 'images') &&
+					($value != 'font') &&
+					($value != 'docs') &&
+					($value != 'locale') &&
+					($value != 'themes') &&
+					($value != 'working') &&
+					($value != 'photos')     ) {
+					$dirs[] = $value;
+                }
+			}
+		}
+		sort($dirs, SORT_LOCALE_STRING);
+		return $dirs;
+	};
+
+    function fileToArray($dir) {
+       $result = array();
+       $cdir = scandir($dir);
+       foreach ($cdir as $key => $value) {
+          if (!in_array($value, array(".", ".."))) {
+             if (!is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
+                $result[] = $value;
+             }
+          }
+       }
+       return $result;
+    }
+
 	function getFileList($dir) {
   	    $files = array();
-  	    if ($handle = opendir($dir)) {
-    	   while (false !== ($file = readdir($handle))) {
-				$info = pathInfo($file);
-      	        if (($file != ".") && ($file != "..") &&
+        $cdir = scandir($dir);
+    	foreach ($cdir as $key => $file) {
+			$info = pathInfo($file);
+      	    if (!in_array($file, array(".", ".."))) {
+                if ((!is_dir($dir . DIRECTORY_SEPARATOR . $file)) &&
 					 ## folowing sub-directories do not contain project code
+					($file != '.hg') &&
 					($file != 'sql') &&
 					($file != 'legacy') &&
 					($file != 'jquery') &&
 					($file != '.Thumbnails') &&
 					## folowing names are file extensions
 					($info['extension'] != 'tran') &&
+					($info['extension'] != 'ico') &&
 					## folowing are special filenames
-					($info['basename'] != 'custom_head.php')
+					($info['basename'] != 'custom_head.php') &&
+					($info['basename'] != '.hgignore') &&
+					($info['basename'] != '.hgtags') &&
+					($info['basename'] != '.htaccess') &&
+					($info['basename'] != 'COPYRIGHT.html') &&
+					($info['basename'] != 'install_instructions.html') &&
+					($info['basename'] != 'database_constants.php') &&
+					($info['basename'] != 'database_constants_deploy.php') &&
+					($info['basename'] != 'GPL.txt') &&
+					($info['basename'] != 'README.md') &&
+					($info['basename'] != 'cache.appcache') &&
+					($info['basename'] != 'TODOlist.txt')
 				) {
-                    if(is_dir($dir.'/'.$file)) {
-          	             $dir2 = $dir.'/'.$file;
-          	             $files[] = getFileList($dir2);
-                    } else {
-          	             $aFile = $dir.'/'.$file;
-                         $files[] = $aFile;
-                    }
+          	        $aFile = $dir.'/'.$file;
+                    $files[] = $aFile;
+//                } else {
+//                    if(is_dir($dir.'/'.$file)) {
+//          	             $dir2 = $dir.'/'.$file;
+//          	             $files[] = getFileList($dir2);
+//                    }
                 }
     	   }
-    	   closedir($handle);
-  	     }
-  	     return array_flat($files);
+ 	    }
+        return array_flat($files);
 	}
 
 	function getFnFmPhpReq($text, $dir) {
@@ -175,26 +204,15 @@
 		return trim($rslt);
 	}
 	
-	$files = array();
-	
-	switch ($_POST['mode']) {
-		case 'ck4Orfans':
-            $allfiles = array();
-			$found = array();
-			$dirs = getDirList();
-
-            // scan all directories for valid files
-			foreach ($dirs as $dir) {
-				if($detail)echo "<br /><br />---- $dir ----<br />";			
-				$dirFiles = getFileList('../'.$dir);
-				//echo "dir files: ";print_r($dirFiles);echo "<br />";
-
+    function findFileRef($fileArray) {
                 // select each file in the current directory and add to array
-				foreach ($dirFiles as $fileName) {
+                global $found, $allFiles, $verbose, $detail;
+
+				foreach ($fileArray as $fileName) {
 					if (is_dir($dir.'/'.$fileName)) {
 						if($detail) echo "--dir-- fn===> $fileName skipped <br />";
 						continue;
-					} 
+					}
 					if($detail)echo '<p class="bold">'.$fileName."</p>";
 					$allFiles[] = $fileName;
 				    $lines = file($fileName, FILE_SKIP_EMPTY_LINES);
@@ -248,6 +266,7 @@
 						$fn = trim($fn);
                 		$fn = str_replace('../',"",$fn);
                 		$fn = str_replace('..',"",$fn);
+                		$fn = str_replace('./',"",$fn);
 
                         // add file reference to array if not a duplicate
                         if ($fn != '') {
@@ -260,13 +279,46 @@
     						}
                         }
 					}
-				} 
+				}
+    }
+
+	switch ($_POST['mode']) {
+		case 'ck4Orfans':
+            $root = '..';
+			$dirs = getDirList($root);
+            //echo "<br />OB directory List: <br />";
+            if ($verbose) {
+                echo "<br />OB directory List: <br />";
+                foreach ($dirs as $dir) {
+                    echo "$dir <br />";
+                }
+            }
+
+            //echo "looking at root directory<br />";
+			$rootFiles = getFileList($root);
+            if ($detail) {
+                echo "<br /><br />---- OpenBiblio ----<br />";
+                //foreach ($rootFiles as $file) {
+                //    echo "$file <br />";
+                //}
+            }
+            findFileRef($rootFiles);
+
+            //echo "looking at sub-directories<br />";
+			foreach ($dirs as $dir) {
+				if($detail)echo "<br /><br />---- $dir ----<br />";
+                // first for OB's root directory
+				$dirFiles = getFileList('../'.$dir);
+                findFileRef($dirFiles);
 			}
+
+            //echo "reporting results";
 			sort($allFiles);
 			ksort($found);
 			echo count($allFiles) . " ". T("files exist"). "<br />";
 			echo count($found) . " ". T("files are referenced")."<br />";
             if ($verbose) {
+                echo "<br />Referenced files: <br />";
                 foreach ($found as $k=>$v) {
 			     	echo "referenced ===> $k <br />";
                 }
@@ -278,6 +330,7 @@
 				$file = trim($file);
 		        $file = str_replace('../',"",$file);
 		        $file = str_replace('..',"",$file);
+		        $file = str_replace('./',"",$file);
 				if ((array_key_exists($file, $found)) && ($found[$file] == 'OK')) {
 					continue;
 				} else {
