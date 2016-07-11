@@ -119,6 +119,7 @@ function staff_menu() {
 		Nav::node('tools/system', T("SystemDocumentation"), '../docs/index.php');
 		//Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 		Nav::node('install/system', T("Install"), '../install/index.php');
+
 	}
 	
 	##-------------------------------------------------------------------------------------##
@@ -137,6 +138,7 @@ function staff_menu() {
 	## For plug-in support
 	## #######################################
 	$list = getPlugIns('nav.nav');
+    sort($list);
 	for ($x=0; $x<count($list); $x++) {
 		include_once ($list[$x]);
 	}

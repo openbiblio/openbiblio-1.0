@@ -196,27 +196,25 @@
 		## make connections where allowed
 		clearstatcache();
 		$pluginSet = array();
-		if (is_dir('../plugins')) {
+        $plugDir = '../plugins';
+		if (is_dir($plugDir)) {
 			## find all plugin directories
-			if ($dirHndl = opendir('../plugins')) {
+            $dirSet = scandir($plugDir);
+            foreach ($dirSet as $key => $plug) {
 				# look at all plugin dirs
-				while (false !== ($plug = readdir($dirHndl))) {
-					if (($plug == '.') || ($plug == '..')) continue;
-					$plugPath = "../plugins/$plug";
-					if (is_dir($plugPath)) {
-						if (!in_array($plug, $aray)) continue; // not allowed
-						if ($filHndl = opendir($plugPath)) {
-							while (false !== ($file = readdir($filHndl))) {
-								if (($file == '.') || ($file == '..')) continue;
-								if ($file == $wanted) {
-									$pluginSet[] = "$plugPath/$file";
-								}
-							}
-							closedir($filHndl);
+				if (in_array($file, array(".", ".."))) continue;
+				$plugPath = "../plugins/$plug";
+				if (is_dir($plugPath)) {
+					if (!in_array($plug, $aray)) continue; // not allowed
+
+                    $filSet = scandir($plugPath);
+                    foreach ($filSet as $key => $file) {
+						if (($file == '.') || ($file == '..')) continue;
+						if ($file == $wanted) {
+							$pluginSet[] = "$plugPath/$file";
 						}
 					}
 				}
-				closedir($dirHndl);
 			}
 		}
 		return $pluginSet;
