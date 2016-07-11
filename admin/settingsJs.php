@@ -16,7 +16,7 @@ var set = {
 	?>
 
 	init: function () {
-		set.url = 'adminSrvr.php';
+		set.url = '../admin/adminSrvr.php';
 		set.listSrvr = '../shared/listSrvr.php'
 
 		set.initWidgets();

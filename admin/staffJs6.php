@@ -7,7 +7,7 @@
 
 class Stf extends Admin {
     constructor () {
-    	var url = 'adminSrvr.php',
+    	var url = '../admin/adminSrvr.php',
     		form = $('#editForm'),
     		dbAlias = 'staff';
     	var hdrs = {'listHdr':<?php echo '"'.T("List of Staff Members").'"'; ?>,

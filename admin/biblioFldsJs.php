@@ -20,7 +20,7 @@ var mtl = {
 	
 	init: function () {
 		//console.log('initializing mtl');	
-		mtl.url = 'biblioFldsSrvr.php';
+		mtl.url = '../admin/biblioFldsSrvr.php';
 		mtl.listUrl = '../shared/listSrvr.php';
 		mtl.editForm = $('#workForm');
 		

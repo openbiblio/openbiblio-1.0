@@ -17,7 +17,7 @@ Mbf.prototype.init = function () {
 };
 
 $(document).ready(function () {
-	var url = 'adminSrvr.php',
+	var url = '../admin/adminSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'mbrFlds';
 	var hdrs = {'listHdr':<?php echo '"'.T("Custom Member Fields").'"'; ?>, 

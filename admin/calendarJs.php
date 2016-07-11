@@ -42,7 +42,7 @@ var cal = {
 	<?php echo "calMASTER:".OBIB_MASTER_CALENDAR.","; ?>
 
 	init: function () {
-		cal.url = 'calendarSrvr.php';
+		cal.url = '../admin/calendarSrvr.php';
         cal.listSrvr = '../shared/listSrvr.php';
 		cal.initWidgets();
 		$('.help').hide();

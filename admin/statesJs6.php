@@ -7,7 +7,7 @@
 
 class St extends Admin {
     constructor () {
-    	var url = 'adminSrvr.php',
+    	var url = '../admin/adminSrvr.php',
     		form = $('#editForm'),
     		dbAlias = 'states';
     	var hdrs = {'listHdr':<?php echo '"'.T("List of States & Abreviations").'"'; ?>,

@@ -6,7 +6,7 @@
 
 class Med extends Admin {
     constructor () {
-    	var url = 'adminSrvr.php',
+    	var url = '../admin/adminSrvr.php',
     		form = $('#editForm'),
     		dbAlias = 'media';
     	var hdrs = {'listHdr':<?php echo '"'.T("List of Media Types").'"'; ?>,

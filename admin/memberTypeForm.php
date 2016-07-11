@@ -89,5 +89,5 @@
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "memberTypeJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
-	require_once(REL(__FILE__, "memberTypeJs6.php"));
+	require_once(REL(__FILE__, "../admin/memberTypeJs6.php"));
 ?>

@@ -165,7 +165,7 @@
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "staffJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
-	require_once(REL(__FILE__, "staffJs6.php"));
+	require_once(REL(__FILE__, "../admin/staffJs6.php"));
 ?>
 </body>
 </html>

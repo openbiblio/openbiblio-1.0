@@ -18,7 +18,7 @@ Bcf.prototype.init = function () {
 };
 
 $(document).ready(function () {
-	var url = 'adminSrvr.php',
+	var url = '../admin/adminSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'copyFlds';
 	var hdrs = {'listHdr':<?php echo '"'.T("List of Custom Copy Fields").'"'; ?>, 

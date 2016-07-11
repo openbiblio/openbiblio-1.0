@@ -19,7 +19,7 @@ var oed = {
 	  
 		oed.initWidgets();
 
-		oed.url = 'adminSrvr.php';
+		oed.url = '../admin/adminSrvr.php';
 		oed.editForm = $('#editForm');
 
 	  $('#editHdr').html(<?php echo "'".T("Online Options")."'"; ?>);

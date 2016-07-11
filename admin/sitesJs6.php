@@ -7,7 +7,7 @@
 
 class Sit extends Admin {
     constructor () {
-    	var url = 'adminSrvr.php',
+    	var url = '../admin/adminSrvr.php',
     		form = $('#editForm'),
     		dbAlias = 'sites';
     	var hdrs = {'listHdr':<?php echo '"'.T("List of Sites").'"'; ?>,

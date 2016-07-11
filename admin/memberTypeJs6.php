@@ -7,7 +7,7 @@
 
 class Mbc extends Admin {
     constructor () {
-    	var url = 'adminSrvr.php',
+    	var url = '../admin/adminSrvr.php',
     		form = $('#editForm'),
     		dbAlias = 'mbrTypes';
     	var hdrs = {'listHdr':<?php echo '"'.T("List of Member Types").'"'; ?>,
