@@ -3,7 +3,7 @@
 "use strict";
 var doi = {
 	init: function () {
-		doi.url = 'doiSearchSrvr.php';
+		//doi.url = 'doiSearchSrvr.php';
 
 		doi.initWidgets();
 		doi.resetForms();
