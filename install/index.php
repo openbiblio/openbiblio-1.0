@@ -93,4 +93,4 @@
 	//require_once($ThemeDirUrl."/footer.php");
 	require_once("../shared/footer.php");
 	
-	require_once(REL(__FILE__, "indexJs.php"));
+	require_once(REL(__FILE__, "../install/indexJs.php"));

@@ -7,8 +7,8 @@ strt = {
     init: function () {
         strt.initWidgets();
 
-        strt.url = 'startupSrvr.php';
-        strt.dest = 'index.php';
+        strt.url = '../install/startupSrvr.php';
+        strt.dest = '../install/index.php';
 
         $('#constBtn').on('click',null, function (e) {
                 e.preventDefault();

@@ -111,5 +111,5 @@
     </div>
 
 <?php
-require_once("./startupJs.php");
+require_once("../install/startupJs.php");
 
