@@ -19,11 +19,11 @@
 orphanFiles = {
 	version:		'1.0.0',
 	author:			'Fred LaPlante',
-	date:       '5 May 2013',
+	date:           '5 May 2013',
 	license:		'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
-	copyright:	'2013 All Rights Reserved.',
+	copyright:	    '2013 All Rights Reserved.',
 	email:			'flaplante at flos-inc dot com',
-	comment:    'Orphan File add-on/plugin for OpenBiblio v1.0+'
+	comment:        'Orphan File add-on/plugin for OpenBiblio v1.0+'
 };
 </script>
 

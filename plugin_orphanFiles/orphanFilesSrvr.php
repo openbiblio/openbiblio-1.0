@@ -6,11 +6,9 @@
     require_once("../shared/common.php");
     require_once("../plugins/supportFuncs.php");
 
-	//print_r($_POST);echo "<br />";
 	$verbose = ($_POST['verb'] == 'No')?false:true;
 	$detail = ($_POST['detl'] == 'No')?false:true;
 	if ($verbose == true) $detail = true;
-	//var_dump($verbose); var_dump($detail); echo "<br />";
 	
     //global variables
     $allFiles = array();
@@ -18,17 +16,8 @@
 
 	switch ($_POST['mode']) {
 		case 'ck4Orfans':
+            //echo "fetch root directory files<br />";
             $root = '..';
-			$dirs = getDirList($root);
-            //echo "<br />OB directory List: <br />";
-            if ($verbose) {
-                echo "<br />OB directory List: <br />";
-                foreach ($dirs as $dir) {
-                    echo "$dir <br />";
-                }
-            }
-
-            //echo "looking at root directory<br />";
 			$rootFiles = getFileList($root);
             if ($detail) {
                 echo "<br /><br />---- OpenBiblio ----<br />";
@@ -38,11 +27,19 @@
             }
             findFileRef($rootFiles);
 
-            //echo "looking at sub-directories<br />";
+            //echo "<br />OB main-directory List: <br />";
+			$dirs = getDirList($root);
+            if ($verbose) {
+                echo "<br />OB directory List: <br />";
+                foreach ($dirs as $dir) {
+                    echo "$dir <br />";
+                }
+            }
+
+            //echo "fetch main&sub-directory files<br />";
 			foreach ($dirs as $dir) {
 				if($detail)echo "<br /><br />---- $dir ----<br />";
-                // first for OB's root directory
-				$dirFiles = getFileList('../'.$dir);
+				$dirFiles = getFileList('../'.$dir, true);
                 findFileRef($dirFiles);
 			}
 
@@ -62,10 +59,10 @@
 			echo "<p>The following files appear to not be in use.</p>";
             foreach($allFiles as $file) {
 				$file = trim($file);
-		        //$file = str_replace('../',"",$file);
+		        $file = str_replace('../',"",$file);
 		        //$file = str_replace_first('../',"",$file);
-		        //$file = str_replace('..',"",$file);
-		        //$file = str_replace('./',"",$file);
+		        $file = str_replace('..',"",$file);
+		        $file = str_replace('./',"",$file);
 				if ((array_key_exists($file, $found)) && ($found[$file] == 'OK')) {
 					continue;
 				} else {
