@@ -45,8 +45,8 @@ var cal = {
 		var d = new Date();
 		cal.mon = d.getMonth();
 		cal.year = d.getFullYear();
-		cal.url = 'calendarSrvr.php';
-                cal.listSrvr = '../shared/listSrvr.php';
+		cal.url = '../admin/calendarSrvr.php';
+        cal.listSrvr = '../shared/listSrvr.php';
 		cal.initWidgets();
 		$('.help').hide();
 
