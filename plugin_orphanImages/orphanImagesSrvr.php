@@ -3,79 +3,24 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
+    require_once("../shared/common.php");
+    require_once("../plugins/supportFuncs.php");
+
 	//print_r($_POST);echo "<br />";
 	$verbose = ($_POST['verb'] == 'No')?false:true;
 	$detail = ($_POST['detl'] == 'No')?false:true;
 	if ($verbose == true) $detail = true;
 	//var_dump($verbose); var_dump($detail); echo "<br />";
 	
-	function getDirList () {
-        // make a list of all folders with files that might reference another file
-		$dirs = array();
-		$handl = opendir("..");
-		while (false !== ($file = readdir($handl))) {
-		  if ($file != '.' && $file != '..') {
-				if ((is_dir('../'.$file)) && 
-						(substr($file,0,1) != '.') && 
-						## folowing names are main directories
-						($file != 'images') &&
-						($file != 'font') &&
-						($file != 'layouts') &&
-						($file != 'locale') &&
-						($file != 'themes') &&
-						($file != 'working') &&
-						($file != 'photos')
-					 ) {
-					$dirs[] = $file;
-				}
-			}
-		}
-		closedir($handl);
-		sort($dirs,SORT_LOCALE_STRING);
-		return $dirs;
-	};
-	function array_flat($array) {
-		$tmp = array();
-	  foreach($array as $a) {
-	    if(is_array($a)) {
-	      $tmp = array_merge($tmp, array_flat($a));
-	    } else {
-      	$tmp[] = $a;
-    	}
-  	}
-  	return $tmp;
-	}
-	function getFileList($dir) {
-  	$files = array();
-  	if ($handle = opendir($dir)) {
-    	while (false !== ($file = readdir($handle))) {
-			$info = pathInfo($file);
-      	    if (($file != ".") && ($file != "..") &&
-                ## folowing names are sub-directories
-				($file != 'sql') &&
-				($file != 'legacy') &&
-				($file != 'jquery') &&
-				($file != '.Thumbnails') &&
-				## folowing names are file extensions
-				($info['extension'] != 'tran') &&
-				## folowing are special filenames
-				($info['basename'] != 'custom_head.php')
-            ) {
-            if(is_dir($dir.'/'.$file)) {
-          	    $dir2 = $dir.'/'.$file;
-          	    $files[] = getFileList($dir2);
-            } else {
-          	    $aFile = $dir.'/'.$file;
-                $files[] = $aFile;
-            }
+   function getImageList ($dir) {
+        $imgs = scandir($dir);
+        foreach ($imgs as $k => $img) {
+            if (in_array($img, array(".", ".."))) continue;
+            $list[] = $img;
         }
-    	}
-    	closedir($handle);
-  	}
-  	return array_flat($files);
-	}
-
+		sort($list,SORT_LOCALE_STRING);
+        return $list;
+    }
 	
 	function getFnFmPhpSrc($text, $dir) {
 		if (stripos($text, '=') <= 6) return '';
@@ -88,13 +33,15 @@
 		$rslt = str_replace('"',"",$rslt);
 		return trim($rslt);
 	}
-	
+
 	$files = array();
 	
 	switch ($_POST['mode']) {
 		case 'ck4Orfans':
-			$found = array();
-			$dirs = getDirList();
+            // scan all files likely to use an image, and save name of those that do
+            $found = array();
+            $root = '..';
+			$dirs = getDirList($root);
 			foreach ($dirs as $dir) {
                 // get a list of folders whose files are to be searched for image references
 				if($detail)echo "<br /><br />---- $dir ----<br />";			
@@ -120,7 +67,7 @@
                                     if($detail) echo "image ref found on ln# $line_num <br />";
                                     //if($verbose) echo $line."<br />";
 									$fn = getFnFmPhpSrc($line, $dir);
-                                    //if($detail) echo $fn."<br />";
+                                    if($detail) echo $fn."<br />";
 								} else {
 									$fn = '';
 								}
@@ -153,11 +100,13 @@
 				echo "$file <br />";
 			}
             echo "<br />";
-            $availImages = getFileList('../images');
-            $nmbr = count($availImages) - count($found);
+
+            // first make a list of all known image files
+			$imgList = getImageList('../images');
+
+            $nmbr = count($imgList) - count($found);
 			echo "<p>The following ".$nmbr." image files are NOT.</p>";
-			sort($availImages);
-            foreach ($availImages as $imgFile) {
+            foreach ($imgList as $imgFile) {
 				$file = trim($imgFile);
                 if  (!in_array($file, $used)) echo "$file <br />";
             }
