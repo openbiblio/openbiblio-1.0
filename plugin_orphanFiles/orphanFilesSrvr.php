@@ -63,10 +63,11 @@
 		        //$file = str_replace_first('../',"",$file);
 		        $file = str_replace('..',"",$file);
 		        $file = str_replace('./',"",$file);
-				if ((array_key_exists($file, $found)) && ($found[$file] == 'OK')) {
+                $fileName = '.../OB/'.trim($file, '/');
+				if ((array_key_exists($fileName, $found)) && ($found[$fileName] == 'OK')) {
 					continue;
 				} else {
-						echo "unused===> $file <br />";
+					echo "unused===> $fileName <br />";
 				}
 			}
 			break;

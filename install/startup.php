@@ -5,53 +5,20 @@
 ?>
 
 <!DOCTYPE html >
-<!-- there are many lines here with obscure comments. For more info see http://html5boilerplate.com/ -->
-
 <html lang="en" class="no-js obInstall" >
-
 <head>
-    <!-- charset MUST be specified within first 1024 char of file start to be effective -->
     <meta charset="utf-8" />
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
     <title>OpenBiblio Initial Startup</title>
-    <meta name="author" content="Fred LaPlante">
-    <meta name="author" content="Jane Sandberg">
 
-    <!-- this line MUST precede all .css & JS files - FL
-    	 Based on the browser in use, it places many conditional classes
-    	 into the <body> tag for use by feature-specific CSS & JS statements.
-    	 It also deals with html5 support issues for older IE browsers. 	 -->
     <script src="../shared/modernizr.min.js"></script>
-
-    <!-- *********************************************************************** -->
-    <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
-    <!-- this is considered to be temporary until the use of prefixes ends -->
-    <!--script src="../shared/prefixfree.min.js"></script--> <!-- review yearly -->
-    <!-- *********************************************************************** -->
-
-    <!-- we place these JS files here because several JS modules loaded in line -->
-    <!-- depend on them being in place. -->
-    <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
-    <!--[if gt IE 8]><!-->
     <script src="../shared/jquery/jquery-3.0.0.min.js"></script>
-    <!--<![endif]-->
 
-    <!-- All other JavaScript is placed at the end of <body>
-    	 to match industry best practices and to improve overall performance -->
-
-    <!-- This style sheet resets all browsers to a common default style -->
     <link rel="stylesheet" href="../shared/normalize.css" />
-
-    <!-- This style sheet is specific to the jQuery UI library -->
     <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
-
-    <!-- OpenBiblio style is set here using default Theme folder -->
     <link rel="stylesheet" href="../themes/default/style.css" />
 
 </head>

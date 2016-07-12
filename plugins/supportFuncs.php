@@ -49,7 +49,8 @@
 					($value != 'locale') &&
 					//($value != 'themes') &&
 					($value != 'working') &&
-					($value != 'photos')     ) {
+					($value != 'photos') &&
+					($value != 'vendor')     ) {
 					$dirs[] = $value;
                 }
 			}
@@ -75,7 +76,7 @@
 					## folowing names are file extensions
 					($info['extension'] != 'tran') &&
 					//($info['extension'] != 'nav') &&
-					($info['extension'] != 'ico') &&
+					//($info['extension'] != 'ico') &&
 					## folowing are special filenames
 					($info['basename'] != '.hgignore') &&
 					($info['basename'] != '.hgtags') &&
@@ -98,7 +99,7 @@
                     if ($getSubs) {
                         global $verbose;
           	            $dir2 = $dir.'/'.$file;
-                        /*if ($verbose)*/ echo "working sub-dir: $dir2<br />";
+                        if ($verbose) echo "working sub-dir: $dir2<br />";
           	            $files[] = getFileList($dir2);
                     }
                 }
@@ -128,7 +129,7 @@
         $in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(href=\")(.*?)(.php|.css)/', $in, $out);
+		preg_match('/(href=\")(.*?)(.php|.css|.ico|.png)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
 		$rslt = $out[2].$out[3];
 		$rslt = str_replace('"',"",$rslt);
@@ -187,15 +188,12 @@
 */
     // originally from orphanImagess plugin
 	function getFnFmPhpSrc($text, $dir) {
-		if (stripos($text, 'script src') > 0) echo "got a script src: << $text >><br />";
-		//if (stripos($text, '=') <= 6) return '';
+		if (stripos($text, '=') <= 6) return '';
 		$in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-echo "in===>";echo $in;echo"<br />";
-		preg_match('/(src=\")(.*?)(\.)(png|gif)/', $in, $out);
+		preg_match('/(src=\")(.*?)(\.)(png|gif|js)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
-echo "out===>";print_r($out);echo"<br />";
 		$rslt = $out[2].$out[3].$out[4];
 		$rslt = str_replace('"',"",$rslt);
 		return trim($rslt);
@@ -280,10 +278,7 @@ echo "out===>";print_r($out);echo"<br />";
 				} elseif (stripos($line, 'eader(', 0) >= 1) {
 					$fn = getFnFmPhpHdr($line, $dir);
 				} elseif (stripos($line, 'src=', 0) >= 1) {
-if (stripos($line, 'script') > 0) echo "need to process a src line: << $line >><br />";
 					$fn = getFnFmPhpSrc($line, $dir);
-               // } elseif (stripos($line, '<script src', 0) >= 1) {
-               //     echo "found unprocessed script tag<br />";
 				} elseif (stripos($line, "url = ", 0) >= 1) {
 					$fn = getFilenameFmJS($line, $dir);
 				} elseif (stripos($line, "av::node", 0) >= 1) {
@@ -299,6 +294,9 @@ if (stripos($line, 'script') > 0) echo "need to process a src line: << $line >><
         		//$fn = str_replace_first('../',"",$fn);
         		$fn = str_replace('..',"",$fn);
         		$fn = str_replace_first('./',"",$fn);
+                //if (strpos($fn, '/') == 0) str_replace('/', "", $fn);
+                //$fn = substr($fn, strpos($fn, '/'));
+                $fn = trim($fn, '/');
 				$fn = trim($fn);
 
                 // add file reference to array if not a duplicate
@@ -310,8 +308,9 @@ if (stripos($line, 'script') > 0) echo "need to process a src line: << $line >><
 						if($detail)echo "--skip-- fn===> $fn<br />";
                         continue;
                     } else {
-						if($detail)echo "--added-- fn===> $fn<br />";
-						$found[$fn] = 'OK';
+                        $fileName = ".../OB/$fn";
+						$found[$fileName] = 'OK';
+						if($detail)echo "--added-- fn===> $fileName<br />";
 					}
                 }
 			}

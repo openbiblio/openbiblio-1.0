@@ -39,6 +39,12 @@
 	</section>
 	
 	<section id="rsltsArea">
+        <div class="note">
+            <ul>
+                <li><?php echo T("filenames starting with an 'x' are already marked for possible removal"); ?></li>
+                <li><?php echo T("some files may only be selected dynamically and may incorrectly appear unused"); ?></li>
+            </ul>
+        </div>
 		<fieldset id="rslts"> </fieldset>
 	</section>
 	
