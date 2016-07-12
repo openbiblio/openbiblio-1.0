@@ -211,9 +211,9 @@ class Calendar {
 		$monthClass = $this->getMonthClass($month, $year);
 		$s .= "<table class=\"$monthClass\">\n";
 		$s .= "<tr>\n";
-		$s .= "<td align=\"center\" valign=\"top\">" . (($prevMonth == "") ? "&nbsp;" : "<a href=\"$prevMonth\">&lt;&lt;</a>")  . "</td>\n";
+		$s .= "<td align=\"center\" valign=\"top\">" . (($prevMonth == "") ? "&nbsp;" : '<a class="month-prev" href="'. $prevMonth.'>&lt;&lt;</a>')  . "</td>\n";
 		$s .= "<td align=\"center\" valign=\"top\" class=\"calendarHeader\" colspan=\"5\">" . $this->getMonthNameHTML($month, $year, $showYear) . "</td>\n";
-		$s .= "<td align=\"center\" valign=\"top\">" . (($nextMonth == "") ? "&nbsp;" : "<a href=\"$nextMonth\">&gt;&gt;</a>")  . "</td>\n";
+		$s .= "<td align=\"center\" valign=\"top\">" . (($nextMonth == "") ? "&nbsp;" : '<a class="month-next" href="'.$nextMonth.'">&gt;&gt;</a>')  . "</td>\n";
 		$s .= "</tr>\n";
 		$s .= "<tr>\n";
 		$s .= "<td align=\"center\" valign=\"top\" class=\"calendarDayNames\">" . $this->getWeekDayHTML(($this->startDay)%7, $month, $year) . "</td>\n";
@@ -269,9 +269,9 @@ class Calendar {
 		$next = $this->getCalendarLink($ndate[0], $ndate[1]);
 		$s .= "<table class=\"calendar\" border=\"0\">\n";
 		$s .= "<tr>";
-		$s .= "<td align=\"center\" valign=\"top\" align=\"left\">" . (($prev == "") ? "&nbsp;" : "<a href=\"$prev\">&lt;&lt;</a>")  . "</td>\n";
+		$s .= "<td align=\"center\" valign=\"top\" align=\"left\">" . (($prev == "") ? "&nbsp;" : "<a class=\"year-prev\" href=\"$prev\">&lt;&lt;</a>")  . "</td>\n";
 		$s .= "<td class=\"calendarHeader\" valign=\"top\" align=\"center\">" . (($this->startMonth > 1) ? $year . " - " . ($year + 1) : $year) ."</td>\n";
-		$s .= "<td align=\"center\" valign=\"top\" align=\"right\">" . (($next == "") ? "&nbsp;" : "<a href=\"$next\">&gt;&gt;</a>")  . "</td>\n";
+		$s .= "<td align=\"center\" valign=\"top\" align=\"right\">" . (($next == "") ? "&nbsp;" : "<a class=\"year-next\" href=\"$next\">&gt;&gt;</a>")  . "</td>\n";
 		$s .= "</tr>\n";
 		$s .= "<tr>";
 		$s .= "<td class=\"calendar\" valign=\"top\">" . $this->getMonthHTML(0 + $this->startMonth, $year, 0) ."</td>\n";
