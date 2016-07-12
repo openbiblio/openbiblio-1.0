@@ -1,4 +1,4 @@
 <?php
-include('/home/jane/Downloads/tcpdf/tcpdf.php');
+include('../vendor/tcpdf/tcpdf.php');
 class PDF extends TCPDF {
 }
