@@ -270,7 +270,7 @@ abstract class DBTable extends Queryi {
 //echo "type ".$this->types[$type]." <br /> \n";
 				 //$s = $this->mkSQL('%I='.$this->types[$type], $name, $rec[$name]);
 				 //$s = $this->mkSQL("%I=".$this->types[$type], $name, $rec[$name]);
-                 $s = "`$name` = '".$rec[$name]."'";
+                 $s = "$name = '".str_replace("'", "''", $rec[$name])."'";
 //echo "mkSql string: $s <br />\n";
                  $vals[] = $s;
 			}
