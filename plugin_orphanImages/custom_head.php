@@ -7,23 +7,23 @@
  * '../shared/header_top file' and '../shared/header_top file'.
  *
  * Provisions to include material unique to a particular portion is
- * at the end of this file.
+ * at the end of thie file.
  */
 ?>
 
-<!-- custom header material for transUtils plugin -->
+<!-- custom header material for OrphanFiles plugin -->
 <script language="JavaScript" >
 //console.log('setting license data');
 
 //license data object
 orphanFiles = {
-	version:		'1.0.0',
-	author:			'Fred LaPlante',
-	date:       '18 June 2013',
-	license:		'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
-	copyright:	'2013 All Rights Reserved.',
-	email:			'flaplante at flos-inc dot com',
-	comment:    'dio / hdl document search add-on/plugin for OpenBiblio v1.0+'
+	version:       '1.0.0',
+	author:	       'Fred LaPlante',
+	date:          '9 July 2016',
+	license:       'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
+	copyright:	   '2013 All Rights Reserved.',
+	email:		   'flaplante at flos-inc dot com',
+	comment:       'Orphan Image add-on/plugin for OpenBiblio v1.0+'
 };
 </script>
 

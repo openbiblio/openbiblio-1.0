@@ -147,7 +147,7 @@
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "mediaJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
-	require_once(REL(__FILE__, "mediaJs6.php"));
+	require_once(REL(__FILE__, "../admin/mediaJs6.php"));
 ?>
 </body>
 </html>

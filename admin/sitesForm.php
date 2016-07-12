@@ -136,7 +136,7 @@
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "sitesJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
-	require_once(REL(__FILE__, "sitesJs6.php"));
+	require_once(REL(__FILE__, "../admin/sitesJs6.php"));
 ?>
 </body>
 </html>

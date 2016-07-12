@@ -120,7 +120,7 @@
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "statesJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
-	require_once(REL(__FILE__, "statesJs6.php"));
+	require_once(REL(__FILE__, "../admin/statesJs6.php"));
 ?>
     </body>
     </html>

@@ -40,5 +40,5 @@
 	</fieldset>
 <?php
 	include_once ("../shared/jsLibJs.php");
-	include_once(REL(__FILE__,'itemDisplayJs.php'));
+	include_once(REL(__FILE__,'../catalog/itemDisplayJs.php'));
 ?>

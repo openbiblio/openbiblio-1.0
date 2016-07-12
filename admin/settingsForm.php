@@ -117,7 +117,7 @@
   require_once(REL(__FILE__,'../shared/footer.php'));
 
 //	require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	require_once(REL(__FILE__, "settingsJs.php"));
+	require_once(REL(__FILE__, "../admin/settingsJs.php"));
 ?>
 </body>
 </html>

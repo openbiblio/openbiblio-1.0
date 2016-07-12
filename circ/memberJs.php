@@ -20,7 +20,7 @@ var mf = {
 	multiMode: false,
 	
 	init: function () {
-		mf.url = 'memberServer.php';
+		mf.url = '../circ/memberServer.php';
 		mf.listSrvr = "../shared/listSrvr.php";
 
 		// get header stuff going first

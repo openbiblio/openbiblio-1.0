@@ -20,10 +20,10 @@
 
 ?>
 
-	<h1 id="pageHdr" class="title"><?php echo T('OrphanFileFinder'); ?></h1>
+	<h1 id="pageHdr" class="title"><?php echo T('OrphanImageFinder'); ?></h1>
 	<section>
 		<fieldset id="orfnFiles">
-		<legend><?php echo T("CheckForOrphanFiles"); ?></legend>
+		<legend><?php echo T("CheckForOrphanImages"); ?></legend>
 		  <input type="button" id="orfnChkBtn" value="<?php echo T("Scan"); ?>" />
 		  <label for="detl">Details</label>
 		  	<select id="detl">
@@ -45,8 +45,8 @@
 <div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-    require_once(REL(__FILE__,'../shared/footer.php'));
-	require_once(REL(__FILE__, "../plugin_orphanFiles/orphanFilesJs.php"));
+  require_once(REL(__FILE__,'../shared/footer.php'));
+	require_once(REL(__FILE__, "../plugin_orphanImages/orphanImagesJs.php"));
 ?>	
 	
 </body>

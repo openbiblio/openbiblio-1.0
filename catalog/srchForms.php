@@ -286,9 +286,9 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+    require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	include_once(REL(__FILE__,'srchJs.php'));
+	include_once(REL(__FILE__,'../catalog/srchJs.php'));
 ?>
 
 </body>

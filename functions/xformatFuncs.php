@@ -11,7 +11,9 @@
  * @return string
  * @access public
  *********************************************************************************
+ * No longer appears to be in use - FL July 2016
  */
+
 function moneyFormat($amount,$decimals){
   // get local info
   $localeInfo = localeconv();

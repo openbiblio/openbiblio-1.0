@@ -23,7 +23,7 @@ Hed.prototype.serviceHandler = function (data) {
 };
 
 $(document).ready(function () {
-	var url = 'adminSrvr.php',
+	var url = '../admin/adminSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'hosts';
 	var hdrs = {'listHdr':<?php echo '"'.T("List of Hosts").'"'; ?>, 

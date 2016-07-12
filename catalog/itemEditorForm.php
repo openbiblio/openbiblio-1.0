@@ -46,5 +46,5 @@
 
 <?php
 	include_once ("../shared/jsLibJs.php");
-	include_once(REL(__FILE__,'itemEditorJs.php'));
+	include_once(REL(__FILE__,'../catalog/itemEditorJs.php'));
 ?>

@@ -18,6 +18,7 @@
  *   filename - the name of the language file to check, default: 'trans'
  *
  */
+include "../shared/common.php";
 
 class CheckLang {
 	private $trans = array();

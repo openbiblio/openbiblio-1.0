@@ -48,7 +48,7 @@
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
-	require_once(REL(__FILE__, "listMgrJs.php"));
+	require_once(REL(__FILE__, "../plugin_listMgr/listMgrJs.php"));
 ?>	
 	
 </body>

@@ -29,7 +29,7 @@ var bs = {
 	init: function () {
 		// get header stuff going first
 		bs.initWidgets();
-		bs.url = 'catalogServer.php';
+		bs.url = '../catalog/catalogServer.php';
 		bs.listSrvr = '../shared/listSrvr.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
 		bs.opts = [];

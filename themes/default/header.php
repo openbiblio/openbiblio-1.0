@@ -69,7 +69,8 @@
 	
 	<footer>
 	  <div id="obLogo">
-			<a href="http://obiblio.sourceforge.net/">
+			<!--a href="http://obiblio.sourceforge.net/"-->
+			<a href="https://bitbucket.org/mstetson/obiblio-1.0-wip/">
 				<img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0" alt="Powered by OpenBiblio" />
 			</a>
 			<br />

@@ -5,8 +5,11 @@
 
 require_once(REL(__FILE__, "../classes/Queryi.php"));
 
-// previously known as 'SessionHandler'
-// renamed due to conflict with PHP 5.4+ class of same name - FL()
+/* previously known as 'SessionHandler'
+ * renamed due to conflict with PHP 5.4+ class of same name - FL
+ *
+ *does not appear to any longer be in use - FL July 2016
+ */
 
 class OBsession {
 	function __construct() {

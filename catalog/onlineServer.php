@@ -7,7 +7,7 @@
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
 	require_once(REL(__FILE__, '../model/Online.php'));
-	require_once(REL(__FILE__, 'olSrvrFuncs.php'));	## general support functions
+	require_once(REL(__FILE__, '../catalog/olSrvrFuncs.php'));	## general support functions
 
 	## ---------------------------------- ##
 	function postNewBiblio() {

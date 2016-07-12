@@ -3,8 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 #****************************************************************************
-#*  Translation text for page transUtils.php
+#*  Translation text for page OrpnanImagesForms.php
 #****************************************************************************
-$trans["dioSearch"] = "dio Search";
-$trans["EnterDOI2Resolve"] = "Enter DOI to resolve, e.g. 10.1000/202";
-$trans["Search4DocumentInfo"] = "Search for Document Info";
+$trans["CheckForOrphanImages"] = "Check for Orphan Images";
+$trans["OrphanImages"] = "Orphan Images";
+$trans["OrphanImageFinder"] = "Orphan Image Finder";

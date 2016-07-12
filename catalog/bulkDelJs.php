@@ -9,7 +9,7 @@ var bbd = {
 		// get header stuff going first
 		bbd.initWidgets();
 
-		bbd.url = 'catalogServer.php';
+		bbd.url = '../catalog/catalogServer.php';
 		bbd.fetchCrntMbrInfo();
 
 		$('#bulkDel_btn').on('click',null,bbd.getEntries);
@@ -51,20 +51,16 @@ var bbd = {
         $(":radio[id^='byB']:checked").each(function (n) {
             var theId = (String)(this.id).trim().substr(0,7);
             if (theId == 'byBarcd') {
-console.log('got barcds');
                 var cpyList = $('#barcodes').val();
                 bbd.doDeleteCpys(cpyList);
            } else if (theId == 'byBibid') {
-console.log('got bibIdds');
                 var bibList = $('#bibids').val();
                 var bibAray = [];
                 if (bibList.indexOf('-') > 0) {
-console.log(bibList);
                     bbd.bibAray = flos.range(bibList);
                 } else {
                     bbd.bibAray = bibList.split(',');
                 }
-console.log(bbd.bibAray);
                 bbd.doDeleteBibs(bbd.bibAray);
            } else {
                 console.log('invalid bulk delete selection: '+this.id);
@@ -81,9 +77,7 @@ console.log(bbd.bibAray);
 	 		bbd.errAray = jsonData[2];
 	 		bbd.barcdStr= jsonData[3].join('\n');
 	  	    $('#barcodes').val(bbd.barcdStr);
-console.log('jsonData:'+jsonData);	  	
 	 		if (bbd.errAray[0]) {
-console.log('we have an error');	 	
 				$('#errSpace').html(bbd.errAray[0].msg).show();
 				return false;
 			}
@@ -102,7 +96,6 @@ console.log('we have an error');
 					$('#errSpace').html(response).show();
 					
 					if ( $('#del_items:checked').val() == 'Y') {
-dconsole.log('deleting parent books');
 						//$.post(bbd.url,{mode:'deleteMultiBiblios', bibList:bbd.bibAray}, function(response) {
 						//	$('#errSpace').html(response).show();
 						//});

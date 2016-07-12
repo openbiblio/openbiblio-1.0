@@ -84,7 +84,7 @@
 <!-- ------------------------------------------------------------------------ -->
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
-	include "./imageBrowseJs.php";
+	include "../opac/imageBrowseJs.php";
 ?>
 </body>
 </html>

@@ -3,20 +3,20 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-// JavaScript Document
+// JavaScript Document - OrphanImagesJs.php
 ?>
 <script language="JavaScript">
 "use strict";
 
-var orf = {
+var orim = {
 	init: function () {
-		//console.log('initializing orf');	
-		orf.url = '../plugin_orphanFiles/orphanFilesSrvr.php';
+		//console.log('initializing orim');
+		orim.url = '../plugin_orphanImages/orphanImagesSrvr.php';
 		
-		orf.resetForms();
-		orf.initWidgets();
+		orim.resetForms();
+		orim.initWidgets();
 
-		$('#orfnChkBtn').bind('click',null,orf.findOrfans);
+		$('#orfnChkBtn').bind('click',null,orim.findOrfans);
 	},
 	
 	//------------------------------
@@ -25,8 +25,8 @@ var orf = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#orfnChkBtn').focus();
-	  $('#rsltsArea').hide();
-	  $('#msgDiv').hide();
+	    $('#rsltsArea').hide();
+	    $('#msgDiv').hide();
 	},
 	
 	//------------------------------
@@ -40,17 +40,17 @@ var orf = {
 		$('#rslts').html('');
 		$('#rsltsArea').show();
 		var detl = $('#detl :checked').val(),
-				verb = $('#verb :checked').val();
-		$.post(orf.url, {
-											'mode':'ck4Orfans',
-											'detl':detl,
-											'verb':verb,
-										},
+			verb = $('#verb :checked').val();
+		$.post(orim.url, {
+						  'mode':'ck4Orfans',
+						  'detl':detl,
+						  'verb':verb,
+						 },
 						function (response) {
 			$('#rslts').html(response);
 		});
 	},
 };
 
-$(document).ready(orf.init);
+$(document).ready(orim.init);
 </script>

@@ -8,7 +8,7 @@ ins = {
 	init: function () {
 		ins.initWidgets();
 
-		ins.url = 'installSrvr.php';
+		ins.url = '../install/installSrvr.php';
 		ins.listSrvr = '../shared/listSrvr.php';
 		ins.editForm = $('#editForm');
 

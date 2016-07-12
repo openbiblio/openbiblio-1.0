@@ -210,11 +210,11 @@ th.colHead { white-space: nowrap; }
 
 	<!-- =================================================== -->
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+    require_once(REL(__FILE__,'../shared/footer.php'));
 	
 	//require_once(REL(__FILE__, "../catalog/itemEditorJs.php"));
 
-	require_once(REL(__FILE__, "newItemJs.php"));
+	require_once(REL(__FILE__, "../catalog/newItemJs.php"));
 ?>	
 </body>
 </html>

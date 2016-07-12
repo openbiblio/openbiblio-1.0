@@ -7,7 +7,7 @@
 
 class Col extends Admin {
     constructor ( ) {
-	   var url = 'adminSrvr.php',
+	   var url = '../admin/adminSrvr.php',
 	       form = $('#editForm'),
 	       dbAlias = 'collect',
     	   hdrs = {'listHdr':<?php echo '"'.T("List of Collections").'"'; ?>,

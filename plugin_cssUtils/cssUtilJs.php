@@ -4,7 +4,7 @@
 
 var csu = {
 	init: function () {
-		csu.url = 'cssUtilSrvr.php';
+		csu.url = '../plugin_cssUtils/cssUtilSrvr.php';
 
 		csu.initWidgets();
 		csu.resetForms();

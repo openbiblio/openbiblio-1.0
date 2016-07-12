@@ -4,7 +4,7 @@
 
 var mlo = {
 	init: function () {
-		mlo.url = 'mediaFldsSrvr.php';
+		mlo.url = '../plugin_mediaFlds/mediaFldsSrvr.php';
 		mlo.listSrvr = '../shared/listSrvr.php';
 		mlo.initWidgets();
 		mlo.resetForms();

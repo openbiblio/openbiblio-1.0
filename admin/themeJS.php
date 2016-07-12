@@ -17,7 +17,7 @@ var thm = {
 	init: function () {
 		thm.initWidgets();
 
-		thm.url = 'adminSrvr.php';
+		thm.url = '../admin/adminSrvr.php';
 		thm.selectForm = $('#selectForm');
 		thm.editForm = $('#editForm');
 

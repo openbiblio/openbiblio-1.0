@@ -19,7 +19,7 @@ else
 
 var chk = {
 	init: function () {
-		chk.url = 'circulationServer.php';
+		chk.url = '../circ/circulationServer.php';
 
 		// get header stuff going first
 		chk.initWidgets();

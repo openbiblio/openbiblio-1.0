@@ -164,9 +164,9 @@
 
 <!-- load javaScript -->
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+    require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	require_once(REL(__FILE__, "biblioFldsJs.php"));
+	require_once(REL(__FILE__, "../admin/biblioFldsJs.php"));
 ?>	
 	<script src="../shared/jquery/jquery-ui.min.js"></script>
 </body>

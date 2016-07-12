@@ -29,18 +29,9 @@
     	 It also deals with html5 support issues for older IE browsers. 	 -->
     <script src="../shared/modernizr.min.js"></script>
 
-    <!-- *********************************************************************** -->
-    <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->
-    <!-- this is considered to be temporary until the use of prefixes ends -->
-    <!--script src="../shared/prefixfree.min.js"></script--> <!-- review yearly -->
-    <!-- *********************************************************************** -->
-
-    <!-- we place these JS files here because several JS modules loaded in line -->
-    <!-- depend on them being in place. -->
-    <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
-    <!--[if gt IE 8]><!-->
+    <!-- we place this JS file here because several JS modules loaded in line -->
+    <!-- depend on it being in place. -->
     <script src="../shared/jquery/jquery-2.2.2.min.js"></script>
-    <!--<![endif]-->
 
     <!-- All other JavaScript is placed at the end of <body>
     	 to match industry best practices and to improve overall performance -->
@@ -64,7 +55,7 @@
 
     	<fieldset id="action">
     		<section id="plsWait">
-    			<h3 id="waitMsg">Building OpenBiblio tables</h3>
+    			<h3 id="waitMsg">Creating new empty database</h3>
     			<img src="../images/please_wait.gif" />
     			<span id="waitText">please wait...</span>
     		</section>
@@ -74,7 +65,7 @@
               <p class="note">Note: All fields MUST be filled.</P>
               <form id="dbConstForm">
                 <label for="hostId">Host Id: </label>
-                <input id="hostId" type="text" placeholder="Ip Address or Name" required /><br />
+                <input id="hostId" type="text" placeholder="Ip Address or Name" required/><br />
                 <label for="userNm">User Name: </label>
                 <input id="userNm" type="text" placeholder="missing" required /><br />
                 <label for="passWd">User Password: </label>
@@ -83,33 +74,25 @@
                 <input id="dbName" type="text" placeholder="missing" required /><br />
                 <p class="note">Note: Above user name & password must be valid for this database server</P>
                 <br />
-        		<input id="constBtn" type="submit" value="Submit" />
+        		<input id="constBtn" type="submit" value="Update" />
               </form>
             </section>
 
             <section id="createDB">
-              <p class="bold">Enter Database Engine Access Data</p><br /></P>
-              <p class="note">Note: These items will NOT be stored.</P>
-              <form id="dbCreateForm">
-                <label for="adminNm">Admin User: </label>
-                <input id="adminNm" type="text" placeholder="missing" required /><br />
-                <label for="adminPw">Admin Password: </label>
-                <input id="adminPw" type="password" placeholder="missing" required /><br />
-                <p class="note">Press button to create new Database</p><br /></p>
+              <p class="bold">Press button to create new Database</p><br /></p>
                 <br />
-        		<input id="newDbBtn" type="button" value="Create Database" />
-        		<input id="skipBtn" type="button" value="Skip This Step" />
+        		<input id="newDbBtn" type="button" value="Update" />
             </section>
 
             <section id="continue">
               <p class="bold">Press button to continue with installation</p><br /></p>
                 <br />
-        		<input id="contBtn" type="submit" value="Continue" />
-        		<input id="restartBtn" type="button" value="Try Again" />
+        		<input id="contBtn" type="button" value="Update" />
             </section>
+
         </fieldset>
     </div>
 
 <?php
-require_once("../install/startupJs.php");
+require_once("./startupJs.php");
 

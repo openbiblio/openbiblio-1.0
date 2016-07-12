@@ -33,9 +33,9 @@ function staff_menu() {
 		Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 		Nav::node('cataloging/newItem', T("New Item"), "../catalog/newItemForms.php");
 
-		if (isset($_SESSION['rpt_BiblioSearch'])) {
-			Nav::node('cataloging/search', T("old search results"), '../shared/biblio_search.php?searchType=previous&tab='.U($tab));
-		}
+		//if (isset($_SESSION['rpt_BiblioSearch'])) {
+		//	Nav::node('cataloging/search', T("old search results"), '../shared/biblio_search.php?searchType=previous&tab='.U($tab));
+		//}
 
 		Nav::node('cataloging/cart', T("Request Cart"), '../shared/req_cart.php?tab='.U($tab));
 
@@ -56,8 +56,7 @@ function staff_menu() {
 				. "&rpt_bibid=".U($_REQUEST['bibid'])
 				. "&".$params);
 			Nav::node('cataloging/biblio/holds', T("Hold Requests"), "../catalog/biblio_hold_list.php?".$params);
-		//Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/upload_usmarc_form.php");
-		//Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");
+
 		Nav::node('cataloging/upload_usmarc', T("MARC Import"), "../catalog/importMarcForms.php");
 		Nav::node('cataloging/upload_csv', T("CSVImport"), "../catalog/importCsvForms.php");
 		Nav::node('cataloging/bulk_delete', T("Bulk Delete"), "../catalog/bulkDelForm.php");
@@ -92,7 +91,7 @@ function staff_menu() {
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
-		Nav::node('admin/openHours', T("Open hours"), '../admin/hoursForm.php');
+		//Nav::node('admin/openHours', T("Open hours"), '../admin/hoursForm.php');
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
@@ -120,6 +119,7 @@ function staff_menu() {
 		Nav::node('tools/system', T("SystemDocumentation"), '../docs/index.php');
 		//Nav::node('tools/system', T("Crude YAZ Test"), '../tools/yazTest.php');
 		Nav::node('install/system', T("Install"), '../install/index.php');
+
 	}
 	
 	##-------------------------------------------------------------------------------------##
@@ -138,6 +138,7 @@ function staff_menu() {
 	## For plug-in support
 	## #######################################
 	$list = getPlugIns('nav.nav');
+    sort($list);
 	for ($x=0; $x<count($list); $x++) {
 		include_once ($list[$x]);
 	}

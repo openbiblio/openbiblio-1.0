@@ -72,7 +72,7 @@
   		 Based on the browser in use, it places many conditional classes
   		 into the <body> tag for use by feature-specific CSS & JS statements.
   		 It also deals with html5 support issues for older IE browsers. 	 -->
-  <script src="../shared/modernizr.min.js"></script>
+  <script src="../shared/modernizr-2.6.2.min.js"></script>
 
   <!-- *********************************************************************** -->
   <!-- prefixFree.js adds appropriate vendor prefixes to CSS as needed -->

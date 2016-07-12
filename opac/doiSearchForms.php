@@ -41,7 +41,7 @@
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
-  require_once(REL(__FILE__,'doiSearchJs.php'));
+  require_once(REL(__FILE__,'../opac/doiSearchJs.php'));
 ?>	
 
 </body>
