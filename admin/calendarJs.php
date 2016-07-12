@@ -88,7 +88,7 @@ var cal = {
 
 	saveCalendar: function (e) {
 		e.stopPropagation();
-        e.preventDefault();
+        	e.preventDefault();
 		$('#calName').val(cal.calName);
 		$('#calCd').val(cal.calCd);
 	       var params = $('#editForm').serialize();
