@@ -171,7 +171,6 @@ class Integrity extends Queryi{
 				'countSql' => 'select count(*) as count '
                     . 'from biblio_status_hist as bsh '
                     . 'where bsh.bibid is null ',
-				// NO AUTOMATIC FIX
 				'fixSql' => 'delete from biblio_status_hist '
                    . 'where bibid is null ',
 			);
@@ -181,6 +180,7 @@ class Integrity extends Queryi{
                     		. 'from biblio_status_hist as bsh '
                     		. 'where bsh.status_cd NOT IN ('
                     		. 'select code from biblio_status_dm as bsd ) '
+				// NO AUTOMATIC FIX
 			);
 			$this->checks[] = array(
 				'error' => T("IntegrityQueryBrokenBibidRef"),
