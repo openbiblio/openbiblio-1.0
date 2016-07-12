@@ -11,7 +11,7 @@
  */
 ?>
 
-<!-- custom header material for transUtils plugin -->
+<!-- custom header material for orphanFiles plugin -->
 <script language="JavaScript" >
 //console.log('setting license data');
 
@@ -19,11 +19,11 @@
 orphanFiles = {
 	version:		'1.0.0',
 	author:			'Fred LaPlante',
-	date:       '29 May 2013',
+	date:           '29 May 2013',
 	license:		'http://www.gnu.org/licenses/lgpl.txt Lesser GNU Public License',
-	copyright:	'2013 All Rights Reserved.',
+	copyright:	    '2013 All Rights Reserved.',
 	email:			'flaplante at flos-inc dot com',
-	comment:    'Css Maintenance Utility add-on/plugin for OpenBiblio v1.0+'
+	comment:        'Orphan File Maintenance Utility add-on/plugin for OpenBiblio v1.0+'
 };
 </script>
 

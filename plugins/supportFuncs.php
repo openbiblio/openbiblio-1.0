@@ -21,30 +21,6 @@
   	    return $tmp;
 	}
 
-	function getDirList ($root) {
-        $dirs = array();
-        $cdir = scandir($root);
-        foreach ($cdir as $key => $value) {
-            if ((!in_array($value, array(".", ".."))))  {
-				if (is_dir($root . DIRECTORY_SEPARATOR . $value) &&
-                    ($value != '.hg') &&
-                    ($value != '.hgignore') &&
-                    ($value != '.htags') &&
-					($value != 'images') &&
-					($value != 'font') &&
-					($value != 'docs') &&
-					//($value != 'locale') &&
-					//($value != 'themes') &&
-					($value != 'working') &&
-					($value != 'photos')     ) {
-					$dirs[] = $value;
-                }
-			}
-		}
-		sort($dirs, SORT_LOCALE_STRING);
-		return $dirs;
-	};
-
     function fileToArray($dir) {
        $result = array();
        $cdir = scandir($dir);
@@ -58,8 +34,33 @@
        return $result;
     }
 
-	function getFileList($dir) {
+	function getDirList ($root) {
+        $dirs = array();
+        $cdir = scandir($root);
+        foreach ($cdir as $key => $value) {
+            if ((!in_array($value, array(".", ".."))))  {
+				if (is_dir($root . DIRECTORY_SEPARATOR . $value) &&
+                    ($value != '.hg') &&
+                    ($value != '.hgignore') &&
+                    ($value != '.htags') &&
+					($value != 'images') &&
+					($value != 'font') &&
+					($value != 'docs') &&
+					($value != 'locale') &&
+					//($value != 'themes') &&
+					($value != 'working') &&
+					($value != 'photos')     ) {
+					$dirs[] = $value;
+                }
+			}
+		}
+		sort($dirs, SORT_LOCALE_STRING);
+		return $dirs;
+	};
+
+	function getFileList($dir, $getSubs=false) {
   	    $files = array();
+        if (!isset($dir)) return;
         $cdir = scandir($dir);
     	foreach ($cdir as $key => $file) {
 			$info = pathInfo($file);
@@ -85,6 +86,7 @@
 					($info['basename'] != 'database_constants.php') &&
 					($info['basename'] != 'database_constants_deploy.php') &&
 					($info['basename'] != 'Development_Guidelines.txt') &&
+					($info['basename'] != 'custom_head.php') &&
 					($info['basename'] != 'GPL.txt') &&
 					($info['basename'] != 'README.md') &&
 					($info['basename'] != 'cache.appcache') &&
@@ -92,11 +94,13 @@
 				) {
           	        $aFile = $dir.'/'.$file;
                     $files[] = $aFile;
-//                } else {
-//                    if(is_dir($dir.'/'.$file)) {
-//          	             $dir2 = $dir.'/'.$file;
-//          	             $files[] = getFileList($dir2);
-//                    }
+                } else if (!is_file($file)) {
+                    if ($getSubs) {
+                        global $verbose;
+          	            $dir2 = $dir.'/'.$file;
+                        /*if ($verbose)*/ echo "working sub-dir: $dir2<br />";
+          	            $files[] = getFileList($dir2);
+                    }
                 }
     	   }
  	    }
@@ -183,12 +187,15 @@
 */
     // originally from orphanImagess plugin
 	function getFnFmPhpSrc($text, $dir) {
-		if (stripos($text, '=') <= 6) return '';
+		if (stripos($text, 'script src') > 0) echo "got a script src: << $text >><br />";
+		//if (stripos($text, '=') <= 6) return '';
 		$in = str_replace("'", "\"", $text);
 		$in = str_replace('__, "', '__,"', $in);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
+echo "in===>";echo $in;echo"<br />";
 		preg_match('/(src=\")(.*?)(\.)(png|gif)/', $in, $out);
 		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
+echo "out===>";print_r($out);echo"<br />";
 		$rslt = $out[2].$out[3].$out[4];
 		$rslt = str_replace('"',"",$rslt);
 		return trim($rslt);
@@ -247,9 +254,9 @@
 					(substr($line,0,2) == "*/") ||
 					(substr($line,0,2) == "//") ||
 					(substr($line,0,1) == "#")  ||
-					(substr($line,0,1) == "<!--")  ||
-					//(substr($line,0,1) == "<") ||
-					(substr($line,0,1) == "?")  ||
+					//(substr($line,0,1) == "<!--")  || // needed for html conditionals
+					//(substr($line,0,2) == "<?")  ||  // needed for php in-line includes, etc.
+					(substr($line,0,2) == "?>")  ||
 					(substr($line,0,1) == "\n") ||
 					(substr($line,0,1) == "*")
                    ){
@@ -273,7 +280,10 @@
 				} elseif (stripos($line, 'eader(', 0) >= 1) {
 					$fn = getFnFmPhpHdr($line, $dir);
 				} elseif (stripos($line, 'src=', 0) >= 1) {
+if (stripos($line, 'script') > 0) echo "need to process a src line: << $line >><br />";
 					$fn = getFnFmPhpSrc($line, $dir);
+               // } elseif (stripos($line, '<script src', 0) >= 1) {
+               //     echo "found unprocessed script tag<br />";
 				} elseif (stripos($line, "url = ", 0) >= 1) {
 					$fn = getFilenameFmJS($line, $dir);
 				} elseif (stripos($line, "av::node", 0) >= 1) {
@@ -285,18 +295,21 @@
 				}
 
                 // normalize filename
-				$fn = trim($fn);
-        		//$fn = str_replace('../',"",$fn);
+        		$fn = str_replace('../',"",$fn);
         		//$fn = str_replace_first('../',"",$fn);
-        		//$fn = str_replace('..',"",$fn);
-        		//$fn = str_replace('./',"",$fn);
+        		$fn = str_replace('..',"",$fn);
+        		$fn = str_replace_first('./',"",$fn);
+				$fn = trim($fn);
 
                 // add file reference to array if not a duplicate
                 if ($fn != '') {
 					if (array_key_exists($fn, $found)) {
 						if($detail)echo "--dupe-- fn===> $fn<br />";
 						continue;
-					} else {
+					} else if ($fn == '/') {
+						if($detail)echo "--skip-- fn===> $fn<br />";
+                        continue;
+                    } else {
 						if($detail)echo "--added-- fn===> $fn<br />";
 						$found[$fn] = 'OK';
 					}
