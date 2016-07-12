@@ -12,11 +12,11 @@
 		var input$ = $('#IN-'+id);
 		var cell$ = $('#date-'+id);
 		if(input$.val() == 'Yes') {
-            input$.val('No');
+            		input$.val('No');
 			cell$.removeClass('calendarOpen');
 			cell$.addClass('calendarClosed');
 		} else {
-            input$.val('Yes');
+            		input$.val('Yes');
 			cell$.removeClass('calendarClosed');
 			cell$.addClass('calendarOpen');
 		}
@@ -42,6 +42,9 @@ var cal = {
 	<?php echo "calMASTER:".OBIB_MASTER_CALENDAR.","; ?>
 
 	init: function () {
+		var d = new Date();
+		cal.mon = d.getMonth();
+		cal.year = d.getFullYear();
 		cal.url = 'calendarSrvr.php';
                 cal.listSrvr = '../shared/listSrvr.php';
 		cal.initWidgets();
@@ -64,7 +67,7 @@ var cal = {
 		$('#listDiv').show();
 		$('#editDiv').hide();
 		$('#calDeltBtn').disable();
-    cal.fetchCalendarList();
+    		cal.fetchCalendarList();
 	},
 	rtnToList: function () {
 		cal.resetForm()
@@ -113,8 +116,9 @@ var cal = {
 	},
 
 	doGetCalendar: function () {
-		$.post(cal.url, {'mode':$('#calMode').val(), 'calendar':cal.calCd}, function (response) {
+		$.post(cal.url, {'mode':$('#calMode').val(), 'calendar':cal.calCd, 'mon':cal.mon, 'year':cal.year}, function (response) {
 			$('#calArea').html(response);
+			cal.createYearNavLinks();
 		});
 	},
 
@@ -136,7 +140,24 @@ var cal = {
 		$('#calDeltBtn').show().enable();
 		$('#listDiv').hide();
 		$('#editDiv').show();
+
 	},
+
+	createYearNavLinks: function () {
+		$(".year-next").click(function(e){
+			e.preventDefault();
+			cal.saveCalendar(e);
+			cal.year = cal.year + 1;
+			cal.showCalendar(e);
+		});
+		$(".year-prev").click(function(e){
+			e.preventDefault();
+			cal.saveCalendar(e);
+			cal.year = cal.year - 1;
+			cal.showCalendar(e);
+		});
+	},
+
 
 	deleteCalendar: function (e) {
 		if (confirm("<?php echo T("DeleteThisCalendar"); ?>?")) {
