@@ -62,7 +62,12 @@
 	function getFileList($dir, $getSubs=false) {
   	    $files = array();
         if (!isset($dir)) return;
-        $cdir = scandir($dir);
+        try {
+            $cdir = scandir($dir);
+        } catch (Exception $e) {
+            if ($detail) echo $e->getMessage()."<br />";
+            continue;
+        }
     	foreach ($cdir as $key => $file) {
 			$info = pathInfo($file);
       	    if (!in_array($file, array(".", ".."))) {
@@ -285,17 +290,16 @@
 					$fn = getFilenameFmMenu($line, $dir);
 				} elseif (stripos($line, "file_get_contents", 0) >= 1) {
 					$fn = getFnFmPhpReq($line, $dir);
+				} elseif (preg_match('(.gif|.png|.jpg)', $line)) {
+					echo "found a undetected image ref on: $line of $filename <br />";
 				} else {
                   continue;
 				}
 
                 // normalize filename
         		$fn = str_replace('../',"",$fn);
-        		//$fn = str_replace_first('../',"",$fn);
         		$fn = str_replace('..',"",$fn);
         		$fn = str_replace_first('./',"",$fn);
-                //if (strpos($fn, '/') == 0) str_replace('/', "", $fn);
-                //$fn = substr($fn, strpos($fn, '/'));
                 $fn = trim($fn, '/');
 				$fn = trim($fn);
 

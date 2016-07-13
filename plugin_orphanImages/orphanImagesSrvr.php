@@ -11,87 +11,136 @@
 	$detail = ($_POST['detl'] == 'No')?false:true;
 	if ($verbose == true) $detail = true;
 	//var_dump($verbose); var_dump($detail); echo "<br />";
-	
+
+    //global variables
+    $allFiles = array();
+    $found = array();
+
+
    function getImageList ($dir) {
         $imgs = scandir($dir);
         foreach ($imgs as $k => $img) {
             if (in_array($img, array(".", ".."))) continue;
             $list[] = $img;
         }
-		sort($list,SORT_LOCALE_STRING);
+		sort($list, SORT_LOCALE_STRING);
         return $list;
     }
-	
-	function getFnFmPhpSrc($text, $dir) {
-		if (stripos($text, '=') <= 6) return '';
-		$in = str_replace("'", "\"", $text);
-		$in = str_replace('__, "', '__,"', $in);
-		if($verbose) {echo "in===>";echo $in;echo"<br />";}
-		preg_match('/(src=\")(.*?)(\.)(png|gif)/', $in, $out);
-		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
-		$rslt = $out[2].$out[3].$out[4];
-		$rslt = str_replace('"',"",$rslt);
-		return trim($rslt);
-	}
+
+    function getImageFmDB () {
+		require_once(REL(__FILE__, "../model/MediaTypes.php"));
+		$db = new MediaTypes;
+		$rslt = $db->getIcons();
+        foreach ($rslt as $row) {
+		  $list[] = $row['image_file'];
+		}
+		sort($list, SORT_LOCALE_STRING);
+        return $list;
+    }
+
+    function findImageRef($fileArray) {
+        // select each file in the current directory and add to array
+        global $found, $allFiles, $verbose, $detail;
+
+		foreach ($fileArray as $fileName) {
+			if (is_dir($dir.'/'.$fileName)) {
+				if($detail) echo "--dir-- fn===> $fileName skipped <br />";
+				continue;
+			}
+			if($detail)echo '<p class="bold">'.$fileName."</p>";
+			$allFiles[] = $fileName;
+		    $lines = file($fileName, FILE_SKIP_EMPTY_LINES);
+
+            // scan every line for reference an image
+        	foreach ($lines as $line_num => $line) {
+                // scan every line in selected files for an image reference
+        		$line = trim($line);
+        		if ($line != '') {
+                    $txtStart = stripos($line,'<img', 0);
+                    $line = substr($line, $txtStart);
+        			if (stripos($line,'img', 0) >= 1)  {
+        				if (stripos($line, 'src', 3) >= 1) {
+                            if($detail) echo "image ref found on ln# $line_num <br />";
+                            //if($verbose) echo $line."<br />";
+        					$fn = getFnFmPhpSrc($line, $dir);
+                            if($detail) echo $fn."<br />";
+        				} else {
+        					$fn = '';
+        				}
+
+                        // normalize filename
+                		$fn = str_replace('../',"",$fn);
+                		$fn = str_replace('..',"",$fn);
+                		$fn = str_replace_first('./',"",$fn);
+                        $fn = trim($fn, '/');
+        				$fn = trim($fn);
+
+        				if ($fn != '') {
+        					if (array_key_exists($fn, $found)) {
+        						if($detail)echo "--dupe-- fn===> $fn<br />";
+        						continue;
+        					} else {
+                                $fn = "../$fn";
+        						if($detail)echo "--added-- fn===> $fn<br />";
+        						$found[$fn] = 'OK';
+        					}
+        				}
+        			}
+        		}
+            }
+        }
+    }
 
 	$files = array();
 	
 	switch ($_POST['mode']) {
 		case 'ck4Orfans':
-            // scan all files likely to use an image, and save name of those that do
-            $found = array();
+            //echo "fetch root directory files<br />";
             $root = '..';
-			$dirs = getDirList($root);
-			foreach ($dirs as $dir) {
-                // get a list of folders whose files are to be searched for image references
-				if($detail)echo "<br /><br />---- $dir ----<br />";			
-				$dirFiles = getFileList('../'.$dir);
-				//echo "dir files: ";print_r($dirFiles);echo "<br />";				
-				foreach ($dirFiles as $fileName) {
-                    // make a list of files to be searched for image references
-					if (is_dir($fileName)) {
-						if($detail) echo "--dir-- fn===> $fileName skipped <br />";							
-						break;
-					} 
-					if($detail)echo '<p class="bold">'.$fileName."</p>";			
-					$allFiles[] = $fileName;
-				    $lines = file($fileName, FILE_SKIP_EMPTY_LINES);
-					foreach ($lines as $line_num => $line) {
-                        // scan every line in selected files for an image reference
-						$line = trim($line);
-						if ($line != '') {
-                            $txtStart = stripos($line,'<img', 0);
-                            $line = substr($line, $txtStart);
-							if (stripos($line,'img', 0) >= 1)  {
-								if (stripos($line, 'src', 3) >= 1) {
-                                    if($detail) echo "image ref found on ln# $line_num <br />";
-                                    //if($verbose) echo $line."<br />";
-									$fn = getFnFmPhpSrc($line, $dir);
-                                    if($detail) echo $fn."<br />";
-								} else {
-									$fn = '';
-								}
+			$rootFiles = getFileList($root);
+            if ($detail) {
+                echo "<br /><br />---- OpenBiblio ----<br />";
+                //foreach ($rootFiles as $file) {
+                //    echo "$file <br />";
+                //}
+            }
+            findImageRef($rootFiles);
 
-								$fn = trim($fn);
-								if ($fn != '') {
-									if (array_key_exists($fn, $found)) {
-										if($detail)echo "--dupe-- fn===> $fn<br />";							
-										continue;
-									} else {
-										if($detail)echo "--added-- fn===> $fn<br />";								
-										$found[$fn] = 'OK';
-									}
-								}
-							}
-						}
-					}
-				} 
+            //echo "<br />OB main-directory List: <br />";
+			$dirs = getDirList($root);
+            if ($verbose) {
+                echo "<br />OB directory List: <br />";
+                foreach ($dirs as $dir) {
+                    echo "$dir <br />";
+                }
+            }
+
+            //echo "fetch main&sub-directory files<br />";
+			foreach ($dirs as $dir) {
+				if($detail)echo "<br /><br />---- $dir ----<br />";
+				$dirFiles = getFileList('../'.$dir, true);
+                findImageRef($dirFiles);
 			}
+
+            // add in those image filenames stored in database
+            $dbList = getImageFmDB();
+			if($detail)echo "<br /><br />---- database ----<br />";
+            foreach ($dbList as $fn) {
+                $fn = "../images/$fn";
+				if (array_key_exists($fn, $found)) {
+					if($detail)echo "--dupe-- fn===> $fn<br />";
+					continue;
+				} else {
+					if($detail)echo "--added-- fn===> $fn<br />";
+					$found[$fn] = 'OK';
+				}
+            }
+            echo "<br /><br />";
+
             //echo "There are ".count($allFiles)." files in ".count($dirs)." directories.<br />";
 			//echo count($found)." image files are referenced.<br />";
 			ksort($found);
 			//sort($allFiles);
-            //var_dump($found);
 
 			echo "<p>The following ".count($found)." image files are being used.</p>";
 			foreach ($found as $k=>$v) {
@@ -108,7 +157,8 @@
 			echo "<p>The following ".$nmbr." image files are NOT.</p>";
             foreach ($imgList as $imgFile) {
 				$file = trim($imgFile);
-                if  (!in_array($file, $used)) echo "$file <br />";
+                $fileName = '../images/'.trim($file, '/');
+                if  (!in_array($fileName, $used)) echo "$fileName <br />";
             }
 
 			break;
