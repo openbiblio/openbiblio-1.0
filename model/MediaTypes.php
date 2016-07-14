@@ -19,7 +19,7 @@ class MediaTypes extends DmTable {
 			'srch_disp_lines'=>'number',
 		));
         $this->setReq(array(
-            'code', 'description', 'default_flg', 'adult_checkout_limit', 'juvenile_checkout_limit', 'srch_disp_lines',
+            'description', 'default_flg', 'adult_checkout_limit', 'juvenile_checkout_limit', 'srch_disp_lines',
         ));
 		$this->setSequenceField('code');
 		$this->setKey('code');

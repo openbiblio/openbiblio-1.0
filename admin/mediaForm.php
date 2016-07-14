@@ -100,7 +100,7 @@
 				<legend><?php echo T("Search Display Lines");?></legend>
 				<label for="srch_disp_lines"><?php echo T("NumberOfLines");?>:</label>
 				<input id="srch_disp_lines" name="srch_disp_lines" type="number" size="2"
-					pattern="[1-9]{1,2}" min="1" max="19" title="0-19" required aria-required="true" />
+					pattern="[1-9]{1,2}" min="1" max="19" title="0-19" value="4" required aria-required="true" />
 				<span class="reqd">*</span>
 		  </fieldset>
 		</li>

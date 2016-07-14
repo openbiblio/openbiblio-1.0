@@ -17,7 +17,7 @@ require_once(REL(__FILE__, "../model/BiblioImages.php"));
  */
 
 class Biblios extends CoreTable {
-	private $avIcon = "circle_green.png";
+	private $avIcon = "../images/circle_green.png";
 
 	public function __construct() {
 		parent::__construct();
@@ -211,25 +211,25 @@ class Biblios extends CoreTable {
 			$this->nCpy = 0;
 			if (!empty($copies)) {
 				// default copy not available
-				$this->avIcon = "circle_red.png";
+				$this->avIcon = "../images/circle_red.png";
 				foreach($copies as $copyEnc){
 					$this->nCpy = $this->nCpy+1;
 					$copy = json_decode($copyEnc, true);
 					if($copy['statusCd'] == OBIB_STATUS_IN) {
 						// See on which site
 						if($_SESSION['current_site'] == $copy['siteid'] || !($_SESSION['multi_site_func'] > 0)){
-							$this->avIcon = "circle_green.png"; // one or more available
+							$this->avIcon = "../images/circle_green.png"; // one or more available
 							break;
 						} else {
-							$this->avIcon = "circle_orange.png"; // one or more available on another site
+							$this->avIcon = "../images/circle_orange.png"; // one or more available on another site
 						}
 					}
-					// Removed && $this->avIcon != "circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
+					// Removed && $this->avIcon != "../images/circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
 					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD || $copy[statusCd] == OBIB_STATUS_NOT_ON_LOAN)
-						$this->avIcon = "circle_blue.png"; // only copy is on hold
+						$this->avIcon = "../images/circle_blue.png"; // only copy is on hold
 				}
 			} else {
-				$this->avIcon = "circle_red.png"; // no copy found
+				$this->avIcon = "../images/circle_red.png"; // no copy found
 			}
 			$rcd['nCpy'] = $this->nCpy;
 			$rcd['avIcon'] = $this->avIcon;

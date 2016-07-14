@@ -64,8 +64,10 @@
                         }
 				    } elseif (stripos($line, ":url", 0) >= 1) {
                         $fn = getFnFmCss($line, $dir);
+			        } elseif (stripos($line, "avIcon ", 0) >= 1) {
+                        $fn = getFnFmPhpTxt($line, $dir);
     				} elseif (preg_match('(.gif|.png|.jpg)', $line)) {
-    					echo "found a undetected image ref on: $line of $fileName <br />";
+					    if ($verbose) echo "found a undetected image ref on: $line of $fileName <br />";
     				} else {
                         continue;
     				}

@@ -213,6 +213,15 @@
 		if (substr($rslt, -4,4) != '.php') $rslt = $rslt.$out[3];
 		return trim($rslt);
 	}
+	function getFnFmPhpTxt($text, $dir) {
+		$in = str_replace("'", "\"", $text);
+		if($verbose) {echo "in===>";echo $in;echo"<br />";}
+		preg_match('/(\")(.*?)(\.)(png|gif|jpg)/', $in, $out);
+		if($verbose) {echo "out===>";print_r($out);echo"<br />";}
+		$rslt = $out[2].$out[3].$out[4];
+		if (substr($rslt, 0,3) != '../') $rslt = '../'.$dir.'/'.$rslt;
+		return trim($rslt);
+	}
 	function getFnFmCss($text, $dir) {
 		$in = str_replace("'", "\"", $text);
 		if($verbose) {echo "in===>";echo $in;echo"<br />";}
@@ -295,6 +304,8 @@
 					$fn = getFnFmPhpSrc($line, $dir);
 				} elseif (stripos($line, "url = ", 0) >= 1) {
 					$fn = getFilenameFmJS($line, $dir);
+			    } elseif (stripos($line, "avIcon ", 0) >= 1) {
+                    $fn = getFnFmPhpTxt($line, $dir);
 			    } elseif (stripos($line, ":url = ", 0) >= 1) {
                     $fn = getFnFmCss($line, $dir);
 				} elseif (stripos($line, "av::node", 0) >= 1) {
@@ -302,7 +313,7 @@
 				} elseif (stripos($line, "file_get_contents", 0) >= 1) {
 					$fn = getFnFmPhpReq($line, $dir);
 				} elseif (preg_match('(\.gif|\.png|\.jpg)', $line)) {
-					echo "found a undetected image ref on: $line of $fileName <br />";
+					if ($verbose) echo "found a undetected image ref on: $line of $fileName <br />";
 				} else {
                   continue;
 				}

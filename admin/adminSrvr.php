@@ -268,8 +268,11 @@
 			list($id, $errors) = $ptr->insert_el($type);
 			if (empty($errors)) {
 				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been added");
-				echo $msg;
-			}
+				echo json_encode(array($id, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
+
 			break;
 		case 'update_media':
 			if (strpos($_POST["image_file"],'\\')) {

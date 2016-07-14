@@ -47,8 +47,8 @@
 
                     <!-- user information -->
                     <span id="fotoInfo">
-					   <label for="fotoFolder"><?php echo T("StoreAt"); ?>:</label>
-					   <p id="fotoFolder">../photos/<span class="italic"><?php echo T("filename"); ?></span>.jpg</p>
+					   <label for="fotoFolder" class="note italic" ><?php echo T("StoreAt"); ?>:</label>
+					   <input id="fotoFolder" class="note italic" READONLY value="<?php echo '../photos/'.T("filename").'.jpg'; ?>" />
 					   <br />
 					   <label for="fotoName"><?php echo T("FileName"); ?>:</label>
 					   <input type="text" id="fotoName" name="url" size="32"
