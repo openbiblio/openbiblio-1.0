@@ -57,7 +57,7 @@
 					<input type="text" id="library_url" name="library_url" maxlength="36" />
 					<br />
 					<label for="library_image_url"><?php echo T("Library Image"); ?></label>
-					<input type="text" id="library_image_url" name="library_image_url" maxlength="36" value="../images/unam.jpg" />
+					<input type="text" id="library_image_url" name="library_image_url" maxlength="36" placeholder="photo of your choice" />
 					<br />
 					<label for="show_lib_info"><?php echo T("Show Lib Info on Staff pages"); ?></label>
 					<input type="checkbox" id="show_lib_info" name="show_lib_info" value="Y" />

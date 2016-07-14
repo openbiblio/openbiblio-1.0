@@ -56,36 +56,37 @@
                 // scan every line in selected files for an image reference
         		$line = trim($line);
         		if ($line != '') {
-                    $txtStart = stripos($line,'<img', 0);
-                    $line = substr($line, $txtStart);
-        			if (stripos($line,'img', 0) >= 1)  {
-        				if (stripos($line, 'src', 3) >= 1) {
-                            if($detail) echo "image ref found on ln# $line_num <br />";
-                            //if($verbose) echo $line."<br />";
-        					$fn = getFnFmPhpSrc($line, $dir);
-                            if($detail) echo $fn."<br />";
-        				} else {
-        					$fn = '';
-        				}
+        			if (stripos($line,'img', 0) >= 1) {
+                        if (stripos($line, 'src', 3) >= 1) {
+                            $txtStart = stripos($line,'<img', 0);
+                            $line = substr($line, $txtStart);
+        			        $fn = getFnFmPhpSrc($line, $dir);
+                        }
+				    } elseif (stripos($line, ":url", 0) >= 1) {
+                        $fn = getFnFmCss($line, $dir);
+    				} elseif (preg_match('(.gif|.png|.jpg)', $line)) {
+    					echo "found a undetected image ref on: $line of $fileName <br />";
+    				} else {
+                        continue;
+    				}
 
-                        // normalize filename
-                		$fn = str_replace('../',"",$fn);
-                		$fn = str_replace('..',"",$fn);
-                		$fn = str_replace_first('./',"",$fn);
-                        $fn = trim($fn, '/');
-        				$fn = trim($fn);
+                    // normalize filename
+            		$fn = str_replace('../',"",$fn);
+            		$fn = str_replace('..',"",$fn);
+            		$fn = str_replace_first('./',"",$fn);
+                    $fn = trim($fn, '/');
+    				$fn = trim($fn);
 
-        				if ($fn != '') {
-        					if (array_key_exists($fn, $found)) {
-        						if($detail)echo "--dupe-- fn===> $fn<br />";
-        						continue;
-        					} else {
-                                $fn = "../$fn";
-        						if($detail)echo "--added-- fn===> $fn<br />";
-        						$found[$fn] = 'OK';
-        					}
-        				}
-        			}
+    				if ($fn != '') {
+    					if (array_key_exists($fn, $found)) {
+    						if($detail)echo "--dupe-- fn===> $fn<br />";
+    						continue;
+    					} else {
+                            $fn = "../$fn";
+    						if($detail)echo "--added-- fn===> $fn<br />";
+    						$found[$fn] = 'OK';
+    					}
+    				}
         		}
             }
         }
