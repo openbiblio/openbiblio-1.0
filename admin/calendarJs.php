@@ -12,11 +12,11 @@
 		var input$ = $('#IN-'+id);
 		var cell$ = $('#date-'+id);
 		if(input$.val() == 'Yes') {
-            		input$.val('No');
+            input$.val('No');
 			cell$.removeClass('calendarOpen');
 			cell$.addClass('calendarClosed');
 		} else {
-            		input$.val('Yes');
+            input$.val('Yes');
 			cell$.removeClass('calendarClosed');
 			cell$.addClass('calendarOpen');
 		}
