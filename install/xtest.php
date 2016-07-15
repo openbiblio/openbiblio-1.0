@@ -31,7 +31,7 @@
 
     <!-- we place this JS file here because several JS modules loaded in line -->
     <!-- depend on it being in place. -->
-    <script src="../shared/jquery/jquery-2.2.2.min.js"></script>
+    <script src="../shared/jquery/jquery-3.1.0.min.js"></script>
 
     <!-- All other JavaScript is placed at the end of <body>
     	 to match industry best practices and to improve overall performance -->

@@ -84,7 +84,7 @@
   <!-- depend on them being in place. -->
   <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
   <!--[if gt IE 8]><!-->
-  <script src="../shared/jquery/jquery-3.0.0.min.js"></script>
+  <script src="../shared/jquery/jquery-3.1.0.min.js"></script>
   <!--<![endif]-->
 
   <!-- All other JavaScript is placed at the end of <body> (see footer.php)

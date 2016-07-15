@@ -15,7 +15,7 @@
     <title>OpenBiblio Initial Startup</title>
 
     <script src="../shared/modernizr.min.js"></script>
-    <script src="../shared/jquery/jquery-3.0.0.min.js"></script>
+    <script src="../shared/jquery/jquery-3.1.0.min.js"></script>
 
     <link rel="stylesheet" href="../shared/normalize.css" />
     <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
