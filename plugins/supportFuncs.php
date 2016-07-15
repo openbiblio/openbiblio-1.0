@@ -9,6 +9,8 @@
  *@author Fred LaPlante - July 2016
  */
 
+    $localeList = array();
+
 	function array_flat($array) {
 		$tmp = array();
 	    foreach($array as $a) {
@@ -34,6 +36,20 @@
        return $result;
     }
 
+    function getLocaleList () {
+        global $detail;
+        $list = array();
+        $locs = scandir("../locale");
+        echo "---- locales ----<br />";
+        foreach ($locs as $k => $loc) {
+            if ((in_array($loc, array(".", "..")))) continue;
+            //if (!is_dir($loc)) continue;
+            if ($detail) echo "found locale: $loc<br />";
+            $list[] = $loc;
+        }
+        return $list;
+    }
+
 	function getDirList ($root) {
         $dirs = array();
         $cdir = scandir($root);
@@ -43,10 +59,10 @@
                     ($value != '.hg') &&
                     ($value != '.hgignore') &&
                     ($value != '.htags') &&
-					($value != 'images') &&
+					//($value != 'images') &&
 					($value != 'font') &&
 					($value != 'docs') &&
-					($value != 'locale') &&
+					//($value != 'locale') &&
 					//($value != 'themes') &&
 					($value != 'working') &&
 					($value != 'photos') &&
@@ -60,6 +76,8 @@
 	};
 
 	function getFileList($dir, $getSubs=false) {
+        global $localeList, $Locale;
+
   	    $files = array();
         if (!isset($dir)) return;
         try {
@@ -75,9 +93,9 @@
 					 ## folowing sub-directories do not contain project code
 					($file != '.hg') &&
 					($file != 'sql') &&
-					($file != 'legacy') &&
-					($file != 'jquery') &&
-					($file != '.Thumbnails') &&
+					//($file != 'legacy') &&
+					//($file != 'jquery') &&
+					//($file != '.Thumbnails') &&
 					## folowing names are file extensions
 					($info['extension'] != 'tran') &&
 					//($info['extension'] != 'nav') &&
@@ -101,10 +119,15 @@
           	        $aFile = $dir.'/'.$file;
                     $files[] = $aFile;
                 } else if (!is_file($file)) {
+                    if (!(in_array($info['basename'], $localeList)) || ($info['basename'] != $Locale)) continue;
+                    if ($info['basename'] == '.Thumbnails') continue; //echo "got a Thumbnail ref</br />";
+                    if ($info['basename'] == 'jquery') continue; //echo "got a jQuery ref</br />";
+                    if ($info['basename'] == 'ajaxFileUpload') continue;
                     if ($getSubs) {
                         global $verbose;
           	            $dir2 = $dir.'/'.$file;
                         if ($verbose) echo "working sub-dir: $dir2<br />";
+                        echo "working sub-dir: $dir2<br />";
           	            $files[] = getFileList($dir2);
                     }
                 }
@@ -327,14 +350,15 @@
 
                 // add file reference to array if not a duplicate
                 if ($fn != '') {
-					if (array_key_exists($fn, $found)) {
-						if($detail)echo "--dupe-- fn===> $fn<br />";
+                    $fileName = ".../OB/$fn";
+					if (array_key_exists($fileName, $found)) {
+					//if (in_array($fileName, $found)) {
+						if($detail)echo "--dupe-- fn===> $fileName<br />";
 						continue;
-					} else if ($fn == '/') {
-						if($detail)echo "--skip-- fn===> $fn<br />";
+					} else if ($fileName == '/') {
+						if($detail)echo "--skip-- fn===> $fileName<br />";
                         continue;
                     } else {
-                        $fileName = ".../OB/$fn";
 						$found[$fileName] = 'OK';
 						if($detail)echo "--added-- fn===> $fileName<br />";
 					}

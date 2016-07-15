@@ -13,6 +13,8 @@
     //global variables
     $allFiles = array();
     $found = array();
+    $localeList = getLocaleList();
+    global $found, $allfiles, $localeList;
 
 	switch ($_POST['mode']) {
 		case 'ck4Orfans':
