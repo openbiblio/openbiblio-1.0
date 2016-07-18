@@ -39,7 +39,7 @@
 		?>
 			<tr>
 				<td><label for="copySite"><?php echo T("Location"); ?></label></td>
-				<td><select id="copySite" name="copy_site">to be filled in by server</span></td>
+				<td><select id="copySite" name="copy_site">to be filled in by server.</select></td>
 			</tr>
 		<?php } ?>
 			<tr>

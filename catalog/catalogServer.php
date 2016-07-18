@@ -156,9 +156,10 @@
 	  
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr],$_POST[copyid]))
-			echo "Barcode $_POST[barcode_nmbr]: ". T("Barcode number already in use.");
-		break;
+	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr],$_POST[copyid])) {
+          echo "Barcode $_POST[barcode_nmbr]: " . T("Barcode number already in use.");
+      }
+      break;
 		
 	case 'getBiblioFields':
 		require_once(REL(__FILE__, "../model/MaterialFields.php"));
@@ -227,7 +228,7 @@
         break;
 	case 'updateCopy':
 	    $theDb = new Copies;
-	    //echo $theDb->updateCopy($_POST['bibid'],$_POST['copyid']);
+	    echo $theDb->updateCopy($_POST['bibid'],$_POST['copyid']);
 		break;
 	case 'getBibsFrmCopies':
 	  $theDb = new Copies;
@@ -298,5 +299,5 @@
 
 	//// ====================================////
 	default:
-	  echo "<h5>Invalid mode: $_POST[mode]</h5>";
+	  echo "<h5>Invalid mode: " . $_POST['mode'] . "</h5>";
 	}

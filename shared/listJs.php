@@ -88,7 +88,7 @@ var list = {
     getSiteList: function(where) {
         $.post(list.server, {mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
-			      list.siteListPt2(where); // chaining
+            list.siteListPt2(where); // chaining
         }, 'json');
     },
     siteListPt2: function (where) {
@@ -107,16 +107,20 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    /* LJ: FYI in the response the default is already marked, so rewriting this to eliminate the extra request. 18-7-16
+       (Please remove this comment when approved/accepted/in here for a long time.)
     getStatusCds: function (where) {
         $.post(list.server,{mode:'getDefaultStatusCd'}, function(data){
             list.dfltCd = data;
-			      list.StatusListPt2(where); // chaining
+            list.StatusListPt2(where); // chaining
         }, 'json');
     },
     StatusListPt2: function (where) {
     	  $.post(list.server,{'mode':'getStatusCds'}, function(data){
+              console.log(data);
             var html = '';
             for (var cd in data) {
+                console.log(cd);
         			  html+= '<option value="'+cd+'" ';
                 if (cd == list.dfltCd) {
                     html+= 'SELECTED '
@@ -126,6 +130,10 @@ var list = {
             where.html(html);
             return html;
         }, 'json');
+    },
+*/
+    getStatusCds: function (where) {
+        bs.fetchStatusCdsList(where);
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
