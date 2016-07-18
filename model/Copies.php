@@ -92,18 +92,24 @@ class Copies extends CoreTable {
 	}
 */
 	public function getNewBarCode($width) {
-		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
-		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
-		$cpy = $this->select1($sql);
-        //echo "in Copies::getNewBarCode(): ";print_r($cpy);echo "<br />\n";
-        //$nmbr = $cpy[lastNmbr]+1;
-        //$nmbr = $cpy['barcdNmbr']+1;
-        //if (strpos($cpy, "error"))
-        //    $nmbr = 1;
-        //else
-            $nmbr = $cpy[0]['lastNmbr']+1;
+        $sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
+ 		$cpy = $this->select1($sql);
+        $nmbr = $cpy[0]['lastNmbr']+1;
 	    if(empty($width)) $w = 13; else $w = $width;
-		return sprintf("%0".$w."s",$nmbr);
+        return sprintf("%0".$w."s",$nmbr);
+
+        // LJ: Have changed the functionality, as the barcode is a varchar, and as such max gives a wrong value.
+        // EDIT: leave it here, but it seems to have been a fault in my DB.
+        /*
+        $sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
+        $lastCpy = $this->select1($sql);
+        //$nmbr = $cpy[lastNmbr]+1;
+        $sql2 = $this->mkSQL("select barcode_nmbr from biblio_copy where copyid=" .  $lastCpy[0]['lastCopy']);
+        $cpy = $this->select1($sql2);
+        $nmbr = $cpy[0]['barcode_nmbr']+1;
+	    if(empty($width)) $w = 13; else $w = $width;
+        return sprintf("%0".$w."s",$nmbr);
+        */
 	}
 	
 	## ========================= ##
@@ -177,10 +183,10 @@ class Copies extends CoreTable {
 	## ========================= ##
 	public function insertCopy($bibid,$copyid) {
 		//$this->lock();
-		if (empty($_POST['copy_site'])) {
+		if (empty($_POST['siteid'])) {
 			$theSite = $_SESSION['current_site'];
 		} else {
-			$theSite = $_POST['copy_site'];
+			$theSite = $_POST['siteid'];
 		}
 		$sql = "INSERT `biblio_copy` SET "
 		      ."`bibid` = $bibid,"
@@ -222,14 +228,24 @@ class Copies extends CoreTable {
 		$rcd = $rslt->fetchAll();  // only first (most recent) response wanted
 		$histid = $rcd['histid'];
 
+        // Changed this to nothing, so any message/output is taken as an error message - LJ
+        // Changed to specific success text to be looked for in JS - FL
+        // Not the nicest, but agree, is needed for activsting the buttons etc. - LJ
+        $message = "!!success!!";
+
 		if ($rcd[status_cd] != $_POST[status_cd]) {
-			$sql = "INSERT `biblio_status_hist` SET "
-			      ."`status_cd` = '$_POST[status_cd]',"
-			      ."`status_begin_dt` = NOW(),"
-						."`bibid` = $bibid,"
-						."`copyid` = $copyid ";
-			$rslt = $this->act($sql);
-			$histid = $this->getInsertID();
+            if($_POST[status_cd] == "out") {
+                //LJ: it does not seem possible to set to checkout without a user?
+                $message = "Cannot change to status 'Checked out'";
+            } else {
+                $sql = "INSERT `biblio_status_hist` SET "
+                    . "`status_cd` = '$_POST[status_cd]',"
+                    . "`status_begin_dt` = NOW(),"
+                    . "`bibid` = $bibid,"
+                    . "`copyid` = $copyid ";
+                $rslt = $this->act($sql);
+                $histid = $this->getInsertID();
+            }
 		}
 
 		$sql = "UPDATE `biblio_copy` SET "
@@ -243,9 +259,7 @@ class Copies extends CoreTable {
 		$this->postCstmCopyFlds($bibid, $copyid);
 
 		$this->unlock();
-		// Changed this to nothing, so any message/output is taken as an error message - LJ
-		// Changed to specific success text to be looked for in JS - FL
-		echo "!!success!!";
+		echo $message;
 		return;
 	}
 
@@ -324,6 +338,7 @@ class Copies extends CoreTable {
 			}
 			return false;
 		}
+		return false;
 	}
 
 	/**

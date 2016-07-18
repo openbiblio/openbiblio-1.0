@@ -172,7 +172,8 @@ class Localize {
 			$text = addslashes($this->trans[$key]);
 		} else {
 			// flag text without an entry in trans.php file
-			$text = 'T!'.$text."T!";
+			// LJ: Disabled, I added this only for development, and should be put on only when updating the localisation texts.
+            //$text = 'T!'.$text."T!";
 		}
 		$text = $this->_substituteVars($text, $vars);
 

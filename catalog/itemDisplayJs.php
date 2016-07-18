@@ -273,7 +273,8 @@ var idis = {
 		ced.doCopyEdit(e);
 		$('#copyEditorDiv').show();
 		e.preventDefault();
-	},
+        console.log("Done!");
+    },
 };
 // this package normally initialized by parent such as .../catalog/new_itemJs.php
 // only initialize here if used in standalone fasion

@@ -123,6 +123,7 @@ var bs = {
 		bs.fetchCrntMbrInfo();
 		// prepare pull-down lists
 		bs.fetchSiteList();
+        bs.fetchStatusCdsList($('#status_cd'));
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
 		bs.fetchAudienceList();
@@ -273,6 +274,23 @@ var bs = {
 			$('#audienceLevel').html(html);
 		}, 'json');
 	},
+    fetchStatusCdsList: function(where) {
+        $.post(list.server,{'mode':'getStatusCds'}, function(data){
+             var html = '';
+
+            $.each(data, function(i, item) {
+                html+= '<option value="'+i+'" ';
+                if (item.default == "Y") {
+                    html+= 'SELECTED '
+                }
+                html+= '>'+ item.description +'</option>';
+            });
+
+            where.html(html);
+            //console.log("Done list: " + html);
+            //return html;
+         }, 'json');
+    },
 	fetchSiteList: function () {
 	  $.post(bs.listSrvr,{'mode':'getSiteList'}, function(data){
 			bs.siteList = data;
@@ -281,7 +299,7 @@ var bs = {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#copySite').html(html);
-			html = '<option value="all"  selected="selected"><?php echo T("All");?></option>' + html;
+			html = '<option value="all" selected="selected"><?php echo T("All");?></option>' + html;
 			$('#srchSites').html(html);
 
 			idis.init(bs.opts, bs.siteList); // used for biblio item & copy displays

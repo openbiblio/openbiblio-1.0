@@ -14,7 +14,7 @@ var ced = {
 		ced.initWidgets();
 		ced.resetForm();
 
-		$('#barcode_nmbr').on('change',null,ced.chkBarcdForDupe);
+		$('#copyBarcode_nmbr').on('change',null,ced.chkBarcdForDupe);
 		$('#copySubmitBtn').val('<?php echo T("Update"); ?>');
 		$('#copySubmitBtn').on('click',null,ced.doCopyUpdate);
 		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
@@ -22,17 +22,17 @@ var ced = {
 //        ced.fetchStatusCds();
 
 		if ($('#autobarco:checked').length > 0) {
-			$('#barcode_nmbr').disable();
+			$('#copyBarcode_nmbr').disable();
 		}
 		// if user changes his/her mind
 		$('#autobarco').on('change',null,function (){
 		  if ($('#autobarco:checked').length > 0) {
-				$('#barcode_nmbr').disable();
+				$('#copyBarcode_nmbr').disable();
 				ced.doGetBarcdNmbr();
 				$('#copySubmitBtn').enable(); //.css('color', bs.srchBtnClr);
 			}
 			else {
-				$('#barcode_nmbr').enable();
+				$('#copyBarcode_nmbr').enable();
 			}
 		});
 
@@ -59,8 +59,9 @@ var ced = {
 	},
 	//----//
 	fetchStatusCds: function () {
-        var statusList = list.getStatusCds($('#status_cd'));
-        $('#status_cd').html(statusList);
+        list.getStatusCds($('#status_cd'));
+        // LJ: this is included in the function (where cv
+        //$('#status_cd').html(statusList);
 //        ced.fetchSiteList();
 	},
 	//----//
@@ -70,16 +71,16 @@ var ced = {
 	},
 	//----//
 	chkBarcdForDupe: function () {
-		var barcd = $.trim($('#barcode_nmbr').val());
+		var barcd = $.trim($('#copyBarcode_nmbr').val());
 		barcd = flos.pad(barcd,bs.opts.barcdWidth,'0');
-		$('#barcode_nmbr').val(barcd);
+		$('#copyBarcode_nmbr').val(barcd);
 		// Set copyId to null if not defined (in case of new item)
 		var currCopyId = null;
 		if(typeof(bs.crntCopy) != "undefined"){
 			currCopyId = bs.crntCopy.copyid;
 		}
 
-        $.get(ced.catalogSrvr,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
+        $.post(ced.catalogSrvr,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
             if(response.length > 0){
             	$('#copySubmitBtn').disable(); //.css('color', '#888888');
             	$('#editRsltMsg').html(response).show();
@@ -107,8 +108,9 @@ var ced = {
 		$('#copyTbl #status_cd').val(crntCopy.status);
 		$('#copyLegend').html("<?php echo T("Edit Copy Properties"); ?>");
 
-        ced.fetchStatusCds();
-        ced.fetchSiteList();
+        // LJ: This is too late to load the list, as it is an async request, and will post populate.
+        //ced.fetchStatusCds();
+        //ced.fetchSiteList();
 
 		// custom fields
 		var fldData = crntCopy.custom;
@@ -121,10 +123,12 @@ var ced = {
 			}
 		});
 
+        $('#copySubmitBtn').val('<?php echo T("Update"); ?>');
+
 		// unbind & bind needed here because of button reuse elsewhere
 		$('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').on('click',null,function (e) {
-			ced.doCopyUpdate(e);
+		    ced.doCopyUpdate(e);
 			return false;
 		});
 
@@ -134,23 +138,24 @@ var ced = {
 	    // prevent submit button from firing a 'submit' action
 		return false;
 	},
-	doCopyNew: function (bibid) {
-        ced.bibid = bibid;
+	doCopyNew: function (e) {
+        //ced.bibid = bibid;
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();
             $('#copyBarcode_nmbr').disable();
         }
-        $('#copyBibid').val(bibid);
+        $('#copyBibid').val(ced.bibid);
         ced.fetchStatusCds();
         ced.fetchSiteList();
 
 		$('#copySite').val("<?php echo Settings::get('library_name');?>");
 		$('#copyMode').val('newCopy');
-		$('#copyCancelBtn').val("Go Back");
+		$('#copyCancelBtn').val('<?php echo T("Go Back"); ?>');
 		$('#copySubmitBtn').enable();
+        $('#copySubmitBtn').val('<?php echo T("Create"); ?>');
 
 		// unbind & bind needed here because of button reuse elsewhere
-		$('#copySubmitBtn').unbind('click');
+        $('#copySubmitBtn').unbind('click');
 		$('#copySubmitBtn').on('click',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -187,15 +192,17 @@ var ced = {
 			params += '&'+this.id+'='+$(this).val();
 		});
 
-	    $.post(ced.catalogSrvr,params, function(response){
-	  	    if(response == '!!success!!') {
-				$('#copyCancelBtn').val("Next");
-				$('#copySubmitBtn').disable();
-				$('#editRsltMsg').html('Copy updated successfully!').show();
-			} else {
-				$('#editRsltMsg').html(response).show();
-			}
-	    }, 'json');
+	    $.post(ced.catalogSrvr,params, function(response) {
+            if (response == '!!success!!') {
+                $('#copyCancelBtn').val("Back");
+                $('#copySubmitBtn').disable();
+                $('#editRsltMsg').html('Copy updated successfully!').show();
+            } else {
+                $('#editRsltMsg').html(response).show();
+            }
+        });
+        // LJ: removed JSON, as the result is not JSON.
+	    //}, 'json');
 	},
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
