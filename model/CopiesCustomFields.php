@@ -14,11 +14,25 @@ class CopiesCustomFields extends DBTable {
 			'code'=>'string',
 			'data'=>'string',
 		));
+        $this->setReq(array(
+            'copyid', 'bibid', 'code', 'data',
+        ));
 		$this->setKey('code');
 	}
 	protected function validate_el($rec, $insert) {
+		$errors = array();
+        //echo "in CopiesCustomFields::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
+        // check for missing entries
+		foreach ($this->reqFields as $req) {
+			if ($insert and !isset($rec[$req])
+					or isset($rec[$req]) and $rec[$req] == '') {
+				$errors[] = new FieldError($req, T("Required field missing"));
+			}
+		}
+		return $errors;
 	}
 }
+
 class CopiesCustomFields_DM extends DmTable {
 	public function __construct() {
 		parent::__construct();
@@ -28,8 +42,32 @@ class CopiesCustomFields_DM extends DmTable {
 			'description'=>'string',
 			'default_flg'=>'string',
 		));
+        $this->setReq(array(
+            'code', 'description', 'default_flg',
+        ));
 		$this->setKey('code');
 	}
 	protected function validate_el($rec, $insert) {
-	}
+		$errors = array();
+        //echo "in CopiesCustomFields_DM::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
+        // check for missing entries
+		foreach ($this->reqFields as $req) {
+			if ($insert and !isset($rec[$req])
+					or isset($rec[$req]) and $rec[$req] == '') {
+				$errors[] = new FieldError($req, T("Required field missing"));
+			}
+		}
+        // duplicate codes not allowed
+		$sql = $this->mkSQL("SELECT * FROM %q WHERE code=%Q ", $this->name, $rec['code']);
+		$rslt = $this->select($sql);
+        $rows = $rslt->fetchAll();
+        if ($insert&& (count($rows) != 0)) {
+			//$errors[] = new FieldError('code', T("Duplicate State Code not allowed"));
+			$errors[] = T("Duplicate Code not allowed");
+		}
+        // otherwise limit default flg to Y or N only
+        if ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N') {
+			$errors[] = new FieldError('default_flg', T("Default Flg MUST be 'Y' or 'N'"));
+        }
+		return $errors;
 }
