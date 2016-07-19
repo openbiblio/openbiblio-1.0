@@ -166,6 +166,11 @@ class Admin {
     		else {
     			$(this).val(item[this.id]);
     		}
+            // key field must be static for updates (marked 'addOnly' in html)
+            var theClass = $(this).get(0).className;
+            if (theClass == 'addOnly') {
+                $(this).attr('readOnly',true);
+            }
     	});
     	for (var n in this.noshows){
     		$('#'+this.noshows[n]).attr('required',false).hide();
@@ -182,6 +187,7 @@ class Admin {
     	for (var n in this.noshows){
     		$('#'+this.noshows[n]).attr('readonly',true).attr('required',false).hide();
     	};
+        $('#editTbl').find('input.addOnly').removeAttr('readonly');
     	$('#codeReqd').show();
     	$('#deltBtn').hide();
     	$('#updtBtn').hide();

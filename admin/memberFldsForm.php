@@ -51,7 +51,7 @@
 	<ul id="editTbl">
     <li>
       <label for="code"><?php echo T("Code"); ?>:</label>
-      <input id="code" name="code" type="text" size="32" required aria-required="true" />
+      <input id="code" name="code" class="addOnly" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>
 		</li>
     <li>
