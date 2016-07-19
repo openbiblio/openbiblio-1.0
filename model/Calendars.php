@@ -15,6 +15,9 @@ class Calendars extends DmTable {
 			'description'=>'string',
 			'default_flg'=>'string',
 		));
+        $this->setReq(array(
+            'code', 'description', 'default_flg',
+        ));
 		$this->setKey('code');
 		$this->setSequenceField('code');
 	}

@@ -14,11 +14,25 @@ class CopiesCustomFields extends DBTable {
 			'code'=>'string',
 			'data'=>'string',
 		));
+        $this->setReq(array(
+            'copyid', 'bibid', 'code', 'data',
+        ));
 		$this->setKey('code');
 	}
 	protected function validate_el($rec, $insert) {
+		$errors = array();
+        //echo "in CopiesCustomFields::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
+        // check for missing entries
+		foreach ($this->reqFields as $req) {
+			if ($insert and !isset($rec[$req])
+					or isset($rec[$req]) and $rec[$req] == '') {
+				$errors[] = new FieldError($req, T("Required field missing"));
+			}
+		}
+		return $errors;
 	}
 }
+
 class CopiesCustomFields_DM extends DmTable {
 	public function __construct() {
 		parent::__construct();
@@ -28,8 +42,10 @@ class CopiesCustomFields_DM extends DmTable {
 			'description'=>'string',
 			'default_flg'=>'string',
 		));
+        $this->setReq(array(
+            'code', 'description', 'default_flg',
+        ));
 		$this->setKey('code');
 	}
-	protected function validate_el($rec, $insert) {
-	}
-}
+
+	//protected function validate_el($rec, $insert) {} // DmTable default used

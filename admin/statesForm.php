@@ -65,8 +65,8 @@
                     <label for="code"><?php echo T("Code"); ?>:</label>
                 </td>
                 <td>
-                    <input id="code" name="code" type="text" size="20" maxlength="20" required aria-required="true" />
-			        <span class="addOnly reqd">*</span>
+                    <input id="code" name="code" type="text" class="addOnly" size="20" maxlength="20" required aria-required="true" />
+			        <span class="reqd">*</span>
                 </td>
             </tr>
             <tr>
@@ -117,8 +117,6 @@
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
 
-	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	//require_once(REL(__FILE__, "statesJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
 	require_once(REL(__FILE__, "../admin/statesJs6.php"));
 ?>
