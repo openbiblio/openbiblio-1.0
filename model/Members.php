@@ -81,6 +81,15 @@ class Members extends CoreTable {
 													 ."ORDER BY last_name", $frag);
 		return $this->select($sql);
 	}
+
+	function getMbrByLegalName($nameFrag) {
+		$frag = '%'.$nameFrag.'%';
+		$sql = $this->mkSQL("SELECT mbrid, barcode_nmbr, first_name, last_name, first_legal_name, last_legal_name, city, home_phone, work_phone, classification, siteid FROM member "
+			."WHERE (last_legal_name LIKE %Q OR last_name LIKE %Q ) "
+			."AND (last_legal_name IS NOT NULL OR first_legal_name IS NOT NULL) "
+			 ."ORDER BY last_legal_name", $frag, $frag);
+		return $this->select($sql);
+	}
 	
 	protected function validate_el($mbr, $insert) {
 		$errors = array();

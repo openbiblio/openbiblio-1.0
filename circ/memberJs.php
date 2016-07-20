@@ -218,37 +218,40 @@ var mf = {
 		return false;
 	},
 	doNameSearch: function () {
-	  var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val(), 'timestamp': <?php echo $current_timestamp; ?>, 'username': '<?php echo $_SESSION['username'] ?>'};
-	  $.ajax({
-		url: mf.url,
-		type: 'POST',
-		dataType: 'json',
-		headers: {
-			'Authorization': 'Token token="<?php echo hash_hmac('md5', 'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp, $_SESSION['secret_key']); ?>"'
-		},
-		data: params,
-		success: function (jsonInpt) {
-			mf.mbrs = JSON.parse(jsonInpt);
-			var html = '';
-			for (var nMbr in mf.mbrs) {
-				var mbr = mf.mbrs[nMbr];
-				html += '<tr>\n';
-				html += '	<td>'+mbr.barcode_nmbr+'</td>\n';
-				html += '	<td><a href="#" id="'+mbr.mbrid+'">'+mbr.last_name+', '+mbr.first_name+'</a></td>\n';
-				html += '	<td>'+mbr.home_phone+'</td>\n';
-				html += '</tr>\n';
-			}
-			$('#srchRslts').html(html);
-	    $('#searchDiv').hide();
-		  $('#listDiv').show();
-			$('#srchRslts tr:odd td').addClass('altBG');
-			$('#srchRslts tr:even td').addClass('altBG2');	
-			$('#srchRslts a').on('click',null,function (e) {
-				e.preventDefault(); e.stopPropagation();
-				mf.mbrid = e.target.id;
-				mf.doFetchMember();
-		  	$('#listDiv').hide();
-			});			
+		var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val(), 'timestamp': <?php echo $current_timestamp; ?>, 'username': '<?php echo $_SESSION['username'] ?>'};
+	    	$.ajax({
+			url: mf.url,
+			type: 'POST',
+			dataType: 'json',
+			headers: {
+				'Authorization': 'Token token="<?php echo hash_hmac('md5', 'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp, $_SESSION['secret_key']); ?>"'
+			},
+			data: params,
+			success: function (results) {
+				var html = '';
+				for (var i in results) {
+					var mbr = results[i];
+					html += '<tr>\n';
+					html += '	<td>'+mbr.barcode_nmbr+'</td>\n';
+					if (mbr.hasOwnProperty('first_legal_name') || mbr.hasOwnProperty('last_legal_name')) {
+						html += '	<td><i>'+mf.doConcatLegalName(mbr)+', <?php echo T('see'); ?> </i><a href="#" id="'+mbr.mbrid+'">'+mbr.last_name+', '+mbr.first_name+'</a></td>\n';
+					} else {
+						html += '	<td><a href="#" id="'+mbr.mbrid+'">'+mbr.last_name+', '+mbr.first_name+'</a></td>\n';
+					}
+					html += '	<td>'+mbr.home_phone+'</td>\n';
+					html += '</tr>\n';
+				}
+				$('#srchRslts').html(html);
+	    			$('#searchDiv').hide();
+		  		$('#listDiv').show();
+				$('#srchRslts tr:odd td').addClass('altBG');
+				$('#srchRslts tr:even td').addClass('altBG2');	
+				$('#srchRslts a').on('click',null,function (e) {
+					e.preventDefault(); e.stopPropagation();
+					mf.mbrid = e.target.id;
+					mf.doFetchMember();
+		  		$('#listDiv').hide();
+				});			
 		}});
 	},
 	
@@ -706,6 +709,19 @@ var mf = {
 		  	mf.rtnToSrch();
 			}
 		});
+	},
+	doConcatLegalName: function (mbr) {
+		if (mbr['first_legal_name']) {
+			if (mbr['last_legal_name']) {
+				return mbr.first_legal_name+' '+mbr.last_legal_name;
+			} else {
+				return mbr.first_legal_name+' '+mbr.last_name;
+			}
+		} else if (mbr['last_legal_name']) {
+			return mbr.first_name+' '+mbr.last_legal_name;
+		} else {
+			return mbr.first_name+' '+mbr.last_name;
+		}
 	},
 };
 $(document).ready(mf.init);

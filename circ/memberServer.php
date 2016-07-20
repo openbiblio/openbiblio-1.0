@@ -172,16 +172,20 @@
 			echo json_encode($mbr);
 	  		break;
 		case 'doNameFragSearch':
-			$rows = $members->getMbrByName($_GET['nameFrag']);
 			$mbrs = array();
-			foreach ($rows as $row) {
+			$rows_name = $members->getMbrByName($_POST['nameFrag']);
+			foreach ($rows_name as $row) {
+				$mbrs[] = $row;
+			}
+			$rows_legal_name = $members->getMbrByLegalName($_POST['nameFrag']);
+			foreach ($rows_legal_name as $row) {
 				$mbrs[] = $row;
 			}
 			echo json_encode($mbrs);
 			break;
 		
 		case 'getAcntActivity':
-			$transactions = $acct->getByMbrid($_GET['mbrid']);
+			$transactions = $acct->getByMbrid($_POST['mbrid']);
 			$tranList = array();
 			foreach ($transactions as $tran) {
 				$tranList[] = $tran;
