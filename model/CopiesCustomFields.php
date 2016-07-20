@@ -47,5 +47,6 @@ class CopiesCustomFields_DM extends DmTable {
         ));
 		$this->setKey('code');
 	}
+}
 
 	//protected function validate_el($rec, $insert) {} // DmTable default used
