@@ -42,6 +42,7 @@
 		case 'addNewMember':
 		case 'updateMember':
 		case 'd-3-L-3-tMember':
+ini_set('display_errors', 1);
 			require_once(REL(__FILE__, "../model/Members.php"));
 			$members = new Members;
 			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
@@ -148,8 +149,8 @@
 			break;
 
 		case 'doGetMbr':
-			$mbrDflt = $members->maybeGetOne($_GET['mbrid']);
-			$cstmFlds = $members->getCustomfields($_GET['mbrid']);
+			$mbrDflt = $members->maybeGetOne($_POST['mbrid']);
+			$cstmFlds = $members->getCustomfields($_POST['mbrid']);
 			$mbrCstm = array();
 			foreach ($cstmFlds as $fld) {
 				$mbrCstm[$fld['code']] = $fld['data'];
