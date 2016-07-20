@@ -91,7 +91,7 @@ var idis = {
   			    } else {
   				    idis.crntFoto = data[0];
 					$('#photoEditBtn').show();
-					var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url;
+					var fotoFile = idis.crntFoto.url;
 					$('#bibBlkB').html('<img src="'+fotoFile+'" id="biblioFoto" class="hover" '
       			    + 'height="'+fotoHt+'" width="'+fotoWid+'" >');
 				}
