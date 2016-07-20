@@ -77,7 +77,7 @@ class Members extends CoreTable {
 	
 	function getMbrByName($nameFrag) {
 		$frag = '%'.$nameFrag.'%';
-		$sql = $this->mkSQL("SELECT * FROM member WHERE last_name LIKE %Q "
+		$sql = $this->mkSQL("SELECT mbrid, barcode_nmbr, first_name, last_name, city, home_phone, work_phone, classification, siteid FROM member WHERE last_name LIKE %Q "
 													 ."ORDER BY last_name", $frag);
 		return $this->select($sql);
 	}
