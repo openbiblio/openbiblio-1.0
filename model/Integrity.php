@@ -76,6 +76,25 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
+        			'error' => T("Legal First Name column is missing from Members table"),
+        			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                			. 'FROM information_schema.COLUMNS '
+                			. 'WHERE TABLE_NAME = "member"'
+                			. 'AND COLUMN_NAME = "first_legal_name"',
+        			'fixSql' => 'alter table member '
+                			. 'add column first_legal_name varchar(50) DEFAULT NULL'
+			);
+			$this->checks[] = array(
+        			'error' => T("Legal Last Name column is missing from Members table"),
+        			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                			. 'FROM information_schema.COLUMNS '
+                			. 'WHERE TABLE_NAME = "member"'
+                			. 'AND COLUMN_NAME = "last_legal_name"',
+        			'fixSql' => 'alter table member '
+                			. 'add column last_legal_name varchar(50) DEFAULT NULL'
+			);
+
+			$this->checks[] = array(
 				'error' => T("Hours not attached to sites"),
 				'countSql' => 'select count(*) as count '
 					. 'from open_hours left join site '

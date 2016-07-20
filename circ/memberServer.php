@@ -21,6 +21,7 @@
 			$mbrTypes = new MemberTypes;
 			break;
 		case 'getCustomFlds':
+			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 			require_once(REL(__FILE__, "../model/MemberCustomFields_DM.php"));
 			$customFlds = new MemberCustomFields_DM;
 			break;
@@ -43,6 +44,7 @@
 		case 'd-3-L-3-tMember':
 			require_once(REL(__FILE__, "../model/Members.php"));
 			$members = new Members;
+			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 			require_once(REL(__FILE__, "../model/MemberCustomFields_DM.php"));
 			$customFlds = new MemberCustomFields_DM;
 			break;

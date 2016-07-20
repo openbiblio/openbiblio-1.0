@@ -231,6 +231,8 @@ $trans["Keyword"] = "Ключевое слово";
 ####### L #######
 $trans["Last Name Contains"] = "Фамилия содержит";
 $trans["LastName"] = "фамилия";
+$trans["Legal First Name column is missing from Members table"] = "Колонка «официальное имя» отсутствует в таблице базы данных посетителей";
+$trans["Legal Last Name column is missing from Members table"] = "Колонка «официальная фамилмя» отсутствует в таблице базы данных посетителей";
 $trans["Library"] = "Библиотека";
 $trans["Library Card Number"] = "Штрих-код";
 $trans["Library Catalog"] = "Каталог";
