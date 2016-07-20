@@ -456,8 +456,7 @@ var bs = {
 		$.post(bs.url,{ 'mode':'getPhoto', 'bibid':bibid  }, function(data){
 			if (data != null) {
                 var foto = data[0];
-				var fotoFile = '<?php echo OBIB_UPLOAD_DIR; ?>'+foto['url'];
-				$(dest).html($('<img src="'+fotoFile+'" class="biblioImage hover">'));
+				$(dest).html($('<img src="'+foto['url']+'" class="biblioImage hover">'));
 			}
 		}, 'json');
 	},
@@ -667,7 +666,7 @@ var bs = {
 		$('#deltFotoBtn').hide();
 		//$('#updtFotoBtn').hide(); // not yet available
 		$('#addFotoBtn').show();
-        $('#fotoMsg').hide();
+        	$('#fotoMsg').hide();
 		$('#fotoMode').val('addNewPhoto')
 		$('#fotoSrce').attr({'required':true, 'aria-required':true});
 		bs.showPhotoForm();

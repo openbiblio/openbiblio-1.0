@@ -179,26 +179,29 @@ var wc = {
 	},
 	sendFoto: function (e) {
 		e.stopPropagation();
-        $('#errSpace').hide();
+        	$('#errSpace').hide();
 		var imgMode = '',
+			current_add_mode = '',
 			url = $('#fotoName').val(),
 			bibid = $('#fotoBibid').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
-		$.post(wc.url,
+		current_add_mode = $('.fotoSrceBtns:checked').val();
+		if ('brw' == current_add_mode || 'cam' == current_add_mode) {
+			$.post(wc.url,
 				{'mode':'addNewPhoto',
-				 'type':'base64',
-				 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
-                 'bibid':bibid,
-				 'url': url,
-                 'position':0,
+			 	'type':'base64',
+			 	'img':wc.canvasOut.toDataURL(imgMode, 0.8),
+                 		'bibid':bibid,
+			 	'url': url,
+                 		'position':0,
 				},
 				function (response) {
 					var data = JSON.parse(response);
 					//console.log('image posting OK');
-					var crntFotoUrl = '../photos/' + data[0]['url'];
+					var crntFotoUrl = data[0]['url'];
 					$('#fotoMsg').html('cover photo posted').show();
 					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
-							+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+						+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
 					if (typeof bs !== 'undefined') {
 						bs.crntFotoUrl = crntFotoUrl;
 						bs.getPhoto(bibid, '#photo_'+bibid );
@@ -206,8 +209,30 @@ var wc = {
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
 				}
-		);
+			);
 		//e.preventDefault();
+		} else {
+			$.post(wc.url,
+				{'mode':'addNewRemotePhoto',
+               			'bibid':bibid,
+			 	'url': url,
+				},
+				function (response) {
+					var data = JSON.parse(response);
+					//console.log('image posting OK');
+					var crntFotoUrl = data[0]['url'];
+					$('#fotoMsg').html('cover photo posted').show();
+						$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
+							+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+						if (typeof bs !== 'undefined') {
+						bs.crntFotoUrl = crntFotoUrl;
+						bs.getPhoto(bibid, '#photo_'+bibid );
+					}
+					$('#photoAddBtn').hide();
+					$('#photoEditBtn').show();
+				}
+			);
+		}
 		return false;
 	},
 	doUpdatePhoto: function () {

@@ -274,23 +274,37 @@
 		$data = base64_decode($img);
 		$success = file_put_contents($file, $data);
 		if ($success) {
-    	  	$ptr = new BiblioImages;
-    		$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'], $data, $_POST['url']);
-    		if(isset($err)) {
-    			print_r($err);
-    			break;
-    		}
-    	  	$set = $ptr->getByBibid($_POST['bibid']);
-    		//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
-    			$imgs[] = $row;
-    		}
-		    echo json_encode($imgs);
+    	  		$ptr = new BiblioImages;
+    			$err = $ptr->appendLink_e($_POST['bibid'], $_POST['caption'], $data, $file);
+    			if(isset($err)) {
+    				print_r($err);
+    				break;
+    			}
+    	  		$set = $ptr->getByBibid($_POST['bibid']);
+                	foreach ($set as $row) {
+    				$imgs[] = $row;
+    			}
+			echo json_encode($imgs);
 		} else {
 			echo 'Unable to save the file.';
 			print_r($_POST);
 		}
 		break;
+	case 'addNewRemotePhoto':
+                $ptr = new BiblioImages;
+		$caption = $_POST['caption'] ? $_POST['caption'] : 'Cover';
+                $err = $ptr->insert_el(array('bibid' => $_POST['bibid'], 'caption' => $caption, 'url' => $_POST['url'], 'imgurl' => $_POST['url']));
+                if(isset($err)) {
+                        print_r($err);
+                        break;
+                }
+                $set = $ptr->getByBibid($_POST['bibid']);
+                foreach ($set as $row) {
+                        $imgs[] = $row;
+                }
+                echo json_encode($imgs);
+		break;
+
 
 	case 'deletePhoto':
 	  $ptr = new BiblioImages;
