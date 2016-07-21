@@ -130,7 +130,6 @@
 <?php
 	## add custom fields
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
-	require_once(REL(__FILE__, "../model/MemberCustomFields_DM.php"));
 	$customFields = new MemberCustomFields_DM;
 	foreach ($customFields->getSelect() as $name=>$title) {
 		echo "<tr>\n";
