@@ -60,9 +60,9 @@ var rpt = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(rpt.listSrvr,{mode:'getOpts'}, function(jsonData){
+	  $.post(rpt.listSrvr,{mode:'getOpts'}, function(jsonData){
 	    rpt.opts = jsonData;
-		});
+		}, 'json');
 	},
 	resetReport: function () {
 		$.post(rpt.url, {'mode':'resetReport'}, function (response) {
@@ -70,7 +70,7 @@ var rpt = {
 		});
 	},
 	getCriteriaForm: function () {
-		$.get(rpt.url, {'mode':'getCriteriaForm',
+		$.post(rpt.url, {'mode':'getCriteriaForm',
 										'type':$('#rptType').val(),
 									 }, function (resp){
 			var parts = resp.split('~|~');
@@ -109,10 +109,10 @@ var rpt = {
 		$('#firstItem').val(firstItem);
 
 		//$('#type').val('previous');
-    var params = $('#reportcriteriaform').serialize();
+    		var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
 			if (response.indexOf('|') < 0) {
-        $('#errSpace').html(response).show();
+        			$('#errSpace').html(response).show();
 				return;
 			}
 			var parts = response.split('|');

@@ -96,7 +96,7 @@
 	  break;
 
 	default:
-		  echo '<h4 class="error">'.T("invalid mode")."@imageSrvr.php: &gt;".$_POST['mode']."&lt;</h4><br />";
+		  echo '<h4 class="error">'.T("invalid mode").": &gt;".$_POST['mode']."&lt;</h4><br />";
 		break;
 	}
 
