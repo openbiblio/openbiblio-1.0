@@ -10,9 +10,9 @@
 
 ## TODO FIXME needs to be replaced by global INTL class
 
-class ruMetaData {
+class arMetaData {
 	public function __construct() {
-		$this->locale_description = "русский язык";
+		$this->locale_description = "اللغة العربية";
 	}
 	function pluralForm($n) {
 		if ($n == 1 or $n == -1) {
