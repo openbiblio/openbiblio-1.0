@@ -1,11 +1,16 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-CREATE TABLE IF NOT EXISTS %prfx%.`collection_circ` (
-  `code` smallint(6) NOT NULL AUTO_INCREMENT,
-  `days_due_back` tinyint(3) unsigned NOT NULL,
-  `daily_late_fee` decimal(4,2) NOT NULL,
-  PRIMARY KEY (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
-INSERT INTO %prfx%.`collection_circ` (`code`, `days_due_back`, `daily_late_fee`) VALUES
+CREATE TABLE IF NOT EXISTS %prfx%.collection_circ (
+  code smallint NOT NULL AUTO_INCREMENT,
+  days_due_back smallint unsigned NOT NULL,
+  due_date_calculator varchar(30) NOT NULL DEFAULT 'simple',
+  minutes_before_closing smallint DEFAULT 0,
+  important_date timestamp DEFAULT NULL,
+  important_date_purpose varchar(30) NOT NULL DEFAULT 'not enabled',
+  regular_late_fee decimal(4,2) NOT NULL,
+  number_of_minutes_between_fee_applications int NOT NULL DEFAULT 1440,
+  number_of_minutes_in_grace_period int DEFAULT 0,
+  PRIMARY KEY (code)
+);
+INSERT INTO %prfx%.collection_circ (code, days_due_back, regular_late_fee) VALUES
 (1, 30, 0.01),
 (2, 14, 0.10),
 (3, 7, 0.25),
