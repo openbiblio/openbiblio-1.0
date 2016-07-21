@@ -34,7 +34,7 @@
 		break;
 
 	case "getCriteriaForm":
-		$rpt = Report::create($_GET['type']);
+		$rpt = Report::create($_POST['type']);
 		if (!$rpt) die("no report available");
 		echo T($rpt->title())."~|~".$rpt->type()."~|~";
 		Params::printForm($rpt->paramDefs());
