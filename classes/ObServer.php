@@ -4,7 +4,7 @@ require_once("../model/Staff.php");
 
 class ObServer {
 	public static function check_hmac() {
-		$headers = apache_request_headers();
+		$headers = ObServer::get_headers();
   		if(isset($headers['Authorization'])){
     			$matches = array();
     			preg_match('/Token token="(.*)"/', $headers['Authorization'], $matches);
@@ -33,6 +33,22 @@ class ObServer {
 		return ($expected_hash === $token);
 	}
 
+	public static function get_headers() {
+		if (!function_exists('getallheaders'))  {
+			$headers = array();
+        		if (is_array($_SERVER)) {
+        			foreach ($_SERVER as $name => $value) {
+            				if (substr($name, 0, 5) == 'HTTP_') {
+                				$headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            				}
+        			}
+        		}
+          		return $headers;
+		} else {
+			return getallheaders();
+		}
+
+	}
 }
 
 ?>
