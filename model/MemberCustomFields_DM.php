@@ -3,27 +3,22 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/DBTable.php"));
+require_once(REL(__FILE__, "../classes/DmTable.php"));
 
-class MemberCustomFields extends DBTable {
+class MemberCustomFields_DM extends DmTable {
 	public function __construct () {
 		parent::__construct();
-		$this->setName('member_fields');
+		$this->setName('member_fields_dm');
 		$this->setFields(array(
-			'mbrid'=>'number',
 			'code'=>'string',
-			'data'=>'string',
+			'description'=>'string',
+			'default_flg'=>'string',
 		));
-        $this->setReq(array(
-            'code', 'mbrid', 'data',
-        ));
 		$this->setKey('code');
 	}
 	protected function validate_el($rec, $insert) {
 		$errors = array();
-        //echo "in MemberCustomFields::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
-        // check for missing entries
-		foreach ($this->reqFields as $req) {
+		foreach (array('description', 'code') as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
 				$errors[] = new FieldError($req, T("Required field missing"));
@@ -31,5 +26,5 @@ class MemberCustomFields extends DBTable {
 		}
 		return $errors;
 	}
-
 }
+
