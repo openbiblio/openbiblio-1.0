@@ -93,6 +93,21 @@ class Integrity extends Queryi{
         			'fixSql' => 'alter table member '
                 			. 'add column last_legal_name varchar(50) DEFAULT NULL'
 			);
+			$this->checks[] = array(
+        			'error' => T("Collection circ table is missing important circulation features"),
+        			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                			. 'FROM information_schema.COLUMNS '
+                			. 'WHERE TABLE_NAME = "collection_circ"'
+                			. 'AND COLUMN_NAME = "due_date_calculator"',
+        			'fixSql' => 'alter table collection_circ '
+					. 'add column hours_due_back smallint unsigned NOT NULL, '
+  					. "add column due_date_calculator varchar(30) NOT NULL DEFAULT 'simple', "
+  					. 'add column minutes_before_closing smallint DEFAULT 0, '
+					. 'add column important_date timestamp NULL DEFAULT NULL, '
+					. "add column important_date_purpose varchar(30) NOT NULL DEFAULT 'not enabled', "
+  					. 'add column number_of_minutes_between_fee_applications int NOT NULL DEFAULT 1440, '
+					. 'add column number_of_minutes_in_grace_period int DEFAULT 0'
+			);
 
 			$this->checks[] = array(
 				'error' => T("Hours not attached to sites"),

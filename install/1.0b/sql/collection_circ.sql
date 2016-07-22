@@ -1,9 +1,10 @@
 CREATE TABLE IF NOT EXISTS %prfx%.collection_circ (
   code smallint NOT NULL AUTO_INCREMENT,
   days_due_back smallint unsigned NOT NULL,
+  hours_due_back smallint unsigned NOT NULL,
   due_date_calculator varchar(30) NOT NULL DEFAULT 'simple',
   minutes_before_closing smallint DEFAULT 0,
-  important_date timestamp DEFAULT NULL,
+  important_date timestamp NULL DEFAULT NULL,
   important_date_purpose varchar(30) NOT NULL DEFAULT 'not enabled',
   regular_late_fee decimal(4,2) NOT NULL,
   number_of_minutes_between_fee_applications int NOT NULL DEFAULT 1440,
