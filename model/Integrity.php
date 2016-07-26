@@ -100,7 +100,7 @@ class Integrity extends Queryi{
                 			. 'WHERE TABLE_NAME = "collection_circ"'
                 			. 'AND COLUMN_NAME = "due_date_calculator"',
         			'fixSql' => 'alter table collection_circ '
-					. 'add column hours_due_back smallint unsigned NOT NULL, '
+					. 'add column minutes_due_back int NOT NULL, '
   					. "add column due_date_calculator varchar(30) NOT NULL DEFAULT 'simple', "
   					. 'add column minutes_before_closing smallint DEFAULT 0, '
 					. 'add column important_date timestamp NULL DEFAULT NULL, '
