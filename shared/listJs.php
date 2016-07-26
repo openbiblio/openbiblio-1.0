@@ -36,6 +36,17 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getDayList: function (where) { 
+        $.post(list.server, {mode:'getDaysOfWeek'}, function(data){
+            var html = '';
+            for (var n in data) {
+                html+= '<option value="'+n+'" >'+data[n]+'</option>';
+            }
+            where.html(html);
+        }, 'json');
+    },
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getCollectionList: function (where, callback) { 
         $.post(list.server, {mode:'getCollectionList'}, function(data){
     		    var html = '';
@@ -66,10 +77,10 @@ var list = {
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getMaterialList: function (where, callback) {
         $.post(list.server, {mode:'getMediaList'}, function(data){
-    		    var html = '';
+            var html = '';
             for (var n in data) {
-        			  html+= '<option value="'+n+'" >'+data[n]+'</option>';
-    		    }
+                html+= '<option value="'+n+'" >'+data[n]+'</option>';
+            }
             where.html(html);
             callback();
         }, 'json');
