@@ -106,7 +106,8 @@ class Integrity extends Queryi{
 					. 'add column important_date timestamp NULL DEFAULT NULL, '
 					. "add column important_date_purpose varchar(30) NOT NULL DEFAULT 'not enabled', "
   					. 'add column number_of_minutes_between_fee_applications int NOT NULL DEFAULT 1440, '
-					. 'add column number_of_minutes_in_grace_period int DEFAULT 0'
+					. 'add column number_of_minutes_in_grace_period int DEFAULT 0, '
+					. 'change daily_late_fee regular_late_fee decimal(4,2) NOT NULL'
 			);
 
 			$this->checks[] = array(
