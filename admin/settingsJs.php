@@ -10,8 +10,8 @@ var set = {
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	//$jsLoc = new Localize(OBIB_LOCALE,$tab);
 	echo 'locs: '.json_encode($LOC->getLocales()).',';
-    echo 'locale: "'.Settings::get('locale').'",';
-    echo 'charSet: "'.Settings::get('charset').'",';
+        echo 'locale: "'.Settings::get('locale').'",';
+        echo 'charSet: "'.Settings::get('charset').'",';
 	echo 'successMsg: "'.T("Update successful").'",';
 	?>
 
@@ -20,8 +20,9 @@ var set = {
 		set.listSrvr = '../shared/listSrvr.php'
 
 		set.initWidgets();
-        $('#charset').val(set.charSet);
+        	$('#charset').val(set.charSet);
 
+		list.getDayList($('#first_day_of_week'));
 		$('#editSettingsForm').on('submit',null,set.doUpdate);
 
 		set.resetForms()
