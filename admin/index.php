@@ -13,7 +13,7 @@ require_once(REL(__FILE__, "../shared/logincheck.php"));
 Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
-    <h1><img src="../images/admin.png" border="0" width="30" height="30" align="top"> '.T("Admin").'</h1>
+    <h1><img src="../images/admin.png" border="0" width="30" height="30" align="top"> <?php echo T("Admin") ?></h1>
     <fieldset> <?php echo T("adminIndexDesc"); ?> </fieldset>
 
 <?php
