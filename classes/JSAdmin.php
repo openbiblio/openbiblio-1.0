@@ -39,6 +39,7 @@ class Admin {
     	$('.reqd sup').css('color','red');
     	$('#updateMsg').hide();
 
+	$('.newBtn').click(function(e) {e.preventDefault();});
     	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
     	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
     	//$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
@@ -227,9 +228,12 @@ class Admin {
     	$('#msgDiv').hide();
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
-    	var parms = $('#editForm').serialize();
+    	var parms = this.doGatherParams();
     	$.post(this.url, parms, $.proxy(this.addHandler,this), 'json');
     	return false;
+    };
+    doGatherParams () {
+        return $('#editForm').serialize();
     };
     addHandler (response) {
         //console.log(response);
@@ -242,7 +246,7 @@ class Admin {
     	$('#msgDiv').hide();
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
-    	var parms = $('#editForm').serialize();
+	var parms = this.doGatherParams();
     	if ($('#newImageFile').val() != '')
     		parms += '&image_file='+$('#newImageFile').val();
     	$.post(this.url, parms, $.proxy(this.updateHandler, this));

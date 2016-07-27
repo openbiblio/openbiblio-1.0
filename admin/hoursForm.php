@@ -56,8 +56,8 @@
 	<legend id="editHdr"></legend>
 	<ul id="editTbl">
     <li>
-      <label for="site"><?php echo T("Site"); ?>:</label>
-      <select id="site" name="site" required aria-required="true"></select>
+      <label for="siteid"><?php echo T("Site"); ?>:</label>
+      <select id="siteid" name="siteid" required aria-required="true"></select>
       <span class="reqd">*</span>    
     </li>
     <li>
@@ -66,12 +66,12 @@
       <span class="reqd">*</span>    
     </li>
     <li>
-      <label for="start"><?php echo T("Opening"); ?>:</label>
-      <input id="start" name="start" type="time" />
+      <label for="start_time"><?php echo T("Opening"); ?>:</label>
+      <input id="start_time" name="start_time" type="time" />
     </li>
     <li>
-      <label for="end"><?php echo T("Closing"); ?>:</label>
-      <input id="end" name="end" type="time" />
+      <label for="end_time"><?php echo T("Closing"); ?>:</label>
+      <input id="end_time" name="end_time" type="time" />
     </li>
     <li>
       <label for="public_note"><?php echo T("Public note"); ?>:</label>
@@ -86,8 +86,9 @@
       <input id="by_appointment" name="by_appointment" type="checkbox" />
     </li>
     <li>
-			<input type="hidden" id="cat" name="cat" value="hours">
-			<input type="hidden" id="mode" name="mode" value="">
+			<input type="hidden" id="cat" name="cat" value="hours" />
+			<input type="hidden" id="hourid" name="hourid" value="" />
+			<input type="hidden" id="mode" name="mode" value="" />
     </li>
 	</ul>
 	<ul id="btnRow">

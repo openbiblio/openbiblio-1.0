@@ -21,7 +21,7 @@
 		case 'hours':
 			require_once(REL(__FILE__, "../model/OpenHours.php"));
 			$ptr = new OpenHours;
-			exit;
+			break;
 		case 'media':
 			require_once(REL(__FILE__, "../model/MediaTypes.php"));
 			$ptr = new MediaTypes;
@@ -80,8 +80,8 @@
 		  $cals = array();
 			$set = $ptr1->getAll('description');
 			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
-			  $cals[] = $row;
+            		foreach ($set as $row) {
+				$cals[] = $row;
 			}
 			echo json_encode($cals);
 			break;
@@ -89,20 +89,18 @@
 	  #-.-.-.-.-.- Collections -.-.-.-.-.-.-
 		case 'getCirc_collect':
 			$ptr = new CircCollections;
-		    $colls = array();
+		    	$colls = array();
 			$set = $ptr->getAll('code');
-			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
-			  $colls[] = $row;
+            		foreach ($set as $row) {
+				$colls[] = $row;
 			}
 			echo json_encode($colls);
 			break;
 		case 'getDist_collect':
 			$ptr = new DistCollections;
-		    $colls = array();
+		    	$colls = array();
 			$set = $ptr->getAll('code');
-			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
+            		foreach ($set as $row) {
 			  $colls[] = $row;
 			}
 			echo json_encode($colls);
@@ -115,9 +113,8 @@
 			$ptr = new Collections;
 		    $colls = array();
 			$set = $ptr->getAllWithStats();
-			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
-			  $colls[] = $row;
+            		foreach ($set as $row) {
+				$colls[] = $row;
 			}
 			echo json_encode($colls);
 			break;
@@ -193,8 +190,7 @@
 		case 'getAll_mbrFlds':
 			$flds = array();
 			$set = $ptr->getAll();
-			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
+            		foreach ($set as $row) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
@@ -218,19 +214,39 @@
 			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;
 
+	  #-.-.-.-.-.- Hours -.-.-.-.-.-.-
+		case 'getAll_hours':
+			$flds = array();
+			$set = $ptr->getAll();
+            		foreach ($set as $row) {
+			  $flds[] = $row;
+			}
+			echo json_encode($flds);
+			break;
+		case 'addNew_hours':
+			$rslt = $ptr->insert_el($_POST);
+            		echo json_encode($rslt);
+			break;
+		case 'update_hours':
+			$errs = $ptr->update_el(array(
+				'hourid'=>@$_POST["hourid"],
+			));
+			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			break;
+
 	  #-.-.-.-.-.- Member Type Classification -.-.-.-.-.-.-
 		case 'getAll_mbrTypes':
 			$flds = array();
 			$set = $ptr->getAll();
 			//while ($row = $set->fetch_assoc()) {
-            foreach ($set as $row) {
-			  $flds[] = $row;
+            		foreach ($set as $row) {
+		 		$flds[] = $row;
 			}
 			echo json_encode($flds);
 			break;
 		case 'addNew_mbrTypes':
 			$rslt = $ptr->insert_el($_POST);
-            echo json_encode($rslt);
+            		echo json_encode($rslt);
 			break;
 		case 'update_mbrTypes':
 			$errs = $ptr->update_el(array(

@@ -3,9 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-require_once(REL(__FILE__, "../classes/DmTable.php"));
+require_once(REL(__FILE__, "../classes/DBTable.php"));
 
-class OpenHours extends DmTable {
+class OpenHours extends DBTable {
 	public function __construct() {
 		parent::__construct();
 		$this->setName('open_hours');
@@ -20,5 +20,17 @@ class OpenHours extends DmTable {
 			'private_note'=>'string',
 		));
 		$this->setKey('hourid');
+	}
+
+	protected function validate_el($rec, $insert) {
+                $errors = array();
+        // check for missing entries
+                foreach ($this->reqFields as $req) {
+                        if ($insert and !isset($rec[$req])
+                                        or isset($rec[$req]) and $rec[$req] == '') {
+                                $errors[] = new FieldError($req, T("Required field missing"));
+                        }
+                }
+                return $errors;
 	}
 }

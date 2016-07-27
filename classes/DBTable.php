@@ -15,7 +15,7 @@ require_once(REL(__FILE__, '../classes/Queryi.php'));
 abstract class DBTable extends Queryi {
 	protected $name;
 	protected $fields = array();
-    protected $reqFields = array();
+        protected $reqFields = array();
 	protected $key = array();
 	protected $sequence = NULL;
 	protected $iter = NULL;
