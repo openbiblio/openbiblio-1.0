@@ -1,4 +1,4 @@
-<?php
+,<?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
@@ -12,20 +12,27 @@ class CircCollections extends DBTable {
 		$this->setFields(array(
 			'code'=>'number',
 			'days_due_back'=>'number',
-			'daily_late_fee'=>'number',
+			'minutes_due_back'=>'number',
+			'regular_late_fee'=>'number',
+			'due_date_calculator'=>'string',
+			'minutes_before_closing'=>'number',
+			'important_date'=>'date',
+			'important_date_purpose'=>'string',
+			'number_of_minutes_between_fee_applications'=>'number',
+			'number_of_minutes_in_grace_period'=>'number',
 		));
 		$this->setKey('code');
 		$this->setForeignKey('code', 'collection_dm', 'code');
 	}
 	protected function validate_el($rec, $insert) {
 		$errors = array();
-		foreach (array('code', 'days_due_back', 'daily_late_fee') as $req) {
+		foreach (array('code', 'days_due_back', 'minutes_due_back', 'due_date_calculator', 'regular_late_fee') as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
 				$errors[] = new FieldError($req, T("Required field missing"));
 			}
 		}
-		$positive = array('days_due_back', 'daily_late_fee');
+		$positive = array('days_due_back', 'regular_late_fee');
 		foreach ($positive as $f) {
 			if (!is_numeric($rec[$f])) {
 				$errors[] = new FieldError($f, T("Field must be numeric"));
