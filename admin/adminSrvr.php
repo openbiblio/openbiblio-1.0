@@ -393,6 +393,7 @@
 			echo json_encode($sites);
 			break;
 		case 'addNew_sites':
+ini_set('display_errors', 1);
 			echo $ptr->insert($_POST);
 			break;
 		case 'update_sites':

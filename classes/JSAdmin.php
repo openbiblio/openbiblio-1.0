@@ -229,11 +229,19 @@ class Admin {
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
     	var parms = this.doGatherParams();
-    	$.post(this.url, parms, $.proxy(this.addHandler,this), 'json');
+    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.addHandler,this), 'json');
     	return false;
     };
     doGatherParams () {
-        return $('#editForm').serialize();
+        return $('#editForm').serializeArray();
+    };
+    doAssembleParams (params) {
+        for (var i = (params.length-1); i >= 0; i--) {
+            if ((params[i].value.length < 1)) {
+                 params.splice(i, 1);
+            }
+        }
+	return jQuery.param(params);
     };
     addHandler (response) {
         //console.log(response);
@@ -249,7 +257,7 @@ class Admin {
 	var parms = this.doGatherParams();
     	if ($('#newImageFile').val() != '')
     		parms += '&image_file='+$('#newImageFile').val();
-    	$.post(this.url, parms, $.proxy(this.updateHandler, this));
+    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this));
     	return false;
     };
     updateHandler (response) {

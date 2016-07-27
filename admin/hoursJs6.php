@@ -48,7 +48,7 @@ class Hour extends Admin {
 				params[i].value = ('on' == params[i].value) ? 1 : 0;
 			}
 		}
-		return jQuery.param(params);
+		return params;
     	}
 }
 
