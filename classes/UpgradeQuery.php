@@ -575,7 +575,7 @@ class UpgradeQuery extends InstallQuery {
 		// new table from full install - images
         
         // lookup is extention tables, may be absent from 0.7.x db
-		$lookup = $this->_act('replace into '.$origName.'.lookup_settings'
+		$lookup = $this->act('replace into '.$origName.'.lookup_settings'
 								.' select * from '.$copyName.'.lookup_settings' );
         if ($lookup != 0) {
 		$this->act('replace into '.$origName.'.lookup_hosts'

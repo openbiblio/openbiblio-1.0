@@ -4,14 +4,14 @@ require_once("../model/Staff.php");
 
 class ObServer {
         public static function check_hmac() {
-                $headers = ObServer::get_headers();
-                if(isset($headers['Authorization'])){
+            $headers = ObServer::get_headers();
+                if(isset($headers['Authcheck'])){
                         $matches = array();
-                        preg_match('/Token token="(.*)"/', $headers['Authorization'], $matches);
+                        preg_match('/Token token="(.*)"/', $headers['Authcheck'], $matches);
                         if(isset($matches[1])){
-                                $token = $matches[1];
+                            $token = $matches[1];
                         } else {
-                                return 0;
+                            return 0;
                         }
                 }
                 if (Settings::get('hmac_timeout')) {

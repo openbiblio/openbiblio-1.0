@@ -25,6 +25,7 @@
 <h3><?php echo T("Current Members"); ?></h3>
 
 <!-- ------------------------------------------------------------------------ -->
+<p id="errSpace" class="error"></p>
 <div id="searchDiv">
 	<form id="barCdSrchForm" name="barCdSrchForm" action="">
 	<fieldset>
@@ -181,8 +182,8 @@
 	<tr>
 	  <td colspan="3">
 			<fieldset>
-				<table id="listTbl">
-					<tbody id="srchRslts" class="striped">filled by server</tbody>
+				<table id="listTbl" width="100%">
+					<tbody id="srchRslts" class="striped"><tr><td>filled by server</td></tr></tbody>
 				</table>
 			</fieldset>
 		</td>

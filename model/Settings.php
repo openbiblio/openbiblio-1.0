@@ -69,7 +69,7 @@ class Settings extends Queryi
 		return $aray;
 	}
 
-    public function getAll() {
+    public static function getAll() {
 		global $_settings_cache;
 		return $_settings_cache;
 	}

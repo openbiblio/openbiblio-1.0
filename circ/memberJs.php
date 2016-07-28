@@ -224,37 +224,48 @@ var mf = {
 			type: 'POST',
 			dataType: 'json',
 			headers: {
-				'Authorization': 'Token token="<?php echo hash_hmac('md5', 'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp, $_SESSION['secret_key']); ?>"'
+				'Authcheck':'Token token="<?php echo hash_hmac('md5', 'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp, $_SESSION['secret_key']); ?>"'
 			},
 			data: params,
-			success: function (results) {
-				var html = '';
-				for (var i in results) {
-					var mbr = results[i];
-					html += '<tr>\n';
-					html += '	<td>'+mbr.barcode_nmbr+'</td>\n';
-					if (mbr.hasOwnProperty('first_legal_name') || mbr.hasOwnProperty('last_legal_name')) {
-						html += '	<td><i>'+mf.doConcatLegalName(mbr)+', <?php echo T('see'); ?> </i><a href="#" id="'+mbr.mbrid+'">'+mbr.last_name+', '+mbr.first_name+'</a></td>\n';
+			error: function(xhr, textStatus, errorThrown) {
+				$('#errSpace').html('Error ' + xhr.responseText).show();
+			},
+				success: function (results) {
+					console.log("Done with " + results);
+					var html = '';
+					if (results.length == 0) {
+						html = '<tr><td><?php echo T('no results') ?></td></tr>';
 					} else {
-						html += '	<td><a href="#" id="'+mbr.mbrid+'">'+mbr.last_name+', '+mbr.first_name+'</a></td>\n';
+						for (var i in results) {
+							var mbr = results[i];
+							html += '<tr>\n';
+							html += '	<td>' + mbr.barcode_nmbr + '</td>\n';
+							if (mbr.hasOwnProperty('first_legal_name') || mbr.hasOwnProperty('last_legal_name')) {
+								html += '	<td><i>' + mf.doConcatLegalName(mbr) + ', <?php echo T('see'); ?> </i><a href="#" id="' + mbr.mbrid + '">' + mbr.last_name + ', ' + mbr.first_name + '</a></td>\n';
+							} else {
+								html += '	<td><a href="#" id="' + mbr.mbrid + '">' + mbr.last_name + ', ' + mbr.first_name + '</a></td>\n';
+							}
+							html += '	<td>' + mbr.home_phone + '</td>\n';
+							html += '</tr>\n';
+						}
 					}
-					html += '	<td>'+mbr.home_phone+'</td>\n';
-					html += '</tr>\n';
+
+					$('#srchRslts').html(html);
+					$('#searchDiv').hide();
+					$('#listDiv').show();
+					$('#srchRslts tr:odd td').addClass('altBG');
+					$('#srchRslts tr:even td').addClass('altBG2');
+					$('#srchRslts a').on('click', null, function (e) {
+						e.preventDefault();
+						e.stopPropagation();
+						mf.mbrid = e.target.id;
+						mf.doFetchMember();
+						$('#listDiv').hide();
+					});
 				}
-				$('#srchRslts').html(html);
-	    			$('#searchDiv').hide();
-		  		$('#listDiv').show();
-				$('#srchRslts tr:odd td').addClass('altBG');
-				$('#srchRslts tr:even td').addClass('altBG2');	
-				$('#srchRslts a').on('click',null,function (e) {
-					e.preventDefault(); e.stopPropagation();
-					mf.mbrid = e.target.id;
-					mf.doFetchMember();
-		  		$('#listDiv').hide();
-				});			
-		}});
+			});
 	},
-	
+
 	handleMbrResponse: function (jsonInpt) {
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
 				$('#errSpace').html(jsonInpt).show();
