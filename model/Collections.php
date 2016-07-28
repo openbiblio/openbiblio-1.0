@@ -42,7 +42,7 @@ class CircCollections extends DBTable {
 				. 'END AS due FROM collection_circ WHERE code=%N ',
 		);
 		$this->calculators[] = array(
-			'code' => 'simple',
+			'code' => 'at_midnight',
 			'required_params' => array('calendarid', 'calenderid', 'collectionid'),
 			'calculation' => 'SELECT CASE '
 				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
