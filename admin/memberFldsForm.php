@@ -62,6 +62,7 @@
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
 			<input type="hidden" id="cat" name="cat" value="mbrFlds">
+			<input type="hidden" id="default_flg" name="default_flg" value="Y">
 		</li>
 	</ul>
 	<ul id="btnRow">

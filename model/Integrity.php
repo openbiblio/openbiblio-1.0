@@ -65,6 +65,15 @@ class Integrity extends Queryi{
 					. 'add column secret_key char(32) NOT NULL'
 			);
 
+
+			$this->checks[] = array(
+				'error' => T("Member Fields DM Table should allow null values for default_flg field"),
+				'countSql' => 'SELECT COUNT(COLUMN_NAME) '
+					. 'FROM information_schema.COLUMNS '
+					. "WHERE TABLE_NAME='member_fields_dm' AND COLUMN_NAME='default_flg' AND IS_NULLABLE='NO'",
+				'fixSql' => 'ALTER TABLE member_fields_dm MODIFY default_flg char(1) NULL'
+			);
+
 			$this->checks[] = array(
 				'error' => T("Staff member does not have secret key"),
 				'countSql' => 'select ( select count(*) as count from staff as s '

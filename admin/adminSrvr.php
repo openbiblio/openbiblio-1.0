@@ -31,7 +31,7 @@
 			$ptr = new MemberTypes;
 			break;
 		case 'mbrFlds':
-			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
+			require_once(REL(__FILE__, "../model/MemberCustomFields_DM.php"));
 			$ptr = new MemberCustomFields_DM;
 			break;
 		case 'opts':
