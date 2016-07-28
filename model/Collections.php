@@ -23,6 +23,37 @@ class CircCollections extends DBTable {
 		));
 		$this->setKey('code');
 		$this->setForeignKey('code', 'collection_dm', 'code');
+		$this->calculators = [];
+
+		/*
+		If you would like to design your own way of calculating due dates, enter it as an SQL query below
+		*/
+		$this->calculators[] = array(
+			'code' => 'simple',
+			'required_params' => array('calendarid', 'calenderid', 'collectionid'),
+			'calculation' => 'SELECT CASE '
+				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
+				. "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
+				. 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + 59 minute) FROM calendar, collection_circ '
+				. 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.hours_due_back minute) '
+				. "AND calendar.calendar=%N AND calendar.open='Yes' "
+				. 'ORDER BY date ASC LIMIT 1) '
+				. 'ELSE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
+				. 'END AS due FROM collection_circ WHERE code=%N ',
+		);
+		$this->calculators[] = array(
+			'code' => 'simple',
+			'required_params' => array('calendarid', 'calenderid', 'collectionid'),
+			'calculation' => 'SELECT CASE '
+				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
+				. "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
+				. 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + 59 minute) FROM calendar, collection_circ '
+				. 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.hours_due_back minute) '
+				. "AND calendar.calendar=%N AND calendar.open='Yes' "
+				. 'ORDER BY date ASC LIMIT 1) '
+				. 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute)  + INTERVAL 23 hour + 59 minute) '
+				. 'END AS due FROM collection_circ WHERE code=%N ',
+		);
 	}
 	protected function validate_el($rec, $insert) {
 		$errors = array();
@@ -41,6 +72,13 @@ class CircCollections extends DBTable {
 			}
 		}
 		return $errors;
+	}
+	public function list_calculators() {
+		$calc_codes = [];
+		foreach ($this->calculators as $c) {
+			$calc_codes[] = $c['code'];
+		}
+		return $calc_codes;
 	}
 }
 
