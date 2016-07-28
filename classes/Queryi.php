@@ -220,16 +220,21 @@ class Queryi
 	 * @access public
 	 ****************************************************************************
 	 */
+
 	public function mkSQL() {
+		return Queryi::mkSQLFromArray(func_get_args());
+	}
+
+	public function mkSQLFromArray($params) {
 		$badSqlFmt = T("Bad mkSQL() format string.");
 
-		$n = func_num_args();
+		$n = count($params);
 		if ($n < 1) {
 			Fatal::internalError(T("Not enough arguments given to mkSQL()."));
 		}
 		$i = 1;
 		$SQL = "";
-		$fmt = func_get_arg(0);
+		$fmt = $params[0];
 		while (strlen($fmt)) {
 			$p = strpos($fmt, "%");
 			if ($p === false) {
@@ -246,7 +251,7 @@ class Queryi
 				if ($i >= $n) {
 					Fatal::internalError(T("Not enough arguments given to mkSQL()."));
 				}
-				$arg = func_get_arg($i++);
+				$arg = $params[$i++];
 				switch ($fmt{$p+1}) {
 				case '!':
 					/* very dangerous, but sometimes very useful -- be careful */
