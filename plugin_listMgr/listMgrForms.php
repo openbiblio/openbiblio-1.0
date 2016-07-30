@@ -41,6 +41,7 @@
 			<br />
 			<!--label for="inptType_cd" >Inputs:<select id="inptTyp_cd" ></select></label-->
 			<label for="validation_cd" >Validations:<select id="validation_cd" ></select></label>
+			<label for="calc_cd" >Due date calculators:<select id="calc_cd" ></select></label>
 		</fieldset>
 	</section>
 	

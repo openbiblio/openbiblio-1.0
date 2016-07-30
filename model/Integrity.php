@@ -118,6 +118,15 @@ class Integrity extends Queryi{
 					. 'add column number_of_minutes_in_grace_period int DEFAULT 0, '
 					. 'change daily_late_fee regular_late_fee decimal(4,2) NOT NULL'
 			);
+			$this->checks[] = array(
+        			'error' => T("Collection circ table is missing important circulation features"),
+        			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                			. 'FROM information_schema.COLUMNS '
+                			. 'WHERE TABLE_NAME = "collection_circ"'
+                			. 'AND COLUMN_NAME = "pre_closing_padding"',
+        			'fixSql' => 'alter table collection_circ '
+					. 'add column pre_closing_padding int DEFAULT 0 '
+			);
 
 			$this->checks[] = array(
 				'error' => T("Hours not attached to sites"),

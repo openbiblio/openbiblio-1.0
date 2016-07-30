@@ -63,19 +63,19 @@
 	case 'getCollectionList':
 		require_once(REL(__FILE__, "../model/Collections.php"));
 		$db = new Collections;
-        if ($_POST['select']=='true') {
-            //echo "select list wanted";
-		    $list = getDmData($db, true);
-        } else {
-            //echo "simple list wanted";
-		    $list = getDmData($db, false);
-        }
+        	if ($_POST['select']=='true') {
+            		//echo "select list wanted";
+		    	$list = getDmData($db, true);
+        	} else {
+            		//echo "simple list wanted";
+		    	$list = getDmData($db, false);
+        	}
 		echo json_encode($list);
 	  break;
 	case 'getDefaultCollection':
 		require_once(REL(__FILE__, "../model/Collections.php"));
-        $db = new Collections;
-        $rslt = $db->getDefault();
+        	$db = new Collections;
+        	$rslt = $db->getDefault();
 		echo json_encode($rslt);
         break;
 
@@ -241,6 +241,12 @@
 		require_once(REL(__FILE__, "../model/Week.php"));
 		$db = new Week;
 		echo json_encode($db->get_days());
+		break;
+
+	case 'getDueDateCalculators':
+		require_once(REL(__FILE__, '../model/Collections.php'));
+		$coll = new CircCollections;
+		echo json_encode($coll->list_calculators());
 		break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//

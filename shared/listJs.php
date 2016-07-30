@@ -58,6 +58,19 @@ var list = {
         }, 'json');
     },
 
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getDueDateCalculatorList: function (where, callback) { 
+        $.post(list.server, {mode:'getDueDateCalculators'}, function(data){
+    		    var html = '';
+            for (var n in data) {
+        			  html+= '<option value="'+data[n]+'" >'+data[n]+'</option>';
+    		    }
+            where.html(html);
+            callback();
+        }, 'json');
+    },
+
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getLocaleList: function (where) {
     	  $.post(list.server, {'mode':'getLocaleList'}, function(data){

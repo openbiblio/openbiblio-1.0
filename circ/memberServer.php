@@ -42,7 +42,6 @@
 		case 'addNewMember':
 		case 'updateMember':
 		case 'd-3-L-3-tMember':
-ini_set('display_errors', 1);
 			require_once(REL(__FILE__, "../model/Members.php"));
 			$members = new Members;
 			require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
@@ -59,7 +58,7 @@ ini_set('display_errors', 1);
 			ini_set('display_errors', '1');
 			require_once(REL(__FILE__, "../model/Copies.php"));
 			$copies = new Copies;
-		    require_once(REL(__FILE__, "../classes/Copy.php"));
+			require_once(REL(__FILE__, "../classes/Copy.php"));
 			require_once(REL(__FILE__, "../model/Biblios.php"));
 			$biblios = new Biblios;
 			break;
@@ -79,7 +78,7 @@ ini_set('display_errors', 1);
 			$holds = new Holds;
 			require_once(REL(__FILE__, "../model/Copies.php"));
 			$copies = new Copies;
-		    require_once(REL(__FILE__, "../classes/Copy.php"));
+			require_once(REL(__FILE__, "../classes/Copy.php"));
 			require_once(REL(__FILE__, "../classes/Biblio.php"));
 			break;
 	}

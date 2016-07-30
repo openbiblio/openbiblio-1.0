@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.collection_circ (
   regular_late_fee decimal(4,2) NOT NULL,
   number_of_minutes_between_fee_applications int NOT NULL DEFAULT 1440,
   number_of_minutes_in_grace_period int DEFAULT 0,
+  pre_closing_padding int DEFAULT 0,
   PRIMARY KEY (code),
   CONSTRAINT chk_time_between_fee_applications CHECK (number_of_minutes_between_fee_applications>0)
 );

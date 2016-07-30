@@ -40,6 +40,7 @@ var pdl = {
 		pdl.fetchSiteList();
 		pdl.fetchStateList();
 		pdl.fetchValidationList();
+		pdl.fetchDueDateCalculatorList();
 		//pdl.fetchInputTypes();
 
 		$('#rsltsArea').show();
@@ -64,6 +65,9 @@ var pdl = {
 	},
 	fetchSiteList: function () {
         list.getSiteList($('#site_cd'));
+	},
+	fetchDueDateCalculatorList: function () {
+	list.getDueDateCalculatorList($('#calc_cd'));
 	},
 	fetchValidationList: function () {
         list.getPullDownList('Validation', $('#validation_cd'));

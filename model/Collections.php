@@ -20,39 +20,103 @@ class CircCollections extends DBTable {
 			'important_date_purpose'=>'string',
 			'number_of_minutes_between_fee_applications'=>'number',
 			'number_of_minutes_in_grace_period'=>'number',
+			'pre_closing_padding'=>'number',
 		));
 		$this->setKey('code');
 		$this->setForeignKey('code', 'collection_dm', 'code');
 		$this->calculators = [];
 
 		/*
-		If you would like to design your own way of calculating due dates, enter it as an SQL query below
+		/ If you would like to design your own way of calculating due dates, enter it below as an array with the
+		/ following indices:
+		/ 'code' => the short name for your calculator.  This is what an end user will select to choose your calculator
+		/ 'calculation' => an SQL query that returns a single timestamp value in a column named "due".  This calculation
+		/	will be run through OpenBiblio's mkSQL function, which will substitute in any params that you may need.
+		/ 'required_params' => an array of labels that will help the calculator get the parameters that it needs.
+		/ 	For example, if your calculator includes 'required_params' => array('calendarid'), when you call
+		/	getDueDate(), it will automagically get the id for your current site's calendar.
+		/	Valid values in this array are: calendarid, siteid, collectionid, bibid
+		/ 
 		*/
 		$this->calculators[] = array(
 			'code' => 'simple',
 			'required_params' => array('calendarid', 'calenderid', 'collectionid'),
 			'calculation' => 'SELECT CASE '
-				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
+				// If due date would fall on a day the Library is closed, instead, move to 11:59 on the next open day
+				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
 				. "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
-				. 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + 59 minute) FROM calendar, collection_circ '
-				. 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.hours_due_back minute) '
+				. 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + INTERVAL 59 minute) FROM calendar, collection_circ '
+				. 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.minutes_due_back minute) '
 				. "AND calendar.calendar=%N AND calendar.open='Yes' "
 				. 'ORDER BY date ASC LIMIT 1) '
-				. 'ELSE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
+				// Otherwise, just add the requested days and minutes to the current time to arrive at the due date
+				. 'ELSE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
 				. 'END AS due FROM collection_circ WHERE code=%N ',
 		);
 		$this->calculators[] = array(
 			'code' => 'at_midnight',
 			'required_params' => array('calendarid', 'calenderid', 'collectionid'),
 			'calculation' => 'SELECT CASE '
-				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute) '
+				// If due date would fall on a day the Library is closed, instead, move to 11:59 on the next open day
+				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
+				. 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
 				. "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
-				. 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + 59 minute) FROM calendar, collection_circ '
-				. 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.hours_due_back minute) '
+				. 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + INTERVAL 59 minute) FROM calendar, collection_circ '
+				. 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.minutes_due_back minute) '
 				. "AND calendar.calendar=%N AND calendar.open='Yes' "
 				. 'ORDER BY date ASC LIMIT 1) '
-				. 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL hours_due_back minute)  + INTERVAL 23 hour + 59 minute) '
+				// Otherwise, just set to 11:59pm on the day the due date would normally fall
+				. 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute)  + INTERVAL 23 hour + 59 minute) '
 				. 'END AS due FROM collection_circ WHERE code=%N ',
+		);
+                $this->calculators[] = array(
+                        'code' => 'before_we_close',
+                        'required_params' => array('calendarid', 'calenderid', 'siteid', 'collectionid'),
+                        'calculation' => 'SELECT CASE '
+				// Check if due date would fall on a day the Library is closed
+                                . 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
+                                . "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
+				// If the library will indeed be closed,  find the closest previous open day with open hours
+				// that are not by appointment
+				// then set the due date to X minutes before the library closes on the open day we've identified
+				. 'THEN (SELECT (calendar.date + '
+				. 'INTERVAL TRUNCATE((open_hours.end_time / 100), 0) hour + INTERVAL (open_hours.end_time %% 100) minute - '
+				. 'INTERVAL pre_closing_padding minute) '
+				. 'FROM calendar, open_hours, collection_circ '
+				. 'WHERE open="Yes" AND DAYOFWEEK(calendar.date) = open_hours.day'
+				. 'AND NOT open_hours.by_appointment AND calendar.calendar=%N AND open_hours.siteid=%N '
+				. 'AND calendar.date<(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.minutes_due_back minute) '
+				. 'ORDER BY date DESC, open_hours.end_time DESC LIMIT 1) '
+				// Otherwise, set to X minutes before closing on the calculated date
+                                . 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute)  + '
+				. 'INTERVAL TRUNCATE((open_hours.end_time / 100), 0) hour + INTERVAL (open_hours.end_time %% 100) minute - '
+				. 'INTERVAL pre_closing_padding minute) '
+                                . 'END AS due FROM collection_circ WHERE code=%N ',
+		);
+/*
+                $this->calculators[] = array(
+                        'code' => 'keep_it_longer',
+                        'required_params' => array('calendarid', 'calenderid', 'collectionid'),
+                        'calculation' => 'SELECT CASE '
+                                . 'WHEN (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
+                                . "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No')) "
+				// If it lands in a closed hour  -- not sure this is working yet, and now() needs to be replaced with the actual calculated date
+                                . 'OR 1 IN  (SELECT 1 FROM open_hours WHERE (EXTRACT(HOUR FROM now() * 100) + EXTRACT(MINUTE FROM now()) > start_time) '
+				. 'AND (EXTRACT(HOUR FROM now() * 100) + EXTRACT(MINUTE FROM now()) < end_time) AND DAYOFWEEK(now())=open_hours.day) '
+				// THen select next closed time -- still needs work
+                                . 'THEN (SELECT (TIMESTAMP(calendar.date) + INTERVAL 23 hour + INTERVAL 59 minute) FROM calendar, collection_circ '
+                                . 'WHERE calendar.date>(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.minutes_due_back minute) '
+                                . "AND calendar.calendar=%N AND calendar.open='Yes' "
+                                . 'ORDER BY date ASC LIMIT 1) '
+                                . 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute)  + INTERVAL 23 hour + 59 minute) '
+                                . 'END AS due FROM collection_circ WHERE code=%N ',
+		);
+*/
+                $this->calculators[] = array(
+                        'code' => 'ask_me',
+                        'required_params' => array('calendarid', 'calenderid', 'collectionid'),
+			// Don't select a due date at this stage
+                        'calculation' => 'SELECT NULL AS due ',
 		);
 	}
 	protected function validate_el($rec, $insert) {
@@ -79,6 +143,46 @@ class CircCollections extends DBTable {
 			$calc_codes[] = $c['code'];
 		}
 		return $calc_codes;
+	}
+	public function propose_due_date($member_id, $copy_barcode) {
+		$calculated_date = NULL;
+		$copy = $this->select01($this->mkSQL('SELECT * FROM biblio_copy WHERE barcode_nmbr=%Q LIMIT 1', $copy_barcode));
+		$collection_circ = $this->select01($this->mkSQL('SELECT * FROM collection_circ WHERE code IN (SELECT collection_cd FROM biblio WHERE biblio.bibid=%N)  LIMIT 1', $copy['bibid']));
+		$calculator = $collection_circ['due_date_calculator'];
+		$important_date = $collection_circ['important_date'];
+		$important_date_purpose = $collection_circ['important_date_purpose'];
+
+		// Calculate a tentative due date
+		foreach ($this->calculators as $calc) {
+			if ($calculator == $calc['code']) {
+				$params = [];
+				foreach ($calc['required_params'] as $i) {
+					$params[] = $this->get_parameter_for_calculator($i, $member, $copy, $collection_circ);
+				}
+				$calculated_date = $this->select01($this->mkSQLFromArray(array_merge(array($calc['calculation']), $params)))['due'];
+			}
+		}
+
+		// Then check for important date conflicts
+		if ('ceiling_date' == $important_date_purpose && $important_date<$calculated_date) {
+			return $important_date;
+		} elseif ('specific_date' == $important_date_purpose) {
+			return $important_date;
+		}
+		return $calculated_date;
+	}
+
+	private function get_parameter_for_calculator($param, $member, $copy, $collection_circ) {
+		switch ($param) {
+			case 'calendarid':
+				return $this->select01($this->mkSQL('SELECT calendar FROM site WHERE siteid=%N', $_SESSION['current_site']))['calendar'];
+			case 'collectionid':
+				return $collection_circ['code'];
+			case 'siteid':
+				return $_SESSION['current_site'];
+			default:
+				return NULL;
+		}
 	}
 }
 
