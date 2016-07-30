@@ -67,14 +67,14 @@ class Copies extends CoreTable {
 	}
 	public function getByBarcode($barcode) {
 		$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
-        $rows = $rslt->fetchAll();
-        $numRows = count($rows);
+        	$rows = $rslt->fetchAll();
+        	$numRows = count($rows);
 		if ($numRows == 0) {
 			$barcode = $this->normalizeBarcode($barcode);
 			$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
 		}
-        $rows = $rslt->fetchAll();
-        $numRows = count($rows);
+        	$rows = $rslt->fetchAll();
+        	$numRows = count($rows);
 		if ($numRows == 0) {
 			return NULL;
 		} else if ($numRows == 1) {
@@ -92,11 +92,11 @@ class Copies extends CoreTable {
 	}
 */
 	public function getNewBarCode($width) {
-        $sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
+        	$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
  		$cpy = $this->select1($sql);
-        $nmbr = $cpy[0]['lastNmbr']+1;
-	    if(empty($width)) $w = 13; else $w = $width;
-        return sprintf("%0".$w."s",$nmbr);
+        	$nmbr = $cpy[0]['lastNmbr']+1;
+	    	if(empty($width)) $w = 13; else $w = $width;
+        	return sprintf("%0".$w."s",$nmbr);
 
         // LJ: Have changed the functionality, as the barcode is a varchar, and as such max gives a wrong value.
         // EDIT: leave it here, but it seems to have been a fault in my DB.
