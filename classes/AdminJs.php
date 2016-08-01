@@ -155,7 +155,7 @@ Admin.prototype.doEditFields = function (e) {
 	}
 	return false;
 };
-	
+
 Admin.prototype.showFields = function (item) {
     $('#fieldsHdr').html(this.editHdr);
     $('#addBtn').hide();

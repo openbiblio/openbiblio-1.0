@@ -66,16 +66,46 @@
             </li>
             <li>
               <label for="days_due_back" class="circOnly"><?php echo T("Days Due Back"); ?>:</label>
-              <input id="days_due_back" name="days_due_back" class="circOnly" type="number" size="3" min="1" max="365" required aria-required="true" />
+              <input id="days_due_back" name="days_due_back" class="circOnly" type="number" size="3" min="0" max="365" required aria-required="true" />
+        			<span class="reqd circOnly">*</span>
+            </li>
+            <li>
+              <label for="minutes_due_back" class="circOnly"><?php echo T("Minutes due back"); ?>:</label>
+              <input id="minutes_due_back" name="minutes_due_back" class="circOnly" type="number" size="4" min="0" max="1439" required aria-required="true" />
+        			<span class="reqd circOnly">*</span>
+            </li>
+            <li>
+              <label for="due_date_calculator" class="circOnly"><?php echo T("Due date calculator"); ?>:</label>
+              <select id="due_date_calculator" name="due_date_calculator" class="circOnly"> </select>
+        			<span class="reqd circOnly">*</span>
+            </li>
+            <li>
+              <label for="pre_closing_padding" class="circOnly"><?php echo T("Pre-closing padding"); ?>:</label>
+              <input id="pre_closing_padding" name="pre_closing_padding" class="circOnly" type="number" size="4" min="0" max="60" />
+            </li>
+            <li>
+              <label for="important_date" class="circOnly"><?php echo T("Important date"); ?>:</label>
+              <input id="important_date" name="important_date" class="circOnly" type="datetime"  />
+            </li>
+            <li>
+              <label for="important_date_purpose" class="circOnly"><?php echo T("Important date purpose"); ?>:</label>
+              <select id="important_date_purpose" name="important_date_purpose" class="circOnly" ></select>
+            </li>
+            <li>
+              <label for="regular_late_fee" class="circOnly"><?php echo T("Regular late fee"); ?>:</label>
+              <input id="regular_late_fee" name="regular_late_fee" class="circOnly" type="number" size="5" min="0" max="99.99" required aria-required="true" />
         			<span class="reqd circOnly">*</span>
         		</li>
             <li>
-              <label for="daily_late_fee" class="circOnly"><?php echo T("Daily Late Fee"); ?>:</label>
-              <input id="daily_late_fee" name="daily_late_fee" class="circOnly" type="number" size="5" min="0" max="99.99" required aria-required="true" />
-              <!--select id="daily_late_fee" name="daily_late_fee" class="circOnly" > </select-->
-        			<span class="reqd circOnly">*</span>
-        		</li>
             <li>
+              <label for="number_of_minutes_between_fee_applications" class="circOnly"><?php echo T("Minutes between fee applications"); ?>:</label>
+              <input id="number_of_minutes_between_fee_applications" name="number_of_minutes_between_fee_applications" class="circOnly" type="number" size="4" min="0" max="1439" required aria-required="true" />
+        			<span class="reqd circOnly">*</span>
+            </li>
+            <li>
+              <label for="number_of_minutes_in_grace_period" class="circOnly"><?php echo T("Minutes in grace period"); ?>:</label>
+              <input id="number_of_minutes_in_grace_period" name="number_of_minutes_in_grace_period" class="circOnly" type="number" size="4" min="0" max="60" />
+            </li>
               <label for="restock_threshold" class="distOnly"><?php echo T("Restock amount"); ?>:</label>
               <input id="restock_threshold" name="restock_threshold" class="distOnly" type="number" size="2" min="1" max="99" required aria-required="true" />
         			<span class="reqd distOnly">*</span>

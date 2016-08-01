@@ -25,7 +25,10 @@ class Col extends Admin {
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
     	this.noshows = [];
 
-	    this.fetchTypes();
+	this.fetchTypes();
+
+	list.getDueDateCalculatorList($('#due_date_calculator'));
+	list.getImportantDatePurposeList($('#important_date_purpose'));
 
         $('#type').on('change',null,$.proxy(function () {
       	     this.setTypeDisplay();
@@ -98,7 +101,13 @@ class Col extends Admin {
     	var circ = this.getCirc(this.crnt);
     	if (circ) {
     		$('#days_due_back').val(circ['days_due_back']);
-    		$('#daily_late_fee').val(circ['daily_late_fee']);
+    		$('#minutes_due_back').val(circ['minutes_due_back']);
+    		$('#regular_late_fee').val(circ['regular_late_fee']);
+		$('#due_date_calculator').val(circ['due_date_calculator']);
+		$('#important_date').val(circ['important_date']);
+		$('#important_date_purpose').val(circ['important_date_purpose']);
+		$('#number_of_minutes_between_fee_applications').val(circ['number_of_minutes_between_fee_applications']);
+		$('#pre_closing_padding').val(circ['pre_closing_padding']);
     	}
     	var dist = this.getDist(this.crnt);
     	if (dist) {

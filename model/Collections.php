@@ -144,6 +144,9 @@ class CircCollections extends DBTable {
 		}
 		return $calc_codes;
 	}
+	public function list_important_date_purposes() {
+		return Array('not enabled', 'ceiling_date', 'specific_date');
+	}
 	public function propose_due_date($member_id, $copy_barcode) {
 		$calculated_date = NULL;
 		$copy = $this->select01($this->mkSQL('SELECT * FROM biblio_copy WHERE barcode_nmbr=%Q LIMIT 1', $copy_barcode));

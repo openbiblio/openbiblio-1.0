@@ -249,6 +249,14 @@
 		echo json_encode($coll->list_calculators());
 		break;
 
+	case 'getImportantDatePurposes':
+		require_once(REL(__FILE__, '../model/Collections.php'));
+		$coll = new CircCollections;
+		echo json_encode($coll->list_important_date_purposes());
+		break;
+
+
+
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	default:
 		  echo "<h4>".T("invalid mode")."@listSrvr.php: &gt;".$_POST['mode']."&lt;</h4><br />";

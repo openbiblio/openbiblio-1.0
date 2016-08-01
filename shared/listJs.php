@@ -60,14 +60,22 @@ var list = {
 
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getDueDateCalculatorList: function (where, callback) { 
+    getDueDateCalculatorList: function (where) { 
         $.post(list.server, {mode:'getDueDateCalculators'}, function(data){
-    		    var html = '';
+    	    var html = '';
             for (var n in data) {
-        			  html+= '<option value="'+data[n]+'" >'+data[n]+'</option>';
-    		    }
+        	  html+= '<option value="'+data[n]+'" >'+data[n]+'</option>';
+    	    }
             where.html(html);
-            callback();
+        }, 'json');
+    },
+    getImportantDatePurposeList: function (where) { 
+        $.post(list.server, {mode:'getImportantDatePurposes'}, function(data){
+    	    var html = '';
+            for (var n in data) {
+        	  html+= '<option value="'+data[n]+'" >'+data[n]+'</option>';
+    	    }
+            where.html(html);
         }, 'json');
     },
 

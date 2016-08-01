@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS %prfx%.collection_circ (
   days_due_back smallint unsigned NOT NULL,
   minutes_due_back int unsigned NOT NULL,
   due_date_calculator varchar(30) NOT NULL DEFAULT 'simple',
-  minutes_before_closing smallint DEFAULT 0,
   important_date timestamp NULL DEFAULT NULL,
   important_date_purpose varchar(30) NOT NULL DEFAULT 'not enabled',
   regular_late_fee decimal(4,2) NOT NULL,
