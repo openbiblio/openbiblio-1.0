@@ -65,21 +65,21 @@
         			<span class="reqd">*</span>
             </li>
             <li>
-              <label for="days_due_back" class="circOnly"><?php echo T("Days Due Back"); ?>:</label>
-              <input id="days_due_back" name="days_due_back" class="circOnly" type="number" size="3" min="0" max="365" required aria-required="true" />
-        			<span class="reqd circOnly">*</span>
-            </li>
-            <li>
-              <label for="minutes_due_back" class="circOnly"><?php echo T("Minutes due back"); ?>:</label>
-              <input id="minutes_due_back" name="minutes_due_back" class="circOnly" type="number" size="4" min="0" max="1439" required aria-required="true" />
-        			<span class="reqd circOnly">*</span>
-            </li>
-            <li>
               <label for="due_date_calculator" class="circOnly"><?php echo T("Due date calculator"); ?>:</label>
               <select id="due_date_calculator" name="due_date_calculator" class="circOnly"> </select>
         			<span class="reqd circOnly">*</span>
             </li>
-            <li>
+            <li class="calculator-simple calculator-at_midnight calculator-before_we_close">
+              <label for="days_due_back" class="circOnly"><?php echo T("Days Due Back"); ?>:</label>
+              <input id="days_due_back" name="days_due_back" class="circOnly" type="number" size="3" min="0" max="365" required aria-required="true" />
+        			<span class="reqd circOnly">*</span>
+            </li>
+            <li class="calculator-simple calculator-at_midnight calculator-before_we_close">
+              <label for="minutes_due_back" class="circOnly"><?php echo T("Minutes due back"); ?>:</label>
+              <input id="minutes_due_back" name="minutes_due_back" class="circOnly" type="number" size="4" min="0" max="1439" required aria-required="true" />
+        			<span class="reqd circOnly">*</span>
+            </li>
+            <li class="calculator-before_we_close">
               <label for="pre_closing_padding" class="circOnly"><?php echo T("Pre-closing padding"); ?>:</label>
               <input id="pre_closing_padding" name="pre_closing_padding" class="circOnly" type="number" size="4" min="0" max="60" />
             </li>
