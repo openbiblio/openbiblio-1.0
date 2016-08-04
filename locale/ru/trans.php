@@ -207,6 +207,7 @@ $trans["Find Member by Name"] = "Поиск посетителя по имени
 $trans["FirstName"] = "имя";
 $trans["FIXED"] = "исправлено";
 $trans["ForDeveloperUse"] = "Для разработчиков";
+$trans['Friday'] = 'пятница';
 $trans["From Year"] = "С года";
 $trans["Function"] = "функция";
 ####### G #######
@@ -279,6 +280,7 @@ $trans["Member Search"] = "Поиск посетителей";
 $trans["Members"] = "Посетители";
 $trans["MemberType"] = "Тип посетителя";
 $trans["Member Types"] = "Типы посетителя";
+$trans['Monday'] = 'понедельник';
 $trans["More info"] = "Прочитайте больше";
 $trans["My Account"] = "Аккаунт";
 ####### N #######
@@ -324,6 +326,7 @@ $trans["Report Results"] = "Результаты отчета";
 $trans["Research"] = "Исследованние";
 $trans["Reverse"] = "в обратном порядке";
 ####### S #######
+$trans['Saturday'] = 'суббота';
 $trans["Save Changes"] = "Сохранить";
 $trans["School"] = "Школ";
 $trans["School Grade"] = "Класс";
@@ -360,16 +363,19 @@ $trans["Status"] = "Статус";
 $trans["Subject"] = "Предметная рубрика";
 $trans["Submit Request"] = "Отправить";
 $trans["Submit"] = "OK";
+$trans['Sunday'] = 'воскресенье';
 ####### T #######
 $trans["Tag"] = "метка";
 $trans["Take Photograph"] = "Сфотографировать";
 $trans["Test Load"] = "пробный прогон";
 $trans["Theme Name"] = "Название темы";
 $trans["Themes"] = "Оформление и темы";
+$trans['Thursday']  = 'четверг';
 $trans["Title"] = "Заглавие";
 $trans["To Year"] = "До года";
 $trans["Total"] = "Всего";
 $trans["Tools"] = "Системные инструменты";
+$trans['Tuesday'] = 'вторник';
 $trans["Type"] = "Тип";
 ####### U #######
 $trans["Unable to connect to database."] = "Нет подключения к базе данных.";
@@ -388,6 +394,7 @@ $trans["View Opac"] = "Электронный каталог";
 $trans["View"] = "Показать";
 ####### W #######
 $trans["WebServerInformation"] = "Про веб-сервер";
+$trans['Wednesday'] = 'среда';
 $trans["Welcome to the Library"] = "Добро пожаловать в библиотеку";
 ####### Y #######
 $trans["Yes"] = "Да";

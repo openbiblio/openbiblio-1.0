@@ -26,6 +26,7 @@ $trans['City'] = 'altepetl';
 ####### D #######
 ####### E #######
 ####### F #######
+$trans['Friday'] = 'quetzalcōātōnal';
 ####### G #######
 ####### H #######
 ####### I #######
@@ -35,6 +36,7 @@ $trans['City'] = 'altepetl';
 $trans['LastName'] = 'tzonquīzcā';
 $trans['Library'] = 'amoxpialoyan';
 ####### M #######
+$trans['Monday'] = 'mētztlitōnal';
 ####### N #######
 $trans['No'] = 'Axcanah';
 ####### O #######
@@ -43,12 +45,17 @@ $trans['No'] = 'Axcanah';
 ####### R #######
 $trans['results found'] = 'pilachiamoxtzin tlen moahcic';
 ####### S #######
+$trans['Saturday'] = 'tlāloctitōnal';
+$trans['Search'] = 'xictemo';
 $trans['Site'] = 'amoxpialoyan';
-$trans['Site'] = 'xictemo';
+$trans['Sunday'] = 'tōnatiuhtōnal';
 ####### T #######
+$trans['Thursday'] = 'tezcatlipotōnal';
+$trans['Tuesday'] = 'huītzilōpōchtōnal';
 ####### U #######
 ####### V #######
 ####### W #######
+$trans['Wednesday'] = 'yacatlipotōnal';
 $trans['Welcome to the Library'] = 'Pialli';
 ####### Y #######
 $trans['Yes'] = 'Quema';
