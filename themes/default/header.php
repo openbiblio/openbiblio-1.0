@@ -2,9 +2,12 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+ini_set('display_errors', 1);
 
 	//include(REL(__FILE__,"header_top.php"));
+	include(REL(__FILE__,"../../model/OpenHours.php"));
 	include(REL(__FILE__,"../../shared/header_top.php"));
+	$open_hours = new OpenHours;
 
 	## ---------------------------------------------------------------------
 	## --- added plugin support -- Fred -----------------------
@@ -45,7 +48,8 @@
 				//	echo "<br />" . T("Staff Interface");
 				if (Settings::get('show_lib_info') == 'Y') {
 					echo "<hr class=\"hdrSpacer\"> \n";
-					echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
+					//echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
+					echo $open_hours->displayOpenHours();
 					echo "<hr class=\"hdrSpacer\"> \n";
 					echo "<div id=\"library_phone\">". Settings::get('library_phone') ."</div> \n";
 				}

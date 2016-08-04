@@ -36,11 +36,12 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+<?php $first_day = Settings::get('first_day_of_week') ? Settings::get('first_day_of_week') : 0; ?>
     getDayList: function (where) { 
         $.post(list.server, {mode:'getDaysOfWeek'}, function(data){
             var html = '';
-            for (var n in data) {
-                html+= '<option value="'+n+'" >'+data[n]+'</option>';
+            for (var i=<?php echo $first_day; ?>;i< <?php echo 7+$first_day; ?>;i++) {
+                html+= '<option value="'+i%7+'" >'+data[i%7]+'</option>';
             }
             where.html(html);
         }, 'json');

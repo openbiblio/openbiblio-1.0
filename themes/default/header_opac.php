@@ -4,7 +4,9 @@
  */
  
 	require_once(REL(__FILE__, "../../model/Members.php"));
+	require_once(REL(__FILE__, "../../model/OpenHours.php"));
 	require_once(REL(__FILE__, "header_top.php"));
+	$open_hours = new OpenHours;
 ?>
 
 <aside id="sidebar">
@@ -21,7 +23,7 @@
 					echo "$libName:<br />"; 
 				?>
 		</h3>
-		<div id="library_hours"><?php echo Settings::get('library_hours') ?></div>
+		<div id="library_hours"><?php //echo Settings::get('library_hours'); ?><?php echo $open_hours->displayOpenHours(); ?></div>
 		<hr style="width:25%">
 		<div id="library_phone"><?php echo Settings::get('library_phone') ?></div>
 	</header>
