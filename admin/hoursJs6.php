@@ -14,7 +14,7 @@ class Hour extends Admin {
 			'editHdr':<?php echo '"'.T("Edit Hours").'"'; ?>,
     			'newHdr':<?php echo '"'.T("Add New Hours").'"'; ?>,
     		};
-    		var listFlds = {'site': 'text',
+    		var listFlds = {'siteid': 'text',
     			'day': 'text',
     			'start_time':'text',
     			'end_time':'text',

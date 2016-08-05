@@ -166,6 +166,7 @@ $trans["Data"] = "Данные";
 $trans["Data Subfield"] = "подполе";
 $trans["Date"] = "Дата";
 $trans["Date Added"] = "Опубликовано";
+$trans['Day'] = 'День';
 $trans["DbServerInformation"] = "Про сервер базы данных";
 $trans["del"] = "удалить";
 $trans["Delete"] = "Удалить";
@@ -301,6 +302,7 @@ $trans["Online Protocol"] = "протокол";
 $trans["On-Line Search"] = "Заимствовать библиографические записи";
 $trans["OPAC"] = "электронный каталог";
 $trans["opacFlag"] = "Показать в электронный каталог";
+$trans['Open hours'] = 'Открытые часы';
 $trans["Options"] = "Настройки";
 ####### P #######
 $trans["Password"] = "Пароль";
