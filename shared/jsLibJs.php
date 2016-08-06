@@ -76,8 +76,6 @@ var flos = {
 	  	$db = new Validations;
 			$set = $db->getAll('description');
 			echo "	patterns: {\n";
-			//while ($row = $set->fetch_assoc()) {
-            //while($row = $set->fetch(PDO::FETCH_ASSOC)) {
             foreach ($set as $row) {
 				echo '		"'.$row['code'].'":"'.$row['pattern'].'",'."\n";
 			}
@@ -133,8 +131,8 @@ inptFld: function (type, name, value, attrs, data) {
 	//case 'email': attrs['pattern'] = flos.patterns.email; handleInput(); break;
 	default:
 		attrs['pattern'] = flos.patterns[attrs['validation_cd']];
-//console.log('inptFld(): attrs');
-//console.log(attrs);
+        //console.log('inptFld(): attrs');
+        //console.log(attrs);
 		handleInput();
 		break;
 	}

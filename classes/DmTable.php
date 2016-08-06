@@ -86,7 +86,7 @@ class DmTable extends DBTable {
 			$errors[] = T("Duplicate Code not allowed");
 		}
         // otherwise limit default flg to Y or N only
-        if ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N') {
+        if ((isset($rec['default_flg'])) && ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N')) {
 			//$errors[] = new FieldError('default_flg', T("Default Flg MUST be 'Y' or 'N'"));
 			$errors[] = T("Default Flg MUST be 'Y' or 'N'");
         }

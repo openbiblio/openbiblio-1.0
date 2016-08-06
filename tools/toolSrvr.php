@@ -110,13 +110,16 @@
 			echo json_encode($valids);
 			break;
 		case 'addNew_validation':
-			echo $db->insert($_POST);
+			$rslt = $db->insert($_POST);
+			echo json_encode($rslt);
 			break;
 		case 'update_validation':
-			echo $db->update($_POST);
+			$rslt = $db->update($_POST);
+			echo json_encode($rslt);
 			break;
 		case 'd-3-L-3-t_validation':
-			echo $db->deleteOne($_POST['code']);
+			$rslt = $db->deleteOne($_POST['code']);
+			echo json_encode($rslt);
 			break;
 
 		default:

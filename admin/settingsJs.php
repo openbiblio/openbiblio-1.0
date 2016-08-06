@@ -10,8 +10,8 @@ var set = {
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	//$jsLoc = new Localize(OBIB_LOCALE,$tab);
 	echo 'locs: '.json_encode($LOC->getLocales()).',';
-        echo 'locale: "'.Settings::get('locale').'",';
-        echo 'charSet: "'.Settings::get('charset').'",';
+    echo 'locale: "'.Settings::get('locale').'",';
+    echo 'charSet: "'.Settings::get('charset').'",';
 	echo 'successMsg: "'.T("Update successful").'",';
 	?>
 
@@ -20,7 +20,7 @@ var set = {
 		set.listSrvr = '../shared/listSrvr.php'
 
 		set.initWidgets();
-        	$('#charset').val(set.charSet);
+        $('#charset').val(set.charSet);
 
 		list.getDayList($('#first_day_of_week'));
 		$('#editSettingsForm').on('submit',null,set.doUpdate);
@@ -103,12 +103,12 @@ var set = {
 				if (fields[n].name == 'library_hours') fields[n].name = 'libraryHours'
 				if (fields[n].name == 'library_phone') fields[n].name = 'libraryPhone'
 
-				var $id = $('#'+fields[n].name);
 				/* map out deprecated values */
 				if (fields[n].type == 'int') fields[n].type = 'number';
 				if (fields[n].type == 'bool') fields[n].type = 'checkbox';
 
-        $id.attr('type',fields[n].type).prev().html(fields[n].title+':');
+				var $id = $('#'+fields[n].name);
+                $id.attr('type',fields[n].type).prev().html(fields[n].title+':');
 				switch (fields[n].type) {
 					case 'select':
 					case 'checkbox': $id.val([fields[n].value]); break;
@@ -119,7 +119,7 @@ var set = {
 					case 'email': $id.attr('pattern', flos.patterns.email); break;
 				}
 				if (fields[n].type == 'textarea') {
-          $id.html(fields[n].value).attr('rows',fields[n].width)
+                    $id.html(fields[n].value).attr('rows',fields[n].width)
 				} else if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {
 					$id.val(fields[n].value).attr('size',fields[n].width);
 				}
@@ -133,16 +133,17 @@ var set = {
 		e.preventDefault();
 		$('#mode').val('update_settings');
 		var params = $('#editSettingsForm').serialize();
-    if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";
-    if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
-    if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
+        if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";
+        if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
+        if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
 
-//--- suggest to prevent someone could update as null these fields and cause list of srchForms disappear --CelsoC--
-    if ($('#items_per_page').val(null)) params += "&items_per_page=25";
-    if ($('#thumbnail_width').val(null)) params += "&thumbnail_width=100";
-    if ($('#thumbnail_height').val(null)) params += "&thumbnail_height=120";
-    if ($('#thumbnail_rotation').val(null)) params += "&thumbnail_rotation=0";
-//-------------
+        //--- suggest to prevent someone could update as null these fields and cause list of srchForms disappear --CelsoC--
+        if ($('#items_per_page').val(null)) params += "&items_per_page=25";
+        if ($('#thumbnail_width').val(null)) params += "&thumbnail_width=100";
+        if ($('#thumbnail_height').val(null)) params += "&thumbnail_height=120";
+        if ($('#thumbnail_rotation').val(null)) params += "&thumbnail_rotation=0";
+        //-------------
+
 		$.post(set.url, params, function (response) {
 			//if (response === null)
 				$('#updateMsg').html(set.successMsg).show();

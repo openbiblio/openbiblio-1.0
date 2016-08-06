@@ -47,9 +47,9 @@
 					<label for="libraryName"><?php echo T("Library Title"); ?></label>
 					<select id="libraryName" name="library_name" ></select>
 					<br />
-					<label for="libraryHours"><?php echo T("Library Hours"); ?></label>
+					<!--label for="libraryHours"><?php echo T("Library Hours"); ?></label>
 					<textarea id="libraryHours" name="library_hours" rows="1" placeholder="M-F: 8am - 5pm<br />Sat:  9am - noon" /></textarea>
-					<br />
+					<br /-->
 					<label for="libraryPhone"><?php echo T("Library Phone"); ?></label>
 					<input type="text" id="libraryPhone" name="library_phone" maxlength="32" />
 					<br />

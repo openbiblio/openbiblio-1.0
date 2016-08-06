@@ -16,6 +16,9 @@ class Validations extends DmTable {
 			'description'=>'string',
 			'pattern'=>'string',
 		));
+        $this->setReq(array(
+            'code', 'description', 'pattern',
+        ));
 		$this->setKey('code');
 	}
 
