@@ -33,8 +33,7 @@ class DbCore
         //echo "in DbCore::__construct() <br />\n";
         $this->getConfig();
         $this->dsn["mode"] == 'haveconst';
-        $real_DSN_string = "pgsql:host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
-echo $real_DSN_string;
+        $real_DSN_string = "mysql:host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

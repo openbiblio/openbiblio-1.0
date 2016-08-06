@@ -51,6 +51,9 @@ class Copies extends CoreTable {
 			'data'=>'string',
 		));
 		$this->custom->setKey('copyid', 'code');
+
+		$this->circ_restriction = Array();
+
 	 }
 
 	public function getCpyList($bibid) {
@@ -533,6 +536,10 @@ class Copies extends CoreTable {
 			);
 			$this->custom->insert($fields);
 		}
+	}
+
+	public function copyCanCirc($copyid) {
+		return 1;
 	}
 }
 

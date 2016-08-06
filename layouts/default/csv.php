@@ -11,7 +11,6 @@ require_once(REL(__FILE__, '../../classes/Biblio.php'));
  */
 
 class Layout_csv {
-/*
 	public function render($rpt) {
 		$tags = array();
 		$collection = array();
@@ -87,28 +86,5 @@ class Layout_csv {
 
 		echo "</pre>";
 		echo "<hr>";
-	}
-*/
-	public function render($rpt) {
-
-		$data_raw = $rpt->columns();
-                foreach($data_raw as $entry) {
-                        if (!array_key_exists('hidden', $entry)) {
-                                $header[] = '"' . $entry['name'] . '"'; // TODO replace any doublequotes in the column header itself
-                        }
-                }
-                $num_headers = count($header);
-
-		echo implode("\t", $header);
-
-                $count_rows = $rpt->count();
-                for ($i = 1; $i < $count_rows; $i++) {
-			$cells = [];
-                        for($j = 0; $j < $num_headers; ++$j) {
-                                $cells[] = '"' . ($rpt->row($i)[$header[$j]]) . '"'; // TODO for some reason this is printing the header a bunch of times
-                        }
-			echo implode("\t", $header) . "\n";
-                }
-
 	}
 }
