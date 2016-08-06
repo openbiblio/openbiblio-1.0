@@ -1,7 +1,11 @@
 syntax: glob
 
 database_constants.php
+glob:x*.*
+glob:*.orig
+glob:*.$$$
 glob:images/Thumbs.db
+glob:images/.Thumbnails/*.*
 glob:admin/xbiblioCopyFldsJs.php
 glob:catalog/temp/cataloging_loc.php
 glob:catalog/temp/cataloging_nav.php
