@@ -33,8 +33,8 @@ class DbCore
         //echo "in DbCore::__construct() <br />\n";
         $this->getConfig();
         $this->dsn["mode"] == 'haveconst';
-        $real_DSN_string = "pgsql:host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
-echo $real_DSN_string;
+        $real_DSN_string = $this->dsn['dbEngine'].":host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
+        echo $real_DSN_string;
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -43,7 +43,7 @@ echo $real_DSN_string;
         try {
             $this->dbh = new PDO($real_DSN_string, $this->dsn['username'], $this->dsn['pwd'], $opt);
         } catch (PDOException $e) {
-            echo "Error: Sttempted connection to DB failed".' ('.$this->dsn['database'].') '."<br />\n". $e->getMessage() ."<br />\n";
+            echo "Error: Attempted connection to DB failed".' ('.$this->dsn['database'].') '."<br />\n". $e->getMessage() ."<br />\n";
             print_r($this->dsn); echo "<br />\n";
             exit;
         }
@@ -64,6 +64,7 @@ echo $real_DSN_string;
         if (file_exists($fn) ) {
             include($fn); // DO NOT change to 'include_once()' !!!!!
         } else {
+            $this->dsn['dbEngine'] = 'mysql';
             $this->dsn['host'] = 'localhost';
             $this->dsn['username'] = 'admin';
             $this->dsn['pwd'] = 'admin';
