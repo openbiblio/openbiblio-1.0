@@ -33,7 +33,7 @@ class DbCore
         //echo "in DbCore::__construct() <br />\n";
         $this->getConfig();
         $this->dsn["mode"] == 'haveconst';
-        $real_DSN_string = "mysql:host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
+        $real_DSN_string = $this->dsn['dbEngine'].":host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -63,6 +63,7 @@ class DbCore
         if (file_exists($fn) ) {
             include($fn); // DO NOT change to 'include_once()' !!!!!
         } else {
+            $this->dsn["dbEngine"] = 'mysql';
             $this->dsn['host'] = 'localhost';
             $this->dsn['username'] = 'admin';
             $this->dsn['pwd'] = 'admin';

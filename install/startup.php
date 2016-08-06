@@ -40,6 +40,21 @@
               <p class="bold">Enter Database Constants</p><br /></P>
               <p class="note">Note: All fields MUST be filled.</P>
               <form id="dbConstForm">
+                <label for="engine">Database Engine: </label>
+                <select id="dbEngine">
+                    <option value="cubrid">CUBRID</option>
+                    <option value="odbc">DB2</option>
+                    <option value="firebird">Firebird</option>
+                    <option value="ibm">IBM</option>
+                    <option value="informix">Informix</option>
+                    <option value="sqlsrv">MS SQL Server</option>
+                    <option value="mysql" selected>MySQL</option>
+                    <option value="odbc">ODBC</option>
+                    <option value="ocl">Oracle</option>
+                    <option value="pgsql">PostgreSQL</option>
+                    <option value="sqlite">SQLite</option>
+                    <option value="4d">4D</option>
+                </select><br />
                 <label for="hostId">Host Id: </label>
                 <input id="hostId" type="text" placeholder="Ip Address or Name" required /><br />
                 <label for="userNm">User Name: </label>

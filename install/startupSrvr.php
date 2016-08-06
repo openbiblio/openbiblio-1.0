@@ -19,11 +19,12 @@
 
             $content =
                 "<?php \n".
-                '$this->dsn["host"] = '      ."'".   $_REQUEST['host']    ."'; \n".
-                '$this->dsn["username"] = '  ."'".   $_REQUEST['user']    ."'; \n".
-                '$this->dsn["pwd"] = '       ."'".   $_REQUEST['passwd']  ."'; \n".
-                '$this->dsn["database"] = '  ."'".   $_REQUEST['db']      ."'; \n".
-                '$this->dsn["mode"] = '      .       'haveConst'          ."; \n"
+                '$this->dsn["dbEngine"] = '  ."'".   $_REQUEST['dbEngine'] ."'; \n".
+                '$this->dsn["host"] = '      ."'".   $_REQUEST['host']     ."'; \n".
+                '$this->dsn["username"] = '  ."'".   $_REQUEST['user']     ."'; \n".
+                '$this->dsn["pwd"] = '       ."'".   $_REQUEST['passwd']   ."'; \n".
+                '$this->dsn["database"] = '  ."'".   $_REQUEST['db']       ."'; \n".
+                '$this->dsn["mode"] = '      .       'haveConst'           ."; \n"
             ;
 
             $response = array();
@@ -40,11 +41,11 @@
         		}
                 if (false === file_put_contents($fn, $content)) {
                     $response['error'] = 'The database constants file could not be written.';
-		    $response[] = 'Please create database_constants.php manually using the database_constants_deploy.php file as a model.';
+		            $response[] = 'Please create database_constants.php manually using the database_constants_deploy.php file as a model.';
         		}
-            echo json_encode($response);
+                echo json_encode($response);
             } else {
-            echo json_encode(array("success"));
+                echo json_encode(array("success"));
             }
         break;
 

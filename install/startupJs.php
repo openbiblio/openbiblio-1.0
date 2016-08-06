@@ -3,108 +3,114 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-strt = {
-    init: function () {
-        strt.initWidgets();
+class Strt {
+    constructor ( ) {
+        this.initWidgets();
 
-        strt.url = '../install/startupSrvr.php';
-        strt.dest = '../install/index.php';
+        this.url = '../install/startupSrvr.php';
+        this.dest = '../install/index.php';
 
         $('#constBtn').on('click',null, function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                strt.doCreateConstFile();
+                this.doCreateConstFile();
         });
         $('#newDbBtn').on('click',null, function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                strt.createDb();
+                this.createDb();
         });
         $('#skipBtn').on('click',null,function() {
             $('#createDB').hide();
             $('#continue').show();
         });
-        $('#contBtn').on('click',null,strt.doContinue);
-        $('#restartBtn').on('click',null, strt.resetForms);
+        $('#contBtn').on('click',null,this.doContinue);
+        $('#restartBtn').on('click',null, this.resetForms);
         $( document ).ajaxError(function() { $( ".log" ).text( "Triggered ajax Error handler." ); });
-        strt.resetForms()
-    },
+        this.resetForms();
+$('#dbEngine').on('change',null, function () {
+console.log($('#dbEngine').val());
+});
+    };
 
     //------------------------------
-    initWidgets: function () {
-    },
-    resetForms: function () {
+    initWidgets () {
+    };
+    resetForms () {
         //console.log('resetting!');
         $('#plsWait').hide();
         $('#const_editor').show();
         $('#createDB').hide();
         $('#continue').hide();
         $('#hostId').focus();
-    },
-    informUser: function (msg) {
+    };
+    informUser (msg) {
         var html = '<li>'+msg+'</li>';
         $('#progressList').append(html)
-    },
-    showWait: function (msg) {
+    };
+    showWait (msg) {
         $('#waitMsg').html(msg);
         $('#plsWait').show();
-    },
+    };
 
     //------------------------------
-    doCreateConstFile: function() {
-        strt.showWait('Creating file');
-        strt.informUser('Creating new database constant file');
+    doCreateConstFile () {
+        this.showWait('Creating file');
+        this.informUser('Creating new database constant file');
 
-        strt.host = $('#hostId').val();
-        strt.user = $('#userNm').val();
-        strt.pw = $('#passWd').val();
-        strt.db = $('#dbName').val();
-        var params = "mode=createConstFile&host="+strt.host+"&user="+strt.user+"&passwd="+strt.pw+"&db="+strt.db;
+        this.dbEngine = $('#dbEngine').val();
+        this.host = $('#hostId').val();
+        this.user = $('#userNm').val();
+        this.pw = $('#passWd').val();
+        this.db = $('#dbName').val();
+        var params = "mode=createConstFile&host="+this.host+"&dbEngine="+this.dbEngine+"&user="+this.user+"&passwd="+this.pw+"&db="+this.db;
 
-        $.post(strt.url, params, function (response) {
+        $.post(this.url, params, function (response) {
             $('#plsWait').hide();
             if (response.hasOwnProperty('error')) {
-              $.each( response, function( key, val ) { strt.informUser(val); });
+              $.each( response, function( key, val ) { this.informUser(val); });
             } else  {
-              strt.informUser('A new database_constant file has been created');
+              this.informUser('A new database_constant file has been created');
               $('#const_editor').hide();
               $('#createDB').show();
               $('#adminNm').focus();
             }
         }, 'json');
-    },
+    };
 
-    createDb: function() {
-        strt.showWait('Creating file');
-        strt.informUser('Creating new database constant file');
+    createDb () {
+        this.showWait('Creating file');
+        this.informUser('Creating new database constant file');
 
         var adminNm = $('#adminNm').val();
         var adminPw = $('#adminPw').val();
         var params = "mode=createDatabase"+
-                     "&host="+strt.host+
-                     "&user="+strt.user+
-                     "&passwd="+strt.pw+
-                     "&db="+strt.db+
+                     "&host="+this.host+
+                     "&user="+this.user+
+                     "&passwd="+this.pw+
+                     "&db="+this.db+
                      "&adminNm="+adminNm+
                      "&adminPw="+adminPw;
 
-        $.post(strt.url, params, function (response) {
+        $.post(this.url, params, function (response) {
             $('#plsWait').hide();
             if (response.indexOf('Error:') >= 0) {
-              strt.informUser('<p class="error">'+response+'</p>');
+              this.informUser('<p class="error">'+response+'</p>');
             } else if (response.indexOf('success') >= 0) {
-              strt.informUser('A new database has been created');
+              this.informUser('A new database has been created');
               $('#createDB').hide();
               $('#continue').show();
             }
         });
-    },
+    };
 
-    doContinue: function() {
-        window.location=strt.dest;
-    },
+    doContinue () {
+        window.location=this.dest;
+    };
 
-};
+}
 
-$(document).ready(strt.init);
+$(document).ready(function () {
+	var strt = new Strt();
+});
 </script>
