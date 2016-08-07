@@ -6,13 +6,13 @@
 /**
  * provides a customization & specialization layer to PHP's mysqli mySql API
  * converted from mysql lib to mysqli by F.LaPlante Aug 2013
+ * converted from mysqli to PDO by F.LaPlante June 2016
  * @author Micah Stetson
  */
 
 require_once("../shared/common.php");
 require_once(REL(__FILE__, "../classes/DbCore.php"));
 
-//class Queryi extends mysqli
 class Queryi
 {
 	private $lock_depth;
@@ -20,33 +20,6 @@ class Queryi
 	public function __construct() {
 		$this->lockDepth = 0;
         //echo "in Queryi::__construct() <br />\n";
-/*
-        $core = Dbcore::getInstance();
-        try {
-            $stmt = $core->$dbh->query('SELECT VERSION()');
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return "success, version# $results";
-        } catch (PDOException $e) {
-            echo "Error: Unable to fetch database version";
-            exit;
-        }
-*/
-/*
-        $this->getDSN();
-       if (($this->dsn["mode"] == 'nodb') || ($this->dsn["mode"] == 'noconst') || ($this->dsn["mode"] == '') ) {
-     	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"]); // connect to db server - fl
-        } else {
-     	    parent::__construct($this->dsn["host"], $this->dsn["username"], $this->dsn["pwd"], $this->dsn["database"]); // connect to db server - fl
-        }
-
-        if (mysqli_connect_error()) {
-            echo mysqli_connect_error()."<br>\n";
-            return t("error: cannot connect to database server");
-        } else {
-            return "success, version# $mysqli->server_version";
-        }
-        $this->set_encoding();
-*/
     }
 
     private function getDSN () {

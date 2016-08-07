@@ -11,11 +11,31 @@ $_settings_cache = array();
 $_settings_validators = array();
 
 /* To be used statically. */
-class Settings extends Queryi
-{
+//class Settings extends Queryi
+class Settings extends DBTable {
 	public function __construct() {
 		parent::__construct();
+		$this->setName('settings');
+		$this->setFields(array(
+			'name'=>'string',
+            'position'=>'number',
+            'title'=>'string',
+            'type'=>'string',
+            'width'=>'number',
+            'type_data'=>'string',
+            'validator'=>'string',
+            'value'=>'string',
+            'menu'=>'string',
+		));
+        $this->setReq(array(
+            'name', 'type', 'menu',
+        ));
+		$this->setKey('name');
 	}
+
+	protected function validate_el($rec, $insert) {
+        return array();
+    }
 
 	static public function load() {
 		global $_settings_cache, $_settings_validators;
@@ -73,7 +93,7 @@ class Settings extends Queryi
 		return $aray;
 	}
 
-    public static function getAll() {
+    public static function getSettings() {
 		global $_settings_cache;
 		return $_settings_cache;
 	}
