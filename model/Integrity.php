@@ -15,7 +15,7 @@ class Integrity extends Queryi{
             $this->checks[] = array(
                 'error' => T("table structure does not match it's model"),
 				'countFn' => 'chkFields',
-				// NO AUTOMATIC FIX
+				'fixFn' => 'fixFields',
             );
 			$this->checks[] = array(
 				'error' => T("unattached MARC fields"),
@@ -442,23 +442,68 @@ class Integrity extends Queryi{
 		return $errors;
 	}
 
+    function getColmnList ($table) {
+        $sql = "select COLUMN_NAME"
+             . "  from information_schema.columns"
+             . "  where " //table_schema = 'your_DB_name'
+             . "    table_name = '$table'";
+        //echo "sql = $sql<br />\n";
+        $set = $this->select($sql);
+        $rslt = $set->fetchAll();
+        foreach ($rslt as $entry) {
+            $list[] = $entry['COLUMN_NAME'];
+        };
+        //print_r($list);echo"<br />\n";
+        return $list;
+    }
+
     /* compare field definition in each model against related DB table */
     function chkFields() {
         $fileList = getFileList('../model');
         foreach ($fileList as $file) {
+            ## first collect model definition
             //echo "$file <br />\n";
             if ($file == '../model/Integrity.php') continue;
             if ($file == '../model/MarcStore.php') continue;
+            if ($file == '../model/OpenHours.php') continue;
             include_once($file);
             $className = pathInfo($file, PATHINFO_FILENAME);
-            echo "Model: $className <br />\n";
+            //echo "Model: $className <br />\n";
             $obj = new $className;
             $tblName = $obj->getName();
-            $fldset = $obj->getFields();
-            echo "db table: $tblName<br />\n";
-            echo "fields: ";print_r($fldset);echo "<br /><br />\n";
+            $fldNames = array_keys($obj->getFields());
+            $fldParms = array_values($obj->getFields());
+            //echo "db table: $tblName<br />\n";
+            //echo "model fields: ";print_r($fldset);echo "<br />\n";
+            $obj = null;
+
+            ## now get current db field names
+            $dbflds = $this->getColmnList($tblName);
+
+            ## finally compare them
+            $errors = array_diff($fldNames, $dbflds);
+            if (sizeof($errors) > 0) {
+                echo "field error(s) in table $tblName: ";print_r($errors); echo"<br />\n";
+                $this->tblErrs[$tblName] = $errors;
+            }
         }
-        return 0;
+        //$this->fixFields(); // intended for debug use only
+        return sizeof($this->tblErrs);
+    }
+
+    /* fix db field descrepencies */
+    function fixFields() {
+        if (!isset($this->tblErrs)) return;
+        foreach ($this->tblErrs as $tbl=>$flds) {
+            //echo "table: $tbl<br />";print_r($flds);echo"<br />\n";
+            $sql = "ALTER $tbl ADD COLUMN (";
+            foreach ($flds as $fld) {
+                $sql = $sql." $fld char(20) NOT NULL,";
+            }
+            $sql = substr($sql, 0, -1) . ')';
+            echo "$sql <br />\n";
+            $this->act($sql);
+        }
     }
 
 	/* Remove repeating MARC fields that should not repeat */
