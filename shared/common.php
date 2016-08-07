@@ -103,12 +103,13 @@
     /*Determine current size of OB modules */
     function getOBsize() {
         /* determine total file size of all OB components */
-        $obRoot = "."; //getOBroot();
+        $obRoot = ".."; //getOBroot();
         $obDirs = getDirList($obRoot);
         $total = 0;
         foreach ($obDirs as $dir) {
             //echo "<br />\n.....dir = $dir ....<br />\n";
             $subTtl = 0;
+            $dir = '../'.$dir;
             $obFiles = getFileList($dir, true);
             foreach ($obFiles as $file) {
                 $size = filesize($file);

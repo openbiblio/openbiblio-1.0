@@ -10,6 +10,11 @@ class Integrity extends Queryi{
 	private $checks= array();
 	public function __construct() {
 		parent::__construct();
+            $this->checks[] = array(
+                'error' => T("missing fields in DB table"),
+				'countFn' => 'chkFields',
+				// NO AUTOMATIC FIX
+            );
 			$this->checks[] = array(
 				'error' => T("unattached MARC fields"),
 				'countSql' => 'select count(*) as count '
@@ -434,7 +439,16 @@ class Integrity extends Queryi{
 		}
 		return $errors;
 	}
-	
+
+    /* compare field definition in each model against related DB table */
+    function chkFields() {
+        $fileList = getFileList('../model');
+        foreach ($fileList as $file) {
+            echo "$file <br />\n";
+        }
+        return 0;
+    }
+
 	/* Remove repeating MARC fields that should not repeat */
 	function removeRepeaters () {
 		$bibList = array();
