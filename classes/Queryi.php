@@ -10,7 +10,7 @@
  */
 
 require_once("../shared/common.php");
-require_once("../classes/DbCore.php");
+require_once(REL(__FILE__, "../classes/DbCore.php"));
 
 //class Queryi extends mysqli
 class Queryi

@@ -45,7 +45,6 @@
 		session_cache_limiter('nocache');
 	}
 
-/* -- no longer used?? FL May 2016
 	function getOBroot() {
 		// obtain OpenBiblio path ref to wep pages root
 		// may be useful later in system (thinking plug-ins, etc.)
@@ -55,7 +54,6 @@
 		$OBroot = '/'.$pathParts[1].'/';
 		return $OBroot;
 	}
-*/
 
 	/* Convenience functions for everywhere */
 	/* Work around PHP's braindead include_path stuff. - MS */
@@ -84,6 +82,7 @@
 	}
 */
 
+
 	### needs to be here so changes in settings are picked up when changes are entered
 	function setSessionFmSettings() {
 		$_SESSION['itemBarcode_flg'] = Settings::get('item_barcode_flg');
@@ -101,31 +100,33 @@
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
-/* -- - moved to Queryi::setDSN - FL 18May2016
-    // construct array of database access values for common use 
-    $fn = '../database_constants.php';
-    if (file_exists($fn) ) {
-        //echo "ini file(): $fn exists <br />\n";
-        include_once($fn);
-    } else {
-        $dbConst = array (
-            // dummy values needed for initial run
-            'mode' => 'noConst',
-            'host' => 'x.x.x',
-            'username' => 'x.x.x',
-            'pwd' => 'x.x.x',
-            'database' => 'x.x.x'
-        );
+    /*Determine current size of OB modules */
+    function getOBsize() {
+        /* determine total file size of all OB components */
+        $obRoot = "."; //getOBroot();
+        $obDirs = getDirList($obRoot);
+        $total = 0;
+        foreach ($obDirs as $dir) {
+            //echo "<br />\n.....dir = $dir ....<br />\n";
+            $subTtl = 0;
+            $obFiles = getFileList($dir, true);
+            foreach ($obFiles as $file) {
+                $size = filesize($file);
+                //echo "$file => $size bytes<br />\n";
+                $subTtl += $size;
+            }
+            //echo "---- subTtl = $subTtl<br />\n";
+            $total += $subTtl;
+        }
+        return $total;
     }
-    global $dbConst;
-    echo "in common: host=".$dbConst['host']."; user=".$dbConst['username']."; pw=".$dbConst['pwd']."; db=".$dbConst['database']."<br />\n";
-*/
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));
 	require_once(REL(__FILE__, "../classes/Nav.php"));
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, '../shared/templates.php'));
+    require_once(REL(__FILE__, "../plugins/supportFuncs.php"));
 
 	global $LOC, $CharSet, $Locale, $OBroot;
 	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl;
@@ -175,6 +176,16 @@
 	
         setSessionFmSettings();
 	}
+
+    /* determine if OB code has changed */
+    $prevSize = Settings::get('OBsize');
+    $crntSize = getOBsize();
+    if ($crntSize != $prevSize) {
+//        header("Location: ../admin/integrity.php");
+echo "Code size has changed since last use<br />\n";
+    }
+    Settings::set('OBsize', $crntSize);
+    echo "crnt OB size is $crntSize bytes<br />\n";
 
 	$LOC->init($Locale);
 

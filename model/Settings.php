@@ -21,8 +21,6 @@ class Settings extends Queryi
 		global $_settings_cache, $_settings_validators;
         //echo "in Settings::load() <br />\n";
 		$db = new Queryi;
-		//$r = $db->select('SELECT * FROM settings');
-		//while ($s = $r->fetch_assoc()) {
         $stmt = $db->act('SELECT * FROM settings');
         foreach ($stmt as $s) {
 			$_settings_cache[$s['name']] = $s['value'];
@@ -32,6 +30,12 @@ class Settings extends Queryi
 	}
 	static public function get($name) {
 		global $_settings_cache;
+		return $_settings_cache[$name];
+	}
+	static public function set($name, $value) {
+		global $_settings_cache;
+        $_settings_cache[$name] = $value;
+        self::setOne_e($name, $value);
 		return $_settings_cache[$name];
 	}
 	static public function getThemeDirs () {

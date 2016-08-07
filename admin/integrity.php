@@ -8,7 +8,7 @@
 	$tab = "admin";
 	$nav = "integrity";
 
-	require_once(REL(__FILE__, "../shared/logincheck.php"));
+	//require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
