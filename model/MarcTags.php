@@ -15,7 +15,7 @@ class MarcTags extends DBTable {
 			'description'=>'string',
 			'ind1_description'=>'string',
 			'ind2_description'=>'string',
-			'repeatable'=>'string',
+			'repeatable_flg'=>'string',
 		));
 		$this->setKey('block_nmbr','tag');
 		$this->setSequenceField('tag');

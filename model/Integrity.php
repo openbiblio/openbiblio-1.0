@@ -63,6 +63,15 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
+				'error' => T("OB size row is missing from Settings"),
+				'countSql' => 'SELECT (CASE (COUNT(*)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                    .  'FROM settings WHERE name = "OBsize" ',
+				'fixSql' => 'INSERT INTO settings '
+					. ' (name,title,type,width) '
+                    . " VALUES('OBsize', 'Current Size','number',16)",
+			);
+
+			$this->checks[] = array(
 				'error' => T("Secret key column is missing for staff members"),
 				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
 					. 'FROM information_schema.COLUMNS '
@@ -502,7 +511,7 @@ class Integrity extends Queryi{
             }
             $sql = substr($sql, 0, -1) . ')';
             echo "$sql <br />\n";
-            $this->act($sql);
+//            $this->act($sql);
         }
     }
 
