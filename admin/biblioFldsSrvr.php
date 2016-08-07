@@ -61,7 +61,7 @@
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMarcBlocks':
 			## prepare list of MARC Blocks
-			require_once(REL(__FILE__, "../model/MarcDBs.php"));
+			require_once(REL(__FILE__, "../model/MarcBlocks.php"));
 			$ptr = new MarcBlocks;
 		  $vals = array();
 			$rslt = $ptr->getAll('block_nmbr');
@@ -75,7 +75,7 @@
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMarcTags':
 			## prepare list of MARC tags for specified block
-			require_once(REL(__FILE__, "../model/MarcDBs.php"));
+			require_once(REL(__FILE__, "../model/MarcTags.php"));
 			$ptr = new MarcTags;
 			$params = array('block_nmbr' => $_POST['block_nmbr']);
 		  $vals = array();
@@ -89,7 +89,7 @@
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMarcFields':
 			## prepare list of MARC subfields for specified tags
-			require_once(REL(__FILE__, "../model/MarcDBs.php"));
+			require_once(REL(__FILE__, "../model/MarcSubfields.php"));
 			$ptr = new MarcSubfields;
 			$params = array('tag' => $_POST['tag']);
 		  $vals = array();

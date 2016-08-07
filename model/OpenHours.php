@@ -5,7 +5,7 @@
 
 ini_set('display_errors', 1);
 require_once(REL(__FILE__, "../classes/DBTable.php"));
-require_once(REL(__FILE__, "Week.php"));
+require_once(REL(__FILE__, "../classes/Week.php"));
 
 class OpenHours extends DBTable {
 	public function __construct() {

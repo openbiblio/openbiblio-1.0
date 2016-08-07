@@ -67,6 +67,10 @@ abstract class DBTable extends Queryi {
 		}
 	}
 
+	## ------------------ getters ---------------------------------------- ##
+    public function getName() {return $this->name;}
+    public function getFields() {return $this->fields;}
+
 	## ------------------------------------------------------------------------ ##
 	public function getKeyList($key, $fields) {
 		$sql = $this->mkSQL('SELECT %I FROM %I WHERE ', $key, $this->name)

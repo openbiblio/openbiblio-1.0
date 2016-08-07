@@ -5,13 +5,27 @@
 
 require_once(REL(__FILE__, "../classes/Queryi.php"));
 
-class Cart extends Queryi {
-	private $name;
-	private $db;
-	public function __construct($name) {
+class Cart extends DBTable {
+	//private $name;
+	//private $db;
+	//public function __construct($name) {
+	public function __construct() {
 		parent::__construct();
-		$this->name = $name;
+		$this->setName('cart');
+		$this->setFields(array(
+			'sess_id'=>'string',
+			'name'=>'string',
+			'id'=>'string',
+		));
+        $this->setReq(array(
+            'seee_id', 'name', 'id',
+        ));
+        //echo "in Cart::__construct(): ";print_r($this->fields);echo "<br />\n";
 	}
+	protected function validate_el($rec, $insert) {
+        return array();
+    }
+
 	function viewURL() {
 		$urls = array(
 			'bibid' => '../shared/req_cart.php',

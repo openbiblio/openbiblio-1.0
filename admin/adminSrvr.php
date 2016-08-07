@@ -15,7 +15,7 @@
 			$ptr = new BiblioCopyFields;
 			break;
 		case 'hosts':
-			require_once(REL(__FILE__, "../model/Online.php"));
+			require_once(REL(__FILE__, "../model/Hosts.php"));
 			$ptr = new Hosts;
 			break;
 		case 'hours':
@@ -35,7 +35,7 @@
 			$ptr = new MemberCustomFields_DM;
 			break;
 		case 'opts':
-			require_once(REL(__FILE__, "../model/Online.php"));
+			require_once(REL(__FILE__, "../model/Opts.php"));
 			$ptr = new Opts;
 			break;
 		case 'settings':

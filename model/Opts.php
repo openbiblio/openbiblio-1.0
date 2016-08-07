@@ -34,26 +34,3 @@ class Opts extends DBTable {
 	protected function validate_el($rec, $insert) { /*return array();*/ }
 }
 
-class Hosts extends DBTable {
-	public function __construct() {
-		parent::__construct();
-		$this->setName('lookup_hosts');
-		$this->setFields(array(
-			'id'=>'number',
-			'seq'=>'number',
-			'active'=>'string',
-			'host'=>'string',
-			'port'=>'number',
-			'name'=>'string',
-			'db'=>'string',
-			'service'=>'string',
-			'syntax'=>'string',
-			'user'=>'string',
-			'pw'=>'string'
-		));
-		$this->setKey('id');
-		$this->setSequenceField('seq');
-	}
-
-	protected function validate_el($rec, $insert) { /*return array();*/ }
-}

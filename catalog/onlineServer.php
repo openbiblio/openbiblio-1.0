@@ -6,7 +6,8 @@
     require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
-	require_once(REL(__FILE__, '../model/Online.php'));
+	require_once(REL(__FILE__, '../model/Hosts.php'));
+	require_once(REL(__FILE__, '../model/Opts.php'));
 	require_once(REL(__FILE__, '../catalog/olSrvrFuncs.php'));	## general support functions
 
 	## ---------------------------------- ##

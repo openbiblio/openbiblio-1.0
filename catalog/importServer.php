@@ -7,7 +7,9 @@
 
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
-	require_once(REL(__FILE__, "../model/MarcDBs.php"));
+	require_once(REL(__FILE__, "../model/MarcBlockss.php"));
+	require_once(REL(__FILE__, "../model/MarcTags.php"));
+	require_once(REL(__FILE__, "../model/MarcMarcSubfields.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/Cart.php"));

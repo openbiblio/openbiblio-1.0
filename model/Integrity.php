@@ -4,6 +4,8 @@
  */
 
 require_once(REL(__FILE__, "../classes/Queryi.php"));
+require_once(REL(__FILE__, "../plugins/supportFuncs.php"));
+
 ini_set('display_errors', 1);
 
 class Integrity extends Queryi{
@@ -11,7 +13,7 @@ class Integrity extends Queryi{
 	public function __construct() {
 		parent::__construct();
             $this->checks[] = array(
-                'error' => T("missing fields in DB table"),
+                'error' => T("table structure does not match it's model"),
 				'countFn' => 'chkFields',
 				// NO AUTOMATIC FIX
             );
@@ -444,7 +446,17 @@ class Integrity extends Queryi{
     function chkFields() {
         $fileList = getFileList('../model');
         foreach ($fileList as $file) {
-            echo "$file <br />\n";
+            //echo "$file <br />\n";
+            if ($file == '../model/Integrity.php') continue;
+            if ($file == '../model/MarcStore.php') continue;
+            include_once($file);
+            $className = pathInfo($file, PATHINFO_FILENAME);
+            echo "Model: $className <br />\n";
+            $obj = new $className;
+            $tblName = $obj->getName();
+            $fldset = $obj->getFields();
+            echo "db table: $tblName<br />\n";
+            echo "fields: ";print_r($fldset);echo "<br /><br />\n";
         }
         return 0;
     }
