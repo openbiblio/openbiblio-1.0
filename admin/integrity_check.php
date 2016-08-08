@@ -9,7 +9,7 @@
 	$nav = "integrity";
 
 	//require_once(REL(__FILE__, "../shared/logincheck.php"));
-	require_once(REL(__FILE__, "../model/Integrity.php"));
+	require_once(REL(__FILE__, "../classes/Integrity.php"));
 
 
 	$fix = false;

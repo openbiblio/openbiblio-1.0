@@ -472,7 +472,7 @@ class Integrity extends Queryi{
         foreach ($fileList as $file) {
             ## first collect model definition
             //echo "$file <br />\n";
-            if ($file == '../model/Integrity.php') continue;
+//            if ($file == '../model/Integrity.php') continue;
             if ($file == '../model/MarcStore.php') continue;
             if ($file == '../model/OpenHours.php') continue;
             include_once($file);
