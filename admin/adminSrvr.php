@@ -22,6 +22,10 @@
 			require_once(REL(__FILE__, "../model/OpenHours.php"));
 			$ptr = new OpenHours;
 			break;
+        case 'integrity':
+            require_once(REL(__FILE__, "../classes/Integrity.php"));
+            $ptr = new Integrity;
+            break;
 		case 'media':
 			require_once(REL(__FILE__, "../model/MediaTypes.php"));
 			$ptr = new MediaTypes;
@@ -69,6 +73,7 @@
 	}
 
 	$updtSuccess = T("Update successful");
+    $deleteComplete = T("Delete completed");
 	
 	switch ($_POST['mode']){
 		## don't combine this switch with that above.
@@ -191,7 +196,7 @@ ini_set('display_errors', 1);
 			break;
 		case 'd-3-L-3-t_copyFlds':
 			$ptr->deleteOne($_POST[code]);
-			if ($errs) {echo $errs;} else {echo T("Delete completed");}
+			if ($errs) {echo $errs;} else {echo $deleteComplete;}
 			break;
 
 	  #-.-.-.-.-.- Custom Member Fields -.-.-.-.-.-.-
@@ -242,6 +247,18 @@ ini_set('display_errors', 1);
 			if ($errs) {echo $errs;} else {echo $updtSuccess;}
 			break;
 
+	  #-.-.-.-.-.- Database Integrity testing -.-.-.-.-.-.-
+        case 'checkDB':
+            $fixDB = false;
+            $errs = $ptr->check_el($fixDB);
+            echo json_encode($errs);
+            break;
+        case 'fixDB':
+            $fixDB = true;
+            $errs = $ptr->check_el($fixDB);
+            echo json_encode($errs);
+            break;
+
 	  #-.-.-.-.-.- Member Type Classification -.-.-.-.-.-.-
 		case 'getAll_mbrTypes':
 			$flds = array();
@@ -267,7 +284,7 @@ ini_set('display_errors', 1);
 			break;
 		case 'd-3-L-3-t_mbrTypes':
 			$ptr->deleteOne($_POST[code]);
-			if ($errs) {echo $errs;} else {echo T("Delete completed");}
+			if ($errs) {echo $errs;} else {echo $deleteComplete;}
 			break;
 
   	#-.-.-.-.-.- Media Types -.-.-.-.-.-.-

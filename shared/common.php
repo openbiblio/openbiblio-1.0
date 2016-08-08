@@ -183,10 +183,10 @@
     $crntSize = getOBsize();
     if ($crntSize != $prevSize) {
 //        header("Location: ../admin/integrity.php");
-echo "Code size has changed since last use<br />\n";
+//echo "Code size has changed since last use<br />\n";
     }
     Settings::set('OBsize', $crntSize);
-    echo "crnt OB size is $crntSize bytes<br />\n";
+//    echo "crnt OB size is $crntSize bytes<br />\n";
 
 	$LOC->init($Locale);
 
