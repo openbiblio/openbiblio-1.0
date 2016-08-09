@@ -1,139 +1,188 @@
-<html>
-
+<!DOCTYPE html >
+<html lang="en">
 <head>
 
-<link rel="stylesheet" type="text/css" href="css/style.css" title="obibstyle">
-<meta name="description" content="OpenBiblio Library Automation System">
-<title>OpenBiblio Install Instructions</title>
+    <meta name="description" content="OpenBiblio ver 1.0b">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Luuk Jansen">
+    <meta name="author" content="Fred LaPlante">
+    <meta name="author" content="Jane Sandberg">
+    <meta name="author" content="Micah Stetson">
+    <meta name="tester" content="Neil Redgate">
+    <meta name="tester" content="Charlie Tudor">
+
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+    <link rel="stylesheet" href="./shared/normalize.css" />
+    <link rel="stylesheet" href="./themes/default/style.css" />
+
+    <title>OpenBiblio Install Instructions</title>
 </head>
-<body bgcolor="#ffffff" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
-<!-- **************************************************************************************
-     * OpenBiblio logo and black background with links and date
+
+<body>
+    <!-- **************************************************************************************
+     * OpenBiblio logo with links and date
      **************************************************************************************-->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr bgcolor="#bebdbe">
-    <td align="left"><img src="images/obiblio_logo.gif" width="170" height="35" border="0"></td>
-    <td align="right" valign="top" width="100%"><font color="#ffffff">
-    </td>
-  </tr>
-</table>
-<font class="primary">
+    <aside id="sidebar">
+    	<header>
+    	  <div id="obLogo">
+    			<!--a href="http://obiblio.sourceforge.net/"-->
+    			<a href="https://bitbucket.org/mstetson/obiblio-1.0-wip/">
+    				<img src="./images/powered_by_openbiblio.gif" width="125" height="44" border="0" alt="Powered by OpenBiblio" />
+    			</a>
+    			<br />
+    		</div>
 
-<h1>Version Notes:</h1>
-<ul>
-<li><font color="red"><b>CAUTION!</b> - version 1.0.0 is still considered <b>beta</b> software since some features
-have still not been implemented.  Use at your own risk.</font>
-</li>
-<li>With the arrival of version 1.0 the database structurehas become much more stable.
-</li>
-<li>OpenBiblio version 1.x requires PHP version 5.4 or higher.
-</li>
-<li>Ver 1.0 requires a Modern Browser with HTML5, CSS3, Javascript (ECMA5)
-</li>
-<li>OpenBiblio version 1.0 test scenarios ran succussfully on the following configurations:
-<blockquote>
-<table>
-  <tr>
-    <td><font class="primary">Operating System:</font></td>
-    <td><font class="primary">Windows 7</font></td>
-    <td><font class="primary">Ubuntu 13.10</font></td>
-  </tr>
-  <tr>
-    <td><font class="primary">PHP Version</font></td>
-    <td><font class="primary">5.5.3 (module)</font></td>
-  </tr>
-  <tr>
-    <td><font class="primary">Web Server</font></td>
-    <td><font class="primary">Apache 2.4.6</font></td>
-  </tr>
-  <tr>
-    <td><font class="primary">MySql Version</font></td>
-    <td><font class="primary">5.5.37</font></td>
-  </tr>
-  <tr>
-    <td><font class="primary">Browser</font></td>
-    <td><font class="primary">FireFox 28+</font></td>
-    <td><font class="primary">Chrome 30+</font></td>
-    <td><font class="primary">IE10+</font></td>
-    <td><font class="primary">BlackBerry 10+</font></td>
-  </tr>
-</ul>
-</blockquote>
+    		OpenBiblio Version: <?php echo H(OBIB_CODE_VERSION);?><br />
+    		For <a href="./COPYRIGHT.html">Legal Info</a>.
+    	</header>
+        <br />
+    </aside>
 
-<h1>OpenBiblio 1.0.x Install Instructions:</h1>
-<ol>
-  <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that is
-     compatible with PHP.  If you install Apache, get familiar with starting 
-     and stopping your Apache Web Server. If you are running Linux
-     your Apache server should be packaged with your Linux installation and will start when
-     you start Linux.
-  </li>
-  <li>Add PHP to your web server as a CGI or a module.  If you are using Apache 2.0, I would highly
-     recommend that you install PHP as a module instead of a cgi application.
-     <p>OpenBiblio uses session data.  Therefore, you will need to make sure PHP sessions is turned on.
-     Be sure to create a directory for your session data on your server and specify the session.save_path
-     in your php.ini file.  The default php.ini sets session.save_path to "/tmp".  Therefore, you have
-     to create a directory called c:/tmp (for Windows) users.  However, I usually create a more descriptive name
-     inside my PHP directory and then change my php.ini file to match it.
-     <p>Example php.ini directive:
-     <pre>session.save_path = d:\PHP\sessiondata</pre>
-  </li>
-  <li>Install the MySQL database from <a href="http://www.mysql.com/">http://www.mysql.com/</a>.
-     Get familiar with starting and stopping your MySQL Server.  See
-     If you are running Linux, MySQL should be packaged with your Linux installation and will start when
-     you start Linux.
-  </li>
+    <main id="content" role="main" aria-role="main">
+    <fieldset>
+        <legend>Version Notes:</legend>
+        <ul>
+            <li class="warning"><b>CAUTION!</b> - version 1.0.0 is still considered <b>beta</b>
+                software since some features have still not been implemented.  Use at your own risk.
+            </li>
+            <li>With the arrival of version 1.0 the database structurehas become much more stable.</li>
+            <li>OpenBiblio version 1.x requires PHP version 5.4 or higher.</li>
+            <li>Ver 1.0 requires a Modern Browser with HTML5, CSS3, Javascript (ECMA5+)</li>
+            <li>OpenBiblio version 1.0 test scenarios have been run succussfully on the following configurations:
+                <ul>
+                    <li>Operating System:
+                        <ul>
+                            <li>Windows 7 & 10</li>
+                            <li>Ubuntu 14.04+, 15.04+, 16.04</li>
+                        </ul>
+                    </li>
+                    <li>PHP Version</li>
+                        <ul>
+                            <li>5.5.3 & 7.0.1</li>
+                        </ul>
+                    </li>
+                    <li>Web Server
+                        <ul>
+                            <li>Apache 2.4.6+</li>
+                        </ul>
+                    </li>
+                    <li>Database
+                        <ul>
+                            <li>MySQL 5.5.37+</font></td>
+                            <li>PostgreSql (in test)</font></td>
+                        </ul>
+                    </li>
+                    <li>Browser
+                        <ul>
+                            <li>FireFox 40+</li>
+                            <li>Chrome 40+</li>
+                            <li>IE10+</li>
+                            <li>BlackBerry 10+</li>
+                            <li>Android 4+</li>
+                        </ul>
+                    </li>
+                </ul>
+    </fieldset>
 
-  <li>Install and become familiar with phpMyAdmin as a means to maintain the MySql databases
-  </li>
+    <fieldset>
+        <legend>OpenBiblio 1.0.x Install Instructions:</legend>
+        <ol>
+            <li>Install a web server such as <a href="http://httpd.apache.org/">Apache</a> that is
+             compatible with PHP.  If you install Apache, get familiar with starting
+             and stopping your Apache Web Server. If you are running Linux
+             your Apache server should be packaged with your Linux installation and will start when
+             you start Linux.
+            </li>
 
-  <a name="step4">
-  <li>Create an OpenBiblio database using whatever tool you prefer - I recommend phpMyAdmin. Avoid '-' in the database name.
-  </li>
-  </a>
+            <li>Add PHP to your web server as a CGI or a module.  If you are using Apache 2.0, I would highly
+             recommend that you install PHP as a module instead of a cgi application.
+             <p>OpenBiblio uses session data.  Therefore, you will need to make sure PHP sessions is turned on.
+             Be sure to create a directory for your session data on your server and specify the session.save_path
+             in your php.ini file.  The default php.ini sets session.save_path to "/tmp".  Therefore, you have
+             to create a directory called c:/tmp (for Windows) users.  However, I usually create a more descriptive name
+             inside my PHP directory and then change my php.ini file to match it.
+             <p>Example php.ini directive:
+             <pre>session.save_path = d:\PHP\sessiondata</pre>
+            </li>
 
-  <a name="step5">
-  <li>Create an OpenBiblio database user.  Use phpMyAdmin for this,
-	using a userid and password of your choice.
-	Be sure to select a proper collation. I suggest 'utf8-general-ci'.
-    <blockquote><pre>
-     <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
-        -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>
-    </pre></blockquote>
-  </li>
-  </a>
+            <li>Install the MySQL database from <a href="http://www.mysql.com/">http://www.mysql.com/</a>.
+             Get familiar with starting and stopping your MySQL Server.  See
+             If you are running Linux, MySQL should be packaged with your Linux installation and will start when
+             you start Linux.
+            </li>
 
-  <a name="step7">
-  <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
-    root or any subdirectory within the htdocs root.
-  </li>
-  </a>
+            <li>Install and become familiar with phpMyAdmin as a means to maintain the MySql databases
+            </li>
 
-  <a name="step8">
-  <li>Edit the database_constants.php file (located in the main openbiblio directory)
-    with the text editor of your choice.
-    Change the username and password to match the new MySQL user and password that you 
-    created in the previous steps.
-  </li>
-  </a>
+            <li>Download and install OpenBiblio 1.0b to a directory of your choice within
+            the main directory of your web server. "openbiblio" woud be a good choice.
+            </li>
 
-  <li>Create the OpenBiblio database tables.  To do this run the install php script
-   located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
-   assuming you placed the openbiblio directory in the root htdocs directory.
-  </li>
+            <li>Point your browser at the openbiblio directory created above. (eg localhost/openbiblio/)
+            Openbiblio's startup procedure will begin and ask the user for information about
+            the database, user access id and password. It will then acreate a file of these database access
+            parameters for al later use of Openbiblio. It will also create an empty database ready for loading.
+            </li>
 
-  <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.html">http://localhost/openbiblio/index.html</a>
-   assuming you placed the openbiblio directory in the root htdocs directory.  Enter
-   "admin" for both the userid and password whenever you are prompted to signon.  You can
-   change the admin password from the "Admin" tab -> staff list, where you can also add
-   more library staff members.
-  </li>
-    
+            <li>When the above completes the actual installation of database tables will automatically begin.
+            </li>
 
-</ol>
+            <li>Next you will be asked to login as the Admn user. For this use the id of 'admin' with a password of 'admin'.
+            </li>
+
+            <li>Proceed to the Admin menu and begin entering Library settings.
+            </li>
+        </ol>
+        <!--ol>
+            <a name="step4">
+            <li>Create an OpenBiblio database using whatever tool you prefer - I recommend phpMyAdmin. Avoid '-' in the database name.
+            </li>
+            </a>
+
+            <a name="step5">
+            <li>Create an OpenBiblio database user.  Use phpMyAdmin for this,
+            using a userid and password of your choice.
+            Be sure to select a proper collation. I suggest 'utf8-general-ci'.
+            <blockquote><pre>
+             <b>grant all privileges on OpenBiblio.* to <i>obiblio_user</i>@localhost</b>
+                -> <b>identified by '<i>obiblio_password</i>' with grant option;</b>
+            </pre></blockquote>
+            </li>
+            </a>
+
+            <a name="step7">
+            <li>Copy the openbiblio directory and all of its contents into your web server's htdocs
+            root or any subdirectory within the htdocs root.
+            </li>
+            </a>
+
+            <a name="step8">
+            <li>Edit the database_constants.php file (located in the main openbiblio directory)
+            with the text editor of your choice.
+            Change the username and password to match the new MySQL user and password that you
+            created in the previous steps.
+            </li>
+            </a>
+
+            <li>Create the OpenBiblio database tables.  To do this run the install php script
+            located at <a href="http://localhost/openbiblio/install/index.php">http://localhost/openbiblio/install/index.php</a>,
+            assuming you placed the openbiblio directory in the root htdocs directory.
+            </li>
+
+            <li>Access your new library automation system at <a href="http://localhost/openbiblio/index.html">http://localhost/openbiblio/index.html</a>
+            assuming you placed the openbiblio directory in the root htdocs directory.  Enter
+            "admin" for both the userid and password whenever you are prompted to signon.  You can
+            change the admin password from the "Admin" tab -> staff list, where you can also add
+            more library staff members.
+            </li-->
 
 
+        </ol>
+    </fieldset>
+    </main>
 
-</font>
 </body>
 </html>
