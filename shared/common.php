@@ -107,22 +107,23 @@
         $obDirs = getDirList($obRoot);
 
         /* This versio will create a concat string of all sizes and timestamps,
-            and uses subsequently hash to create a unique represenation which is not too large */
+            and subsequently uses hash() to create a unique represenation which is not too large */
 
-        $total = "";
+        $ttlStr = "";
+        $total = 0;
         foreach ($obDirs as $dir) {
             //echo "<br />\n.....dir = $dir ....<br />\n";
-            $subTtl = "";
+            $str = ""; $subttl = 0;
             $dir = '../'.$dir;
             $obFiles = getFileList($dir, true);
             foreach ($obFiles as $file) {
-                $subTtl .= filesize($file) . ":" . filectime($file);
+                $subttl += filesize($file);
+                $str .= filesize($file) . ":" . filectime($file);
             }
-            //echo "---- subTtl = $subTtl<br />\n";
-            $total .= "- " . $subTtl;
+            $ttlStr .= "- " . $str;
+            $total += $subttl;
         }
-
-        return hash("md5", $total);
+        return array(hash("md5", $ttlStr),$total);
     }
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
@@ -183,12 +184,13 @@
 
     /* determine if OB code has changed */
     $prevHash = Settings::get('version_hash');
-    $crntHash = getOBVersionHash();
+    list($crntHash, $crntSize) = getOBVersionHash();
     if ($crntHash != $prevHash) {
-        header("Location: ../working/dbChkrForms.php");
+        header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
         //echo "Code hash has changed since last use<br />\n";
     }
     Settings::set('version_hash', $crntHash);
+    Settings::set('OBsize', $crntSize);
 
 	$LOC->init($Locale);
 

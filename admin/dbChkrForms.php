@@ -5,13 +5,22 @@
 
 	require_once("../shared/common.php");
 
-	$tab = "working";
+	$tab = strToLower($_REQUEST['tab']);
+	if(empty($tab)) {
+		$tab = "admin";
+		$title = T("Check Database Integrity");
+	} else if ($tab == 'auto'){
+		$title = T("Updating Database");
+	}
+
 	$nav = "dbChkr";
 	//require_once(REL(__FILE__, "../shared/logincheck.php"));
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
     <h3 id="listHdr"><?php echo T("Check Database Integrity"); ?></h3>
+    <input id="tab" type="hidden" value="<?php echo "$tab"; ?>" />
+    <input id="rtnTo" type="hidden" value="<?php echo $_REQUEST['rtnTo']; ?>" />
 
     <div id="editDiv">
         <fieldset id="entry">
@@ -22,11 +31,11 @@
         </fieldset>
     </div>
 
+    <div id="plsWait"><img src="../images/please_wait.gif" /></div>
+
     <div id="rsltDiv">
 	   <fieldset id="errList">
-		    <ul id="rslts">
-				<?php echo T("Checking..."); ?>
-			</ul>
+		    <ul id="rslts"></ul>
 
     		<form>
     			<input type="button" id="chkAgnBtn" value="<?php echo T("Recheck"); ?>" />
@@ -41,7 +50,7 @@
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
 
-	require_once(REL(__FILE__, "../working/dbChkrJs.php"));
+	require_once(REL(__FILE__, "../admin/dbChkrJs.php"));
 ?>
 </body>
 </html>

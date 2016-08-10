@@ -34,7 +34,7 @@ class Settings extends DBTable {
 /*
         $this->setRows(
             '{"plugList":{"position":"", "title":"", "type":"text", "width":"", "type_data":"", "vallidator":"", "value"","menu":""}}',
-            '{"version_hash":  {"position":"NULL", "title":"Current Size", "type":"number", "width":"16", "type_data":"", "vallidator":"", "value":"","menu":""}}',
+            '{"version_hash":  {"position":"NULL", "title":"Version Hash", "type":"text", "width":"32", "type_data":"", "vallidator":"", "value":"","menu":""}}',
             '{"allow_plugins_flg":  {"position":"0", "title":"Allow Plugins", "type":"bool", "width":"", "type_data":"", "vallidator":"", "value":"","menu":"tools"}}',
             '{"library_name":  {"position":"1", "title":"Library Title", "type":"select", "width":"", "type_data":"sites", "vallidator":"", "value":"1","menu":"admin"}}',
             '{"item_barcode_flg":  {"position":"1", "title":"Use Item Barcodes", "type":"bool", "width":"", "type_data":"", "vallidator":"", "value":"","menu":"tools"}}',

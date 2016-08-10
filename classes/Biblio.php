@@ -8,7 +8,7 @@ require_once(REL(__FILE__, "../model/Copies.php"));
 require_once(REL(__FILE__, "../classes/Copy.php"));
 require_once(REL(__FILE__, "../model/BiblioImages.php"));
 require_once(REL(__FILE__, "../catalog/biblioChange.php"));
-require_once(REL(__FILE__, "../model/MarcStore.php"));
+require_once(REL(__FILE__, "../classes/MarcStore.php"));
 require_once(REL(__FILE__, "../model/MaterialFields.php"));
 
 /**

@@ -4,7 +4,7 @@
  */
 
 //require_once(REL(__FILE__, '../../model/Biblios.php'));
-require_once(REL(__FILE__, '../../model/MarcStore.php'));
+require_once(REL(__FILE__, '../../classes/MarcStore.php'));
 
 /**
  * this class generates the MARC file output for a report
@@ -33,9 +33,9 @@ class Layout_marc {
 		for ($i=0; $i<$nBibs; $i++) {
 			## consider a single document from those selected
 			$row = $cache['rows'][$i];
-echo "bibid==>{$row['bibid']}<br/>\n";
+//echo "bibid==>{$row['bibid']}<br/>\n";
 			$bib = $marc->get($row['bibid']);
-var_dump($bib);echo"<br/>\n";
+//var_dump($bib);echo"<br/>\n";
 		}
 	}
 }
