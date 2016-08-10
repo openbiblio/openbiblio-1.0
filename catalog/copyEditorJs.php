@@ -120,7 +120,9 @@ var ced = {
 			if (typeof(fldData) !== 'undefined') {
 				var datum = fldData[code];
 				$(this).val(datum);
-			}
+			} else {
+                $(this).val("");
+            }
 		});
 
         $('#copySubmitBtn').val('<?php echo T("Update"); ?>');
@@ -139,7 +141,7 @@ var ced = {
 		return false;
 	},
 	doCopyNew: function (e) {
-        //ced.bibid = bibid;
+        ced.bibid = e;
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();
             $('#copyBarcode_nmbr').disable();
@@ -194,9 +196,14 @@ var ced = {
 
 	    $.post(ced.catalogSrvr,params, function(response) {
             if (response == '!!success!!') {
-                $('#copyCancelBtn').val("Back");
-                $('#copySubmitBtn').disable();
-                $('#editRsltMsg').html('Copy updated successfully!').show();
+                //$('#copyCancelBtn').val("Back");
+                //$('#copySubmitBtn').disable();
+                idis.fetchCopyInfo(); // refresh copy display
+                bs.rtnToBiblio();
+                $('#rsltMsg').html('Copy updated successfully!').show();
+                setTimeout(function() {
+                    $("#rsltMsg").hide(500);
+                }, 5000);
             } else {
                 $('#editRsltMsg').html(response).show();
             }

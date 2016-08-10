@@ -166,7 +166,19 @@ var list = {
     },
 */
     getStatusCds: function (where) {
-        bs.fetchStatusCdsList(where);
+        $.post(list.server,{'mode':'getStatusCds'}, function(data){
+             var html = '';
+
+            $.each(data, function(i, item) {
+                html+= '<option value="'+i+'" ';
+                if (item.default == "Y") {
+                    html+= 'SELECTED '
+                }
+                html+= '>'+ item.description +'</option>';
+            });
+
+            where.html(html);
+         }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//

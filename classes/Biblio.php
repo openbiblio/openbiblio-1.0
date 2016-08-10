@@ -104,7 +104,7 @@ class Biblio {
      * deletes all traces of a single biblio
      */
     public function deleteBiblio() {
-        ## first delete all existing copiesand related material
+        ## first delete all existing copies and related material
         foreach ($this->cpyList as $cpyid) {
             $cpy = new Copy($cpyid);
             $cpy->deleteCopy();

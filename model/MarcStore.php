@@ -141,8 +141,7 @@ class MarcStore extends Queryi{
 					die ("<Error: > unable to post array field ".$field['tag']." to database.");
 				}
 				$subseq = 1;
-//echo "MarcStore: posting array subfield<br/>\n";
-				if (!$this->_putSub($bibid, $fieldid, $subseq++, $field['subfield_cd'], $field['data'])) {
+				if (!$this->_putSub($bibid, $fieldid, $subseq++, $field['subfield_cd'], addslashes ($field['data']))) {
 					$this->unlock();
 					die ("<Error: > unable to post array subfield ".$field['tag'].$field['subfield_cd']." to database.");
 				}

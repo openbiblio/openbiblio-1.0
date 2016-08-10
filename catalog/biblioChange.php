@@ -245,8 +245,8 @@ function postBiblioChange($nav) {
 	##  Insert/Update bibliography ##
 	if ($nav == "newconfirm") {
 		list($bibid,$err) = $biblios->insert($biblio);
-		if (!empty($err)) {
-			die('Error while inserting a new Biblio');
+		if (!empty($err) && $err != "Success") {
+			die('Error while inserting a new Biblio: ' . $err);
 		}
 		$msg = '{"bibid":"' . $bibid .'"}';
 	} else {

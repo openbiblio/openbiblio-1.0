@@ -26,7 +26,7 @@ class CopiesCustomFields extends DBTable {
 		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
+				$errors[] = new FieldError($req, T("Required field missing") . ":" . $req);
 			}
 		}
 		return $errors;

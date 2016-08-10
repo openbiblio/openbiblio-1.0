@@ -275,21 +275,7 @@ var bs = {
 		}, 'json');
 	},
     fetchStatusCdsList: function(where) {
-        $.post(list.server,{'mode':'getStatusCds'}, function(data){
-             var html = '';
-
-            $.each(data, function(i, item) {
-                html+= '<option value="'+i+'" ';
-                if (item.default == "Y") {
-                    html+= 'SELECTED '
-                }
-                html+= '>'+ item.description +'</option>';
-            });
-
-            where.html(html);
-            //console.log("Done list: " + html);
-            //return html;
-         }, 'json');
+        list.getStatusCds(where);
     },
 	fetchSiteList: function () {
 	  $.post(bs.listSrvr,{'mode':'getSiteList'}, function(data){
@@ -713,7 +699,7 @@ var bs = {
 			  // failure, show error msg, leave form in place
 				$('#itemRsltMsg').html(response);
 	 		}
-	    }, 'json');
+	    }, 'text');
 	    return false;
 	},
 

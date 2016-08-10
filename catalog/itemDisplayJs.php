@@ -157,7 +157,8 @@ var idis = {
 	doItemDelete: function (biblio) {
         //console.log(biblio);
         idis.bibid = biblio.hdr.bibid;
-		if (bs.copyJSON) {
+		console.log(idis.copys);
+        if (idis.copys) {
 			alert('You must delete all copies before you can delete an item!');
 		}
 		else {
@@ -266,14 +267,13 @@ var idis = {
 	doCopyEdit: function (e) {
   	e.stopPropagation();
 		$('#biblioDiv').hide();
-  	var crntsite = idis.opts.current_site
+  	    var crntsite = idis.opts.current_site;
 		$('#copy_site').val(crntsite);
 
 		ced.bibid = idis.bibid;
 		ced.doCopyEdit(e);
 		$('#copyEditorDiv').show();
 		e.preventDefault();
-        console.log("Done!");
     },
 };
 // this package normally initialized by parent such as .../catalog/new_itemJs.php

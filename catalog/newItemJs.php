@@ -235,14 +235,15 @@ var ni = {
 	 	var parms=$('#newBiblioForm').serialize();
 		parms += '&mode=doInsertBiblio';
 	    $.post(ni.url,parms, function(response){
-    	  	if (response.indexOf('<') == 0) {
-    			$('#msgDiv').html(response).show();
+    	  	if (response.indexOf('{') == 0) {
+				var rslt = JSON.parse(response);
+				ni.bibid = rslt['bibid'];
+				ni.showCopyEditor(ni.bibid);
     		}
     		else {
-    	    	var rslt = JSON.parse(response);
-    	    	ni.bibid = rslt['bibid'];
-    	  		ni.showCopyEditor(ni.bibid);
-      	    }
+				$('#msgDiv').html(response).show();
+				$('#content').scrollTop(0);
+			}
     	});
 	    return false;
 	},

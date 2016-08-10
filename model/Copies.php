@@ -199,7 +199,8 @@ class Copies extends CoreTable {
 		      ."`last_change_dt` = NOW(),"
 		      ."`last_change_userid` = $_SESSION[userid],"
 		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
-		$rows = $this->act($sql);
+
+        $rows = $this->act($sql);
 		$copyid = $this->getInsertID();
 
 		$sql = "Insert `biblio_status_hist` SET "
@@ -238,8 +239,9 @@ class Copies extends CoreTable {
 
 		if ($rcd[status_cd] != $_POST[status_cd]) {
             if($_POST[status_cd] == "out") {
-                //LJ: it does not seem possible to set to checkout without a user?
-                $message = "Cannot change to status 'Checked out'";
+                //LJ: it does not seem possible to set to checkout without a user!
+                echo "Cannot change to status 'Checked out'. Changes NOT saved!";
+                return;
             } else {
                 $sql = "INSERT `biblio_status_hist` SET "
                     . "`status_cd` = '$_POST[status_cd]',"
@@ -259,7 +261,11 @@ class Copies extends CoreTable {
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		$rows = $this->act($sql);
 
-		$this->postCstmCopyFlds($bibid, $copyid);
+        try {
+            $this->postCstmCopyFlds($bibid, $copyid);
+        } catch (Exception $e){
+            $message = "Custom fields error: $e->getMessage()";
+        }
 
 		$this->unlock();
 		echo $message;
@@ -294,11 +300,11 @@ class Copies extends CoreTable {
 		//while ($row = $rows->fetch_assoc()) {
 		foreach ($rows as $row) {
 			if (isset($_POST['copyCustom_'.$row["code"]])) {
-				$custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
+			    if(strlen($_POST['copyCustom_'.$row["code"]]) > 0) $custom[$row["code"]] = $_POST['copyCustom_'.$row["code"]];
 			}
 		}
 		$copies = new Copies;
-		$copies->setCustomFields($copyid, $custom);
+		$copies->setCustomFields($bibid, $copyid, $custom);
 	}
 	public function insert_el($copy, $confirmed=false) {
 		$this->lock();
@@ -526,15 +532,17 @@ class Copies extends CoreTable {
 		return $this->custom->deleteMatches(array('copyid'=>$copyid));
 	}
 
-	public function setCustomFields($copyid, $customFldsarr) {
+	public function setCustomFields($bibid, $copyid, $customFldsarr) {
 		$this->custom->deleteMatches(array('copyid'=>$copyid));
 		foreach ($customFldsarr as $code => $data) {
 			$fields= array(
+                bibid=>$bibid,
 				copyid=>$copyid ,
 				code=>$code,
 				data=>$data
 			);
-			$this->custom->insert($fields);
+			list($seqVal, $err) = $this->custom->insert($fields);
+            if($err != "Success") throw new Exception("Error saving the fields.");
 		}
 	}
 
