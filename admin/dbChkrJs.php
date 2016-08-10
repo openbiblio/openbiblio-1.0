@@ -7,14 +7,22 @@
 
 class Chkr {
     constructor () {
-    		this.url = '../admin/adminSrvr.php';
+    	this.url = '../admin/adminSrvr.php';
+
+        this.tab = $('#tab').val();
+console.log('tab: '+this.tab);
+
+    	this.initWidgets();
+    	this.resetForms();
+
+        if (this.tab == 'auto') {
+console.log('runing in auto mode');
+            this.doFixDB();
+        }
 
         $('#chkNowBtn').on('click', null, $.proxy(this.doCheckDB,this));
         $('#chkAgnBtn').on('click', null, $.proxy(this.doCheckDB,this));
         $('#fixBtn').on('click', null, $.proxy(this.doFixDB,this));
-
-    		this.initWidgets();
-    		this.resetForms()
     };
 
     //------------------------------
@@ -23,7 +31,11 @@ class Chkr {
 
     resetForms () {
         //console.log('resetting!');
-        $('#editDiv').show();
+        if (this.tab == 'admin') {
+            $('#editDiv').show();
+        } else {
+            $('#editDiv').hide();
+        }
         $('#rsltDiv').hide();
         $('#fixBtn').hide();
     };
@@ -34,7 +46,7 @@ class Chkr {
             if (data.length > 0) {
                 var list = "";
                 for (var n in data) {
-            		    var item = data[n]['msg'];
+            		var item = data[n]['msg'];
                     list += '<li>'+item+'</li>';
                 }
                 var content = list;
@@ -61,6 +73,7 @@ class Chkr {
                 }
                 var content = list;
                 $('#fixBtn').show();
+                if (this.tab == 'auto') console.log('fixes reported');
             } else {
                 var content = "<?php echo '<p>'.T("No errors found").'</p>'; ?>";
                 $('#fixBtn').hide();
@@ -68,8 +81,10 @@ class Chkr {
             $('#rslts').html(content)
         }, 'json');
 
-        $('#editDiv').hide();
-        $('#rsltDiv').show();
+        if (this.tab == 'admin') {
+            $('#editDiv').hide();
+            $('#rsltDiv').show();
+        }
     };
 
 };

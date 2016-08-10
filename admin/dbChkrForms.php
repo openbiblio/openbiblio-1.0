@@ -7,14 +7,10 @@
 
 	$tab = strToLower($_REQUEST[tab]);
 	if(empty($tab)) {
-		$tab = "cataloging";
-		$title = T("Existing Items");
-	} else if ($tab == 'user'){
-		$title = T("Library Catalog");
-	} else if ($tab == 'opac'){
-		$title = T("Library Catalog");
-	} else if ($tab == 'rpt'){
-		$title = T("ReportSelection");
+		$tab = "admin";
+		$title = T("Check Database Integrity");
+	} else if ($tab == 'auto'){
+		$title = T("Updating Database");
 	}
 
 	$nav = "dbChkr";
@@ -23,6 +19,7 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
     <h3 id="listHdr"><?php echo T("Check Database Integrity"); ?></h3>
+    <input id="tab" type="hidden" value="<?php echo "$tab"; ?>" />
 
     <div id="editDiv">
         <fieldset id="entry">
@@ -36,7 +33,8 @@
     <div id="rsltDiv">
 	   <fieldset id="errList">
 		    <ul id="rslts">
-				<?php echo T("Checking..."); ?>
+				//<?php echo T("Checking..."); ?>
+                <img src="../images/please_wait.gif" />
 			</ul>
 
     		<form>
@@ -52,7 +50,7 @@
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
 
-	require_once(REL(__FILE__, "../working/dbChkrJs.php"));
+	require_once(REL(__FILE__, "../admin/dbChkrJs.php"));
 ?>
 </body>
 </html>
