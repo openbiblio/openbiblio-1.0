@@ -10,13 +10,12 @@ class Chkr {
     	this.url = '../admin/adminSrvr.php';
 
         this.tab = $('#tab').val();
-console.log('tab: '+this.tab);
+        this.rtnTo = $('#rtnTo').val();
 
     	this.initWidgets();
     	this.resetForms();
 
         if (this.tab == 'auto') {
-console.log('runing in auto mode');
             this.doFixDB();
         }
 
@@ -36,13 +35,16 @@ console.log('runing in auto mode');
         } else {
             $('#editDiv').hide();
         }
+        $('#plsWait').hide();
         $('#rsltDiv').hide();
         $('#fixBtn').hide();
     };
 
 	  //------------------------------
     doCheckDB () {
+        $('#plsWait').show();
         $.post(this.url, {cat:'integrity', mode:'checkDB'}, function (data) {
+            $('#plsWait').hide();
             if (data.length > 0) {
                 var list = "";
                 for (var n in data) {
@@ -64,24 +66,30 @@ console.log('runing in auto mode');
 
 	  //------------------------------
     doFixDB () {
+        var tab = this.tab;
+        var rtnTo = this.rtnTo;
+        $('#plsWait').show();
         $.post(this.url, {cat:'integrity', mode:'fixDB'}, function (data) {
-            if (data.length > 0) {
-                var list = "";
-                for (var n in data) {
-            		    var item = data[n]['msg'];
-                    list += '<li>'+item+'</li>';
+            $('#plsWait').hide();
+                if (data.length > 0) {
+                    var list = "";
+                    for (var n in data) {
+                		var item = data[n]['msg'];
+                        list += '<li>'+item+'</li>';
+                    }
+                    var content = list;
+                    $('#fixBtn').show();
+                } else {
+                    var content = "<?php echo '<p>'.T("No errors found").'</p>'; ?>";
+                    $('#fixBtn').hide();
                 }
-                var content = list;
-                $('#fixBtn').show();
-                if (this.tab == 'auto') console.log('fixes reported');
-            } else {
-                var content = "<?php echo '<p>'.T("No errors found").'</p>'; ?>";
-                $('#fixBtn').hide();
-            }
-            $('#rslts').html(content)
-        }, 'json');
-
-        if (this.tab == 'admin') {
+                if (tab == 'auto') {
+                    location = rtnTo;
+                    return false;   // DO NOT REMOVE
+                }
+                $('#rslts').html(content)
+            }, 'json');
+        if (tab == 'admin') {
             $('#editDiv').hide();
             $('#rsltDiv').show();
         }

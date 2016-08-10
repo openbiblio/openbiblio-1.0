@@ -5,7 +5,7 @@
 
 	require_once("../shared/common.php");
 
-	$tab = strToLower($_REQUEST[tab]);
+	$tab = strToLower($_REQUEST['tab']);
 	if(empty($tab)) {
 		$tab = "admin";
 		$title = T("Check Database Integrity");
@@ -20,6 +20,7 @@
 ?>
     <h3 id="listHdr"><?php echo T("Check Database Integrity"); ?></h3>
     <input id="tab" type="hidden" value="<?php echo "$tab"; ?>" />
+    <input id="rtnTo" type="hidden" value="<?php echo $_REQUEST['rtnTo']; ?>" />
 
     <div id="editDiv">
         <fieldset id="entry">
@@ -30,12 +31,11 @@
         </fieldset>
     </div>
 
+    <div id="plsWait"><img src="../images/please_wait.gif" /></div>
+
     <div id="rsltDiv">
 	   <fieldset id="errList">
-		    <ul id="rslts">
-				//<?php echo T("Checking..."); ?>
-                <img src="../images/please_wait.gif" />
-			</ul>
+		    <ul id="rslts"></ul>
 
     		<form>
     			<input type="button" id="chkAgnBtn" value="<?php echo T("Recheck"); ?>" />
