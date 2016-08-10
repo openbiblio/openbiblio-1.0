@@ -24,7 +24,9 @@
 
     <div id="rsltDiv">
 	   <fieldset id="errList">
-		    <ul id="rslts"></ul>
+		    <ul id="rslts">
+				<?php echo T("Checking..."); ?>
+			</ul>
 
     		<form>
     			<input type="button" id="chkAgnBtn" value="<?php echo T("Recheck"); ?>" />

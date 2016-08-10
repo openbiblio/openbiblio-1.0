@@ -63,12 +63,12 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
-				'error' => T("OB size row is missing from Settings"),
+				'error' => T("OB version hash row is missing from Settings"),
 				'countSql' => 'SELECT (CASE (COUNT(*)) WHEN 0 THEN 1 ELSE 0 END) AS count '
-                    .  'FROM settings WHERE name = "OBsize" ',
+                    .  'FROM settings WHERE name = "version_hash" ',
 				'fixSql' => 'INSERT INTO settings '
 					. ' (name,title,type,width) '
-                    . " VALUES('OBsize', 'Current Size','number',16)",
+                    . " VALUES('version_hash', 'Current version hash','text',32)",
 			);
 
 			$this->checks[] = array(

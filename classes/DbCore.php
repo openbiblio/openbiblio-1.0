@@ -42,8 +42,8 @@ class DbCore
         try {
             $this->dbh = new PDO($real_DSN_string, $this->dsn['username'], $this->dsn['pwd'], $opt);
         } catch (PDOException $e) {
-            echo "Error: Sttempted connection to DB failed".' ('.$this->dsn['database'].') '."<br />\n". $e->getMessage() ."<br />\n";
-            print_r($this->dsn); echo "<br />\n";
+            echo "Error: Attempted connection to DB failed".' ('.$this->dsn['database'].') '."<br />\n". $e->getMessage() ."<br />\n";
+            //print_r($this->dsn); echo "<br />\n";
             exit;
         }
         //echo "connection successful!";

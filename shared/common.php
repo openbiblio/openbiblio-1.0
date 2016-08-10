@@ -101,25 +101,28 @@
 	}
 
     /*Determine current size of OB modules */
-    function getOBsize() {
+    function getOBVersionHash() {
         /* determine total file size of all OB components */
         $obRoot = ".."; //getOBroot();
         $obDirs = getDirList($obRoot);
-        $total = 0;
+
+        /* This versio will create a concat string of all sizes and timestamps,
+            and uses subsequently hash to create a unique represenation which is not too large */
+
+        $total = "";
         foreach ($obDirs as $dir) {
             //echo "<br />\n.....dir = $dir ....<br />\n";
-            $subTtl = 0;
+            $subTtl = "";
             $dir = '../'.$dir;
             $obFiles = getFileList($dir, true);
             foreach ($obFiles as $file) {
-                $size = filesize($file);
-                //echo "$file => $size bytes<br />\n";
-                $subTtl += $size;
+                $subTtl .= filesize($file) . ":" . filectime($file);
             }
             //echo "---- subTtl = $subTtl<br />\n";
-            $total += $subTtl;
+            $total .= "- " . $subTtl;
         }
-        return $total;
+
+        return hash("md5", $total);
     }
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
@@ -162,10 +165,10 @@
 
 	if (!isset($doing_install) or !$doing_install) {
 		## Get the current Session Timeout Value
-		$currentTimeoutInSecs = ini_get(’session.gc_maxlifetime’);
+		$currentTimeoutInSecs = ini_get('session.gc_maxlifetime');
 
 		## Change the session timeout value to 60 minutes,  8*60*60 = 8 hours
-		ini_set(’session.gc_maxlifetime’, 60*60);
+		ini_set('session.gc_maxlifetime', 60*60);
 
 		session_start();
 		# Forcibly disable register_globals if php.ini does not do it already
@@ -179,14 +182,13 @@
 	}
 
     /* determine if OB code has changed */
-    $prevSize = Settings::get('OBsize');
-    $crntSize = getOBsize();
-    if ($crntSize != $prevSize) {
-    header("Location: ../admin/dbChkrForms.php");
-//echo "Code size has changed since last use<br />\n";
+    $prevHash = Settings::get('version_hash');
+    $crntHash = getOBVersionHash();
+    if ($crntHash != $prevHash) {
+        header("Location: ../working/dbChkrForms.php");
+        //echo "Code hash has changed since last use<br />\n";
     }
-    Settings::set('OBsize', $crntSize);
-//    echo "crnt OB size is $crntSize bytes<br />\n";
+    Settings::set('version_hash', $crntHash);
 
 	$LOC->init($Locale);
 

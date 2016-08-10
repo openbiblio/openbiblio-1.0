@@ -76,7 +76,7 @@
 	};
 
 	function getFileList($dir, $getSubs=false) {
-        global $localeList, $Locale;
+        global $localeList, $Locale, $detail;
 
   	    $files = array();
         if (!isset($dir)) return;
@@ -84,7 +84,8 @@
             $cdir = scandir($dir);
         } catch (Exception $e) {
             if ($detail) echo $e->getMessage()."<br />";
-            continue;
+            // LJ, not sure, this was continue which is not correct.
+            return array_flat($files);
         }
     	foreach ($cdir as $key => $file) {
 			$info = pathInfo($file);

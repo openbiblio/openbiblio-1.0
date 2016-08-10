@@ -369,7 +369,7 @@ ini_set('display_errors', 1);
 			echo $ptr->update($_POST);
 			break;
 		case 'd-3-L-3-t_hosts':
-			$sql = "DELETE FROM $ptr->name WHERE `id`=$_POST[id]";
+			$sql = "DELETE FROM $ptr->getName() WHERE `id`=$_POST[id]";
 			echo $ptr->act($sql);
 			break;
 
