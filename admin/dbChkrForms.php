@@ -5,7 +5,18 @@
 
 	require_once("../shared/common.php");
 
-	$tab = "working";
+	$tab = strToLower($_REQUEST[tab]);
+	if(empty($tab)) {
+		$tab = "cataloging";
+		$title = T("Existing Items");
+	} else if ($tab == 'user'){
+		$title = T("Library Catalog");
+	} else if ($tab == 'opac'){
+		$title = T("Library Catalog");
+	} else if ($tab == 'rpt'){
+		$title = T("ReportSelection");
+	}
+
 	$nav = "dbChkr";
 	//require_once(REL(__FILE__, "../shared/logincheck.php"));
 

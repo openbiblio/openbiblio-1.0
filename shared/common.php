@@ -107,7 +107,7 @@
         $obDirs = getDirList($obRoot);
 
         /* This versio will create a concat string of all sizes and timestamps,
-            and uses subsequently hash to create a unique represenation which is not too large */
+            and subsequently uses hash() to create a unique represenation which is not too large */
 
         $total = "";
         foreach ($obDirs as $dir) {
