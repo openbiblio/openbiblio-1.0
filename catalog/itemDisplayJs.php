@@ -102,8 +102,8 @@ var idis = {
 		$.each(idis.theBiblio.marc, function(key,value) {
 		  var tmp = value;
 			tmp.marcTag = key.substr(0,5);
-			if (tmp.line && tmp.value) {
-		  	txt += "<tr>\n";
+			if ((tmp.line >= 0) && (tmp.value != '')) {
+		  	    txt += "<tr>\n";
 				txt += '	<td class="filterable hilite">'+tmp.marcTag+"</td>\n";
 				txt += "	<td>"+tmp.lbl+"</td>\n";
 				if (tmp.marcTag == '024$a') {
