@@ -22,6 +22,8 @@
 
 		<div id="fotoCntlDiv">
 			<form id="fotoForm">
+                <fieldset id="userMsg"></fieldset>
+
 				<fieldset class="inline">
 			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_width');?>"
 					 											 height="<?php echo Settings::get('thumbnail_height');?>">

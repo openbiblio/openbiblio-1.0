@@ -639,6 +639,8 @@ var bs = {
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
 		//$('#updtFotoBtn').show(); //not yet available
+        $('#userMsg').html('<p class="warning">not yet implemented.<br />delete existing photo and add new.</p>').show();
+
         $('#fotoMsg').hide();
 		$('#fotoMode').val('updatePhoto')
 		$('#fotoSrce').attr({'required':false, 'aria-required':false});
@@ -651,8 +653,9 @@ var bs = {
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
 		$('#deltFotoBtn').hide();
 		//$('#updtFotoBtn').hide(); // not yet available
+        $('#userMsg').hide();
 		$('#addFotoBtn').show();
-        	$('#fotoMsg').hide();
+        $('#fotoMsg').hide();
 		$('#fotoMode').val('addNewPhoto')
 		$('#fotoSrce').attr({'required':true, 'aria-required':true});
 		bs.showPhotoForm();
@@ -666,11 +669,11 @@ var bs = {
 
 	  if (idis.crntFoto == null) {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
-	  	$('#fotoName').val(idis.crntBibid+'.jpg');
+	  	    $('#fotoName').val(idis.crntBibid+'.jpg');
 			wc.eraseImage();
 	  } else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
-	  	$('#fotoName').val('<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url);
+	  	    $('#fotoName').val('<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url);
 			wc.showImage($('#fotoName').val());
 		}
 		$('.gobkFotoBtn').on('click',null,bs.rtnToBiblio);

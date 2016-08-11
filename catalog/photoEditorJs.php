@@ -82,6 +82,7 @@ var wc = {
 	resetForm: function () {
 		$('.help').hide();
 		//$('#errSpace').hide();
+        $('#userMsg').hide();
 		$('#camera').hide();
 		$('#canvasIn').hide();
 		$('#fotoAreaDiv').show();
@@ -267,7 +268,7 @@ var wc = {
 
     in Mozilla Firefox 46+, you can elinate the prompt to allow video capture
     at "about:config | media.navigator.permission.disabled"
-    BUT BE WARY, once on, it is accesable by any page in the browser until OB is turned off
+    BUT BE WARY, once on, the camera is accesable by any page in the browser until OB is turned off
 
  */
 <?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
