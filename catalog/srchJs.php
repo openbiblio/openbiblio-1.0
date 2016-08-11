@@ -638,6 +638,7 @@ var bs = {
 		$('#fotoHdr').val('<?php echo T("EditingExistingFoto"); ?>')
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
+
 		//$('#updtFotoBtn').show(); //not yet available
         $('#userMsg').html('<p class="warning">not yet implemented.<br />delete existing photo and add new.</p>').show();
 
