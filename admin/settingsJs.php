@@ -109,15 +109,17 @@ var set = {
 
 				var $id = $('#'+fields[n].name);
                 $id.attr('type',fields[n].type).prev().html(fields[n].title+':');
-				switch (fields[n].type) {
+				/*
+                switch (fields[n].type) {
 					case 'select':
 					case 'checkbox': $id.val([fields[n].value]); break;
-					case 'number': $id.attr('pattern','/\d*/'); break;
+					case 'number': $id.attr('pattern','/^\\d+$/'); break;
 					case 'date': $id.attr('pattern', flos.patterns.date); break;
 					case 'tel': $id.attr('pattern', flos.patterns.tel); break;
 					case 'url': $id.attr('pattern', flos.patterns.url); break;
 					case 'email': $id.attr('pattern', flos.patterns.email); break;
 				}
+                */
 				if (fields[n].type == 'textarea') {
                     $id.html(fields[n].value).attr('rows',fields[n].width)
 				} else if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {

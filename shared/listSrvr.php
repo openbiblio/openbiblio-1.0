@@ -238,7 +238,7 @@
 	  break;
 
 	case 'getDaysOfWeek':
-		require_once(REL(__FILE__, "../model/Week.php"));
+		require_once(REL(__FILE__, "../classes/Week.php"));
 		$db = new Week;
 		echo json_encode($db->get_days());
 		break;

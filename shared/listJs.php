@@ -36,7 +36,7 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-<?php $first_day = Settings::get('first_day_of_week') ? Settings::get('first_day_of_week') : 0; ?>
+    <?php $first_day = Settings::get('first_day_of_week') ? Settings::get('first_day_of_week') : 0; ?>
     getDayList: function (where) { 
         $.post(list.server, {mode:'getDaysOfWeek'}, function(data){
             var html = '';
