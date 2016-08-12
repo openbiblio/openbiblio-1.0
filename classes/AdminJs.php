@@ -124,6 +124,7 @@ Admin.prototype.fetchHandler = function(dataAray){
 			else {
 				html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
 			}
+            this.modifyField();
 		}
 		html += '</tr>\n';
 		$theList.append(html);
