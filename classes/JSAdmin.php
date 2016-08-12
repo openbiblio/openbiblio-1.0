@@ -39,7 +39,7 @@ class Admin {
     	$('.reqd sup').css('color','red');
     	$('#updateMsg').hide();
 
-	$('.newBtn').click(function(e) {e.preventDefault();});
+	    $('.newBtn').click(function(e) {e.preventDefault();});
     	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
     	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
     	//$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));

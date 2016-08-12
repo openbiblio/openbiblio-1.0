@@ -36,9 +36,20 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    // occasionally where getDayList() is too slow
+    getDays: function () {
+        $.post(list.server, {mode:'getDaysOfWeek'}, function(data){
+          list.days = data;
+          return list.days;
+        }, 'json');
+    },
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     <?php $first_day = Settings::get('first_day_of_week') ? Settings::get('first_day_of_week') : 0; ?>
     getDayList: function (where) { 
         $.post(list.server, {mode:'getDaysOfWeek'}, function(data){
+            //list.days = data;
+
             var html = '';
             for (var i=<?php echo $first_day; ?>;i< <?php echo 7+$first_day; ?>;i++) {
                 html+= '<option value="'+i%7+'" >'+data[i%7]+'</option>';
@@ -117,6 +128,15 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    // occasionally where getSiteList() is too slow
+    getSites: function () {
+        $.post(list.server, {mode:'getSiteList'}, function(data){
+          list.sites = data;
+          return list.sites;
+        }, 'json');
+    },
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     // different structure than other pull-down tables
     getSiteList: function(where) {
         $.post(list.server, {mode:'getDefaultSite'}, function(data){
@@ -126,6 +146,7 @@ var list = {
     },
     siteListPt2: function (where) {
         $.post(list.server, {mode:'getSiteList'}, function(data){
+            list.sites = data;
     		    var html = '';
             for (var n in data) {
         			  html+= '<option value="'+n+'" ';

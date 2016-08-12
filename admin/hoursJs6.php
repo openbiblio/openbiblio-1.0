@@ -7,6 +7,11 @@
 
 class Hour extends Admin {
 	constructor () {
+        list.getSites(); // make simple list, no formatting or placing
+        list.getDays(); // make simple list, no formatting or placing
+    	list.getSiteList($('#siteid'));  // place options for pull-down select
+    	list.getDayList($('#day'));  // place for pull-down select
+
 		var url = '../admin/adminSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'hours';
@@ -29,9 +34,6 @@ class Hour extends Admin {
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
 
 		this.noshows = [];
-
-    	list.getSiteList($('#siteid'));
-    	list.getDayList($('#day'));
 	};
 
 	doNewFields (e) {
@@ -50,6 +52,23 @@ class Hour extends Admin {
 		}
 		return params;
 	}
+
+    fetchHandler (dataAray){    // adds functionality to base class Admin
+        super.fetchHandler(dataAray);
+        $('#showList tbody tr').each(function() {
+            var where = $(this).find("td").eq(1);
+            var siteid = where.html();
+            var siteName = list.sites[siteid];
+            console.log(siteid+' ==> '+siteName);
+            where.html(siteName);
+
+            var where = $(this).find("td").eq(2);
+            var dayid = where.html();
+            var dayName = list.days[dayid];
+            console.log(dayid+' ==> '+dayName);
+            where.html(dayName);
+        });
+    };
 }
 
 $(document).ready(function () {
