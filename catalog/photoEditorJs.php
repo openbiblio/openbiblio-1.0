@@ -10,41 +10,9 @@
 var wc = {
 	init: function () {
 		wc.url = '../catalog/catalogServer.php';
-		wc.initWidgets();
 		$('.help').hide();
 
-		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
-//			if (Modernizr.video) { // seems to not be working any longer - FL
-//				console.log('video supported in this browser');
-		  	    var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
-								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
-								 + ' preload="none" ></video>';
-				$('#canvasIn').before(html);
-				$('#fotoDiv').show();
-//			} else {
-//				console.log('video NOT supported in this browser');
-//			}
-		}
-
-		wc.video = document.querySelector('video');
-		wc.videoOpts = { video:true, audio:false, };
-        var errBack = function (error) {
- 			alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
-			console.log("Video capture error: ", error.code);
-		};
-		var handleVideo = function (stream) {
-	    wc.video.src = window.URL.createObjectURL(stream);
-		};
-		navigator.getUserMedia = navigator.getUserMedia
-													 || navigator.webkitGetUserMedia || navigator.mozGetUserMedia
-													 || navigator.msGetUserMedia || navigator.oGetUserMedia ;
-		if (navigator.getUserMedia) {
-		    navigator.getUserMedia(wc.videoOpts, handleVideo, errBack);
-		}
-
-		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
-		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
-		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+		wc.initWidgets();
 
 		wc.canvasOut = document.getElementById('canvasOut'),
 		wc.ctxOut = canvasOut.getContext('2d');
@@ -77,12 +45,61 @@ var wc = {
 	},
 	//------------------------------
 	initWidgets: function () {
+		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
+			if (Modernizr.video) { // seems to not be working any longer - FL
+				console.log('video supported in this browser');
+		  	    var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
+								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
+								 + ' preload="none" ></video>';
+				$('#canvasIn').before(html);
+			} else {
+				console.log('video NOT supported in this browser');
+			}
+		}
+
+		navigator.getUserMedia = navigator.getUserMedia
+								|| navigator.webkitGetUserMedia
+                                || navigator.mozGetUserMedia
+								|| navigator.msGetUserMedia
+                                || navigator.oGetUserMedia
+                                ;
+		if (navigator.getUserMedia) {
+		    navigator.getUserMedia({
+                video:true,
+                audio:false
+            },
+                function (stream) {
+		wc.video = document.querySelector('video');
+       	            wc.video.src = window.URL.createObjectURL(stream);
+                    localstream = stream;
+                    vid.play();
+                    console.log("streaming");
+            },
+                function (error) {
+     			    alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
+    			    console.log("Video capture error: ", error.code);
+            });
+		}
+
+		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
+		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
+		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
 	},
+    vidOff: function () {
+        //clearInterval(theDrawLoop);
+        //ExtensionData.vidStatus = 'off';
+        vid.pause();
+        vid.src = "";
+        localstream.getTracks()[0].stop();
+        console.log("Vid off");
+    },
+
 	//----//
 	resetForm: function () {
 		$('.help').hide();
 		//$('#errSpace').hide();
-        $('#userMsg').hide();
+        $('#userMsg').html("").hide();
+        $('#fotoDiv').hide();
 		$('#camera').hide();
 		$('#canvasIn').hide();
 		$('#fotoAreaDiv').show();
