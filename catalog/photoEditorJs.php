@@ -69,10 +69,10 @@ var wc = {
                 audio:false
             },
                 function (stream) {
-		wc.video = document.querySelector('video');
+		            wc.video = document.querySelector('video');
        	            wc.video.src = window.URL.createObjectURL(stream);
-                    localstream = stream;
-                    vid.play();
+                    wc.localstream = stream;
+                    wc.video.play();
                     console.log("streaming");
             },
                 function (error) {
@@ -88,9 +88,9 @@ var wc = {
     vidOff: function () {
         //clearInterval(theDrawLoop);
         //ExtensionData.vidStatus = 'off';
-        vid.pause();
-        vid.src = "";
-        localstream.getTracks()[0].stop();
+        wc.video.pause();
+        wc.video.src = "";
+        wc.localstream.getTracks()[0].stop();
         console.log("Vid off");
     },
 

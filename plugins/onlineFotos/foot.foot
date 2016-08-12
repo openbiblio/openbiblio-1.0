@@ -66,9 +66,12 @@ class FotoFt {
 
         var src = "https://covers.openlibrary.org/b/"+key+'/'+code+'-'+size+'.jpg';
         image.src = src;
-	$('#fotoName').val(src);
+	      $('#fotoName').val(src);
         if ( image.complete || image.complete === undefined ) {
             console.log('Success');
+        } else {
+            $('#fotoMsg').html('no cover photo available').show();
+            console.log('no image found');
         }
     }
 }

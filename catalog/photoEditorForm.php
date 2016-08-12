@@ -34,9 +34,9 @@
 					<fieldset id="fotoSources">
 						<legend><?php echo T("Select an image Source"); ?></legend>
 						<label for="useCapture"><?php echo T("Camera"); ?></label>
-						<input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>
+						  <input type="radio" id="useCapture" name="imgSrce" value="cam" checked class="fotoSrceBtns" \>
 						<label for="useBrowse">  <?php echo T("Browse"); ?></label>
-						<input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" \>
+						  <input type="radio" id="useBrowse" name="imgSrce" value="brw" class="fotoSrceBtns" \>
 					</fieldset>
                     <br />
 
