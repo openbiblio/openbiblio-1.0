@@ -199,6 +199,7 @@ class BiblioImages extends DBTable {
 		$this->unlock();
 	}
 	function deleteByBibid($bibid) {
+echo "in BiblioImages::deleteByBibid<br />";
 		$this->lock();
 		//$imgs = $this->getByBibid($bibid);
 		//while ($img = $imgs->fetch_assoc()) {
@@ -213,6 +214,7 @@ class BiblioImages extends DBTable {
 			catch (Exception $err){
 				echo "Error while trying to 'unlink()' photo for biblio #{$bibid}.";
 			}
+echo "deleting $bibid <br />";
 			$sql = $this->mkSQL("delete from images where bibid=%N and imgurl=%Q ",
 				$bibid, $img['imgurl']);
 			$this->act($sql);

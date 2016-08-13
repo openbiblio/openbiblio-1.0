@@ -141,12 +141,11 @@ var ced = {
 		return false;
 	},
 	doCopyNew: function (e) {
-        ced.bibid = e;
+        ced.bibid = $('#copyBibid').val(); // set within srchJs::newCopy(); FL Aug 2016
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();
             $('#copyBarcode_nmbr').disable();
         }
-        $('#copyBibid').val(ced.bibid);
         ced.fetchStatusCds();
         ced.fetchSiteList();
 

@@ -76,6 +76,7 @@ var bs = {
 			bs.doPhotoAdd(bs.theBiblio);
 		});
 		$('#photoEditBtn').on('click',null,function () {
+            $('#updtFotoBtn').show();
 			bs.doPhotoEdit(bs.theBiblio);
 		});
 		$('#biblioEditBtn').on('click',null,function () {
@@ -634,13 +635,13 @@ var bs = {
 	doPhotoEdit: function () {
     if (!wc.url) wc.init;
 
-		$('#updtFotoBtn').hide();
+		//$('#updtFotoBtn').hide();
 		$('#fotoHdr').val('<?php echo T("EditingExistingFoto"); ?>')
 		$('#deltFotoBtn').show();
 		$('#addFotoBtn').hide();
 
-		//$('#updtFotoBtn').show(); //not yet available
-        $('#userMsg').html('<p class="warning">not yet implemented.<br />delete existing photo and add new.</p>').show();
+		$('#updtFotoBtn').show(); //not yet available
+        //$('#userMsg').html('<p class="warning">not yet implemented.<br />delete existing photo and add new.</p>').show();
 
         $('#fotoMsg').hide();
 		$('#fotoMode').val('updatePhoto')
@@ -709,10 +710,10 @@ var bs = {
 
 	/* ====================================== */
 	doNewCopy: function (e) {
-  	e.stopPropagation();
+  	    e.stopPropagation();
 		$('#biblioDiv').hide();
 		$('#copyBibid').val(idis.crntBibid);
-  	var crntsite = bs.opts.current_site
+  	    var crntsite = bs.opts.current_site
 		$('#copySite').val(crntsite);
 
 		$('#copyEditorDiv').show();
