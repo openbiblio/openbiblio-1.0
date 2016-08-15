@@ -5,43 +5,43 @@
 // JavaScript Document
 "use strict";
 
-function Hed ( url, form, dbAlias, hdrs, listFlds, opts ) {
-	Admin.call( this, url, form, dbAlias, hdrs, listFlds, opts );
-};
-Hed.prototype = inherit(Admin.prototype);
-Hed.prototype.constructor = Hed;
+class Hed extends Admin {
+    constructor () {
+    	var url = '../admin/adminSrvr.php',
+    			form = $('#editForm'),
+    			dbAlias = 'hosts';
+    	var hdrs = {'listHdr':<?php echo '"'.T("List of Hosts").'"'; ?>,
+    							'editHdr':<?php echo '"'.T("Edit Hosts").'"'; ?>,
+    							'newHdr':<?php echo '"'.T("Add New Host").'"'; ?>,
+    						 };
+    	var listFlds = {'seq':'number',
+    									'active':'center',
+    									'host':'text',
+    									'name':'text',
+    									'db':'text',
+    									'user':'text',
+    									'pw':'password',
+    								 };
+    	var opts = { 'focusFld':'name', 'keyFld':'id' };
 
-Hed.prototype.fetchServiceList = function () {
+	    super ( url, form, dbAlias, hdrs, listFlds, opts );
+    };
+
+    fetchServiceList () {
 		$.getJSON(this.url, {'cat':'hosts', 'mode':'getSvcs_hosts'}, $.proxy(this.serviceHandler,this));
-};
-Hed.prototype.serviceHandler = function (data) {
-	var html = '';
-	for (var n in data) {
-		html += '<option value="'+data[n]+'">'+data[n]+'</option>\n';
-	}
-	$('#service').html(html);
-};
+    };
+    serviceHandler (data) {
+    	var html = '';
+    	for (var n in data) {
+    		html += '<option value="'+data[n]+'">'+data[n]+'</option>\n';
+	    }
+	    $('#service').html(html);
+    };
+}
 
 $(document).ready(function () {
-	var url = '../admin/adminSrvr.php',
-			form = $('#editForm'),
-			dbAlias = 'hosts';
-	var hdrs = {'listHdr':<?php echo '"'.T("List of Hosts").'"'; ?>, 
-							'editHdr':<?php echo '"'.T("Edit Hosts").'"'; ?>, 
-							'newHdr':<?php echo '"'.T("Add New Host").'"'; ?>,
-						 };
-	var listFlds = {'seq':'number',
-									'active':'center',
-									'host':'text',
-									'name':'text',
-									'db':'text',
-									'user':'text',
-									'pw':'password',
-								 };
-	var opts = { 'focusFld':'name', 'keyFld':'id' };
-						 
-	var xxxx = new Hed( url, form, dbAlias, hdrs, listFlds, opts );
-	xxxx.init();
-	xxxx.fetchServiceList();
+	var hed = new Hed();
+	hed.fetchServiceList();
 });
+
 </script>
