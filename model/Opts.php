@@ -4,7 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../classes/DBTable.php"));
-require_once(REL(__FILE__, "../model/Collections.php"));
+//require_once(REL(__FILE__, "../model/Collections.php"));
 
 class Opts extends DBTable {
 	public function __construct() {
@@ -31,6 +31,6 @@ class Opts extends DBTable {
 		$this->setKey('id');
 	}
 
-	protected function validate_el($rec, $insert) { /*return array();*/ }
+	protected function validate_el($rec, $insert) { return array(); }
 }
 

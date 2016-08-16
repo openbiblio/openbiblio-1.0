@@ -4,6 +4,7 @@
  */
 
 class Form {
+    ## -------------------------------------------------
 	function getCgi_el($fields) {
 		$fields = Form::_cleanFields($fields);
 		$errors = array();
@@ -34,7 +35,9 @@ class Form {
 		}
 		return array($values, $errors);
 	}
-	function display($params) {
+    ## -------------------------------------------------
+
+	static function display($params) {
 		$defaults = array(
 			'title'=>'',
 			'name'=>NULL,
@@ -87,7 +90,7 @@ class Form {
 		if ($msg) {
 			echo '<p class="error">'.H($msg).'</p>';
 		}
-    ## fill using $rows[] cache
+        ## fill using $rows[] cache
 		foreach ($rows as $r) {
 			if ($r['error']) {
 				$err = '<span class="error">'.H($r['error']).'</span>';
@@ -107,7 +110,9 @@ class Form {
 		echo "</fieldset>\n";
 		echo "</form>\n";
 	}
-	function _inputField($field) {
+
+    ## -------------------------------------------------
+	static function _inputField($field) {
 		$s = "";
 		$attrs = "";
 		foreach ($field['attrs'] as $k => $v) {
@@ -163,6 +168,8 @@ class Form {
 		}
 		return $s;
 	}
+
+    ## -------------------------------------------------
 	function _cleanFields($fields) {
 		$defaults = array(
 			'name'=>NULL,

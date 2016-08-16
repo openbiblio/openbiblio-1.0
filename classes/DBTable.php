@@ -9,13 +9,13 @@ require_once(REL(__FILE__, '../classes/Queryi.php'));
  * provides common DB facilities used by various Models
  * @author Micah Stetson
  * modified for PHP 5.0 FL
- * modified to suport required Fields - June 2016 FL
+ * modified to suport required Field validations - June 2016 FL
  */
 
 abstract class DBTable extends Queryi {
 	protected $name;
 	protected $fields = array();
-        protected $reqFields = array();
+    protected $reqFields = array();
 	protected $key = array();
 	protected $sequence = NULL;
 	protected $iter = NULL;
@@ -102,13 +102,10 @@ abstract class DBTable extends Queryi {
 	}
 	public function getAll($orderby = NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
-		//if (!empty($orderby)) $sql .= $this->mkSQL('ORDER BY %q ', $orderby);
 		if (!empty($orderby)) {$sql .= "ORDER BY $orderby";}
+if ($name == 'lookup_settings') echo "in DBTable::getAll() sql = $sql<br />\n";
+//echo "sql = $sql<br />\n";
         $recs = $this->select($sql);
-//if ($this->name == 'biblio_status_dm') {
-//    echo  "$sql <br /> \n";
-//    print_r($recs);echo  "<br /> \n";
-//}
 		return $recs;
 	}
 	public function getMatches($fields, $orderby=NULL) {

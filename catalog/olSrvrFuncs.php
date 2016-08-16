@@ -20,7 +20,7 @@
 	    global $postVars;
 	    
 			## remove any "-" char user may have entered
-			if ($postVars[keepDashes]=='n') $lookupVal = str_replace("-", "", $lookupVal);
+			if ($postVars['keepDashes']=='n') $lookupVal = str_replace("-", "", $lookupVal);
 			## remove any space char user may have entered
 			$lookupVal = str_replace(" ", "", $lookupVal);
 

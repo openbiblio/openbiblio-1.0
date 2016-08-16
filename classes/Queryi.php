@@ -8,13 +8,14 @@
  * converted from mysql lib to mysqli by F.LaPlante Aug 2013
  * converted from mysqli to PDO by F.LaPlante June 2016
  * @author Micah Stetson
+ *
+ * note: all acces to the database engine is via Qurei::_act() which invokes the parent DbCore
  */
 
 require_once("../shared/common.php");
 require_once(REL(__FILE__, "../classes/DbCore.php"));
 
-class Queryi
-{
+class Queryi {
 	private $lock_depth;
 
 	public function __construct() {

@@ -46,8 +46,8 @@ var wc = {
 	//------------------------------
 	initWidgets: function () {
 		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
-			if (Modernizr.video) { // seems to not be working any longer - FL
-				console.log('video supported in this browser');
+			if (Modernizr.video) { 
+				//console.log('video supported in this browser');
 		  	    var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
 								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
 								 + ' preload="none" ></video>';
@@ -73,7 +73,7 @@ var wc = {
        	            wc.video.src = window.URL.createObjectURL(stream);
                     wc.localstream = stream;
                     wc.video.play();
-                    console.log("streaming");
+                    //console.log("streaming");
             },
                 function (error) {
      			    alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
@@ -196,26 +196,28 @@ var wc = {
 		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
 	},
 	sendFoto: function (e) {
-		e.stopPropagation();
-        	$('#errSpace').hide();
+console.log('sending foto');
+		if (e) e.stopPropagation();
+        $('#errSpace').hide();
 		var imgMode = '',
 			current_add_mode = '',
 			url = $('#fotoName').val(),
 			bibid = $('#fotoBibid').val();
 		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
 		current_add_mode = $('.fotoSrceBtns:checked').val();
-		if ('brw' == current_add_mode || 'cam' == current_add_mode) {
+		if ((current_add_mode == 'brw') || (current_add_mode == 'cam')) {
 			$.post(wc.url,
 				{'mode':'addNewPhoto',
-			 	'type':'base64',
-			 	'img':wc.canvasOut.toDataURL(imgMode, 0.8),
-                 		'bibid':bibid,
-			 	'url': url,
-                 		'position':0,
+			 	 'type':'base64',
+			 	 'img':wc.canvasOut.toDataURL(imgMode, 0.8),
+                 'bibid':bibid,
+			 	 'url': url,
+                 'position':0,
 				},
 				function (response) {
-					var data = JSON.parse(response);
-					//console.log('image posting OK');
+					//var data = JSON.parse(response);
+					var data = response;
+console.log('image posting OK');
 					var crntFotoUrl = data[0]['url'];
 					$('#fotoMsg').html('cover photo posted').show();
 					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
@@ -226,7 +228,7 @@ var wc = {
 					}
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
-				}
+				}, 'json'
 			);
 		//e.preventDefault();
 		} else {
@@ -236,7 +238,8 @@ var wc = {
 			 	'url': url,
 				},
 				function (response) {
-					var data = JSON.parse(response);
+					//var data = JSON.parse(response);
+					var data = response;
 					//console.log('image posting OK');
 					var crntFotoUrl = data[0]['url'];
 					$('#fotoMsg').html('cover photo posted').show();
@@ -248,33 +251,47 @@ var wc = {
 					}
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
-				}
+				}, 'json'
 			);
 		}
 		return false;
 	},
-	doUpdatePhoto: function () {
-	  /// left as an exercise for the motivated - FL (I'm burned out on this project)
+
+	doUpdatePhoto: function (e) {
+        var callFinishUpdate = true;
+        wc.deleteActual(e , function(e) {wc.callFinishUpdte(e)}); // returns before actual work done by server
 	},
+    finishUpdate: function (e) {
+console.log('attempting update');
+        wc.sendFoto(e);
+    },
+
 	doDeletePhoto: function (e) {
-		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {
-	  	    $.post(wc.url,{'mode':'deletePhoto',
-					   'bibid':$('#fotoBibid').val(),
-						'url':$('#fotoName').val(),
-		              },
-					  function(response){
-							wc.eraseImage();
-							$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
-      											+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-                            idis.crntFoto = null;
-						    $('#fotoName').val('');
-							$('#photoAddBtn').show();
-							$('#photoEditBtn').hide();
-							$('#fotoMsg').html('cover photo deleted').show();
-					 }
-                     , 'json'
-			);
-		}
+		if (confirm("<?php echo T("Are you sure you want to delete this cover photo"); ?>")) {wc.deleteActual(e); }
+    },
+    deleteActual: function (e, forUpdate=false) {
+  	    $.post(wc.url,{'mode':'deletePhoto',
+				       'bibid':$('#fotoBibid').val(),
+					   'url':$('#fotoName').val(),
+	              },
+				  function(response){
+console.log('back from deleting');
+						wc.eraseImage();
+						$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
+  											+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
+                        idis.crntFoto = null;
+						$('#photoAddBtn').show();
+						$('#photoEditBtn').hide();
+
+                        if(forUpdate) {
+                            wc.finishUpdate();
+                        } else {
+					       $('#fotoName').val('');
+						   $('#fotoMsg').html('cover photo deleted').show();
+                       }
+				 }
+                 , 'json'
+		);
 		e.stopPropagation();
 		return false;
 	},

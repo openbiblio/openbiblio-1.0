@@ -4,7 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../classes/DBTable.php"));
-require_once(REL(__FILE__, "../model/Collections.php"));
+//require_once(REL(__FILE__, "../model/Collections.php"));
 
 class Hosts extends DBTable {
 	public function __construct() {
@@ -27,5 +27,5 @@ class Hosts extends DBTable {
 		$this->setSequenceField('seq');
 	}
 
-	protected function validate_el($rec, $insert) { /*return array();*/ }
+	protected function validate_el($rec, $insert) { return array(); }
 }
