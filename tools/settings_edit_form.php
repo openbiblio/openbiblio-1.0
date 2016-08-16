@@ -33,3 +33,8 @@ Form::display(array(
 	'submit'=>T("Update"),
 	'fields'=>Settings::getFormFields('tools'),
 ));
+
+/*
+INSERT INTO `settings` (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`)
+VALUES ('allow_auto_db_check', '28', 'Allow Database Auto-Integrity Check', 'bool', NULL, NULL, NULL, 'Y', 'tools');
+*/

@@ -53,7 +53,7 @@ class FieldError extends OBErr {
 		parent::__construct($msg);
 		$this->field = $field;
 	}
-	public function listExtract($errors) {
+	static public function listExtract($errors) {
 		$msgs = array();
 		$l = array();
 		foreach ($errors as $e) {

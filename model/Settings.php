@@ -135,11 +135,11 @@ class Settings extends DBTable {
 		return $aray;
 	}
 
-    public static function getSettings() {
+    static public function getSettings() {
 		global $_settings_cache;
 		return $_settings_cache;
 	}
-	private function _getData ($menu=NULL, $cols='*'){
+	static private function _getData ($menu=NULL, $cols='*'){
 		$db = new Queryi;
 		$sql = "SELECT ".$cols." FROM settings WHERE (title <> '') ";
 		if (!empty($menu)) {
@@ -192,7 +192,7 @@ class Settings extends DBTable {
 		$db->unlock();
 		return $errors;
 	}
-	private function _mkField($s) {
+	static private function _mkField($s) {
 		global $_settings_validators;
 		$attrs = array();
 

@@ -5,7 +5,7 @@
 
 class Form {
     ## -------------------------------------------------
-	function getCgi_el($fields) {
+	public function getCgi_el($fields) {
 		$fields = Form::_cleanFields($fields);
 		$errors = array();
 		$values = array();
@@ -170,7 +170,7 @@ class Form {
 	}
 
     ## -------------------------------------------------
-	function _cleanFields($fields) {
+	static function _cleanFields($fields) {
 		$defaults = array(
 			'name'=>NULL,
 			'title'=>NULL,
