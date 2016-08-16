@@ -27,10 +27,10 @@ var ni = {
 		ni.resetForm();
 
 		// New On-Line Entry Item - search form functions
-    $('.criteria').on('change',null, function () {
+        $('.criteria').on('change',null, function () {
 			ni.enableSrchBtn();
 		});
-    $('#manualBtn').on('click',null, function() {
+        $('#manualBtn').on('click',null, function() {
 			ni.doClearItemForm();
 			ni.doMakeItemForm('');
 			$('#searchDiv').hide();
@@ -40,7 +40,7 @@ var ni = {
 	  	var mediaType = $('#itemMediaTypes option:selected').val();
 			ni.doClearItemForm();
 			ni.doMakeItemForm(mediaType);
-    });
+        });
     
 		$('#quitBtn').on('click',null,ni.doAbandon);
 		$('#retryBtn').on('click',null,ni.doBackToSrch);
@@ -81,10 +81,9 @@ var ni = {
 		}
 		// if user changes his/her mind
 		$('#autobarco').on('change',null,function (){
-		  if ($('#autobarco:checked').length > 0) {
+		    if ($('#autobarco:checked').length > 0) {
 				$('#barcode_nmbr').disable();
-			}
-			else {
+			} else {
 				$('#barcode_nmbr').enable();
 			}
 		});
@@ -92,11 +91,12 @@ var ni = {
 		$('#100a').on('change',null,ni.fixAuthor);
 		$('#245a').on('change',null,ni.fixTitle);
 
-		ni.fetchHosts(); // for searches
 		ni.fetchOpts(); // starts chain to call the following
 		//ni.fetchSiteList(); // for new copy use
 		//ni.fetchMaterialList(); // for new items
 		//ni.fetchCollectionList(); // for new items
+
+		ni.fetchHosts(); // for searches
 	},
 	
 	//------------------------------
@@ -147,8 +147,9 @@ var ni = {
 	},
 	//------------------------------
 	fetchOpts: function () {
+        //console.log('fetching Opts');
         $.post(ni.url,{mode:'getOpts'}, function(data){
-			ni.opts = data;
+			ni.opts = data[0];
 			ni.fetchDfltMedia(); // chaining
 		}, 'json');
 	},
@@ -202,8 +203,8 @@ var ni = {
 	},
 
 	fetchHosts: function () {
-		//console.log('svr:'+ni.url);
-	  $.post(ni.url,{mode:'getHosts'}, function(data){
+        //console.log('svr:'+ni.url);
+	    $.post(ni.url,{mode:'getHosts'}, function(data){
 	  	// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;
 			ni.nHosts = data.length;
@@ -386,15 +387,15 @@ var ni = {
 		}
 	},
 	doSearch: function () {
-	  var srchBy = flos.getSelectBox($('#srchBy'),'getText');
-	  var lookupVal = $('#lookupVal').val();
+        var srchBy = flos.getSelectBox($('#srchBy'),'getText');
+        var lookupVal = $('#lookupVal').val();
 
-	  // advise user that this will take some time to complete
-	  var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
-	  var theTxt = '<h5>';
-		theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
-	  if ($('#lookupVal2').val() != '') {
-			theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
+        // advise user that this will take some time to complete
+        var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
+        var theTxt = '<h5>';
+        theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
+        if ($('#lookupVal2').val() != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
 		}
 
 		// show host(s) being searched
@@ -411,7 +412,7 @@ var ni = {
 		}
 
 		theTxt += '</h5>';
-	  $('#waitText').html(theTxt);
+	    $('#waitText').html(theTxt);
 	  
 		$('#searchDiv').hide();
 		$('#waitDiv').show();
@@ -434,10 +435,10 @@ var ni = {
 			else {
 				var rslts = JSON.parse(response);
 				var numHits = parseInt(rslts.ttlHits);
-				var maxHits = parseInt(rslts.maxHits);
+                var maxHits = ni.opts.maxHits;
 				if (numHits < 1) {
-					//console.log('nothing found');
-				  //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
+                    console.log('nothing found');
+				    //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
 					// 'srch2':['byName':$srchByName2,'val':$lookupVal2]}
@@ -453,8 +454,8 @@ var ni = {
 				}
 			
 				else if (numHits >= maxHits) {
-					//console.log('too many hits');
-		  		//{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',
+                    console.log('too many hits');
+		  		    //{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',
 					// 'msg':'$msg1', 'msg2':'$msg2'}
 					var str = rslts.msg+' ('+rslts.ttlHits+' ).<br />'+rslts.msg2;
 					$('#retryHead').empty();
@@ -465,7 +466,7 @@ var ni = {
 				}
 			
 				else if (numHits > 1){
-					//console.log('more than one hit');
+                    console.log('more than one hit');
 					$('#choiceSpace').empty();
 					$('#ttlHits').html(numHits);
 					ni.singleHit = false;
@@ -513,9 +514,9 @@ var ni = {
 				} // else if (rslts.ttlHits > 1)
 				
 				else if (rslts.ttlHits == 1){
-				  var data;
-				  ni.singleHit = true;
-					//console.log('single hit found');
+				    var data;
+				    ni.singleHit = true;
+                    console.log('single hit found');
 					ni.hostData = rslts.data;
 					$.each(rslts.data, function(hostIndex,hostData) {
 					  $.each(hostData, function(hitIndex,hitData) {

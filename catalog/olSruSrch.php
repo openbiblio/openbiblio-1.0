@@ -14,13 +14,13 @@
 	$subfieldcount = 0;
 	$sruRcrdSchema = 'marcxml';
 //	$sruRcrdSchema = 'mods';
-//echo "using SRU module<br />";
+echo "using SRU module<br />";
 	
  	$qry ="operation=searchRetrieve"
  			 ."&version=1.1"
 			 ."&query=$sQuery"
 		 	 ."&recordPacking=xml"
-			 ."&maximumRecords=$postVars[maxHits]"
+			 ."&maximumRecords=$postVars['maxHits']"
 			 ."&recordSchema=$sruRcrdSchema"
 				;
 	//echo "query: $qry <br />";
@@ -46,7 +46,7 @@
 		$theHost = $postVars['hosts'][$i]['host'];
 		$thePort = $postVars['hosts'][$i]['port'];
 		if(!isset($thePort) || empty($thePort)) $thePort = 7090;  // default port
-		//echo "url: '$theHost:$thePort'<br />timeout=$postVars[timeout]seconds<br />";
+		//echo "url: '$theHost:$thePort'<br />timeout=$postVars['timeout']seconds<br />";
 		$fp = fsockopen($theHost, $thePort, $errNmbr, $errMsg, $postVars['timeout']);
 		$text = $header . $qry;
 		if(!$fp) {
@@ -66,7 +66,7 @@
 echo "to host=>".nl2br($text)." at port "."$thePort<br />";
 		
 		### Added timeout on the stream itself (also in loop)- LJ
-		stream_set_timeout($fp, $postVars[timeout]);
+		stream_set_timeout($fp, $postVars['timeout']);
 		$info = stream_get_meta_data($fp); 
 		
 		### fetch the response, if any
@@ -103,7 +103,7 @@ echo "summary:<br />";print_r($hits[$i]);echo "<br />";
 /*
 	### create and parse downloaded XML
 	$xml_parser = xml_parser_create();
-	for($i = 0; $i < $postVars[numHosts]; $i++) {
+	for($i = 0; $i < $postVars['numHosts']; $i++) {
 	  if (!empty($hits[$i])) {
 			xml_parse_into_struct($xml_parser, $hits[$i], $hostRecords[$i]);
 

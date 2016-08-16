@@ -285,7 +285,7 @@
 			}
 			echo json_encode($imgs);
 		} else {
-			echo 'Unable to save the file.';
+			echo "Unable to save the file < $file >.\n";
 			print_r($_POST);
 		}
 		break;
@@ -305,7 +305,11 @@
 		break;
 	case 'deletePhoto':
 	    $ptr = new BiblioImages;
-		$ptr->deleteByBibid($_POST['bibid']);
+		$rslt = $ptr->deleteByBibid($_POST['bibid']);
+        echo json_encode($rslt);
+		define('UPLOAD_DIR', '../photos/');
+		$file = UPLOAD_DIR . $_POST['url'];
+        unlink($file);
 		break;
 
 	//// ====================================////

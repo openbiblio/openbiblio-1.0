@@ -186,7 +186,7 @@
     $prevHash = Settings::get('version_hash');
     list($crntHash, $crntSize) = getOBVersionHash();
     if ($crntHash != $prevHash) {
-        header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
+//        header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
         //echo "Code hash has changed since last use<br />\n";
     }
     Settings::set('version_hash', $crntHash);
