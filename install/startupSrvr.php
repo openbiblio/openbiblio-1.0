@@ -11,6 +11,22 @@
  */
 
     //print_r($_REQUEST);echo "<br />";
+    function createDB ($dbh, $db) {
+        $sql = "CREATE DATABASE `$db` ";
+        $dbh->exec($sql);
+    };
+    function createUser ($dbh, $user, $host, $passwd) {
+        $sql = "CREATE USER '$user'@'$host' IDENTIFIED BY '$passwd' ";
+        $dbh->exec($sql);
+    };
+    function grantPriv ($dbh, $db, $user, $host) {
+        $sql = "GRANT ALL ON `$db`.* TO '$user'@'$host'; FLUSH PRIVILEGES;";
+        $dbh->exec($sql);
+    };
+    function hndlError($e) {
+        print ("Error: ". $e->getMessage());
+        exit;
+    };
 
 	switch ($_REQUEST['mode']) {
         case 'createConstFile':
@@ -57,19 +73,19 @@
             $passwd=$_REQUEST['passwd'];
             $db=$_REQUEST["db"];
 
-            try {
-                $dbh = new PDO("mysql:host=$host", $adminNm, $adminPw);
-
-                $dbh->exec("CREATE DATABASE `$db`;
-                    CREATE USER '$user'@'$host' IDENTIFIED BY '$passwd';
-                    GRANT ALL ON `$db`.* TO '$user'@'$host';
-                    FLUSH PRIVILEGES;");
+            $dbh = new PDO("mysql:host=$host", $adminNm, $adminPw);
                     //or die(print_r($dbh->errorInfo(), true));
                     //FLUSH PRIVILEGES;");
-            } catch (PDOException $e) {
-                return ("Error: ". $e->getMessage());
-                exit;
-            }
+
+            try { createDB($dbh, $db); }
+            catch (PDOException $e) { hndlError($e); }
+
+            try { createUser ($dbh, $user, $host, $passwd); }
+            catch (PDOException $e) { hndlError ($e); }
+
+            try { grantPriv ($dbh, $db, $user, $host); }
+            catch (PDOException $e) { hndlError ($e); }
+
             echo "success";
         break;
 
