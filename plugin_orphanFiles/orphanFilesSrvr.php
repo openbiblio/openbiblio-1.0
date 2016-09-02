@@ -4,7 +4,7 @@
  */
 
     require_once("../shared/common.php");
-    require_once("../plugins/supportFuncs.php");
+    require_once("../functions/supportFuncs.php");
 
 	$verbose = ($_POST['verb'] == 'No')?false:true;
 	$detail = ($_POST['detl'] == 'No')?false:true;

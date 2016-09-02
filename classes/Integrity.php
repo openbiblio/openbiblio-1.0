@@ -4,7 +4,7 @@
  */
 
 require_once(REL(__FILE__, "../classes/Queryi.php"));
-require_once(REL(__FILE__, "../plugins/supportFuncs.php"));
+require_once(REL(__FILE__, "../functions/supportFuncs.php"));
 
 ini_set('display_errors', 1);
 

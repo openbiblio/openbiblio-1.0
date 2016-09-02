@@ -10,9 +10,9 @@
  * OBIB_BOTH - both assoc and numeric array result type
  ****************************************************************************
  */
-define("OBIB_ASSOC","1");
-define("OBIB_NUM","2");
-define("OBIB_BOTH","3");
+//define("OBIB_ASSOC","1");
+//define("OBIB_NUM","2");
+//define("OBIB_BOTH","3");
 
 /****************************************************************************
  * search types:

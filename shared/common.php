@@ -100,30 +100,26 @@
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
 
-    /*Determine current size of OB modules */
+    /* This function will create a concat string of all file sizes and timestamps,
+       and subsequently uses hash() to create a unique represenation which is not too large
+    */
     function getOBVersionHash() {
-        /* determine total file size of all OB components */
-        $obRoot = ".."; //getOBroot();
-        $obDirs = getDirList($obRoot);
-
-        /* This versio will create a concat string of all sizes and timestamps,
-            and subsequently uses hash() to create a unique represenation which is not too large */
-
         $ttlStr = "";
         $total = 0;
+        $obRoot = "..";
+        $obDirs = getDirList($obRoot);
         foreach ($obDirs as $dir) {
-            //echo "<br />\n.....dir = $dir ....<br />\n";
             $str = ""; $subttl = 0;
             $dir = '../'.$dir;
             $obFiles = getFileList($dir, true);
-            foreach ($obFiles as $file) {
-                $subttl += filesize($file);
-                $str .= filesize($file) . ":" . filectime($file);
+            foreach ($obFiles as $file) {   // for all files in current directory
+                $subttl += filesize($file); // accumulate file sizes
+                $str .= filesize($file) . ":" . filectime($file);   // concatenate sizes and mod dates
             }
             $ttlStr .= "- " . $str;
             $total += $subttl;
         }
-        return array(hash("md5", $ttlStr),$total);
+        return array(hash("md5", $ttlStr), $total);
     }
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
@@ -131,7 +127,7 @@
 	require_once(REL(__FILE__, "../classes/Nav.php"));
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, '../shared/templates.php'));
-    require_once(REL(__FILE__, "../plugins/supportFuncs.php"));
+    require_once(REL(__FILE__, "../functions/supportFuncs.php"));
 	require_once(REL(__FILE__, "../model/Settings.php"));
 
 	global $LOC, $CharSet, $Locale, $OBroot;
@@ -140,6 +136,7 @@
 
 	$LOC = new Localize;
 	if (!isset($doing_install) or !$doing_install) {
+        ## normal processing
 		include_once(REL(__FILE__, "../model/Settings.php"));
         //echo "in common.php @ln#136 <br />\n";
 		Settings::load();
@@ -150,6 +147,7 @@
 		$Locale = Settings::get('locale');
 	}
 	else {
+        ## startup / install only
 		$CharSet = "UTF-8";
 		$ThemeId = '1';
 		$ThemeDirUrl = "../themes/default";
