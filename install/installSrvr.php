@@ -12,12 +12,12 @@
  	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 
-	$installQ = new InstallQuery($dbConst);
+	$installQ = new InstallQuery();
 	switch ($_REQUEST['mode']) {
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
         case 'connectDBServer':
 			$msg = $installQ->getDbServerVersion();
-			echo $msg;
+			print_r($msg);
 			break;
 
         case 'createNewDB':

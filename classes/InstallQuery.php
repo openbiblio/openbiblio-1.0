@@ -14,28 +14,30 @@ require_once("../classes/Queryi.php");
 
 class InstallQuery extends Queryi
 {
-    public function __construct($dbConst) {
-        $this->dbConst = $dbConst;
-        //echo "in installQuery constructor: host=".$this->dbConst["host"]."; user=".$this->dbConst["username"]."; pw=".$this->dbConst["pwd"]."; db=".$this->dbConst["database"]."<br />\n";
-        parent::__construct($this->dbConst);
+    public function __construct() {
+        parent::__construct();
     }
 
 	public function getDbServerVersion () {
 		$sql = $this->mkSQL("SELECT VERSION()");
-//echo "sql={$sql}<br/>\n";
         $rslt = parent::select1($sql);
-//print_r($rslt);
-		//return $rslt['VERSION()'];
-		return $rslt;
+		return $rslt[0]['VERSION()'];
 	}
 
-  public function getSettings($tablePrfx) {
-    if (!isset($tablePrfx)) $tablePrfx = $this->dbConst['database']; // needed because default parameters cannot be complex items - FL
-    //  first try to determine if setting table even exists
-    $sql = $this->mkSQL('SHOW TABLES LIKE %C ', $tablePrfx.'.settings');
-    //echo "sql={$sql}<br/>\n";
-    $rows = $this->select01($sql);
+  public function getSettings($tablePrfx=0) {
+    $this->getDSN();
+    //echo"dsn===>";print_r($this->dsn);echo"<br />";
+    if (empty($tablePrfx)) $tablePrfx = $this->dsn['database']; // needed because default parameters cannot be complex items - FL
 
+    //  first try to determine if setting table even exists
+    try {
+        $sql = "SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE "
+//         . "TABLE_SCHEMA = `$tablePrfx` "
+//         . "AND "
+         . "TABLE_NAME = `settings`";
+        echo "sql={$sql}<br/>\n";
+        $rows = $this->select01($sql);
+    } catch (PDOException $e){ }
     if (!$rows || empty($rows) || !isset($rows)) {
       return 'NothingFound';
     }
@@ -54,16 +56,16 @@ class InstallQuery extends Queryi
   }
 
   public function getCurrentDatabaseVersion() {
-		## versions 1.0+
-    $dbName = $this->$dbConst['database']; // needed because default parameters cannot be complex items - FL
+    $dbName = $this->$dsn['database']; // needed because default parameters cannot be complex items - FL
     $sql = $this->mkSQL('SELECT `value` FROM %i WHERE `name`=%Q', $dbName.'.settings','version');
     $row = $this->select01($sql);
 		if ($row) {
+		    ## versions 1.0+
 			$version = $row['value'];
 		} else {
 			## versions < 1.0
-    	$sql = $this->mkSQL('SELECT `version` FROM %i ', $dbName.'.settings');
-    	$rslt = $this->select01($sql);
+    	    $sql = $this->mkSQL('SELECT `version` FROM %i ', $dbName.'.settings');
+    	    $rslt = $this->select01($sql);
 			$version = $rslt['version'];
 		}
 		return $version;
@@ -82,7 +84,7 @@ class InstallQuery extends Queryi
   }
 
   public function createDatabase() {
-    $sql = "CREATE DATABASE IF NOT EXISTS ".$this->dbConst['database'];
+    $sql = "CREATE DATABASE IF NOT EXISTS ".$this->dsn['database'];
     //echo $sql."<br>\n";
     $r = parent::act($sql);
     if ($r === true) {

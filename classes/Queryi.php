@@ -23,7 +23,7 @@ class Queryi {
         //echo "in Queryi::__construct() <br />\n";
     }
 
-    private function getDSN () {
+    protected function getDSN () {
         $fn = '../database_constants.php';
         if (file_exists($fn) ) {
             // DO NOT change to 'Include Once' !!!!!

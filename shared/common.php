@@ -132,6 +132,7 @@
 	require_once(REL(__FILE__, "../classes/Localize.php"));
 	require_once(REL(__FILE__, '../shared/templates.php'));
     require_once(REL(__FILE__, "../plugins/supportFuncs.php"));
+	require_once(REL(__FILE__, "../model/Settings.php"));
 
 	global $LOC, $CharSet, $Locale, $OBroot;
 	global $ThemeId, $ThemeDirUrl, $ThemeDir, $SharedDirUrl;
@@ -182,16 +183,18 @@
         setSessionFmSettings();
 	}
 
-    /* determine if OB code has changed */
-    $prevHash = Settings::get('version_hash');
-    $allowCk = Settings::get('allow_auto_db_check');
-    list($crntHash, $crntSize) = getOBVersionHash();
-    if (($crntHash != $prevHash) and (strpos($_SERVER[PHP_SELF], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
-        header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
-        //echo "Code hash has changed since last use<br />\n";
+    /* determine if OB code has changed - do not use this during install, data not present yet*/
+	if (!isset($doing_install) or !$doing_install) {
+        $prevHash = Settings::get('version_hash');
+        $allowCk = Settings::get('allow_auto_db_check');
+        list($crntHash, $crntSize) = getOBVersionHash();
+        if (($crntHash != $prevHash) and (strpos($_SERVER[PHP_SELF], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
+            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
+            //echo "Code hash has changed since last use<br />\n";
+        }
+        Settings::set('version_hash', $crntHash);
+        Settings::set('OBsize', $crntSize);
     }
-    Settings::set('version_hash', $crntHash);
-    Settings::set('OBsize', $crntSize);
 
 	$LOC->init($Locale);
 
