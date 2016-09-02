@@ -188,9 +188,10 @@
         $prevHash = Settings::get('version_hash');
         $allowCk = Settings::get('allow_auto_db_check');
         list($crntHash, $crntSize) = getOBVersionHash();
+        //echo "crntHash=>$crntHash; prevHash=>$prevHash; allowChk=>$allowCk<br />\n";
         if (($crntHash != $prevHash) and (strpos($_SERVER[PHP_SELF], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
-            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
             //echo "Code hash has changed since last use<br />\n";
+            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
         }
         Settings::set('version_hash', $crntHash);
         Settings::set('OBsize', $crntSize);
