@@ -35,7 +35,7 @@ class InstallQuery extends Queryi
 //         . "TABLE_SCHEMA = `$tablePrfx` "
 //         . "AND "
          . "TABLE_NAME = `settings`";
-        echo "sql={$sql}<br/>\n";
+        //echo "sql={$sql}<br/>\n";
         $rows = $this->select01($sql);
     } catch (PDOException $e){ }
     if (!$rows || empty($rows) || !isset($rows)) {
@@ -178,14 +178,20 @@ class InstallQuery extends Queryi
   
   public function executeSqlFilesInDir($dir, $dbName = "") {
     if (is_dir($dir)) {
-      if ($dh = opendir($dir)) {
-        while (($filename = readdir($dh)) !== false) {
+        $cdir = scandir($dir, SCANDIR_SORT_ASCENDING);
+        foreach ($cdir as $key => $filename) {
           if(preg_match('/\\.sql$/', $filename)) {
             $this->executeSqlFile($dir.'/'.$filename, $dbName);
           }
         }
-        closedir($dh);
-      }
+//      if ($dh = opendir($dir)) {
+//        while (($filename = readdir($dh)) !== false) {
+//          if(preg_match('/\\.sql$/', $filename)) {
+//            $this->executeSqlFile($dir.'/'.$filename, $dbName);
+//          }
+//        }
+//        closedir($dh);
+//      }
     }
   }
 
@@ -193,6 +199,7 @@ class InstallQuery extends Queryi
    * Function to read through an sql file executing SQL only when ";" is encountered
    */
   function executeSqlFile($filename, $dbName = DB_TABLENAME_PREFIX) {
+    //echo "processing test file: $filename(br />\n";
     $fp = fopen($filename, "r");
     # show error if file could not be opened
     if ($fp == false) {
