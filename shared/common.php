@@ -35,8 +35,6 @@
     assert_options(ASSERT_CALLBACK, 'obAssertHandler');
 
 	#apd_set_pprof_trace();
-	## TODO - will not work with db models and classes as currently written - FL
-	//error_reporting(E_ALL ^ E_NOTICE);
 	//error_reporting(E_ALL & ~(E_DEPRECATED | E_STRICT | E_NOTICE));
 	error_reporting(E_ALL & ~(E_STRICT | E_NOTICE));
 	if (isset($cache)) {
@@ -99,28 +97,6 @@
 		$_SESSION['site_login'] = Settings::get('site_login');
 		$_SESSION['checkout_interval'] = Settings::get('checkout_interval');
 	}
-
-    /* This function will create a concat string of all file sizes and timestamps,
-       and subsequently uses hash() to create a unique represenation which is not too large
-    */
-    function getOBVersionHash() {
-        $ttlStr = "";
-        $total = 0;
-        $obRoot = "..";
-        $obDirs = getDirList($obRoot);
-        foreach ($obDirs as $dir) {
-            $str = ""; $subttl = 0;
-            $dir = '../'.$dir;
-            $obFiles = getFileList($dir, true);
-            foreach ($obFiles as $file) {   // for all files in current directory
-                $subttl += filesize($file); // accumulate file sizes
-                $str .= filesize($file) . ":" . filectime($file);   // concatenate sizes and mod dates
-            }
-            $ttlStr .= "- " . $str;
-            $total += $subttl;
-        }
-        return array(hash("md5", $ttlStr), $total);
-    }
 
 	require_once(REL(__FILE__, '../shared/global_constants.php'));
 	require_once(REL(__FILE__, '../classes/Error.php'));

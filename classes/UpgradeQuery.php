@@ -9,17 +9,17 @@
  */
 
 class UpgradeQuery extends InstallQuery {
-  public function __construct($startVer) {
-		$this->startVer = $startVer;
-    # Each of the routines listed should update the given version to the next higher version.
-    $this->upgrades = array(
-      '0.3.0' => '_upgrade030_e',
-      '0.4.0' => '_upgrade040_e',
-      '0.5.2' => '_upgrade052_e',
-      '0.6.0' => '_upgrade060_e',
-      '0.7.0' => '_upgrade070_e',
-			'0.7.1' => '_upgrade071_e',
-    );
+    public function __construct($startVer) {
+        $this->startVer = $startVer;
+        # Each of the routines listed should update the given version to the next higher version.
+        $this->upgrades = array(
+            '0.3.0' => '_upgrade030_e',
+            '0.4.0' => '_upgrade040_e',
+            '0.5.2' => '_upgrade052_e',
+            '0.6.0' => '_upgrade060_e',
+            '0.7.0' => '_upgrade070_e',
+            '0.7.1' => '_upgrade071_e',
+        );
 		parent::__construct();
   }
 

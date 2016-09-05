@@ -59,7 +59,7 @@ class DbCore
     }
 
     private function getConfig () {
-        $fn = '../database_constants.php';
+        $fn = '../dbParams.php';
         if (file_exists($fn) ) {
             include($fn); // DO NOT change to 'include_once()' !!!!!
         } else {

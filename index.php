@@ -1,5 +1,5 @@
 <?php
-  if (file_exists('./database_constants.php') ) {
+  if (file_exists('./dbParams.php') ) {
     // usual startup process, customize to suit staff requirements
     // header("Location: circ/memberForms.php");  // if circulation dept is main user
     header("Location: ./catalog/srchForms.php");    // if catalogging is main user

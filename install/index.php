@@ -32,7 +32,7 @@
 				<li>create OpenBiblio database user
 					(<a href="../install_instructions.html#step5">step 5</a> of the
 					install instructions)</li>
-				<li>update openbiblio/database_constants.php with your new database
+				<li>update openbiblio/dbParams.php with your new database
 					username and password
 					(<a href="../install_instructions.html#step8">step 8</a> of the install
 					instructions)</li>

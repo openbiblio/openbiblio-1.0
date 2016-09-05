@@ -4,7 +4,7 @@
  */
 
 /******************************************************************************
- * support functions for possible plugins
+ * file-related support functions
  *
  *@author Fred LaPlante - July 2016
  */
@@ -108,8 +108,8 @@
 					($info['basename'] != 'custom_head.php') &&
 					($info['basename'] != 'COPYRIGHT.html') &&
 					($info['basename'] != 'install_instructions.html') &&
-					($info['basename'] != 'database_constants.php') &&
-					($info['basename'] != 'database_constants_deploy.php') &&
+					($info['basename'] != 'dbParams.php') &&
+					($info['basename'] != 'dbParams_deploy.php') &&
 					($info['basename'] != 'Development_Guidelines.txt') &&
 					($info['basename'] != 'custom_head.php') &&
 					($info['basename'] != 'GPL.txt') &&
@@ -366,5 +366,27 @@
                 }
 			}
 		}
+    }
+
+    /* This function will create a concat string of all file sizes and timestamps,
+       and subsequently uses hash() to create a unique represenation which is not too large
+    */
+    function getOBVersionHash() {
+        $ttlStr = "";
+        $total = 0;
+        $obRoot = "..";
+        $obDirs = getDirList($obRoot);
+        foreach ($obDirs as $dir) {
+            $str = ""; $subttl = 0;
+            $dir = '../'.$dir;
+            $obFiles = getFileList($dir, true);
+            foreach ($obFiles as $file) {   // for all files in current directory
+                $subttl += filesize($file); // accumulate file sizes
+                $str .= filesize($file) . ":" . filectime($file);   // concatenate sizes and mod dates
+            }
+            $ttlStr .= "- " . $str;
+            $total += $subttl;
+        }
+        return array(hash("md5", $ttlStr), $total);
     }
 

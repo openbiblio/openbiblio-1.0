@@ -31,7 +31,7 @@
 	switch ($_REQUEST['mode']) {
         case 'createConstFile':
             $path = "..";
-            $fn = $path . "/database_constants.php";
+            $fn = $path . "/dbParams.php";
 
             $content =
                 "<?php \n".
@@ -57,7 +57,7 @@
         		}
                 if (false === file_put_contents($fn, $content)) {
                     $response['error'] = 'The database constants file could not be written.';
-		            $response[] = 'Please create database_constants.php manually using the database_constants_deploy.php file as a model.';
+		            $response[] = 'Please create dbParams.php manually using the dbParams_deploy.php file as a model.';
         		}
                 echo json_encode($response);
             } else {

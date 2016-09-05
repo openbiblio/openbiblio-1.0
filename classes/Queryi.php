@@ -24,7 +24,7 @@ class Queryi {
     }
 
     protected function getDSN () {
-        $fn = '../database_constants.php';
+        $fn = '../dbParams.php';
         if (file_exists($fn) ) {
             // DO NOT change to 'Include Once' !!!!!
             include($fn); 
