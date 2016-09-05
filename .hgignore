@@ -14,3 +14,4 @@ glob:catalog/temp/upload_csv.php
 glob:catalog/temp/upload_csv_form.php
 glob:photos/*.*
 wxDisplay.ppr
+dbParams.php
