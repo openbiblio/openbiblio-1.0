@@ -104,7 +104,7 @@ var ni = {
 	},
 	
 	resetForm: function () {
-	  //console.log('resetting Search Form');
+	    //console.log('resetting Search Form');
 		$('#help').hide();
 		$('#searchDiv').show();
 		$('#srchHosts').hide();// depends if multiple hosts available
@@ -117,7 +117,7 @@ var ni = {
 		$('#copyEditorDiv').hide();
 		$('#photoEditorDiv').hide();
 		ni.disableSrchBtn();
-    $('span#ttlHits').html('');
+        $('span#ttlHits').html('');
 		$('#lookupVal').focus();
 	},
 	
@@ -149,10 +149,10 @@ var ni = {
 	fetchOpts: function () {
         //console.log('fetching Opts');
         $.post(ni.url,{mode:'getOpts'}, function(data){
-			ni.opts = data[0];
+			ni.opts = data; 
 			ni.fetchDfltMedia(); // chaining
 		}, 'json');
-	},
+  	},
     fetchDfltMedia: function() {
         $.post(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
             ni.dfltMedia = data[0];
@@ -591,7 +591,7 @@ var ni = {
 	},
 	
 	setCallNmbr: function (data) {
-		switch (ni.opts['callNmbrType'].toLowerCase())  {
+		switch (ni.opts.opts[0]['callNmbrType'].toLowerCase())  {
 		case 'loc':
 			$('#099a').val(data['050a']+' '+data['050b']);
 			break;

@@ -60,7 +60,7 @@
     ## get a set of online options
 	$optr = new Opts;
 	$opts = $optr->getAll();
-	$postVars = $opts->fetchAll();
+	$postVars['opts'] = $opts->fetchAll();
 
 	## prepare list of hosts selected by user
 	if (!empty($_POST['srchHost'])) {
