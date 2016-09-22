@@ -197,7 +197,10 @@ var ced = {
             if (response == '!!success!!') {
                 //$('#copyCancelBtn').val("Back");
                 //$('#copySubmitBtn').disable();
-                idis.fetchCopyInfo(); // refresh copy display
+                if (typeof(idis) === 'object') {
+                    // needed because idis not available in all use cases of the copy editor
+                    idis.fetchCopyInfo(); // refresh copy display
+                }
                 bs.rtnToBiblio();
                 $('#rsltMsg').html('Copy updated successfully!').show();
                 setTimeout(function() {
