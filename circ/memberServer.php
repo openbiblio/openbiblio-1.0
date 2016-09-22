@@ -15,6 +15,8 @@
 			exit;
 		}
 	}
+
+	// now back to work!
 	switch ($_POST['mode']) {
 		case 'getMbrType':
 			require_once(REL(__FILE__, "../model/MemberTypes.php"));
@@ -59,6 +61,7 @@
 			require_once(REL(__FILE__, "../model/Copies.php"));
 			$copies = new Copies;
 			require_once(REL(__FILE__, "../classes/Copy.php"));
+			require_once(REL(__FILE__, "../classes/Biblio.php"));
 			require_once(REL(__FILE__, "../model/Biblios.php"));
 			$biblios = new Biblios;
 			break;
@@ -73,9 +76,12 @@
 			break;
 		case 'doHold':
 		case 'getHolds':
+			require_once(REL(__FILE__, "../model/Holds.php"));
+			$holds = new Holds;
+			break;
         case 'getOpts':
-            require_once(REL(__FILE__, "../model/Settings.php"));
-            $settings = new Settings;
+            //require_once(REL(__FILE__, "../model/Settings.php"));
+            //$settings = new Settings;
             break;
         case 'd-3-L-3-tHold':
 			require_once(REL(__FILE__, "../model/Holds.php"));
@@ -125,8 +131,8 @@
 	#****************************************************************************
 	switch ($_POST['mode']) {
 		case 'getOpts':
-			$opts = $settings->getAll();
-			echo json_encode($opts);
+//			$opts = $settings->getAll();
+			echo json_encode($_SESSION);
 	  		break;
 		case 'getMbrType':
 			$type = $mbrTypes->getOne($_REQUEST['classification']);
@@ -258,7 +264,7 @@
 	case 'getHist':
 		$sql = "SELECT h.* "
 				 . "FROM booking_member m, booking b, biblio_status_hist h "
-				 . "WHERE (m.mbrid = ".$_GET['mbrid'].") "
+				 . "WHERE (m.mbrid = ".$_POST['mbrid'].") "
 				 . "  AND (b.bookingid = m.bookingid) "
 				 . "  AND ((h.histid = b.out_histid) OR (h.histid = b.ret_histid)) "
 				 . " ORDER BY h.bibid, b.out_dt ASC";
@@ -278,7 +284,8 @@
 
 	//// ====================================////
 	case 'getHolds':
-		$rslt = $holds->getByMember($_GET['mbrid']);
+//echo "in memberSrvr, getHolds; POST[] = ";print_r($_POST);echo"<br />\n";
+		$rslt = $holds->getByMember($_POST['mbrid']);
 		$holdList = array();
 		foreach ($rslt as $row) {
 			$rcd['hold_dt'] = $row['hold_begin_dt'];

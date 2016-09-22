@@ -137,8 +137,8 @@ var mf = {
 	//------------------------------
 	fetchOpts: function () {
 	  $.post(mf.url,{mode:'getOpts'}, function(jsonData){
-	    mf.opts = jsonData, 'json'
-		});
+	    mf.opts = jsonData
+		}, 'json');
 	},
 	getNewBarCd: function () {
 	  $.post(mf.url,{mode:'getNewBarCd', width:4}, function(data){

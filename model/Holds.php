@@ -34,6 +34,7 @@ class Holds extends DBTable {
 		return $this->select01($sql);
 	}
 	public function getByMember($mbrid) {
+		//echo "in Holds::getByMember; mbrid=";print_r($mbrid);echo"<br />\n";
 		$sql = "SELECT * FROM biblio_hold "
 					 . $this->mkSQL("WHERE mbrid=%N ", $mbrid)
 					 . "ORDER BY hold_begin_dt ";
