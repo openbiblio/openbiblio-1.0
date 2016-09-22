@@ -70,14 +70,15 @@ class Copies extends CoreTable {
 	}
 	public function getByBarcode($barcode) {
 		$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
-        	$rows = $rslt->fetchAll();
-        	$numRows = count($rows);
+        $rows = $rslt->fetchAll();
+        $numRows = count($rows);
 		if ($numRows == 0) {
+echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
 			$barcode = $this->normalizeBarcode($barcode);
 			$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
-		}
         	$rows = $rslt->fetchAll();
-        	$numRows = count($rows);
+		}
+        $numRows = count($rows);
 		if ($numRows == 0) {
 			return NULL;
 		} else if ($numRows == 1) {

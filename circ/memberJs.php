@@ -218,52 +218,58 @@ var mf = {
 		return false;
 	},
 	doNameSearch: function () {
-		var params = {'mode':'doNameFragSearch', 'nameFrag':$('#nameFrag').val(), 'timestamp': <?php echo $current_timestamp; ?>, 'username': '<?php echo $_SESSION['username'] ?>'};
-	    	$.ajax({
+		var params = {'mode':'doNameFragSearch',
+			'nameFrag':$('#nameFrag').val(),
+			'timestamp': <?php echo $current_timestamp; ?>,
+			'username': '<?php echo $_SESSION['username'] ?>'
+			};
+    	$.ajax({
 			url: mf.url,
 			type: 'POST',
 			dataType: 'json',
 			headers: {
-				'Authcheck':'Token token="<?php echo hash_hmac('md5', 'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp, $_SESSION['secret_key']); ?>"'
+				'Authcheck':'Token token="<?php echo hash_hmac('md5',
+				'doNameFragSearch-'.$_SESSION['username'].'-'.$current_timestamp,
+				$_SESSION['secret_key']); ?>"'
 			},
 			data: params,
 			error: function(xhr, textStatus, errorThrown) {
 				$('#errSpace').html('Error ' + xhr.responseText).show();
 			},
-				success: function (results) {
-					console.log("Done with " + results);
-					var html = '';
-					if (results.length == 0) {
-						html = '<tr><td><?php echo T('no results') ?></td></tr>';
-					} else {
-						for (var i in results) {
-							var mbr = results[i];
-							html += '<tr>\n';
-							html += '	<td>' + mbr.barcode_nmbr + '</td>\n';
-							if (mbr.hasOwnProperty('first_legal_name') || mbr.hasOwnProperty('last_legal_name')) {
-								html += '	<td><i>' + mf.doConcatLegalName(mbr) + ', <?php echo T('see'); ?> </i><a href="#" id="' + mbr.mbrid + '">' + mbr.last_name + ', ' + mbr.first_name + '</a></td>\n';
-							} else {
-								html += '	<td><a href="#" id="' + mbr.mbrid + '">' + mbr.last_name + ', ' + mbr.first_name + '</a></td>\n';
-							}
-							html += '	<td>' + mbr.home_phone + '</td>\n';
-							html += '</tr>\n';
+			success: function (results) {
+				//console.log("Done with " + results);
+				var html = '';
+				if (results.length == 0) {
+					html = '<tr><td><?php echo T('no results') ?></td></tr>';
+				} else {
+					for (var i in results) {
+						var mbr = results[i];
+						html += '<tr>\n';
+						html += '	<td>' + mbr.barcode_nmbr + '</td>\n';
+						if (mbr.hasOwnProperty('first_legal_name') || mbr.hasOwnProperty('last_legal_name')) {
+							html += '	<td><i>' + mf.doConcatLegalName(mbr) + ', <?php echo T('see'); ?> </i><a href="#" id="' + mbr.mbrid + '">' + mbr.last_name + ', ' + mbr.first_name + '</a></td>\n';
+						} else {
+							html += '	<td><a href="#" id="' + mbr.mbrid + '">' + mbr.last_name + ', ' + mbr.first_name + '</a></td>\n';
 						}
+						html += '	<td>' + mbr.home_phone + '</td>\n';
+						html += '</tr>\n';
 					}
-
-					$('#srchRslts').html(html);
-					$('#searchDiv').hide();
-					$('#listDiv').show();
-					$('#srchRslts tr:odd td').addClass('altBG');
-					$('#srchRslts tr:even td').addClass('altBG2');
-					$('#srchRslts a').on('click', null, function (e) {
-						e.preventDefault();
-						e.stopPropagation();
-						mf.mbrid = e.target.id;
-						mf.doFetchMember();
-						$('#listDiv').hide();
-					});
 				}
-			});
+
+				$('#srchRslts').html(html);
+				$('#searchDiv').hide();
+				$('#listDiv').show();
+				$('#srchRslts tr:odd td').addClass('altBG');
+				$('#srchRslts tr:even td').addClass('altBG2');
+				$('#srchRslts a').on('click', null, function (e) {
+					e.preventDefault();
+					e.stopPropagation();
+					mf.mbrid = e.target.id;
+					mf.doFetchMember();
+					$('#listDiv').hide();
+				});
+			}
+		});
 	},
 
 	handleMbrResponse: function (jsonInpt) {
@@ -310,9 +316,9 @@ var mf = {
 		$('#msgDiv').hide();
 		$('#msgArea').html('');
 		var ttlOwed = 0.00,
-				maxFines = mf.typeInfo.max_fines,
+			maxFines = mf.typeInfo.max_fines,
 	  		params = 'mode=getChkOuts&mbrid='+mf.mbrid;
-	  $.post(mf.url,params, function(jsonInpt){
+	    $.post(mf.url,params, function(jsonInpt){
 			if (jsonInpt.substr(0,1) == '<') {
 				$('#msgArea').html(jsonInpt);
 				$('#msgDiv').show();
@@ -326,12 +332,12 @@ var mf = {
 				var html = '';
 				for (var nCpy in mf.cpys) {
 					var cpy = mf.cpys[nCpy],
-							outDate = cpy.out_dt,
-							dueDate = cpy.due_dt,
-							daysLate = cpy.daysLate,
-							lateFee = (cpy.lateFee).toLocaleString(),
-							owed = (cpy.daysLate*cpy.lateFee).toFixed(2),
-							owedAmnt = owed.toLocaleString();
+						outDate = cpy.out_dt,
+						dueDate = cpy.due_dt,
+						daysLate = cpy.daysLate,
+						lateFee = ((cpy.lateFee === null) ? '0': (cpy.lateFee).toLocaleString()),
+						owed = (cpy.daysLate*cpy.lateFee).toFixed(2),
+						owedAmnt = owed.toLocaleString();
 					html += '<tr>';
 					html += '	<td>'+outDate+'</td>';
 					//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';

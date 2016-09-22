@@ -235,13 +235,16 @@
 			if (!empty($a) || !empty($b) || !empty($c)) $copy['title'] = $a.' '.$b.' '.$c;
 			if (!empty($d) || !empty($e)) $copy['title'] = $d.' '.$e;
 			*/
-      				$copy['title'] = $bibData['hdr']['title'];
+      			$copy['title'] = $bibData['hdr']['title'];
 				$chkOutList[] = $copy;
 			}
 	  		echo json_encode($chkOutList);
 			break;
 		case 'doCheckout':
-			$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
+			if (strlen($_POST["barcodeNmbr"]) < $_SESSION['item_barcode_width']) {
+				//echo "barcode = ".$_POST["barcodeNmbr"]." <br />\n";
+				$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
+			}
 			$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], $_POST['calCd'], array($_POST["mbrid"]));
 			if ($err) {
 				if(is_array($err)){
