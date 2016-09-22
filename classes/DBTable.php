@@ -103,8 +103,9 @@ abstract class DBTable extends Queryi {
 	public function getAll($orderby = NULL) {
 		$sql = $this->mkSQL('SELECT * FROM %I ', $this->name);
 		if (!empty($orderby)) {$sql .= "ORDER BY $orderby";}
-if ($name == 'lookup_settings') echo "in DBTable::getAll() sql = $sql<br />\n";
-//echo "sql = $sql<br />\n";
+        if ($this->name == 'lookup_settings') echo "in DBTable::getAll() sql = $sql<br />\n";
+        //echo "sql = $sql<br />\n";
+
         $recs = $this->select($sql);
 		return $recs;
 	}

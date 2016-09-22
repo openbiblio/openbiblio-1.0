@@ -149,7 +149,7 @@ var mf = {
 	  $.post(mf.listSrvr,{mode:'getMbrTypList'}, function(data){
 			var html = '';
       for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
+				html+= '<option value="'+n+'">'+data[n].description+'</option>';
 			}
 			$('#classification').html(html);
 		}, 'json');
@@ -167,7 +167,7 @@ var mf = {
 	  $.post(mf.listSrvr,{mode:'getStateList'}, function(data){
 			var html = '';
       for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
+				html+= '<option value="'+n+'">'+data[n].description+'</option>';
 			}
 			$('#state').html(html);
 		}, 'json');
@@ -298,10 +298,13 @@ var mf = {
 	//------------------------------
 	showOneMbr: function (mbr) {
 		$('#mbrName').val(mbr.last_name+', '+mbr.first_name);
-		$('#mbrSite').val(mbr.siteid);
+		$('#mbrSite').val("...");
 		$('#mbrCardNo').val(mbr.barcode_nmbr);
 		mf.mbrid = mbr.mbrid;
 		mf.doGetCheckOuts(mf.mbrid);
+		$.post(mf.url,{mode:'getSite', 'siteid':mbr.siteid}, function (response) {
+			$('#mbrSite').val(response.name);
+		}, 'json');
 	},
 	doGetCheckOuts: function () {
 		$('#msgDiv').hide();
@@ -505,7 +508,7 @@ var mf = {
 
 		var barcd = $.trim($('#ckoutBarcd').val());
 		if (barcd == '') {
-      mf.showMsg('Please enter a number');
+      		mf.showMsg('Please enter a number');
 			return false;
 		}
 		barcd = flos.pad(barcd,mf.opts.item_barcode_width,'0');

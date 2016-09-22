@@ -73,7 +73,11 @@
 			break;
 		case 'doHold':
 		case 'getHolds':
-		case 'd-3-L-3-tHold':
+        case 'getOpts':
+            require_once(REL(__FILE__, "../model/Settings.php"));
+            $settings = new Settings;
+            break;
+        case 'd-3-L-3-tHold':
 			require_once(REL(__FILE__, "../model/Holds.php"));
 			$holds = new Holds;
 			require_once(REL(__FILE__, "../model/Copies.php"));
@@ -121,11 +125,11 @@
 	#****************************************************************************
 	switch ($_POST['mode']) {
 		case 'getOpts':
-			$opts = Settings::getAll();
+			$opts = $settings->getAll();
 			echo json_encode($opts);
 	  		break;
 		case 'getMbrType':
-			$type = $mbrTypes->getOne($_GET['classification']);
+			$type = $mbrTypes->getOne($_REQUEST['classification']);
 			echo json_encode($type);
 			break;
 		case 'getCustomFlds':
@@ -136,8 +140,8 @@
 			echo json_encode($flds);
 			break;
 		case 'getSite':
-			$site = $sites->getOne($_GET['siteid']);
-    			echo json_encode($site);
+			$site = $sites->getOne($_REQUEST['siteid']);
+            echo json_encode($site);
 			break;
 		case 'getAcnts':
 			$mbr['balance'] = $acct->getBalance($mbrid);
