@@ -197,7 +197,10 @@ var ced = {
             if (response == '!!success!!') {
                 //$('#copyCancelBtn').val("Back");
                 //$('#copySubmitBtn').disable();
-                idis.fetchCopyInfo(); // refresh copy display
+                if (typeof(idis) === 'object') {
+                    // needed because idis not available in all use cases of the copy editor
+                    idis.fetchCopyInfo(); // refresh copy display
+                }
                 bs.rtnToBiblio();
                 $('#rsltMsg').html('Copy updated successfully!').show();
                 setTimeout(function() {
@@ -213,14 +216,14 @@ var ced = {
 	doCopyDelete: function (e) {
 	  $(this).parent().parent().addClass('hilite');
 	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
-			var btnid = e.currentTarget.id,
-					copyid = btnid.split('-')[1],
-	    		params = "&mode=deleteCopy&bibid="+idis.bibid+"&copyid="+copyid;
-	  	$.post(ced.catalogSrvr,params, function(response){
-	  	  $('#editRsltMsg').html(response).show();
-	  		idis.fetchCopyInfo(); // refresh copy display
-	  	});
-		};
+		  var btnid = e.currentTarget.id,
+			  copyid = btnid.split('-')[1],
+	    	  params = "&mode=deleteCopy&bibid="+idis.bibid+"&copyid="+copyid;
+	  	  $.post(ced.catalogSrvr,params, function(response){
+	  	        $('#editRsltMsg').html(response).show();
+	  	        idis.fetchCopyInfo(); // refresh copy display
+	  	  });
+	  };
 	  $(this).parent().parent().removeClass('hilite');
 	}
 }
