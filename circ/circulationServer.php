@@ -59,8 +59,8 @@
 	break;
 
 	case 'getOpts':
-		$opts = Settings::getAll();
-		echo json_encode($opts);
+		//$opts = Settings::getAll();
+        echo json_encode($_SESSION);
 	  break;
 
 /*
@@ -99,7 +99,7 @@
 	case 'fetchShelvingCart':
 		$scart = $copies->getShelvingCart();
 		$rec = array();
-		while ($copy = $scart->fetch_assoc()) {
+        foreach ($scart as $copy) {
 			//$biblio = $biblios->getOne($copy['bibid']);
 			$ptr = new Biblio($copy['bibid']);
 			$bib = $ptr->getData();

@@ -25,6 +25,9 @@
 <h3><?php echo T("Current Members"); ?></h3>
 
 <!-- ------------------------------------------------------------------------ -->
+<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+
+<!-- ------------------------------------------------------------------------ -->
 <p id="errSpace" class="error"></p>
 <div id="searchDiv">
 	<form id="barCdSrchForm" name="barCdSrchForm" action="">
@@ -313,9 +316,6 @@
 	</fieldset>
 	<input type="button" class="gobkHistBtn" value="<?php echo T("Go Back"); ?>" />
 </div>
-
-<!-- ------------------------------------------------------------------------ -->
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
 
 <!-- ------------------------------------------------------------------------ -->
 <?php

@@ -25,7 +25,13 @@ class Calendars extends DmTable {
 		$sql = $this->mkSQL('SELECT open FROM calendar '
 			. 'WHERE calendar=%N AND date = %Q ',
 			$calendar, $day);
-		return $this->select1($sql);
+		$row = $this->select1($sql);
+        if($row != null) {
+            if ($row['open'] == 'No') {
+                return false;
+            }
+        }
+        return true;
 	}
 	function rename($code, $name) {
 		$this->update(array('code'=>$code, 'description'=>$name));

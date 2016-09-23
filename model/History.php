@@ -40,6 +40,6 @@ class History extends DBTable {
 	}
 
 	protected function validate_el($new, $insert) {
-		return true;
+
 	}
 }

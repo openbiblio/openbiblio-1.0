@@ -346,11 +346,11 @@ var bs = {
 	    var params = $('#barcodeSearch').serialize();
 		params += '&mode=doBarcdSearch';
 	    $.post(bs.url,params, function(jsonInpt){
-			if ($.trim(jsonInpt).substr(0,1) != '{') {
-				$('#errSpace').html(jsonInpt).show();
+			if (jsonInpt.message) {
+				$('#errSpace').html(jsonInpt.message).show();
 				return false;
 			} else {
-				bs.biblio = JSON.parse(jsonInpt);
+				bs.biblio = jsonInpt;
 				if (bs.biblio.hdr != null) {
 					bs.multiMode = false;
 					idis.showOneBiblio(bs.biblio)
@@ -697,7 +697,7 @@ var bs = {
     		    $('#itemEditorDiv').hide();
 				// repeat search with existing criteria, to assurre a current display
 				if (bs.srchType == 'barCd')
-					bs.doBarCdSearch();
+					bs.doBarcdSearch();
 				else if (bs.srchType = 'phrase')
 					bs.doPhraseSearch();
 			} else {

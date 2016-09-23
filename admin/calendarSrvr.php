@@ -21,7 +21,11 @@
 	$ptr = new Calendars;
 	switch ($_REQUEST['mode']) {
 	case "isOpen":
-		echo $ptr->isOpen($_GET['date']);
+		if($ptr->isOpen($_GET['date'])){
+		    echo T("Yes");
+        } else {
+            echo T("No");
+        }
 		break;
 
 	case "deleteCalendar":

@@ -106,7 +106,6 @@ class Bookings extends CoreTable {
 			. 'group by date order by date ');
 	}
 	protected function validate_el($new, $insert) {
-		$modelBookingsNotEnoughCopiesText = T("modelBookingsNotEnoughCopies");
 		if ($insert) {
 			$old = array();
 		} else {
@@ -151,7 +150,7 @@ class Bookings extends CoreTable {
 
 			# Check that copies exist
 			if ($ncopies == 0) {
-				$errors[] = new Error($modelBookingsNotEnoughCopiesText);
+				$errors[] = new Error(T("modelBookingsNotEnoughCopies"));
 			}
 
 			if ($errors) {
@@ -186,7 +185,7 @@ class Bookings extends CoreTable {
 				. 'having ncopies >= %N ', $ncopies);
 			$rows = $this->select($sql);
 			if ($rows->num_rows != 0) {
-				$errors[] = new Error($modelBookingsNotEnoughCopiesText);
+				$errors[] = new Error(T("modelBookingsNotEnoughCopies"));
 				return $errors;
 			}
 		}
@@ -483,12 +482,9 @@ class Bookings extends CoreTable {
 			return T("No copy with barcode")." ".$barcode;
 		}
 
-echo "in Bookings::quickCheckout_e(), copy: ";print_r($copy);echo"<br />\n";
-echo "in Bookings: bibid=".$copy["bibid"]."; copyid=".$copy["copyid"]."; histid=".$copy["histid"]." <br />\n";
 		$bibid = $copy["bibid"];
 		$copyid = $copy["copyid"];
 		$histid = $copy["histid"];
-echo "in Bookings: bibid=$bibid; copyid=$copyid; histid=$histid <br />\n";
 
 		$history = new History;
 		$status = $history->maybeGetOne($histid);
@@ -517,7 +513,6 @@ echo "in Bookings: bibid=$bibid; copyid=$copyid; histid=$histid <br />\n";
 
 		$collections = new Collections;
 		$coll = $collections->getByBibid($bibid);
-echo "in Bookings::quickCheckout_e(), coll: ";print_r($coll);echo"<br />\n";
 		$loanDuration = $coll['days_due_back'];
 		if ($loanDuration <= 0) {
 			$this->unlock();
@@ -534,14 +529,12 @@ echo "in Bookings::quickCheckout_e(), coll: ";print_r($coll);echo"<br />\n";
 		## assure potential due date is a 'library open' day
 		$due_dt = Date::addDays($this->outDate, $loanDuration);
 		$cal = new Calendars;
-		$row = $cal->isOpen($calCd, $due_dt);
-		$status = $row['open'];
-  		if ($status == 'No') {
+		$isOpen = $cal->isOpen($calCd, $due_dt);
+  		if (!$isOpen) {
 			do {
 				$due_dt = Date::addDays($due_dt, 1); // advance to next day
-				$row = $cal->isOpen($calCd, $due_dt);
-				$status = $row['open'];
-			} while ($status == 'No');
+				$isOpen = $cal->isOpen($calCd, $due_dt);
+			} while (!$isOpen);
 		}
 //    	$this->due_dt = $due_dt;
 
@@ -559,7 +552,6 @@ echo "in Bookings::quickCheckout_e(), coll: ";print_r($coll);echo"<br />\n";
 			$this->unlock();
 			return $err;
 		}
-
 		$this->statusCd = OBIB_STATUS_OUT;
 		list($this->histid, $err) = $history->insert_el(array(
 			'bibid'=>$bibid,
@@ -569,18 +561,19 @@ echo "in Bookings::quickCheckout_e(), coll: ";print_r($coll);echo"<br />\n";
 		));
 		if ($err) {
 			$this->unlock();
+            //echo "Error: " . $err . "/n";
 			return $err;
 		}
 
 		$copies = new Copies;
 		$copies->update(array(
 			'copyid'=>$copyid,
-			'histid'=>$histid,
+			'histid'=>$this->histid,
 		));
 
 		$this->update(array(
 			"bookingid"=>$this->bookingid,
-			"out_histid" =>$histid,
+			"out_histid" =>$this->histid,
 			"out_dt" =>$this->outDate,
       		"mbrids" =>$mbrids,
 		));

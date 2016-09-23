@@ -64,7 +64,7 @@
 	  	$bib = new Biblio($copy['bibid']);
 	  	echo json_encode($bib->getData());
 	  } else {
-        echo '{"data":null}';
+        echo '{"message":"' . T("No copy with that barcode") . '"}';
 	  }
 	  break;
 

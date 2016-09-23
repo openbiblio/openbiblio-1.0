@@ -10,6 +10,17 @@ $current_timestamp = time();
 //------------------------------------------------------------------------------
 "use strict";
 
+function shortenTitle(title, maxLength) {
+	if (title.length > maxLength) {
+		//trim the string to the maximum length
+		var trimmedString = title.substr(0, maxLength);
+
+		//re-trim if we are in the middle of a word
+		return trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + '...';
+	}
+	return title;
+}
+
 var mf = {
 	<?php
 	if ($_SESSION['mbrBarcode_flg'] == 'Y') 
@@ -336,26 +347,25 @@ var mf = {
 						dueDate = cpy.due_dt,
 						daysLate = cpy.daysLate,
 						lateFee = ((cpy.lateFee === null) ? '0': (cpy.lateFee).toLocaleString()),
-						owed = (cpy.daysLate*cpy.lateFee).toFixed(2),
-						owedAmnt = owed.toLocaleString();
+						owed = (cpy.daysLate*cpy.lateFee).toFixed(2);
 					html += '<tr>';
 					html += '	<td>'+outDate+'</td>';
 					//html += '	<td><img src="'+cpy.material_img_url+'" />'+cpy.material_type+'	</td>\n';
 					html += '	<td>'+cpy.media+'	</td>\n';
 					html += '	<td>'+cpy.barcode+'</td>';
-					html += '	<td><a href="#" id="'+cpy.bibid+'">"'+cpy.title+'"</a></td>';
+					html += '	<td><a href="#" id="'+cpy.bibid+'">'+ shortenTitle(cpy.title, 75)+'</a></td>';
 					html += '	<td>'+dueDate+'</td>';
 					html += '	<td class="number">'+daysLate+'@'+lateFee+'</td>';
-					html += '	<td class="number">'+owedAmnt+'</td>';
+					html += '	<td class="number">'+owed+'</td>';
 					html += '</tr>\n';
-					ttlOwed += owed;
+					ttlOwed += eval(owed);
 				}
 				mf.nmbrOnloan = nCpy+1;
 				$('#chkOutList tBody').html(html);
 				$('table tbody.striped tr:odd td').addClass('altBG');
 				$('table tbody.striped tr:even td').addClass('altBG2');	
 
-				if (ttlOwed >= maxFines) {
+				if (ttlOwed >= maxFines && ttlOwed != 0) {
 					$('#chkOutBtn').disable();
 					$('#ckoutBarcd').disable();
 					$('#chkOutMsg').html('<?php echo T("NotAllowed");?>').show();

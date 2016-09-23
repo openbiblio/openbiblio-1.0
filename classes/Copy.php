@@ -149,7 +149,7 @@ class Copy {
 			$ptr = new CircCollections;
 			$this->cCol = $ptr;
 			$rslt = $ptr->getOne($this->hdrFlds['collection_cd']);
-			$this->hdrFlds['lateFee'] = $rslt['daily_late_fee'];
+            $rslt['daily_late_fee']==null?$this->hdrFlds['lateFee'] =0:$this->hdrFlds['lateFee'] = $rslt['daily_late_fee'];
 
 			$ptr = new Bookings;
 			$this->book = $ptr;

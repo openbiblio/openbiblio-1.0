@@ -290,7 +290,7 @@ class Collections extends DmTable {
 		$sql = "SELECT c.* FROM collection_circ c, biblio b "
 			. "WHERE c.code=b.collection_cd "
 			. $this->mkSQL("AND b.bibid=%N ", $bibid);
-echo "sql=$sql<br />\n";
+//echo "sql=$sql<br />\n";
 		return $this->select1($sql);
 	}
 	public function getAllWithStats() {

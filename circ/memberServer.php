@@ -246,7 +246,7 @@
 				$_POST["barcodeNmbr"] = str_pad($_POST["barcodeNmbr"],$_SESSION['item_barcode_width'],'0',STR_PAD_LEFT);
 			}
 			$err = $bookings->quickCheckout_e($_POST["barcodeNmbr"], $_POST['calCd'], array($_POST["mbrid"]));
-			if ($err) {
+            if ($err) {
 				if(is_array($err)){
 					$errors = ""; $nErr = 0;
 					foreach($err as $error)	{
@@ -255,7 +255,11 @@
 						$nErr++;
 					}
 				} elseif (is_object($err)) {
-					$errors = $err->toStr();
+					if(method_exists ($err,"toStr")) {
+                        $errors = $err->toStr();
+                    } else {
+                        $errors = $err->getMessage();
+                    }
 				} else {
 					$errors = $err;
 				}

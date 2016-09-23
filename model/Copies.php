@@ -73,7 +73,7 @@ class Copies extends CoreTable {
         $rows = $rslt->fetchAll();
         $numRows = count($rows);
 		if ($numRows == 0) {
-echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
+//echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
 			$barcode = $this->normalizeBarcode($barcode);
 			$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
         	$rows = $rslt->fetchAll();
@@ -82,7 +82,7 @@ echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
 		if ($numRows == 0) {
 			return NULL;
 		} else if ($numRows == 1) {
-			return $rows;
+			return $rows[0];
 		} else {
 			Fatal::internalError(T("Duplicate barcode: %barcode%", array('barcode'=>$barcode)));
 		}
@@ -489,7 +489,7 @@ echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
 			. $this->mkSQL("and bsh.status_cd=%Q ",
 				OBIB_STATUS_SHELVING_CART);
 		//echo "sql=$sql<br />\n";
-		return $this->select($sql);
+		return $this->select($sql)->fetchAll();
 	}
 	/* way incomplete, done in Copy object now
 	function checkin($bibids,$copyids) {
@@ -511,7 +511,7 @@ echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
 		$cart = $this->getShelvingCart();
 		$bibids = array();
 		$copyids = array();
-		while ($copy = $cart->fetch_assoc()) {
+		foreach ($cart as $copy) {
 			array_push($bibids, $copy['bibid']);
 			array_push($copyids, $copy['copyid']);
 		}

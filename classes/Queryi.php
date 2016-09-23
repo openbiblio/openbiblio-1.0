@@ -56,11 +56,11 @@ class Queryi {
         $recs = $rslt->fetchAll();
         $nRecs = count($recs);
         if ($nRecs != 1) {
-		  return T("NothingFoundError");
+		  return null;
 		  //echo "sql=$sql<br />\n";
 		} else {
 			//return $r->fetch_assoc();
-            return $recs;
+            return $recs[0];
 		}
 	}
 	public function select01($sql) {
@@ -255,12 +255,12 @@ class Queryi {
 					$SQL .= $this->_numstr($arg);
 					break;
 				case 'Q':
-					//$SQL .= "'".mysqli::real_escape_string($arg)."'";
-					$SQL .= "'".$arg."'";
+					$SQL .= "'".addslashes($arg)."'";
+					//$SQL .= "'".$arg."'";
 					break;
 				case 'q':
-					//$SQL .= mysqli::real_escape_string($arg);
-					$SQL .=$arg;
+					$SQL .= addslashes($arg);
+					//$SQL .=$arg;
 					break;
 				default:
 					Fatal::internalError($badSqlFmt);

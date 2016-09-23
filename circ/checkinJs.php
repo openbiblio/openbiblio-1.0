@@ -17,6 +17,16 @@ else
   echo "var opacMode = false;";
 ?>
 
+function shortenTitle(title, maxLength) {
+	if (title.length > maxLength) {
+		//trim the string to the maximum length
+		var trimmedString = title.substr(0, maxLength);
+
+		//re-trim if we are in the middle of a word
+		return trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))) + '...';
+	}
+	return title;
+}
 var chk = {
 	init: function () {
 		chk.url = '../circ/circulationServer.php';
@@ -79,7 +89,7 @@ var chk = {
 			}
 			else {
 				$('#msgArea').html(response);
-				$('#msgDiv').show().hide(10000);
+				$('#msgDiv').show().hide(1000);
 				chk.fetchShelvingCart();  //update screen
 			}
 		});
@@ -100,17 +110,17 @@ var chk = {
 			}
 			else {
 				$('#msgArea').html(response);
-				$('#msgDiv').show().hide(10000);
+				$('#msgDiv').show().hide(1000);
 				chk.fetchShelvingCart();  //update screen
 				$('#shelvedCopiesList').add('<tr><td>Barcode</td><td>Title</td></tr>');
 			}
 		});
 		return false;
-	}	,
+	},
 	
 	//------------------------------
 	fetchShelvingCart: function () {
-	  $.getJSON(chk.url,{'mode':'fetchShelvingCart'}, function(jsonData){
+	  $.post(chk.url,{'mode':'fetchShelvingCart'}, function(jsonData){
 	    chk.cart = jsonData;
 			var txt = '';
 
@@ -122,13 +132,13 @@ var chk = {
 				txt += '	<td><input type="checkbox" id="copy-'+cpy.copyid+'" name="copy-'+cpy.copyid+'" value="'+cpy.copyid+'" /></td>\n';
 				txt += '	<td>'+beginDate+'</td>\n';
 				txt += '	<td>'+cpy.barcd+'</td>\n';
-				txt += '	<td>'+cpy.title+'</td>';
+				txt += '	<td>'+shortenTitle(cpy.title, 100)+'</td>';
 				txt += '</tr>\n';
 			}
 			$('#shelvingList tbody').html(txt);
 			$('#shelvingList tbody.striped tr:odd td').addClass('altBG');
 			$('#shelvingList tbody.striped tr:even td').addClass('altBG2');	
-		});
+		}, 'json');
 	},
 	
 };
