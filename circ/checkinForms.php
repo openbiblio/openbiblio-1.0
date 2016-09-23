@@ -24,10 +24,10 @@
 	<fieldset>
 		<legend><?php echo T("Check In"); ?></legend>
 		<label for="barcodeNmbr"><?php echo T("Barcode Number").":"; ?></label>
-		<input type="text" id="barcodeNmbr" name="barcodeNmbr" size="18" />
+			<input type="text" id="barcodeNmbr" name="barcodeNmbr" size="18" />
 		<input type="hidden" id="ckinMode" name="mode" value="doItemCheckin" />
-		<input type="checkbox" id="ckinDirectly" name="direct" />
-		<label for="ckinDirecly"><?php echo T("Shelve directly"); ?></label>
+		<!--label for="ckinDirecly"><?php //echo T("Shelve directly"); ?></label>
+			<input type="checkbox" id="ckinDirectly" name="direct" /-->
 		<input type="button" id="checkInBtn" value="<?php echo T("Check In"); ?>" />
 		<br />
 		<input type="text" readonly id="ckinTitle" size="100" />

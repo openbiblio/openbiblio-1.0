@@ -27,6 +27,8 @@ var idis = {
 	multiMode: false,
 
 	init: function (opts, sites) {
+console.log(opts);
+console.log(sites);
 		idis.opts = opts;
 		idis.sites = sites;
 		idis.url = '../catalog/catalogServer.php';

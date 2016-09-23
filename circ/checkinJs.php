@@ -63,9 +63,9 @@ var chk = {
 
 	//------------------------------
 	fetchOpts: function () {
-	  $.getJSON(chk.url,{'mode':'getOpts'}, function(jsonData){
+	  $.post(chk.url,{'mode':'getOpts'}, function(jsonData){
 	    chk.opts = jsonData;
-		});
+		}, 'json');
 	},
 	getCopyTitle: function () {
 		var barcd = $.trim($('#barcodeNmbr').val());
@@ -89,7 +89,7 @@ var chk = {
 			}
 			else {
 				$('#msgArea').html(response);
-				$('#msgDiv').show().hide(1000);
+				$('#msgDiv').show().hide(5000);
 				chk.fetchShelvingCart();  //update screen
 			}
 		});

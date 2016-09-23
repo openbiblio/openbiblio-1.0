@@ -168,6 +168,7 @@ var mf = {
 	fetchSiteList: function () {
 	  $.post(mf.listSrvr,{mode:'getSiteList'}, function(data){
 			var html = '';
+			mf.sites = data;
       for (var n in data) {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
@@ -375,7 +376,7 @@ var mf = {
 
 				$('#chkOutList a').on('click',null,function (e) {
 					e.preventDefault(); e.stopPropagation();
-					idis.init(mf.opts); // be sure all is ready	
+					idis.init(mf.opts, mf.sites); // be sure all is ready
 					idis.doBibidSearch(e.target.id);
 					$('#biblioDiv').show();
 					$('#mbrDiv').hide();					

@@ -52,27 +52,17 @@ class Queryi {
 	}
 	public function select1($sql) {
 		$rslt = $this->select($sql);
-		//if ($r->num_rows != 1) {
         $recs = $rslt->fetchAll();
         $nRecs = count($recs);
         if ($nRecs != 1) {
 		  return null;
-		  //echo "sql=$sql<br />\n";
 		} else {
-			//return $r->fetch_assoc();
             return $recs[0];
 		}
 	}
 	public function select01($sql) {
 		$r = $this::act($sql);
-//		if (($r == 0) || ($r->num_rows == 0)) {
-//			return NULL;
-//		} else if ($r->num_rows != 1) {
-//			return T("Wrong Number Rows Found");
-//		} else {
-			//return $r->fetch_assoc();
             return $r->fetch();
-//		}
 	}
 
 	/** Make sure all queries have the user's preferred encoding

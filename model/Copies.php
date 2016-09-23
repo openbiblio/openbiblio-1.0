@@ -73,7 +73,7 @@ class Copies extends CoreTable {
         $rows = $rslt->fetchAll();
         $numRows = count($rows);
 		if ($numRows == 0) {
-//echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
+			//echo "in Copies::getByBarcode(); failed, trying again. <br />\n";
 			$barcode = $this->normalizeBarcode($barcode);
 			$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
         	$rows = $rslt->fetchAll();
