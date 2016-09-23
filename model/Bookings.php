@@ -483,18 +483,21 @@ class Bookings extends CoreTable {
 			return T("No copy with barcode")." ".$barcode;
 		}
 
-		$this->copyid = $copy['copyid'];
-		$this->histid = $copy['histid'];
-		$this->bibid = $copy['bibid'];
+echo "in Bookings::quickCheckout_e(), copy: ";print_r($copy);echo"<br />\n";
+echo "in Bookings: bibid=".$copy["bibid"]."; copyid=".$copy["copyid"]."; histid=".$copy["histid"]." <br />\n";
+		$bibid = $copy["bibid"];
+		$copyid = $copy["copyid"];
+		$histid = $copy["histid"];
+echo "in Bookings: bibid=$bibid; copyid=$copyid; histid=$histid <br />\n";
 
 		$history = new History;
-		$status = $history->maybeGetOne($this->histid);
+		$status = $history->maybeGetOne($histid);
 		if ($status == NULL) {
 			## no entry found, need an initial entry for reports
 			$status['status_cd'] = OBIB_DEFAULT_STATUS;
 			$rslt = $history->insert(array(
-				'bibid'=>$this->bibid,
-				'copyid'=>$this->copyid,
+				'bibid'=>$bibid,
+				'copyid'=>$copyid,
 				'status_cd'=>$status['status_cd'],
 			));
 		} else if($status['status_cd'] == OBIB_STATUS_NOT_ON_LOAN){
@@ -502,7 +505,7 @@ class Bookings extends CoreTable {
 		} else if ($status['status_cd'] == OBIB_STATUS_ON_HOLD) {
 			include_once(REL(__FILE__, "../model/Holds.php"));
 			$holds = new Holds;
-			if ($hold = $holds->getFirstHold($this->copyid)) {
+			if ($hold = $holds->getFirstHold($copyid)) {
 				if (!in_array($hold['mbrid'], $mbrids)) {
 					$this->unlock();
 					return new Error(T("modelBookingsHeldForOtherMember", array("barcode"=>$barcode)));
@@ -513,7 +516,8 @@ class Bookings extends CoreTable {
 		}
 
 		$collections = new Collections;
-		$coll = $collections->getByBibid($this->bibid);
+		$coll = $collections->getByBibid($bibid);
+echo "in Bookings::quickCheckout_e(), coll: ";print_r($coll);echo"<br />\n";
 		$loanDuration = $coll['days_due_back'];
 		if ($loanDuration <= 0) {
 			$this->unlock();
@@ -532,23 +536,23 @@ class Bookings extends CoreTable {
 		$cal = new Calendars;
 		$row = $cal->isOpen($calCd, $due_dt);
 		$status = $row['open'];
-  	if ($status == 'No') {
+  		if ($status == 'No') {
 			do {
 				$due_dt = Date::addDays($due_dt, 1); // advance to next day
 				$row = $cal->isOpen($calCd, $due_dt);
 				$status = $row['open'];
 			} while ($status == 'No');
 		}
-    $this->due_dt = $due_dt;
+//    	$this->due_dt = $due_dt;
 
 		## all OK, begin DB update for checkout
 //echo "mbrids===>";print_r($mbrids);echo"<br />\n";
 		list($this->bookingid, $err) = $this->insert_el(
 					array("book_dt" =>$today,
-								"bibid" =>$this->bibid,
+								"bibid" =>$bibid,
 								"out_dt" =>$this->outDate,
-								"out_histid" =>$this->histid,
-								"due_dt" =>$this->due_dt,
+								"out_histid" =>$histid,
+								"due_dt" =>$due_dt,
 								"mbrids" =>$mbrids,
 		));
 		if ($err) {
@@ -558,8 +562,8 @@ class Bookings extends CoreTable {
 
 		$this->statusCd = OBIB_STATUS_OUT;
 		list($this->histid, $err) = $history->insert_el(array(
-			'bibid'=>$this->bibid,
-			'copyid'=>$this->copyid,
+			'bibid'=>$bibid,
+			'copyid'=>$copyid,
 			'status_cd'=>$this->statusCd,
 			'bookingid'=>$this->bookingid,
 		));
@@ -570,15 +574,15 @@ class Bookings extends CoreTable {
 
 		$copies = new Copies;
 		$copies->update(array(
-			'copyid'=>$this->copyid,
-			'histid'=>$this->histid,
+			'copyid'=>$copyid,
+			'histid'=>$histid,
 		));
 
 		$this->update(array(
 			"bookingid"=>$this->bookingid,
-			"out_histid" =>$this->histid,
+			"out_histid" =>$histid,
 			"out_dt" =>$this->outDate,
-      "mbrids" =>$mbrids,
+      		"mbrids" =>$mbrids,
 		));
 
 	//	$err = $this->checkout_e($bookingid, $barcode);
