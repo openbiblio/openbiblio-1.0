@@ -29,7 +29,7 @@ var rpt = {
 		});
 
 		rpt.resetForm();
-    rpt.getCriteriaForm();
+    	rpt.getCriteriaForm();
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -71,21 +71,21 @@ var rpt = {
 	},
 	getCriteriaForm: function () {
 		$.post(rpt.url, {'mode':'getCriteriaForm',
-										'type':$('#rptType').val(),
-									 }, function (resp){
+						 'type':$('#rptType').val(),
+						}, function (resp){
 			var parts = resp.split('~|~');
 			$('#pageTitle').html(parts[0]);
 			$('#type').val(parts[1]);
 			$('#specs').html(parts[2]);
 
 			if (!(Modernizr.inputtypes && Modernizr.inputtypes.date)) {
-				console.log('using jQueryUI datepicker');
-	  		$("input[type='date']").datepicker({
-	   			dateFormat: 'yy-mm-dd',
+				//console.log('using jQueryUI datepicker');
+	  			$("input[type='date']").datepicker({
+	   				dateFormat: 'yy-mm-dd',
 					maxDate: -1,
 				});
 			} else {
-				console.log('using native datepicker');
+				//console.log('using native datepicker');
 			}
 		});
 	},
@@ -109,10 +109,10 @@ var rpt = {
 		$('#firstItem').val(firstItem);
 
 		//$('#type').val('previous');
-    		var params = $('#reportcriteriaform').serialize();
+    	var params = $('#reportcriteriaform').serialize();
 		$.post(rpt.url, params, function (response) {
 			if (response.indexOf('|') < 0) {
-        			$('#errSpace').html(response).show();
+        		$('#errSpace').html(response).show();
 				return;
 			}
 			var parts = response.split('|');
@@ -153,8 +153,8 @@ var rpt = {
 		e.stopPropagation();
 		idis.init(rpt.opts); // be sure all is ready
 		var href = e.currentTarget.href,
-				query = href.split('?')[1],
-				args = obib.urlArgs(query); //parse query into 'named' properties
+			query = href.split('?')[1],
+			args = obib.urlArgs(query); //parse query into 'named' properties
 		idis.doBibidSearch(args.bibid);
 		$('#biblioDiv').show();
 		$('#reportDiv').hide();

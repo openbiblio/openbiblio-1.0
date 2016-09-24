@@ -16,6 +16,7 @@ class Rpt {
 	## ------------------------------------------------------------------------ ##
 	public function __construct () {
 	}
+
 	public function load_e($filename) {
 		$this->_title = $filename;
 		$this->_category = 'Misc.';
@@ -55,7 +56,9 @@ class Rpt {
 					Fatal::internalError(T("Can't happen"));
 			}
 		}
+//echo "in Rpt::load_e(), params=";print_r($this->_paramdefs);echo"<br />\n";
 		return NULL;
+//		return $this->getRptCache();
 	}
 	public function title() {
 		return $this->_title;
@@ -74,6 +77,9 @@ class Rpt {
 	}
 	public function layouts() {
 		return $this->_layouts;
+	}
+	public function getRptCache() {
+		return array($this->title, $this->_paramdefs, $this->_columns, $this->_category, $this->_layouts);
 	}
 }
 
@@ -703,21 +709,29 @@ class RptIter extends Iter {
 			# better for the Rpt syntax to indicate whether a query is expected
 			# to return rows or not.
 			if (strncasecmp(trim($sql), 'select', strlen('select')) != 0) {
-				$this->q->act($sql);
+				//$this->q->act($sql);
+				$rslts = $this->q->act($sql);
 			} else {
-				$this->iter = $this->q->select($sql);
+				//$this->iter = $this->q->select($sql);
+				$rslts = $this->q->select($sql);
 				$this->subselects = $subs;
 			}
+			$this->iter = $rslts;
 		}
 	}
 	public function count() {
-		return $this->iter->num_rows;
+		//return $this->iter->num_rows;
+		//return count($this->iter);
+		$recs = $this->iter->fetchAll();
+		return count($recs);
 	}
 	public function skip() {
-    $this->iter->fetch_assoc();
+    	//$this->iter->fetch_assoc();
+    	$this->iter->fetch();
 	}
 	public function next() {
-		$row = $this->iter->fetch_assoc();
+		//$row = $this->iter->fetch_assoc();
+		$row = $this->iter->fetch();
 		if ($row === NULL) {
 			return $row;
 		}

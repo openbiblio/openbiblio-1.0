@@ -12,6 +12,10 @@ require_once(REL(__FILE__, "../classes/Date.php"));
  */
 
 class Params {
+	## ------------------------------------------------------------------------ ##
+	public function __construct () {
+	}
+
 	private $dict = array();
 
 	## ------------------------------------------------------------------------ ##
@@ -90,6 +94,7 @@ class Params {
 		$p->loadDict($this->dict);
 		return $p;
 	}
+
 	/* Careful! */
 	public function loadDict($dict) {
 //echo "Params: in loadDict<br />\n";

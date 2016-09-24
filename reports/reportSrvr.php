@@ -25,8 +25,9 @@
 
 	switch ($_POST['mode']) {
 	case 'getOpts':
-		$opts = Settings::getAll();
-		echo json_encode($opts);
+		//$opts = Settings::getAll();
+		//echo json_encode($opts);
+        echo json_encode($_SESSION);
 	  break;
 
 	case "resetReport":

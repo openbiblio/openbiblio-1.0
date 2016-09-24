@@ -6,6 +6,11 @@
 	require_once(REL(__FILE__, "../classes/Params.php"));
 	require_once(REL(__FILE__, "../classes/Iter.php"));
 
+ /**
+ * Principal class for the Report Sub-System
+ * @author Micah Stetson
+ */
+
 /* A report should always be created with Report::load(), Report::create(),
  * or Report::create_e(), never with new Report().  
  * Create_e() makes a new report of the given type.  If the report is given a 
@@ -23,11 +28,6 @@
  *   count(), curPage(), row(), each(), table(), and pageTable()
  */
 
-/**
- * Principal class for the Report Sub-System
- * @author Micah Stetson
- */
-
 class Report {
 	public $name;
 	public $params;
@@ -39,15 +39,24 @@ class Report {
 
 	## ------------------------------------------------------------------------ ##
 	public function __construct ($startAt=NULL, $howMany=NULL) {
-    if(!is_null($startAt)) $this->startAt = $startAt;
+    	if(!is_null($startAt)) $this->startAt = $startAt;
 		if(!is_null($howMany)) $this->howMany = $howMany;
 	}
+
+	## ------------------------------------------------------------------------ ##
 	public static function create($type, $name=NULL, $startAt=NULL, $howMany=NULL) {
 		list($rpt, $err) = Report::create_e($type, $name, $startAt, $howMany);
 		if($err) {
 			Fatal::internalError(T("ReportCreatingReport", array('error'=>$err->toStr())));
 		}
 		return $rpt;
+	}
+	public static function create_e($type, $name=NULL) {
+//echo "in Report::create_e()<br/>\n";
+		$cache = array('type'=>$type);
+		$rpt = new Report();
+		$err = $rpt->_load_e($name, $cache);
+		return array($rpt, $err);
 	}
 	public static function load($name, $startAt=NULL, $howMany=NULL) {
 		if (!isset($_SESSION['rpt_'.$name])) {
@@ -61,6 +70,8 @@ class Report {
 		}
 		return $rpt;
 	}
+
+	## ------------------------------------------------------------------------ ##
 	public function title() {
 		return $this->rpt->title();
 	}
@@ -126,12 +137,6 @@ class Report {
 			return 1;
 		}
 	}
-	public static function create_e($type, $name=NULL) {
-		$cache = array('type'=>$type);
-		$rpt = new Report();
-		$err = $rpt->_load_e($name, $cache);
-		return array($rpt, $err);
-	}
 
 	## ------------------------------------------------------------------------ ##
 	private function _load_e($name, $cache) {
@@ -142,16 +147,20 @@ class Report {
 			## for hard-coded reports
 			$err = $this->_load_php_e($cache['type'], $fname.'.php');
 		} elseif (is_readable($fname.'.rpt')) {
-		  ## for scripted reports
+		    ## for scripted reports
 			$err = $this->_load_rpt_e($cache['type'], $fname.'.rpt');
 		} else {
 			die ("unrecognized file");
 		}
+//echo "in Report::_load_e(), report script loaded.<br/>\n";
+//echo "cache: ";print_r($cache);echo"<br />\n";
+
 		if ($err) {
 			return $err;
 		}
 		$this->cache = $cache;
 		if (array_key_exists('params', $cache) and is_array($cache['params'])) {
+//echo "in Report::_load_e(), params array found in cache.<br/>\n";
 			$this->params = new Params;
 			$this->params->loadDict($cache['params']);
 		}
