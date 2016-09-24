@@ -732,7 +732,8 @@ class RptIter extends Iter {
 	public function next() {
 		//$row = $this->iter->fetch_assoc();
 		$row = $this->iter->fetch();
-		if ($row === NULL) {
+		//if ($row === NULL) {
+		if (empty($row)) {
 			return $row;
 		}
 		$scope = $this->params->getCopy();
