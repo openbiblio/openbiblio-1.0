@@ -174,7 +174,7 @@ var mtl = {
 		$('#configDiv').show();
 	},
 	fetchMarcBlocks: function () {
-	  $.getJSON(mtl.url,{mode:'getMarcBlocks'}, function(data){
+	  $.post(mtl.url,{mode:'getMarcBlocks'}, function(data){
 			var html = "<option value=\"0\">Choose a Block</option>\n";
 			for (var n in data) {
 				html += '<option value="'+data[n]['block_nmbr']+'">'
@@ -182,12 +182,12 @@ var mtl = {
 						 +  '</option>\n';
 			}
 			$('#marcBlocks').html(html);
-		});
+		}, 'json');
 	},
 	fetchMarcTags: function () {
 	  $('#potential').html('');
 	  mtl.blockNmbr = $('#marcBlocks').val();
-	  $.getJSON(mtl.url,{mode:'getMarcTags',block_nmbr:mtl.blockNmbr}, function(data){
+	  $.post(mtl.url,{mode:'getMarcTags',block_nmbr:mtl.blockNmbr}, function(data){
 			var html = "<option value=\"0\">Choose a Tag</option>\n";
 			for (var n in data) {
 				html += '<option value="'+data[n]['tag']+'">'
@@ -195,11 +195,11 @@ var mtl = {
 						 +  '</option>\n';
 			}
 			$('#marcTags').html(html).show();
-		});
+		}, 'json');
 	},
 	fetchMarcFields: function () {
 	  mtl.tagNmbr = $('#marcTags').val();
-	  $.getJSON(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
+	  $.post(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
 			var html = '';
 			for (var n in data) {
 			  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
@@ -211,7 +211,7 @@ var mtl = {
 						 +	"</li>\n";
 			}
 			$('#potential').html(html);
-		});
+		}, 'json');
 	},
 	receiveMarcFld: function (e,ui){
 		console.debug('received: e-->'+e.target.id+'; ui-->'+ui.item.id);

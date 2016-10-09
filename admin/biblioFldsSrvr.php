@@ -63,9 +63,10 @@
 			## prepare list of MARC Blocks
 			require_once(REL(__FILE__, "../model/MarcBlocks.php"));
 			$ptr = new MarcBlocks;
-		  $vals = array();
+		  	$vals = array();
 			$rslt = $ptr->getAll('block_nmbr');
-			while ($row = $rslt->fetch_assoc()) { //'block_nmbr'
+			//while ($row = $rslt->fetch_assoc()) { //'block_nmbr'
+			foreach ($rslt as $row) {  //'block_nmbr'
 			  $vals[] = $row;
 			}
 			//print_r($blks);
@@ -78,9 +79,10 @@
 			require_once(REL(__FILE__, "../model/MarcTags.php"));
 			$ptr = new MarcTags;
 			$params = array('block_nmbr' => $_POST['block_nmbr']);
-		  $vals = array();
+		  	$vals = array();
 			$rslt = $ptr->getMatches($params,'tag');
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+			foreach ($rslt as $row) {
 			  $vals[] = $row;
 			}
 			echo json_encode($vals);
@@ -92,9 +94,10 @@
 			require_once(REL(__FILE__, "../model/MarcSubfields.php"));
 			$ptr = new MarcSubfields;
 			$params = array('tag' => $_POST['tag']);
-		  $vals = array();
+		  	$vals = array();
 			$rslt = $ptr->getMatches($params,'subfield_cd');
-			while ($row = $rslt->fetch_assoc()) {
+			//while ($row = $rslt->fetch_assoc()) {
+			foreach ($rslt as $row) {
 			  $vals[] = $row;
 			}
 			echo json_encode($vals);
