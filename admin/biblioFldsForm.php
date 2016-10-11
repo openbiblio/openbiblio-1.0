@@ -115,7 +115,7 @@
     <td colspan="2">
     	<select id="form_type" name="form_type">
     	</select>
-      <span class="reqd">*</span>
+      	<span class="reqd">*</span>
 		</td>
   </tr>
   <tr>
@@ -123,7 +123,7 @@
     <td colspan="2">
     	<select id="validation_cd" name="validation_cd">
     	</select>
-      <span class="reqd">*</span>
+      	<span class="reqd">*</span>
 		</td>
   </tr>
   <tr>

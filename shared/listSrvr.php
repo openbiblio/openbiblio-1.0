@@ -87,13 +87,12 @@
 		$rslt = $db->select($sql);
 		//while ($col = $rslt->fetch_assoc()) {
         $recs = $rslt->fetchAll();
-//echo "in lstSrvr, getInputTypes: ";print_r($recs);echo "<br />\n";
-//        foreach ($rslt as $col) {
+		//echo "in lstSrvr, getInputTypes: ";print_r($recs);echo "<br />\n";
         foreach ($recs as $col) {
 			if ($col['Field'] == 'form_type') break;
 		}
 		$enum = $col['Type'];
-		echo $enum;
+		echo $enum;     // JSON not wanted here!!!
 	  break;
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getLocaleList':

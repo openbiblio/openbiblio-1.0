@@ -69,12 +69,12 @@ var mtl = {
 	},
 	resetForms: function () {
 		//console.log('resetting!');
-	  $('#pageHdr').html(mtl.pageHdr);
+	  	$('#pageHdr').html(mtl.pageHdr);
 		$('#typeChoice').show();
 		$('#workDiv').hide();
 		$('#configDiv').hide();
 		$('#editDiv').hide();
-	  $('#msgDiv').hide();
+	  	$('#msgDiv').hide();
 		$('#updateMsg').hide();
 		mtl.disableBtn('configBtn');
 		mtl.disableBtn('saveBtn');
@@ -89,8 +89,8 @@ var mtl = {
 		$('#'+btnId).disable();
 	},
 	enableBtn: function (btnId) {
-	  //$('#'+btnId).css('color', mtl.btnColor);
-	  $('#'+btnId).css('color', '#000000');
+	  	//$('#'+btnId).css('color', mtl.btnColor);
+	  	$('#'+btnId).css('color', '#000000');
 		$('#'+btnId).enable();
 	},
 	hideTopBtns: function() {
@@ -107,11 +107,11 @@ var mtl = {
 	},
 
 	doBackToList: function () {
-	  $('#typeList').enable();
+	  	$('#typeList').enable();
 		$('#workDiv').show();
 		$('#configDiv').hide();
 		$('#editDiv').hide();
-	  $('#msgDiv').hide();
+	  	$('#msgDiv').hide();
 		$('#updateMsg').hide();
 		$('#editCnclBtn').val(mtl.cancelLbl);
 		mtl.enableBtn('configBtn');
@@ -143,14 +143,15 @@ var mtl = {
             for (var n in list) {
 				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
 			}
+			console.log(html);
 			$('#form_type').html(html);
-		}, 'json');
+		});
 	},
 	fetchValidationList: function () {
 	    $.post(mtl.listUrl,{mode:'getValidations'}, function(data){
-			var html = '';
+			var html= '<option value="none">none</option>';
             for (var n in data) {
-				html+= '<option value="'+n+'">'+data[n]+'</option>';
+				html+= '<option value="'+n+'">'+n+'</option>';
 			}
 			$('#validation_cd').html(html);
 		}, 'json');
@@ -351,7 +352,7 @@ var mtl = {
 	},
 	
 	doEdit: function (e) {
-	  // come here as result of pressing a line's edit button
+	  	// come here as result of pressing a line's edit button
 		$('#workDiv').hide();
 		$('#msgDiv').hide();
 		$('#addBtn').hide();
@@ -359,28 +360,29 @@ var mtl = {
 		mtl.hideTopBtns();
 		$('#editDiv').show();
 		
-	  var theTagId = $(this).next().val();
+	  	var theTagId = $(this).next().val();
 		var mtlId ='mtl'+theTagId;
 		var inpt = mtl.collectSpanData(mtlId);
 		var parms = eval('('+inpt+')');
 		for(var n in parms) {
 			var fldName = parms[n]['name'],
-					fldVal = parms[n]['value'];
+				fldVal = parms[n]['value'];
 			switch (fldName) {
 				case 'required':
-//				$('#editTbl #required').val([fldVal=='Y'?'1':'0']);
+//					$('#editTbl #required').val([fldVal=='Y'?'1':'0']);
 					$('#editTbl #required').val(fldVal);
 					break;
 				case 'repeatable':
-//				$('#editTbl #repeatable').val([fldVal=='Y'?'1':'0']);
+//					$('#editTbl #repeatable').val([fldVal=='Y'?'1':'0']);
 					$('#editTbl #repeatable').val(fldVal);
 					break;
 				case 'form_type':
 					$('#editTbl #form_type').val([fldVal]);
-				  break;
+				  	break;
 				case 'validation_cd':
-					$('#editTbl #form_type').val([fldVal]);
-				  break;
+console.log('validation fldVal='+fldVal);
+					$('#editTbl #validation_cd').val([fldVal]);
+				  	break;
 				default:
 					$('#editTbl #'+fldName).val(fldVal);
 			}
@@ -394,6 +396,7 @@ var mtl = {
 		$('#editMode').val('updateFldSet');
 
 		var parms = $('#editForm').serialize();
+console.log('attempting update');
 
 		$.post(mtl.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
@@ -402,7 +405,7 @@ var mtl = {
 				$('#msgDiv').show();
 			}
 			else {
-			  mtl.fetchMatlFlds();
+			  	mtl.fetchMatlFlds();
 				$('#updateMsg').html(mtl.successMsg);
 				$('#updateMsg').show();
 				$('#msgArea').html(mtl.successMsg);
@@ -415,20 +418,20 @@ var mtl = {
 	doDeleteFldset: function (e) {
 		var msg = mtl.delConfirmMsg+'\n>>> '+$('#editForm tbody #label').val()+' <<<';
 	    if (confirm(msg)) {
-	  	$.get(mtl.url,
-								{	mode:'d-3-L-3-tFld',
-									material_field_id:$('#editForm #material_field_id').val()
-								},
-								function(response){
-				if (($.trim(response)).substr(0,1)=='<') {
-					console.log('rcvd error msg from server :<br />'+response);
-					$('#msgArea').html(response);
-					$('#msgDiv').show();
-				}
-				else {
-			  	mtl.doReloadList();
-				}
-			});
+		  	$.post(mtl.url,
+				{	mode:'d-3-L-3-tFld',
+					material_field_id:$('#editForm #material_field_id').val()
+				},
+				function(response){
+					if (($.trim(response)).substr(0,1)=='<') {
+						console.log('rcvd error msg from server :<br />'+response);
+						$('#msgArea').html(response);
+						$('#msgDiv').show();
+					}
+					else {
+				  		mtl.doReloadList();
+					}
+				});
 		}
 	},
 	
