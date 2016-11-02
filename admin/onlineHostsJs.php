@@ -38,7 +38,6 @@ class Hed extends Admin {
     	for (var n in svcs) {
     		html += '<option value="'+svcs[n]+'">'+svcs[n]+'</option>\n';
 	    }
-console.log(html);
 	    $('#service').html(html);
     };
 }

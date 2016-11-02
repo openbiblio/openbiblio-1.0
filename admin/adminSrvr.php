@@ -313,7 +313,6 @@ ini_set('display_errors', 1);
 			} else {
 				echo json_encode(array(null, $errors));
             }
-
 			break;
 		case 'update_media':
 			if (strpos($_POST["image_file"],'\\')) {
@@ -362,7 +361,9 @@ ini_set('display_errors', 1);
 			break;
 		case 'addNew_hosts':
 			if (empty($_POST[active])) $_POST[active] = 'N';
-			echo $ptr->insert($_POST);
+			//echo $ptr->insert($_POST);
+			$rslt = $ptr->insert($_POST);
+            echo json_encode($rslt);
 			break;
 		case 'update_hosts':
 			if (empty($_POST[active])) $_POST[active] = 'N';

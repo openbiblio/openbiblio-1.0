@@ -224,7 +224,7 @@ class Admin {
     }
 
     doAddFields () {
-        //console.log('in JSAdmin::doAddFields()');
+console.log('in JSAdmin::doAddFields()');
     	$('#msgDiv').hide();
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
@@ -236,16 +236,16 @@ class Admin {
         return $('#editForm').serializeArray();
     };
     doAssembleParams (params) {
-	var numParams = params.length;
+		var numParams = params.length;
         for (var i = (numParams-1); i >= 0; i--) {
             if ((params[i].value.length < 1)) {
                  params.splice(i, 1);
             }
         }
-	return jQuery.param(params);
+		return jQuery.param(params);
     };
     addHandler (response) {
-        //console.log(response);
+console.log(response);
         this.seqNum = response[0];
     	this.showResponse(response[1]);
     };
@@ -255,9 +255,10 @@ class Admin {
     	$('#msgDiv').hide();
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
-	var parms = this.doGatherParams();
-    	if ($('#newImageFile').length)
+		var parms = this.doGatherParams();
+    	if ($('#newImageFile').length) {
     		parms.push($('#newImageFile').serializeArray());
+		}
     	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this));
     	return false;
     };
