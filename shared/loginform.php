@@ -88,6 +88,23 @@
 </fieldset>
 </form>
 
+<script language="JavaScript" >
+	"use strict"
+/* TODO - fl get this working
+console.log('js activated');
+	$("#showPwd").on('change',null, function () {
+console.log("'hide pwd' clicked");
+		if ($("#showPwd:checked").length > 0) {
+        	$(".pwd").attr('type', 'text');
+console.log("'pwd type' now text");
+		} else {
+        	$(".pwd").attr('type', 'password');
+console.log("'pwd type' now password");
+		}
+	});
+*/
+</script>
+
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
 ?>	

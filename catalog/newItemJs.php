@@ -76,8 +76,8 @@ var ni = {
 			return ni.doBackToSrch();
 		});
 		$('#barcode_nmbr').on('change',null,ni.chkBarcdForDupe);
-		if ($('#autobarco:checked').length > 0) {
-			$('#barcode_nmbr').disable();
+			if ($('#autobarco:checked').length > 0) {
+				$('#barcode_nmbr').disable();
 		}
 		// if user changes his/her mind
 		$('#autobarco').on('change',null,function (){

@@ -100,7 +100,7 @@
   <tr>
     <td><label for="db"><?php echo T("Service"); ?>:</label></td>
     <td>
-			<select  id="service" name="service" >to be filled by server</select>
+		<select  id="service" name="service" >to be filled by server</select>
     </td>
   </tr>
   <tr>

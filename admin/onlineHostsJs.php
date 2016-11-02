@@ -11,37 +11,40 @@ class Hed extends Admin {
     			form = $('#editForm'),
     			dbAlias = 'hosts';
     	var hdrs = {'listHdr':<?php echo '"'.T("List of Hosts").'"'; ?>,
-    							'editHdr':<?php echo '"'.T("Edit Hosts").'"'; ?>,
-    							'newHdr':<?php echo '"'.T("Add New Host").'"'; ?>,
-    						 };
+    				'editHdr':<?php echo '"'.T("Edit Hosts").'"'; ?>,
+    				'newHdr':<?php echo '"'.T("Add New Host").'"'; ?>,
+    				};
     	var listFlds = {'seq':'number',
-    									'active':'center',
-    									'host':'text',
-    									'name':'text',
-    									'db':'text',
-    									'user':'text',
-    									'pw':'password',
-    								 };
+    					'active':'center',
+    					'host':'text',
+    					'name':'text',
+    					'db':'text',
+    					'user':'text',
+    					'pw':'password',
+    					};
     	var opts = { 'focusFld':'name', 'keyFld':'id' };
 
 	    super ( url, form, dbAlias, hdrs, listFlds, opts );
+
+		this.fetchServiceList();
     };
 
     fetchServiceList () {
-		$.getJSON(this.url, {'cat':'hosts', 'mode':'getSvcs_hosts'}, $.proxy(this.serviceHandler,this));
+		$.post(this.url, {'cat':'hosts', 'mode':'getSvcs_hosts'}, $.proxy(this.serviceHandler,this));
     };
     serviceHandler (data) {
-    	var html = '';
-    	for (var n in data) {
-    		html += '<option value="'+data[n]+'">'+data[n]+'</option>\n';
+    	var html = '',
+			svcs = JSON.parse(data);
+    	for (var n in svcs) {
+    		html += '<option value="'+svcs[n]+'">'+svcs[n]+'</option>\n';
 	    }
+console.log(html);
 	    $('#service').html(html);
     };
 }
 
 $(document).ready(function () {
 	var hed = new Hed();
-	hed.fetchServiceList();
 });
 
 </script>
