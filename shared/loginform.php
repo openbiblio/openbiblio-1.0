@@ -64,6 +64,7 @@
 		<td><label for="password"><?php echo T("Password"); ?>:</label></td>
 		<td valign="top" class="noborder">
 			<input id="pwd" name="pwd" type="password" size="15" required aria-required="true" />
+			<!--label><input type="checkbox" id="showPwd" /> show password</label-->
 		</td>
 	</tr>
 	<?php if(($_SESSION['multi_site_func'] > 0) || ($_SESSION['site_login'] == 'Y')){ ?>
