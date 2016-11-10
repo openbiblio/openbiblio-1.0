@@ -95,12 +95,12 @@ class Copies extends CoreTable {
 		return $nextCopy["nextCopy"]+1;
 	}
 */
-	public function getNewBarCode($width) {
-        	$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
- 		$cpy = $this->select1($sql);
-        	$nmbr = $cpy[0]['lastNmbr']+1;
-	    	if(empty($width)) $w = 13; else $w = $width;
-        	return sprintf("%0".$w."s",$nmbr);
+    public function getNewBarCode($width){
+        $sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from biblio_copy");
+        $cpy = $this->select1($sql);
+        $nmbr = $cpy['lastNmbr'] + 1;
+        if (empty($width)) $w = 13; else $w = $width;
+        return sprintf("%0" . $w . "s", $nmbr);
 
         // LJ: Have changed the functionality, as the barcode is a varchar, and as such max gives a wrong value.
         // EDIT: leave it here, but it seems to have been a fault in my DB.
@@ -114,7 +114,7 @@ class Copies extends CoreTable {
 	    if(empty($width)) $w = 13; else $w = $width;
         return sprintf("%0".$w."s",$nmbr);
         */
-	}
+    }
 	
 	## ========================= ##
 	public function getBibsForCpys ($barcode_list) {

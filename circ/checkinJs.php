@@ -89,7 +89,7 @@ var chk = {
 			}
 			else {
 				$('#msgArea').html(response);
-				$('#msgDiv').show().hide(5000);
+				$('#msgDiv').show().hide(2000);
 				chk.fetchShelvingCart();  //update screen
 			}
 		});
@@ -110,7 +110,7 @@ var chk = {
 			}
 			else {
 				$('#msgArea').html(response);
-				$('#msgDiv').show().hide(1000);
+				$('#msgDiv').show().hide(2000);
 				chk.fetchShelvingCart();  //update screen
 				$('#shelvedCopiesList').add('<tr><td>Barcode</td><td>Title</td></tr>');
 			}
