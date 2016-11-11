@@ -104,7 +104,7 @@ console.log(sites);
 		$.each(idis.theBiblio.marc, function(key,value) {
 		  var tmp = value;
 			tmp.marcTag = key.substr(0,5);
-			if ((tmp.line >= 0) && (tmp.value != '')) {
+			if ((tmp.line >= 0) && (tmp.value != '') && tmp.value != null) {
 		  	    txt += "<tr>\n";
 				txt += '	<td class="filterable hilite">'+tmp.marcTag+"</td>\n";
 				txt += "	<td>"+tmp.lbl+"</td>\n";
@@ -234,7 +234,7 @@ console.log(sites);
 
 					html += "	<td>"+copy.status
 					if (copy.ckoutMbr) {
-						var text = 'href="../circ/mbr_view.php?mbrid='+copy.ckoutMbr+'"';
+						var text = 'href="../circ/memberForms.php?mbrid='+copy.ckoutMbr+'"';
 					  html += ' to <a '+text+'>'+copy.mbrName+'</a>';
 					}
 					html += "	</td>\n";

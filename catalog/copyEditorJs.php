@@ -201,7 +201,13 @@ var ced = {
                     // needed because idis not available in all use cases of the copy editor
                     idis.fetchCopyInfo(); // refresh copy display
                 }
-                bs.rtnToBiblio();
+
+                // LJ: This is used by search and new items.
+                if(typeof ni !== 'undefined') {
+                    ni.doBackToSrch();
+                } else {
+                    bs.rtnToBiblio();
+                }
                 $('#rsltMsg').html('Copy updated successfully!').show();
                 setTimeout(function() {
                     $("#rsltMsg").hide(500);

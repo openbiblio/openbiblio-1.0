@@ -14,7 +14,7 @@ function currentMbrBox() {
 			return;
 		}
 		echo HTML('<div class="current_mbr">{#trans}Current Patron:{#end} '
-			. ' <a href="../circ/mbr_view.php?mbrid={mbrid|url-param-value}">'
+			. ' <a href="../circ/memberForms.php?mbrid={mbrid|url-param-value}">'
 			. '{first_name} {last_name} ({barcode_nmbr})</a></div>',
 			$mbr);
 	}

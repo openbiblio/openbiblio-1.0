@@ -69,6 +69,7 @@ class Copies extends CoreTable {
 		return $cpys;
 	}
 	public function getByBarcode($barcode) {
+        /*
 		$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
         $rows = $rslt->fetchAll();
         $numRows = count($rows);
@@ -78,6 +79,13 @@ class Copies extends CoreTable {
 			$rslt = $this->getMatches(array('barcode_nmbr'=>$barcode));
         	$rows = $rslt->fetchAll();
 		}
+        */
+
+        // Have changed this to the following. In a particular library a new digit was added to the barcode, so now we use a like selector and strip the '0' at the beginning.
+        $trimmedCode = ltrim($barcode, '0');
+        $sql = "select * from biblio_copy WHERE barcode_nmbr LIKE '%" . $trimmedCode . "'";
+        $rows = $this->select($sql)->fetchAll();
+
         $numRows = count($rows);
 		if ($numRows == 0) {
 			return NULL;
@@ -375,9 +383,11 @@ class Copies extends CoreTable {
 				 . "where mbr.mbrid=bkm.mbrid "
 				 . "and bkm.bookingid=bk.bookingid ";
 		$sql .= $this->mkSQL("and bk.out_histid=%N ", $histid);
-		$checkouts = $this->select($sql);
-		$checkouts->execute();
-		return $checkouts->fetchAll(PDO::FETCH_ASSOC);
+		// LJ: This can only be one, so should ony return one!
+        //$checkouts = $this->select($sql);
+		//$checkouts->execute();
+		//return $checkouts->fetchAll(PDO::FETCH_ASSOC);
+        return $this->select1($sql);
 	}
 
 	public function getHoldMember($copyid) {

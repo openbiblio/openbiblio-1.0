@@ -106,7 +106,7 @@ class Bookings extends CoreTable {
 			. 'group by date order by date ');
 	}
 	protected function validate_el($new, $insert) {
-		if ($insert) {
+        if ($insert) {
 			$old = array();
 		} else {
 			$old = $this->getOne($new['bookingid']);
@@ -329,6 +329,9 @@ class Bookings extends CoreTable {
 	 * If the checkout should not be made, $error will contain an
 	 * Error object indicating the reason.
 	 */
+
+	// LJ: IS THIS STILL USED??? NOT SURE!
+
 	function verifyCheckout_e($bookingid, $barcode, $out_copyids=array()) {
 		$this->lock();
 		do {
@@ -481,7 +484,6 @@ class Bookings extends CoreTable {
 			$this->unlock();
 			return T("No copy with barcode")." ".$barcode;
 		}
-
 		$bibid = $copy["bibid"];
 		$copyid = $copy["copyid"];
 		$histid = $copy["histid"];
@@ -496,6 +498,8 @@ class Bookings extends CoreTable {
 				'copyid'=>$copyid,
 				'status_cd'=>$status['status_cd'],
 			));
+        } else if($status['status_cd'] == OBIB_STATUS_OUT){
+            return new Error(T("modelBookingsAlreadyCheckedOut"));
 		} else if($status['status_cd'] == OBIB_STATUS_NOT_ON_LOAN){
 			return new Error(T("modelBookingsNotOnLoan", array("barcode"=>$barcode)));
 		} else if ($status['status_cd'] == OBIB_STATUS_ON_HOLD) {
@@ -509,7 +513,12 @@ class Bookings extends CoreTable {
 					$holds->deleteOne($hold['holdid']);
 				}
 			}
-		}
+        } else {
+            if ($status['status_cd'] != OBIB_STATUS_IN && $status['status_cd'] != OBIB_STATUS_SHELVING_CART) {
+                // LJ: The above seemed incomplete (and the check functions are not called anymore, e.g. verifyCheckout_e). Somebody please verify
+                return new Error(T("modelBookingsNotAvailable", array("barcode"=>$barcode)));
+            }
+        }
 
 		$collections = new Collections;
 		$coll = $collections->getByBibid($bibid);

@@ -44,7 +44,7 @@ function BiblioLinkUrlFormatter($val, $context, $args) {
 		array('bibid'=>$val, 'tab'=>$tab));
 }
 function MemberLinkUrlFormatter($val, $context, $args) {
-	return URL('../circ/mbr_view.php?mbrid={@}', $val);
+	return URL('../circ/memberForms.php?mbrid={@}', $val);
 }
  
 $_templateFormatters = array(

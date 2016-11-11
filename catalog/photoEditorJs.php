@@ -16,8 +16,12 @@ var wc = {
 
 		wc.canvasOut = document.getElementById('canvasOut'),
 		wc.ctxOut = canvasOut.getContext('2d');
+
+        //LJ: Not shown in .php equivalent for this situation, so will cause a exception.
+        <?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 		wc.canvasIn = document.getElementById('canvasIn'),
 		wc.ctxIn = canvasIn.getContext('2d');
+        <?php } ?>
 
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
 		$('#capture').on('click',null,wc.takeFoto);

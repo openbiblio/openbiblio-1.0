@@ -172,7 +172,7 @@ class TableFuncs {
 		return TableFuncs::_link_common($col, $row, $params, $url, 'bookingid');
 	}
 	function member_link($col, $row, $params) {
-		$url = '../circ/mbr_view.php?mbrid='.HURL($row['mbrid']);
+		$url = '../circ/memberForms.php?mbrid='.HURL($row['mbrid']);
 		return TableFuncs::_link_common($col, $row, $params, $url, 'mbrid');
 	}
 	function site_link($col, $row, $params) {
@@ -219,7 +219,7 @@ class TableFuncs {
 	function member_list($col, $row, $params) {
 		$s = '';
 		foreach ($row[$col['name']] as $m) {
-			$t = 'href="../circ/mbr_view.php?mbrid';
+			$t = 'href="../circ/memberForms.php?mbrid';
 			$s .= '<a '.$t.'='.HURL($m['mbrid']).'">'
 						. H($m['first_name']).' '.H($m['last_name']).' ('.H($m['site_code']).')'
 						. '</a>, ';

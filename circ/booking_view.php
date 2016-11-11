@@ -119,7 +119,7 @@
 			<table>
 <?php
 	foreach ($mbrs as $member) {
-		echo '<tr><td><a href="../circ/mbr_view.php?mbrid='.HURL($member['mbrid']).'">';
+		echo '<tr><td><a href="../circ/memberForms.php?mbrid='.HURL($member['mbrid']).'">';
 		echo H($member['first_name'].' '.$member['last_name'].' ');
 		echo '('.H($member['barcode_nmbr']).')</a>';
 		echo '</td><td><a href="../circ/booking_edit.php?bookingid='.HURL($bookingid).'&amp;id[]='.HURL($member['mbrid']).'&amp;action_booking_mbr_del=1" class="small_button">'.T("Remove").'</a></td></tr>';
