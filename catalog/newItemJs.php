@@ -149,7 +149,7 @@ var ni = {
 	fetchOpts: function () {
         //console.log('fetching Opts');
         $.post(ni.url,{mode:'getOpts'}, function(data){
-			ni.opts = data; 
+			ni.opts = data.opts[0];
 			ni.fetchDfltMedia(); // chaining
 		}, 'json');
   	},
@@ -591,14 +591,19 @@ var ni = {
 	},
 	
 	setCallNmbr: function (data) {
-		switch (ni.opts.opts[0]['callNmbrType'].toLowerCase())  {
-		case 'loc':
-			$('#099a').val(data['050a']+' '+data['050b']);
-			break;
-		case 'dew':
-		  var callNmbr = ni.makeCallNmbr(data['082a']);
-    		var cutter = ni.makeCutter(data['100a'], data['245a']);
-				$('#099a').val(callNmbr+cutter);
+		switch (ni.opts.callNmbrType.toLowerCase()) {
+			case 'loc':
+				$('#099a').val(data['050a'] + ' ' + data['050b']);
+				break;
+			case 'dew':
+				var callNmbr = ni.makeCallNmbr(data['082a']);
+				var cutter = ni.makeCutter(data['100a'], data['245a']);
+				// LJ: Not sure what cutter is, so ignore if undefined.
+				if (typeof(cutter) === 'undefined') {
+					$('#099a').val(callNmbr);
+				} else {
+					$('#099a').val(callNmbr + cutter);
+				}
 			break;
 		case 'udc':
 		  var callNmbr = ni.makeCallNmbr(data['080a']);
@@ -617,9 +622,8 @@ var ni = {
 	},
 
 	makeCallNmbr: function (code) {
-		//console.log('code='+code)
-		if ((code) && ((ni.opts['callNmbrType']).toLowerCase() == "dew")) {
-			var fictionDew = ni.opts['fictionDew'].split(' ');
+		if ((code) && (ni.opts.callNmbrType.toLowerCase() == "dew")) {
+			var fictionDew = ni.opts.fictionDew.split(' ');
 			if (ni.opts['autoDewey']
 					&&
 					((code == "") || (code == "[Fic]"))
