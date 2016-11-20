@@ -17,12 +17,12 @@
 		<tr>
 			<td><label for="itemMediaTypes"><?php echo T("Media Type"); ?>:</label></td>
 			<td><select id="itemMediaTypes" name="materialCd">to be filled by server</select></td>
-			<td rowspan="3" class="online filterable"><div id="onlineMsg"></div></td>
+			<td rowspan="3" class="online filterable"><div id="onlineMsg"></div><span class="reqd">*</span></td>
 		</tr>
 		<tr>
 			<td><label for="itemEditColls"><?php echo T("Collection"); ?>:</label></td>
 			<td><select id="itemEditColls" name="collectionCd">to be filled by server</select></td>
-			<td><input id="editBibid" name="bibid" type="hidden" value="" /></td>
+			<td><input id="editBibid" name="bibid" type="hidden" value="" /><span class="reqd">*</span></td>
 		</tr>
 		<tr>
 			<td><label for="opacFlg"><?php echo T("Show in OPAC"); ?>:</label></td>

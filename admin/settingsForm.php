@@ -44,8 +44,11 @@
 					<select id="theme_dir_url" name="theme_dir_url" ></select-->
 				</div>
 				<div id="libraryPage" class="block">
+					<!--
+					LJ: This is actually the library name, so e.g. Cook County Library, which can have multiple locations/sites. This is printed on the top of barcode labels.
+					-->
 					<label for="libraryName"><?php echo T("Library Title"); ?></label>
-					<select id="libraryName" name="library_name" ></select>
+					<input type="text" id="libraryName" name="library_name" />
 					<br />
 					<!--label for="libraryHours"><?php echo T("Library Hours"); ?></label>
 					<textarea id="libraryHours" name="library_hours" rows="1" placeholder="M-F: 8am - 5pm<br />Sat:  9am - noon" /></textarea>

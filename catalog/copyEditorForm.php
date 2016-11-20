@@ -32,14 +32,18 @@
 			</tr>
 			<tr>
 				<td><label for="copyDesc"><?php echo T("Description"); ?></label></td>
-				<td><input id="copyDesc" name="copy_desc" type="text" size="40" /></td>
+				<td><input id="copyDesc" name="copy_desc" type="text" size="40" />
+					<span class="reqd">*</span>
+				</td>
 			</tr>
 		<?php // Not to be shown when in normal (non multisite mode)
 		if($_SESSION['multi_site_func'] > 0){
 		?>
 			<tr>
 				<td><label for="copySite"><?php echo T("Location"); ?></label></td>
-				<td><select id="copySite" name="copy_site">to be filled in by server.</select></td>
+				<td><select id="copySite" name="copy_site">to be filled in by server.</select>
+					<span class="reqd">*</span>
+				</td>
 			</tr>
 		<?php } ?>
 			<tr>
