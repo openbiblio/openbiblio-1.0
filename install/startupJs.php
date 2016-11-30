@@ -8,7 +8,7 @@ class Strt {
         this.initWidgets();
 
         this.url = '../install/startupSrvr.php';
-        this.dest = '../install/index.php';
+        this.dest = '../index.php';
 
         $('#constBtn').on('click',null, $.proxy(this.doCreateConstFile, this));
         $('#newDbBtn').on('click',null, $.proxy(this.createDb, this));
