@@ -23,8 +23,7 @@
 
 		<section id="dbPblms">
 			<pre id="connectErr"></pre>
-			Please make sure the following has been done before re-running this
-			install script.
+			Please make sure the following has been done before re-running this install script.
 			<ol>
 				<li>create OpenBiblio database
 					(<a href="../install_instructions.html#step4">step 4</a> of the
