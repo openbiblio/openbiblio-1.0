@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.collection_circ (
   pre_closing_padding int DEFAULT 0,
   PRIMARY KEY (code),
   CONSTRAINT chk_time_between_fee_applications CHECK (number_of_minutes_between_fee_applications>0)
-);
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO %prfx%.collection_circ (code, days_due_back, regular_late_fee) VALUES
 (1, 30, 0.01),
 (2, 14, 0.10),

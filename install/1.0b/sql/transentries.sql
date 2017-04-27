@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`transentries` (
   `transSectionName` varchar(50) NOT NULL,
   PRIMARY KEY (`transEntryID`),
   UNIQUE KEY `transLocaleCode` (`transLocaleCode`,`transKeyText`,`transSectionName`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

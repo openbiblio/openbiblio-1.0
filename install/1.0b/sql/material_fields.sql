@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`material_fields` (
   `repeatable` tinyint(1) DEFAULT NULL,
   `search_results` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`material_field_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=136 ;
+)   DEFAULT CHARSET=latin1 AUTO_INCREMENT=136 ;
 INSERT INTO %prfx%.`material_fields` (`material_field_id`, `material_cd`, `tag`, `subfield_cd`, `position`, `label`, `form_type`, `required`, `repeatable`, `search_results`) VALUES
 (1, 2, '245', 'a', 0, 'Title', 'text', 1, 0, NULL),
 (2, 2, '245', 'b', 1, 'Subtitle', 'text', 0, 0, NULL),

@@ -18,6 +18,6 @@ CREATE TABLE IF NOT EXISTS %prfx%.`lookup_settings` (
   `fictionLoc` varchar(255) NOT NULL DEFAULT 'PQ PR PS PT PU PV PW PX PY PZ',
   `fictionDew` varchar(255) NOT NULL DEFAULT '813 823',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 INSERT INTO %prfx%.`lookup_settings` (`id`, `protocol`, `maxHits`, `timeout`, `keepDashes`, `callNmbrType`, `autoDewey`, `defaultDewey`, `autoCutter`, `cutterType`, `cutterWord`, `noiseWords`, `autoCollect`, `fictionName`, `fictionCode`, `fictionLoc`, `fictionDew`) VALUES
 (1, 'SRU', 25, 10, 'n', 'LoC', 'n', '813.52', 'y', 'LoC', 1, 'a an and for of the this those', 'y', 'Fiction', 1, 'PQ PR PS PT PU PV PW PX PY PZ', '813 823');

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`collection_dm` (
   `default_flg` char(1) NOT NULL,
   `type` enum('Circulated','Distributed') NOT NULL DEFAULT 'Circulated',
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 INSERT INTO %prfx%.`collection_dm` (`code`, `description`, `default_flg`, `type`) VALUES
 (1, 'Fiction', 'N', 'Circulated'),
 (2, 'Nonfiction', 'Y', 'Circulated'),

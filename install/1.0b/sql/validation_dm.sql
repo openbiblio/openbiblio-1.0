@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`validation_dm` (
   `description` varchar(32) NOT NULL,
   `pattern` varchar(1024) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='for HTML5 input field validations';
+)  DEFAULT CHARSET=utf8 COMMENT='for HTML5 input field validations';
 INSERT INTO %prfx%.`validation_dm` (`code`, `description`, `pattern`) VALUES
 ('isbn', 'ISBN', '((978[\\--â€“ ])?[0-9][0-9\\--â€“ ]{10}[\\--â€“ ][0-9xX])|((978)?[0-9]{9}[0-9Xx])'),
 ('ipv4', 'IPv4', '^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[0-9]{1,2})){3}$'),

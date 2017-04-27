@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_field` (
   PRIMARY KEY (`fieldid`),
   KEY `bibid_idx` (`bibid`),
   KEY `tag_idx` (`tag`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22233 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=22233 ;

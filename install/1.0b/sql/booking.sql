@@ -19,4 +19,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`booking` (
   KEY `out_dt_idx` (`out_dt`),
   KEY `ret_histid_idx` (`ret_histid`),
   KEY `ret_dt_idx` (`ret_dt`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;

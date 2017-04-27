@@ -3,4 +3,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`session` (
   `userid` int(5) NOT NULL,
   `last_updated_dt` datetime NOT NULL,
   `token` int(5) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

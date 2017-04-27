@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`transkeys` (
   `transKeySectionName` varchar(50) NOT NULL,
   `transKeyText` varchar(100) NOT NULL,
   PRIMARY KEY (`transKeyID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

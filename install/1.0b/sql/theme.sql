@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`theme` (
   `border_width` tinyint(4) NOT NULL,
   `table_padding` tinyint(4) NOT NULL,
   PRIMARY KEY (`themeid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 INSERT INTO %prfx%.`theme` (`themeid`, `theme_name`, `title_bg`, `title_font_face`, `title_font_size`, `title_font_bold`, `title_font_color`, `title_align`, `primary_bg`, `primary_font_face`, `primary_font_size`, `primary_font_color`, `primary_link_color`, `primary_error_color`, `alt1_bg`, `alt1_font_face`, `alt1_font_size`, `alt1_font_color`, `alt1_link_color`, `alt2_bg`, `alt2_font_face`, `alt2_font_size`, `alt2_font_color`, `alt2_link_color`, `alt2_font_bold`, `border_color`, `border_width`, `table_padding`) VALUES
 (1, 'Mossy Blue', '#7695C0', 'Arial,Helvetica,sans-serif', 26, 'N', '#ffffff', 'left', '#ffffff', 'verdana,arial,helvetica', 13, '#000000', '#0000aa', '#990000', '#CCCC99', 'verdana,arial,helvetica', 13, '#000000', '#0000aa', '#003366', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'Y', '#000000', 1, 2),
 (2, 'Arizona Dessert', '#dfa955', 'Arial,Helvetica,sans-serif', 26, 'N', '#ffffff', 'left', '#ffffff', 'verdana,arial,helvetica', 13, '#000000', '#af6622', '#990000', '#c0c0c0', 'verdana,arial,helvetica', 13, '#000000', '#bf7733', '#c05232', 'verdana,arial,helvetica', 13, '#ffffff', '#ffffff', 'Y', '#000000', 1, 2),

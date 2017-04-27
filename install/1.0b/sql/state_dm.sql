@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`state_dm` (
   `description` varchar(32) NOT NULL,
   `default_flg` char(1) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 INSERT INTO `state_dm` (`code`, `description`, `default_flg`) VALUES
 ('ME', 'Maine', 'Y'),
 ('CA', 'California', 'N');

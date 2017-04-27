@@ -16,6 +16,6 @@ CREATE TABLE IF NOT EXISTS %prfx%.staff (
   reports_flg char(1) NOT NULL,
   tools_flg char(1) NOT NULL,
   PRIMARY KEY (userid)
-) DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO %prfx%.staff (userid, create_dt, last_change_dt, last_change_userid, username, pwd, last_name, first_name, suspended_flg, admin_flg, circ_flg, circ_mbr_flg, catalog_flg, reports_flg, tools_flg) VALUES
 (2, '0000-00-00 00:00:00', '2010-12-18 16:42:03', 2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', '', 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');

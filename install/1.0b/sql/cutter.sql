@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`cutter` (
   `theName` varchar(32) NOT NULL DEFAULT '',
   `theNmbr` mediumint(9) NOT NULL DEFAULT '0',
   PRIMARY KEY (`theName`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 INSERT INTO %prfx%.`cutter` (`theName`, `theNmbr`) VALUES
 ('Aa', 111),
 ('Aal', 112),

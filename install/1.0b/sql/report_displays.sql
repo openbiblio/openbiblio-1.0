@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`report_displays` (
   `max_rows` int(11) NOT NULL,
   `params` text NOT NULL,
   PRIMARY KEY (`page`,`position`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

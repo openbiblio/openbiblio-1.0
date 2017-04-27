@@ -22,4 +22,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.member (
   school_grade tinyint unsigned NOT NULL,
   school_teacher varchar(32) NOT NULL,
   PRIMARY KEY (mbrid)
-);
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

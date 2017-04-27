@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`mbr_classify_dm` (
   `default_flg` char(1) COLLATE latin1_general_ci NOT NULL DEFAULT '',
   `max_fines` decimal(4,2) NOT NULL,
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=5 ;
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=5 ;
 INSERT INTO %prfx%.`mbr_classify_dm` (`code`, `description`, `default_flg`, `max_fines`) VALUES
 (1, 'adult', 'Y', 0.00),
 (2, 'juvenile', 'N', 0.00),

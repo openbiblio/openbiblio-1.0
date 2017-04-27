@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`member_account` (
   `amount` decimal(8,2) NOT NULL DEFAULT '0.00',
   `description` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`mbrid`,`transid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

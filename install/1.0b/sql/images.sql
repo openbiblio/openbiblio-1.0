@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`images` (
   `caption` text NOT NULL,
   `type` enum('Thumb','Link') NOT NULL,
   PRIMARY KEY (`bibid`,`imgurl`(128))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

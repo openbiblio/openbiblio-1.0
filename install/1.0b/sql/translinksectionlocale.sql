@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`translinksectionlocale` (
   `transLocaleCode` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`transLinkID`),
   UNIQUE KEY `transSectionName` (`transSectionName`,`transLocaleCode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

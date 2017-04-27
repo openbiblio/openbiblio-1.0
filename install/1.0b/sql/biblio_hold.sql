@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_hold` (
   KEY `mbr_index` (`mbrid`),
   KEY `bibid_index` (`bibid`),
   KEY `copyid_index` (`copyid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_subfield` (
   KEY `bibid_idx` (`bibid`),
   KEY `fieldid_idx` (`fieldid`),
   KEY `subfield_cd_idx` (`subfield_cd`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22417 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=22417 ;

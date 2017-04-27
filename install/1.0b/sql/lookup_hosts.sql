@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`lookup_hosts` (
   `user` varchar(20) DEFAULT NULL,
   `pw` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+)   DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 INSERT INTO %prfx%.`lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`, `db`, `service`, `syntax`, `user`, `pw`) VALUES
 (14, 1, 'y', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - z39.50', 'voyager', 'Z3950', 'marcxml', '', ''),
 (23, 1, 'n', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - SRU', 'voyager', 'SRU', 'dc', '', ''),
