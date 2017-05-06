@@ -100,7 +100,7 @@ class Strt {
             if (response.indexOf('PDOException:') >= 0) {
               _this.informUser('<p class="error">'+response+'</p>');
             } else if (response.indexOf('success') >= 0) {
-              _this.informUser('A new database has been created');
+              _this.informUser('A new EMPTY database has been created');
               $('#createDB').hide();
               $('#continue').show();
             }

@@ -60,12 +60,12 @@ ins = {
 		ins.showWait('<?php echo T("Checking for Database Content"); ?>');
 	    $.get(ins.url,{ 'mode':'getSettings'}, function(response){
 	  	    if (response.indexOf('noTbl') >= 0) {
-				$('#newInstall').show();
-				$('#plsWait').hide();
-			} else {
-				$('#plsWait').hide();
-				ins.getDbVersion();
-			}
+						$('#newInstall').show();
+						$('#plsWait').hide();
+					} else {
+						$('#plsWait').hide();
+						ins.getDbVersion();
+					}
 	    });
 	},
 	getDbVersion: function () {

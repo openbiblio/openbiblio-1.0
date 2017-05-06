@@ -15,15 +15,15 @@
 	$installQ = new InstallQuery();
 	switch ($_REQUEST['mode']) {
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
-        case 'connectDBServer':
+    case 'connectDBServer':
 			$msg = $installQ->getDbServerVersion();
 			print_r($msg);
 			break;
 
-        case 'createNewDB':
-            $msg = $installQ->createDatabase();
-            echo $msg;
-            break;
+    case 'createNewDB':
+	    $msg = $installQ->createDatabase();
+	    echo $msg;
+	    break;
 			
 		case 'getSettings':
 			$resp = $installQ->getSettings();

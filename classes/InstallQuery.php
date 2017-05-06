@@ -12,16 +12,16 @@ require_once("../classes/Queryi.php");
  * @author Fred LaPlante
  */
 
-class InstallQuery extends Queryi
-{
-    public function __construct() {
-        parent::__construct();
-    }
+class InstallQuery extends Queryi {
+
+	public function __construct() {
+	  parent::__construct();
+	}
 
 	public function getDbServerVersion () {
 		$sql = $this->mkSQL("SELECT VERSION()");
-        $rslt = parent::select1($sql);
-		return $rslt[0]['VERSION()'];
+    $rslt = parent::select1($sql);
+		return $rslt['VERSION()'];
 	}
 
   public function getSettings($tablePrfx=0) {
