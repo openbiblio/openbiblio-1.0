@@ -24,10 +24,11 @@ class Staff extends CoreTable {
 			'circ_mbr_flg'=>'string',
 			'catalog_flg'=>'string',
 			'reports_flg'=>'string',
+			'start_page'=>'string',
 		));
-        $this->setReq(array(
-            'username', 'pwd', 'last_name', 'secret_key', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg',
-        ));
+    $this->setReq(array(
+        'username', 'pwd', 'last_name', 'secret_key', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg', 'start_page',
+    ));
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
 	}

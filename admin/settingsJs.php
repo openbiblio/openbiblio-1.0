@@ -20,7 +20,7 @@ var set = {
 		set.listSrvr = '../shared/listSrvr.php'
 
 		set.initWidgets();
-        $('#charset').val(set.charSet);
+    $('#charset').val(set.charSet);
 
 		list.getDayList($('#first_day_of_week'));
 		$('#editSettingsForm').on('submit',null,set.doUpdate);

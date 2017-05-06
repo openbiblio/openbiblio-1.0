@@ -24,6 +24,7 @@ class Stf extends Admin {
     					'admin_flg':'center',
     					'tools_flg':'center',
     					'suspended_flg':'center',
+						'start_page':'center',
     				   };
     	var opts = { 'keyFld':'userid', 'focusFld':'last_name' };
 
@@ -61,9 +62,9 @@ class Stf extends Admin {
     };
 
     doAddBtn () {
-        //console.log('in staffJs6::doAddBtn()');
-        //console.log('got "addBtn"');
-		var pw1 = $('#pwd1').val(),
+	    //console.log('in staffJs6::doAddBtn()');
+	    //console.log('got "addBtn"');
+			var pw1 = $('#pwd1').val(),
 			pw2 = $('#pwd2').val();
         var pwOk = this.chkPwds(pw1, pw2);
         //console.log('pwOk = '+pwOk);

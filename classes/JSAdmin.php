@@ -74,7 +74,7 @@ class Admin {
     fetchList () {
     	var params = { 'cat':this.dbAlias,
     				   'mode':'getAll_'+this.dbAlias,
-    							 };
+    				};
         $.post( this.url, params, $.proxy(this.fetchHandler,this), 'json');
     };
     fetchHandler (dataAray) {
@@ -130,6 +130,7 @@ class Admin {
     };
        
     doEditFields (e) {
+//console.log('in doEditfields()');
         var code = $(e.target).next().val(),
     	    ident = this.keyFld,
     		n;
@@ -145,6 +146,7 @@ class Admin {
     };
 	
     showFields (item) {
+//console.log('process '+item+' in showFields()');
         $('#fieldsHdr').html(this.editHdr);
         $('#addBtn').hide();
         $('#updtBtn').show();
@@ -152,7 +154,9 @@ class Admin {
 
     	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
     		var tagname = $(this).get(0).tagName;
+//console.log(tagname);
     		if (tagname == 'select') {
+//console.log('the id='+this.id+'; the val='+item[this.id]);
     			$(this).val([item[this.id]]);
     		}
     		else if ($(this).is('[type=checkbox]')) {

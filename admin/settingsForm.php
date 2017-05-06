@@ -34,8 +34,8 @@
 					<label for="charset"><?php echo T("Character Set"); ?></label>
 					<input type="text" id="charset" name="charset" >
 					<br />
-                    <label for="first_day_of_week"><?php echo T("First day of week"); ?></label>
-                    <select id="first_day_of_week" name="first_day_of_week" ></select>
+            <label for="first_day_of_week"><?php echo T("First day of week"); ?></label>
+            <select id="first_day_of_week" name="first_day_of_week" ></select>
 					<br />
 					<!--label for="themeid"><?php echo T("Theme id"); ?></label>
 					<select id="themeid" name="themeid"></select>

@@ -28,6 +28,7 @@
 		<th rowspan="2" valign="top"><?php echo T("Userid"); ?></th>
 		<th colspan="6"><?php echo T("Authorization"); ?></th>
 		<th rowspan="2" valign="top"><?php echo T("Suspended"); ?></th>
+		<th rowspan="2" valign="top"><?php echo T("Start Page"); ?></th>
 	</tr>
 	<tr>
 		<th><?php echo T("Circ"); ?></th>
@@ -90,11 +91,24 @@
     			</ul>
     		</fieldset>
     	</li>
-        <li>
-            <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
-    		<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
+      	<li>
+	        <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
+	    	<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
+    	</li>
+      	<li>
+			<label for="start_page"><?php echo T("Start Page"); ?>:</label>
+			<!--input id="start_page" name="start_page" type="text" value="" /-->
+			<select id="start_page" name="start_page" >
+				<option value="admin">Admin</option>
+				<option value="cataloging">Cataloging</option>
+				<option value="circulation">Circulation</option>
+				<option value="reports">Reports</option>
+				<option value="research">Research</option>
+				<option value="tools">Tools</option>
+			</select>
     	</li>
     	<br />
+
     	<li>
     		<fieldset>
     			<legend><?php echo T("Authorization");?>:</legend>
