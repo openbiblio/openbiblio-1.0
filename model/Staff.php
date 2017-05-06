@@ -32,6 +32,13 @@ class Staff extends CoreTable {
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
 	}
+
+	public function getStartPage(1) {
+		$response = getOne();
+		$page = $response->fetchColumn
+		return $response;
+	}
+
 	protected function validate_el($rec, $insert) {
 		$errors = array();
         // all required fields present?

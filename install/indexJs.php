@@ -14,6 +14,7 @@ ins = {
 
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
+		$('#startBtn').on('click',null,ins.startOB);
 
 		ins.resetForms()
 		ins.connectDb();
@@ -161,6 +162,15 @@ ins = {
 			return false;
 		});
 		return false;
+	},
+
+	//-------------------------------
+	startOB: function() {
+		$('#plsWait').show();
+		$.post(ins.url, {'mode':'getStartPage', 'user':1}, function (response) {
+console.log('switching control to'+response);
+		}
+        window.location = "../response";
 	},
 			
 };

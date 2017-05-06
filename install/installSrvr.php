@@ -11,20 +11,21 @@
     require_once("../shared/common.php");
  	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
+	require_once(REL(__FILE__, "../model/Staff.php"));
 
 	$installQ = new InstallQuery();
 	switch ($_REQUEST['mode']) {
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-    case 'connectDBServer':
-			$msg = $installQ->getDbServerVersion();
-			print_r($msg);
-			break;
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-'
+	    case 'connectDBServer':
+				$msg = $installQ->getDbServerVersion();
+				print_r($msg);
+				break;
 
-    case 'createNewDB':
-	    $msg = $installQ->createDatabase();
-	    echo $msg;
-	    break;
-			
+	    case 'createNewDB':
+		    $msg = $installQ->createDatabase();
+		    echo $msg;
+		    break;
+
 		case 'getSettings':
 			$resp = $installQ->getSettings();
 			if ($resp == 'NothingFound') {
@@ -49,6 +50,12 @@ ini_set('display_errors', 1);
 			foreach ($arr_lang as $langCode => $langDesc) {
 				echo '<option value="'.H($langCode).'">'.H($langDesc)."</option>\n";
 			}
+			break;
+
+		case 'getStartPage':
+			$staffPtr = newStaff();
+			$startPage = $staffPtr->getOne($_POST['user']);
+			return $startPage;
 			break;
 			
 		case 'doFullInstall':

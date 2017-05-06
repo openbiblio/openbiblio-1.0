@@ -22,7 +22,7 @@
 		</section>
 
 		<section id="dbPblms">
-			<pre id="connectErr"></pre>
+			<!--pre id="connectErr"></pre>
 			Please make sure the following has been done before re-running this install script.
 			<ol>
 				<li>create OpenBiblio database
@@ -37,7 +37,7 @@
 					instructions)</li>
 			</ol>
 			See <a href="../install_instructions.html">Install Instructions</a> for more details.
-			</p>
+			</p-->
 		</section>
 	
 		<section id="versionOK">
@@ -81,7 +81,7 @@
 
 		<section id="startOB">
 			<p>OpenBiblio appears ready for use.</p>
-			<form name="startForm" method="POST" action="../index.php">
+			<form name="startForm" >
 				<input id="startBtn" type="submit" value="<?php echo T("Start OpenBiblio now"); ?>">
 			</form>
 		</section>
