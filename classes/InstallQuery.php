@@ -230,7 +230,7 @@ class InstallQuery extends Queryi {
         }
       }
       fclose($fp);
-			//$echo "file $filename completed OK <br />\n";
+			//echo "file $filename completed OK <br />\n";
     }
   } //executeSqlFile
 }
