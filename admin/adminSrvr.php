@@ -472,6 +472,10 @@ ini_set('display_errors', 1);
             else
                 echo json_encode($rslt);
 			break;
+		case 'fetchStartPage':
+			$staff = $_POST('user');
+			echo json_encode($staff);
+			break;
 		case 'd-3-L-3-t_staff':
 			echo $ptr->deleteOne($_POST['userid']);
 			break;

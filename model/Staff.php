@@ -33,10 +33,12 @@ class Staff extends CoreTable {
 		$this->setSequenceField('userid');
 	}
 
-	public function getStartPage(1) {
-		$response = getOne();
-		$page = $response->fetchColumn
-		return $response;
+	public function getStartPage($id) {
+		$rslt = $this->getOne($id);
+ 		//echo "in Staff::getStartPage(): rslt=";print_r($rslt);echo "<br /> \n";
+		$userData = $rslt->fetch();
+ 		//echo "in Staff::getStartPage(): userData";print_r($userData);echo "<br /> \n";
+		return $userData['start_page'];
 	}
 
 	protected function validate_el($rec, $insert) {

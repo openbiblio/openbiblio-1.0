@@ -18,6 +18,8 @@ ins = {
 
 		ins.resetForms()
 		ins.connectDb();
+        // for debugging purposes only; enable line below, disable line above
+		//ins.startOB(); 
 	},
 	
 	//------------------------------
@@ -166,11 +168,13 @@ ins = {
 
 	//-------------------------------
 	startOB: function() {
+		$('#startOB').show();
 		$('#plsWait').show();
 		$.post(ins.url, {'mode':'getStartPage', 'user':1}, function (response) {
-console.log('switching control to'+response);
-		}
-        window.location = "../response";
+console.log('switching control to '+response);
+		$('#plsWait').hide();
+        window.location = "../"+response+"/settingsForm.php";
+		});
 	},
 			
 };

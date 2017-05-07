@@ -13,13 +13,15 @@
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
 	require_once(REL(__FILE__, "../model/Staff.php"));
 
+ini_set('display_errors', 1);
 	$installQ = new InstallQuery();
+
 	switch ($_REQUEST['mode']) {
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-'
+  		#-.-.-.-.-.-.-.-.-.-.-.-.-'
 	    case 'connectDBServer':
-				$msg = $installQ->getDbServerVersion();
-				print_r($msg);
-				break;
+			$msg = $installQ->getDbServerVersion();
+			print_r($msg);
+			break;
 
 	    case 'createNewDB':
 		    $msg = $installQ->createDatabase();
@@ -36,7 +38,6 @@
 			break;
 			
 		case 'getDbVersion':
-ini_set('display_errors', 1);
 			$version = $installQ->getCurrentDatabaseVersion();
 			if (!$version || empty($version)) {
 				echo T("noDB");
@@ -53,9 +54,10 @@ ini_set('display_errors', 1);
 			break;
 
 		case 'getStartPage':
-			$staffPtr = newStaff();
+			$staffPtr = new Staff();
 			$startPage = $staffPtr->getOne($_POST['user']);
-			return $startPage;
+			//echo "in installSrvr ";print_r($startPage);echo "<br />\n";
+			echo $startPage['start_page'];
 			break;
 			
 		case 'doFullInstall':
@@ -73,8 +75,8 @@ ini_set('display_errors', 1);
 			}
 			break;
 			
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+  		#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  	echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
 			break;
 	}

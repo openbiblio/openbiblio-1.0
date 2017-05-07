@@ -20,7 +20,7 @@ class InstallQuery extends Queryi {
 
 	public function getDbServerVersion () {
 		$sql = $this->mkSQL("SELECT VERSION()");
-    $rslt = parent::select1($sql);
+    	$rslt = parent::select1($sql);
 		return $rslt['VERSION()'];
 	}
 
@@ -37,9 +37,10 @@ class InstallQuery extends Queryi {
          . "TABLE_NAME = `settings`";
         //echo "sql={$sql}<br/>\n";
         $rows = $this->select01($sql);
-    } catch (PDOException $e){ }
+    } catch (PDOException $e){
+	}
     if (!$rows || empty($rows) || !isset($rows)) {
-      return 'NothingFound';
+      	return 'NothingFound';
     }
 
     // since we have a table, fetch the contents
