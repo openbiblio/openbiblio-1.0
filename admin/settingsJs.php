@@ -20,7 +20,7 @@ var set = {
 		set.listSrvr = '../shared/listSrvr.php'
 
 		set.initWidgets();
-    $('#charset').val(set.charSet);
+    	$('#charset').val(set.charSet);
 
 		list.getDayList($('#first_day_of_week'));
 		$('#editSettingsForm').on('submit',null,set.doUpdate);
@@ -108,7 +108,7 @@ var set = {
 				if (fields[n].type == 'bool') fields[n].type = 'checkbox';
 
 				var $id = $('#'+fields[n].name);
-                $id.attr('type',fields[n].type).prev().html(fields[n].title+':');
+                //$id.attr('type',fields[n].type).prev().html(fields[n].title+':');
 				/*
                 switch (fields[n].type) {
 					case 'select':

@@ -26,6 +26,7 @@
 				<li><a href="#photoPage"><?php echo T("CoverPhotos"); ?></a></li>
 			</ul>
 
+			<!-- Note titles/Labels in this form are 'placeholders only', actual labels will be downloaded from the database -->
 			<form name="editSettingsForm" id="editSettingsForm">
 				<div id="localePage" class="block active">
 					<label for="locale"><?php echo T("Available languages"); ?></label>
@@ -34,8 +35,8 @@
 					<label for="charset"><?php echo T("Character Set"); ?></label>
 					<input type="text" id="charset" name="charset" >
 					<br />
-            <label for="first_day_of_week"><?php echo T("First day of week"); ?></label>
-            <select id="first_day_of_week" name="first_day_of_week" ></select>
+		            <label for="first_day_of_week"><?php echo T("First day of week"); ?></label>
+		            <select id="first_day_of_week" name="first_day_of_week" ></select>
 					<br />
 					<!--label for="themeid"><?php echo T("Theme id"); ?></label>
 					<select id="themeid" name="themeid"></select>
@@ -89,19 +90,19 @@
                     <label for="use_image_flg"><?php echo T("Use Image"); ?></label>
                     <input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />
-					<label for="items_per_page"><?php echo T("Items per page"); ?></label>
+					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" />
 					<br />
-					<label for="item_columns"><?php echo T("Item Columns"); ?></label>
+					<label for="item_columns"><?php echo T("Photo Columns"); ?></label>
 					<input type="number" id="item_columns" name="item_columns" maxlength="17" value="5"  />
 					<br />
-					<label for="thumbnail_width"><?php echo T("Thumbnail width"); ?></label>
+					<label for="thumbnail_width"><?php echo T("Photo Width"); ?></label>
 					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19" value="100" />(mm)
 					<br />
-					<label for="thumbnail_height"><?php echo T("Thumbnail height"); ?></label>
+					<label for="thumbnail_height"><?php echo T("Photo Height"); ?></label>
 					<input type="number" id="thumbnail_height" name="thumbnail_height" maxlength="19" value="120" />(mm)
 					<br />
-					<label for="thumbnail_rotation"><?php echo T("Thumbnail rotation"); ?></label>
+					<label for="thumbnail_rotation"><?php echo T("Photo Rotation"); ?></label>
 					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19" value="0" />(deg)
 				</div>
 				<hr>

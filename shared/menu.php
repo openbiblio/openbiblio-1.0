@@ -91,12 +91,12 @@ function staff_menu() {
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
-		Nav::node('admin/openHours', T("Open hours"), '../admin/hoursForm.php');
+		Nav::node('admin/openHours', T("Hours open"), '../admin/hoursForm.php');
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
 		Nav::node('admin/opac', T("View Opac"), '../catalog/srchForms.php?tab=OPAC');
-		Nav::node('admin/dbChkr', T("Database Checker"), '../admin/dbChkrForms.php');
+		Nav::node('admin/dbChkr', T("Database checker"), '../admin/dbChkrForms.php');
 	}
 	
 	##-------------------------------------------------------------------------------------##
