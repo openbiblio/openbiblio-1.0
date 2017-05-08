@@ -448,16 +448,17 @@ ini_set('display_errors', 1);
 			if ($_POST['mode'] == 'addNew_staff') {
 				//echo $ptr->insert_el($_POST);
 				$rslt = $ptr->insert_el($_POST);
+            	list($id, $response) = $rslt;
+            	if ($id == NULL)
+                	echo json_encode($response);
+            	else
+                	echo json_encode($rslt);
 			} else {
-				$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen
+				//$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen
 				//echo $ptr->update($_POST);
-				$rslt =  $ptr->update($_POST);
-			}
-            list($id, $response) = $rslt;
-            if ($id == NULL)
-                echo json_encode($response);
-            else
+				$rslt =  $ptr->update($_POST); // will call $Staff::validate()
                 echo json_encode($rslt);
+			}
 			break;
 		case 'fetchStartPage':
 			$staff = $_POST('user');

@@ -181,10 +181,12 @@ abstract class DBTable extends Queryi {
 			//Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
             //echo "Error: $this->name; ";print_r($errors);echo "<br />\n";
             return $errors;
+		} else {
+        	return T("Success");
 		}
-        return T("Success");
 	}
 	public function update_el($rec, $confirmed=false) {
+		//echo "in DBTable::update_el()";
 		$key = array();
 		foreach ($this->key as $k) {
 			if (!isset($rec[$k]))
@@ -205,12 +207,19 @@ abstract class DBTable extends Queryi {
 			$this->unlock();
 			return $errs;
 		}
-		$sql = $this->mkSQL('UPDATE %I ', $this->name)
-			. ' SET '.$this->_pairs($rec)
-			. ' WHERE '.$this->_keyTerms($key);
-		$this->act($sql);
-		$this->unlock();
-		return array();
+		if (!$errs) {
+			$sql = $this->mkSQL('UPDATE %I ', $this->name)
+				. ' SET '.$this->_pairs($rec)
+				. ' WHERE '.$this->_keyTerms($key);
+			$errs = $this->act($sql);
+			$this->unlock();
+		}
+		if ($errs) {
+			return $errs;
+			//return array();
+		} else {
+        	return T("Success");
+		}
 	}
 	public function deleteOne() {
 		$this->lock();

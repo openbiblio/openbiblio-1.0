@@ -264,10 +264,11 @@ class Admin {
     	if ($('#newImageFile').length) {
     		parms.push($('#newImageFile').serializeArray());
 		}
-    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this));
+    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this), 'json');
     	return false;
     };
     updateHandler (response) {
+console.log(response);
     	this.showResponse(response);
     };
 	
