@@ -78,14 +78,14 @@
     	<li id="pwdFldSet">
     		<fieldset>
     			<ul>
-        			<li>
-       			        <label for="pwd1"><?php echo T("Password"); ?>:</label>
-       			        <input type="password" id="pwd1" name="pwd" size="20" required aria-required="true" />
+      			    <li>
+      			        <label for="xpwd1"><?php echo T("Password"); ?>:</label>
+      			        <input type="password" id="xpwd1" name="pwd" size="20" required aria-required="true" />
     						<span class="reqd">*</span>
     				</li>
       			    <li>
       			        <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
-      			        <input type="password" id="pwd2" name="pwd2" size="20" required aria-required="true" />
+      			        <input type="password" id="xpwd2" name="pwd2" size="20" required aria-required="true" />
     						<span class="reqd">*</span>
     				</li>
     			</ul>
@@ -97,7 +97,6 @@
     	</li>
       	<li>
 			<label for="start_page"><?php echo T("Start Page"); ?>:</label>
-			<!--input id="start_page" name="start_page" type="text" value="" /-->
 			<select id="start_page" name="start_page" >
 				<option value="admin">Admin</option>
 				<option value="cataloging">Cataloging</option>
@@ -174,10 +173,8 @@
 <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+  	require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	//require_once(REL(__FILE__, "staffJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
 	require_once(REL(__FILE__, "../admin/staffJs6.php"));
 ?>

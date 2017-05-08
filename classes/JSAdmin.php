@@ -45,6 +45,8 @@ class Admin {
     	//$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
     	$('#cnclBtn').on('click',null,$.proxy(this.doBackToList,this));
 
+		$('input:visible:first').focus();   // set focus to first input element of each form on page
+
     	this.fetchList();
     	this.resetForms()
     };
@@ -130,7 +132,7 @@ class Admin {
     };
        
     doEditFields (e) {
-//console.log('in doEditfields()');
+		//console.log('in doEditfields()');
         var code = $(e.target).next().val(),
     	    ident = this.keyFld,
     		n;
@@ -146,17 +148,17 @@ class Admin {
     };
 	
     showFields (item) {
-//console.log('process '+item+' in showFields()');
+		//console.log('process '+item+' in showFields()');
         $('#fieldsHdr').html(this.editHdr);
         $('#addBtn').hide();
         $('#updtBtn').show();
         $('#deltBtn').show();
 
-    	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
+    	$('#editTbl').find('input:not(:button):not(:submit):not(:password), textarea, select').each(function () {
     		var tagname = $(this).get(0).tagName;
-//console.log(tagname);
+			//console.log(tagname);
     		if (tagname == 'select') {
-//console.log('the id='+this.id+'; the val='+item[this.id]);
+				//console.log('the id='+this.id+'; the val='+item[this.id]);
     			$(this).val([item[this.id]]);
     		}
     		else if ($(this).is('[type=checkbox]')) {
@@ -180,7 +182,6 @@ class Admin {
     	for (var n in this.noshows){
     		$('#'+this.noshows[n]).attr('required',false).hide();
     	};
-        $('#editForm input:visible:first').focus();
     	$('#codeReqd').hide();
     	$('#listDiv').hide();
     	$('#editDiv').show();
@@ -205,14 +206,14 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-        //console.log('in JSAdmin::doSubmitFields()');
+console.log('in JSAdmin::doSubmitFields()');
     	e.preventDefault();
     	e.stopPropagation();
     	var theId = e.target.id;
     	switch (theId) {
-    		case 'addBtn':	this.doAddBtn();	  break;
-    		case 'updtBtn':	this.doUpdtBtn();  break;
-    		case 'deltBtn':	this.doDeltBtn();  break;
+    		case 'addBtn':	this.doAddBtn();	break;
+    		case 'updtBtn':	this.doUpdtBtn();  	break;
+    		case 'deltBtn':	this.doDeltBtn();  	break;
     		default: $('#msgArea').html("'"+theId+"' is not a valid action button id");
     				 $('#msgDiv').show();
     	}
@@ -249,7 +250,7 @@ console.log('in JSAdmin::doAddFields()');
 		return jQuery.param(params);
     };
     addHandler (response) {
-console.log(response);
+		//console.log(response);
         this.seqNum = response[0];
     	this.showResponse(response[1]);
     };

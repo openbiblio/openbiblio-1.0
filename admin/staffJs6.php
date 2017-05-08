@@ -62,19 +62,19 @@ class Stf extends Admin {
     };
 
     doAddBtn () {
-	    //console.log('in staffJs6::doAddBtn()');
+		//console.log('in staffJs6::doAddBtn()');
 	    //console.log('got "addBtn"');
-			var pw1 = $('#pwd1').val(),
-			pw2 = $('#pwd2').val();
+		let pw1 = $('#xpwd1').val();
+		let pw2 = $('#xpwd2').val();
+console.log("pw1=<"+pw1+">");
+console.log("pw2=<"+pw2+">");
         var pwOk = this.chkPwds(pw1, pw2);
-        //console.log('pwOk = '+pwOk);
         var rolesOk = this.chkRoles();
-        //console.log('rolesOk = '+rolesOk);
+		//console.log('rolesOk = '+rolesOk);
         if (rolesOk && pwOk) {
-            //console.log('passed all validation chks')
             this.doAddFields();
         } else {
-            //console.log('failed a validation chk')
+console.log('failed a validation chk')
             return false;
         }
     };
@@ -92,14 +92,14 @@ class Stf extends Admin {
 
     chkPwds (pw1, pw2) {
 		var errMsg = '';
-        //console.log('in staffJs6::chkPwds()');
-		if ( pw1 !== pw2 ) {
+		if ( pw1 != pw2 ) {
 			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
 		} else if (!pw1 || !pw2) {
 			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
 		}
 		if (errMsg != '') {
             console.log(errMsg);
+			alert(errMsg);
 			$('#msgArea').html(errMsg).show();
 			$('#msgDiv').show();
 			return false;
