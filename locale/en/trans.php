@@ -913,6 +913,7 @@ $trans["Statistical Reports"] = "Statistical Reports";
 $trans["Status Dt"] = "Status Dt";
 $trans["Status"] = "Status";
 $trans["Start OpenBiblio now"] = "Start OpenBiblio now";
+$trans["Start Page"] = "Start Page";
 $trans["Start Using OpenBiblio"] = "Start Using OpenBiblio";
 $trans["StoreAt"] = "Photo will be stored as";
 $trans["Subfield Contains"] = "Subfield contains";
@@ -1043,6 +1044,8 @@ $trans["Your userid has been suspended."] = "Your userid has been suspended.";
 ####### Z #######
 $trans["ZipCode"] = "ZipCode";
 $trans["ZipCodeExt"] = "Zip Code Ext.";
+
+require_once(REL(__FILE__, './customTrans.php'));
 
  ## ##################################
  ## adds suport for plugins - fl, 2009
