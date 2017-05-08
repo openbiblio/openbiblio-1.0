@@ -51,6 +51,17 @@ class Staff extends CoreTable {
 				$errors[] = array('NULL', T("Required field missing").": ".$req);
 			}
 		}
+        $nFlg = 0;
+		foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
+			if (isset($rec[$flg.'_flg']) && ($rec[$flg.'_flg'] == 'Y')) {
+                $nFlg++;
+			} else {
+				$rec[$flg.'_flg'] = 'N';
+			}
+		}
+        if ($nFlg < 1) {
+            $errors[] = array('NULL', T("Role MUST be selected"));
+        }
         // login credentials
 		if (isset($rec['pwd'])) {
 			if (!isset($rec['pwd2']) or ($rec['pwd'] != $rec['pwd2']) ) {

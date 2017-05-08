@@ -431,7 +431,7 @@ ini_set('display_errors', 1);
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
 		case 'getAll_staff':
-		  $staff = array();
+		  	$staff = array();
 			$set = $ptr->getAll('last_name');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -444,19 +444,6 @@ ini_set('display_errors', 1);
 			if (!isset($_POST['suspended_flg'])) {
 				$_POST['suspended_flg'] = 'N';
 			}
-
-            $nYflg = 0;
-			foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
-				if (isset($_POST[$flg.'_flg']) && ($_POST[$flg.'_flg'] == 'Y')) {
-                    $nFlg++;
-				} else {
-					$_POST[$flg.'_flg'] = 'N';
-				}
-			}
-            if ($nFlg < 1) {
-                echo json_encode(array(NULL, T("Role MUST be selected")));
-                return;
-            }
 
 			if ($_POST['mode'] == 'addNew_staff') {
 				//echo $ptr->insert_el($_POST);
