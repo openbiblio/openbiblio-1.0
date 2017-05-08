@@ -79,8 +79,8 @@
 <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+  	require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	require_once(REL(__FILE__, "../admin/biblioCopyFldsJs.php"));
+	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
+	require_once(REL(__FILE__, "../admin/biblioCopyFldsJs6.php"));
 ?>	

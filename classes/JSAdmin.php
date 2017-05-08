@@ -206,7 +206,7 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-console.log('in JSAdmin::doSubmitFields()');
+//console.log('in JSAdmin::doSubmitFields()');
     	e.preventDefault();
     	e.stopPropagation();
     	var theId = e.target.id;
@@ -229,7 +229,7 @@ console.log('in JSAdmin::doSubmitFields()');
     }
 
     doAddFields () {
-console.log('in JSAdmin::doAddFields()');
+//console.log('in JSAdmin::doAddFields()');
     	$('#msgDiv').hide();
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);

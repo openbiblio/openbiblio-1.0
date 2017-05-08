@@ -11,7 +11,7 @@
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
-<h3 id="listHdr"><?php echo T("Open hours"); ?></h3>
+<h3 id="listHdr"><?php echo T("Hours open"); ?></h3>
 
 <div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
@@ -28,10 +28,10 @@
 			<th><?php echo T("Opening"); ?></th>
 			<th><?php echo T("Closing"); ?></th>
 			<th><?php echo T("By appointment"); ?></th>
-			<th><?php echo T("Effective start date"); ?></th>
-			<th><?php echo T("Effective end date"); ?></th>
-			<th><?php echo T("Public note"); ?></th>
-			<th><?php echo T("Private note"); ?></th>
+			<th><?php echo T("Start Date - Effective"); ?></th>
+			<th><?php echo T("End Date - Effective"); ?></th>
+			<th><?php echo T("Note - public"); ?></th>
+			<th><?php echo T("Note - private"); ?></th>
 		</tr>
 	</thead>
 	<tbody class="striped">
@@ -74,11 +74,11 @@
       <input id="end_time" name="end_time" type="time" />
     </li>
     <li>
-      <label for="public_note"><?php echo T("Public note"); ?>:</label>
+      <label for="public_note"><?php echo T("Note - public"); ?>:</label>
       <input id="public_note" name="public_note" type="text" size="32" />
     </li>
     <li>
-      <label for="private_note"><?php echo T("Private note"); ?>:</label>
+      <label for="private_note"><?php echo T("Note - private"); ?>:</label>
       <input id="private_note" name="private_note" type="text" size="32" />
     </li>
     <li>

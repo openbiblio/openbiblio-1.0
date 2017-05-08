@@ -7,29 +7,32 @@
 
 class Hour extends Admin {
 	constructor () {
-        list.getSites(); // make simple list, no formatting or placing
-        list.getDays(); // make simple list, no formatting or placing
-    	list.getSiteList($('#siteid'));  // place options for pull-down select
-    	list.getDayList($('#day'));  // place for pull-down select
+        list.getSites(); 					// make simple list, no formatting or placing
+        list.getDays(); 					// make simple list, no formatting or placing
+    	list.getSiteList($('#siteid'));  	// place options for pull-down select
+    	list.getDayList($('#day'));  		// place for pull-down select
 
 		var url = '../admin/adminSrvr.php',
 			form = $('#editForm'),
 			dbAlias = 'hours';
-		var hdrs = {'listHdr':<?php echo '"'.T("List of Hours").'"'; ?>,
-		             'editHdr':<?php echo '"'.T("Edit Hours").'"'; ?>,
-			         'newHdr':<?php echo '"'.T("Add New Hours").'"'; ?>,
-		};
-		var listFlds = {'siteid': 'text',
-			'day': 'text',
-			'start_time':'text',
-			'end_time':'text',
-			'by_appointment':'text',
-			'effective_start_date':'text',
-			'effective_end_date':'text',
-			'public_note':'text',
-			'private_note':'text',
-	    };
-	    var opts = { 'focusFld':'day', 'keyFld':'hourid' };
+		var hdrs = { 'listHdr':		<?php echo '"'.T("Hours - AddNew").'"'; ?>,
+		             'editHdr':		<?php echo '"'.T("Hours - Edit").'"'; ?>,
+			         'newHdr':		<?php echo '"'.T("Hours - AddNew").'"'; ?>
+					};
+		var listFlds = {'siteid':				'text',
+						'day': 					'text',
+						'start_time':			'text',
+						'end_time':				'text',
+						'by_appointment':		'text',
+						'effective_start_date':	'text',
+						'effective_end_date':	'text',
+						'public_note':			'text',
+						'private_note':			'text'
+	    				};
+
+	    var opts = { 'focusFld':'day',
+					 'keyFld':'hourid'
+					};
 
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
 
@@ -39,7 +42,7 @@ class Hour extends Admin {
 	doNewFields (e) {
     	super.doNewFields.apply(this);
 		$('#editDiv').show();
-	}
+	};
 
 	doGatherParams () {
 		var params = $('#editForm').serializeArray();
@@ -51,9 +54,9 @@ class Hour extends Admin {
 			}
 		}
 		return params;
-	}
+	};
 
-    fetchHandler (dataAray){    // adds functionality to base class Admin
+    fetchHandler (dataAray) {    // adds functionality to base class Admin
         super.fetchHandler(dataAray);
         $('#showList tbody tr').each(function() {
             var where = $(this).find("td").eq(1);
