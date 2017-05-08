@@ -62,7 +62,7 @@ class Stf extends Admin {
     };
 
     doAddBtn () {
-		//console.log('in staffJs6::doAddBtn()');
+console.log('in staffJs6::doAddBtn()');
 	    //console.log('got "addBtn"');
 		let pw1 = $('#xpwd1').val();
 		let pw2 = $('#xpwd2').val();

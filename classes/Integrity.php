@@ -72,17 +72,6 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
-				'error' => T("Secret key column is missing for staff members"),
-				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
-					. 'FROM information_schema.COLUMNS '
-					. 'WHERE TABLE_NAME = "staff"'
-					. 'AND COLUMN_NAME = "secret_key"',
-				'fixSql' => 'alter table staff '
-					. 'add column secret_key char(32) NOT NULL'
-			);
-
-
-			$this->checks[] = array(
 				'error' => T("Member Fields DM Table should allow null values for default_flg field"),
 				'countSql' => 'SELECT COUNT(COLUMN_NAME) '
 					. 'FROM information_schema.COLUMNS '
@@ -91,6 +80,15 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
+				'error' => T("Secret key column is missing for staff members"),
+				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+					. 'FROM information_schema.COLUMNS '
+					. 'WHERE TABLE_NAME = "staff"'
+					. 'AND COLUMN_NAME = "secret_key"',
+				'fixSql' => 'alter table staff '
+					. 'add column secret_key char(32) NOT NULL'
+			);
+			$this->checks[] = array(
 				'error' => T("Staff member does not have secret key"),
 				'countSql' => 'select ( select count(*) as count from staff as s '
 					. 'where secret_key="") as count '
@@ -98,6 +96,22 @@ class Integrity extends Queryi{
 				'fixSql' => 'update staff '
 					. 'set secret_key ="' . md5(time()) .'" '
 					. 'where secret_key="" ',
+			);
+
+			$this->checks[] = array(
+				'error' => T("Start_Page column is missing for staff members"),
+				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+					. 'FROM information_schema.COLUMNS '
+					. 'WHERE TABLE_NAME = "staff"'
+					. 'AND COLUMN_NAME = "start_page"',
+				'fixSql' => 'alter table staff '
+					. 'add column start_page varchar(64) default "admin" NOT NULL'
+			);
+			$this->checks[] = array(
+				'error' => T("Staff member does not have secret key"),
+				'countSql' => 'select ( select count(*) as count from staff as s '
+					. 'where start_page="") as count '
+					. 'from (select 1 as start_page) as dummy;'
 			);
 
 			$this->checks[] = array(
