@@ -91,19 +91,19 @@
                     <input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />
 					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
-					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" />
+					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" required aria-required />
 					<br />
 					<label for="item_columns"><?php echo T("Photo Columns"); ?></label>
-					<input type="number" id="item_columns" name="item_columns" maxlength="17" value="5"  />
+					<input type="number" id="item_columns" name="item_columns" maxlength="17" value="5" required aria-required  />
 					<br />
 					<label for="thumbnail_width"><?php echo T("Photo Width"); ?></label>
-					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19" value="100" />(mm)
+					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19" value="100" required aria-required />(mm)
 					<br />
 					<label for="thumbnail_height"><?php echo T("Photo Height"); ?></label>
-					<input type="number" id="thumbnail_height" name="thumbnail_height" maxlength="19" value="120" />(mm)
+					<input type="number" id="thumbnail_height" name="thumbnail_height" maxlength="19" value="120" required aria-required />(mm)
 					<br />
 					<label for="thumbnail_rotation"><?php echo T("Photo Rotation"); ?></label>
-					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19" value="0" />(deg)
+					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19" value="0" required aria-required />(deg)
 				</div>
 				<hr>
 				<input type="hidden" id="cat" name="cat" value="settings" />

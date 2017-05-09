@@ -139,18 +139,11 @@ var set = {
         if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
         if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
 
-        //--- suggest to prevent someone could update as null these fields and cause list of srchForms disappear --CelsoC--
-        if ($('#items_per_page').val(null)) params += "&items_per_page=25";
-        if ($('#thumbnail_width').val(null)) params += "&thumbnail_width=100";
-        if ($('#thumbnail_height').val(null)) params += "&thumbnail_height=120";
-        if ($('#thumbnail_rotation').val(null)) params += "&thumbnail_rotation=0";
-        //-------------
-
 		$.post(set.url, params, function (response) {
-			//if (response === null)
+			if (response === null)
 				$('#updateMsg').html(set.successMsg).show();
-			//else
-			//	$('#updateMsg').html(response);
+			else
+				$('#updateMsg').html('Update failed');
 		});
 	},
 
