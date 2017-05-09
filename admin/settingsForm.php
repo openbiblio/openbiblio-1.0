@@ -88,7 +88,7 @@
 				</div>
 				<div id="photoPage" class="block">
                     <label for="use_image_flg"><?php echo T("Use Image"); ?></label>
-                    <input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
+                    <input type="checkbox" id="use_image_flg" name="use_image_flg" checked value="Y" />
 					<br />
 					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" required aria-required />
@@ -104,12 +104,19 @@
 					<br />
 					<label for="thumbnail_rotation"><?php echo T("Photo Rotation"); ?></label>
 					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19" value="0" required aria-required />(deg)
+					<br />
+					<input type="button" id="fotoTestBtn" value="Test" />
+					<input type="button" id="fotoDoneBtn" value="Done" />
 				</div>
 				<hr>
 				<input type="hidden" id="cat" name="cat" value="settings" />
 				<input type="hidden" id="mode" name="mode" />
-				<input type="submit" value="Update" />
+				<input type="submit" id="updtBtn" value="Update" />
 			</form>
+			<br />
+			<div id="photoEditorDiv">
+				<?php require_once(REL(__FILE__,"../catalog/photoEditorForm.php"));?>
+			</div>
 		</fieldset>
 	</div>
 </div>

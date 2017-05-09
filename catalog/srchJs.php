@@ -120,10 +120,10 @@ var bs = {
 		});
 			
 		bs.resetForms();
-		bs.fetchOpts(); // also inits itemDisplayJs
+		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		// prepare pull-down lists
-		bs.fetchSiteList();
+		bs.fetchSiteList(); // also inits itemDisplayJs
         bs.fetchStatusCdsList($('#status_cd'));
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
@@ -238,10 +238,10 @@ var bs = {
 	fetchOpts: function () {
 		bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';
 		bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
-    bs.opts['current_site'] = '<?php echo Settings::get('library_name');?>';
+    	bs.opts['current_site'] = '<?php echo Settings::get('library_name');?>';
 	},
 	fetchCrntMbrInfo: function () {
-	  $.post(bs.url,{mode:'getCrntMbrInfo'}, function(data){
+	  	$.post(bs.url,{mode:'getCrntMbrInfo'}, function(data){
 			$('#crntMbrDiv').empty().html(data).show();
 		}, 'json');
 	},

@@ -26,7 +26,7 @@
 
 				<fieldset class="inline">
 			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_width');?>"
-					 											 height="<?php echo Settings::get('thumbnail_height');?>">
+					 					   height="<?php echo Settings::get('thumbnail_height');?>">
 					</canvas>
 				</fieldset>
 				<fieldset class="inline">

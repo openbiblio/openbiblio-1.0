@@ -24,6 +24,8 @@ var set = {
 
 		list.getDayList($('#first_day_of_week'));
 		$('#editSettingsForm').on('submit',null,set.doUpdate);
+		$('#fotoTestBtn').on('click',null,set.doFotoTest);
+		$('#fotoDoneBtn').on('click',null,set.doTestDone);
 
 		set.resetForms()
 		set.setLocaleList();
@@ -49,7 +51,21 @@ var set = {
 		$('#updateMsg').hide();
 		$('#msgDiv').hide();
 		$('#editDiv').show();
+		$('#photoEditorDiv').hide();
 		$('#site_cd').focus();
+		$('#updtBtn').show();
+
+		set.prepareFotoTest();
+	},
+	prepareFotoTest: function () {
+		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
+			if (wc.video === undefined) wc.init();
+			$('#fotoTestBtn').show();
+			$('#fotoDoneBtn').hide();
+			$('#fotoHdr').hide();
+			$('#reqdNote').hide();
+			$('#fotoInfo').hide();
+		}
 	},
 
 	setLocaleList: function () {
@@ -127,6 +143,26 @@ var set = {
 				}
 			}
 		}, 'json');
+	},
+
+	//------------------------------
+	doFotoTest: function (e) {
+console.log('test btn pressed');
+		$('#fotoTestBtn').hide();
+		$('#fotoDoneBtn').show();
+		$('#updtBtn').hide();
+		$('#photoEditorDiv').show();
+		// use screen values for test
+		wc.fotoWidth = $('#thumbnail_width').val();
+		wc.fotoHeight = $('#thumbnail_height').val();
+		wc.fotoRotate = $('#thumbnail_rotation').val();
+	},
+	doTestDone: function (e) {
+console.log('done btn pressed');
+		$('#photoEditorDiv').hide();
+		$('#fotoTestBtn').show();
+		$('#fotoDoneBtn').hide();
+		$('#updtBtn').show();
 	},
 
 	//------------------------------

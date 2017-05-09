@@ -955,6 +955,7 @@ $trans["Tag"] = "Tag";
 $trans["Take Photograph"] = "Take Photograph";
 $trans["TestingConnectionToDBServer"] = "Testing Connection to DB server";
 $trans["TestingDatabaseConnection"] = "Testing Database connection";
+$trans["Test"] = "Test";
 $trans["Test Load"] = "Test Load";
 $trans["Theme Dir URL"] = "Theme Dir URL";
 $trans["Theme Name"] = "Theme Name";
