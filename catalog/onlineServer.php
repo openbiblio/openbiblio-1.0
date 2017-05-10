@@ -89,6 +89,8 @@
 	$postVars['hosts'] = $hosts;
 	$postVars['numHosts'] = count($hosts);
 	$postVars['session'] = $_SESSION;
+//echo "in onlineServer, above switch() <br />\n";
+//print_r($postVars);echo "<br />\n";
 
     ## main body of code
     switch ($_POST['mode']){
@@ -107,12 +109,12 @@
     	case 'getHosts':
     		echo json_encode($postVars['hosts']);
     		break;
-
+/*
         #-.-.-.-.-.-.-.-.-.-.-.-.-
     	case 'getOpts':
     		echo json_encode($postVars);
     		break;
-
+*/
         #-.-.-.-.-.-.-.-.-.-.-.-.-
     	case 'getCutter':
     		if ($postVars['cutterType'] == 'LoC') {

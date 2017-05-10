@@ -16,6 +16,7 @@ var ni = {
 
 	init: function () {
 		// get header stuff going first
+console.log("in newItemJs, ni.init():");
 		ni.initWidgets();
 
 		ni.url = '../catalog/onlineServer.php';
@@ -91,12 +92,12 @@ var ni = {
 		$('#100a').on('change',null,ni.fixAuthor);
 		$('#245a').on('change',null,ni.fixTitle);
 
+console.log('calling fetchOpts()');
 		ni.fetchOpts(); // starts chain to call the following
 		//ni.fetchSiteList(); // for new copy use
 		//ni.fetchMaterialList(); // for new items
 		//ni.fetchCollectionList(); // for new items
-
-		ni.fetchHosts(); // for searches
+		//ni.fetchHosts(); // for searches
 	},
 	
 	//------------------------------
@@ -147,19 +148,21 @@ var ni = {
 	},
 	//------------------------------
 	fetchOpts: function () {
-        //console.log('fetching Opts');
-        $.post(ni.url,{mode:'getOpts'}, function(data){
-			ni.opts = data.opts[0];
+console.log('fetching Opts');
+        $.post(ni.listSrvr,{mode:'getOpts'}, function(data){
+			ni.opts = data;
 			ni.fetchDfltMedia(); // chaining
 		}, 'json');
   	},
     fetchDfltMedia: function() {
+console.log('fetching dfltMedia');
         $.post(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
-            ni.dfltMedia = data[0];
+            ni.dfltMedia = data;
 			ni.fetchMaterialList(); // chaining
         }, 'json');
     },
 	fetchMaterialList: function () {
+console.log('fetching matlList');
         $.post(ni.listSrvr,{mode:'getMediaList'}, function(data){
 			var html = '';
             for (var n in data) {
@@ -178,12 +181,14 @@ var ni = {
 		}, 'json');
 	},
     fetchDfltCollection: function() {
+console.log('fetching dfltColl');
         $.post(ni.listSrvr,{mode:'getDefaultCollection'}, function(data){
-            ni.dfltColl = data[0];
+            ni.dfltColl = data;
 			ni.fetchCollectionList(); // chaining
         }, 'json');
     },
 	fetchCollectionList: function () {
+console.log('fetching collList');
 	    $.post(ni.listSrvr,{mode:'getCollectionList'}, function(data){
 			var html = '';
             for (var n in data) {
@@ -198,12 +203,14 @@ var ni = {
 		}, 'json');
 	},
 	fetchSiteList: function () {
+console.log('fetching siteList');
         var listHtml = list.getSiteList($('#copySite'));
 		$('#copySite').html(listHtml);
+		ni.fetchHosts(); // chaining
 	},
 
 	fetchHosts: function () {
-        //console.log('svr:'+ni.url);
+console.log('fetching hostList');
 	    $.post(ni.url,{mode:'getHosts'}, function(data){
 	  	// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;

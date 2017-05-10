@@ -66,8 +66,9 @@ var ced = {
 	},
 	//----//
 	fetchSiteList: function () {
-        var siteList = list.getSiteList($('#copySite'));
-		$('#copySite').html(siteList);
+//        var siteList = list.getSiteList($('#copySite'));
+//		$('#copySite').html(siteList);
+        list.getSiteList($('#copySite'));
 	},
 	//----//
 	chkBarcdForDupe: function () {

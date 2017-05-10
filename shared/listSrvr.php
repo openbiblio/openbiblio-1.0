@@ -176,7 +176,7 @@
 		echo json_encode($rslt);
 */
         $siteId = Settings::get('library_name');
-        //echo "in listSrvr, getDefaultSite = $siteId <br />\n";
+		//echo "in listSrvr, getDefaultSite = $siteId <br />\n";
         echo $siteId;
         break;
 

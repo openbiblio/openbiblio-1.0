@@ -215,6 +215,6 @@ th.colHead { white-space: nowrap; }
 	//require_once(REL(__FILE__, "../catalog/itemEditorJs.php"));
 
 	require_once(REL(__FILE__, "../catalog/newItemJs.php"));
-?>	
+?>
 </body>
 </html>
