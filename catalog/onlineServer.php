@@ -109,12 +109,12 @@
     	case 'getHosts':
     		echo json_encode($postVars['hosts']);
     		break;
-/*
+
         #-.-.-.-.-.-.-.-.-.-.-.-.-
     	case 'getOpts':
     		echo json_encode($postVars);
     		break;
-*/
+
         #-.-.-.-.-.-.-.-.-.-.-.-.-
     	case 'getCutter':
     		if ($postVars['cutterType'] == 'LoC') {

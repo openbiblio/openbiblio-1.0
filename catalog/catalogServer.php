@@ -105,8 +105,8 @@
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
 				## create a Biblio object for each item in range and add content to $srchRslt
-		  	$bib = new Biblio($bibid);
-		  	$srchRslt[] = json_encode($bib->getData());
+		  		$bib = new Biblio($bibid);
+		  		$srchRslt[] = json_encode($bib->getData());
 				unset($bib); ## object no longer needed, destroy it
 			}
 			echo json_encode($srchRslt);

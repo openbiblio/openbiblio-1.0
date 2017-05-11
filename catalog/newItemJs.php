@@ -148,21 +148,27 @@ console.log('calling fetchOpts()');
 	},
 	//------------------------------
 	fetchOpts: function () {
-console.log('fetching Opts');
-        $.post(ni.listSrvr,{mode:'getOpts'}, function(data){
-			ni.opts = data;
+		// Do not try to get from ListSrvr;
+		// that will provide a small subset of what is needed here.
+		//console.log('fetching Opts');
+        $.post(ni.url,{mode:'getOpts'}, function(data){
+			ni.postVars = data;
+			ni.opts = ni.postVars['opts'][0];
+			ni.numHosts = ni.postVars['numHosts'];
+			ni.hosts = ni.postVars['hosts'];
+			ni.session = ni.postVars['session'];
 			ni.fetchDfltMedia(); // chaining
 		}, 'json');
   	},
     fetchDfltMedia: function() {
-console.log('fetching dfltMedia');
+		//console.log('fetching dfltMedia');
         $.post(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
             ni.dfltMedia = data;
 			ni.fetchMaterialList(); // chaining
         }, 'json');
     },
 	fetchMaterialList: function () {
-console.log('fetching matlList');
+		//console.log('fetching matlList');
         $.post(ni.listSrvr,{mode:'getMediaList'}, function(data){
 			var html = '';
             for (var n in data) {
@@ -181,14 +187,14 @@ console.log('fetching matlList');
 		}, 'json');
 	},
     fetchDfltCollection: function() {
-console.log('fetching dfltColl');
+		//console.log('fetching dfltColl');
         $.post(ni.listSrvr,{mode:'getDefaultCollection'}, function(data){
             ni.dfltColl = data;
 			ni.fetchCollectionList(); // chaining
         }, 'json');
     },
 	fetchCollectionList: function () {
-console.log('fetching collList');
+		//console.log('fetching collList');
 	    $.post(ni.listSrvr,{mode:'getCollectionList'}, function(data){
 			var html = '';
             for (var n in data) {
@@ -203,16 +209,16 @@ console.log('fetching collList');
 		}, 'json');
 	},
 	fetchSiteList: function () {
-console.log('fetching siteList');
+		//console.log('fetching siteList');
         var listHtml = list.getSiteList($('#copySite'));
 		$('#copySite').html(listHtml);
 		ni.fetchHosts(); // chaining
 	},
 
 	fetchHosts: function () {
-console.log('fetching hostList');
+		//console.log('fetching hostList');
 	    $.post(ni.url,{mode:'getHosts'}, function(data){
-	  	// return includes all ACTIVE marked hosts
+	  		// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;
 			ni.nHosts = data.length;
 			if (ni.nHosts > 1) {
@@ -260,7 +266,7 @@ console.log('fetching hostList');
 	// copy-editor support
 	showCopyEditor: function (bibid) {
       	$('#selectionDiv').hide();
-      	var crntsite = ni.opts.session.current_site
+      	var crntsite = ni.postVars.session.current_site
 		$('#copyBibid').val(bibid);
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
@@ -274,8 +280,11 @@ console.log('fetching hostList');
 
 		//e.preventDefault();
 		$('#copyCancelBtn').on('click',null, function () {
-			ni.doPhotoAdd();
+			$('#copyEditorDiv').hide();
+      		$('#selectionDiv').show();
 		});
+
+			ni.doPhotoAdd();
 	},
 
 	//------------------------------------------------------------------------------------------
@@ -598,7 +607,7 @@ console.log('fetching hostList');
 	},
 	
 	setCallNmbr: function (data) {
-		switch (ni.opts.callNmbrType.toLowerCase()) {
+		switch (ni.opts['callNmbrType'].toLowerCase()) {
 			case 'loc':
 				$('#099a').val(data['050a'] + ' ' + data['050b']);
 				break;
