@@ -41,12 +41,14 @@ class Biblio {
 		$this->fetch_marc();
 		$this->fetch_title();
 		$this->fetch_photoData();
-/**/		$this->fetch_copyList();
+/**/
+		$this->fetch_copyList();
 
 		$data = [];
 		$data['hdr'] = $this->hdrFlds;
 		$data['marc'] = $this->marcFlds;
-/**/		$data['cpys'] = $this->cpyList;
+/**/
+		$data['cpys'] = $this->cpyList;
 		return $data;
 	}
 	/**

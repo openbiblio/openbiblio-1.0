@@ -464,6 +464,7 @@ var bs = {
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
+console.log('#'+nBiblio);
 			if (nBiblio == 0) continue;
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			if (!biblio.hdr) {
@@ -516,12 +517,14 @@ var bs = {
 			if (marc) {
 				//// Construct all potential lines for later use.
 				var lines = [],
-						lineNo;
+					lineNo;
 				$.each(marc, function (ndx, fld) {
 					//if (!fld.value) fld.value = 'n/a';
 					if (!fld.value) fld.value = '';
 					lineNo = fld.line;
-					lines[lineNo] = fld.value.trim();
+console.log('consider: ln#'+lineNo+': '+fld.value);
+//					lines[lineNo] = fld.value.trim();
+					lines.push(fld.value.trim());
 				});
 			} else {
 				// skip these
