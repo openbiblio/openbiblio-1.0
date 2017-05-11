@@ -142,6 +142,7 @@ var ced = {
 		return false;
 	},
 	doCopyNew: function (e) {
+console.log('in copyEditorJs.php::doCopyNew()');
         ced.bibid = $('#copyBibid').val(); // set within srchJs::newCopy(); FL Aug 2016
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();

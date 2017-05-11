@@ -464,7 +464,6 @@ var bs = {
 
 		$('#listTbl tbody#srchRslts').html('');
 		for (var nBiblio in biblioList) {
-console.log('#'+nBiblio);
 			if (nBiblio == 0) continue;
 			var biblio = JSON.parse(biblioList[nBiblio]);
 			if (!biblio.hdr) {
@@ -522,7 +521,6 @@ console.log('#'+nBiblio);
 					//if (!fld.value) fld.value = 'n/a';
 					if (!fld.value) fld.value = '';
 					lineNo = fld.line;
-console.log('consider: ln#'+lineNo+': '+fld.value);
 //					lines[lineNo] = fld.value.trim();
 					lines.push(fld.value.trim());
 				});

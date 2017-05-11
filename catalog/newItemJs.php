@@ -16,7 +16,7 @@ var ni = {
 
 	init: function () {
 		// get header stuff going first
-console.log("in newItemJs, ni.init():");
+		//console.log("in newItemJs, ni.init():");
 		ni.initWidgets();
 
 		ni.url = '../catalog/onlineServer.php';
@@ -92,7 +92,6 @@ console.log("in newItemJs, ni.init():");
 		$('#100a').on('change',null,ni.fixAuthor);
 		$('#245a').on('change',null,ni.fixTitle);
 
-console.log('calling fetchOpts()');
 		ni.fetchOpts(); // starts chain to call the following
 		//ni.fetchSiteList(); // for new copy use
 		//ni.fetchMaterialList(); // for new items
@@ -265,6 +264,7 @@ console.log('calling fetchOpts()');
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
 	showCopyEditor: function (bibid) {
+console.log('in newItemJs.php::showCopyEditor()');
       	$('#selectionDiv').hide();
       	var crntsite = ni.postVars.session.current_site
 		$('#copyBibid').val(bibid);
@@ -273,23 +273,27 @@ console.log('calling fetchOpts()');
 		//ced.bibid = bibid;
 		ced.doCopyNew(bibid);
 
-		/* prepare in advance for photo editing */
-		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
-			if (wc.video === undefined) wc.init();
-		}
-
 		//e.preventDefault();
+
+		$('#copySubmitBtn').on('click',null, function () {
+			ni.doPhotoAdd();
+		});
 		$('#copyCancelBtn').on('click',null, function () {
 			$('#copyEditorDiv').hide();
       		$('#selectionDiv').show();
 		});
 
-			ni.doPhotoAdd();
+		/* prepare in advance for photo editing */
+		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
+			if (wc.video === undefined) wc.init();
+		}
+
 	},
 
 	//------------------------------------------------------------------------------------------
 	// photo-editor support
 	doPhotoAdd: function () {
+console.log('in newItemJs.php::doPhotoAdd()');
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
         $('#fotoMsg').hide();
