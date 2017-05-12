@@ -260,7 +260,7 @@ var ni = {
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
 	showCopyEditor: function (bibid) {
-console.log('in newItemJs.php::showCopyEditor()');
+		//console.log('in newItemJs.php::showCopyEditor()');
       	$('#selectionDiv').hide();
       	var crntsite = ni.postVars.session.current_site
 		$('#copyBibid').val(bibid);
@@ -292,7 +292,7 @@ console.log('in newItemJs.php::showCopyEditor()');
 	//------------------------------------------------------------------------------------------
 	// photo-editor support
 	doPhotoAdd: function () {
-console.log('in newItemJs.php::doPhotoAdd()');
+		//console.log('in newItemJs.php::doPhotoAdd()');
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
         $('#fotoMsg').hide();
@@ -318,21 +318,25 @@ console.log('in newItemJs.php::doPhotoAdd()');
 
 	//------------------------------------------------------------------------------------------
 	// on-line search related stuff
-	chkIsbn: function (isbn) {
+	chkIsbn: function (isbnRaw) {
+		//console.log('raw isbn input: '+isbnRaw);
 		// validate isbn string; return TRUE if checksum is valid
-		var nSum = 0;
-		var sSum = '';
-		var nAdr = 0;
-		var rslt = true;
-		var msg = '';
+		var nSum = 0,
+			sSum = '',
+			nAdr = 0,
+			rslt = true,
+			msg = '';
+		let isbn = isbnRaw.replace(/-/, "");    // remove all '-'
+		//console.log('clean isbn input: '+isbn);
+
 		if (isbn.length < 10) {
 			msg = "<br />(length is "+isbn.length+"; Not enough digits for isbn)";
 			rslt = false;
 		}
 		else if (isbn.substr(0,3) == "978") {
-			// this is a bar code reader input
+			//console.log('found a isbn-13 entry');
 			if (isNaN(parseInt(isbn.substr(9,1))) ) {
-				msg = "(Bar-Code ISBN Entry does not start with a digit)";
+				msg = "(ISBN-13 Entry does not start with a digit)";
 				rslt = false;
 			}
 		}
@@ -366,30 +370,32 @@ console.log('in newItemJs.php::doPhotoAdd()');
 		$('#errMsgTxt').html('');
 		var msg = '';
 		var nType = $('#srchBy').val();
-	  var val = $('#lookupVal').val();
-	  var rslt = true;
-	  var test = val.replace(/-| /g, '');
-	  switch (parseInt(nType)) {
-	  case 4: // Text input
-	  	if (!isNaN(parseInt(test))) {
+	  	var val = $('#lookupVal').val();
+	  	var test = val.replace(/-| /g, '');
+        $('#lookupVal').val(test);
+	  	var rslt = true;
+
+	  	switch (parseInt(nType)) {
+	  	case 4: // Text input
+	  		if (!isNaN(parseInt(test))) {
 				rslt = false;
 				msg += "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.<br />";
 			}
 			break;
 		case 7: //ISBN
-	   	if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
+	   		if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
 				msg += "This is not a valid ISBN.<br />";
 			}
 			break;
-		 case 8: // ISSN
-	   	if (isNaN(parseInt(test))) {
+		case 8: // ISSN
+	   		if (isNaN(parseInt(test))) {
 				rslt = false;
 				msg += "This is not a valid ISSN.<br />";
 			}
 			break;
 		case 9: // LCCN
-	   	if (isNaN(parseInt(test))) {
+	   		if (isNaN(parseInt(test))) {
 				rslt = false;
 				msg += "This is not a valid LCCN.<br />";
 			}
