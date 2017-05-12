@@ -142,7 +142,7 @@ var ced = {
 		return false;
 	},
 	doCopyNew: function (e) {
-console.log('in copyEditorJs.php::doCopyNew()');
+		//console.log('in copyEditorJs.php::doCopyNew()');
         ced.bibid = $('#copyBibid').val(); // set within srchJs::newCopy(); FL Aug 2016
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();
@@ -163,8 +163,10 @@ console.log('in copyEditorJs.php::doCopyNew()');
 			e.preventDefault();
 			e.stopPropagation();
 			var params = "&mode=newCopy&bibid="+ced.bibid;
-
 			ced.doPostCopy2DB(params);
+			if (typeof(ni) !== 'undefined') {
+				ni.doPhotoAdd();
+			}
 		});
 	    // prevent submit button from firing a 'submit' action
 		return false;
@@ -181,6 +183,7 @@ console.log('in copyEditorJs.php::doCopyNew()');
 		return false;
 	},
 	doPostCopy2DB: function (params) {
+		//console.log('in copyEditorJs.php::doPostCopy2Db()');
 		var copy = ced.crntCopy,
 			barcdNmbr = $('#copyBarcode_nmbr').val(),
 	  		copyDesc = $('#copyDesc').val(),
@@ -204,9 +207,9 @@ console.log('in copyEditorJs.php::doCopyNew()');
                     idis.fetchCopyInfo(); // refresh copy display
                 }
 
-                // LJ: This is used by search and new items.
+                // LJ: This module is used by search and new items.
                 if(typeof ni !== 'undefined') {
-                    ni.doBackToSrch();
+                    ni.doPhotoAdd();
                 } else {
                     bs.rtnToBiblio();
                 }

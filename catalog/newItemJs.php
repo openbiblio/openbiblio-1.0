@@ -69,12 +69,8 @@ var ni = {
 		$('#copyForm').on('submit',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-			//ni.doCopyNew();
 			ni.doNewCopy(e);
 			return false;
-		});
-		$('#copyCancelBtn').on('click',null,function () {
-			return ni.doBackToSrch();
 		});
 		$('#barcode_nmbr').on('change',null,ni.chkBarcdForDupe);
 			if ($('#autobarco:checked').length > 0) {
@@ -271,17 +267,20 @@ console.log('in newItemJs.php::showCopyEditor()');
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
 		//ced.bibid = bibid;
-		ced.doCopyNew(bibid);
-
-		//e.preventDefault();
 
 		$('#copySubmitBtn').on('click',null, function () {
 			ni.doPhotoAdd();
 		});
-		$('#copyCancelBtn').on('click',null, function () {
-			$('#copyEditorDiv').hide();
-      		$('#selectionDiv').show();
+		//$('#copyCancelBtn').on('click',null, function () {
+		//	$('#copyEditorDiv').hide();
+      	//	$('#selectionDiv').show();
+		//});
+		$('#copyCancelBtn').on('click',null,function () {
+			return ni.doBackToSrch();
 		});
+
+		//e.preventDefault();
+		ced.doCopyNew(bibid);
 
 		/* prepare in advance for photo editing */
 		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {

@@ -200,7 +200,7 @@ var wc = {
 		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
 	},
 	sendFoto: function (e) {
-console.log('sending foto');
+		//console.log('sending foto');
 		if (e) e.stopPropagation();
         $('#errSpace').hide();
 		var imgMode = '',
@@ -221,7 +221,7 @@ console.log('sending foto');
 				function (response) {
 					//var data = JSON.parse(response);
 					var data = response;
-console.log('image posting OK');
+					//console.log('image posting OK');
 					var crntFotoUrl = data[0]['url'];
 					$('#fotoMsg').html('cover photo posted').show();
 					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
