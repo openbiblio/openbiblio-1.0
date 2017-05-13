@@ -372,7 +372,6 @@ var ni = {
 		var nType = $('#srchBy').val();
 	  	var val = $('#lookupVal').val();
 	  	var test = val.replace(/-| /g, '');
-        $('#lookupVal').val(test);
 	  	var rslt = true;
 
 	  	switch (parseInt(nType)) {
@@ -383,6 +382,7 @@ var ni = {
 			}
 			break;
 		case 7: //ISBN
+        	$('#lookupVal').val(test);
 	   		if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
 				msg += "This is not a valid ISBN.<br />";
