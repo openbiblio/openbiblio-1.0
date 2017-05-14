@@ -22,8 +22,9 @@
 			}
 			return $label;
 		}
-		function mkinput($fid, $sfid, $data, $f) {
-			return array('fieldid' => $fid,
+		function mkinput($fid, $sfid, $data, $f, $n) {
+			$ar = array(
+				'fieldid' => $fid,
 				'subfieldid' => $sfid,
 				'data' => $data,
 				'tag' => $f['tag'],
@@ -31,7 +32,12 @@
 				'label' => getlabel($f),
 				'required' => $f['required'],
 				'form_type' => $f['form_type'],
-				'repeat' => $f['repeatable']);
+				'repeat' => $f['repeatable']
+				);
+			if (($f['repeatable']) && ($n > 0)) {
+				$ar['subfield'] .= $n;
+			}
+			return $ar;
 		}
 		function mkFldSet($n, $i, $marcInputFld, $mode) {
 		  if ($mode == 'onlnCol') {
@@ -43,7 +49,7 @@
 				echo "	<td valign=\"top\" > \n";
 				$namePrefix = 'fields['.H($n).']';
 				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
-				echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
+				echo inputfield('hidden', $namePrefix."[subfield_cd]", substr(H($i['subfield']),0,1))." \n";
 				echo inputfield('hidden', $namePrefix."[fieldid]",     H($i['fieldid']),
 												array('id'=>$marcInputFld.'_fieldid'))." \n";
 				echo inputfield('hidden', $namePrefix."[subfieldid]",  H($i['subfieldid']),
@@ -113,7 +119,7 @@
         foreach ($fields as $f) {
 		  #  make multiples of those so flagged
 			for ($n=0; $n<=$f['repeatable']; $n++) {
-				array_push($inputs, mkinput(NULL, NULL, NULL, $f));
+				array_push($inputs, mkinput(NULL, NULL, NULL, $f, $n));
 			}
 		}
 

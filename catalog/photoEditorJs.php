@@ -61,12 +61,14 @@ var wc = {
 			}
 		}
 
-		navigator.getUserMedia = navigator.getUserMedia
+/*      no longer needed? - FL May2017
+*/		navigator.getUserMedia = navigator.mediaDevices.getUserMedia
 								|| navigator.webkitGetUserMedia
                                 || navigator.mozGetUserMedia
 								|| navigator.msGetUserMedia
                                 || navigator.oGetUserMedia
                                 ;
+/**/
 		if (navigator.getUserMedia) {
 		    navigator.getUserMedia({
                 video:true,
@@ -266,7 +268,7 @@ var wc = {
         wc.deleteActual(e , function(e) {wc.callFinishUpdte(e)}); // returns before actual work done by server
 	},
     finishUpdate: function (e) {
-console.log('attempting update');
+		//console.log('attempting update');
         wc.sendFoto(e);
     },
 
@@ -279,7 +281,7 @@ console.log('attempting update');
 					   'url':$('#fotoName').val(),
 	              },
 				  function(response){
-console.log('back from deleting');
+						//console.log('back from deleting');
 						wc.eraseImage();
 						$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
   											+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
