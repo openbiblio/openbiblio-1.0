@@ -30,6 +30,11 @@ var ie = {
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
 		});
+
+		// prepare pull-down lists for later use
+        list.getPullDownList('Media', $('#itemMediaTypes'));
+        list.getPullDownList('Collection', $('#itemEditColls'));
+
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -97,14 +102,9 @@ var ie = {
 	    ie.bibid = hdr.bibid;
 		$('#editBibid').val(hdr.bibid);
 
-		// set non-MARC fields 
-        list.getPullDownList('Media', $('#itemMediaTypes'));
-        list.getPullDownList('Collection', $('#itemEditColls'));
-		$('#opacFlg').val(hdr.opac_flg);  // using data on hand
-
 		// fill MARC fields with data on hand
-		// each field has, in array 'val', a:
-		// label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
+		// each field has, in array 'val':
+		// a label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
 	    var txt = '';
 		$.each(marc, function(key,val) {
 			if (val.lbl) {
@@ -119,6 +119,12 @@ var ie = {
 			}
 		});
 		$('#marcBody').html(txt);
+
+		// set non-MARC fields
+		//console.log('setting pull-downs: media='+hdr.material_cd+'; coll='+hdr.collection_cd);
+        $('#itemMediaTypes').val(hdr.material_cd);
+        $('#itemEditColls').val(hdr.collection_cd);
+		$('#opacFlg').val(hdr.opac_flg);  // using data on hand
 
 		$('#itemEditorDiv fieldset legend').html('<?php echo T("Edit Item Properties"); ?>');
 		$('#itemEditorDiv td.filterable').hide();

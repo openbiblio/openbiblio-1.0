@@ -597,6 +597,7 @@ var ni = {
 	    $('#searchDiv').hide();
 		for (var tag in data) {
 			if (data[tag] != '') {
+				//console.log(tag+': '+data[tag]);
 				$('#'+tag).val(data[tag]);
 				$('#'+tag).css('color',ni.inputColor);
 			}

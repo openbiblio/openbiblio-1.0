@@ -15,17 +15,17 @@ var list = {
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getPullDownList: function (listName, whereToPaste) {
         $.post(list.server, {mode:'get'+listName+'List', select:'true'}, function(data){
-    			  var html = '';
+    		var html = '';
             for (var n in data) {
-    				    html += '<option value="'+n+'" ';
+    			html += '<option value="'+n+'" ';
                 var dflt= data[n].default;
                 if (dflt == 'Y') html += 'SELECTED ';
                 html += '>'+data[n].description+'</option>';
-    			  }
+    		}
             whereToPaste.html(html);
-            //console.log(html);
-    		    return html;
-		    }, 'json');
+			//console.log(html);
+    		return html;
+		}, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
