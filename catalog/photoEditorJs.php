@@ -12,16 +12,21 @@ var wc = {
 		wc.url = '../catalog/catalogServer.php';
 		$('.help').hide();
 
-		wc.initWidgets();
-
-		wc.canvasOut = document.getElementById('canvasOut'),
-		wc.ctxOut = canvasOut.getContext('2d');
-
-        //LJ: Not shown in .php equivalent for this situation, so will cause a exception.
+		wc.showFotos = false;
         <?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-		wc.canvasIn = document.getElementById('canvasIn'),
-		wc.ctxIn = canvasIn.getContext('2d');
+		wc.showFotos = true;
         <?php } ?>
+
+		if (wc.showFotos) {
+			wc.canvasOut = document.getElementById('canvasOut'),
+			wc.ctxOut = canvasOut.getContext('2d');
+
+	        //LJ: Not shown in .php equivalent for this situation, so will cause a exception.
+			wc.canvasIn = document.getElementById('canvasIn'),
+			wc.ctxIn = canvasIn.getContext('2d');
+        }
+
+		wc.initWidgets();
 
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
 		$('#capture').on('click',null,wc.takeFoto);
@@ -49,47 +54,71 @@ var wc = {
 	},
 	//------------------------------
 	initWidgets: function () {
-		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
-			if (Modernizr.video) { 
-				//console.log('video supported in this browser');
-		  	    var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
-								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
-								 + ' preload="none" ></video>';
-				$('#canvasIn').before(html);
-			} else {
-				console.log('video NOT supported in this browser');
-			}
+		if (wc.showFotos) {
+			wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
+			wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
+			wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+
+//			if (Modernizr.video) {
+//				//console.log('video supported in this browser');
+//		  	    var html = '<video id="camera" width='+wc.fotoWidth
+//								 + ' height='+wc.fotoHeight
+//								 + ' preload="none" ></video>';
+//				$('#canvasIn').before(html);
+//			} else {
+//				console.log('video NOT supported in this browser');
+//			}
 		}
 
-/*      no longer needed? - FL May2017
-*/		navigator.getUserMedia = navigator.mediaDevices.getUserMedia
-								|| navigator.webkitGetUserMedia
-                                || navigator.mozGetUserMedia
-								|| navigator.msGetUserMedia
-                                || navigator.oGetUserMedia
-                                ;
 /**/
+      	//no longer valid? - FL May2017
+		navigator.getUserMedia = navigator.getUserMedia
+							  || navigator.webkitGetUserMedia
+                              || navigator.mozGetUserMedia
+							  || navigator.msGetUserMedia
+                              || navigator.oGetUserMedia
+        ;
+
 		if (navigator.getUserMedia) {
 		    navigator.getUserMedia({
                 video:true,
                 audio:false
             },
-                function (stream) {
-		            wc.video = document.querySelector('video');
-       	            wc.video.src = window.URL.createObjectURL(stream);
-                    wc.localstream = stream;
-                    wc.video.play();
-                    //console.log("streaming");
+            function (stream) {
+	            wc.video = document.querySelector('video');
+   	            wc.video.src = window.URL.createObjectURL(stream);
+                wc.localstream = stream;
+                wc.video.play();
+                //console.log("streaming");
             },
-                function (error) {
-     			    alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
-    			    console.log("Video capture error: ", error.code);
+            function (error) {
+ 			    alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
+			    console.log("Video capture error: ", error.code);
             });
-		}
 
-		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
-		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
-		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+		}
+/**/
+/*
+		// this is Mozilla recommended solution, doesn't seem to work here - FL
+		var constraints = {
+			audio: true,
+			video: { width: {min: wc.fotoWidth},
+					 height:{min: wc.fotoHeight}
+				   }
+		};
+
+		navigator.mediaDevices.getUserMedia(constraints)
+			.then(function(mediaStream) {
+			  	video = document.querySelector('video');
+			  	video.srcObject = mediaStream;
+			  	video.onloadedmetadata = function(e) {
+			    	video.play();
+			  	};
+			})
+			.catch(function(err) {      // always check for errors at the end.
+				console.log('fotoErr: '+err.name + ": " + err.message);
+			}); 
+*/
 	},
     vidOff: function () {
         //clearInterval(theDrawLoop);

@@ -141,6 +141,14 @@ var ni = {
 			$('#choiceDiv').show();
 		}
 	},
+
+	doBackToShow: function () {
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
+		$('#searchDiv').hide();
+		$('#selectionDiv').show();
+	},
+
 	//------------------------------
 	fetchOpts: function () {
 		// Do not try to get from ListSrvr;
@@ -276,7 +284,7 @@ var ni = {
       	//	$('#selectionDiv').show();
 		//});
 		$('#copyCancelBtn').on('click',null,function () {
-			return ni.doBackToSrch();
+			ni.doBackToShow();
 		});
 
 		//e.preventDefault();
@@ -303,7 +311,7 @@ var ni = {
 		$('#deltFotoBtn').hide();
 		$('#addFotoBtn').show();
 		$('.gobkFotoBtn').on('click',null, function () {
-			ni.doBackToSrch();
+			ni.doBackToShow();
 		});
 
 		$('#fotoMode').val('addNewPhoto')
@@ -403,9 +411,11 @@ var ni = {
 		}
 
 		if (rslt) {
+
 		  ni.doSearch();
 		}
 		else {
+            $('#lookupVal').val(test)
 			$('#srchBy').focus();
 			$('#errMsgTxt').html(msg);
 			return rslt;
