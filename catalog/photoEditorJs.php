@@ -58,13 +58,30 @@ var wc = {
 			wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
 			wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
 			wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+
+//			if (Modernizr.video) {
+//				//console.log('video supported in this browser');
+//		  	    var html = '<video id="camera" width='+wc.fotoWidth
+//								 + ' height='+wc.fotoHeight
+//								 + ' preload="none" ></video>';
+//				$('#canvasIn').before(html);
+//			} else {
+//				console.log('video NOT supported in this browser');
+//			}
 		}
 
-		if (navigator.mediaDevices.getUserMedia) {
-		    navigator.mediaDevices.getUserMedia({
-                video:{ width: {min: wc.fotoWidth},
-					 height:{min: wc.fotoHeight}
-				   },
+/**/
+      	//no longer valid? - FL May2017
+		navigator.getUserMedia = navigator.getUserMedia
+							  || navigator.webkitGetUserMedia
+                              || navigator.mozGetUserMedia
+							  || navigator.msGetUserMedia
+                              || navigator.oGetUserMedia
+        ;
+
+		if (navigator.getUserMedia) {
+		    navigator.getUserMedia({
+                video:true,
                 audio:false
             },
             function (stream) {
@@ -80,6 +97,28 @@ var wc = {
             });
 
 		}
+/**/
+/*
+		// this is Mozilla recommended solution, doesn't seem to work here - FL
+		var constraints = {
+			audio: false,
+			video: { width: {min: wc.fotoWidth},
+					 height:{min: wc.fotoHeight}
+				   }
+		};
+
+		navigator.mediaDevices.getUserMedia(constraints)
+			.then(function(mediaStream) {
+			  	video = document.querySelector('video');
+			  	video.srcObject = mediaStream;
+			  	video.onloadedmetadata = function(e) {
+			    	video.play();
+			  	};
+			})
+			.catch(function(err) {      // always check for errors at the end.
+				console.log('fotoErr: '+err.name + ": " + err.message);
+			});
+*/
 	},
     vidOff: function () {
         //clearInterval(theDrawLoop);
