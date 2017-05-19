@@ -315,12 +315,16 @@ ini_set('display_errors', 1);
             }
 			break;
 		case 'update_media':
-			if (strpos($_POST["image_file"],'\\')) {
-				$imgInfo = pathinfo($_POST["image_file"]);
-				$imgStuff = explode('\\',$imgInfo['filename']);
-				$imgFile = $imgStuff[2].'.'.$imgInfo['extension'];
+			if (isset($POST["image_file"])) {
+				if (strpos($_POST["image_file"],'\\')) {
+					$imgInfo = pathinfo($_POST["image_file"]);
+					$imgStuff = explode('\\',$imgInfo['filename']);
+					$imgFile = $imgStuff[2].'.'.$imgInfo['extension'];
+				} else {
+					$imgFile = $_POST["image_file"];
+				}
 			} else {
-				$imgFile = $_POST["image_file"];
+				$imgFile = $_POST["crntImage_file"];
 			}
 			$type = array(
 				'code'=>$_POST["code"],
@@ -329,12 +333,14 @@ ini_set('display_errors', 1);
 				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
 				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
 				'image_file'=>$imgFile,
-        'srch_disp_lines'=>$_POST["srch_disp_lines"],
+        		'srch_disp_lines'=>$_POST["srch_disp_lines"],
 			);
 			$errors = $ptr->update_el($type);
-			if (empty($errors)) {
-				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been updated");
-				echo $msg;
+			if ((stripos($errors, 'Success') > -1) || empty($errors) ) {
+				$msg = $errors."! ".T("Media Type")." '".H($type['description'])."' ".T("has been updated");
+				echo json_encode($msg);
+			} else {
+				echo json_encode($errors);
 			}
 			break;
 		case 'd-3-L-3-t_media':

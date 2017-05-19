@@ -23,13 +23,13 @@ class Med extends Admin {
     					'default_flg': 'center'
     				   };
     	var opts = {};
-
+		$('.note').hide();
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
     };
 
 }
 
-$(document).ready(function () {
+//$(document).ready(function () {
 	var xxxx = new Med( );
-});
+//});
 </script>

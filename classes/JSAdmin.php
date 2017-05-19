@@ -206,7 +206,7 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-//console.log('in JSAdmin::doSubmitFields()');
+		//console.log('in JSAdmin::doSubmitFields()');
     	e.preventDefault();
     	e.stopPropagation();
     	var theId = e.target.id;
@@ -229,7 +229,7 @@ class Admin {
     }
 
     doAddFields () {
-//console.log('in JSAdmin::doAddFields()');
+		//console.log('in JSAdmin::doAddFields()');
     	$('#msgDiv').hide();
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
@@ -261,15 +261,15 @@ class Admin {
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
 		var parms = this.doGatherParams();
-    	if ($('#newImageFile').length) {
+    	if ($('#newImageFile').val() != '') {
     		parms.push($('#newImageFile').serializeArray());
 		}
     	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this), 'json');
     	return false;
     };
     updateHandler (response) {
-console.log(response);
-    	this.showResponse(response);
+console.log('update response from server: '+response);
+   	this.showResponse(response);
     };
 	
     doDeleteFields (e) {
@@ -290,11 +290,11 @@ console.log(response);
     };
 
     showResponse (response) {
-        //console.log('rcvd response from server: '+response);
-    	if (($.trim(response)).indexOf('Success') > 0){
+console.log('showing response from server: '+response);
+    	if (($.trim(response)).indexOf('Success') > -1){
     		$('#msgArea').html(response);
     		$('#msgDiv').show();
-            this.doBackToList();
+            //this.doBackToList();
     	} else {
     	    $('#msgArea').html(response);
     	    $('#msgDiv').show();

@@ -193,12 +193,14 @@ abstract class DBTable extends Queryi {
 				Fatal::internalError(T("DBTableIncompleteKey", array('key'=>$k)));
 			$key[] = $rec[$k];
 		}
+
 		$this->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
 			$this->unlock();
 			return $errs;
 		}
+
 		$errs = $this->validate_el($rec, false);
 		if ($confirmed) {
 			$errs = $this->skipIgnorableErrors($errs);
@@ -207,11 +209,13 @@ abstract class DBTable extends Queryi {
 			$this->unlock();
 			return $errs;
 		}
+
 		if (!$errs) {
 			$sql = $this->mkSQL('UPDATE %I ', $this->name)
 				. ' SET '.$this->_pairs($rec)
 				. ' WHERE '.$this->_keyTerms($key);
-			$errs = $this->act($sql);
+			$rslt = $this->act($sql);
+			$errs = $rslt->fetch();
 			$this->unlock();
 		}
 		if ($errs) {
