@@ -241,11 +241,14 @@ class Admin {
         return $('#editForm').serializeArray();
     };
     doAssembleParams (params) {
-		var numParams = params.length;
-        for (var i = (numParams-1); i >= 0; i--) {
-            if ((params[i].value.length < 1)) {
-                 params.splice(i, 1);
-            }
+		var numParams = params.length-1;
+		//        for (var i = (numParams-1); i >= 0; i--) {
+        for (var i=0; i<numParams; i++) {
+			if ((typeof params[i] !== "undefined") && (typeof params[i].value !== "undefined")) {
+	            if (params[i].value.length < 1) {
+	                 params.splice(i, 1);
+            	}
+			}
         }
 		return jQuery.param(params);
     };
@@ -268,8 +271,7 @@ class Admin {
     	return false;
     };
     updateHandler (response) {
-console.log('update response from server: '+response);
-   	this.showResponse(response);
+   		this.showResponse(response);
     };
 	
     doDeleteFields (e) {
@@ -290,7 +292,6 @@ console.log('update response from server: '+response);
     };
 
     showResponse (response) {
-console.log('showing response from server: '+response);
     	if (($.trim(response)).indexOf('Success') > -1){
     		$('#msgArea').html(response);
     		$('#msgDiv').show();

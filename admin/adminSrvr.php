@@ -161,8 +161,10 @@ ini_set('display_errors', 1);
 			$errors = $ptr->update_el($coll);
 			if (empty($errors)) {
 				$msg = T("Collection, %desc%, has been updated.", array('desc'=>H($coll['description'])));
+			} else {
+				$msg = $errors;
 			}
-			echo $msg;
+			echo json_encode($msg);
 			break;
 		case 'd-3-L-3-t_collect':
 			$ptr = new Collections;
@@ -192,7 +194,7 @@ ini_set('display_errors', 1);
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_copyFlds':
 			$ptr->deleteOne($_POST[code]);
@@ -220,7 +222,7 @@ ini_set('display_errors', 1);
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_mbrFlds':
 			$ptr->deleteOne($_POST[code]);
@@ -244,7 +246,7 @@ ini_set('display_errors', 1);
 			$errs = $ptr->update_el(array(
 				'hourid'=>@$_POST["hourid"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 
 	  #-.-.-.-.-.- Database Integrity testing -.-.-.-.-.-.-
@@ -280,7 +282,7 @@ ini_set('display_errors', 1);
 				'default_flg'=>@$_POST['default_flg'],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_mbrTypes':
 			$ptr->deleteOne($_POST[code]);
@@ -373,7 +375,7 @@ ini_set('display_errors', 1);
 			break;
 		case 'update_hosts':
 			if (empty($_POST[active])) $_POST[active] = 'N';
-			echo $ptr->update($_POST);
+			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_hosts':
 			$sql = "DELETE FROM $ptr->getName() WHERE `id`=$_POST[id]";
@@ -396,7 +398,7 @@ ini_set('display_errors', 1);
 			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
 			$rslt = $ptr->update($_POST);
 			if(empty($rslt)) $rslt = '1';
-			echo $rslt;
+			echo json_encode($rslt);
 			break;
 
 	  #-.-.-.-.-.- Settings -.-.-.-.-.-.-
@@ -429,7 +431,7 @@ ini_set('display_errors', 1);
 			echo $ptr->insert($_POST);
 			break;
 		case 'update_sites':
-			echo $ptr->update($_POST);
+			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_sites':
 			echo $ptr->deleteOne($_POST['siteid']);
