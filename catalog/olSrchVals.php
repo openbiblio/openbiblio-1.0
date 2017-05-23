@@ -57,9 +57,9 @@
   		break;
   		
 		case "999":
-		  ## special for external use as an general search engine
-		  $srchByName = 'general';
-		  $sruQuery = "";
+		  	## special for external use as an general search engine
+		  	$srchByName = 'general';
+		  	$sruQuery = "";
 			$lookupVal = '"' . $lookupVal . '"';
 			break;
 		}
@@ -69,10 +69,13 @@
 			if ($srchBy2 == "1004") {
 				$srchByName2 = 'Author';
 				$sruQry2 = "$sruIndexTerm.author=";
+			}	else if ($srchBy2 == "1031") {
+				$srchByName2 = 'Media';
+				$sruQry2 = "$sruIndexTerm.media=";
 			}	else if ($srchBy2 == "1016") {
 				$srchByName2 = 'Keyword';
 				$sruQry2 = "$sruIndexTerm.subject=";
-  		}
+  			}
 			$lookupVal2 = '"' . $lookupVal2 . '"';
 		}
 		

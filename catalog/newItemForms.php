@@ -7,12 +7,14 @@
 
   session_cache_limiter(null);
 
+	$anyTxt     = T("AnyKwrd");
 	$isbnTxt    = T("ISBN");
 	$issnTxt    = T("ISSN");
 	$lccnTxt    = T("LCCN");
 	$titleTxt   = T("Title");
 	$authorTxt  = T("Author");
 	$keywordTxt = T("Keyword");
+	$mediaTxt	= T("Media Type");
 	$pubDateTxt = T("Publication Date");
 	$pubNameTxt = T("Publisher");
 	$pubLocTxt  = T("Publication Location");
@@ -60,7 +62,7 @@ th.colHead { white-space: nowrap; }
 			  		<option value="8"><?php echo $issnTxt; ?></option>
 			  		<option value="9"><?php echo $lccnTxt; ?></option>
 			  		<option value="4"><?php echo $titleTxt; ?></option>
-			  		<!--option value="1016"\>$isbnTxt; ?></option-->
+			  		<option value="1016"\><?php echo $anyTxt; ?></option>
 					</select>
 				</div>
 				<label><?php echo T("And"); ?></label>
@@ -69,6 +71,7 @@ th.colHead { white-space: nowrap; }
 			  	<select id="srchBy2" name="srchBy2" class="criteria">
 			  		<option value="0"></option>
 			  		<option value="1004"><?php echo $authorTxt; ?></option>
+			  		<!--option value="1031"><?php echo $mediaTxt; ?></option-->
 			  		<option value="1018"><?php echo $pubNameTxt; ?></option>
 			  		<option value="59"><?php echo $pubLocTxt; ?></option>
 			  		<option value="31"><?php echo $pubDateTxt; ?></option>

@@ -390,7 +390,7 @@ var ni = {
 			}
 			break;
 		case 7: //ISBN
-        	$('#lookupVal').val(test);
+        	$('#lookupVal').val(test); // update display with cleaned up ISBN
 	   		if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
 				msg += "This is not a valid ISBN.<br />";

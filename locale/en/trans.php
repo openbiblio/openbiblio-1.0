@@ -90,6 +90,7 @@ $trans["And"] = "And";
 $trans["AnswerNo"] = "No";
 $trans["AnswerYes"] = "Yes";
 $trans["Any"] = "Any";
+$trans["AnyKwrd"] = "Any Keyword";
 $trans["Are you sure you want to delete "] = "Are you sure you want to delete ";
 $trans["Are you sure you want to delete this"] = "Are you sure you want to delete this ";
 $trans["Are you sure you want to delete this copy?"] = "Are you sure you want to delete this copy?";
