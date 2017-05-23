@@ -19,35 +19,38 @@
 	function verifyISBN($lookupVal,$keepDashes) {
 	    global $postVars;
 	    
-			## remove any "-" char user may have entered
-			if ($postVars['keepDashes']=='n') $lookupVal = str_replace("-", "", $lookupVal);
-			## remove any space char user may have entered
-			$lookupVal = str_replace(" ", "", $lookupVal);
+		## remove any "-" char user may have entered
+		if ($postVars['keepDashes']=='n') $lookupVal = str_replace("-", "", $lookupVal);
+		## remove any space char user may have entered
+		$lookupVal = str_replace(" ", "", $lookupVal);
 
-			## test if its a scanned EAN code
-			## '978' & '979' per Cristoph Lange of Germany
-			if (((substr($lookupVal, 0,3) == "978") ||(substr($lookupVal, 0,3) == "979")) && (strlen($lookupVal) > 12))  {
-				## extract the isbn from the scanner jumble
-				$isbn = substr($lookupVal, 3,9);
-				//echo "raw reader isbn: $isbn <br />";
+/*  deprecated - ISBN-13 now standard, conversion not needed
+		## test if its a scanned EAN code
+		## '978' & '979' per Cristoph Lange of Germany
+		if (((substr($lookupVal, 0,3) == "978") ||(substr($lookupVal, 0,3) == "979")) && (strlen($lookupVal) > 12))  {
+			## extract the isbn from the scanner jumble
+			$isbn = substr($lookupVal, 3,9);
+			//echo "raw reader isbn: $isbn <br />";
 
-				$xSum = 0;
-				$add = 0;
-				for ($i=0; $i<9; $i++) {
-					$add = substr($isbn, $i,1);
-					$xSum += (10-$i) * $add;
-				}
-				$xSum %= 11;
-				$xSum = 11-$xSum;
-				if ($xSum == 10)
-					$xSum = "X";
-				if ($xSum == 11)
-					$xSum = "0";
-				//echo 'checksum: ' . $xSum . '<br />';
-
-				$lookupVal = $isbn . $xSum;
+			$xSum = 0;
+			$add = 0;
+			for ($i=0; $i<9; $i++) {
+				$add = substr($isbn, $i,1);
+				$xSum += (10-$i) * $add;
 			}
-			return substr($lookupVal,0,10);
+			$xSum %= 11;
+			$xSum = 11-$xSum;
+			if ($xSum == 10)
+				$xSum = "X";
+			if ($xSum == 11)
+				$xSum = "0";
+			//echo 'checksum: ' . $xSum . '<br />';
+
+			$lookupVal = $isbn . $xSum;
+		}
+		return substr($lookupVal,0,10);
+*/
+		return $lookupVal;
 	}
 	
 	##-----------
