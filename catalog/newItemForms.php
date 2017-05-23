@@ -53,19 +53,23 @@ th.colHead { white-space: nowrap; }
 		<fieldset id="srchSpecs">
 		<legend><?php echo T("On-Line Search"); ?></legend>
 			<fieldset id="srchDetl" class="inlineFS">
-			  <label class="colLbl" for="lookupVal"><?php echo T("What to search for"); ?>:</label>
-			  <label class="colLbl" for="srchBy"><?php echo T("Which is a"); ?>:</label>
 			  <div id="fldset1">
-		  		<input id="lookupVal" name="lookupVal" type="text" class="criteria" required aria-required="true" />
-			  	<select id="srchBy" name="srchBy" class="criteria">
+			  	<span style="display:inline-block">
+			  		<label for="lookupVal" style="display:block"><?php echo T("What to search for"); ?>:</label>
+		  			<input id="lookupVal" name="lookupVal" type="text" class="criteria" required aria-required="true" />
+				</span>
+				<span style="display:inline-block">
+			  		<label for="srchBy" style="display:block"><?php echo T("Which is a"); ?>:</label>
+			  		<select id="srchBy" name="srchBy" class="criteria">
 			  		<option value="7" selected><?php echo $isbnTxt; ?></option>
 			  		<option value="8"><?php echo $issnTxt; ?></option>
 			  		<option value="9"><?php echo $lccnTxt; ?></option>
 			  		<option value="4"><?php echo $titleTxt; ?></option>
 			  		<option value="1016"\><?php echo $anyTxt; ?></option>
 					</select>
-				</div>
-				<label><?php echo T("And"); ?></label>
+				</span>
+			  </div>
+			  <label><?php echo T("And"); ?></label>
 			  <div id="fldset2">
 			  	<input id="lookupVal2" name="lookupVal2" type="text" class="criteria" />
 			  	<select id="srchBy2" name="srchBy2" class="criteria">
