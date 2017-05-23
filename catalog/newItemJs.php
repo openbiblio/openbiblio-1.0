@@ -379,7 +379,7 @@ var ni = {
 		var msg = '';
 		var nType = $('#srchBy').val();
 	  	var val = $('#lookupVal').val();
-	  	var test = val.replace(/-| /g, '');
+	  	//var test = val.replace(/-| /g, '');   // only applies to ISBN
 	  	var rslt = true;
 
 	  	switch (parseInt(nType)) {
@@ -390,6 +390,7 @@ var ni = {
 			}
 			break;
 		case 7: //ISBN
+	  		var test = val.replace(/-| /g, '');
         	$('#lookupVal').val(test); // update display with cleaned up ISBN
 	   		if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
