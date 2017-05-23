@@ -17,7 +17,6 @@
 			$tptr = new MediaTypes;
 		    $matls = array();
 			$tSet = $tptr->getAll('code');
-			//while ($row = $tSet->fetch_assoc()) {
             foreach ($tSet as $row) {
 			  $matls[] = $row;
 			}
@@ -33,7 +32,6 @@
 			$typeCd = array('material_cd' => $_POST['matlCd']);
 		    $flds = array();
 			$fSet = $fptr->getMatches($typeCd,'position');
-			//while ($row = $fSet->fetch_assoc()) {
             foreach ($fSet as $row) {
 			  $flds[] = $row;
 			}
@@ -65,7 +63,6 @@
 			$ptr = new MarcBlocks;
 		  	$vals = array();
 			$rslt = $ptr->getAll('block_nmbr');
-			//while ($row = $rslt->fetch_assoc()) { //'block_nmbr'
 			foreach ($rslt as $row) {  //'block_nmbr'
 			  $vals[] = $row;
 			}
@@ -81,7 +78,6 @@
 			$params = array('block_nmbr' => $_POST['block_nmbr']);
 		  	$vals = array();
 			$rslt = $ptr->getMatches($params,'tag');
-			//while ($row = $rslt->fetch_assoc()) {
 			foreach ($rslt as $row) {
 			  $vals[] = $row;
 			}
@@ -96,7 +92,6 @@
 			$params = array('tag' => $_POST['tag']);
 		  	$vals = array();
 			$rslt = $ptr->getMatches($params,'subfield_cd');
-			//while ($row = $rslt->fetch_assoc()) {
 			foreach ($rslt as $row) {
 			  $vals[] = $row;
 			}

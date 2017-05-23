@@ -224,12 +224,12 @@
 	  break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-	case 'getValidations': // deprecated
-		require_once(REL(__FILE__, "../model/Validations.php"));
-		$db = new Validations;
-		$list = getDmData($db);
-		echo json_encode($list);
-	  break;
+	//case 'getValidations': // deprecated
+	//	require_once(REL(__FILE__, "../model/Validations.php"));
+	//	$db = new Validations;
+	//	$list = getDmData($db);
+	//	echo json_encode($list);
+	//  break;
 	case 'getValidationList':
 		require_once(REL(__FILE__, "../model/Validations.php"));
 		$db = new Validations;

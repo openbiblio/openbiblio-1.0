@@ -160,7 +160,7 @@
 </form>
 </div>
 
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv" style="display:none" ><fieldSet><span id="msgArea"></span></fieldset></div>
 
 <!-- load javaScript -->
 <?php

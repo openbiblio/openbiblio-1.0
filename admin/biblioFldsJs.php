@@ -9,13 +9,14 @@
 var mtl = {
 	<?php
 	echo 'successMsg 		: "'.T("Update successful").'",'."\n";
-	echo 'delConfirmMsg : "'.T("confirmDelete").'",'."\n";
+	echo 'deleteMsg 		: "'.T("Delete completed").'",'."\n";
+	echo 'delConfirmMsg 	: "'.T("confirmDelete").'",'."\n";
 	echo 'goBackLbl			: "'.T("Go Back").'",'."\n";
 	echo 'cancelLbl			: "'.T("Cancel").'",'."\n";
 	echo 'updateLbL			: "'.T("Update").'",'."\n";
 	echo 'addNewLbl			: "'.T("Add New").'",'."\n";
 	echo 'deleteLbl			: "'.T("Delete").'",'."\n";
-	echo 'editLbl				: "'.T("Edit").'",'."\n";
+	echo 'editLbl			: "'.T("Edit").'",'."\n";
 	?>
 	
 	init: function () {
@@ -143,12 +144,12 @@ var mtl = {
             for (var n in list) {
 				html+= '<option value="'+list[n]+'">'+list[n]+'</option>';
 			}
-			console.log(html);
+			//console.log(html);
 			$('#form_type').html(html);
 		});
 	},
 	fetchValidationList: function () {
-	    $.post(mtl.listUrl,{mode:'getValidations'}, function(data){
+	    $.post(mtl.listUrl,{mode:'getValidationList'}, function(data){
 			var html= '<option value="none">none</option>';
             for (var n in data) {
 				html+= '<option value="'+n+'">'+n+'</option>';
@@ -270,7 +271,7 @@ var mtl = {
 		var matl = $('#typeList').val();
 		$('#fldSet').empty();
 		$('#existing').empty();
-		$('#msgArea').hide();
+		$('#msgDiv').hide();
 		$('#msgArea').empty();
 	  $.post(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
 			mtl.data = data;	// for later use
@@ -380,7 +381,6 @@ var mtl = {
 					$('#editTbl #form_type').val([fldVal]);
 				  	break;
 				case 'validation_cd':
-console.log('validation fldVal='+fldVal);
 					$('#editTbl #validation_cd').val([fldVal]);
 				  	break;
 				default:
@@ -396,7 +396,6 @@ console.log('validation fldVal='+fldVal);
 		$('#editMode').val('updateFldSet');
 
 		var parms = $('#editForm').serialize();
-console.log('attempting update');
 
 		$.post(mtl.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
@@ -429,6 +428,8 @@ console.log('attempting update');
 						$('#msgDiv').show();
 					}
 					else {
+						$('#msgArea').html(mtl.deleteMsg);
+						$('#msgDiv').show();
 				  		mtl.doReloadList();
 					}
 				});
