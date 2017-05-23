@@ -29,9 +29,9 @@ function staff_menu() {
 
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasCatalogAuth"]){
-		Nav::node('cataloging', T("Cataloging"), '../catalog/srchForms.php');
-		Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
+		Nav::node('cataloging', T("Cataloging"), '../catalog/newItemForms.php');
 		Nav::node('cataloging/newItem', T("New Item"), "../catalog/newItemForms.php");
+		Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 
 		//if (isset($_SESSION['rpt_BiblioSearch'])) {
 		//	Nav::node('cataloging/search', T("old search results"), '../shared/biblio_search.php?searchType=previous&tab='.U($tab));
