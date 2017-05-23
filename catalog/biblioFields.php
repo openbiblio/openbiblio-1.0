@@ -92,16 +92,16 @@
 		# fetch a complete set of all material types
 		$matTypes = new MediaTypes;
 		# determine which is to be 'selected'
-		if (!empty($_GET['matlCd'])) {
-		  $material_cd_value = $_GET['matlCd'];
-		} elseif (!empty($_GET['material_cd'])) {
-		  $material_cd_value = $_GET['material_cd'];
+		if (!empty($_POST['matlCd'])) {
+		  	$material_cd_value = $_POST['matlCd'];
+		} elseif (!empty($_POST['material_cd'])) {
+		  	$material_cd_value = $_POST['material_cd'];
 		} elseif (isset($biblio['material_cd'])) {
 			$material_cd_value = $biblio['material_cd'];
 		} else {
 			$material_cd_value = $matTypes->getDefault();
 		}
- 				
+
 		// get field specs for this material type in 'display postition' order
 		$mf = new MaterialFields;
 		$fieldSet = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
