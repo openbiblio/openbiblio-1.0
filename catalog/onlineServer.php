@@ -61,6 +61,7 @@
 	$optr = new Opts;
 	$opts = $optr->getAll();
 	$postVars['opts'] = $opts->fetchAll();
+	//print_r($postVars['opts']);
 
 	## prepare list of hosts selected by user
 	if (!empty($_POST['srchHost'])) {

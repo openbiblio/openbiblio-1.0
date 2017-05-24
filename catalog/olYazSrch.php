@@ -10,7 +10,8 @@
 
 		#### pagination search limits - may be user sperified in future;
 		$startAt = 1;
-$nmbr = 50; //$postVars['maxHits'];
+//$nmbr = 50; //$postVars['maxHits'];
+//$nmbr = $maxHits; // extracted from onLine Opts db table
 		//echo "return results from #$startAt to #". ($startAt+$nmbr-1) ."<br />";
 
 		//echo "using $postVars['numHosts'] host(s)<br />";

@@ -456,12 +456,13 @@ var ni = {
 		// note for this to work, all form fields MUST have a 'name' attribute
 		$('lookupForm #mode').val('search');
 		var srchParms = $('#lookupForm').serialize();
-		$.post(ni.url, srchParms, ni.handleSrchRslts);
+		$.post(ni.url, srchParms, ni.handleSrchRslts, 'json');
 	},
 	handleSrchRslts: function (response) {
 			$('#waitDiv').hide();
-			
-			if ($.trim(response).substr(0,1) != '{') {
+
+			if (typeof response != 'object') {
+				//console.log('unexpected response');
 				$('#retryHead').empty();
 				$('#retryHead').html(ni.searchError);
 				$('#retryMsg').empty();
@@ -469,9 +470,12 @@ var ni = {
 				$('#retryDiv').show();
 			}
 			else {
-				var rslts = JSON.parse(response);
+				//var rslts = JSON.parse(response);
+				var rslts = response;
 				var numHits = parseInt(rslts.ttlHits);
+				//console.log('ttlHits = '+numHits);
                 var maxHits = ni.opts.maxHits;
+				//console.log('maxHits = '+maxHits);
 				if (numHits < 1) {
                     console.log('nothing found');
 				    //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
@@ -490,10 +494,10 @@ var ni = {
 				}
 			
 				else if (numHits >= maxHits) {
-                    console.log('too many hits');
+                    console.log('too many hits: '+numHits+' > '+maxHits);
 		  		    //{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',
 					// 'msg':'$msg1', 'msg2':'$msg2'}
-					var str = rslts.msg+' ('+rslts.ttlHits+' ).<br />'+rslts.msg2;
+					var str = rslts.msg+' ('+rslts.ttlHits+' )<br />'+rslts.msg2;
 					$('#retryHead').empty();
 					$('#retryHead').html(rslts.msg);
 					$('#retryMsg').empty();
@@ -502,7 +506,7 @@ var ni = {
 				}
 			
 				else if (numHits > 1){
-                    console.log('more than one hit');
+                    //console.log('more than one hit: '+numHits);
 					$('#choiceSpace').empty();
 					$('#ttlHits').html(numHits);
 					ni.singleHit = false;
