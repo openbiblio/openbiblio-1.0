@@ -460,6 +460,7 @@ var ni = {
 	},
 	handleSrchRslts: function (response) {
 			$('#waitDiv').hide();
+			//console.log(typeof response);
 
 			if (typeof response != 'object') {
 				//console.log('unexpected response');
