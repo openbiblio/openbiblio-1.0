@@ -87,8 +87,8 @@ ini_set('display_errors', 1);
 <?php } ?>
 
 <!-- **************************************************************************************
-		 * beginning of main body
-		 **************************************************************************************-->
+	 * beginning of main body
+	 **************************************************************************************-->
 <main id="content" role="main" aria-role="main">
     <!--[if lt IE 7]>
       <p class="chromeframe">You are using an <strong>outdated</strong> browser.<br /> 

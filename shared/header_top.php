@@ -10,18 +10,22 @@
 <!DOCTYPE html >
 <!-- there are many lines here with obscure comments. For more info see http://html5boilerplate.com/ -->
 
+<!-- language is set by user (default is 'en') -->
 <html lang="<?php echo $Locale; ?>" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
 
 <head>
   <!-- charset MUST be specified within first 1024 char of file start to be effective -->
   <meta charset="<?php echo $CharSet; ?>" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
   <!-- Mobile viewport optimized: j.mp/bplateviewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- select browser-top icon -->
   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 
+  <!-- build title using library's name (or current-site name) from database -->
   <title>
     <?php
     if (!isset($doing_install) or !$doing_install) {
@@ -53,9 +57,9 @@
     	}
 
     	echo $libName;
-    	if($params['title']) {
-    		echo ': '.H($params['title']);
-    	}
+		//    	if($params['title']) {
+		//    		echo ': '.H($params['title']);
+		//    	}
     }
     ?>
   </title>
