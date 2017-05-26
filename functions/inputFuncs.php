@@ -120,9 +120,9 @@ function inputHandler($type, $name, $value, $attrs) {
 	}
 	$s .= "/>";
 
-	if (in_array('required', $attrs)) {
-		$s .= '<span class="reqd">*</span>';
-	}
+	//if (in_array('required', $attrs)) {
+	//	$s .= '<span class="reqd">*</span>';
+	//}
 	return $s;
 }
 

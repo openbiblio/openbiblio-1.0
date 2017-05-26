@@ -132,6 +132,9 @@
 			//	echo '	<sup>*</sup>';
 			//}
 			echo "		<label for=\"$marcInputFld\">".H($val['label'].":")."</label>";
+			if ($val['required']) {
+				echo '<span class="reqd">*</span>';
+			}
 			echo "	</td> \n";
 
 			mkFldSet($key, $val, $marcInputFld, 'editCol');	// normal local edit column
