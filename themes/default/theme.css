@@ -1,0 +1,82 @@
+/* CSS Document */
+/* Would expect all color and fonts to be declared here, to override anything in style.css */
+html { font-size:calc(1em * 1vw); } /* adjust font to size of user's screen */
+body {
+    font-family:verdana,arial,helvetica, serif;
+    color:#000000; background:#90b0b8;
+}
+
+.error { color:red; !important; }
+.warning { color:orange; !important; }
+
+/* headers */
+h1,h2,h3,h4,h5,h6 {
+	font:1rem sans-serif; text-align:center;
+	color:white; background:#ccb470;
+}
+fieldset { background-color:#ffffdd; }
+tbody.striped tr:odd /*td*/ { background-color:#EEE; }
+tbody.striped tr:even /*td*/ { background-color:#CCC; }
+
+/* styling for javascript stop-gap placeholder for browsers without native support */
+.placeholder { color:#aaa; }
+
+input[type=button], input[type=submit], button {
+
+/* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
+input[type=button], input[type=submit], button {
+	padding:2px 4px;
+	font-family:Helvitca, Arial, sans-serif; font-weight:bold;
+	line-height:1;
+	color:#222; background-color:rgb(240,240,240); border:none;
+	text-shadow:0 1px 1px rgba(255, 255, 255, 0.85);
+	background-image:-moz-linear-gradient(to top, #fff, #bbb);
+	background-image:-o-linear-gradient(to top, #fff, #bbb);
+	background-image:linear-gradient(to top, #fff, #bbb);
+	border-radius:23px;
+	box-shadow:0 1px 2px rgba(0,0,0,0.5);
+	}
+
+input:focus { background:rgb(230,255,255); }
+input:disabled,
+button:disabled { background:#dddddd; color:#888888; }
+
+ui-datepicker {background:-color:green}
+
+aside { color:black; background:#90b0b8; }
+
+h1.theHead { color:white; }
+#library_name { color:black; }
+
+ul.nav_main > li.nav_selected { background:white; }
+nav a { color:blue; }
+nav a:visited { color:blue; }
+nav a.button { color:black; }
+
+#content {background:white; }
+
+#tabs li a { background:#ccc; color:#333; }
+#tabs ul.controls li.active a { color:blue; background-color:#ffffdd; }
+
+.title {
+	font:1.25rem sans-serif; /* 20/16 */
+	color:white;
+	background:#ccb470;
+}
+
+#onlineMsg { color:blue; }
+.call_media { font:1.0em sans-serif; /* 16/16 */ }
+.compact_info_display th.title { font:1.0em serif regular;	/* 16/16 */ }
+.compact_info_display th.author { font:1.0em serif regular;	/* 16/16 */ }
+.compact_info_display li { font:0.87em serif;	/* 14/16 */ }
+.hilite { color:white; background-color:green; }
+.search_result .available { font:0.87em serif;	/* 14/16 */ }
+
+/*************************************************/
+div#msgDiv { color:red; }
+span.highLite { color:#FF8A00; }
+
+#configDiv ul#existing li { color:black; background:#FFFF99; }
+#configDiv ul#potential li { color:black; background:#CCFFFF; }
+
+#skiptocontent a { color:white; }

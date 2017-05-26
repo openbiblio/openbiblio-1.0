@@ -96,9 +96,12 @@
 
   <!-- This style sheet resets all browsers to a common default style -->
   <link rel="stylesheet" href="../shared/normalize.css" />
+  <!-- OpenBiblio style is set here -->
+  <link rel="stylesheet" href="../shared/style.css" />
 
   <!-- This style sheet is specific to the jQuery UI library -->
   <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
 
-  <!-- OpenBiblio style is set here using appropriate Theme folder -->
-  <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
+  <!-- User-selected theme colors, fonts, and button style are set here -->
+  <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" /> /* deprecated, please do not use */
+  <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/theme.css" />
