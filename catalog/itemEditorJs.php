@@ -57,7 +57,7 @@ var ie = {
 		} else if (mode == 'onlnCol') {
 			name = 'onln_'+key;
 			txt += '	<td valign="top" class="filterable">';
-	    txt += '		<input type="button" value="<--" id="'+name+'_btn" class="accptBtn" />';
+	    	txt += '		<input type="button" value="<--" id="'+name+'_btn" class="accptBtn" />';
 			txt += '	</td>\n<td valign="top" class="filterable">';
 		}
 
@@ -112,6 +112,9 @@ var ie = {
 				txt += "<tr> \n";
 				txt += "	<td valign=\"top\"> \n";
 				txt +=  '		<label for="'+key+'">'+val['lbl']+": </label>\n";
+                if (val['required'] == 1) {
+					txt += '<span class="reqd">*</span>';
+				}
 				txt +=  "	</td> \n";
 				txt += ie.mkFldSet(key, val, 'editCol');	// local edit column
 				txt += ie.mkFldSet(key, val, 'onlnCol');  // update on-line column

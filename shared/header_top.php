@@ -103,5 +103,5 @@
   <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
 
   <!-- User-selected theme colors, fonts, and button style are set here -->
-  <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" /> /* deprecated, please do not use */
+  <!--link rel="stylesheet" href="<?php //echo H($params['theme_dir_url']) ?>/style.css" /--> <!--> deprecated, please do not use -->
   <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/theme.css" />
