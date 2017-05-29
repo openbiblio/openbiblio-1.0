@@ -21,12 +21,14 @@ body {
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
-/*.error { color:red; font-weight:bold; !important; }*/
-/*.warning { color:orange; font-weight:bold; !important; }*/
+.error { /*color:red;*/ font-weight:bold; !important; }*/
+.warning { /*color:orange;*/ font-weight:bold; !important; }*/
 .bold { font-size:larger; font-weight:bold; }
-.note { font-size:0.7rem; font-weight:bold; color:green; }
+.note { font-size:0.7rem; font-weight:bold; /*color:green;*/ }
+.info { font-weight:bold; }
 .help { font-size:0.7rem; display:none; }
 .italic { font-size:0.7rem; font-style:italic; /*color:lightblue;*/ }
+#msgDiv msgArea:empty { display:none; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
@@ -70,8 +72,7 @@ th, label, .lblFld { font-size:0.75rem; font-weight:bold; margin-left:2px;}
 tfoot.topBorder {  border-top:1px solid #AAA; margin-top:5px; }
 thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
 
-/* styling for javascript stop-gap placeholder for browsers without native support */
-.placeholder { /*color:#aaa;*/ }
+::placeholder { font-style:italic; }
 
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 /*input[type=button], input[type=submit], button {
@@ -367,7 +368,6 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	}
 
 /*************************************************/
-/*div#msgDiv { color:red; }*/
 table.sigh { width:100%; }
 table.sigh .spacer { width:5px; }
 /*span.highLite { color:#FF8A00; }*/
@@ -496,7 +496,7 @@ div#configDiv{
 	
 	/*************************************************/
 	main#content { position:absolute; top:1%; left:17.5%; width:auto; padding:2px 2px 2px 2px; }
-	#content > div { display:none; /* hide child screen elements until wanted */ }
+/*	#content > div { display:none; /* hide child screen elements until wanted */ }
 	#srchSpecs { /*display:box; box-orient:horizontal;*/ }
 	.inlineFS { display:inline-block; /*box-flex:1; box-align:start;*/ }
 	#srchHosts { /*position:absolute; max-width:25%; top:0; left:68%;*/ }

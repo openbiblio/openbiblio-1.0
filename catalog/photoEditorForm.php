@@ -5,7 +5,7 @@
 ?>
 	<h3 id="fotoHdr"><?php echo T("PhotoEditor"); ?></h3>
 	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-	<p id="fotoMsg" class="error"></p>
+
 	<fieldset>
 		<legend id="fotoEdLegend"></legend>
 
@@ -27,8 +27,6 @@
 
 		<div id="fotoCntlDiv">
 			<form id="fotoForm">
-                <fieldset id="userMsg"></fieldset>
-
 				<fieldset class="inline">
 			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_width');?>"
 					 					   height="<?php echo Settings::get('thumbnail_height');?>">

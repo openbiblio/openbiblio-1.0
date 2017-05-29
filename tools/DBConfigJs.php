@@ -102,7 +102,7 @@ var cdc = {
 						function (response) {
 			//console.log(response);
 			$('#chgRslts').html(response);
-			//$('#msgArea').html(response);
+			//$('#userMsg').html(response);
 			//#('#msgDiv').show()
 		});
 	},

@@ -84,11 +84,11 @@ var chk = {
 		$.post(chk.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show().hide(2000);
 				chk.fetchShelvingCart();  //update screen
 			}
@@ -105,11 +105,11 @@ var chk = {
 		$.post(chk.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show().hide(2000);
 				chk.fetchShelvingCart();  //update screen
 				$('#shelvedCopiesList').add('<tr><td>Barcode</td><td>Title</td></tr>');

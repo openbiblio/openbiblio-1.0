@@ -12,8 +12,10 @@ body {
     color:#000000; background:#90b0b8;
 }
 
+.note { color:green; }
 .error { color:red; /*!important;*/ }
 .warning { color:orange; /*!important;*/ }
+.info { color: green }
 .italic { color:lightblue; }
 
 /* headers */
@@ -27,8 +29,7 @@ fieldset { background-color:#ffffdd; }
 tbody.striped tr:nth-child(odd) { background-color:#EEE; }
 tbody.striped tr:nth-child(even) { background-color:#CCC; }
 
-/* styling for javascript stop-gap placeholder for browsers without native support */
-.placeholder { color:#aaa; }
+:: placeholder, .placeholder { color:#000; }
 
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 /* to revert to normal OS button style, remove this block */
@@ -82,7 +83,6 @@ nav a.button:visited { color:black; }
 .search_result .available { font:0.87em serif;	/* 14/16 */ }
 
 /*************************************************/
-div#msgDiv { color:red; }
 span.highLite { color:#FF8A00; }
 
 #configDiv ul#existing li { color:black; background:#FFFF99; }

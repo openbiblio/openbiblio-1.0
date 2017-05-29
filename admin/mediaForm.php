@@ -134,7 +134,7 @@
 </div>
 
 <div id="msgDiv" style="display: none;">
-	<fieldSet id="msgArea"></fieldset>
+	<fieldSet id="userMsg"></fieldset>
 </div>
 
 <p class="note">

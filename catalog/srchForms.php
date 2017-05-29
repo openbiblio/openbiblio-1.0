@@ -24,7 +24,7 @@
 
 	$nav = "localSearch";
 	$menu = $tab . '/search/catalog';
-	$focus_form_name = "barcodesearch";
+	$focus_form_name = "phraseSearch";
 	$focus_form_field = "ph_searchText";
 	if ($tab != "opac") {
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
@@ -33,13 +33,9 @@
 	Nav::node($menu, T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
 	Nav::node($menu, T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>$title));
-
-	//print_r($_SESSION); // for debugging
 ?>
 
 <div id="crntMbrDiv">to be filled by server</div>
-
-<p id="errSpace" class="error">to be filled by server</p>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="searchDiv">
@@ -216,7 +212,6 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
-	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
 		<?php if (!(($tab == 'opac') || ($tab == 'rpt'))) { ?>
 			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>

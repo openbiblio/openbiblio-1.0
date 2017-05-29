@@ -125,7 +125,7 @@
         </fieldset>
         </form>
 
-    <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
+    <div id="msgDiv" style="display: none;"><fieldSet id="userMsg"></fieldset></div>
 
     <p class="note">
     	<?php echo T("Note");?>:<br /><?php echo T("collectionsListNoteMsg"); ?>

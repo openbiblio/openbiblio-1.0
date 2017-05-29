@@ -50,7 +50,7 @@ class Col extends Admin {
     		$('.distOnly').show().attr('required','true');
     	}
     	else {
-    		$('#msgArea').html('Invalid Collection Type');
+    		$('#userMsg').html('Invalid Collection Type');
     		$('#msgDiv').show();
     	}
     };

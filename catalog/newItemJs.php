@@ -107,7 +107,7 @@ var ni = {
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
-		$('#msgDiv').hide();
+		obib.hideMsg('now');
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
@@ -252,16 +252,19 @@ var ni = {
 	 	var parms=$('#newBiblioForm').serialize();
 		parms += '&mode=doInsertBiblio';
 	    $.post(ni.url,parms, function(response){
-    	  	if (response.indexOf('{') == 0) {
-				var rslt = JSON.parse(response);
+    	  	if (typeof response == 'object') {
+				var rslt = response;
 				ni.bibid = rslt['bibid'];
+				//console.log('posted #'+ni.bibid)
+				obib.showMsg('new biblio #'+ni.bibid+' posted');
 				ni.showCopyEditor(ni.bibid);
     		}
     		else {
-				$('#msgDiv').html(response).show();
+				//console.log(response);
+				obib.showMsg(response);
 				$('#content').scrollTop(0);
 			}
-    	});
+    	}, 'JSON');
 	    return false;
 	},
 	
@@ -303,7 +306,7 @@ var ni = {
 		//console.log('in newItemJs.php::doPhotoAdd()');
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
-        $('#fotoMsg').hide();
+//		obib.hideMsg(response);
 		$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 		$('#fotoBibid').val(ni.bibid);
 
@@ -418,6 +421,7 @@ var ni = {
             $('#lookupVal').val(test)
 			$('#srchBy').focus();
 			$('#errMsgTxt').html(msg);
+			obib.showMsg(msg);
 			return rslt;
 		}
 	},

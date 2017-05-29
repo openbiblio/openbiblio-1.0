@@ -115,7 +115,7 @@ var bs = {
 
 		// for the item edit and online update functions
 		$('.itemGobkBtn').on('click',null,function () {
-   		$('#itemEditorDiv').hide();
+   			$('#itemEditorDiv').hide();
 		 	$('#biblioDiv').show();
 		});
 			
@@ -137,57 +137,56 @@ var bs = {
 	initWidgets: function () {
 	},
 	resetForms: function () {
-	  //console.log('resetting Search Form');
+	  	//console.log('resetting Search Form');
 		$('#advancedSrch').hide();
 		$('#marcTagsRow').hide();
-	  $('#crntMbrDiv').hide();
-	  $('#searchDiv').show();
-		$('p.error').hide();
-	  $('#biblioDiv').hide();
-	  $('#biblioListDiv').hide();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
-	  bs.multiMode = false;
-	  bs.checkPhraseSrchBtn();
-	  bs.checkBarcdSrchBtn();
+	  	$('#crntMbrDiv').hide();
+	  	$('#searchDiv').show();
+		obib.hideMsg('now');
+	  	$('#biblioDiv').hide();
+	  	$('#biblioListDiv').hide();
+	  	$('#itemEditorDiv').hide();
+	  	$('#copyEditorDiv').hide();
+	  	$('#photoEditorDiv').hide();
+	  	bs.multiMode = false;
+	  	bs.checkPhraseSrchBtn();
+	  	bs.checkBarcdSrchBtn();
 		$('#marcBtn').val(bs.showMarc);
 		if (opacMode) $('#barcodeSearch').hide();
 		$('#ph_searchText').focus();
 	},
 	rtnToSrch: function () {
-  	$('tbody#biblio').html('');
-  	$('tbody#copies').html('');
-	  $('#rsltMsg').html('');
-	  $('#editRsltMsg').html('');
-	  $('#biblioDiv').hide();
-	  $('#biblioListDiv').hide();
-	  $('#searchDiv').show();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
-	  bs.checkPhraseSrchBtn();
-	  bs.checkBarcdSrchBtn();
+  		$('tbody#biblio').html('');
+  	  	$('tbody#copies').html('');
+		obib.hideMsg();
+		$('#editRsltMsg').html('');
+		$('#biblioDiv').hide();
+		$('#biblioListDiv').hide();
+		$('#searchDiv').show();
+		$('#itemEditorDiv').hide();
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
+		bs.checkPhraseSrchBtn();
+		bs.checkBarcdSrchBtn();
 	},
 	rtnToList: function () {
-	  $('#rsltMsg').html('');
-	  $('#editRsltMsg').html('');
-	  $('#biblioDiv').hide();
-	  $('#biblioListDiv').show();
-	  $('#searchDiv').hide();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
+		obib.hideMsg();
+		$('#editRsltMsg').html('');
+		$('#biblioDiv').hide();
+		$('#biblioListDiv').show();
+		$('#searchDiv').hide();
+		$('#itemEditorDiv').hide();
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
 	},
 	rtnToBiblio: function () {
-	  $('#rsltMsg').html('');
-	  $('#editRsltMsg').html('');
-	  $('#biblioDiv').show();
-	  $('#biblioListDiv').hide();
-	  $('#searchDiv').hide();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
+		obib.hideMsg();
+		$('#biblioDiv').show();
+		$('#biblioListDiv').hide();
+		$('#searchDiv').hide();
+		$('#itemEditorDiv').hide();
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
 	},
 
 	checkPhraseSrchBtn: function () {
@@ -227,11 +226,6 @@ var bs = {
 			echo "bs.doPhraseSearch();\n";
 		}
 		?>
-	},
-
-	showMsg: function (msg) {
-		$('#errSpace').html(msg);
-		$('.error').show();
 	},
 
 	//------------------------------
@@ -319,11 +313,11 @@ var bs = {
         var params = '&mode=doBibidSearch&bibid='+bibid;
         $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
-				$('#errSpace').html(jsonInpt).show();
+				obib.showMsg(jsonInpt);
 			} else {
 				bs.biblio = JSON.parse(jsonInpt);
 				if (!bs.biblio.data) {
-	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
+	  			obib.showMsg('<?php echo T("NothingFoundByBarcdSearch") ?>');
 				}
 				else {
 					idis.showOneBiblio(bs.biblio)
@@ -347,7 +341,7 @@ var bs = {
 		params += '&mode=doBarcdSearch';
 	    $.post(bs.url,params, function(jsonInpt){
 			if (jsonInpt.message) {
-				$('#errSpace').html(jsonInpt.message).show();
+				obib.showMsg(jsonInpt.message);
 				return false;
 			} else {
 				bs.biblio = jsonInpt;
@@ -358,7 +352,7 @@ var bs = {
 				}
 				else if (bs.biblio.hdr == null) {
 				    var msgTxt =
-	  			    $('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
+	  			    obib.showMsg('<?php echo T("Nothing Found") ?>');
 	  			    bs.rtnToSrch();
 				}
 				else {
@@ -375,7 +369,6 @@ var bs = {
         $('#biblioListDiv').show()
         $('#searchDiv').hide();
         $('#resultsArea').html('');
-        $('#errSpace').html('');
 
 		// searchType 'ID' gets special handling
 		var searchType = $('#ph_searchType option:selected').val();
@@ -405,7 +398,7 @@ var bs = {
 	    $.post(bs.url,params, function(jsonInpt){
 			//if ($.trim(jsonInpt).substr(0,1) != '[') {
 			//if ($.trim(jsonInpt).substr(0,1) != '[') {
-			//	$('#errSpace').html(jsonInpt).show();
+			//	$('#userMsg').html(jsonInpt).show();
 			//} else {
 				//var biblioList = JSON.parse(jsonInpt);
 				var biblioList = jsonInpt;
@@ -656,7 +649,6 @@ var bs = {
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
 		$('#deltFotoBtn').hide();
 		//$('#updtFotoBtn').hide(); // not yet available
-        $('#userMsg').hide();
 		$('#addFotoBtn').show();
         $('#fotoMsg').hide();
 		$('#fotoMode').val('addNewPhoto')

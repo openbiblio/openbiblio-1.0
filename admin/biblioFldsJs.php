@@ -252,7 +252,7 @@ var mtl = {
 		var parms = "mode=updateMarcFields&jsonStr=["+outStr+"]";
 		$.post(mtl.url, parms, function(response) {
 			if (response.length > 0) {
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			mtl.fetchMatlFlds();
@@ -272,12 +272,12 @@ var mtl = {
 		$('#fldSet').empty();
 		$('#existing').empty();
 		$('#msgDiv').hide();
-		$('#msgArea').empty();
+		$('#userMsg').empty();
 	  $.post(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
 			mtl.data = data;	// for later use
 			var html = '';
 			var html2 = '';
-				$('#msgArea').html(html);
+				$('#userMsg').html(html);
 				$('#msgDiv').show();
 			if ((!data.length) || (data.length == 0)){
 				html2  = '<li id="zqzqz099a" tag="099" subfld="a">099a - Call Number</li>\n';
@@ -400,14 +400,14 @@ var mtl = {
 		$.post(mtl.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			else {
 			  	mtl.fetchMatlFlds();
 				$('#updateMsg').html(mtl.successMsg);
 				$('#updateMsg').show();
-				$('#msgArea').html(mtl.successMsg);
+				$('#userMsg').html(mtl.successMsg);
 				$('#msgDiv').show();
 				$('#editCnclBtn').val(mtl.goBackLbl)
 			}
@@ -424,11 +424,11 @@ var mtl = {
 				function(response){
 					if (($.trim(response)).substr(0,1)=='<') {
 						console.log('rcvd error msg from server :<br />'+response);
-						$('#msgArea').html(response);
+						$('#userMsg').html(response);
 						$('#msgDiv').show();
 					}
 					else {
-						$('#msgArea').html(mtl.deleteMsg);
+						$('#userMsg').html(mtl.deleteMsg);
 						$('#msgDiv').show();
 				  		mtl.doReloadList();
 					}

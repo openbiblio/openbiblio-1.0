@@ -25,7 +25,7 @@
 <h3><?php echo T("Current Members"); ?></h3>
 
 <!-- ------------------------------------------------------------------------ -->
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <!-- ------------------------------------------------------------------------ -->
 <p id="errSpace" class="error"></p>

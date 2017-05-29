@@ -84,7 +84,7 @@ var oed = {
 		$.post(oed.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			else if (response.substr(0,1)=='1'){

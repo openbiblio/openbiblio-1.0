@@ -84,7 +84,7 @@ console.log('failed a validation chk')
         console.log('in staffJs6::chkRoles()');
         if (!roles) {
             var errMsg = '<?php echo T("Role MUST be selected"); ?>';
-    		$('#msgArea').html(errMsg).show();
+    		$('#userMsg').html(errMsg).show();
     		$('#msgDiv').show();
     	}
     	return roles;
@@ -100,7 +100,7 @@ console.log('failed a validation chk')
 		if (errMsg != '') {
             console.log(errMsg);
 			alert(errMsg);
-			$('#msgArea').html(errMsg).show();
+			$('#userMsg').html(errMsg).show();
 			$('#msgDiv').show();
 			return false;
 		}

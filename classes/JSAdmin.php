@@ -214,7 +214,7 @@ class Admin {
     		case 'addBtn':	this.doAddBtn();	break;
     		case 'updtBtn':	this.doUpdtBtn();  	break;
     		case 'deltBtn':	this.doDeltBtn();  	break;
-    		default: $('#msgArea').html("'"+theId+"' is not a valid action button id");
+    		default: $('#userMsg').html("'"+theId+"' is not a valid action button id");
     				 $('#msgDiv').show();
     	}
     };
@@ -293,11 +293,11 @@ class Admin {
 
     showResponse (response) {
     	if (($.trim(response)).indexOf('Success') > -1){
-    		$('#msgArea').html(response);
+    		$('#userMsg').html(response);
     		$('#msgDiv').show();
             //this.doBackToList();
     	} else {
-    	    $('#msgArea').html(response);
+    	    $('#userMsg').html(response);
     	    $('#msgDiv').show();
         }
         return

@@ -99,7 +99,7 @@ var wc = {
 		}
 /**/
 /*
-		// this is Mozilla recommended solution, doesn't seem to work here - FL
+		// this is Mozilla recommended solution, doesn't seem to work here - FL May2017
 		var constraints = {
 			audio: false,
 			video: { width: {min: wc.fotoWidth},
@@ -132,8 +132,6 @@ var wc = {
 	//----//
 	resetForm: function () {
 		$('.help').hide();
-		//$('#errSpace').hide();
-        $('#userMsg').html("").hide();
         $('#fotoDiv').hide();
 		$('#camera').hide();
 		$('#canvasIn').hide();
@@ -233,7 +231,7 @@ var wc = {
 	sendFoto: function (e) {
 		//console.log('sending foto');
 		if (e) e.stopPropagation();
-        $('#errSpace').hide();
+//		obib.hideMsg(); // clear any user msgs
 		var imgMode = '',
 			current_add_mode = '',
 			url = $('#fotoName').val(),
@@ -249,18 +247,17 @@ var wc = {
 			 	 'url': url,
                  'position':0,
 				},
-				function (response) {
-					//var data = JSON.parse(response);
-					var data = response;
-					//console.log('image posting OK');
+				function (data) {
+					//console.log('local image posting OK');
 					var crntFotoUrl = data[0]['url'];
-					$('#fotoMsg').html('cover photo posted').show();
+					// paste this photo to parent biblio (used by 'Existing Item' viewer)
 					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
 						+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
 					if (typeof bs !== 'undefined') {
 						bs.crntFotoUrl = crntFotoUrl;
-						bs.getPhoto(bibid, '#photo_'+bibid );
+//						bs.getPhoto(bibid, '#photo_'+bibid );
 					}
+					obib.showMsg('<?php echo T("cover photo posted");?>: '+crntFotoUrl);
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
 				}, 'json'
@@ -272,24 +269,23 @@ var wc = {
                			'bibid':bibid,
 			 	'url': url,
 				},
-				function (response) {
-					//var data = JSON.parse(response);
-					var data = response;
-					//console.log('image posting OK');
+				function (data) {
+					//console.log('remote image posting OK');
 					var crntFotoUrl = data[0]['url'];
-					$('#fotoMsg').html('cover photo posted').show();
-						$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
+					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
 							+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-						if (typeof bs !== 'undefined') {
+					if (typeof bs !== 'undefined') {
 						bs.crntFotoUrl = crntFotoUrl;
 						bs.getPhoto(bibid, '#photo_'+bibid );
 					}
+					obib.showMsg('<?php echo T("cover photo posted");?>');
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
 				}, 'json'
 			);
 		}
-		return false;
+		obib.showMsg('<?php echo T("cover photo posted");?>');
+//		return false;
 	},
 
 	doUpdatePhoto: function (e) {
@@ -322,7 +318,7 @@ var wc = {
                             wc.finishUpdate();
                         } else {
 					       $('#fotoName').val('');
-						   $('#fotoMsg').html('cover photo deleted').show();
+						   obib.showMsg('<?php echo T("cover photo deleted");?>');
                        }
 				 }
                  , 'json'

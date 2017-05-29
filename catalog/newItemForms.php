@@ -125,7 +125,6 @@ th.colHead { white-space: nowrap; }
 			
 			
 		</fieldset>
-		<p id="errMsgTxt"></p>
 		</form>
 	</div>
 	
@@ -179,10 +178,6 @@ th.colHead { white-space: nowrap; }
 			Search Results go here
 		</div>
 		<input id="choiceBtn2" type="button" class="button btnFld" value="<?php echo T("Go Back");?>" />
-	</div>
-
-	<!-- =================================================== -->
-	<div id="msgDiv">
 	</div>
 
 	<!-- =================================================== -->

@@ -48,7 +48,7 @@
 		<fieldset id="rslts"> </fieldset>
 	</section>
 	
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));

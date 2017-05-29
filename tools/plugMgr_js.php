@@ -22,7 +22,7 @@ div#listDiv h5{
 /*#msgDiv fieldset {
 		padding: 5px;
 	}*/
-#msgArea h4 {
+#userMsg h4 {
 	margin: 0; padding: 2px;
 	color: red;
 	}
@@ -64,7 +64,7 @@ var plm = {
 		var parms = 'mode=updatePluginSetting&allow_plugins_flg='+state;
 		$.post(plm.url, parms, function(response) {
 		  if (response.length > 0) {
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			plm.checkPluginOK();
@@ -121,7 +121,7 @@ var plm = {
 		var parms = 'mode=updatePluginList&id='+meId+'&allowPlugin='+state;
 		$.post(plm.url, parms, function(response) {
 		  if (response.length > 0) {
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 		});

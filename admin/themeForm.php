@@ -208,7 +208,7 @@
 </fieldset>
 </form>
 
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <p class="note">
 	<?php echo T("Note"); ?>:<br /><?php echo T("No delete on active theme"); ?>

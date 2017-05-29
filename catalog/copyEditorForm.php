@@ -9,7 +9,6 @@
 ?>
 
 	<p class="note"><?php echo T("Fields marked are required"); ?></p>
-	<p id="editRsltMsg" class="error"></p>
 
 	<form id="copyForm" name="copyForm" >
 	<fieldset>

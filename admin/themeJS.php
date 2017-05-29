@@ -101,7 +101,7 @@ var thm = {
 					.html(<?php echo "'".T("in use")."'"; ?>);
 			thm.crntTheme = newTheme;
 
-			$('#msgArea').html(response);
+			$('#userMsg').html(response);
 			$('#msgDiv').show();
 			 thm.doBackToList();
 		});
@@ -207,11 +207,11 @@ var thm = {
 		$.post(thm.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html('Added!');
+				$('#userMsg').html('Added!');
 				$('#msgDiv').show();
 			  thm.doBackToList();
 			}
@@ -228,11 +228,11 @@ var thm = {
 		$.post(thm.url, parms, function(response) {
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
+				$('#userMsg').html(response);
 				$('#msgDiv').show();
 			}
 			else {
-				$('#msgArea').html('response');
+				$('#userMsg').html('response');
 				$('#msgDiv').show();
 			  thm.doBackToList();
 			}
@@ -251,11 +251,11 @@ var thm = {
 	  	$.post(thm.url, parms, function(response){
 				if (($.trim(response)).substr(0,1)=='<') {
 					//console.log('rcvd error msg from server :<br />'+response);
-					$('#msgArea').html(response);
+					$('#userMsg').html(response);
 					$('#msgDiv').show();
 				}
 				else {
-					$('#msgArea').html('response');
+					$('#userMsg').html('response');
 					$('#msgDiv').show();
 			  	thm.doBackToList();
 				}
