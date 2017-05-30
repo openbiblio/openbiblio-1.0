@@ -27,7 +27,7 @@ class Staff extends CoreTable {
 			'start_page'=>'string',
 		));
     $this->setReq(array(
-        'username', 'pwd', 'last_name', 'secret_key', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg', 'start_page',
+        'username', 'pwd', 'last_name', 'secret_key', 'start_page',
     ));
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
@@ -47,21 +47,10 @@ class Staff extends CoreTable {
 		foreach ($this->reqFields as $req) {
 			if ($insert and !isset($rec[$req])
 					or isset($rec[$req]) and $rec[$req] == '') {
-				//$errors[] = new FieldError($req, T("Required field missing"));
 				$errors[] = array('NULL', T("Required field missing").": ".$req);
 			}
 		}
         $nFlg = 0;
-		foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
-			if (isset($rec[$flg.'_flg']) && ($rec[$flg.'_flg'] == 'Y')) {
-                $nFlg++;
-			} else {
-				$rec[$flg.'_flg'] = 'N';
-			}
-		}
-        if ($nFlg < 1) {
-            $errors[] = array('NULL', T("Role MUST be selected"));
-        }
         // login credentials
 		if (isset($rec['pwd'])) {
 			if (!isset($rec['pwd2']) or ($rec['pwd'] != $rec['pwd2']) ) {
@@ -92,6 +81,21 @@ class Staff extends CoreTable {
 		if(!isset($rec['secret_key'])) {
 			$rec['secret_key'] = md5(time());
 		}
+
+		foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
+			if (isset($rec[$flg.'_flg']) && ($rec[$flg.'_flg'] == 'Y')) {
+                $nFlg++;
+			} else {
+                $nFlg++;
+				$rec[$flg.'_flg'] = 'N';
+			}
+			//echo $flg."_flg = '".$rec[$flg.'_flg']."' <br />\n";
+		}
+		// this should be part of validations
+        //if ($nFlg < 1) {
+        //    $errors[] = array('NULL', T("Role MUST be selected"));
+        //}
+
 		unset($rec['userid']);
 		$rslt = parent::insert_el($rec, $confirmed);
         return $rslt;

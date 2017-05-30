@@ -14,7 +14,6 @@
 <h3><?php echo T("Staff Members"); ?></h3>
 
 <div id="listDiv" style="display: none;">
-<h5 id="updateMsg"></h5>
 
 <form id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
@@ -169,12 +168,11 @@
 	</ul>
 </fieldset>
 </form>
-
-<div id="msgDiv" style="display: none;"><fieldSet id="userMsg"></fieldset></div>
+</div>
 
 <?php
-  	require_once(REL(__FILE__,'../shared/footer.php'));
-	
+    require_once(REL(__FILE__,'../shared/footer.php'));
+
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
 	require_once(REL(__FILE__, "../admin/staffJs6.php"));
 ?>

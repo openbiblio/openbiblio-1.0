@@ -2,6 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+ini_set('display_errors', 1);
 
   require_once("../shared/common.php");
 
@@ -427,7 +428,6 @@ ini_set('display_errors', 1);
 			echo json_encode($sites);
 			break;
 		case 'addNew_sites':
-ini_set('display_errors', 1);
 			echo $ptr->insert($_POST);
 			break;
 		case 'update_sites':

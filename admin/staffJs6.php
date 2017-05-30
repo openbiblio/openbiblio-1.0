@@ -62,19 +62,22 @@ class Stf extends Admin {
     };
 
     doAddBtn () {
-console.log('in staffJs6::doAddBtn()');
+		//console.log('in staffJs6::doAddBtn()');
 	    //console.log('got "addBtn"');
 		let pw1 = $('#xpwd1').val();
 		let pw2 = $('#xpwd2').val();
-console.log("pw1=<"+pw1+">");
-console.log("pw2=<"+pw2+">");
+		//console.log("pw1=<"+pw1+">");
+		//console.log("pw2=<"+pw2+">");
         var pwOk = this.chkPwds(pw1, pw2);
         var rolesOk = this.chkRoles();
 		//console.log('rolesOk = '+rolesOk);
         if (rolesOk && pwOk) {
             this.doAddFields();
+			obib.hideMsg('now');
         } else {
-console.log('failed a validation chk')
+			var errMsg = '<?php echo T("validation check failed "); ?>';
+			console.log(errMsg);
+			//obib.showMsg(errMsg); // redundant, not needed
             return false;
         }
     };
@@ -84,8 +87,8 @@ console.log('failed a validation chk')
         console.log('in staffJs6::chkRoles()');
         if (!roles) {
             var errMsg = '<?php echo T("Role MUST be selected"); ?>';
-    		$('#userMsg').html(errMsg).show();
-    		$('#msgDiv').show();
+            console.log(errMsg);
+			obib.showError(errMsg)
     	}
     	return roles;
     }
@@ -99,9 +102,8 @@ console.log('failed a validation chk')
 		}
 		if (errMsg != '') {
             console.log(errMsg);
-			alert(errMsg);
-			$('#userMsg').html(errMsg).show();
-			$('#msgDiv').show();
+//			alert(errMsg);
+			obib.showError(errMsg)
 			return false;
 		}
 		return true;

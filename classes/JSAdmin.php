@@ -34,7 +34,7 @@ class Admin {
 
     	this.initWidgets();
 
-    	$('#msgDiv').hide();
+ //   	$('#msgDiv').hide();
     	$('#reqdNote').css('color','red');
     	$('.reqd sup').css('color','red');
     	$('#updateMsg').hide();
@@ -214,8 +214,7 @@ class Admin {
     		case 'addBtn':	this.doAddBtn();	break;
     		case 'updtBtn':	this.doUpdtBtn();  	break;
     		case 'deltBtn':	this.doDeltBtn();  	break;
-    		default: $('#userMsg').html("'"+theId+"' is not a valid action button id");
-    				 $('#msgDiv').show();
+    		default: obib.showError("'"+theId+"' is not a valid action button id");
     	}
     };
 	doAddBtn () {
@@ -229,8 +228,8 @@ class Admin {
     }
 
     doAddFields () {
-		//console.log('in JSAdmin::doAddFields()');
-    	$('#msgDiv').hide();
+console.log('in JSAdmin::doAddFields()');
+    	obib.hideMsg('now');
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
     	var parms = this.doGatherParams();
@@ -253,9 +252,13 @@ class Admin {
 		return jQuery.param(params);
     };
     addHandler (response) {
-		//console.log(response);
+console.log('in add handler');
         this.seqNum = response[0];
-    	this.showResponse(response[1]);
+		if (Number.isInteger(this.seqNum )) {
+    		this.showResponse('Success');
+		} else {
+    		this.showResponse(response);
+		}
     };
 
     doUpdateFields () {
@@ -288,17 +291,17 @@ class Admin {
     	return false;
     };
     deleteHandler (response){
+		if (response == '') response = 'Success - Delete completed';
     	this.showResponse(response);
     };
 
     showResponse (response) {
+console.log(response);
     	if (($.trim(response)).indexOf('Success') > -1){
-    		$('#userMsg').html(response);
-    		$('#msgDiv').show();
+    		obib.showMsg(response);
             //this.doBackToList();
     	} else {
-    	    $('#userMsg').html(response);
-    	    $('#msgDiv').show();
+    	    obib.showError(response);
         }
         return
     };
