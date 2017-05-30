@@ -60,7 +60,6 @@
 
 <div id="workDiv">
 <form id="workForm" name="workForm">
-<h5 id="updateMsg"></h5>
 <table id="showList" name="showList">
 	<thead>
   <tr>
@@ -159,8 +158,6 @@
 </fieldset>
 </form>
 </div>
-
-<div id="msgDiv" style="display:none" ><fieldSet><span id="userMsg"></span></fieldset></div>
 
 <!-- load javaScript -->
 <?php

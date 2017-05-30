@@ -28,10 +28,6 @@ var mtl = {
 		mtl.resetForms();
 		mtl.initWidgets();
 
-		$('#reqdNote').css('color','red');
-		$('.reqd sup').css('color','red');
-		$('#updateMsg').hide();
-
 		//mtl.btnColor = [];
 		mtl.configBtn = $('#configBtn');
 		mtl.saveBtn = $('#saveBtn');
@@ -75,8 +71,7 @@ var mtl = {
 		$('#workDiv').hide();
 		$('#configDiv').hide();
 		$('#editDiv').hide();
-	  	$('#msgDiv').hide();
-		$('#updateMsg').hide();
+	  	obib.hideMsg('now');
 		mtl.disableBtn('configBtn');
 		mtl.disableBtn('saveBtn');
 		mtl.disableBtn('goBackBtn');
@@ -112,8 +107,8 @@ var mtl = {
 		$('#workDiv').show();
 		$('#configDiv').hide();
 		$('#editDiv').hide();
-	  	$('#msgDiv').hide();
-		$('#updateMsg').hide();
+	  	//$('#msgDiv').hide();
+		//$('#updateMsg').hide();
 		$('#editCnclBtn').val(mtl.cancelLbl);
 		mtl.enableBtn('configBtn');
 		mtl.disableBtn('saveBtn');
@@ -161,14 +156,14 @@ var mtl = {
 	//------------------------------
 	// this section is for the drag & drop layout display
 	doConfigLayout: function () {
-	  $('#typeList').disable();
-	  $('#workDiv').hide();
-	  $('#msgDiv').hide();
-	  $('#marcTags').hide()
+		$('#typeList').disable();
+		$('#workDiv').hide();
+		obib.hideMsg();
+		$('#marcTags').hide()
 		var matl = $('#typeList option:selected').text();
-	  $('#configName').html("'"+matl+"'");
+		$('#configName').html("'"+matl+"'");
 	  
-	  mtl.fetchMarcBlocks();
+	  	mtl.fetchMarcBlocks();
 	  
 		mtl.disableBtn('configBtn');
 		mtl.enableBtn('saveBtn');
@@ -176,7 +171,7 @@ var mtl = {
 		$('#configDiv').show();
 	},
 	fetchMarcBlocks: function () {
-	  $.post(mtl.url,{mode:'getMarcBlocks'}, function(data){
+	  	$.post(mtl.url,{mode:'getMarcBlocks'}, function(data){
 			var html = "<option value=\"0\">Choose a Block</option>\n";
 			for (var n in data) {
 				html += '<option value="'+data[n]['block_nmbr']+'">'
@@ -187,9 +182,9 @@ var mtl = {
 		}, 'json');
 	},
 	fetchMarcTags: function () {
-	  $('#potential').html('');
-	  mtl.blockNmbr = $('#marcBlocks').val();
-	  $.post(mtl.url,{mode:'getMarcTags',block_nmbr:mtl.blockNmbr}, function(data){
+		$('#potential').html('');
+		mtl.blockNmbr = $('#marcBlocks').val();
+		$.post(mtl.url,{mode:'getMarcTags',block_nmbr:mtl.blockNmbr}, function(data){
 			var html = "<option value=\"0\">Choose a Tag</option>\n";
 			for (var n in data) {
 				html += '<option value="'+data[n]['tag']+'">'
@@ -200,8 +195,8 @@ var mtl = {
 		}, 'json');
 	},
 	fetchMarcFields: function () {
-	  mtl.tagNmbr = $('#marcTags').val();
-	  $.post(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
+	  	mtl.tagNmbr = $('#marcTags').val();
+	  	$.post(mtl.url,{mode:'getMarcFields',tag:mtl.tagNmbr}, function(data){
 			var html = '';
 			for (var n in data) {
 			  var id = ('0'+data[n]['tag']).substr(-3,3)+data[n]['subfield_cd'];
@@ -226,8 +221,8 @@ var mtl = {
 		for (var n in arayd) {
 			if (($.trim(arayd[n])).substr(0,5) == "zqzqz"){
 				// deal with additions
-			  var entry = $('#'+arayd[n]);
-			  var id = (arayd[n]).substr(5,99);
+			  	var entry = $('#'+arayd[n]);
+			  	var id = (arayd[n]).substr(5,99);
 				var tag = entry.attr('tag');
 				while (tag.length < 3) { tag = '0'+tag; };
 				var subFld = entry.attr('subFld');
@@ -241,7 +236,7 @@ var mtl = {
 									 ',"required":"0","repeatable":"0"},';
 			} else {
 				// position of hold-overs from original layout
-		  	// param name & value MUST be in double quotes
+		  		// param name & value MUST be in double quotes
 				jsonStr += '{"id":"'+arayd[n]+'","position":"'+n+'"},';
 			}
 		}
@@ -252,8 +247,9 @@ var mtl = {
 		var parms = "mode=updateMarcFields&jsonStr=["+outStr+"]";
 		$.post(mtl.url, parms, function(response) {
 			if (response.length > 0) {
-				$('#userMsg').html(response);
-				$('#msgDiv').show();
+				obib.showMsg(response);
+			} else {
+				obib.showMsg(mtl.successMsg);
 			}
 			mtl.fetchMatlFlds();
 		});
@@ -271,14 +267,13 @@ var mtl = {
 		var matl = $('#typeList').val();
 		$('#fldSet').empty();
 		$('#existing').empty();
-		$('#msgDiv').hide();
-		$('#userMsg').empty();
-	  $.post(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
+//		obib.hideMsg();
+	  	$.post(mtl.url,{mode:'getMatlFlds', matlCd: matl}, function(data){
 			mtl.data = data;	// for later use
 			var html = '';
 			var html2 = '';
-				$('#userMsg').html(html);
-				$('#msgDiv').show();
+//			$('#userMsg').html(html);
+//			$('#msgDiv').show();
 			if ((!data.length) || (data.length == 0)){
 				html2  = '<li id="zqzqz099a" tag="099" subfld="a">099a - Call Number</li>\n';
 				html2 += '<li id="zqzqz100a" tag="100" subfld="a">100a - Author</li>\n';
@@ -338,8 +333,8 @@ var mtl = {
 	},
 	
 	collectSpanData: function (id) {
-	  // collect data from a single line in preparation for editing; return as array of JSON
-	  var rslt = '[';
+	  	// collect data from a single line in preparation for editing; return as array of JSON
+	  	var rslt = '[';
 		var entry = '';
 	    $('#'+id+' span.fldData').each(function (n) {
 			entry = "{'name':'"+$(this).attr('name')+"','value':'"+$(this).html()+"'},";
@@ -355,7 +350,7 @@ var mtl = {
 	doEdit: function (e) {
 	  	// come here as result of pressing a line's edit button
 		$('#workDiv').hide();
-		$('#msgDiv').hide();
+//		obib.hideMsg();
 		$('#addBtn').hide();
 		$('#typeList').disable();
 		mtl.hideTopBtns();
@@ -391,8 +386,7 @@ var mtl = {
 	
 	doUpdateFldset: function () {
 	    //if (!mtl.doValidate(e)) return;
-		$('#updateMsg').hide();
-		$('#msgDiv').hide();
+		obib.hideMsg();
 		$('#editMode').val('updateFldSet');
 
 		var parms = $('#editForm').serialize();
@@ -424,12 +418,10 @@ var mtl = {
 				function(response){
 					if (($.trim(response)).substr(0,1)=='<') {
 						console.log('rcvd error msg from server :<br />'+response);
-						$('#userMsg').html(response);
-						$('#msgDiv').show();
+						obib.showError(response);
 					}
 					else {
-						$('#userMsg').html(mtl.deleteMsg);
-						$('#msgDiv').show();
+						obib.showMsg(mtl.deleteMsg);
 				  		mtl.doReloadList();
 					}
 				});
@@ -437,19 +429,19 @@ var mtl = {
 	},
 	
 	doNewFldset: function (e) {
-	  $('#hostHdr').html(mtl.newHdr);
-	  $('#hostForm tfoot #updtBtn').hide();
-	  $('#hostForm tfoot #addBtn').show();
-	  $('#hostForm tbody #name').focus();
+		$('#hostHdr').html(mtl.newHdr);
+		$('#hostForm tfoot #updtBtn').hide();
+		$('#hostForm tfoot #addBtn').show();
+		$('#hostForm tbody #name').focus();
 
 		$('#listDiv').hide();
 		$('#editDiv').show();
 	},
 
 	doValidate: function () {
-console.log('user input validation not available!!!!, see admin/settings_edit');
+		console.log('user input validation not available!!!!, see admin/settings_edit');
 		return true;
- }
+	}
 };
 
 $(document).ready(mtl.init);
