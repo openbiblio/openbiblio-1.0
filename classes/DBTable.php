@@ -160,6 +160,7 @@ abstract class DBTable extends Queryi {
 
 		$sql = $this->mkSQL('INSERT INTO %I SET ', $this->name)
 			. $this->_pairs($rec);
+		//echo "sql = $sql <br />\n";
 		$this->act($sql);
 		if ($this->sequence) {
 			if (isset($rec[$this->sequence])) {

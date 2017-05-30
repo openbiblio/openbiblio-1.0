@@ -255,7 +255,7 @@ var wc = {
 						+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
 					if (typeof bs !== 'undefined') {
 						bs.crntFotoUrl = crntFotoUrl;
-//						bs.getPhoto(bibid, '#photo_'+bibid );
+						bs.getPhoto(bibid, '#photo_'+bibid );
 					}
 					obib.showMsg('<?php echo T("cover photo posted");?>: '+crntFotoUrl);
 					$('#photoAddBtn').hide();

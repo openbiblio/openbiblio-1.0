@@ -11,11 +11,11 @@ unset($_SESSION['postVars']);
 	<!-- =================================================== -->
 	<!-- Common user message area for all pages, hidden when empty -->
 	<div id="msgDiv">
-		<span id="userMsg">to be filled</span>
+		<span id="userMsg"></span>
 	</div>
 
 
-</main>  <!-- closes of <main id="Content"> -->
+</main>  <!-- closes off <main id="Content"> -->
 
 <!-- All JavaScript should be placed at the end of <body> to improve overall performance
 
@@ -49,9 +49,9 @@ var obib = {
 			//console.log('setting focus to '+obib.focusFormName);
 		}
 		
-		/* suggest this should be in code local to desired function unless widely used -- FL */
 		// bind the confirmLink routine to all <a> tags on the current form
-		if (obib.confirmLinks) {
+		/* suggest this should be in code local to desired function unless widely used -- FL */
+		if (obib.confirmLinks) {    // defined by php above init()
 			$('a').on('click',null,obib.confirmLink);
 		}
 	},
@@ -96,7 +96,7 @@ var obib = {
 	},
 	
 	//-------------------------
-/*
+
 	//is this still required? No references found in any file. FL 29 May 2017
 	confirmLink: function(e) {
 		if (modified) {
@@ -105,7 +105,7 @@ var obib = {
 			return true;
 		}
 	}
-*/
+
 
 }
 // hold off above javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
