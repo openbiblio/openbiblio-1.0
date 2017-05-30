@@ -13,6 +13,7 @@ var set = {
     echo 'locale: "'.Settings::get('locale').'",';
     echo 'charSet: "'.Settings::get('charset').'",';
 	echo 'successMsg: "'.T("Update successful").'",';
+	echo 'failureMsg: "'.T("Update failed").'",';
 	?>
 
 	init: function () {
@@ -49,7 +50,7 @@ var set = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#updateMsg').hide();
-		$('#msgDiv').hide();
+		obib.hideMsg('now');
 		$('#editDiv').show();
 		$('#photoEditorDiv').hide();
 		$('#site_cd').focus();
@@ -147,7 +148,7 @@ var set = {
 
 	//------------------------------
 	doFotoTest: function (e) {
-console.log('test btn pressed');
+		//console.log('test btn pressed');
 		$('#fotoTestBtn').hide();
 		$('#fotoDoneBtn').show();
 		$('#updtBtn').hide();
@@ -158,7 +159,7 @@ console.log('test btn pressed');
 		wc.fotoRotate = $('#thumbnail_rotation').val();
 	},
 	doTestDone: function (e) {
-console.log('done btn pressed');
+		//console.log('test done btn pressed');
 		$('#photoEditorDiv').hide();
 		$('#fotoTestBtn').show();
 		$('#fotoDoneBtn').hide();
@@ -174,13 +175,14 @@ console.log('done btn pressed');
         if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";
         if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
         if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
-
+console.log('in doUpdate');
 		$.post(set.url, params, function (response) {
-			if (response === null)
-				$('#updateMsg').html(set.successMsg).show();
+console.log(response);
+			if (response !== null)
+				obib.showError(set.failureMsg);
 			else
-				$('#updateMsg').html('Update failed');
-		});
+				obib.showMsg(set.successMsg);
+		}, 'JSON');
 	},
 
 };

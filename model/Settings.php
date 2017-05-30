@@ -76,7 +76,7 @@ class Settings extends DBTable {
 	}
 
 	protected function validate_el($rec, $insert) {
-        return array();
+        return $rec;
     }
 
 	static public function load() {
@@ -190,7 +190,7 @@ class Settings extends DBTable {
 			$db->act($sql);
 		}
 		$db->unlock();
-		return $errors;
+		return;
 	}
 	static private function _mkField($s) {
 		global $_settings_validators;

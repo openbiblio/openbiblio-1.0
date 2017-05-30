@@ -15,8 +15,6 @@
 
 <div id="editDiv">
 	<div id="tabs">
-		<p id="updateMsg" class="warning"></p>
-
 		<fieldset>
 			<ul class="controls inline">
 				<li class="active"><a href="#localePage"><?php echo T("Locale"); ?></a></li>
@@ -120,8 +118,6 @@
 		</fieldset>
 	</div>
 </div>
-
-<div id="msgDiv" style="display: none;"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

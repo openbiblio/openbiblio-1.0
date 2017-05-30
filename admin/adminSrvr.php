@@ -404,17 +404,18 @@ ini_set('display_errors', 1);
 
 	  #-.-.-.-.-.- Settings -.-.-.-.-.-.-
 		case 'getFormData':
-      $formData = $ptr->getFormData ('admin','name,title,type,value');
-      $fd = array();
-      // translate these form titles
-      foreach($formData as $entry) {
-        $entry['title'] = T($entry['title']);
-        $fd[] = $entry;
-      }
+			$formData = $ptr->getFormData ('admin','name,title,type,value');
+			$fd = array();
+			// translate these form titles
+			foreach($formData as $entry) {
+				$entry['title'] = T($entry['title']);
+				$fd[] = $entry;
+			}
 			echo json_encode($fd);
 			break;
 		case 'update_settings':
-			echo $ptr->setAll_el($_POST);
+			$rslt = $ptr->setAll_el($_POST);
+			echo json_encode($rslt);
 			break;
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
