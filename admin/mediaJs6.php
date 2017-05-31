@@ -23,7 +23,7 @@ class Med extends Admin {
     					'default_flg': 'center'
     				   };
     	var opts = {};
-		$('.note').hide();
+//		$('.note').hide();
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
     };
 

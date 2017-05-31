@@ -34,8 +34,6 @@ class Admin {
 
     	this.initWidgets();
 
-//    	$('#updateMsg').hide();
-
 	    $('.newBtn').click(function(e) {e.preventDefault();});
     	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
     	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
@@ -53,8 +51,7 @@ class Admin {
     };
 
     resetForms () {
- //   	$('#msgDiv').hide();
-		obib.hideMsg('now');
+ 		obib.hideMsg('now');
     	$('#editDiv').hide();
         $('#listHdr').html(this.listHdr);
         $('#editHdr').html(this.editHdr);
@@ -102,6 +99,7 @@ class Admin {
     		for (var fld in this.listFlds) {
     			var theClass = this.listFlds[fld];
     			if (theClass == 'image') {
+					if (item[fld] == 'null') item[fld] = 'shim.gif';
     				html += '	<td valign="top">'
     					 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
     					 + 		item[fld] + '</td>\n';
@@ -187,6 +185,10 @@ class Admin {
     };
 	
     doNewFields (e) {
+console.log('in JSAdmin::doNewFields()');
+    	e.preventDefault();
+    	e.stopPropagation();
+
         document.forms['editForm'].reset();
         $('#fieldsHdr').html(this.newHdr);
     	for (var n in this.noshows){
@@ -205,25 +207,25 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-		//console.log('in JSAdmin::doSubmitFields()');
-    	e.preventDefault();
-    	e.stopPropagation();
+console.log('in JSAdmin::doSubmitFields()');
+//    	e.preventDefault();
+//    	e.stopPropagation();
     	var theId = e.target.id;
     	switch (theId) {
-    		case 'addBtn':	this.doAddBtn();	break;
-    		case 'updtBtn':	this.doUpdtBtn();  	break;
-    		case 'deltBtn':	this.doDeltBtn();  	break;
+    		case 'addBtn':	this.doAddBtn(e);	break;
+    		case 'updtBtn':	this.doUpdtBtn(e);  break;
+    		case 'deltBtn':	this.doDeltBtn(e);  break;
     		default: obib.showError("'"+theId+"' is not a valid action button id");
     	}
     };
-	doAddBtn () {
-        this.doAddFields()
+	doAddBtn (e) {
+        this.doAddFields(e)
     }
-	doUpdtBtn () {
-        this.doUpdateFields()
+	doUpdtBtn (e) {
+        this.doUpdateFields(e)
     }
-	doDeltBtn () {
-        this.doDeleteFields();
+	doDeltBtn (e) {
+        this.doDeleteFields(e);
     }
 
     doGatherParams () {
@@ -241,26 +243,36 @@ class Admin {
 		return jQuery.param(params);
     };
 
-    doAddFields () {
+    doAddFields (e) {
 console.log('in JSAdmin::doAddFields()');
-    	obib.hideMsg('now');
+		var f = document.getElementById('editForm');
+		if(f.reportValidity()) {
+console.log('all validations pass');
+    		obib.hideMsg('now');
+		} else {
+console.log('some validation(s) fail');
+			obib.showError('some validation(s) fail');
+			return;
+		}
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
     	var parms = this.doGatherParams();
 		parms = this.doAssembleParams(parms)
-    	$.post(this.url, parms, function (response) {
-console.log('in add handler');
-	        var seqNum = response[0];
-			if (Number.isInteger(seqNum )) {
-	    		this.showResponse('Success');
-			} else {
-	    		this.showResponse(response[1]);
-			}
-		}, 'json');
-    	return false;
+    	$.post(this.url, parms, $.proxy(this.addHandler, this), 'json');
+    	e.preventDefault();
+    	e.stopPropagation();
     };
+	addHandler (response) {
+		//console.log('in add handler');
+        var seqNum = response[0];
+		if (Number.isInteger(seqNum )) {
+    		this.showResponse('Success');
+		} else {
+    		this.showResponse(response);
+		}
+	};
 
-    doUpdateFields () {
+    doUpdateFields (e) {
 		obib.hideMsg();
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
@@ -269,6 +281,8 @@ console.log('in add handler');
     		parms.push($('#newImageFile').serializeArray());
 		}
     	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this), 'json');
+    	e.preventDefault();
+    	e.stopPropagation();
     	return false;
     };
     updateHandler (response) {
@@ -285,6 +299,8 @@ console.log('in add handler');
     								};
     		parms[this.keyFld] = $('#'+this.keyFld).val();
       	    $.post(this.url, parms, $.proxy(this.deleteHandler,this));
+    		e.preventDefault();
+    		e.stopPropagation();
     	}
     	return false;
     };
@@ -296,10 +312,13 @@ console.log('in add handler');
     };
 
     showResponse (response) {
-console.log('show response=>>> '+response);
+		//console.log('show response=>>> '+response);
     	if (($.trim(response)).indexOf('Success') > -1){
     		obib.showMsg(response);
             //this.doBackToList();
+		} else if (typeof response === 'object') {
+			var msg = JSON.stringify(response);
+    	    obib.showError(msg);
     	} else {
     	    obib.showError(response);
         }

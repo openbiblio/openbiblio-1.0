@@ -131,7 +131,8 @@
 				'default_flg'=>$_POST['default_flg'],
 				'type'=>$_POST["type"],
 				'days_due_back'=>$_POST["days_due_back"],
-				'daily_late_fee'=>$_POST["daily_late_fee"],
+				'minutes_due_back'=>$_POST["minutes_due_back"],
+				'regular_late_fee'=>$_POST["regular_late_fee"],
 				'restock_threshold'=>$_POST["restock_threshold"],
 				'due_date_calculator'=>$_POST['due_date_calculator'],
 				'important_date'=>$_POST['important_date'],
@@ -142,15 +143,15 @@
 			);
 			list($id, $errors) = $ptr->insert_el($col);
 			if (empty($errors)) {
-				$msg = T("Collection, %desc%, has been added.", array('desc'=>H($col['description'])));
-				echo $msg;
+				$msg = "Success - '".$_POST["description"]."' ".T("Collection has been added.");
+			} else {
+				$msg = $errors;
 			}
+			echo json_encode($msg);
 			break;
 		case 'update_collect':
-ini_set('display_errors', 1);
 			$ptr = new Collections;
 			$coll = array(
-				'code'=>$_POST["code"],
 				'description'=>$_POST["description"],
 				'default_flg'=>$_POST['default_flg'],
 				'type'=>$_POST["type"],
@@ -158,10 +159,15 @@ ini_set('display_errors', 1);
 				'minutes_due_back'=>$_POST["minutes_due_back"],
 				'regular_late_fee'=>$_POST["regular_late_fee"],
 				'restock_threshold'=>$_POST["restock_threshold"],
+				'important_date'=>$_POST['important_date'],
+				'important_date_purpose'=>$_POST['important_date_purpose'],
+				'number_of_minutes_between_fee_applications'=>$_POST['number_of_minutes_between_fee_applications'],
+				'number_of_minutes_in_grace_period'=>$_POST['number_of_minutes_in_grace_period'],
+				'pre_closing_padding'=>$_POST['pre_closing_padding'],
 			);
 			$errors = $ptr->update_el($coll);
 			if (empty($errors)) {
-				$msg = T("Collection, %desc%, has been updated.", array('desc'=>H($coll['description'])));
+				$msg = "Success - '".$_POST["description"]."' ".$updtSuccess;
 			} else {
 				$msg = $errors;
 			}
@@ -169,9 +175,8 @@ ini_set('display_errors', 1);
 			break;
 		case 'd-3-L-3-t_collect':
 			$ptr = new Collections;
-			$ptr->deleteOne($_POST['code']);
-			$msg = T("Collection, %desc%, has been deleted.", array('desc'=>$description));
-			echo $msg;
+			$errs = $ptr->deleteOne($_POST['code']);
+			if ($errs) {echo $errs;} else {echo $deleteComplete;}
 			break;
 
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-

@@ -71,8 +71,7 @@ class DmTable extends DBTable {
         // check for missing entries
         if (isset($this->reqFields)) {
     		foreach ($this->reqFields as $req) {
-    			if ($insert and !isset($rec[$req])
-    					or isset($rec[$req]) and $rec[$req] == '') {
+    			if ($insert and !isset($rec[$req]) or isset($rec[$req]) and $rec[$req] == '') {
     				$errors[] = new FieldError($req, T("Required field missing"));
     			}
     		}

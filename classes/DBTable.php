@@ -140,7 +140,7 @@ abstract class DBTable extends Queryi {
         return array($seqVal, 'Success');
 	}
 	public function insert_el($rec, $confirmed=false) {
-        //echo "in DBTbl:insert_el ,";print_r($rec);echo "<br />\n";
+		//echo "in DBTbl:insert_el ,";print_r($rec);echo "<br />\n";
 		$this->lock();
 		//$errs = $this->checkForeignKeys_el($rec);
 		//if (!empty($errs)) {
