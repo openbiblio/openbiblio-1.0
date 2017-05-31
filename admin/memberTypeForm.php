@@ -14,7 +14,6 @@
 <h3 id="listHdr"></h3>
 
 <div id="listDiv" style="display: none;">
-    <h5 id="updateMsg"></h5>
     <form id="showForm" name="showForm">
         <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
         <fieldset>
@@ -80,8 +79,6 @@
     </fieldset>
     </form>
 </div>
-
-<div id="msgDiv" style="display: none;"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
