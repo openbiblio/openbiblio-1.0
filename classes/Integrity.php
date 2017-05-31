@@ -402,6 +402,13 @@ class Integrity extends Queryi{
 					. 'and b.bookingid is null) X) ',
 				*/
 			);
+			$this->checks[] = array(
+				'error' => T("Material_type has empty image file name"),
+				'countSql' => 'select count(*) as count '
+					. 'from material_type_dm '
+					. 'where image_file is null ',
+				'fixSql' => "ALTER TABLE material_type_dm CHANGE image_file NOT NULL DEFAULT 'shim.gif'",
+			);
 //			$this->checks[] = array(
 //				//'error' => T("%count% double check outs"),
 //				'error' => T("double check outs"),
