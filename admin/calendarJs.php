@@ -62,12 +62,13 @@ var cal = {
 	},
 	//----//
 	resetForm: function () {
+		obib.hideMsg('now');
 		$('.help').hide();
 		$('#errSpace').hide();
 		$('#listDiv').show();
 		$('#editDiv').hide();
 		$('#calDeltBtn').disable();
-    		cal.fetchCalendarList();
+    	cal.fetchCalendarList();
 	},
 	rtnToList: function () {
 		cal.resetForm()
@@ -91,12 +92,13 @@ var cal = {
 
 	saveCalendar: function (e) {
 		e.stopPropagation();
-        	e.preventDefault();
+        e.preventDefault();
 		$('#calName').val(cal.calName);
 		$('#calCd').val(cal.calCd);
-	       var params = $('#editForm').serialize();
+	    var params = $('#editForm').serialize();
 	    $.post(cal.url, params, function(response){
-			$('#errSpace').html(response).show();
+//			$('#errSpace').html(response).show();
+			obib.showMsg(response);
 		});
 	},
 
@@ -162,7 +164,8 @@ var cal = {
 	deleteCalendar: function (e) {
 		if (confirm("<?php echo T("DeleteThisCalendar"); ?>?")) {
 			$.post(cal.url, {'mode':'deleteCalendar', 'calendar':cal.calCd}, function (response) {
-				$('#errSpace').html(response).show();
+//				$('#errSpace').html(response).show();
+				obib.showMsg(response);
 				$('#calDeltBtn').disable();
 			});
 		}

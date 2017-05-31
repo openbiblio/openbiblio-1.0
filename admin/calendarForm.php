@@ -19,8 +19,6 @@
 	//print_r($_SESSION); // for debugging
 ?>
 
-	<p id="errSpace" class="error"></p>
-
 <!-- ------------------------------------------------------------------------ -->
 	<div id="listDiv">
 		<fieldset>
