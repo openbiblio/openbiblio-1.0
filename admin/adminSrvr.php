@@ -2,9 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-ini_set('display_errors', 1);
+	require_once("../shared/common.php");
 
-  require_once("../shared/common.php");
+	ini_set('display_errors', 1);
 
 	switch ($_POST['cat']) {
 		case 'collect':

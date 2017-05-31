@@ -34,10 +34,7 @@ class Admin {
 
     	this.initWidgets();
 
- //   	$('#msgDiv').hide();
-    	$('#reqdNote').css('color','red');
-    	$('.reqd sup').css('color','red');
-    	$('#updateMsg').hide();
+//    	$('#updateMsg').hide();
 
 	    $('.newBtn').click(function(e) {e.preventDefault();});
     	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
@@ -56,6 +53,8 @@ class Admin {
     };
 
     resetForms () {
+ //   	$('#msgDiv').hide();
+		obib.hideMsg('now');
     	$('#editDiv').hide();
         $('#listHdr').html(this.listHdr);
         $('#editHdr').html(this.editHdr);
@@ -64,8 +63,8 @@ class Admin {
     };
 
     doBackToList () {
-        //console.log('in back to list');
-    	$('#msgDiv').hide('slow', $.proxy(this.backHandler, this));
+		this.fetchList();
+		this.resetForms();
     };
     backHandler (e) {
     	this.resetForms();
@@ -227,21 +226,11 @@ class Admin {
         this.doDeleteFields();
     }
 
-    doAddFields () {
-console.log('in JSAdmin::doAddFields()');
-    	obib.hideMsg('now');
-    	$('#mode').val('addNew_'+this.dbAlias);
-    	$('#cat').val(this.dbAlias);
-    	var parms = this.doGatherParams();
-    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.addHandler,this), 'json');
-    	return false;
-    };
     doGatherParams () {
         return $('#editForm').serializeArray();
     };
     doAssembleParams (params) {
 		var numParams = params.length-1;
-		//        for (var i = (numParams-1); i >= 0; i--) {
         for (var i=0; i<numParams; i++) {
 			if ((typeof params[i] !== "undefined") && (typeof params[i].value !== "undefined")) {
 	            if (params[i].value.length < 1) {
@@ -251,19 +240,28 @@ console.log('in JSAdmin::doAddFields()');
         }
 		return jQuery.param(params);
     };
-    addHandler (response) {
+
+    doAddFields () {
+console.log('in JSAdmin::doAddFields()');
+    	obib.hideMsg('now');
+    	$('#mode').val('addNew_'+this.dbAlias);
+    	$('#cat').val(this.dbAlias);
+    	var parms = this.doGatherParams();
+		parms = this.doAssembleParams(parms)
+    	$.post(this.url, parms, function (response) {
 console.log('in add handler');
-        this.seqNum = response[0];
-		if (Number.isInteger(this.seqNum )) {
-    		this.showResponse('Success');
-		} else {
-    		this.showResponse(response);
-		}
+	        var seqNum = response[0];
+			if (Number.isInteger(seqNum )) {
+	    		this.showResponse('Success');
+			} else {
+	    		this.showResponse(response[1]);
+			}
+		}, 'json');
+    	return false;
     };
 
     doUpdateFields () {
-    	$('#updateMsg').hide();
-    	$('#msgDiv').hide();
+		obib.hideMsg();
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
 		var parms = this.doGatherParams();
@@ -291,12 +289,14 @@ console.log('in add handler');
     	return false;
     };
     deleteHandler (response){
-		if (response == '') response = 'Success - Delete completed';
+		if (($.trim(response)).indexOf('completed') > -1){
+			response = 'Success - '+response;
+		}
     	this.showResponse(response);
     };
 
     showResponse (response) {
-console.log(response);
+console.log('show response=>>> '+response);
     	if (($.trim(response)).indexOf('Success') > -1){
     		obib.showMsg(response);
             //this.doBackToList();
