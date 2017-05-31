@@ -12,7 +12,7 @@ body {
     color:#000000; background:#90b0b8;
 }
 
-.note { color:green; }
+.note { color:gray; }
 .error { color:red; /*!important;*/ }
 .warning { color:orange; /*!important;*/ }
 .info { color: green }
@@ -24,6 +24,7 @@ h1,h2,h3,h4,h5,h6 {
 	color:white; background:#ccb470;
 }
 .reqd, sup, span.reqd, #reqdNote { color:red; }
+h5#reqdNote { background:#EFDB8A;}
 
 fieldset { background-color:#ffffdd; }
 tbody.striped tr:nth-child(odd) { background-color:#EEE; }
