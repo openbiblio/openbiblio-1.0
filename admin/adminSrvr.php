@@ -278,8 +278,14 @@
 			echo json_encode($flds);
 			break;
 		case 'addNew_mbrTypes':
-			$rslt = $ptr->insert_el($_POST);
-            		echo json_encode($rslt);
+			$desc = $_POST['description'];
+			list($id, $errors) = $ptr->insert_el($_POST);
+			if (!empty($id) || empty($errors)) {
+				$msg = T("MemberType")." '".$desc."' ".T("has been added");
+				echo json_encode(array(0, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
 			break;
 		case 'update_mbrTypes':
 			$errs = $ptr->update_el(array(
@@ -315,7 +321,7 @@
                 'srch_disp_lines'=>$_POST["srch_disp_lines"],
 				);
 			list($id, $errors) = $ptr->insert_el($type);
-			if (empty($errors)) {
+			if (!empty($id) || empty($errors)) {
 				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been added");
 				echo json_encode(array($id, $msg));
 			} else {
