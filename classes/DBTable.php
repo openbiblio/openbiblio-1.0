@@ -166,7 +166,7 @@ abstract class DBTable extends Queryi {
 			if (isset($rec[$this->sequence])) {
 				$seq_val = $rec[$this->sequence];
 			} else {
-echo 'getting auto increment key';
+				//echo 'getting auto increment key';
 				$seq_val = $this->getInsertID();
 			}
 		} else {

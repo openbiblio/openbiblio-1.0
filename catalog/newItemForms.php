@@ -65,7 +65,7 @@ th.colHead { white-space: nowrap; }
 			  		<option value="8"><?php echo $issnTxt; ?></option>
 			  		<option value="9"><?php echo $lccnTxt; ?></option>
 			  		<option value="4"><?php echo $titleTxt; ?></option>
-			  		<option value="1016"\><?php echo $anyTxt; ?></option>
+			  		<option value="1016"><?php echo $keywordTxt; ?></option>
 					</select>
 				</span>
 			  </div>
@@ -75,7 +75,8 @@ th.colHead { white-space: nowrap; }
 			  	<select id="srchBy2" name="srchBy2" class="criteria">
 			  		<option value="0"></option>
 			  		<option value="1004"><?php echo $authorTxt; ?></option>
-			  		<!--option value="1031"><?php echo $mediaTxt; ?></option-->
+			  		<option value="1016"><?php echo $keywordTxt; ?></option>
+			  		<option value="1031"><?php echo $mediaTxt; ?></option>
 			  		<option value="1018"><?php echo $pubNameTxt; ?></option>
 			  		<option value="59"><?php echo $pubLocTxt; ?></option>
 			  		<option value="31"><?php echo $pubDateTxt; ?></option>
@@ -89,6 +90,7 @@ th.colHead { white-space: nowrap; }
 			  		<option value="1018"><?php echo $pubNameTxt; ?></option>
 			  		<option value="59"><?php echo $pubLocTxt; ?></option>
 			  		<option value="31"><?php echo $pubDateTxt; ?></option>
+			  		<option value="1016"><?php echo $keywordTxt; ?></option>
 					</select>
 				</div>
 				<label><?php echo T("And");?></label>
@@ -96,9 +98,10 @@ th.colHead { white-space: nowrap; }
 			  	<input id="lookupVal4" name="lookupVal4" type="text" class="criteria" />
 			  	<select id="srchBy4" name="srchBy4" class="criteria">
 			  		<option value="0"></option>
-			  		<option value="59"><?php echo $pubLocTxt; ?></option>
 			  		<option value="1018"><?php echo $pubNameTxt; ?></option>
+			  		<option value="59"><?php echo $pubLocTxt; ?></option>
 			  		<option value="31"><?php echo $pubDateTxt; ?></option>
+			  		<option value="1016"><?php echo $keywordTxt; ?></option>
 					</select>
 				</div>
 				<label><?php echo T("And");?></label>

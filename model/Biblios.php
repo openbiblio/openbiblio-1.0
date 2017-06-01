@@ -284,7 +284,9 @@ class Biblios extends CoreTable {
 	}
 
 	## ======================================================================== ##
-	protected function validate_el($rec, $insert) { /*return array();*/ }
+	protected function validate_el($rec, $insert) {
+		/*return array();*/
+	}
 
 	public function insert_el($rec, $confirmed=false) {
 		$this->lock();
@@ -313,13 +315,14 @@ class Biblios extends CoreTable {
 		return $r;
 	}
 
-	public function xupdate ($updtData) {
+
+//	public function xupdate ($updtData) {
 		/** -----------------experimental-----------------------------
 		 *	currently does not post new entries to database, do NOT use
 		 *  TODO should be fixed to replace mess in biblioChange.php
 		 * -----------------do not remove yet ------------------------
 		 */
-
+/*
 		## get user screen content
 		$updts = $updtData['marc'];
 		## get database content
@@ -372,7 +375,7 @@ class Biblios extends CoreTable {
 		$newBiblio['marc'] = $crntRec; ## replaces Marc portion
 		parent::update($newBiblio);
 	}
-
+*/
 	## ========================= ##
 	protected function makeParamStr($criteria) {
 		/* typical form of $paramStr:
@@ -432,6 +435,7 @@ class Biblios extends CoreTable {
 		//echo "srch params: $paramStr <br>\n";
 		return $paramStr;
 	}
+
 }
 
 class BiblioIter extends Iter {
