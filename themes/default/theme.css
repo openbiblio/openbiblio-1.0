@@ -15,6 +15,7 @@ body {
 .note { color:gray; }
 .error { color:red; /*!important;*/ }
 .warning { color:orange; /*!important;*/ }
+.hiWarning {color:white; background:orange; }
 .info { color: green }
 .italic { color:lightblue; }
 
