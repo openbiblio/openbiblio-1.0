@@ -139,11 +139,11 @@ th.colHead { white-space: nowrap; }
 			<td rowspan="3"><img src="<?php echo REL(__FILES__,"../images/please_wait.gif"); ?>" /></td>
 		</tr>
 		<tr>
-		  <td colspan="1"><span id="waitText"></span></td>
+		  	<td colspan="1"><span id="waitText"></span></td>
 		</tr>
 		<tr>
-	    <td align="center" colspan="1">
-	      <fieldset><?php echo T("lookup_resetInstr");?></fieldset>
+	    	<td align="center" colspan="1">
+	      		<fieldset><?php echo T("lookup_resetInstr");?></fieldset>
 			</td>
 		</tr>
 		</table>
@@ -187,7 +187,7 @@ th.colHead { white-space: nowrap; }
 	<div id="selectionDiv">
    	<form id="newBiblioForm" name="newbiblioform" >
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
-			<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
+			<!--input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" /-->
 			<?php
 				include(REL(__FILE__,"../catalog/itemEditorForm.php"));
 			?>

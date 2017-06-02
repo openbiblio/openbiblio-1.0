@@ -44,9 +44,9 @@ var ie = {
 
 	mkFldSet: function (key, val, mode) {
 		var txt='',
-				classStr = "marcBiblioFld",
-				attrs = {},
-				name='';
+			classStr = "marcBiblioFld",
+			attrs = {},
+			name='';
 
 		/* unique items per mode */
 		if (mode == 'editCol') {
@@ -78,8 +78,9 @@ var ie = {
 			if (val['validation_cd'] !== null) attrs['validation_cd'] = val['validation_cd'];
 		}
 
-        //console.log('mkFldSet():');
-        //console.log(attrs);
+		//console.log('in ie.mkFldSet():');
+		//console.log(attrs);
+		if (!val.value) val.value = ' ';
 		if (val['form_type'] == 'textarea') {
 			attrs["rows"] = "7"; attrs["cols"] = "48";
 			txt += flos.inptFld('textarea', name+'[data]', val['value'], attrs, val['value'])+"\n";
@@ -102,7 +103,7 @@ var ie = {
 	    ie.bibid = hdr.bibid;
 		$('#editBibid').val(hdr.bibid);
 
-		// fill MARC fields with data on hand
+		// fill pre-existing MARC fields with db data on hand
 		// each field has, in array 'val':
 		// a label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
 	    var txt = '';
@@ -195,15 +196,15 @@ var ie = {
 				$('#onlineMsg').html(numHits+'hits found, this version can only handle one.');
 			}
 			else if (rslts.ttlHits == 1){
-			  var data;
+			  	var data;
 				$('#onlineMsg').html('Success!!<br /><br />'+
 														 'Click the arrow buton to enter online data,<br />'+
 														 'then click "Update" at the bottom of the page.');
 				bs.hostData = rslts.data;
 				$.each(rslts.data, function(hostIndex,hostData) {
-				  $.each(hostData, function(hitIndex,hitData) {
-					  data = hitData;
-				  }); // .each
+				  	$.each(hostData, function(hitIndex,hitData) {
+					  	data = hitData;
+				  	}); // .each
 				}); // .each
 				for (var tag in data) {
 					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);

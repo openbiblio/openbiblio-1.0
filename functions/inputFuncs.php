@@ -106,13 +106,13 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	return $s;
 }
 function inputHandler($type, $name, $value, $attrs) {
+	//echo "in input Handler: arttrs=";print_r($attrs);
 	$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
 	if ($value != "") {
 		$s .= 'value="'.H($value).'" ';
 	}
 	foreach ($attrs as $k => $v) {
 		if ($k == 'required') {
-			//$s .= 'required="required" aria-required="true" ';
 			$s .= 'required aria-required="true" ';
 		} else {
 			$s .= H($k).'="'.H($v).'" ';

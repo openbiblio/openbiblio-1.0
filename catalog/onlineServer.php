@@ -40,13 +40,15 @@
 				$_POST[$k] = $v;
 			} else if ($k == 'fields') {
 				foreach ($v as $fld) {
-				$tag = $fld['tag'].'$'.$fld['subfield_cd'];
-				$rec[$tag]['data'] = $fld['data'];
-				$rec[$tag]['codes'] = 'subfieldid='.$fld['subfieldid'].'&fieldid='&$fld['fieldid'];
+					$tag = $fld['tag'].'$'.$fld['subfield_cd'];
+					$rec[$tag]['data'] = $fld['data'];
+					$rec[$tag]['codes'] = 'subfieldid='.$fld['subfieldid'].'&fieldid='&$fld['fieldid'];
 				}
 			}
 		}
 		$_POST['fields'] = $rec;
+		//echo "in onlineServer::postNewBiblio(): ";
+		//print_r($_POST['fields']);
 		## ----------------------------------
 	    $nav = "newconfirm";
   	    $msg = PostBiblioChange($nav);
@@ -90,8 +92,8 @@
 	$postVars['hosts'] = $hosts;
 	$postVars['numHosts'] = count($hosts);
 	$postVars['session'] = $_SESSION;
-//echo "in onlineServer, above switch() <br />\n";
-//print_r($postVars);echo "<br />\n";
+	//echo "in onlineServer, above switch() <br />\n";
+	//print_r($postVars);echo "<br />\n";
 
     ## main body of code
     switch ($_POST['mode']){

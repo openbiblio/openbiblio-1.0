@@ -244,7 +244,7 @@
 <div id="itemEditorDiv">
   <form id="biblioEditForm" name="biblioEditForm" >
 		<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-		<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
+		<!--input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" /-->
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T("Fetch On-line Data"); ?>" />
 		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T("Search Complete"); ?>" />

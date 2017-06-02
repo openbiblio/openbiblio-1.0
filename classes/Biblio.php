@@ -118,7 +118,7 @@ class Biblio {
 
 	## ------------------------------------------------------------------------ ##
 	private function fetch_biblio () {
-		## get data from db
+		## get hdr data from db
 		$ptr = new Biblios;
 		$rslt = $ptr->getOne($this->bibid);
 		## post relevent info to this object
@@ -132,28 +132,38 @@ class Biblio {
 		## get marc field list for this biblio's media type
 		$mat = new MaterialFields;
 		$this->marcFlds = $mat->getMediaTags($this->hdrFlds['material_cd']);
+
 		## retrieve all existing marc data for this biblio
 		$mrc = new MarcStore;
 		$rslt = $mrc->fetchMarcFlds($this->bibid);
+
+		## post data to relevent display structure
 		//if ($rslt->num_rows <= 1) return 'MARC '.T("Nothing Found");
 		$firstRep = true;
 		//while ($row = $rslt->fetch_assoc()) {
         foreach ($rslt as $row) {
 			$tag = $row['tag'].'$'.$row['subfield_cd'];
-			if ($this->marcFlds[$tag.'$1']['repeatable'] > 0) {
+			//			if ($this->marcFlds[$tag.'$1']['repeatable'] > 0) {  // remove unneded '$' FL May2017
+			if ($this->marcFlds[$tag.'1']['repeatable'] > 0) {
 				if($firstRep) {
 					$firstRep = false;
 					$rep = 1;
 				} else {
 					$rep++;
 				}
-				$tag .= '$'.$rep;
-//echo"Biblio: marcFlds {$tag} row===>";print_r($row);echo"<br/>\n";
+				//				$tag .= '$'.$rep;  // remove unneded '$' FL May2017
+				$tag .= $rep;
+				//echo"Biblio: marcFlds {$tag} row===>";print_r($row);echo"<br/>\n";
 			}
 			## merge data with structure and post to this object
-			$this->marcFlds[$tag]['value'] = $row['subfield_data'];
+			if (empty($row['subfield_data'])) {
+                $this->marcFlds[$tag]['value'] = ' ';
+			} else {
+				$this->marcFlds[$tag]['value'] = $row['subfield_data'];
+			}
 			$this->marcFlds[$tag]['fieldid'] = $row['fieldid'];
 			$this->marcFlds[$tag]['subfieldid'] = $row['subfieldid'];
+			//echo"Biblio: marcFlds {$tag} row===>";print_r($row);echo"<br/>\n";
 		}
 	}
 	private function fetch_title () {

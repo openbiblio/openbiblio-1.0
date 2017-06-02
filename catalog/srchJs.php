@@ -317,7 +317,7 @@ var bs = {
 			} else {
 				bs.biblio = JSON.parse(jsonInpt);
 				if (!bs.biblio.data) {
-	  			obib.showMsg('<?php echo T("NothingFoundByBarcdSearch") ?>');
+	  				obib.showMsg('<?php echo T("NothingFoundByBarcdSearch") ?>');
 				}
 				else {
 					idis.showOneBiblio(bs.biblio)

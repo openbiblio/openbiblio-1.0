@@ -432,9 +432,15 @@ var ni = {
         // advise user that this will take some time to complete
         var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
         var theTxt = '<h5>';
-        theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
+        theTxt += "Searching for :<br />"+srchBy+" '" + lookupVal + "'<br /><br />";
         if ($('#lookupVal2').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br /><br />";
+		}
+        if ($('#lookupVal3').val() != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal3').val()+"'<br /><br />";
+		}
+        if ($('#lookupVal4').val() != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal4').val()+"'<br /><br />";
 		}
 
 		// show host(s) being searched
@@ -450,7 +456,7 @@ var ni = {
 				theTxt += '&nbsp;&nbsp;&nbsp;'+ni.hostJSON[0].name+'<br />';
 		}
 
-		theTxt += '</h5>';
+		theTxt += '</h5><br />';
 	    $('#waitText').html(theTxt);
 	  
 		$('#searchDiv').hide();

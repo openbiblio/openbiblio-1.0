@@ -40,16 +40,19 @@
 			return $ar;
 		}
 		function mkFldSet($n, $i, $marcInputFld, $mode) {
-		  if ($mode == 'onlnCol') {
+		  	if ($mode == 'onlnCol') {
 				echo "	<td valign=\"top\" class=\"filterable\"> \n";
 				$namePrefix = "onln_$n";
-		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
-			}
-			else if ($mode == 'editCol') {
+		    	echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
+			} else if ($mode == 'editCol') {
 				echo "	<td valign=\"top\" > \n";
 				$namePrefix = 'fields['.H($n).']';
 				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
-				echo inputfield('hidden', $namePrefix."[subfield_cd]", substr(H($i['subfield']),0,1))." \n";
+				if ($i['repeat']) {
+					echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
+				} else {
+					echo inputfield('hidden', $namePrefix."[subfield_cd]", substr(H($i['subfield']),0,1))." \n";
+				}
 				echo inputfield('hidden', $namePrefix."[fieldid]",     H($i['fieldid']),
 												array('id'=>$marcInputFld.'_fieldid'))." \n";
 				echo inputfield('hidden', $namePrefix."[subfieldid]",  H($i['subfieldid']),
@@ -63,13 +66,15 @@
 				$attrs['required'] = 'required';
 			}
 			if ($i['repeat'])
-			  $attrStr .= " rptd";
+			  	$attrStr .= " rptd";
 			else
-			  $attrStr .= " only1";
-		  if ($mode == 'onlnCol')
-		    $attrStr .= " online";
+			  	$attrStr .= " only1";
+
+		  	if ($mode == 'onlnCol')
+		    	$attrStr .= " online";
 			else
-			  $attrStr .= " offline";
+				$attrStr .= " offline";
+
 			$attrs["class"] = $attrStr;
 
 			if ($i['form_type'] == 'textarea') {

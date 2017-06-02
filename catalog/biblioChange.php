@@ -97,7 +97,8 @@ function postBiblioChange($nav) {
 		if (!isset($f['tag'])) continue;
 
 		$f = expand($tf,$f);
-		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {
+//		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 1)) {   // this is where we loose repeated fields //
+		if ((strlen($f['tag']) < 3) or (strlen($f['subfield_cd']) > 2)) {
 			echo "f: Encountered SHORT marc code '{$f['tag']}'<br />or too long subfield code '{$f['subfield']}'.<br/>\n";
 			continue;
 		}
@@ -107,7 +108,8 @@ function postBiblioChange($nav) {
 		$fidxSuffix = null;
 		foreach ($_POST['fields'] as $ts=>$s){
 		$s = expand($ts,$s);
-			if (strlen($s['tag']) < 3 or strlen($s['subfield_cd']) > 1) {
+//			if (strlen($s['tag']) < 3 or strlen($s['subfield_cd']) > 1) {   // this is where we loose repeated fields //
+			if (strlen($s['tag']) < 3 or strlen($s['subfield_cd']) > 2) {   // this is where we loose repeated fields //
 				echo "s: Encountered SHORT marc code '{$s['tag']}'<br />or too long subfield code '{$s['subfield_cd']}'.<br/>\n";
 				continue;
 			}
