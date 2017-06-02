@@ -27,8 +27,8 @@ var idis = {
 	multiMode: false,
 
 	init: function (opts, sites) {
-console.log(opts);
-console.log(sites);
+		//console.log(opts);
+		//console.log(sites);
 		idis.opts = opts;
 		idis.sites = sites;
 		idis.url = '../catalog/catalogServer.php';
@@ -51,7 +51,7 @@ console.log(sites);
 					idis.showOneBiblio(idis.biblio);
 				}
 	    }
-		  $('#searchDiv').hide();
+		$('#searchDiv').hide();
 	    $('#biblioDiv').show();
 		});
 		return false;
@@ -208,7 +208,7 @@ console.log(sites);
 				idis.copys = jsonInpt;
 				if (!idis.copys) {
 					var msg = '(<?php echo T("No copies"); ?>)';
-					$('tbody#copies').html('<tr><td colspan="9" class="hilite">'+msg+'</td></tr>');
+					$('tbody#copies').html('<tr><td colspan="9" class="hiWarning">'+msg+'</td></tr>');
 					return false; // no copies found
 				}
 
