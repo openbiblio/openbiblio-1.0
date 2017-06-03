@@ -10,7 +10,7 @@ unset($_SESSION['postVars']);
 ?>
 	<!-- =================================================== -->
 	<!-- Common user message area for all pages, hidden when empty -->
-	<div id="msgDiv">
+	<div id="userMsgDiv">
 		<span id="userMsg"></span>
 	</div>
 
@@ -59,19 +59,19 @@ var obib = {
 	// common user message handler(s) for #msgDiv at top of this file
 	showMsg: function (msg) {
 		$('span#userMsg').html(msg).removeClass('error').addClass('info');
-		$('#msgDiv').show();
+		$('#userMsgDiv').show();
 	},
 	showError: function (msg) {
 		msg = 'Error: '+msg;
 		$('span#userMsg').html(msg).removeClass('info').addClass('error');
-		$('#msgDiv').show();
+		$('#userMsgDiv').show();
 	},
 	hideMsg: function (howFast='slow') {
 		$('span#userMsg').html('');
 		if (howFast == 'now') {
-			$('#msgDiv').hide(); // instantaneous, immediate
+			$('#userMsgDiv').hide(); // instantaneous, immediate
 		} else {
-			$('#msgDiv').hide(howFast);
+			$('##userMsgDiv').hide(howFast);
 		}
 	},
 

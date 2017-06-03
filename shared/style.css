@@ -28,7 +28,7 @@ body {
 .info { font-weight:bold; }
 .help { font-size:0.7rem; display:none; }
 .italic { font-size:0.7rem; font-style:italic; /*color:lightblue;*/ }
-#msgDiv msgArea:empty { display:none; }
+#userMsgDiv userMsg:empty { display:none; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
