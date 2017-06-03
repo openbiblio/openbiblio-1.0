@@ -58,7 +58,7 @@ ini_set('display_errors', 1);
 		</h3>
 		
 		<?php if ($tab != 'opac') { ?>
-		<form id="logoutForm" class="notForInstall" method="get" action="../shared/logout.php">
+		<form role="form" id="logoutForm" class="notForInstall" method="get" action="../shared/logout.php">
 			<input type="submit" id="logoutBtn" value="<?php echo T("Logout") ?>" />
 		</form>
 		<?php } ?>

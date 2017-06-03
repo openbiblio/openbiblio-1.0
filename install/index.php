@@ -43,14 +43,14 @@
 		<section id="versionOK">
 			<p>Your OpenBiblio Installation is up to date.</p>
 			<p>Nothing further is required.</p><br />
-			<form method="get" action="../index.php">
+			<form role="form" method="get" action="../index.php">
 				<input id="useBtn" type="submit" value="<?php echo T("Start Using OpenBiblio"); ?>" />
 			</form>
 		</section>
 
 		<section id="newInstall">
 			<p>New Install</p>
-			<form id="newForm">
+			<form role="form" id="newForm">
 				<table cellpadding=0 cellspacing=0 border=0>
 				<!--tr>
 					<td><label for="locale">Language:</label></td>
@@ -74,14 +74,14 @@
 			</p>
 			<br />
 			<p class="error">WARNING - Please back up your database before updating.</p>
-			<form name="updateForm">
+			<form role="form" name="updateForm">
 				<input id="updtBtn" type="submit" value="<?php echo T("Update Now"); ?>">
 			</form>
 		</section>
 
 		<section id="startOB">
 			<p>OpenBiblio appears ready for use.</p>
-			<form name="startForm" >
+			<form role="form" name="startForm" >
 				<input id="startBtn" type="submit" value="<?php echo T("Start OpenBiblio now"); ?>">
 			</form>
 		</section>

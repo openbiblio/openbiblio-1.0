@@ -53,7 +53,7 @@
 	<section id="entry">
 		<fieldset>
 		<legend>Change DB Collation HERE</legend>
-			<form id="chgForm" name ="chgColl">
+			<form role="form" id="chgForm" name ="chgColl">
 				<label for="collSet"><?php echo T("Collation"); ?>: </label>
 				<select id="collSet" name="collSet">
 				</select>

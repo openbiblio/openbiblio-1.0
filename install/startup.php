@@ -39,7 +39,7 @@
             <section id="const_editor">
               <p class="bold">Enter Database Constants</p><br /></P>
               <p class="note">Note: All fields MUST be filled.</P>
-              <form id="dbConstForm">
+              <form role="form" id="dbConstForm">
                 <label for="engine">Database Engine: </label>
                 <select id="dbEngine">
                     <option value="cubrid">CUBRID</option>
@@ -72,7 +72,7 @@
             <section id="createDB">
               <p class="bold">Enter Database Engine Access Data</p><br /></P>
               <p class="note">Note: These items will NOT be stored.</P>
-              <form id="dbCreateForm">
+              <form role="form" id="dbCreateForm">
                 <label for="adminNm">Admin User: </label>
                 <input id="adminNm" type="text" placeholder="missing" required /><br />
                 <label for="adminPw">Admin Password: </label>

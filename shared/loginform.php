@@ -50,7 +50,7 @@
 <h3 class="title"><?php echo T("Staff Login"); ?></h3>
 <?php // print_r($_SESSION); //debugging only ?>
 
-<form name="loginform" method="post" action="../shared/login.php">
+<form role="form" name="loginform" method="post" action="../shared/login.php">
 <fieldset>
 <table>
 	<tbody>

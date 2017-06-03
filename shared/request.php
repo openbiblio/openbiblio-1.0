@@ -23,7 +23,7 @@
 	}
 	Page::header_opac(array('nav'=>$nav, 'title'=>''));
 ?>
-<form method="post" action="../shared/request_send.php">
+<form role="form" method="post" action="../shared/request_send.php">
 	<p style="color: #ff0000;"><?php echo T("requestFieldsReqd"); ?></p>
 	<p>
 	<table>

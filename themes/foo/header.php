@@ -15,7 +15,7 @@
 <table id="staff_main" height="100%" cellpadding="0" cellspacing="0">
 	<tr>
 		<td id="sidebar">
-			<form method="get" action="../shared/logout.php">
+			<form role="form" method="get" action="../shared/logout.php">
 			<input type="submit" value="<?php echo T("Logout"); ?>" class="navbutton">
 			</form>
 <?php

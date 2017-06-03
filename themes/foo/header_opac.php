@@ -22,7 +22,7 @@ if ($mbr) {
 	echo 'Hello, '.H($mbr['first_name']).' (<a href="../opac/logout.php">logout</a>)';
 } else {
 ?>
-<form action="../opac/login.php" method="POST">
+<form role="form" action="../opac/login.php" method="POST">
 ID:<input type="text" name="id" size="20" />
 Password:<input type="password" name="password" size="8" />
 <input class="button" type="submit" value="Log in" />

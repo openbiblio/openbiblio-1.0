@@ -26,7 +26,7 @@
       <fieldset>
           <p class="note">NOTE: Enter as 1,2,3,4,5,... OR 1-5</p>
           <br />
-          <form id="bulkDel_form" name="bulkDel_form" >
+          <form role="form" id="bulkDel_form" name="bulkDel_form" >
         	     <label for="byBarcd">
         	     <!--?php //echo inputfield('checkbox','byBarcd','1','',($vars['byBarcd']?'1':'')); ?-->
                <input type="radio" id=byBarcd" name="bulkBarcd" value="1" checked />

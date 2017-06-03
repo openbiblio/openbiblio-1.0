@@ -16,7 +16,7 @@
 
 <div id="listDiv" style="display: none;">
 
-<form id="showForm" name="showForm">
+<form role="form" id="showForm" name="showForm">
 <fieldset>
 <table id="showList" >
 	<thead>
@@ -54,7 +54,7 @@
 	
 <div id="editDiv" style="display: none;">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <fieldset>
 	<legend id="editHdr"></legend>
 	<ul id="editTbl">

@@ -20,7 +20,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="ckinDiv">
-	<form id="chekinForm" name="chekinForm" >
+	<form role="form" id="chekinForm" name="chekinForm" >
 	<fieldset>
 		<legend><?php echo T("Check In"); ?></legend>
 		<label for="barcodeNmbr"><?php echo T("Barcode Number").":"; ?></label>
@@ -34,7 +34,7 @@
 	</fieldset>
 	</form>
 
-	<form id="shelvingForm" name="shelvingForm" >
+	<form role="form" id="shelvingForm" name="shelvingForm" >
 	<fieldset>
 		<legend><?php echo T("Shelving Cart Contents"); ?></legend>
 		<button class="shelvItemBtn"><?php echo T("Shelve selected items"); ?></button>
@@ -61,7 +61,7 @@
 		<button class="clerAllBtn" ><?php echo T("Clear all"); ?></button>
 	</fieldset>
 	</form>
-	<form id="checkedInForm" name="checkedInForm" >
+	<form role="form" id="checkedInForm" name="checkedInForm" >
 	<fieldset>
 		<legend><?php echo T("Shelved Copies"); ?></legend>
 			<table id="shelvedCopiesList">

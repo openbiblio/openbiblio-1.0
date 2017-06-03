@@ -48,7 +48,7 @@
 			</p>   	
 		<img id="loading" src="../../images/loading.gif" style="display:none;">
 		
-		<form name="form" action="" method="POST" enctype="multipart/form-data">
+		<form role="form" name="form" action="" method="POST" enctype="multipart/form-data">
 		<table cellpadding="0" cellspacing="0" class="tableForm">
 		<thead>
 			<tr>

@@ -24,7 +24,7 @@
 			This modeule is intended to search the servers<br >
 			of the GLOBAL HANDLE REGISTRY for documents.
 			</p>
-			<form id="doiForm">
+			<form role="form" id="doiForm">
 			<label for="doiCd"><?php echo T("EnterDOI2Resolve"); ?></label><br />
 			<input type="text" id="doiCd" name="doiCd" required \><br />
 		  <input type="submit" id="srchBtn" value="<?php echo T("Search"); ?>" />

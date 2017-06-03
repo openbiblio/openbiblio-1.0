@@ -54,7 +54,7 @@ Page::header(array('nav'=>$nav, 'title'=>''));
 
 ?>
 			<h1><?php echo T("Welcome to the Library");?></h1>
-				<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="phrasesearch">
+				<form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="phrasesearch">
 					<fieldset>
 					<legend><?php T("Please select the library") ?></legend>
 					<table class="primary">

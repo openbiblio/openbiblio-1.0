@@ -10,7 +10,7 @@
 
 	<p class="note"><?php echo T("Fields marked are required"); ?></p>
 
-	<form id="copyForm" name="copyForm" >
+	<form role="form" id="copyForm" name="copyForm" >
 	<fieldset>
 	<legend id="copyLegend"><?php echo T("Add New Copy"); ?></legend>
 	<table id="copyTbl" >

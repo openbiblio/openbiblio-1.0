@@ -537,7 +537,7 @@ var ni = {
 							html += hitData['err'];
 						} else {
 							    
-							    html += '<form class="hitForm"><table border="0">';
+							    html += '<form role="form" class="hitForm"><table border="0">';
 							    html += '<tr><td>LCCN</th><td>'+hitData['010a']+'</td></tr>';
 							    html += '<tr><td>ISBN</th><td>'+hitData['020a']+'</td></tr>';
 							    html += '<tr><td>Title</th><td>'+hitData['245a']+'</td></tr>';

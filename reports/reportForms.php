@@ -58,7 +58,7 @@
 	<div id="specsDiv">
 		<fieldset>
 			<legend>Report Criteria</legend>
-			<form id="reportcriteriaform" name="reportcriteriaform">
+			<form role="form" id="reportcriteriaform" name="reportcriteriaform">
 				<!--input type="hidden" id="title" name="title" value="" /-->
 				<input type="hidden" id="type" name="type" value="" />
 				<input type="hidden" id="firstItem" name="firstItem" value="0" />

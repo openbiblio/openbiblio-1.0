@@ -15,7 +15,7 @@
 
 <div id="listDiv" style="display: none;">
 
-<form id="showForm" name="showForm">
+<form role="form" id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
 <table id="showList" name="showList"">
@@ -55,7 +55,7 @@
 </div>
 
 <div id="editDiv" style="display: none;">
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 	<legend id="fieldsHdr"></legend>
@@ -146,7 +146,7 @@
 </div>
 
 <div id="pwdDiv" style="display: none;">
-<form id="pwdChgForm" name="pwdChgForm">
+<form role="form" id="pwdChgForm" name="pwdChgForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 	<legend><?php echo T("Reset Password"); ?> for <span></span></legend>

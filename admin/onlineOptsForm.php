@@ -18,7 +18,7 @@
 
 <p id="updateMsg" class="error"></p>
 <br />
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <fieldset>
 <table id="optsShow" name="optsShow">
 	<tbody class="striped">

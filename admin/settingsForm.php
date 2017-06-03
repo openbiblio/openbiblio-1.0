@@ -25,7 +25,7 @@
 			</ul>
 
 			<!-- Note titles/Labels in this form are 'placeholders only', actual labels will be downloaded from the database -->
-			<form name="editSettingsForm" id="editSettingsForm">
+			<form role="form" name="editSettingsForm" id="editSettingsForm">
 				<div id="localePage" class="block active">
 					<label for="locale"><?php echo T("Available languages"); ?></label>
 					<select id="locale" name="locale" autofocus ></select>

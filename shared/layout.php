@@ -88,7 +88,7 @@
 ?>
 <h3><?php echo T("Circulation"); ?></h3>
 
-<form name="layoutparamform" method="get" action="../shared/layout.php">
+<form role="form" name="layoutparamform" method="get" action="../shared/layout.php">
 <fieldset>
 <legend><?php echo T("Packing List"); ?></legend>
 <input type="hidden" name="name" value="<?php echo H($_REQUEST["name"]) ?>" />

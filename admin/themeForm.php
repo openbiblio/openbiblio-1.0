@@ -17,7 +17,7 @@
 <div id="listDiv">
 <h5 id="updateMsg"></h5>
 <br />
-<form id="selectForm" name="selectForm">
+<form role="form" id="selectForm" name="selectForm">
 <fieldset>
 <legend><?php echo T("Change Theme In Use"); ?>:</legend>
 	<div>
@@ -30,7 +30,7 @@
 
 <p class="error">Sorry, Not Working, Under Construction<p>
 
-<form id="showForm" name="showForm">
+<form role="form" id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
 <legend><?php echo T("Available Themes"); ?></legend>
@@ -52,7 +52,7 @@
 </div>
 
 <div id="editDiv">
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 <table>

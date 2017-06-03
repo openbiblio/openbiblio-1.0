@@ -59,7 +59,7 @@
 </div>
 
 <div id="workDiv">
-<form id="workForm" name="workForm">
+<form role="form" id="workForm" name="workForm">
 <table id="showList" name="showList">
 	<thead>
   <tr>
@@ -87,7 +87,7 @@
 </div>
 
 <div id="editDiv">
-<form id="editForm" name="tagForm">
+<form role="form" id="editForm" name="tagForm">
 <h5 id="reqdNote" class="reqd"><span class="reqd">*</span><?php echo T("lookup_rqdNote"); ?></h5>
 <fieldset>
 <table id="editTbl">
