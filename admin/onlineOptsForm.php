@@ -5,18 +5,17 @@
  
   require_once("../shared/common.php");
 
-  $tab = "admin";
-  $nav = "onlineOpts";
-  $focus_form_name = "editForm";
-  $focus_form_field = "protocol";
-  require_once(REL(__FILE__, "../shared/logincheck.php"));
-  
+	$tab = "admin";
+	$nav = "onlineOpts";
+	$focus_form_name = "editForm";
+	$focus_form_field = "protocol";
+	require_once(REL(__FILE__, "../shared/logincheck.php"));
+
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 
 <h3 id="editHdr"></h3>
 
-<p id="updateMsg" class="error"></p>
 <br />
 <form role="form" id="editForm" name="editForm">
 <fieldset>
@@ -146,8 +145,6 @@
 </table>
 </fieldset>
 </form>
-
-<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));
