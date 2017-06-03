@@ -153,15 +153,18 @@
 <fieldset>
 	<legend><?php echo T("Reset Password"); ?> for <span></span></legend>
 	<ul id="editTbl">
+		<p class="note"><?php echo T("Password at least 4 chars"); ?></p>
         <li>
             <label for="pwdA"><?php echo T("Password"); ?>:</label>
             <input type="password" id="pwdA" name="pwd" size="20" required aria-required="true" />
     			<span class="reqd">*</span>
+			<label><input type="checkbox" id="showPasswdA" /> show password</label>
     	</li>
         <li>
             <label for="pwdB"><?php echo T("Password"); ?>:</label>
             <input type="password" id="pwdB" name="pwd2" size="20" required aria-required="true" />
     			<span class="reqd">*</span>
+			<label><input type="checkbox" id="showPasswdB" /> show password</label>
     	</li>
 	</ul>
 	<ul id="btnRow">

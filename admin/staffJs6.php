@@ -33,6 +33,7 @@ class Stf extends Admin {
     	$('#pwdChgForm').on('submit',null,$.proxy(this.doSetStaffPwd,this));
     	$('#pwdCnclBtn').on('click',null,$.proxy(this.resetForms,this));
 
+		// password for new staff
 		var passwd1 = document.getElementById('xpwd1');
 		var showPasswd1 = document.getElementById('showPasswd1');
 		showPasswd1.addEventListener('change', function () {
@@ -44,6 +45,20 @@ class Stf extends Admin {
 		showPasswd2.addEventListener('change', function () {
 			let type = this.checked ? 'text' : 'password';
 			passwd2.setAttribute('type', type);
+		});
+
+		// change password for existing staff
+		var passwdA = document.getElementById('pwdA');
+		var showPasswdA = document.getElementById('showPasswdA');
+		showPasswdA.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwdA.setAttribute('type', type);
+		});
+		var passwdB = document.getElementById('pwdB');
+		var showPasswdB = document.getElementById('showPasswdB');
+		showPasswdB.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwdB.setAttribute('type', type);
 		});
     };
 
