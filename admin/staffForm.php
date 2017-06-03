@@ -81,11 +81,13 @@
       			        <label for="xpwd1"><?php echo T("Password"); ?>:</label>
       			        <input type="password" id="xpwd1" name="pwd" size="20" required aria-required="true" />
     						<span class="reqd">*</span>
+						<label><input type="checkbox" id="showPasswd1" /> show password</label>
     				</li>
       			    <li>
-      			        <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
+      			        <label for="xpwd2"><?php echo T("Re-enter"); ?>:</label>
       			        <input type="password" id="xpwd2" name="pwd2" size="20" required aria-required="true" />
     						<span class="reqd">*</span>
+						<label><input type="checkbox" id="showPasswd2" /> show password</label>
     				</li>
     			</ul>
     		</fieldset>

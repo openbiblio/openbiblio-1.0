@@ -184,10 +184,10 @@ class Admin {
     	$('#editDiv').show();
     };
 	
-    doNewFields (e) {
+    doNewFields () {
 console.log('in JSAdmin::doNewFields()');
-    	e.preventDefault();
-    	e.stopPropagation();
+    	//e.preventDefault();
+    	//e.stopPropagation();
 
         document.forms['editForm'].reset();
         $('#fieldsHdr').html(this.newHdr);

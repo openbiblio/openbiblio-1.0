@@ -32,6 +32,19 @@ class Stf extends Admin {
 
     	$('#pwdChgForm').on('submit',null,$.proxy(this.doSetStaffPwd,this));
     	$('#pwdCnclBtn').on('click',null,$.proxy(this.resetForms,this));
+
+		var passwd1 = document.getElementById('xpwd1');
+		var showPasswd1 = document.getElementById('showPasswd1');
+		showPasswd1.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwd1.setAttribute('type', type);
+		});
+		var passwd2 = document.getElementById('xpwd2');
+		var showPasswd2 = document.getElementById('showPasswd2');
+		showPasswd2.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwd2.setAttribute('type', type);
+		});
     };
 
     resetForms () {
