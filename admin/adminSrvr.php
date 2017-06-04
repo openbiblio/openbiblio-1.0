@@ -367,7 +367,7 @@
 				
   	#-.-.-.-.-.- Online Hosts -.-.-.-.-.-.-
 		case 'getAll_hosts':
-		  $hosts = array();
+		  	$hosts = array();
 			$set = $ptr->getAll('seq');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -390,8 +390,13 @@
 			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_hosts':
-			$sql = "DELETE FROM $ptr->getName() WHERE `id`=$_POST[id]";
-			echo $ptr->act($sql);
+//			$sql = "DELETE FROM ".$ptr->getName()." WHERE `id`=$_POST[id]";
+//echo "sql=$sql<br />\n";
+//			echo $ptr->act($sql);
+			$id = $_POST["id"];
+			$ptr->deleteOne($id);
+			$msg = T("Host")." #".$id." ".T("has been deleted");
+			echo $msg;
 			break;
 
 	  #-.-.-.-.-.- Online Options -.-.-.-.-.-.-

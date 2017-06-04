@@ -148,8 +148,8 @@ class Admin {
 		//console.log('process '+item+' in showFields()');
         $('#fieldsHdr').html(this.editHdr);
         $('#addBtn').hide();
-        $('#updtBtn').show();
-        $('#deltBtn').show();
+        $('#updtBtn').show().enable();
+        $('#deltBtn').show().enable();
 
     	$('#editTbl').find('input:not(:button):not(:submit):not(:password), textarea, select').each(function () {
     		var tagname = $(this).get(0).tagName;
