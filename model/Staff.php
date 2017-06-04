@@ -69,7 +69,10 @@ class Staff extends CoreTable {
 				$errors[] = array('NULL', T("Username already taken by another user"));
 			}
 		}
-		return $errors;
+		// user start_ page
+		if (!file_exists($rec['start_page'])) {
+			$errors[] = array('NULL', T("startPage does not exist"));
+		}
 	}
 	function insert_el($rec, $confirmed=false) {
 		if(isset($rec['pwd'])) {

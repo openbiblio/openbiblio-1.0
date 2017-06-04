@@ -81,6 +81,7 @@ if(isset($_REQUEST['selectSite'])){
 
 $_SESSION["username"] = $user['username'];
 $_SESSION["userid"] = $user['userid'];
+$_SESSION["start_page"] = $user['start_page'];
 $_SESSION["secret_key"] = $user['secret_key'];
 $_SESSION["loginAttempts"] = 0;
 $_SESSION["hasAdminAuth"] = ($user['admin_flg'] == 'Y');
@@ -94,5 +95,6 @@ echo "in login ln#92<br />\n";
 setSessionFmSettings();
 //print_r($_SESSION);echo "<br />";exit();
 
-header("Location: ".$_SESSION["returnPage"]);
+//header("Location: ".$_SESSION["returnPage"]);
+header("Location: "."../" .$_SESSION["start_page"]);
 exit();
