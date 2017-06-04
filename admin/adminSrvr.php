@@ -245,8 +245,15 @@
 			echo json_encode($flds);
 			break;
 		case 'addNew_hours':
-			$rslt = $ptr->insert_el($_POST);
-            echo json_encode($rslt);
+			//$rslt = $ptr->insert_el($_POST);
+            //echo json_encode($rslt);
+			list($id, $errors) = $ptr->insert_el($type);
+			if (!empty($id) || empty($errors)) {
+				$msg = T("Hours open")." ".T("has been added");
+				echo json_encode(array($id, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
 			break;
 		case 'update_hours':
 			$errs = $ptr->update_el(array
