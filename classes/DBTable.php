@@ -216,6 +216,7 @@ abstract class DBTable extends Queryi {
 			$sql = $this->mkSQL('UPDATE %I ', $this->name)
 				. ' SET '.$this->_pairs($rec)
 				. ' WHERE '.$this->_keyTerms($key);
+			//echo "sql = $sql<br />\n";
 			$rslt = $this->act($sql);
 			$errs = $rslt->fetch();
 			$this->unlock();

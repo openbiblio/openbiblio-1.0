@@ -62,7 +62,7 @@ class Hour extends Admin {
             var where = $(this).find("td").eq(1);
             var siteid = where.html();
             var siteName = list.sites[siteid];
-            console.log(siteid+' ==> '+siteName);
+            //console.log(siteid+' ==> '+siteName);
             where.html(siteName);
 
             var where = $(this).find("td").eq(2);

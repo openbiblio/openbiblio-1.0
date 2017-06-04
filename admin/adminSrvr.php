@@ -239,19 +239,27 @@
 		case 'getAll_hours':
 			$flds = array();
 			$set = $ptr->getAll();
-            		foreach ($set as $row) {
+            foreach ($set as $row) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
 			break;
 		case 'addNew_hours':
 			$rslt = $ptr->insert_el($_POST);
-            		echo json_encode($rslt);
+            echo json_encode($rslt);
 			break;
 		case 'update_hours':
-			$errs = $ptr->update_el(array(
-				'hourid'=>@$_POST["hourid"],
-			));
+			$errs = $ptr->update_el(array
+				('hourid'=>$_POST["hourid"],
+				 'siteid'=>$POST['siteid'],
+				 'day'=>$_POST['day'],
+				 'start_time'=>$_POST['start_time'],
+				 'end_time'=>$_POST['end_time'],
+				'by_appointment'=>$_POST['by_appointment'],
+				'public_note'=>$_POST['public_note'],
+				'private_note'=>$_POST['private_note'],
+				 )
+			);
 			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 

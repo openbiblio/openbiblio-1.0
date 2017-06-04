@@ -75,6 +75,8 @@ class Admin {
     				};
         $.post( this.url, params, $.proxy(this.fetchHandler,this), 'json');
     };
+
+	// construct the initial 'List' screen from database table content
     fetchHandler (dataAray) {
         this.json = dataAray;	// will be re-used later for editing
 
@@ -98,6 +100,8 @@ class Admin {
     		// these vary by form in use
     		for (var fld in this.listFlds) {
     			var theClass = this.listFlds[fld];
+				//console.log('fld type='+theClass+'; with value='+item[fld]);
+
     			if (theClass == 'image') {
 					if (item[fld] == 'null') item[fld] = 'shim.gif';
     				html += '	<td valign="top">'
@@ -108,6 +112,12 @@ class Admin {
     				html += '	<td valign="top" class="'+theClass+'">'
     					 +  '		<textarea cols="100" readonly>'+item[fld]+'</textarea></td>\n';
     			}
+				else if (theClass == 'bool') {
+					// does not seem to be working - FL 4 Jun 2017
+					let val = (item[fld] == '1')? 'Yes': 'No';
+					//consloe.log(val);
+    				html += '	<td valign="top" class="'+theClass+'" readonly>'+ val +'</td>\n';
+				}
     			else {
     				html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
     			}
@@ -128,6 +138,7 @@ class Admin {
     	return html;
     };
        
+	// fill out the contents of the 'edit' screen from data previously downloaded
     doEditFields (e) {
 		//console.log('in doEditfields()');
         var code = $(e.target).next().val(),
@@ -143,7 +154,6 @@ class Admin {
     	}
     	return false;
     };
-	
     showFields (item) {
 		//console.log('process '+item+' in showFields()');
         $('#fieldsHdr').html(this.editHdr);
