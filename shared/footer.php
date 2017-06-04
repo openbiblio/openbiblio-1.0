@@ -71,7 +71,7 @@ var obib = {
 		if (howFast == 'now') {
 			$('#userMsgDiv').hide(); // instantaneous, immediate
 		} else {
-			$('##userMsgDiv').hide(howFast);
+			$('#userMsgDiv').hide(howFast);
 		}
 	},
 

@@ -139,7 +139,7 @@
 
   <tfoot>
   <tr>
-    <td colspan="1" align="left">
+    <td colspan="2" align="left">
 			<input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" />
 			<input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
 			<input type="button" id="cnclBtn" value="<?php echo T("Cancel"); ?>" />
@@ -153,8 +153,6 @@
 </fieldset>
 </form>
 </div>
-
-<div id="msgDiv" style="display: none;"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

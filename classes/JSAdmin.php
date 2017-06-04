@@ -185,9 +185,12 @@ class Admin {
     };
 	
     doNewFields () {
-console.log('in JSAdmin::doNewFields()');
+		//console.log('in JSAdmin::doNewFields()');
     	//e.preventDefault();
     	//e.stopPropagation();
+		$('#addBtn').enable();
+		$('#updtBtn').enable();
+		$('#deltBtn').enable();
 
         document.forms['editForm'].reset();
         $('#fieldsHdr').html(this.newHdr);
@@ -207,15 +210,15 @@ console.log('in JSAdmin::doNewFields()');
     };
 	
     doSubmitFields (e) {
-console.log('in JSAdmin::doSubmitFields()');
+		//console.log('in JSAdmin::doSubmitFields()');
 //    	e.preventDefault();
 //    	e.stopPropagation();
-    	var theId = e.target.id;
-    	switch (theId) {
+    	var theBtn = e.target.id;
+    	switch (theBtn) {
     		case 'addBtn':	this.doAddBtn(e);	break;
     		case 'updtBtn':	this.doUpdtBtn(e);  break;
     		case 'deltBtn':	this.doDeltBtn(e);  break;
-    		default: obib.showError("'"+theId+"' is not a valid action button id");
+    		default: obib.showError("'"+theBtn+"' is not a valid action button id");
     	}
     };
 	doAddBtn (e) {
@@ -244,13 +247,13 @@ console.log('in JSAdmin::doSubmitFields()');
     };
 
     doAddFields (e) {
-console.log('in JSAdmin::doAddFields()');
-		var f = document.getElementById('editForm');
+		$('#addBtn').enable();
+		let f = document.getElementById('editForm');
 		if(f.reportValidity()) {
-console.log('all validations pass');
+			//console.log('all validations pass');
     		obib.hideMsg('now');
 		} else {
-console.log('some validation(s) fail');
+			//console.log('some validation(s) fail');
 			obib.showError('some validation(s) fail');
 			return;
 		}
@@ -261,18 +264,15 @@ console.log('some validation(s) fail');
     	$.post(this.url, parms, $.proxy(this.addHandler, this), 'json');
     	e.preventDefault();
     	e.stopPropagation();
+		return false;
     };
 	addHandler (response) {
-		//console.log('in add handler');
-        var seqNum = response[0];
-		if (Number.isInteger(seqNum )) {
-    		this.showResponse('Success');
-		} else {
-    		this.showResponse(response);
-		}
+		$('#addBtn').disable();
+		this.showResponse(response);
 	};
 
     doUpdateFields (e) {
+		$('#updtBtn').enable();
 		obib.hideMsg();
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
@@ -286,17 +286,19 @@ console.log('some validation(s) fail');
     	return false;
     };
     updateHandler (response) {
+		$('#updtBtn').disable();
    		this.showResponse(response);
     };
 	
     doDeleteFields (e) {
-    	var msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
+		$('#deltBtn').enable();
+    	let msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
         if (confirm(msg)) {
-      	   var parms = {'cat':this.dbAlias,
+      	   let parms = {'cat':this.dbAlias,
     					'mode':'d-3-L-3-t_'+this.dbAlias,
     					'code':$('#'+this.keyFld).val(),
     					'description':$('#description').val(),
-    								};
+    					};
     		parms[this.keyFld] = $('#'+this.keyFld).val();
       	    $.post(this.url, parms, $.proxy(this.deleteHandler,this));
     		e.preventDefault();
@@ -304,23 +306,41 @@ console.log('some validation(s) fail');
     	}
     	return false;
     };
-    deleteHandler (response){
-		if (($.trim(response)).indexOf('completed') > -1){
-			response = 'Success - '+response;
+    deleteHandler (response) {
+		var svrResponse = '';
+		if ((($.trim(response)).indexOf('ompleted') > -1) || (($.trim(response)).indexOf('eleted') > -1)) {
+			svrResponse = 'Success - '+response;
 		}
-    	this.showResponse(response);
+        $('#deltBtn').disable();
+		$('#updtBtn').disable();
+    	this.showResponse(svrResponse);
     };
 
     showResponse (response) {
-		//console.log('show response=>>> '+response);
-    	if (($.trim(response)).indexOf('Success') > -1){
-    		obib.showMsg(response);
-            //this.doBackToList();
+		//console.log('in Admin::showResponse()');
+		var userMsg = '';
+		var	seqNum = 0;
+		//console.log('initial userMsg= '+userMsg);
+
+		if ( $.isArray(response) ) {
+			seqNum = response[0];
+			userMsg = response[1];
 		} else if (typeof response === 'object') {
-			var msg = JSON.stringify(response);
-    	    obib.showError(msg);
+			userMsg = JSON.stringify(response);
+		} else {
+			userMsg = response;
+		}
+
+		if (userMsg.indexOf('uccess') >= -1 ) {
+			//console.log('found success; userMsg= ' + userMsg);
+    		obib.showMsg(userMsg);
+			//this.doBackToList();  // this will cause user message to be removed before it can be read
+		} else if (userMsg.indexOf('rror') >= -1 ) {
+			//console.log('found error; userMsg= ' + userMsg);
+    	    obib.showError(userMsg);
     	} else {
-    	    obib.showError(response);
+			//console.log('using default; userMsg= '+userMsg);
+    	    obib.showError(userMsg);
         }
         return
     };
