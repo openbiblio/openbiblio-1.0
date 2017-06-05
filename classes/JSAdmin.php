@@ -141,10 +141,11 @@ class Admin {
 	// fill out the contents of the 'edit' screen from data previously downloaded
     doEditFields (e) {
 		//console.log('in doEditfields()');
-        var code = $(e.target).next().val(),
-    	    ident = this.keyFld,
-    		n;
-    	for (n in this.json) {
+		/* get id from field adjacent to 'edit' button of list screen */
+        var code = $(e.target).next().val();
+    	var ident = this.keyFld;
+		/* now locate data for desired object and build screen with it */
+    	for (let n in this.json) {
     		var item = this.json[n];
     	    if (item[ident] == code) {
     			this.showFields(item);
@@ -154,41 +155,35 @@ class Admin {
     	}
     	return false;
     };
-    showFields (item) {
+    showFields (rec) {
 		//console.log('process '+item+' in showFields()');
         $('#fieldsHdr').html(this.editHdr);
         $('#addBtn').hide();
         $('#updtBtn').show().enable();
         $('#deltBtn').show().enable();
 
+		/* scan form and set values of fields using corresponding data entries  */
     	$('#editTbl').find('input:not(:button):not(:submit):not(:password), textarea, select').each(function () {
-    		var tagname = $(this).get(0).tagName;
-			//console.log(tagname);
-    		if (tagname == 'select') {
-				//console.log('the id='+this.id+'; the val='+item[this.id]);
-    			$(this).val([item[this.id]]);
+			var $this = $(this);
+
+    		if ($this.is('[type=radio]')) {
+    			$this.val([rec[this.name]]);
+    		} else {
+ 				/* despite documentation, this seems to be needed for checkboxes, and works for others too. */
+				$this.val([rec[this.id]]);
     		}
-    		else if ($(this).is('[type=checkbox]')) {
-    			$(this).val([item[this.id]]);
-    		}
-    		else if ($(this).is('[type=radio]')) {
-    			$(this).val([item[this.name]]);
-    		}
-    		else if ($(this).is('[type=file]')) {
-    			$(this).val([item[this.id]]);
-    		}
-    		else {
-    			$(this).val(item[this.id]);
-    		}
-            // key field must be static for updates (marked 'addOnly' in html)
-            var theClass = $(this).get(0).className;
+
+            /* key field must be static for updates (marked 'addOnly' in html) */
+            var theClass = $this.get(0).className;
             if (theClass == 'addOnly') {
-                $(this).attr('readOnly',true);
+                $this.attr('readOnly',true);
             }
     	});
+
     	for (var n in this.noshows){
     		$('#'+this.noshows[n]).attr('required',false).hide();
     	};
+
     	$('#codeReqd').hide();
     	$('#listDiv').hide();
     	$('#editDiv').show();

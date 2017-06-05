@@ -517,11 +517,11 @@
 
 	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-
 		case 'getAll_states':
-		  $states = array();
+		  	$states = array();
 			$set = $ptr2->getAll('description');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
-			  $states[] = $row;
+			  	$states[] = $row;
 			}
 			echo json_encode($states);
 			break;
@@ -530,7 +530,7 @@
             echo json_encode($rslt);
 			break;
 		case 'update_states':
-			echo $ptr2->update($_POST);
+			echo json_encode($ptr2->update($_POST));
 			break;
 		case 'd-3-L-3-t_states':
 			echo $ptr2->deleteOne($_POST['code']);
@@ -538,7 +538,7 @@
 
 	  #-.-.-.-.-.- Themes -.-.-.-.-.-.-
 		case 'getAllThemes':
-		  $thms = array();
+		  	$thms = array();
 			$set = $ptr->getAll('theme_name');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -556,7 +556,7 @@
 			echo $ptr->insert_el($_POST);
 			break;
 		case 'updateTheme':
-			echo $ptr->update_el($_POST);
+			echo json_encode($ptr->update_el($_POST));
 			break;
 		case 'd-3-L-3-tTheme':
 			echo $ptr->deleteOne($_POST['themeid']);

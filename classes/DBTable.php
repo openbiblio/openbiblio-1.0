@@ -189,9 +189,6 @@ abstract class DBTable extends Queryi {
 	public function update($rec, $confirmed=false) {
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
-			//Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
-			//Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
-            //echo "Error: $this->name; ";print_r($errors);echo "<br />\n";
             return $errors;
 		} else {
         	return T("Success");
@@ -231,7 +228,7 @@ abstract class DBTable extends Queryi {
 			$errs = $rslt->fetch();
 			$this->unlock();
 		}
-		if ($errs) {
+		if (isset($errs)) {
 			return $errs;
 			//return array();
 		} else {
