@@ -247,7 +247,7 @@
 		case 'addNew_hours':
 			//$rslt = $ptr->insert_el($_POST);
             //echo json_encode($rslt);
-			list($id, $errors) = $ptr->insert_el($type);
+			list($id, $errors) = $ptr->insert_el($_POST);
 			if (!empty($id) || empty($errors)) {
 				$msg = T("Hours open")." ".T("has been added");
 				echo json_encode(array($id, $msg));
@@ -256,17 +256,7 @@
             }
 			break;
 		case 'update_hours':
-			$errs = $ptr->update_el(array
-				('hourid'=>$_POST["hourid"],
-				 'siteid'=>$POST['siteid'],
-				 'day'=>$_POST['day'],
-				 'start_time'=>$_POST['start_time'],
-				 'end_time'=>$_POST['end_time'],
-				'by_appointment'=>$_POST['by_appointment'],
-				'public_note'=>$_POST['public_note'],
-				'private_note'=>$_POST['private_note'],
-				 )
-			);
+			$errs = $ptr->update_el($_POST);
 			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 
@@ -460,13 +450,22 @@
 			echo json_encode($sites);
 			break;
 		case 'addNew_sites':
-			echo $ptr->insert($_POST);
+//			echo $ptr->insert($_POST);
+			list($id, $errors) = $ptr->insert_el($_POST);
+			if (!empty($id) || empty($errors)) {
+				$msg = T("Site")." ".$_POST['name'].' '.T("has been added");
+				echo json_encode(array($id, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
 			break;
 		case 'update_sites':
 			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_sites':
-			echo $ptr->deleteOne($_POST['siteid']);
+			$ptr->deleteOne($_POST['siteid']);
+			$msg = T("Site")." ".$_POST['siteid']." ".T("has been deleted");
+			echo $msg;
 			break;
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-

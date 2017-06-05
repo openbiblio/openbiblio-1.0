@@ -327,7 +327,7 @@ class Admin {
     };
 
     showResponse (response) {
-		//console.log('in Admin::showResponse()');
+console.log('in Admin::showResponse(): response='+response);
 		var userMsg = '';
 		var	seqNum = 0;
 		//console.log('initial userMsg= '+userMsg);
@@ -342,14 +342,14 @@ class Admin {
 		}
 
 		if (userMsg.indexOf('uccess') >= -1 ) {
-			//console.log('found success; userMsg= ' + userMsg);
+console.log('found success; userMsg= ' + userMsg);
     		obib.showMsg(userMsg);
 			//this.doBackToList();  // this will cause user message to be removed before it can be read
 		} else if (userMsg.indexOf('rror') >= -1 ) {
-			//console.log('found error; userMsg= ' + userMsg);
+console.log('found error; userMsg= ' + userMsg);
     	    obib.showError(userMsg);
     	} else {
-			//console.log('using default; userMsg= '+userMsg);
+console.log('using default; userMsg= '+userMsg);
     	    obib.showError(userMsg);
         }
         return

@@ -13,7 +13,7 @@ class Sit extends Admin {
     	var hdrs = {'listHdr':<?php echo '"'.T("List of Sites").'"'; ?>,
     				'editHdr':<?php echo '"'.T("Edit Site").'"'; ?>,
     				'newHdr':<?php echo '"'.T("Add New Site").'"'; ?>,
-    						 };
+    				};
     	var listFlds = {'name': 'text',
     					'code': 'text',
     					'city':'text',

@@ -19,7 +19,6 @@
 <h3 id="listHdr"><?php echo T("Sites"); ?></h3>
 
 <div id="listDiv" style="display: none;">
-<h5 id="updateMsg"></h5>
 
 <form role="form" id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
@@ -109,14 +108,15 @@
     </li>
     <li>
       <label for="delivery_note"><?php echo T("DeliveryNote"); ?>:</label>
+			<span class="reqd">*</span>
       <br />
       <textarea id="delivery_note" name="delivery_note" cols="45" required aria-required="true" /></textarea>
     </li>
     <li>
-			<input type="hidden" id="cat" name="cat" value="sites">
-			<input type="hidden" id="mode" name="mode" value="">
-			<input type="hidden" id="siteid" name="siteid" value="">
-		</li>
+		<input type="hidden" id="cat" name="cat" value="sites">
+		<input type="hidden" id="mode" name="mode" value="">
+		<input type="hidden" id="siteid" name="siteid" value="">
+	</li>
 	</ul>
 	<ul id="btnRow">
     <li><input type="submit" id="addBtn"  name="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" /></li>
@@ -128,10 +128,8 @@
 </form>
 </div>
 
-<div id="msgDiv" style="display: none;"><fieldSet id="userMsg"></fieldset></div>
-
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+  	require_once(REL(__FILE__,'../shared/footer.php'));
 	
 	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
 	//require_once(REL(__FILE__, "sitesJs.php"));

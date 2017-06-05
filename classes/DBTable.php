@@ -29,7 +29,17 @@ abstract class DBTable extends Queryi {
 		parent::__construct();
 	}
 
-	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
+	protected function validate_el($rec, $insert){
+		$errors = array();
+		// check for missing entries
+		foreach ($this->reqFields as $req) {
+	        if ($insert and !isset($rec[$req])
+	                        or isset($rec[$req]) and $rec[$req] == '') {
+	            $errors[] = new FieldError($req, T("Required field missing"));
+	        }
+		}
+		return $errors;
+	}
 
 	## ------------------ setters ---------------------------------------- ##
 	protected function setName($name) {
