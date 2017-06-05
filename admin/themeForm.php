@@ -15,7 +15,6 @@
 <h3><?php echo T("Themes"); ?></h3>
 
 <div id="listDiv">
-<h5 id="updateMsg"></h5>
 <br />
 <form role="form" id="selectForm" name="selectForm">
 <fieldset>
@@ -28,7 +27,7 @@
 </fieldset>
 </form>
 
-<p class="error">Sorry, Not Working, Under Construction<p>
+<p class="error bold">Sorry, Not Working, Under Construction<p>
 
 <form role="form" id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
@@ -207,8 +206,6 @@
 </table>
 </fieldset>
 </form>
-
-<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <p class="note">
 	<?php echo T("Note"); ?>:<br /><?php echo T("No delete on active theme"); ?>

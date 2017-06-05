@@ -23,7 +23,7 @@ body {
 
 .error { /*color:red;*/ font-weight:bold; !important; }*/
 .warning { /*color:orange;*/ font-weight:bold; !important; }*/
-.bold { font-size:larger; font-weight:bold; }
+.bold { font-size:1.5rem; font-weight:bold; }
 .note { font-size:0.7rem; font-weight:bold; /*color:green;*/ }
 .info { font-weight:bold; }
 .help { font-size:0.7rem; display:none; }

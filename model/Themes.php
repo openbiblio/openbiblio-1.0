@@ -41,7 +41,7 @@ class Themes extends DBTable {
 		));
 		$this->setKey('themeid');
         $this->setReq(array(
-            'theme_name',
+            'theme_name', 'border_color', 'border_width', 'table_padding',
         ));
 		$this->setSequenceField('themeid');
 	}
@@ -55,10 +55,5 @@ class Themes extends DBTable {
 			$select[$rec['themeid']] = $rec['theme_name'];
 		}
 		return $select;
-	}
-	protected function validate_el($rec, $insert) {
-		// check for required fields done in DBTable
-		$errors = parent::validate_el($rec, $insert);
-		return $errors;
 	}
 }
