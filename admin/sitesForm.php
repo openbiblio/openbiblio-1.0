@@ -80,7 +80,7 @@
     </li>
     <li>
       <label for="city"><?php echo T("City"); ?>:</label>
-      <input id="city" name="city" type="text" size="32" />
+      <input id="city" name="city" type="text" size="32" required aria-required="true" />
     </li>
     <li>
       <label for="state"><?php echo T("State"); ?>:</label>

@@ -42,15 +42,9 @@ class Staff extends CoreTable {
 	}
 
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        // all required fields present?
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = array('NULL', T("Required field missing").": ".$req);
-			}
-		}
-        $nFlg = 0;
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
         // login credentials
 		if (isset($rec['pwd'])) {
 			if (!isset($rec['pwd2']) or ($rec['pwd'] != $rec['pwd2']) ) {
@@ -73,6 +67,7 @@ class Staff extends CoreTable {
 		if (!file_exists($rec['start_page'])) {
 			$errors[] = array('NULL', T("startPage does not exist"));
 		}
+		return $errors;
 	}
 	function insert_el($rec, $confirmed=false) {
 		if(isset($rec['pwd'])) {

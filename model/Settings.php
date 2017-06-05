@@ -76,7 +76,9 @@ class Settings extends DBTable {
 	}
 
 	protected function validate_el($rec, $insert) {
-        return $rec;
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+		return $errors;
     }
 
 	static public function load() {

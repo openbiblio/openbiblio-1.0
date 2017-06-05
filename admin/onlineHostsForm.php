@@ -91,14 +91,14 @@
     </td>
   </tr>
   <tr>
-    <td><label for="db"><?php echo T("Syntax"); ?>:</label></td>
+    <td><label for="syntax"><?php echo T("Syntax"); ?>:</label></td>
     <td>
       <input id="syntax" name="syntax" type="text" size="20" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>
   <tr>
-    <td><label for="db"><?php echo T("Service"); ?>:</label></td>
+    <td><label for="service"><?php echo T("Service"); ?>:</label></td>
     <td>
 		<select  id="service" name="service" >to be filled by server</select>
     </td>

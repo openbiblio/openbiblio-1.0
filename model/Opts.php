@@ -30,7 +30,5 @@ class Opts extends DBTable {
 		));
 		$this->setKey('id');
 	}
-
-	protected function validate_el($rec, $insert) { return array(); }
 }
 

@@ -24,10 +24,10 @@ class Sites extends DBTable {
 			'email'=>'string',
 			'calendar'=>'number',
 		));
-        $this->setReq(array(
-            'name', 'code', 'delivery_note',
-        ));
 		$this->setKey('siteid');
+        $this->setReq(array(
+            'name', 'code', 'city', 'delivery_note',
+        ));
 		$this->setSequenceField('siteid');
 		$this->setForeignKey('calendar', 'calendar_dm', 'code');
 	}
@@ -52,17 +52,9 @@ class Sites extends DBTable {
 		}
 		return $select;
 	}
+
 	protected function validate_el($rec, $insert) {
-/*
-		$errors = array();
-        // check for missing entries
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
-*/
+		// check for required fields done in DBTable
 		$errors = parent::validate_el($rec, $insert);
 		return $errors;
 	}

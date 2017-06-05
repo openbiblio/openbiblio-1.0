@@ -20,15 +20,8 @@ class MemberCustomFields extends DBTable {
 		$this->setKey('code');
 	}
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        //echo "in MemberCustomFields::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
-        // check for missing entries
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 		return $errors;
 	}
 

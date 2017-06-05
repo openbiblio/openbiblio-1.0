@@ -49,7 +49,6 @@ class Holds extends DBTable {
 		parent::deleteMatches($fields);
 		$this->_cleanup();
 	}
-	protected function validate_el($rec, $insert) { /*return array();*/ }
 	public function insert_el($rec, $confirmed=false) {
 		$rec['hold_begin_dt'] = date('Y-m-d H:i:s');
 		return parent::insert_el($rec, $confirmed);

@@ -23,6 +23,9 @@ class CircCollections extends DBTable {
 			'pre_closing_padding'=>'number',
 		));
 		$this->setKey('code');
+        $this->setReq(array(
+            'days_due_back', 'minutes_due_back', 'due_date_calculator', 'regular_late_fee',
+        ));
 		$this->setForeignKey('code', 'collection_dm', 'code');
 		$this->calculators = [];
 
@@ -120,12 +123,8 @@ class CircCollections extends DBTable {
 		);
 	}
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('days_due_back', 'minutes_due_back', 'due_date_calculator', 'regular_late_fee') as $req) {
-			if ($insert and !isset($rec[$req]) or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 
 		$positive = array('days_due_back', 'regular_late_fee');
 		foreach ($positive as $f) {
@@ -198,15 +197,15 @@ class DistCollections extends DBTable {
 			'restock_threshold'=>'number',
 		));
 		$this->setKey('code');
+        $this->setReq(array(
+            'restock_threshold'
+        ));
 		$this->setForeignKey('code', 'collection_dm', 'code');
 	}
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('restock_threshold') as $req) {
-			if ($insert and !isset($rec[$req]) or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
 		$positive = array('restock_threshold');
 		foreach ($positive as $f) {
 			if (!is_numeric($rec[$f])) {
@@ -242,13 +241,9 @@ class Collections extends DmTable {
 	}
 
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        // all required fields present?
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req]) or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
         // valid collection type?
 		if (isset($rec['type']) and !array_key_exists($rec['type'], $this->colltypes)) {
 			$errors[] = new FieldError('type', T("Bad collection type"));

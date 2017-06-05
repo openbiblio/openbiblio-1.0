@@ -30,5 +30,4 @@ class States extends DmTable {
         return array($parm1, $parm2);
     }
 
-	//protected function validate_el($rec, $insert) {} // DmTable default used
 }

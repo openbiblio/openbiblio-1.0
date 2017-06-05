@@ -66,16 +66,8 @@ class DmTable extends DBTable {
 
 	protected function validate_el($rec, $insert) {
         // individual derviatives SHOULD over-ride this for particular needs
-		$errors = array();
-        //echo "in DmTable::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
-        // check for missing entries
-        if (isset($this->reqFields)) {
-    		foreach ($this->reqFields as $req) {
-    			if ($insert and !isset($rec[$req]) or isset($rec[$req]) and $rec[$req] == '') {
-    				$errors[] = new FieldError($req, T("Required field missing"));
-    			}
-    		}
-        }
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
         // duplicate codes not allowed
 		$sql = $this->mkSQL("SELECT * FROM %q WHERE code=%Q ", $this->name, $rec['code']);
 		$rslt = $this->select($sql);

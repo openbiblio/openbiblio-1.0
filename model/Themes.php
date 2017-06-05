@@ -40,6 +40,9 @@ class Themes extends DBTable {
 			'table_padding'=>'number',
 		));
 		$this->setKey('themeid');
+        $this->setReq(array(
+            'theme_name',
+        ));
 		$this->setSequenceField('themeid');
 	}
 	function getSelect($all=false) {
@@ -54,13 +57,8 @@ class Themes extends DBTable {
 		return $select;
 	}
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('theme_name') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 		return $errors;
 	}
 }
