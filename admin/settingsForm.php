@@ -17,31 +17,17 @@
 	<div id="tabs">
 		<fieldset>
 			<ul class="controls inline">
-				<li class="active"><a href="#localePage"><?php echo T("Locale"); ?></a></li>
-				<li><a href="#libraryPage"><?php echo T("Library"); ?></a></li>
-				<li><a href="#miscPage"><?php echo T("Miscellaneous"); ?></a></li>
+				<!-- the displayed tab order will follow the order of the following links -->
+				<li class="active"><a href="#libraryPage"><?php echo T("Library"); ?></a></li>
+				<li><a href="#localePage"><?php echo T("Locale"); ?></a></li>
 				<li><a href="#requestPage"><?php echo T("Requests"); ?></a></li>
 				<li><a href="#photoPage"><?php echo T("CoverPhotos"); ?></a></li>
+				<li><a href="#opacPage"><?php echo T("OPAC"); ?></a></li>
+				<li><a href="#miscPage"><?php echo T("Miscellaneous"); ?></a></li>
 			</ul>
 
 			<!-- Note titles/Labels in this form are 'placeholders only', actual labels will be downloaded from the database -->
 			<form role="form" name="editSettingsForm" id="editSettingsForm">
-				<div id="localePage" class="block active">
-					<label for="locale"><?php echo T("Available languages"); ?></label>
-					<select id="locale" name="locale" autofocus ></select>
-					<br />
-					<label for="charset"><?php echo T("Character Set"); ?></label>
-					<input type="text" id="charset" name="charset" >
-					<br />
-		            <label for="first_day_of_week"><?php echo T("First day of week"); ?></label>
-		            <select id="first_day_of_week" name="first_day_of_week" ></select>
-					<br />
-					<!--label for="themeid"><?php echo T("Theme id"); ?></label>
-					<select id="themeid" name="themeid"></select>
-					<br />
-					<label for="theme_dir_url"><?php echo T("Theme Dir URL"); ?></label>
-					<select id="theme_dir_url" name="theme_dir_url" ></select-->
-				</div>
 				<div id="libraryPage" class="block">
 					<label for="libraryName"><?php echo T("Library Title"); ?></label>
 					<select id="libraryName" name="library_name" ></select>
@@ -64,15 +50,15 @@
 					<label for="show_lib_info"><?php echo T("Show Lib Info on Staff pages"); ?></label>
 					<input type="checkbox" id="show_lib_info" name="show_lib_info" value="Y" />
 				</div>
-				<div id="miscPage" class="block">
-					<label for="mbr_barcode_width"><?php echo T("Barcode width"); ?></label>
-					<input type="number" id="mbr_barcode_width" name="mbr_barcode_width" maxlength="17" />
-                    <br />
-                    <label for="block_checkouts_when_fines_due"><?php echo T("Block Checkouts When Fines Due"); ?></label>
-                    <input type="checkbox" id="block_checkouts_when_fines_due" name="block_checkouts_when_fines_due" value="Y" />
-                    <br />
-					<label for="opac_url"><?php echo T("OPAC URL"); ?></label>
-					<input type="text" id="opac_url" name="opac_url" size="17" maxlength="33" />
+				<div id="localePage" class="block active">
+					<label for="locale"><?php echo T("Available languages"); ?></label>
+					<select id="locale" name="locale" autofocus ></select>
+					<br />
+					<label for="charset"><?php echo T("Character Set"); ?></label>
+					<input type="text" id="charset" name="charset" >
+					<br />
+		            <label for="first_day_of_week"><?php echo T("First day of week"); ?></label>
+		            <select id="first_day_of_week" name="first_day_of_week" ></select>
 				</div>
 				<div id="requestPage" class="block">
 					<label for="request_from"><?php echo T("Request From"); ?></label>
@@ -105,6 +91,26 @@
 					<br />
 					<input type="button" id="fotoTestBtn" value="Test" />
 					<input type="button" id="fotoDoneBtn" value="Done" />
+				</div>
+				<div id="opacPage" class="block">
+					<label for="opac_url"><?php echo T("OPAC URL"); ?></label>
+					<input type="text" id="opac_url" name="opac_url" size="17" maxlength="33" />
+                    <br />
+                    <!--label for="opacCrntSite"><?php echo T("OpacUseCurrentSite"); ?></label>
+                    <input type="radio" id="opacCrntSite" name="opacSiteMode" value="curent" />
+                    <br />
+                    <label for="opacSelectSite"><?php echo T("OpacUserSelectsSite"); ?></label>
+                    <input type="radio" id="opacSelectSite" name="opacSiteMode" value="select" /-->
+				</div>
+				<div id="miscPage" class="block">
+					<label for="mbr_barcode_width"><?php echo T("Barcode width"); ?></label>
+					<input type="number" id="mbr_barcode_width" name="mbr_barcode_width" maxlength="17" />
+                    <br />
+					<!--label for="themeid"><?php echo T("Theme id"); ?></label>
+					<select id="themeid" name="themeid"></select>
+					<br />
+					<label for="theme_dir_url"><?php echo T("Theme Dir URL"); ?></label>
+					<select id="theme_dir_url" name="theme_dir_url" ></select-->
 				</div>
 				<hr>
 				<input type="hidden" id="cat" name="cat" value="settings" />

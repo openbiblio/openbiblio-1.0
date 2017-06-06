@@ -80,8 +80,8 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasAdminAuth"]){
 		Nav::node('admin', T("Admin"), '../admin/index.php');
-		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');
 		Nav::node('admin/settings', T("Library Settings"), '../admin/settingsForm.php');
+		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');
 		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
 		Nav::node('admin/calendar', T("Calendar Manager"), '../admin/calendarForm.php');

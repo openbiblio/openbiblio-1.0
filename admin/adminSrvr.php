@@ -435,8 +435,8 @@
 			echo json_encode($fd);
 			break;
 		case 'update_settings':
-			$rslt = $ptr->setAll_el($_POST);
-			echo json_encode($rslt);
+			$msg = $ptr->setAll_el($_POST);
+			echo json_encode($msg);
 			break;
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-

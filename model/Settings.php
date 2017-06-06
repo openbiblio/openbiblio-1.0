@@ -75,12 +75,6 @@ class Settings extends DBTable {
 */
 	}
 
-	protected function validate_el($rec, $insert) {
-		// check for required fields done in DBTable
-		$errors = parent::validate_el($rec, $insert);
-		return $errors;
-    }
-
 	static public function load() {
 		global $_settings_cache, $_settings_validators;
         //echo "in Settings::load() <br />\n";
@@ -108,38 +102,32 @@ class Settings extends DBTable {
 	static public function getFormFields($menu=NULL) {
 		$r = Settings::_getData($menu);
 		$fields = array();
-		//while ($s = $r->fetch_assoc()) {
         foreach ($r as $s) {
-				$fields[] = Settings::_mkField($s);
+			$fields[] = Settings::_mkField($s);
 		}
 		return $fields;
 	}
 	static private function _getSubdirs($root) {
 		$aray = array();
-	  if (is_dir('../'.$root)) {
+	  	if (is_dir('../'.$root)) {
 			//echo $root." Dir found: <br />";
-  	  ## find all sub-directories
+  	  		## find all sub-directories
 			if ($dirHndl = opendir('../'.$root)) {
-		    # look at all sub-dirs
-		    while (false !== ($subdir = readdir($dirHndl))) {
-		      if (($subdir == '.') || ($subdir == '..')) continue;
+			    # look at all sub-dirs
+			    while (false !== ($subdir = readdir($dirHndl))) {
+			      	if (($subdir == '.') || ($subdir == '..')) continue;
 					//echo "subdir => $subdir<br />";
-  	      $path = "../".$root."/".$subdir;
-  	      if (is_dir($path)) {
-  	        if (!in_array($path, $aray)) {
-  	        	$aray[$path] = $path;
+	  	     		$path = "../".$root."/".$subdir;
+	  	      		if (is_dir($path)) {
+	  	        		if (!in_array($path, $aray)) {
+	  	        			$aray[$path] = $path;
 						}
 					}
-  		  }
-  		  closedir($dirHndl);
+	  		  	}
+	  		  	closedir($dirHndl);
 			}
 		}
 		return $aray;
-	}
-
-    static public function getSettings() {
-		global $_settings_cache;
-		return $_settings_cache;
 	}
 	static private function _getData ($menu=NULL, $cols='*'){
 		$db = new Queryi;
@@ -151,6 +139,12 @@ class Settings extends DBTable {
 		//echo "sql={$sql}<br />\n";
 		return $db->select($sql);
 	}
+
+    static public function getSettings() {
+		global $_settings_cache;
+		return $_settings_cache;
+	}
+
 	function getFormData ($menu=NULL, $cols) {
 		$r = $this->_getData($menu, $cols);
 		$fields = array();
@@ -189,7 +183,8 @@ class Settings extends DBTable {
 		foreach ($settings as $n=>$v) {
 			$sql = $db->mkSQL('UPDATE settings SET value=%Q WHERE name=%Q', $v, $n);
 			//echo "sql={$sql}<br />\n";
-			$db->act($sql);
+			$rslt = $db->act($sql);
+//			$errors[] = $rslt->fetch();
 		}
 		$db->unlock();
 		return;

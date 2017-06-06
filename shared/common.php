@@ -171,6 +171,7 @@
         Settings::set('OBsize', $crntSize);
     }
 
+	//echo " crnt locale is $Locale";
 	$LOC->init($Locale);
 
     // ***********************************************

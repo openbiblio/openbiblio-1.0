@@ -40,7 +40,7 @@ class Chkr {
         $('#fixBtn').hide();
     };
 
-	  //------------------------------
+	//------------------------------
     doCheckDB () {
         $('#plsWait').show();
         $.post(this.url, {cat:'integrity', mode:'checkDB'}, function (data) {
