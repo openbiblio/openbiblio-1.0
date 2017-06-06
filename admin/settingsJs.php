@@ -141,6 +141,9 @@ var set = {
                     $id.html(fields[n].value).attr('rows',fields[n].width)
 				} else if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {
 					$id.val(fields[n].value).attr('size',fields[n].width);
+				} else if (fields[n].type == 'checkbox') {
+console.log('checkbox value= '+fields[n].value);
+                    $id.val([fields[n].value]);
 				}
 			}
 		}, 'json');
@@ -175,6 +178,7 @@ var set = {
         if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";
         if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
         if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
+        if (!($('#opac_site_mode').is(':checked'))) params += "&opac_site_mode=N";
 console.log('in doUpdate');
 		$.post(set.url, params, function (response) {
 console.log(response);

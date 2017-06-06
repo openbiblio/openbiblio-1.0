@@ -72,6 +72,15 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
+				'error' => T("OPAC site mode missing from Settings"),
+				'countSql' => 'SELECT (CASE (COUNT(*)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                    .  'FROM settings WHERE name = "opac_site_mode" ',
+				'fixSql' => 'INSERT INTO `settings` '
+					. ' (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) '
+					. " VALUES ('opac_site_mode', NULL, 'Allow user Site Selection', 'bool', NULL, NULL, NULL, 'N', 'admin')",
+			);
+
+			$this->checks[] = array(
 				'error' => T("Member Fields DM Table should allow null values for default_flg field"),
 				'countSql' => 'SELECT COUNT(COLUMN_NAME) '
 					. 'FROM information_schema.COLUMNS '

@@ -72,7 +72,7 @@
 				</div>
 				<div id="photoPage" class="block">
                     <label for="use_image_flg"><?php echo T("Use Image"); ?></label>
-                    <input type="checkbox" id="use_image_flg" name="use_image_flg" checked value="Y" />
+                    <input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />
 					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" required aria-required />
@@ -96,11 +96,8 @@
 					<label for="opac_url"><?php echo T("OPAC URL"); ?></label>
 					<input type="text" id="opac_url" name="opac_url" size="17" maxlength="33" />
                     <br />
-                    <!--label for="opacCrntSite"><?php echo T("OpacUseCurrentSite"); ?></label>
-                    <input type="radio" id="opacCrntSite" name="opacSiteMode" value="curent" />
-                    <br />
-                    <label for="opacSelectSite"><?php echo T("OpacUserSelectsSite"); ?></label>
-                    <input type="radio" id="opacSelectSite" name="opacSiteMode" value="select" /-->
+                    <label for="opac_site_mode"><?php echo T("OpacUserSelectsSite"); ?></label>
+                    <input type="checkbox" id="opac_site_mode" name="opac_site_mode" value="Y" />
 				</div>
 				<div id="miscPage" class="block">
 					<label for="mbr_barcode_width"><?php echo T("Barcode width"); ?></label>
