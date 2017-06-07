@@ -10,7 +10,7 @@
 var list = {
     init: function () {
         list.server = '../shared/listSrvr.php';
-		list.getCameraList()
+		list.getMediaList()
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
@@ -30,28 +30,14 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-	getCameraList: function () {
-		//console.log('in list::getCameraList()');
-		if (list.videoDevices) {
-			console.log('videoDevices already available');
-			return list.videoDevices;
+	mediaListPromise: null,
+	getMediaList: function () {
+		//console.log('in list::getMediaList()');
+		if (!this.mediaListPromise) {
+			//console.log('no mediaDevices yet available');
+			this.mediaListPromise = navigator.mediaDevices.enumerateDevices();
 		}
-
-		// else go get the data
-		navigator.mediaDevices.enumerateDevices()
-	    .then(devices => {
-			list.videoDevices = [0,0];
-			var videoDeviceIndex = 0;
-			devices.forEach(function(device) {
-				if (device.kind == "videoinput") {
-					//console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
-				  	list.videoDevices[videoDeviceIndex++] =  {'label':device.label, 'id':device.deviceId};
-				}
-			});
-			return list.videoDevices;
-		})
-        .catch(e => console.error(e));
-		return
+		return this.mediaListPromise;
 	},
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//

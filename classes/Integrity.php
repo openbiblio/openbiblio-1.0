@@ -86,7 +86,7 @@ class Integrity extends Queryi{
                     .  'FROM settings WHERE name = "camera" ',
 				'fixSql' => 'INSERT INTO `settings` '
 					. '(`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) '
-					. " VALUES ('camera', NULL, 'Camera_in_use', 'text', '32', NULL, NULL, NULL, 'admin')",
+					. " VALUES ('camera', NULL, 'Camera_in_use', 'select', '32', NULL, NULL, NULL, 'admin')",
 			);
 
 			$this->checks[] = array(

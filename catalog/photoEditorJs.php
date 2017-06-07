@@ -26,7 +26,7 @@ var wc = {
 			wc.ctxIn = canvasIn.getContext('2d');
         }
 
-		wc.initWidgets();
+//		wc.initWidgets();
 
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
 		$('#capture').on('click',null,wc.takeFoto);
@@ -54,23 +54,17 @@ var wc = {
 	},
 	//------------------------------
 	initWidgets: function () {
+console.log('in wc::initWidgets()');
 		if (wc.showFotos) {
 			wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
 			wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
 			wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
-
-//			if (Modernizr.video) {
-//				//console.log('video supported in this browser');
-//		  	    var html = '<video id="camera" width='+wc.fotoWidth
-//								 + ' height='+wc.fotoHeight
-//								 + ' preload="none" ></video>';
-//				$('#canvasIn').before(html);
-//			} else {
-//				console.log('video NOT supported in this browser');
-//			}
+			wc.cameraId = "<?php echo Settings::get('camera');?>";
 		}
 
-/**/
+	    wc.video = document.querySelector('video');
+
+/*
       	//no longer valid? - FL May2017
 		navigator.getUserMedia = navigator.getUserMedia
 							  || navigator.webkitGetUserMedia
@@ -78,6 +72,7 @@ var wc = {
 							  || navigator.msGetUserMedia
                               || navigator.oGetUserMedia
         ;
+		console.log(mediaDevices.enumerateDevices);
 
 		if (navigator.getUserMedia) {
 		    navigator.getUserMedia({
@@ -97,7 +92,7 @@ var wc = {
             });
 
 		}
-/**/
+*/
 /*
 		// this is Mozilla recommended solution, doesn't seem to work here - FL May2017
 		var constraints = {
@@ -106,6 +101,8 @@ var wc = {
 					 height:{min: wc.fotoHeight}
 				   }
 		};
+
+		console.log(navigator.mediaDevices.enumerateDevices());
 
 		navigator.mediaDevices.getUserMedia(constraints)
 			.then(function(mediaStream) {
@@ -119,7 +116,81 @@ var wc = {
 				console.log('fotoErr: '+err.name + ": " + err.message);
 			});
 */
+/*
+		// here is another method that might allow choice of cameras - FL Jun2017
+        //----------------------------------------------------------------------
+        //  Here we list all media devices, in order to choose between
+        //  the front and the back camera.
+        //      videoDevices[0] : Front Camera
+        //      videoDevices[1] : Back Camera
+        //  I used an array to save the devices ID
+        //  which i get using devices.forEach()
+        //  Then set the video resolution.
+        //----------------------------------------------------------------------
+		navigator.mediaDevices.enumerateDevices()
+	    .then(devices => {
+			wc.videoDevices = [0,0];
+			var videoDeviceIndex = 0;
+			devices.forEach(function(device) {
+				if (device.kind == "videoinput") {
+//					console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+				  	wc.videoDevices[videoDeviceIndex++] =  device.deviceId;
+				}
+			});
+
+			var constraints =  {
+				video:{width: { min: wc.fotoWidth },
+					   height: { min: wc.fotoHeight },
+					   deviceId: { exact: wc.videoDevices[2]},
+					  },
+				audio: false,
+				};
+	        return navigator.mediaDevices.getUserMedia(constraints);
+	    })
+        .then(stream => {
+			if (window.webkitURL) {
+				wc.video.src = window.webkitURL.createObjectURL(stream);
+				wc.localMediaStream = stream;
+			} else if (wc.video.mozSrcObject !== undefined) {
+				wc.video.mozSrcObject = stream;
+			} else if (wc.video.srcObject !== undefined) {
+				wc.video.srcObject = stream;
+			} else {
+				wc.video.src = stream;
+          	}
+		})
+        .catch(e => console.error(e));
+*/
+		// Final version?
+
+		const constraints =  {
+			video:{width: { min: wc.fotoWidth },
+				   height: { min: wc.fotoHeight },
+				   deviceId: { exact: wc.cameraId},
+				  },
+			audio: false,
+			};
+	    navigator.mediaDevices.getUserMedia(constraints);
+
+
+
+		list.getMediaList()
+        .then(stream => {
+
+			if (window.webkitURL) {
+				wc.video.src = window.webkitURL.createObjectURL(stream);
+				wc.localMediaStream = stream;
+			} else if (wc.video.mozSrcObject !== undefined) {
+				wc.video.mozSrcObject = stream;
+			} else if (wc.video.srcObject !== undefined) {
+				wc.video.srcObject = stream;
+			} else {
+				wc.video.src = stream;
+          	}
+		})
+        .catch(e => console.error(e));
 	},
+
     vidOff: function () {
         //clearInterval(theDrawLoop);
         //ExtensionData.vidStatus = 'off';

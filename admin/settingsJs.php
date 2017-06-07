@@ -12,6 +12,7 @@ var set = {
 	echo 'locs: '.json_encode($LOC->getLocales()).',';
     echo 'locale: "'.Settings::get('locale').'",';
     echo 'charSet: "'.Settings::get('charset').'",';
+//	echo 'camera: "'.Settings::get('camera').'",';
 	echo 'successMsg: "'.T("Update successful").'",';
 	echo 'failureMsg: "'.T("Update failed").'",';
 	?>
@@ -87,9 +88,26 @@ var set = {
 			}
 			$('#libraryName').html(html).show();
 			//set.fetchThemeDirs();  // not yet supported
-			set.fetchFormData();
+			set.fetchCameras();
 		}, 'json');
 	},
+	//------------------------------
+	fetchCameras: function () {
+		var html = '<option value="0">Please select a camera</option>';
+
+		list.getMediaList()
+		.then(devices => {
+			devices.forEach(function(device) {
+				if (device.kind == "videoinput") {
+    				html+= '<option value="'+device.deviceId+'">'+device.label+'</option>';
+    			}
+			});
+    		$('#camera').html(html).show();
+			set.fetchFormData();
+		})
+        .catch(e => console.error(e));
+	},
+
 	/* not in use at this time - June2017
 	fetchThemeDirs: function () {
         $.post(set.url,{'cat':'themes', 'mode':'getThemeDirs'}, function(data){
@@ -115,6 +133,7 @@ var set = {
 
 	//------------------------------
 	fetchFormData: function () {
+		//console.log('getting data from db')
 		$.post(set.url, {'cat':'settings', 'mode':'getFormData'}, function (fields) {
 			for (var n in fields) {
 				/* this mapping needed due to same ids being used in <aside> */
@@ -139,28 +158,19 @@ var set = {
 					case 'email': $id.attr('pattern', flos.patterns.email); break;
 				}
                 */
+
+				/* set form field using downloaded data */
+				//console.log(fields[n].name+' ==>> '+fields[n].value);
 				if (fields[n].type == 'textarea') {
                     $id.html(fields[n].value).attr('rows',fields[n].width)
 				} else if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {
 					$id.val(fields[n].value).attr('size',fields[n].width);
-				} else if (fields[n].type == 'checkbox') {
+				} else if ((fields[n].type == 'checkbox') || (fields[n].type == 'select')) {
+					//console.log('we have a select box');
                     $id.val([fields[n].value]);
 				}
 			}
-
-			set.fetchCameras();
 		}, 'json');
-	},
-
-	//------------------------------
-	fetchCameras: function () {
-		var cameras = list.getCameraList()
-		var html = '';
-		for (let n in cameras) {
-console.log('serving camera: '+cameras[n].label);
-    		html+= '<option value="'+cameras[n].id+'">'+cameras[n].label+'</option>';
-    	}
-    	$('#cameras').html(html).show();
 	},
 
 	//------------------------------
@@ -193,9 +203,9 @@ console.log('serving camera: '+cameras[n].label);
         if (!($('#block_checkouts_when_fines_due').is(':checked'))) params += "&block_checkouts_when_fines_due=N";
         if (!($('#use_image_flg').is(':checked'))) params += "&use_image_flg=N";
         if (!($('#opac_site_mode').is(':checked'))) params += "&opac_site_mode=N";
-console.log('in doUpdate');
+		//console.log('in doUpdate');
 		$.post(set.url, params, function (response) {
-console.log(response);
+			//console.log(response);
 			if (response !== null)
 				obib.showError(set.failureMsg);
 			else

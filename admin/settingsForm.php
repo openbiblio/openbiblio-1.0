@@ -74,8 +74,8 @@
                     <label for="use_image_flg"><?php echo T("Use Image"); ?></label>
                     <input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
 					<br />
-					<label for="cameras"><?php echo T("Select a camera"); ?></label>
-					<select id="cameras" name="cameras" ><option >Not available</option></select>
+					<label for="camera"><?php echo T("Select a camera"); ?></label>
+					<select id="camera" name="camera" ><option >Not available</option></select>
 					<br />
 					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" required aria-required />
