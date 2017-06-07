@@ -90,6 +90,7 @@ var set = {
 			set.fetchFormData();
 		}, 'json');
 	},
+	/* not in use at this time - June2017
 	fetchThemeDirs: function () {
         $.post(set.url,{'cat':'themes', 'mode':'getThemeDirs'}, function(data){
     		var html = '';
@@ -107,9 +108,10 @@ var set = {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#themeid').html(html).show();
-			set.fetchFormData();
+			set.fetchCameras();
 		}, 'json');
 	},
+	*/
 
 	//------------------------------
 	fetchFormData: function () {
@@ -142,11 +144,23 @@ var set = {
 				} else if ((fields[n].type != 'select') && (fields[n].type != 'checkbox')) {
 					$id.val(fields[n].value).attr('size',fields[n].width);
 				} else if (fields[n].type == 'checkbox') {
-console.log('checkbox value= '+fields[n].value);
                     $id.val([fields[n].value]);
 				}
 			}
+
+			set.fetchCameras();
 		}, 'json');
+	},
+
+	//------------------------------
+	fetchCameras: function () {
+		var cameras = list.getCameraList()
+		var html = '';
+		for (let n in cameras) {
+console.log('serving camera: '+cameras[n].label);
+    		html+= '<option value="'+cameras[n].id+'">'+cameras[n].label+'</option>';
+    	}
+    	$('#cameras').html(html).show();
 	},
 
 	//------------------------------

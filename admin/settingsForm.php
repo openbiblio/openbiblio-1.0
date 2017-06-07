@@ -30,7 +30,7 @@
 			<form role="form" name="editSettingsForm" id="editSettingsForm">
 				<div id="libraryPage" class="block">
 					<label for="libraryName"><?php echo T("Library Title"); ?></label>
-					<select id="libraryName" name="library_name" ></select>
+					<select id="libraryName" name="library_name" autofocus ></select>
 					<br />
 					<!--label for="libraryHours"><?php echo T("Library Hours"); ?></label>
 					<textarea id="libraryHours" name="library_hours" rows="1" placeholder="M-F: 8am - 5pm<br />Sat:  9am - noon" /></textarea>
@@ -52,7 +52,7 @@
 				</div>
 				<div id="localePage" class="block active">
 					<label for="locale"><?php echo T("Available languages"); ?></label>
-					<select id="locale" name="locale" autofocus ></select>
+					<select id="locale" name="locale" ></select>
 					<br />
 					<label for="charset"><?php echo T("Character Set"); ?></label>
 					<input type="text" id="charset" name="charset" >
@@ -73,6 +73,9 @@
 				<div id="photoPage" class="block">
                     <label for="use_image_flg"><?php echo T("Use Image"); ?></label>
                     <input type="checkbox" id="use_image_flg" name="use_image_flg" value="Y" />
+					<br />
+					<label for="cameras"><?php echo T("Select a camera"); ?></label>
+					<select id="cameras" name="cameras" ><option >Not available</option></select>
 					<br />
 					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" required aria-required />

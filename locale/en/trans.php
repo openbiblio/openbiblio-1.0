@@ -884,6 +884,7 @@ $trans["Secret key column is missing for staff members"] = "Secret key column is
 $trans["see"] = "see";
 $trans["Select did not return results."] = "Select did not return results.";
 $trans["Selecting database..."] = "Selecting database...";
+$trans["Select a camera"] = "Select a camera";
 $trans["Select an image Source"] = "Select an image Source";
 $trans["Select Plugins"] = "Select Plugins to be used.";
 $trans["Select site"] = "Select site";

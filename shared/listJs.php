@@ -10,6 +10,7 @@
 var list = {
     init: function () {
         list.server = '../shared/listSrvr.php';
+		list.getCameraList()
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
@@ -29,7 +30,32 @@ var list = {
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getCalendarList: function (where) { 
+	getCameraList: function () {
+		//console.log('in list::getCameraList()');
+		if (list.videoDevices) {
+			console.log('videoDevices already available');
+			return list.videoDevices;
+		}
+
+		// else go get the data
+		navigator.mediaDevices.enumerateDevices()
+	    .then(devices => {
+			list.videoDevices = [0,0];
+			var videoDeviceIndex = 0;
+			devices.forEach(function(device) {
+				if (device.kind == "videoinput") {
+					//console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
+				  	list.videoDevices[videoDeviceIndex++] =  {'label':device.label, 'id':device.deviceId};
+				}
+			});
+			return list.videoDevices;
+		})
+        .catch(e => console.error(e));
+		return
+	},
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getCalendarList: function (where) {
         $.post(list.server, {mode:'getCalendarList'}, function(data){
             return data;
         }, 'json');
