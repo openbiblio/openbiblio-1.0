@@ -93,8 +93,10 @@ var wc = {
 
     vidOff: function () {
         wc.video.pause();
-        wc.video.srcObject.getTracks()[0].stop();
-		wc.video.srcObject=null;
+		if (wc.video.srcObject) {
+        	wc.video.srcObject.getTracks()[0].stop();
+			wc.video.srcObject=null;
+		}
         console.log("Vid off");
     },
 
