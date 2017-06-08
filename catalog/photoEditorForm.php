@@ -11,19 +11,17 @@
 
 		<!-- to reduce annoyance, only load video components if wanted-->
 		<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-		<div id="fotoDiv" style="display:none" >
+		<div id="fotoDiv" >
 			<!-- video element will be inserted here when JS is activated -->
-	  	    <video id="video" preload="none" style="display:none" />
-
-			<!-- folowing dimensions are not an error, the box MUST be square for later image rotation -->
-		 	<canvas id="canvasIn" style="display:none" />
+	  	    <video id="video" preload="auto" />
+		 	<canvas id="canvasIn" />
 		</div>
 		<?php } ?>
 
 		<div id="fotoCntlDiv">
 			<form role="form" id="fotoForm">
 				<fieldset class="inline">
-			 		<canvas id="canvasOut" height="<?php //echo Settings::get('thumbnail_height');?>" />
+			 		<canvas id="canvasOut"  />
 				</fieldset>
 				<fieldset class="inline">
                     <!-- source choices -->

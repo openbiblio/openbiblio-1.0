@@ -64,8 +64,12 @@ var wc = {
 		//console.log('in wc::initWidgets()');
 		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
 		wc.cameraId = "<?php echo Settings::get('camera');?>";
-		//console.log('width='+wc.fotoWidth+'; height='+wc.fotoHeight);
-		$('#video, #canvasIn, #canvasOut').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+
+		$('#video').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+		// folowing dimensions are not an error, the box MUST be square for later image rotation
+		$('#canvasIn').attr('width',wc.fotoWidth).attr('height',wc.fotoWidth);
+		// folowing dimensions are not an error, the box MUST be turned to accept the rotation
+		$('#canvasOut').attr('width',wc.fotoHeight).attr('height',wc.fotoWidth);
 
 	    wc.video = document.querySelector('video');
 		//console.log(wc.cameraId);
@@ -88,20 +92,18 @@ var wc = {
 	},
 
     vidOff: function () {
-        //clearInterval(theDrawLoop);
-        //ExtensionData.vidStatus = 'off';
         wc.video.pause();
-        wc.video.src = "";
-        wc.localstream.getTracks()[0].stop();
+        wc.video.srcObject.getTracks()[0].stop();
+		wc.video.srcObject=null;
         console.log("Vid off");
     },
 
 	//----//
 	resetForm: function () {
 		$('.help').hide();
-        $('#fotoDiv').hide();
-		$('#video').hide();
-		$('#canvasIn').hide();
+        //$('#fotoDiv').hide();
+		//$('#video').hide();
+		//$('#canvasIn').hide();
 		$('#fotoAreaDiv').show();
 		$('#addFotoBtn').show();
 		wc.eraseImage();
@@ -192,22 +194,33 @@ var wc = {
         reader.readAsDataURL(file);
 	},
 	takeFoto: function () {
-// 	    $('#errSpace').hide();
-		// note in each case, the inputs are location x,y followed by width,height
-		wc.ctxIn.clearRect(0,0, wc.fotoWidth,wc.fotoHeight);
-		wc.ctxIn.drawImage(wc.video, 0,0,wc.fotoWidth,wc.fotoHeight); // input photo
-		wc.rotateImage(wc.fotoRotate);
-		wc.ctxOut.drawImage(wc.canvasIn, 0,0,wc.fotoWidth,wc.fotoHeight, 0,0,wc.fotoWidth,wc.fotoHeight); //input, output
+//	    wc.ctxIn.clearRect(0,0,wc.canvasIn.width,wc.canvasIn.height);
+	    if(wc.rotate == 90 || wc.rotate == 270) {
+	        wc.canvasIn.width = wc.video.height;
+	        wc.canvasIn.height = wc.video.width;
+	    } else {
+	        wc.canvasIn.width = wc.video.width;
+	        wc.canvasIn.height = wc.video.height;
+	    }
+	    if(wc.rotate == 90 || wc.rotate == 270) {
+	        wc.ctxIn.translate(wc.video.height/2, wc.video.width/2);
+	    } else {
+	        wc.ctxIn.translate(wc.video.width/2, wc.video.height/2);
+	    }
+	    wc.ctxIn.rotate(wc.rotate*Math.PI/180);
+
+	    wc.ctxOut.clearRect(0,0, canvasOut.width, canvasOut.height);
+	    wc.ctxOut.drawImage(canvasIn, -wc.video.width/2, -wc.video.height/2);
 	},
 	sendFoto: function (e) {
 		//console.log('sending foto');
 		if (e) e.stopPropagation();
 //		obib.hideMsg(); // clear any user msgs
-		var imgMode = '',
-			current_add_mode = '',
+		var current_add_mode = '',
 			url = $('#fotoName').val(),
 			bibid = $('#fotoBibid').val();
-		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
+		var imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
+
 		current_add_mode = $('.fotoSrceBtns:checked').val();
 		if ((current_add_mode == 'brw') || (current_add_mode == 'cam')) {
 			$.post(wc.url,

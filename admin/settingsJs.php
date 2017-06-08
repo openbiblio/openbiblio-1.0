@@ -192,6 +192,7 @@ var set = {
 	},
 	doTestDone: function (e) {
 		//console.log('test done btn pressed');
+		wc.vidOff();
 		wc.eraseImage();
 		$('#photoEditorDiv').hide();
 		$('#fotoTestBtn').show();
