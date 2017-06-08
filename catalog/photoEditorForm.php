@@ -13,24 +13,17 @@
 		<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 		<div id="fotoDiv" style="display:none" >
 			<!-- video element will be inserted here when JS is activated -->
-	  	    <video id="camera" width="<?php echo Settings::get('thumbnail_width');?>"
-							   height="<?php echo Settings::get('thumbnail_height');?>"
-							   preload="none" style="display:none">
-			</video>
+	  	    <video id="video" preload="none" style="display:none" />
 
 			<!-- folowing dimensions are not an error, the box MUST be square for later image rotation -->
-		 	<canvas id="canvasIn" width="<?php echo Settings::get('thumbnail_height');?>"
-			 					  height="<?php echo Settings::get('thumbnail_height');?>"  style="display:none">
-			</canvas>
+		 	<canvas id="canvasIn" style="display:none" />
 		</div>
 		<?php } ?>
 
 		<div id="fotoCntlDiv">
 			<form role="form" id="fotoForm">
 				<fieldset class="inline">
-			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_height');?>"
-					 					   height="<?php echo Settings::get('thumbnail_height');?>">
-					</canvas>
+			 		<canvas id="canvasOut" height="<?php //echo Settings::get('thumbnail_height');?>" />
 				</fieldset>
 				<fieldset class="inline">
                     <!-- source choices -->

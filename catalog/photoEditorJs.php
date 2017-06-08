@@ -2,6 +2,13 @@
 <?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
    See the file COPYRIGHT.html for more details.
+
+  	this code should be explicity initialized when needed unless
+	the frequent appearance of the video allow/deny prompt is acceptable
+
+    in Mozilla Firefox 46+, you can eleminate the prompt to allow video capture
+    at "about:config | media.navigator.permission.disabled"
+    BUT BE WARY, once on, the camera is accesable by any page in the browser until OB is turned off
  */
 ?>
 // JavaScript Document
@@ -9,6 +16,7 @@
 
 var wc = {
 	init: function () {
+		//console.log('wc.init() called');
 		wc.url = '../catalog/catalogServer.php';
 		$('.help').hide();
 
@@ -16,15 +24,13 @@ var wc = {
         <?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
 		wc.showFotos = true;
         <?php } ?>
+		if (!wc.showFotos) return;
 
-		if (wc.showFotos) {
-			wc.canvasOut = document.getElementById('canvasOut'),
-			wc.ctxOut = canvasOut.getContext('2d');
-
-	        //LJ: Not shown in .php equivalent for this situation, so will cause a exception.
-			wc.canvasIn = document.getElementById('canvasIn'),
-			wc.ctxIn = canvasIn.getContext('2d');
-        }
+		wc.canvasOut = document.getElementById('canvasOut'),
+		wc.ctxOut = canvasOut.getContext('2d');
+		wc.canvasIn = document.getElementById('canvasIn'),
+		wc.ctxIn = canvasIn.getContext('2d');
+		wc.eraseImage();
 
 		wc.initWidgets();
 
@@ -44,6 +50,7 @@ var wc = {
 		wc.canvasOut.ondrop = function (e) {
 			wc.getFotoDrop(e);
 		};
+
 		/* support cut&paste of image */
 		document.onpaste = function (e) {
 			wc.getFotoPaste(e);
@@ -55,12 +62,10 @@ var wc = {
 	//------------------------------
 	initWidgets: function () {
 		//console.log('in wc::initWidgets()');
-		if (wc.showFotos) {
-			wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
-			wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
-			wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
-			wc.cameraId = "<?php echo Settings::get('camera');?>";
-		}
+		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+		wc.cameraId = "<?php echo Settings::get('camera');?>";
+		//console.log('width='+wc.fotoWidth+'; height='+wc.fotoHeight);
+		$('#video, #canvasIn, #canvasOut').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
 
 	    wc.video = document.querySelector('video');
 		//console.log(wc.cameraId);
@@ -95,10 +100,11 @@ var wc = {
 	resetForm: function () {
 		$('.help').hide();
         $('#fotoDiv').hide();
-		$('#camera').hide();
+		$('#video').hide();
 		$('#canvasIn').hide();
 		$('#fotoAreaDiv').show();
 		$('#addFotoBtn').show();
+		wc.eraseImage();
 		wc.changeImgSource();
 	},
 
@@ -130,6 +136,7 @@ var wc = {
 		wc.ctxIn.drawImage(canvasIn, 0,0);
 		wc.ctxIn.restore();
 	},
+
 	showImage: function (fn) {
 		var img = new Image;
 		img.onload = function() { wc.ctxOut.drawImage(img, 0,0, wc.fotoWidth,wc.fotoHeight); };
@@ -185,12 +192,12 @@ var wc = {
         reader.readAsDataURL(file);
 	},
 	takeFoto: function () {
-  	    $('#errSpace').hide();
-		wc.ctxIn.drawImage(wc.video,0,0, wc.fotoHeight,wc.fotoWidth);
+// 	    $('#errSpace').hide();
+		// note in each case, the inputs are location x,y followed by width,height
+		wc.ctxIn.clearRect(0,0, wc.fotoWidth,wc.fotoHeight);
+		wc.ctxIn.drawImage(wc.video, 0,0,wc.fotoWidth,wc.fotoHeight); // input photo
 		wc.rotateImage(wc.fotoRotate);
-//		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
-		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight);
-		//$('video').show();
+		wc.ctxOut.drawImage(wc.canvasIn, 0,0,wc.fotoWidth,wc.fotoHeight, 0,0,wc.fotoWidth,wc.fotoHeight); //input, output
 	},
 	sendFoto: function (e) {
 		//console.log('sending foto');
@@ -292,16 +299,5 @@ var wc = {
 	},
 
 }
-/*  this code should be explicity initialized when needed unless
-	the frequent appearance of the video allow/deny prompt is acceptable
-
-    in Mozilla Firefox 46+, you can elinate the prompt to allow video capture
-    at "about:config | media.navigator.permission.disabled"
-    BUT BE WARY, once on, the camera is accesable by any page in the browser until OB is turned off
-
- */
-<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-  $(document).ready(wc.init);
-<?php } ?>
 
 </script>

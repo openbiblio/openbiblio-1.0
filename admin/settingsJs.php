@@ -12,7 +12,6 @@ var set = {
 	echo 'locs: '.json_encode($LOC->getLocales()).',';
     echo 'locale: "'.Settings::get('locale').'",';
     echo 'charSet: "'.Settings::get('charset').'",';
-//	echo 'camera: "'.Settings::get('camera').'",';
 	echo 'successMsg: "'.T("Update successful").'",';
 	echo 'failureMsg: "'.T("Update failed").'",';
 	?>
@@ -61,7 +60,6 @@ var set = {
 	},
 	prepareFotoTest: function () {
 		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
-			if (wc.video === undefined) wc.init();
 			$('#fotoTestBtn').show();
 			$('#fotoDoneBtn').hide();
 			$('#fotoHdr').hide();
@@ -181,33 +179,32 @@ var set = {
 	},
 	doFotoTest: function (e) {
 		//console.log('test btn pressed');
-		wc.init();
+		set.doFotoScreenUpdate();
+		wc.init();  // to insure that current settings are in use by photoEditor
 
+		$('#updtBtn').hide();
+		$('#editDiv').hide();
 		$('#fotoTestBtn').hide();
 		$('#fotoDoneBtn').show();
-		$('#updtBtn').hide();
 		$('#photoEditorDiv').show();
 		$('#fotoDiv').show();
 
-		// use screen values for test
-		set.doFotoScreenUpdate();
-		wc.fotoWidth = $('#thumbnail_width').val();
-		wc.fotoHeight = $('#thumbnail_height').val();
-		wc.fotoRotate = $('#thumbnail_rotation').val();
 	},
 	doTestDone: function (e) {
 		//console.log('test done btn pressed');
+		wc.eraseImage();
 		$('#photoEditorDiv').hide();
 		$('#fotoTestBtn').show();
 		$('#fotoDoneBtn').hide();
 		$('#updtBtn').show();
+		$('#editDiv').show();
 	},
 
 	//------------------------------
 	doUpdate: function (e) {
 		e.stopPropagation();
 		e.preventDefault();
-		wc.doFotoScreenUpdate();
+		set.doFotoScreenUpdate();
 		$('#mode').val('update_settings');
 		var params = $('#editSettingsForm').serialize();
         if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";

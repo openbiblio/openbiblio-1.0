@@ -93,7 +93,6 @@
 					<input type="number" id="thumbnail_rotation" name="thumbnail_rotation" maxlength="19" value="0" required aria-required />(deg)
 					<br />
 					<input type="button" id="fotoTestBtn" value="Test" />
-					<input type="button" id="fotoDoneBtn" value="Done" />
 				</div>
 				<div id="opacPage" class="block">
 					<label for="opac_url"><?php echo T("OPAC URL"); ?></label>
@@ -117,18 +116,18 @@
 				<input type="hidden" id="mode" name="mode" />
 				<input type="submit" id="updtBtn" value="Update" />
 			</form>
-			<br />
-			<div id="photoEditorDiv">
-				<?php require_once(REL(__FILE__,"../catalog/photoEditorForm.php"));?>
-			</div>
 		</fieldset>
 	</div>
 </div>
 
-<?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+<div id="photoEditorDiv">
+	<?php require_once(REL(__FILE__,"../catalog/photoEditorForm.php"));?>
+		<input type="button" id="fotoDoneBtn" value="Done" />
+</div>
 
-//	require_once(REL(__FILE__, "../classes/AdminJs.php"));
+<?php
+  	require_once(REL(__FILE__,'../shared/footer.php'));
+
 	require_once(REL(__FILE__, "../admin/settingsJs.php"));
 ?>
 </body>
