@@ -15,12 +15,12 @@
 			<!-- video element will be inserted here when JS is activated -->
 	  	    <video id="camera" width="<?php echo Settings::get('thumbnail_width');?>"
 							   height="<?php echo Settings::get('thumbnail_height');?>"
-							   preload="none" >
+							   preload="none" style="display:none">
 			</video>
 
 			<!-- folowing dimensions are not an error, the box MUST be square for later image rotation -->
 		 	<canvas id="canvasIn" width="<?php echo Settings::get('thumbnail_height');?>"
-			 					  height="<?php echo Settings::get('thumbnail_height');?>" >
+			 					  height="<?php echo Settings::get('thumbnail_height');?>"  style="display:none">
 			</canvas>
 		</div>
 		<?php } ?>
@@ -28,7 +28,7 @@
 		<div id="fotoCntlDiv">
 			<form role="form" id="fotoForm">
 				<fieldset class="inline">
-			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_width');?>"
+			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_height');?>"
 					 					   height="<?php echo Settings::get('thumbnail_height');?>">
 					</canvas>
 				</fieldset>

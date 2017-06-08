@@ -95,7 +95,7 @@ var set = {
 	fetchCameras: function () {
 		var html = '<option value="0">Please select a camera</option>';
 
-		list.getMediaList()
+		list.getMediaList()  // returns a Promise, obviously
 		.then(devices => {
 			devices.forEach(function(device) {
 				if (device.kind == "videoinput") {
@@ -174,13 +174,23 @@ var set = {
 	},
 
 	//------------------------------
+	doFotoScreenUpdate: function () {
+		wc.fotoWidth = $('#thumbnail_width').val();
+		wc.fotoHeight = $('#thumbnail_height').val();
+		wc.fotoRotate = $('#thumbnail_rotation').val();
+	},
 	doFotoTest: function (e) {
 		//console.log('test btn pressed');
+		wc.init();
+
 		$('#fotoTestBtn').hide();
 		$('#fotoDoneBtn').show();
 		$('#updtBtn').hide();
 		$('#photoEditorDiv').show();
+		$('#fotoDiv').show();
+
 		// use screen values for test
+		set.doFotoScreenUpdate();
 		wc.fotoWidth = $('#thumbnail_width').val();
 		wc.fotoHeight = $('#thumbnail_height').val();
 		wc.fotoRotate = $('#thumbnail_rotation').val();
@@ -197,6 +207,7 @@ var set = {
 	doUpdate: function (e) {
 		e.stopPropagation();
 		e.preventDefault();
+		wc.doFotoScreenUpdate();
 		$('#mode').val('update_settings');
 		var params = $('#editSettingsForm').serialize();
         if (!($('#show_lib_info').is(':checked'))) params += "&show_lib_info=N";

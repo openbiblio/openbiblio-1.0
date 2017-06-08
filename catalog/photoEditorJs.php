@@ -26,7 +26,7 @@ var wc = {
 			wc.ctxIn = canvasIn.getContext('2d');
         }
 
-//		wc.initWidgets();
+		wc.initWidgets();
 
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
 		$('#capture').on('click',null,wc.takeFoto);
@@ -54,7 +54,7 @@ var wc = {
 	},
 	//------------------------------
 	initWidgets: function () {
-console.log('in wc::initWidgets()');
+		//console.log('in wc::initWidgets()');
 		if (wc.showFotos) {
 			wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
 			wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
@@ -63,106 +63,7 @@ console.log('in wc::initWidgets()');
 		}
 
 	    wc.video = document.querySelector('video');
-
-/*
-      	//no longer valid? - FL May2017
-		navigator.getUserMedia = navigator.getUserMedia
-							  || navigator.webkitGetUserMedia
-                              || navigator.mozGetUserMedia
-							  || navigator.msGetUserMedia
-                              || navigator.oGetUserMedia
-        ;
-		console.log(mediaDevices.enumerateDevices);
-
-		if (navigator.getUserMedia) {
-		    navigator.getUserMedia({
-                video:true,
-                audio:false
-            },
-            function (stream) {
-	            wc.video = document.querySelector('video');
-   	            wc.video.src = window.URL.createObjectURL(stream);
-                wc.localstream = stream;
-                wc.video.play();
-                //console.log("streaming");
-            },
-            function (error) {
- 			    alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
-			    console.log("Video capture error: ", error.code);
-            });
-
-		}
-*/
-/*
-		// this is Mozilla recommended solution, doesn't seem to work here - FL May2017
-		var constraints = {
-			audio: false,
-			video: { width: {min: wc.fotoWidth},
-					 height:{min: wc.fotoHeight}
-				   }
-		};
-
-		console.log(navigator.mediaDevices.enumerateDevices());
-
-		navigator.mediaDevices.getUserMedia(constraints)
-			.then(function(mediaStream) {
-			  	video = document.querySelector('video');
-			  	video.srcObject = mediaStream;
-			  	video.onloadedmetadata = function(e) {
-			    	video.play();
-			  	};
-			})
-			.catch(function(err) {      // always check for errors at the end.
-				console.log('fotoErr: '+err.name + ": " + err.message);
-			});
-*/
-/*
-		// here is another method that might allow choice of cameras - FL Jun2017
-        //----------------------------------------------------------------------
-        //  Here we list all media devices, in order to choose between
-        //  the front and the back camera.
-        //      videoDevices[0] : Front Camera
-        //      videoDevices[1] : Back Camera
-        //  I used an array to save the devices ID
-        //  which i get using devices.forEach()
-        //  Then set the video resolution.
-        //----------------------------------------------------------------------
-		navigator.mediaDevices.enumerateDevices()
-	    .then(devices => {
-			wc.videoDevices = [0,0];
-			var videoDeviceIndex = 0;
-			devices.forEach(function(device) {
-				if (device.kind == "videoinput") {
-//					console.log(device.kind + ": " + device.label + " id = " + device.deviceId);
-				  	wc.videoDevices[videoDeviceIndex++] =  device.deviceId;
-				}
-			});
-
-			var constraints =  {
-				video:{width: { min: wc.fotoWidth },
-					   height: { min: wc.fotoHeight },
-					   deviceId: { exact: wc.videoDevices[2]},
-					  },
-				audio: false,
-				};
-	        return navigator.mediaDevices.getUserMedia(constraints);
-	    })
-        .then(stream => {
-			if (window.webkitURL) {
-				wc.video.src = window.webkitURL.createObjectURL(stream);
-				wc.localMediaStream = stream;
-			} else if (wc.video.mozSrcObject !== undefined) {
-				wc.video.mozSrcObject = stream;
-			} else if (wc.video.srcObject !== undefined) {
-				wc.video.srcObject = stream;
-			} else {
-				wc.video.src = stream;
-          	}
-		})
-        .catch(e => console.error(e));
-*/
-		// Final version?
-
+		//console.log(wc.cameraId);
 		const constraints =  {
 			video:{width: { min: wc.fotoWidth },
 				   height: { min: wc.fotoHeight },
@@ -170,25 +71,15 @@ console.log('in wc::initWidgets()');
 				  },
 			audio: false,
 			};
-	    navigator.mediaDevices.getUserMedia(constraints);
 
-
-
-		list.getMediaList()
+	    navigator.mediaDevices.getUserMedia(constraints)// returns a Promise, obviously
         .then(stream => {
-
-			if (window.webkitURL) {
-				wc.video.src = window.webkitURL.createObjectURL(stream);
-				wc.localMediaStream = stream;
-			} else if (wc.video.mozSrcObject !== undefined) {
-				wc.video.mozSrcObject = stream;
-			} else if (wc.video.srcObject !== undefined) {
-				wc.video.srcObject = stream;
-			} else {
-				wc.video.src = stream;
-          	}
+  			wc.video.srcObject = stream;
+  			wc.video.onloadedmetadata = function(e) {
+    			wc.video.play();
+  			};
 		})
-        .catch(e => console.error(e));
+        .catch(function(err) { console.log(err.name + ": " + err.message); });
 	},
 
     vidOff: function () {
@@ -297,7 +188,9 @@ console.log('in wc::initWidgets()');
   	    $('#errSpace').hide();
 		wc.ctxIn.drawImage(wc.video,0,0, wc.fotoHeight,wc.fotoWidth);
 		wc.rotateImage(wc.fotoRotate);
-		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
+//		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
+		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight);
+		//$('video').show();
 	},
 	sendFoto: function (e) {
 		//console.log('sending foto');
