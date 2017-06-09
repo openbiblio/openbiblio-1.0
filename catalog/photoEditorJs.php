@@ -26,10 +26,18 @@ var wc = {
         <?php } ?>
 		if (!wc.showFotos) return;
 
-		wc.canvasOut = document.getElementById('canvasOut'),
-		wc.ctxOut = canvasOut.getContext('2d');
+		$('#video').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+
+		// folowing dimensions are not an error, the box MUST be square for later image rotation
 		wc.canvasIn = document.getElementById('canvasIn'),
-		wc.ctxIn = canvasIn.getContext('2d');
+		$('#canvasIn').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+		wc.ctxIn = wc.canvasIn.getContext('2d');
+
+		// folowing dimensions are not an error, the box MUST be turned to accept the rotation
+		wc.canvasOut = document.getElementById('canvasOut'),
+		$('#canvasOut').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+		wc.ctxOut = wc.canvasOut.getContext('2d');
+
 		wc.eraseImage();
 
 		wc.initWidgets();
@@ -62,14 +70,10 @@ var wc = {
 	//------------------------------
 	initWidgets: function () {
 		//console.log('in wc::initWidgets()');
+
+		/* Video Initialization; needed forcamera input */
 		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
 		wc.cameraId = "<?php echo Settings::get('camera');?>";
-
-		$('#video').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
-		// folowing dimensions are not an error, the box MUST be square for later image rotation
-		$('#canvasIn').attr('width',wc.fotoWidth).attr('height',wc.fotoWidth);
-		// folowing dimensions are not an error, the box MUST be turned to accept the rotation
-		$('#canvasOut').attr('width',wc.fotoHeight).attr('height',wc.fotoWidth);
 
 	    wc.video = document.querySelector('video');
 		//console.log(wc.cameraId);
@@ -87,6 +91,10 @@ var wc = {
   			wc.video.onloadedmetadata = function(e) {
     			wc.video.play();
   			};
+
+			$('#canvasIn').attr('width',wc.video.width).attr('height',wc.video.height);
+			wc.ctxIn.clearRect(0,0, canvasIn.width, canvasIn.height);
+			wc.ctxIn.drawImage(wc.video, 0,0);
 		})
         .catch(function(err) { console.log(err.name + ": " + err.message); });
 	},
@@ -129,10 +137,12 @@ var wc = {
 	},
 
 	//----//
-	rotateImage: function (angle) {
+/*
+	rotateImage: function (degrees) {
         var tw = wc.canvasIn.width/2,
     		th = wc.canvasIn.height/2,
-    		angle = angle*(Math.PI/180.0);
+    		angle = degrees*(Math.PI/180.0);
+
 		wc.ctxIn.save();
 		wc.ctxIn.translate(tw, th);
 		wc.ctxIn.rotate(angle);
@@ -140,7 +150,7 @@ var wc = {
 		wc.ctxIn.drawImage(canvasIn, 0,0);
 		wc.ctxIn.restore();
 	},
-
+*/
 	showImage: function (fn) {
 		var img = new Image;
 		img.onload = function() { wc.ctxOut.drawImage(img, 0,0, wc.fotoWidth,wc.fotoHeight); };
@@ -196,23 +206,31 @@ var wc = {
         reader.readAsDataURL(file);
 	},
 	takeFoto: function () {
-//	    wc.ctxIn.clearRect(0,0,wc.canvasIn.width,wc.canvasIn.height);
-	    if(wc.rotate == 90 || wc.rotate == 270) {
-	        wc.canvasIn.width = wc.video.height;
-	        wc.canvasIn.height = wc.video.width;
+		var x, y;
+		//console.log('in photoEditorJs, rotate angle= '+wc.fotoRotate+'deg');
+	    if(wc.fotoRotate == 0 || wc.fotoRotate == 180) {
+			wc.canvasOut.width = wc.video.width;
+			wc.canvasOut.height = wc.video.height;
+			y = wc.video.height/2;
+			x = wc.video.width/2
 	    } else {
-	        wc.canvasIn.width = wc.video.width;
-	        wc.canvasIn.height = wc.video.height;
+			wc.canvasOut.width = wc.video.height;
+			wc.canvasOut.height = wc.video.width;
+			y = wc.video.height/2;
+			x = wc.video.width/2
 	    }
-	    if(wc.rotate == 90 || wc.rotate == 270) {
-	        wc.ctxIn.translate(wc.video.height/2, wc.video.width/2);
-	    } else {
-	        wc.ctxIn.translate(wc.video.width/2, wc.video.height/2);
-	    }
-	    wc.ctxIn.rotate(wc.rotate*Math.PI/180);
 
-	    wc.ctxOut.clearRect(0,0, canvasOut.width, canvasOut.height);
-	    wc.ctxOut.drawImage(canvasIn, -wc.video.width/2, -wc.video.height/2);
+		// save current coord system
+		wc.ctxOut.save();
+		// move coord system 0,0 point to center of expected image
+	    wc.ctxOut.translate(x, y);
+		// rotate the coord system about the 0,0 point
+	    wc.ctxOut.rotate(wc.fotoRotate*Math.PI/180);
+		// draw image so it's center lays on 0,0 pt
+	    wc.ctxOut.drawImage(wc.video, -x,-y, wc.canvasOut.height,wc.canvasOut.width);
+//	    wc.ctxOut.drawImage(wc.video, 0,0, wc.video.width, wc.video.height, -x,-y, wc.canvasOut.height,wc.canvasOut.width);
+		// recover original coord system
+		wc.ctxOut.restore();
 	},
 	sendFoto: function (e) {
 		//console.log('sending foto');
