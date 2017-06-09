@@ -656,17 +656,17 @@ var bs = {
 		bs.showPhotoForm();
 	},
 	showPhotoForm: function () {
-    if (!wc.url) wc.init;
+    	if (!wc.url) wc.init;
 
-	  $('#biblioDiv').hide();
-	  $('#fotoSrce').val('')
-	  $('#fotoBibid').val(idis.crntBibid);
+	  	$('#biblioDiv').hide();
+	  	$('#fotoSrce').val('')
+	  	$('#fotoBibid').val(idis.crntBibid);
 
-	  if (idis.crntFoto == null) {
+	  	if (idis.crntFoto == null) {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 	  	    $('#fotoName').val(idis.crntBibid+'.jpg');
 			wc.eraseImage();
-	  } else {
+	  	} else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
 	  	    $('#fotoName').val('<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url);
 			wc.showImage($('#fotoName').val());

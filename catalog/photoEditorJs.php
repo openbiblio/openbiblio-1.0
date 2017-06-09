@@ -26,6 +26,10 @@ var wc = {
         <?php } ?>
 		if (!wc.showFotos) return;
 
+		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 0;
+		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 0;
+
 		$('#video').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
 
 		// folowing dimensions are not an error, the box MUST be square for later image rotation
@@ -207,7 +211,7 @@ var wc = {
 	},
 	takeFoto: function () {
 		var x, y;
-		//console.log('in photoEditorJs, rotate angle= '+wc.fotoRotate+'deg');
+console.log('in photoEditorJs, rotate angle= '+wc.fotoRotate+'deg');
 	    if(wc.fotoRotate == 0 || wc.fotoRotate == 180) {
 			wc.canvasOut.width = wc.video.width;
 			wc.canvasOut.height = wc.video.height;
