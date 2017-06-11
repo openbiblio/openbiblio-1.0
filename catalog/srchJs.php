@@ -23,6 +23,7 @@ var bs = {
 	<?php
 		echo "showMarc: '".T("Show Marc Tags")."',\n";
 		echo "hideMarc: '".T("Hide Marc Tags")."',\n";
+		echo "whereAmI: '".T("curently viewing site")." ".$_SESSION['current_site']."',\n";
 	?> 
 	multiMode: false,
 	
@@ -33,6 +34,8 @@ var bs = {
 		bs.listSrvr = '../shared/listSrvr.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
 		bs.opts = [];
+
+		$('#whereAmI').html(bs.whereAmI);
 
 		// for search criteria form
 		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);

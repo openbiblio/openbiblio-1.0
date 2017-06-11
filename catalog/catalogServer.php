@@ -52,6 +52,12 @@
     //echo "in catalogSrvr, at start: ";print_r($_POST);echo "<br />\n";
 
 	switch ($_POST['mode']) {
+	case 'setCurrentSite':
+		$crntSite = $_POST['siteid'];
+		$_SESSION['current_site'] = $crntSite;
+		echo json_encode('crntSite set to '.$crntSite);
+		break;
+
 	case 'doBibidSearch':
 	  $bib = new Biblio($_POST[bibid]);
 	  echo json_encode($bib->getData());

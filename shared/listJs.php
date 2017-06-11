@@ -4,12 +4,14 @@
    See the file COPYRIGHT.html for more details.
  */
 ?>
-// JavaScript Document - copyEditorJs.php
+// JavaScript Document - .../shared/listJs.php
 "use strict";
 
 var list = {
+	server: '../shared/listSrvr.php',
+
     init: function () {
-        list.server = '../shared/listSrvr.php';
+//        list.server = '../shared/listSrvr.php';
 		list.getMediaList()
     },
 
@@ -151,16 +153,18 @@ var list = {
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     // different structure than other pull-down tables
     getSiteList: function(where) {
+		//console.log ("in list::getSiteList()");
         $.post(list.server, {mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
             list.siteListPt2(where); // chaining
         }, 'json');
     },
     siteListPt2: function (where) {
+		//console.log ("in list::siteListPt2()");
         $.post(list.server, {mode:'getSiteList'}, function(data){
             list.sites = data;
     		var html = '';
-            for (var n in data) {
+            for (let n in data) {
         		html+= '<option value="'+n+'" ';
                 if (n == list.dfltSite) {
                     html+= 'SELECTED '

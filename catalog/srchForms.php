@@ -37,6 +37,8 @@
 
 <div id="crntMbrDiv">to be filled by server</div>
 
+<p id="whereAmI" class="note">You are currently viewing data for site: </p>
+
 <!-- ------------------------------------------------------------------------ -->
 <div id="searchDiv">
 <form role="form" id="barcodeSearch" name="barcodeSearch" method="post">

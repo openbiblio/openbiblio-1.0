@@ -1,75 +1,50 @@
 <?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
- * 
- * This module looks to see if a library preference is saved in a COOKIE. 
+ *
+ * This module looks to see if a library preference is saved in a COOKIE.
  * If so, then the user is taken directlly to a search screen for that library.
- * If, not the user is asked to select a library and a new cookie is saved. 
- * 
- *FIXME:
- * There needs to be a way for a user to switch libraries.
- *         
+ * If, not the user is asked to select a library and a new cookie is saved.
+ *
+ * Re-write of original PHP based version.
+ * @author Fred LaPlante, June 2017
  */
 
 require_once("../shared/common.php");
-require_once(REL(__FILE__, "../functions/inputFuncs.php"));	
-require_once(REL(__FILE__, "../model/Sites.php"));
 
-$sites_table = new Sites;		
-$sites = $sites_table->getSelect();
-
-// Adjusted, so that if 'library_name' contains a string, the site is put by default on 1.
-if(empty($_SESSION['current_site'])){ 
- 	// Check for cookie, otherwise take default
-	if(isset($_COOKIE['OpenBiblioSiteID'])) {
-		$siteId = $_COOKIE['OpenBiblioSiteID'];
-	} else {
-		if($_SESSION['multi_site_func'] > 0){
-			$_SESSION['current_site'] = $_SESSION['multi_site_func'];
-		} else {
-			$_SESSION['current_site'] = 1;
-		}
-		setcookie("OpenBiblioSiteID", $_SESSION['current_site'], time()+60*60*24*365);
-	}			
-}
-	
-if(isset($_REQUEST['selectSite'])){
-	$_SESSION['current_site'] =  $_REQUEST['selectSite'];
-	header("Location: ../opac/index.php");
-}
-
-if(!empty($_SESSION['current_site'])) {
+$currentSite = $_SESSION['current_site'];
+$opecSiteMode = Settings::get('opec_site_mode');
+if ($opecSiteMode == 'N') {
+	//Force user to use current site
 	header("Location: ../catalog/srchForms.php?tab=OPAC");
-}	
-
-session_cache_limiter(null);
+} // else Now dispay site chooser form
 
 $tab = "opac";
-$nav = "home";
-$focus_form_name = "catalog_search";
-$focus_form_field = "searchText";
+$nav = "index";
+$focus_form_name = "chooserFrm";
+$focus_form_field = "libraryName";
 
-//Page::header_opac(array('nav'=>$nav, 'title'=>''));
 Page::header(array('nav'=>$nav, 'title'=>''));
 
 ?>
-	<h1><?php echo T("Welcome to the Library");?></h1>
-		<form role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" name="phrasesearch">
-			<fieldset>
-			<legend><?php T("Please select the library") ?></legend>
-			<table class="primary">
-				<tbody>
-					<tr>
-					<td class="primary" nowrap="true">
-						<?php echo T("Please select the library"); ?>
-					</td><td>
-						<?php echo inputfield('select', 'selectSite', Settings::get('library_name'), NULL, $sites); 	?>								
-						<input class="button" name="action" type="submit" value="<?php echo T("Select site")?>"/>
-					</td></tr>							
-				</tbody>
-			</table>
+	<h3 id="opacHdr"><?php echo T("Welcome to the Library");?></h3>
+	<p class="note"><?php echo T("Library has multiple facilities, chose one");?></p>
+	<form role="form" id="chooserForm" name="chooserForm" method="post" >
+		<fieldset>
+			<label for="libraryName"><?php echo T("Library Site"); ?></label>
+			<select id="libraryName" name="siteid" ></select>
+
+			<hr>
+			<input type="hidden" id="mode" name="mode" />
+			<button id="theBtn">Select site</button>
 		</fieldset>
-	</form>			
-<?
- ;
+	</form>
+
+<?php
+  	require_once(REL(__FILE__,'../shared/footer.php'));
+
+	require_once(REL(__FILE__, "../opac/indexJs.php"));
 ?>
+</body>
+</html>
+<?
