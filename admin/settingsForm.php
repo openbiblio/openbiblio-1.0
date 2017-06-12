@@ -85,9 +85,10 @@
 					<label for="items_per_page"><?php echo T("Photos per Page"); ?></label>
 					<input type="number" id="items_per_page" name="items_per_page" maxlength="18" value="25" required aria-required />
 					<br />
-					<label for="item_columns"><?php echo T("Photo Columns"); ?></label>
+					<!-- no longer required, using html5/CSS3 flex-box, see .../opac/imageBrowseForm.php for example -->
+					<!--label for="item_columns"><?php echo T("Photo Columns"); ?></label>
 					<input type="number" id="item_columns" name="item_columns" maxlength="17" value="5" required aria-required  />
-					<br />
+					<br /-->
 					<label for="thumbnail_width"><?php echo T("Photo Width"); ?></label>
 					<input type="number" id="thumbnail_width" name="thumbnail_width" maxlength="19" value="100" required aria-required />(mm)
 					<br />

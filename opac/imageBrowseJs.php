@@ -81,41 +81,25 @@ var img = {
 	showFotos: function () {
 			$('.countBox').html((img.firstItem+1)+' - '+img.lastItem+' <?php echo T("of");?> '+img.ttlNmbr).show();
 
-			var $table = $('#fotos'),
-					tab = '<?php echo $tab;?>',
-					html = '',
-					cntr = 0;
+			var $fotos = $('#fotos'),
+				tab = '<?php echo $tab;?>',
+				html = '',
+				cntr = 0;
 
-			if (img.columns == 0) {
-				/* provide for flexible nmbr of columns based on screen width */
-				var bodyWidth = $('#fotoDiv').innerWidth();
-				var asideWidth = $('#sidebar').outerWidth();
-				var displayWidth = bodyWidth - asideWidth;
-				var fotoWidth = parseInt($('#img-dummy').outerWidth())*1.5;
-				var perLine = Math.floor((bodyWidth/fotoWidth),0)-1 ;
-                //console.log('width: body='+bodyWidth+'; aside='+asideWidth+'; display='+displayWidth+'; foto='+fotoWidth+'; perLine='+perLine);
-			} else {
-				/* columns will be per 'Admin|Library Settings' entrys */
-				var perLine = img.columns;
-			}
-
-			$table.html('<tr>');
+			$fotos.html('');
 			for (var entry in img.cells) {
 				var cell = img.cells[entry];
-				if (cntr == perLine) {
-					$table.append('</tr>'+"\n"+'<tr>');
-					cntr = 0;
-				}
+
 				var bibid = cell['bibid'];
-				html  = '<td valign="bottom" align="center">'+"\n";
+
+				html = '<li>'+"\n";
 				html += '	<div class="galleryBox">'+"\n";
 				html += '		<div><img id="img-'+bibid+'" src="../photos/'+cell['url']+'" class="biblioImage" /></div>'+"\n";
 				html += '		<div class="smallType">'+"\n";
 				html += '			<a href="#" id="a-'+bibid+'" >'+cell[img.orderBy]+'</a>'+"\n";
 				html += '		</div>'+"\n";
-				html += '</td>'+"\n";
-				cntr++;
-				$table.append(html);
+				html += '</li>'+"\n";
+				$fotos.append(html);
 
 				$('#fotos img').on('click',null,function (e) {
 					e.preventDefault(); e.stopPropagation();
