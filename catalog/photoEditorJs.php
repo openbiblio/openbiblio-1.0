@@ -211,7 +211,7 @@ var wc = {
 	},
 	takeFoto: function () {
 		var x, y;
-console.log('in photoEditorJs, rotate angle= '+wc.fotoRotate+'deg');
+		//console.log('in photoEditorJs, rotate angle= '+wc.fotoRotate+'deg');
 	    if(wc.fotoRotate == 0 || wc.fotoRotate == 180) {
 			wc.canvasOut.width = wc.video.width;
 			wc.canvasOut.height = wc.video.height;

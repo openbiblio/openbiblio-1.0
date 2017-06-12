@@ -27,28 +27,33 @@
 			</ul>
 
 			<!-- Note titles/Labels in this form are 'placeholders only', actual labels will be downloaded from the database -->
-			<form role="form" name="editSettingsForm" id="editSettingsForm">
+			<form role="form" id="editSettingsForm" name="editSettingsForm" >
 				<div id="libraryPage" class="block active">
-					<label for="libraryName"><?php echo T("Library Title"); ?></label>
-					<select id="libraryName" name="library_name" autofocus ></select>
-					<br />
-					<!--label for="libraryHours"><?php echo T("Library Hours"); ?></label>
-					<textarea id="libraryHours" name="library_hours" rows="1" placeholder="M-F: 8am - 5pm<br />Sat:  9am - noon" /></textarea>
-					<br /-->
-					<label for="libraryPhone"><?php echo T("Library Phone"); ?></label>
-					<input type="text" id="libraryPhone" name="library_phone" maxlength="32" />
-					<br />
-					<label for="library_home"><?php echo T("Library Address"); ?></label>
-					<input type="text" id="library_home" name="library_home" maxlength="29" />
-					<br />
-					<label for="library_url"><?php echo T("Library URL"); ?></label>
-					<input type="text" id="library_url" name="library_url" maxlength="36" />
-					<br />
-					<label for="library_image_url"><?php echo T("Library Image"); ?></label>
-					<input type="text" id="library_image_url" name="library_image_url" maxlength="36" placeholder="photo of your choice" />
-					<br />
-					<label for="show_lib_info"><?php echo T("Show Lib Info on Staff pages"); ?></label>
-					<input type="checkbox" id="show_lib_info" name="show_lib_info" value="Y" />
+					<fieldset  class="inlineFldSet">
+						<label for="libraryName"><?php echo T("Library Title"); ?></label>
+						<select id="libraryName" name="library_name" autofocus ></select>
+						<br />
+						<!--label for="libraryHours"><?php echo T("Library Hours"); ?></label>
+						<textarea id="libraryHours" name="library_hours" rows="1" placeholder="M-F: 8am - 5pm<br />Sat:  9am - noon" /></textarea>
+						<br /-->
+						<label for="libraryPhone"><?php echo T("Library Phone"); ?></label>
+						<input type="text" id="libraryPhone" name="library_phone" maxlength="32" />
+						<br />
+						<label for="library_home"><?php echo T("Library Address"); ?></label>
+						<input type="text" id="library_home" name="library_home" maxlength="29" />
+						<br />
+						<label for="library_url"><?php echo T("Library URL"); ?></label>
+						<input type="text" id="library_url" name="library_url" maxlength="36" />
+						<br />
+						<label for="library_image_url"><?php echo T("Library Image"); ?></label>
+						<input type="text" id="library_image_url" name="library_image_url" maxlength="64" placeholder="photo of your choice" />
+						<br />
+						<label for="show_lib_info"><?php echo T("Show Lib Info on Staff pages"); ?></label>
+						<input type="checkbox" id="show_lib_info" name="show_lib_info" value="Y" />
+					</fieldset>
+					<fieldset class="inlineFldSet">
+						<img id="libImg" width="150" height="125" />
+					</fieldset>
 				</div>
 				<div id="localePage" class="block">
 					<label for="locale"><?php echo T("Available languages"); ?></label>

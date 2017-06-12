@@ -12,6 +12,7 @@ var set = {
 	echo 'locs: '.json_encode($LOC->getLocales()).',';
     echo 'locale: "'.Settings::get('locale').'",';
     echo 'charSet: "'.Settings::get('charset').'",';
+	echo 'libImgUrl: "'.Settings::get("library_image_url").'",';
 	echo 'successMsg: "'.T("Update successful").'",';
 	echo 'failureMsg: "'.T("Update failed").'",';
 	?>
@@ -22,11 +23,12 @@ var set = {
 
 		set.initWidgets();
     	$('#charset').val(set.charSet);
-
+		$('#libImg').attr('src', set.libImgUrl);
 		list.getDayList($('#first_day_of_week'));
 		$('#editSettingsForm').on('submit',null,set.doUpdate);
 		$('#fotoTestBtn').on('click',null,set.doFotoTest);
 		$('#fotoDoneBtn').on('click',null,set.doTestDone);
+		$('#library_image_url').on('change', null, set.fetchLibImage);
 
 		set.resetForms()
 		set.setLocaleList();
@@ -68,6 +70,15 @@ var set = {
 		}
 	},
 
+    fetchLibImage: function (e) {
+		set.imgUrl = $('#library_image_url').val();
+		if (set.imgUrl == '') {
+			$('#libImg').hide();
+		} else {
+			$('#libImg').attr('src', set.imgUrl).show();
+			//$('#logo').attr('src', set.imgUrl).show();
+		}
+	},
 	setLocaleList: function () {
 		var html = '';
         for (var key in set.locs) {
@@ -89,6 +100,7 @@ var set = {
 			set.fetchCameras();
 		}, 'json');
 	},
+
 	//------------------------------
 	fetchCameras: function () {
 		var html = '<option value="0">Please select a camera</option>';

@@ -55,7 +55,7 @@ figure { border:1px solid gray; }
 legend { font-weight:bold; margin:0 10px 0 10px; padding:0 5px 0 5px; }
 label { margin:0; padding:0; }
 
-fieldset { /*background-color:#ffffdd;*/ max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
+fieldset {  max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
 fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5rem; padding:0; }
 fieldset.inlineFldSet label { display:inline; }
 .inline { display:inline; }
