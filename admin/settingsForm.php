@@ -28,7 +28,7 @@
 
 			<!-- Note titles/Labels in this form are 'placeholders only', actual labels will be downloaded from the database -->
 			<form role="form" name="editSettingsForm" id="editSettingsForm">
-				<div id="libraryPage" class="block">
+				<div id="libraryPage" class="block active">
 					<label for="libraryName"><?php echo T("Library Title"); ?></label>
 					<select id="libraryName" name="library_name" autofocus ></select>
 					<br />
@@ -50,7 +50,7 @@
 					<label for="show_lib_info"><?php echo T("Show Lib Info on Staff pages"); ?></label>
 					<input type="checkbox" id="show_lib_info" name="show_lib_info" value="Y" />
 				</div>
-				<div id="localePage" class="block active">
+				<div id="localePage" class="block">
 					<label for="locale"><?php echo T("Available languages"); ?></label>
 					<select id="locale" name="locale" ></select>
 					<br />

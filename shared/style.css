@@ -487,6 +487,7 @@ div#configDiv{
 		margin:0;
 		}
 	.hdrSpacer { display:block; width:25%; }
+	.about,
 	#library_name, 
 	#library_hours, 
 	#library_phone { margin:2px 5px 2px 5px; font:0.82em sans-serif; }

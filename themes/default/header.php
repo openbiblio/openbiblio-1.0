@@ -48,10 +48,11 @@ ini_set('display_errors', 1);
 
 		<h3 class="theHead">
 		<?php
-			if (!isset($doing_install) or !$doing_install) {
+			if (($tab != 'opac') && ((!isset($doing_install) or !$doing_install))) {
 				if (Settings::get('library_image_url') != "") {
 					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" />';
 				}
+			}
 		?>
 
 		<?php if ($tab == 'opac') { ?>
@@ -67,16 +68,16 @@ ini_set('display_errors', 1);
 		<span id=\"library_name\" ><?php echo $libName; ?></span>
 
 		<?php
-				//if ($tab != "opac") 
-				//	echo "<br />" . T("Staff Interface");
-				if (Settings::get('show_lib_info') == 'Y') {
-					echo "<hr class=\"hdrSpacer\"> \n";
-					//echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
-					echo $open_hours->displayOpenHours();
-					echo "<hr class=\"hdrSpacer\"> \n";
-					echo "<div id=\"library_phone\">". Settings::get('library_phone') ."</div> \n";
-				}
+			if ($tab != "opac") {
+			//	echo "<br />" . T("Staff Interface");
+			if (Settings::get('show_lib_info') == 'Y') {
+				echo "<hr class=\"hdrSpacer\"> \n";
+				//echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
+				echo $open_hours->displayOpenHours();
+				echo "<hr class=\"hdrSpacer\"> \n";
+				echo "<div id=\"library_phone\">". Settings::get('library_phone') ."</div> \n";
 			}
+		}
 		?>
 		</h3>
 		
@@ -111,7 +112,7 @@ ini_set('display_errors', 1);
 		OpenBiblio Version: <?php echo H(OBIB_CODE_VERSION);?><br />
 		For <a href="../COPYRIGHT.html">Legal Info</a>.
 	</footer>
-		<?php } ?>
+	<?php } ?>
 </aside>
 <?php } ?>
 

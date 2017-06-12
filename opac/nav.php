@@ -28,8 +28,34 @@
 
 		<section class="menuSect">
 			<h3 class="navHeading">About</h3>
-			<div class="navContent">
+			<div class="navContent about">
                 <a href="../opac/aboutForm.php" title="Info">About Library</a><br />
+				<?php if (Settings::get('library_image_url') != "") {
+					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" />';
+				} ?>
+
+				<!-- Libname is defined in header_top.php -->
+				<span id="library_name" ><?php echo $libName; ?></span>
+
+				<hr class="hdrSpacer">
+				<?php echo $open_hours->displayOpenHours(); ?>
+
+				<hr class="hdrSpacer">
+				<div id="library_phone"><?php echo Settings::get('library_phone'); ?></div>
+
+				<hr class="hdrSpacer" />
+				<footer>
+				  <div id="obLogo">
+						<a href="https://bitbucket.org/mstetson/obiblio-1.0-wip/">
+							<img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0" alt="Powered by OpenBiblio" />
+						</a>
+						<br />
+					</div>
+
+					OpenBiblio Version: <?php echo H(OBIB_CODE_VERSION);?>
+					<br />
+					For <a href="../COPYRIGHT.html">Legal Info</a>.
+				</footer>
 	        </div>
 	    </section>
 	</nav>

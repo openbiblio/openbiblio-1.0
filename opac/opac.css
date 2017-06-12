@@ -54,6 +54,10 @@ hr.navSpacer { margin:0.5em; margin-left:2em; color:gray; width:75%; padding-lef
 .navSpacer { padding-left:20px; }
 .notOffline { display:none; }
 
+/* ------- */
+.about { background-color:#ffffdd; }
+
+/* ---------------------------- */
 @media screen and (min-width:800px) {
 	/* For Desktops */
 	#menuBtn { display:none; }
