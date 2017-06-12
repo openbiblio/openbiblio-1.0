@@ -95,7 +95,7 @@ function staff_menu() {
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
-		Nav::node('admin/opac', T("View Opac"), '../opac/index.php');
+		Nav::node('admin/opac', T("View Opac"), '../opac/index.php?tab=opac');
 		Nav::node('admin/dbChkr', T("Database checker"), '../admin/dbChkrForms.php');
 	}
 	

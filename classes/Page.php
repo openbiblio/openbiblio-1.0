@@ -10,8 +10,9 @@ class Page {
 		$params = Page::clean_params($params);
 		$_Page_params = $params;
 		if ($tab == 'opac') {
-			require_once(REL(__FILE__, '../opac/menu.php'));
-			opac_menu();
+//			require_once(REL(__FILE__, '../opac/menu.php'));
+//			opac_menu();
+//			require_once(REL(__FILE__, '../opac/nav.php'));
 		} else {
 			require_once(REL(__FILE__, '../shared/menu.php'));
 			staff_menu();

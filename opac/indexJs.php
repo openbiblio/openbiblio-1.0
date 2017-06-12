@@ -21,6 +21,23 @@ class Opac {
 
 		list.getSiteList($('#libraryName'));
 
+		this.makeNav();
+
+		// set initial (closed menu) states
+		//$('#menuBtn').attr('aria-expanded', 'false')
+		//			 .attr('hidden', 'false');
+		//$('.menuSect').attr('hidden', 'true');
+
+		$('#menuBtn').on('click', function() {
+			// toggle menu visibility
+console.log('menu btn clicked');
+			$('.menuSect').toggle(); // show/hide
+			if ($(this).attr('aria-expanded') === 'true') {
+				$(this).attr('aria-expanded', 'false');
+			} else {
+                $(this).attr('aria-expanded', 'true');
+			}
+		});
 		this.initWidgets();
 		this.resetForms();
 	};
@@ -43,6 +60,22 @@ class Opac {
 			window.location = "../catalog/srchForms.php?tab=OPAC";
 		}, 'json');
 	};
+
+	//------------------------------
+    makeNav () {
+		// based on "Stupid Simple jQuery Accordian" by Ryan Stemkoski, 2009
+		$(".navHeading").bind('click',null,function() {
+			$(".navSelected").removeClass("navSelected").addClass("navUnselected")
+			$(this).removeClass("navUnselected").addClass("navSelected");
+			$(".navContent").hide();//slideUp();
+			$(this).next(".navContent").show();//slideDown();
+		});
+
+		//$(".navContent").hide();
+		$(".navHeading").addClass("navUnselected");
+		$("nav #defaultOpen").trigger("click");
+	};
+
 }
 
 var opac = new Opac();

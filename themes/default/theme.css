@@ -57,6 +57,9 @@ ui-datepicker { background:green }
 /*************************************************/
 aside { color:black; background:#90b0b8; }
 
+#menuBtn { color:white; background:#a0c0c8; }
+#menuBtn svg { width:1em; height:1em; border:none; }
+
 h1.theHead { color:white; }
 #library_name { color:black; }
 

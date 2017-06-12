@@ -47,4 +47,3 @@ Page::header(array('nav'=>$nav, 'title'=>''));
 ?>
 </body>
 </html>
-<?
