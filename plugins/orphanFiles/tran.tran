@@ -8,5 +8,7 @@
 $trans["CheckForOrphanFiles"] = "Check for Orphan Files";
 $trans["files are referenced"] = "files are referenced in OB";
 $trans["files exist"] = "files exist in OB";
+$trans["filenames starting with an -x- are already marked for possible removal"] = "filenames starting with an -x- are already marked for possible removal";
 $trans["OrphanFiles"] = "Orphan Files";
 $trans["OrphanFileFinder"] = "Orphan File Finder";
+$trans["some files may only be selected dynamically and may incorrectly appear unused"] = "some files may only be selected dynamically and may incorrectly appear unused";

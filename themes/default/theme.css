@@ -31,7 +31,7 @@ fieldset { background-color:#ffffdd; }
 tbody.striped tr:nth-child(odd) { background-color:#EEE; }
 tbody.striped tr:nth-child(even) { background-color:#CCC; }
 
-:: placeholder, .placeholder { color:#000; }
+::placeholder, .placeholder { color:#000; }
 
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 /* to revert to normal OS button style, remove this block */

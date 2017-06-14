@@ -21,8 +21,8 @@ body {
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
-.error { /*color:red;*/ font-weight:bold; !important; }*/
-.warning { /*color:orange;*/ font-weight:bold; !important; }*/
+.error { /*color:red;*/ font-weight:bold; }
+.warning { /*color:orange;*/ font-weight:bold; }
 .bold { font-size:1.5rem; font-weight:bold; }
 .note { font-size:0.7rem; font-weight:bold; /*color:green;*/ }
 .info { font-weight:bold; }
@@ -215,6 +215,9 @@ footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 #btnRow li input[value="Delete"], 
 .btnRow li input[value="Delete This Item"],
 .btnRow li input[value="Delete"] { float:right; margin-right:0; }
+.btnRow>input.leftBtn { float:left; margin-left:5em; }
+.btnRow>input.midBtn { float:left; margin-left:50em; }
+.btnRow>input.rightBtn { float:right; margin-left:20em; }
 
 #vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray}
 
