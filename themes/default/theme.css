@@ -51,6 +51,7 @@ input[type=button], input[type=submit], button {
 input:focus { background:rgb(230,255,255); }
 input:disabled,
 button:disabled { background:#dddddd; color:#888888; }
+input[readonly] { background-color:#ffffdd; }
 
 textarea:focus { box-shadow:0 0 12px rgba(51,204,255, 0.5); } /* blue shadow */
 

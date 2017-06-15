@@ -6,13 +6,11 @@
  * we start here assuming a small mobile screen less than 720px wide
  * larger screens will be progressively enhanced at the end of this document 
  *
- * All colors, fonts, and button style are set by..../themes/../theme.css
+ * All colors, fonts, and button style are set by .../themes/../theme.css - June 2017
  *
  */
 
-body {
-    width:auto; height:auto; padding:1rem;
-	}
+body { width:auto; height:auto; padding:1rem; }
 .ie body {width:540px;}
 
 /*************************************************/
@@ -71,7 +69,7 @@ thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
 /* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
 /* moved to theme.css - FL June2017*/
 
-/* self-adjusting grid dsiplay */
+/* self-adjusting grid dsiplay, mainly used for cover-photo galary */
 #fotoDiv { margin-right:1em;  margin-left:1em; width:auto; }
 .grid-display {
 	display:flex;
@@ -93,9 +91,8 @@ thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
 /* form user-input fields */
 input:disabled { cursor:not-allowed; }
 input, select, textarea { margin:2px; }
-input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
-select:focus,
-input[readonly] { border:none; background-color:#ffffdd; }
+/*input:not([type=button]):not([type=select]):not([attr=readonly]):focus, select:focus,*/
+input[readonly] { /*border:none;*/ }
 input[type=checkbox] { padding-left:5px; }
 input[type=text], textarea, select { font-size:1.0rem; box-sizing:border-box; width:auto; }
 /*
@@ -125,7 +122,7 @@ aside input[type=submit] { position:relative; left:30%; }
 #library_name, 
 #library_hours, 
 #library_phone { margin:0; font:1.0rem sans-serif; }
-#library_name { /*color:black;*/ font-size:2.0rem; }
+#library_name { font-size:2.0rem; }
 
 /*************************************************/
 ul.nav_main {

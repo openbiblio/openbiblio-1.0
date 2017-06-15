@@ -239,7 +239,7 @@ var ie = {
 		var rowNmbr = ((e.target.id).split('_'))[1];
 		var srcId = '#marcBody input[name="onln_'+rowNmbr+'[data]"]';
 		var text = $(srcId).val();
-console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
+		//console.log('you clicked btn #'+rowNmbr+' containing "'+text+'" from '+srcId );
 		var destId = '#marcBody input[name="fields['+rowNmbr+'][data]"]';
 		$(destId).val(text);
 	},
