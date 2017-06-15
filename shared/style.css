@@ -10,10 +10,7 @@
  *
  */
 
-/*html { font-size:calc(1em * 1vw); }*/ /* adjust font to size of user's screen */
 body {
-/*    font-family:verdana,arial,helvetica, serif;*/
-/*    color:#000000; background:#90b0b8;*/
     width:auto; height:auto; padding:1rem;
 	}
 .ie body {width:540px;}
@@ -21,26 +18,25 @@ body {
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
-.error { /*color:red;*/ font-weight:bold; }
-.warning { /*color:orange;*/ font-weight:bold; }
+.error { font-weight:bold; }
+.warning { font-weight:bold; }
 .bold { font-size:1.5rem; font-weight:bold; }
-.note { font-size:0.7rem; font-weight:bold; /*color:green;*/ }
+.note { font-size:0.7rem; font-weight:bold; }
 .info { font-weight:bold; }
 .help { font-size:0.7rem; display:none; }
-.italic { font-size:0.7rem; font-style:italic; /*color:lightblue;*/ }
+.italic { font-size:0.7rem; font-style:italic; }
 #userMsgDiv userMsg:empty { display:none; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
 	font:1rem sans-serif; text-align:center;
-/*	color:white; background:#ccb470;*/
 	border:solid black 2px;
 	margin:2px;
 	}
 
 img { margin:3px 3px 0 3px; }
 
-.reqd, sup, span.reqd, #reqdNote { /*color:red;*/ text-align:center; }
+.reqd, sup, span.reqd, #reqdNote { text-align:center; }
 .smallType { font-size:75%; }
 p { margin:2px; padding:0; }
 hr {
@@ -62,8 +58,6 @@ fieldset.inlineFldSet label { display:inline; }
 
 /* tables & parts of */
 table { margin:2px; width:99%; border-spacing:0; }
-tbody.striped tr:nth-child(odd) { /*background-color:#EEE;*/ }
-tbody.striped tr:nth-child(even) /*td*/ { /*background-color:#CCC;*/ }
 td,th { padding:0 5px 0 5px; vertical-align:top;}
 td.number { text-align:right; }
 td.center, th.center { text-align:center; }
@@ -97,14 +91,10 @@ thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
 .no-touch input[type=button], input[type=submit], button { font-size:0.9rem; }
 
 /* form user-input fields */
-/*input:focus { background:rgb(230,255,255); }*/
-/*input:disabled,
-button:disabled { background:#dddddd; color:#888888; }*/
 input:disabled { cursor:not-allowed; }
 input, select, textarea { margin:2px; }
 input:not([type=button]):not([type=select]):not([attr=readonly]):focus,
 select:focus,
-textarea:focus { box-shadow:0 0 12px rgba(51,204,255, 0.5); } /* blue shadow */
 input[readonly] { border:none; background-color:#ffffdd; }
 input[type=checkbox] { padding-left:5px; }
 input[type=text], textarea, select { font-size:1.0rem; box-sizing:border-box; width:auto; }
@@ -113,8 +103,6 @@ input[type=text] { width:100%; }
 span.WIDE { display: block; overflow: hidden; }
 */
 textarea { width:100%; }
-
-/*ui-datepicker {background:-color:green}*/
 
 /*************************************************/
 aside { 
@@ -129,7 +117,6 @@ h1.theHead {
 	display:block; width:100%;
 	text-align:right;
 	font:bold 2.0rem serif;
-/*	color:white;*/
 	margin:0; padding:0;
 	}
 #logo { display:none; }
@@ -177,17 +164,11 @@ ul.nav_sub ul.nav_sub { padding-left:1em }
 ul.nav_sub li { margin-bottom:0; font-weight:normal; }
 ul.nav_sub li.nav_selected { font-weight:bold; list-style-type:disc; }
 	
-nav a { /*color:blue;*/ }
-nav a:visited { /*color:blue;*/ }
 nav a.button {
-	/*font:0.75em serif;*/ /* 12/16 */
-	/*color:black;*/
-	/*background:#b2dae4;*/
 	border:solid black 2px;
 	padding:3px;
 	text-decoration:none;
 }
-nav a.button:visited { /*color:black;*/ }
 nav a.button:hover { text-decoration:underline; }
 
 /*************************************************/
@@ -195,12 +176,11 @@ footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 
 /*************************************************/
 #content {
-  left:0; vertical-align:top; border:solid black 2px; /*background:white;*/ padding:0;
+  left:0; vertical-align:top; border:solid black 2px; padding:0;
 	/*width:720px;*/  max-width:100%;
 }
 #content > div { display:none; /* hide child screen elements until wanted */ }
 .ie #content figure {width:480px;}
-#content .altBG { /*background:#dddddd;*/ }
 
 #copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
 	border-width:1px; padding:2px; border-style:solid; border-color:black; }
@@ -235,16 +215,16 @@ ul.pagBtns li { display:block; list-style:none; margin:0; padding:0; }
 xul.pagBtns li:first-child { float:left; color:red; }   /* should this be removed?? */
 xul.pagBtns li:last-child { float:right; color:green; }   /* should this be removed?? */
  
+/*************************************************/
 ul#calList { float:left; margin:0; padding:0; width:100%; }
 ul#calList li { display:block; list-style:none; margin:0; padding:0; }
-/*.calendarClosed { background-color:lightred; }*/
 .calendarClosed { background:url('../../images/Ximage.jpg') center center no-repeat;
-									background-size:auto;
-								}
+				  background-size:auto;
+				}
 
 /*************************************************/
 /* simple tabbed pages */
-#tabs ul { /*background:#90b0b8;*/ margin:0; padding:0; margin-bottom:2em; }
+#tabs ul { margin:0; padding:0; margin-bottom:2em; }
 #tabs	ul.controls	li {
   	list-style:none; float:left; margin:0; margin-bottom:1em;
 	white-space:nowrap; border-radius:5px 5px 0 0;
@@ -252,11 +232,9 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 #tabs li a {
 	display:block; float:left; padding:0.5em;
 	text-decoration:none; font-weight:bold;
-	border:1px solid; border-color:#fff #333 #222 #fff;
-/*	background:#ccc; color:#333;*/
+	border:1px solid; 
 	}
-#tabs li a:hover { /*background:#333; color:#ccc;*/ border-color:#000 #ccc #ccc #000; }
-#tabs ul.controls li.active a { /*color:blue; background-color:#ffffdd;*/ border-bottom:0; }
+#tabs ul.controls li.active a {  border-bottom:0; }
 #tabs .block { padding:1.25em; display:none; }
 #tabs .block.active	{ display:block; }
 
@@ -267,8 +245,6 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 .title {
 	font:1.25rem sans-serif; /* 20/16 */
 	text-align:center;
-/*	color:white;
-	background:#ccb470;*/
 	border:solid black 2px;
 	margin-bottom:5px;
 	}
@@ -335,7 +311,6 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 /* end of search results display */
 /*************************************************/
 
-/*#onlineMsg { color:blue; }*/
 .call_media {
 /*	font:1.0em sans-serif;*/ /* 16/16 */
 	width:40px;
@@ -381,7 +356,6 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 /*************************************************/
 table.sigh { width:100%; }
 table.sigh .spacer { width:5px; }
-/*span.highLite { color:#FF8A00; }*/
 tr.searchRow { height:35px; }
 	
 /*************************************************/
@@ -408,8 +382,6 @@ div#configDiv{
 	margin-bottom:2px;
 	/*font-size:1.2rem;	/* 20/16 */
 	}
-/*#configDiv ul#existing li { color:black; background:#FFFF99; }*/
-/*#configDiv ul#potential li { color:black; background:#CCFFFF; }*/
 #typeChoice fieldset {
 	margin:0; padding:5px;
 	text-align:center;

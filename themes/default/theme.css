@@ -52,6 +52,8 @@ input:focus { background:rgb(230,255,255); }
 input:disabled,
 button:disabled { background:#dddddd; color:#888888; }
 
+textarea:focus { box-shadow:0 0 12px rgba(51,204,255, 0.5); } /* blue shadow */
+
 ui-datepicker { background:green }
 
 /*************************************************/
@@ -74,7 +76,8 @@ nav a.button:visited { color:black; }
 #content .altBG { background:#dddddd; }
 
 #tabs ul { background:#90b0b8; }
-#tabs li a { background:#ccc; color:#333; }
+#tabs li a { border-color:#fff #333 #222 #fff; background:#ccc; color:#333; }
+#tabs li a:hover { background:#333; color:#ccc; border-color:#000 #ccc #ccc #000; }
 #tabs ul.controls li.active a { color:blue; background-color:#ffffdd; }
 
 .title { font:1.25rem sans-serif; /* 20/16 */ color:white; background:#ccb470; }
