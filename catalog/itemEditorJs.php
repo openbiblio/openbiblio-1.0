@@ -227,9 +227,11 @@ var ie = {
 					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);
 				}
 
-				// this button created dynamicly by server
-				$('#marcBody input.accptBtn').on('click',null,bs.doFldUpdt);
 			} // else
+
+			// this button created dynamicly by server
+			$('#marcBody input[type="button"].accptBtn').on('click',null,ie.doFldUpdt);
+
 		},'JSON'); // .post
 	},
 
