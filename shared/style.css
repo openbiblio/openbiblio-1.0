@@ -213,11 +213,12 @@ footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 #btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0; }
 #btnRow li, ul.btnRow li { display:inline; margin-right:1rem; }
 #btnRow li input[value="Delete"], 
-.btnRow li input[value="Delete This Item"],
-.btnRow li input[value="Delete"] { float:right; margin-right:0; }
-.btnRow>input.leftBtn { float:left; margin-left:5em; }
-.btnRow>input.midBtn { float:left; margin-left:50em; }
-.btnRow>input.rightBtn { float:right; margin-left:20em; }
+	.btnRow li input[value="Delete This Item"],
+	.btnRow li input[value="Delete"] { float:right; margin-right:0; }
+.btnRow.flexBoxed { display:flex; flex-direction:row; justify-content:space-around;
+	padding:0; margin:0;
+	}
+.btnRow > input[type=button] { flex:auto; max-width:15em; }
 
 #vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray}
 
@@ -229,6 +230,8 @@ footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 
 ul.pagBtns { float:left; margin:0; padding:0; width:100%; }
 ul.pagBtns li { display:block; list-style:none; margin:0; padding:0; }
+
+/**********************************************************************************/
 xul.pagBtns li:first-child { float:left; color:red; }   /* should this be removed?? */
 xul.pagBtns li:last-child { float:right; color:green; }   /* should this be removed?? */
  

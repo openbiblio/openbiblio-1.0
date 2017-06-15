@@ -246,16 +246,15 @@
 <div id="itemEditorDiv">
   <form role="form" id="biblioEditForm" name="biblioEditForm" >
 		<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-		<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T("Fetch On-line Data"); ?>" />
-		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T("Search Complete"); ?>" />
-
+		<div class="btnRow flexBoxed">
+			<input type="button" class="itemGobkBtn leftBtn" value="<?php echo T("Go Back"); ?>" />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" id="onlnUpdtBtn" class="button midBtn" value="<?php echo T("Fetch On-line Data"); ?>" />
+			<input type="button" id="onlnDoneBtn" class="button rightBtn" value="<?php echo T("Search Complete"); ?>" />
+		</div>
 
 		<?php require(REL(__FILE__,"../catalog/itemEditorForm.php")); ?>
 	
-
-		<!--input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
 		<input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
