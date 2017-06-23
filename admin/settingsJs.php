@@ -96,7 +96,17 @@ var set = {
 				html+= '<option value="'+n+'">'+data[n]+'</option>';
 			}
 			$('#libraryName').html(html).show();
-			//set.fetchThemeDirs();  // not yet supported
+			set.fetchThemeDirs();  // not yet supported
+		}, 'json');
+	},
+	fetchThemeDirs: function () {
+        $.post(set.url,{'cat':'themes', 'mode':'getThemeDirs'}, function(data){
+    		var html = '';
+            for (var n in data) {
+    			html+= '<option value="'+n+'">'+data[n]+'</option>';
+    		}
+    		$('#theme_dir_url').html(html).show();
+    		//set.fetchThemeList();
 			set.fetchCameras();
 		}, 'json');
 	},
@@ -117,18 +127,7 @@ var set = {
 		})
         .catch(e => console.error(e));
 	},
-
 	/* not in use at this time - June2017
-	fetchThemeDirs: function () {
-        $.post(set.url,{'cat':'themes', 'mode':'getThemeDirs'}, function(data){
-    		var html = '';
-            for (var n in data) {
-    			html+= '<option value="'+n+'">'+data[n]+'</option>';
-    		}
-    		$('#theme_dir_url').html(html).show();
-    		set.fetchThemeList();
-		}, 'json');
-	},
 	fetchThemeList: function () {
 	   $.post(set.listSrvr,{'mode':'getThemeList'}, function(data){
 			var html = '';

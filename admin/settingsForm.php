@@ -111,11 +111,11 @@
 					<label for="mbr_barcode_width"><?php echo T("Barcode width"); ?></label>
 					<input type="number" id="mbr_barcode_width" name="mbr_barcode_width" maxlength="17" />
                     <br />
+					<label for="theme_dir_url"><?php echo T("Theme Dir URL"); ?></label>
+					<select id="theme_dir_url" name="theme_dir_url" ></select>
 					<!--label for="themeid"><?php echo T("Theme id"); ?></label>
 					<select id="themeid" name="themeid"></select>
-					<br />
-					<label for="theme_dir_url"><?php echo T("Theme Dir URL"); ?></label>
-					<select id="theme_dir_url" name="theme_dir_url" ></select-->
+					<br /-->
 				</div>
 				<hr>
 				<input type="hidden" id="cat" name="cat" value="settings" />

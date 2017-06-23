@@ -6,7 +6,7 @@
  * we start here assuming a small mobile screen less than 720px wide
  * larger screens will be progressively enhanced at the end of this document 
  *
- * All colors, fonts, and button style are set by .../themes/../theme.css - June 2017
+ * All colors, fonts, and button style are set by .../themes/xxx/theme.css - June 2017
  *
  */
 
@@ -16,27 +16,46 @@ body { width:auto; height:auto; padding:1rem; }
 /*************************************************/
 /*  Basic components, may be used anywhere       */
 
-.error { font-weight:bold; }
-.warning { font-weight:bold; }
-.bold { font-size:1.5rem; font-weight:bold; }
-.note { font-size:0.7rem; font-weight:bold; }
-.info { font-weight:bold; }
-.help { font-size:0.7rem; display:none; }
-.italic { font-size:0.7rem; font-style:italic; }
-#userMsgDiv userMsg:empty { display:none; }
+.error { font-weight:bold;
+	}
+.warning { font-weight:bold;
+	}
+.bold { font-size:1.5rem; font-weight:bold;
+	}
+.note { font-size:0.7rem; font-weight:bold;
+	}
+.info { font-weight:bold;
+	}
+.help { font-size:0.7rem; display:none;
+	}
+.italic { font-size:0.7rem; font-style:italic;
+	}
+#userMsgDiv userMsg:empty { display:none;
+	}
 
-/* headers */
-h1,h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font:1rem sans-serif; text-align:center;
-	border:solid black 2px;
+	border:solid black 1px;
 	margin:2px;
 	}
 
-img { margin:3px 3px 0 3px; }
+img { margin:3px 3px 0 3px;
+	}
 
-.reqd, sup, span.reqd, #reqdNote { text-align:center; }
-.smallType { font-size:75%; }
-p { margin:2px; padding:0; }
+.reqd,
+sup,
+span.reqd,
+#reqdNote { text-align:center;
+	}
+.smallType { font-size:75%;
+	}
+p { margin:2px; padding:0;
+	}
 hr {
 	display:block; position:relative; 
 	padding:0; margin:8px auto;
@@ -45,32 +64,45 @@ hr {
 	/*font-size:1px; line-height:0;*/
 	overflow:visible;
 	}
-figure { border:1px solid gray; }
-legend { font-weight:bold; margin:0 10px 0 10px; padding:0 5px 0 5px; }
-label { margin:0; padding:0; }
+figure { border:1px solid gray;
+	}
+legend { font-weight:bold; margin:0 10px 0 10px; padding:0 5px 0 5px;
+	}
+label { margin:0; padding:0;
+	}
 
-fieldset {  max-width:100%; border:1px solid gray; margin:2px; padding-bottom:2px; }
-fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5rem; padding:0; }
-fieldset.inlineFldSet label { display:inline; }
-.inline { display:inline; }
+fieldset {  max-width:100%; border:1px solid black; margin:2px; margin-top: 5px; padding-bottom:2px;
+	}
+fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5rem; padding:0;
+	}
+fieldset.inlineFldSet label { display:inline;
+	}
+.inline { display:inline;
+	}
 
 /* tables & parts of */
-table { margin:2px; width:99%; border-spacing:0; }
-td,th { padding:0 5px 0 5px; vertical-align:top;}
-td.number { text-align:right; }
-td.center, th.center { text-align:center; }
-td.label { text-align:left; white-space:nowrap; }
-th, label, .lblFld { font-size:0.75rem; font-weight:bold; margin-left:2px;}
-tfoot.topBorder {  border-top:1px solid #AAA; margin-top:5px; }
-thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
-
-::placeholder { font-style:italic; }
-
-/* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
-/* moved to theme.css - FL June2017*/
+table { margin:2px; width:99%; border-spacing:0;
+	}
+td,th { padding:0 5px 0 5px; vertical-align:top;
+	}
+td.number { text-align:right;
+	}
+td.center, th.center { text-align:center;
+	}
+td.label { text-align:left; white-space:nowrap;
+	}
+th,
+label,
+.lblFld { font-size:0.75rem; font-weight:bold; margin-left:2px;
+	}
+tfoot.topBorder {  border-top:1px solid #AAA; margin-top:5px;
+	}
+thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px;
+	}
 
 /* self-adjusting grid dsiplay, mainly used for cover-photo galary */
-#fotoDiv { margin-right:1em;  margin-left:1em; width:auto; }
+#fotoDiv { margin-right:1em;  margin-left:1em; width:auto;
+	}
 .grid-display {
 	display:flex;
 	flex-direction:row;
@@ -85,43 +117,50 @@ thead.bottomBorder {  border-bottom:1px solid #AAA; margin-top:5px; }
 	max-width:30em;
 	}
 
-.touch input[type=button], input[type=submit], button { font-size:0.9rem; }
-.no-touch input[type=button], input[type=submit], button { font-size:0.9rem; }
-
 /* form user-input fields */
 input:disabled { cursor:not-allowed; }
-input, select, textarea { margin:2px; }
+input,
+select,
+textarea { margin:2px; }
 /*input:not([type=button]):not([type=select]):not([attr=readonly]):focus, select:focus,*/
 input[readonly] { /*border:none;*/ }
 input[type=checkbox] { padding-left:5px; }
-input[type=text], textarea, select { font-size:1.0rem; box-sizing:border-box; width:auto; }
+input[type=text],
+textarea,
+select { font-size:1.0rem; box-sizing:border-box; width:auto; }
 /*
 input[type=text] { width:100%; }
 span.WIDE { display: block; overflow: hidden; }
 */
 textarea { width:100%; }
 
+::placeholder { font-style:italic; }
+
 /*************************************************/
 aside { 
 	width:auto; margin:0; padding:0; margin-bottom:2px; border:0.15em solid black;
-	/*color:black; background:#90b0b8; */ 
 	}
-.obInstall .notForInstall { display:none; }
-#obLogo { display:none; }
+.obInstall .notForInstall { display:none;
+	}
+#obLogo { display:none;
+	}
+aside input[type=submit] { position:relative; left:30%; }
 
 /*************************************************/
 h1.theHead {
 	display:block; width:100%;
 	text-align:right;
-	font:bold 2.0rem serif;
+	font:bold 2rem serif;
 	margin:0; padding:0;
 	}
-#logo { display:none; }
-aside input[type=submit] { position:relative; left:30%; }
-.hdrSpacer { display:none; }
+#logo { display:none;
+	}
+.hdrSpacer { display:none;
+	}
 #library_name, 
 #library_hours, 
-#library_phone { margin:0; font:1.0rem sans-serif; }
+#library_phone { margin:0; font:1.0rem sans-serif;
+	}
 #library_name { font-size:2.0rem; }
 
 /*************************************************/
@@ -135,10 +174,10 @@ ul.nav_main li {
 	margin-bottom:1.1rem;
 	white-space:nowrap;
 	margin-left:2px;
-	display:inline; padding-right:1.0rem;
+	display:inline; padding-right:1rem;
 	}
 ul.nav_main li:last-child { padding:0; margin-bottom:0;
- }
+ 	}
 ul.nav_main > li.nav_selected {
 	max-width:93%;
 	border-left:solid black 1px;
@@ -147,7 +186,6 @@ ul.nav_main > li.nav_selected {
 	border-bottom:solid grey 1px;
 	margin-right:-28px;
 	margin-left:-0px;
-	/*background:white;*/
 	padding:2px;
 	position:relative;
 	border-radius:5px;
@@ -165,7 +203,7 @@ nav a.button {
 	border:solid black 2px;
 	padding:3px;
 	text-decoration:none;
-}
+	}
 nav a.button:hover { text-decoration:underline; }
 
 /*************************************************/
@@ -173,40 +211,74 @@ footer { margin-top:10px; text-align:center; font:0.75em serif;/* 12/16 */ }
 
 /*************************************************/
 #content {
-  left:0; vertical-align:top; border:solid black 2px; padding:0;
+  left:0; vertical-align:top; border:solid black 1px; padding:0;
 	/*width:720px;*/  max-width:100%;
-}
-#content > div { display:none; /* hide child screen elements until wanted */ }
-.ie #content figure {width:480px;}
-
-#copyList td, table#copyList th, table#biblioTbl td, table#biblioTbl th  {
-	border-width:1px; padding:2px; border-style:solid; border-color:black; }
-#editTbl { margin-left:0; padding-left:0; }
-#editTbl li { list-style-type:none; 	margin:0; padding:0; }
-	
-#srchSpecs { display:flex; flex-direction:column; }
-.inlineFS { order:1; }
-
-#btnRow, ul.btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0; }
-#btnRow li, ul.btnRow li { display:inline; margin-right:1rem; }
-#btnRow li input[value="Delete"], 
-	.btnRow li input[value="Delete This Item"],
-	.btnRow li input[value="Delete"] { float:right; margin-right:0; }
-.btnRow.flexBoxed { display:flex; flex-direction:row; justify-content:space-around;
-	padding:0; margin:0;
 	}
-.btnRow > input[type=button] { flex:auto; max-width:15em; }
+#content > div { display:none; /* hide child screen elements until wanted */
+	}
+.ie #content figure { width:480px;
+	}
 
-#vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray}
+#copyList td,
+table#copyList th,
+table#biblioTbl td,
+table#biblioTbl th  {
+	border-width:1px; padding:2px; border-style:solid; border-color:black;
+	}
+#editTbl { margin-left:0; padding-left:0;
+	}
+#editTbl li { list-style-type:none; margin:0; padding:0;
+	}
 
-#barcodeSearch { display:none; } /* reserved for desktop users */
-#phraseSearch #searchType  { display:block; }
-#phraseSearch legend { display:none; }
+#srchSpecs { display:flex; flex-direction:column;
+	}
+.inlineFS { order:1;
+	}
 
-.searchListItem { /*font-size:smaller;*/ }
+/* button-related stuff */
+/* lozenge shape buttons - from "CSS3 for Web Designers", Jeffrey Zeldman " */
+/* moved to theme.css - FL June2017*/
 
-ul.pagBtns { float:left; margin:0; padding:0; width:100%; }
-ul.pagBtns li { display:block; list-style:none; margin:0; padding:0; }
+input[type=button],
+input[type=submit],
+button { font-size:0.9rem;
+}
+
+#btnRow,
+.btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0;
+	}
+.btnRow.gridded { display:grid; grid-template-columns: repeat(5, 1fr);
+	}
+.btnRow > [type=button].col1 {   grid-column: 1 / 5;
+	}
+.btnRow > [type=button].col2 {   grid-column: 2 / 5;
+	}
+.btnRow > [type=button].col3 {   grid-column: 3 / 5;
+	}
+.btnRow > [type=button].col4 {   grid-column: 4 / 5;
+	}
+.btnRow > [type=button].col5 {   grid-column: 5 / 5;
+	}
+.btnRow.flexBoxed { display:flex;
+	flex-direction:row; justify-content:space-around;
+	}
+#btnRow li, ul.btnRow li { display:inline; margin-right:1rem;
+	}
+#btnRow li input[value="Delete"], 
+.btnRow li input[value="Delete This Item"],
+.btnRow li input[value="Delete"] { float:right; margin-right:0;
+	}
+.btnRow > input[type=button] { flex:auto; max-width:15em;
+	}
+/*.goBkBtn { float: right; } */
+
+#vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray
+	}
+
+ul.pagBtns { float:left; margin:0; padding:0; width:100%;
+	}
+ul.pagBtns li { display:block; list-style:none; margin:0; padding:0;
+	}
 
 /**********************************************************************************/
 xul.pagBtns li:first-child { float:left; color:red; }   /* should this be removed?? */
@@ -215,27 +287,37 @@ xul.pagBtns li:last-child { float:right; color:green; }   /* should this be remo
 /*************************************************/
 ul#calList { float:left; margin:0; padding:0; width:100%; }
 ul#calList li { display:block; list-style:none; margin:0; padding:0; }
-.calendarClosed { background:url('../../images/Ximage.jpg') center center no-repeat;
-				  background-size:auto;
-				}
+.calendarClosed {
+	background:url('../../images/Ximage.jpg') center center no-repeat;
+	background-size:auto;
+	}
 
 /*************************************************/
 /* simple tabbed pages */
+/*#tabs form { border-left:1px solid black; border-bottom:1px solid black; border-right:1px solid black; }*/
 #tabs ul { margin:0; padding:0; margin-bottom:2em; }
-#tabs	ul.controls	li {
+#tabs .controls li {
   	list-style:none; float:left; margin:0; margin-bottom:1em;
 	white-space:nowrap; border-radius:5px 5px 0 0;
 	}
-#tabs li a {
+#tabs li {
 	display:block; float:left; padding:0.5em;
 	text-decoration:none; font-weight:bold;
-	border:1px solid; 
+	border:1px solid black;
 	}
-#tabs ul.controls li.active a {  border-bottom:0; }
+#tabs .controls .active {  border-bottom:0; border-top:1px; }
 #tabs .block { padding:1.25em; display:none; }
 #tabs .block.active	{ display:block; }
 
 /*************************************************/
+#barcodeSearch { display:none;  /* reserved for desktop users */
+	}
+#phraseSearch #searchType  { display:block;
+	}
+#phraseSearch legend { display:none;
+	}
+.searchListItem { /*font-size:smaller;*/ }
+
 /* search results displays */
 #biblioListDiv { width:100%; }
 .listTbl { max-width:100%; text-align:left; }
@@ -245,8 +327,11 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	border:solid black 2px;
 	margin-bottom:5px;
 	}
-.results_found, .results_pages, .search_terms { 	font:0.75rem serif; /* 12/16 */ }
-.results_found, .results_pages { text-align:right; }
+.results_found,
+.results_pages,
+.search_terms { font:0.75rem serif; /* 12/16 */ }
+.results_found,
+.results_pages { text-align:right; }
 .results_found { margin:0.5rem 0; }
 .results_pages { float:right; }
 .search_terms { font-weight:bold; margin:0.5rem 0; }
@@ -265,13 +350,16 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	-webkit-flex-direction:row; flex-direction:row;
 	/*width:120px;*/
 	}
-.photos, .dashBds,.galleryBox { display:inline-block; margin:0; padding:0; }
+.photos,
+.dashBds,
+.galleryBox { display:inline-block; margin:0; padding:0; }
 .dashBds {
 	display:-webkit-flex; display:flex;
 	-webkit-flex-direction:row; flex-direction:column;
 	-webkit-justify-content:flex-end; justify-content:flex-end;
 	}
-.dashBdsA, .dashBdsB, .dashBdsC {
+.dashBdsA,
+.dashBdsB, .dashBdsC {
 	display:-webkit-flex; display:flex;
 	-webkit-flex-direction:row; flex-direction: row;
 	}
@@ -291,10 +379,14 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 .cover_image img { border:solid black 2px; width:75px; }
 .fotoSrceBtns { display:inline; }
 
-#bibBlks, fotoBlks { position:relative; top:0px; left:0px; width:auto; }
-#bibBlkA, fotoBlkA { display:inline-block; float:left; width:85% }
-#bibBlkB, fotoBlkB { display:inline-block; float:right; }
-#biblioFoto, #foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
+#bibBlks,
+fotoBlks { position:relative; top:0px; left:0px; width:auto; }
+#bibBlkA,
+fotoBlkA { display:inline-block; float:left; width:85% }
+#bibBlkB,
+fotoBlkB { display:inline-block; float:right; }
+#biblioFoto,
+#foto { width:100px; height:125px; padding:0; margin-right:0px; border:1px solid green }
 #biblioFoto.hover:hover {
 	top:20px;
 	-webkit-transform:scale(3.0); -webkit-transform-origin:bottom right;
@@ -340,7 +432,6 @@ ul#calList li { display:block; list-style:none; margin:0; padding:0; }
 	text-indent:-2rem;
 	}
 .compact_info_display .heading { font-weight:bold; }
-/*.hilite { color:white; background-color:green; }*/
 .search_result .right_info {
 	width:125px;
 	text-align:center; vertical-align:middle
@@ -437,10 +528,27 @@ div#configDiv{
 	/* For Desktops */
 	body { font-size:90%; }
 	/* rounded corners and shadows for major layout elements */
-	h1,h2,h3,h4,h5,h6, fieldset, img, aside, header, #content {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	fieldset,
+	img,
+	aside,
+	header,
+	#content {
 		border-radius:0.3rem;
 		}
-	h1,h2,h3,h4,h5,h6, aside, #content {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	aside,
+	#content {
 		box-shadow:3px 6px 8px -4px #000;
 		}
 	/*************************************************/

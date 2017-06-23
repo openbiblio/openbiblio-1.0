@@ -67,25 +67,19 @@
 					echo "</tr>";
 				}
 			?>
-		</tbody>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<input type="hidden" id="copyBibid" name="bibid" value="" />
-				<input type="hidden" id="copyMode" name="mode" value="" />
-			</td>
-		</tr>
+			<tr>
+				<td colspan="2">
+					<input type="hidden" id="copyBibid" name="bibid" value="" />
+					<input type="hidden" id="copyMode" name="mode" value="" />
+				</td>
+			</tr>
 		</tbody>
 
-		<tfoot>
-		<tr>
-			<td align="center" colspan="2">
-				<input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" />
-				<input type="button" id="copyCancelBtn" value="<?php echo T("Cancel"); ?>" />
-			</td>
-		</tr>
-		</tfoot>
 	</table>
+	<div class="btnRow gridded">
+		<input type="submit" id="copySubmitBtn" class="col1" value="<?php echo T("Submit"); ?>" />
+		<input type="button" id="copyCancelBtn" class="col4" value="<?php echo T("Cancel"); ?>" />
+	</div>
 	</fieldset>
 	</form>
 

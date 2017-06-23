@@ -1,34 +1,46 @@
+/* CSS Document */
+
 /** Theme style settings
  *	This file should contain all color and fonts to be declared here
  *	It will override anything in style.css and may be user modified.
  *
+ *  Note that newItemForms.php has a few unique in-line styling at top of file
+ *
  *  initial setup by f.LaPLante 26 May 2017
  */
 
-html { font-size: calc(0.5*(1em + 1vw)); } /* adjust font to size of user's screen */
+:root, html {
+     font-size: calc(0.5*(1em + 1vw));  /* adjust font to size of user's screen */
+	--main-color:#000000; --main-bg-color:#90b0b8;
+	--header-color:white; --header-bg-color:#ccb470;
+	--fieldset-bg-color:#ffffdd;
+	--nav-color:blue;
+	--nav-bg-color:white;
+/*	--fieldset-bg-color:#EFDB8A;*/
+	}
 
 body {
     font-family:verdana,arial,helvetica, serif;
-    color:#000000; background:#90b0b8;
+    color:var(--main-color); background:var(--main-bg-color);
 }
 
 /* useful classes that may appear anywhere */
 .note { color:gray; }
 .error { color:red; /*!important;*/ }
 .warning { color:orange; /*!important;*/ }
-.hiWarning {color:white; background:orange; }
+.hiWarning { color:white; background:orange; }
 .info { color: green }
 .italic { color:lightblue; }
 
 /* headers */
 h1,h2,h3,h4,h5,h6 {
 	font:1rem sans-serif; text-align:center;
-	color:white; background:#ccb470;
+	color:var(--header-color); background:var(--header-bg-color);
 }
 .reqd, sup, span.reqd, #reqdNote { color:red; }
-h5#reqdNote { background:#EFDB8A;}
+h5#reqdNote { background:var(--fieldset-bg-color); }
 
-fieldset, ledgend { background-color:#ffffdd; }
+fieldset, ledgend { background-color:var(--fieldset-bg-color); }
 tbody.striped tr:nth-child(odd) { background-color:#EEE; }
 tbody.striped tr:nth-child(even) { background-color:#CCC; }
 
@@ -52,14 +64,14 @@ input[type=button], input[type=submit], button {
 input:focus { background:rgb(230,255,255); }
 input:disabled,
 button:disabled { background:#dddddd; color:#888888; }
-input[readonly] { background-color:#ffffdd; }
+input[readonly] { background-color:var(--fieldset-bg-color); }
 
 textarea:focus { box-shadow:0 0 12px rgba(51,204,255, 0.5); } /* blue shadow */
 
 ui-datepicker { background:green }
 
 /*************************************************/
-aside { color:black; background:#90b0b8; }
+aside { color:black; background-color:var(--main-bg-color); }
 
 #menuBtn { color:white; background:#a0c0c8; }
 #menuBtn svg { width:1em; height:1em; border:none; }
@@ -67,22 +79,23 @@ aside { color:black; background:#90b0b8; }
 h1.theHead { color:white; }
 #library_name { color:black; }
 
-ul.nav_main > li.nav_selected { background:white; }
-nav a { color:blue; }
-nav a:visited { color:blue; }
-nav a.button { font:0.75em serif; /* 12/16 */ color:black; background:#b2dae4; }
-nav a.button:visited { color:black; }
+ul.nav_main > li.nav_selected { background:var(--nav-bg-color); }
+nav a { color:var(--nav-color); }
+nav a:visited { color:var(--nav-color); }
+/*nav a.button { font:0.75em serif; color:black; background:#b2dae4; }*/  /* 12/16 */
+/*nav a.button:visited { color:black; }*/
 
 /*************************************************/
 #content { background:white; }
 #content .altBG { background:#dddddd; }
 
-#tabs ul { background:#90b0b8; }
-#tabs li a { border-color:#fff #333 #222 #fff; background:#ccc; color:#333; }
+#tabs ul { background:var(--main-bg-color); }
+#tabs li { border-color:black; }
+#tabs li a { background:#ccc; color:#333; }
 #tabs li a:hover { background:#333; color:#ccc; border-color:#000 #ccc #ccc #000; }
-#tabs ul.controls li.active a { color:blue; background-color:#ffffdd; }
+#tabs ul.controls li.active a { color:blue; background-color:var(--fieldset-bg-color); }
 
-.title { font:1.25rem sans-serif; /* 20/16 */ color:white; background:#ccb470; }
+.title { font:1.25rem sans-serif; /* 20/16 */ color:white; background:var(--header-bg-color); }
 
 #onlineMsg { color:blue; }
 .call_media { font:1.0em sans-serif; /* 16/16 */ }

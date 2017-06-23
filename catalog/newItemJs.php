@@ -93,6 +93,8 @@ var ni = {
 		//ni.fetchMaterialList(); // for new items
 		//ni.fetchCollectionList(); // for new items
 		//ni.fetchHosts(); // for searches
+
+		$('#lookupVal').focus();
 	},
 	
 	//------------------------------
@@ -295,7 +297,8 @@ var ni = {
 
 		/* prepare in advance for photo editing */
 		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
-			if (wc.video === undefined) wc.init();
+//			if (wc.video === undefined) wc.init();
+			wc.init();
 		}
 
 	},
@@ -306,7 +309,6 @@ var ni = {
 		//console.log('in newItemJs.php::doPhotoAdd()');
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
-//		obib.hideMsg(response);
 		$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 		$('#fotoBibid').val(ni.bibid);
 
@@ -314,6 +316,7 @@ var ni = {
 		$('#deltFotoBtn').hide();
 		$('#addFotoBtn').show();
 		$('.gobkFotoBtn').on('click',null, function () {
+			wc.vidOff();    // disables camera
 			ni.doBackToShow();
 		});
 
@@ -427,24 +430,25 @@ var ni = {
 	},
 	doSearch: function () {
         var srchBy = flos.getSelectBox($('#srchBy'),'getText');
-        var lookupVal = $('#lookupVal').val();
-
-        // advise user that this will take some time to complete
         var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
+        var srchBy3 = flos.getSelectBox($('#srchBy3'),'getText');
+        var srchBy4 = flos.getSelectBox($('#srchBy4'),'getText');
+
         var theTxt = '<h5>';
-        theTxt += "Searching for :<br />"+srchBy+" '" + lookupVal + "'<br /><br />";
+        theTxt += "Searching for :<br />&nbsp;&nbsp;&nbsp;"+srchBy+" '" + $('#lookupVal').val() + "'<br /><br />";
         if ($('#lookupVal2').val() != '') {
         	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br /><br />";
 		}
         if ($('#lookupVal3').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal3').val()+"'<br /><br />";
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy3+" '"+$('#lookupVal3').val()+"'<br /><br />";
 		}
         if ($('#lookupVal4').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal4').val()+"'<br /><br />";
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy4+" '"+$('#lookupVal4').val()+"'<br /><br />";
 		}
 
 		// show host(s) being searched
 		theTxt += 'at :<br />';
+		//console.log('n hosts = '+ni.nHosts);
 		if (ni.nHosts > 1){
 			var n=1;
 			$('#srchHosts :checkbox:checked').each(function () {
@@ -453,7 +457,7 @@ var ni = {
 				n++;
 			});
 		} else {
-				theTxt += '&nbsp;&nbsp;&nbsp;'+ni.hostJSON[0].name+'<br />';
+			theTxt += '&nbsp;&nbsp;&nbsp;'+ni.hostJSON[0].name+'<br />';
 		}
 
 		theTxt += '</h5><br />';
@@ -469,10 +473,11 @@ var ni = {
 	},
 	handleSrchRslts: function (response) {
 			$('#waitDiv').hide();
-			//console.log(typeof response);
+console.log(typeof response);
+console.log(response);
 
 			if (typeof response != 'object') {
-				//console.log('unexpected response');
+console.log('unexpected response');
 				$('#retryHead').empty();
 				$('#retryHead').html(ni.searchError);
 				$('#retryMsg').empty();
@@ -480,10 +485,14 @@ var ni = {
 				$('#retryDiv').show();
 			}
 			else {
-				//var rslts = JSON.parse(response);
 				var rslts = response;
-				var numHits = parseInt(rslts.ttlHits);
-				//console.log('ttlHits = '+numHits);
+				if (typeof rslts.ttlHits == 'undefined') {
+					numHits = rslts[0];
+				} else {
+					var numHits = parseInt(rslts.ttlHits);
+					//console.log('ttlHits = '+numHits);
+				}
+
                 var maxHits = ni.opts.maxHits;
 				//console.log('maxHits = '+maxHits);
 				if (numHits < 1) {
@@ -492,10 +501,12 @@ var ni = {
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
 					// 'srch2':['byName':$srchByName2,'val':$lookupVal2]}
-					var srch1 = JSON.parse(rslts['srch1']), srch2 = JSON.parse(rslts['srch2']);
+					var srch1 = JSON.parse(rslts['srch1']),
+						srch2 = JSON.parse(rslts['srch2']);
 					var str = rslts.msg+':<br />&nbsp;&nbsp;for '+srch1["byName"]+' = '+srch1["lookupVal"];
 					if ((srch2['lookupVal']) && (srch2['lookupVal'] != ''))
 						str += '<br />&nbsp;&nbsp;&nbsp;'+srch2['byName']+' = '+srch2['lookupVal'];
+//str = rslts[1]+'<br />'+rslts[3];
 					$('#retryHead').empty();
 					$('#retryHead').html('<?php echo T("Nothing Found"); ?>');
 					$('#retryMsg').empty();

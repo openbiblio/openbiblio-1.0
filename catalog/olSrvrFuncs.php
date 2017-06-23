@@ -3,6 +3,20 @@
  * See the file COPYRIGHT.html for more details.
  */
 	##-----------
+	function getErrInfo($errCode) {
+		$msg = '';
+		switch ($errCode) {
+			case 10007:
+				$msg = "Host Timeout";
+				break;
+			default:
+				$msg = "unknown errCode: $errCode";
+				break;
+		}
+		return $msg;
+	}
+
+	##-----------
 	function verifyLCCN ($lookupVal) {
 			## remove "-" and fill with "0" to make 8 char long
 			$pos = strPos($lookupVal, "-");

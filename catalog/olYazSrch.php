@@ -58,7 +58,7 @@
 
 		#### now wait for ALL hosts to return ALL results
 //		$waitOpts = array("timeout"=>$postVars['timeout']);
-$waitOpts = array('timeout'=>30);
+$waitOpts = array('timeout'=>60);
         //echo "<br /> waiting {$waitOpts['timeout']} seconds for responses. <br />";
 		yaz_wait($waitOpts);
 
@@ -70,16 +70,17 @@ $waitOpts = array('timeout'=>30);
 			if (!empty($error)) {
 				//echo "error response from host.<br />";
 				$hits[$i] = 0;
-				$errMsg[$i]  = "Error encountered at ".$postVars['hosts'][$i]['name']."<br />";
-				$errMsg[$i] .= "Query ==>> ".$query."<br />";
-				$errMsg[$i] .= '<p class="error">YAZ reports: '.$error.':<br />';
-				$errMsg[$i] .= "(yaz err no. " . yaz_errno($id[$i]) . ') ' . yaz_addinfo($id[$i]) . "</p>";
+				$errText = yaz_addinfo($id[$i]);
+				if ($errText == '') {
+					$errText = getErrInfo(yaz_errno($id[$i]));
+				}
+				$errMsg[$i] = "(yaz err no. " . yaz_errno($id[$i]) . ') ' . $errText;
 			} else {
 				//echo "host responded without error.<br />";
 				$hits[$i] = yaz_hits($id[$i]);
-				$ttlHits += $hits[$i];
 				$errMsg[$i] = '';
 				//echo "Host #$i {$postVars[hosts][$i]['name']} result Count: $hits[$i] <br />";
 			}
+			$ttlHits += $hits[$i];
 		}
 		//echo "Total Hits=$ttlHits <br />";

@@ -34,21 +34,20 @@
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <style>
-
 h4, h5 { margin: 0; padding: 0; text-align: left; color: blue; }
 h5#updateMsg { color: red; }
 p#errMsgTxt { color: red; text-align: center; }
 table#showList tr { height: 1.3em; }
 th.colHead { white-space: nowrap; }
 .editBtn { margin: 0; padding: 0; height: 1.5em; text-align:center; }
-
 </style>
 
 <h3><?php echo T("Add New Item"); ?></h3>
 	<!-- =================================================== -->
 	<div id="searchDiv">
-	  <input type="button" id="manualBtn" value="<?php echo T('Manual Entry'); ?>" />
-	  <br />
+	  <div class="btnRow gridded">
+	  	<input type="button" id="manualBtn" class="col1" value="<?php echo T('Manual Entry'); ?>" />
+	  </div>
 		<form role="form" id="lookupForm" name="lookupForm" action="" >
 		<fieldset id="srchSpecs">
 		<legend><?php echo T("On-Line Search"); ?></legend>
@@ -56,7 +55,7 @@ th.colHead { white-space: nowrap; }
 			  <div id="fldset1">
 			  	<span style="display:inline-block">
 			  		<label for="lookupVal" style="display:block"><?php echo T("What to search for"); ?>:</label>
-		  			<input id="lookupVal" name="lookupVal" type="text" class="criteria" required aria-required="true" />
+		  			<input id="lookupVal" name="lookupVal" type="text" class="criteria" autofocus required aria-required="true" />
 				</span>
 				<span style="display:inline-block">
 			  		<label for="srchBy" style="display:block"><?php echo T("Which is a"); ?>:</label>
@@ -122,8 +121,10 @@ th.colHead { white-space: nowrap; }
 				</fieldset>
 
 				<input type="hidden" id="mode" name="mode" value="search" />
-				<br />
-				<input type="submit" id="srchBtn" name="srchBtn" value="<?php echo T("Search");?>" />
+
+				<div class="btnRow gridded">
+					<input type="submit" id="srchBtn" name="srchBtn" class="col1"value="<?php echo T("Search");?>" />
+				</div>
 			</fieldset>
 			
 			
@@ -151,49 +152,43 @@ th.colHead { white-space: nowrap; }
 
 	<!-- =================================================== -->
 	<div id="retryDiv">
-	  <form role="form" action="">
-	  <fieldset>
-	  <legend id="retryHead"></legend>
-		<table>
-		<tr>
-			<th colspan="3" ></th>
-		</tr>
-		<tr>
-			<td colspan="3" id="retryMsg"></td>
-		</tr>
-		<tr>
-	    <td colspan="3">
-				<input id="retryBtn" type="submit" value="<?php echo T("Go Back");?>" />
-			</td>
-		</tr>
-		</table>
+	  	<fieldset>
+	  	<legend id="retryHead"></legend>
+			<div id="retryMsg">filled by server</div>
+			<div class="btnRow gridded">
+				<input id="retryBtn" type="button" class="col4" value="<?php echo T("Go Back");?>" />
+			</div>
 		</fieldset>
-		</form>
 	</div>
 
 	<!-- =================================================== -->
 	<div id="choiceDiv">
-		<input id="choiceBtn1" type="button" class="btnFld" value="<?php echo T("Go Back");?>" />
+		<div class="btnRow gridded">
+			<input id="choiceBtn1" type="button" class="col4" value="<?php echo T("Go Back");?>" />
+		</div>
 		<span id="hitInfo">
 			<?php echo T("Success")."! "; ?><span id="ttlHits"></span><?php echo " ".T("results found."); ?>
 		</span>
-	  <div id="choiceSpace">
-			Search Results go here
+	  	<div id="choiceSpace"> Search Results go here </div>
+		<div class="btnRow gridded">
+			<input id="choiceBtn2" type="button" class="col4" value="<?php echo T("Go Back");?>" />
 		</div>
-		<input id="choiceBtn2" type="button" class="button btnFld" value="<?php echo T("Go Back");?>" />
 	</div>
 
 	<!-- =================================================== -->
 	<div id="selectionDiv">
-   	<form role="form" id="newBiblioForm" name="newbiblioform" >
+   		<form role="form" id="newBiblioForm" name="newbiblioform" >
 			<p class="note"><?php echo T("Fields marked are required"); ?></p>
-			<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
+			<div class="btnRow gridded">
+				<input type="button" class="col4 itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
+			</div>
 			<?php
 				include(REL(__FILE__,"../catalog/itemEditorForm.php"));
 			?>
-			<input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
+			<div class="btnRow gridded">
+				<input type="submit" id="itemSubmitBtn" class="col1" value="<?php echo T("Submit"); ?>" />
+				<input type="button" class="col4 itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
+			</div>
 		</form>
 	</div>
 
@@ -205,11 +200,11 @@ th.colHead { white-space: nowrap; }
 	<!-- =================================================== -->
 	<div id="photoEditorDiv">
 		<?php require_once(REL(__FILE__,"../catalog/photoEditorForm.php"));?>
-		<ul class="btnRow">
-			<li><input type="button" class="gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
-			<li><input type="submit" id="addFotoBtn" value="<?php echo T("Add New"); ?>" /></li>
-			<li><input type="button" id="updtFotoBtn" value="<?php echo T("Update"); ?>" /></li>
-			<li><input type="button" id="deltFotoBtn" value="<?php echo T("Delete"); ?>" /></li>
+		<ul class="btnRow gridded">
+			<li><input type="submit" id="addFotoBtn" class="col1" value="<?php echo T("Add New"); ?>" /></li>
+			<li><input type="button" id="updtFotoBtn" class="col2" value="<?php echo T("Update"); ?>" /></li>
+			<li><input type="button" id="deltFotoBtn" class="col5" class="col1" value="<?php echo T("Delete"); ?>" /></li>
+			<li><input type="button" class="col4 gobkFotoBtn" value="<?php echo T("Go Back"); ?>" /></li>
 		</ul>
 	</div>
 
