@@ -269,4 +269,48 @@
         return $rslt;
 	}
 
-?>
+	## ---------------------------------- ##
+	function postNewBiblio() {
+		require_once(REL(__FILE__, "../model/Biblios.php"));
+		require_once(REL(__FILE__, "../classes/Marc.php"));
+	    include(REL(__FILE__,'../catalog/biblioChange.php'));
+
+		/* ---convert old format to new---
+		## legacy format, still used by 'NewItems' ##
+		bibid
+		collectionCd	2
+		fields[0][data]	another testing
+		fields[0][fieldid]
+		fields[0][subfield_cd]	a
+		fields[0][subfieldid]
+		fields[0][tag]	245
+		## new format, used in 'ExistingItems', etc.
+		## see .../catalog/catalogSrvr.php for usage example.
+		bibid
+		collectionCd 2
+		fields[245$a]['codes'] subfieldid=xx&fieldid=yy
+		fields[245$a]['data'] another testing
+		*/
+		$input = $_POST;
+		unset($_POST);
+		//$rec = [];
+		foreach ($input as $k=>$v) {
+			if (($k != 'fields') && (substr($k,0,4) != 'onln')) {
+				$_POST[$k] = $v;
+			} else if ($k == 'fields') {
+				foreach ($v as $fld) {
+					$tag = $fld['tag'].'$'.$fld['subfield_cd'];
+					$rec[$tag]['data'] = $fld['data'];
+					$rec[$tag]['codes'] = 'subfieldid='.$fld['subfieldid'].'&fieldid='&$fld['fieldid'];
+				}
+			}
+		}
+		$_POST['fields'] = $rec;
+		//echo "in onlineServer::postNewBiblio(): ";
+		//print_r($_POST['fields']);
+		## ----------------------------------
+	    $nav = "newconfirm";
+  	    $msg = PostBiblioChange($nav);
+	    echo $msg;
+	}
+
