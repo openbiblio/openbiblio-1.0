@@ -384,18 +384,23 @@ var ni = {
 		$('#errMsgTxt').html('');
 		var msg = '';
 		var nType = $('#srchBy').val();
-	  	var val = $('#lookupVal').val();
-	  	var test = val.replace(/-| /g, '');   // only applies to ISBN
+	  	var val = $.trim($('#lookupVal').val());
 	  	var rslt = true;
-
 	  	switch (parseInt(nType)) {
 	  	case 4: // Text input
-	  		if (!isNaN(parseInt(test))) {
-				rslt = false;
-				msg += "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.<br />";
-			}
+//	  		if (!isNaN(parseInt(val))) {
+//				rslt = false;
+//				msg += "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.<br />";
+//			}
 			break;
 		case 7: //ISBN
+			var isbnPattern = /^((?:ISBN(?:-1[03])?:? )):?(?=[0-9X]{10}$(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][-]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$/;
+			if (isbnPattern.test(val)) {
+console.log('isbn OK');
+			} else {
+console.log('isbn fails');
+			}
+	  		let test = val.replace(/-| /g, '');
         	$('#lookupVal').val(test); // update display with cleaned up ISBN
 	   		if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
 				rslt = false;
@@ -409,10 +414,21 @@ var ni = {
 			}
 			break;
 		case 9: // LCCN
-	   		if (isNaN(parseInt(test))) {
+			if (val.indexOf('-') <0 ) {
 				rslt = false;
-				msg += "This is not a valid LCCN.<br />";
 			}
+			var parts = val.split('-');
+	   		if (isNaN(parseInt(parts[0])) || (isNaN(parseInt(parts[1])))){
+				rslt = false;
+			}
+			if (!rslt) {
+				msg += "This is not a valid LCCN.<br />";
+				return;
+			}
+			var temp = '00000'+parts[1];
+			parts[1] = temp.substr(-6,6);
+			val = parts[0]+'-'+parts[1];
+			$('#lookupVal').val(val); // update display with cleaned up LCCN
 			break;
 		}
 
@@ -421,7 +437,7 @@ var ni = {
 		  ni.doSearch();
 		}
 		else {
-            $('#lookupVal').val(test)
+            $('#lookupVal').val(val)
 			$('#srchBy').focus();
 			$('#errMsgTxt').html(msg);
 			obib.showMsg(msg);
@@ -473,11 +489,11 @@ var ni = {
 	},
 	handleSrchRslts: function (response) {
 			$('#waitDiv').hide();
-console.log(typeof response);
-console.log(response);
+			//console.log(typeof response);
+			//console.log(response);
 
 			if (typeof response != 'object') {
-console.log('unexpected response');
+				console.log('unexpected response');
 				$('#retryHead').empty();
 				$('#retryHead').html(ni.searchError);
 				$('#retryMsg').empty();

@@ -247,30 +247,32 @@ button { font-size:0.9rem;
 #btnRow,
 .btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0;
 	}
-.btnRow.gridded { display:grid; grid-template-columns: repeat(5, 1fr);
+#btnRow li,
+ul.btnRow li { display:inline; margin-right:1rem;
 	}
-.btnRow > [type=button].col1 {   grid-column: 1 / 5;
-	}
-.btnRow > [type=button].col2 {   grid-column: 2 / 5;
-	}
-.btnRow > [type=button].col3 {   grid-column: 3 / 5;
-	}
-.btnRow > [type=button].col4 {   grid-column: 4 / 5;
-	}
-.btnRow > [type=button].col5 {   grid-column: 5 / 5;
-	}
-.btnRow.flexBoxed { display:flex;
-	flex-direction:row; justify-content:space-around;
-	}
-#btnRow li, ul.btnRow li { display:inline; margin-right:1rem;
-	}
-#btnRow li input[value="Delete"], 
+#btnRow li input[value="Delete"],
 .btnRow li input[value="Delete This Item"],
 .btnRow li input[value="Delete"] { float:right; margin-right:0;
 	}
-.btnRow > input[type=button] { flex:auto; max-width:15em;
+
+.btnRow.flexBoxed { display:flex;
+	flex-direction:row; justify-content:space-around;
 	}
-/*.goBkBtn { float: right; } */
+.btnRow.flexBoxed > input[type=button] { flex:auto; max-width:15em;
+	}
+.btnRow.gridded { display:grid; grid-template-columns: repeat(5, 1fr);
+	}
+.btnRow.gridded > [type=button].col1 {   grid-column: 1 / 5;
+	}
+.btnRow.gridded > [type=button].col2 {   grid-column: 2 / 5;
+	}
+.btnRow.gridded > [type=button].col3 {   grid-column: 3 / 5;
+	}
+.btnRow.gridded > [type=button].col4 {   grid-column: 4 / 5;
+	}
+.btnRow.gridded > [type=button].col5 {   grid-column: 5 / 5;
+	}
+
 
 #vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray
 	}
