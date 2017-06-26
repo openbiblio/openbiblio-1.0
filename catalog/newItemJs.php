@@ -381,6 +381,10 @@ var ni = {
 	},
 	
 	doValidate_n_Srch: function () {
+		var isbnPattern = /ISBN(-1(?:(0)|3))?:?\x20(\s)*[0-9]+[- ][0-9]+[- ][0-9]+[- ][0-9]*[- ]*[xX0-9]/;
+		var issnPattern = /[0-9]{4}-[0-9]{4}/;
+		var lccnPattern = /((a(c|fl?|gr)?|b[irs]|c(a?d?|lc|[sxy])|do?|es?|f(i[ae]?)?|g[ms]?|h(a|e[wx]?)?|in?t|j[ax]?|kx?|l(lh|tf)?|m([ams]|ap|ed|i[cdef]|pa?|us)?|n(cn|ex?|[tu]c)|or|p([aop]|h[opq])|r[aceu]?|s(ax?|[cdfgnsu])?|t(b|mp)|u(m|nk)|w(ar)?|[xz])(\b|-)?|20)?\d\d(-\d{1,5}|(\b|-)?\d{6})/;
+
 		$('#errMsgTxt').html('');
 		var msg = '';
 		var nType = $('#srchBy').val();
@@ -388,56 +392,52 @@ var ni = {
 	  	var rslt = true;
 	  	switch (parseInt(nType)) {
 	  	case 4: // Text input
-//	  		if (!isNaN(parseInt(val))) {
-//				rslt = false;
-//				msg += "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.<br />";
-//			}
 			break;
 		case 7: //ISBN
-			var isbnPattern = /^((?:ISBN(?:-1[03])?:? )):?(?=[0-9X]{10}$(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][-]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$/;
-			if (isbnPattern.test(val)) {
-console.log('isbn OK');
+			if ( isbnPattern.test('ISBN: '+val) ) {
+				console.log('isbn passes regExp');
 			} else {
-console.log('isbn fails');
-			}
-	  		let test = val.replace(/-| /g, '');
-        	$('#lookupVal').val(test); // update display with cleaned up ISBN
-	   		if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
+				console.log('isbn fails regExp');
 				rslt = false;
 				msg += "This is not a valid ISBN.<br />";
 			}
+	  		let test = val.replace(/-| /g, '');
+        	$('#lookupVal').val(test); // update display with cleaned up ISBN
 			break;
 		case 8: // ISSN
-	   		if (isNaN(parseInt(test))) {
+	   		if ( issnPattern.test(val) ) {
 				rslt = false;
 				msg += "This is not a valid ISSN.<br />";
 			}
 			break;
 		case 9: // LCCN
-			if (val.indexOf('-') <0 ) {
-				rslt = false;
-			}
-			var parts = val.split('-');
-	   		if (isNaN(parseInt(parts[0])) || (isNaN(parseInt(parts[1])))){
-				rslt = false;
-			}
-			if (!rslt) {
+			/*
+			On Wikidata, an optional space or hyphen may appear before the year.
+			An optional hyphen may appear before the serial number;
+			if the serial number is typed as less than 6 digits, the hyphen is required.
+			The preferred and best formatting now is to remove all hyphens and spaces
+			and insure that the serial is always 6 digits, as shown in the right column
+			of http://lccn.loc.gov/#n9. (English)
+			*/
+			// currently under test only
+			if ( lccnPattern.test(val) ) {
+				console.log('lccn passes regExp');
+			} else {
+				console.log('lccn fails regExp');
 				msg += "This is not a valid LCCN.<br />";
 				return;
 			}
+			var parts = val.split('-');
 			var temp = '00000'+parts[1];
 			parts[1] = temp.substr(-6,6);
-			val = parts[0]+'-'+parts[1];
+			val = parts[0]+parts[1];    // wikidata stated preference
 			$('#lookupVal').val(val); // update display with cleaned up LCCN
 			break;
 		}
 
 		if (rslt) {
-
-		  ni.doSearch();
-		}
-		else {
-            $('#lookupVal').val(val)
+		  	ni.doSearch();
+		} else {
 			$('#srchBy').focus();
 			$('#errMsgTxt').html(msg);
 			obib.showMsg(msg);
