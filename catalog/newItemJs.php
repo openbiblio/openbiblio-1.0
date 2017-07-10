@@ -421,16 +421,21 @@ var ni = {
 			*/
 			// currently under test only
 			if ( lccnPattern.test(val) ) {
-				console.log('lccn passes regExp');
+				console.log('lccn '+val+' passes regExp');
 			} else {
-				console.log('lccn fails regExp');
+				console.log('lccn '+val+' fails regExp');
 				msg += "This is not a valid LCCN.<br />";
 				return;
 			}
-			var parts = val.split('-');
-			var temp = '00000'+parts[1];
-			parts[1] = temp.substr(-6,6);
-			val = parts[0]+parts[1];    // wikidata stated preference
+			if (val.indexOf('-') >= 0) {
+				var parts = val.split('-');
+				val = doFixLccn(parts[0], parts[1])
+			} else if (val.length < 8) {
+                // prior to year 2000
+				let partA = val.substr(0,2)
+				let partB = val.substr(2)
+				val = doFixLccn(partA, partB)
+			}
 			$('#lookupVal').val(val); // update display with cleaned up LCCN
 			break;
 		}
@@ -444,22 +449,32 @@ var ni = {
 			return rslt;
 		}
 	},
+	doFixLccn: function (part0, part1) {
+		var temp = '00000'+part1;
+		parts1 = temp.substr(-6,6);
+		val = part0+part1;    // wikidata stated preference
+		return val
+	},
 	doSearch: function () {
         var srchBy = flos.getSelectBox($('#srchBy'),'getText');
         var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
         var srchBy3 = flos.getSelectBox($('#srchBy3'),'getText');
         var srchBy4 = flos.getSelectBox($('#srchBy4'),'getText');
+		let val1 = $('#lookupVal').val()
+		let val2 = $('#lookupVal2').val()
+		let val3 = $('#lookupVal3').val()
+		let val4 = $('#lookupVal4').val()
 
         var theTxt = '<h5>';
-        theTxt += "Searching for :<br />&nbsp;&nbsp;&nbsp;"+srchBy+" '" + $('#lookupVal').val() + "'<br /><br />";
-        if ($('#lookupVal2').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br /><br />";
+        theTxt += "Searching for :<br />&nbsp;&nbsp;&nbsp;"+srchBy+" '" + val1 + "'<br /><br />";
+        if (val2 != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+val2+"'<br /><br />";
 		}
-        if ($('#lookupVal3').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy3+" '"+$('#lookupVal3').val()+"'<br /><br />";
+        if (val3 != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy3+" '"+val3+"'<br /><br />";
 		}
-        if ($('#lookupVal4').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy4+" '"+$('#lookupVal4').val()+"'<br /><br />";
+        if (val4 != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy4+" '"+val4+"'<br /><br />";
 		}
 
 		// show host(s) being searched
