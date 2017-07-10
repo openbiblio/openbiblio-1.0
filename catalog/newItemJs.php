@@ -429,12 +429,12 @@ var ni = {
 			}
 			if (val.indexOf('-') >= 0) {
 				var parts = val.split('-');
-				val = doFixLccn(parts[0], parts[1])
+				val = ni.doFixLccn(parts[0], parts[1])
 			} else if (val.length < 8) {
                 // prior to year 2000
 				let partA = val.substr(0,2)
 				let partB = val.substr(2)
-				val = doFixLccn(partA, partB)
+				val = ni.doFixLccn(partA, partB)
 			}
 			$('#lookupVal').val(val); // update display with cleaned up LCCN
 			break;
@@ -450,9 +450,9 @@ var ni = {
 		}
 	},
 	doFixLccn: function (part0, part1) {
-		var temp = '00000'+part1;
-		parts1 = temp.substr(-6,6);
-		val = part0+part1;    // wikidata stated preference
+		let temp = '00000'+part1;
+		part1 = temp.substr(-6,6);
+		let val = part0+part1;
 		return val
 	},
 	doSearch: function () {
