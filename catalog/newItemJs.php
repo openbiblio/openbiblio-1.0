@@ -405,7 +405,7 @@ var ni = {
         	$('#lookupVal').val(test); // update display with cleaned up ISBN
 			break;
 		case 8: // ISSN
-	   		if ( issnPattern.test(val) ) {
+	   		if ( !issnPattern.test(val) ) {
 				rslt = false;
 				msg += "This is not a valid ISSN.<br />";
 			}
