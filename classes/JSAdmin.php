@@ -227,6 +227,7 @@ class Admin {
     	}
     };
 	doAddBtn (e) {
+		//console.log('in JSAdmin::addBtn(): '+e.target.id)
         this.doAddFields(e)
     }
 	doUpdtBtn (e) {
@@ -252,7 +253,7 @@ class Admin {
     };
 
     doAddFields (e) {
-		$('#addBtn').enable();
+		//console.log('in JSAdmin::doAddFields(): '+e.target.id)
 		let f = document.getElementById('editForm');
 		if(f.reportValidity()) {
 			//console.log('all validations pass');
@@ -262,13 +263,15 @@ class Admin {
 			obib.showError('some validation(s) fail');
 			return;
 		}
+    	e.preventDefault();
+    	e.stopPropagation();
+
     	$('#mode').val('addNew_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
     	var parms = this.doGatherParams();
 		parms = this.doAssembleParams(parms)
     	$.post(this.url, parms, $.proxy(this.addHandler, this), 'json');
-    	e.preventDefault();
-    	e.stopPropagation();
+		$('#addBtn').enable();
 		return false;
     };
 	addHandler (response) {
@@ -322,29 +325,38 @@ class Admin {
     };
 
     showResponse (response) {
-console.log('in Admin::showResponse(): response='+response);
+		//console.log('in JSAdmin::showResponse(): response='+response);
 		var userMsg = '';
 		var	seqNum = 0;
 		//console.log('initial userMsg= '+userMsg);
 
-		if ( $.isArray(response) ) {
+		if (response.indexOf(',')) {
+console.log('got a CSV thing');
+			//let parts = response.split(',');
+			//userMsg = parts[1];
+			userMsg = response;
+		} else if ( $.isArray(response) ) {
+console.log('got an array')
 			seqNum = response[0];
 			userMsg = response[1];
 		} else if (typeof response === 'object') {
+console.log('got an object')
 			userMsg = JSON.stringify(response);
 		} else {
+console.log("don't know what I got")
 			userMsg = response;
 		}
+		//console.log('in JSAdmin::showResponse(): userMsg='+userMsg);
 
 		if (userMsg.indexOf('uccess') >= -1 ) {
-console.log('found success; userMsg= ' + userMsg);
+			//console.log('found success; userMsg= ' + userMsg);
     		obib.showMsg(userMsg);
 			//this.doBackToList();  // this will cause user message to be removed before it can be read
 		} else if (userMsg.indexOf('rror') >= -1 ) {
-console.log('found error; userMsg= ' + userMsg);
+			//console.log('found error; userMsg= ' + userMsg);
     	    obib.showError(userMsg);
     	} else {
-console.log('using default; userMsg= '+userMsg);
+			//console.log('using default; userMsg= '+userMsg);
     	    obib.showError(userMsg);
         }
         return

@@ -337,6 +337,7 @@ $trans["demoMsg"] = "This function is not available in the demo version of OpenB
 $trans["Description"] = "Description";
 $trans["Details"] = "Details";
 $trans["DisplayLines"] = "Display<br />Lines";
+$trans["does not exist"] = "does not exist";
 $trans["doiSearch"] = "DOI Search";
 $trans["double check outs"] = "double check outs";
 $trans["Due Back"] = "Due Back";
@@ -1058,6 +1059,7 @@ $trans["Use Image"] = "Use Image";
 $trans["using default"] = "using default";
 ####### V #######
 $trans["Valid."] = "Valid.";
+$trans["validation check failed"] = "validation check failed";
 $trans["Validation Patterns"] = "Validation Patterns";
 $trans["Validation Type"] = "Validation Type";
 $trans["Value"] = "Value";

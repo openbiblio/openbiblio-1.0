@@ -89,7 +89,7 @@ class Stf extends Admin {
     	$('.pwdFlds').attr('required',true) ;
     };
 
-    doAddBtn () {
+    doAddBtn (e) {
 		//console.log('in staffJs6::doAddBtn()');
 	    //console.log('got "addBtn"');
 		let pw1 = $('#xpwd1').val();
@@ -100,13 +100,13 @@ class Stf extends Admin {
         var rolesOk = this.chkRoles();
 		//console.log('rolesOk = '+rolesOk);
         if (rolesOk && pwOk) {
-            this.doAddFields();
-			obib.hideMsg('now');
+            this.doAddFields(e);
+			//obib.hideMsg('now');
         } else {
-			var errMsg = '<?php echo T("validation check failed "); ?>';
+			var errMsg = '<?php echo T("validation check failed"); ?>';
 			console.log(errMsg);
-			//obib.showMsg(errMsg); // redundant, not needed
-            return false;
+			//obib.showMsg(errMsg); // redundant, see chkPwds() & chkRoles()
+            //return false;
         }
     };
 

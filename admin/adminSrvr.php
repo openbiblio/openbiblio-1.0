@@ -490,7 +490,9 @@
             	list($id, $response) = $rslt;
             	if ($id == NULL)
                 	echo json_encode($response);
-            	else
+            	elseif ($response == NULL)
+					echo json_encode([$id,'Success']);
+				else
                 	echo json_encode($rslt);
 			} else {
 				//$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen

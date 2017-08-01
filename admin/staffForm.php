@@ -99,12 +99,12 @@
       	<li>
 			<label for="start_page"><?php echo T("Start Page"); ?>:</label>
 			<select id="start_page" name="start_page" >
-				<option value="admin/index.php">System Admin</option>
-				<option value="catalog/newItemForms.php">Cataloging</option>
-				<option value="circ/memberForms.php">Circulation</option>
-				<option value="reports/index.php">Reports</option>
-				<option value="research/srchForms.php?tab=user">Research</option>
-				<option value="tools/index.php">Tools</option>
+				<option value="../admin/index.php">System Admin</option>
+				<option value="../catalog/newItemForms.php">Cataloging</option>
+				<option value="../circ/memberForms.php">Circulation</option>
+				<option value="../reports/index.php">Reports</option>
+				<option value="../research/srchForms.php?tab=user">Research</option>
+				<option value="../tools/index.php">Tools</option>
 			</select>
     	</li>
     	<br />
