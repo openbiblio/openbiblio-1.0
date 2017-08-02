@@ -81,6 +81,7 @@
     <li>
       <label for="city"><?php echo T("City"); ?>:</label>
       <input id="city" name="city" type="text" size="32" required aria-required="true" />
+			<span class="reqd">*</span>
     </li>
     <li>
       <label for="state"><?php echo T("State"); ?>:</label>
