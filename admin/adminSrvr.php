@@ -450,7 +450,6 @@
 			echo json_encode($sites);
 			break;
 		case 'addNew_sites':
-//			echo $ptr->insert($_POST);
 			list($id, $errors) = $ptr->insert_el($_POST);
 			if (!empty($id) || empty($errors)) {
 				$msg = T("Site")." ".$_POST['name'].' '.T("has been added");
@@ -458,6 +457,10 @@
 			} else {
 				echo json_encode(array(null, $errors));
             }
+			break;
+		case 'mergeSites':
+			$rslt = $ptr->moveSiteHoldings($_POST);
+            echo json_encode($rslt);
 			break;
 		case 'update_sites':
 			echo json_encode($ptr->update($_POST));

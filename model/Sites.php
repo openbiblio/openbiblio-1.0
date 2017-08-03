@@ -64,6 +64,16 @@ class Sites extends DBTable {
 		return $errors;
 	}
 
+	function moveSiteHoldings($rec) {
+		$sql = "UPDATE `biblio_copy` set siteid = '".$rec["to"]."' where siteid = '".$rec["fm"]."' LIMIT 2";
+		//echo "sql=$sql <br />\n";
+		$errors = $this->act($sql);
+		if ($errors === false)
+			return 'Error: update failed';
+		else
+			return 'Success';
+	}
+
 	function deleteOne() {
 		$id_to_delete = func_get_arg(0);
 		if ($_SESSION['current_site'] == $id_to_delete) {

@@ -242,7 +242,7 @@ table#biblioTbl th  {
 input[type=button],
 input[type=submit],
 button { font-size:0.9rem;
-}
+	}
 
 #btnRow,
 .btnRow { margin-left:0; padding-left:0; text-align:left; margin:0; padding:0;
@@ -260,6 +260,7 @@ ul.btnRow li { display:inline; margin-right:1rem;
 	}
 .btnRow.flexBoxed > input[type=button] { flex:auto; max-width:15em;
 	}
+/*
 .btnRow.gridded { display:grid; grid-template-columns: repeat(5, 1fr);
 	}
 .btnRow.gridded > [type=button].col1 {   grid-column: 1 / 5;
@@ -272,7 +273,20 @@ ul.btnRow li { display:inline; margin-right:1rem;
 	}
 .btnRow.gridded > [type=button].col5 {   grid-column: 5 / 5;
 	}
-
+*/
+.gridded { display:grid;
+	grid-template-columns: 20% 20% 20% 20% 20%; grid-auto-columns: 20%;
+	}
+.gridded > .col1 {   grid-column: 1;
+	}
+.gridded > .col2 {   grid-column: 2;
+	}
+.gridded > .col3 {   grid-column: 3;
+	}
+.gridded > .col4 {   grid-column: 4;
+	}
+.gridded > .col5 {   grid-column: 5;
+	}
 
 #vertSep { width:0; height:3rem; margin-right:0.5rem; padding:0; border:1px solid gray
 	}

@@ -37,8 +37,7 @@ class Admin {
 	    $('.newBtn').click(function(e) {e.preventDefault();});
     	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
     	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
-    	//$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
-    	$('#cnclBtn').on('click',null,$.proxy(this.doBackToList,this));
+    	$('#cnclBtn, .cnclBtn').on('click',null,$.proxy(this.doBackToList,this));
 
 		$('input:visible:first').focus();   // set focus to first input element of each form on page
 
@@ -53,6 +52,7 @@ class Admin {
     resetForms () {
  		obib.hideMsg('now');
     	$('#editDiv').hide();
+    	$('#extraDiv').hide();
         $('#listHdr').html(this.listHdr);
         $('#editHdr').html(this.editHdr);
         $('#cnclBtn').val('Go Back');
@@ -216,8 +216,6 @@ class Admin {
 	
     doSubmitFields (e) {
 		//console.log('in JSAdmin::doSubmitFields()');
-//    	e.preventDefault();
-//    	e.stopPropagation();
     	var theBtn = e.target.id;
     	switch (theBtn) {
     		case 'addBtn':	this.doAddBtn(e);	break;
@@ -325,12 +323,12 @@ class Admin {
     };
 
     showResponse (response) {
-		//console.log('in JSAdmin::showResponse(): response='+response);
+console.log('in JSAdmin::showResponse(): response='+response);
 		var userMsg = '';
 		var	seqNum = 0;
 		//console.log('initial userMsg= '+userMsg);
 
-		if (response.indexOf(',')) {
+		if (response.indexOf(',') >= 0) {
 console.log('got a CSV thing');
 			//let parts = response.split(',');
 			//userMsg = parts[1];
