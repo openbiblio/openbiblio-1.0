@@ -441,7 +441,7 @@
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAll_sites':
-		  $sites = array();
+		  	$sites = array();
 			$set = $ptr->getAll('name');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {

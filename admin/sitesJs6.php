@@ -23,11 +23,31 @@ class Sit extends Admin {
 	    super( url, form, dbAlias, hdrs, listFlds, opts );
 
     	this.noshows = [];
+
 	    this.fetchStates();
 	    this.fetchCalendars();
 
         $('#country').val('xxxx');
     };
+
+	async fetchList() {
+		// using 'promise' technique to insure calls are processed in-turn
+		await list.getSiteHoldings();
+		await super.fetchList();
+	};
+    fetchHandler (dataAray) {
+		super.fetchHandler(dataAray);
+		var holdings = list.holdings
+		var $rows = $('#showList tbody tr');
+
+		// add holdings to each site display
+		$rows.each(function (i){
+			var siteid = $(this).find('input[type="hidden"]').val();
+			let nmbr = holdings[siteid];
+			let html = '<td>'+nmbr+'</td>';
+			$(this).append(html);
+		});
+	};
 
     fetchStates () {
         list.getPullDownList('State', $('#state'));

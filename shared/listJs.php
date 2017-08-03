@@ -149,6 +149,15 @@ var list = {
           return list.sites;
         }, 'json');
     },
+	getSiteHoldings: function () {
+        $.post(list.server, {mode:'getSiteHoldings'}, function(data){
+		  list.holdings = [];
+		  for (let idx in data) {
+			list.holdings[data[idx].siteid] = data[idx].quan;
+		  }
+          return list.holdings;
+        }, 'json');
+    },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     // different structure than other pull-down tables

@@ -53,6 +53,11 @@ class Sites extends DBTable {
 		return $select;
 	}
 
+	function getHoldings() {
+		$sql = "SELECT `siteid`, count(*) as quan FROM `biblio_copy` GROUP BY `siteid`";
+		return $this->select($sql);
+	}
+
 	protected function validate_el($rec, $insert) {
 		// check for required fields done in DBTable
 		$errors = parent::validate_el($rec, $insert);

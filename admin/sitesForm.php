@@ -9,11 +9,6 @@
 	$nav = "sites";
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	//require_once(REL(__FILE__, "../classes/Report.php"));
-	//require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
-	//require_once(REL(__FILE__, "../classes/TableDisplay.php"));
-	//require_once(REL(__FILE__, "../classes/Links.php"));
-
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 <h3 id="listHdr"><?php echo T("Sites"); ?></h3>
@@ -30,6 +25,7 @@
  			<th><?php echo T("Name"); ?></th>
 			<th><?php echo T("Code"); ?></th>
 			<th><?php echo T("Location"); ?></th>
+			<th><?php echo T("Holdings"); ?></th>
 		</tr>
 	</thead>
 	<tbody class="striped">

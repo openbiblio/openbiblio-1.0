@@ -172,6 +172,16 @@
         $siteId = Settings::get('library_name');
         echo json_encode($siteId);
         break;
+	case 'getSiteHoldings':
+		require_once(REL(__FILE__, "../model/Sites.php"));
+		$db = new Sites;
+	  	$sites = array();
+		$set = $db->getHoldings();
+        foreach ($set as $row) {
+		  $sites[] = $row;
+		}
+		echo json_encode($sites);
+		break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getStateList':
