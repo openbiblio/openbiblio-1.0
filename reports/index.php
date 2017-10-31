@@ -56,8 +56,8 @@ foreach (array_keys($reports) as $category) {
 	echo '<li class="report_category">'.T($category);
 	echo '	<ul>';
 	foreach ($reports[$category] as $type => $title) {
-//		echo '		<li class="report_name"><a href="../reports/report_criteria.php?type='.HURL($type).'">'.H($title).'</a></li>';
-		echo '		<li class="report_name"><a href="../reports/reportForms.php?type='.HURL($type).'">'.H($title).'</a></li>';
+		echo '		<li class="report_name"><a href="../reports/report_criteria.php?type='.HURL($type).'">'.H($title).'</a></li>';
+//		echo '		<li class="report_name"><a href="../reports/reportForms.php?type='.HURL($type).'">'.H($title).'</a></li>';
 	}
 	echo '	</ul>';
 	echo '</li>';

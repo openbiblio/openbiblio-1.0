@@ -29,7 +29,7 @@ class Layout_list {
 
 	function render($rpt) {
 
-		$pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$pdf = new PDF_TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		$pdf->SetCreator($_SESSION['username']);
 		$pdf->SetAuthor($_SESSION['username']);

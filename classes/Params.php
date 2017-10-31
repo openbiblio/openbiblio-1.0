@@ -16,7 +16,7 @@ class Params {
 	public function __construct () {
 	}
 
-	private $dict = array();
+	public $dict = array();
 
 	## ------------------------------------------------------------------------ ##
 	public static function printForm($defs, $prefix='rpt_', $namel=array()) {

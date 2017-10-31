@@ -685,14 +685,13 @@ var mf = {
 			if (response.substr(0,1)=='0') {
 				//console.log('rcvd error msg from server :<br />'+response);
 				mf.showMsg(response);
-			}
-			else {
+			} else {
 				if (response.substr(0,1)=='1'){
 					$('#updateMsg').html('<?php echo T("Added");?>');
 					$('#updateMsg').show();
 				}
 				mf.showMsg('Added!');
-				$('#msgDiv').show().hide(10000);
+				$('#msgDiv').show().hide(2000);
 			}
 		});
 		return false;

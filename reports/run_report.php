@@ -33,6 +33,7 @@
 		header('Location: ../reports/index.php');
 		exit(0);
 	}
+
 	if ($_REQUEST['type'] == 'previous') {
 		if ($_REQUEST['rpt_order_by']) {
 			$rpt = $rpt->variant(array('order_by'=>$_REQUEST['rpt_order_by']));
@@ -49,7 +50,6 @@
 		$page = $rpt->curPage();
 	}
 
-	## menu modifications  go here
 	foreach ($rpt->layouts() as $l) {
 		if ($l['title']) {
 			$title = $l['title'];
@@ -61,21 +61,12 @@
 	}
 	Nav::node('reports/results/list', T("Print List"),
 		'../shared/layout.php?rpt=Report&name=list');
-	Nav::node('reports/results/list', T("Prepare CSV file"),
-		'../shared/layout.php?rpt=Report&name=csv');
-	Nav::node('reports/results/list', T("Prepare MARC file"),
-		'../shared/layout.php?rpt=Report&name=marc');
 	Nav::node('reports/reportcriteria', T("Report Criteria"),
 		'../reports/report_criteria.php?type='.U($rpt->type()));
-	## end of menu modifications
-	 
-	## create web page ###
-	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
-	//echo "<br />";print_r($_REQUEST);echo "<br />";
-?>
-	<h3><?php echo T($_GET['title']); ?></h3>
-	<h5><?php echo T("Report Results"); ?></h5>
 
+	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
+?>
+<h3><?php echo T("Report Results"); ?></h3>
 <?php
 	if (isset($_REQUEST["msg"]) && !empty($_REQUEST["msg"])) {
 		echo '<p class="error">'.H($_REQUEST["msg"]).'</p><br /><br />';
@@ -83,36 +74,39 @@
 
 	if ($rpt->count() == 0) {
 		echo T("No results found.");
-		// ;
 		exit();
 	}
 
 	$p = array('type'=>'previous', 'tab'=>$tab, 'nav'=>$nav);
-	$page_url = new LinkUrl("../reports/run_report.php", 'page', $p);
-	$sort_url = new LinkUrl("../reports/run_report.php", 'rpt_order_by', $p);
-	
+	$page_url = new LinkUrl("../reports/run_report.php",
+		'page', $p);
+	$sort_url = new LinkUrl("../reports/run_report.php",
+		'rpt_order_by', $p);
 	$disp = new ReportDisplay($rpt);
-?>
-	
-	<p class="results_count">
-		<?php echo $rpt->count()." ".T("items found")."."; ?>
-	</p>
-	
-<?php	
+	echo '<div class="results_count">';
+	echo T("%count% results found.", array('count'=>$rpt->count()));
+	echo '</div>';
 	echo $disp->pages($page_url, $page);
+	//echo '<p>'.$rpt->count().' results found.</p>';
 ?>
-
-	<fieldset>
-	<legend><?php echo T("Report Results"); ?></legend>
-	
+<!--table class="resultshead">
+	<tr>
+			<th><?php echo T("Report Results"); ?></th>
+		<td class="resultshead">
+<table class="buttons">
+<tr-->
+<?php
+# Fill in report actions here
+?>
+<!--/tr>
+</table>
+</td>
+	</tr>
+</table-->
+<fieldset>
 <?php
 	$t = new TableDisplay;
-	
-	// get column headings
 	$t->columns = $disp->columns($sort_url);
-
-	// create and display actual data rows
-	// actual display of biblio content controlled by ../classes/BiblioRows.php (see function next())
 	echo $t->begin();
 	$pg = $rpt->pageIter($page);
 	while ($r = $pg->next()) {
@@ -122,4 +116,4 @@
 
 	echo $disp->pages($page_url, $page);
 ?>
-	</fieldset>
+</fieldset>

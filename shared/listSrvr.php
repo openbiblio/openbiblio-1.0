@@ -169,15 +169,20 @@
 		echo json_encode($list);
 	    break;
 	case 'getDefaultSite':
-/*
+		// LJ: The library name is the global name of the library, not the default library. E.g. Cook County Library, which could have multiple sites. This is printed on the barcode label.
+		/*
 		require_once(REL(__FILE__, "../model/Sites.php"));
         $db = new Sites;
         $rslt = $db->getDefault();
 		echo json_encode($rslt);
 */
+		/*
         $siteId = Settings::get('library_name');
         //echo "in listSrvr, getDefaultSite = $siteId <br />\n";
         echo $siteId;
+*/
+		// We take the library logged on to.
+		echo $_SESSION['current_site'];
         break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//

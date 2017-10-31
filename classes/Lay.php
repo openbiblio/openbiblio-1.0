@@ -40,8 +40,8 @@ class Lay_Word {
 	function init(&$display, $params) {
 		$this->display =& $display;
 		$this->p = $params;
-		$display->setFont($this->p['font-name'], '', $this->p['font-size']);
-		$this->dimensions = 12;
+		$display->font($this->p['font-name'], $this->p['font-size']);
+		$this->dimensions = $display->textDim($this->p['text']);
 	}
 	function paint($point) {
 		$this->display->font($this->p['font-name'], $this->p['font-size']);
@@ -77,14 +77,14 @@ class Lay_Compound_Element {
 		$max_clip = $point;
 		$max_clip['x'] += $this->dimensions['x'];
 		$max_clip['y'] -= $this->dimensions['y'];
-		//$this->display->startClip($point, $max_clip);
+		$this->display->startClip($point, $max_clip);
 		foreach ($this->elems as $l) {
 			list($pos, $elem) = $l;
 			$pos['x'] = $point['x'] + $pos['x'];
 			$pos['y'] = $point['y'] - $pos['y'];
 			$elem->paint($pos);
 		}
-		//$this->display->endClip();
+		$this->display->endClip();
 		if ($this->p['border']) {
 			$this->display->line($point, array('x'=>$point['x'], 'y'=>$max_clip['y']));
 			$this->display->line($point, array('x'=>$max_clip['x'], 'y'=>$point['y']));
@@ -197,7 +197,7 @@ class Lay_Transformer extends Lay_Container {
 		if ($params['x-skew'] != 0 or $params['y-skew'] != 0)
 			Fatal::internalError(T("Transformer: skew not implemented"));
 		if (abs(fmod($params['rotation'] * 2 / M_PI, 1)) > 0.01)
-			Fatal::internalError(T("LaySupportedRotation"));
+			Fatal::internalError(T('LaySupportedRotation'));
 		$this->setDims();
 	}
 	function setDims() {
@@ -288,7 +288,7 @@ class Lay_Lines extends Lay_Container {
 		$this->child_max_dim = $this->childMaxDim();
 	}
 	function makeFit($dim) {
-		//$toobig = $this->tooBig($dim);
+		$toobig = $this->tooBig($dim);
 		if (!$toobig) {
 			return;
 		}
@@ -296,7 +296,7 @@ class Lay_Lines extends Lay_Container {
 			$this->close(false);
 			$this->max_dim = $this->maxDim();
 			$this->child_max_dim = $this->childMaxDim();
-			//$toobig = $this->tooBig($dim);
+			$toobig = $this->tooBig($dim);
 			if (!$toobig) {
 				return;
 			}
@@ -327,7 +327,7 @@ class Lay_Lines extends Lay_Container {
 		$dir1 = $this->dirs[1];
 		$dim = $elem->dimensions;
 		if ($this->first and empty($this->children)) {
-			//$dim[$dir1] += $this->p['indent'];
+			$dim[$dir1] += $this->p['indent'];
 		} else if (!empty($this->children)) {
 			$this->children_dim[$dir0] += $this->p[$dir0.'-spacing'];
 		}
@@ -509,7 +509,7 @@ class Lay_Columns extends Lay_Lines {
 
 class Lay_Line extends Lay_Lines {
 	function makeFit($dim) {
-		//$toobig = $this->tooBig($dim);
+		$toobig = $this->tooBig($dim);
 		foreach ($this->fixedDim() as $d=>$size) {
 			if (isset($toobig[$d])) {
 				unset($toobig[$d]);
@@ -549,7 +549,7 @@ class Lay_Paragraph extends Lay_Columns {
 
 /* Not an element, used for underlining by Lay_TextLines and Lay_TextLine */
 class Lay_Underline {
-	function __construct(&$display, $length, $width) {
+    public function __construct(&$display, $length, $width) {
 		$this->display =& $display;
 		$this->length = $length;
 		$this->width = $width;
@@ -621,16 +621,16 @@ class Lay_TextLine extends Lay_Line {
 class Lay_Top_Container {
 	var $parent = NULL;
 	var $display;
-	function __construct(&$page) {
-		$this->display =& $page->display;
-		$this->child_max_dim = $page->getPageDimensions();
+    public function __construct(&$display) {
+		$this->display =& $display;
+		$this->child_max_dim = $this->display->dimensions();
 	}
 	function child($element) {
-		//$this->display->AddPage();
+		$this->display->newPage();
 		$element->paint(array('x'=>0, 'y'=>$this->child_max_dim['y']));
 	}
 	function close() {
-		//$this->display->Close();
+		$this->display->close();
 	}
 	function makeFit($dim) {
 		return;
@@ -640,7 +640,8 @@ class Lay_Top_Container {
 class Lay {
 	var $display;
 	var $current;
-	function __construct($paper='letter', $orientation='Portrait') {
+
+    public function __construct($paper='letter', $orientation='portrait') {
 		if (is_array($paper)) {
 			list($l, $err) = $this->lengthToPoints($paper[0], 'x');
 			assert('!$err');	# FIXME
@@ -649,10 +650,9 @@ class Lay {
 			assert('!$err');	# FIXME
 			$paper[1] = $l;
 		}
-ini_set('display_errors', '1');
-		$this->display = new PDF($orientation, 'pt', $paper);
+		$this->display = new PDF($paper, $orientation);
 		$this->current = new Lay_Top_Container($this->display);
-		$this->fonts = array(array('Times', '', 12));
+		$this->fonts = array(array('Times-Roman', 12));
 	}
 	function container($name, $params=array()) {
 		# FIXME should assert that $name names a container class
@@ -680,9 +680,11 @@ ini_set('display_errors', '1');
 		$e->init($this->display, $p);
 		$this->current->child($e);
 	}
-	function pushFont($name, $style, $size) {
+	function pushFont($name, $size) {
 		# FIXME - verify that the font name is available
-		array_unshift($this->fonts, array($name, $style, $size));
+		list($p, $errs) = $this->handleParams(array(array('size', 'y-length', 0)), array('size'=>$size));
+		assert('!$errs');	# FIXME
+		array_unshift($this->fonts, array($name, $p['size']));
 	}
 	function popFont() {
 		array_shift($this->fonts);
@@ -762,14 +764,18 @@ ini_set('display_errors', '1');
 		} elseif (is_string($len)) {
 			if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)%$/', $len, $m)) {
 				if (!$this->current) {
-					return array(0, T("LayPercentLengths"));
+					return array(0, T('LayPercentLengths'));
 				}
 				$dim = $this->current->max_dim;
 				$length = ($m[1]/100) * $dim[$dir];
 			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)em$/', $len, $m)) {
-				$this->display->setFont($this->fonts[0][0], '',  $this->fonts[0][1]);
+				$this->display->font($this->fonts[0][0], $this->fonts[0][1]);
+				$em = $this->display->textDim('M');
+				$length = $m[1] * $em['y'];
 			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)sp$/', $len, $m)) {
-				$this->display->setFont($this->fonts[0][0], '', $this->fonts[0][1]);
+				$this->display->font($this->fonts[0][0], $this->fonts[0][1]);
+				$sp = $this->display->textDim(' ');
+				$length = $m[1] * $sp['x'];
 			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)in$/', $len, $m)) {
 				$length = $m[1] * 72;	// 72 points/inch
 			} else if (preg_match('/^(-?[0-9]+(\.[0-9]+)?)mm$/', $len, $m)) {

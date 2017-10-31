@@ -462,13 +462,15 @@ ini_set('display_errors', 1);
 				//echo $ptr->insert_el($_POST);
 				$rslt = $ptr->insert_el($_POST);
 			} else {
-				$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen
-				//echo $ptr->update($_POST);
 				$rslt =  $ptr->update($_POST);
 			}
             list($id, $response) = $rslt;
             if ($id == NULL)
-                echo json_encode($response);
+                if ($response != null) {
+                    echo json_encode($response);
+                } else {
+                    echo $rslt;
+                }
             else
                 echo json_encode($rslt);
 			break;

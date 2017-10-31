@@ -18,11 +18,31 @@
 	}
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 
+// LJ: Added the non idented lines, a hack to get label printing to work again, taken from the old run_report.php. Fred started to migrate to a new way, but this broke all label reporting, so restoring what is needed to get it back working for now.
+require_once(REL(__FILE__, "../classes/Report.php"));
+require_once(REL(__FILE__, "../classes/ReportDisplay.php"));
+require_once(REL(__FILE__, "../classes/TableDisplay.php"));
+require_once(REL(__FILE__, "../classes/Links.php"));
+
+if (!$_REQUEST['type']) {
+	header('Location: ../reports/index.php');
+	exit(0);
+}
+if ($_REQUEST['type'] == 'previous') {
+	$rpt = Report::load('Report');
+} else {
+	$rpt = Report::create($_REQUEST['type'], 'Report');
+}
+if (!$rpt) {
+	header('Location: ../reports/index.php');
+	exit(0);
+}
+
 	$focus_form_name = "";
 	$focus_form_field = "";
 
 	## menu modifications  go here
-	//foreach ($rpt->layouts() as $l) {
+	foreach ($rpt->layouts() as $l) {
 		if ($l['title']) {
 			$title = $l['title'];
 		} else {
@@ -30,15 +50,15 @@
 		}
 		Nav::node('reports/results/'.$l['name'], $title,
 			'../shared/layout.php?rpt=Report&name='.U($l['name']));
-	//}
+	}
 	Nav::node('reports/results/list', T("Print List"),
 		'../shared/layout.php?rpt=Report&name=list');
 	Nav::node('reports/results/list', T("Prepare CSV file"),
 		'../shared/layout.php?rpt=Report&name=csv');
 	Nav::node('reports/results/list', T("Prepare MARC file"),
 		'../shared/layout.php?rpt=Report&name=marc');
-	//Nav::node('reports/reportcriteria', T("Report Criteria"),
-	//	'../reports/report_criteria.php?type='.U($rpt->type()));
+	Nav::node('reports/reportcriteria', T("Report Criteria"),
+		'../reports/report_criteria.php?type='.U($rpt->type()));
 	## end of menu modifications
 
 	## create web page ###

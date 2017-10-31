@@ -76,7 +76,7 @@ class Staff extends CoreTable {
         return $rslt;
 	}
 	function update_el($rec, $confirmed=false) {
-		if (isset($rec['pwd']) && isset($rec['pwd2']) && ($rec['pwd'] == $rec['pwd2']) ) {
+        if (!isset($rec['pwd']) || (isset($rec['pwd2']) && ($rec['pwd'] == $rec['pwd2']))) {
 			$rec['pwd'] = md5($rec['pwd']);	
 			$rec['pwd2'] = md5($rec['pwd2']);
 			return parent::update_el($rec, $confirmed);
