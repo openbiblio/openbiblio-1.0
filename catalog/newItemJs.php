@@ -16,6 +16,7 @@ var ni = {
 
 	init: function () {
 		// get header stuff going first
+		//console.log("in newItemJs, ni.init():");
 		ni.initWidgets();
 
 		ni.url = '../catalog/onlineServer.php';
@@ -68,12 +69,8 @@ var ni = {
 		$('#copyForm').on('submit',null,function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-			//ni.doCopyNew();
 			ni.doNewCopy(e);
 			return false;
-		});
-		$('#copyCancelBtn').on('click',null,function () {
-			return ni.doBackToSrch();
 		});
 		$('#barcode_nmbr').on('change',null,ni.chkBarcdForDupe);
 			if ($('#autobarco:checked').length > 0) {
@@ -95,8 +92,9 @@ var ni = {
 		//ni.fetchSiteList(); // for new copy use
 		//ni.fetchMaterialList(); // for new items
 		//ni.fetchCollectionList(); // for new items
+		//ni.fetchHosts(); // for searches
 
-		ni.fetchHosts(); // for searches
+		$('#lookupVal').focus();
 	},
 	
 	//------------------------------
@@ -111,7 +109,7 @@ var ni = {
 		$('#errMsgTxt').html(' ');
 		$('#waitDiv').hide();
 		$('#retryDiv').hide();
-		$('#msgDiv').hide();
+		obib.hideMsg('now');
 		$('#choiceDiv').hide();
 		$('#selectionDiv').hide();
 		$('#copyEditorDiv').hide();
@@ -145,21 +143,37 @@ var ni = {
 			$('#choiceDiv').show();
 		}
 	},
+
+	doBackToShow: function () {
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
+		$('#searchDiv').hide();
+		$('#selectionDiv').show();
+	},
+
 	//------------------------------
 	fetchOpts: function () {
-        //console.log('fetching Opts');
+		// Do not try to get from ListSrvr;
+		// that will provide a small subset of what is needed here.
+		//console.log('fetching Opts');
         $.post(ni.url,{mode:'getOpts'}, function(data){
-			ni.opts = data.opts[0];
+			ni.postVars = data;
+			ni.opts = ni.postVars['opts'][0];
+			ni.numHosts = ni.postVars['numHosts'];
+			ni.hosts = ni.postVars['hosts'];
+			ni.session = ni.postVars['session'];
 			ni.fetchDfltMedia(); // chaining
 		}, 'json');
   	},
     fetchDfltMedia: function() {
+		//console.log('fetching dfltMedia');
         $.post(ni.listSrvr,{mode:'getDefaultMaterial'}, function(data){
-            ni.dfltMedia = data[0];
+            ni.dfltMedia = data;
 			ni.fetchMaterialList(); // chaining
         }, 'json');
     },
 	fetchMaterialList: function () {
+		//console.log('fetching matlList');
         $.post(ni.listSrvr,{mode:'getMediaList'}, function(data){
 			var html = '';
             for (var n in data) {
@@ -178,12 +192,14 @@ var ni = {
 		}, 'json');
 	},
     fetchDfltCollection: function() {
+		//console.log('fetching dfltColl');
         $.post(ni.listSrvr,{mode:'getDefaultCollection'}, function(data){
-            ni.dfltColl = data[0];
+            ni.dfltColl = data;
 			ni.fetchCollectionList(); // chaining
         }, 'json');
     },
 	fetchCollectionList: function () {
+		//console.log('fetching collList');
 	    $.post(ni.listSrvr,{mode:'getCollectionList'}, function(data){
 			var html = '';
             for (var n in data) {
@@ -198,14 +214,16 @@ var ni = {
 		}, 'json');
 	},
 	fetchSiteList: function () {
+		//console.log('fetching siteList');
         var listHtml = list.getSiteList($('#copySite'));
 		$('#copySite').html(listHtml);
+		ni.fetchHosts(); // chaining
 	},
 
 	fetchHosts: function () {
-        //console.log('svr:'+ni.url);
+		//console.log('fetching hostList');
 	    $.post(ni.url,{mode:'getHosts'}, function(data){
-	  	// return includes all ACTIVE marked hosts
+	  		// return includes all ACTIVE marked hosts
 			ni.hostJSON = data;
 			ni.nHosts = data.length;
 			if (ni.nHosts > 1) {
@@ -236,47 +254,61 @@ var ni = {
 	 	var parms=$('#newBiblioForm').serialize();
 		parms += '&mode=doInsertBiblio';
 	    $.post(ni.url,parms, function(response){
-    	  	if (response.indexOf('{') == 0) {
-				var rslt = JSON.parse(response);
+    	  	if (typeof response == 'object') {
+				var rslt = response;
 				ni.bibid = rslt['bibid'];
+				//console.log('posted #'+ni.bibid)
+				obib.showMsg('new biblio #'+ni.bibid+' posted');
 				ni.showCopyEditor(ni.bibid);
     		}
     		else {
-				$('#msgDiv').html(response).show();
+				//console.log(response);
+				obib.showMsg(response);
 				$('#content').scrollTop(0);
 			}
-    	});
+    	}, 'JSON');
 	    return false;
 	},
 	
 	//------------------------------------------------------------------------------------------
 	// copy-editor support
 	showCopyEditor: function (bibid) {
+		//console.log('in newItemJs.php::showCopyEditor()');
       	$('#selectionDiv').hide();
-      	var crntsite = ni.opts.session.current_site
+      	var crntsite = ni.postVars.session.current_site
 		$('#copyBibid').val(bibid);
 		$('#copySite').val(crntsite);
 		$('#copyEditorDiv').show();
 		//ced.bibid = bibid;
+
+		$('#copySubmitBtn').on('click',null, function () {
+			ni.doPhotoAdd();
+		});
+		//$('#copyCancelBtn').on('click',null, function () {
+		//	$('#copyEditorDiv').hide();
+      	//	$('#selectionDiv').show();
+		//});
+		$('#copyCancelBtn').on('click',null,function () {
+			ni.doBackToShow();
+		});
+
+		//e.preventDefault();
 		ced.doCopyNew(bibid);
 
 		/* prepare in advance for photo editing */
 		if ((Modernizr.video) && (typeof(wc)) !== 'undefined') {
-			if (wc.video === undefined) wc.init();
+//			if (wc.video === undefined) wc.init();
+			wc.init();
 		}
 
-		//e.preventDefault();
-		$('#copyCancelBtn').on('click',null, function () {
-			ni.doPhotoAdd();
-		});
 	},
 
 	//------------------------------------------------------------------------------------------
 	// photo-editor support
 	doPhotoAdd: function () {
+		//console.log('in newItemJs.php::doPhotoAdd()');
 		$('#copyEditorDiv').hide();
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
-        $('#fotoMsg').hide();
 		$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 		$('#fotoBibid').val(ni.bibid);
 
@@ -284,7 +316,8 @@ var ni = {
 		$('#deltFotoBtn').hide();
 		$('#addFotoBtn').show();
 		$('.gobkFotoBtn').on('click',null, function () {
-			ni.doBackToSrch();
+			wc.vidOff();    // disables camera
+			ni.doBackToShow();
 		});
 
 		$('#fotoMode').val('addNewPhoto')
@@ -299,21 +332,25 @@ var ni = {
 
 	//------------------------------------------------------------------------------------------
 	// on-line search related stuff
-	chkIsbn: function (isbn) {
+	chkIsbn: function (isbnRaw) {
+		//console.log('raw isbn input: '+isbnRaw);
 		// validate isbn string; return TRUE if checksum is valid
-		var nSum = 0;
-		var sSum = '';
-		var nAdr = 0;
-		var rslt = true;
-		var msg = '';
+		var nSum = 0,
+			sSum = '',
+			nAdr = 0,
+			rslt = true,
+			msg = '';
+		let isbn = isbnRaw.replace(/-/, "");    // remove all '-'
+		//console.log('clean isbn input: '+isbn);
+
 		if (isbn.length < 10) {
 			msg = "<br />(length is "+isbn.length+"; Not enough digits for isbn)";
 			rslt = false;
 		}
 		else if (isbn.substr(0,3) == "978") {
-			// this is a bar code reader input
+			//console.log('found a isbn-13 entry');
 			if (isNaN(parseInt(isbn.substr(9,1))) ) {
-				msg = "(Bar-Code ISBN Entry does not start with a digit)";
+				msg = "(ISBN-13 Entry does not start with a digit)";
 				rslt = false;
 			}
 		}
@@ -344,62 +381,105 @@ var ni = {
 	},
 	
 	doValidate_n_Srch: function () {
+		var isbnPattern = /ISBN(-1(?:(0)|3))?:?\x20(\s)*[0-9]+[- ][0-9]+[- ][0-9]+[- ][0-9]*[- ]*[xX0-9]/;
+		var issnPattern = /[0-9]{4}-[0-9]{4}/;
+		var lccnPattern = /((a(c|fl?|gr)?|b[irs]|c(a?d?|lc|[sxy])|do?|es?|f(i[ae]?)?|g[ms]?|h(a|e[wx]?)?|in?t|j[ax]?|kx?|l(lh|tf)?|m([ams]|ap|ed|i[cdef]|pa?|us)?|n(cn|ex?|[tu]c)|or|p([aop]|h[opq])|r[aceu]?|s(ax?|[cdfgnsu])?|t(b|mp)|u(m|nk)|w(ar)?|[xz])(\b|-)?|20)?\d\d(-\d{1,5}|(\b|-)?\d{6})/;
+
 		$('#errMsgTxt').html('');
 		var msg = '';
 		var nType = $('#srchBy').val();
-	  var val = $('#lookupVal').val();
-	  var rslt = true;
-	  var test = val.replace(/-| /g, '');
-	  switch (parseInt(nType)) {
-	  case 4: // Text input
-	  	if (!isNaN(parseInt(test))) {
-				rslt = false;
-				msg += "This appears to be either a ISBN, ISSN, or LCCN,<br />but you have selected 'Title'.<br />";
-			}
+	  	var val = $.trim($('#lookupVal').val());
+	  	var rslt = true;
+	  	switch (parseInt(nType)) {
+	  	case 4: // Text input
 			break;
 		case 7: //ISBN
-	   	if ((isNaN(parseInt(test))) || (!ni.chkIsbn(test))) {
+			if ( isbnPattern.test('ISBN: '+val) ) {
+				console.log('isbn passes regExp');
+			} else {
+				console.log('isbn fails regExp');
 				rslt = false;
 				msg += "This is not a valid ISBN.<br />";
 			}
+	  		let test = val.replace(/-| /g, '');
+        	$('#lookupVal').val(test); // update display with cleaned up ISBN
 			break;
-		 case 8: // ISSN
-	   	if (isNaN(parseInt(test))) {
+		case 8: // ISSN
+	   		if ( !issnPattern.test(val) ) {
 				rslt = false;
 				msg += "This is not a valid ISSN.<br />";
 			}
 			break;
 		case 9: // LCCN
-	   	if (isNaN(parseInt(test))) {
-				rslt = false;
+			/*
+			On Wikidata, an optional space or hyphen may appear before the year.
+			An optional hyphen may appear before the serial number;
+			if the serial number is typed as less than 6 digits, the hyphen is required.
+			The preferred and best formatting now is to remove all hyphens and spaces
+			and insure that the serial is always 6 digits, as shown in the right column
+			of http://lccn.loc.gov/#n9. (English)
+			*/
+			// currently under test only
+			if ( lccnPattern.test(val) ) {
+				console.log('lccn '+val+' passes regExp');
+			} else {
+				console.log('lccn '+val+' fails regExp');
 				msg += "This is not a valid LCCN.<br />";
+				return;
 			}
+			if (val.indexOf('-') >= 0) {
+				var parts = val.split('-');
+				val = ni.doFixLccn(parts[0], parts[1])
+			} else if (val.length < 8) {
+                // prior to year 2000
+				let partA = val.substr(0,2)
+				let partB = val.substr(2)
+				val = ni.doFixLccn(partA, partB)
+			}
+			$('#lookupVal').val(val); // update display with cleaned up LCCN
 			break;
 		}
 
 		if (rslt) {
-		  ni.doSearch();
-		}
-		else {
+		  	ni.doSearch();
+		} else {
 			$('#srchBy').focus();
 			$('#errMsgTxt').html(msg);
+			obib.showMsg(msg);
 			return rslt;
 		}
 	},
+	doFixLccn: function (part0, part1) {
+		let temp = '00000'+part1;
+		part1 = temp.substr(-6,6);
+		let val = part0+part1;
+		return val
+	},
 	doSearch: function () {
         var srchBy = flos.getSelectBox($('#srchBy'),'getText');
-        var lookupVal = $('#lookupVal').val();
-
-        // advise user that this will take some time to complete
         var srchBy2 = flos.getSelectBox($('#srchBy2'),'getText');
+        var srchBy3 = flos.getSelectBox($('#srchBy3'),'getText');
+        var srchBy4 = flos.getSelectBox($('#srchBy4'),'getText');
+		let val1 = $('#lookupVal').val()
+		let val2 = $('#lookupVal2').val()
+		let val3 = $('#lookupVal3').val()
+		let val4 = $('#lookupVal4').val()
+
         var theTxt = '<h5>';
-        theTxt += "Looking for "+srchBy+" '" + lookupVal + "'<br />";
-        if ($('#lookupVal2').val() != '') {
-        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+$('#lookupVal2').val()+"'<br />";
+        theTxt += "Searching for :<br />&nbsp;&nbsp;&nbsp;"+srchBy+" '" + val1 + "'<br /><br />";
+        if (val2 != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy2+" '"+val2+"'<br /><br />";
+		}
+        if (val3 != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy3+" '"+val3+"'<br /><br />";
+		}
+        if (val4 != '') {
+        	theTxt += "&nbsp;&nbsp;&nbsp;with "+srchBy4+" '"+val4+"'<br /><br />";
 		}
 
 		// show host(s) being searched
 		theTxt += 'at :<br />';
+		//console.log('n hosts = '+ni.nHosts);
 		if (ni.nHosts > 1){
 			var n=1;
 			$('#srchHosts :checkbox:checked').each(function () {
@@ -408,10 +488,10 @@ var ni = {
 				n++;
 			});
 		} else {
-				theTxt += '&nbsp;&nbsp;&nbsp;'+ni.hostJSON[0].name+'<br />';
+			theTxt += '&nbsp;&nbsp;&nbsp;'+ni.hostJSON[0].name+'<br />';
 		}
 
-		theTxt += '</h5>';
+		theTxt += '</h5><br />';
 	    $('#waitText').html(theTxt);
 	  
 		$('#searchDiv').hide();
@@ -420,12 +500,15 @@ var ni = {
 		// note for this to work, all form fields MUST have a 'name' attribute
 		$('lookupForm #mode').val('search');
 		var srchParms = $('#lookupForm').serialize();
-		$.post(ni.url, srchParms, ni.handleSrchRslts);
+		$.post(ni.url, srchParms, ni.handleSrchRslts, 'json');
 	},
 	handleSrchRslts: function (response) {
 			$('#waitDiv').hide();
-			
-			if ($.trim(response).substr(0,1) != '{') {
+			//console.log(typeof response);
+			//console.log(response);
+
+			if (typeof response != 'object') {
+				console.log('unexpected response');
 				$('#retryHead').empty();
 				$('#retryHead').html(ni.searchError);
 				$('#retryMsg').empty();
@@ -433,19 +516,28 @@ var ni = {
 				$('#retryDiv').show();
 			}
 			else {
-				var rslts = JSON.parse(response);
-				var numHits = parseInt(rslts.ttlHits);
+				var rslts = response;
+				if (typeof rslts.ttlHits == 'undefined') {
+					numHits = rslts[0];
+				} else {
+					var numHits = parseInt(rslts.ttlHits);
+					//console.log('ttlHits = '+numHits);
+				}
+
                 var maxHits = ni.opts.maxHits;
+				//console.log('maxHits = '+maxHits);
 				if (numHits < 1) {
                     console.log('nothing found');
 				    //{'ttlHits':$ttlHits,'maxHits':$postVars[maxHits],
 					// 'msg':".$lookLoc->getText('lookup_NothingFound'),
 					// 'srch1':['byName':$srchByName,'val':$lookupVal],
 					// 'srch2':['byName':$srchByName2,'val':$lookupVal2]}
-					var srch1 = JSON.parse(rslts['srch1']), srch2 = JSON.parse(rslts['srch2']);
+					var srch1 = JSON.parse(rslts['srch1']),
+						srch2 = JSON.parse(rslts['srch2']);
 					var str = rslts.msg+':<br />&nbsp;&nbsp;for '+srch1["byName"]+' = '+srch1["lookupVal"];
 					if ((srch2['lookupVal']) && (srch2['lookupVal'] != ''))
 						str += '<br />&nbsp;&nbsp;&nbsp;'+srch2['byName']+' = '+srch2['lookupVal'];
+//str = rslts[1]+'<br />'+rslts[3];
 					$('#retryHead').empty();
 					$('#retryHead').html('<?php echo T("Nothing Found"); ?>');
 					$('#retryMsg').empty();
@@ -454,10 +546,10 @@ var ni = {
 				}
 			
 				else if (numHits >= maxHits) {
-                    console.log('too many hits');
+                    console.log('too many hits: '+numHits+' > '+maxHits);
 		  		    //{'ttlHits':'$ttlHits','maxHits':'$postVars[maxHits]',
 					// 'msg':'$msg1', 'msg2':'$msg2'}
-					var str = rslts.msg+' ('+rslts.ttlHits+' ).<br />'+rslts.msg2;
+					var str = rslts.msg+' ('+rslts.ttlHits+' )<br />'+rslts.msg2;
 					$('#retryHead').empty();
 					$('#retryHead').html(rslts.msg);
 					$('#retryMsg').empty();
@@ -466,7 +558,7 @@ var ni = {
 				}
 			
 				else if (numHits > 1){
-                    console.log('more than one hit');
+                    //console.log('more than one hit: '+numHits);
 					$('#choiceSpace').empty();
 					$('#ttlHits').html(numHits);
 					ni.singleHit = false;
@@ -487,7 +579,7 @@ var ni = {
 							html += hitData['err'];
 						} else {
 							    
-							    html += '<form class="hitForm"><table border="0">';
+							    html += '<form role="form" class="hitForm"><table border="0">';
 							    html += '<tr><td>LCCN</th><td>'+hitData['010a']+'</td></tr>';
 							    html += '<tr><td>ISBN</th><td>'+hitData['020a']+'</td></tr>';
 							    html += '<tr><td>Title</th><td>'+hitData['245a']+'</td></tr>';
@@ -572,6 +664,7 @@ var ni = {
 	    $('#searchDiv').hide();
 		for (var tag in data) {
 			if (data[tag] != '') {
+				//console.log(tag+': '+data[tag]);
 				$('#'+tag).val(data[tag]);
 				$('#'+tag).css('color',ni.inputColor);
 			}
@@ -591,7 +684,7 @@ var ni = {
 	},
 	
 	setCallNmbr: function (data) {
-		switch (ni.opts.callNmbrType.toLowerCase()) {
+		switch (ni.opts['callNmbrType'].toLowerCase()) {
 			case 'loc':
 				$('#099a').val(data['050a'] + ' ' + data['050b']);
 				break;

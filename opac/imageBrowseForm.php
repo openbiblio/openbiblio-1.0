@@ -50,7 +50,8 @@
 		</div>
 
 		<fieldset id="gallery">
-			<table id="fotos"> </table>
+			<!--table id="fotos"> </table-->
+			<ul id="fotos" class="grid-display" > </ul>
 		</fieldset>
 
 		<div class="cntlArea">

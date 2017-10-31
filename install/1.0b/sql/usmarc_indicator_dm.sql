@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`usmarc_indicator_dm` (
   `indicator_cd` char(1) NOT NULL DEFAULT '',
   `description` varchar(80) NOT NULL DEFAULT '',
   PRIMARY KEY (`tag`,`indicator_nmbr`,`indicator_cd`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 INSERT INTO %prfx%.`usmarc_indicator_dm` (`tag`, `indicator_nmbr`, `indicator_cd`, `description`) VALUES
 (10, 1, '#', 'Undefined'),
 (10, 2, '#', 'Undefined'),

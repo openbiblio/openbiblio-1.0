@@ -4,32 +4,46 @@
    See the file COPYRIGHT.html for more details.
  */
 ?>
-// JavaScript Document - copyEditorJs.php
+// JavaScript Document - .../shared/listJs.php
 "use strict";
 
 var list = {
+	server: '../shared/listSrvr.php',
+
     init: function () {
-        list.server = '../shared/listSrvr.php';
+//        list.server = '../shared/listSrvr.php';
+		list.getMediaList()
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     getPullDownList: function (listName, whereToPaste) {
         $.post(list.server, {mode:'get'+listName+'List', select:'true'}, function(data){
-    			  var html = '';
+    		var html = '';
             for (var n in data) {
-    				    html += '<option value="'+n+'" ';
+    			html += '<option value="'+n+'" ';
                 var dflt= data[n].default;
                 if (dflt == 'Y') html += 'SELECTED ';
                 html += '>'+data[n].description+'</option>';
-    			  }
+    		}
             whereToPaste.html(html);
-            //console.log(html);
-    		    return html;
-		    }, 'json');
+			//console.log(html);
+    		return html;
+		}, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    getCalendarList: function (where) { 
+	mediaListPromise: null,
+	getMediaList: function () {
+		//console.log('in list::getMediaList()');
+		if (!this.mediaListPromise) {
+			//console.log('no mediaDevices yet available');
+			this.mediaListPromise = navigator.mediaDevices.enumerateDevices();
+		}
+		return this.mediaListPromise;
+	},
+
+    //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
+    getCalendarList: function (where) {
         $.post(list.server, {mode:'getCalendarList'}, function(data){
             return data;
         }, 'json');
@@ -135,57 +149,43 @@ var list = {
           return list.sites;
         }, 'json');
     },
+	getSiteHoldings: function () {
+        $.post(list.server, {mode:'getSiteHoldings'}, function(data){
+		  list.holdings = [];
+		  for (let idx in data) {
+			list.holdings[data[idx].siteid] = data[idx].quan;
+		  }
+          return list.holdings;
+        }, 'json');
+    },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
     // different structure than other pull-down tables
     getSiteList: function(where) {
+		//console.log ("in list::getSiteList()");
         $.post(list.server, {mode:'getDefaultSite'}, function(data){
             list.dfltSite = data;
             list.siteListPt2(where); // chaining
         }, 'json');
     },
     siteListPt2: function (where) {
+		//console.log ("in list::siteListPt2()");
         $.post(list.server, {mode:'getSiteList'}, function(data){
             list.sites = data;
-    		    var html = '';
-            for (var n in data) {
-        			  html+= '<option value="'+n+'" ';
+    		var html = '';
+            for (let n in data) {
+        		html+= '<option value="'+n+'" ';
                 if (n == list.dfltSite) {
                     html+= 'SELECTED '
                 }
                 html+= '>'+data[n]+'</option>';
-    		    }
+    		}
             where.html(html);
             return html;
         }, 'json');
     },
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-    /* LJ: FYI in the response the default is already marked, so rewriting this to eliminate the extra request. 18-7-16
-       (Please remove this comment when approved/accepted/in here for a long time.)
-    getStatusCds: function (where) {
-        $.post(list.server,{mode:'getDefaultStatusCd'}, function(data){
-            list.dfltCd = data;
-            list.StatusListPt2(where); // chaining
-        }, 'json');
-    },
-    StatusListPt2: function (where) {
-    	  $.post(list.server,{'mode':'getStatusCds'}, function(data){
-              console.log(data);
-            var html = '';
-            for (var cd in data) {
-                console.log(cd);
-        			  html+= '<option value="'+cd+'" ';
-                if (cd == list.dfltCd) {
-                    html+= 'SELECTED '
-                }
-                html+= '>'+data[cd]+'</option>';
-    		    }
-            where.html(html);
-            return html;
-        }, 'json');
-    },
-*/
     getStatusCds: function (where) {
         $.post(list.server,{'mode':'getStatusCds'}, function(data){
              var html = '';

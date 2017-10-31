@@ -25,12 +25,12 @@
 <h3><?php echo T("Current Members"); ?></h3>
 
 <!-- ------------------------------------------------------------------------ -->
-<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <!-- ------------------------------------------------------------------------ -->
 <p id="errSpace" class="error"></p>
 <div id="searchDiv">
-	<form id="barCdSrchForm" name="barCdSrchForm" action="">
+	<form role="form" id="barCdSrchForm" name="barCdSrchForm" action="">
 	<fieldset>
 	<legend><?php echo T("Find Member by Barcode"); ?></legend>
 	<table>
@@ -45,7 +45,7 @@
 	</fieldset>
 	</form>
 	
-	<form id="nameSrchForm" name="nameSrchForm" action="">
+	<form role="form" id="nameSrchForm" name="nameSrchForm" action="">
 	<fieldset>
 	<legend><?php echo T("Find Member by Name"); ?></legend>
 	<table>
@@ -207,7 +207,7 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="editDiv">
-	<form id="editForm" name="editForm" >
+	<form role="form" id="editForm" name="editForm" >
 	<h5 class="note"> Fields marked with <span class="reqd">*</span> are required.</h5>
 	<fieldset>
 		<legend id="editHdr"></legend>
@@ -261,7 +261,7 @@
 	<input type="button" class="gobkAcntBtn" value="<?php echo T("Go Back"); ?>" />
 	<fieldset>
 		<legend><?php echo T("Add a Transaction"); ?></legend>
-		<form id="acntForm">
+		<form role="form" id="acntForm">
 			<label for="transaction_type_cd"><?php echo T("Transaction Type"); ?>:</label>
 			<select id="transaction_type_cd" name="transaction_type_cd"></select>
 			<br />

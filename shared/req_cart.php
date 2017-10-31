@@ -67,7 +67,7 @@
 	echo $disp->pages($page_url, $currentPageNmbr);
 ?>
 
-<form name="selection" id="selection" action="../shared/cart_del.php" method="post">
+<form role="form" name="selection" id="selection" action="../shared/cart_del.php" method="post">
 	<fieldset>
 	<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
 	<input type="hidden" name="name" value="bibid" />

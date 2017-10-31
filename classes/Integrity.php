@@ -63,12 +63,48 @@ class Integrity extends Queryi{
 			);
 
 			$this->checks[] = array(
-				'error' => T("OB version hash row is missing from Settings"),
+				'error' => T("version hash row is missing from Settings"),
 				'countSql' => 'SELECT (CASE (COUNT(*)) WHEN 0 THEN 1 ELSE 0 END) AS count '
                     .  'FROM settings WHERE name = "version_hash" ',
 				'fixSql' => 'INSERT INTO settings '
 					. ' (name,title,type,width) '
                     . " VALUES('version_hash', 'Current version hash','text',32)",
+			);
+
+			$this->checks[] = array(
+				'error' => T("OPAC site mode missing from Settings"),
+				'countSql' => 'SELECT (CASE (COUNT(*)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                    .  'FROM settings WHERE name = "opac_site_mode" ',
+				'fixSql' => 'INSERT INTO `settings` '
+					. ' (`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) '
+					. " VALUES ('opac_site_mode', NULL, 'Allow user Site Selection', 'bool', NULL, NULL, NULL, 'N', 'admin')",
+			);
+
+			$this->checks[] = array(
+				'error' => T("Camera selector missing from Settings"),
+				'countSql' => 'SELECT (CASE (COUNT(*)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+                    .  'FROM settings WHERE name = "camera" ',
+				'fixSql' => 'INSERT INTO `settings` '
+					. '(`name`, `position`, `title`, `type`, `width`, `type_data`, `validator`, `value`, `menu`) '
+					. " VALUES ('camera', NULL, 'Camera_in_use', 'select', '32', NULL, NULL, NULL, 'admin')",
+			);
+
+			$this->checks[] = array(
+				'error' => T("Start_Page column is missing for staff members"),
+				'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+					. 'FROM information_schema.COLUMNS '
+					. 'WHERE TABLE_NAME = "staff"'
+					. 'AND COLUMN_NAME = "start_page"',
+				'fixSql' => 'alter table staff '
+					. 'add column start_page varchar(64) default "admin" NOT NULL'
+			);
+
+			$this->checks[] = array(
+				'error' => T("Member Fields DM Table should allow null values for default_flg field"),
+				'countSql' => 'SELECT COUNT(COLUMN_NAME) '
+					. 'FROM information_schema.COLUMNS '
+					. "WHERE TABLE_NAME='member_fields_dm' AND COLUMN_NAME='default_flg' AND IS_NULLABLE='NO'",
+				'fixSql' => 'ALTER TABLE member_fields_dm MODIFY default_flg char(1) NULL'
 			);
 
 			$this->checks[] = array(
@@ -80,16 +116,6 @@ class Integrity extends Queryi{
 				'fixSql' => 'alter table staff '
 					. 'add column secret_key char(32) NOT NULL'
 			);
-
-
-			$this->checks[] = array(
-				'error' => T("Member Fields DM Table should allow null values for default_flg field"),
-				'countSql' => 'SELECT COUNT(COLUMN_NAME) '
-					. 'FROM information_schema.COLUMNS '
-					. "WHERE TABLE_NAME='member_fields_dm' AND COLUMN_NAME='default_flg' AND IS_NULLABLE='NO'",
-				'fixSql' => 'ALTER TABLE member_fields_dm MODIFY default_flg char(1) NULL'
-			);
-
 			$this->checks[] = array(
 				'error' => T("Staff member does not have secret key"),
 				'countSql' => 'select ( select count(*) as count from staff as s '
@@ -119,7 +145,7 @@ class Integrity extends Queryi{
                 			. 'add column last_legal_name varchar(50) DEFAULT NULL'
 			);
 			$this->checks[] = array(
-        			'error' => T("Collection circ table is missing important circulation features"),
+        			'error' => T("Collection circ table is missing due_date_calculator"),
         			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
                 			. 'FROM information_schema.COLUMNS '
                 			. 'WHERE TABLE_NAME = "collection_circ"'
@@ -135,7 +161,7 @@ class Integrity extends Queryi{
 					. 'change daily_late_fee regular_late_fee decimal(4,2) NOT NULL'
 			);
 			$this->checks[] = array(
-        			'error' => T("Collection circ table is missing important circulation features"),
+        			'error' => T("Collection circ table is missing pre_closing_padding"),
         			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
                 			. 'FROM information_schema.COLUMNS '
                 			. 'WHERE TABLE_NAME = "collection_circ"'
@@ -388,6 +414,13 @@ class Integrity extends Queryi{
 					. 'and b.bookingid is null) X) ',
 				*/
 			);
+			$this->checks[] = array(
+				'error' => T("Material_type has empty image file name"),
+				'countSql' => 'select count(*) as count '
+					. 'from material_type_dm '
+					. 'where image_file is null ',
+				'fixSql' => "ALTER TABLE material_type_dm CHANGE image_file NOT NULL DEFAULT 'shim.gif'",
+			);
 //			$this->checks[] = array(
 //				//'error' => T("%count% double check outs"),
 //				'error' => T("double check outs"),
@@ -401,15 +434,19 @@ class Integrity extends Queryi{
 		$checks = $this->checks;
 		foreach ($checks as $chk) {
 			assert('isset($chk["error"])');
-			//echo $chk["error"]."<br />";
+			//echo $chk["error"]."<br />\n";
 			if (isset($chk['countSql'])) {
 				$rslt = $this->select1($chk['countSql']);
-                $row = $rslt[0];
-                //echo "in Integrity::check_el(), countSQL => ".$chk['countSql']." <br />\n";
-                //echo "in Integrity::check_el(), countSQL => ";print_r($row);echo "<br />\n";
-                $count = $row["count"];
-                //$count = count($row['count']);
-                //echo "count= $count <br />\n";
+//                $row = $rslt[0];
+//                $count = $row["count"];
+                $count = $rslt["count"];
+				//echo $chk["error"]."<br />\n";
+				//if (stripos($chk["error"], 'selector') >= -1) {
+				//	echo "in Integrity::check_el(), countSQL => ".$chk['countSql']." <br />\n";
+				//	echo "in Integrity::check_el(), countSQL => ";print_r($rslt);echo "<br />\n";
+				//	$count = count($rslt['count']);
+				//	echo "count= $count <br />\n";
+				//}
 			} elseif (isset($chk['countFn'])) {
 				$fn = $chk['countFn'];
 				assert('method_exists($this, $fn)');

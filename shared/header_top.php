@@ -10,18 +10,22 @@
 <!DOCTYPE html >
 <!-- there are many lines here with obscure comments. For more info see http://html5boilerplate.com/ -->
 
+<!-- language is set by user (default is 'en') -->
 <html lang="<?php echo $Locale; ?>" class="no-js <?php echo ($doing_install?'obInstall':'no-obInstall'); ?>" >
 
 <head>
   <!-- charset MUST be specified within first 1024 char of file start to be effective -->
   <meta charset="<?php echo $CharSet; ?>" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
   <!-- Mobile viewport optimized: j.mp/bplateviewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- select browser-top icon -->
   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 
+  <!-- build title using library's name (or current-site name) from database -->
   <title>
     <?php
     if (!isset($doing_install) or !$doing_install) {
@@ -53,9 +57,9 @@
     	}
 
     	echo $libName;
-    	if($params['title']) {
-    		echo ': '.H($params['title']);
-    	}
+		//    	if($params['title']) {
+		//    		echo ': '.H($params['title']);
+		//    	}
     }
     ?>
   </title>
@@ -84,7 +88,7 @@
   <!-- depend on them being in place. -->
   <!--[if lt IE 9]><script src="../shared/jquery/jquery-1.10.2.min.js"></script><!--<![endif]-->
   <!--[if gt IE 8]><!-->
-  <script src="../shared/jquery/jquery-3.1.0.min.js"></script>
+  <script src="../shared/jquery/jquery-3.2.1.min.js"></script>
   <!--<![endif]-->
 
   <!-- All other JavaScript is placed at the end of <body> (see footer.php)
@@ -92,9 +96,15 @@
 
   <!-- This style sheet resets all browsers to a common default style -->
   <link rel="stylesheet" href="../shared/normalize.css" />
+  <!-- OpenBiblio style is set here -->
+  <link rel="stylesheet" href="../shared/style.css" />
 
   <!-- This style sheet is specific to the jQuery UI library -->
   <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
 
-  <!-- OpenBiblio style is set here using appropriate Theme folder -->
-  <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/style.css" />
+  <!-- User-selected theme colors, fonts, and button style are set here -->
+  <link rel="stylesheet" href="<?php echo H($params['theme_dir_url']) ?>/theme.css" />
+
+    <?php if ($tab == 'opac') { ?>
+	 <link rel="stylesheet" href="../opac/opac.css" />
+	<?php } ?>

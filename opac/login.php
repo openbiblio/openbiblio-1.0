@@ -29,7 +29,7 @@ if ($msg) {
 }
 
 ?>
-<form action="../opac/login.php" method="post">
+<form role="form" action="../opac/login.php" method="post">
 <table>
 <tr>
 	<td align="right">

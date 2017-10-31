@@ -22,7 +22,7 @@
 <div id="listDiv" style="display: none;">
 <h5 id="updateMsg"></h5>
 
-<form id="showForm" name="showForm">
+<form role="form" id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
 <legend id="listHdr"> </legend>
@@ -56,7 +56,7 @@
 
 
 <div id="editDiv" style="display: none;">
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 <legend id="fieldsHdr"><?php echo T("Host Editor"); ?></legend>
@@ -91,14 +91,14 @@
     </td>
   </tr>
   <tr>
-    <td><label for="db"><?php echo T("Syntax"); ?>:</label></td>
+    <td><label for="syntax"><?php echo T("Syntax"); ?>:</label></td>
     <td>
       <input id="syntax" name="syntax" type="text" size="20" required aria-required="true" />
 			<span class="reqd">*</span>    
     </td>
   </tr>
   <tr>
-    <td><label for="db"><?php echo T("Service"); ?>:</label></td>
+    <td><label for="service"><?php echo T("Service"); ?>:</label></td>
     <td>
 		<select  id="service" name="service" >to be filled by server</select>
     </td>
@@ -139,7 +139,7 @@
 
   <tfoot>
   <tr>
-    <td colspan="1" align="left">
+    <td colspan="2" align="left">
 			<input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" />
 			<input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
 			<input type="button" id="cnclBtn" value="<?php echo T("Cancel"); ?>" />
@@ -153,8 +153,6 @@
 </fieldset>
 </form>
 </div>
-
-<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

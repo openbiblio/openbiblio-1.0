@@ -14,9 +14,12 @@ ins = {
 
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
+		$('#startBtn').on('click',null,ins.startOB);
 
 		ins.resetForms()
 		ins.connectDb();
+        // for debugging purposes only; enable line below, disable line above
+		//ins.startOB(); 
 	},
 	
 	//------------------------------
@@ -60,12 +63,12 @@ ins = {
 		ins.showWait('<?php echo T("Checking for Database Content"); ?>');
 	    $.get(ins.url,{ 'mode':'getSettings'}, function(response){
 	  	    if (response.indexOf('noTbl') >= 0) {
-				$('#newInstall').show();
-				$('#plsWait').hide();
-			} else {
-				$('#plsWait').hide();
-				ins.getDbVersion();
-			}
+						$('#newInstall').show();
+						$('#plsWait').hide();
+					} else {
+						$('#plsWait').hide();
+						ins.getDbVersion();
+					}
 	    });
 	},
 	getDbVersion: function () {
@@ -161,6 +164,17 @@ ins = {
 			return false;
 		});
 		return false;
+	},
+
+	//-------------------------------
+	startOB: function() {
+		$('#startOB').show();
+		$('#plsWait').show();
+		$.post(ins.url, {'mode':'getStartPage', 'user':1}, function (response) {
+console.log('switching control to '+response);
+		$('#plsWait').hide();
+        window.location = "../"+response+"/settingsForm.php";
+		});
 	},
 			
 };

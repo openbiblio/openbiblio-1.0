@@ -24,13 +24,13 @@ var csu = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#rsltsArea').hide();
-	  $('#msgDiv').hide();
+	  	$('#msgDiv').hide();
 	},
 	
 	//------------------------------
 	fetchModuleList: function () {
-	  $.getJSON(csu.url,{'cat':'locale', 
-											 'mode':'getModuleList'}, function(data){
+	  	$.getJSON(csu.url,{'cat':'locale',
+							'mode':'getModuleList'}, function(data){
 			csu.obMods = data.sort();
 		});
 	},
@@ -41,9 +41,9 @@ var csu = {
 		$('#rsltsArea').show();
 		var choice = $('#locSet option:selected');
 		$.post(csu.url, {'mode':'ck4CssUnused',
-									  },
+						},
 						function (response) {
-			$('#rslts').html(response);
+							$('#rslts').html(response);
 		});
 	},
 
@@ -52,9 +52,9 @@ var csu = {
 		$('#rsltsArea').show();
 		var choice = $('#locSet option:selected');
 		$.post(csu.url, {'cat':'locale', 
-										 'mode':'ck4TransDupes',
-										 'locale':choice.val(),
-									  },
+						 'mode':'ck4TransDupes',
+						 'locale':choice.val(),
+						},
 						function (response) {
 			$('#rslts').html(response);
 		});
@@ -65,10 +65,10 @@ var csu = {
 		$.each(csu.obMods, function (n,module) {
 			var choice = $('#locSet option:selected');
 			$.post(csu.url, {'cat':'locale',
-											 'mode':'ck4TransNeeded',
-											 'locale':choice.val(),
-											 'module':module,
-										  },
+							 'mode':'ck4TransNeeded',
+							 'locale':choice.val(),
+							 'module':module,
+							},
 							function (response) {
 				$('#rslts').append(response);
 			});
@@ -81,16 +81,39 @@ var csu = {
 		$.each(csu.obMods, function (n,module) {
 			var choice = $('#locSet option:selected');
 			$.post(csu.url, {'cat':'locale',
-											 'mode':'ck4TransMaybe',
-											 'locale':choice.val(),
-											 'module':module,
-										  },
+							 'mode':'ck4TransMaybe',
+							 'locale':choice.val(),
+							 'module':module,
+							},
 							function (response) {
 				$('#rslts').append(response);
 			});
 		});
 	},
+/*
 
+
+Building on Jon Petersen's answer, this gets all id's and classes, filters them to the unique ones and prepares the output so it can be pasted into your css file.
+
+    function getAllCSS() {
+        var all = document.getElementsByTagName("*");
+        var st = [];
+        var trailing = " {<br /><br />}<br />";
+        for (var i = 0, max = all.length; i < max; i++) {
+            if (all[i].className !== '') {
+                st.push('.' + all[i].className + trailing);
+            }
+            if (all[i].id !== '') {
+                st.push('#' + all[i].id + trailing);
+            }
+        }
+        var unique = st.filter(function (item, i, ar) { return ar.indexOf(item) === i; });
+
+        document.write(unique.join("<br />"));
+    }
+    getAllCSS();
+
+*/
 }
 
 $(document).ready(csu.init);

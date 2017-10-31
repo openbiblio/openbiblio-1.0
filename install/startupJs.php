@@ -8,7 +8,7 @@ class Strt {
         this.initWidgets();
 
         this.url = '../install/startupSrvr.php';
-        this.dest = '../install/index.php';
+        this.dest = './index.php';
 
         $('#constBtn').on('click',null, $.proxy(this.doCreateConstFile, this));
         $('#newDbBtn').on('click',null, $.proxy(this.createDb, this));
@@ -97,10 +97,10 @@ class Strt {
 
         $.post(this.url, params, function (response) {
             $('#plsWait').hide();
-            if (response.indexOf('Error:') >= 0) {
+            if (response.indexOf('PDOException:') >= 0) {
               _this.informUser('<p class="error">'+response+'</p>');
             } else if (response.indexOf('success') >= 0) {
-              _this.informUser('A new database has been created');
+              _this.informUser('A new EMPTY database has been created');
               $('#createDB').hide();
               $('#continue').show();
             }

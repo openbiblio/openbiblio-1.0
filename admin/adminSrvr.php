@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+	require_once("../shared/common.php");
 
-  require_once("../shared/common.php");
+	ini_set('display_errors', 1);
 
 	switch ($_POST['cat']) {
 		case 'collect':
@@ -130,7 +131,8 @@
 				'default_flg'=>$_POST['default_flg'],
 				'type'=>$_POST["type"],
 				'days_due_back'=>$_POST["days_due_back"],
-				'daily_late_fee'=>$_POST["daily_late_fee"],
+				'minutes_due_back'=>$_POST["minutes_due_back"],
+				'regular_late_fee'=>$_POST["regular_late_fee"],
 				'restock_threshold'=>$_POST["restock_threshold"],
 				'due_date_calculator'=>$_POST['due_date_calculator'],
 				'important_date'=>$_POST['important_date'],
@@ -141,15 +143,15 @@
 			);
 			list($id, $errors) = $ptr->insert_el($col);
 			if (empty($errors)) {
-				$msg = T("Collection, %desc%, has been added.", array('desc'=>H($col['description'])));
-				echo $msg;
+				$msg = "Success - '".$_POST["description"]."' ".T("Collection has been added.");
+			} else {
+				$msg = $errors;
 			}
+			echo json_encode($msg);
 			break;
 		case 'update_collect':
-ini_set('display_errors', 1);
 			$ptr = new Collections;
 			$coll = array(
-				'code'=>$_POST["code"],
 				'description'=>$_POST["description"],
 				'default_flg'=>$_POST['default_flg'],
 				'type'=>$_POST["type"],
@@ -157,18 +159,24 @@ ini_set('display_errors', 1);
 				'minutes_due_back'=>$_POST["minutes_due_back"],
 				'regular_late_fee'=>$_POST["regular_late_fee"],
 				'restock_threshold'=>$_POST["restock_threshold"],
+				'important_date'=>$_POST['important_date'],
+				'important_date_purpose'=>$_POST['important_date_purpose'],
+				'number_of_minutes_between_fee_applications'=>$_POST['number_of_minutes_between_fee_applications'],
+				'number_of_minutes_in_grace_period'=>$_POST['number_of_minutes_in_grace_period'],
+				'pre_closing_padding'=>$_POST['pre_closing_padding'],
 			);
 			$errors = $ptr->update_el($coll);
 			if (empty($errors)) {
-				$msg = T("Collection, %desc%, has been updated.", array('desc'=>H($coll['description'])));
+				$msg = "Success - '".$_POST["description"]."' ".$updtSuccess;
+			} else {
+				$msg = $errors;
 			}
-			echo $msg;
+			echo json_encode($msg);
 			break;
 		case 'd-3-L-3-t_collect':
 			$ptr = new Collections;
-			$ptr->deleteOne($_POST['code']);
-			$msg = T("Collection, %desc%, has been deleted.", array('desc'=>$description));
-			echo $msg;
+			$errs = $ptr->deleteOne($_POST['code']);
+			if ($errs) {echo $errs;} else {echo $deleteComplete;}
 			break;
 
 	  #-.-.-.-.-.-Custom Copy Fields -.-.-.-.-.-.-
@@ -192,7 +200,7 @@ ini_set('display_errors', 1);
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_copyFlds':
 			$ptr->deleteOne($_POST[code]);
@@ -220,7 +228,7 @@ ini_set('display_errors', 1);
 				'code'=>@$_POST["code"],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_mbrFlds':
 			$ptr->deleteOne($_POST[code]);
@@ -231,20 +239,25 @@ ini_set('display_errors', 1);
 		case 'getAll_hours':
 			$flds = array();
 			$set = $ptr->getAll();
-            		foreach ($set as $row) {
+            foreach ($set as $row) {
 			  $flds[] = $row;
 			}
 			echo json_encode($flds);
 			break;
 		case 'addNew_hours':
-			$rslt = $ptr->insert_el($_POST);
-            		echo json_encode($rslt);
+			//$rslt = $ptr->insert_el($_POST);
+            //echo json_encode($rslt);
+			list($id, $errors) = $ptr->insert_el($_POST);
+			if (!empty($id) || empty($errors)) {
+				$msg = T("Hours open")." ".T("has been added");
+				echo json_encode(array($id, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
 			break;
 		case 'update_hours':
-			$errs = $ptr->update_el(array(
-				'hourid'=>@$_POST["hourid"],
-			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			$errs = $ptr->update_el($_POST);
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 
 	  #-.-.-.-.-.- Database Integrity testing -.-.-.-.-.-.-
@@ -270,8 +283,14 @@ ini_set('display_errors', 1);
 			echo json_encode($flds);
 			break;
 		case 'addNew_mbrTypes':
-			$rslt = $ptr->insert_el($_POST);
-            		echo json_encode($rslt);
+			$desc = $_POST['description'];
+			list($id, $errors) = $ptr->insert_el($_POST);
+			if (!empty($id) || empty($errors)) {
+				$msg = T("MemberType")." '".$desc."' ".T("has been added");
+				echo json_encode(array(0, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
 			break;
 		case 'update_mbrTypes':
 			$errs = $ptr->update_el(array(
@@ -280,7 +299,7 @@ ini_set('display_errors', 1);
 				'default_flg'=>@$_POST['default_flg'],
 				'description'=>@$_POST["description"],
 			));
-			if ($errs) {echo $errs;} else {echo $updtSuccess;}
+			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_mbrTypes':
 			$ptr->deleteOne($_POST[code]);
@@ -307,7 +326,7 @@ ini_set('display_errors', 1);
                 'srch_disp_lines'=>$_POST["srch_disp_lines"],
 				);
 			list($id, $errors) = $ptr->insert_el($type);
-			if (empty($errors)) {
+			if (!empty($id) || empty($errors)) {
 				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been added");
 				echo json_encode(array($id, $msg));
 			} else {
@@ -315,12 +334,16 @@ ini_set('display_errors', 1);
             }
 			break;
 		case 'update_media':
-			if (strpos($_POST["image_file"],'\\')) {
-				$imgInfo = pathinfo($_POST["image_file"]);
-				$imgStuff = explode('\\',$imgInfo['filename']);
-				$imgFile = $imgStuff[2].'.'.$imgInfo['extension'];
+			if (isset($POST["image_file"])) {
+				if (strpos($_POST["image_file"],'\\')) {
+					$imgInfo = pathinfo($_POST["image_file"]);
+					$imgStuff = explode('\\',$imgInfo['filename']);
+					$imgFile = $imgStuff[2].'.'.$imgInfo['extension'];
+				} else {
+					$imgFile = $_POST["image_file"];
+				}
 			} else {
-				$imgFile = $_POST["image_file"];
+				$imgFile = $_POST["crntImage_file"];
 			}
 			$type = array(
 				'code'=>$_POST["code"],
@@ -329,12 +352,14 @@ ini_set('display_errors', 1);
 				'adult_checkout_limit'=>$_POST["adult_checkout_limit"],
 				'juvenile_checkout_limit'=>$_POST["juvenile_checkout_limit"],
 				'image_file'=>$imgFile,
-        'srch_disp_lines'=>$_POST["srch_disp_lines"],
+        		'srch_disp_lines'=>$_POST["srch_disp_lines"],
 			);
 			$errors = $ptr->update_el($type);
-			if (empty($errors)) {
-				$msg = T("Media Type")." '".H($type['description'])."' ".T("has been updated");
-				echo $msg;
+			if ((stripos($errors, 'Success') > -1) || empty($errors) ) {
+				$msg = $errors."! ".T("Media Type")." '".H($type['description'])."' ".T("has been updated");
+				echo json_encode($msg);
+			} else {
+				echo json_encode($errors);
 			}
 			break;
 		case 'd-3-L-3-t_media':
@@ -347,7 +372,7 @@ ini_set('display_errors', 1);
 				
   	#-.-.-.-.-.- Online Hosts -.-.-.-.-.-.-
 		case 'getAll_hosts':
-		  $hosts = array();
+		  	$hosts = array();
 			$set = $ptr->getAll('seq');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -367,11 +392,16 @@ ini_set('display_errors', 1);
 			break;
 		case 'update_hosts':
 			if (empty($_POST[active])) $_POST[active] = 'N';
-			echo $ptr->update($_POST);
+			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_hosts':
-			$sql = "DELETE FROM $ptr->getName() WHERE `id`=$_POST[id]";
-			echo $ptr->act($sql);
+//			$sql = "DELETE FROM ".$ptr->getName()." WHERE `id`=$_POST[id]";
+//echo "sql=$sql<br />\n";
+//			echo $ptr->act($sql);
+			$id = $_POST["id"];
+			$ptr->deleteOne($id);
+			$msg = T("Host")." #".$id." ".T("has been deleted");
+			echo $msg;
 			break;
 
 	  #-.-.-.-.-.- Online Options -.-.-.-.-.-.-
@@ -390,27 +420,28 @@ ini_set('display_errors', 1);
 			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
 			$rslt = $ptr->update($_POST);
 			if(empty($rslt)) $rslt = '1';
-			echo $rslt;
+			echo json_encode($rslt);
 			break;
 
 	  #-.-.-.-.-.- Settings -.-.-.-.-.-.-
 		case 'getFormData':
-      $formData = $ptr->getFormData ('admin','name,title,type,value');
-      $fd = array();
-      // translate these form titles
-      foreach($formData as $entry) {
-        $entry['title'] = T($entry['title']);
-        $fd[] = $entry;
-      }
+			$formData = $ptr->getFormData ('admin','name,title,type,value');
+			$fd = array();
+			// translate these form titles
+			foreach($formData as $entry) {
+				$entry['title'] = T($entry['title']);
+				$fd[] = $entry;
+			}
 			echo json_encode($fd);
 			break;
 		case 'update_settings':
-			echo $ptr->setAll_el($_POST);
+			$msg = $ptr->setAll_el($_POST);
+			echo json_encode($msg);
 			break;
 
 	  #-.-.-.-.-.- Sites -.-.-.-.-.-.-
 		case 'getAll_sites':
-		  $sites = array();
+		  	$sites = array();
 			$set = $ptr->getAll('name');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -419,19 +450,30 @@ ini_set('display_errors', 1);
 			echo json_encode($sites);
 			break;
 		case 'addNew_sites':
-ini_set('display_errors', 1);
-			echo $ptr->insert($_POST);
+			list($id, $errors) = $ptr->insert_el($_POST);
+			if (!empty($id) || empty($errors)) {
+				$msg = T("Site")." ".$_POST['name'].' '.T("has been added");
+				echo json_encode(array($id, $msg));
+			} else {
+				echo json_encode(array(null, $errors));
+            }
+			break;
+		case 'mergeSites':
+			$rslt = $ptr->moveSiteHoldings($_POST);
+            echo json_encode($rslt);
 			break;
 		case 'update_sites':
-			echo $ptr->update($_POST);
+			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_sites':
-			echo $ptr->deleteOne($_POST['siteid']);
+			$ptr->deleteOne($_POST['siteid']);
+			$msg = T("Site")." ".$_POST['siteid']." ".T("has been deleted");
+			echo $msg;
 			break;
 
 	  #-.-.-.-.-.- Staff -.-.-.-.-.-.-
 		case 'getAll_staff':
-		  $staff = array();
+		  	$staff = array();
 			$set = $ptr->getAll('last_name');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -445,34 +487,26 @@ ini_set('display_errors', 1);
 				$_POST['suspended_flg'] = 'N';
 			}
 
-            $nYflg = 0;
-			foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
-				if (isset($_POST[$flg.'_flg']) && ($_POST[$flg.'_flg'] == 'Y')) {
-                    $nFlg++;
-				} else {
-					$_POST[$flg.'_flg'] = 'N';
-				}
-			}
-            if ($nFlg < 1) {
-                echo json_encode(array(NULL, T("Role MUST be selected")));
-                return;
-            }
-
 			if ($_POST['mode'] == 'addNew_staff') {
 				//echo $ptr->insert_el($_POST);
 				$rslt = $ptr->insert_el($_POST);
+            	list($id, $response) = $rslt;
+            	if ($id == NULL)
+                	echo json_encode($response);
+            	elseif ($response == NULL)
+					echo json_encode([$id,'Success']);
+				else
+                	echo json_encode($rslt);
 			} else {
-				$rslt =  $ptr->update($_POST);
-			}
-            list($id, $response) = $rslt;
-            if ($id == NULL)
-                if ($response != null) {
-                    echo json_encode($response);
-                } else {
-                    echo $rslt;
-                }
-            else
+				//$_POST[pwd2] = $_POST[pwd]; // no PW changes allowed in update screen
+				//echo $ptr->update($_POST);
+				$rslt =  $ptr->update($_POST); // will call $Staff::validate()
                 echo json_encode($rslt);
+			}
+			break;
+		case 'fetchStartPage':
+			$staff = $_POST('user');
+			echo json_encode($staff);
 			break;
 		case 'd-3-L-3-t_staff':
 			echo $ptr->deleteOne($_POST['userid']);
@@ -488,11 +522,11 @@ ini_set('display_errors', 1);
 
 	  #-.-.-.-.-.- States / Provinces -.-.-.-.-.-.-
 		case 'getAll_states':
-		  $states = array();
+		  	$states = array();
 			$set = $ptr2->getAll('description');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
-			  $states[] = $row;
+			  	$states[] = $row;
 			}
 			echo json_encode($states);
 			break;
@@ -501,7 +535,7 @@ ini_set('display_errors', 1);
             echo json_encode($rslt);
 			break;
 		case 'update_states':
-			echo $ptr2->update($_POST);
+			echo json_encode($ptr2->update($_POST));
 			break;
 		case 'd-3-L-3-t_states':
 			echo $ptr2->deleteOne($_POST['code']);
@@ -509,7 +543,7 @@ ini_set('display_errors', 1);
 
 	  #-.-.-.-.-.- Themes -.-.-.-.-.-.-
 		case 'getAllThemes':
-		  $thms = array();
+		  	$thms = array();
 			$set = $ptr->getAll('theme_name');
 			//while ($row = $set->fetch_assoc()) {
             foreach ($set as $row) {
@@ -527,7 +561,7 @@ ini_set('display_errors', 1);
 			echo $ptr->insert_el($_POST);
 			break;
 		case 'updateTheme':
-			echo $ptr->update_el($_POST);
+			echo json_encode($ptr->update_el($_POST));
 			break;
 		case 'd-3-L-3-tTheme':
 			echo $ptr->deleteOne($_POST['themeid']);

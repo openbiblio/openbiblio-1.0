@@ -64,30 +64,28 @@ class DmTable extends DBTable {
 		}
 	}
 
+	public function update($rec, $confirmed=false) {
+		if (!isset($rec['default_flg'])) {
+			$rec['default_flg'] = 'N';
+		}
+		return parent::update($rec, $confirmed);
+	}
+
 	protected function validate_el($rec, $insert) {
         // individual derviatives SHOULD over-ride this for particular needs
-		$errors = array();
-        //echo "in DmTable::validate_el(): ";print_r($this->reqFields);echo "<br />\n";
-        // check for missing entries
-        if (isset($this->reqFields)) {
-    		foreach ($this->reqFields as $req) {
-    			if ($insert and !isset($rec[$req])
-    					or isset($rec[$req]) and $rec[$req] == '') {
-    				$errors[] = new FieldError($req, T("Required field missing"));
-    			}
-    		}
-        }
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
         // duplicate codes not allowed
 		$sql = $this->mkSQL("SELECT * FROM %q WHERE code=%Q ", $this->name, $rec['code']);
 		$rslt = $this->select($sql);
         $rows = $rslt->fetchAll();
         if ($insert&& (count($rows) != 0)) {
-            //$errors[] = new FieldError('code', T("Duplicate Code not allowed"));
 			$errors[] = T("Duplicate Code not allowed");
 		}
+
         // otherwise limit default flg to Y or N only
         if ((isset($rec['default_flg'])) && ($rec['default_flg'] != 'Y' && $rec['default_flg']!= 'N')) {
-			//$errors[] = new FieldError('default_flg', T("Default Flg MUST be 'Y' or 'N'"));
 			$errors[] = T("Default Flg MUST be 'Y' or 'N'");
         }
 		return $errors;

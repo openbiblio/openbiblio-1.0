@@ -25,7 +25,7 @@
 <h3 id="searchHdr"><?php echo T("CSVImport"); ?></h3>
 
 <section id="intro">
-	<form id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
+	<form role="form" id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
 		<input type="hidden" id="mode" name="mode" value="csvPreview" \>
 		<input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
 

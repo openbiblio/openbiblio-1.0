@@ -11,20 +11,23 @@
     require_once("../shared/common.php");
  	require_once(REL(__FILE__, "../classes/InstallQuery.php"));
 	require_once(REL(__FILE__, "../classes/UpgradeQuery.php"));
+	require_once(REL(__FILE__, "../model/Staff.php"));
 
+ini_set('display_errors', 1);
 	$installQ = new InstallQuery();
+
 	switch ($_REQUEST['mode']) {
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
-        case 'connectDBServer':
+  		#-.-.-.-.-.-.-.-.-.-.-.-.-'
+	    case 'connectDBServer':
 			$msg = $installQ->getDbServerVersion();
 			print_r($msg);
 			break;
 
-        case 'createNewDB':
-            $msg = $installQ->createDatabase();
-            echo $msg;
-            break;
-			
+	    case 'createNewDB':
+		    $msg = $installQ->createDatabase();
+		    echo $msg;
+		    break;
+
 		case 'getSettings':
 			$resp = $installQ->getSettings();
 			if ($resp == 'NothingFound') {
@@ -35,7 +38,6 @@
 			break;
 			
 		case 'getDbVersion':
-ini_set('display_errors', 1);
 			$version = $installQ->getCurrentDatabaseVersion();
 			if (!$version || empty($version)) {
 				echo T("noDB");
@@ -49,6 +51,13 @@ ini_set('display_errors', 1);
 			foreach ($arr_lang as $langCode => $langDesc) {
 				echo '<option value="'.H($langCode).'">'.H($langDesc)."</option>\n";
 			}
+			break;
+
+		case 'getStartPage':
+			$staffPtr = new Staff();
+			$startPage = $staffPtr->getOne($_POST['user']);
+			//echo "in installSrvr ";print_r($startPage);echo "<br />\n";
+			echo $startPage['start_page'];
 			break;
 			
 		case 'doFullInstall':
@@ -66,8 +75,8 @@ ini_set('display_errors', 1);
 			}
 			break;
 			
-  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+  		#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
+		  	echo "<h4>invalid mode: &gt;$_REQUEST[mode]&lt;</h4><br />";
 			break;
 	}

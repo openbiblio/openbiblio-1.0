@@ -24,23 +24,27 @@ class Staff extends CoreTable {
 			'circ_mbr_flg'=>'string',
 			'catalog_flg'=>'string',
 			'reports_flg'=>'string',
+			'start_page'=>'string',
 		));
-        $this->setReq(array(
-            'username', 'pwd', 'last_name', 'secret_key', 'suspended_flg', 'admin_flg', 'tools_flg', 'circ_flg', 'circ_mbr_flg', 'catalog_flg', 'reports_flg',
-        ));
+    $this->setReq(array(
+        'username', 'pwd', 'last_name', 'secret_key', 'start_page',
+    ));
 		$this->setKey('userid');
 		$this->setSequenceField('userid');
 	}
+
+	public function getStartPage($id) {
+		$rslt = $this->getOne($id);
+ 		//echo "in Staff::getStartPage(): rslt=";print_r($rslt);echo "<br /> \n";
+		$userData = $rslt->fetch();
+ 		//echo "in Staff::getStartPage(): userData";print_r($userData);echo "<br /> \n";
+		return $userData['start_page'];
+	}
+
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        // all required fields present?
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				//$errors[] = new FieldError($req, T("Required field missing"));
-				$errors[] = array('NULL', T("Required field missing").": ".$req);
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
         // login credentials
 		if (isset($rec['pwd'])) {
 			if (!isset($rec['pwd2']) or ($rec['pwd'] != $rec['pwd2']) ) {
@@ -59,6 +63,10 @@ class Staff extends CoreTable {
 				$errors[] = array('NULL', T("Username already taken by another user"));
 			}
 		}
+		// user start_ page
+		if (!file_exists($rec['start_page'])) {
+			$errors[] = array('NULL', T("startPage")." '".$rec['start_page']."' ".T("does not exist"));
+		}
 		return $errors;
 	}
 	function insert_el($rec, $confirmed=false) {
@@ -71,17 +79,26 @@ class Staff extends CoreTable {
 		if(!isset($rec['secret_key'])) {
 			$rec['secret_key'] = md5(time());
 		}
+
+		foreach (array('admin','circ','circ_mbr','catalog','reports','tools') as $flg) {
+			if (isset($rec[$flg.'_flg']) && ($rec[$flg.'_flg'] == 'Y')) {
+                $nFlg++;
+			} else {
+                $nFlg++;
+				$rec[$flg.'_flg'] = 'N';
+			}
+			//echo $flg."_flg = '".$rec[$flg.'_flg']."' <br />\n";
+		}
+		// this should be part of validations
+        //if ($nFlg < 1) {
+        //    $errors[] = array('NULL', T("Role MUST be selected"));
+        //}
+
 		unset($rec['userid']);
 		$rslt = parent::insert_el($rec, $confirmed);
         return $rslt;
 	}
 	function update_el($rec, $confirmed=false) {
-        if (!isset($rec['pwd']) || (isset($rec['pwd2']) && ($rec['pwd'] == $rec['pwd2']))) {
-			$rec['pwd'] = md5($rec['pwd']);	
-			$rec['pwd2'] = md5($rec['pwd2']);
-			return parent::update_el($rec, $confirmed);
-		} else {
-			return "invalid password";
-		}
+		return parent::update_el($rec, $confirmed); // will call above validate_el()
 	}
 }

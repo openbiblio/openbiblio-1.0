@@ -15,9 +15,8 @@
 <h3 id="listHdr"><?php echo T("List of Media Types"); ?></h3>
 
 <div id="listDiv" style="display: none;">
-<h5 id="updateMsg"></h5>
-<form id="showForm" name="showForm">
-<input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
+
+<form role="form" id="showForm" name="showForm">
 <fieldset>
 <table id="showList" >
 	<thead>
@@ -54,68 +53,67 @@
 </div>
 	
 <div id="editDiv" style="display: none;">
-<form id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
+<form role="form" id="editForm" name="editForm">
 <fieldset>
 	<legend id="editHdr"></legend>
 	<ul id="editTbl">
     <li>
-      <label for="description"><?php echo T("Description"); ?>:</label>
-      <input id="description" name="description" type="text" size="32" required aria-required="true" />
+		<label for="description"><?php echo T("Description"); ?>:</label>
+		<input id="description" name="description" type="text" size="32" required aria-required="true" />
 			<span class="reqd">*</span>    
-		</li>
+	</li>
 
-		<li>
-		  <fieldset>
-				<legend><?php echo T("Checkout Limit");?>:</legend>
-		  	<fieldset class="inlineFldSet">
+	<li>
+		<fieldset>
+			<legend><?php echo T("Checkout Limit");?>:</legend>
+			<fieldset class="inlineFldSet">
 					<span class="note"><?php echo T("(enter 0 for unlimited)"); ?></span>
-		  	</fieldset>
-		  	<fieldset class="inlineFldSet">
-		  		<label for="adult_checkout_limit"><?php echo T("Adult");?>:</label><br />
-					<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2"
+			</fieldset>
+			<fieldset class="inlineFldSet">
+				<label for="adult_checkout_limit"><?php echo T("Adult");?>:</label><br />
+				<input id="adult_checkout_limit" name="adult_checkout_limit" type="mumber" size="2"
 						pattern="[0-9]{1,2}" title="0-99" required aria-required="true" />
 					<span class="reqd">*</span>
-		  	</fieldset>
-		  	<fieldset class="inlineFldSet">
-		  		<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:</label><br />
-					<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2"
+			</fieldset>
+			<fieldset class="inlineFldSet">
+				<label for="juvenile_checkout_limit"><?php echo T("Juvenile");?>:</label><br />
+				<input id="juvenile_checkout_limit" name="juvenile_checkout_limit" type="mumber" size="2"
 						pattern="[0-9]{1,2}" title="0-99" required aria-required="true" />
-					<span class="reqd">*</span>  
-		  	</fieldset>
-		  	<fieldset class="inlineFldSet" id="vertSep"></fieldset>
-		  	<fieldset class="inlineFldSet">
-          <label><?php echo T("Default"); ?>:</label>
-          <label for="default_Y">Y:<label>
-          <input id="default_Y" name="default_flg" type="radio" value="Y" required aria-required="true" />
-          <label for="default_N">N:</label>
-          <input id="default_N" name="default_flg" type="radio" value="N" checked required aria-required="true" />
+					<span class="reqd">*</span>
+			</fieldset>
+			<fieldset class="inlineFldSet" id="vertSep"></fieldset>
+			<fieldset class="inlineFldSet">
+				<label><?php echo T("Default"); ?>:</label>
+				<label for="default_Y">Y:<label>
+				<input id="default_Y" name="default_flg" type="radio" value="Y" required aria-required="true" />
+				<label for="default_N">N:</label>
+				<input id="default_N" name="default_flg" type="radio" value="N" checked required aria-required="true" />
     			<span class="reqd">*</span>
-				</fieldset>
-		  </fieldset>
-		</li>
+			</fieldset>
+		</fieldset>
+	</li>
 
-		<li>
+	<li>
 			<fieldset>
 				<legend><?php echo T("Search Display Lines");?></legend>
 				<label for="srch_disp_lines"><?php echo T("NumberOfLines");?>:</label>
 				<input id="srch_disp_lines" name="srch_disp_lines" type="number" size="2"
-					pattern="[1-9]{1,2}" min="1" max="19" title="0-19" value="4" required aria-required="true" />
-				<span class="reqd">*</span>
+						pattern="[1-9]{1,2}" min="1" max="19" title="0-19" value="4" required aria-required="true" />
+					<span class="reqd">*</span>
 		  </fieldset>
-		</li>
+	</li>
 
-		<li>
+	<li>
 			<fieldset>
 				<legend><?php echo T("Image File");?></legend>
 				<label for="image_file"><?php echo T("CrntImageFile");?>:</label>
 				<input id="image_file" name="crntImage_file" type="text" size="32" maxlength="128" readonly />
-					<span class="reqd">*</span>
 					<br />
 				<label for="newImageFile"><?php echo T("NewImageFile");?>:</label>
 				<input id="newImageFile" name="image_file" type="file" size="32" maxlength="128" />
 			</fieldset>  
-		</li>
+	</li>
 
     <li>
 			<input type="hidden" id="mode" name="mode" value="">
@@ -123,6 +121,11 @@
 			<input type="hidden" id="code" name="code" value="">
 		</li>
 	</ul>
+	<!--hr />
+	<p class="note">
+		<?php //echo T("Note"); ?>:<br /><?php //echo T("mediaListNoteMsg"); ?>
+	</p>
+	<hr /-->
 	<ul id="btnRow">
     <li><input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" /></li>
     <li><input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" /></li>
@@ -133,19 +136,9 @@
 </form>
 </div>
 
-<div id="msgDiv" style="display: none;">
-	<fieldSet id="msgArea"></fieldset>
-</div>
-
-<p class="note">
-	<?php echo T("Note"); ?>:<br /><?php echo T("mediaListNoteMsg"); ?>
-</p>
-
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+  	require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	//require_once(REL(__FILE__, "mediaJs.php"));
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
 	require_once(REL(__FILE__, "../admin/mediaJs6.php"));
 ?>

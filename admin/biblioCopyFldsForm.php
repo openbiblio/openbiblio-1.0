@@ -15,9 +15,8 @@
 <h3 id="listHdr"></h3>
 
 <div id="listDiv" style="display: none;">
-<h5 id="updateMsg"></h5>
-<form id="showForm" name="showForm">
-<input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
+<form role="form" id="showForm" name="showForm">
+<br />
 <fieldset>
 <table id="showList" name="showList"">
 	<thead>
@@ -45,7 +44,7 @@
 </div>
 
 <div id="editDiv" style="display: none;">
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 	<legend id="fieldsHdr"></legend>
@@ -76,11 +75,9 @@
 </form>
 </div>
 
-<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
-
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
+  	require_once(REL(__FILE__,'../shared/footer.php'));
 	
-	require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	require_once(REL(__FILE__, "../admin/biblioCopyFldsJs.php"));
+	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
+	require_once(REL(__FILE__, "../admin/biblioCopyFldsJs6.php"));
 ?>	

@@ -46,7 +46,7 @@
 	});
 </script>
 
-<form name="selection" id="selection" action="../circ/booking_checkout.php" method="post">
+<form role="form" name="selection" id="selection" action="../circ/booking_checkout.php" method="post">
 	<input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
 	<input type="hidden" name="name" value="bibid" />
 	<fieldset>

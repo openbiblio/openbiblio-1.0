@@ -184,6 +184,16 @@
 		// We take the library logged on to.
 		echo $_SESSION['current_site'];
         break;
+	case 'getSiteHoldings':
+		require_once(REL(__FILE__, "../model/Sites.php"));
+		$db = new Sites;
+	  	$sites = array();
+		$set = $db->getHoldings();
+        foreach ($set as $row) {
+		  $sites[] = $row;
+		}
+		echo json_encode($sites);
+		break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
 	case 'getStateList':
@@ -229,12 +239,12 @@
 	  break;
 
     //-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-//
-	case 'getValidations': // deprecated
-		require_once(REL(__FILE__, "../model/Validations.php"));
-		$db = new Validations;
-		$list = getDmData($db);
-		echo json_encode($list);
-	  break;
+	//case 'getValidations': // deprecated
+	//	require_once(REL(__FILE__, "../model/Validations.php"));
+	//	$db = new Validations;
+	//	$list = getDmData($db);
+	//	echo json_encode($list);
+	//  break;
 	case 'getValidationList':
 		require_once(REL(__FILE__, "../model/Validations.php"));
 		$db = new Validations;

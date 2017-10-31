@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`transsections` (
   `transSectionName` varchar(50) NOT NULL,
   `transSectionIsProtected` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`transSectionID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

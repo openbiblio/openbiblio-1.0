@@ -8,9 +8,16 @@ unset($_SESSION['pageErrors']);
 unset($_SESSION['postVars']);
 
 ?>
-</div>  <!-- closing of div Content -->
+	<!-- =================================================== -->
+	<!-- Common user message area for all pages, hidden when empty -->
+	<div id="userMsgDiv">
+		<span id="userMsg"></span>
+	</div>
 
-<!-- All JavaScript is placed at the end of <body> to improve overall performance
+
+</main>  <!-- closes off <main id="Content"> -->
+
+<!-- All JavaScript should be placed at the end of <body> to improve overall performance
 
 		note: jQuery was here, moved to header-top so it would be available to
 		HTML/JS conditional modules loaded in line as required.
@@ -24,7 +31,7 @@ unset($_SESSION['postVars']);
 <script language="JavaScript" >
 "use strict";
 
-// common javascript functionality set in own namespace to avoid potential conflict
+// common javascript utility functions set in own namespace to avoid potential conflict
 var obib = {
 	<?php
 		echo "focusFormName:  '$focus_form_name',\n";
@@ -36,43 +43,36 @@ var obib = {
 
 	init: function() {
 		obib.reStripe();
-	  // set focus to specified field in all pages
+	  	// set focus to specified field in all pages
 		if ((obib.focusFormName.length > 0) && (obib.focusFormField.length > 0)) {
-		  $('#'+obib.focusFormField).focus();
+		  	$('#'+obib.focusFormField).focus();
+			//console.log('setting focus to '+obib.focusFormName);
 		}
 		
-		/* suggest this should be in code local to desired function unless widely used -- FL */
 		// bind the confirmLink routine to all <a> tags on the current form
-		if (obib.confirmLinks) {
+		/* suggest this should be in code local to desired function unless widely used -- FL */
+		if (obib.confirmLinks) {    // defined by php above init()
 			$('a').on('click',null,obib.confirmLink);
 		}
 	},
 
-	//-------------------------
-	/*
-	 * This function parses ampersand-seperated name=value argument pairs from
-	 * the query string of the URL.  It stores the name=value pairs in
-	 * properties of an object and returns that object.  Use it like this:
-	 *
-	 * var args = urlArgs();  // parse args from URL
-	 * var q = args.q || "";   // use arguement, if defined, or a default value
-	 * var n = args.n ? parseInt(args.n) : 10;
-	 *
-	 * adapted from "JavaScript: the Definitive Guide", by David Flanagan, 6th ed, p.344
-	 */
-	urlArgs: function(url) {
-		var args = {};                            // start wit empty object
-		var query = url || location.search.substring(1); // get query string minus '?'
-		var pairs = query.split('&');             // split at ampersands
-		for (var i=0; i<pairs.length; i++) {      // for each fragment
-			var pos = pairs[i].indexOf('=');        // look for name=value
-			if (pos == -1) continue;                // if not found, skip it
-			var name = pairs[i].substring(0,pos);   // extract the name
-			var value = pairs[i].substring(pos+1);  // extract the value
-			value = decodeURIComponent(value);      // decode the value
-			args[name] = value                      // store as a property
+	// common user message handler(s) for #msgDiv at top of this file
+	showMsg: function (msg) {
+		$('span#userMsg').html(msg).removeClass('error').addClass('info');
+		$('#userMsgDiv').show();
+	},
+	showError: function (msg) {
+		msg = 'Error: '+msg;
+		$('span#userMsg').html(msg).removeClass('info').addClass('error');
+		$('#userMsgDiv').show();
+	},
+	hideMsg: function (howFast='slow') {
+		$('span#userMsg').html('');
+		if (howFast == 'now') {
+			$('#userMsgDiv').hide(); // instantaneous, immediate
+		} else {
+			$('#userMsgDiv').hide(howFast);
 		}
-		return args;
 	},
 
 	//-------------------------
@@ -96,6 +96,8 @@ var obib = {
 	},
 	
 	//-------------------------
+
+	//is this still required? No references found in any file. FL 29 May 2017
 	confirmLink: function(e) {
 		if (modified) {
 			return confirm("<?php echo addslashes(T("This will discard any changes you've made on this page.  Are you sure?")) ?>");
@@ -103,8 +105,10 @@ var obib = {
 			return true;
 		}
 	}
+
+
 }
-// hold off javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
+// hold off above javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
 $(document).ready(obib.init);
 
 function popSecondary(url) {
@@ -129,7 +133,7 @@ var modified = false;
 
 <?php
  ## ##################################
- ## adds suport for plugins - fl, 2016
+ ## adds suport for plugin custom footers  - fl, 2016
  ## ##################################
 		$list = getPlugIns('foot.foot');
 		for ($x=0; $x<count($list); $x++) {

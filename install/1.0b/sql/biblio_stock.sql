@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_stock` (
   `fund` varchar(100) DEFAULT NULL,
   `price` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`bibid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

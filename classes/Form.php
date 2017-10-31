@@ -55,7 +55,7 @@ class Form {
 		}
 		$fields = Form::_cleanFields($params['fields']);
 		echo '<h3>'.H($params['title']).'</h3>';
-		echo "<form method='".H($params['method'])."' action='".H($params['action'])."'";
+		echo '<form role="form" method="'.H($params['method']).'" action="'.H($params['action']).'"';
 		if ($params['name']) {
 			echo ' name="'.H($params['name']).'" id="'.H($params['name']).'"';
 		}

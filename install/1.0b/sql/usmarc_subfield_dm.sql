@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`usmarc_subfield_dm` (
   `description` varchar(80) NOT NULL DEFAULT '',
   `repeatable_flg` char(1) NOT NULL DEFAULT '',
   PRIMARY KEY (`tag`,`subfield_cd`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 INSERT INTO %prfx%.`usmarc_subfield_dm` (`tag`, `subfield_cd`, `description`, `repeatable_flg`) VALUES
 (10, 'a', 'LC control number', 'N'),
 (10, 'b', 'NUCMC control number', 'Y'),

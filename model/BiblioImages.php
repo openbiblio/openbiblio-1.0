@@ -21,7 +21,11 @@ class BiblioImages extends DBTable {
 		$this->setForeignKey('bibid', 'biblio', 'bibid');
 	}
 
-	protected function validate_el($rec, $insert) { /*return array();*/ }
+	protected function validate_el($rec, $insert) {
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+		return $errors;
+	}
 
 	public function getBiblioMatches($fields) {
         //echo "in BiblioImages::getBiblioMatches(): ";print_r($fields);echo "<br />\n";

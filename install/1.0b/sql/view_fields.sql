@@ -12,4 +12,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`view_fields` (
   `label` varchar(128) DEFAULT NULL,
   `form_type` enum('text','textarea') NOT NULL DEFAULT 'text',
   PRIMARY KEY (`vfid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

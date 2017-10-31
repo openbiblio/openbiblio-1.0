@@ -21,9 +21,7 @@
     <h3 id="listHdr"><?php echo T("States"); ?></h3>
 
     <div id="listDiv" style="display: none;">
-        <h5 id="updateMsg"></h5>
-
-        <form id="showForm" name="showForm">
+        <form role="form" id="showForm" name="showForm">
         <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
         <fieldset>
             <legend id="listHdr"> </legend>
@@ -52,9 +50,8 @@
         </form>
     </div>
 
-
     <div id="editDiv">
-        <form id="editForm" name="editForm">
+        <form role="form" id="editForm" name="editForm">
         <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
         <fieldset>
             <legend id="fieldsHdr"> </legend>
@@ -62,32 +59,26 @@
             <tbody>
             <tr>
                 <td>
-                    <label for="code"><?php echo T("Code"); ?>:</label>
+                    <label for="code"><?php echo T("Code"); ?>:</label><span class="reqd">*</span>
                 </td>
-                <td>
+                <td colspan="2" >
                     <input id="code" name="code" type="text" class="addOnly" size="20" maxlength="20" required aria-required="true" />
-			        <span class="reqd">*</span>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="description"><?php echo T("Description"); ?>:</label>
+                    <label for="description"><?php echo T("Description"); ?>:</label><span class="reqd">*</span>
                 </td>
-                <td>
+                <td colspan="2" >
                     <input id="description" name="description" type="text" size="32" required aria-required="true" />
-			        <span class="reqd">*</span>
 		        </td>
             </tr>
             <tr>
                 <td>
-                    <!--label for="default_flg"><?php echo T("Default (Y/N)"); ?>:</label-->
-                    <label for="default_flg"><?php echo T("Default"); ?>:</label>
+                    <label for="default_flg"><?php echo T("Default"); ?>:</label><span class="reqd">*</span>
                 </td>
-                <td>
-                    <!--input id="default_flg" name="default_flg" type="text" size="1" value="N"
-				        pattern="[Y,N]" required aria-required="true" /-->
-                    <input id="default_flg" name="default_flg" type="checkbox" value="N" />
-			        <span class="reqd">*</span>
+                <td colspan="2" >
+                    <input id="default_flg" name="default_flg" type="checkbox" value="Y" />
                 </td>
             </tr>
             <tr>
@@ -98,7 +89,7 @@
 
             <tfoot>
             <tr>
-                <td colspan="1" align="left">
+                <td colspan="2" align="left">
 			         <input type="submit" id="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" />
 			         <input type="submit" id="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" />
 			         <input type="button" id="cnclBtn" value="<?php echo T("Go Back"); ?>" />
@@ -110,9 +101,6 @@
             </tfoot>
             </table>
         </fieldset>
-    <div id="msgDiv" style="display: none;">
-        <fieldSet id="msgArea"></fieldset>
-    </div>
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));

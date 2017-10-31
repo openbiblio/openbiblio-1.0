@@ -3,14 +3,14 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-  require_once("../shared/common.php");
+  	require_once("../shared/common.php");
 
 	session_cache_limiter(null);
 
-  $tab = "tools";
-  $nav = "cssUtil";
-  //$focus_form_name = "utilForm";
-  //$focus_form_field = "collSet";
+  	$tab = "tools";
+  	$nav = "cssUtil";
+  	//$focus_form_name = "utilForm";
+  	//$focus_form_field = "collSet";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>
@@ -33,11 +33,11 @@
 		</fieldset>
 	</section>
 	
-	<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+	<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
-  require_once(REL(__FILE__,'../plugin_cssUtils/cssUtilJs.php'));
+  	require_once(REL(__FILE__,'../shared/footer.php'));
+  	require_once(REL(__FILE__,'../plugin_cssUtils/cssUtilJs.php'));
 ?>	
 </body>
 </html>

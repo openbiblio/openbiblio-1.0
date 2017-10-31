@@ -94,7 +94,8 @@
 					 ## folowing sub-directories do not contain project code
 					($file != '.hg') &&
 					($file != 'sql') &&
-					//($file != 'legacy') &&
+					($file != 'legacy') &&
+					($file != 'defs') &&
 					//($file != 'jquery') &&
 					//($file != '.Thumbnails') &&
 					## folowing names are file extensions

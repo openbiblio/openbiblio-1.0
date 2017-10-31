@@ -1,0 +1,21 @@
+What to do after Installation
+
+Visit the following menu locations and make selections as needed:
+1. Tools | System Settings
+2. Tools | Web Server Information
+	search (Ctrl-F) for 'yaz'. If not found make a note to install YAZ asap.
+3. Admin | Staff Admin
+	add additional people as needed and choose appropriate Roles and Start Page
+4. Admin | Library Settings
+5. Admin | Collections
+	select your most used collection (Non-Fiction) and make it the default for any later pull-down lists
+6. Admin | Media Types
+	select your most used Media (Books?) and make it the default for any later pull-down lists
+7. Admin | Open Hours
+	make appropriate entries. this information will appear on the OPAC screens
+8. Admin | Sites
+	if you have multiple sites, select the default for pull down lists
+9. Admin | States
+	if your state / province /etc. is not present, add it now
+
+

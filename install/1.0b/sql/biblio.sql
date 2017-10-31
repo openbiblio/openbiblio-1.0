@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio` (
   `collection_cd` smallint(6) NOT NULL DEFAULT '0',
   `opac_flg` char(1) NOT NULL DEFAULT '',
   PRIMARY KEY (`bibid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1375 ;
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1375 ;

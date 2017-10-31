@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.settings (
   `value` text,
   `menu` enum('admin','tools','none') NOT NULL DEFAULT 'admin',
   PRIMARY KEY (`name`)
-);
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 INSERT INTO %prfx%.settings (name, position, title, type, width, type_data, validator, value, menu) VALUES
 ('plugin_list', NULL, NULL, 'text', NULL, NULL, NULL, ',lookup2,biblioFlds,orphanFiles,transUtils,listMgr,cssUtils,mediaFlds,callNoUtils,onlineFotos,orphanImages', ''),
 ('library_name', 1, 'Library Title', 'select', NULL, 'sites', NULL, '1', 'admin'),

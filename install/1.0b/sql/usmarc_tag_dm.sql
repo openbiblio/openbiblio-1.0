@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`usmarc_tag_dm` (
   `ind2_description` varchar(80) NOT NULL DEFAULT '',
   `repeatable_flg` char(1) NOT NULL DEFAULT '',
   PRIMARY KEY (`block_nmbr`,`tag`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 INSERT INTO %prfx%.`usmarc_tag_dm` (`block_nmbr`, `tag`, `description`, `ind1_description`, `ind2_description`, `repeatable_flg`) VALUES
 (0, 10, 'Library of congress control number', 'Undefined', 'Undefined', 'N'),
 (0, 13, 'Patent control information', 'Undefined', 'Undefined', 'Y'),

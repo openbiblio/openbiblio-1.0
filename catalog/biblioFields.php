@@ -22,8 +22,9 @@
 			}
 			return $label;
 		}
-		function mkinput($fid, $sfid, $data, $f) {
-			return array('fieldid' => $fid,
+		function mkinput($fid, $sfid, $data, $f, $n) {
+			$ar = array(
+				'fieldid' => $fid,
 				'subfieldid' => $sfid,
 				'data' => $data,
 				'tag' => $f['tag'],
@@ -31,19 +32,27 @@
 				'label' => getlabel($f),
 				'required' => $f['required'],
 				'form_type' => $f['form_type'],
-				'repeat' => $f['repeatable']);
+				'repeat' => $f['repeatable']
+				);
+			if (($f['repeatable']) && ($n > 0)) {
+				$ar['subfield'] .= $n;
+			}
+			return $ar;
 		}
 		function mkFldSet($n, $i, $marcInputFld, $mode) {
-		  if ($mode == 'onlnCol') {
+		  	if ($mode == 'onlnCol') {
 				echo "	<td valign=\"top\" class=\"filterable\"> \n";
 				$namePrefix = "onln_$n";
-		    echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
-			}
-			else if ($mode == 'editCol') {
+		    	echo "<input type=\"button\" value=\"<--\" id=\"$namePrefix"."_btn\" class=\"accptBtn\" /> \n";
+			} else if ($mode == 'editCol') {
 				echo "	<td valign=\"top\" > \n";
 				$namePrefix = 'fields['.H($n).']';
 				echo inputfield('hidden', $namePrefix."[tag]",         H($i['tag']))." \n";
-				echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
+				if ($i['repeat']) {
+					echo inputfield('hidden', $namePrefix."[subfield_cd]", H($i['subfield']))." \n";
+				} else {
+					echo inputfield('hidden', $namePrefix."[subfield_cd]", substr(H($i['subfield']),0,1))." \n";
+				}
 				echo inputfield('hidden', $namePrefix."[fieldid]",     H($i['fieldid']),
 												array('id'=>$marcInputFld.'_fieldid'))." \n";
 				echo inputfield('hidden', $namePrefix."[subfieldid]",  H($i['subfieldid']),
@@ -57,13 +66,15 @@
 				$attrs['required'] = 'required';
 			}
 			if ($i['repeat'])
-			  $attrStr .= " rptd";
+			  	$attrStr .= " rptd";
 			else
-			  $attrStr .= " only1";
-		  if ($mode == 'onlnCol')
-		    $attrStr .= " online";
+			  	$attrStr .= " only1";
+
+		  	if ($mode == 'onlnCol')
+		    	$attrStr .= " online";
 			else
-			  $attrStr .= " offline";
+				$attrStr .= " offline";
+
 			$attrs["class"] = $attrStr;
 
 			if ($i['form_type'] == 'textarea') {
@@ -86,16 +97,16 @@
 		# fetch a complete set of all material types
 		$matTypes = new MediaTypes;
 		# determine which is to be 'selected'
-		if (!empty($_GET['matlCd'])) {
-		  $material_cd_value = $_GET['matlCd'];
-		} elseif (!empty($_GET['material_cd'])) {
-		  $material_cd_value = $_GET['material_cd'];
+		if (!empty($_POST['matlCd'])) {
+		  	$material_cd_value = $_POST['matlCd'];
+		} elseif (!empty($_POST['material_cd'])) {
+		  	$material_cd_value = $_POST['material_cd'];
 		} elseif (isset($biblio['material_cd'])) {
 			$material_cd_value = $biblio['material_cd'];
 		} else {
 			$material_cd_value = $matTypes->getDefault();
 		}
- 				
+
 		// get field specs for this material type in 'display postition' order
 		$mf = new MaterialFields;
 		$fieldSet = $mf->getMatches(array('material_cd'=>$material_cd_value), 'position');
@@ -113,7 +124,7 @@
         foreach ($fields as $f) {
 		  #  make multiples of those so flagged
 			for ($n=0; $n<=$f['repeatable']; $n++) {
-				array_push($inputs, mkinput(NULL, NULL, NULL, $f));
+				array_push($inputs, mkinput(NULL, NULL, NULL, $f, $n));
 			}
 		}
 
@@ -126,6 +137,9 @@
 			//	echo '	<sup>*</sup>';
 			//}
 			echo "		<label for=\"$marcInputFld\">".H($val['label'].":")."</label>";
+			if ($val['required']) {
+				echo '<span class="reqd">*</span>';
+			}
 			echo "	</td> \n";
 
 			mkFldSet($key, $val, $marcInputFld, 'editCol');	// normal local edit column

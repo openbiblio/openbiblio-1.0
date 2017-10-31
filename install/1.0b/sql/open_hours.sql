@@ -17,4 +17,4 @@ CONSTRAINT chk_NotTooManyEndMinutes CHECK (MOD(end_time,100)<60),
 CONSTRAINT chk_EndTimeAfterStartTime CHECK (start_time<end_time),
 CONSTRAINT chk_EndDateAfterStartDate CHECK (effective_start_date<effective_end_date),
 CONSTRAINT chk_Day CHECK (day<7 AND day>=0)
-) DEFAULT CHARSET=utf8;
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

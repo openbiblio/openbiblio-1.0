@@ -24,7 +24,7 @@
 			This modeule is intended to search the servers<br >
 			of the GLOBAL HANDLE REGISTRY for documents.
 			</p>
-			<form id="doiForm">
+			<form role="form" id="doiForm">
 			<label for="doiCd"><?php echo T("EnterDOI2Resolve"); ?></label><br />
 			<input type="text" id="doiCd" name="doiCd" required \><br />
 		  <input type="submit" id="srchBtn" value="<?php echo T("Search"); ?>" />
@@ -37,7 +37,7 @@
 		</fieldset>
 	</section>
 	
-	<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+	<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

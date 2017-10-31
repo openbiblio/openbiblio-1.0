@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_copy_fields` (
   `data` text NOT NULL,
   PRIMARY KEY (`copyid`,`bibid`,`code`),
   KEY `code_index` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

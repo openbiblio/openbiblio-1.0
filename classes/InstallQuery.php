@@ -12,16 +12,16 @@ require_once("../classes/Queryi.php");
  * @author Fred LaPlante
  */
 
-class InstallQuery extends Queryi
-{
-    public function __construct() {
-        parent::__construct();
-    }
+class InstallQuery extends Queryi {
+
+	public function __construct() {
+	  parent::__construct();
+	}
 
 	public function getDbServerVersion () {
 		$sql = $this->mkSQL("SELECT VERSION()");
-        $rslt = parent::select1($sql);
-		return $rslt[0]['VERSION()'];
+    	$rslt = parent::select1($sql);
+		return $rslt['VERSION()'];
 	}
 
   public function getSettings($tablePrfx=0) {
@@ -37,9 +37,10 @@ class InstallQuery extends Queryi
          . "TABLE_NAME = `settings`";
         //echo "sql={$sql}<br/>\n";
         $rows = $this->select01($sql);
-    } catch (PDOException $e){ }
+    } catch (PDOException $e){
+	}
     if (!$rows || empty($rows) || !isset($rows)) {
-      return 'NothingFound';
+      	return 'NothingFound';
     }
 
     // since we have a table, fetch the contents
@@ -75,9 +76,11 @@ class InstallQuery extends Queryi
                         $version=OBIB_LATEST_DB_VERSION,
                         $dbName = DB_TABLENAME_PREFIX) {
     $rootDir = '../install/' . $version . '/sql';
-    $localeDir = '../locale/' . $locale . '/sql/' . $version;
     $this->executeSqlFilesInDir($rootDir, $dbName);
+
+    $localeDir = '../locale/' . $locale . '/sql/' . $version;
     $this->executeSqlFilesInDir($localeDir . '/domain/', $dbName);
+
     if($sampleDataRequired) {
         $this->executeSqlFilesInDir($localeDir . '/sample/', $dbName);
     }
@@ -199,10 +202,11 @@ class InstallQuery extends Queryi
    * Function to read through an sql file executing SQL only when ";" is encountered
    */
   function executeSqlFile($filename, $dbName = DB_TABLENAME_PREFIX) {
-    //echo "processing test file: $filename(br />\n";
+		//echo "processing test file: $filename <br />\n";
     $fp = fopen($filename, "r");
     # show error if file could not be opened
     if ($fp == false) {
+			//echo "error with file $filename <br />\n";
       Fatal::error("Error reading file: ".H($filename));
     } else {
         //this code based rom here :
@@ -227,6 +231,7 @@ class InstallQuery extends Queryi
         }
       }
       fclose($fp);
+			//echo "file $filename completed OK <br />\n";
     }
   } //executeSqlFile
 }

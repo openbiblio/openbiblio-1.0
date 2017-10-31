@@ -173,7 +173,7 @@ class Localize {
 		} else {
 			// flag text without an entry in trans.php file
 			// LJ: Disabled, I added this only for development, and should be put on only when updating the localisation texts.
-            //$text = 'T!'.$text."T!";
+			$text = '<span class="warning">T!</span>'.$text.'<span class="warning">!T</span>';
 		}
 		$text = $this->_substituteVars($text, $vars);
 

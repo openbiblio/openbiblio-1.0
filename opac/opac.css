@@ -1,0 +1,64 @@
+/* CSS Document */
+
+/* ---------------------------- */
+#menuBtn {display:block; }
+.menuSect { display:none; }
+
+/* ------- */
+nav { min-width:100%; margin:0.2em 0 0.2em; }
+nav .notPDA { display:none; }
+hr.navSpacer { margin:0.5em; margin-left:2em; color:gray; width:75%; padding-left:2em; }
+
+#accordion { margin-left:auto; margin-right:auto; }
+.navHeading {
+	position:relative;
+	padding-left:1.5em; margin:0.2em 0.1em 0 0.1em;
+	width: 85%;
+	/*color:white; background:black; text-decoration:none;*/
+	/*font: normal 120% Veranda; text-align:left; text-decoration:none;*/
+	font: normal Veranda; text-align:left; text-decoration:none;
+	}
+.navHeading, .navHeading a, .navHeading a:hover, .navHeading a:active {
+	color:white; background:#ccb470; text-decoration:none;
+	cursor:pointer;
+	}
+.touch .navHeading { font-size:1.5em; height:1.5em; }
+.navUnselected:before {
+	content:"\00A0";
+	display:block; position:absolute; top:0.4em; left:4px;
+	width:0; height:0;
+	border-width:3px 0px 3px 7px;
+	border-style:solid;
+	border-color:transparent transparent transparent #ffcc66;
+	}
+.navSelected:before {
+	content:"\00A0";
+	display:block; position:absolute; top:0.4em; left:5px;
+	width:0; height:0;
+	border-width:7px 3px 0px 3px;
+	border-style:solid;
+	border-color:#ffcc66 transparent transparent transparent;
+	}
+.navContent {
+	margin:0 0.2em 0.1em 1em; padding-left:0.2em;
+	/*font:normal 120% Veranda; text-decoration:none;*/
+	font:normal Veranda; text-decoration:none;
+	width:88%; color:black; background:white; border:1px solid gray;
+	display:none;
+	}
+.touch .navContent { font-size:1.5em; }
+.navContent a, .navContent a:hover, .navContent a:active {
+	color:black; background:white; text-decoration:none;
+	cursor:pointer;
+	}
+.navSpacer { padding-left:20px; }
+.notOffline { display:none; }
+
+/* ------- */
+.about { background-color:#ffffdd; }
+
+/* ---------------------------- */
+@media screen and (min-width:800px) {
+	/* For Desktops */
+	#menuBtn { display:none; }
+	.menuSect {display:block; }

@@ -29,9 +29,9 @@ function staff_menu() {
 
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasCatalogAuth"]){
-		Nav::node('cataloging', T("Cataloging"), '../catalog/srchForms.php');
-		Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
+		Nav::node('cataloging', T("Cataloging"), '../catalog/newItemForms.php');
 		Nav::node('cataloging/newItem', T("New Item"), "../catalog/newItemForms.php");
+		Nav::node('cataloging/localSearch', T("Existing Items"), "../catalog/srchForms.php");
 
 		//if (isset($_SESSION['rpt_BiblioSearch'])) {
 		//	Nav::node('cataloging/search', T("old search results"), '../shared/biblio_search.php?searchType=previous&tab='.U($tab));
@@ -80,8 +80,8 @@ function staff_menu() {
 	##-------------------------------------------------------------------------------------##
 	if($_SESSION["hasAdminAuth"]){
 		Nav::node('admin', T("Admin"), '../admin/index.php');
-		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');
 		Nav::node('admin/settings', T("Library Settings"), '../admin/settingsForm.php');
+		Nav::node('admin/staff', T("Staff Admin"), '../admin/staffForm.php');
 		Nav::node('admin/biblioFields', T("Biblio Fields"),'../admin/biblioFldsForm.php');
 		Nav::node('admin/biblioCopyFields', T("Biblio Copy Fields"),'../admin/biblioCopyFldsForm.php');
 		Nav::node('admin/calendar', T("Calendar Manager"), '../admin/calendarForm.php');
@@ -91,12 +91,12 @@ function staff_menu() {
 		Nav::node('admin/memberFields', T("Member Fields"), '../admin/memberFldsForm.php');
 		Nav::node('admin/onlineOpts', T("Online Options"), '../admin/onlineOptsForm.php');
 		Nav::node('admin/onlineHosts', T("Online Hosts"), '../admin/onlineHostsForm.php');
-		Nav::node('admin/openHours', T("Open hours"), '../admin/hoursForm.php');
+		Nav::node('admin/openHours', T("Hours open"), '../admin/hoursForm.php');
 		Nav::node('admin/sites', T("Sites"), '../admin/sitesForm.php');
 		Nav::node('admin/states', T("States"), '../admin/statesForm.php');
 		Nav::node('admin/themes', T("Themes"), '../admin/themeForm.php');
-		Nav::node('admin/opac', T("View Opac"), '../catalog/srchForms.php?tab=OPAC');
-		Nav::node('admin/dbChkr', T("Database Checker"), '../admin/dbChkrForms.php');
+		Nav::node('admin/opac', T("View Opac"), '../opac/index.php?tab=opac');
+		Nav::node('admin/dbChkr', T("Database checker"), '../admin/dbChkrForms.php');
 	}
 	
 	##-------------------------------------------------------------------------------------##

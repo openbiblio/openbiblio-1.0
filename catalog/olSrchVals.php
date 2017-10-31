@@ -57,9 +57,9 @@
   		break;
   		
 		case "999":
-		  ## special for external use as an general search engine
-		  $srchByName = 'general';
-		  $sruQuery = "";
+		  	## special for external use as an general search engine
+		  	$srchByName = 'general';
+		  	$sruQuery = "";
 			$lookupVal = '"' . $lookupVal . '"';
 			break;
 		}
@@ -72,7 +72,19 @@
 			}	else if ($srchBy2 == "1016") {
 				$srchByName2 = 'Keyword';
 				$sruQry2 = "$sruIndexTerm.subject=";
-  		}
+			}	else if ($srchBy2 == "1031") {
+				$srchByName2 = 'Media';
+				$sruQry2 = "$sruIndexTerm.media=";
+			}	else if ($srchBy3 == "59") {
+				$srchByName3 = 'Pub Loc';
+				$sruQry3 = "$sruIndexTerm.geographicName=";
+			}	else if ($srchBy3 == "31") {
+				$srchByName3 = 'Pub Date';
+				$sruQry3 = "$sruIndexTerm.date=";
+			}	else if ($srchBy3 == "1016") {
+				$srchByName3 = 'Keyword';
+				$sruQry3 = "$sruIndexTerm.subject=";
+			}
 			$lookupVal2 = '"' . $lookupVal2 . '"';
 		}
 		
@@ -86,7 +98,7 @@
 				$sruQry3 = "$sruIndexTerm.geographicName=";
 			}	else if ($srchBy3 == "31") {
 				$srchByName3 = 'Pub Date';
-				$sruQry3 = "dc.date=";
+				$sruQry3 = "$sruIndexTerm.date=";
 			}	else if ($srchBy3 == "1016") {
 				$srchByName3 = 'Keyword';
 				$sruQry3 = "$sruIndexTerm.subject=";

@@ -45,7 +45,7 @@ var ced = {
 	},
 	//----//
 	resetForm: function () {
-		$('#editRsltMsg').hide();
+//		obib.hideMsg();
 		$('#crntStatus').hide();
 		$('.help').hide();
 	},
@@ -66,8 +66,9 @@ var ced = {
 	},
 	//----//
 	fetchSiteList: function () {
-        var siteList = list.getSiteList($('#copySite'));
-		$('#copySite').html(siteList);
+//        var siteList = list.getSiteList($('#copySite'));
+//		$('#copySite').html(siteList);
+        list.getSiteList($('#copySite'));
 	},
 	//----//
 	chkBarcdForDupe: function () {
@@ -83,10 +84,10 @@ var ced = {
         $.post(ced.catalogSrvr,{'mode':'chkBarcdForDupe','barcode_nmbr':barcd,'copyid':currCopyId}, function (response) {
             if(response.length > 0){
             	$('#copySubmitBtn').disable(); //.css('color', '#888888');
-            	$('#editRsltMsg').html(response).show();
+            	obib.showMsg(response);
             } else {
             	$('#copySubmitBtn').enable(); //.css('color', bs.srchBtnClr);
-            	$('#editRsltMsg').html(response).show();
+            	obib.showMsg(response);
             }
 		})
     },
@@ -94,7 +95,7 @@ var ced = {
 	doCopyEdit: function (e) {
 		e.preventDefault();
 		e.stopPropagation();
-		$('#editRsltMsg').html('').hide();
+//		obib.hideMsg();
 		var btnid = e.currentTarget.id,
 				copyid = btnid.split('-')[1];
 		for (var nCopy in idis.copys) {
@@ -141,6 +142,7 @@ var ced = {
 		return false;
 	},
 	doCopyNew: function (e) {
+		//console.log('in copyEditorJs.php::doCopyNew()');
         ced.bibid = $('#copyBibid').val(); // set within srchJs::newCopy(); FL Aug 2016
         if ($('#autobarco:checked').length > 0) {
             ced.doGetBarcdNmbr();
@@ -161,8 +163,10 @@ var ced = {
 			e.preventDefault();
 			e.stopPropagation();
 			var params = "&mode=newCopy&bibid="+ced.bibid;
-
-			ced.doPostCopy2DB(params);
+			ced.doPostCopy2DB(params,'Added');
+			if (typeof(ni) !== 'undefined') {
+				ni.doPhotoAdd();
+			}
 		});
 	    // prevent submit button from firing a 'submit' action
 		return false;
@@ -175,10 +179,11 @@ var ced = {
 	    var params = "&mode=updateCopy&bibid="+ced.bibid+"&copyid="+ced.crntCopy.copyid;
 
 		// post to DB
-		ced.doPostCopy2DB(params);
+		ced.doPostCopy2DB(params, 'Updated');
 		return false;
 	},
-	doPostCopy2DB: function (params) {
+	doPostCopy2DB: function (params, mode) {
+		//console.log('in copyEditorJs.php::doPostCopy2Db()');
 		var copy = ced.crntCopy,
 			barcdNmbr = $('#copyBarcode_nmbr').val(),
 	  		copyDesc = $('#copyDesc').val(),
@@ -202,35 +207,33 @@ var ced = {
                     idis.fetchCopyInfo(); // refresh copy display
                 }
 
-                // LJ: This is used by search and new items.
+                obib.showMsg('Copy '+mode+' successfully!');
+
+                // LJ: This module is used by both search and new items.
                 if(typeof ni !== 'undefined') {
-                    ni.doBackToSrch();
+                    ni.doPhotoAdd();
                 } else {
                     bs.rtnToBiblio();
                 }
-                $('#rsltMsg').html('Copy updated successfully!').show();
-                setTimeout(function() {
-                    $("#rsltMsg").hide(500);
-                }, 5000);
             } else {
-                $('#editRsltMsg').html(response).show();
+                obib.showError(response);
             }
         });
         // LJ: removed JSON, as the result is not JSON.
 	    //}, 'json');
 	},
 	doCopyDelete: function (e) {
-	  $(this).parent().parent().addClass('hilite');
-	  if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
-		  var btnid = e.currentTarget.id,
-			  copyid = btnid.split('-')[1],
-	    	  params = "&mode=deleteCopy&bibid="+idis.bibid+"&copyid="+copyid;
-	  	  $.post(ced.catalogSrvr,params, function(response){
-	  	        $('#editRsltMsg').html(response).show();
-	  	        idis.fetchCopyInfo(); // refresh copy display
-	  	  });
-	  };
-	  $(this).parent().parent().removeClass('hilite');
+		$(this).parent().parent().addClass('hilite');
+		if (confirm('<?php echo T("Are you sure you want to delete this copy?"); ?>')) {
+			var btnid = e.currentTarget.id,
+				copyid = btnid.split('-')[1],
+				params = "&mode=deleteCopy&bibid="+idis.bibid+"&copyid="+copyid;
+			$.post(ced.catalogSrvr,params, function(response){
+				obib.showMsg(response);
+				idis.fetchCopyInfo(); // refresh copy display
+			});
+		};
+		$(this).parent().parent().removeClass('hilite');
 	}
 }
 $(document).ready(ced.init);

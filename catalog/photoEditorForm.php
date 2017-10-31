@@ -5,29 +5,23 @@
 ?>
 	<h3 id="fotoHdr"><?php echo T("PhotoEditor"); ?></h3>
 	<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-	<p id="fotoMsg" class="error"></p>
+
 	<fieldset>
 		<legend id="fotoEdLegend"></legend>
 
 		<!-- to reduce annoyance, only load video components if wanted-->
 		<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-		<div id="fotoDiv" style="display:none" >
+		<div id="fotoDiv" >
 			<!-- video element will be inserted here when JS is activated -->
-			<!-- folowing dimensions are not an error, the box MUST be square for later image rotation -->
-		 	<canvas id="canvasIn" width="<?php echo Settings::get('thumbnail_height');?>"
-			 					  height="<?php echo Settings::get('thumbnail_height');?>" >
-			</canvas>
+	  	    <video id="video" preload="auto" />
+		 	<canvas id="canvasIn" />
 		</div>
 		<?php } ?>
 
 		<div id="fotoCntlDiv">
-			<form id="fotoForm">
-                <fieldset id="userMsg"></fieldset>
-
+			<form role="form" id="fotoForm">
 				<fieldset class="inline">
-			 		<canvas id="canvasOut" width="<?php echo Settings::get('thumbnail_width');?>"
-					 											 height="<?php echo Settings::get('thumbnail_height');?>">
-					</canvas>
+			 		<canvas id="canvasOut"  />
 				</fieldset>
 				<fieldset class="inline">
                     <!-- source choices -->

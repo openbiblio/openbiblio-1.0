@@ -21,7 +21,7 @@
 ?>
 
 <h3><?php echo T("Manage Bookings"); ?></h3>
-<form name="booking_pending" method="get" action="../circ/booking_pending.php">
+<form role="form" name="booking_pending" method="get" action="../circ/booking_pending.php">
 <fieldset>
 <legend><?php echo T("Pending Bookings"); ?></legend>
 <table class="primary">

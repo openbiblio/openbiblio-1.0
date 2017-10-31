@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`booking_member` (
   `mbrid` int(11) NOT NULL,
   PRIMARY KEY (`bookingid`,`mbrid`),
   KEY `mbrid_idx` (`mbrid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

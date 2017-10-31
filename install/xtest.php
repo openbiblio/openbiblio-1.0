@@ -63,7 +63,7 @@
             <section id="const_editor">
               <p class="bold">Enter Database Constants</p><br /></P>
               <p class="note">Note: All fields MUST be filled.</P>
-              <form id="dbConstForm">
+              <form role="form" id="dbConstForm">
                 <label for="hostId">Host Id: </label>
                 <input id="hostId" type="text" placeholder="Ip Address or Name" required/><br />
                 <label for="userNm">User Name: </label>

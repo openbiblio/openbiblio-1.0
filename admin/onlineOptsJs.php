@@ -15,14 +15,13 @@ var oed = {
 	?>
 	init: function () {
 		//console.log('in oed init');
-	  //init(); // openbiblio parent init
 	  
 		oed.initWidgets();
 
 		oed.url = '../admin/adminSrvr.php';
 		oed.editForm = $('#editForm');
 
-	  $('#editHdr').html(<?php echo "'".T("Online Options")."'"; ?>);
+	  	$('#editHdr').html(<?php echo "'".T("Online Options")."'"; ?>);
 		$('#editForm').on('submit',null,oed.doUpdate);
 
 		oed.fetchOpts();
@@ -35,8 +34,7 @@ var oed = {
 	
 	resetForms: function () {
 		//console.log('resetting!');
-		$('#updateMsg').hide();
-		$('#msgDiv').hide();
+		obib.hideMsg();
 		$('#lookupVal').focus();
 	},
 	
@@ -48,7 +46,7 @@ var oed = {
 	//------------------------------
 	fetchOpts: function () {
 	  $.post(oed.url,{ 'cat':'opts', 'mode':'getOpts'}, function(data){
-	  	$('#protocol').val(data.protocol);
+	  		$('#protocol').val(data.protocol);
 			$('#maxHits').val(data.maxHits);
 			$('#timeout').val(data.timeout);
 			$('#keepDashes').val([data.keepDashes]);
@@ -75,31 +73,29 @@ var oed = {
 	doUpdate: function (e) {
 	  if (!oed.doValidate()) return;
 
-		$('#msgDiv').hide();
+		//obib.hideMsg();
 		$('#mode').val('updateOpts');
 		e.preventDefault();
 		e.stopPropagation();
 		var parms = $('#editForm').serialize();
 		//console.log(parms);
 		$.post(oed.url, parms, function(response) {
+			//console.log(response);
 			if (response.substr(0,1)=='<') {
 				//console.log('rcvd error msg from server :<br />'+response);
-				$('#msgArea').html(response);
-				$('#msgDiv').show();
+				obib.showMsg(response);
+			} else if (response.substr(0,1)=='1'){
+				obib.showMsg(oed.successMsg);
+			  	oed.doBackToList();
+			} else {
+				obib.showMsg(response);
+			  	oed.doBackToList();
 			}
-			else if (response.substr(0,1)=='1'){
-				$('#updateMsg').html(oed.successMsg);
-				$('#updateMsg').show();
-			  oed.doBackToList();
-			}
-			else {
-				$('#msgDiv').hide();
-			  oed.doBackToList();
-			}
-		});
+		}, 'JSON');
 		return false;
 	}
 };
 
-$(document).ready(oed.init);
+//$(document).ready(oed.init);
+oed.init();
 </script>

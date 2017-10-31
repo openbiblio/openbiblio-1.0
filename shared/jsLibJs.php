@@ -151,9 +151,9 @@ inptFld: function (type, name, value, attrs, data) {
 			}
 		});
 		s += "/>";
-		if (attrs['required']) {
-			s += '<span class="reqd">*</span>';
-		}
+//		if (attrs['required']) {
+//			s += '<span class="reqd">*</span>';
+//		}
 	}
 	/* ------------------------------------------------------- */
 },

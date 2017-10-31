@@ -53,7 +53,7 @@
 	<section id="entry">
 		<fieldset>
 		<legend>Change DB Collation HERE</legend>
-			<form id="chgForm" name ="chgColl">
+			<form role="form" id="chgForm" name ="chgColl">
 				<label for="collSet"><?php echo T("Collation"); ?>: </label>
 				<select id="collSet" name="collSet">
 				</select>
@@ -72,7 +72,7 @@
 		</fieldset>
 	</section>
 	
-	<div id="msgDiv"><fieldSet id="msgArea"></fieldset></div>
+	<div id="msgDiv"><fieldSet id="userMsg"></fieldset></div>
 
 <?php
   require_once(REL(__FILE__,'../shared/footer.php'));

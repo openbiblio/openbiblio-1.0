@@ -42,8 +42,6 @@ class MaterialFields extends DBTable {
 		$this->setForeignKey('material_cd', 'material_type_dm', 'code');
 	}
 
-	protected function validate_el($rec, $insert) { /*return array();*/ }
-
 	public function getDisplayInfo ($nmbr) {
 		$media = array();
 		$set = $this->getAll('material_cd,position');
@@ -63,17 +61,21 @@ class MaterialFields extends DBTable {
         foreach ($set as $row) {
 			if ($row['material_cd'] == $code) {
 				$n = 1;
+				// rows with repeatable > 0 will pass through multiple times,
+				// each pass will increase the suffex on the tag.subfield
+				// others only once and will get no numeric suffix
 				do {
 					$tag = $row['tag'].'$'.$row['subfield_cd'];
-					if ($row['repeatable'] > 0) $tag .= '$'.$n;
+					// if ($row['repeatable'] > 0) $tag .= '$'.$n; // remove unneded '$' FL May2017
+					if ($row['repeatable'] > 0) $tag .= $n;
 					$tags[$tag] = array('line'=>$row['position'],
-			 												'lbl'=>$row['label'],
-															'required'=>$row['required'],
-															'repeatable'=>$row['repeatable'],
-															'seq'=>$row['seq'],
-															'form_type'=>$row['form_type'],
-															'validation_cd'=>$row['validation_cd']
-															);
+			 							'lbl'=>$row['label'],
+										'required'=>$row['required'],
+										'repeatable'=>$row['repeatable'],
+										'seq'=>$row['seq'],
+										'form_type'=>$row['form_type'],
+										'validation_cd'=>$row['validation_cd']
+										);
 					$n++;
 				} while ($n<=$row['repeatable']);
 			}

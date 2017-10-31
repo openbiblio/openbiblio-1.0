@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`translocales` (
   `transLocaleText` varchar(50) NOT NULL,
   `transLocaleEnglishText` varchar(50) NOT NULL,
   PRIMARY KEY (`transLocaleID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+)  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

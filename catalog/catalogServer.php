@@ -52,6 +52,12 @@
     //echo "in catalogSrvr, at start: ";print_r($_POST);echo "<br />\n";
 
 	switch ($_POST['mode']) {
+	case 'setCurrentSite':
+		$crntSite = $_POST['siteid'];
+		$_SESSION['current_site'] = $crntSite;
+		echo json_encode('crntSite set to '.$crntSite);
+		break;
+
 	case 'doBibidSearch':
 	  $bib = new Biblio($_POST[bibid]);
 	  echo json_encode($bib->getData());
@@ -105,8 +111,8 @@
 				if($iterCounter - 1 < $firstItem) continue;
 				if($iterCounter > $lastItem) break;
 				## create a Biblio object for each item in range and add content to $srchRslt
-		  	$bib = new Biblio($bibid);
-		  	$srchRslt[] = json_encode($bib->getData());
+		  		$bib = new Biblio($bibid);
+		  		$srchRslt[] = json_encode($bib->getData());
 				unset($bib); ## object no longer needed, destroy it
 			}
 			echo json_encode($srchRslt);

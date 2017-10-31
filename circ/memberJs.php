@@ -141,7 +141,7 @@ var mf = {
 	},
 
 	showMsg: function (msg) {
-		$('#msgArea').html(msg);
+		$('#userMsg').html(msg);
 		$('#msgDiv').show();
 	},
 
@@ -326,13 +326,13 @@ var mf = {
 	},
 	doGetCheckOuts: function () {
 		$('#msgDiv').hide();
-		$('#msgArea').html('');
+		$('#userMsg').html('');
 		var ttlOwed = 0.00,
 			maxFines = mf.typeInfo.max_fines,
 	  		params = 'mode=getChkOuts&mbrid='+mf.mbrid;
 	    $.post(mf.url,params, function(jsonInpt){
 			if (jsonInpt.substr(0,1) == '<') {
-				$('#msgArea').html(jsonInpt);
+				$('#userMsg').html(jsonInpt);
 				$('#msgDiv').show();
 			} else if ($.trim(jsonInpt) == '[]') {
 				mf.cpys = [];
@@ -440,7 +440,7 @@ var mf = {
 	  $.post(mf.url,params, function(jsonInpt){
 			$('#tranList tBody').html(''); // clear any residue from past displays
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
-				$('#msgArea').html(jsonInpt);
+				$('#userMsg').html(jsonInpt);
 				$('#msgDiv').show();
 			} else {
 				mf.trans = JSON.parse(jsonInpt);
@@ -520,7 +520,7 @@ var mf = {
 	
 	//------------------------------
 	doCheckout: function () {
-		$('#msgArea').html('');
+		$('#userMsg').html('');
 		$('#msgDiv').hide();
 
 		var barcd = $.trim($('#ckoutBarcd').val());
@@ -589,7 +589,7 @@ var mf = {
 	  $.post(mf.url,{mode:'getHist', 'mbrid':mf.mbrid}, function(jsonInpt){
 			$('#histList tBody').html(''); // clear any residue from past displays
 			if ($.trim(jsonInpt).substr(0,1) != '[') {
-				$('#msgArea').html(jsonInpt);
+				$('#userMsg').html(jsonInpt);
 				$('#msgDiv').show();
 			} else {
 				mf.hist = JSON.parse(jsonInpt);

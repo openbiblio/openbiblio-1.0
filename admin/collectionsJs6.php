@@ -22,20 +22,20 @@ class Col extends Admin {
 			         },
 	       opts = {};
 
-	    super( url, form, dbAlias, hdrs, listFlds, opts );
-    	this.noshows = [];
+		super( url, form, dbAlias, hdrs, listFlds, opts );
+		this.noshows = [];
 
-	this.fetchTypes();
+		this.fetchTypes();
 
-	list.getDueDateCalculatorList($('#due_date_calculator'));
-	list.getImportantDatePurposeList($('#important_date_purpose'));
+		list.getDueDateCalculatorList($('#due_date_calculator'));
+		list.getImportantDatePurposeList($('#important_date_purpose'));
 
         $('#type').on('change',null,$.proxy(function () {
       	     this.setTypeDisplay();
         },this));
-	$('#due_date_calculator').on('change',null,$.proxy(function () {
-		this.getRelevantCalculatorFields();
-	}, this));
+		$('#due_date_calculator').on('change',null,$.proxy(function () {
+			this.getRelevantCalculatorFields();
+		}, this));
     };
 
     setTypeDisplay () {
@@ -43,21 +43,21 @@ class Col extends Admin {
     	if (type == 'Circulated') {
     		$('.distOnly').hide().removeAttr('required');
     		$('.circOnly').show().attr('required','true');
-		this.getRelevantCalculatorFields();
+			this.getRelevantCalculatorFields();
     	}
     	else if (type == 'Distributed') {
     		$('.circOnly').hide().removeAttr('required');
     		$('.distOnly').show().attr('required','true');
     	}
     	else {
-    		$('#msgArea').html('Invalid Collection Type');
+    		$('#userMsg').html('Invalid Collection Type');
     		$('#msgDiv').show();
     	}
     };
 
     getRelevantCalculatorFields () {
-	$("li[class^='calculator-']").hide();
-	$(".calculator-"+$("#due_date_calculator").val()).show();
+		$("li[class^='calculator-']").hide();
+		$(".calculator-"+$("#due_date_calculator").val()).show();
     };
 
     fetchTypes () {

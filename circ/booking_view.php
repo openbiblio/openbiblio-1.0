@@ -101,7 +101,7 @@
 		</td>
 	</tr>
 </table>
-<form method="post" action="../circ/mbr_search.php">
+<form role="form" method="post" action="../circ/mbr_search.php">
 <input type="hidden" name="rpt_terms[0][type]" value="keyword" />
 <input type="hidden" name="rpt_terms[0][exact]" value="0" />
 <table class="biblio_view">
@@ -131,7 +131,7 @@
 	</tr>
 </table>
 </form>
-<form method="post" action="../circ/booking_edit.php">
+<form role="form" method="post" action="../circ/booking_edit.php">
 <input type="hidden" name="bookingid" value="<?php echo H($bookingid); ?>" />
 <?php
 	if (isset($_SESSION['postVars']['confirm_book_dt'])) {

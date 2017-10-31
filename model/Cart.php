@@ -22,9 +22,6 @@ class Cart extends DBTable {
         ));
         //echo "in Cart::__construct(): ";print_r($this->fields);echo "<br />\n";
 	}
-	protected function validate_el($rec, $insert) {
-        return array();
-    }
 
 	function viewURL() {
 		$urls = array(

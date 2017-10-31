@@ -23,6 +23,7 @@ var bs = {
 	<?php
 		echo "showMarc: '".T("Show Marc Tags")."',\n";
 		echo "hideMarc: '".T("Hide Marc Tags")."',\n";
+		echo "whereAmI: '".T("curently viewing site")." ".$_SESSION['current_site']."',\n";
 	?> 
 	multiMode: false,
 	
@@ -33,6 +34,8 @@ var bs = {
 		bs.listSrvr = '../shared/listSrvr.php';
 		bs.urlLookup = '../catalog/onlineServer.php'; //may not exist
 		bs.opts = [];
+
+		$('#whereAmI').html(bs.whereAmI);
 
 		// for search criteria form
 		$('#barcdSrchBtn').on('click',null,bs.doBarcdSearch);
@@ -115,15 +118,15 @@ var bs = {
 
 		// for the item edit and online update functions
 		$('.itemGobkBtn').on('click',null,function () {
-   		$('#itemEditorDiv').hide();
+   			$('#itemEditorDiv').hide();
 		 	$('#biblioDiv').show();
 		});
 			
 		bs.resetForms();
-		bs.fetchOpts(); // also inits itemDisplayJs
+		bs.fetchOpts();
 		bs.fetchCrntMbrInfo();
 		// prepare pull-down lists
-		bs.fetchSiteList();
+		bs.fetchSiteList(); // also inits itemDisplayJs
         bs.fetchStatusCdsList($('#status_cd'));
 		bs.fetchMaterialList();
 		bs.fetchCollectionList();
@@ -137,57 +140,56 @@ var bs = {
 	initWidgets: function () {
 	},
 	resetForms: function () {
-	  //console.log('resetting Search Form');
+	  	//console.log('resetting Search Form');
 		$('#advancedSrch').hide();
 		$('#marcTagsRow').hide();
-	  $('#crntMbrDiv').hide();
-	  $('#searchDiv').show();
-		$('p.error').hide();
-	  $('#biblioDiv').hide();
-	  $('#biblioListDiv').hide();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
-	  bs.multiMode = false;
-	  bs.checkPhraseSrchBtn();
-	  bs.checkBarcdSrchBtn();
+	  	$('#crntMbrDiv').hide();
+	  	$('#searchDiv').show();
+		obib.hideMsg('now');
+	  	$('#biblioDiv').hide();
+	  	$('#biblioListDiv').hide();
+	  	$('#itemEditorDiv').hide();
+	  	$('#copyEditorDiv').hide();
+	  	$('#photoEditorDiv').hide();
+	  	bs.multiMode = false;
+	  	bs.checkPhraseSrchBtn();
+	  	bs.checkBarcdSrchBtn();
 		$('#marcBtn').val(bs.showMarc);
 		if (opacMode) $('#barcodeSearch').hide();
 		$('#ph_searchText').focus();
 	},
 	rtnToSrch: function () {
-  	$('tbody#biblio').html('');
-  	$('tbody#copies').html('');
-	  $('#rsltMsg').html('');
-	  $('#editRsltMsg').html('');
-	  $('#biblioDiv').hide();
-	  $('#biblioListDiv').hide();
-	  $('#searchDiv').show();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
-	  bs.checkPhraseSrchBtn();
-	  bs.checkBarcdSrchBtn();
+  		$('tbody#biblio').html('');
+  	  	$('tbody#copies').html('');
+		obib.hideMsg();
+		$('#editRsltMsg').html('');
+		$('#biblioDiv').hide();
+		$('#biblioListDiv').hide();
+		$('#searchDiv').show();
+		$('#itemEditorDiv').hide();
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
+		bs.checkPhraseSrchBtn();
+		bs.checkBarcdSrchBtn();
 	},
 	rtnToList: function () {
-	  $('#rsltMsg').html('');
-	  $('#editRsltMsg').html('');
-	  $('#biblioDiv').hide();
-	  $('#biblioListDiv').show();
-	  $('#searchDiv').hide();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
+		obib.hideMsg();
+		$('#editRsltMsg').html('');
+		$('#biblioDiv').hide();
+		$('#biblioListDiv').show();
+		$('#searchDiv').hide();
+		$('#itemEditorDiv').hide();
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
 	},
 	rtnToBiblio: function () {
-	  $('#rsltMsg').html('');
-	  $('#editRsltMsg').html('');
-	  $('#biblioDiv').show();
-	  $('#biblioListDiv').hide();
-	  $('#searchDiv').hide();
-	  $('#itemEditorDiv').hide();
-	  $('#copyEditorDiv').hide();
-	  $('#photoEditorDiv').hide();
+		obib.hideMsg();
+		$('#biblioDiv').show();
+		$('#biblioListDiv').hide();
+		$('#searchDiv').hide();
+		$('#itemEditorDiv').hide();
+		$('#copyEditorDiv').hide();
+		$('#photoEditorDiv').hide();
 	},
 
 	checkPhraseSrchBtn: function () {
@@ -229,19 +231,14 @@ var bs = {
 		?>
 	},
 
-	showMsg: function (msg) {
-		$('#errSpace').html(msg);
-		$('.error').show();
-	},
-
 	//------------------------------
 	fetchOpts: function () {
 		bs.opts['showBiblioPhotos'] = '<?php echo Settings::get('show_item_photos');?>';
 		bs.opts['barcdWidth'] = <?php echo Settings::get('item_barcode_width');?>;
-    bs.opts['current_site'] = '<?php echo Settings::get('library_name');?>';
+    	bs.opts['current_site'] = '<?php echo Settings::get('library_name');?>';
 	},
 	fetchCrntMbrInfo: function () {
-	  $.post(bs.url,{mode:'getCrntMbrInfo'}, function(data){
+	  	$.post(bs.url,{mode:'getCrntMbrInfo'}, function(data){
 			$('#crntMbrDiv').empty().html(data).show();
 		}, 'json');
 	},
@@ -319,11 +316,11 @@ var bs = {
         var params = '&mode=doBibidSearch&bibid='+bibid;
         $.post(bs.url,params, function(jsonInpt){
 			if ($.trim(jsonInpt).substr(0,1) != '{') {
-				$('#errSpace').html(jsonInpt).show();
+				obib.showMsg(jsonInpt);
 			} else {
 				bs.biblio = JSON.parse(jsonInpt);
 				if (!bs.biblio.data) {
-	  			$('#rsltMsg').html('<?php echo T("NothingFoundByBarcdSearch") ?>').show();
+	  				obib.showMsg('<?php echo T("NothingFoundByBarcdSearch") ?>');
 				}
 				else {
 					idis.showOneBiblio(bs.biblio)
@@ -347,7 +344,7 @@ var bs = {
 		params += '&mode=doBarcdSearch';
 	    $.post(bs.url,params, function(jsonInpt){
 			if (jsonInpt.message) {
-				$('#errSpace').html(jsonInpt.message).show();
+				obib.showMsg(jsonInpt.message);
 				return false;
 			} else {
 				bs.biblio = jsonInpt;
@@ -358,7 +355,7 @@ var bs = {
 				}
 				else if (bs.biblio.hdr == null) {
 				    var msgTxt =
-	  			    $('#rsltMsg').html('<?php echo T("Nothing Found") ?>').show();
+	  			    obib.showMsg('<?php echo T("Nothing Found") ?>');
 	  			    bs.rtnToSrch();
 				}
 				else {
@@ -375,7 +372,6 @@ var bs = {
         $('#biblioListDiv').show()
         $('#searchDiv').hide();
         $('#resultsArea').html('');
-        $('#errSpace').html('');
 
 		// searchType 'ID' gets special handling
 		var searchType = $('#ph_searchType option:selected').val();
@@ -405,7 +401,7 @@ var bs = {
 	    $.post(bs.url,params, function(jsonInpt){
 			//if ($.trim(jsonInpt).substr(0,1) != '[') {
 			//if ($.trim(jsonInpt).substr(0,1) != '[') {
-			//	$('#errSpace').html(jsonInpt).show();
+			//	$('#userMsg').html(jsonInpt).show();
 			//} else {
 				//var biblioList = JSON.parse(jsonInpt);
 				var biblioList = jsonInpt;
@@ -516,12 +512,13 @@ var bs = {
 			if (marc) {
 				//// Construct all potential lines for later use.
 				var lines = [],
-						lineNo;
+					lineNo;
 				$.each(marc, function (ndx, fld) {
 					//if (!fld.value) fld.value = 'n/a';
 					if (!fld.value) fld.value = '';
 					lineNo = fld.line;
-					lines[lineNo] = fld.value.trim();
+//					lines[lineNo] = fld.value.trim();
+					lines.push(fld.value.trim());
 				});
 			} else {
 				// skip these
@@ -655,7 +652,6 @@ var bs = {
 		$('#fotoHdr').val('<?php echo T("AddingNewFoto"); ?>')
 		$('#deltFotoBtn').hide();
 		//$('#updtFotoBtn').hide(); // not yet available
-        $('#userMsg').hide();
 		$('#addFotoBtn').show();
         $('#fotoMsg').hide();
 		$('#fotoMode').val('addNewPhoto')
@@ -663,17 +659,17 @@ var bs = {
 		bs.showPhotoForm();
 	},
 	showPhotoForm: function () {
-    if (!wc.url) wc.init;
+    	if (!wc.url) wc.init;
 
-	  $('#biblioDiv').hide();
-	  $('#fotoSrce').val('')
-	  $('#fotoBibid').val(idis.crntBibid);
+	  	$('#biblioDiv').hide();
+	  	$('#fotoSrce').val('')
+	  	$('#fotoBibid').val(idis.crntBibid);
 
-	  if (idis.crntFoto == null) {
+	  	if (idis.crntFoto == null) {
 			$('#fotoEdLegend').html('<?php echo T("EnterNewPhotoInfo"); ?>');
 	  	    $('#fotoName').val(idis.crntBibid+'.jpg');
 			wc.eraseImage();
-	  } else {
+	  	} else {
 			$('#fotoEdLegend').html('<?php echo T("CoverPhotoFor");?>: '+idis.crntTitle);
 	  	    $('#fotoName').val('<?php echo OBIB_UPLOAD_DIR; ?>'+idis.crntFoto.url);
 			wc.showImage($('#fotoName').val());

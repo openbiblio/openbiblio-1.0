@@ -25,7 +25,8 @@ class Hosts extends DBTable {
 		));
 		$this->setKey('id');
 		$this->setSequenceField('seq');
+        $this->setReq(array(
+            'name', 'host', 'port', 'db', 'syntax', 'seq', 'active',
+        ));
 	}
-
-	protected function validate_el($rec, $insert) { return array(); }
 }

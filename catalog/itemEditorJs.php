@@ -30,6 +30,11 @@ var ie = {
 			$('#onlnUpdtBtn').show();
 			$('#onlnDoneBtn').hide();
 		});
+
+		// prepare pull-down lists for later use
+        list.getPullDownList('Media', $('#itemMediaTypes'));
+        list.getPullDownList('Collection', $('#itemEditColls'));
+
 	},
 	//------------------------------
 	initWidgets: function () {
@@ -39,9 +44,9 @@ var ie = {
 
 	mkFldSet: function (key, val, mode) {
 		var txt='',
-				classStr = "marcBiblioFld",
-				attrs = {},
-				name='';
+			classStr = "marcBiblioFld",
+			attrs = {},
+			name='';
 
 		/* unique items per mode */
 		if (mode == 'editCol') {
@@ -52,7 +57,7 @@ var ie = {
 		} else if (mode == 'onlnCol') {
 			name = 'onln_'+key;
 			txt += '	<td valign="top" class="filterable">';
-	    txt += '		<input type="button" value="<--" id="'+name+'_btn" class="accptBtn" />';
+	    	txt += '		<input type="button" value="<--" id="'+name+'_btn" class="accptBtn" />';
 			txt += '	</td>\n<td valign="top" class="filterable">';
 		}
 
@@ -73,8 +78,9 @@ var ie = {
 			if (val['validation_cd'] !== null) attrs['validation_cd'] = val['validation_cd'];
 		}
 
-        //console.log('mkFldSet():');
-        //console.log(attrs);
+		//console.log('in ie.mkFldSet():');
+		//console.log(attrs);
+		if (!val.value) val.value = ' ';
 		if (val['form_type'] == 'textarea') {
 			attrs["rows"] = "7"; attrs["cols"] = "48";
 			txt += flos.inptFld('textarea', name+'[data]', val['value'], attrs, val['value'])+"\n";
@@ -97,14 +103,9 @@ var ie = {
 	    ie.bibid = hdr.bibid;
 		$('#editBibid').val(hdr.bibid);
 
-		// set non-MARC fields 
-        list.getPullDownList('Media', $('#itemMediaTypes'));
-        list.getPullDownList('Collection', $('#itemEditColls'));
-		$('#opacFlg').val(hdr.opac_flg);  // using data on hand
-
-		// fill MARC fields with data on hand
-		// each field has, in array 'val', a:
-		// label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
+		// fill pre-existing MARC fields with db data on hand
+		// each field has, in array 'val':
+		// a label, tag & suffix, fieldId, subfieldId, formInputType, displayValue
 	    var txt = '';
 		$.each(marc, function(key,val) {
 			if (val.lbl) {
@@ -112,6 +113,9 @@ var ie = {
 				txt += "<tr> \n";
 				txt += "	<td valign=\"top\"> \n";
 				txt +=  '		<label for="'+key+'">'+val['lbl']+": </label>\n";
+                if (val['required'] == 1) {
+					txt += '<span class="reqd">*</span>';
+				}
 				txt +=  "	</td> \n";
 				txt += ie.mkFldSet(key, val, 'editCol');	// local edit column
 				txt += ie.mkFldSet(key, val, 'onlnCol');  // update on-line column
@@ -119,6 +123,12 @@ var ie = {
 			}
 		});
 		$('#marcBody').html(txt);
+
+		// set non-MARC fields
+		//console.log('setting pull-downs: media='+hdr.material_cd+'; coll='+hdr.collection_cd);
+        $('#itemMediaTypes').val(hdr.material_cd);
+        $('#itemEditColls').val(hdr.collection_cd);
+		$('#opacFlg').val(hdr.opac_flg);  // using data on hand
 
 		$('#itemEditorDiv fieldset legend').html('<?php echo T("Edit Item Properties"); ?>');
 		$('#itemEditorDiv td.filterable').hide();
@@ -130,51 +140,68 @@ var ie = {
 
 	/* ====================================== */
 	fetchOnlnData: function () {
-		if ($('input[id="245$a"]').length > 0) var title =  $('input[id="245$a"]').val();
-			//console.log('title==>'+title);
-		if ($('input[id="100$a"]').length > 0) var author= $('input[id="100$a"]').val().split(',')[0];
-			//console.log('author==>'+author);
+		if ($('input[id="010$a"]').length > 0) var lccn = $.trim($('input[id="010$a"]').val());
+			//console.log('lccn==>'+lccn);
+		if ($('input[id="022$a"]').length > 0) var issn = $.trim($('input[id="022$a"]').val()).split(',');
+			//console.log('issn==>'+issn);
 		if ($('input[id="020$a"]').length > 0) {
-		  var isbn  = $('input[id="020$a"]').val().split(',');
-		  for (var i=0; i<isbn.length; i++) {
-		    if (!((isbn[i].substr(0,3) == '978') && (isbn[i].length == 10))) {
-		    	var ISBN = isbn[i];
-		    	break;
+		  	var isbnAll  = $('input[id="020$a"]').val().split(';');
+		  	for (var i=0; i<isbnAll.length; i++) {
+		    	if (isbnAll[i].substr(0,3) == '978') {
+		    		var isbn = $.trim(isbnAll[i].substr(0,13));
+						//console.log('isbn-13: '+isbn);
+		    		break;
+				} else {
+		    		var isbn = $.trim(isbnAll[i].substr(0,10));
+						//console.log('isbn-10: '+isbn);
+		    		break;
 				}
 			}
 			//console.log('isbn==>'+isbn);
 		}
-		if ($('input[id="022$a"]').length > 0) var issn  = ($('input[id="022$a"]').val()).split(',');
-			//console.log('issn==>'+issn);
+		if ($('input[id="245$a"]').length > 0) var title =  $.trim($('input[id="245$a"]').val());
+			//console.log('title==>'+title);
+		if ($('input[id="100$a"]').length > 0) var author = $.trim($('input[id="100$a"]').val().split(',')[0]);
+			//console.log('author==>'+author);
 
 		var msgText = '',
-				params = '',
-				item = '';
-	  if ((isbn != '') && (isbn != undefined)) {
-	  	msgText = '<?php T("Searching for ISBN"); ?>'+' '+isbn,
-	  	params = "&mode=search&srchBy=7&lookupVal="+isbn,
-	  	item = isbn;
+			params = '',
+			item = '';
+	  	if ((lccn != '') && (lccn != undefined) && (typeof lccn !== null)) {
+			//console.log('using lccn');
+	  		msgText = '<?php T("Searching for LCCN"); ?>'+' '+lccn;
+	  		params = "&mode=search&srchBy=9&lookupVal="+lccn;
+	  		item = isbn;
+	  	} else if ((isbn != '') && (isbn != undefined)) {
+			//console.log('using isbn');
+	  		msgText = '<?php T("Searching for ISBN"); ?>'+' '+isbn;
+	  		params = "&mode=search&srchBy=7&lookupVal="+isbn;
+	  		item = isbn;
 		} else if ((issn != '') && (issn != undefined)) {
-	  	msgText = '<?php T("Searching for ISSN"); ?>'+' '+issn;
-	  	params = "&mode=search&srchBy=7&lookupVal="+issn;
-	  	item = issn;
+			//console.log('using issn');
+	  		msgText = '<?php T("Searching for ISSN"); ?>'+' '+issn;
+	  		params = "&mode=search&srchBy=8&lookupVal="+issn;
+	  		item = issn;
 		} else if (title && author) {
-	  	msgText = "Searching for<br />Title: '"+title+"',<br />by "+author;
-	  	params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
-	  	item = '"'+title+'", by '+author;
+			//console.log('using title & author');
+	  		msgText = "Searching for<br />Title: '"+title+"',<br />and "+author;
+	  		params = "&mode=search&srchBy=4&lookupVal="+title+"&srchBy2=1004&lookupVal2="+author;
+	  		item = '"'+title+'", by '+author;
 		} else {
-			$('#onlineMsg').html('<?php T("NotEnoughData"); ?>').show();
+			//console.log('nothing to search by');
+			msgText = '<?php T("NotEnoughData"); ?>'
+			$('#onlineMsg').html(msgText).show();
 			return;
 		}
-
-	  msgText += '.<br />' + '<?php echo T("this may take a moment.");?>'
+		msgText += '.<br />' + '<?php echo T("this may take a moment.");?>'
 		$('#onlineMsg').html(msgText).show();
+			//console.log('search params ==>> '+params);
 
-	  $.post(ie.urlLookup,params,function(response){
+	  	$.post(ie.urlLookup,params,function(response){
 			//console.log('params==>'+params)
-			var rslts = JSON.parse(response),
-					numHits = parseInt(rslts.ttlHits),
-					maxHits = parseInt(rslts.maxHits);
+			var rslts = response,
+				numHits = parseInt(rslts.ttlHits),
+				maxHits = parseInt(rslts.maxHits);
 			if (numHits < 1) {
 				$('#onlineMsg').html(rslts.msg+' for '+item);
 			}
@@ -186,24 +213,26 @@ var ie = {
 				$('#onlineMsg').html(numHits+'hits found, this version can only handle one.');
 			}
 			else if (rslts.ttlHits == 1){
-			  var data;
+			  	var data;
 				$('#onlineMsg').html('Success!!<br /><br />'+
-														 'Click the arrow buton to enter online data,<br />'+
-														 'then click "Update" at the bottom of the page.');
+									 'Click the arrow buton to enter online data,<br />'+
+									 'then click "Update" at the bottom of the page.');
 				bs.hostData = rslts.data;
 				$.each(rslts.data, function(hostIndex,hostData) {
-				  $.each(hostData, function(hitIndex,hitData) {
-					  data = hitData;
-				  }); // .each
+				  	$.each(hostData, function(hitIndex,hitData) {
+					  	data = hitData;
+				  	}); // .each
 				}); // .each
 				for (var tag in data) {
 					$('#marcBody input.online:text').filter('#'+tag).val(data[tag]);
 				}
 
-				// this button created dynamicly by server
-				$('#marcBody input.accptBtn').on('click',null,bs.doFldUpdt);
 			} // else
-		}); // .post
+
+			// this button created dynamicly by server
+			$('#marcBody input[type="button"].accptBtn').on('click',null,ie.doFldUpdt);
+
+		},'JSON'); // .post
 	},
 
 	doFldUpdt: function (e) {

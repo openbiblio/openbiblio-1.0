@@ -29,7 +29,17 @@ abstract class DBTable extends Queryi {
 		parent::__construct();
 	}
 
-	abstract protected function validate_el($rec, $insert); /*{ return array(); }*/
+	protected function validate_el($rec, $insert){
+		$errors = array();
+		// check for missing entries
+		foreach ($this->reqFields as $req) {
+	        if ($insert and !isset($rec[$req])
+	                        or isset($rec[$req]) and $rec[$req] == '') {
+	            $errors[] = new FieldError($req, T("Required field missing"));
+	        }
+		}
+		return $errors;
+	}
 
 	## ------------------ setters ---------------------------------------- ##
 	protected function setName($name) {
@@ -87,8 +97,9 @@ abstract class DBTable extends Queryi {
 		$key = func_get_args();
 		$sql = $this->mkSQL('SELECT * FROM %I WHERE ', $this->name)
 			. $this->_keyTerms($key);
-        //echo "in DBTable::maybeGetOne(): ";echo "$sql";echo "<br /> \n";
+ 		//echo "in DBTable::maybeGetOne(): ";echo "$sql";echo "<br /> \n";
 		$row = $this->select01($sql);
+		// echo "in DBTable::maybeGetOne(): ";print_r("$row");echo "<br /> \n";
 		return $row;
 	}
 	public function getOne() {
@@ -96,9 +107,10 @@ abstract class DBTable extends Queryi {
 		$row = call_user_func_array(array($this, 'maybeGetOne'), $key);
 		if (is_null($row)) {
 			//Fatal::internalError(T("Bad key (%key%) for %name% table", array('key'=>implode(', ', $key), 'name'=>$this->name)));
-            //echo "Fatal::internalError";echo "Bad key ";print_r($key);echo" for table $this->name";
+            echo "Fatal::internalError";echo "Bad key ";print_r($key);echo" for table $this->name";
 			//echo "sql=$sql<br />\n";
 		}
+ 		//echo "in DBTable::getOne(): ";print_r($row);echo "<br /> \n";
 		return $row;
 	}
 	public function getAll($orderby = NULL) {
@@ -138,7 +150,7 @@ abstract class DBTable extends Queryi {
         return array($seqVal, 'Success');
 	}
 	public function insert_el($rec, $confirmed=false) {
-        //echo "in DBTbl:insert_el ,";print_r($rec);echo "<br />\n";
+		//echo "in DBTbl:insert_el ,";print_r($rec);echo "<br />\n";
 		$this->lock();
 		//$errs = $this->checkForeignKeys_el($rec);
 		//if (!empty($errs)) {
@@ -158,11 +170,13 @@ abstract class DBTable extends Queryi {
 
 		$sql = $this->mkSQL('INSERT INTO %I SET ', $this->name)
 			. $this->_pairs($rec);
+		//echo "sql = $sql <br />\n";
 		$this->act($sql);
 		if ($this->sequence) {
 			if (isset($rec[$this->sequence])) {
 				$seq_val = $rec[$this->sequence];
 			} else {
+				//echo 'getting auto increment key';
 				$seq_val = $this->getInsertID();
 			}
 		} else {
@@ -175,26 +189,27 @@ abstract class DBTable extends Queryi {
 	public function update($rec, $confirmed=false) {
 		$errors = $this->update_el($rec, $confirmed);
 		if ($errors) {
-			//Fatal::internalError(T("DBTableErrorUpdating", array('name'=>$this->name, 'error'=>Error::listToStr($errors))));
-			//Fatal::internalError(T("DBTableErrorUpdating")." '".$this->name."', ".Error::listToStr($errors));
-            //echo "Error: $this->name; ";print_r($errors);echo "<br />\n";
             return $errors;
+		} else {
+        	return T("Success");
 		}
-        return T("Success");
 	}
 	public function update_el($rec, $confirmed=false) {
+		//echo "in DBTable::update_el()";
 		$key = array();
 		foreach ($this->key as $k) {
 			if (!isset($rec[$k]))
 				Fatal::internalError(T("DBTableIncompleteKey", array('key'=>$k)));
 			$key[] = $rec[$k];
 		}
+
 		$this->lock();
 		$errs = $this->checkForeignKeys_el($rec);
 		if (!empty($errs)) {
 			$this->unlock();
 			return $errs;
 		}
+
 		$errs = $this->validate_el($rec, false);
 		if ($confirmed) {
 			$errs = $this->skipIgnorableErrors($errs);
@@ -203,18 +218,29 @@ abstract class DBTable extends Queryi {
 			$this->unlock();
 			return $errs;
 		}
-		$sql = $this->mkSQL('UPDATE %I ', $this->name)
-			. ' SET '.$this->_pairs($rec)
-			. ' WHERE '.$this->_keyTerms($key);
-		$this->act($sql);
-		$this->unlock();
-		return array();
+
+		if (!$errs) {
+			$sql = $this->mkSQL('UPDATE %I ', $this->name)
+				. ' SET '.$this->_pairs($rec)
+				. ' WHERE '.$this->_keyTerms($key);
+			//echo "sql = $sql<br />\n";
+			$rslt = $this->act($sql);
+			$errs = $rslt->fetch();
+			$this->unlock();
+		}
+		if (isset($errs)) {
+			return $errs;
+			//return array();
+		} else {
+        	return T("Success");
+		}
 	}
 	public function deleteOne() {
+		//echo "in DBTable::deleteOne()";
 		$this->lock();
 		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
-        //echo "sql=$sql<br />\n";
+		//echo "sql=$sql<br />\n";
 		$this->act($sql);
 		$this->unlock();
 	}

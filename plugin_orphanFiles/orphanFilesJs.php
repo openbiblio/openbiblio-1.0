@@ -25,8 +25,8 @@ var orf = {
 	resetForms: function () {
 		//console.log('resetting!');
 		$('#orfnChkBtn').focus();
-	  $('#rsltsArea').hide();
-	  $('#msgDiv').hide();
+	  	$('#rsltsArea').hide();
+	  	$('#msgDiv').hide();
 	},
 	
 	//------------------------------
@@ -42,10 +42,10 @@ var orf = {
 		var detl = $('#detl :checked').val(),
 				verb = $('#verb :checked').val();
 		$.post(orf.url, {
-											'mode':'ck4Orfans',
-											'detl':detl,
-											'verb':verb,
-										},
+						'mode':'ck4Orfans',
+						'detl':detl,
+						'verb':verb,
+						},
 						function (response) {
 			$('#rslts').html(response);
 		});

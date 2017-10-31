@@ -34,16 +34,12 @@ class Admin {
 
     	this.initWidgets();
 
-    	$('#msgDiv').hide();
-    	$('#reqdNote').css('color','red');
-    	$('.reqd sup').css('color','red');
-    	$('#updateMsg').hide();
-
 	    $('.newBtn').click(function(e) {e.preventDefault();});
     	$('.newBtn').on('click',null,$.proxy(this.doNewFields,this));
     	$('.actnBtns').on('click',null,$.proxy(this.doSubmitFields,this));
-    	//$('#cnclBtn').on('click',null,$.proxy(this.resetForms,this));
-    	$('#cnclBtn').on('click',null,$.proxy(this.doBackToList,this));
+    	$('#cnclBtn, .cnclBtn').on('click',null,$.proxy(this.doBackToList,this));
+
+		$('input:visible:first').focus();   // set focus to first input element of each form on page
 
     	this.fetchList();
     	this.resetForms()
@@ -54,7 +50,9 @@ class Admin {
     };
 
     resetForms () {
+ 		obib.hideMsg('now');
     	$('#editDiv').hide();
+    	$('#extraDiv').hide();
         $('#listHdr').html(this.listHdr);
         $('#editHdr').html(this.editHdr);
         $('#cnclBtn').val('Go Back');
@@ -62,8 +60,8 @@ class Admin {
     };
 
     doBackToList () {
-        //console.log('in back to list');
-    	$('#msgDiv').hide('slow', $.proxy(this.backHandler, this));
+		this.fetchList();
+		this.resetForms();
     };
     backHandler (e) {
     	this.resetForms();
@@ -74,9 +72,11 @@ class Admin {
     fetchList () {
     	var params = { 'cat':this.dbAlias,
     				   'mode':'getAll_'+this.dbAlias,
-    							 };
+    				};
         $.post( this.url, params, $.proxy(this.fetchHandler,this), 'json');
     };
+
+	// construct the initial 'List' screen from database table content
     fetchHandler (dataAray) {
         this.json = dataAray;	// will be re-used later for editing
 
@@ -100,7 +100,10 @@ class Admin {
     		// these vary by form in use
     		for (var fld in this.listFlds) {
     			var theClass = this.listFlds[fld];
+				//console.log('fld type='+theClass+'; with value='+item[fld]);
+
     			if (theClass == 'image') {
+					if (item[fld] == 'null') item[fld] = 'shim.gif';
     				html += '	<td valign="top">'
     					 +'		<img src="../images/'+item[fld]+'" width="20" height="20" align="middle">'
     					 + 		item[fld] + '</td>\n';
@@ -109,6 +112,12 @@ class Admin {
     				html += '	<td valign="top" class="'+theClass+'">'
     					 +  '		<textarea cols="100" readonly>'+item[fld]+'</textarea></td>\n';
     			}
+				else if (theClass == 'bool') {
+					// does not seem to be working - FL 4 Jun 2017
+					let val = (item[fld] == '1')? 'Yes': 'No';
+					//consloe.log(val);
+    				html += '	<td valign="top" class="'+theClass+'" readonly>'+ val +'</td>\n';
+				}
     			else {
     				html += '	<td valign="top" class="'+theClass+'">'+item[fld]+'</td>\n';
     			}
@@ -129,11 +138,14 @@ class Admin {
     	return html;
     };
        
+	// fill out the contents of the 'edit' screen from data previously downloaded
     doEditFields (e) {
-        var code = $(e.target).next().val(),
-    	    ident = this.keyFld,
-    		n;
-    	for (n in this.json) {
+		//console.log('in doEditfields()');
+		/* get id from field adjacent to 'edit' button of list screen */
+        var code = $(e.target).next().val();
+    	var ident = this.keyFld;
+		/* now locate data for desired object and build screen with it */
+    	for (let n in this.json) {
     		var item = this.json[n];
     	    if (item[ident] == code) {
     			this.showFields(item);
@@ -143,46 +155,48 @@ class Admin {
     	}
     	return false;
     };
-	
-    showFields (item) {
+    showFields (rec) {
+		//console.log('process '+item+' in showFields()');
         $('#fieldsHdr').html(this.editHdr);
         $('#addBtn').hide();
-        $('#updtBtn').show();
-        $('#deltBtn').show();
+        $('#updtBtn').show().enable();
+        $('#deltBtn').show().enable();
 
-    	$('#editTbl').find('input:not(:button):not(:submit), textarea, select').each(function () {
-    		var tagname = $(this).get(0).tagName;
-    		if (tagname == 'select') {
-    			$(this).val([item[this.id]]);
+		/* scan form and set values of fields using corresponding data entries  */
+    	$('#editTbl').find('input:not(:button):not(:submit):not(:password), textarea, select').each(function () {
+			var $this = $(this);
+
+    		if ($this.is('[type=radio]')) {
+    			$this.val([rec[this.name]]);
+    		} else {
+ 				/* despite documentation, this seems to be needed for checkboxes, and works for others too. */
+				$this.val([rec[this.id]]);
     		}
-    		else if ($(this).is('[type=checkbox]')) {
-    			$(this).val([item[this.id]]);
-    		}
-    		else if ($(this).is('[type=radio]')) {
-    			$(this).val([item[this.name]]);
-    		}
-    		else if ($(this).is('[type=file]')) {
-    			$(this).val([item[this.id]]);
-    		}
-    		else {
-    			$(this).val(item[this.id]);
-    		}
-            // key field must be static for updates (marked 'addOnly' in html)
-            var theClass = $(this).get(0).className;
+
+            /* key field must be static for updates (marked 'addOnly' in html) */
+            var theClass = $this.get(0).className;
             if (theClass == 'addOnly') {
-                $(this).attr('readOnly',true);
+                $this.attr('readOnly',true);
             }
     	});
+
     	for (var n in this.noshows){
     		$('#'+this.noshows[n]).attr('required',false).hide();
     	};
-        $('#editForm input:visible:first').focus();
+
     	$('#codeReqd').hide();
     	$('#listDiv').hide();
     	$('#editDiv').show();
     };
 	
-    doNewFields (e) {
+    doNewFields () {
+		//console.log('in JSAdmin::doNewFields()');
+    	//e.preventDefault();
+    	//e.stopPropagation();
+		$('#addBtn').enable();
+		$('#updtBtn').enable();
+		$('#deltBtn').enable();
+
         document.forms['editForm'].reset();
         $('#fieldsHdr').html(this.newHdr);
     	for (var n in this.noshows){
@@ -201,97 +215,147 @@ class Admin {
     };
 	
     doSubmitFields (e) {
-        //console.log('in JSAdmin::doSubmitFields()');
-    	e.preventDefault();
-    	e.stopPropagation();
-    	var theId = e.target.id;
-    	switch (theId) {
-    		case 'addBtn':	this.doAddBtn();	  break;
-    		case 'updtBtn':	this.doUpdtBtn();  break;
-    		case 'deltBtn':	this.doDeltBtn();  break;
-    		default: $('#msgArea').html("'"+theId+"' is not a valid action button id");
-    				 $('#msgDiv').show();
+		//console.log('in JSAdmin::doSubmitFields()');
+    	var theBtn = e.target.id;
+    	switch (theBtn) {
+    		case 'addBtn':	this.doAddBtn(e);	break;
+    		case 'updtBtn':	this.doUpdtBtn(e);  break;
+    		case 'deltBtn':	this.doDeltBtn(e);  break;
+    		default: obib.showError("'"+theBtn+"' is not a valid action button id");
     	}
     };
-	doAddBtn () {
-        this.doAddFields()
+	doAddBtn (e) {
+		//console.log('in JSAdmin::addBtn(): '+e.target.id)
+        this.doAddFields(e)
     }
-	doUpdtBtn () {
-        this.doUpdateFields()
+	doUpdtBtn (e) {
+        this.doUpdateFields(e)
     }
-	doDeltBtn () {
-        this.doDeleteFields();
+	doDeltBtn (e) {
+        this.doDeleteFields(e);
     }
 
-    doAddFields () {
-console.log('in JSAdmin::doAddFields()');
-    	$('#msgDiv').hide();
-    	$('#mode').val('addNew_'+this.dbAlias);
-    	$('#cat').val(this.dbAlias);
-    	var parms = this.doGatherParams();
-    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.addHandler,this), 'json');
-    	return false;
-    };
     doGatherParams () {
         return $('#editForm').serializeArray();
     };
     doAssembleParams (params) {
-		var numParams = params.length;
-        for (var i = (numParams-1); i >= 0; i--) {
-            if ((params[i].value.length < 1)) {
-                 params.splice(i, 1);
-            }
+		var numParams = params.length-1;
+        for (var i=0; i<numParams; i++) {
+			if ((typeof params[i] !== "undefined") && (typeof params[i].value !== "undefined")) {
+	            if (params[i].value.length < 1) {
+	                 params.splice(i, 1);
+            	}
+			}
         }
 		return jQuery.param(params);
     };
-    addHandler (response) {
-console.log(response);
-        this.seqNum = response[0];
-    	this.showResponse(response[1]);
-    };
 
-    doUpdateFields () {
-    	$('#updateMsg').hide();
-    	$('#msgDiv').hide();
+    doAddFields (e) {
+		//console.log('in JSAdmin::doAddFields(): '+e.target.id)
+		let f = document.getElementById('editForm');
+		if(f.reportValidity()) {
+			//console.log('all validations pass');
+    		obib.hideMsg('now');
+		} else {
+			//console.log('some validation(s) fail');
+			obib.showError('some validation(s) fail');
+			return;
+		}
+    	e.preventDefault();
+    	e.stopPropagation();
+
+    	$('#mode').val('addNew_'+this.dbAlias);
+    	$('#cat').val(this.dbAlias);
+    	var parms = this.doGatherParams();
+		parms = this.doAssembleParams(parms)
+    	$.post(this.url, parms, $.proxy(this.addHandler, this), 'json');
+		$('#addBtn').enable();
+		return false;
+    };
+	addHandler (response) {
+		$('#addBtn').disable();
+		this.showResponse(response);
+	};
+
+    doUpdateFields (e) {
+		$('#updtBtn').enable();
+		obib.hideMsg();
     	$('#mode').val('update_'+this.dbAlias);
     	$('#cat').val(this.dbAlias);
 		var parms = this.doGatherParams();
-    	if ($('#newImageFile').length) {
+    	if ($('#newImageFile').val() != '') {
     		parms.push($('#newImageFile').serializeArray());
 		}
-    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this));
+    	$.post(this.url, this.doAssembleParams(parms), $.proxy(this.updateHandler, this), 'json');
+    	e.preventDefault();
+    	e.stopPropagation();
     	return false;
     };
     updateHandler (response) {
-    	this.showResponse(response);
+		$('#updtBtn').disable();
+   		this.showResponse(response);
     };
 	
     doDeleteFields (e) {
-    	var msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
+		$('#deltBtn').enable();
+    	let msg = this.delConfirmMsg+'\n>>> '+$('#'+this.focusFld).val()+' <<<';
         if (confirm(msg)) {
-      	   var parms = {'cat':this.dbAlias,
+      	   let parms = {'cat':this.dbAlias,
     					'mode':'d-3-L-3-t_'+this.dbAlias,
     					'code':$('#'+this.keyFld).val(),
     					'description':$('#description').val(),
-    								};
+    					};
     		parms[this.keyFld] = $('#'+this.keyFld).val();
       	    $.post(this.url, parms, $.proxy(this.deleteHandler,this));
+    		e.preventDefault();
+    		e.stopPropagation();
     	}
     	return false;
     };
-    deleteHandler (response){
-    	this.showResponse(response);
+    deleteHandler (response) {
+		var svrResponse = '';
+		if ((($.trim(response)).indexOf('ompleted') > -1) || (($.trim(response)).indexOf('eleted') > -1)) {
+			svrResponse = 'Success - '+response;
+		}
+        $('#deltBtn').disable();
+		$('#updtBtn').disable();
+    	this.showResponse(svrResponse);
     };
 
     showResponse (response) {
-        //console.log('rcvd response from server: '+response);
-    	if (($.trim(response)).indexOf('Success') > 0){
-    		$('#msgArea').html(response);
-    		$('#msgDiv').show();
-            this.doBackToList();
+console.log('in JSAdmin::showResponse(): response='+response);
+		var userMsg = '';
+		var	seqNum = 0;
+		//console.log('initial userMsg= '+userMsg);
+
+		if (response.indexOf(',') >= 0) {
+console.log('got a CSV thing');
+			//let parts = response.split(',');
+			//userMsg = parts[1];
+			userMsg = response;
+		} else if ( $.isArray(response) ) {
+console.log('got an array')
+			seqNum = response[0];
+			userMsg = response[1];
+		} else if (typeof response === 'object') {
+console.log('got an object')
+			userMsg = JSON.stringify(response);
+		} else {
+console.log("don't know what I got")
+			userMsg = response;
+		}
+		//console.log('in JSAdmin::showResponse(): userMsg='+userMsg);
+
+		if (userMsg.indexOf('uccess') >= -1 ) {
+			//console.log('found success; userMsg= ' + userMsg);
+    		obib.showMsg(userMsg);
+			//this.doBackToList();  // this will cause user message to be removed before it can be read
+		} else if (userMsg.indexOf('rror') >= -1 ) {
+			//console.log('found error; userMsg= ' + userMsg);
+    	    obib.showError(userMsg);
     	} else {
-    	    $('#msgArea').html(response);
-    	    $('#msgDiv').show();
+			//console.log('using default; userMsg= '+userMsg);
+    	    obib.showError(userMsg);
         }
         return
     };

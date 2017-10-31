@@ -38,8 +38,4 @@ class History extends DBTable {
 		$this->unlock();
 		return array($id, $errs);
 	}
-
-	protected function validate_el($new, $insert) {
-
-	}
 }

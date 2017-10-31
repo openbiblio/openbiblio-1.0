@@ -17,4 +17,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_copy` (
   UNIQUE KEY `histid_idx` (`histid`),
   KEY `bibid_idx` (`bibid`),
   KEY `barcode_index` (`barcode_nmbr`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;
+) DEFAULT CHARSET=utf8 AUTO_INCREMENT=73 ;

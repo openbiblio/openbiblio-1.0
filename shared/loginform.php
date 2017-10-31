@@ -50,7 +50,7 @@
 <h3 class="title"><?php echo T("Staff Login"); ?></h3>
 <?php // print_r($_SESSION); //debugging only ?>
 
-<form name="loginform" method="post" action="../shared/login.php">
+<form role="form" name="loginform" method="post" action="../shared/login.php">
 <fieldset>
 <table>
 	<tbody>
@@ -63,8 +63,8 @@
 	<tr>
 		<td><label for="password"><?php echo T("Password"); ?>:</label></td>
 		<td valign="top" class="noborder">
-			<input id="pwd" name="pwd" type="password" size="15" required aria-required="true" />
-			<!--label><input type="checkbox" id="showPwd" /> show password</label-->
+			<input id="password" name="pwd" type="password" size="15" required aria-required="true" />
+			<label><input type="checkbox" id="showPassword" /> show password</label>
 		</td>
 	</tr>
 	<?php if(($_SESSION['multi_site_func'] > 0) || ($_SESSION['site_login'] == 'Y')){ ?>
@@ -91,19 +91,12 @@
 
 <script language="JavaScript" >
 	"use strict"
-/* TODO - fl get this working
-console.log('js activated');
-	$("#showPwd").on('change',null, function () {
-console.log("'hide pwd' clicked");
-		if ($("#showPwd:checked").length > 0) {
-        	$(".pwd").attr('type', 'text');
-console.log("'pwd type' now text");
-		} else {
-        	$(".pwd").attr('type', 'password');
-console.log("'pwd type' now password");
-		}
+	var password = document.getElementById('password');
+	var showPassword = document.getElementById('showPassword');
+	showPassword.addEventListener('change', function () {
+		let type = this.checked ? 'text' : 'password';
+		password.setAttribute('type', type);
 	});
-*/
 </script>
 
 <?php

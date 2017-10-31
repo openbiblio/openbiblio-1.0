@@ -92,13 +92,8 @@ class Members extends CoreTable {
 	}
 	
 	protected function validate_el($mbr, $insert) {
-		$errors = array();
-		foreach ($this->reqdFlds as $req) {
-			if ($insert and !isset($mbr[$req])
-					or isset($mbr[$req]) and $mbr[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 		# Check for duplicate barcodes
 		if (isset($mbr['barcode_nmbr']) && ($mbr['barcode_nmbr'] != '000000')) {
 			$sql = $this->mkSQL("SELECT COUNT(*) duplicates FROM member "

@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`php_sess` (
   `last_access_dt` datetime DEFAULT NULL,
   `data` mediumtext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

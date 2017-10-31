@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`member_fields` (
   `data` text COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`mbrid`,`code`),
   KEY `code_index` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)  DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

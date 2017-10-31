@@ -24,38 +24,42 @@
 		sort($mods,SORT_LOCALE_STRING);
 		return $mods;
 	};
+/*
 	function array_flat($array) {
 		$tmp = array();
-	  foreach($array as $a) {
-	    if(is_array($a)) {
-	      $tmp = array_merge($tmp, array_flat($a));
-	    } else {
-      	$tmp[] = $a;
-    	}
-  	}
-  	return $tmp;
+		foreach($array as $a) {
+		    if(is_array($a)) {
+		      	$tmp = array_merge($tmp, array_flat($a));
+		    } else {
+	      		$tmp[] = $a;
+	    	}
+	  	}
+	  	return $tmp;
 	}
+*/
+/*
 	function getFileList($dir) {
-  	$files = array();
-  	if ($handle = opendir($dir)) {
-    	while (false !== ($file = readdir($handle))) {
-      	if ($file != "." && $file != ".." && 
-						$file != 'sql' && 
-						$file != 'legacy' && 
-						$file != 'themes') {
-          if(is_dir($dir.'/'.$file)) {
-          	$dir2 = $dir.'/'.$file;
-          	$files[] = getFileList($dir2);
-          } else {
-          	$aFile = $dir.'/'.$file;
-            $files[] = $aFile;
-          }
-        }
-    	}
-    	closedir($handle);
-  	}
-  	return array_flat($files);
+	  	$files = array();
+	  	if ($handle = opendir($dir)) {
+	    	while (false !== ($file = readdir($handle))) {
+		      	if ($file != "." && $file != ".." &&
+								$file != 'sql' &&
+								$file != 'legacy' &&
+								$file != 'themes') {
+		          if(is_dir($dir.'/'.$file)) {
+		          	$dir2 = $dir.'/'.$file;
+		          	$files[] = getFileList($dir2);
+		          } else {
+		          	$aFile = $dir.'/'.$file;
+		            $files[] = $aFile;
+		          }
+		        }
+	    	}
+	    	closedir($handle);
+	  	}
+	  	return array_flat($files);
 	}
+*/
 
 	/* define T() string to match to a trans[] entry */
 	/* - used to check for missing or needed entries */

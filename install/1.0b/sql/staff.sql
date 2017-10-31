@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS %prfx%.staff (
+CREATE TABLE IF NOT EXISTS staff (
   userid int(11) NOT NULL AUTO_INCREMENT,
   create_dt datetime NOT NULL,
   last_change_dt datetime NOT NULL,
@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS %prfx%.staff (
   catalog_flg char(1) NOT NULL,
   reports_flg char(1) NOT NULL,
   tools_flg char(1) NOT NULL,
+  start_page varchar(64) DEFAULT 'admin' NOT NULL,
   PRIMARY KEY (userid)
-) DEFAULT CHARSET=utf8;
-INSERT INTO %prfx%.staff (userid, create_dt, last_change_dt, last_change_userid, username, pwd, last_name, first_name, suspended_flg, admin_flg, circ_flg, circ_mbr_flg, catalog_flg, reports_flg, tools_flg) VALUES
-(2, '0000-00-00 00:00:00', '2010-12-18 16:42:03', 2, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Administrator', '', 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y');
+)   DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO staff (userid, create_dt, last_change_dt, last_change_userid, username, pwd, last_name, first_name, secret_key, suspended_flg, admin_flg, circ_flg, circ_mbr_flg, catalog_flg, reports_flg, tools_flg, start_page) VALUES
+(1, '2017-05-06 00:00:01', '2017-05-06 00:00:01', 2, 'admin', MD5('admin'), 'Administrator', '', MD5('admin'), 'N', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'admin');

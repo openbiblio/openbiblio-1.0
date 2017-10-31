@@ -24,10 +24,10 @@ class Sites extends DBTable {
 			'email'=>'string',
 			'calendar'=>'number',
 		));
-        $this->setReq(array(
-            'name', 'calendar', 'country',
-        ));
 		$this->setKey('siteid');
+        $this->setReq(array(
+            'name', 'code', 'city', 'delivery_note',
+        ));
 		$this->setSequenceField('siteid');
 		$this->setForeignKey('calendar', 'calendar_dm', 'code');
 	}
@@ -52,16 +52,26 @@ class Sites extends DBTable {
 		}
 		return $select;
 	}
+
+	function getHoldings() {
+		$sql = "SELECT `siteid`, count(*) as quan FROM `biblio_copy` GROUP BY `siteid`";
+		return $this->select($sql);
+	}
+
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        // check for missing entries
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 		return $errors;
+	}
+
+	function moveSiteHoldings($rec) {
+		$sql = "UPDATE `biblio_copy` set siteid = '".$rec["to"]."' where siteid = '".$rec["fm"]."' LIMIT 2";
+		//echo "sql=$sql <br />\n";
+		$errors = $this->act($sql);
+		if ($errors === false)
+			return 'Error: update failed';
+		else
+			return 'Success';
 	}
 
 	function deleteOne() {

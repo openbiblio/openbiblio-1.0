@@ -14,9 +14,8 @@
 <h3><?php echo T("Staff Members"); ?></h3>
 
 <div id="listDiv" style="display: none;">
-<h5 id="updateMsg"></h5>
 
-<form id="showForm" name="showForm">
+<form role="form" id="showForm" name="showForm">
 <input type="button" class="newBtn" value="<?php echo T("Add New"); ?>" />
 <fieldset>
 <table id="showList" name="showList"">
@@ -28,6 +27,7 @@
 		<th rowspan="2" valign="top"><?php echo T("Userid"); ?></th>
 		<th colspan="6"><?php echo T("Authorization"); ?></th>
 		<th rowspan="2" valign="top"><?php echo T("Suspended"); ?></th>
+		<th rowspan="2" valign="top"><?php echo T("Start Page"); ?></th>
 	</tr>
 	<tr>
 		<th><?php echo T("Circ"); ?></th>
@@ -55,7 +55,7 @@
 </div>
 
 <div id="editDiv" style="display: none;">
-<form id="editForm" name="editForm">
+<form role="form" id="editForm" name="editForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 	<legend id="fieldsHdr"></legend>
@@ -77,24 +77,38 @@
     	<li id="pwdFldSet">
     		<fieldset>
     			<ul>
-        			<li>
-       			        <label for="pwd1"><?php echo T("Password"); ?>:</label>
-       			        <input type="password" id="pwd1" name="pwd" size="20" required aria-required="true" />
+      			    <li>
+      			        <label for="xpwd1"><?php echo T("Password"); ?>:</label>
+      			        <input type="password" id="xpwd1" name="pwd" size="20" required aria-required="true" />
     						<span class="reqd">*</span>
+						<label><input type="checkbox" id="showPasswd1" /> show password</label>
     				</li>
       			    <li>
-      			        <label for="pwd2"><?php echo T("Re-enter"); ?>:</label>
-      			        <input type="password" id="pwd2" name="pwd2" size="20" required aria-required="true" />
+      			        <label for="xpwd2"><?php echo T("Re-enter"); ?>:</label>
+      			        <input type="password" id="xpwd2" name="pwd2" size="20" required aria-required="true" />
     						<span class="reqd">*</span>
+						<label><input type="checkbox" id="showPasswd2" /> show password</label>
     				</li>
     			</ul>
     		</fieldset>
     	</li>
-        <li>
-            <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
-    		<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
+      	<li>
+	        <label for="suspended_flg"><?php echo T("Suspended"); ?>:</label>
+	    	<input id="suspended_flg" name="suspended_flg" type="checkbox" value="Y" />
+    	</li>
+      	<li>
+			<label for="start_page"><?php echo T("Start Page"); ?>:</label>
+			<select id="start_page" name="start_page" >
+				<option value="../admin/index.php">System Admin</option>
+				<option value="../catalog/newItemForms.php">Cataloging</option>
+				<option value="../circ/memberForms.php">Circulation</option>
+				<option value="../reports/index.php">Reports</option>
+				<option value="../research/srchForms.php?tab=user">Research</option>
+				<option value="../tools/index.php">Tools</option>
+			</select>
     	</li>
     	<br />
+
     	<li>
     		<fieldset>
     			<legend><?php echo T("Authorization");?>:</legend>
@@ -134,20 +148,23 @@
 </div>
 
 <div id="pwdDiv" style="display: none;">
-<form id="pwdChgForm" name="pwdChgForm">
+<form role="form" id="pwdChgForm" name="pwdChgForm">
 <h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
 <fieldset>
 	<legend><?php echo T("Reset Password"); ?> for <span></span></legend>
 	<ul id="editTbl">
+		<p class="note"><?php echo T("Password at least 4 chars"); ?></p>
         <li>
             <label for="pwdA"><?php echo T("Password"); ?>:</label>
             <input type="password" id="pwdA" name="pwd" size="20" required aria-required="true" />
     			<span class="reqd">*</span>
+			<label><input type="checkbox" id="showPasswdA" /> show password</label>
     	</li>
         <li>
             <label for="pwdB"><?php echo T("Password"); ?>:</label>
             <input type="password" id="pwdB" name="pwd2" size="20" required aria-required="true" />
     			<span class="reqd">*</span>
+			<label><input type="checkbox" id="showPasswdB" /> show password</label>
     	</li>
 	</ul>
 	<ul id="btnRow">
@@ -156,14 +173,11 @@
 	</ul>
 </fieldset>
 </form>
-
-<div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
+</div>
 
 <?php
-  require_once(REL(__FILE__,'../shared/footer.php'));
-	
-	//require_once(REL(__FILE__, "../classes/AdminJs.php"));
-	//require_once(REL(__FILE__, "staffJs.php"));
+    require_once(REL(__FILE__,'../shared/footer.php'));
+
 	require_once(REL(__FILE__, "../classes/JSAdmin.php"));
 	require_once(REL(__FILE__, "../admin/staffJs6.php"));
 ?>

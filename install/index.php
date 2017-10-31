@@ -22,9 +22,8 @@
 		</section>
 
 		<section id="dbPblms">
-			<pre id="connectErr"></pre>
-			Please make sure the following has been done before re-running this
-			install script.
+			<!--pre id="connectErr"></pre>
+			Please make sure the following has been done before re-running this install script.
 			<ol>
 				<li>create OpenBiblio database
 					(<a href="../install_instructions.html#step4">step 4</a> of the
@@ -38,20 +37,20 @@
 					instructions)</li>
 			</ol>
 			See <a href="../install_instructions.html">Install Instructions</a> for more details.
-			</p>
+			</p-->
 		</section>
 	
 		<section id="versionOK">
 			<p>Your OpenBiblio Installation is up to date.</p>
 			<p>Nothing further is required.</p><br />
-			<form method="get" action="../index.php">
+			<form role="form" method="get" action="../index.php">
 				<input id="useBtn" type="submit" value="<?php echo T("Start Using OpenBiblio"); ?>" />
 			</form>
 		</section>
 
 		<section id="newInstall">
 			<p>New Install</p>
-			<form id="newForm">
+			<form role="form" id="newForm">
 				<table cellpadding=0 cellspacing=0 border=0>
 				<!--tr>
 					<td><label for="locale">Language:</label></td>
@@ -75,14 +74,14 @@
 			</p>
 			<br />
 			<p class="error">WARNING - Please back up your database before updating.</p>
-			<form name="updateForm">
+			<form role="form" name="updateForm">
 				<input id="updtBtn" type="submit" value="<?php echo T("Update Now"); ?>">
 			</form>
 		</section>
 
 		<section id="startOB">
 			<p>OpenBiblio appears ready for use.</p>
-			<form name="startForm" method="POST" action="../index.php">
+			<form role="form" name="startForm" >
 				<input id="startBtn" type="submit" value="<?php echo T("Start OpenBiblio now"); ?>">
 			</form>
 		</section>

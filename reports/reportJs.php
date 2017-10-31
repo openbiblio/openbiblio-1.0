@@ -90,6 +90,33 @@ var rpt = {
 		});
 	},
 
+	//-------------------------
+	/*
+	 * This function parses ampersand-seperated name=value argument pairs from
+	 * the query string of the URL.  It stores the name=value pairs in
+	 * properties of an object and returns that object.  Use it like this:
+	 *
+	 * var args = urlArgs();  // parse args from URL
+	 * var q = args.q || "";   // use arguement, if defined, or a default value
+	 * var n = args.n ? parseInt(args.n) : 10;
+	 *
+	 * adapted from "JavaScript: the Definitive Guide", by David Flanagan, 6th ed, p.344
+	 */
+	urlArgs: function(url) {
+		var args = {};                            // start wit empty object
+		var query = url || location.search.substring(1); // get query string minus '?'
+		var pairs = query.split('&');             // split at ampersands
+		for (var i=0; i<pairs.length; i++) {      // for each fragment
+			var pos = pairs[i].indexOf('=');        // look for name=value
+			if (pos == -1) continue;                // if not found, skip it
+			var name = pairs[i].substring(0,pos);   // extract the name
+			var value = pairs[i].substring(pos+1);  // extract the value
+			value = decodeURIComponent(value);      // decode the value
+			args[name] = value                      // store as a property
+		}
+		return args;
+	},
+
 	//------------------------------
 	getNextPage:function () {
 		$('.nextBtn').disable();

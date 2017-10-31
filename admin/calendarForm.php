@@ -19,8 +19,6 @@
 	//print_r($_SESSION); // for debugging
 ?>
 
-	<p id="errSpace" class="error"></p>
-
 <!-- ------------------------------------------------------------------------ -->
 	<div id="listDiv">
 		<fieldset>
@@ -37,7 +35,7 @@
 		<h3><?php echo T("Edit Calendar"); ?></h3>
 
 		<p class="note"><?php echo T("calendarEditFormMsg");?></p>
-		<form id="editForm" name="editForm">
+		<form role="form" id="editForm" name="editForm">
 			<fieldset>
 				<input type="hidden" id="calMode" name="mode" value="" />
 				<input type="hidden" id="calName" name="oldName" value="" />

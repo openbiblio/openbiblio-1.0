@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`calendar` (
   `date` date NOT NULL,
   `open` enum('Yes','No','Unset') NOT NULL,
   PRIMARY KEY (`calendar`,`date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

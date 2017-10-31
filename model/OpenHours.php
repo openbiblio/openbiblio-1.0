@@ -22,18 +22,15 @@ class OpenHours extends DBTable {
 			'private_note'=>'string',
 		));
 		$this->setKey('hourid');
+        $this->setReq(array(
+            'siteid', 'day',
+        ));
 	}
 
 	protected function validate_el($rec, $insert) {
-                $errors = array();
-        	// check for missing entries
-                foreach ($this->reqFields as $req) {
-                        if ($insert and !isset($rec[$req])
-                                        or isset($rec[$req]) and $rec[$req] == '') {
-                                $errors[] = new FieldError($req, T("Required field missing"));
-                        }
-                }
-                return $errors;
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+		return $errors;
 	}
 
 	private function getHoursOnDay($day_code) {

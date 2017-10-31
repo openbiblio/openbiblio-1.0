@@ -36,7 +36,6 @@
     <div id="rsltDiv">
 	   <fieldset id="errList">
 		    <ul id="rslts"></ul>
-
     		<form>
     			<input type="button" id="chkAgnBtn" value="<?php echo T("Recheck"); ?>" />
     			<input type="hidden" id="dummy" />
@@ -44,8 +43,6 @@
     		</form>
 	   </fieldset>
     </div>
-
-    <div id="msgDiv" style="display: none;"><fieldSet id="msgArea"></fieldset></div>
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));

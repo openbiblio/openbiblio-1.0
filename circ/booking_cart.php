@@ -65,7 +65,7 @@ function setCheckboxes()
 	return true;
 }
 </script>
-<form name="selection" id="selection" action="../shared/cart_del.php" method="post">
+<form role="form" name="selection" id="selection" action="../shared/cart_del.php" method="post">
 <input type="hidden" name="tab" value="<?php echo HURL($tab)?>" />
 <input type="hidden" name="name" value="bookingid" />
 <table class="resultshead">

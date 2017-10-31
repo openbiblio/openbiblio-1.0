@@ -33,6 +33,9 @@ class Bookings extends CoreTable {
 			'ret_dt'=>'string',
 		));
 		$this->setKey('bookingid');
+        $this->setReq(array(
+            'mbrids', 'bibid', 'book_dt', 'due_dt',
+        ));
 		$this->setSequenceField('bookingid');
 		$this->setForeignKey('bibid', 'biblio', 'bibid');
 		$this->setForeignKey('out_histid', 'biblio_status_hist', 'histid');
@@ -113,13 +116,8 @@ class Bookings extends CoreTable {
 		}
 		$booking = array_merge($old, $new);
 
-		$errors = array();
-		foreach (array('mbrids', 'bibid', 'book_dt', 'due_dt') as $req) {
-			if (!isset($booking[$req])
-					or isset($booking[$req]) and $booking[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing").": $req");
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 
 		# Check that mbrids exist
 		if (isset($new['mbrids'])) {

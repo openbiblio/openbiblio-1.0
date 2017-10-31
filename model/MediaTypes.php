@@ -26,14 +26,8 @@ class MediaTypes extends DmTable {
 	}
 
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        // all required fields present?
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
         // test checkout_limits
 		$positive = array('adult_checkout_limit', 'juvenile_checkout_limit');
 		foreach ($positive as $f) {

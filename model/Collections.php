@@ -23,6 +23,9 @@ class CircCollections extends DBTable {
 			'pre_closing_padding'=>'number',
 		));
 		$this->setKey('code');
+        $this->setReq(array(
+            'days_due_back', 'minutes_due_back', 'due_date_calculator', 'regular_late_fee',
+        ));
 		$this->setForeignKey('code', 'collection_dm', 'code');
 		$this->calculators = [];
 
@@ -69,29 +72,29 @@ class CircCollections extends DBTable {
 				. 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute)  + INTERVAL 23 hour + 59 minute) '
 				. 'END AS due FROM collection_circ WHERE code=%N ',
 		);
-                $this->calculators[] = array(
-                        'code' => 'before_we_close',
-                        'required_params' => array('calendarid', 'calenderid', 'siteid', 'collectionid'),
-                        'calculation' => 'SELECT CASE '
-				// Check if due date would fall on a day the Library is closed
-                                . 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
-                                . "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
-				// If the library will indeed be closed,  find the closest previous open day with open hours
-				// that are not by appointment
-				// then set the due date to X minutes before the library closes on the open day we've identified
-				. 'THEN (SELECT (calendar.date + '
-				. 'INTERVAL TRUNCATE((open_hours.end_time / 100), 0) hour + INTERVAL (open_hours.end_time %% 100) minute - '
-				. 'INTERVAL pre_closing_padding minute) '
-				. 'FROM calendar, open_hours, collection_circ '
-				. 'WHERE open="Yes" AND DAYOFWEEK(calendar.date) = open_hours.day'
-				. 'AND NOT open_hours.by_appointment AND calendar.calendar=%N AND open_hours.siteid=%N '
-				. 'AND calendar.date<(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.minutes_due_back minute) '
-				. 'ORDER BY date DESC, open_hours.end_time DESC LIMIT 1) '
-				// Otherwise, set to X minutes before closing on the calculated date
-                                . 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute)  + '
-				. 'INTERVAL TRUNCATE((open_hours.end_time / 100), 0) hour + INTERVAL (open_hours.end_time %% 100) minute - '
-				. 'INTERVAL pre_closing_padding minute) '
-                                . 'END AS due FROM collection_circ WHERE code=%N ',
+        $this->calculators[] = array(
+            'code' => 'before_we_close',
+            'required_params' => array('calendarid', 'calenderid', 'siteid', 'collectionid'),
+            'calculation' => 'SELECT CASE '
+			// Check if due date would fall on a day the Library is closed
+	                        . 'WHEN DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute) '
+	                        . "IN (SELECT date FROM calendar WHERE calendar=%N AND open='No') "
+			// If the library will indeed be closed,  find the closest previous open day with open hours
+			// that are not by appointment
+			// then set the due date to X minutes before the library closes on the open day we've identified
+			. 'THEN (SELECT (calendar.date + '
+			. 'INTERVAL TRUNCATE((open_hours.end_time / 100), 0) hour + INTERVAL (open_hours.end_time %% 100) minute - '
+			. 'INTERVAL pre_closing_padding minute) '
+			. 'FROM calendar, open_hours, collection_circ '
+			. 'WHERE open="Yes" AND DAYOFWEEK(calendar.date) = open_hours.day'
+			. 'AND NOT open_hours.by_appointment AND calendar.calendar=%N AND open_hours.siteid=%N '
+			. 'AND calendar.date<(now() + INTERVAL collection_circ.days_due_back day + INTERVAL collection_circ.minutes_due_back minute) '
+			. 'ORDER BY date DESC, open_hours.end_time DESC LIMIT 1) '
+			// Otherwise, set to X minutes before closing on the calculated date
+	                        . 'ELSE (DATE (now() + INTERVAL days_due_back day + INTERVAL minutes_due_back minute)  + '
+			. 'INTERVAL TRUNCATE((open_hours.end_time / 100), 0) hour + INTERVAL (open_hours.end_time %% 100) minute - '
+			. 'INTERVAL pre_closing_padding minute) '
+	                        . 'END AS due FROM collection_circ WHERE code=%N ',
 		);
 /*
                 $this->calculators[] = array(
@@ -112,21 +115,17 @@ class CircCollections extends DBTable {
                                 . 'END AS due FROM collection_circ WHERE code=%N ',
 		);
 */
-                $this->calculators[] = array(
-                        'code' => 'ask_me',
-                        'required_params' => array('calendarid', 'calenderid', 'collectionid'),
+        $this->calculators[] = array(
+            'code' => 'ask_me',
+            'required_params' => array('calendarid', 'calenderid', 'collectionid'),
 			// Don't select a due date at this stage
-                        'calculation' => 'SELECT NULL AS due ',
+            'calculation' => 'SELECT NULL AS due ',
 		);
 	}
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('code', 'days_due_back', 'minutes_due_back', 'due_date_calculator', 'regular_late_fee') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
 		$positive = array('days_due_back', 'regular_late_fee');
 		foreach ($positive as $f) {
 			if (!is_numeric($rec[$f])) {
@@ -198,16 +197,15 @@ class DistCollections extends DBTable {
 			'restock_threshold'=>'number',
 		));
 		$this->setKey('code');
+        $this->setReq(array(
+            'restock_threshold'
+        ));
 		$this->setForeignKey('code', 'collection_dm', 'code');
 	}
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('code', 'restock_threshold') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
 		$positive = array('restock_threshold');
 		foreach ($positive as $f) {
 			if (!is_numeric($rec[$f])) {
@@ -231,7 +229,7 @@ class Collections extends DmTable {
 			'type'=>'string',
 		));
         $this->setReq(array(
-            'code', 'description', 'default_flg', 'type'
+            'description', 'default_flg', 'type'
         ));
 		$this->setSequenceField('code');
 		$this->setKey('code');
@@ -243,14 +241,9 @@ class Collections extends DmTable {
 	}
 
 	protected function validate_el($rec, $insert) {
-		$errors = array();
-        // all required fields present?
-		foreach ($this->reqFields as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
+
         // valid collection type?
 		if (isset($rec['type']) and !array_key_exists($rec['type'], $this->colltypes)) {
 			$errors[] = new FieldError('type', T("Bad collection type"));
@@ -344,10 +337,11 @@ class Collections extends DmTable {
 		return $errs;
 	}
 	public function deleteOne() {
-		$code = func_get_args(0);
-		DBTable::deleteOne($code);
+		//echo "in Collections::deleteOne()";
+		$code = func_get_arg(0);
+		echo parent::deleteOne($code);
 		foreach ($this->colltypes as $table) {
-			$table->deleteOne($code);
+			echo $table->deleteOne($code);
 		}
 	}
 	public function deleteMatches($fields) {

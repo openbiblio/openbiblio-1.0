@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`cart` (
   `name` char(16) NOT NULL,
   `id` int(11) NOT NULL,
   PRIMARY KEY (`sess_id`(64),`name`,`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;

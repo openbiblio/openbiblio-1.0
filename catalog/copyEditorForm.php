@@ -9,9 +9,8 @@
 ?>
 
 	<p class="note"><?php echo T("Fields marked are required"); ?></p>
-	<p id="editRsltMsg" class="error"></p>
 
-	<form id="copyForm" name="copyForm" >
+	<form role="form" id="copyForm" name="copyForm" >
 	<fieldset>
 	<legend id="copyLegend"><?php echo T("Add New Copy"); ?></legend>
 	<table id="copyTbl" >
@@ -72,25 +71,19 @@
 					echo "</tr>";
 				}
 			?>
-		</tbody>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<input type="hidden" id="copyBibid" name="bibid" value="" />
-				<input type="hidden" id="copyMode" name="mode" value="" />
-			</td>
-		</tr>
+			<tr>
+				<td colspan="2">
+					<input type="hidden" id="copyBibid" name="bibid" value="" />
+					<input type="hidden" id="copyMode" name="mode" value="" />
+				</td>
+			</tr>
 		</tbody>
 
-		<tfoot>
-		<tr>
-			<td align="center" colspan="2">
-				<input type="submit" id="copySubmitBtn" value="<?php echo T("Submit"); ?>" />
-				<input type="button" id="copyCancelBtn" value="<?php echo T("Cancel"); ?>" />
-			</td>
-		</tr>
-		</tfoot>
 	</table>
+	<div class="btnRow gridded">
+		<input type="submit" id="copySubmitBtn" class="col1" value="<?php echo T("Submit"); ?>" />
+		<input type="button" id="copyCancelBtn" class="col4" value="<?php echo T("Cancel"); ?>" />
+	</div>
 	</fieldset>
 	</form>
 

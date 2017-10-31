@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`material_type_dm` (
   `image_file` varchar(128) DEFAULT NULL,
 	`srch_disp_lines` tinyint(3) unsigned NOT NULL DEFAULT '4',
   PRIMARY KEY (`code`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 INSERT INTO %prfx%.`material_type_dm` (`code`, `description`, `default_flg`, `adult_checkout_limit`, `juvenile_checkout_limit`, `image_file`) VALUES
 (6, 'magazines', 'N', 10, 5, 'mag.gif'),
 (5, 'equipment', 'N', 10, 5, 'case.gif'),

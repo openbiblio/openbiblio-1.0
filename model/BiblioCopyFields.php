@@ -15,15 +15,13 @@ class BiblioCopyFields extends DmTable {
 			'default_flg'=>'string',
 		));
 		$this->setKey('code');
+        $this->setReq(array(
+            'code', 'dedescription',
+        ));
 	}
 	function validate_el($rec, $insert) {
-		$errors = array();
-		foreach (array('description', 'code') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] == '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 		return $errors;
 	}
 }

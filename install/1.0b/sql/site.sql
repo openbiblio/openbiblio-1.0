@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`site` (
   `email` varchar(128) DEFAULT NULL,
   `delivery_note` text NOT NULL,
   PRIMARY KEY (`siteid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 INSERT INTO %prfx%.`site` (`siteid`, `calendar`, `name`, `code`, `address1`, `address2`, `city`, `state`, `zip`, `phone`, `fax`, `email`, `delivery_note`) VALUES
 (1, 0, 'Home', 'home', '344 Bacon Rd', '', 'Mercer', 'ME', '04957', '207-587-2623', '', 'flaplante@flos-inc.com', 'Leave under cover'),
 (2, 2, 'LaPlante Library', 'lib', '344 Bacon Rd', '', 'Mercer', 'ME', '04957', '207-587-2623', '', 'library@flos-inc.com', 'Leave at front door');

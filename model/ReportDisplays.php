@@ -39,15 +39,14 @@ class ReportDisplays extends DBTable {
 			'params'=>'string',
 		));
 		$this->setKey('page', 'position');
+        $this->setReq(array(
+            'page', 'position', 'report', 'title', 'max_rows', 'params',
+        ));
 	}
 	function validate_el($rec, $insert) {
 		$errors = array();
-		foreach (array('page', 'position', 'report', 'title', 'max_rows', 'params') as $req) {
-			if ($insert and !isset($rec[$req])
-					or isset($rec[$req]) and $rec[$req] === '') {
-				$errors[] = new FieldError($req, T("Required field missing"));
-			}
-		}
+		// check for required fields done in DBTable
+		$errors = parent::validate_el($rec, $insert);
 		foreach (array('position', 'max_rows') as $num) {
 			if (isset($rec[$num]) and !is_numeric($rec[$num])
 					or $rec[$num] <= 0) {

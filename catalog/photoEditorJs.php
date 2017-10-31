@@ -2,6 +2,13 @@
 <?php
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
    See the file COPYRIGHT.html for more details.
+
+  	this code should be explicity initialized when needed unless
+	the frequent appearance of the video allow/deny prompt is acceptable
+
+    in Mozilla Firefox 46+, you can eleminate the prompt to allow video capture
+    at "about:config | media.navigator.permission.disabled"
+    BUT BE WARY, once on, the camera is accesable by any page in the browser until OB is turned off
  */
 ?>
 // JavaScript Document
@@ -9,19 +16,35 @@
 
 var wc = {
 	init: function () {
+		//console.log('wc.init() called');
 		wc.url = '../catalog/catalogServer.php';
 		$('.help').hide();
 
-		wc.initWidgets();
-
-		wc.canvasOut = document.getElementById('canvasOut'),
-		wc.ctxOut = canvasOut.getContext('2d');
-
-        //LJ: Not shown in .php equivalent for this situation, so will cause a exception.
+		wc.showFotos = false;
         <?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-		wc.canvasIn = document.getElementById('canvasIn'),
-		wc.ctxIn = canvasIn.getContext('2d');
+		wc.showFotos = true;
         <?php } ?>
+		if (!wc.showFotos) return;
+
+		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 0;
+		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 0;
+
+		$('#video').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+
+		// folowing dimensions are not an error, the box MUST be square for later image rotation
+		wc.canvasIn = document.getElementById('canvasIn'),
+		$('#canvasIn').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+		wc.ctxIn = wc.canvasIn.getContext('2d');
+
+		// folowing dimensions are not an error, the box MUST be turned to accept the rotation
+		wc.canvasOut = document.getElementById('canvasOut'),
+		$('#canvasOut').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
+		wc.ctxOut = wc.canvasOut.getContext('2d');
+
+		wc.eraseImage();
+
+		wc.initWidgets();
 
 		$('input.fotoSrceBtns').on('click',null,wc.changeImgSource);
 		$('#capture').on('click',null,wc.takeFoto);
@@ -39,6 +62,7 @@ var wc = {
 		wc.canvasOut.ondrop = function (e) {
 			wc.getFotoDrop(e);
 		};
+
 		/* support cut&paste of image */
 		document.onpaste = function (e) {
 			wc.getFotoPaste(e);
@@ -49,65 +73,54 @@ var wc = {
 	},
 	//------------------------------
 	initWidgets: function () {
-		if ('<?php echo $_SESSION['show_item_photos'];?>' == 'Y') {
-			if (Modernizr.video) { 
-				//console.log('video supported in this browser');
-		  	    var html = '<video id="camera" width="<?php echo Settings::get('thumbnail_height');?>"'
-								 + ' height="<?php echo Settings::get('thumbnail_width');?>"'
-								 + ' preload="none" ></video>';
-				$('#canvasIn').before(html);
-			} else {
-				console.log('video NOT supported in this browser');
-			}
-		}
+		//console.log('in wc::initWidgets()');
 
-		navigator.getUserMedia = navigator.getUserMedia
-								|| navigator.webkitGetUserMedia
-                                || navigator.mozGetUserMedia
-								|| navigator.msGetUserMedia
-                                || navigator.oGetUserMedia
-                                ;
-		if (navigator.getUserMedia) {
-		    navigator.getUserMedia({
-                video:true,
-                audio:false
-            },
-                function (stream) {
-		            wc.video = document.querySelector('video');
-       	            wc.video.src = window.URL.createObjectURL(stream);
-                    wc.localstream = stream;
-                    wc.video.play();
-                    //console.log("streaming");
-            },
-                function (error) {
-     			    alert("<?php echo T("allowWebcamAccess4Camera"); ?>");
-    			    console.log("Video capture error: ", error.code);
-            });
-		}
-
-		wc.fotoWidth = <?php echo Settings::get('thumbnail_width');?> || 176;
-		wc.fotoHeight = <?php echo Settings::get('thumbnail_height');?> || 233;
+		/* Video Initialization; needed forcamera input */
 		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
+		wc.cameraId = "<?php echo Settings::get('camera');?>";
+
+	    wc.video = document.querySelector('video');
+		//console.log(wc.cameraId);
+		const constraints =  {
+			video:{width: { min: wc.fotoWidth },
+				   height: { min: wc.fotoHeight },
+				   deviceId: { exact: wc.cameraId},
+				  },
+			audio: false,
+			};
+
+	    navigator.mediaDevices.getUserMedia(constraints)// returns a Promise, obviously
+        .then(stream => {
+  			wc.video.srcObject = stream;
+  			wc.video.onloadedmetadata = function(e) {
+    			wc.video.play();
+  			};
+
+			$('#canvasIn').attr('width',wc.video.width).attr('height',wc.video.height);
+			wc.ctxIn.clearRect(0,0, canvasIn.width, canvasIn.height);
+			wc.ctxIn.drawImage(wc.video, 0,0);
+		})
+        .catch(function(err) { console.log(err.name + ": " + err.message); });
 	},
+
     vidOff: function () {
-        //clearInterval(theDrawLoop);
-        //ExtensionData.vidStatus = 'off';
         wc.video.pause();
-        wc.video.src = "";
-        wc.localstream.getTracks()[0].stop();
+		if (wc.video.srcObject) {
+        	wc.video.srcObject.getTracks()[0].stop();
+			wc.video.srcObject=null;
+		}
         console.log("Vid off");
     },
 
 	//----//
 	resetForm: function () {
 		$('.help').hide();
-		//$('#errSpace').hide();
-        $('#userMsg').html("").hide();
-        $('#fotoDiv').hide();
-		$('#camera').hide();
-		$('#canvasIn').hide();
+        //$('#fotoDiv').hide();
+		//$('#video').hide();
+		//$('#canvasIn').hide();
 		$('#fotoAreaDiv').show();
 		$('#addFotoBtn').show();
+		wc.eraseImage();
 		wc.changeImgSource();
 	},
 
@@ -128,10 +141,12 @@ var wc = {
 	},
 
 	//----//
-	rotateImage: function (angle) {
+/*
+	rotateImage: function (degrees) {
         var tw = wc.canvasIn.width/2,
     		th = wc.canvasIn.height/2,
-    		angle = angle*(Math.PI/180.0);
+    		angle = degrees*(Math.PI/180.0);
+
 		wc.ctxIn.save();
 		wc.ctxIn.translate(tw, th);
 		wc.ctxIn.rotate(angle);
@@ -139,6 +154,7 @@ var wc = {
 		wc.ctxIn.drawImage(canvasIn, 0,0);
 		wc.ctxIn.restore();
 	},
+*/
 	showImage: function (fn) {
 		var img = new Image;
 		img.onload = function() { wc.ctxOut.drawImage(img, 0,0, wc.fotoWidth,wc.fotoHeight); };
@@ -194,20 +210,41 @@ var wc = {
         reader.readAsDataURL(file);
 	},
 	takeFoto: function () {
-  	    $('#errSpace').hide();
-		wc.ctxIn.drawImage(wc.video,0,0, wc.fotoHeight,wc.fotoWidth);
-		wc.rotateImage(wc.fotoRotate);
-		wc.ctxOut.drawImage(wc.canvasIn,0,0, wc.fotoWidth,wc.fotoHeight, 0,0, wc.fotoWidth,wc.fotoHeight);
+		var x, y;
+		//console.log('in photoEditorJs, rotate angle= '+wc.fotoRotate+'deg');
+	    if(wc.fotoRotate == 0 || wc.fotoRotate == 180) {
+			wc.canvasOut.width = wc.video.width;
+			wc.canvasOut.height = wc.video.height;
+			y = wc.video.height/2;
+			x = wc.video.width/2
+	    } else {
+			wc.canvasOut.width = wc.video.height;
+			wc.canvasOut.height = wc.video.width;
+			y = wc.video.height/2;
+			x = wc.video.width/2
+	    }
+
+		// save current coord system
+		wc.ctxOut.save();
+		// move coord system 0,0 point to center of expected image
+	    wc.ctxOut.translate(x, y);
+		// rotate the coord system about the 0,0 point
+	    wc.ctxOut.rotate(wc.fotoRotate*Math.PI/180);
+		// draw image so it's center lays on 0,0 pt
+	    wc.ctxOut.drawImage(wc.video, -x,-y, wc.canvasOut.height,wc.canvasOut.width);
+//	    wc.ctxOut.drawImage(wc.video, 0,0, wc.video.width, wc.video.height, -x,-y, wc.canvasOut.height,wc.canvasOut.width);
+		// recover original coord system
+		wc.ctxOut.restore();
 	},
 	sendFoto: function (e) {
-console.log('sending foto');
+		//console.log('sending foto');
 		if (e) e.stopPropagation();
-        $('#errSpace').hide();
-		var imgMode = '',
-			current_add_mode = '',
+//		obib.hideMsg(); // clear any user msgs
+		var current_add_mode = '',
 			url = $('#fotoName').val(),
 			bibid = $('#fotoBibid').val();
-		imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
+		var imgMode = (url.substr(-3) == 'png')? 'image/png' : 'image/jpeg';
+
 		current_add_mode = $('.fotoSrceBtns:checked').val();
 		if ((current_add_mode == 'brw') || (current_add_mode == 'cam')) {
 			$.post(wc.url,
@@ -218,18 +255,17 @@ console.log('sending foto');
 			 	 'url': url,
                  'position':0,
 				},
-				function (response) {
-					//var data = JSON.parse(response);
-					var data = response;
-console.log('image posting OK');
+				function (data) {
+					//console.log('local image posting OK');
 					var crntFotoUrl = data[0]['url'];
-					$('#fotoMsg').html('cover photo posted').show();
+					// paste this photo to parent biblio (used by 'Existing Item' viewer)
 					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
 						+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
 					if (typeof bs !== 'undefined') {
 						bs.crntFotoUrl = crntFotoUrl;
 						bs.getPhoto(bibid, '#photo_'+bibid );
 					}
+					obib.showMsg('<?php echo T("cover photo posted");?>: '+crntFotoUrl);
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
 				}, 'json'
@@ -241,24 +277,23 @@ console.log('image posting OK');
                			'bibid':bibid,
 			 	'url': url,
 				},
-				function (response) {
-					//var data = JSON.parse(response);
-					var data = response;
-					//console.log('image posting OK');
+				function (data) {
+					//console.log('remote image posting OK');
 					var crntFotoUrl = data[0]['url'];
-					$('#fotoMsg').html('cover photo posted').show();
-						$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
+					$('#bibBlkB').html('<img src="'+crntFotoUrl+'" id="biblioFoto" class="hover" '
 							+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
-						if (typeof bs !== 'undefined') {
+					if (typeof bs !== 'undefined') {
 						bs.crntFotoUrl = crntFotoUrl;
 						bs.getPhoto(bibid, '#photo_'+bibid );
 					}
+					obib.showMsg('<?php echo T("cover photo posted");?>');
 					$('#photoAddBtn').hide();
 					$('#photoEditBtn').show();
 				}, 'json'
 			);
 		}
-		return false;
+		obib.showMsg('<?php echo T("cover photo posted");?>');
+//		return false;
 	},
 
 	doUpdatePhoto: function (e) {
@@ -266,7 +301,7 @@ console.log('image posting OK');
         wc.deleteActual(e , function(e) {wc.callFinishUpdte(e)}); // returns before actual work done by server
 	},
     finishUpdate: function (e) {
-console.log('attempting update');
+		//console.log('attempting update');
         wc.sendFoto(e);
     },
 
@@ -279,7 +314,7 @@ console.log('attempting update');
 					   'url':$('#fotoName').val(),
 	              },
 				  function(response){
-console.log('back from deleting');
+						//console.log('back from deleting');
 						wc.eraseImage();
 						$('#bibBlkB').html('<img src="../images/shim.gif" id="biblioFoto" class="noHover" '
   											+ 'height="'+wc.fotoHeight+'" width="'+wc.fotoWidth+'" >');
@@ -291,7 +326,7 @@ console.log('back from deleting');
                             wc.finishUpdate();
                         } else {
 					       $('#fotoName').val('');
-						   $('#fotoMsg').html('cover photo deleted').show();
+						   obib.showMsg('<?php echo T("cover photo deleted");?>');
                        }
 				 }
                  , 'json'
@@ -301,16 +336,5 @@ console.log('back from deleting');
 	},
 
 }
-/*  this code should be explicity initialized when needed unless
-	the frequent appearance of the video allow/deny prompt is acceptable
-
-    in Mozilla Firefox 46+, you can elinate the prompt to allow video capture
-    at "about:config | media.navigator.permission.disabled"
-    BUT BE WARY, once on, the camera is accesable by any page in the browser until OB is turned off
-
- */
-<?php if ($_SESSION['show_item_photos'] == 'Y') { ?>
-  $(document).ready(wc.init);
-<?php } ?>
 
 </script>

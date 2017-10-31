@@ -24,6 +24,7 @@ class Stf extends Admin {
     					'admin_flg':'center',
     					'tools_flg':'center',
     					'suspended_flg':'center',
+						'start_page':'center',
     				   };
     	var opts = { 'keyFld':'userid', 'focusFld':'last_name' };
 
@@ -31,6 +32,34 @@ class Stf extends Admin {
 
     	$('#pwdChgForm').on('submit',null,$.proxy(this.doSetStaffPwd,this));
     	$('#pwdCnclBtn').on('click',null,$.proxy(this.resetForms,this));
+
+		// password for new staff
+		var passwd1 = document.getElementById('xpwd1');
+		var showPasswd1 = document.getElementById('showPasswd1');
+		showPasswd1.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwd1.setAttribute('type', type);
+		});
+		var passwd2 = document.getElementById('xpwd2');
+		var showPasswd2 = document.getElementById('showPasswd2');
+		showPasswd2.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwd2.setAttribute('type', type);
+		});
+
+		// change password for existing staff
+		var passwdA = document.getElementById('pwdA');
+		var showPasswdA = document.getElementById('showPasswdA');
+		showPasswdA.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwdA.setAttribute('type', type);
+		});
+		var passwdB = document.getElementById('pwdB');
+		var showPasswdB = document.getElementById('showPasswdB');
+		showPasswdB.addEventListener('change', function () {
+			let type = this.checked ? 'text' : 'password';
+			passwdB.setAttribute('type', type);
+		});
     };
 
     resetForms () {
@@ -60,21 +89,24 @@ class Stf extends Admin {
     	$('.pwdFlds').attr('required',true) ;
     };
 
-    doAddBtn () {
-        //console.log('in staffJs6::doAddBtn()');
-        //console.log('got "addBtn"');
-		var pw1 = $('#pwd1').val(),
-			pw2 = $('#pwd2').val();
+    doAddBtn (e) {
+		//console.log('in staffJs6::doAddBtn()');
+	    //console.log('got "addBtn"');
+		let pw1 = $('#xpwd1').val();
+		let pw2 = $('#xpwd2').val();
+		//console.log("pw1=<"+pw1+">");
+		//console.log("pw2=<"+pw2+">");
         var pwOk = this.chkPwds(pw1, pw2);
-        //console.log('pwOk = '+pwOk);
         var rolesOk = this.chkRoles();
-        //console.log('rolesOk = '+rolesOk);
+		//console.log('rolesOk = '+rolesOk);
         if (rolesOk && pwOk) {
-            //console.log('passed all validation chks')
-            this.doAddFields();
+            this.doAddFields(e);
+			//obib.hideMsg('now');
         } else {
-            //console.log('failed a validation chk')
-            return false;
+			var errMsg = '<?php echo T("validation check failed"); ?>';
+			console.log(errMsg);
+			//obib.showMsg(errMsg); // redundant, see chkPwds() & chkRoles()
+            //return false;
         }
     };
 
@@ -83,24 +115,23 @@ class Stf extends Admin {
         console.log('in staffJs6::chkRoles()');
         if (!roles) {
             var errMsg = '<?php echo T("Role MUST be selected"); ?>';
-    		$('#msgArea').html(errMsg).show();
-    		$('#msgDiv').show();
+            console.log(errMsg);
+			obib.showError(errMsg)
     	}
     	return roles;
     }
 
     chkPwds (pw1, pw2) {
 		var errMsg = '';
-        //console.log('in staffJs6::chkPwds()');
-		if ( pw1 !== pw2 ) {
+		if ( pw1 != pw2 ) {
 			errMsg = <?php echo "'".T("Passwords do not match.")."'"; ?>;
 		} else if (!pw1 || !pw2) {
 			errMsg = <?php echo "'".T("Passwords may not be empty.")."'"; ?>;
 		}
 		if (errMsg != '') {
             console.log(errMsg);
-			$('#msgArea').html(errMsg).show();
-			$('#msgDiv').show();
+//			alert(errMsg);
+			obib.showError(errMsg)
 			return false;
 		}
 		return true;

@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS %prfx%.`biblio_status_hist` (
   `status_begin_dt` datetime NOT NULL,
   PRIMARY KEY (`histid`),
   KEY `copy_index` (`bibid`,`copyid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=178 ;
+)   DEFAULT CHARSET=utf8 AUTO_INCREMENT=178 ;

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`usmarc_block_dm` (
   `block_nmbr` tinyint(4) NOT NULL DEFAULT '0',
   `description` varchar(80) NOT NULL DEFAULT '',
   PRIMARY KEY (`block_nmbr`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+)  DEFAULT CHARSET=utf8;
 INSERT INTO %prfx%.`usmarc_block_dm` (`block_nmbr`, `description`) VALUES
 (0, 'Control information, numbers, and codes'),
 (1, 'Main entry'),

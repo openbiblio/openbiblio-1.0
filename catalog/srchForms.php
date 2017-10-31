@@ -24,7 +24,7 @@
 
 	$nav = "localSearch";
 	$menu = $tab . '/search/catalog';
-	$focus_form_name = "barcodesearch";
+	$focus_form_name = "phraseSearch";
 	$focus_form_field = "ph_searchText";
 	if ($tab != "opac") {
 		require_once(REL(__FILE__, "../shared/logincheck.php"));
@@ -33,17 +33,15 @@
 	Nav::node($menu, T("Print Catalog"), '../shared/layout.php?name=catalog&rpt=BiblioSearch&tab=cataloging');
 	Nav::node($menu, T("MARC Output"), '../shared/layout.php?name=marc&rpt=Report&tab=cataloging');
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>$title));
-
-	//print_r($_SESSION); // for debugging
 ?>
 
 <div id="crntMbrDiv">to be filled by server</div>
 
-<p id="errSpace" class="error">to be filled by server</p>
+<p id="whereAmI" class="note">You are currently viewing data for site: </p>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="searchDiv">
-<form id="barcodeSearch" name="barcodeSearch" method="post">
+<form role="form" id="barcodeSearch" name="barcodeSearch" method="post">
 <fieldset>
 	<legend><?php echo T("Find Item by Barcode"); ?></legend>
 	<label for="bc_searchBarcd"><?php echo T("Barcode");?>:</label>
@@ -54,7 +52,7 @@
 </fieldset>
 </form>
 
-<form id="phraseSearch" name="phraseSearch" method="post" >
+<form role="form" id="phraseSearch" name="phraseSearch" method="post" >
 <fieldset>
 <legend><?php echo T("Search Catalog"); ?></legend>
 <table>
@@ -216,7 +214,6 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="biblioDiv">
-	<p id="rsltMsg" class="error"></p>
 	<ul class="btnRow">
 		<?php if (!(($tab == 'opac') || ($tab == 'rpt'))) { ?>
 			<li><input type="button" class="bibGobkBtn" value="<?php echo T("Go Back"); ?>" /></li>
@@ -247,18 +244,17 @@
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="itemEditorDiv">
-  <form id="biblioEditForm" name="biblioEditForm" >
+  <form role="form" id="biblioEditForm" name="biblioEditForm" >
 		<h5 id="reqdNote">*<?php echo T("Required note"); ?></h5>
-		<input type="button" class="itemGobkBtn" value="<?php echo T("Go Back"); ?>" />
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" id="onlnUpdtBtn" class="button" value="<?php echo T("Fetch On-line Data"); ?>" />
-		<input type="button" id="onlnDoneBtn" class="button" value="<?php echo T("Search Complete"); ?>" />
-
+		<div class="btnRow flexBoxed">
+			<input type="button" class="itemGobkBtn leftBtn" value="<?php echo T("Go Back"); ?>" />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="button" id="onlnUpdtBtn" class="button midBtn" value="<?php echo T("Fetch On-line Data"); ?>" />
+			<input type="button" id="onlnDoneBtn" class="button rightBtn" value="<?php echo T("Search Complete"); ?>" />
+		</div>
 
 		<?php require(REL(__FILE__,"../catalog/itemEditorForm.php")); ?>
 	
-
-		<!--input type="submit" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" /-->
 		<input type="button" id="itemSubmitBtn" value="<?php echo T("Submit"); ?>" />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="button" value="<?php echo T("Go Back"); ?>" class="itemGobkBtn" />
