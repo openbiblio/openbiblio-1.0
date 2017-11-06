@@ -241,8 +241,9 @@ abstract class DBTable extends Queryi {
 		$sql = $this->mkSQL('DELETE FROM %I WHERE ', $this->name)
 			. $this->_keyTerms(func_get_args());
 		//echo "sql=$sql<br />\n";
-		$this->act($sql);
+		$result = $this->act($sql);
 		$this->unlock();
+		return $result->rowCount();
 	}
 	public function deleteMatches($fields) {
 		$this->lock();

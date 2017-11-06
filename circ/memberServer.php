@@ -168,7 +168,7 @@
 			echo json_encode($mbr);
 	  		break;
 		case 'getNewBarCd':
-			$barCd = $members->getNewBarCode($_GET['width']);
+			$barCd = $members->getNewBarCode($_POST['width']);
 			echo $barCd;
 			break;
 		case 'doBarcdSearch':
@@ -357,13 +357,20 @@
 	  echo $members->setCustomFields($_POST['mbrid'], $cstmArray);
 		break;
 	case 'addNewMember':
-		$_POST["barcode_nmbr"] = $members->getNextMbr();
+		if(empty($_POST["barcode_nmbr"])) $_POST["barcode_nmbr"] = $members->getNewBarCode(6);
 		$mbr = mbrArray();
+        // LJ - fields which are empty needs to be unset;
+        foreach ($mbr as $key => $value) {
+            if (empty($value)) {
+                unset($mbr[$key]);
+            }
+        }
 		$response = $members->insert_el($mbr);
 		if ($response instanceof OBErr) {
 			echo $response->toStr();
 			exit;
 		}
+        $mbrid = $response[0];
 		$cstmArray = array();
 		foreach ($_POST as $key => $value) {
 			if (substr($key,0,7) == 'custom_') {
@@ -371,11 +378,16 @@
 				$cstmArray[$theKey] = $value;	 
 			}
 		}
-	  echo $members->setCustomFields($mbrid, $cstmArray);
+		$result = $members->setCustomFields($mbrid, $cstmArray);
+	  if(!empty($result)){
+	    echo $result;
+      } else {
+	      echo "1";
+      }
 		break;
 	case 'd-3-L-3-tMember':
-		$members->deleteOne($_POST['mbrid']);
-		$members->deleteCustomFields($_POST['mbrid']);
+        $members->deleteCustomFields($_POST['mbrid']);
+	    echo $members->deleteOne($_POST['mbrid']);
 		break;
 		
 	//// ====================================////

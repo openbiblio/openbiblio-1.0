@@ -30,6 +30,7 @@ class Members extends CoreTable {
 			'work_phone'=>'string',
 			'email'=>'string',
 			'classification'=>'string',
+            'password'=>'string',
 		));
 		$this->setKey('mbrid');
 		$this->setSequenceField('mbrid');
@@ -58,17 +59,20 @@ class Members extends CoreTable {
 	
 	function getNewBarCode($width) {
 		//$sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
-		$sql = $this->mkSQL("select max(barcode_nmbr) as lastNmbr from member");
+		$sql = $this->mkSQL("select max(cast(barcode_nmbr as signed)) as lastNmbr from member");
 		$mbr = $this->select1($sql);
 	  if(empty($width)) $w = 13; else $w = $width;
 		return sprintf("%0".$w."s",($mbr[lastNmbr]+1));
 	}
 
+	// Seems duplicate from above, so removing.
+    /*
 	function getNextMbr() {
 		$sql = $this->mkSQL("select max(barcode_nmbr) as lastMbr from member");
 		$lastMbr = $this->select1($sql);
 		return $lastMbr["lastMbr"]+1;
 	}
+    */
 	
 	function getMbrByBarcode($barcd) {
 		$sql = $this->mkSQL("SELECT * FROM member WHERE barcode_nmbr = %Q ", $barcd);
@@ -97,7 +101,7 @@ class Members extends CoreTable {
 		# Check for duplicate barcodes
 		if (isset($mbr['barcode_nmbr']) && ($mbr['barcode_nmbr'] != '000000')) {
 			$sql = $this->mkSQL("SELECT COUNT(*) duplicates FROM member "
-				. "WHERE barcode_nmbr = %Q ",
+				. "WHERE barcode_nmbr LIKE %Q",
 				$mbr['barcode_nmbr']);
 			if (isset($mbr['mbrid'])) {
 				$sql .= $this->mkSQL("AND mbrid <> %N ", $mbr['mbrid']);
@@ -137,15 +141,30 @@ class Members extends CoreTable {
 				return new FieldError('password', T("Supplied passwords do not match"));
 			}
 			$mbr['password'] = md5($mbr['password']);
-		}
+		} else {
+            $mbr['password'] = md5($this->generatePassword(8));
+        }
 		$results = parent::insert_el($mbr, $confirmed);
 		// Check to make sure insert went through
-		if (0 == $this->insert_id) {
-			return new OBErr(T('Member creation was not successful.'));
+        // LJ: Not exactly sure, this the line below was meant for an other restuls set, but $this->insert_id seems empty...
+		//if (0 == $this->insert_id) {
+        
+        if (NULL == $results[0]) {
+			return new OBErr(T('Member creation was not successful'));
 		} else {
 			return $results;
 		}
 	}
+    function generatePassword($length = 8) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@£$%^&*()';
+        $count = mb_strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+        return $result;
+    }
 	function update_el($mbr, $confirmed=false) {
 		if (isset($mbr['password']) and $mbr['password']) {
 			if ($mbr['password'] == '*encrypted*') {
@@ -169,11 +188,11 @@ class Members extends CoreTable {
 	}
 	function deleteOne() {
 		# FIXME - history
-		$mbrid = func_get_args(0);
+		$mbrid = func_get_args()[0];
 		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
 		$acct = new MemberAccounts;
 		$acct->deleteByMbrid($mbrid);
-		parent::deleteOne($mbrid);
+		return parent::deleteOne($mbrid);
 	}
 	function deleteMatches($fields) {
 		$this->lock();
@@ -187,7 +206,7 @@ class Members extends CoreTable {
 		return $this->custom->getMatches(array('mbrid'=>$mbrid));
 	}
 	function setCustomFields($mbrid, $customFldsarr) {
-		$this->deleteCustomFields($mbrid);
+	    $this->deleteCustomFields($mbrid);
 		foreach ($customFldsarr as $code => $data) {
 			$fields= array(
 				mbrid=>$mbrid ,

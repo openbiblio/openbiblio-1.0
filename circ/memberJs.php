@@ -152,7 +152,7 @@ var mf = {
 		}, 'json');
 	},
 	getNewBarCd: function () {
-	  $.post(mf.url,{mode:'getNewBarCd', width:4}, function(data){
+	  $.post(mf.url,{mode:'getNewBarCd', width:6}, function(data){
 			$('#barcode_nmbr').val(data);
 		});
 	},
@@ -667,6 +667,7 @@ var mf = {
 		$('.gobkNewBtn').show();
 		document.forms.editForm.reset();
 
+		$('#mbrid').val('');
 		$('#siteid').val([$('#crntSite').val()]);
 		$('#city').val([$('#crntCity').val()]);
 		mf.getNewBarCd();  // posts directly to screen
@@ -682,16 +683,19 @@ var mf = {
 		$('#msgDiv').hide();
 		var parms = $('#editForm').serialize();
 		$.post(mf.url, parms, function(response) {
-			if (response.substr(0,1)=='0') {
+		    //console.log('Server response: ' + response);
+			if (response == 1) {
+
+                //$('#updateMsg').html('<?php echo T("Added");?>');
+                //'$('#updateMsg').show();
+                mf.rtnToSrch();
+				mf.showMsg('<?php echo T("Added");?>');
+                setTimeout( function(){
+                    $('#msgDiv').show().hide(2000);
+                  }  , 3000 );
+            } else {
 				//console.log('rcvd error msg from server :<br />'+response);
 				mf.showMsg(response);
-			} else {
-				if (response.substr(0,1)=='1'){
-					$('#updateMsg').html('<?php echo T("Added");?>');
-					$('#updateMsg').show();
-				}
-				mf.showMsg('Added!');
-				$('#msgDiv').show().hide(2000);
 			}
 		});
 		return false;
@@ -726,17 +730,20 @@ var mf = {
 			return false;
 		}
 		var delConfirmMsg = '<?php echo T("Are you sure you want to delete "); ?>';
-		if (!confirm(mf.delConfirmMsg+ mf.mbr.first_name+' '+mf.mbr.last_name+'?')) return false;
+		if (!confirm(delConfirmMsg + ' ' + mf.mbr.first_name + ' ' + mf.mbr.last_name+'?')) return false;
 
   	var parms = {	'mode':'d-3-L-3-tMember', 'mbrid':mf.mbrid };
   	$.post(mf.url, parms, function(response){
-			if (($.trim(response)).substr(0,1)=='<') {
+			if (response != 1) {
 				//console.log('rcvd error msg from server :<br />'+response);
 				mf.showMsg(response);
 			}
 			else {
-				mf.showMsg('member deleted!');
-		  	mf.rtnToSrch();
+                mf.rtnToSrch();
+				mf.showMsg('<?php echo T('Member deleted!'); ?>');
+                setTimeout( function(){
+                    $('#msgDiv').show().hide(2000);
+                  }  , 3000 );
 			}
 		});
 	},
