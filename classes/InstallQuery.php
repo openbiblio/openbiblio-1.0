@@ -88,8 +88,9 @@ class InstallQuery extends Queryi {
 
   public function createDatabase() {
     $sql = "CREATE DATABASE IF NOT EXISTS ".$this->dsn['database'];
-    //echo $sql."<br>\n";
+	//echo $sql."<br>\n";
     $r = parent::act($sql);
+	//print_r($r);
     if ($r === true) {
       echo T("success, Database created");
       //$this->setGrants($dbName, $dbUser); // must be done by db admin person when user created.

@@ -108,11 +108,15 @@ class Strt {
     };
 
     doContinue () {
+console.log('Creating database');
         this.showWait('Creating database');
+console.log('Transferring to database install/create');
         this.informUser('Transferring to database install/create');
-        window.location = this.dest;
+console.log('new dest is: '+this.dest);
+        window.location.href = this.dest;
+console.log('shouldnt get here');
+		return false;
     };
-
 }
 
 $(document).ready(function () {

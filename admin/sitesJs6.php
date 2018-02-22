@@ -25,9 +25,10 @@ class Sit extends Admin {
     	this.noshows = [];
 
 		$('#mergeBtn').on('click',null,this.doMergeSites);
-
-	    this.fetchStates();
-	    this.fetchCalendars();
+		//list.getSiteList($('#fmSite'));
+		//list.getSiteList($('#toSite'));
+        //list.getPullDownList('State', $('#state'));
+        //list.getPullDownList('Calendar', $('#calendar'));
 
         $('#country').val('xxxx');
     };
@@ -36,35 +37,40 @@ class Sit extends Admin {
 		// using 'promise' technique to insure calls are processed in-turn
 		await list.getSiteHoldings();
 		await super.fetchList();
+
+		await list.getSiteList($('#fmSite'));
+		await list.getSiteList($('#toSite'));
+		await list.getPullDownList('State', $('#state'));
+		await list.getPullDownList('Calendar', $('#calendar'));
 	};
     fetchHandler (dataAray) {
 		super.fetchHandler(dataAray);
-		var holdings = list.holdings
+		//this.holdings = list.holdings
 		var $rows = $('#showList tbody tr');
 
 		// add holdings to each site display
 		$rows.each(function (i){
 			var siteid = $(this).find('input[type="hidden"]').val();
-			let nmbr = holdings[siteid];
+			let nmbr = list.holdings[siteid];
 			let html = '<td>'+nmbr+'</td>';
 			$(this).append(html);
 		});
 	};
 
-    fetchStates () {
-        list.getPullDownList('State', $('#state'));
-    };
+    //fetchStates () {
+    //};
 
-    fetchCalendars () {
-        list.getPullDownList('Calendar', $('#calendar'));
-    };
+    //fetchCalendars () {
+    //};
 
 	doMergeSites(e) {
     	$('#listDiv').hide();
     	$('#extraDiv').show();
 		$('#mergeSiteBtn').enable();
-		list.getSiteList($('#fmSite'));
-		list.getSiteList($('#toSite'));
+		$('#fmSite').on('change', null, function () {
+			let nmbr = list.holdings[$('#fmSite').val()];
+			$('#limit').val(nmbr);
+		});
 	};
 
     doSubmitFields (e) {
@@ -72,18 +78,20 @@ class Sit extends Admin {
     	if (theBtn == 'mergeSiteBtn') {
 			let fm = $('#fmSite').val();
 			let to = $('#toSite').val();
-			if (this.validateMerge(fm, to)) {
+			let maxHit = list.holdings[fm];
+			let limit = $('#limit').val();
+			if (this.validateMerge(fm, to, limit, maxHit)) {
     			e.preventDefault();
     			e.stopPropagation();
 				$('#mergeSiteBtn').disable();
-				this.merge(fm, to);
+				this.merge(fm, to, limit);
 			} else
 				return false;
 		} else {
 			super.doSubmitFields(e);
 		}
 	};
-	validateMerge(fm, to){
+	validateMerge(fm, to, limit, maxHit){
 		let crntSite = <?php echo $_SESSION['current_site']; ?>;
 		if (fm == crntSite) {
 			alert('You may not remove items from logged-in site');
@@ -91,11 +99,13 @@ class Sit extends Admin {
 		} else if (fm == to) {
 			alert('Both sites cannot be the same');
 			return false;
+		} else if (limit > maxHit) {
+			alert('Number to transfer cannot exceed holdings.');
 		}
 		return true;
 	};
-	merge(fm, to) {
-		let parms = "cat=sites&mode=mergeSites&fm="+fm+"&to="+to;
+	merge(fm, to, limit) {
+		let parms = "cat=sites&mode=mergeSites&fm="+fm+"&to="+to+"&limit="+limit;
     	//$.post(this.url, parms, $.proxy(this.mergeHandler, this), 'json');
     	$.post(this.url, parms, this.mergeHandler, 'json');
 	};

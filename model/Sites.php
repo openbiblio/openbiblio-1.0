@@ -65,7 +65,7 @@ class Sites extends DBTable {
 	}
 
 	function moveSiteHoldings($rec) {
-		$sql = "UPDATE `biblio_copy` set siteid = '".$rec["to"]."' where siteid = '".$rec["fm"]."' LIMIT 2";
+		$sql = "UPDATE `biblio_copy` set siteid = '".$rec["to"]."' where siteid = '".$rec["fm"]."' LIMIT ".$rec["limit"];
 		//echo "sql=$sql <br />\n";
 		$errors = $this->act($sql);
 		if ($errors === false)

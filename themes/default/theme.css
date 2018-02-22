@@ -38,7 +38,7 @@ tbody.striped tr:nth-child(even) { background-color:#CCC; }
 /* to revert to normal OS button style, remove this block */
 input[type=button], input[type=submit], button {
 	padding:2px 4px;
-	font-family:Helvitca, Arial, sans-serif; font-weight:bold;
+	font-family:Helvitca, Arial, sans-serif; /*font-weight:bold;*/
 	line-height:1;
 	color:#222; background-color:rgb(240,240,240); border:none;
 	text-shadow:0 1px 1px rgba(255, 255, 255, 0.85);

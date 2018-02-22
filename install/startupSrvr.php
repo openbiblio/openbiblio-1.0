@@ -73,10 +73,10 @@
             $passwd=$_REQUEST['passwd'];
             $db=$_REQUEST["db"];
 
-            $dbh = new PDO("mysql:host=$host", $adminNm, $adminPw);
+			try { $dbh = new PDO("mysql:host=$host", $adminNm, $adminPw); }
+			catch (PDOException $e) { hndlError($e); }
                     //or die(print_r($dbh->errorInfo(), true));
                     //FLUSH PRIVILEGES;");
-
             try { createDB($dbh, $db); }
             catch (PDOException $e) { hndlError($e); }
 

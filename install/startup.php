@@ -19,7 +19,8 @@
 
     <link rel="stylesheet" href="../shared/normalize.css" />
     <link rel="stylesheet" href="../shared/jquery/jquery-ui.min.css" />
-    <link rel="stylesheet" href="../themes/default/style.css" />
+    <link rel="stylesheet" href="../shared/style.css" />
+    <link rel="stylesheet" href="../themes/default/theme.css" />
 
 </head>
 <body>
