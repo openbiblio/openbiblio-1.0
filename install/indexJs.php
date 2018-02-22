@@ -174,6 +174,7 @@ ins = {
 console.log('switching control to '+response);
 		$('#plsWait').hide();
         window.location = "../"+response+"/settingsForm.php";
+		return false;
 		});
 	},
 			

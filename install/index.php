@@ -2,12 +2,10 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
-
 	$doing_install = true;
 	require_once("../shared/common.php");
 
 	Page::header_install(array('nav'=>'', 'title'=>'OpenBiblio Installation'));
-	
 ?>
 	<fieldset id="progress">
 		<ul id="progressList">
@@ -50,6 +48,9 @@
 
 		<section id="newInstall">
 			<p>New Install</p>
+			<p class="note">If you wish test data installed, click the check box<br>
+			   If not, leave it un-checked. (TEST DATA NOT YET AVAILABLE)
+			</p>
 			<form role="form" id="newForm">
 				<table cellpadding=0 cellspacing=0 border=0>
 				<!--tr>
@@ -80,7 +81,7 @@
 		</section>
 
 		<section id="startOB">
-			<p>OpenBiblio appears ready for use.</p>
+			<p><?php echo T("OpenBiblio appears to be ready for use."); ?></p>
 			<form role="form" name="startForm" >
 				<input id="startBtn" type="submit" value="<?php echo T("Start OpenBiblio now"); ?>">
 			</form>

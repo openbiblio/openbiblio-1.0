@@ -16,7 +16,7 @@
 
 var wc = {
 	init: function () {
-		//console.log('wc.init() called');
+console.log('wc.init() called');
 		wc.url = '../catalog/catalogServer.php';
 		$('.help').hide();
 
@@ -32,12 +32,12 @@ var wc = {
 
 		$('#video').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
 
-		// folowing dimensions are not an error, the box MUST be square for later image rotation
+		/* folowing dimensions are not an error, the box MUST be square for later image rotation */
 		wc.canvasIn = document.getElementById('canvasIn'),
 		$('#canvasIn').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
 		wc.ctxIn = wc.canvasIn.getContext('2d');
 
-		// folowing dimensions are not an error, the box MUST be turned to accept the rotation
+		/* folowing dimensions are not an error, the box MUST be turned to accept the rotation */
 		wc.canvasOut = document.getElementById('canvasOut'),
 		$('#canvasOut').attr('width',wc.fotoWidth).attr('height',wc.fotoHeight);
 		wc.ctxOut = wc.canvasOut.getContext('2d');
@@ -73,21 +73,22 @@ var wc = {
 	},
 	//------------------------------
 	initWidgets: function () {
-		//console.log('in wc::initWidgets()');
+console.log('in wc::initWidgets()');
 
 		/* Video Initialization; needed forcamera input */
 		wc.fotoRotate = <?php echo Settings::get('thumbnail_rotation');?> || 0;
 		wc.cameraId = "<?php echo Settings::get('camera');?>";
 
 	    wc.video = document.querySelector('video');
-		//console.log(wc.cameraId);
+console.log(wc.cameraId);
 		const constraints =  {
 			video:{width: { min: wc.fotoWidth },
 				   height: { min: wc.fotoHeight },
-				   deviceId: { exact: wc.cameraId},
+//				   deviceId: { exact: wc.cameraId},
 				  },
 			audio: false,
 			};
+console.log("in wc::initWidgets(), constraints set.");
 
 	    navigator.mediaDevices.getUserMedia(constraints)// returns a Promise, obviously
         .then(stream => {

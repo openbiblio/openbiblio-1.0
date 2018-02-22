@@ -58,6 +58,7 @@ console.log('menu btn clicked');
 		this.url ="../catalog/catalogServer.php"; // can not seem to get to 'this.url'
 		$.post(this.url, params, function(response){
 			window.location = "../catalog/srchForms.php?tab=OPAC";
+			return false;
 		}, 'json');
 	};
 

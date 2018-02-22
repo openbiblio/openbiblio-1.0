@@ -6,7 +6,7 @@
     #### --- For those unable to set their time zone in PHP.ini --- ####
     #### for valid entries see: http://www.php.net/manual/en/timezones.php
     //date_default_timezone_set ( "America/New_York" );
-    //echo "at start of common.php <br />\n";
+	//echo "at start of common.php <br />\n";
 
     # Forcibly disable register_globals
     if (ini_get('register_globals')) {
@@ -114,9 +114,9 @@
 	if (!isset($doing_install) or !$doing_install) {
         ## normal processing
 		include_once(REL(__FILE__, "../model/Settings.php"));
-        //echo "in common.php @ln#136 <br />\n";
+		//echo "in common.php @ln#136 <br />\n";
 		Settings::load();
-        //echo "in common.php @ln#138 <br />\n";
+		//echo "in common.php @ln#138 <br />\n";
 		$CharSet = Settings::get('charset');
 		$ThemeId = Settings::get('themeid');
 		$ThemeDirUrl = trim(Settings::get('theme_dir_url'));
@@ -129,7 +129,7 @@
 		$ThemeDirUrl = "../themes/default";
         //$localeStrs = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
         //$Locale = substr($localeStrs[0],0,2);
-        //echo "this locale is: $Locale <br />\n";
+		//echo "this locale is: $Locale <br />\n";
 		$Locale = 'en';
 	}
 
@@ -162,7 +162,7 @@
         $prevHash = Settings::get('version_hash');
         $allowCk = Settings::get('allow_auto_db_check');
         list($crntHash, $crntSize) = getOBVersionHash();
-        //echo "crntHash=>$crntHash; prevHash=>$prevHash; allowChk=>$allowCk<br />\n";
+		//echo "crntHash=>$crntHash; prevHash=>$prevHash; allowChk=>$allowCk<br />\n";
         if (($crntHash != $prevHash) and (strpos($_SERVER[PHP_SELF], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
             //echo "Code hash has changed since last use<br />\n";
             header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");

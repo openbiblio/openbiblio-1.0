@@ -58,6 +58,10 @@
 
 	    <label for="toSite"><?php echo T("Gaining Site"); ?>:</label>
 	    <select id="toSite" name="toSite" > </select>
+
+		<br />
+		<label for="limit"><?php echo T("Maximum to transfer"); ?>:</label>
+		<input id="limit" type="number" name="limit" />
 	</fieldset>
 	<div class="btnRow gridded">
 		<input type="submit" id="mergeSiteBtn" class="actnBtns col1" value="<?php echo T("Merge"); ?>" />
