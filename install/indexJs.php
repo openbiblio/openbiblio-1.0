@@ -14,7 +14,7 @@ ins = {
 
 		$('#newBtn').on('click',null,ins.doNewInstall);
 		$('#updtBtn').on('click',null,ins.doDbUpdate);
-		$('#startBtn').on('click',null,ins.startOB);
+		$('#startBtn').on('click',null,ins.doStartOB);
 
 		ins.resetForms()
 		ins.connectDb();
@@ -167,15 +167,18 @@ ins = {
 	},
 
 	//-------------------------------
-	startOB: function() {
-		$('#startOB').show();
+	doStartOB: function() {
+console.log('in ins::startOB()');
 		$('#plsWait').show();
-		$.post(ins.url, {'mode':'getStartPage', 'user':1}, function (response) {
-console.log('switching control to '+response);
-		$('#plsWait').hide();
-        window.location = "../"+response+"/settingsForm.php";
+//		$.post(ins.url, {'mode':'getStartPage', 'user':1}, function (response) {
+//console.log('desired new page: '+response);
+//			$('#startOB').hide();
+//			$('#plsWait').hide();
+//        	window.location = "../"+response+"/settingsForm.php";
+//			return false;
+//		});
+      	window.location.href = "../index.php";
 		return false;
-		});
 	},
 			
 };

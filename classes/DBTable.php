@@ -110,7 +110,7 @@ abstract class DBTable extends Queryi {
             echo "Fatal::internalError";echo "Bad key ";print_r($key);echo" for table $this->name";
 			//echo "sql=$sql<br />\n";
 		}
- 		//echo "in DBTable::getOne(): ";print_r($row);echo "<br /> \n";
+		//echo "in DBTable::getOne(): ";print_r($row);echo "<br /> \n";
 		return $row;
 	}
 	public function getAll($orderby = NULL) {

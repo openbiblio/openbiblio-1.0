@@ -54,7 +54,9 @@ ini_set('display_errors', 1);
 			break;
 
 		case 'getStartPage':
+			//echo "in installSrvr, mode='getStartPage 0' <br />\n";
 			$staffPtr = new Staff();
+			//echo "in installSrvr, mode='getStartPage 1' <br />\n";
 			$startPage = $staffPtr->getOne($_POST['user']);
 			//echo "in installSrvr ";print_r($startPage);echo "<br />\n";
 			echo $startPage['start_page'];
