@@ -105,7 +105,7 @@ class Integrity extends Queryi{
 				. 'FROM information_schema.COLUMNS '
 				. 'WHERE TABLE_NAME = "members"'
 				. 'AND COLUMN_NAME = "password"',
-			'fixSql' => 'alter table staff '
+			'fixSql' => 'alter table member '
 				. 'add column password char(32) DEFAULT NULL'
 		);
 
