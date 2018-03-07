@@ -25,8 +25,8 @@ class Chkr {
     };
 
     //------------------------------
-	  initWidgets () {
-	  };
+	initWidgets () {
+	};
 
     resetForms () {
         //console.log('resetting!');
@@ -64,7 +64,7 @@ class Chkr {
         $('#rsltDiv').show();
     };
 
-	  //------------------------------
+	//------------------------------
     doFixDB () {
         var tab = this.tab;
         var rtnTo = this.rtnTo;

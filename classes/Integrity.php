@@ -437,12 +437,10 @@ class Integrity extends Queryi{
 			assert('isset($chk["error"])');
 			//echo $chk["error"]."<br />\n";
 			if (isset($chk['countSql'])) {
-//echo "--------------------"."<br />\n";
-//$what = $chk["error"];
-//echo "got chk-countSQL while processing item: $what"."<br />\n";
+				//echo "--------------------"."<br />\n";
+				//$what = $chk["error"];
+				//echo "got chk-countSQL while processing item: $what"."<br />\n";
 				$rslt = $this->select1($chk['countSql']);
-//                $row = $rslt[0];
-//                $count = $row["count"];
                 $count = $rslt["count"];
 				//echo $chk["error"]."<br />\n";
 				//if (stripos($chk["error"], 'selector') >= -1) {
@@ -452,16 +450,16 @@ class Integrity extends Queryi{
 				//	echo "count= $count <br />\n";
 				//}
 			} elseif (isset($chk['countFn'])) {
-//echo "got chk-countFN"."<br />\n";
+				//echo "got chk-countFN"."<br />\n";
 				$fn = $chk['countFn'];
 				assert('method_exists($this, $fn)');
 				$count = $this->$fn();
 			} else {
-//echo "got nothing"."<br />\n";
+				//echo "got nothing"."<br />\n";
 				assert('NULL');
 			}
 			if ($count) {
-//$msg = $count . T($chk["error"], array('count'=>$count));
+				//$msg = $count . T($chk["error"], array('count'=>$count));
 				$msg = $count." ".$chk["error"];
 				if ($fix) {
 					if (isset($chk['fixSql'])) {
@@ -514,26 +512,27 @@ class Integrity extends Queryi{
         $fileList = getFileList('../model');
         foreach ($fileList as $file) {
             ## first collect model definition
-//echo "$file <br />\n";
-//if ($file == '../model/OpenHours.php') continue;
+			//echo "- - - - - - - - - - - - - - - - - - - - - - <br />\n";
+			//echo "checking model file: $file <br />\n";
+			//if ($file == '../model/OpenHours.php') continue;
             include_once($file);
             $className = pathInfo($file, PATHINFO_FILENAME);
-//echo "Model: $className <br />\n";
+			//echo "Model: $className <br />\n";
             $obj = new $className;
             $tblName = $obj->getName();
             $fldNames = array_keys($obj->getFields());
             $fldParms = array_values($obj->getFields());
-//echo "db table: $tblName<br />\n";
-//echo "model fields: ";print_r($fldset);echo "<br />\n";
+			//echo "model fields: ";print_r($fldNames);echo "<br />\n";
             $obj = null;
 
             ## now get current db field names
+			//echo "db table: $tblName<br />\n";
             $dbflds = $this->getColmnList($tblName);
-
+			//echo "tbl columns: ";print_r($dbflds);echo "<br />\n";
             ## finally compare them
             $errors = array_diff($fldNames, $dbflds);
             if (sizeof($errors) > 0) {
-                echo "field error(s) in table $tblName: ";print_r($errors); echo"<br />\n";
+                //echo "field error(s) ---> model '$className' has field(s):'  ";print_r($errors); echo" not present in db table: $tblName<br />\n";
                 $this->tblErrs[$tblName] = $errors;
             }
         }
