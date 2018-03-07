@@ -58,9 +58,9 @@ class Strt {
 
         this.dbEngine = $('#dbEngine').val();
         this.host = $('#hostId').val();
-        this.user = $('#userNm').val();
-        this.pw = $('#passWd').val();
-        this.db = $('#dbName').val();
+        this.user = $('#userNm').val().replace(/\+/g, '%2b');
+        this.pw = $('#passWd').val().replace(/\+/g, '%2b');
+        this.db = $('#dbName').val().replace(/\+/g, '%2b');
         var params = "mode=createConstFile&host="+this.host+"&dbEngine="+this.dbEngine+"&user="+this.user+"&passwd="+this.pw+"&db="+this.db;
         var _this = this;
 
