@@ -103,7 +103,7 @@ class Integrity extends Queryi{
 			'error' => T("password column is missing for members"),
 			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
 				. 'FROM information_schema.COLUMNS '
-				. 'WHERE TABLE_NAME = "members"'
+				. 'WHERE TABLE_NAME = "member"'
 				. 'AND COLUMN_NAME = "password"',
 			'fixSql' => 'alter table member '
 				. 'add column password char(32) DEFAULT NULL'
