@@ -99,6 +99,15 @@ class Integrity extends Queryi{
 			'fixSql' => 'alter table staff '
 				. 'add column start_page varchar(64) default "admin" NOT NULL'
 		);
+		$this->checks[] = array(
+			'error' => T("password column is missing for members"),
+			'countSql' => 'SELECT (CASE (COUNT(COLUMN_NAME)) WHEN 0 THEN 1 ELSE 0 END) AS count '
+				. 'FROM information_schema.COLUMNS '
+				. 'WHERE TABLE_NAME = "members"'
+				. 'AND COLUMN_NAME = "password"',
+			'fixSql' => 'alter table staff '
+				. 'add column password char(32) DEFAULT NULL'
+		);
 
 		$this->checks[] = array(
 			'error' => T("Member Fields DM Table should allow null values for default_flg field"),

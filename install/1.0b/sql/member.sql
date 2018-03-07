@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.member (
   state varchar(32) DEFAULT NULL,
   zip varchar(10) DEFAULT NULL,
   zip_ext varchar(10) DEFAULT NULL,
+  password char(32) DEFAULT NULL,
   home_phone varchar(15) DEFAULT NULL,
   work_phone varchar(15) DEFAULT NULL,
   email varchar(128) DEFAULT NULL,
