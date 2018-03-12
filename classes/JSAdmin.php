@@ -197,7 +197,7 @@ class Admin {
 		$('#updtBtn').enable();
 		$('#deltBtn').enable();
 
-        document.forms['editForm'].reset();
+        document.getElementById('editForm').reset();
         $('#fieldsHdr').html(this.newHdr);
     	for (var n in this.noshows){
     		$('#'+this.noshows[n]).attr('readonly',true).attr('required',false).hide();

@@ -65,8 +65,9 @@
 	</fieldset>
 	<div class="btnRow gridded">
 		<input type="submit" id="mergeSiteBtn" class="actnBtns col1" value="<?php echo T("Merge"); ?>" />
-		<input type="button" id="cnclBtn" class="col5" value="<?php echo T("Cancel"); ?>" /></div>
+		<input type="button" id="cnclBtn" class="col5" value="<?php echo T("Go Back"); ?>" /></div>
 	</div>
+	</form>
 </div>
 
 <div id="editDiv" style="display: none;">
@@ -144,7 +145,7 @@
 		<ul id="btnRow">
 	    <li><input type="submit" id="addBtn"  name="addBtn" class="actnBtns" value="<?php echo T("Add"); ?>" /></li>
 	    <li><input type="submit" id="updtBtn" name="updtBtn" class="actnBtns" value="<?php echo T("Update"); ?>" /></li>
-	    <li><input type="button" id="cnclBtn" name="cnclBtn" class="cnclBtn" value="<?php echo T("Cancel"); ?>" /></li>
+	    <li><input type="button" id="cnclBtn" name="cnclBtn" class="cnclBtn" value="<?php echo T("Go Back"); ?>" /></li>
 	    <li><input type="submit" id="deltBtn" name="deltBtn" class="actnBtns" value="<?php echo T("Delete"); ?>" /></li>
 		</ul>
 	</fieldset>
