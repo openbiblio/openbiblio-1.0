@@ -136,6 +136,7 @@
             <li>Proceed to the Admin menu and begin entering Library settings.
             </li>
         </ol>
+
         <!--ol>
             <a name="step4">
             <li>Create an OpenBiblio database using whatever tool you prefer - I recommend phpMyAdmin. Avoid '-' in the database name.
@@ -177,11 +178,46 @@
             "admin" for both the userid and password whenever you are prompted to signon.  You can
             change the admin password from the "Admin" tab -> staff list, where you can also add
             more library staff members.
-            </li-->
-
-
-        </ol>
+            </li>
+         </ol-->
     </fieldset>
+
+	<fieldset>
+		<legend>>Opptionally install YAZ in support of on-line access to various on-line repositories</legend>
+
+		<ol>
+			<li>Open a terminal window on the Openbiblio webserver (presumably a debian-based linux)
+			</li>
+
+			<li>enter the following:
+				<pre>
+    				sudo apt-get install yaz libyaz4 libyaz4-dev php7.0-dev php-pear pecl
+					sudo pecl install yaz
+				</pre>
+			</li>
+
+			<li>In Openbiblio, at the tools menu, select'Web Server Information'. Search (Cntl-F) for 'yaz'
+			</li>
+
+			<li>You should see something like this:
+				<table>
+              		<caption>yaz</caption>
+					<tr>
+						<th>YAZ Support</th><td>enabled</td>
+					</tr>
+					<tr>
+						<th>PHP/YAZ Version</th><td>1.2.1</td>
+					</tr>
+					<tr>
+						<th>YAZ Version</th><td>4.2.30  </td>
+					<tr>
+						<th>Compiled with YAZ version</th><td>4.2.30  </td>
+					</tr>
+				</table>
+			</li>
+		</ol>
+
+	</fieldset>
     </main>
 
 </body>
