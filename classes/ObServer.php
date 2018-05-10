@@ -14,6 +14,15 @@ class ObServer {
                             return 0;
                         }
                 }
+                if(isset($headers['authcheck'])){
+                        $matches = array();
+                        preg_match('/Token token="(.*)"/', $headers['authcheck'], $matches);
+                        if(isset($matches[1])){
+                            $token = $matches[1];
+                        } else {
+                            return 0;
+                        }
+                }
                 if (Settings::get('hmac_timeout')) {
                         $earliestLegitSendTime = time() - (Settings::get('hmac_timeout') * 60);
                 } else {
@@ -51,5 +60,4 @@ class ObServer {
 
 	}
 }
-
 ?>
