@@ -437,6 +437,20 @@ class Integrity extends Queryi{
 //				'countFn' => 'countDoubleCheckouts',
 //				// NO AUTOMATIC FIX
 //			);
+    
+    $this->checks[] = array(
+      'error' => T("You have members with duplicate barcode"),
+      'countSql' => 'select count(*) as count '
+        . 'from member '
+        . 'group by barcode_nmbr '
+        . 'having count > 1 ',
+    );
+    $this->checks[] = array(
+      'error' => T("You have members with the same barcode as a book"),
+      'countSql' => 'select count(*) as count '
+        . 'from member inner join biblio_copy '
+        . 'on member.barcode_nmbr=biblio_copy.barcode_nmbr ',
+    );
 	}
 
 	function check_el($fix=false) {
