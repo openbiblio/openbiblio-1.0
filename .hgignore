@@ -15,3 +15,5 @@ glob:catalog/temp/upload_csv_form.php
 glob:photos/*.*
 wxDisplay.ppr
 dbParams.php
+obiblio-10-wip.ppr
+dbParams.php.saved.php
