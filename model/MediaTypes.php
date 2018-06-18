@@ -66,11 +66,13 @@ class MediaTypes extends DmTable {
 		return $this->select($sql);
 	}
 //	function getAll($orderBy=null) {
+/*  duplicate of DBTable::getAll()
 	public function getAll($orderBy='description') {
 		$sql = "SELECT * FROM material_type_dm "
 				 . " ORDER BY $orderBy ";
 		return $this->select($sql);
 	}
+*/
 	public function getByBibid($bibid) {
 		$sql = "SELECT m.* FROM material_type_dm m, biblio b"
 				 . " WHERE $bibid = b.bibid AND m.code = b.material_cd";
