@@ -31,22 +31,26 @@ class Members extends CoreTable {
 			'email'=>'string',
 			'classification'=>'string',
             'password'=>'string',
+			'school_grade'=>'number',
+			'school_teacher'=>'string',
 		));
 		$this->setKey('mbrid');
 		$this->setSequenceField('mbrid');
 		$this->setForeignKey('siteid', 'site', 'siteid');
 		$this->setIter('MembersIter');
 
-		$this->reqdFlds = array(
+		$this->setReq(array(
 			'last_name',
 			'first_name',
 			'home_phone',
 			'classification',
-		);
+		));
 		if ($_SESSION[mbrBarcode_flg]=='Y') {
 		  $this->reqdFlds[] = 'barcode_nmbr';
 		}
-		$this->custom = new MemberCustomFields;
+
+		$custom = new MemberCustomFields;
+/*       This is taken care of in .../models/MemberCustomFields
 		$this->custom->setName('member_fields');
 		$this->custom->setFields(array(
 			'mbrid'=>'string',
@@ -55,6 +59,7 @@ class Members extends CoreTable {
 		));
 		$this->custom->setKey('mbrid', 'code');
 		$this->custom->setForeignKey('mbrid', 'member', 'mbrid');
+*/
 	}
 	
 	function getNewBarCode($width) {
@@ -130,9 +135,10 @@ class Members extends CoreTable {
 		return $r['mbrid'];
 	}
 	function insert_el($mbr, $confirmed=false) {
-		foreach ($this->reqdFlds as $field) {
-			if (!isset($mbr[$field])) {return new OBErr('Required fields missing: '.$field);}
-		}
+		// this mechanism present in DBtable::validate()
+		//foreach ($this->reqdFlds as $field) {
+		//	if (!isset($mbr[$field])) {return new OBErr('Required fields missing: '.$field);}
+		//}
 		if (isset($mbr['password'])) {
 			if (strlen($mbr['password']) < 4 && !$_SESSION["hasCircAuth"]) {
 				return new FieldError('password', T("Password at least 4 chars"));
