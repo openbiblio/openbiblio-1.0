@@ -50,7 +50,7 @@ var csvi = {
 		csvi.setCopyDefault()
 		$('#review').hide();
 		$('#rslts').hide();
-		$('#imptBtn').disable();
+		$('#imptBtn').disable();    // may be a problem in some systems!!
 		$('#intro').show();
 	},
 	//----//

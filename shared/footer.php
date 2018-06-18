@@ -34,10 +34,13 @@ unset($_SESSION['postVars']);
 // common javascript utility functions set in own namespace to avoid potential conflict
 var obib = {
 	<?php
-		echo "focusFormName:  '$focus_form_name',\n";
+		echo "focusFormName:	'$focus_form_name',\n";
 		echo "focusFormField:	'$focus_form_field',\n";
 		if (isset($confirm_links) and $confirm_links) {
 			echo "confirmLinks:		$confirm_links,\n";
+		}
+		if ($tab == 'opac') {
+			echo "opacMode:	true,\n";
 		}
 	?>
 
@@ -53,6 +56,27 @@ var obib = {
 		/* suggest this should be in code local to desired function unless widely used -- FL */
 		if (obib.confirmLinks) {    // defined by php above init()
 			$('a').on('click',null,obib.confirmLink);
+		}
+
+		if (obib.opacMode) {
+			console.log('in OPAC mode');
+			obib.makeNav();
+
+			// set initial (closed menu) states
+			//$('#menuBtn').attr('aria-expanded', 'false')
+			//			 .attr('hidden', 'false');
+			//$('.menuSect').attr('hidden', 'true');
+
+			$('#menuBtn').on('click', function() {
+				// toggle menu visibility
+console.log('menu btn clicked');
+				$('.menuSect').toggle(); // show/hide
+				if ($(this).attr('aria-expanded') === 'true') {
+					$(this).attr('aria-expanded', 'false');
+				} else {
+	                $(this).attr('aria-expanded', 'true');
+				}
+			});
 		}
 	},
 
@@ -90,26 +114,31 @@ var obib = {
 		}
 		else if (oddEven == 'odd') {
 			//console.log('striping odd rows of table: '+tblName);
-	  	$('#'+tblName+'>tbody.striped tr:even').addClass('altBG');
-	  	$('#'+tblName+'>tbody.striped tr:odd').removeClass('altBG');
-	 }
+	  		$('#'+tblName+'>tbody.striped tr:even').addClass('altBG');
+	  		$('#'+tblName+'>tbody.striped tr:odd').removeClass('altBG');
+	 	}
 	},
 	
-	//-------------------------
+	//------------------------------
+    makeNav: function () {
+		// based on "Stupid Simple jQuery Accordian" by Ryan Stemkoski, 2009
+		$(".navHeading").bind('click',null,function() {
+			$(".navSelected").removeClass("navSelected").addClass("navUnselected")
+			$(this).removeClass("navUnselected").addClass("navSelected");
+			$(".navContent").hide();//slideUp();
+			$(this).next(".navContent").show();//slideDown();
+		});
 
-	//is this still required? No references found in any file. FL 29 May 2017
-	confirmLink: function(e) {
-		if (modified) {
-			return confirm("<?php echo addslashes(T("This will discard any changes you've made on this page.  Are you sure?")) ?>");
-		} else {
-			return true;
-		}
-	}
-
+		//$(".navContent").hide();
+		$(".navHeading").addClass("navUnselected");
+		$("nav #defaultOpen").trigger("click");
+	},
 
 }
 // hold off above javascript until DOM is fully loaded; images, etc, may not all be loaded yet.
 $(document).ready(obib.init);
+
+
 
 function popSecondary(url) {
 		var SecondaryWin;

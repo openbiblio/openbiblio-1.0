@@ -21,7 +21,7 @@ if ($opecSiteMode == 'N') {
 
 $tab = "opac";
 $nav = "index";
-$focus_form_name = "chooserFrm";
+$focus_form_name = "chooserForm";
 $focus_form_field = "libraryName";
 
 Page::header(array('nav'=>$nav, 'title'=>''));
@@ -42,7 +42,6 @@ Page::header(array('nav'=>$nav, 'title'=>''));
 
 <?php
   	require_once(REL(__FILE__,'../shared/footer.php'));
-
 	require_once(REL(__FILE__, "../opac/indexJs.php"));
 ?>
 </body>

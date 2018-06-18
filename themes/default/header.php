@@ -29,7 +29,7 @@ ini_set('display_errors', 1);
 	 * Left navigation area
 	 **************************************************************************************/
 
-	if ($tab != 'help') {
+if ($tab != 'help') {
 ?>
 <?php if ($tab == 'opac') { ?>
 	<!-- defines a SVG sprite for later use in menu -->
@@ -47,8 +47,7 @@ ini_set('display_errors', 1);
 	<header class="notForInstall">
 
 		<h3 class="theHead">
-		<?php
-			if (($tab != 'opac') && ((!isset($doing_install) or !$doing_install))) {
+		<?php if (($tab != 'opac') && ((!isset($doing_install) or !$doing_install))) {
 				if (Settings::get('library_image_url') != "") {
 					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" />';
 				}
@@ -56,12 +55,12 @@ ini_set('display_errors', 1);
 		?>
 
 		<?php if ($tab == 'opac') { ?>
-		<!-- this button allows user to expand menu. Intended for phone & tablet users -->
-		<span>
-			<button id="menuBtn" aria-expanded="false">
-				<svg><use xlink:href=#navicon></use></svg>
-			</button>
-		</span>
+			<!-- this button allows user to expand menu. Intended for phone & tablet users -->
+			<span>
+				<button id="menuBtn" aria-expanded="false">
+					<svg><use xlink:href=#navicon></use></svg>
+				</button>
+			</span>
 		<?php } ?>
 
 		<!-- Libname is defined in header_top.php -->
@@ -69,49 +68,49 @@ ini_set('display_errors', 1);
 
 		<?php
 			if ($tab != "opac") {
-			//	echo "<br />" . T("Staff Interface");
-			if (Settings::get('show_lib_info') == 'Y') {
-				echo "<hr class=\"hdrSpacer\"> \n";
-				//echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
-				echo $open_hours->displayOpenHours();
-				echo "<hr class=\"hdrSpacer\"> \n";
-				echo "<div id=\"library_phone\">". Settings::get('library_phone') ."</div> \n";
+				//	echo "<br />" . T("Staff Interface");
+				if (Settings::get('show_lib_info') == 'Y') {
+					echo "<hr class=\"hdrSpacer\"> \n";
+					//echo "<div id=\"library_hours\">". Settings::get('library_hours') . "</div> \n";
+					echo $open_hours->displayOpenHours();
+					echo "<hr class=\"hdrSpacer\"> \n";
+					echo "<div id=\"library_phone\">". Settings::get('library_phone') ."</div> \n";
+				}
 			}
-		}
 		?>
 		</h3>
 		
 		<?php if ($tab != 'opac') { ?>
-		<form role="form" id="logoutForm" class="notForInstall" method="get" action="../shared/logout.php">
-			<input type="submit" id="logoutBtn" value="<?php echo T("Logout") ?>" />
-		</form>
+			<form role="form" id="logoutForm" class="notForInstall" method="get" action="../shared/logout.php">
+				<input type="submit" id="logoutBtn" value="<?php echo T("Logout") ?>" />
+			</form>
 		<?php } ?>
 	</header>
 
 	<?php if ($tab != 'opac') { ?>
-	<hr class="notForInstall hdrSpacer" />
+		<hr class="notForInstall hdrSpacer" />
 
-	<nav class="notForInstall">
-		<?php Nav::display($params['nav']); ?>
-	</nav>
+		<nav class="notForInstall">
+			<?php Nav::display($params['nav']); ?>
+		</nav>
 	<?php } else 
 		include("../opac/nav.php");
-	 ?>
+	?>
 
 	<?php if ($tab != 'opac') { ?>
-	<hr class="notForInstall hdrSpacer" />
-	<footer>
-	  <div id="obLogo">
-			<!--a href="http://obiblio.sourceforge.net/"-->
-			<a href="https://bitbucket.org/mstetson/obiblio-1.0-wip/">
-				<img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0" alt="Powered by OpenBiblio" />
-			</a>
-			<br />
-		</div>
-		
-		OpenBiblio Version: <?php echo H(OBIB_CODE_VERSION);?><br />
-		For <a href="../COPYRIGHT.html">Legal Info</a>.
-	</footer>
+		<hr class="notForInstall hdrSpacer" />
+		<footer>
+		  <div id="obLogo">
+				<!--a href="http://obiblio.sourceforge.net/"-->
+				<a href="https://bitbucket.org/mstetson/obiblio-1.0-wip/">
+					<img src="../images/powered_by_openbiblio.gif" width="125" height="44" border="0" alt="Powered by OpenBiblio" />
+				</a>
+				<br />
+			</div>
+
+			OpenBiblio Version: <?php echo H(OBIB_CODE_VERSION);?><br />
+			For <a href="../COPYRIGHT.html">Legal Info</a>.
+		</footer>
 	<?php } ?>
 </aside>
 <?php } ?>
