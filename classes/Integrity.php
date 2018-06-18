@@ -438,19 +438,24 @@ class Integrity extends Queryi{
 //				// NO AUTOMATIC FIX
 //			);
     
-    $this->checks[] = array(
-      'error' => T("You have members with duplicate barcode"),
-      'countSql' => 'select count(*) as count '
-        . 'from member '
-        . 'group by barcode_nmbr '
-        . 'having count > 1 ',
-    );
-    $this->checks[] = array(
-      'error' => T("You have members with the same barcode as a book"),
-      'countSql' => 'select count(*) as count '
-        . 'from member inner join biblio_copy '
-        . 'on member.barcode_nmbr=biblio_copy.barcode_nmbr ',
-    );
+	    $this->checks[] = array(
+	      'error' => T("You have members with duplicate barcode"),
+	      'countSql' => 'select count(*) as count '
+	        . 'from member '
+	        . 'group by barcode_nmbr '
+	        . 'having count > 1 ',
+	    );
+	    $this->checks[] = array(
+	      'error' => T("You have members with the same barcode as a book"),
+	      'countSql' => 'select count(*) as count '
+	        . 'from member inner join biblio_copy '
+	        . 'on member.barcode_nmbr=biblio_copy.barcode_nmbr ',
+	    );
+//		$this->checks[] = array(
+//		  'error' => T("field not marked as 'reqd' list not allowed NULL in DB"),
+//		  'countFn' => 'countNullsReqd',
+//		  'fixFn' => 'addNullDileds',
+//		);
 	}
 
 	function check_el($fix=false) {
@@ -515,8 +520,9 @@ class Integrity extends Queryi{
 		return $errors;
 	}
 
+/*
     function getColmnList ($table) {
-        $sql = "select COLUMN_NAME"
+        $sql = "select COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE"
              . "  from information_schema.columns"
              . "  where " //table_schema = 'your_DB_name'
              . "    table_name = '$table'";
@@ -529,9 +535,31 @@ class Integrity extends Queryi{
         //print_r($list);echo"<br />\n";
         return $list;
     }
+*/
+    function getColmnInfo ($table) {
+        $sql = "select COLUMN_NAME, COLUMN_DEFAULT, IS_NULLABLE"
+             . "  from information_schema.columns"
+             . "  where " //table_schema = 'your_DB_name'
+             . "    table_name = '$table'";
+        //echo "sql = $sql<br />\n";
+        $set = $this->select($sql);
+        $rslt = $set->fetchAll();
+        foreach ($rslt as $row) {
+            $list[$row['COLUMN_NAME']] = array($row['COLUMN_DEFAULT'], $row['IS_NULLABLE']);
+        };
+		//print_r($list);echo"<br />\n";
+        return $list;
+    }
 
     /* compare field definition in each model against related DB table */
     function chkFields() {
+        function mkFldNull ($info, $colName, $req) {
+			if ( ( ! in_array($colName, $req) ) AND ( $info[1] != 'YES') ) {
+   				return True;
+			}
+			return False;
+		}
+
         $fileList = getFileList('../model');
         foreach ($fileList as $file) {
             ## first collect model definition
@@ -545,20 +573,30 @@ class Integrity extends Queryi{
             $tblName = $obj->getName();
             $fldNames = array_keys($obj->getFields());
             $fldParms = array_values($obj->getFields());
-			//echo "model fields: ";print_r($fldNames);echo "<br />\n";
+			$reqdFlds = $obj->getReqdFlds();
+			//echo "$file:  tbl reqd columns: ";print_r($reqdFlds);echo "<br />\n<br />\n<br />\n";
             $obj = null;
+			//echo "model fields: ";print_r($fldNames);echo "<br />\n";
 
-            ## now get current db field names
+            ## now get current db field info
 			//echo "db table: $tblName<br />\n";
-            $dbflds = $this->getColmnList($tblName);
-			//echo "tbl columns: ";print_r($dbflds);echo "<br />\n";
-            ## finally compare them
+            $colInfo = $this->getColmnInfo($tblName);
+			//echo "$file:  tbl columns: ";print_r($colInfo);echo "<br />\n<br />\n<br />\n";
+
+			// check that field names match
+			$dbflds = array_keys($colInfo);
             $errors = array_diff($fldNames, $dbflds);
+
+			// model fields not required must allow null in DB
+			if (array_walk($colInfo, "mkFldNull", $reqdFlds)) {
+//				$errors[] =
+			}
+
             if (sizeof($errors) > 0) {
                 //echo "field error(s) ---> model '$className' has field(s):'  ";print_r($errors); echo" not present in db table: $tblName<br />\n";
                 $this->tblErrs[$tblName] = $errors;
             }
-        }
+       }
         //$this->fixFields(); // intended for debug use only
         return sizeof($this->tblErrs);
     }
@@ -568,9 +606,15 @@ class Integrity extends Queryi{
         if (!isset($this->tblErrs)) return;
         foreach ($this->tblErrs as $tbl=>$flds) {
             //echo "table: $tbl<br />";print_r($flds);echo"<br />\n";
+            $colInfo = getColmnInfo($tbl);
+
             $sql = "ALTER $tbl ADD COLUMN (";
             foreach ($flds as $fld) {
-                $sql = $sql." $fld char(20) NOT NULL,";
+    			if ( ! in_array($colName, $obj->reqdFlds) ) {
+                	$sql = $sql." $fld char(20) NULL,";
+				} else {
+                	$sql = $sql." $fld char(20) NOT NULL,";
+				}
             }
             $sql = substr($sql, 0, -1) . ')';
             echo "$sql <br />\n";
