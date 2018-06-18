@@ -80,6 +80,7 @@ abstract class DBTable extends Queryi {
 	## ------------------ getters ---------------------------------------- ##
     public function getName() {return $this->name;}
     public function getFields() {return $this->fields;}
+	public function getReqdFlds() {return $this->reqFields;}
 
 	## ------------------------------------------------------------------------ ##
 	public function getKeyList($key, $fields) {
