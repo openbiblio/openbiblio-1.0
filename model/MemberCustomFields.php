@@ -15,9 +15,9 @@ class MemberCustomFields extends DBTable {
 			'data'=>'string',
 		));
         $this->setReq(array(
-            'code', 'mbrid', 'data',
+            'mbrid', 'code', 'data',
         ));
-		$this->setKey('code');
+		$this->setKey('mbrid', 'code');
 	}
 	protected function validate_el($rec, $insert) {
 		// check for required fields done in DBTable
