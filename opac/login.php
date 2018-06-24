@@ -22,7 +22,8 @@ if (isset($_POST['id']) and isset($_POST['password'])) {
 	}
 }
 
-Page::header_opac(array('nav'=>$nav, 'title'=>''));
+//Page::header_opac(array('nav'=>$nav, 'title'=>''));
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Member Login'));
 
 if ($msg) {
 	echo '<p class="error">'.H($msg).'</p>';
@@ -58,4 +59,8 @@ if ($msg) {
 </form>
 
 <?php
- ;
+  require_once(REL(__FILE__,'../shared/footer.php'));
+?>
+
+</body>
+</html>

@@ -7,10 +7,11 @@
 
 	session_cache_limiter(null);
 
-  $tab = "user";
-  $nav = "doiSearch";
-  $focus_form_name = "doiForm";
-  $focus_form_field = "doiCd";
+//  $tab = "user";
+	$tab = strToLower($_REQUEST[tab]);
+  	$nav = "doiSearch";
+  	$focus_form_name = "doiForm";
+  	$focus_form_field = "doiCd";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 
 ?>

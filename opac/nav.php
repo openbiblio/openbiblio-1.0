@@ -8,11 +8,11 @@
 ?>
     <nav id="accordion" role="navigation" aria-label="site" tabindex="-1">
       	<section class="menuSect">
-        	<h3 class="navHeading" id="defaultOpen">Holdings</h3>
+        	<h3 class="navHeading" id="defaultOpen">Library Holdings</h3>
 				<div class="navContent">
 				  <a href="../catalog/srchForms.php?tab=OPAC" title="search">Library Search</a><br />
-				  <a href="../catalog/doiSearchForms.php?tab=OPAC" title="doi">use DOI</a><br />
-				  <a href="../opac/imageBrowseForm.php?tab=opac" title="Photos">CoverPhotos</a><br />
+				  <a href="../opac/doiSearchForms.php?tab=OPAC" title="doi">use DOI</a><br />
+				  <a href="../opac/imageBrowseForm.php?tab=OPAC" title="Photos">CoverPhotos</a><br />
 				  <a href="../shared/req_cart.php?tab=opac#main" title="cart">Cart</a><br />
 				</div>
       	</section>
@@ -20,16 +20,16 @@
 		<section class="menuSect">
 			<h3 class="navHeading">My Account</h3>
 			<div class="navContent">
-                <a href="../opac/my_account.php" title="Info">Account Information</a><br />
-                <a href="../opac/edit_account.php" title="Edit">Edit Account</a><br />
-                <a href="../opac/bookings.php" title="Bookings">Bookings</a><br />
+                <a href="../opac/my_account.php?tab=OPAC" title="Info">Account Information</a><br />
+                <a href="../opac/edit_account.php?tab=OPAC" title="Edit">Edit Account</a><br />
+                <a href="../opac/bookings.php?tab=OPAC" title="Bookings">Bookings</a><br />
 	        </div>
 	    </section>
 
 		<section class="menuSect">
-			<h3 class="navHeading">About</h3>
+			<h3 class="navHeading">About Library</h3>
 			<div class="navContent about">
-                <a href="../opac/aboutForm.php" title="Info">About Library</a><br />
+                <a href="../opac/aboutForm.php?tab=OPAC" title="Info">About Library</a><br />
 				<?php if (Settings::get('library_image_url') != "") {
 					echo '<img id="logo"'.' src="'.Settings::get("library_image_url").'" />';
 				} ?>

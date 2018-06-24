@@ -60,6 +60,7 @@ var obib = {
 
 		if (obib.opacMode) {
 			console.log('in OPAC mode');
+            obib.setup_SvcWorker();
 			obib.makeNav();
 
 			// set initial (closed menu) states
@@ -118,7 +119,23 @@ console.log('menu btn clicked');
 	  		$('#'+tblName+'>tbody.striped tr:odd').removeClass('altBG');
 	 	}
 	},
-	
+
+	//------------------------------
+	setup_SvcWorker: function () {
+  		// setup application caching
+  		if (navigator.serviceWorker) {
+	        console.log("Service worker API available");
+	        navigator.serviceWorker.register('../serviceworker.js')
+	        .then ( function (registration) {
+	          console.log("Service worker registration success!", registration.scope);
+	        })
+	        .catch ( function (regErr) {
+	          console.error("Service worker registration failure!", regErr);
+	        });
+	        //console.log("Service worker registration all done");
+		}
+	},
+
 	//------------------------------
     makeNav: function () {
 		// based on "Stupid Simple jQuery Accordian" by Ryan Stemkoski, 2009

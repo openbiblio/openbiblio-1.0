@@ -5,9 +5,6 @@
 
 require_once("../shared/common.php");
 
-$tab = "opac";
-$nav = "account";
-
 require_once(REL(__FILE__, "../model/Members.php"));
 require_once(REL(__FILE__, "../model/Sites.php"));
 require_once(REL(__FILE__, "../classes/Report.php"));
@@ -15,10 +12,12 @@ require_once(REL(__FILE__, "../classes/Links.php"));
 require_once(REL(__FILE__, "../classes/InfoDisplay.php"));
 require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 
+$tab = strToLower($_REQUEST[tab]);
+$nav = "account";
+
 
 if (!isset($_SESSION['authMbrid'])) {
-	header('Location: ../opac/index.php');
-	exit();
+	header("Location: ../opac/login.php?tab=OPAC");
 }
 
 $members = new Members;
@@ -26,7 +25,7 @@ $mbr = $members->getOne($_SESSION['authMbrid']);
 $sites = new Sites;
 $site = $sites->getOne($mbr['siteid']);
 
-Page::header_opac(array('nav'=>$nav, 'title'=>''));
+Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Cover Photos'));
 
 $d = new InfoDisplay;
 $d->title = T("Member Information");
