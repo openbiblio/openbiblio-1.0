@@ -226,23 +226,24 @@ console.log('upload completed');
 */
 	// using SimpleUpload.js 27 Jun 2018
 	importFile: function () {
-console.log('in mrci::importFile()');
+		//console.log('in mrci::importFile()');
         $('input[type="file"]').simpleUpload(mrci.url, {
 			data:{  'junk':'dummy',
 					'mode':'processMarcFile',
 			  		'test':$('[name="test"]:checked').val(),
+			  		'verbose':$('[name="verbose"]:checked').val(),
 			  		'collectionCd': $('#collectionCd').val(),
 			  		'materialCd': $('#materialCd').val(),
 			  		'opacFlg': $('#opacFlg option:selected').val(),
 			},
 			success: function (rslt) {
-console.log('upload completed');
+				console.log('upload completed');
 				$('#mrcImportRslts').html(rslt);
 				$('#intro').hide();
 				$('#rslts').show();
 			},
 			error: function (response) {
-console.log('upload failed');
+				console.log('upload failed');
 				$('#mrcImportRslts').html(response);
 				$('#intro').hide();
 				$('#rslts').show();

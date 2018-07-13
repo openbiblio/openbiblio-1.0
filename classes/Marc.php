@@ -18,7 +18,7 @@ define("MARC_RT", "\x1d");	# Record terminator
 # be added at some point.
 /* -------------------------------------------------------------------------- */
 class MarcHelpers {
-	function toMnem($s) {
+	static function toMnem($s) {
 		$map = array(
 			'{' => '{lcub}',
 			'}' => '{rcub}',
@@ -48,7 +48,7 @@ class MarcHelpers {
 		}
 		return $t;
 	}
-	function fromMnem($s) {
+	static function fromMnem($s) {
 		$map = array(
 			'{lcub}' => '{',
 			'{rcub}' => '}',
@@ -80,7 +80,8 @@ class MarcHelpers {
 /* Base class for Control and Data fields */
 /* -------------------------------------------------------------------------- */
 class MarcField {
-	var $tag;
+	public $tag;
+
 	public function __construct($tag='') {
 		$this->tag=strtoupper($tag);
 	}
@@ -106,7 +107,8 @@ class MarcField {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcControlField extends MarcField {
-	var $data;
+	public $data;
+
 	public function __construct($tag='', $data='') {
 		//$this->MarcField($tag);
 		parent::__construct($tag);
@@ -130,8 +132,9 @@ class MarcControlField extends MarcField {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcSubfield {
-	var $identifier;
-	var $data;
+	public $identifier;
+	public $data;
+
 	public function __construct($i, $d) {
 		$this->identifier=strtolower($i);
 		$this->data=$d;
@@ -220,7 +223,7 @@ class MarcRecord {
 	public $fields;
 
 	public function __construct() {
-echo "in MarcRecord::__construct() <br />";
+//echo "in MarcRecord::__construct() <br />";
 		# Provide a default leader
 		$this->setLeader($this->default_leader);
 		$this->fields = array();
@@ -241,11 +244,11 @@ echo "in MarcRecord::__construct() <br />";
 		return $a;
 	}
 	public function setLeader($ldr, $lenient=False) {
-echo "in MarcRecord::setLeader() <br />";
+//echo "in MarcRecord::setLeader() <br />";
 		if ($lenient) {
 			$ldr = rtrim($ldr);
 		}
-echo "raw ldr  : $ldr<br />";
+//echo "raw ldr  : $ldr<br />";
 		if (strlen($ldr) != strlen($this->default_leader)) {
 			if ($lenient) {
 				$ldr .= substr($this->default_leader, strlen($ldr));
@@ -254,7 +257,7 @@ echo "raw ldr  : $ldr<br />";
 				return 'wrong leader length';
 			}
 		}
-echo "adjtd ldr: $ldr<br />";
+//echo "adjtd ldr: $ldr<br />";
 		foreach ($this->_leader_fields as $f) {
 			$v = substr($ldr, 0, $f[2]);
 			$ldr = substr($ldr, $f[2]);
@@ -409,10 +412,10 @@ abstract class MarcBaseParser {
 	}
 	public function parse($input = "") {
 		$this->unparsed .= $input;
-echo "in MarcBaseParser::parse()<br />";
+//echo "in MarcBaseParser::parse()<br />";
 //       if (strlen($this->unparsed) < 5) {
 //			return $this->_error("Invalid MARC record length");
-echo "input file len = ".strlen($this->unparsed)."<br />";
+//echo "input file len = ".strlen($this->unparsed)."<br />";
 //echo "unparsed: ";print_r($this->unparsed);echo "<br />";
 //		}
 	}
@@ -431,22 +434,22 @@ class MarcParser extends MarcBaseParser {
 	public function parse($input) {
 		$recLen = 0;
 		$unparLen = 0;
-echo "in MarcParser::parse(), pt A<br />";
+//echo "in MarcParser::parse(), pt A<br />";
 
 		parent::parse($input);
-echo "in MarcParser::parse(), pt B<br />";
+//echo "in MarcParser::parse(), pt B<br />";
 
 		$unparLen = strlen($this->unparsed);
 		while ($unparLen >= 5) {
-echo "Unparsed data len = $unparLen <br />";
+//echo "Unparsed data len = $unparLen <br />";
 //return;
 			$this->recnum = count($this->records);
-echo $this->recnum." recs found so far<br />";
+//echo $this->recnum." recs found so far<br />";
 //return;
 //echo "unparsed: ";print_r($this->unparsed);echo "<br />";
 //return;
 			$recLen = substr($this->unparsed, 0, 5);
-echo "current MARC record len field = $recLen<br />";
+//echo "current MARC record len field = $recLen<br />";
 			//if (!ctype_digit($recLen)) {
 			//	return $this->_error("garbled length field");
 			//}
@@ -458,10 +461,10 @@ echo "current MARC record len field = $recLen<br />";
 				return $this->_error("Input size exceeds the coded record length.");
 				//break;
 			}
-echo "record dimensions OK.<br />";
+//echo "record dimensions OK.<br />";
 //return;
 			$marcRec = substr($this->unparsed, 0, $recLen);
-echo "MARC record: ";print_r($marcRec);echo "<br />";
+//echo "MARC record: ";print_r($marcRec);echo "<br />";
 //return;
 			$r = $this->parseRecord($marcRec);
 //return;
@@ -476,24 +479,24 @@ echo "MARC record: ";print_r($marcRec);echo "<br />";
 	}
 
 	private function parseRecord($rec) {
-echo "in MarcParser::parseRecord()<br />";
+//echo "in MarcParser::parseRecord()<br />";
 
 		$r = new MarcRecord();
 		$this->recnum += 1;
 		$ldr = substr($rec, 0, 24);
 		$err = $r->setLeader(ldr, $this->lenient);
 
-echo "ldr err: ";print_r($err);echo "<br />";
+//echo "ldr err: ";print_r($err);echo "<br />";
 //return;
 //		if (!empty($err)) {
 //			echo "Invalid Leader: ".$err;
 //			return;
 //		}
-echo "record leader OK.<br />";
+//echo "record leader OK.<br />";
 //return;
 $r->baseAddr = substr($rec, 12, 5);
 		$base=$r->baseAddr;
-echo "marc fields base addr = $base<br />";
+//echo "marc fields base addr = $base<br />";
 //return;
 		$dir = substr($rec, 24, $base-24);
 //echo "MARC record dir: ";print_r($dir);echo "<br />";
@@ -503,7 +506,7 @@ echo "marc fields base addr = $base<br />";
 //			return $entries;
 //		}
 //echo "MARC record entries: ";print_r($entries);echo "<br />";
-echo "record directories OK.<br />";
+//echo "record directories OK.<br />";
 //return;
 		foreach ($entries as $e) {
 			$f = substr($rec, $base+$e['start'], $e['length']);
@@ -514,18 +517,18 @@ echo "record directories OK.<br />";
 //			}
 			array_push($r->fields, $field);
 		}
-print_r($r);echo"<br />";
+//echo "MARC Record: ";print_r($r);echo"<br /><br />";
 		return $r;
 	}
 
 	private function parseDirectory($directory) {
-echo "in MarcParser::parseDirectory()<br />";
-echo "MARC record dir: ";print_r($directory);echo "<br />";
+//echo "in MarcParser::parseDirectory()<br />";
+//echo "MARC record dir: ";print_r($directory);echo "<br />";
 //return array();
 		if (!$this->lenient and $directory{strlen($directory)-1} != MARC_FT) {
 			return $this->_error('directory unterminated');
 		}
-echo "directory termination OK.<br />";
+//echo "directory termination OK.<br />";
 //return array();
 
 		$directory = substr($directory, 0, -1);
@@ -536,17 +539,17 @@ echo "directory termination OK.<br />";
 		);
 		$entry_len = $emap['tag'] + $emap['length'] + $emap['start'];
 		$dirLen = strlen($directory);
-echo "entryLen = $entry_len; dirLen = $dirLen<br />";
+//echo "entryLen = $entry_len; dirLen = $dirLen<br />";
 //return array();
 		if ($dirLen % $entry_len != 0) {
 			//echo "Dir Len: ".$dirLen." SHOULD BE a multiple of $entry_len";
 			$mult = round(($dirLen / $entry_len), 0, PHP_ROUND_HALF_DOWN); // get integer result
 			$dirLen = $entry_len * $mult;
-echo "Dir len forced to $dirLen<br />";
+//echo "Dir len forced to $dirLen<br />";
 		}
 //return array();
 
-echo "making directory pointer array<br />";
+//echo "making directory pointer array<br />";
 		$entries=array();
 		$directory = substr($directory, 0, $dirLen);
 		while (strlen($directory)) {
@@ -565,13 +568,13 @@ echo "making directory pointer array<br />";
 			array_push($entries, $e);
 			$directory = substr($directory, $p);
 		}
-echo "Dir Entries: ";print_r($entries);echo "<br />";
+//echo "Dir Entries: ";print_r($entries);echo "<br />";
 		return $entries;
 	}
 
 	private function parseField($tag, $field) {
-echo "in MarcParser::parseField()<br />";
-echo "working tag ".$tag."<br />";
+//echo "in MarcParser::parseField()<br />";
+//echo "working tag ".$tag."<br />";
 		if (!$this->lenient and $field{strlen($field)-1} != MARC_FT) {
 			return $this->_error('variable field unterminated: '+$field);
 		}
@@ -580,7 +583,7 @@ echo "working tag ".$tag."<br />";
 		if (substr($tag, 0, 2) == '00') {
 			return new MarcControlField($tag, $field);
 		}
-echo "raw field data: ";print_r($field);echo "<br />";
+//echo "raw field data: ";print_r($field);echo "<br />";
 
 		# 2 is the number of indicators
 		$f = new MarcDataField($tag, substr($field, 0, 2));

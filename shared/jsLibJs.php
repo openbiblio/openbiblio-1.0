@@ -12,11 +12,12 @@
 
 /**
  * misc support JavaScript utility functions
- * @author Fred LaPlante
- */
-
-/**
  * jQuery plugins for openBiblio
+ *
+ * @name jsLib.Js
+ *
+ * @author Fred LaPlante
+ *
  */
 
 (function($){

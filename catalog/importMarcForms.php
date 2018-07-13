@@ -30,15 +30,20 @@
 		<input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
 
 		<fieldset>
-			<label><?php echo T("Test Load"); ?>:
-				<?php echo T("MARCloadTestTrue"); ?>
-					<input type="radio" id="testTrue" name="test" value="true" checked \>
-				<?php echo T("MARCloadTestFalse"); ?>
-					<input type="radio" id="testFalse" name="test" value="false" \>
-			</label> <br />
 			<label><?php echo T("MARCInputFile"); ?>:
 				<input type="file" id="imptSrce" name="imptSrce" required aria-required="true" autofocus \>
 			</label>
+
+			<fieldset>
+				<label><?php echo T("Test Load"); ?>:
+					<?php echo T("True"); ?> <input type="radio" id="testTrue" name="test" value="true" checked \>
+					<?php echo T("False"); ?> <input type="radio" id="testFalse" name="test" value="false" \>
+				</label> <br />
+				<label><?php echo T("Verbose"); ?>:
+					<?php echo T("True"); ?> <input type="radio" id="verboseTrue" name="verbose" value="true" \>
+					<?php echo T("False"); ?> <input type="radio" id="verboseFalse" name="verbose" value="false" checked \>
+				</label> <br />
+			</fieldset>
 		</fieldset>
 	
 		<fieldset>

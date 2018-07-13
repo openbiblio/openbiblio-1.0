@@ -66,7 +66,7 @@ switch ($_POST[mode]){
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'processMarcFile':
-echo "in importServer, process MarcFile: <br />";
+//echo "in importServer, process MarcFile: <br />";
 		$fn = $_FILES['imptSrce']['tmp_name'];
 		if (is_uploaded_file($fn)) {
 			//$f = @fopen($fn, rb);
@@ -76,9 +76,14 @@ echo "in importServer, process MarcFile: <br />";
 			$biblios = new Biblios();
 			$p = new MarcParser();
 			$cart = new Cart('bibid');
-			$nrecs = 0;
+			$nfnd = 0;
+			$nimp = 0;
 
-			$opac_flg = (isset($_POST['opac']) && $_POST['opac'] == 'Y') ? 'Y' : 'N';
+			$opac_flg = (isset($_POST['opac']) AND $_POST['opac'] == 'Y') ? 'Y' : 'N';
+
+			if ($_POST["test"]=="true") {
+				echo '<p class="info">Test mode was selected,<br />input file was error checked,  nothing has been imported.</p><br />';
+			}
 
 			while($buf = fread($f, 8192)) {
 				$err = $p->parse($buf);
@@ -88,13 +93,18 @@ echo "in importServer, process MarcFile: <br />";
 					echo "<br /> See file ".$fn."</p>";
 					break;
 				}
-echo "good record found";
+//echo "good record found<br />";
 				foreach ($p->records as $rec) {
+					$nfnd += 1;
 					if ($_POST["test"]=="true") {
-						echo '<p><pre>';
-						echo $rec->getMnem();
-						print_r($rec);
-						echo '</pre></p>';
+						if ($_POST["verbose"]=="true") {
+							echo '<p>RECORD To be Imported:<pre>';
+							echo $rec->getMnem();
+//							print_r($rec);
+							echo '</pre></p><br />';
+						} else {
+							continue;
+						}
 					} else {
 						$biblio = array(
 							'last_change_userid' => $_SESSION["userid"],
@@ -105,13 +115,14 @@ echo "good record found";
 						);
 						$bibid = $biblios->insert($biblio);
 						$cart->add($bibid);
-						$nrecs += 1;
+						$nimp += 1;
 					}
 				}
 				$p->records = array();
 			}
 			fclose($f);
-			echo '<p>'.$nrecs.' '.T("recordsImported").'</p>';
+			echo '<p>'.$nfnd.' '.T("recordsFound").'</p>';
+			echo '<p>'.$nimp.' '.T("recordsImported").'</p>';
 			if ($_POST["test"] != "true") {
 				$text = '<a href="../shared/req_cart.php?tab='.HURL($tab).'">'.'</a>';
 				//echo '<p>'.T("Records added to %url%Cart", array('url'=>$text)).'</p>';
