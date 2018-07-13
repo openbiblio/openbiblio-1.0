@@ -220,6 +220,7 @@ class MarcRecord {
 	public $fields;
 
 	public function __construct() {
+echo "in MarcRecord::__construct() <br />";
 		# Provide a default leader
 		$this->setLeader($this->default_leader);
 		$this->fields = array();
@@ -240,9 +241,11 @@ class MarcRecord {
 		return $a;
 	}
 	public function setLeader($ldr, $lenient=False) {
+echo "in MarcRecord::setLeader() <br />";
 		if ($lenient) {
 			$ldr = rtrim($ldr);
 		}
+echo "raw ldr  : $ldr<br />";
 		if (strlen($ldr) != strlen($this->default_leader)) {
 			if ($lenient) {
 				$ldr .= substr($this->default_leader, strlen($ldr));
@@ -251,6 +254,7 @@ class MarcRecord {
 				return 'wrong leader length';
 			}
 		}
+echo "adjtd ldr: $ldr<br />";
 		foreach ($this->_leader_fields as $f) {
 			$v = substr($ldr, 0, $f[2]);
 			$ldr = substr($ldr, $f[2]);
@@ -367,15 +371,16 @@ class MarcRecord {
 ## MARC parsing stuff below here
 /* -------------------------------------------------------------------------- */
 class MarcParseError {
-	var $msg;
-	var $record;
-	var $line;
+	protected $msg;
+	protected $record;
+	protected $line;
+
 	public function __construct($msg, $record=NULL, $line=NULL) {
 		$this->msg = $msg;
 		$this->record = $record;
 		$this->line = $line;
 	}
-	function toStr() {
+	public function toStr() {
 		$s = '';
 		if ($this->line !== NULL) {
 			$s .= 'Line '.$this->line.': ';
@@ -389,99 +394,140 @@ class MarcParseError {
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
-class MarcBaseParser {
-	var $lenient;
-	var $records;
-	var $_recnum;
-	var $_unparsed;
+abstract class MarcBaseParser {
+	public $records;
+
+	protected $lenient;
+	protected $recnum;
+	protected $unparsed;
+
 	public function __construct($lenient=true) {
 		$this->lenient = $lenient;
 		$this->records = array();
-		$this->_recnum = 0;
-		$this->_unparsed = '';
+		$this->recnum = 0;
+		$this->unparsed = '';
 	}
-	function parse($unparsed) {
-		$this->_unparsed .= $unparsed;
-		return $this->_parse();
+	public function parse($input = "") {
+		$this->unparsed .= $input;
+echo "in MarcBaseParser::parse()<br />";
+//       if (strlen($this->unparsed) < 5) {
+//			return $this->_error("Invalid MARC record length");
+echo "input file len = ".strlen($this->unparsed)."<br />";
+//echo "unparsed: ";print_r($this->unparsed);echo "<br />";
+//		}
 	}
 
-	# Must be overridden by derived classes
-	function eof() {
-		$this->_recnum = 0;
-		return 0;
-	}
-	function _error($s) {
-		return new MarcParseError($s);
-	}
-	function _parse() {
-		return 0;
-	}
+	# MUST be implemented in derived classes
+	abstract protected function eof();
+	abstract protected function error($s);
 }
 
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcParser extends MarcBaseParser {
-	function eof() {
-		if (!$this->lenient and strlen($this->_unparsed) > 0) {
-			return new MarcParseError('trailing junk or incomplete record at end of file');
-		}
-		$this->_recnum = 0;
-		return 0;
+	public function __construct ($lenient=true) {
+		parent::__construct($lenient);
 	}
-	function _error($s) {
-		return new MarcParseError($s, $this->_recnum);
-	}
-	function _parse() {
-		$old_len = count($this->records);
-		while (strlen($this->_unparsed) >= 5) {
-			$rec_len = substr($this->_unparsed, 0, 5);
-			if (!ctype_digit($rec_len)) {
-				return $this->_error("garbled length field");
-			}
-			if ($rec_len < 24) {
+	public function parse($input) {
+		$recLen = 0;
+		$unparLen = 0;
+echo "in MarcParser::parse(), pt A<br />";
+
+		parent::parse($input);
+echo "in MarcParser::parse(), pt B<br />";
+
+		$unparLen = strlen($this->unparsed);
+		while ($unparLen >= 5) {
+echo "Unparsed data len = $unparLen <br />";
+//return;
+			$this->recnum = count($this->records);
+echo $this->recnum." recs found so far<br />";
+//return;
+//echo "unparsed: ";print_r($this->unparsed);echo "<br />";
+//return;
+			$recLen = substr($this->unparsed, 0, 5);
+echo "current MARC record len field = $recLen<br />";
+			//if (!ctype_digit($recLen)) {
+			//	return $this->_error("garbled length field");
+			//}
+			if ($recLen < 24) {
 				return $this->_error("impossibly small length field");
 			}
-			if (strlen($this->_unparsed) < $rec_len) {
-				break;
+//return;
+			if ($unparLen < $recLen) {
+				return $this->_error("Input size exceeds the coded record length.");
+				//break;
 			}
-			$r = $this->_parseRecord(substr($this->_unparsed, 0, $rec_len));
+echo "record dimensions OK.<br />";
+//return;
+			$marcRec = substr($this->unparsed, 0, $recLen);
+echo "MARC record: ";print_r($marcRec);echo "<br />";
+//return;
+			$r = $this->parseRecord($marcRec);
+//return;
 			if (is_a($r, 'MarcParseError')) {
 				return $r;
 			}
 			array_push($this->records, $r);
-			$this->_unparsed = substr($this->_unparsed, $rec_len);
+			$this->unparsed = substr($this->unparsed, $recLen);
+			$unparLen = strlen($this->unparsed);
 		}
-		return count($this->records)-$old_len;
+		return count($this->records)-$this->recnum;
 	}
 
-	function _parseRecord($rec) {
-		$r = new MarcRecord();
-		$this->_recnum += 1;
-		$err = $r->setLeader(substr($rec, 0, 24), $this->lenient);
-		if ($err) {
-			return $this->_error("Invalid Leader: ".$err);
-		}
+	private function parseRecord($rec) {
+echo "in MarcParser::parseRecord()<br />";
 
+		$r = new MarcRecord();
+		$this->recnum += 1;
+		$ldr = substr($rec, 0, 24);
+		$err = $r->setLeader(ldr, $this->lenient);
+
+echo "ldr err: ";print_r($err);echo "<br />";
+//return;
+//		if (!empty($err)) {
+//			echo "Invalid Leader: ".$err;
+//			return;
+//		}
+echo "record leader OK.<br />";
+//return;
+$r->baseAddr = substr($rec, 12, 5);
 		$base=$r->baseAddr;
-		$entries = $this->_parseDirectory(substr($rec, 24, $base-24));
-		if (is_a($entries, 'MarcParseError')) {
-			return $entries;
-		}
+echo "marc fields base addr = $base<br />";
+//return;
+		$dir = substr($rec, 24, $base-24);
+//echo "MARC record dir: ";print_r($dir);echo "<br />";
+//return;
+		$entries = $this->parseDirectory($dir);
+//		if (is_a($entries, 'MarcParseError')) {
+//			return $entries;
+//		}
+//echo "MARC record entries: ";print_r($entries);echo "<br />";
+echo "record directories OK.<br />";
+//return;
 		foreach ($entries as $e) {
 			$f = substr($rec, $base+$e['start'], $e['length']);
-			$field = $this->_parseField($e['tag'], $f);
-			if (is_a($field, 'MarcParseError')) {
-				return $field;
-			}
+			$field = $this->parseField($e['tag'], $f);
+//			if (is_a($field, 'MarcParseError')) {
+//				return $field;
+//echo "MARC err: ";print_r($field);echo"<br />";
+//			}
 			array_push($r->fields, $field);
 		}
+print_r($r);echo"<br />";
 		return $r;
 	}
 
-	function _parseDirectory($directory) {
+	private function parseDirectory($directory) {
+echo "in MarcParser::parseDirectory()<br />";
+echo "MARC record dir: ";print_r($directory);echo "<br />";
+//return array();
 		if (!$this->lenient and $directory{strlen($directory)-1} != MARC_FT) {
 			return $this->_error('directory unterminated');
 		}
+echo "directory termination OK.<br />";
+//return array();
+
 		$directory = substr($directory, 0, -1);
 		$emap = array(
 			'tag' => 3,
@@ -489,29 +535,43 @@ class MarcParser extends MarcBaseParser {
 			'start' => 5,
 		);
 		$entry_len = $emap['tag'] + $emap['length'] + $emap['start'];
-		if (strlen($directory) % $entry_len != 0) {
-			return $this->_error('directory is the wrong length');
+		$dirLen = strlen($directory);
+echo "entryLen = $entry_len; dirLen = $dirLen<br />";
+//return array();
+		if ($dirLen % $entry_len != 0) {
+			//echo "Dir Len: ".$dirLen." SHOULD BE a multiple of $entry_len";
+			$mult = round(($dirLen / $entry_len), 0, PHP_ROUND_HALF_DOWN); // get integer result
+			$dirLen = $entry_len * $mult;
+echo "Dir len forced to $dirLen<br />";
 		}
+//return array();
+
+echo "making directory pointer array<br />";
 		$entries=array();
+		$directory = substr($directory, 0, $dirLen);
 		while (strlen($directory)) {
 			$e = array();
 			$e['tag'] = substr($directory, 0, $emap['tag']);
 			$p = $emap['tag'];
 			foreach (array('length', 'start') as $f) {
 				$s = substr($directory, $p, $emap[$f]);
-				if (!ctype_digit($s)) {
-					return self._error('non-numeric '.$f.' field in directory entry '.count(entries));
-				}
+//				if (!ctype_digit($s)) {
+//					return self._error('non-numeric '.$f.' field in directory entry '.count(entries));
+//					echo "bad field in directory entry $s, #" . count(entries) . "<br />";
+//				}
 				$e[$f] = $s;
 				$p += $emap[$f];
 			}
 			array_push($entries, $e);
 			$directory = substr($directory, $p);
 		}
+echo "Dir Entries: ";print_r($entries);echo "<br />";
 		return $entries;
 	}
 
-	function _parseField($tag, $field) {
+	private function parseField($tag, $field) {
+echo "in MarcParser::parseField()<br />";
+echo "working tag ".$tag."<br />";
 		if (!$this->lenient and $field{strlen($field)-1} != MARC_FT) {
 			return $this->_error('variable field unterminated: '+$field);
 		}
@@ -520,14 +580,17 @@ class MarcParser extends MarcBaseParser {
 		if (substr($tag, 0, 2) == '00') {
 			return new MarcControlField($tag, $field);
 		}
+echo "raw field data: ";print_r($field);echo "<br />";
 
 		# 2 is the number of indicators
 		$f = new MarcDataField($tag, substr($field, 0, 2));
+//echo "field data: ";print_r($f);echo "<br />";
 		$field = substr($field, 2);
+//echo "using as delimiter: ";print_r(MARC_DELIMITER);echo "<br />";
+//		if ($field{0} != MARC_DELIMITER) {
+//			return $this->_error("missing delimiter in ".$f->tag." field, got '".$field."' instead");
+//		}
 
-		if ($field{0} != MARC_DELIMITER) {
-			return $this->_error("missing delimiter in ".$f->tag." field, got '".$field."' instead");
-		}
 		$elems = explode(MARC_DELIMITER, $field);
 		# Elements begin with a delimiter, but we treat it as
 		# a separator, so the first one will always be empty and
@@ -540,6 +603,18 @@ class MarcParser extends MarcBaseParser {
 		}
 		return $f;
 	}
+
+	/* ........................ */
+	protected function eof() {
+		if (!$this->lenient and strlen($this->unparsed) > 0) {
+			return new MarcParseError('trailing junk or incomplete record at end of file');
+		}
+		$this->recnum = 0;
+		return 0;
+	}
+	protected function error($s) {
+		return new MarcParseError($s, $this->recnum);
+	}
 }
 
 /* -------------------------------------------------------------------------- */
@@ -551,34 +626,17 @@ class MarcMnemParser extends MarcBaseParser {
 		$this->_line = 0;
 		$this->_rec = NULL;
 		$this->_field = NULL;
-		$this->_recnum = 1;
-	}
-	function _error($s) {
-		return new MarcParseError($s, $this->_recnum, $this->_line);
-	}
-	function eof() {
-		$this->_unparsed .= "\n\n";
-		$n = $this->_parse();
-		if (is_a($n, 'MarcParseError')) {
-			return $n;
-		}
-		$this->_recnum = 1;
-		if ($this->_rec != NULL) {
-			array_push($this->records, $this->_rec);
-			$this->_rec = NULL;
-			return $n+1;
-		}
-		return $n;
+		$this->recnum = 1;
 	}
 
-	function _parse() {
+	function parse($input = "") {
 		$old_len = count($this->records);
-		$data = str_replace("\r", "", $this->_unparsed);
+		$data = str_replace("\r", "", $this->unparsed);
 		$lines = explode("\n", $data);
-		$this->_unparsed = '';
+		$this->unparsed = '';
 		if (count($lines)) {
 			# The last element is a partial line or an empty string.
-			$this->_unparsed = array_pop($lines);
+			$this->unparsed = array_pop($lines);
 		}
 		foreach ($lines as $l) {
 			// Correct for explode() removing the newlines.
@@ -601,7 +659,7 @@ class MarcMnemParser extends MarcBaseParser {
 				}
 				if ($this->_rec) {
 					array_push($this->records, $this->_rec);
-					$this->_recnum += 1;
+					$this->recnum += 1;
 					$this->_rec = NULL;
 				}
 			} else if (!$this->_field) {
@@ -664,5 +722,24 @@ class MarcMnemParser extends MarcBaseParser {
 		}
 		array_push($this->_rec->fields, $f);
 		return;
+	}
+
+	/* .......................... */
+	function error($s) {
+		return new MarcParseError($s, $this->recnum, $this->_line);
+	}
+	function eof() {
+		$this->unparsed .= "\n\n";
+		$n = $this->parse();
+		if (is_a($n, 'MarcParseError')) {
+			return $n;
+		}
+		$this->recnum = 1;
+		if ($this->_rec != NULL) {
+			array_push($this->records, $this->_rec);
+			$this->_rec = NULL;
+			return $n+1;
+		}
+		return $n;
 	}
 }

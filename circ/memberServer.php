@@ -371,6 +371,7 @@
 			exit;
 		}
         $mbrid = $response[0];
+echo "in memberServer, addNewMember, mbrId: $mbrid<br />\n";
 		$cstmArray = array();
 		foreach ($_POST as $key => $value) {
 			if (substr($key,0,7) == 'custom_') {
@@ -378,12 +379,13 @@
 				$cstmArray[$theKey] = $value;	 
 			}
 		}
+echo "in memberServer, addNewMember, CstmArray: ";print_r($cstmArray);echo "<br />\n";
 		$result = $members->setCustomFields($mbrid, $cstmArray);
-	  if(!empty($result)){
-	    echo $result;
-      } else {
-	      echo "1";
-      }
+	  	if(!empty($result)){
+	    	echo $result;
+      	} else {
+	      	echo "1";
+      	}
 		break;
 	case 'd-3-L-3-tMember':
         $members->deleteCustomFields($_POST['mbrid']);

@@ -224,7 +224,7 @@
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
-	include_once(REL(__FILE__,'../shared/ajaxFileUpload/ajaxfileupload.js'));
+	include_once(REL(__FILE__,'../shared/txtFileUpload/ajaxfileupload.js'));
 	require_once(REL(__FILE__, "../catalog/importCsvJs.php"));
 ?>	
 </body>

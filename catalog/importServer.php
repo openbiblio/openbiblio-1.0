@@ -7,70 +7,74 @@
 
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	require_once(REL(__FILE__, "../model/MediaTypes.php"));
-	require_once(REL(__FILE__, "../model/MarcBlockss.php"));
+	require_once(REL(__FILE__, "../model/MarcBlocks.php"));
 	require_once(REL(__FILE__, "../model/MarcTags.php"));
-	require_once(REL(__FILE__, "../model/MarcMarcSubfields.php"));
+	require_once(REL(__FILE__, "../model/MarcSubfields.php"));
 	require_once(REL(__FILE__, "../model/Copies.php"));
 	require_once(REL(__FILE__, "../model/Biblios.php"));
 	require_once(REL(__FILE__, "../model/Cart.php"));
 	require_once(REL(__FILE__, "../classes/Marc.php"));
 
 	# Big uploads take a while
-	set_time_limit(120);
+//	set_time_limit(120);
 
-	$recordTerminator="\n";
+//	$recordTerminator="\n";
 
 	## ---------------------------------------------------------------------- ##
 
 function doPostNewBiblio($rcrd) {
 	$_POST = $rcrd;
-  require_once(REL(__FILE__,'../catalog/biblioChange.php'));
-  $rtn = PostBiblioChange("newconfirm");
-  $rslt = json_decode($rtn);
-  return $rslt->bibid;
+  	require_once(REL(__FILE__,'../catalog/biblioChange.php'));
+  	$rtn = PostBiblioChange("newconfirm");
+  	$rslt = json_decode($rtn);
+  	return $rslt->bibid;
 }
 
 ## main body of code
+//echo "params: ";print_r($_POST);echo "<br />\n";
 switch ($_POST[mode]){
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-  case 'isDupBarCd':
-  	$cpys = new Copies;
-  	$rslt = $cpys->isDuplicateBarcd($_GET['barCd']);
-  	echo $rslt;
-  	break;
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+  	case 'isDupBarCd':
+  		$cpys = new Copies;
+  		$rslt = $cpys->isDuplicateBarcd($_GET['barCd']);
+  		echo $rslt;
+  		break;
   	
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
-  case 'getCollections':
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
+  	case 'getCollections':
 		$cols = new Collections;
 		$collections = $cols->getSelect();
 		echo json_encode($collections);
-  	break;
+	  	break;
   case 'getMediaTypes':
 		$meds = new MediaTypes;
 		$medTypes = $meds->getSelect();
 		echo json_encode($medTypes);
-  	break;
+	  	break;
   case 'getMarcDesc':
-	  $tag = explode('$', $_GET['code']);
+	  	$tag = explode('$', $_GET['code']);
 		$ptr = new MarcSubfields;
 		$params = array('tag' =>$tag[0], 'subfield_cd' =>$tag[1] );
-	  $vals = array();
+	  	$vals = array();
 		$rslt = $ptr->getMatches($params, 'subfield_cd');
 		while ($row = $rslt->fetch_assoc()) {
-		  $vals[] = $row;
+		  	$vals[] = $row;
 		}
 		$val = $vals[0]['description'];
-	  echo $val;
-  	break;
+	  	echo $val;
+  		break;
 
-  #-.-.-.-.-.-.-.-.-.-.-.-.-
+  	#-.-.-.-.-.-.-.-.-.-.-.-.-
 	case 'processMarcFile':
+echo "in importServer, process MarcFile: <br />";
 		$fn = $_FILES['imptSrce']['tmp_name'];
 		if (is_uploaded_file($fn)) {
-			$f = @fopen($fn, rb);
+			//$f = @fopen($fn, rb);
+			$f = fopen($fn, rb);
 			assert($f);
-			$p = new MarcParser();
+
 			$biblios = new Biblios();
+			$p = new MarcParser();
 			$cart = new Cart('bibid');
 			$nrecs = 0;
 
@@ -79,26 +83,30 @@ switch ($_POST[mode]){
 			while($buf = fread($f, 8192)) {
 				$err = $p->parse($buf);
 				if (is_a($err, 'MarcParseError')) {
-					echo '<p class="error">'.T("Bad MARC record, giving up: %err%", array('err'=>$err->toStr())).'</p>';
+					echo '<p class="error"><br />'.T("Bad MARC record, giving up").'<br />';
+					print_r($err);
+					echo "<br /> See file ".$fn."</p>";
 					break;
 				}
+echo "good record found";
 				foreach ($p->records as $rec) {
 					if ($_POST["test"]=="true") {
 						echo '<p><pre>';
 						echo $rec->getMnem();
+						print_r($rec);
 						echo '</pre></p>';
-						continue;
+					} else {
+						$biblio = array(
+							'last_change_userid' => $_SESSION["userid"],
+							'material_cd' => $_POST["materialCd"],
+							'collection_cd' => $_POST["collectionCd"],
+							'opac_flg' => $opac_flg,
+							'marc' => $rec,
+						);
+						$bibid = $biblios->insert($biblio);
+						$cart->add($bibid);
+						$nrecs += 1;
 					}
-					$biblio = array(
-						'last_change_userid' => $_SESSION["userid"],
-						'material_cd' => $_POST["materialCd"],
-						'collection_cd' => $_POST["collectionCd"],
-						'opac_flg' => $opac_flg,
-						'marc' => $rec,
-					);
-					$bibid = $biblios->insert($biblio);
-					$cart->add($bibid);
-					$nrecs += 1;
 				}
 				$p->records = array();
 			}
@@ -106,10 +114,12 @@ switch ($_POST[mode]){
 			echo '<p>'.$nrecs.' '.T("recordsImported").'</p>';
 			if ($_POST["test"] != "true") {
 				$text = '<a href="../shared/req_cart.php?tab='.HURL($tab).'">'.'</a>';
-				echo '<p>'.T("Records added to %url%Cart", array('url'=>$text)).'</p>';
+				//echo '<p>'.T("Records added to %url%Cart", array('url'=>$text)).'</p>';
+				echo '<p>'.T("Records added to Cart")." ".$text.'</p>';
 			}
 		} else {
 			echo	T("error - file did not load successfully!!")."<br />";
+			print_r($_FILES);echo "<br />\n";
 		}
 		break;
 
@@ -130,7 +140,7 @@ switch ($_POST[mode]){
   	break;
   
 	case 'postCsvData':
-	  $theDb = new Copies;
+	  	$theDb = new Copies;
 		$cpys = new Copies;
 
 		$rec = $_POST['record'];
@@ -156,8 +166,8 @@ switch ($_POST[mode]){
 				
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	default:
-	  echo T("invalid mode").": $_POST[mode] <br />";
+	    echo T("invalid mode").": $_POST[mode] <br />";
 		break;
 }
 
-?>
+

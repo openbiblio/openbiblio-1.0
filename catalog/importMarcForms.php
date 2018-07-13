@@ -25,7 +25,7 @@
 <h3 id="searchHdr"><?php echo T("MARCImport"); ?></h3>
 
 <section id="intro">
-	<form role="form" id="specForm" name="specForm" enctype="multipart/form-data" method="POST" >
+	<form role="form" id="specForm" name="specForm" action="../catalog/importServer.php" enctype="multipart/form-data" method="POST" >
 		<input type="hidden" id="mode" name="mode" value="marcPreview" \>
 		<input type=hidden name="userid" id="userid" value="<?php echo H($_SESSION["userid"])?>">
 
@@ -49,9 +49,10 @@
 					<td colspan="3"><label for="collectionCd"><?php echo T("Collection"); ?>:</label></td>
 					<td colspan="2">
 						<?php
-						$cols = new Collections;
-						echo inputfield('select', "collectionCd", $cols->getDefault(), NULL, $cols->getSelect());
+						//$cols = new Collections;
+						//echo inputfield('select', "collectionCd", $cols->getDefault(), NULL, $cols->getSelect());
 						?>
+						<select id="collectionCd"> </select>
 					</td>
 			  </tr>
 			  
@@ -59,9 +60,10 @@
 					<td colspan="3"><label for="materialCd"><?php echo T("Media Type"); ?>:</label></td>
 					<td colspan="2">
 						<?php
-						$medTypes = new MediaTypes;
-						echo inputfield('select', "materialCd", $medTypes->getDefault(), NULL, $medTypes->getSelect());
+						//$medTypes = new MediaTypes;
+						//echo inputfield('select', "materialCd", $medTypes->getDefault(), NULL, $medTypes->getSelect());
 						?>
+						<select id="materialCd"> </select>
 					</td>
 				</tr>
 			  
@@ -134,8 +136,11 @@
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
-	include_once(REL(__FILE__,'../shared/ajaxFileUpload/ajaxfileupload.js'));
-	require_once(REL(__FILE__, "../catalog/importMarcJs.php"));
+//	require_once(REL(__FILE__,'../shared/txtFileUpload/ajaxFileUploader.js'));
+//	require_once(REL(__FILE__,'../shared/simpleUpload.min.js'));
+	require_once(REL(__FILE__,'../catalog/importMarcJs.php'));
 ?>	
+  <script src="../shared/simpleUpload.min.js"></script>
+
 </body>
 </html>
