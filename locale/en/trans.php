@@ -829,6 +829,7 @@ $trans["Record Info"] = "Record Info";
 $trans["recordsFound"] = "records found";
 $trans["recordsImported"] = "records imported";
 $trans["Records added to Cart"] = "Imported records have been added to the Cart";
+$trans["Records imported to database"] = "Imported records have been added to the Database";
 $trans["Records imported: %rec%"] = "Records imported: %rec%";
 $trans["Re-enter"] = "Re-enter";
 $trans["Remove from Cart"] = "Remove from Cart";

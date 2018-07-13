@@ -86,32 +86,33 @@
 					<td colspan="3">
 						<label for="autoFlg"><?php echo T("Auto Barcode"); ?>
 							is <?php echo ($_SESSION['item_autoBarcode_flg'] == 'Y'?T("ON"):T("OFF")); ?>.
-							&nbsp;Make Item Copies?
-						</label></td>
-			    <td colspan="2">
-			    	<select id="cpyAction" name="cpyAction">
-			    		<option value="0"><?php echo T("Never"); ?></option>
-			    		<option value="1"><?php echo T("Only if Barcode present"); ?></option>
-			    		<option value="2" selected ><?php echo T("Always"); ?></option>
-			    	</select>
-			    </td>
+							<br />&nbsp;&nbsp;Make Item Copies?
+						</label>
+					</td>
+			    	<td colspan="2">
+				    	<select id="cpyAction" name="cpyAction">
+				    		<option value="0" selected ><?php echo T("Never"); ?></option>
+				    		<option value="1"><?php echo T("Only if Barcode present"); ?></option>
+				    		<option value="2"><?php echo T("Always"); ?></option>
+				    	</select>
+			    	</td>
 			  </tr>
 			  
 			  <tr>
 					<td colspan="3"><label for="copyText"><?php echo T("ImportCopyDescription"); ?>:</label></td>
-			    <td colspan="2">
-			      <input type=text name="copyText" id="copyText" size=20 maxsize=256 value="<?php echo T("MARCImport"); ?>" />
-			    </td>
+			    	<td colspan="2">
+			      		<input type=text name="copyText" id="copyText" size=20 maxsize=256 value="<?php echo T("MARCImport"); ?>" />
+			    	</td>
 			  </tr>
 
 			  <tr>
 					<td colspan="3"><label for="code"><?php echo T("Copy Status"); ?>:</label></td>
-			    <td colspan="2">
+			    	<td colspan="2">
 						<?php
 						$cpyStatus = new CopyStatus;
 						echo inputfield('select', "code", $cpyStatus->getDefault(), NULL, $cpyStatus->getSelect());
 						?>
-			    </td>
+			    	</td>
 			  </tr>
 
 			  </tbody>
