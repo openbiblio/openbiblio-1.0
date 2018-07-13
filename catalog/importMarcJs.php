@@ -119,111 +119,13 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 
 	//------------------------------
 	processImportFile: function (e) {
-console.log('in mrci::processImportFile()');
+		//console.log('in mrci::processImportFile()');
 		e.preventDefault();
 		mrci.importFile(e);	//file will be stored at mrci.File
 		e.stopPropagation();
 		return false;;	
 	},
 	//----//
-/* // original code
-	importFile: function () {
-		$.ajaxFileUpload({
-			url:			mrci.url,
-			secureuri:		false,
-			fileElementId:	'imptSrce',
-			dataType: 		'text',
-      		contentType: 	$('#specForm').attr( "enctype", "multipart/form-data" ),
-			data:			{ 'mode':'processMarcFile',
-							  'test':$('[name="test"]:checked').val(),
-							  'collectionCd': $('#collectionCd').val(),
-							  'materialCd': $('#materialCd').val(),
-							  'opacFlg': $('#opacFlg option:selected').val(),
-							},
-			success: 		function (response, status) {
-								mrci.File = response;
-								$('#mrcImportRslts').html(response);
-								$('#intro').hide();
-								$('#rslts').show();
-							},
-			error: 			function (data, status, e) {
-								alert(e); 
-								console.log('error');
-								console.log(JSON.parse(data));				
-							}
-		});
-
-	},
-*/
-/*  new attempt - 25 Jun 18
-	importFile: function () {
-console.log('in mrci::importFile()');
-		$('input[type="file"]').ajaxfileupload({
-			  action: mrci.url,
-			  valid_extensions : ['marc','csv'],
-			  params: { 'mode':'processMarcFile',
-						'test':$('[name="test"]:checked').val(),
-						'collectionCd': $('#collectionCd').val(),
-						'materialCd': $('#materialCd').val(),
-						'opacFlg': $('#opacFlg option:selected').val(),
-					  },
-			  onComplete: function(response) {
-			    	console.log('custom handler for file:');
-			    	alert(JSON.stringify(response));
-			  },
-			  onStart: function() {
-//			    	if(weWantedTo) return false; // cancels upload
-console.log('beginning upload');
-			  },
-			  onCancel: function() {
-			    	console.log('no file selected');
-			  }
-		});
-	},
-*/
-/*  // another try 25 Jun 2018
-	importFile: function () {
-		const file = $('input[type="file"]').val();
-console.log('preping file: '+file);
-        const uri = mrci.url;
-        const xhr = new XMLHttpRequest();
-        const fd = new FormData();
-
-        xhr.open("POST", uri, true);
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                alert(xhr.responseText); // handle response.
-            }
-        };
-        fd.append('myFile', file);
-        // Initiate a multipart/form-data upload
-        xhr.send(fd);
-	},
-*/
-/*
-	// trying photoEditor code 27 Jun 2018
-	importFile: function () {
-console.log('in mrci::importFile()');
-//console.log($('input[type="file"]').prop('files'));
-		const file = $('input[type="file"]').prop('files');
-console.log(file);
-		$.post(mrci.url,
-			{ 'mode':'processMarcFile',
-			  'test':$('[name="test"]:checked').val(),
-			  'collectionCd': $('#collectionCd').val(),
-			  'materialCd': $('#materialCd').val(),
-			  'opacFlg': $('#opacFlg option:selected').val(),
-			  'imptSrce': file[0],
-			},
-			function (response) {
-console.log('upload completed');
-				$('#mrcImportRslts').html(response);
-				$('#intro').hide();
-				$('#rslts').show();
-			},
-		);
-	},
-*/
 	// using SimpleUpload.js 27 Jun 2018
 	importFile: function () {
 		//console.log('in mrci::importFile()');

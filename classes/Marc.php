@@ -5,7 +5,9 @@
  
 /**
  * Data classes and a parser for MARC data.
- * @author Micah Stetson
+ *
+ * @author Micah Stetson, original author
+ * @author Fred LaPlante, updated to PHP 7, July 2018
  */
 
 define("MARC_DELIMITER", "\x1f");
@@ -93,13 +95,16 @@ class MarcField {
 			return NULL;
 		}
 	}
-	/* Methods below should be overridden */
-	function getMnem() {
+	/* Methods below should be 'extended' by descendents
+		cannot use abstract methods, as the default action is
+		used in a few cases. FL Jul 2018
+	*/
+	protected function getMnem() {
 		return '='.$this->tag.'  ';
 	}
-	function get() {
+	protected function get() {
 	}
-	function getValues($identifier=NULL) {
+	protected function getValues($identifier=NULL) {
 		return array();
 	}
 }
@@ -114,13 +119,13 @@ class MarcControlField extends MarcField {
 		parent::__construct($tag);
 		$this->data=$data;
 	}
-	function get() {
+	public function get() {
 		return $this->data . MARC_FT;
 	}
-	function getMnem() {
+	public function getMnem() {
 		return parent::getMnem() . MarcHelpers::toMnem($this->data) . "\n";
 	}
-	function getValues($identifier=NULL) {
+	public function getValues($identifier=NULL) {
 		if ($identifier !== NULL) {
 			return array();
 		} else {
@@ -139,10 +144,10 @@ class MarcSubfield {
 		$this->identifier=strtolower($i);
 		$this->data=$d;
 	}
-	function get() {
+	public function get() {
 		return MARC_DELIMITER . $this->identifier . $this->data;
 	}
-	function getMnem() {
+	public function getMnem() {
 		return '$' . MarcHelpers::toMnem($this->identifier) . MarcHelpers::toMnem($this->data);
 	}
 }
@@ -150,29 +155,30 @@ class MarcSubfield {
 /* -------------------------------------------------------------------------- */
 /* -------------------------------------------------------------------------- */
 class MarcDataField extends MarcField {
-	var $indicators;
-	var $subfields;
+	public $indicators;
+	public $subfields;
+
 	public function __construct($tag='', $indicators='  ') {
 		//$this->MarcField($tag);
 		parent::__construct($tag);
 		$this->indicators=$indicators;
 		$this->subfields=array();	# list of Subfield
 	}
-	function get() {
+	public function get() {
 		$s = $this->indicators;
 		foreach ($this->subfields as $sf) {
 			$s .= $sf->get();
 		}
 		return $s . MARC_FT;
 	}
-	function getMnem() {
+	public function getMnem() {
 		$s = parent::getMnem() . str_replace(' ', '\\', $this->indicators);
 		foreach ($this->subfields as $sf) {
 			$s .= $sf->getMnem();
 		}
 		return $s . "\n";
 	}
-	function getSubfields($identifier=NULL) {
+	public function getSubfields($identifier=NULL) {
 		if ($identifier === NULL) {
 			return $this->subfields;
 		} else {
@@ -185,7 +191,7 @@ class MarcDataField extends MarcField {
 			return $ret;
 		}
 	}
-	function getSubfield($identifier=NULL) {
+	public function getSubfield($identifier=NULL) {
 		$l = $this->getSubfields($identifier);
 		if (count($l) > 0) {
 			return $l[0];
@@ -193,7 +199,7 @@ class MarcDataField extends MarcField {
 			return NULL;
 		}
 	}
-	function getValues($identifier=NULL) {
+	public function getValues($identifier=NULL) {
 		return array_map(create_function('$sf', 'return $sf->data;'),
 			$this->getSubfields($identifier));
 	}
@@ -296,7 +302,7 @@ class MarcRecord {
 
 	// Returns array(record_string, error)
 	// where record_string is only valid if error is NULL
-	function get() {
+	public function get() {
 		$directory = '';
 		$data = '';
 		foreach ($this->fields as $f) {
@@ -322,7 +328,7 @@ class MarcRecord {
 		return array($this->getLeader() . $directory . MARC_FT . $data . MARC_RT, NULL);
 	}
 
-	function getMnem() {
+	public function getMnem() {
 		$s = '=LDR  ' . MarcHelpers::toMnem($this->getLeader()) . "\n";
 		foreach ($this->fields as $f) {
 			$s .= $f->getMnem();
@@ -332,7 +338,7 @@ class MarcRecord {
 
 
 
-	function getField($tag=NULL) {
+	public function getField($tag=NULL) {
 		$l = $this->getFields($tag);
 		if (count($l) > 0) {
 			return $l[0];
@@ -341,7 +347,7 @@ class MarcRecord {
 		}
 	}
 
-	function getValues($spec=NULL) {
+	public function getValues($spec=NULL) {
 		$l = array();
 		if ($spec === NULL) {
 			array_push($l, NULL);
@@ -360,7 +366,7 @@ class MarcRecord {
 		return $a;
 	}
 
-	function getValue($spec=NULL) {
+	public function getValue($spec=NULL) {
 		$l = $this->getValues($spec);
 		if (count($l) > 0) {
 			return $l[0];
@@ -632,7 +638,7 @@ class MarcMnemParser extends MarcBaseParser {
 		$this->recnum = 1;
 	}
 
-	function parse($input = "") {
+	public function parse($input = "") {
 		$old_len = count($this->records);
 		$data = str_replace("\r", "", $this->unparsed);
 		$lines = explode("\n", $data);
@@ -675,7 +681,7 @@ class MarcMnemParser extends MarcBaseParser {
 		return count($this->records)-$old_len;
 	}
 
-	function _addField($field) {
+	public function _addField($field) {
 		if (!$field) {
 			return;
 		}
@@ -728,10 +734,10 @@ class MarcMnemParser extends MarcBaseParser {
 	}
 
 	/* .......................... */
-	function error($s) {
+	public function error($s) {
 		return new MarcParseError($s, $this->recnum, $this->_line);
 	}
-	function eof() {
+	public function eof() {
 		$this->unparsed .= "\n\n";
 		$n = $this->parse();
 		if (is_a($n, 'MarcParseError')) {

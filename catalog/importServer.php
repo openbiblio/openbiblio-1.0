@@ -113,8 +113,15 @@ switch ($_POST[mode]){
 							'opac_flg' => $opac_flg,
 							'marc' => $rec,
 						);
+echo "processing record #$nimp<br />";
 						$bibid = $biblios->insert($biblio);
-						$cart->add($bibid);
+echo "bibid ".print_r($bibid);echo " added to Biblios<br />";
+						/* Posting to the cart currently gives all items in the batch the same session ID
+						   so the process fails with a duplicate primary key. I'm not sure how this should work,
+						   so have commented it out for now - FL July 2018
+						*/
+						//$cart->add($bibid);
+						//echo "bibid $bibid added to Cart<br />";
 						$nimp += 1;
 					}
 				}

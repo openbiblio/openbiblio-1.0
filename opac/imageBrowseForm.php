@@ -8,20 +8,19 @@
 
 	session_cache_limiter(null);
 
-	$tab = "working";
-	if (isset($_REQUEST["tab"])) {
-		$tab = $_REQUEST["tab"];
-	}
-	$_REQUEST['tab'] = $tab;
+//	$tab = "working";
+//	if (isset($_REQUEST["tab"])) {
+  		$tab = strToLower($_REQUEST[tab]);
+//	}
+//	$_REQUEST['tab'] = $tab;
 
-	$nav = "browse_images";
-	if ($tab != "opac") {
-		require_once(REL(__FILE__, "../shared/logincheck.php"));
-	}
 
 	$nav = "imageBrowseForm";
 	$focus_form_name = "";
 	$focus_form_field = "";
+	if ($tab != "opac") {
+		require_once(REL(__FILE__, "../shared/logincheck.php"));
+	}
 
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>'Cover Photos'));
 ?>
