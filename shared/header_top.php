@@ -60,6 +60,7 @@
 		//    	if($params['title']) {
 		//    		echo ': '.H($params['title']);
 		//    	}
+		$_SESSION['libName'] = $libName;
     }
     ?>
   </title>

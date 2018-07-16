@@ -3,7 +3,7 @@
 //?>
 
 // JavaScript Document
-const version = "v0.1";
+const version = "v0.2";
 const staticCacheName = version + "-staticFiles";
 //const <?php echo "themeDir = '$ThemeDir'\n";
 const themeDir = "themes/default";
@@ -20,7 +20,7 @@ addEventListener ('install', installEvent => {
     caches.open (staticCacheName)
     .then(staticCache => {
       return staticCache.addAll([
-		"./index.php",
+		"./opac/index.php",
         "./shared/normalize.css",
         "./shared/style.css",
         "./shared/jquery/jquery-3.2.1.min.js",

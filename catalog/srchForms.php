@@ -37,7 +37,7 @@
 
 <div id="crntMbrDiv">to be filled by server</div>
 
-<p id="whereAmI" class="note">You are currently viewing data for site: </p>
+<p id="whereAmI" class="note"></p>
 
 <!-- ------------------------------------------------------------------------ -->
 <div id="searchDiv">
