@@ -49,7 +49,7 @@ class Members extends CoreTable {
 		  $this->reqdFlds[] = 'barcode_nmbr';
 		}
 
-		$custom = new MemberCustomFields;
+		$this->custom = new MemberCustomFields;
 /*       This is taken care of in .../models/MemberCustomFields
 		$this->custom->setName('member_fields');
 		$this->custom->setFields(array(
