@@ -53,7 +53,7 @@
 		    if ($lib['siteid'] != $_SESSION['current_site']) {
     			$lib = $sit->getOne(1);
 		    }
-    		$libName = $lib[name];
+    		$libName = $lib['name'];
     	}
 
     	echo $libName;
