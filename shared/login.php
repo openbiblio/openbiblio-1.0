@@ -90,7 +90,7 @@ $_SESSION["hasCircMbrAuth"] = ($user['circ_mbr_flg'] == 'Y');
 $_SESSION["hasCatalogAuth"] = ($user['catalog_flg'] == 'Y');
 $_SESSION["hasReportsAuth"] = ($user['reports_flg'] == 'Y');
 $_SESSION["hasToolsAuth"] = ($user['tools_flg'] == 'Y');
-echo "in login ln#92<br />\n";
+// echo "in login ln#92<br />\n";
 
 setSessionFmSettings();
 //print_r($_SESSION);echo "<br />";exit();
