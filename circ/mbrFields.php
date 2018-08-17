@@ -15,17 +15,17 @@
 		return;
 	}
 
-	$mbr[siteid] = $lib[siteid];
-	$mbr[city] = $lib[city];
-	$mbr[state] = $lib[state];
-	$mbr[zip] = $lib[zip];
+	$mbr['siteid'] = $lib['siteid'];
+	$mbr['city'] = $lib['city'];
+	$mbr['state'] = $lib['state'];
+	$mbr['zip'] = $lib['zip'];
 
 	require_once(REL(__FILE__, "../model/MemberTypes.php"));
 	$mbrtypes = new MemberTypes;
-	$mbr[classification] = $mbrtypes->getDefault();
+	$mbr['classification'] = $mbrtypes->getDefault();
 
-	$_SESSION[postVars] = $postVars;
-	$_SESSION[pageErrors] = $pageErrors;
+	$_SESSION['postVars'] = $postVars;
+	$_SESSION['pageErrors'] = $pageErrors;
 ?>
 
 	<tr>
