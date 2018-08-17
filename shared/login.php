@@ -11,7 +11,7 @@ if (count($_POST) == 0) {
 	header("Location: ../shared/loginform.php");
 	exit();
 }
-echo "in login.php ln#58<br />\n";
+//echo "in login.php ln#58<br />\n";
 
 $username = $_POST["username"];
 $error_found = false;
