@@ -161,7 +161,7 @@
 			<label><input type="checkbox" id="showPasswdA" /> show password</label>
     	</li>
         <li>
-            <label for="pwdB"><?php echo T("Password"); ?>:</label>
+            <label for="pwdB"><?php echo T("Re-enter"); ?>:</label>
             <input type="password" id="pwdB" name="pwd2" size="20" required aria-required="true" />
     			<span class="reqd">*</span>
 			<label><input type="checkbox" id="showPasswdB" /> show password</label>
