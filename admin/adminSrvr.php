@@ -515,7 +515,7 @@
 			$rec = array('userid'=>$_POST['userid'], 'pwd'=>$_POST['pwd'], 'pwd2'=>$_POST['pwd2']);
 			$errs = $ptr->update_el($rec);
 			if ($errs) 
-				echo $errs;
+				print_r($errs);
 			else
 				echo T("Password has been reset.");
 			break;
