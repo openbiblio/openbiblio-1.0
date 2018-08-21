@@ -106,8 +106,7 @@ function inputfield($type, $name, $value="", $attrs=NULL, $data=NULL) {
 	return $s;
 }
 function inputHandler($type, $name, $value, $attrs) {
-	//echo "in input Handler: arttrs=";print_r($attrs);
-	$s .= '<input type="'.H($type).'" name="'.H($name).'" ';
+	$s = '<input type="'.H($type).'" name="'.H($name).'" ';
 	if ($value != "") {
 		$s .= 'value="'.H($value).'" ';
 	}
@@ -120,9 +119,6 @@ function inputHandler($type, $name, $value, $attrs) {
 	}
 	$s .= "/>";
 
-	//if (in_array('required', $attrs)) {
-	//	$s .= '<span class="reqd">*</span>';
-	//}
 	return $s;
 }
 
