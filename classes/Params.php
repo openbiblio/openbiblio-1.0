@@ -129,7 +129,7 @@ class Params {
 	private static function _print($type, $namel, $options, $list, $prefix) {
 		global $loc;
 		//assert('$loc');
-		assert('!empty($namel)');
+		assert(!empty($namel));
 		if ($type == 'session_id') {
 			return;
 		}
