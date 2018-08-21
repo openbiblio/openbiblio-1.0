@@ -64,7 +64,7 @@ class Staff extends CoreTable {
 			}
 		}
 		// user start_ page
-		if (!file_exists($rec['start_page'])) {
+		if ($rec['start_page'] && (!file_exists($rec['start_page']))) {
 			$errors[] = array('NULL', T("startPage")." '".$rec['start_page']."' ".T("does not exist"));
 		}
 		return $errors;
