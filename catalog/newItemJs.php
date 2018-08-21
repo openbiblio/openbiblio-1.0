@@ -381,7 +381,7 @@ var ni = {
 	},
 	
 	doValidate_n_Srch: function () {
-		var isbnPattern = /ISBN(-1(?:(0)|3))?:?\x20(\s)*[0-9]+[- ][0-9]+[- ][0-9]+[- ][0-9]*[- ]*[xX0-9]/;
+		var isbnPattern = /(ISBN)?[0-9xX\-\s]*/;
 		var issnPattern = /[0-9]{4}-[0-9]{4}/;
 		var lccnPattern = /((a(c|fl?|gr)?|b[irs]|c(a?d?|lc|[sxy])|do?|es?|f(i[ae]?)?|g[ms]?|h(a|e[wx]?)?|in?t|j[ax]?|kx?|l(lh|tf)?|m([ams]|ap|ed|i[cdef]|pa?|us)?|n(cn|ex?|[tu]c)|or|p([aop]|h[opq])|r[aceu]?|s(ax?|[cdfgnsu])?|t(b|mp)|u(m|nk)|w(ar)?|[xz])(\b|-)?|20)?\d\d(-\d{1,5}|(\b|-)?\d{6})/;
 
