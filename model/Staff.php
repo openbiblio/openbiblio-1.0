@@ -99,6 +99,12 @@ class Staff extends CoreTable {
         return $rslt;
 	}
 	function update_el($rec, $confirmed=false) {
+		if(isset($rec['pwd'])) {
+			$rec['pwd'] = md5($rec['pwd']);
+		}
+		if(isset($rec['pwd2'])) {
+			$rec['pwd2'] = md5($rec['pwd2']);
+		}
 		return parent::update_el($rec, $confirmed); // will call above validate_el()
 	}
 }
