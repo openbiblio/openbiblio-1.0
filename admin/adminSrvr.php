@@ -385,13 +385,13 @@
 			echo json_encode($svcs);
 			break;
 		case 'addNew_hosts':
-			if (empty($_POST[active])) $_POST[active] = 'N';
+			if (empty($_POST['active'])) $_POST['active'] = 'N';
 			//echo $ptr->insert($_POST);
 			$rslt = $ptr->insert($_POST);
             echo json_encode($rslt);
 			break;
 		case 'update_hosts':
-			if (empty($_POST[active])) $_POST[active] = 'N';
+			if (empty($_POST['active'])) $_POST['active'] = 'N';
 			echo json_encode($ptr->update($_POST));
 			break;
 		case 'd-3-L-3-t_hosts':
