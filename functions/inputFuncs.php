@@ -110,14 +110,19 @@ function inputHandler($type, $name, $value, $attrs) {
 	if ($value != "") {
 		$s .= 'value="'.H($value).'" ';
 	}
+	$reqd = false;
 	foreach ($attrs as $k => $v) {
 		if ($k == 'required') {
+			$reqd = true;
 			$s .= 'required aria-required="true" ';
 		} else {
 			$s .= H($k).'="'.H($v).'" ';
 		}
 	}
 	$s .= "/>";
+	//if ($reqd) {
+	//	$s .= '<span class="reqd">*</span>';
+	//}
 
 	return $s;
 }

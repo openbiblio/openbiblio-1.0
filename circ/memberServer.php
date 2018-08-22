@@ -342,7 +342,7 @@
 	//// ====================================////
 	case 'updateMember':
 		$mbr = mbrArray();
-	  $errors = $members->update_el($mbr);
+	  	$errors = $members->update_el($mbr);
 		if (!empty($errors)) {
 			echo json_encode($errors);
 			exit;
@@ -371,7 +371,7 @@
 			exit;
 		}
         $mbrid = $response[0];
-echo "in memberServer, addNewMember, mbrId: $mbrid<br />\n";
+		//echo "in memberServer, addNewMember, mbrId: $mbrid<br />\n";
 		$cstmArray = array();
 		foreach ($_POST as $key => $value) {
 			if (substr($key,0,7) == 'custom_') {
@@ -379,7 +379,7 @@ echo "in memberServer, addNewMember, mbrId: $mbrid<br />\n";
 				$cstmArray[$theKey] = $value;	 
 			}
 		}
-echo "in memberServer, addNewMember, CstmArray: ";print_r($cstmArray);echo "<br />\n";
+		//echo "in memberServer, addNewMember, CstmArray: ";print_r($cstmArray);echo "<br />\n";
 		$result = $members->setCustomFields($mbrid, $cstmArray);
 	  	if(!empty($result)){
 	    	echo $result;

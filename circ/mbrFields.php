@@ -36,19 +36,19 @@
 		</td>
 	</tr>
 	<tr>
-		<td><label for="barcode_nmbr"><?php echo T("Card Number");?></label></td>
+		<td><label for="barcode_nmbr"><?php echo T("Card Number");?></label><span class="reqd">*</span></td>
 		<td valign="top">
 			<?php echo inputfield("text","barcode_nmbr",$mbr['barcode_nmbr'],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors); ?>
 		</td>
 	</tr>
 	<tr>
-		<td><label for="last_name"><?php echo T("LastName");?></label></td>
+		<td><label for="last_name"><?php echo T("LastName");?></label><span class="reqd">*</span></td>
 		<td valign="top">
       <?php echo inputfield("text","last_name",$mbr['last_name'],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors); ?>
 		</td>
 	</tr>
 	<tr>
-		<td><label for="first_name"><?php echo T("FirstName");?></label></td>
+		<td><label for="first_name"><?php echo T("FirstName");?></label><span class="reqd">*</span></td>
 		<td valign="top">
 			<?php echo inputfield("text","first_name",$mbr['first_name'],$attr=array("required"=>"required","size"=>20,"max"=>20),$pageErrors);?>
 		</td>
@@ -90,7 +90,7 @@
 		</td>
 	</tr-->
 	<tr>
-		<td><label for="home_phone"><?php echo T("HomePhone");?></label></td>
+		<td><label for="home_phone"><?php echo T("HomePhone");?></label><span class="reqd">*</span></td>
 		<td valign="top">
 			<?php echo inputfield("tel","home_phone",$mbr['home_phone'],$attr=array("required"=>"required","size"=>15,"max"=>15),$pageErrors);?>
 		</td>
@@ -132,12 +132,14 @@
 	require_once(REL(__FILE__, "../model/MemberCustomFields.php"));
 	require_once(REL(__FILE__, "../model/MemberCustomFields_DM.php"));
 	$customFields = new MemberCustomFields_DM;
-	foreach ($customFields->getSelect() as $name=>$title) {
-		echo "<tr>\n";
-		echo "	<td><label>";echo T($title); echo "</label></td>\n";
-		echo "	<td valign=\"top\" >";
-		echo inputfield('text', 'custom_'.$name, '', NULL,$pageErrors);
-    echo "	</td>\n";
-		echo "</tr>\n";
+	if (!empty($customFields->getSelect())){
+		foreach ($customFields->getSelect() as $name=>$title) {
+			echo "<tr>\n";
+			echo "	<td><label>";echo T($title); echo "</label></td>\n";
+			echo "	<td valign=\"top\" >";
+			echo inputfield('text', 'custom_'.$name, '', NULL,$pageErrors);
+	    	echo "	</td>\n";
+			echo "</tr>\n";
+		}
 	}
 ?>
