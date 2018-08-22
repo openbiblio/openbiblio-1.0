@@ -13,8 +13,8 @@ function staff_menu() {
 		Nav::node('circulation/bookings/cart', T("Booking Cart"), '../circ/booking_cart.php');
 		Nav::node('circulation/bookings/pending', T("Pending Bookings"));
 
-		if (isset($_REQUEST[bookingid])) {
-			$params = 'bookingid='.U($_REQUEST[bookingid]);
+		if (isset($_REQUEST['bookingid'])) {
+			$params = 'bookingid='.U($_REQUEST['bookingid']);
 			if (isset($_REQUEST['rpt']) and isset($_REQUEST['seqno'])) {
 				$params .= '&rpt='.U($_REQUEST['rpt']);
 				$params .= '&seqno='.U($_REQUEST['seqno']);
