@@ -57,7 +57,7 @@ class Biblios extends CoreTable {
 		/* mode may be null at times */
 	    $spec = json_decode($jsonSpec, true);
 
-	    $srchTxt = strtolower($_POST[searchText]);
+	    $srchTxt = strtolower($_POST['searchText']);
 	    if ($mode == 'words')
 			$keywords = explode(' ',$srchTxt);
 		else
