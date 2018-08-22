@@ -631,7 +631,7 @@ class Integrity extends Queryi{
 					. 'WHERE f.bibid=b.bibid AND s.fieldid=f.fieldid '
 					.	'AND m.material_cd=b.material_cd AND m.repeatable<2 '
 					.	'AND m.tag=f.tag AND m.subfield_cd=s.subfield_cd '
-					. 'GROUP BY f.bibid, f.tag, s.subfield_cd '
+					. 'GROUP BY f.bibid, f.tag, s.subfield_cd, s.subfieldid '
 					. 'HAVING count > 1 ';
 		//$status = array();
 		$errors = 0;

@@ -23,8 +23,8 @@ var bs = {
 	<?php
 		echo "showMarc: '".T("Show Marc Tags")."',\n";
 		echo "hideMarc: '".T("Hide Marc Tags")."',\n";
-		echo "whereAmI: '".T("curently viewing site")." ".$_SESSION['current_site']."',\n";
-	?> 
+		echo "whereAmI: '".T("curently viewing site").": ".$_SESSION['libName']."',\n";
+	?>
 	multiMode: false,
 	
 	init: function () {

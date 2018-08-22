@@ -127,12 +127,14 @@ class Members extends CoreTable {
 			. 'WHERE password=MD5(%Q) '
 			. 'AND (barcode_nmbr=%Q or email=%Q) ',
 			$password, $id, $id);
-		$rows = $this->select($sql);
-		if ($rows->count() != 1) {
+		$rslt = $this->select($sql);
+		$rows = $rslt->fetchall();
+		if (count($rows) != 1) {
 			return NULL;
 		}
-		$r = $rows->fetch_assoc();
-		return $r['mbrid'];
+//		$r = $rows->fetch_assoc();
+//		return $r['mbrid'];
+		return $rows['mbrid'];
 	}
 	function insert_el($mbr, $confirmed=false) {
 		// this mechanism present in DBtable::validate()
@@ -208,6 +210,8 @@ class Members extends CoreTable {
 		}
 		$this->unlock();
 	}
+
+	/* ---------------------------- */
 	function getCustomFields($mbrid) {
 		return $this->custom->getMatches(array('mbrid'=>$mbrid));
 	}
@@ -223,7 +227,8 @@ class Members extends CoreTable {
 		}
 	}
 	function deleteCustomFields($mbrid) {
-		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
+//		$this->custom->deleteMatches(array('mbrid'=>$mbrid));
+		$this->deleteMatches(array('mbrid'=>$mbrid));
 	}
 }
 class MembersIter extends Iter {

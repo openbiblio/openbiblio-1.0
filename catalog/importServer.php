@@ -131,9 +131,10 @@ echo "bibid ".print_r($bibid);echo " added to Biblios<br />";
 			echo '<p>'.$nfnd.' '.T("recordsFound").'</p>';
 			echo '<p>'.$nimp.' '.T("recordsImported").'</p>';
 			if ($_POST["test"] != "true") {
-				$text = '<a href="../shared/req_cart.php?tab='.HURL($tab).'">'.'</a>';
+				//$text = '<a href="../shared/req_cart.php?tab='.HURL($tab).'">'.'</a>';
 				//echo '<p>'.T("Records added to %url%Cart", array('url'=>$text)).'</p>';
-				echo '<p>'.T("Records added to Cart")." ".$text.'</p>';
+				//echo '<p>'.T("Records added to Cart")." ".$text.'</p>';
+				echo '<p>'.T("Records imported to database")." ".$text.'</p>';
 			}
 		} else {
 			echo	T("error - file did not load successfully!!")."<br />";
