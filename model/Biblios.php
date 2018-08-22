@@ -44,7 +44,7 @@ class Biblios extends CoreTable {
 			."	AND (b.`bibid` = bc.`bibid`)";
 		$rcd = $this->select01($sql);
 		$this->barCd = $barcd;
-		$this->bibid = $rcd[bibid];
+		$this->bibid = $rcd['bibid'];
 		return $rcd;
 	}
 
@@ -168,7 +168,7 @@ class Biblios extends CoreTable {
         //if ($rows->num_rows < 1) return NULL;
 		//while (($row = $rows->fetch_assoc()) !== NULL) {
         foreach ($rows as $row) {
-			$rslt[] = $row[bibid];
+			$rslt[] = $row['bibid'];
 		}
 		return $rslt;
 	}
@@ -225,7 +225,7 @@ class Biblios extends CoreTable {
 						}
 					}
 					// Removed && $this->avIcon != "../images/circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
-					else if($copy[statusCd] == OBIB_STATUS_ON_HOLD || $copy[statusCd] == OBIB_STATUS_NOT_ON_LOAN)
+					else if($copy['statusCd'] == OBIB_STATUS_ON_HOLD || $copy['statusCd'] == OBIB_STATUS_NOT_ON_LOAN)
 						$this->avIcon = "../images/circle_blue.png"; // only copy is on hold
 				}
 			} else {
@@ -383,7 +383,7 @@ class Biblios extends CoreTable {
 			 {"tag":"245","suf":"c"},{"tag":"246","suf":"a"},{"tag":"246","suf":"b"},
 			 {"tag":"502","suf":"a"},{"tag":"505","suf":"a"},{"tag":"650","suf":"a"},.............
 		*/
-		$params = makeTagObj(getSrchTags($criteria[searchType]));
+		$params = makeTagObj(getSrchTags($criteria['searchType']));
 
 		# Add search params
 		$searchTags = "";
