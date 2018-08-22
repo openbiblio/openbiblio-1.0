@@ -115,7 +115,7 @@ class Copies extends CoreTable {
         /*
         $sql = $this->mkSQL("select max(copyid) as lastCopy from biblio_copy");
         $lastCpy = $this->select1($sql);
-        //$nmbr = $cpy[lastNmbr]+1;
+        //$nmbr = $cpy['lastNmbr']+1;
         $sql2 = $this->mkSQL("select barcode_nmbr from biblio_copy where copyid=" .  $lastCpy[0]['lastCopy']);
         $cpy = $this->select1($sql2);
         $nmbr = $cpy[0]['barcode_nmbr']+1;
@@ -161,22 +161,22 @@ class Copies extends CoreTable {
 			if ($_SESSION['multi_site_func'] > 0) {
 				$sites_table = new Sites;
 				$sites = $sites_table->getSelect();
-				$copy['site'] = $sites[$copy[siteid]];
+				$copy['site'] = $sites[$copy['siteid']];
 			}
-			$copy['status'] = $states[$status[status_cd]];
-			$copy['statusCd'] = $status[status_cd];
-			if($_SESSION['show_checkout_mbr'] == "Y" && ($status[status_cd] == OBIB_STATUS_OUT || $status[status_cd] == OBIB_STATUS_ON_HOLD)){
-				if($status[status_cd] == OBIB_STATUS_OUT){
-					$checkout_mbr = $copies->getCheckoutMember($copy[histid]);
+			$copy['status'] = $states[$status['status_cd']];
+			$copy['statusCd'] = $status['status_cd'];
+			if($_SESSION['show_checkout_mbr'] == "Y" && ($status['status_cd'] == OBIB_STATUS_OUT || $status[status_cd] == OBIB_STATUS_ON_HOLD)){
+				if($status['status_cd'] == OBIB_STATUS_OUT){
+					$checkout_mbr = $copies->getCheckoutMember($copy['histid']);
 				} else {
-					$checkout_mbr = $copies->getHoldMember($copy[copyid]);
+					$checkout_mbr = $copies->getHoldMember($copy['copyid']);
 				}
-				$copy['mbrId'] = $checkout_mbr[mbrid];
-				$copy['mbrName'] = "$checkout_mbr[first_name] $checkout_mbr[last_name]";
+				$copy['mbrId'] = $checkout_mbr['mbrid'];
+				$copy['mbrName'] = "$checkout_mbr['first_name'] $checkout_mbr['last_name']";
 			}
 			// Add custom fields - Bit complicated, but seems the easiest way to populate empty fields (list compiled at beginning of procedure to lower databse queries)
 			// Now populate data
-			$custom = $copies->getCustomFields($copy[copyid]);
+			$custom = $copies->getCustomFields($copy['copyid']);
 			$copy['custFields'] = array();
 			$fieldList = $custFieldList;
 			//while ($row = $custom->fetch_assoc() ) {
@@ -206,7 +206,7 @@ class Copies extends CoreTable {
 		      ."`siteid` = '$theSite'," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
-		      ."`last_change_userid` = $_SESSION[userid],"
+		      ."`last_change_userid` = $_SESSION['userid'],"
 		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
 
         $rows = $this->act($sql);
@@ -215,7 +215,7 @@ class Copies extends CoreTable {
 		$sql = "Insert `biblio_status_hist` SET "
 		      ."`bibid` = $bibid,"
 		      ."`copyid` = $copyid,"
-		      ."`status_cd` = '$_POST[status_cd]',"
+		      ."`status_cd` = '$_POST['status_cd']',"
 		      ."`status_begin_dt` = NOW()";
 		$rows = $this->act($sql);
 		$histid = $this->getInsertID();
@@ -246,14 +246,14 @@ class Copies extends CoreTable {
         // Not the nicest, but agree, is needed for activsting the buttons etc. - LJ
         $message = "!!success!!";
 
-		if ($rcd[status_cd] != $_POST[status_cd]) {
-            if($_POST[status_cd] == "out") {
+		if ($rcd['status_cd'] != $_POST['status_cd']) {
+            if($_POST['status_cd'] == "out") {
                 //LJ: it does not seem possible to set to checkout without a user!
                 echo "Cannot change to status 'Checked out'. Changes NOT saved!";
                 return;
             } else {
                 $sql = "INSERT `biblio_status_hist` SET "
-                    . "`status_cd` = '$_POST[status_cd]',"
+                    . "`status_cd` = '$_POST['status_cd']',"
                     . "`status_begin_dt` = NOW(),"
                     . "`bibid` = $bibid,"
                     . "`copyid` = $copyid ";
@@ -263,9 +263,9 @@ class Copies extends CoreTable {
 		}
 
 		$sql = "UPDATE `biblio_copy` SET "
-		      ."`barcode_nmbr` = '$_POST[barcode_nmbr]', "
-		      ."`copy_desc` = '$_POST[copy_desc]', "
-		      ."`siteid` = '$_POST[siteid]', "
+		      ."`barcode_nmbr` = '$_POST['barcode_nmbr']', "
+		      ."`copy_desc` = '$_POST['copy_desc']', "
+		      ."`siteid` = '$_POST['siteid']', "
 					."`histid` = $histid "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		$rows = $this->act($sql);
@@ -466,7 +466,7 @@ class Copies extends CoreTable {
 				}
 			}
 			// Removed && $this->avIcon != "circle_orange.png" as and extra clause, as it is better to show the book is there, even if not available
-			else if($copy[status_cd] == OBIB_STATUS_ON_HOLD || $copy[status_cd] == OBIB_STATUS_NOT_ON_LOAN) {
+			else if($copy['status_cd'] == OBIB_STATUS_ON_HOLD || $copy['status_cd'] == OBIB_STATUS_NOT_ON_LOAN) {
 				$avIcon = "circle_blue.png"; // only copy is on hold
 			}
 		}
