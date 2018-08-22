@@ -165,7 +165,7 @@ class Copies extends CoreTable {
 			}
 			$copy['status'] = $states[$status['status_cd']];
 			$copy['statusCd'] = $status['status_cd'];
-			if($_SESSION['show_checkout_mbr'] == "Y" && ($status['status_cd'] == OBIB_STATUS_OUT || $status[status_cd] == OBIB_STATUS_ON_HOLD)){
+			if($_SESSION['show_checkout_mbr'] == "Y" && ($status['status_cd'] == OBIB_STATUS_OUT || $status['status_cd'] == OBIB_STATUS_ON_HOLD)){
 				if($status['status_cd'] == OBIB_STATUS_OUT){
 					$checkout_mbr = $copies->getCheckoutMember($copy['histid']);
 				} else {
