@@ -45,7 +45,7 @@ class Members extends CoreTable {
 			'home_phone',
 			'classification',
 		));
-		if ($_SESSION[mbrBarcode_flg]=='Y') {
+		if ($_SESSION['mbrBarcode_flg']=='Y') {
 		  $this->reqdFlds[] = 'barcode_nmbr';
 		}
 
@@ -162,7 +162,7 @@ class Members extends CoreTable {
 		}
 	}
     function generatePassword($length = 8) {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@Â£$%^&*()';
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@£$%^&*()';
         $count = mb_strlen($chars);
 
         for ($i = 0, $result = ''; $i < $length; $i++) {
