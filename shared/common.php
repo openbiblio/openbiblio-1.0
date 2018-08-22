@@ -46,7 +46,7 @@
 	function getOBroot() {
 		// obtain OpenBiblio path ref to wep pages root
 		// may be useful later in system (thinking plug-ins, etc.)
-		$thisApp = $_SERVER[PHP_SELF];
+		$thisApp = $_SERVER['PHP_SELF'];
 		$thisPath = pathinfo($thisApp, PATHINFO_DIRNAME);
 		$pathParts = explode('/',$thisPath);
 		$OBroot = '/'.$pathParts[1].'/';
@@ -163,9 +163,9 @@
         $allowCk = Settings::get('allow_auto_db_check');
         list($crntHash, $crntSize) = getOBVersionHash();
 		//echo "crntHash=>$crntHash; prevHash=>$prevHash; allowChk=>$allowCk<br />\n";
-        if (($crntHash != $prevHash) and (strpos($_SERVER[PHP_SELF], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
+        if (($crntHash != $prevHash) and (strpos($_SERVER['PHP_SELF'], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
             //echo "Code hash has changed since last use<br />\n";
-            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER[PHP_SELF]");
+            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER['PHP_SELF']");
         }
         Settings::set('version_hash', $crntHash);
         Settings::set('OBsize', $crntSize);
