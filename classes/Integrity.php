@@ -462,7 +462,7 @@ class Integrity extends Queryi{
 		$errors = array();
 		$checks = $this->checks;
 		foreach ($checks as $chk) {
-			assert('isset($chk["error"])');
+			assert(isset($chk["error"]));
 			//echo $chk["error"]."<br />\n";
 			if (isset($chk['countSql'])) {
 				//echo "--------------------"."<br />\n";
@@ -480,11 +480,11 @@ class Integrity extends Queryi{
 			} elseif (isset($chk['countFn'])) {
 				//echo "got chk-countFN"."<br />\n";
 				$fn = $chk['countFn'];
-				assert('method_exists($this, $fn)');
+				assert(method_exists($this, $fn));
 				$count = $this->$fn();
 			} else {
 				//echo "got nothing"."<br />\n";
-				assert('NULL');
+				assert(NULL);
 			}
 			if ($count) {
 				//$msg = $count . T($chk["error"], array('count'=>$count));
@@ -503,7 +503,7 @@ class Integrity extends Queryi{
 						}
 					} elseif (isset($chk['fixFn'])) {
 						$fn = $chk['fixFn'];
-						assert('method_exists($this, $fn)');
+						assert(method_exists($this, $fn));
 						$error = $this->$fn();
 						if ($error) {
 							$msg .= ' <b>'.T("CAN'T FIX").'</b>: '.$error->toStr();
