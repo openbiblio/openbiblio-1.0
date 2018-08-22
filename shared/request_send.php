@@ -108,6 +108,6 @@ if ($result) {
 } else {
 	$sites = new Sites;
 	$site = $sites->getSelect(Settings::get('library_name'));
-	echo '<p>'.T("Request failed, call %library% %phone%", array('library'=>H($site[name]), 'phone'=>H(Settings::get('library_phone')))).'</p>';
+	echo '<p>'.T("Request failed, call %library% %phone%", array('library'=>H($site['name']), 'phone'=>H(Settings::get('library_phone')))).'</p>';
 }
  ;
