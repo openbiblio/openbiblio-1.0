@@ -5,17 +5,15 @@
 
 require_once("../shared/common.php");
 
-$tab = "opac";
-$nav = "account/edit";
-
 require_once(REL(__FILE__, "../model/Members.php"));
 require_once(REL(__FILE__, "../model/Sites.php"));
 require_once(REL(__FILE__, "../classes/Form.php"));
 
+$tab = strToLower($_REQUEST[tab]);
+$nav = "account/edit";
 
 if (!isset($_SESSION['authMbrid'])) {
-	header('Location: ../opac/index.php');
-	exit();
+	header("Location: ../opac/login.php?tab=OPAC");
 }
 
 $members = new Members;
