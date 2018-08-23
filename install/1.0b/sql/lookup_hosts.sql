@@ -32,5 +32,5 @@ INSERT INTO %prfx%.`lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`
 (30, 13, 'n', 'spok.jabok.cuni.cz', 80, 'Společný katalog Evergreen', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
 (31, 14, 'n', 'gapines.org', 80, 'Georgia Pines', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
 (32, 15, 'n', 'libcat.linnbenton.edu', 80, 'Linn Libraries Consortium (Oregon)', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
-(31, 14, 'n', 'catalog.sage.eou.edu', 80, 'SAGE Library System (Oregon)', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
-(31, 14, 'n', 'evergreen.lib.in.us', 80, 'Evergreen Indiana', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL);
+(33, 16, 'n', 'catalog.sage.eou.edu', 80, 'SAGE Library System (Oregon)', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
+(34, 17, 'n', 'evergreen.lib.in.us', 80, 'Evergreen Indiana', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL);
