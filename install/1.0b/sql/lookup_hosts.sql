@@ -28,4 +28,9 @@ INSERT INTO %prfx%.`lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`
 (9, 9, 'n', 'pino.csic.es', 9909, 'Red de bibliotecas del CSIC', 'MAD01', 'Z3950', 'marcxml', NULL, NULL),
 (12, 10, 'n', 'opac.sbn.it', 3950, 'SBN - Sistema Bibliotecario Nazi', 'nopac', 'Z3950', 'marcxml', '', ''),
 (15, 11, 'n', 'aulib.abdn.ac.uk', 9991, 'UK Aberdeen', 'ABN01', 'Z3950', 'marcxml', '', ''),
-(18, 12, 'n', 'z3950.gbv.de', 210, 'Gemeinsamer Bibliotheksverbund', 'gvk', 'SRU', 'dc', '999', 'abc');
+(18, 12, 'n', 'z3950.gbv.de', 210, 'Gemeinsamer Bibliotheksverbund', 'gvk', 'SRU', 'dc', '999', 'abc'),
+(30, 13, 'n', 'spok.jabok.cuni.cz', 80, 'Společný katalog Evergreen', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
+(31, 14, 'n', 'gapines.org', 80, 'Georgia Pines', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
+(32, 15, 'n', 'libcat.linnbenton.edu', 80, 'Linn Libraries Consortium (Oregon)', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
+(31, 14, 'n', 'catalog.sage.eou.edu', 80, 'SAGE Library System (Oregon)', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL),
+(31, 14, 'n', 'evergreen.lib.in.us', 80, 'Evergreen Indiana', 'opac/extras/sru', 'SRU', 'marcxml', NULL, NULL);
