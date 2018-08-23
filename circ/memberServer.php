@@ -354,7 +354,12 @@
 				$cstmArray[$theKey] = $value;	 
 			}
 		}
-	  echo $members->setCustomFields($_POST['mbrid'], $cstmArray);
+		if (count($cstmArray) > 0) {
+	  		$result =  $members->setCustomFields($_POST['mbrid'], $cstmArray);
+			echo $result;
+		} else {
+			echo "1";
+		}
 		break;
 	case 'addNewMember':
 		if(empty($_POST["barcode_nmbr"])) $_POST["barcode_nmbr"] = $members->getNewBarCode(6);
