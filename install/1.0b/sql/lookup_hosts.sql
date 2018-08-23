@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS %prfx%.`lookup_hosts` (
 )   DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 INSERT INTO %prfx%.`lookup_hosts` (`id`, `seq`, `active`, `host`, `port`, `name`, `db`, `service`, `syntax`, `user`, `pw`) VALUES
 (14, 1, 'y', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - z39.50', 'voyager', 'Z3950', 'marcxml', '', ''),
-(23, 1, 'n', 'z3950.loc.gov', 7090, 'U.S. Library of Congress - SRU', 'voyager', 'SRU', 'dc', '', ''),
+(23, 1, 'n', 'lx2.loc.gov', 210, 'U.S. Library of Congress - SRU', 'LCDB', 'SRU', 'marcxml', '', ''),
 (2, 2, 'n', 'copac.ac.uk', 3000, 'UK COPAC - SRU', 'COPAC', 'SRU', 'dc', '', ''),
 (21, 2, 'n', 'z3950.copac.ac.uk', 210, 'UK COPAC - Z3950', 'COPAC', 'Z3950', 'mods', '', ''),
 (20, 2, 'n', 'z3950cat.bl.uk', 9909, 'British Lending Library', 'ZBLACU', 'Z3950', 'marcxml', 'NEIRED2005', '5V7W_pb-'),
