@@ -708,6 +708,7 @@ $trans["No items have been selected."] = "No items have been selected.";
 $trans["No MARC record set"] = "No MARC record set";
 $trans["No name set for form field."] = "No name set for form field.";
 $trans["No patterns have been defined"] = "No patterns have been defined.";
+$trans["no results"] = "no results";
 $trans["No results found."] = "No results found.";
 $trans["No sites have been defined."] = "No sites have been defined.";
 $trans["No staff has been defined."] = "No staff has been defined.";

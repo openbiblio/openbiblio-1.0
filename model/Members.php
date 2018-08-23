@@ -137,6 +137,7 @@ class Members extends CoreTable {
 		return $rows['mbrid'];
 	}
 	function insert_el($mbr, $confirmed=false) {
+		//echo "in Members::insert_el(); ";
 		// this mechanism present in DBtable::validate()
 		//foreach ($this->reqdFlds as $field) {
 		//	if (!isset($mbr[$field])) {return new OBErr('Required fields missing: '.$field);}
@@ -156,7 +157,7 @@ class Members extends CoreTable {
 		// Check to make sure insert went through
         // LJ: Not exactly sure, this the line below was meant for an other restuls set, but $this->insert_id seems empty...
 		//if (0 == $this->insert_id) {
-        
+		//print_r($results);echo "<br />\n";
         if (NULL == $results[0]) {
 			return new OBErr(T('Member creation was not successful'));
 		} else {

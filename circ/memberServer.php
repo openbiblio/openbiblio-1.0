@@ -379,13 +379,15 @@
 				$cstmArray[$theKey] = $value;	 
 			}
 		}
-		//echo "in memberServer, addNewMember, CstmArray: ";print_r($cstmArray);echo "<br />\n";
-		$result = $members->setCustomFields($mbrid, $cstmArray);
-	  	if(!empty($result)){
-	    	echo $result;
-      	} else {
-	      	echo "1";
-      	}
+		if (count($cstmArray) > 0) {
+			//echo "in memberServer, addNewMember, CstmArray: ";print_r($cstmArray);echo "<br />\n";
+			$result = $members->setCustomFields($mbrid, $cstmArray);
+		  	if(!empty($result)){
+		    	echo $result;
+	      	} else {
+		      	echo "1";
+	      	}
+		}
 		break;
 	case 'd-3-L-3-tMember':
         $members->deleteCustomFields($_POST['mbrid']);
