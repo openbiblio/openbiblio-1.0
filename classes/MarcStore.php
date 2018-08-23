@@ -155,9 +155,9 @@ class MarcStore extends Queryi{
 	}
 	## ------------------------------------------------------------------------##
 	private function _putControl($bibid, $seq, $tag, $data) {
-		//echo "MarcStore: in _putControl()<br/>\n";
-		$sql = $this->mkSQL("insert into biblio_field values "
-			. "(%N, NULL, %N, %Q, NULL, NULL, %Q, NULL) ",
+		$sql = $this->mkSQL("insert into biblio_field "
+            . "(bibid, seq, tag, field_data) values "
+			. "(%N, %N, %Q, %Q) ",
 			$bibid, $seq, $tag, $data);
 		//echo "sql={$sql}<br/>\n";
 		$this->act($sql);
