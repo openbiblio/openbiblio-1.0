@@ -25,10 +25,8 @@
 	if (!empty($_POST['srchHost'])) {
 		# but first we extract those hosts acceptable to user for THIS search
 		$useHosts = array();
-		foreach ($_POST as $key => $val ) {
-			if (strpos($key,'srchHost') > -1) {
+		foreach ($_POST['srchHost'] as $val ) {
 		  	$useHosts[] = $val;
-			}
 		}
 	}
 
