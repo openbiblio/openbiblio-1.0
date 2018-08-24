@@ -28,7 +28,7 @@
 		<tr>
 			<td nowrap="true">
 				<label for="searchByBarcd"><?php echo T("Library Card Number");?>:</label>
-				<input type="number" id="searchByBarcd" name="searchByBarcd" size="20" />
+				<input type="text" id="searchByBarcd" name="searchByBarcd" size="20" />
 				<input type="button" id="barCdSrchBtn" value="<?php echo T("Search"); ?>" />
 			</td>
 		</tr>
