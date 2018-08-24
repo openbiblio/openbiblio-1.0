@@ -172,7 +172,7 @@
 			echo $barCd;
 			break;
 		case 'doBarcdSearch':
-			$mbrDflt = $members->getMbrByBarcode($_GET['barcdNmbr']);
+			$mbrDflt = $members->getMbrByBarcode($_POST['barcdNmbr']);
 			$cstmFlds = $members->getCustomfields($mbrDflt['mbrid']);
 			$mbrCstm = array();
 			foreach ($cstmFlds as $fld) {
