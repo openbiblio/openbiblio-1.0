@@ -5,11 +5,11 @@
 
   require_once("../shared/common.php");
 
-	if ((empty($_POST[mode]))&& (!empty($_POST[editMode]))) {
-    $_POST[mode] = $_POST[editMode];
+	if ((empty($_POST['mode']))&& (!empty($_POST['editMode']))) {
+    $_POST['mode'] = $_POST['editMode'];
 	}
 	
-	switch ($_POST[mode]){
+	switch ($_POST['mode']){
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMtlTypes':
 			## prepare list of Material Types
@@ -43,7 +43,7 @@
 			## update material fields for a specific material type
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
 			$ptr = new MaterialFields;
-			if (empty($_POST[required])) $_POST[required] = '0';
+			if (empty($_POST['required'])) $_POST['required'] = '0';
 //			echo $ptr->update_el($_POST);
 			echo $ptr->update($_POST);
 			break;
@@ -53,7 +53,7 @@
 			## delete Material_fields database entry
 			require_once(REL(__FILE__, "../model/MaterialFields.php"));
 			$ptr = new MaterialFields;
-			echo $ptr->deleteOne($_POST[material_field_id]);
+			echo $ptr->deleteOne($_POST['material_field_id']);
 			break;
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
@@ -120,6 +120,6 @@
 			
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": $_POST[mode]</h4><br />";
+		  echo "<h4>".T("invalid mode").": $_POST['mode']</h4><br />";
 		break;
 	}
