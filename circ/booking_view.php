@@ -107,7 +107,7 @@
 <table class="biblio_view">
 	<tr>
 		<td class="name"><?php echo T("Item"); ?>:</td>
-		<td class="value"><a href="../shared/biblio_view.php?bibid=<?php echo H($booking[bibid]) ?>&amp;tab=cataloging">
+		<td class="value"><a href="../shared/biblio_view.php?bibid=<?php echo H($booking['bibid']) ?>&amp;tab=cataloging">
 			(<?php echo H($biblio['marc']->getValue('099$a')) ?>)
 			<?php echo H($biblio['marc']->getValue('245$a')) ?>
 			<?php echo H($biblio['marc']->getValue('245$b')) ?>
