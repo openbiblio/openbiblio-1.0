@@ -394,6 +394,6 @@ echo "in memberServer, addNewMember, CstmArray: ";print_r($cstmArray);echo "<br 
 		
 	//// ====================================////
 	default:
-	  echo "<h5>".T("invalid mode").": $_POST[mode]</h5>";
+	  echo "<h5>".T("invalid mode").": $_POST['mode']</h5>";
 	}
 
