@@ -32,7 +32,7 @@ function doPostNewBiblio($rcrd) {
 
 ## main body of code
 //echo "params: ";print_r($_POST);echo "<br />\n";
-switch ($_POST[mode]){
+switch ($_POST['mode']){
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
   	case 'isDupBarCd':
   		$cpys = new Copies;
@@ -165,7 +165,7 @@ echo "bibid ".print_r($bibid);echo " added to Biblios<br />";
 		$barCd = $rec['barcode_nmbr'];
 		$cpyAction = $rec['copy_action'];
 		if ($barCd == 'autogen') {
-			$barCd = $cpys->getNewBarCode($_SESSION[item_barcode_width]);
+			$barCd = $cpys->getNewBarCode($_SESSION['item_barcode_width']);
 			$rec['barcode_nmbr'] = $barCd;
 		}
 
@@ -184,7 +184,7 @@ echo "bibid ".print_r($bibid);echo " added to Biblios<br />";
 				
   #-.-.-.-.-.-.-.-.-.-.-.-.-
 	default:
-	    echo T("invalid mode").": $_POST[mode] <br />";
+	    echo T("invalid mode").": $_POST['mode'] <br />";
 		break;
 }
 
