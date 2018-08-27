@@ -10,7 +10,7 @@
 
 	session_cache_limiter(null);
 
-	$tab = strToLower($_REQUEST[tab]);
+	$tab = strToLower($_REQUEST['tab']);
 	if(empty($tab)) {
 		$tab = "cataloging";
 		$title = T("Existing Items");
