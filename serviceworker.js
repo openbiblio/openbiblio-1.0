@@ -3,7 +3,7 @@
 //?>
 
 // JavaScript Document
-const version = "v0.2";
+const version = "v0.3";
 const staticCacheName = version + "-staticFiles";
 //const <?php echo "themeDir = '$ThemeDir'\n";
 const themeDir = "themes/default";

@@ -29,6 +29,7 @@ h1,h2,h3,h4,h5,h6 {
 span.reqd { font-weight:bold; }
 h5#reqdNote { background:#EFDB8A;}
 
+fieldset { border:0; margin:0; padding:0; }
 fieldset, ledgend { background-color:#ffffdd; }
 tbody.striped tr:nth-child(odd) { background-color:#EEE; }
 tbody.striped tr:nth-child(even) { background-color:#CCC; }
@@ -107,6 +108,7 @@ span.highLite { color:#FF8A00; }
 @media screen and (min-width:700px) {
 	/* For Tablets */
 html { font-size: calc(0.8*(1em + 1vw)); } /* adjust font to size of user's screen */
+fieldset {  max-width:100%; border:1px solid black; margin:2px; margin-top: 5px; padding-bottom:2px;
 
 	}
 

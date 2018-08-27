@@ -8,7 +8,7 @@
 ?>
     <nav id="accordion" role="navigation" aria-label="site" tabindex="-1">
       	<section class="menuSect">
-        	<h3 class="navHeading" id="defaultOpen">Library Holdings</h3>
+        	<h3 class="navHeading">Library Holdings</h3>
 				<div class="navContent">
 				  <a href="../catalog/srchForms.php?tab=OPAC" title="search">Library Search</a><br />
 				  <a href="../opac/doiSearchForms.php?tab=OPAC" title="doi">use DOI</a><br />
@@ -27,7 +27,7 @@
 	    </section>
 
 		<section class="menuSect">
-			<h3 class="navHeading">About Library</h3>
+			<h3 class="navHeading" id="defaultOpen">About Library</h3>
 			<div class="navContent about">
                 <a href="../opac/aboutForm.php?tab=OPAC" title="Info">About Library</a><br />
 				<?php if (Settings::get('library_image_url') != "") {

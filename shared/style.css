@@ -10,7 +10,7 @@
  *
  */
 
-body { width:auto; height:auto; padding:1rem; }
+body { width:auto; height:auto; /*padding:1rem;*/ margin:0; padding:0; }
 .ie body {width:540px;}
 
 /*************************************************/
@@ -71,7 +71,8 @@ legend { font-weight:bold; margin:0 10px 0 10px; padding:0 5px 0 5px;
 label { margin:0; padding:0;
 	}
 
-fieldset {  max-width:100%; border:1px solid black; margin:2px; margin-top: 5px; padding-bottom:2px;
+/*fieldset {  max-width:100%; border:1px solid black; margin:2px; margin-top: 5px; padding-bottom:2px;*/
+fieldset { border:0; margin:0; padding:0; }
 	}
 fieldset.inlineFldSet { float:left; width:auto; border:0; margin-right:0.5rem; padding:0;
 	}
@@ -81,7 +82,7 @@ fieldset.inlineFldSet label { display:inline;
 	}
 
 /* tables & parts of */
-table { margin:2px; width:99%; border-spacing:0;
+table { /*margin:2px;*/ margin:0; padding:0; width:99%; border-spacing:0;
 	}
 td,th { padding:0 5px 0 5px; vertical-align:top;
 	}
@@ -539,6 +540,7 @@ div#configDiv{
 /* ####################################################### */
 @media screen and (min-width:700px) {
 	/* For Tablets */
+	body { padding:1rem; }
 	}
 	
 @media screen and (min-width:800px) {
@@ -602,6 +604,9 @@ div#configDiv{
 	
 	/*************************************************/
 	main#content { position:absolute; top:1%; left:17.5%; width:auto; padding:2px 2px 2px 2px; }
+
+	table { margin:2px; }
+
 	#srchSpecs { /*display:box; box-orient:horizontal;*/ }
 	.inlineFS { display:inline-block; /*box-flex:1; box-align:start;*/ }
 	#srchHosts { /*position:absolute; max-width:25%; top:0; left:68%;*/ }
