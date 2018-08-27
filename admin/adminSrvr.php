@@ -203,7 +203,7 @@
 			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_copyFlds':
-			$ptr->deleteOne($_POST[code]);
+			$ptr->deleteOne($_POST['code']);
 			if ($errs) {echo $errs;} else {echo $deleteComplete;}
 			break;
 
@@ -231,7 +231,7 @@
 			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_mbrFlds':
-			$ptr->deleteOne($_POST[code]);
+			$ptr->deleteOne($_POST['code']);
 			if ($errs) {echo $errs;} else {echo T("Delete completed");}
 			break;
 
@@ -302,7 +302,7 @@
 			if ($errs) {echo json_encode($errs);} else {echo json_encode($updtSuccess);}
 			break;
 		case 'd-3-L-3-t_mbrTypes':
-			$ptr->deleteOne($_POST[code]);
+			$ptr->deleteOne($_POST['code']);
 			if ($errs) {echo $errs;} else {echo $deleteComplete;}
 			break;
 
@@ -413,11 +413,11 @@
 			echo json_encode($row[0]);
 			break;
 		case 'updateOpts':
-		  $_POST[id] = 1;
-			if (empty($_POST[autoDewey])) $_POST[autoDewey] = 'n';
-			if (empty($_POST[defaultDewey])) $_POST[defaultDewey] = 'n';
-			if (empty($_POST[autoCutter])) $_POST[autoCutter] = 'n';
-			if (empty($_POST[autoCollect])) $_POST[autoCollect] = 'n';
+		  $_POST['id'] = 1;
+			if (empty($_POST['autoDewey'])) $_POST['autoDewey'] = 'n';
+			if (empty($_POST['defaultDewey'])) $_POST['defaultDewey'] = 'n';
+			if (empty($_POST['autoCutter'])) $_POST['autoCutter'] = 'n';
+			if (empty($_POST['autoCollect'])) $_POST['autoCollect'] = 'n';
 			$rslt = $ptr->update($_POST);
 			if(empty($rslt)) $rslt = '1';
 			echo json_encode($rslt);
@@ -569,6 +569,6 @@
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_POST['mode']&lt;</h4><br />";
 		break;
 	}
