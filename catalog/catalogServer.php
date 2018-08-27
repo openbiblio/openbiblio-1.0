@@ -59,7 +59,7 @@
 		break;
 
 	case 'doBibidSearch':
-	  $bib = new Biblio($_POST[bibid]);
+	  $bib = new Biblio($_POST['bibid']);
 	  echo json_encode($bib->getData());
 	  break;
 
@@ -156,14 +156,14 @@
 
 	case 'getNewBarcd':
 		$copies = new Copies;
-		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION[item_barcode_width]);
+		$temp['barcdNmbr'] = $copies->getNewBarCode($_SESSION['item_barcode_width']);
 		echo json_encode($temp);
 	  break;	  
 	  
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
-	  if ($copies->isDuplicateBarcd($_POST[barcode_nmbr],$_POST[copyid])) {
-          echo "Barcode $_POST[barcode_nmbr]: " . T("Barcode number already in use.");
+	  if ($copies->isDuplicateBarcd($_POST['barcode_nmbr'],$_POST['copyid'])) {
+          echo "Barcode $_POST['barcode_nmbr']: " . T("Barcode number already in use.");
       }
       break;
 		
@@ -225,8 +225,8 @@
 	//// ====================================////
 	case 'newCopy':
         $copies = new Copies;
-        if ($copies->isDuplicateBarcd($_POST[barcode_nmbr], $_POST[copyid])) {
-        	echo "Barcode $_POST[barcode_nmbr]: ". T("Barcode number already in use.");
+        if ($copies->isDuplicateBarcd($_POST['barcode_nmbr'], $_POST['copyid'])) {
+        	echo "Barcode $_POST['barcode_nmbr']: ". T("Barcode number already in use.");
         	return;
         }
         $theDb = new Copies;
