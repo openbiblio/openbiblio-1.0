@@ -60,11 +60,11 @@ function getCutter ($aName) {
 
 	$sql = $ctrQ->mkSQL("SELECT MAX(`theName`) as name FROM `cutter` WHERE `theName` < '$aName'" );
 	$rslt1 = $ctrQ->select1($sql);
-	$name = $rslt1[name];
+	$name = $rslt1['name'];
 	//echo "using key '$name' <br />";
 
 	$sql = $ctrQ->mkSQL("SELECT `theNmbr` FROM `cutter` WHERE `theName` = '$name'" );
 	$rslt2 = $ctrQ->select1($sql);
-  return substr($aName,0,1) . $rslt2[theNmbr];
+  return substr($aName,0,1) . $rslt2['theNmbr'];
 }
 ?>
