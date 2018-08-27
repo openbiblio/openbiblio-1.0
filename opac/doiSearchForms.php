@@ -8,7 +8,7 @@
 	session_cache_limiter(null);
 
 //  $tab = "user";
-	$tab = strToLower($_REQUEST[tab]);
+	$tab = strToLower($_REQUEST['tab']);
   	$nav = "doiSearch";
   	$focus_form_name = "doiForm";
   	$focus_form_field = "doiCd";
