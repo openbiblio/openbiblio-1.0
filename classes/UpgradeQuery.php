@@ -441,13 +441,13 @@ class UpgradeQuery extends InstallQuery {
 			$n++;
 			$bibSql .= '('.$bib['bibid'].',"'.$bib['create_dt'].'", "'.$bib['last_change_dt'].'", "'
 										.$bib['last_change_userid'].'", "'.$bib['material_cd'].'", "'
-										.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
+										.$bib['collection_cd'].'", "'.$bib['opac_flg'].'"),';
 
 			### get those fields & sub-fields previosly kept in biblio table
 			# title
 			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "0", "245", NULL, NULL, NULL, NULL),';
             $bib['title'] = $this->MangleQuotas($bib['title']);
- 			$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[title].'"),'; $subid++;
+ 			$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib['title'].'"),'; $subid++;
 			if ($bib['title_remainder']) {
                 $bib['title_remainder'] = $this->MangleQuotas($bib['title_remainder']);
                 $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "b", "'.$bib['title_remainder'].'"),'; $subid++;
@@ -466,7 +466,7 @@ class UpgradeQuery extends InstallQuery {
 	    $fldid++;
       # call number
 			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';
-			if ($bib['call_nmbr1']) {$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[call_nmbr1].'"),'; $subid++;}
+			if ($bib['call_nmbr1']) {$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib['call_nmbr1'].'"),'; $subid++;}
 	    $fldid++;
 			# topics
 			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "650", NULL, NULL, NULL, NULL),';  
@@ -498,13 +498,13 @@ class UpgradeQuery extends InstallQuery {
 			$fldid++;
     
 			### get each biblio_field entry for this biblio in MARC tag order
-			$sql = "SELECT * FROM `$copyName`.`biblio_field` WHERE (`bibid`=$bib[bibid]) ORDER BY `tag` ";
+			$sql = "SELECT * FROM `$copyName`.`biblio_field` WHERE (`bibid`=$bib['bibid']) ORDER BY `tag` ";
 			$flds = $this->select($sql);
 			while ($fld = $flds->fetch_assoc()) {
 			  $tag = sprintf("%03d",$fld['tag']);
 				$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
                 $fld['field_data'] = $this->MangleQuotas($fld['field_data']);
-				$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld['subfield_cd'].'", "'.$fld[field_data].'"),'; $subid++;
+				$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld['subfield_cd'].'", "'.$fld['field_data'].'"),'; $subid++;
 	      $fldid++;
 			}
 
