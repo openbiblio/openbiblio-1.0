@@ -50,6 +50,7 @@ class Biblio {
 /**/
 		$data['cpys'] = $this->cpyList;
 		return $data;
+		
 	}
 	/**
 	 * Populates an empty biblio with header data.

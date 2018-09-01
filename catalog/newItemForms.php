@@ -25,7 +25,7 @@
  	require_once(REL(__FILE__, "../model/MediaTypes.php"));
 	require_once(REL(__FILE__, "../model/Collections.php"));
 	
-	$defBarcodeDigits = $_SESSION[item_barcode_width];
+	$defBarcodeDigits = $_SESSION['item_barcode_width'];
 
 	$tab = "cataloging";
 	$nav = "newItem";

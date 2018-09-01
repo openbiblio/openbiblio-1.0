@@ -6,11 +6,11 @@
   require_once("../shared/common.php");
   //require_once(REL(__FILE__, "../shared/logincheck.php"));
 
-	if ((empty($_REQUEST[mode]))&& (!empty($_REQUEST[editMode]))) {
-    $_REQUEST[mode] = $_REQUEST[editMode];
+	if ((empty($_REQUEST['mode']))&& (!empty($_REQUEST['editMode']))) {
+    $_REQUEST['mode'] = $_REQUEST['editMode'];
 	}
 	
-	switch ($_REQUEST[mode]){
+	switch ($_REQUEST['mode']){
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getPluginList':
 			## prepare list of Material Types
@@ -42,9 +42,9 @@
 		  ## update the Plugins entry in Settings DB
 			require_once(REL(__FILE__, "../model/Settings.php"));
 			$ptr = new Settings;
-			$rslt = $ptr->setOne_el('allow_plugins_flg',$_POST[allow_plugins_flg]);
+			$rslt = $ptr->setOne_el('allow_plugins_flg',$_POST['allow_plugins_flg']);
 			if (empty($rslt)) {
-				$_SESSION['allow_plugins_flg'] = $_POST[allow_plugins_flg];
+				$_SESSION['allow_plugins_flg'] = $_POST['allow_plugins_flg'];
 			}
 			echo $rslt;
 			break;
@@ -53,17 +53,17 @@
 		case 'updatePluginList':
 		  $list = $_SESSION['plugin_list'];
 		  $aray = explode(',', $list);
-		  if ($_POST[allowPlugin] == 'N') {
+		  if ($_POST['allowPlugin'] == 'N') {
 		    // remove specified id from the list
-				$i = array_search($_POST[id],$aray);
+				$i = array_search($_POST['id'],$aray);
 				array_splice($aray,$i,1);
 			}
-			else if ($_POST[allowPlugin] == 'Y') {
+			else if ($_POST['allowPlugin'] == 'Y') {
 				// add id to the list
-				$aray[] = $_POST[id];
+				$aray[] = $_POST['id'];
 			}
 			else {
-				echo "invalid choice: $_POST[allow_plugin]";
+				echo "invalid choice: $_POST['allow_plugin']";
 			}
 			$list = implode($aray, ',');
 
@@ -78,6 +78,6 @@
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": $_REQUEST[mode]</h4>";
+		  echo "<h4>".T("invalid mode").": $_REQUEST['mode']</h4>";
 		break;
 	}

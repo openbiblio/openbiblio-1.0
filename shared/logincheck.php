@@ -50,7 +50,7 @@ if (!OBIB_DEMO_FLG) {
 		// view the catalogue as OPAC users.
 		// If hasCircAuth allow biblio_search.php
 		if (!$_SESSION["hasCatalogAuth"]) {
-			if(!((basename($_SERVER[PHP_SELF]) == "srchForms.php") && $_SESSION["hasCircAuth"])){
+			if(!((basename($_SERVER['PHP_SELF']) == "srchForms.php") && $_SESSION["hasCircAuth"])){
 				header("Location: ../catalog/noauth.php");
 				exit();
 			}

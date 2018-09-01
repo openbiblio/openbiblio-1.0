@@ -12,7 +12,7 @@ require_once(REL(__FILE__, "../classes/Links.php"));
 require_once(REL(__FILE__, "../classes/InfoDisplay.php"));
 require_once(REL(__FILE__, "../classes/TableDisplay.php"));
 
-$tab = strToLower($_REQUEST[tab]);
+$tab = strToLower($_REQUEST['tab']);
 $nav = "account";
 
 

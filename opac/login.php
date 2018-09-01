@@ -37,7 +37,7 @@ if ($msg) {
 		<label for="id"><?php echo T("Email or ID Number"); ?>:</label>
 	</td>
 	<td>
-		<?php echo inputfield('text',"id",H($_POST[id])); ?>
+		<?php echo inputfield('text',"id",H($_POST['id'])); ?>
   </td>
 </tr>
 <tr>

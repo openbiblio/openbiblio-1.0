@@ -67,7 +67,7 @@ class Members extends CoreTable {
 		$sql = $this->mkSQL("select max(cast(barcode_nmbr as signed)) as lastNmbr from member");
 		$mbr = $this->select1($sql);
 	  if(empty($width)) $w = 13; else $w = $width;
-		return sprintf("%0".$w."s",($mbr[lastNmbr]+1));
+		return sprintf("%0".$w."s",($mbr['lastNmbr']+1));
 	}
 
 	// Seems duplicate from above, so removing.
@@ -165,7 +165,7 @@ class Members extends CoreTable {
 		}
 	}
     function generatePassword($length = 8) {
-        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@£$%^&*()';
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@ï¿½$%^&*()';
         $count = mb_strlen($chars);
 
         for ($i = 0, $result = ''; $i < $length; $i++) {

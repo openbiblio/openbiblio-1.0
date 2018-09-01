@@ -123,6 +123,6 @@
 			break;
 
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_POST[mode]&lt;</h4><br />";
+		  echo "<h4>".T("invalid mode").": &gt;$_POST['mode']&lt;</h4><br />";
 		break;
 	}

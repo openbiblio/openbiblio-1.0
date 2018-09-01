@@ -401,6 +401,6 @@
 		
 	//// ====================================////
 	default:
-	  echo "<h5>".T("invalid mode").": $_POST[mode]</h5>";
+	  echo "<h5>".T("invalid mode").": $_POST['mode']</h5>";
 	}
 

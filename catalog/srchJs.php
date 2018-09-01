@@ -214,18 +214,18 @@ var bs = {
 
 	doAltStart: function () {
 		// alternate startup in response to remote package
-		//console.log('checking for alternative starts using: '+<?php echo "'".$_REQUEST[barcd]."'"; ?>);
+		//console.log('checking for alternative starts using: '+<?php echo "'".$_REQUEST['barcd']."'"; ?>);
 		<?php
 		if ($_REQUEST['barcd']) {
-			echo "$('#bc_searchBarcd').val('$_REQUEST[barcd]');\n";
+			echo "$('#bc_searchBarcd').val('$_REQUEST['barcd']');\n";
 			echo "bs.doBarcdSearch();\n";
 		}
 		else if ($_REQUEST['bibid']) {
-			echo "bs.doBibidSearch($_REQUEST[bibid]);\n";
+			echo "bs.doBibidSearch($_REQUEST['bibid']);\n";
 		}
 		else if ($_REQUEST['searchText']) {
-			echo "$('#ph_searchText').val('$_REQUEST[searchText]');\n";
-			echo "$('#ph_searchType').val('$_REQUEST[searchType]');\n";
+			echo "$('#ph_searchText').val('$_REQUEST['searchText']');\n";
+			echo "$('#ph_searchType').val('$_REQUEST['searchType']');\n";
 			echo "bs.doPhraseSearch();\n";
 		}
 		?>

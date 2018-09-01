@@ -439,72 +439,72 @@ class UpgradeQuery extends InstallQuery {
 		while (($bib = $bibRslt->fetch_assoc()) != NULL) {
 			# we will be posting to the db in blocks of 100 records to avoid server overload
 			$n++;
-			$bibSql .= '('.$bib[bibid].',"'.$bib[create_dt].'", "'.$bib[last_change_dt].'", "'
-										.$bib[last_change_userid].'", "'.$bib[material_cd].'", "'
-										.$bib[collection_cd].'", "'.$bib[opac_flg].'"),';
+			$bibSql .= '('.$bib['bibid'].',"'.$bib['create_dt'].'", "'.$bib['last_change_dt'].'", "'
+										.$bib['last_change_userid'].'", "'.$bib['material_cd'].'", "'
+										.$bib['collection_cd'].'", "'.$bib['opac_flg'].'"),';
 
 			### get those fields & sub-fields previosly kept in biblio table
 			# title
-			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", "0", "245", NULL, NULL, NULL, NULL),';
-            $bib[title] = $this->MangleQuotas($bib[title]);
- 			$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[title].'"),'; $subid++;
-			if ($bib[title_remainder]) {
-                $bib[title_remainder] = $this->MangleQuotas($bib[title_remainder]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "b", "'.$bib[title_remainder].'"),'; $subid++;
+			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "0", "245", NULL, NULL, NULL, NULL),';
+            $bib['title'] = $this->MangleQuotas($bib['title']);
+ 			$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib['title'].'"),'; $subid++;
+			if ($bib['title_remainder']) {
+                $bib['title_remainder'] = $this->MangleQuotas($bib['title_remainder']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "b", "'.$bib['title_remainder'].'"),'; $subid++;
             }
-			if ($bib[responsibility_stmt]) {
-                $bib[responsibility_stmt] = $this->MangleQuotas($bib[responsibility_stmt]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "c", "'.$bib[responsibility_stmt].'"),'; $subid++;
+			if ($bib['responsibility_stmt']) {
+                $bib['responsibility_stmt'] = $this->MangleQuotas($bib['responsibility_stmt']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "c", "'.$bib['responsibility_stmt'].'"),'; $subid++;
             }
   	  $fldid++;
   	  # author
-			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "100", NULL, NULL, NULL, NULL),';  
-			if ($bib[author]) {
-                $bib[author] = $this->MangleQuotas($bib[author]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[author].'"),'; $subid++;
+			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "100", NULL, NULL, NULL, NULL),';  
+			if ($bib['author']) {
+                $bib['author'] = $this->MangleQuotas($bib['author']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib['author'].'"),'; $subid++;
             }
 	    $fldid++;
       # call number
-			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';
-			if ($bib[call_nmbr1]) {$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[call_nmbr1].'"),'; $subid++;}
+			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "099", NULL, NULL, NULL, NULL),';
+			if ($bib['call_nmbr1']) {$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib['call_nmbr1'].'"),'; $subid++;}
 	    $fldid++;
 			# topics
-			$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "650", NULL, NULL, NULL, NULL),';  
-			if ($bib[topic1]) {
-                $bib[topic1] = preg_replace("/'/","''",$bib[topic1]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib[topic1].'"),'; 
+			$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "650", NULL, NULL, NULL, NULL),';  
+			if ($bib['topic1']) {
+                $bib['topic1'] = preg_replace("/'/","''",$bib['topic1']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "a", "'.$bib['topic1'].'"),'; 
                 $subid++;
             }
-			if ($bib[topic2]) {
-                $bib[topic2] = preg_replace("/'/","''",$bib[topic2]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 1, "a", "'.$bib[topic2].'"),'; 
+			if ($bib['topic2']) {
+                $bib['topic2'] = preg_replace("/'/","''",$bib['topic2']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 1, "a", "'.$bib['topic2'].'"),'; 
                 $subid++;
             }
-			if ($bib[topic3]) {
-                $bib[topic3] = preg_replace("/'/","''",$bib[topic3]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 2, "a", "'.$bib[topic3].'"),'; 
+			if ($bib['topic3']) {
+                $bib['topic3'] = preg_replace("/'/","''",$bib['topic3']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 2, "a", "'.$bib['topic3'].'"),'; 
                 $subid++;
             }
-			if ($bib[topic4]) {
-                $bib[topic4] = preg_replace("/'/","''",$bib[topic4]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 3, "a", "'.$bib[topic4].'"),'; 
+			if ($bib['topic4']) {
+                $bib['topic4'] = preg_replace("/'/","''",$bib['topic4']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 3, "a", "'.$bib['topic4'].'"),'; 
                 $subid++;
             }
-			if ($bib[topic5]) {
-                $bib[topic5] = preg_replace("/'/","''",$bib[topic5]);
-                $subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 4, "a", "'.$bib[topic5].'"),'; 
+			if ($bib['topic5']) {
+                $bib['topic5'] = preg_replace("/'/","''",$bib['topic5']);
+                $subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 4, "a", "'.$bib['topic5'].'"),'; 
                 $subid++;
             }
 			$fldid++;
     
 			### get each biblio_field entry for this biblio in MARC tag order
-			$sql = "SELECT * FROM `$copyName`.`biblio_field` WHERE (`bibid`=$bib[bibid]) ORDER BY `tag` ";
+			$sql = "SELECT * FROM `$copyName`.`biblio_field` WHERE (`bibid`=$bib['bibid']) ORDER BY `tag` ";
 			$flds = $this->select($sql);
 			while ($fld = $flds->fetch_assoc()) {
-			  $tag = sprintf("%03d",$fld[tag]);
-				$fldSql .= '("'.$bib[bibid].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
-                $fld[field_data] = $this->MangleQuotas($fld[field_data]);
-				$subSql .= '("'.$bib[bibid].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld[subfield_cd].'", "'.$fld[field_data].'"),'; $subid++;
+			  $tag = sprintf("%03d",$fld['tag']);
+				$fldSql .= '("'.$bib['bibid'].'", "'.$fldid.'", 0, "'.$tag.'", NULL, NULL, NULL, NULL),';
+                $fld['field_data'] = $this->MangleQuotas($fld['field_data']);
+				$subSql .= '("'.$bib['bibid'].'", "'.$fldid.'", "'.$subid.'", 0, "'.$fld['subfield_cd'].'", "'.$fld['field_data'].'"),'; $subid++;
 	      $fldid++;
 			}
 

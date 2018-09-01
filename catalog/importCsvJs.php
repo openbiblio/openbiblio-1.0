@@ -220,7 +220,7 @@ TODO				// Check for uniqueness with existing barcodes and new entries read.
 		//console.log('bcdDflt='+$('#bcdDeflt').val());
 	
 		/* for use with barcodes */
-		var width = <?php echo $_SESSION[item_barcode_width]; ?>;
+		var width = <?php echo $_SESSION['item_barcode_width']; ?>;
 	 	if( width <= 1 ) var w = 13; else var w = width;
 	  	
 		for (var line=1; line<csvi.File.length; line++) {
