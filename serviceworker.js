@@ -1,8 +1,6 @@
-//<?php
-//	global $LocaleDir, $ThemeDir;
-//?>
-
 // JavaScript Document
+"use strict";
+
 const version = "v0.3";
 const staticCacheName = version + "-staticFiles";
 //const <?php echo "themeDir = '$ThemeDir'\n";
@@ -67,12 +65,12 @@ addEventListener ('fetch', fetchEvent => {
       if (responseFromCache) {
         return responseFromCache;
       }  // end if
-    	// otherwise fetch from network
-    	return fetch (request)
-    	.catch (error => {
-		// show a fallback page instead
+      // otherwise fetch from network
+      return fetch (request)
+      .catch (error => {
+	    // show a fallback page instead
       	return caches.match ("/offline.html");
-			}); // end fetch catch and return
-		})  //end match
+	  }); // end fetch catch and return
+	})  //end match
   );  // end respondWith
 }); // end addEventListener
