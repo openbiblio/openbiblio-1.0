@@ -165,7 +165,7 @@
 		//echo "crntHash=>$crntHash; prevHash=>$prevHash; allowChk=>$allowCk<br />\n";
         if (($crntHash != $prevHash) and (strpos($_SERVER['PHP_SELF'], 'dbChkrForms.php') === FALSE) AND ($allowCk == 'Y')) {
             //echo "Code hash has changed since last use<br />\n";
-            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=$_SERVER['PHP_SELF']");
+            header("Location: ../admin/dbChkrForms.php?tab=auto&rtnTo=".$_SERVER['PHP_SELF']);
         }
         Settings::set('version_hash', $crntHash);
         Settings::set('OBsize', $crntSize);
