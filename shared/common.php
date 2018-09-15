@@ -185,7 +185,7 @@
 	###################################################################
 	function getPlugIns($wanted) {
 		## determine what is allowed
-		if ($_SESSION['allow_plugins_flg'] != 'Y') return NULL;
+		if ($_SESSION['allow_plugins_flg'] != 'Y') return array();
 		$list = $_SESSION['plugin_list'];
 		$aray = explode(',', $list);
 
