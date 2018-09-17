@@ -40,7 +40,7 @@
                 '$this->dsn["username"] = '  ."'".   $_REQUEST['user']     ."'; \n".
                 '$this->dsn["pwd"] = '       ."'".   $_REQUEST['passwd']   ."'; \n".
                 '$this->dsn["database"] = '  ."'".   $_REQUEST['db']       ."'; \n".
-                '$this->dsn["mode"] = '      .       'haveConst'           ."; \n"
+                '$this->dsn["mode"] = '      ."'".   'haveConst'           ."'; \n"
             ;
 
             $response = array();

@@ -32,7 +32,7 @@ class DbCore
     private function __construct() {
         //echo "in DbCore::__construct() <br />\n";
         $this->getConfig();
-        $this->dsn["mode"] == 'haveconst';
+        $this->dsn["mode"] = 'haveconst';
         $real_DSN_string = $this->dsn['dbEngine'].":host=".$this->dsn['host']."; port=3306; dbname=".$this->dsn['database']."; charset=utf8";
         $opt = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

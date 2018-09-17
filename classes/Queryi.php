@@ -34,7 +34,7 @@ class Queryi {
             $this->dsn['pwd'] = 'admin';
             $this->dsn['database'] = 'xxxopenbiblioxxx';
             $this->dsn['mode'] = 'nodb';
-            $this->dsn["mode"] == 'haveconst';
+            $this->dsn["mode"] = 'haveconst';
         }
     }
 	public function act($sql) {
