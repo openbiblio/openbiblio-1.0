@@ -4,11 +4,10 @@
  */
 
     //echo "in srchForms.php";
+	$cache = NULL;
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../classes/ReportDisplaysUI.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-
-	session_cache_limiter(null);
 
 	$tab = strToLower($_REQUEST['tab']);
 	if(empty($tab)) {

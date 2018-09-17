@@ -3,9 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
  
+  $cache = NULL;
   require_once("../shared/common.php");
-
-	session_cache_limiter(null);
 
   $tab = "tools";
   $nav = "chgColl";
@@ -59,9 +58,9 @@
 				</select>
 				<br />
 				<label for="db"><?php echo T("Database"); ?>: </label>
-		   	<input type="text" size="30" name="db" value="<?php echo OBIB_DATABASE; ?>" />
-		   	<br />
-		   	<input type="button" id="action" name="action" value="Change Database" />
+		   		<input type="text" size="30" name="db" value="<?php echo OBIB_DATABASE; ?>" />
+		   		<br />
+		   		<input type="button" id="action" name="action" value="Change Database" />
 		   </form>
 		</fieldset>   
 	</section>

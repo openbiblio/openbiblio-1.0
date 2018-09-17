@@ -2,8 +2,9 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+  $cache = NULL;
   require_once("../shared/common.php");
-	session_cache_limiter(null);
+
   $tab = "tools";
   $nav = "mediaFlds";
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));

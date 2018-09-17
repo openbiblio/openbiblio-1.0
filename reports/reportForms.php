@@ -3,10 +3,9 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+	$cache = NULL;
 	require_once("../shared/common.php");
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
-
-	session_cache_limiter(null);
 
 	$tab="reports";
 	$nav="results";

@@ -3,9 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
-  require_once("../shared/common.php");
-
-  session_cache_limiter(null);
+  	$cache = NULL;
+	require_once("../shared/common.php");
 
 	$anyTxt     = T("AnyKwrd");
 	$isbnTxt    = T("ISBN");

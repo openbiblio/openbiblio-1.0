@@ -5,9 +5,8 @@
  * THIS IS AN OpenBiblio PLUG-IN  
  */
  
+  $cache = NULL;
   require_once("../shared/common.php");
-
-	session_cache_limiter(null);
 
   $tab = "tools";
   $nav = "oldFiles";

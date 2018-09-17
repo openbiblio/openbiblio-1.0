@@ -7,10 +7,9 @@
  * @author Micah Stetson
  */
 
+$cache = NULL;
 require_once("../shared/common.php");
 require_once(REL(__FILE__, "../classes/Form.php"));
-
-session_cache_limiter(null);
 
 $tab = "tools";
 $nav = "settings";

@@ -3,9 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
 
+  $cache = NULL;
   require_once("../shared/common.php");
-
-  session_cache_limiter(null);
 
 	include(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
