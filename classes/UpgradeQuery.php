@@ -498,7 +498,7 @@ class UpgradeQuery extends InstallQuery {
 			$fldid++;
     
 			### get each biblio_field entry for this biblio in MARC tag order
-			$sql = "SELECT * FROM `$copyName`.`biblio_field` WHERE (`bibid`=$bib['bibid']) ORDER BY `tag` ";
+			$sql = "SELECT * FROM `$copyName`.`biblio_field` WHERE (`bibid`=" . $bib['bibid'] . ") ORDER BY `tag` ";
 			$flds = $this->select($sql);
 			while ($fld = $flds->fetch_assoc()) {
 			  $tag = sprintf("%03d",$fld['tag']);
