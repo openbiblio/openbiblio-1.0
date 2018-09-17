@@ -10,9 +10,9 @@
 	require_once(REL(__FILE__, "../shared/logincheck.php"));
 	require_once(REL(__FILE__, "../functions/inputFuncs.php"));
 
-	$focus_form_name=bulk_delete;
-	$focus_form_field=barcodes;
-	
+	$focus_form_name = 'bulk_delete';
+	$focus_form_field = 'barcodes';
+
 	Page::header(array('nav'=>$tab.'/'.$nav, 'title'=>''));
 ?>
 	<h3><?php echo T("Bulk Delete"); ?></h3>

@@ -206,7 +206,7 @@ class Copies extends CoreTable {
 		      ."`siteid` = '$theSite'," // set to current site
 		      ."`create_dt` = NOW(),"
 		      ."`last_change_dt` = NOW(),"
-		      ."`last_change_userid` = $_SESSION['userid'],"
+		      ."`last_change_userid` = " . $_SESSION['userid'] . ","
 		      ."`copy_desc` = '".$_POST['copy_desc']."' ";
 
         $rows = $this->act($sql);
@@ -215,7 +215,7 @@ class Copies extends CoreTable {
 		$sql = "Insert `biblio_status_hist` SET "
 		      ."`bibid` = $bibid,"
 		      ."`copyid` = $copyid,"
-		      ."`status_cd` = '$_POST['status_cd']',"
+		      ."`status_cd` = '" . $_POST['status_cd'] . "',"
 		      ."`status_begin_dt` = NOW()";
 		$rows = $this->act($sql);
 		$histid = $this->getInsertID();
@@ -253,7 +253,7 @@ class Copies extends CoreTable {
                 return;
             } else {
                 $sql = "INSERT `biblio_status_hist` SET "
-                    . "`status_cd` = '$_POST['status_cd']',"
+                    . "`status_cd` = '" . $_POST['status_cd'] . "',"
                     . "`status_begin_dt` = NOW(),"
                     . "`bibid` = $bibid,"
                     . "`copyid` = $copyid ";
@@ -263,10 +263,10 @@ class Copies extends CoreTable {
 		}
 
 		$sql = "UPDATE `biblio_copy` SET "
-		      ."`barcode_nmbr` = '$_POST['barcode_nmbr']', "
-		      ."`copy_desc` = '$_POST['copy_desc']', "
-		      ."`siteid` = '$_POST['siteid']', "
-					."`histid` = $histid "
+		      		."`barcode_nmbr` = '" . $_POST['barcode_nmbr'] . "', "
+		      		."`copy_desc` = '" . $_POST['copy_desc'] . "', "
+		      		."`siteid` = '" . $_POST['siteid'] . "', "
+					."`histid` = " . $histid . " "
 					." WHERE (`bibid` = $bibid) AND (`copyid` = $copyid) ";
 		$rows = $this->act($sql);
 

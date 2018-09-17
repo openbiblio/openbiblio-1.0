@@ -437,7 +437,7 @@ class MarcParser extends MarcBaseParser {
 	public function __construct ($lenient=true) {
 		parent::__construct($lenient);
 	}
-	public function parse($input) {
+	public function parse($input = '') {
 		$recLen = 0;
 		$unparLen = 0;
 //echo "in MarcParser::parse(), pt A<br />";
