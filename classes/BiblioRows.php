@@ -81,8 +81,10 @@ class BiblioRowsIter extends Iter {
 	}
 	public function next() {
 		## this builds the sql to get search item details for later display
-		$r = $this->iter->fetch_assoc();
-		if ($r === NULL) return $r;
+		//$r = $this->iter->fetch_assoc();
+		$r = $this->iter->fetch(PDO::FETCH_ASSOC); // suggested by Peter
+		//if ($r === NULL) return $r;
+		if ($r === FALSE) return $r;  // suggested by Peter
 
 		## Construct an array of displayable fields for the material_cd of this biblio
 		$media = new MaterialFields;

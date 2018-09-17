@@ -172,7 +172,7 @@ class Copies extends CoreTable {
 					$checkout_mbr = $copies->getHoldMember($copy['copyid']);
 				}
 				$copy['mbrId'] = $checkout_mbr['mbrid'];
-				$copy['mbrName'] = "$checkout_mbr['first_name'] $checkout_mbr['last_name']";
+				$copy['mbrName'] = $checkout_mbr['first_name'] ." ". $checkout_mbr['last_name'];
 			}
 			// Add custom fields - Bit complicated, but seems the easiest way to populate empty fields (list compiled at beginning of procedure to lower databse queries)
 			// Now populate data

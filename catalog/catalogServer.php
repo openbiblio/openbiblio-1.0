@@ -163,7 +163,7 @@
 	case 'chkBarcdForDupe':
 	  $copies = new Copies;
 	  if ($copies->isDuplicateBarcd($_POST['barcode_nmbr'],$_POST['copyid'])) {
-          echo "Barcode $_POST['barcode_nmbr']: " . T("Barcode number already in use.");
+          echo "Barcode ". $_POST['barcode_nmbr']. ": " . T("Barcode number already in use.");
       }
       break;
 		
@@ -226,7 +226,7 @@
 	case 'newCopy':
         $copies = new Copies;
         if ($copies->isDuplicateBarcd($_POST['barcode_nmbr'], $_POST['copyid'])) {
-        	echo "Barcode $_POST['barcode_nmbr']: ". T("Barcode number already in use.");
+        	echo "Barcode ". $_POST['barcode_nmbr']. ": ". T("Barcode number already in use.");
         	return;
         }
         $theDb = new Copies;
