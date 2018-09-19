@@ -26,7 +26,13 @@
 				<td><label for="autobarco"><?php echo T("Auto Barcode"); ?></label></td>
 				<td>
 					<input id="autobarco" name="autobarco" type="checkbox" value="Y"
-						<?php echo ($_SESSION['item_autoBarcode_flg']=='Y'?checked:''); ?> />
+						<?php
+						// Use of undefined constant checked - assumed 'checked' (this will throw an Error in a future version of PHP)
+                  // in catalog/copyEditorForm.php on line 29
+                  // request: "GET /circ/memberForms.php HTTP/1.1"
+                  // referrer: admin/dbChkrForms.php?tab=auto&rtnTo=/circ/memberForms.php
+						if ($_SESSION['item_autoBarcode_flg'] == 'Y') { echo 'checked'; }
+						?> />
 				</td>
 			</tr>
 			<tr>
