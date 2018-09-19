@@ -569,6 +569,11 @@
 
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": &gt;$_POST['mode']&lt;</h4><br />";
+		  // unexpected '' (T_ENCAPSED_AND_WHITESPACE), expecting '-' or identifier (T_STRING) or variable (T_VARIABLE) or number (T_NUM_STRING)
+		  // in admin/adminSrvr.php on line 572
+        // request: "POST /admin/adminSrvr.php HTTP/1.1",
+        // referrer: admin/dbChkrForms.php?tab=auto&rtnTo=/catalog/srchForms.php
+		  echo "<h4>".T("invalid mode").": &gt;", $_POST['mode'], "&lt;</h4><br />";
+		  
 		break;
 	}
