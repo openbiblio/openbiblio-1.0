@@ -6,27 +6,28 @@
 require_once(REL(__FILE__, '../../classes/Lay.php'));
 
 class Layout_pull_list {
+	protected $serif_font = 'Times-Roman';
 	function render($rpt) {
-//		$rpt = $rpt->variant(array('order_by'=>'item_num'));
-		$rpt = $rpt->getVariant(array('order_by'=>'item_num'));
+		$rpt = $rpt->variant(array('order_by'=>'item_num'));
+//		$rpt = $rpt->getVariant(array('order_by'=>'item_num'));
 
 		$lay = new Lay;
 			$lay->container('Columns', array(
 				'margin-left'=>'0.5in', 'margin-right'=>'0.5in',
 				'margin-top'=>'0.5in', 'margin-bottom'=>'0.5in',
 			));
-				$lay->pushFont('Times', 'B', 16);
+				$lay->pushFont($this->serif_font, 'B', 16);
 					$lay->container('TextLine', array('x-align'=>'center'));
 						$lay->text('Instructional Media Center');
 					$lay->close();
 				$lay->popFont();
-				$lay->pushFont('Times', 'B', 12);
+				$lay->pushFont($this->serif_font, 'B', 12);
 					$lay->container('TextLine', array('x-align'=>'center'));
 						$lay->text('Pull List - '.date('m/d/y'));
 					$lay->close();
 				$lay->popFont();
 				$lay->element('Spacer', array('height'=>9));
-				$lay->pushFont('Times', 'I', 14);
+				$lay->pushFont($this->serif_font, 'I', 14);
 					$lay->container('Line');
 						$lay->container('TextLine', array('width'=>'1in'));
 							$lay->text('Item');
@@ -42,7 +43,7 @@ class Layout_pull_list {
 				# FIXME - The justification works around a layout bug that would make
 				# one single-spaced line appear at the bottom of each page.
 				$lay->container('Columns', array('y-spacing'=>14, 'y-align'=>'justify'));
-					$lay->pushFont('Times-Roman', 14);
+					$lay->pushFont($this->serif_font, 14);
 						while ($row = $rpt->each()) {
 							$lay->container('Line');
 								$lay->container('TextLine', array('width'=>'1in'));
