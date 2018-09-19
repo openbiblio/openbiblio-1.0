@@ -15,7 +15,7 @@
 	<fieldset id="action">
 		<section id="plsWait">
 			<h3 id="waitMsg">Building OpenBiblio tables</h3>
-			<img src="<?php echo REL(__FILES__,"../images/please_wait.gif"); ?>" />
+			<img src="<?php echo "/images/please_wait.gif"; ?>" />
 			<span id="waitText">please wait...</span>
 		</section>
 
