@@ -3,8 +3,8 @@
  * See the file COPYRIGHT.html for more details.
  */
  
-require_once(REL(__FILE__, "../../classes/Queryi.php"));
-require_once(REL(__FILE__, "../../classes/Search.php"));
+require_once(REL(__FILE__, "../../classes/class_autoloader.php"));
+$class_autoloader = new class_autoloader();
 
 /**
  * Member-specific specification & search facilities for use with the Report generator
