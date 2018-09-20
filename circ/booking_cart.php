@@ -23,7 +23,7 @@
 		$currentPageNmbr = 1;
 	}
 
-	$rpt = Report::create(booking_cart, BookingCart);
+	$rpt = Report::create('booking_cart', 'BookingCart');
 	$rpt->initCgi();
 	$total_items = $rpt->count();
 
