@@ -223,7 +223,15 @@
 
 <?php
     require_once(REL(__FILE__,'../shared/footer.php'));
+    /**
+     * Cataloging -> CVS Import
+     * Warning: include_once(catalog/../shared/txtFileUpload/ajaxfileupload.js): failed to open stream: No such file or directory in catalog/importCsvForms.php on line 226
 	include_once(REL(__FILE__,'../shared/txtFileUpload/ajaxfileupload.js'));
+     */
+   echo '<script language="JavaScript">' . "\n";
+	include_once(REL(__FILE__,'../shared/simpleUpload.min.js'));
+   echo "</script>\n";
+
 	require_once(REL(__FILE__, "../catalog/importCsvJs.php"));
 ?>	
 </body>
