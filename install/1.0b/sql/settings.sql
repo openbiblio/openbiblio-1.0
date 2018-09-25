@@ -52,5 +52,6 @@ INSERT INTO %prfx%.settings (name, position, title, type, width, type_data, vali
 ('version_hash', NULL, 'Current version hash', 'text', 32, NULL, NULL, '2fec51995b2fa77aff2c4aa63979ab73', 'admin'),
 ('first_day_of_week', 0, 'first day of week', 'number', 2, NULL, NULL, '0', 'admin'),
 ('allow_auto_db_check', 28, 'Allow Database Auto-Integrity Check', 'bool', NULL, NULL, NULL, 'Y', 'tools'),
-('hmac_timeout', NULL, 'Number of minutes before a request for sensitive data expires', 'int', NULL, NULL, NULL, '30', 'admin');
+('hmac_timeout', NULL, 'Number of minutes before a request for sensitive data expires', 'int', NULL, NULL, NULL, '30', 'admin'),
+('help_link', NULL, 'URL for your system documentation', 'text', NULL, NULL, NULL, 'https://openbiblio.github.io/openbiblio_docs', 'admin');
 
