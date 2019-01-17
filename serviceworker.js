@@ -1,7 +1,7 @@
 // JavaScript Document
 "use strict";
 
-const version = "v0.3";
+const version = "v0.4";
 const staticCacheName = version + "-staticFiles";
 //const <?php echo "themeDir = '$ThemeDir'\n";
 const themeDir = "themes/default";
@@ -19,9 +19,12 @@ addEventListener ('install', installEvent => {
     .then(staticCache => {
       return staticCache.addAll([
 		"./opac/index.php",
+		"../favicon.ico",
+		"./shared/modernizr-2.6.2.min.js",
+        "./shared/jquery/jquery-3.2.1.min.js",
         "./shared/normalize.css",
         "./shared/style.css",
-        "./shared/jquery/jquery-3.2.1.min.js",
+		"./shared/jquery/jquery-ui.min.css",
         "./shared/jsLibJs.php",
 		"./shared/global_constants.php",
 		"./"+themeDir+"/theme.css",
