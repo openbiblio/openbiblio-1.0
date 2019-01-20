@@ -50,10 +50,11 @@ class Biblios extends CoreTable {
 
 	## ========================= ##
 	public function getBiblioByPhrase($criteria, $mode=null) {
+//echo "in Biblios:getBiblioByPhrase() <br>\n";
 		// actual sort string for a search is created by the following line
 		// warning! not straight-forward, be careful requires good understanding of MARC field intentions
-
 		$jsonSpec = $this->makeParamStr($criteria);   // see routine near bottom of this file
+
 		/* mode may be null at times */
 	    $spec = json_decode($jsonSpec, true);
 
@@ -68,7 +69,7 @@ class Biblios extends CoreTable {
 			$keywords[$i] = addslashes(stripslashes($keywords[$i]));
 		}
 
-		$sqlSelect= "SELECT DISTINCT b.bibid FROM `biblio` AS b";
+		$sqlSelect = "SELECT DISTINCT b.bibid FROM `biblio` AS b";
 		$sqlWhere = " WHERE (1=1)";
 		$keywordnr = 1;
 		foreach ($keywords as $kwd) {
@@ -94,13 +95,15 @@ class Biblios extends CoreTable {
 			$sqlWhere .= ")";
 			$keywordnr++;
 		}
+
+
 		// Now do the selecting and ordering
 		$selectNr = 1;
 		foreach ($spec as $item) {
-
 /*
-    You can't do this here. - FL May 2016
-    All items in 'Order by' must also be in 'Select' list
+//You can't do this here. - FL May 2016
+//All items in 'Order by' must also be in 'Select' list,
+//sorting now handled by UI javascript (srchJs.php)
 
 			if(isset($item['orderTag'])){
 				// If order is already specified, add a secondairy

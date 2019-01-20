@@ -444,24 +444,57 @@ var bs = {
 		}, 'json');
 	},
 
-	showList: function (firstItem, biblioList) {
-	  if(firstItem == null) firstItem=0;
+	showList: function (firstItem, biblioData) {
+		if(firstItem == null) firstItem=0;
 	  
 		// print 'number found'('first displayed#'- 'last displayed#')
 		// Modified in order to limit results per page. First "record" contains this data - LJ
-		var queryInfo = JSON.parse(biblioList[0]);
+		var queryInfo = JSON.parse(biblioData[0]);
 		var firstItem = parseInt(queryInfo.firstItem),
-				lastItem = parseInt(queryInfo.lastItem),
-				perPage = parseInt(queryInfo.itemsPage),
-				ttlNum = parseInt(queryInfo.totalNum),
-				modFirstItem = parseInt(queryInfo.firstItem) + 1;
+			lastItem = parseInt(queryInfo.lastItem),
+			perPage = parseInt(queryInfo.itemsPage),
+			ttlNum = parseInt(queryInfo.totalNum),
+			modFirstItem = parseInt(queryInfo.firstItem) + 1;
+
+		// we need a sorted list of biblios for display
+		// 1. clone list without the info record
+		var biblioList = biblioData.slice(1);
+		//console.log(biblioList);
+		// 2. construct an array of bibioList indeces and various sort keys
+		var keys = ['Call Number', 'Title', 'Author'];
+		var biblioNdx = [];
+		for (var nBiblio in biblioList) {
+			biblioNdx[nBiblio] = [];
+			biblioNdx[nBiblio]['index'] = nBiblio;
+			var biblio = JSON.parse(biblioList[nBiblio]);
+			var hdr = biblio.hdr;   //console.log(hdr); console.log("--");
+			var marc = biblio.marc;  //console.log(marc); console.log("--");
+			for (var nEntry in marc) {
+				var key = marc[nEntry].lbl
+				//console.log("testing lbl '"+key+"'' for a match for biblio #"+String(nEntry));
+				if (keys.includes(key)) {
+					//console.log("found a match to "+key);
+					console.log("placing '"+marc[nEntry].value+"'' into '"+key+"'' column for biblio #"+String(nBiblio));
+					biblioNdx[nBiblio][key] = marc[nEntry].value;
+				}
+			}
+			//console.log(biblioNdx);
+			console.log("- - - - -");
+		}
+		// 3. sort the biblio Index array
+		var sortBy = $('#sortBy option:selected').val();
+		//console.log("sorting by '"+sortBy+"'");
+		biblioNdx.sort(bs.by(sortBy, true));
+		//console.log(biblioNdx);
+
 		$('.rsltQuan').html(' '+ttlNum+' <?php echo T("Items"); ?>('+modFirstItem+'-'+lastItem+ ') ');
 		bs.biblio = [];
 
 		$('#listTbl tbody#srchRslts').html('');
-		for (var nBiblio in biblioList) {
-			if (nBiblio == 0) continue;
-			var biblio = JSON.parse(biblioList[nBiblio]);
+//		for (var nBiblio in biblioList) {
+		for (var nSeqno in biblioNdx) {
+			var ndx = biblioNdx[nSeqno]['index']
+			var biblio = JSON.parse(biblioList[ndx]);
 			if (!biblio.hdr) {
 				console.log('biblio hdr missing for record #'+nBiblio+' of the current setDate.');
 				continue;
@@ -491,6 +524,7 @@ var bs = {
 				html += '		</div>'+"\n";
 				bs.getPhoto(hdr.bibid, '#photo_'+hdr.bibid );
 			}
+
 			/*  some administrative info and a 'more detail' button */
 			html += '	<div class="dashBds">\n';
 			html += ' 	<div class="dashBdsA">';
@@ -560,6 +594,20 @@ var bs = {
 		$('#biblioDiv').hide()
  		$('#searchDiv').hide();
 	},
+
+	by: function(field, reverse, primer){
+		// json object array sort based on work described at
+		// http://stackoverflow.com/a/979325/2502532
+   		var key = function (x) {
+   			return primer ? primer(x[field]) : x[field];
+		};
+
+   		return function (a,b) {
+	  		var A = key(a), B = key(b);
+	  		return ( (A < B) ? -1 : ((A > B) ? 1 : 0) ) * [-1,1][+!!reverse];
+   		}
+	},
+
 	goNextPage:function (firstItem) {
 		$('#biblioListDiv .goNextBtn').disable();
 		bs.doPhraseSearch(null,firstItem);
