@@ -8,7 +8,7 @@
 var oed = {
 	<?php
 	require_once(REL(__FILE__, "../classes/Localize.php"));
-	$jsLoc = new Localize(OBIB_LOCALE,$tab);
+	$jsLoc = new Localize('OBIB_LOCALE',$tab);
 
 	echo 'editHdr 	 : "'.T("Online Options").'",'."\n";
 	echo 'successMsg : "'.T("Update successful").'",'."\n";

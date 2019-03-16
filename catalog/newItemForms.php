@@ -136,9 +136,11 @@ th.colHead { white-space: nowrap; }
 		<table>
 		<tr>
 			<th colspan="1"><?php echo T("lookup_patience");?></th>
+			<!--
 			// open() "/home/.me./openbiblio/public_html/images/please_wait.gif" failed (2: No such file or directory),
 			// request: "GET /home/.me./openbiblio/public_html/images/please_wait.gif HTTP/1.1",
 			// referrer: "http://openbhg.local/catalog/newItemForms.php"
+			-->
 			<td rowspan="3"><img src="<?php echo "/images/please_wait.gif"; ?>" /></td>
 		</tr>
 		<tr>
