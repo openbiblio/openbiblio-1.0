@@ -2,14 +2,15 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+//echo "in biblioFldSrvr.php::";
 
-  require_once("../shared/common.php");
+	require_once("../shared/common.php");
 
 	if ((empty($_POST['mode']))&& (!empty($_POST['editMode']))) {
-    $_POST['mode'] = $_POST['editMode'];
+    	$_POST['mode'] = $_POST['editMode'];
 	}
-	
-	switch ($_POST['mode']){
+	$mode = $_POST['mode'];
+	switch ($mode){
 	  #-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'getMtlTypes':
 			## prepare list of Material Types
@@ -38,6 +39,7 @@
 			//print_r($hosts);
 			echo json_encode($flds);
 			break;
+
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		case 'updateFldSet':
 			## update material fields for a specific material type
@@ -117,9 +119,9 @@
 				}
 			}
 			break;
-			
+
   	#-.-.-.-.-.-.-.-.-.-.-.-.-
 		default:
-		  echo "<h4>".T("invalid mode").": $_POST['mode']</h4><br />";
+		  echo "<h4>".T("invalid mode").": $mode </h4><br />";
 		break;
 	}

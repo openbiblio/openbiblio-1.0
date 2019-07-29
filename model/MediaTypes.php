@@ -2,6 +2,7 @@
 /* This file is part of a copyrighted work; it is distributed with NO WARRANTY.
  * See the file COPYRIGHT.html for more details.
  */
+//echo "in mediaTypes.php";echo "<br />";
 
 require_once(REL(__FILE__, "../classes/DmTable.php"));
 

@@ -41,6 +41,8 @@ var obib = {
 		}
 		if ($tab == 'opac') {
 			echo "opacMode:	true,\n";
+		} else {
+			echo "opacMode:	false,\n";
 		}
 	?>
 

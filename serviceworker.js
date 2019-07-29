@@ -1,7 +1,7 @@
 // JavaScript Document
 "use strict";
 
-const version = "v0.4";
+const version = "v0.42";
 const staticCacheName = version + "-staticFiles";
 //const <?php echo "themeDir = '$ThemeDir'\n";
 const themeDir = "themes/default";
@@ -25,8 +25,8 @@ addEventListener ('install', installEvent => {
         "./shared/normalize.css",
         "./shared/style.css",
 		"./shared/jquery/jquery-ui.min.css",
-        "./shared/jsLibJs.php",
-		"./shared/global_constants.php",
+//        "./shared/jsLibJs.php",
+//		"./shared/global_constants.php",
 		"./"+themeDir+"/theme.css",
 		"./"+themeDir+"/header.php",
 		"./"+localeDir+"/trans.php",
